@@ -3,6 +3,9 @@
 .nbgrader.log
 
 # Ignore cache
-__pycache__/*
+*__pycache__/*
+
+# Ignore compiled files
+*.pyc
 
 
