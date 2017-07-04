@@ -7,6 +7,7 @@ from scipy.optimize import curve_fit
 # TODO:
 #  Build the 'optimize' step into the main fooof function
 #  Add post-fit, pre-multifit merging of overlapping oscillations
+#  Make I/O order for parameters consistent
 
 # NOTE:
 #  Quite sensitive to f_low. Fails to fit sometimes.
@@ -103,7 +104,9 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     amplitude_threshold = np.max(p_flat_real)*threshold
 
     p_flat_real[p_flat_real < 0] = 0
-    p_flat_iteration = p_flat_real - 0
+    # UPDATE: Change force copy method
+    p_flat_iteration = np.copy(p_flat_real)
+    #p_flat_iteration = p_flat_real - 0
 
     # initialize
     oscillation_params = np.empty((0, 3)) # cf, amp, bw
@@ -262,23 +265,23 @@ def gaussian_function(x, *params):
 
 
 def fit_gaussian(flattened_psd, frequency_vector, window_around_max):
-    """
+    """Fit a gaussian to the largest peak in a (flattened) PSD.
 
     Parameters
     ----------
     flattened_psd : 1d array
-        xx
+        Power spectral density values.
     frequency_vector : 1d array
-        xx
+        Frequency values for the PSD.
     window_around_max : int
-        xx
+        Window (in Hz) around peak to fit gaussian to.
 
     Returns
     -------
-    popt :
-        xx
-    gaussian_fit :
-        xx
+    popt : 1d array
+        Parameter values to define the fit gaussian (length 3).
+    gaussian_fit : 1d array
+        Values of the gaussian fit to the input (flattened & zeroed out) PSD.
     """
 
     # find the location and amplitude of the maximum of the flattened spectrum
@@ -287,12 +290,17 @@ def fit_gaussian(flattened_psd, frequency_vector, window_around_max):
     guess_freq = frequency_vector[max_index]
 
     # set everything that's not the biggest oscillation to zero
-    # NOTE: am i missing something about the 'minus zero' here? Or we can drop it?
-    p_flat_zeros = flattened_psd - 0
+    # UPDATE: Change force copy method
+    p_flat_zeros = np.copy(flattened_psd)
+    #p_flat_zeros = flattened_psd - 0
 
-    idx = [0, 0]
-    idx[0] = get_index_from_vector(frequency_vector, guess_freq-window_around_max)
-    idx[1] = get_index_from_vector(frequency_vector, guess_freq+window_around_max)
+    #idx = [0, 0]
+    #idx[0] = get_index_from_vector(frequency_vector, guess_freq-window_around_max)
+    #idx[1] = get_index_from_vector(frequency_vector, guess_freq+window_around_max)
+
+    # UPDATE: Alternate to above
+    idx = [get_index_from_vector(frequency_vector, edge) for edge in
+        [guess_freq-window_around_max, guess_freq+window_around_max]]
 
     # if the cf is near left edge, only flatten to the right
     if (guess_freq-window_around_max) < window_around_max:
