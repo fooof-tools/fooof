@@ -1,0 +1,8 @@
+# Ignore notebook checkpoints & log
+.ipynb_checkpoints/*
+.nbgrader.log
+
+# Ignore cache
+__pycache__/*
+
+
