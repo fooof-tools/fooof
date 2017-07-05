@@ -1,4 +1,6 @@
 # helper functions
+import numpy as np
+from scipy import signal
 
 def data_syn(filename, freq_range):
 #     filename = '6.npy'
@@ -28,6 +30,8 @@ def data_ecog(filename, srate, channel):
 #     filename = 'ecog_data.csv'
 #     srate = 1000.0
     chandat = np.loadtxt(filename, delimiter=",")
+    if np.shape(chandat)[0]<np.shape(chandat)[1]:
+        chandat = chandat.T
     chandat = chandat[:, channel]
 
     # make the PSD
