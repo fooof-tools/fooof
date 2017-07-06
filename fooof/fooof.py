@@ -24,6 +24,7 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
         Suggest: Take both in linear space, big note that this is what's expected (like old foof)
     Seems to be a lot of outputs, not all are clearly useful in most scenarios.
         Suggest: Reorder: full fit 1st, freqs 2nd, maybe rest are optional?
+        Suggest 2: How it a proper module, so we can call fooof.fit.full(), fooof.fit.background(), etc.
 
     Parameters
     ----------
@@ -67,9 +68,7 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     # this is express as percent relative maximum oscillation height
     threshold = 0.025
 
-    # UPDATE - WRONG INPUT NAME HERE, WASN'T USING INPUT DATA FROM FUNCTION
     # trim the PSD
-    #frequency_vector, foof_spec = trim_psd(psd_array, frequency_vector, frequency_range)
     frequency_vector, foof_spec = trim_psd(input_psd, frequency_vector, frequency_range)
 
     # Check dimensions
@@ -164,11 +163,6 @@ def trim_psd(input_psd, input_frequency_vector, frequency_range):
         Extracted power spectral density values.
     """
 
-    #idx = [0, 0]
-    #idx[0] = get_index_from_vector(input_frequency_vector, frequency_range[0])
-    #idx[1] = get_index_from_vector(input_frequency_vector, frequency_range[1])
-
-    # UPDATE: ^ Rewrite above 3 lines as list comprehension:
     idx = [get_index_from_vector(input_frequency_vector, freq) for freq in frequency_range]
 
     output_frequency_vector = input_frequency_vector[idx[0]:idx[1]]
@@ -290,15 +284,8 @@ def fit_gaussian(flattened_psd, frequency_vector, window_around_max):
     guess_freq = frequency_vector[max_index]
 
     # set everything that's not the biggest oscillation to zero
-    # UPDATE: Change force copy method
     p_flat_zeros = np.copy(flattened_psd)
-    #p_flat_zeros = flattened_psd - 0
 
-    #idx = [0, 0]
-    #idx[0] = get_index_from_vector(frequency_vector, guess_freq-window_around_max)
-    #idx[1] = get_index_from_vector(frequency_vector, guess_freq+window_around_max)
-
-    # UPDATE: Alternate to above
     idx = [get_index_from_vector(frequency_vector, edge) for edge in
         [guess_freq-window_around_max, guess_freq+window_around_max]]
 
