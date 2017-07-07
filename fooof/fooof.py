@@ -153,8 +153,8 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
       except:
         pass
 
-      keep_osc = True
-      while np.sum(keep_osc) > 0:
+      keep_osc = False
+      while ~np.all(keep_osc):
         # remove gaussians by bandwidth
         osc_params = group_three(oscillation_params)
         cf_params = [item[0] for item in osc_params]
@@ -172,7 +172,7 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
           
         # logic handle background fit when there are no oscillations
         else:
-          keep_osc = False
+          keep_osc = True
           oscillation_params = []
 
       if len(oscillation_params) > 0:
