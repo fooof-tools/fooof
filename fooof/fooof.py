@@ -338,8 +338,6 @@ def quick_background_fit(frequency_vector, trimmed_psd, param_bounds):
   popt, _ = curve_fit(linear_function, frequency_vector, trimmed_psd, p0=guess)
   guess = [popt[0], popt[1], 0]
   guess = np.array(guess)
-  print(guess)
-  print(param_bounds)
   popt, _ = curve_fit(quadratic_function, frequency_vector, trimmed_psd, p0=guess, bounds=param_bounds)
   psd_fit = quadratic_function(frequency_vector, *popt)
   
