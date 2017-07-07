@@ -142,9 +142,9 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
       guess = list(itertools.chain.from_iterable(guess))
       
       # make a list of the bounds to pass into the curve fitting
-      param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations 
+      gaus_param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations 
       try:
-        oscillation_params, _ = curve_fit(gaussian_function, frequency_vector, p_flat_real, p0=guess, maxfev=5000, bounds=param_bounds)
+        oscillation_params, _ = curve_fit(gaussian_function, frequency_vector, p_flat_real, p0=guess, maxfev=5000, bounds=gaus_param_bounds)
       except:
         pass
 
@@ -160,8 +160,8 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
         if len(guess) > 0:
           num_of_oscillations = int(np.shape(guess)[0])
           guess = list(itertools.chain.from_iterable(guess))
-          param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations
-          oscillation_params, _ = curve_fit(gaussian_function, frequency_vector, p_flat_real, p0=guess, maxfev=5000, bounds=param_bounds)
+          gaus_param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations
+          oscillation_params, _ = curve_fit(gaussian_function, frequency_vector, p_flat_real, p0=guess, maxfev=5000, bounds=gaus_param_bounds)
           
         # logic to handle background fit when there are no oscillations
         else:
@@ -338,6 +338,8 @@ def quick_background_fit(frequency_vector, trimmed_psd, param_bounds):
   popt, _ = curve_fit(linear_function, frequency_vector, trimmed_psd, p0=guess)
   guess = [popt[0], popt[1], 0]
   guess = np.array(guess)
+  print(guess)
+  print(param_bounds)
   popt, _ = curve_fit(quadratic_function, frequency_vector, trimmed_psd, p0=guess, bounds=param_bounds)
   psd_fit = quadratic_function(frequency_vector, *popt)
   
