@@ -66,6 +66,7 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     # outlier amplitude is also the minimum amplitude required for counting as an "oscillation"
     # this is express as percent relative maximum oscillation height
     threshold = 0.025
+    param_bounds = (-np.inf, -8, -np.inf), (np.inf, 0, 0)
     
     # convert window_around_max to freq
     window_around_max = np.int(np.ceil(window_around_max/(frequency_vector[1]-frequency_vector[0])))
@@ -84,7 +85,7 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     trimmed_psd = np.nanmean(foof_spec, 0)
     
     # fit the background 1/f
-    background_params, background_fit = clean_background_fit(frequency_vector, trimmed_psd, threshold)
+    background_params, background_fit = clean_background_fit(frequency_vector, trimmed_psd, threshold, param_bounds)
     p_flat_real = trimmed_psd - background_fit
     p_flat_real[p_flat_real < 0] = 0
     p_flat_iteration = np.copy(p_flat_real)
@@ -96,6 +97,8 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
         max_amp = p_flat_iteration[max_index]
 
         # trim gaussians at the edges of the PSD
+        # trimming these here dramatically speeds things up, since the trimming later...
+        # ... requires doing the gaussian curve fitting, which is slooow
         cut_freq = [0,0]
         cut_freq[0] = np.int(np.ceil(frequency_range[0]/(frequency_vector[1]-frequency_vector[0])))
         cut_freq[1] = np.int(np.ceil(frequency_range[1]/(frequency_vector[1]-frequency_vector[0])))
@@ -127,10 +130,8 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
       num_of_oscillations = int(np.shape(guess)[0])
       guess = list(itertools.chain.from_iterable(guess))
       
-      lo_bw = bandwidth_limits[0]
-      hi_bw = bandwidth_limits[1]
-      lo_bound = frequency_range[0], 0, lo_bw
-      hi_bound = frequency_range[1], np.inf, hi_bw      
+      lo_bound = frequency_range[0], 0, bandwidth_limits[0]
+      hi_bound = frequency_range[1], np.inf, bandwidth_limits[1]      
       param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations 
       try:
         oscillation_params, _ = curve_fit(gaussian_function, frequency_vector, p_flat_real, p0=guess, maxfev=5000, bounds=param_bounds)
@@ -143,10 +144,7 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
         osc_params = group_three(oscillation_params)
         cf_params = [item[0] for item in osc_params]
         bw_params = [item[2] for item in osc_params]
-        keep_osc = (np.abs(np.subtract(cf_params, frequency_range[0]))>2) & \
-                    (np.abs(np.subtract(cf_params, frequency_range[1]))>2) & \
-                    (np.abs(np.subtract(bw_params, lo_bw))>10e-4) & \
-                    (np.abs(np.subtract(bw_params, hi_bw))>10e-4)
+        keep_osc = decision_criterion(cf_params, bw_params, frequency_range, bandwidth_limits)
         guess = [d for (d, remove) in zip(osc_params, keep_osc) if remove]
         if len(guess) > 0:
           num_of_oscillations = int(np.shape(guess)[0])
@@ -154,7 +152,7 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
           param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations
           oscillation_params, _ = curve_fit(gaussian_function, frequency_vector, p_flat_real, p0=guess, maxfev=5000, bounds=param_bounds)
           
-        # logic handle background fit when there are no oscillations
+        # logic hto andle background fit when there are no oscillations
         else:
           keep_osc = True
           oscillation_params = []
@@ -164,28 +162,14 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
         psd_fit = gaussian_fit + background_fit
       else:
         log_f = np.log10(frequency_vector)
-        guess = [trimmed_psd[0], -2]
-        guess = np.array(guess)
-        popt, _ = curve_fit(linear_function, log_f, trimmed_psd, p0=guess)
-        guess = [popt[0], popt[1], 0]
-        guess = np.array(guess)
-        param_bounds = (-np.inf, -8, -np.inf), (np.inf, 0, 0)
-        popt, _ = curve_fit(quadratic_function, log_f, trimmed_psd, p0=guess, bounds=param_bounds)
-        psd_fit = quadratic_function(log_f, *popt)
+        psd_fit, _ = quick_background_fit(log_f, trimmed_psd, param_bounds)
         gaussian_fit = np.zeros_like(frequency_vector)
         oscillation_params = []
         
     # logic handle background fit when there are no oscillations
     else:
       log_f = np.log10(frequency_vector)
-      guess = [trimmed_psd[0], -2]
-      guess = np.array(guess)
-      popt, _ = curve_fit(linear_function, log_f, trimmed_psd, p0=guess)
-      guess = [popt[0], popt[1], 0]
-      guess = np.array(guess)
-      param_bounds = (-np.inf, -8, -np.inf), (np.inf, 0, 0)
-      popt, _ = curve_fit(quadratic_function, log_f, trimmed_psd, p0=guess, bounds=param_bounds)
-      psd_fit = quadratic_function(log_f, *popt)
+      psd_fit, _ = quick_background_fit(log_f, trimmed_psd, param_bounds)
       gaussian_fit = np.zeros_like(frequency_vector)
       oscillation_params = []
 
@@ -243,41 +227,6 @@ def get_index_from_vector(input_vector, element_value):
     return idx
 
 
-# def fit_one_over_f(frequency_vector, trimmed_psd):
-#     """Fit the 1/f slope of PSD - does so like a 2nd order fit in
-# 
-#     Parameters
-#     ----------
-#     frequency_vector : 1d array
-#         Frequency values for the PSD.
-#     trimmed_psd : 1d array
-#         Power spectral density values.
-# 
-#     Returns
-#     -------
-#     fit_values : 1d array
-#         Values of fit slope.
-#     fit_parameters : 1d array
-#         Parameters of slope fit (length of 3).
-#     """
-# 
-#     # 2nd degree polynomial robust fit for first pass
-#     Xvar = np.column_stack((frequency_vector, frequency_vector**2))
-#     Xvar = sm.add_constant(Xvar)
-# 
-#     # logic in case RLM fails
-#     # TODO: choose fit model (based on data appropriateness and/or speed)
-#     try:
-#         mdl_fit = sm.RLM(trimmed_psd, Xvar, M=sm.robust.norms.HuberT()).fit()
-#     except:
-#         mdl_fit = sm.OLS(trimmed_psd, Xvar).fit()
-# 
-#     fit_values = mdl_fit.fittedvalues
-#     fit_parameters = mdl_fit.params
-# 
-#     return fit_values, fit_parameters
-
-
 def gaussian_function(x, *params):
     """Gaussian function to use for fitting.
 
@@ -306,6 +255,7 @@ def gaussian_function(x, *params):
 
     return y
 
+
 def linear_function(x, *params):
   """Linear function to use for quick fitting 1/f to estimate parameters.
 
@@ -327,6 +277,7 @@ def linear_function(x, *params):
   slope = params[1]
   y = y + offset + (x*slope)
   return y
+
 
 def quadratic_function(x, *params):
   """Quadratic function to use for better fitting 1/f.
@@ -351,8 +302,18 @@ def quadratic_function(x, *params):
   y = y + offset + (x*slope) + ((x**2)*curve)
   return y
 
+def quick_background_fit(frequency_vector, trimmed_psd, param_bounds):
+  guess = [trimmed_psd[0], -2]
+  guess = np.array(guess)
+  popt, _ = curve_fit(linear_function, frequency_vector, trimmed_psd, p0=guess)
+  guess = [popt[0], popt[1], 0]
+  guess = np.array(guess)
+  popt, _ = curve_fit(quadratic_function, frequency_vector, trimmed_psd, p0=guess, bounds=param_bounds)
+  psd_fit = quadratic_function(frequency_vector, *popt)
+  
+  return psd_fit, popt
 
-def clean_background_fit(frequency_vector, trimmed_psd, threshold):
+def clean_background_fit(frequency_vector, trimmed_psd, threshold, param_bounds):
   """Fit the 1/f slope of PSD using a linear and then quadratic fit
 
   Parameters
@@ -371,18 +332,8 @@ def clean_background_fit(frequency_vector, trimmed_psd, threshold):
   background_fit : 1d array
       Values of fit slope.
   """
-  
   log_f = np.log10(frequency_vector)
-
-  guess = [trimmed_psd[0], -2]
-  guess = np.array(guess)
-  popt, _ = curve_fit(linear_function, log_f, trimmed_psd, p0=guess)
-
-  guess = [popt[0], popt[1], 0]
-  guess = np.array(guess)
-  param_bounds = (-np.inf, -8, -np.inf), (np.inf, 0, 0)
-  popt, _ = curve_fit(quadratic_function, log_f, trimmed_psd, p0=guess, bounds=param_bounds)
-  quadratic_fit = quadratic_function(log_f, *popt)
+  quadratic_fit, popt = quick_background_fit(frequency_vector, trimmed_psd, param_bounds)
   p_flat = trimmed_psd - quadratic_fit
 
   # remove outliers
@@ -400,65 +351,14 @@ def clean_background_fit(frequency_vector, trimmed_psd, threshold):
 
   return background_params, background_fit
 
-# def fit_gaussian(flattened_psd, frequency_vector, window_around_max):
-#     """Fit a gaussian to the largest peak in a (flattened) PSD.
-# 
-#     Parameters
-#     ----------
-#     flattened_psd : 1d array
-#         Power spectral density values.
-#     frequency_vector : 1d array
-#         Frequency values for the PSD.
-#     window_around_max : int
-#         Window (in Hz) around peak to fit gaussian to.
-# 
-#     Returns
-#     -------
-#     popt : 1d array
-#         Parameter values to define the fit gaussian (length 3).
-#     gaussian_fit : 1d array
-#         Values of the gaussian fit to the input (flattened & zeroed out) PSD.
-#     """
-# 
-#     # find the location and amplitude of the maximum of the flattened spectrum
-#     # this assumes that this value is the peak of the biggest oscillation
-#     max_index = np.argmax(flattened_psd)
-#     guess_freq = frequency_vector[max_index]
-# 
-#     # set everything that's not the biggest oscillation to zero
-#     p_flat_zeros = np.copy(flattened_psd)
-# 
-#     idx = [get_index_from_vector(frequency_vector, edge) for edge in
-#         [guess_freq-window_around_max, guess_freq+window_around_max]]
-# 
-#     # if the cf is near left edge, only flatten to the right
-#     if (guess_freq-window_around_max) < window_around_max:
-#         p_flat_zeros[idx[1]:] = 0
-#     # if the cf is near right edge, only flatten to the left
-#     elif (guess_freq+window_around_max) > (np.max(frequency_vector)-window_around_max):
-#         p_flat_zeros[0:idx[0]] = 0
-#     # otherwise flatten it all
-#     else:
-#         p_flat_zeros[0:idx[0]] = 0
-#         p_flat_zeros[idx[1]:] = 0
-# 
-#     # the first guess for the gaussian fit is the biggest oscillation
-#     guess = [guess_freq, np.max(p_flat_zeros), 2]
-#     guess = np.array(guess)
-#     popt, _ = curve_fit(gaussian_function, frequency_vector, p_flat_zeros, p0=guess, maxfev=5000)
-#     gaussian_fit = gaussian_function(frequency_vector, *popt)
-#     gaussian_fit = np.array(gaussian_fit)
-# 
-#     return popt, gaussian_fit
 
 # decision criteria for keeping fitted oscillations
-# amp has to be at least 1.645 * residual noise
 # std of gaussian fit needs to not be too narrow...
 # ... nor too wide
 # and cf of oscillation can't be too close to edges,
 #   else there's not enough infomation to make a good fit
 
-def decision_criterion(oscillation_params, frequency_range):
+def decision_criterion(cf_params, bw_params, frequency_range, bandwidth_limits):
     """Decide whether a potential oscillation fit meets criterion.
 
     Parameters
@@ -473,13 +373,13 @@ def decision_criterion(oscillation_params, frequency_range):
     keep_parameter : boolean
         Whether the oscillation fit is deemed appropriate to keep.
     """
-
-    edge_criteria = oscillation_params[1]*2
+    lo_bw = bandwidth_limits[0]
+    hi_bw = bandwidth_limits[1]
     keep_parameter = \
-        (oscillation_params[2] < 5.) & \
-        (oscillation_params[2] > 0.5) & \
-        (oscillation_params[0] > (frequency_range[0]+edge_criteria)) & \
-        (oscillation_params[0] < (frequency_range[1]-edge_criteria))
+        (np.abs(np.subtract(cf_params, frequency_range[0]))>2) & \
+        (np.abs(np.subtract(cf_params, frequency_range[1]))>2) & \
+        (np.abs(np.subtract(bw_params, lo_bw))>10e-4) & \
+        (np.abs(np.subtract(bw_params, hi_bw))>10e-4)
 
     return keep_parameter
 
