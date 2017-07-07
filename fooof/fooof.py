@@ -1,5 +1,6 @@
 """FOOOF!"""
 
+import itertools
 import numpy as np
 import statsmodels.api as sm
 from scipy.optimize import curve_fit
@@ -67,6 +68,9 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     # outlier amplitude is also the minimum amplitude required for counting as an "oscillation"
     # this is express as percent relative maximum oscillation height
     threshold = 0.025
+    
+    # convert window_around_max to freq
+    window_around_max = np.int(np.ceil(window_around_max/(frequency_vector[1]-frequency_vector[0])))
 
     # trim the PSD
     frequency_vector, foof_spec = trim_psd(input_psd, frequency_vector, frequency_range)
@@ -81,64 +85,103 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     # Average across all provided PSDs
     trimmed_psd = np.nanmean(foof_spec, 0)
 
-    # fit in log-log space and flatten the PSD
-    log_f = np.log10(frequency_vector)
-    _, background_params = fit_one_over_f(log_f, trimmed_psd)
-    fit_values = background_params[0] + (background_params[1]*(log_f)) + (background_params[2]*(log_f**2))
-    p_flat = trimmed_psd - fit_values
+    # if the slope of the fit at the beginning is positive, adjust freq range up
+    beginning_slope = True
+    edge_shift = 1
+    while beginning_slope:
+      # Average across all provided PSDs
+      trimmed_psd = trimmed_psd[edge_shift:]
+      frequency_vector = frequency_vector[edge_shift:]
 
-    # remove outliers
-    p_flat[p_flat < 0] = 0
-    amplitude_threshold = np.max(p_flat) * threshold
-    cutoff = p_flat <= (amplitude_threshold)
-    f_ignore = frequency_vector[cutoff]
-    p_ignore = trimmed_psd[cutoff]
+      # fit in log-log space and flatten the PSD
+      log_f = np.log10(frequency_vector)
+      _, background_params = fit_one_over_f(log_f, trimmed_psd)
+      fit_values = background_params[0] + (background_params[1]*(log_f)) + (background_params[2]*(log_f**2))
+      p_flat = trimmed_psd - fit_values
 
-    # refit the background, ignoring regions with large amplitudes
-    # this assumes those large amplitude regions are oscillations, not background
-    log_f_ignore = np.log10(f_ignore)
-    _, background_params = fit_one_over_f(log_f_ignore, p_ignore)
-    background_fit = background_params[0] + (background_params[1]*(log_f)) + (background_params[2]*(log_f**2))
-    p_flat_real = trimmed_psd - background_fit
-    amplitude_threshold = np.max(p_flat_real)*threshold
+      # remove outliers
+      p_flat[p_flat < 0] = 0
+      amplitude_threshold = np.max(p_flat) * threshold
+      cutoff = p_flat <= (amplitude_threshold)
+      f_ignore = frequency_vector[cutoff]
+      p_ignore = trimmed_psd[cutoff]
 
-    p_flat_real[p_flat_real < 0] = 0
-    # UPDATE: Change force copy method
-    p_flat_iteration = np.copy(p_flat_real)
-    #p_flat_iteration = p_flat_real - 0
+      # refit the background, ignoring regions with large amplitudes
+      # this assumes those large amplitude regions are oscillations, not background
+      log_f_ignore = np.log10(f_ignore)
+      _, background_params = fit_one_over_f(log_f_ignore, p_ignore)
+      background_fit = background_params[0] + (background_params[1]*(log_f)) + (background_params[2]*(log_f**2))
+      p_flat_real = trimmed_psd - background_fit
+      amplitude_threshold = np.max(p_flat_real)*threshold
 
-    # initialize
-    oscillation_params = np.empty((0, 3)) # cf, amp, bw
-    gaussian_fit = np.empty((0, np.size(frequency_vector)))
+      p_flat_real[p_flat_real < 0] = 0
+      p_flat_iteration = np.copy(p_flat_real)
+      
+      beginning_slope = background_fit[1] > background_fit[0]
 
-    # fit gaussians
-    for i in range(number_of_gaussians):
-        try:
-            popt, output_gaussian = fit_gaussian(p_flat_iteration, frequency_vector, window_around_max)
-            keep_parameter = decision_criterion(popt, frequency_range)
+    guess = np.empty((0, 3))
+    gausi = 0
+    while gausi <= number_of_gaussians:
+        max_index = np.argmax(p_flat_iteration)
+        max_amp = p_flat_iteration[max_index]
+        amp_cut = 2 * np.median(p_flat_real)
+        drop_cond1 = (max_index - window_around_max) <= frequency_range[0]
+        drop_cond2 = (max_index + window_around_max) >= frequency_range[1]
+        drop_criterion = drop_cond1 | drop_cond2
+        if ~drop_criterion:
+            if max_amp >= amp_cut:
+                guess_freq = frequency_vector[max_index]
+                guess_amp = max_amp
+                guess_bw = 2.
+                guess = np.vstack((guess, (guess_freq, guess_amp, guess_bw)))
+                flat_range = ((max_index-window_around_max), (max_index+window_around_max))
+                p_flat_iteration[flat_range[0]:flat_range[1]] = 0
+        if drop_cond1:
+            flat_range = (0, (max_index+window_around_max))
+            p_flat_iteration[flat_range[0]:flat_range[1]] = 0
+        if drop_cond2:
+            flat_range = ((max_index-window_around_max), frequency_range[1])
+            p_flat_iteration[flat_range[0]:flat_range[1]] = 0
+        gausi += 1
+    
+    if len(guess) > 0:
+      guess = list(itertools.chain.from_iterable(guess))
+      num_of_oscillations = int(np.shape(guess)[0]/3)
+      lo_bw = 0.5
+      hi_bw = 5.
+      lo_bound = frequency_range[0], 0, lo_bw
+      hi_bound = frequency_range[1], np.inf, hi_bw      
+      param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations      
+      oscillation_params, _ = curve_fit(gaussian_function, frequency_vector, p_flat_real, p0=guess, maxfev=5000, bounds=param_bounds)
 
-            if keep_parameter:
-                oscillation_params = np.vstack((oscillation_params, popt))
-                gaussian_fit = np.vstack((gaussian_fit, output_gaussian))
-                p_flat_iteration = p_flat_real - np.sum(gaussian_fit, 0)
 
-        except:
-            pass # TODO: this needs exception handling in case fitting fails
 
-    # NOTE: When and why are there duplicates?
-    # remove any duplicates
-    oscillation_params = [list(x) for x in set(tuple(x) for x in oscillation_params)]
-    gaussian_fit = [list(x) for x in set(tuple(x) for x in gaussian_fit)]
-
-    psd_fit = np.sum(gaussian_fit, 0) + background_fit
+      bw_params = group_three(oscillation_params)
+      bw_params = [item[2] for item in bw_params]
+      keep_osc = (np.abs(np.subtract(bw_params,lo_bw))>10e-2) & \
+                  (np.abs(np.subtract(bw_params,hi_bw))>10e-2)
+      if ~np.all(keep_osc):
+        guess = group_three(guess)
+        to_remove = np.where(~keep_osc)[0]
+        for i in range(np.size(to_remove)):
+            del guess[to_remove[i]][:]
+        guess = [x for x in guess if x]
+        
+        guess = list(itertools.chain.from_iterable(guess))
+        num_of_oscillations = int(np.shape(guess)[0]/3)
+        param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations
+        oscillation_params, _ = curve_fit(gaussian_function, frequency_vector, p_flat_real, p0=guess, maxfev=5000, bounds=param_bounds)
+      
+      
+      gaussian_fit = gaussian_function(frequency_vector, *oscillation_params)
+      psd_fit = gaussian_fit + background_fit
 
     # logic handle background fit when there are no oscillations
-    if len(oscillation_params) == 0:
-
-        # 2nd degree polynomial robust fit for first pass
-        background_fit, background_params = fit_one_over_f(log_f, trimmed_psd)
-
-        psd_fit = background_fit
+    else:
+        # just fit background without removing any windows
+        log_f = np.log10(frequency_vector)
+        _, background_params = fit_one_over_f(log_f, trimmed_psd)
+        psd_fit = background_params[0] + (background_params[1]*(log_f)) + (background_params[2]*(log_f**2))
 
     return p_flat_real, frequency_vector, trimmed_psd, psd_fit, background_fit, gaussian_fit, background_params, oscillation_params
 
@@ -340,3 +383,9 @@ def decision_criterion(oscillation_params, frequency_range):
         (oscillation_params[0] < (frequency_range[1]-edge_criteria))
 
     return keep_parameter
+
+def group_three(vec):
+    """Takes array of inputs, groups by three."""
+
+    return [list(vec[i:i+3]) for i in range(0, len(vec), 3)]
+
