@@ -15,7 +15,7 @@ from scipy.optimize import curve_fit
 ###################################################################################################
 ###################################################################################################
 
-def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, window_around_max):
+def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, window_around_max, bandwidth_limits):
     """Fit oscillations & one over f.
 
     NOTE:
@@ -88,21 +88,6 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     p_flat_real = trimmed_psd - background_fit
     p_flat_real[p_flat_real < 0] = 0
     p_flat_iteration = np.copy(p_flat_real)
-    
-    # # if the slope of the fit at the beginning is positive, adjust freq range up
-    # beginning_slope = True
-    # edge_shift = 1
-    # while beginning_slope:
-    #   # Average across all provided PSDs
-    #   trimmed_psd = trimmed_psd[edge_shift:]
-    #   frequency_vector = frequency_vector[edge_shift:]
-    # 
-    #   background_params, background_fit = clean_background_fit(frequency_vector, trimmed_psd, threshold)
-    #   p_flat_real = trimmed_psd - background_fit
-    #   p_flat_real[p_flat_real < 0] = 0
-    #   p_flat_iteration = np.copy(p_flat_real)
-    #   
-    #   beginning_slope = background_fit[1] > background_fit[0]
 
     guess = np.empty((0, 3))
     gausi = 0
@@ -142,9 +127,8 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
       num_of_oscillations = int(np.shape(guess)[0])
       guess = list(itertools.chain.from_iterable(guess))
       
-      
-      lo_bw = 0.5
-      hi_bw = 10.
+      lo_bw = bandwidth_limits[0]
+      hi_bw = bandwidth_limits[1]
       lo_bound = frequency_range[0], 0, lo_bw
       hi_bound = frequency_range[1], np.inf, hi_bw      
       param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations 
@@ -159,8 +143,8 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
         osc_params = group_three(oscillation_params)
         cf_params = [item[0] for item in osc_params]
         bw_params = [item[2] for item in osc_params]
-        keep_osc = (np.abs(np.subtract(cf_params, cut_freq[0]))>5) & \
-                    (np.abs(np.subtract(cf_params, cut_freq[1]))>5) & \
+        keep_osc = (np.abs(np.subtract(cf_params, frequency_range[0]))>2) & \
+                    (np.abs(np.subtract(cf_params, frequency_range[1]))>2) & \
                     (np.abs(np.subtract(bw_params, lo_bw))>10e-4) & \
                     (np.abs(np.subtract(bw_params, hi_bw))>10e-4)
         guess = [d for (d, remove) in zip(osc_params, keep_osc) if remove]
