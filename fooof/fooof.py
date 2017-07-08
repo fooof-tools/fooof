@@ -168,6 +168,9 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
             keep_osc = decision_criterion(cf_params, bw_params, frequency_range, bandwidth_limits)
             guess = [d for (d, remove) in zip(osc_params, keep_osc) if remove]
 
+            # Remove oscillations due to BW overlap (one osc is entirely within another)
+            guess = drop_overlapping_oscs(guess)
+
             if len(guess) > 0:
                 num_of_oscillations = int(np.shape(guess)[0])
                 guess = list(itertools.chain.from_iterable(guess))
@@ -439,3 +442,69 @@ def group_three(vec):
     """Takes array of inputs, groups by three."""
 
     return [list(vec[i:i+3]) for i in range(0, len(vec), 3)]
+
+
+def drop_overlapping_oscs(oscs):
+    """Drop oscillation definitions if they are entirely within another oscillation.
+
+    Parameters
+    ----------
+    oscs : list of lists of [float, float, float]
+        Oscillation definitions - [CF, Amp, BW].
+
+    Returns
+    -------
+    oscs : list of lists of [float, float, float]
+        Oscillation definitions - [CF, Amp, BW].
+    """
+
+    n_oscs = len(oscs)
+
+    oscs = sorted(oscs, key = lambda x: float(x[2]))
+    bounds = [[osc[0]-osc[2], osc[0]+osc[2]] for osc in oscs]
+
+    drops = []
+    for i, bound in enumerate(bounds[:-1]):
+        for j in range(i+1, n_oscs):
+            if overlap(bound, bounds[j]):
+
+                # Mark overlapped oscillation to be dropped
+                #print('DROPPED')
+                drops.append(i)
+
+                # NOTE: in a small number of manual test cases, it doesn't
+                #  matter if you use either or neither of the updates below,
+                #  the end fit ends up exactly the same.
+
+                # Update parameters for overlapping osc
+                #  New CF is combined across each, weighted by amp
+                #oscs[i][0] = oscs[i][0] * (oscs[i][1] / oscs[i][1] + oscs[j][1]) + \
+                #             oscs[j][0] * (oscs[j][1] / oscs[j][1] + oscs[j][1])
+
+                # Or - update CF and Amp to straight average
+                #oscs[i][0] = (oscs[i][0] + oscs[j][0]) / 2
+                #oscs[i][1] = (oscs[i][1] + oscs[j][1]) / 2
+
+    oscs = [oscs[k] for k in list(set(range(n_oscs)) - set(drops))]
+
+    return sorted(oscs)
+
+
+def overlap(a, b):
+    """Checks if boundary definitions 'a' are entirely within boundary definitions 'b'.
+
+    Parameters
+    ----------
+    a, b : list of [float, float]
+        Boundary definitions.
+
+    Returns
+    -------
+    bool
+        True if a is entirely within the bounds of b, False otherwise.
+    """
+
+    if a[0] >= b[0] and a[0] <= b[1] and a[1] >= b[0] and a[1] <= b[1]:
+        return True
+    else:
+        return False
