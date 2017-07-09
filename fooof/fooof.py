@@ -72,7 +72,7 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     hi_bound = frequency_range[1], np.inf, bandwidth_limits[1]
 
     # default 1/f parameter bounds limit slope to be negative, and no steeper than -8
-    param_bounds = (-np.inf, -8, -np.inf), (np.inf, 0, 0)
+    param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
 
     # convert window_around_max to freq
     window_around_max = np.int(np.ceil(window_around_max/(frequency_vector[1]-frequency_vector[0])))
@@ -469,7 +469,7 @@ def drop_overlapping_oscs(oscs):
             if overlap(bound, bounds[j]):
 
                 # Mark overlapped oscillation to be dropped
-                #print('DROPPED')
+                # print('DROPPED')
                 drops.append(i)
 
                 # NOTE: in a small number of manual test cases, it doesn't
