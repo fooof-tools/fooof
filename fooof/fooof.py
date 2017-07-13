@@ -71,7 +71,7 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     lo_bound = frequency_range[0], 0, bandwidth_limits[0]
     hi_bound = frequency_range[1], np.inf, bandwidth_limits[1]
 
-    # default 1/f parameter bounds limit slope to be negative, and no steeper than -8
+    # default 1/f parameter bounds limit slope to be less than 2 and no steeper than -8
     param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
 
     # convert window_around_max to freq
@@ -107,10 +107,11 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
         # trimming these here dramatically speeds things up, since the trimming later...
         # ... requires doing the gaussian curve fitting, which is slooow
         cut_freq = [0, 0]
+        edge_window = 1.
         cut_freq[0] = np.int(np.ceil(frequency_range[0]/(frequency_vector[1]-frequency_vector[0])))
         cut_freq[1] = np.int(np.ceil(frequency_range[1]/(frequency_vector[1]-frequency_vector[0])))
-        drop_cond1 = (max_index - window_around_max) <= cut_freq[0]
-        drop_cond2 = (max_index + window_around_max) >= cut_freq[1]
+        drop_cond1 = (max_index - edge_window) <= cut_freq[0]
+        drop_cond2 = (max_index + edge_window) >= cut_freq[1]
         drop_criterion = drop_cond1 | drop_cond2
 
         if ~drop_criterion:
@@ -155,6 +156,7 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
 
         # TODO: should it do something in particular here?
         except:
+            oscillation_params = []
             pass
 
         # iterate through gaussian fitting to remove implausible oscillations
@@ -350,7 +352,6 @@ def quick_background_fit(frequency_vector, trimmed_psd, param_bounds):
     popt : list of [offset, slope, curvature]
         Parameter estimates.
     """
-
     guess = [trimmed_psd[0], -2]
     guess = np.array(guess)
     popt, _ = curve_fit(linear_function, frequency_vector, trimmed_psd, p0=guess)
@@ -504,7 +505,7 @@ def overlap(a, b):
         True if a is entirely within the bounds of b, False otherwise.
     """
 
-    if a[0] >= b[0] and a[0] <= b[1] and a[1] >= b[0] and a[1] <= b[1]:
+    if (a[0] >= b[0]) and (a[0] <= b[1]) and (a[1] >= b[0]) and (a[1] <= b[1]):
         return True
     else:
         return False

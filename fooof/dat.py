@@ -1,6 +1,8 @@
 # helper functions
 import numpy as np
 from scipy import signal
+import foof_utils as fu
+
 
 def data_syn(filename, freq_range):
 #     filename = '6.npy'
