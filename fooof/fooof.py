@@ -386,7 +386,7 @@ def clean_background_fit(frequency_vector, trimmed_psd, threshold, param_bounds)
         Values of fit slope.
     """
     log_f = np.log10(frequency_vector)
-    quadratic_fit, popt = quick_background_fit(frequency_vector, trimmed_psd, param_bounds)
+    quadratic_fit, popt = quick_background_fit(log_f, trimmed_psd, param_bounds)
     p_flat = trimmed_psd - quadratic_fit
 
     # remove outliers
