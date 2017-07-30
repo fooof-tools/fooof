@@ -71,8 +71,8 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     lo_bound = frequency_range[0], 0, bandwidth_limits[0]
     hi_bound = frequency_range[1], np.inf, bandwidth_limits[1]
 
-    # default 1/f parameter bounds limit slope to be negative, and no steeper than -8
-    param_bounds = (-np.inf, -8, -np.inf), (np.inf, 0, 0)
+    # default 1/f parameter bounds limit slope to be less than 2 and no steeper than -8
+    param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
 
     # convert window_around_max to freq
     window_around_max = np.int(np.ceil(window_around_max/(frequency_vector[1]-frequency_vector[0])))
@@ -107,10 +107,11 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
         # trimming these here dramatically speeds things up, since the trimming later...
         # ... requires doing the gaussian curve fitting, which is slooow
         cut_freq = [0, 0]
+        edge_window = 1.
         cut_freq[0] = np.int(np.ceil(frequency_range[0]/(frequency_vector[1]-frequency_vector[0])))
         cut_freq[1] = np.int(np.ceil(frequency_range[1]/(frequency_vector[1]-frequency_vector[0])))
-        drop_cond1 = (max_index - window_around_max) <= cut_freq[0]
-        drop_cond2 = (max_index + window_around_max) >= cut_freq[1]
+        drop_cond1 = (max_index - edge_window) <= cut_freq[0]
+        drop_cond2 = (max_index + edge_window) >= cut_freq[1]
         drop_criterion = drop_cond1 | drop_cond2
 
         if ~drop_criterion:
@@ -155,6 +156,7 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
 
         # TODO: should it do something in particular here?
         except:
+            oscillation_params = []
             pass
 
         # iterate through gaussian fitting to remove implausible oscillations
@@ -167,6 +169,9 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
             bw_params = [item[2] for item in osc_params]
             keep_osc = decision_criterion(cf_params, bw_params, frequency_range, bandwidth_limits)
             guess = [d for (d, remove) in zip(osc_params, keep_osc) if remove]
+
+            # Remove oscillations due to BW overlap (one osc is entirely within another)
+            guess = drop_overlapping_oscs(guess)
 
             if len(guess) > 0:
                 num_of_oscillations = int(np.shape(guess)[0])
@@ -347,7 +352,6 @@ def quick_background_fit(frequency_vector, trimmed_psd, param_bounds):
     popt : list of [offset, slope, curvature]
         Parameter estimates.
     """
-
     guess = [trimmed_psd[0], -2]
     guess = np.array(guess)
     popt, _ = curve_fit(linear_function, frequency_vector, trimmed_psd, p0=guess)
@@ -382,7 +386,7 @@ def clean_background_fit(frequency_vector, trimmed_psd, threshold, param_bounds)
         Values of fit slope.
     """
     log_f = np.log10(frequency_vector)
-    quadratic_fit, popt = quick_background_fit(frequency_vector, trimmed_psd, param_bounds)
+    quadratic_fit, popt = quick_background_fit(log_f, trimmed_psd, param_bounds)
     p_flat = trimmed_psd - quadratic_fit
 
     # remove outliers
@@ -439,3 +443,69 @@ def group_three(vec):
     """Takes array of inputs, groups by three."""
 
     return [list(vec[i:i+3]) for i in range(0, len(vec), 3)]
+
+
+def drop_overlapping_oscs(oscs):
+    """Drop oscillation definitions if they are entirely within another oscillation.
+
+    Parameters
+    ----------
+    oscs : list of lists of [float, float, float]
+        Oscillation definitions - [CF, Amp, BW].
+
+    Returns
+    -------
+    oscs : list of lists of [float, float, float]
+        Oscillation definitions - [CF, Amp, BW].
+    """
+
+    n_oscs = len(oscs)
+
+    oscs = sorted(oscs, key = lambda x: float(x[2]))
+    bounds = [[osc[0]-osc[2], osc[0]+osc[2]] for osc in oscs]
+
+    drops = []
+    for i, bound in enumerate(bounds[:-1]):
+        for j in range(i+1, n_oscs):
+            if overlap(bound, bounds[j]):
+
+                # Mark overlapped oscillation to be dropped
+                # print('DROPPED')
+                drops.append(i)
+
+                # NOTE: in a small number of manual test cases, it doesn't
+                #  matter if you use either or neither of the updates below,
+                #  the end fit ends up exactly the same.
+
+                # Update parameters for overlapping osc
+                #  New CF is combined across each, weighted by amp
+                #oscs[i][0] = oscs[i][0] * (oscs[i][1] / oscs[i][1] + oscs[j][1]) + \
+                #             oscs[j][0] * (oscs[j][1] / oscs[j][1] + oscs[j][1])
+
+                # Or - update CF and Amp to straight average
+                #oscs[i][0] = (oscs[i][0] + oscs[j][0]) / 2
+                #oscs[i][1] = (oscs[i][1] + oscs[j][1]) / 2
+
+    oscs = [oscs[k] for k in list(set(range(n_oscs)) - set(drops))]
+
+    return sorted(oscs)
+
+
+def overlap(a, b):
+    """Checks if boundary definitions 'a' are entirely within boundary definitions 'b'.
+
+    Parameters
+    ----------
+    a, b : list of [float, float]
+        Boundary definitions.
+
+    Returns
+    -------
+    bool
+        True if a is entirely within the bounds of b, False otherwise.
+    """
+
+    if (a[0] >= b[0]) and (a[0] <= b[1]) and (a[1] >= b[0]) and (a[1] <= b[1]):
+        return True
+    else:
+        return False
