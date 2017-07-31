@@ -1,13 +1,37 @@
 """FOOOF!
-DEPENDENCIES: SCIPY >0.19"""
+
+DEPENDENCIES: SCIPY >0.19
+"""
 
 import itertools
 import numpy as np
 from scipy.optimize import curve_fit
 
+from fooof.utils import overlap, group_three, get_index_from_vector
+from fooof.funcs import gaussian_function, linear_function, quadratic_function
+
+
 # TODO:
-#  Add post-fit, pre-multifit merging of overlapping oscillations
-#  Make I/O order for parameters consistent
+#   Make I/O order for parameters consistent
+#   Final call on size / shape of PSD inputs (take 1 or many?)
+#       Then:   - fix up size checking.
+#               - document conventions for inputs
+#   Make it real OOP
+
+# MAGIC NUMBERS:
+#   threshold amplitude (MN-1, ~line 74)
+#   1/f parameter bounds (MN-2, ~line 81)
+#   BW guess (MN-3, ~line 141)
+#   Decision criterion values (MN-4, ~line 354)
+
+
+# NOTES:
+#   Size of PSD inputs:
+#     Since all we do is average, what is the benefit of taking multiple PSDs?
+#       Since we only ever fit 1, could add a note to average before FOOOF, if user wants
+#   Linear / logs:
+#     Right now function expects linear frequency and logged powers right? Not sure that's ideal.
+#       Suggest: Take both in linear space, big note that this is what's expected (like old foof)
 
 ###################################################################################################
 ###################################################################################################
@@ -15,13 +39,6 @@ from scipy.optimize import curve_fit
 
 def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, window_around_max, bandwidth_limits):
     """Fit oscillations & one over f.
-
-    NOTE:
-    Right now function expects linear frequency and logged powers right? Not sure that's ideal.
-        Suggest: Take both in linear space, big note that this is what's expected (like old foof)
-    Seems to be a lot of outputs, not all are clearly useful in most scenarios.
-        Suggest: Reorder: full fit 1st, freqs 2nd, maybe rest are optional?
-        Suggest 2: Have it be a proper module, so we can call fooof.fit.full(), fooof.fit.background(), etc.
 
     Parameters
     ----------
@@ -58,11 +75,11 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
         xx
     """
 
-    # TODO: Fix size checking, decide and document conventions for inputs
     # check dimensions
     if input_psd.ndim > 2:
         raise ValueError("input PSD must be 1- or 2- dimensional")
 
+    # MN-1
     # outlier amplitude is also the minimum amplitude required for counting as an "oscillation"
     # this is express as percent relative maximum oscillation height
     threshold = 0.025
@@ -71,11 +88,12 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     lo_bound = frequency_range[0], 0, bandwidth_limits[0]
     hi_bound = frequency_range[1], np.inf, bandwidth_limits[1]
 
+    # MN-2
     # default 1/f parameter bounds limit slope to be less than 2 and no steeper than -8
     param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
 
     # convert window_around_max to freq
-    window_around_max = np.int(np.ceil(window_around_max/(frequency_vector[1]-frequency_vector[0])))
+    window_around_max = np.int(np.ceil(window_around_max / (frequency_vector[1]-frequency_vector[0])))
 
     # trim the PSD
     frequency_vector, foof_spec = trim_psd(input_psd, frequency_vector, frequency_range)
@@ -84,21 +102,24 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     if np.shape(frequency_vector)[0] == np.shape(foof_spec)[0]:
         foof_spec = foof_spec.T
 
-    # NOTE: Since all we do is average, what is the benefit of taking multiple PSDs?
-    #   - Since we only ever fit 1, could add a note to average before FOOOF, if user wants
-
     # Average across all provided PSDs
+    # NOTE: Why NaN mean? Do we expect NaNs? What happens if they are there?
+    #    Should we check inputs to exclude NaNs first?
     trimmed_psd = np.nanmean(foof_spec, 0)
 
-    # fit the background 1/f
+    # Fit the background 1/f
     background_params, background_fit = clean_background_fit(frequency_vector, trimmed_psd,
                                                              threshold, param_bounds)
+
+    # Flatten the PSD using fit background
     p_flat_real = trimmed_psd - background_fit
     p_flat_real[p_flat_real < 0] = 0
     p_flat_iteration = np.copy(p_flat_real)
 
     guess = np.empty((0, 3))
     gausi = 0
+
+    #
     while gausi < number_of_gaussians:
         max_index = np.argmax(p_flat_iteration)
         max_amp = p_flat_iteration[max_index]
@@ -140,7 +161,7 @@ def fooof(frequency_vector, input_psd, frequency_range, number_of_gaussians, win
     if len(guess) > 0:
 
         # remove low amplitude gaussians
-        amp_cut =  0.5 * np.var(p_flat_real)
+        amp_cut = 0.5 * np.var(p_flat_real)
         amp_params = [item[1] for item in guess]
         keep_osc = amp_params > amp_cut
 
@@ -232,107 +253,6 @@ def trim_psd(input_psd, input_frequency_vector, frequency_range):
     return output_frequency_vector, trimmed_psd
 
 
-def get_index_from_vector(input_vector, element_value):
-    """Returns index for input closest to desired element value.
-
-    Parameters
-    ----------
-    input_vector : 1d array
-        Vector of values to search through.
-    element_value : float
-        Value to search for in input vector.
-
-    Returns
-    -------
-    idx : int
-        Index closest to element value.
-    """
-
-    loc = input_vector - element_value
-    idx = np.where(np.abs(loc) == np.min(np.abs(loc)))
-    idx = idx[0][0]
-
-    return idx
-
-
-def gaussian_function(x, *params):
-    """Gaussian function to use for fitting.
-
-    Parameters
-    ----------
-    x :
-        xx
-    *params :
-        xx
-
-    Returns
-    -------
-    y :
-        xx
-    """
-
-    y = np.zeros_like(x)
-
-    for i in range(0, len(params), 3):
-
-        ctr = params[i]
-        amp = params[i+1]
-        wid = params[i+2]
-
-        y = y + amp * np.exp(-((x - ctr)/wid)**2)
-
-    return y
-
-
-def linear_function(x, *params):
-    """Linear function to use for quick fitting 1/f to estimate parameters.
-
-    Parameters
-    ----------
-    x :
-        xx
-    *params :
-        xx
-
-    Returns
-    -------
-    y :
-        xx
-    """
-
-    y = np.zeros_like(x)
-    offset = params[0]
-    slope = params[1]
-    y = y + offset + (x*slope)
-
-    return y
-
-
-def quadratic_function(x, *params):
-    """Quadratic function to use for better fitting 1/f.
-
-    Parameters
-    ----------
-    x :
-        xx
-    *params :
-        xx
-
-    Returns
-    -------
-    y :
-        xx
-    """
-
-    y = np.zeros_like(x)
-    offset = params[0]
-    slope = params[1]
-    curve = params[2]
-    y = y + offset + (x*slope) + ((x**2)*curve)
-
-    return y
-
-
 def quick_background_fit(frequency_vector, trimmed_psd, param_bounds):
     """Fit the 1/f slope of PSD using a linear fit then quadratic fit
 
@@ -352,12 +272,15 @@ def quick_background_fit(frequency_vector, trimmed_psd, param_bounds):
     popt : list of [offset, slope, curvature]
         Parameter estimates.
     """
-    guess = [trimmed_psd[0], -2]
-    guess = np.array(guess)
+
+    # Linear fit
+    guess = np.array([trimmed_psd[0], -2])
     popt, _ = curve_fit(linear_function, frequency_vector, trimmed_psd, p0=guess)
-    guess = [popt[0], popt[1], 0]
-    guess = np.array(guess)
+
+    # Quadratic fit (using guess parameters from linear fit)
+    guess = np.array([popt[0], popt[1], 0])
     popt, _ = curve_fit(quadratic_function, frequency_vector, trimmed_psd, p0=guess, bounds=param_bounds)
+
     psd_fit = quadratic_function(frequency_vector, *popt)
 
     return psd_fit, popt
@@ -385,6 +308,7 @@ def clean_background_fit(frequency_vector, trimmed_psd, threshold, param_bounds)
     background_fit : 1d array
         Values of fit slope.
     """
+
     log_f = np.log10(frequency_vector)
     quadratic_fit, popt = quick_background_fit(log_f, trimmed_psd, param_bounds)
     p_flat = trimmed_psd - quadratic_fit
@@ -397,8 +321,7 @@ def clean_background_fit(frequency_vector, trimmed_psd, threshold, param_bounds)
     p_ignore = trimmed_psd[cutoff]
 
     # use the outputs from the first fit as the guess for the second fit
-    guess = [popt[0], popt[1], popt[2]]
-    guess = np.array(guess)
+    guess = np.array([popt[0], popt[1], popt[2]])
     background_params, _ = curve_fit(quadratic_function, log_f_ignore, p_ignore,
                                      p0=guess, bounds=param_bounds)
     background_fit = background_params[0] + (background_params[1]*(log_f)) + (background_params[2]*(log_f**2))
@@ -430,6 +353,8 @@ def decision_criterion(cf_params, bw_params, frequency_range, bandwidth_limits):
 
     lo_bw = bandwidth_limits[0]
     hi_bw = bandwidth_limits[1]
+
+    # MN-4
     keep_parameter = \
         (np.abs(np.subtract(cf_params, frequency_range[0])) > 2) & \
         (np.abs(np.subtract(cf_params, frequency_range[1])) > 2) & \
@@ -437,12 +362,6 @@ def decision_criterion(cf_params, bw_params, frequency_range, bandwidth_limits):
         (np.abs(np.subtract(bw_params, hi_bw)) > 10e-4)
 
     return keep_parameter
-
-
-def group_three(vec):
-    """Takes array of inputs, groups by three."""
-
-    return [list(vec[i:i+3]) for i in range(0, len(vec), 3)]
 
 
 def drop_overlapping_oscs(oscs):
@@ -461,7 +380,7 @@ def drop_overlapping_oscs(oscs):
 
     n_oscs = len(oscs)
 
-    oscs = sorted(oscs, key = lambda x: float(x[2]))
+    oscs = sorted(oscs, key=lambda x: float(x[2]))
     bounds = [[osc[0]-osc[2], osc[0]+osc[2]] for osc in oscs]
 
     drops = []
@@ -489,23 +408,3 @@ def drop_overlapping_oscs(oscs):
     oscs = [oscs[k] for k in list(set(range(n_oscs)) - set(drops))]
 
     return sorted(oscs)
-
-
-def overlap(a, b):
-    """Checks if boundary definitions 'a' are entirely within boundary definitions 'b'.
-
-    Parameters
-    ----------
-    a, b : list of [float, float]
-        Boundary definitions.
-
-    Returns
-    -------
-    bool
-        True if a is entirely within the bounds of b, False otherwise.
-    """
-
-    if (a[0] >= b[0]) and (a[0] <= b[1]) and (a[1] >= b[0]) and (a[1] <= b[1]):
-        return True
-    else:
-        return False
