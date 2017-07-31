@@ -67,3 +67,31 @@ def get_index_from_vector(input_vector, element_value):
     idx = np.where(np.abs(loc) == np.min(np.abs(loc)))
 
     return idx[0][0]
+
+
+def trim_psd(input_frequency_vector, input_psd, frequency_range):
+    """Extract PSD, and frequency vector, to desired frequency range.
+
+    Parameters
+    ----------
+    input_frequency_vector :
+        Frequency values for the PSD.
+    input_psd : 1d array
+        Power spectral density values.
+    frequency_range : list of [float, float]
+        Desired frequency range of PSD.
+
+    Returns
+    -------
+    output_frequency_vector : 1d array
+        Extracted frequency values for the PSD.
+    trimmed_psd :
+        Extracted power spectral density values.
+    """
+
+    idx = [get_index_from_vector(input_frequency_vector, freq) for freq in frequency_range]
+
+    output_frequency_vector = input_frequency_vector[idx[0]:idx[1]]
+    trimmed_psd = input_psd[idx[0]:idx[1], :]
+
+    return output_frequency_vector, trimmed_psd
