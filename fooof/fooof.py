@@ -22,6 +22,7 @@ from fooof.funcs import gaussian_function, linear_function, quadratic_function
 #       For - number_of_gaussians, window_around_max, bandwidth_limits
 #   Which slope fitting do we want exposed? Potentially hide the other, change names.
 #   Add basic plotting function to display PSD & Fit?
+#   If we're doing R^2 comparison in paper, add method to do so in here?
 
 # MAGIC NUMBERS:
 #   threshold amplitude (MN-1)
