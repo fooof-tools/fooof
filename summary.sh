@@ -9,17 +9,17 @@ find ./fooof -name "*.py" -type f -exec grep . {} \; | wc -l
 printf "\n\n\n CLOC OUTPUT (EXCLUDING TESTS): \n"
 cloc fooof --exclude-dir='tests'
 
-#printf "\n\n\n CLOC OUTPUT - TEST FILES: \n"
-#cloc fooof/tests --exclude-dir='data'
+printf "\n\n\n CLOC OUTPUT - TEST FILES: \n"
+cloc fooof/tests --exclude-dir='data'
 
 # Run Tests & Check Coverage
-#printf "\n\n\n RUN TESTS & TEST COVERAGE: \n"
-#coverage run --source fooof --omit="*/plts/*" -m py.test
-#coverage report
+printf "\n\n\n RUN TESTS & TEST COVERAGE: \n"
+coverage run --source fooof  -m py.test
+coverage report
 
-# Find a way to get summary from pylint?
+# Run pylint and print summary
 printf "\n\n\n RUN PYLINT ACROSS MODULE: \n"
-pylint fooof -> _lint.txt
+pylint fooof --ignore tests -> _lint.txt
 tail -n5 _lint.txt
 
 # Print out some new lines
