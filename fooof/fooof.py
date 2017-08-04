@@ -7,24 +7,44 @@ import itertools
 import numpy as np
 from scipy.optimize import curve_fit
 
-from fooof.utils import overlap, group_three, get_index_from_vector, trim_psd
+from fooof.utils import overlap, group_three, trim_psd
 from fooof.funcs import gaussian_function, linear_function, quadratic_function
 
-
 # TODO:
-#   Make I/O order for parameters consistent
-#       Note - order: freqs, psd
-#   Final call on size / shape of PSD inputs (take 1 or many?)
+#   Make final call on size / shape of PSD inputs (take 1 or many?)
 #       Then:   - fix up size checking.
 #               - document conventions for inputs
+#       Size of PSD inputs notes:
+#           Since all we do is average, what is the benefit of taking multiple PSDs?
+#           Since we only ever fit 1, could add a note to average before FOOOF, if user wants.
+#       Related: why NANMEAN? If we keep 2d, do we need that?
+#           Do we expect NaNs? What happens if they are there?
+#           Should we check inputs to exclude NaNs first?
 #   Document inputs: Size, orientation, logged.
+#       Notes of liner / logs:
+#           Linear / logs:
+#               Right now function expects linear frequency and logged powers right? Not sure that's ideal.
+#               Suggest: Take both in linear space, big note that this is what's expected (like old foof)
+#   Storing freqs & psd
+#       Right now it reduces to requested range, and only stores trimmed psd & freqs. Change?
+#       It used to keep psd & trimmed_psd, but only trimmed freqs. Whichever - needs to be consistent.
 #   Do we have sensible defaults for input parameters?
 #       For - number_of_gaussians, window_around_max, bandwidth_limits
+#   Variable names & organization (sort out inconsistencies):
+#       What does the 'p' stand for in flattened slope vars?
+#           Is it needed? Change var name, and/or document naming logic
+#       What get called 'guess' and 'oscillation_params' can vary in organization:
+#           Sometimes 2d array, 1d arrays, or list to hold effectively the same info. Can we standardize?
+#           Currently the docs are up to date (I think), which shows the inconsistency.
+#   Check and potentially clean up the order of the oscillation checks in 'check_oscs'
+#           Why is amp out front? Should we check amplitude again after refitting - inside the loop?
+#           Should they all be in the loop together?
+#   Finish basic, sanity check, test coverage.
 #   Which slope fitting do we want exposed? Potentially hide the other, change names.
 #   Add basic plotting function to display PSD & Fit?
 #   If we're doing R^2 comparison in paper, add method to do so in here?
 
-# MAGIC NUMBERS:
+# MAGIC NUMBERS (potentially to be updated, moved to be parameter attributes, or at least doc'd):
 #   threshold amplitude (MN-1)
 #   1/f parameter bounds (MN-2)
 #   BW guess (MN-3)
@@ -33,24 +53,9 @@ from fooof.funcs import gaussian_function, linear_function, quadratic_function
 #   Edge window in fit_oscs (MN-6)
 #   Guess params in quick_fit (MN-7)
 
-# NOTES:
-#   Size of PSD inputs:
-#     Since all we do is average, what is the benefit of taking multiple PSDs?
-#       Since we only ever fit 1, could add a note to average before FOOOF, if user wants
-#   Linear / logs:
-#     Right now function expects linear frequency and logged powers right? Not sure that's ideal.
-#       Suggest: Take both in linear space, big note that this is what's expected (like old foof)
-#   Right now it reduces to requested range, and only stores trimmed psd & freqs. Change?
-#       It used to keep psd & trimmed_psd, but only trimmed freqs. Whichever - needs to be consistent.
-#   What does the 'p' stand for in flattened slope vars?
-#   What get called 'guess' and 'oscillation_params' can vary in organization:
-#       Sometimes 2d array, 1d arrays, or list to hold effectively the same info. Can we standardize?
-#       Currently the docs are up to date (I think), which shows the inconsistency.
-
 ###################################################################################################
 ###################################################################################################
 ###################################################################################################
-
 
 class FOOOF(object):
     """Model the physiological power spectrum as oscillatory peaks and 1/f background.
@@ -78,10 +83,10 @@ class FOOOF(object):
         The full model fit of the PSD - 1/f & oscillations across freq_range.
     background_fit : 1d array
         Values of the background fit.
-    gaussian_fit : 1d array
+    oscillation_fit : 1d array
         Values of the oscillation fit (flattened).
     background_params : 1d array
-        Parameters that define the background fit: [TODO: WHAT ARE THEY!?]
+        Parameters that define the background fit.
     oscillation_params : 1d array
         Parameters that define the oscillation (gaussian) fit(s).
     """
@@ -108,7 +113,7 @@ class FOOOF(object):
         self.p_flat_real = None
         self.psd_fit = None
         self.background_fit = None
-        self.gaussian_fit = None    # NOTE: rename oscillation fit, for consistency with other names?
+        self.oscillation_fit = None
         self.background_params = None
         self.oscillation_params = None
 
@@ -142,19 +147,15 @@ class FOOOF(object):
             foof_spec = foof_spec.T
 
         # Average across all provided PSDs
-        # NOTE: Why NaN mean? Do we expect NaNs? What happens if they are there?
-        #    Should we check inputs to exclude NaNs first?
         self.psd = np.nanmean(foof_spec, 0)
 
         # Fit the background 1/f
         self.background_params, self.background_fit = self.clean_background_fit(self.freqs, self.psd)
-                                                                 #self.threshold, self.param_bounds)
 
         # Flatten the PSD using fit background
         p_flat_real = self.psd - self.background_fit
         p_flat_real[p_flat_real < 0] = 0
         self.p_flat_real = p_flat_real
-        #p_flat_iteration = np.copy(p_flat_real)
 
         # Fit initial oscillation gaussian fit
         osc_guess = self.fit_oscs(np.copy(self.p_flat_real))
@@ -167,16 +168,14 @@ class FOOOF(object):
 
         #
         if len(self.oscillation_params) > 0:
-            self.gaussian_fit = gaussian_function(self.freqs, *self.oscillation_params)
-            self.psd_fit = self.gaussian_fit + self.background_fit
+            self.oscillation_fit = gaussian_function(self.freqs, *self.oscillation_params)
+            self.psd_fit = self.oscillation_fit + self.background_fit
 
         # Logic handle background fit when there are no oscillations
         else:
             log_f = np.log10(self.freqs)
-            self.psd_fit, _ = self.quick_background_fit(log_f, self.psd)#, self.param_bounds)
-            self.gaussian_fit = np.zeros_like(self.freqs)
-
-        #return p_flat_real, freqs, trimmed_psd, psd_fit, background_fit, gaussian_fit, background_params, oscillation_params
+            self.psd_fit, _ = self.quick_background_fit(log_f, self.psd)
+            self.oscillation_fit = np.zeros_like(self.freqs)
 
 
     def quick_background_fit(self, freqs, psd): #, param_bounds):
@@ -224,12 +223,6 @@ class FOOOF(object):
             Frequency values for the PSD.
         psd : 1d array
             Power spectral density values.
-
-        # NOW OBJECT ATTRIBUTES
-        threshold : scalar
-            Threshold for removing outliers during fitting.
-        param_bounds : list of [float, float, float]
-            Guess parameters for fitting the quadratic 1/f
 
         Returns
         -------
@@ -334,40 +327,14 @@ class FOOOF(object):
         -------
         oscillation_params : 1d array
             Gaussian definition for oscillation fit: triplets of [center freq, amplitude, bandwidth].
-
-        NOTE: need to sanity check which checks are done where (order).
-            Why is amp out front?
-            Should they all be in the loop?
         """
 
         # Remove gaussians with low amplitude
-        # NOTE: is there a reason we do this here, and not again after refitting?
-        #  Should we check amplitide inside the while loop as well?
         keep_osc = self._drop_osc_amp(guess)
         guess = [d for (d, remove) in zip(guess, keep_osc) if remove]
 
-        # SAME AS ABOVE: OLD VERSION
-        # remove low amplitude gaussians
-        # MN-4
-        #amp_cut = 0.5 * np.var(p_flat_real)
-        #amp_params = [item[1] for item in guess]
-        #keep_osc = amp_params > amp_cut
-
         # Fit a guess of oscillations parameters
         oscillation_params = self._fit_osc_guess(guess)
-
-        # SAME AS ABOVE: OLD VERSION
-        #num_of_oscillations = int(np.shape(guess)[0])
-        #guess = list(itertools.chain.from_iterable(guess))
-
-        # make a list of the bounds to pass into the curve fitting
-        #gaus_param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations
-        #try:
-        #oscillation_params, _ = curve_fit(gaussian_function, freqs, p_flat_real,
-        #                                  p0=guess, maxfev=5000, bounds=gaus_param_bounds)
-        #except:
-        #   oscillation_params = []
-        #    pass
 
         # iterate through gaussian fitting to remove implausible oscillations
         keep_osc = False
@@ -377,12 +344,6 @@ class FOOOF(object):
             osc_params = group_three(oscillation_params)
             keep_osc = np.logical_and(self._drop_osc_cf(osc_params), self._drop_osc_bw(osc_params))
 
-            # SAME AS ABOVE (OLD VERSION):
-            #osc_params = group_three(oscillation_params)
-            #cf_params = [item[0] for item in osc_params]
-            #bw_params = [item[2] for item in osc_params]
-            #keep_osc = self._decision_criterion(cf_params, bw_params, frequency_range, bandwidth_limits)
-
             guess = [d for (d, remove) in zip(osc_params, keep_osc) if remove]
 
             # Remove oscillations due to BW overlap (one osc is entirely within another)
@@ -391,14 +352,6 @@ class FOOOF(object):
             # Refit oscillation guess
             if len(guess) > 0:
                 oscillation_params = self._fit_osc_guess(guess)
-
-            # SAME AS ABOVE: OLD VERSION
-            #if len(guess) > 0:
-            #    num_of_oscillations = int(np.shape(guess)[0])
-            #    guess = list(itertools.chain.from_iterable(guess))
-            #    gaus_param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations
-            #    oscillation_params, _ = curve_fit(gaussian_function, freqs, p_flat_real,
-            #                                      p0=guess, maxfev=5000, bounds=gaus_param_bounds)
 
             # Break out of loop, and set empty params, if no oscillations are found
             else:
@@ -434,41 +387,6 @@ class FOOOF(object):
                                           p0=guess, maxfev=5000, bounds=gaus_param_bounds)
 
         return oscillation_params
-
-
-    # NOTE: below was split out for more explicit / modular decision criteria.
-    #def _decision_criterion(self, cf_params, bw_params, frequency_range, bandwidth_limits):
-        """Decide whether a potential oscillation fit meets criterion.
-
-        Parameters
-        ----------
-
-
-        Returns
-        -------
-        keep_parameter : boolean
-            Whether the oscillation fit is deemed appropriate to keep.
-
-        Notes
-        -----
-        # decision criteria for keeping fitted oscillations
-        # std of gaussian fit needs to not be too narrow...
-        # ... nor too wide
-        # and cf of oscillation can't be too close to edges,
-        #   else there's not enough infomation to make a good fit
-        """
-
-    #    lo_bw = self.bandwidth_limits[0]
-    #    hi_bw = self.bandwidth_limits[1]
-
-        # MN-5
-    #    keep_parameter = \
-    #        (np.abs(np.subtract(cf_params, frequency_range[0])) > 2) & \
-    #        (np.abs(np.subtract(cf_params, frequency_range[1])) > 2) & \
-    #        (np.abs(np.subtract(bw_params, lo_bw)) > 10e-4) & \
-    #        (np.abs(np.subtract(bw_params, hi_bw)) > 10e-4)
-
-    #    return keep_parameter
 
 
     def _drop_osc_amp(self, osc_params):
@@ -566,21 +484,7 @@ class FOOOF(object):
                 if overlap(bound, bounds[j]):
 
                     # Mark overlapped oscillation to be dropped
-                    # print('DROPPED')
                     drops.append(i)
-
-                    # NOTE: in a small number of manual test cases, it doesn't
-                    #  matter if you use either or neither of the updates below,
-                    #  the end fit ends up exactly the same.
-
-                    # Update parameters for overlapping osc
-                    #  New CF is combined across each, weighted by amp
-                    #oscs[i][0] = oscs[i][0] * (oscs[i][1] / oscs[i][1] + oscs[j][1]) + \
-                    #             oscs[j][0] * (oscs[j][1] / oscs[j][1] + oscs[j][1])
-
-                    # Or - update CF and Amp to straight average
-                    #oscs[i][0] = (oscs[i][0] + oscs[j][0]) / 2
-                    #oscs[i][1] = (oscs[i][1] + oscs[j][1]) / 2
 
         oscs = [oscs[k] for k in list(set(range(n_oscs)) - set(drops))]
 
