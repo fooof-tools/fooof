@@ -76,8 +76,6 @@ def quadratic_function(x, *params):
         xx
     """
 
-    xs = 1
-
     y = np.zeros_like(x)
 
     offset = params[0]

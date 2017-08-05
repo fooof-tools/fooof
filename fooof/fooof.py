@@ -21,7 +21,7 @@ from fooof.funcs import gaussian_function, linear_function, quadratic_function
 #           Do we expect NaNs? What happens if they are there?
 #           Should we check inputs to exclude NaNs first?
 #   Document inputs: Size, orientation, logged.
-#       Notes of liner / logs:
+#       Notes of linear / logs:
 #           Linear / logs:
 #               Right now function expects linear frequency and logged powers right? Not sure that's ideal.
 #               Suggest: Take both in linear space, big note that this is what's expected (like old foof)
@@ -36,11 +36,13 @@ from fooof.funcs import gaussian_function, linear_function, quadratic_function
 #       What get called 'guess' and 'oscillation_params' can vary in organization:
 #           Sometimes 2d array, 1d arrays, or list to hold effectively the same info. Can we standardize?
 #           Currently the docs are up to date (I think), which shows the inconsistency.
+#           Oscillation params is returned as one long list. Group_three before return?
 #   Check and potentially clean up the order of the oscillation checks in 'check_oscs'
 #           Why is amp out front? Should we check amplitude again after refitting - inside the loop?
 #           Should they all be in the loop together?
 #   Finish basic, sanity check, test coverage.
 #   Which slope fitting do we want exposed? Potentially hide the other, change names.
+#   Clean up object parameters - hide parameters & methods not for direct use.
 #   Add basic plotting function to display PSD & Fit?
 #   If we're doing R^2 comparison in paper, add method to do so in here?
 
@@ -172,13 +174,14 @@ class FOOOF(object):
             self.psd_fit = self.oscillation_fit + self.background_fit
 
         # Logic handle background fit when there are no oscillations
+        # ??: Should document / point out you get a different approach to slope fit if no oscillations.
         else:
             log_f = np.log10(self.freqs)
             self.psd_fit, _ = self.quick_background_fit(log_f, self.psd)
             self.oscillation_fit = np.zeros_like(self.freqs)
 
 
-    def quick_background_fit(self, freqs, psd): #, param_bounds):
+    def quick_background_fit(self, freqs, psd):
         """Fit the 1/f slope of PSD using a linear fit then quadratic fit
 
         Parameters
@@ -187,10 +190,6 @@ class FOOOF(object):
             Frequency values for the PSD.
         psd : 1d array
             Power spectral density values.
-
-        # NOW OBJECT ATTRIBUTE
-        param_bounds : list of [float, float, float]
-            Guess parameters for fitting the quadratic 1/f
 
         Returns
         -------
@@ -214,7 +213,7 @@ class FOOOF(object):
         return psd_fit, popt
 
 
-    def clean_background_fit(self, freqs, psd): #, threshold, param_bounds):
+    def clean_background_fit(self, freqs, psd):
         """Fit the 1/f slope of PSD using a linear and then quadratic fit, ignoring outliers
 
         Parameters
@@ -233,7 +232,7 @@ class FOOOF(object):
         """
 
         log_f = np.log10(freqs)
-        quadratic_fit, popt = self.quick_background_fit(log_f, psd)#, self.param_bounds)
+        quadratic_fit, popt = self.quick_background_fit(log_f, psd)
         p_flat = psd - quadratic_fit
 
         # remove outliers
@@ -330,6 +329,7 @@ class FOOOF(object):
         """
 
         # Remove gaussians with low amplitude
+        #  NOTE: Why don't we move this to the fit_oscs method? It works on the guess.
         keep_osc = self._drop_osc_amp(guess)
         guess = [d for (d, remove) in zip(guess, keep_osc) if remove]
 
