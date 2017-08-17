@@ -55,60 +55,95 @@ def group_three(vec):
     return [list(vec[i:i+3]) for i in range(0, len(vec), 3)]
 
 
-def get_index_from_vector(input_vector, element_value):
-    """Returns index for input closest to desired element value.
+def trim_psd(freqs, psd, f_range):
+    """Extract frequency range of interest from PSD data.
 
     Parameters
     ----------
-    input_vector : 1d array
-        Vector of values to search through.
-    element_value : float
-        Value to search for in input vector.
-
-    Returns
-    -------
-    idx : int
-        Index closest to element value.
-    """
-
-    loc = input_vector - element_value
-    idx = np.where(np.abs(loc) == np.min(np.abs(loc)))
-
-    return idx[0][0]
-
-
-def trim_psd(input_frequency_vector, input_psd, frequency_range):
-    """Extract PSD, and frequency vector, to desired frequency range.
-
-    Parameters
-    ----------
-    input_frequency_vector :
+    freqs : 1d array
         Frequency values for the PSD.
-    input_psd : 2d array
+    psd : 1d array
         Power spectral density values.
-    frequency_range : list of [float, float]
-        Desired frequency range of PSD.
+    f_range: list of [float, float]
+        Frequency range to restrict to.
 
     Returns
     -------
-    output_frequency_vector : 1d array
-        Extracted frequency values for the PSD.
-    trimmed_psd :
+    freqs_ext : 1d array
         Extracted power spectral density values.
+    psd_ext : 1d array
+        Extracted frequency values for the PSD.
 
-    NOTEs (TODO):
-    This function currently assumes 2d input. Should it?
-        In particular, it assumes column vectors of PSDs.
-    It also (using get_index_from_vector) round bi-directionally.
-        Not obvious, and maybe not desirable.
-    It also, also: doesn't include last requested frequency.
-        So f_range [2, 30] would include f_vals 2 to one f_val prior to 30.
-        With the rounding: this happens
+    Notes
+    -----
+    This function extracts frequency ranges >= f_low and <= f_high.
+        - It does not round to below or above f_low & f_high, respectively.
     """
 
-    idx = [get_index_from_vector(input_frequency_vector, freq) for freq in frequency_range]
+    # Create mask to index only requested frequencies
+    f_mask = np.logical_and(freqs >= f_range[0], freqs <= f_range[1])
 
-    output_frequency_vector = input_frequency_vector[idx[0]:idx[1]]
-    trimmed_psd = input_psd[idx[0]:idx[1]]#, :]
+    # Restrict freqs & psd to requested range
+    freqs_ext = freqs[f_mask]
+    psd_ext = psd[f_mask]
 
-    return output_frequency_vector, trimmed_psd
+    return freqs_ext, psd_ext
+
+
+# def get_index_from_vector(input_vector, element_value):
+#     """Returns index for input closest to desired element value.
+
+#     Parameters
+#     ----------
+#     input_vector : 1d array
+#         Vector of values to search through.
+#     element_value : float
+#         Value to search for in input vector.
+
+#     Returns
+#     -------
+#     idx : int
+#         Index closest to element value.
+#     """
+
+#     loc = input_vector - element_value
+#     idx = np.where(np.abs(loc) == np.min(np.abs(loc)))
+
+#     return idx[0][0]
+
+
+# def trim_psd(input_frequency_vector, input_psd, frequency_range):
+#     """Extract PSD, and frequency vector, to desired frequency range.
+
+#     Parameters
+#     ----------
+#     input_frequency_vector :
+#         Frequency values for the PSD.
+#     input_psd : 2d array
+#         Power spectral density values.
+#     frequency_range : list of [float, float]
+#         Desired frequency range of PSD.
+
+#     Returns
+#     -------
+#     output_frequency_vector : 1d array
+#         Extracted frequency values for the PSD.
+#     trimmed_psd :
+#         Extracted power spectral density values.
+
+#     NOTEs (TODO):
+#     This function currently assumes 2d input. Should it?
+#         In particular, it assumes column vectors of PSDs.
+#     It also (using get_index_from_vector) round bi-directionally.
+#         Not obvious, and maybe not desirable.
+#     It also, also: doesn't include last requested frequency.
+#         So f_range [2, 30] would include f_vals 2 to one f_val prior to 30.
+#         With the rounding: this happens
+#     """
+
+#     idx = [get_index_from_vector(input_frequency_vector, freq) for freq in frequency_range]
+
+#     output_frequency_vector = input_frequency_vector[idx[0]:idx[1]]
+#     trimmed_psd = input_psd[idx[0]:idx[1]]#, :]
+
+#     return output_frequency_vector, trimmed_psd
