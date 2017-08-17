@@ -33,7 +33,6 @@ from fooof.funcs import gaussian_function, linear_function, quadratic_function
 
 # MAGIC NUMBERS (potentially to be updated, moved to be parameter attributes, or at least doc'd):
 #   BW guess (MN-3)
-#   Amplitude cut (MN-4)
 #   Decision criterion values (MN-5)
 #   Edge window in fit_oscs (MN-6)
 
@@ -87,16 +86,19 @@ class FOOOF(object):
         """Initialize FOOOF object with run parameters."""
 
         # Set input parameters
-        self.number_of_gaussians = number_of_gaussians
+        #self.number_of_gaussians = number_of_gaussians
         self.window_around_max = window_around_max
         self.bandwidth_limits = bandwidth_limits
 
         ## SETTINGS
         # Noise threshold, as a percentage of the data.
         #  This threshold defines the minimum amplitude, above residuals, to be considered an oscillation
-        self._threshold = 0.025
+        self._sl_amp_thresh = 0.025
         # Default 1/f parameter bounds. This limits slope to be less than 2 and no steeper than -8.
         self._sl_param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
+        # St. deviation threshold, above residuals, to consider a peak an oscillation
+        #   TODO: SEE NOTE IN FIT_OSCS about this parameter
+        self._amp_std_thresh = 1
 
         # Initialize all data attributes (to None)
         self._reset_dat()
@@ -225,19 +227,22 @@ class FOOOF(object):
         print(' FOOOF - PSD MODEL'.center(cen_val), '\n')
 
         # Frequency range
-        print('The input PSD was modelled in the frequency range: {}-{}'.format( \
+        print('The input PSD was modelled in the frequency range: {}-{} \n'.format( \
               self.frequency_range[0], self.frequency_range[1]).center(cen_val))
 
         # Background (slope) parameters
+        print('Background Parameters: '.center(100))
         print(self.background_params)
 
         # Oscillation parameters
-        print('\n', '{} oscillations were found'.format(1).center(cen_val), '\n')
-        print(self.oscillation_params)
+        print('\n', '{} oscillations were found'.format(len(group_three(self.oscillation_params))).center(cen_val), '\n')
+        for param in group_three(self.oscillation_params):
+            print(param)
+        #print(self.oscillation_params)
 
         # Error
         self.r_squared()
-        print('\n', 'R-squared error is: {}'.format(self.error).center(cen_val), '\n')
+        print('\n', 'R-squared error is: {}'.format(self.error).center(cen_val))
 
         # Footer
         print('\n', '=' * cen_val)
@@ -304,13 +309,13 @@ class FOOOF(object):
         psd_flat[psd_flat < 0] = 0
 
         # Amplitude threshold - in terms of % of power
-        #amplitude_threshold = np.max(psd_flat) * self._threshold
+        #amplitude_threshold = np.max(psd_flat) * self._sl_amp_thresh
         #amp_mask = psd_flat <= (amplitude_threshold)
         #log_f_ignore = log_f[amp_mask]
         #psd_flat_ignore = psd[amp_mask]
 
         # NEW - Amplitude threshold - in terms of # of points
-        perc_thresh = np.percentile(psd_flat, self._threshold)
+        perc_thresh = np.percentile(psd_flat, self._sl_amp_thresh)
         amp_mask = psd_flat <= perc_thresh
         log_f_ignore = log_f[amp_mask]
         psd_flat_ignore = psd[amp_mask]
@@ -340,13 +345,24 @@ class FOOOF(object):
             Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, AMP, BW].
         """
 
-        gausi = 0
+        #gausi = 0
         guess = np.empty((0, 3))
 
-        #
-        while gausi < self.number_of_gaussians:
+        # OLD: loop through preset number of times
+        #while gausi < self.number_of_gaussians:
+
+        # NEW: loop through, checking residuals, stoppind based on STD check
+        #  NOTE: depending how good our osc_gauss guesses are, we are 'inducing' residuals
+        #   As in - making negative error.
+        #     So - with a bad fit, we could add a lot of error, increased STD, and make us stop early
+        #       Possibly: stop based on initial STD of flat (unsubtracted) PSD, not an iterative update PSD?
+        while True:
+
             max_index = np.argmax(flat_iteration)
             max_amp = flat_iteration[max_index]
+
+            if max_amp <= self._amp_std_thresh * np.std(flat_iteration):
+                break
 
             # trim gaussians at the edges of the PSD
             # trimming these here dramatically speeds things up, since the trimming later...
@@ -402,15 +418,15 @@ class FOOOF(object):
                 #flat_iteration[flat_range[0]:flat_range[1]] = 0
 
                 # NEW: Subtract best-guess gaussian
-                osc_guass = gaussian_function(self.freqs, guess_freq, guess_amp, guess_bw)
+                osc_gauss = gaussian_function(self.freqs, guess_freq, guess_amp, guess_bw)
 
                 # TEMP: plot current iteration
                 #plt.figure()
                 #plt.plot(self.freqs, flat_iteration, 'b')
-                #plt.plot(self.freqs, osc_guass, 'g')
-                #plt.plot(self.freqs, flat_iteration - osc_guass, 'k')
+                #plt.plot(self.freqs, osc_gauss, 'g')
+                #plt.plot(self.freqs, flat_iteration - osc_gauss, 'k')
 
-                flat_iteration = flat_iteration - osc_guass
+                flat_iteration = flat_iteration - osc_gauss
 
 
             # flatten edges if the "peak" is at the edge (but don't store that as a gaussian to fit)
@@ -422,7 +438,7 @@ class FOOOF(object):
                 flat_range = ((max_index-self.window_around_max), self.frequency_range[1])
                 flat_iteration[flat_range[0]:flat_range[1]] = 0
 
-            gausi += 1
+            #gausi += 1
 
         return guess
 
@@ -441,10 +457,11 @@ class FOOOF(object):
             Gaussian definition for oscillation fit: triplets of [center freq, amplitude, bandwidth].
         """
 
+        # OLD: Amp check now covered by stopping procedure in fit_oscs
         # Remove gaussians with low amplitude
         #  NOTE: Why don't we move this to the fit_oscs method? It works on the guess.
-        keep_osc = self._drop_osc_amp(guess)
-        guess = [d for (d, remove) in zip(guess, keep_osc) if remove]
+        #keep_osc = self._drop_osc_amp(guess)
+        #guess = [d for (d, remove) in zip(guess, keep_osc) if remove]
 
         # Fit a guess of oscillations parameters
         oscillation_params = self._fit_osc_guess(guess)
@@ -502,28 +519,28 @@ class FOOOF(object):
         return oscillation_params
 
 
-    def _drop_osc_amp(self, osc_params):
-        """Check whether to drop oscillations based on low amplitude.
+    # def _drop_osc_amp(self, osc_params):
+    #     """Check whether to drop oscillations based on low amplitude.
 
-        Parameters
-        ----------
-        osc_params : 2d array
-            Gaussian definition for oscillation fit, each row: [CF, AMP, BW].
+    #     Parameters
+    #     ----------
+    #     osc_params : 2d array
+    #         Gaussian definition for oscillation fit, each row: [CF, AMP, BW].
 
-        Returns
-        -------
-        keep_parameter : 1d array, dtype=bool
-            Whether to keep each oscillation.
-        """
+    #     Returns
+    #     -------
+    #     keep_parameter : 1d array, dtype=bool
+    #         Whether to keep each oscillation.
+    #     """
 
-        amp_params = [item[1] for item in osc_params]
+    #     amp_params = [item[1] for item in osc_params]
 
-        # MN-4
-        amp_cut = 0.5 * np.var(self.psd_flat)
+    #     # OLD MN -4
+    #     amp_cut = 0.5 * np.var(self.psd_flat)
 
-        keep_parameter = amp_params > amp_cut
+    #     keep_parameter = amp_params > amp_cut
 
-        return keep_parameter
+    #     return keep_parameter
 
 
     def _drop_osc_cf(self, osc_params):
