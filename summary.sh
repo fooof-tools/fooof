@@ -2,7 +2,7 @@
 
 # Check how many lines there are in module - excludes blank lines
 printf "\n\n\n\n CHECK MODULE SIZE:"
-printf "\nNumber of lines of code & comments in ERP-SCANR: "
+printf "\nNumber of lines of code & comments in FOOOF: "
 find ./fooof -name "*.py" -type f -exec grep . {} \; | wc -l
 
 # Check number of files using cloc
