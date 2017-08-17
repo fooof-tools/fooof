@@ -109,6 +109,6 @@ def trim_psd(input_frequency_vector, input_psd, frequency_range):
     idx = [get_index_from_vector(input_frequency_vector, freq) for freq in frequency_range]
 
     output_frequency_vector = input_frequency_vector[idx[0]:idx[1]]
-    trimmed_psd = input_psd[idx[0]:idx[1], :]
+    trimmed_psd = input_psd[idx[0]:idx[1]]#, :]
 
     return output_frequency_vector, trimmed_psd
