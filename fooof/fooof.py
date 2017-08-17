@@ -106,6 +106,7 @@ class FOOOF(object):
         """Set (or reset) all data attributes to empty"""
 
         self.freqs = None
+        self.freq_res = None
         self.psd = None
         self.psd_flat = None
         self.psd_fit = None
@@ -141,7 +142,7 @@ class FOOOF(object):
         ----------
         freqs : 1d array
             Frequency values for the PSD.
-        psd : 2d array
+        psd : 1d array
             Power spectral density values.
         frequency_range : list of [float, float]
             Desired frequency range to run FOOOF on.
@@ -155,6 +156,9 @@ class FOOOF(object):
             raise ValueError('Inputs are not 1 dimensional.')
         if freqs.shape != psd.shape:
             raise ValueError('Inputs are not consistent size.')
+
+        # Calculate and store frequency resolution
+        self.freq_res = freqs[1] - freqs[0]
 
         # convert window_around_max to freq
         self.window_around_max = np.int(np.ceil(self.window_around_max / (freqs[1]-freqs[0])))
@@ -195,6 +199,8 @@ class FOOOF(object):
 
     def plot(self):
         """Plot the original PSD, and full model fit."""
+
+        plt.figure()
 
         plt.plot(self.freqs, self.psd, 'k')
         plt.plot(self.freqs, self.psd_fit, 'g')
@@ -358,16 +364,54 @@ class FOOOF(object):
 
             if ~drop_criterion:
 
-                # MN-3
                 # set the guess parameters for gaussian fitting (bw = 2)
                 guess_freq = self.freqs[max_index]
                 guess_amp = max_amp
-                guess_bw = 2.
+
+                # OLD - Guess BW - MN-3
+                #guess_bw = 2.
+
+                # NEW - Guess BW
+                #  NOTE: I'm unconvinced this is the most elegant way to do this...
+                #    Is there a better / cleaner / quicker way?
+
+                # NOTES:
+                #  - Currently - Estimates bandwidth at ~0.6 of max_amp (as opposed to FWHM @ 0.5)
+                half_amp = 0.6 * max_amp
+
+                for ind in range(max_index-1, 0, -1):
+                    if flat_iteration[ind] <= half_amp:
+                        le_ind = ind
+                        break
+
+                for ind in range(max_index+1, len(flat_iteration), 1):
+                    if flat_iteration[ind] <= half_amp:
+                        ri_ind = ind
+                        break
+
+                # This is in index values - convert to frequency
+                shortest_side = min(abs(le_ind - max_index), abs(ri_ind - max_index))
+                guess_bw = shortest_side * 2 * self.freq_res
+
+                # Collect guess parameters
                 guess = np.vstack((guess, (guess_freq, guess_amp, guess_bw)))
 
+                # OLD: flatten around hardcoded guess BW
                 # flatten the flat PSD around this peak
-                flat_range = ((max_index-self.window_around_max), (max_index+self.window_around_max))
-                flat_iteration[flat_range[0]:flat_range[1]] = 0
+                #flat_range = ((max_index-self.window_around_max), (max_index+self.window_around_max))
+                #flat_iteration[flat_range[0]:flat_range[1]] = 0
+
+                # NEW: Subtract best-guess gaussian
+                osc_guass = gaussian_function(self.freqs, guess_freq, guess_amp, guess_bw)
+
+                # TEMP: plot current iteration
+                #plt.figure()
+                #plt.plot(self.freqs, flat_iteration, 'b')
+                #plt.plot(self.freqs, osc_guass, 'g')
+                #plt.plot(self.freqs, flat_iteration - osc_guass, 'k')
+
+                flat_iteration = flat_iteration - osc_guass
+
 
             # flatten edges if the "peak" is at the edge (but don't store that as a gaussian to fit)
             if drop_cond1:
