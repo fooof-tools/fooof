@@ -12,28 +12,14 @@ from fooof.utils import overlap, group_three, trim_psd
 from fooof.funcs import gaussian_function, linear_function, quadratic_function
 
 # TODO:
-#   Make final call on size / shape of PSD inputs (take 1 or many?)
-#       Then:   - fix up size checking.
-#               - document conventions for inputs
-#       Size of PSD inputs notes:
-#           Since all we do is average, what is the benefit of taking multiple PSDs?
-#           Since we only ever fit 1, could add a note to average before FOOOF, if user wants.
-#       Related: why NANMEAN? If we keep 2d, do we need that?
-#           Do we expect NaNs? What happens if they are there?
-#           Should we check inputs to exclude NaNs first?
 #   Document inputs: Size, orientation, logged.
 #       Notes of linear / logs:
 #           Linear / logs:
 #               Right now function expects linear frequency and logged powers right? Not sure that's ideal.
 #               Suggest: Take both in linear space, big note that this is what's expected (like old foof)
-#   Storing freqs & psd
-#       Right now it reduces to requested range, and only stores trimmed psd & freqs. Change?
-#       It used to keep psd & trimmed_psd, but only trimmed freqs. Whichever - needs to be consistent.
 #   Do we have sensible defaults for input parameters?
 #       For - number_of_gaussians, window_around_max, bandwidth_limits
 #   Variable names & organization (sort out inconsistencies):
-#       What does the 'p' stand for in flattened slope vars?
-#           Is it needed? Change var name, and/or document naming logic
 #       What get called 'guess' and 'oscillation_params' can vary in organization:
 #           Sometimes 2d array, 1d arrays, or list to hold effectively the same info. Can we standardize?
 #           Currently the docs are up to date (I think), which shows the inconsistency.
@@ -42,10 +28,8 @@ from fooof.funcs import gaussian_function, linear_function, quadratic_function
 #           Why is amp out front? Should we check amplitude again after refitting - inside the loop?
 #           Should they all be in the loop together?
 #   Finish basic, sanity check, test coverage.
-#   Which slope fitting do we want exposed? Potentially hide the other, change names.
 #   Clean up object parameters - hide parameters & methods not for direct use.
-#   Add basic plotting function to display PSD & Fit?
-#   If we're doing R^2 comparison in paper, add method to do so in here?
+#   Clear FOOOF object when running new PSD. (It has weird behaviour when re-running without doing so.)
 
 # MAGIC NUMBERS (potentially to be updated, moved to be parameter attributes, or at least doc'd):
 #   BW guess (MN-3)
@@ -97,7 +81,6 @@ class FOOOF(object):
     Notes
     -----
     - Input PSD should be smooth. We recommend ...
-
     """
 
     def __init__(self, number_of_gaussians, window_around_max, bandwidth_limits):
@@ -115,7 +98,13 @@ class FOOOF(object):
         # Default 1/f parameter bounds. This limits slope to be less than 2 and no steeper than -8.
         self._sl_param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
 
-        # Initialize all other attributes
+        # Initialize all data attributes (to None)
+        self._reset_dat()
+
+
+    def _reset_dat(self):
+        """Set (or reset) all data attributes to empty"""
+
         self.freqs = None
         self.psd = None
         self.flat_psd = None
@@ -128,10 +117,21 @@ class FOOOF(object):
 
 
     def model(self, freqs, psd, frequency_range):
-        """   """
-        pass
+        """Run model fit, plot, and print results.
 
-        # Runs self.fit() -> self.plot(), self.r_squared(), self.print_params().
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the PSD.
+        psd : 2d array
+            Power spectral density values.
+        frequency_range : list of [float, float]
+            Desired frequency range to run FOOOF on.
+        """
+
+        self.fit(freqs, psd, frequency_range)
+        self.plot()
+        self.print_params()
 
 
     def fit(self, freqs, psd, frequency_range):
@@ -147,16 +147,14 @@ class FOOOF(object):
             Desired frequency range to run FOOOF on.
         """
 
-        # Check inputs
+        # Clear any potentially old data
+        self._reset_dat()
+
+        # Check inputs dimensions & size
         if freqs.ndim != freqs.ndim != 1:
             raise ValueError('Inputs are not 1 dimensional.')
         if freqs.shape != psd.shape:
             raise ValueError('Inputs are not consistent size.')
-
-        # TODO: fix size checking
-        # Check dimensions
-        #if psd.ndim > 2:
-        #    raise ValueError("input PSD must be 1- or 2- dimensional")
 
         # convert window_around_max to freq
         self.window_around_max = np.int(np.ceil(self.window_around_max / (freqs[1]-freqs[0])))
@@ -164,14 +162,6 @@ class FOOOF(object):
         # Trim the PSD to requested frequency range
         self.frequency_range = frequency_range
         self.freqs, self.psd = trim_psd(freqs, psd, self.frequency_range)
-        #self.freqs, foof_spec = trim_psd(freqs, psd, self.frequency_range)
-
-        # Check dimensions
-        #if np.shape(self.freqs)[0] == np.shape(foof_spec)[0]:
-        #    foof_spec = foof_spec.T
-
-        # Average across all provided PSDs
-        #self.psd = np.nanmean(foof_spec, 0)
 
         # Fit the background 1/f
         self.background_params, self.background_fit = self.clean_background_fit(self.freqs, self.psd)
@@ -213,27 +203,38 @@ class FOOOF(object):
 
 
     def r_squared(self):
-        """Check r-squared error of the full model fit."""
+        """Calculate r-squared error of the full model fit."""
 
         self.error = np.sqrt((self.psd - self.psd_fit) ** 2).mean()
 
 
     def print_params(self):
-        """Print out the model fit parameters.
-        TODO: fix this up.
-        """
+        """Print out the model fit parameters."""
 
-        print('The input PSD was modelled in the frequency range: ', self.frequency_range[0], ' - ', self.frequency_range[1])
+        # Set centering value
+        cen_val = 100
+
+        # Header
+        print('=' * cen_val, '\n')
+        print(' FOOOF - PSD MODEL'.center(cen_val), '\n')
+
+        # Frequency range
+        print('The input PSD was modelled in the frequency range: {}-{}'.format( \
+              self.frequency_range[0], self.frequency_range[1]).center(cen_val))
 
         # Background (slope) parameters
         print(self.background_params)
 
         # Oscillation parameters
-        print('N oscillations were found')
+        print('\n', '{} oscillations were found'.format(1).center(cen_val), '\n')
         print(self.oscillation_params)
 
+        # Error
         self.r_squared()
-        print('R-squared error is: ', self.error)
+        print('\n', 'R-squared error is: {}'.format(self.error).center(cen_val), '\n')
+
+        # Footer
+        print('\n', '=' * cen_val)
 
 
     def quick_background_fit(self, freqs, psd):
@@ -306,12 +307,12 @@ class FOOOF(object):
         return background_params, background_fit
 
 
-    def fit_oscs(self, p_flat_iteration):
+    def fit_oscs(self, flat_iteration):
         """Iteratively fit oscillations to flattened spectrum.
 
         Parameters
         ----------
-        p_flat_iteration : 1d array
+        flat_iteration : 1d array
             Flattened PSD values.
 
         Returns
@@ -325,8 +326,8 @@ class FOOOF(object):
 
         #
         while gausi < self.number_of_gaussians:
-            max_index = np.argmax(p_flat_iteration)
-            max_amp = p_flat_iteration[max_index]
+            max_index = np.argmax(flat_iteration)
+            max_amp = flat_iteration[max_index]
 
             # trim gaussians at the edges of the PSD
             # trimming these here dramatically speeds things up, since the trimming later...
@@ -353,16 +354,16 @@ class FOOOF(object):
 
                 # flatten the flat PSD around this peak
                 flat_range = ((max_index-self.window_around_max), (max_index+self.window_around_max))
-                p_flat_iteration[flat_range[0]:flat_range[1]] = 0
+                flat_iteration[flat_range[0]:flat_range[1]] = 0
 
             # flatten edges if the "peak" is at the edge (but don't store that as a gaussian to fit)
             if drop_cond1:
                 flat_range = (0, (max_index+self.window_around_max))
-                p_flat_iteration[flat_range[0]:flat_range[1]] = 0
+                flat_iteration[flat_range[0]:flat_range[1]] = 0
 
             if drop_cond2:
                 flat_range = ((max_index-self.window_around_max), self.frequency_range[1])
-                p_flat_iteration[flat_range[0]:flat_range[1]] = 0
+                flat_iteration[flat_range[0]:flat_range[1]] = 0
 
             gausi += 1
 
