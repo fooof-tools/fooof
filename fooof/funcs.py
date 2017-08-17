@@ -10,15 +10,15 @@ def gaussian_function(x, *params):
 
     Parameters
     ----------
-    x :
-        xx
-    *params :
-        xx
+    x : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define gaussian function.
 
     Returns
     -------
-    y :
-        xx
+    y : 1d array
+        Output values for gaussian function.
     """
 
     y = np.zeros_like(x)
@@ -39,15 +39,15 @@ def linear_function(x, *params):
 
     Parameters
     ----------
-    x :
-        xx
-    *params :
-        xx
+    x : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define linear function.
 
     Returns
     -------
-    y :
-        xx
+    y : 1d array
+        Output values for linear function.
     """
 
     y = np.zeros_like(x)
@@ -65,15 +65,15 @@ def quadratic_function(x, *params):
 
     Parameters
     ----------
-    x :
-        xx
-    *params :
-        xx
+    x : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define quadratic function.
 
     Returns
     -------
-    y :
-        xx
+    y : 1d array
+        Output values for quadratic function.
     """
 
     y = np.zeros_like(x)
