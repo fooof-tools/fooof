@@ -6,6 +6,7 @@ DEPENDENCIES: SCIPY >0.19
 import itertools
 import numpy as np
 from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
 
 from fooof.utils import overlap, group_three, trim_psd
 from fooof.funcs import gaussian_function, linear_function, quadratic_function
@@ -90,11 +91,12 @@ class FOOOF(object):
         Parameters that define the background fit.
     oscillation_params : 1d array
         Parameters that define the oscillation (gaussian) fit(s).
+    error : float
+        R-squared error of the full model fit.
 
     Notes
     -----
     - Input PSD should be smooth. We recommend ...
-
 
     """
 
@@ -107,11 +109,9 @@ class FOOOF(object):
         self.bandwidth_limits = bandwidth_limits
 
         ## SETTINGS
-
         # Noise threshold, as a percentage of the data.
         #  This threshold defines the minimum amplitude, above residuals, to be considered an oscillation
         self._threshold = 0.025
-
         # Default 1/f parameter bounds. This limits slope to be less than 2 and no steeper than -8.
         self._sl_param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
 
@@ -124,13 +124,14 @@ class FOOOF(object):
         self.oscillation_fit = None
         self.background_params = None
         self.oscillation_params = None
+        self.error = None
 
 
     def model(self, freqs, psd, frequency_range):
-    	"""   """
-    	pass
+        """   """
+        pass
 
-    	# Runs self.fit() -> self.plot(), self.r_squared(), self.print_params().
+        # Runs self.fit() -> self.plot(), self.r_squared(), self.print_params().
 
 
     def fit(self, freqs, psd, frequency_range):
@@ -148,9 +149,9 @@ class FOOOF(object):
 
         # Check inputs
         if freqs.ndim != freqs.ndim != 1:
-        	raise ValueError('Inputs are not 1 dimensional.')
+            raise ValueError('Inputs are not 1 dimensional.')
         if freqs.shape != psd.shape:
-        	raise ValueError('Inputs are not consistent size.')
+            raise ValueError('Inputs are not consistent size.')
 
         # TODO: fix size checking
         # Check dimensions
@@ -202,22 +203,37 @@ class FOOOF(object):
             self.oscillation_fit = np.zeros_like(self.freqs)
 
 
-    def plot():
-    	"""   """
-    	# Plots the PSD & Full fit.
-    	pass
+    def plot(self):
+        """Plot the original PSD, and full model fit."""
+
+        plt.plot(self.freqs, self.psd, 'k')
+        plt.plot(self.freqs, self.psd_fit, 'g')
+
+        plt.legend(['Original PSD', 'Full model fit'])
 
 
-   	def r_squared():
-   		"""   """
-   		# Check the fit error.
-   		pass
+    def r_squared(self):
+        """Check r-squared error of the full model fit."""
+
+        self.error = np.sqrt((self.psd - self.psd_fit) ** 2).mean()
 
 
-   	def print_params():
-   		"""   """
-   		# Pretty print out the model fit and parameters.
-   		pass
+    def print_params(self):
+        """Print out the model fit parameters.
+        TODO: fix this up.
+        """
+
+        print('The input PSD was modelled in the frequency range: ', self.frequency_range[0], ' - ', self.frequency_range[1])
+
+        # Background (slope) parameters
+        print(self.background_params)
+
+        # Oscillation parameters
+        print('N oscillations were found')
+        print(self.oscillation_params)
+
+        self.r_squared()
+        print('R-squared error is: ', self.error)
 
 
     def quick_background_fit(self, freqs, psd):
