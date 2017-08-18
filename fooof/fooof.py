@@ -205,6 +205,13 @@ class FOOOF(object):
         # Create full PSD model fit
         self.psd_fit = self._oscillation_fit + self._background_fit
 
+        # Update the stored & returned amplitude values
+        # NOTE: do we want to also store the gaussian amplitude values?
+        # NOTE: Currently, calculates based on nearest actual point. Should we instead estimate based an actual CF?
+        for i, osc in enumerate(self.oscillation_params):
+            ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i]-osc[0]))
+            self.oscillation_params[i, 1] = self.psd[ind] - self._background_fit[ind]
+
         # # OLD:
         # # Making PSD fit, and final slope fit, depending on extract oscillations
         # if len(self.oscillation_params) > 0:
