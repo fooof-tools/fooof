@@ -503,18 +503,29 @@ class FOOOF(object):
             Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, AMP, BW].
         """
 
+        #OLD:
         # Set the parameter bounds for the gaussians
-        lo_bound = self.freq_range[0], 0, self.bandwidth_limits[0]
-        hi_bound = self.freq_range[1], np.inf, self.bandwidth_limits[1]
+        #lo_bound = self.freq_range[0], 0, self.bandwidth_limits[0]
+        #hi_bound = self.freq_range[1], np.inf, self.bandwidth_limits[1]
 
+        #NEW:
+        # Set the bounds, +/- 1 BW for center frequency, positively amp value, and with specified BW limits
+        lo_bound = [[osc[0]-osc[2], 0, self.bandwidth_limits[0]] for osc in guess]
+        hi_bound = [[osc[0]+osc[2], np.inf, self.bandwidth_limits[1]] for osc in guess]
+        gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]), \
+                             tuple([item for sublist in hi_bound for item in sublist]))
+
+        # OLD:
         # Set up bounds and then fit gaussians to oscillations, using guess parameters
-        num_of_oscillations = int(np.shape(guess)[0])
+        #num_of_oscillations = int(np.shape(guess)[0])
+        #gaus_param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations
 
         # OLD: remove itertools dependency
         #guess = list(itertools.chain.from_iterable(guess))
+        # NEW: numpy flattening
         guess = np.ndarray.flatten(guess)
 
-        gaus_param_bounds = lo_bound*num_of_oscillations, hi_bound*num_of_oscillations
+        # Fit the oscillations
         oscillation_params, _ = curve_fit(gaussian_function, self.freqs, self._psd_flat,
                                           p0=guess, maxfev=5000, bounds=gaus_param_bounds)
 
