@@ -91,7 +91,7 @@ class FOOOF(object):
         self._sl_param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
         # St. deviation threshold, above residuals, to consider a peak an oscillation
         #   TODO: SEE NOTE IN FIT_OSCS about this parameter
-        self._amp_std_thresh = 2.
+        self._amp_std_thresh = 2.0
         # Threshold for how far (in units of standard deviation) an oscillation has to be from edge to keep
         self._bw_std_thresh = 1.
 
@@ -430,15 +430,21 @@ class FOOOF(object):
             #       Is there a better / cleaner / quicker way?
             half_amp = 0.5 * max_amp
 
+            le_ind = ri_ind = None
+
             for ind in range(max_index-1, 0, -1):
                 if flat_iteration[ind] <= half_amp:
                     le_ind = ind
                     break
+            if not le_ind:
+                le_ind = 0
 
             for ind in range(max_index+1, len(flat_iteration), 1):
                 if flat_iteration[ind] <= half_amp:
                     ri_ind = ind
                     break
+            if not ri_ind:
+                ri_ind = len(self.freqs)
 
             # This is in index values - convert to frequency
             shortest_side = min(abs(le_ind - max_index), abs(ri_ind - max_index))
