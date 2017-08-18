@@ -428,7 +428,7 @@ class FOOOF(object):
             #  - Currently - Estimates bandwidth at ~0.6 of max_amp (as opposed to FWHM @ 0.5)
             #  - I'm unconvinced this (loop, etc) is the most elegant way to do this...
             #       Is there a better / cleaner / quicker way?
-            half_amp = 0.6 * max_amp
+            half_amp = 0.5 * max_amp
 
             for ind in range(max_index-1, 0, -1):
                 if flat_iteration[ind] <= half_amp:
@@ -442,7 +442,15 @@ class FOOOF(object):
 
             # This is in index values - convert to frequency
             shortest_side = min(abs(le_ind - max_index), abs(ri_ind - max_index))
-            guess_bw = shortest_side * 2 * self.freq_res
+
+            # OLD: estimate bw dumbly
+            #guess_bw = shortest_side * 2 * self.freq_res
+
+            # NEW: estimate BW properly from FWHM
+            # Calculate FWHM, in Hz
+            fwhm = shortest_side * 2 * self.freq_res
+            # Calulate guess BW from FWHM
+            guess_bw = fwhm / (2 * np.sqrt(2 * np.log(2)))
 
             # NEW:
             # Check that guess BW isn't great than limits - restrict if so
