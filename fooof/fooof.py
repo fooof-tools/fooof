@@ -3,6 +3,7 @@
 DEPENDENCIES: SCIPY >0.19
 """
 
+# OLD: no longer has itertools dependency (updated to use numpy instead)
 #import itertools
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,12 +23,13 @@ class FOOOF(object):
 
     Parameters
     ----------
-    number_of_gaussians : int
-        Maximum number of oscillations to attempt to fit.
-    window_around_max : int
-        Frequency window around center frequency to examine.
     bandwidth_limits : list of [float, float]
         Setting to exclude gaussian fits where the bandwidth is implausibly narrow or wide
+    # OLD:
+    #number_of_gaussians : int
+    #    Maximum number of oscillations to attempt to fit.
+    #window_around_max : int
+    #   Frequency window around center frequency to examine.
 
     Attributes
     ----------
@@ -35,22 +37,34 @@ class FOOOF(object):
         Frequency values for the PSD.
     psd : 1d array
         Input power spectral density values.
-    frequency_range : list of [float, float]
-        Frequency range to process.
-    psd_flat : 1d array
-        Flattened PSD.
+    freq_range : list of [float, float]
+        Frequency range of the PSD.
+    freq_res : float
+        Frequency resolution of the PSD.
     psd_fit : 1d array
         The full model fit of the PSD - 1/f & oscillations across freq_range.
-    background_fit : 1d array
-        Values of the background fit.
-    oscillation_fit : 1d array
-        Values of the oscillation fit (flattened).
     background_params : 1d array
         Parameters that define the background fit.
     oscillation_params : 2d array
         Parameters that define the oscillation (gaussian) fit(s). Each row is an oscillation, as [CF, Amp, BW].
     error : float
         R-squared error of the full model fit.
+    _psd_flat : 1d array
+        Flattened PSD.
+    _psd_osc_rm : 1d array
+        PSD with oscillations removed (not flattened).
+    _background_fit : 1d array
+        Values of the background fit.
+    _oscillation_fit : 1d array
+        Values of the oscillation fit (flattened).
+    _sl_amp_thresh : float
+        Noise threshold for slope fitting.
+    _sl_param_bounds :
+        Parameter bounds for background fitting.
+    _amp_std_thresh : float
+        Amplitude threshold for detecting oscillatory peaks, units of standard deviation.
+    _bw_std_thresh : float
+        Banwidth threshold for edge rejection of oscillations, units of standard deviation.
 
     Notes
     -----
@@ -63,7 +77,7 @@ class FOOOF(object):
         """Initialize FOOOF object with run parameters."""
 
         # Set input parameters
-        self._bandwidth_limits = bandwidth_limits
+        self.bandwidth_limits = bandwidth_limits
 
         # OLD:
         #self.number_of_gaussians = number_of_gaussians
@@ -90,6 +104,7 @@ class FOOOF(object):
 
         self.freqs = None
         self.freq_res = None
+        self.freq_range = None
         self.psd = None
         self.psd_fit = None
         self.background_params = None
@@ -102,25 +117,25 @@ class FOOOF(object):
         self._oscillation_fit = None
 
 
-    def model(self, freqs, psd, frequency_range):
+    def model(self, freqs, psd, freq_range):
         """Run model fit, plot, and print results.
 
         Parameters
         ----------
         freqs : 1d array
             Frequency values for the PSD.
-        psd : 2d array
+        psd : 1d array
             Power spectral density values.
-        frequency_range : list of [float, float]
+        freq_range : list of [float, float]
             Desired frequency range to run FOOOF on.
         """
 
-        self.fit(freqs, psd, frequency_range)
+        self.fit(freqs, psd, freq_range)
         self.plot()
         self.print_params()
 
 
-    def fit(self, freqs, psd, frequency_range):
+    def fit(self, freqs, psd, freq_range):
         """Fit the full PSD as 1/f and gaussian oscillations.
 
         Parameters
@@ -129,7 +144,7 @@ class FOOOF(object):
             Frequency values for the PSD.
         psd : 1d array
             Power spectral density values.
-        frequency_range : list of [float, float]
+        freq_range : list of [float, float]
             Desired frequency range to run FOOOF on.
         """
 
@@ -150,8 +165,8 @@ class FOOOF(object):
         #self.window_around_max = np.int(np.ceil(self.window_around_max / (freqs[1]-freqs[0])))
 
         # Trim the PSD to requested frequency range
-        self.frequency_range = frequency_range
-        self.freqs, self.psd = trim_psd(freqs, psd, self.frequency_range)
+        self.freq_range = freq_range
+        self.freqs, self.psd = trim_psd(freqs, psd, self.freq_range)
 
         # Fit the background 1/f
         self._background_fit, self.background_params = self._clean_background_fit(self.freqs, self.psd)
@@ -224,7 +239,7 @@ class FOOOF(object):
 
 
     def print_params(self):
-        """Print out the model fit parameters."""
+        """Print out the PSD model fit parameters."""
 
         # Set centering value
         cen_val = 100
@@ -235,7 +250,7 @@ class FOOOF(object):
 
         # Frequency range & resolution
         print('The input PSD was modelled in the frequency range {}-{} Hz'.format( \
-              self.frequency_range[0], self.frequency_range[1]).center(cen_val))
+              self.freq_range[0], self.freq_range[1]).center(cen_val))
         print('Frequency Resolution is {:1.2f} Hz \n'.format(self.freq_res).center(cen_val))
 
         # Background (slope) parameters
@@ -386,8 +401,8 @@ class FOOOF(object):
             # # MN-6
             # edge_window = 1.
 
-            # cut_freq[0] = np.int(np.ceil(self.frequency_range[0]/(self.freqs[1]-self.freqs[0])))
-            # cut_freq[1] = np.int(np.ceil(self.frequency_range[1]/(self.freqs[1]-self.freqs[0])))
+            # cut_freq[0] = np.int(np.ceil(self.freq_range[0]/(self.freqs[1]-self.freqs[0])))
+            # cut_freq[1] = np.int(np.ceil(self.freq_range[1]/(self.freqs[1]-self.freqs[0])))
             # drop_cond1 = (max_index - edge_window) <= cut_freq[0]
             # drop_cond2 = (max_index + edge_window) >= cut_freq[1]
             # drop_criterion = drop_cond1 | drop_cond2
@@ -426,8 +441,8 @@ class FOOOF(object):
             # Check that guess BW isn't great than limits - restrict if so
             #  Note: without this, curve_fitting fails if given guess > bounds
             #   Between this, and index search above, covers checking of BWs
-            if guess_bw > self._bandwidth_limits[1]:
-                guess_bw = self._bandwidth_limits[1]
+            if guess_bw > self.bandwidth_limits[1]:
+                guess_bw = self.bandwidth_limits[1]
 
             # Collect guess parameters
             guess = np.vstack((guess, (guess_freq, guess_amp, guess_bw)))
@@ -455,7 +470,7 @@ class FOOOF(object):
             #     flat_iteration[flat_range[0]:flat_range[1]] = 0
 
             # if drop_cond2:
-            #     flat_range = ((max_index-self.window_around_max), self.frequency_range[1])
+            #     flat_range = ((max_index-self.window_around_max), self.freq_range[1])
             #     flat_iteration[flat_range[0]:flat_range[1]] = 0
 
             #gausi += 1
@@ -489,8 +504,8 @@ class FOOOF(object):
         """
 
         # Set the parameter bounds for the gaussians
-        lo_bound = self.frequency_range[0], 0, self._bandwidth_limits[0]
-        hi_bound = self.frequency_range[1], np.inf, self._bandwidth_limits[1]
+        lo_bound = self.freq_range[0], 0, self.bandwidth_limits[0]
+        hi_bound = self.freq_range[1], np.inf, self.bandwidth_limits[1]
 
         # Set up bounds and then fit gaussians to oscillations, using guess parameters
         num_of_oscillations = int(np.shape(guess)[0])
@@ -529,14 +544,14 @@ class FOOOF(object):
         # OLD:
         # MN-5
         #keep_parameter = \
-        #    (np.abs(np.subtract(cf_params, self.frequency_range[0])) > 2) & \
-        #    (np.abs(np.subtract(cf_params, self.frequency_range[1])) > 2)
+        #    (np.abs(np.subtract(cf_params, self.freq_range[0])) > 2) & \
+        #    (np.abs(np.subtract(cf_params, self.freq_range[1])) > 2)
 
         # NEW
         # Drop if within 1 BW (std. dev) of the edge
         keep_parameter = \
-            (np.abs(np.subtract(cf_params, self.frequency_range[0])) > bw_params) & \
-            (np.abs(np.subtract(cf_params, self.frequency_range[1])) > bw_params)
+            (np.abs(np.subtract(cf_params, self.freq_range[0])) > bw_params) & \
+            (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)
 
         return keep_parameter
 
@@ -637,8 +652,8 @@ class FOOOF(object):
     #     bw_params = [item[2] for item in osc_params]
 
     #     keep_parameter = \
-    #         (np.abs(np.subtract(bw_params, self._bandwidth_limits[0])) > 10e-20) & \
-    #         (np.abs(np.subtract(bw_params, self._bandwidth_limits[1])) > 10e-20)
+    #         (np.abs(np.subtract(bw_params, self.bandwidth_limits[0])) > 10e-20) & \
+    #         (np.abs(np.subtract(bw_params, self.bandwidth_limits[1])) > 10e-20)
 
     #     return keep_parameter
 
