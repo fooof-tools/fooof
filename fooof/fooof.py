@@ -91,9 +91,9 @@ class FOOOF(object):
         self._sl_param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
         # St. deviation threshold, above residuals, to consider a peak an oscillation
         #   TODO: SEE NOTE IN FIT_OSCS about this parameter
-        self._amp_std_thresh = 2
+        self._amp_std_thresh = 2.
         # Threshold for how far (in units of standard deviation) an oscillation has to be from edge to keep
-        self._bw_std_thresh = 1
+        self._bw_std_thresh = 1.
 
         # Initialize all data attributes (to None)
         self._reset_dat()
@@ -453,9 +453,11 @@ class FOOOF(object):
             guess_bw = fwhm / (2 * np.sqrt(2 * np.log(2)))
 
             # NEW:
-            # Check that guess BW isn't great than limits - restrict if so
+            # Check that guess BW isn't outside preset limits - restrict if so
             #  Note: without this, curve_fitting fails if given guess > bounds
             #   Between this, and index search above, covers checking of BWs
+            if guess_bw < self.bandwidth_limits[0]:
+                guess_bw = self.bandwidth_limits[0]
             if guess_bw > self.bandwidth_limits[1]:
                 guess_bw = self.bandwidth_limits[1]
 
