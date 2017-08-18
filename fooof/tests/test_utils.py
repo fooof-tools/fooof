@@ -3,20 +3,20 @@
 from py.test import raises
 import numpy as np
 
-from fooof.utils import overlap, group_three, trim_psd
+from fooof.utils import group_three, trim_psd #overlap
 
 ##
 ##
 
-def test_overlap():
+# def test_overlap():
 
-	lst_1 = [10, 12]
-	lst_2 = [8, 13]
-	lst_3 = [9, 14]
+# 	lst_1 = [10, 12]
+# 	lst_2 = [8, 13]
+# 	lst_3 = [9, 14]
 
-	assert overlap(lst_1, lst_2)
-	assert not overlap(lst_2, lst_1)
-	assert not overlap(lst_2, lst_3)
+# 	assert overlap(lst_1, lst_2)
+# 	assert not overlap(lst_2, lst_1)
+# 	assert not overlap(lst_2, lst_3)
 
 def test_group_three():
 

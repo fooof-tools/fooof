@@ -7,7 +7,7 @@ from fooof import FOOOF
 
 def test_FOOOF():
 
-	assert FOOOF(2, 2, [2, 2])
+	assert FOOOF()
 
 def test_drop_osc_overlap():
 	pass
