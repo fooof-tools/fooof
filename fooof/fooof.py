@@ -216,7 +216,7 @@ class FOOOF(object):
         for i, osc in enumerate(self._gaussian_params):
             ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i]-osc[0]))
             self.oscillation_params = np.vstack((self.oscillation_params, [osc[0],
-                                                 self.psd[ind] - self._background_fit[ind], osc[2]]))
+                                                 self.psd_fit[ind] - self._background_fit[ind], osc[2]]))
             #self._gaussian_params[i, 1] = self.psd[ind] - self._background_fit[ind]
 
         # # OLD:
@@ -457,13 +457,13 @@ class FOOOF(object):
             shortest_side = min(abs(le_ind - max_index), abs(ri_ind - max_index))
 
             # OLD: estimate bw dumbly
-            guess_bw = shortest_side * 2 * self.freq_res
+            #guess_bw = shortest_side * 2 * self.freq_res
 
             # NEW: estimate BW properly from FWHM
             # Calculate FWHM, in Hz
-            #fwhm = shortest_side * 2 * self.freq_res
+            fwhm = shortest_side * 2 * self.freq_res
             # Calulate guess BW from FWHM
-            #guess_bw = fwhm / (2 * np.sqrt(2 * np.log(2)))
+            guess_bw = fwhm / (2 * np.sqrt(2 * np.log(2)))
 
             # NEW:
             # Check that guess BW isn't outside preset limits - restrict if so
