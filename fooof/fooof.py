@@ -369,12 +369,12 @@ class FOOOF(object):
         return background_fit, background_params
 
 
-    def _fit_oscs(self, flat_iteration):
+    def _fit_oscs(self, flat_iter):
         """Iteratively fit oscillations to flattened spectrum.
 
         Parameters
         ----------
-        flat_iteration : 1d array
+        flat_iter : 1d array
             Flattened PSD values.
 
         Returns
@@ -399,11 +399,11 @@ class FOOOF(object):
         #           Perhaps play with STD val, or add an absolute threshold as well
         while True:
 
-            max_index = np.argmax(flat_iteration)
-            max_amp = flat_iteration[max_index]
+            max_ind = np.argmax(flat_iter)
+            max_amp = flat_iter[max_ind]
 
             # Stop searching for oscillations peaks once drops below amplitude threshold
-            if max_amp <= self._amp_std_thresh * np.std(flat_iteration):
+            if max_amp <= self._amp_std_thresh * np.std(flat_iter):
                 break
 
             # OLD:
@@ -417,14 +417,14 @@ class FOOOF(object):
 
             # cut_freq[0] = np.int(np.ceil(self.freq_range[0]/(self.freqs[1]-self.freqs[0])))
             # cut_freq[1] = np.int(np.ceil(self.freq_range[1]/(self.freqs[1]-self.freqs[0])))
-            # drop_cond1 = (max_index - edge_window) <= cut_freq[0]
-            # drop_cond2 = (max_index + edge_window) >= cut_freq[1]
+            # drop_cond1 = (max_ind - edge_window) <= cut_freq[0]
+            # drop_cond2 = (max_ind + edge_window) >= cut_freq[1]
             # drop_criterion = drop_cond1 | drop_cond2
 
             # if ~drop_criterion:
 
             # set the guess parameters for gaussian fitting (bw = 2)
-            guess_freq = self.freqs[max_index]
+            guess_freq = self.freqs[max_ind]
             guess_amp = max_amp
 
             # OLD - Guess BW - MN-3
@@ -432,35 +432,45 @@ class FOOOF(object):
 
             # NEW - Data driven guess BW
             # NOTES:
-            #  - Currently - Estimates bandwidth at ~0.6 of max_amp (as opposed to FWHM @ 0.5)
-            #  - I'm unconvinced this (loop, etc) is the most elegant way to do this...
-            #       Is there a better / cleaner / quicker way?
             half_amp = 0.5 * max_amp
 
-            le_ind = ri_ind = None
+            # Find half-amp index on each side of the center frequency
+            le_ind = next((x for x in range(max_ind-1, 0, -1) if flat_iter[x] <= half_amp), None)
+            ri_ind = next((x for x in range(max_ind+1, len(flat_iter), 1) \
+                if flat_iter[x] <= half_amp), None)
 
-            for ind in range(max_index-1, 0, -1):
-                if flat_iteration[ind] <= half_amp:
-                    le_ind = ind
-                    break
-            if not le_ind:
-                le_ind = 0
+            # OLD: this crap is replaced by the two lines above
+            # le_ind = None
+            # ri_ind = None
 
-            for ind in range(max_index+1, len(flat_iteration), 1):
-                if flat_iteration[ind] <= half_amp:
-                    ri_ind = ind
-                    break
-            if not ri_ind:
-                ri_ind = len(self.freqs)
+            # for ind in range(max_ind-1, 0, -1):
+            #     if flat_iter[ind] <= half_amp:
+            #         le_ind = ind
+            #         break
+            # if not le_ind:
+            #     le_ind = 0
 
-            # This is in index values - convert to frequency
-            shortest_side = min(abs(le_ind - max_index), abs(ri_ind - max_index))
+            # for ind in range(max_ind+1, len(flat_iter), 1):
+            #     if flat_iter[ind] <= half_amp:
+            #         ri_ind = ind
+            #         break
+            # if not ri_ind:
+            #     ri_ind = len(self.freqs)
+
+            # Keep bandwidth estimation from the shortest side
+            #  We grab shortest to avoid >> BW from overalapping oscillations
+            # OLD:
+            #shortest_side = min(abs(le_ind - max_ind), abs(ri_ind - max_ind))
+            # NEW:
+            # Grab the shortest side, ignoring a side if the half max was not found
+            # Note: this will fail if both le & ri ind's end up as None (probably shouldn't happen)
+            shortest_side = min([abs(ind-max_ind) for ind in [le_ind, ri_ind] if ind is not None])
 
             # OLD: estimate bw dumbly
             #guess_bw = shortest_side * 2 * self.freq_res
 
             # NEW: estimate BW properly from FWHM
-            # Calculate FWHM, in Hz
+            # Calculate FWHM, converting to Hz
             fwhm = shortest_side * 2 * self.freq_res
             # Calulate guess BW from FWHM
             guess_bw = fwhm / (2 * np.sqrt(2 * np.log(2)))
@@ -479,29 +489,29 @@ class FOOOF(object):
 
             # OLD: flatten around hardcoded guess BW
             # flatten the flat PSD around this peak
-            #flat_range = ((max_index-self.window_around_max), (max_index+self.window_around_max))
-            #flat_iteration[flat_range[0]:flat_range[1]] = 0
+            #flat_range = ((max_ind-self.window_around_max), (max_ind+self.window_around_max))
+            #flat_iter[flat_range[0]:flat_range[1]] = 0
 
             # NEW: Subtract best-guess gaussian
             osc_gauss = gaussian_function(self.freqs, guess_freq, guess_amp, guess_bw)
 
             # TEMP: plot current iteration
             #plt.figure()
-            #plt.plot(self.freqs, flat_iteration, 'b')
+            #plt.plot(self.freqs, flat_iter, 'b')
             #plt.plot(self.freqs, osc_gauss, 'g')
-            #plt.plot(self.freqs, flat_iteration - osc_gauss, 'k')
+            #plt.plot(self.freqs, flat_iter - osc_gauss, 'k')
 
-            flat_iteration = flat_iteration - osc_gauss
+            flat_iter = flat_iter - osc_gauss
 
             # OLD:
             # # flatten edges if the "peak" is at the edge (but don't store that as a gaussian to fit)
             # if drop_cond1:
-            #     flat_range = (0, (max_index+self.window_around_max))
-            #     flat_iteration[flat_range[0]:flat_range[1]] = 0
+            #     flat_range = (0, (max_ind+self.window_around_max))
+            #     flat_iter[flat_range[0]:flat_range[1]] = 0
 
             # if drop_cond2:
-            #     flat_range = ((max_index-self.window_around_max), self.freq_range[1])
-            #     flat_iteration[flat_range[0]:flat_range[1]] = 0
+            #     flat_range = ((max_ind-self.window_around_max), self.freq_range[1])
+            #     flat_iter[flat_range[0]:flat_range[1]] = 0
 
             #gausi += 1
 
