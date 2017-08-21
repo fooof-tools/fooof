@@ -5,37 +5,6 @@ import numpy as np
 ###################################################################################################
 ###################################################################################################
 
-# OLD: No longer needed with updates
-# def overlap(lst_1, lst_2):
-#     """Checks if boundary definitions 'a' are entirely within boundary definitions 'b'.
-
-#     Parameters
-#     ----------
-#     lst_1, lst_2 : list of [float, float]
-#         Boundary definitions.
-
-#     Returns
-#     -------
-#     bool
-#         True if a is entirely within the bounds of b, False otherwise.
-
-#     Notes
-#     -----
-#     This function is not symmetrical with respect to inputs.
-#         overlap(lst_1, lst_2) != overlap(lst_2, lst_1).
-#     """
-
-#     return bool((lst_1[0] >= lst_2[0]) and (lst_1[0] <= lst_2[1]) and \
-#     			(lst_1[1] >= lst_2[0]) and (lst_1[1] <= lst_2[1]))
-
-#     # Above should perform the same as explicit if statement, as below:
-#     #if (lst_1[0] >= lst_2[0]) and (lst_1[0] <= lst_2[1]) and \
-#     #   (lst_1[1] >= lst_2[0]) and (lst_1[1] <= lst_2[1]):
-#     #    return True
-#     #else:
-#     #    return False
-
-
 def group_three(vec):
     """Takes array of inputs, groups by three.
 
