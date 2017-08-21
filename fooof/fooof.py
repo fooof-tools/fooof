@@ -192,7 +192,7 @@ class FOOOF(object):
         for i, osc in enumerate(self._gaussian_params):
             ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i]-osc[0]))
             self.oscillation_params = np.vstack((self.oscillation_params, [osc[0],
-                                                 self.psd_fit[ind] - self._background_fit[ind], osc[2]]))
+                                                 self.psd_fit[ind] - self._background_fit[ind], osc[2] * 2]))
 
         # Calculate error of the model fit
         self._r_squared()
