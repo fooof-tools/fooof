@@ -4,6 +4,7 @@
 
 # Ignore cache
 *__pycache__/*
+*.cache*
 
 # Ignore compiled files
 *.pyc
@@ -11,3 +12,8 @@
 # Ignore Mac folder profile files
 *DS_Store*
 
+# Ignore coverage file
+.coverage
+
+# Ignore temp file for linter output
+_lint.txt
