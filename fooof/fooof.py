@@ -66,7 +66,7 @@ class FOOOF(object):
     - Input PSD should be smooth. We recommend ... TODO
     """
 
-    def __init__(self, bandwidth_limits=[0.5, 8]):
+    def __init__(self, bandwidth_limits=(0.5, 8.0)):
         """Initialize FOOOF object with run parameters."""
 
         # Set input parameters
@@ -74,14 +74,14 @@ class FOOOF(object):
 
         ## SETTINGS
         # Noise threshold, as a percentage of the data.
-        #  This threshold defines the minimum amplitude, above residuals, to be considered an oscillation
+        #  Defines the minimum amplitude, above residuals, to be considered an oscillation
         self._sl_amp_thresh = 0.025
         # Default 1/f parameter bounds. This limits slope to be less than 2 and no steeper than -8.
         self._sl_param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
         # St. deviation threshold, above residuals, to consider a peak an oscillation
         #   TODO: SEE NOTE IN FIT_OSCS about this parameter
         self._amp_std_thresh = 2.0
-        # Threshold for how far (in units of standard deviation) an oscillation has to be from edge to keep
+        # Threshold for how far (in units of std. dev) an oscillation has to be from edge to keep
         self._bw_std_thresh = 1.
 
         # Initialize all data attributes (to None)
@@ -182,15 +182,16 @@ class FOOOF(object):
         # Create full PSD model fit
         self.psd_fit = self._oscillation_fit + self._background_fit
 
-        # Copy the gaussian params to oscillations outputs, updating amplitude value
-        #  Amplitude is update to the amplitude of oscillation above the background fit
-        #  This is returned instead of the gaussian amplitude, which is harder to interpret, due to osc overlaps
-        # NOTE: Currently, calculates based on nearest actual point. Should we instead estimate based an actual CF?
+        # Copy the gaussian params to oscillations outputs updating as appropriate
+        #  Amplitude is updated to the amplitude of oscillation above the background fit
+        #    This is returned instead of the gaussian amplitude, which is harder to interpret, due to osc overlaps
+        #    NOTE: Currently, calculates based on nearest actual point. Should we instead estimate based an actual CF?
+        #  Bandwidth is updated to be 'both-sided' (as opposed to gaussian std param, which is 1-sided)
         self.oscillation_params = np.empty([0, 3])
         for i, osc in enumerate(self._gaussian_params):
             ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i]-osc[0]))
-            self.oscillation_params = np.vstack((self.oscillation_params, [osc[0],
-                                                 self.psd_fit[ind] - self._background_fit[ind], osc[2] * 2]))
+            self.oscillation_params = np.vstack((self.oscillation_params,
+                                                 [osc[0], self.psd_fit[ind] - self._background_fit[ind], osc[2] * 2]))
 
         # Calculate error of the model fit
         self._r_squared()
@@ -304,7 +305,7 @@ class FOOOF(object):
         # Remove outliers - any points that drop below 0 (troughs)
         psd_flat[psd_flat < 0] = 0
 
-        # NEW - Amplitude threshold - in terms of # of points
+        # Amplitude threshold - in terms of # of points
         perc_thresh = np.percentile(psd_flat, self._sl_amp_thresh)
         amp_mask = psd_flat <= perc_thresh
         log_f_ignore = log_f[amp_mask]
@@ -337,7 +338,7 @@ class FOOOF(object):
 
         guess = np.empty([0, 3])
 
-        # NEW: loop through, checking residuals, stoppind based on STD check
+        # Find oscillations: loop through, checking residuals, stoppind based on STD check
         #  NOTE: depending how good our osc_gauss guesses are, we are 'inducing' residuals
         #   As in - making negative error.
         #     So - with a bad fit, we could add a lot of error, increased STD, and make us stop early
@@ -379,7 +380,6 @@ class FOOOF(object):
             # Calulate guess BW from FWHM
             guess_bw = fwhm / (2 * np.sqrt(2 * np.log(2)))
 
-            # NEW:
             # Check that guess BW isn't outside preset limits - restrict if so
             #  Note: without this, curve_fitting fails if given guess > bounds
             #   Between this, and index search above, covers checking of BWs
@@ -434,7 +434,7 @@ class FOOOF(object):
 
         # Fit the oscillations
         _gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._psd_flat,
-                                          p0=guess, maxfev=5000, bounds=gaus_param_bounds)
+                                        p0=guess, maxfev=5000, bounds=gaus_param_bounds)
 
         # Re-organize params into 2d matrix
         _gaussian_params = np.array(group_three(_gaussian_params))
