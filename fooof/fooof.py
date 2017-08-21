@@ -3,13 +3,11 @@
 DEPENDENCIES: SCIPY >0.19
 """
 
-# OLD: no longer has itertools dependency (updated to use numpy instead)
-#import itertools
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-from fooof.utils import group_three, trim_psd #overlap
+from fooof.utils import group_three, trim_psd
 from fooof.funcs import gaussian_function, linear_function, quadratic_function
 
 ###################################################################################################

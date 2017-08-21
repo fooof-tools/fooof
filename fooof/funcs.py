@@ -29,10 +29,6 @@ def gaussian_function(x, *params):
         amp = params[i+1]
         wid = params[i+2]
 
-        # OLD: (wid param defined as 2-sided)
-        #y = y + amp * np.exp(-((x - ctr)/wid)**2)
-
-        # NEW: (wid as c param, 1 sided, as typical)
         y = y + amp * np.exp(-(x-ctr)**2 / (2*wid**2))
 
     return y
