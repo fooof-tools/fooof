@@ -259,6 +259,12 @@ class FOOOF(object):
         print('\n', '=' * cen_val)
 
 
+    def get_params(self):
+        """Return model fit parameters & error."""
+
+        return self.background_params, self.oscillation_params, self.error
+
+
     def _quick_background_fit(self, freqs, psd):
         """Fit the 1/f slope of PSD using a linear fit then quadratic fit
 
