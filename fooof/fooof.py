@@ -21,7 +21,7 @@ class FOOOF(object):
 
     Parameters
     ----------
-    bandwidth_limits : list of [float, float]
+    bandwidth_limits : tuple of (float, float)
         Setting to exclude gaussian fits where the bandwidth is implausibly narrow or wide
 
     Attributes
@@ -63,7 +63,11 @@ class FOOOF(object):
 
     Notes
     -----
-    - Input PSD should be smooth. We recommend ... TODO
+    - Input PSD should be smooth - overly noisy power spectra may lead to bad fits.
+        - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
+        procedure, or a median filter smoothing on the FFT output before running FOOOF.
+        - Where possible and appropriate, use longer time segments for PSD calculation to
+        get smoother PSD's that will offer better FOOOF fits.
     """
 
     def __init__(self, bandwidth_limits=(0.5, 8.0)):
@@ -107,7 +111,7 @@ class FOOOF(object):
         self._oscillation_fit = None
 
 
-    def model(self, freqs, psd, freq_range):
+    def model(self, freqs, psd, freq_range, plt_log=False):
         """Run model fit, plot, and print results.
 
         Parameters
@@ -121,7 +125,7 @@ class FOOOF(object):
         """
 
         self.fit(freqs, psd, freq_range)
-        self.plot()
+        self.plot(plt_log)
         self.print_params()
 
 
@@ -197,22 +201,33 @@ class FOOOF(object):
         self._r_squared()
 
 
-    def plot(self):
+    def plot(self, plt_log=False):
         """Plot the original PSD, and full model fit.
         NOTE: Should we plot in semi-log, or log-log?
         """
 
+        if not np.all(self.freqs):
+            raise ValueError('Model fit has not been run - can not proceed.')
+
         plt.figure(figsize=(14, 10))
 
-        plt.plot(self.freqs, self.psd, 'k')
-        plt.plot(self.freqs, self.psd_fit, 'b')
-        plt.plot(self.freqs, self._background_fit, '--g')
+        if plt_log:
+            plt_freqs = np.log10(self.freqs)
+        else:
+            plt_freqs = self.freqs
+
+        plt.plot(plt_freqs, self.psd, 'k')
+        plt.plot(plt_freqs, self.psd_fit, 'b')
+        plt.plot(plt_freqs, self._background_fit, '--g')
 
         plt.legend(['Original PSD', 'Full model fit', 'Background fit'], prop={'size': 18})
 
 
     def print_params(self):
         """Print out the PSD model fit parameters."""
+
+        if not np.all(self.freqs):
+            raise ValueError('Model fit has not been run - can not proceed.')
 
         # Set centering value
         cen_val = 100
