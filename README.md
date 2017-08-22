@@ -1,4 +1,4 @@
-# FOOOF- fitting oscillations & one over F
+# FOOOF - fitting oscillations & one over f
 
 FOOOF is a model to parameterize neural power spectra. 
 
@@ -11,6 +11,7 @@ FOOOF is object oriented. With a PSD loaded (with 'freqs' storing frequency valu
 ```python
 from fooof import FOOOF
 
+# Initialize FOOOF object
 foof_model = FOOOF()
 
 # Define frequency range to model PSD
