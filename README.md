@@ -4,6 +4,12 @@ FOOOF is a model to parameterize neural power spectra.
 
 It conceives of the neural power spectral density (PSD) as consisting of two distinct processes - a 1/f distributed background process, with potentially multiple sections of band-limited power - oscillatory regions in which the power is greater than the background process.
 
+## Dependencies
+
+- numpy
+- matplotlib
+- scipy >= 0.19
+
 ## Usage
 
 FOOOF is object oriented. With a PSD loaded (with 'freqs' storing frequency values, and 'psd' storing power values, both as 1D arrays) FOOOF can be used as follows:
