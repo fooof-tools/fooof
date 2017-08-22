@@ -233,8 +233,8 @@ class FOOOF(object):
                                                  self.background_params[2]).center(cen_val))
 
         # Oscillation parameters
-        print('\n', '{} oscillations were found:'.format(len(self._gaussian_params)).center(cen_val))
-        for op in self._gaussian_params:
+        print('\n', '{} oscillations were found:'.format(len(self.oscillation_params)).center(cen_val))
+        for op in self.oscillation_params:
             print('CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]).center(cen_val))
 
         # Error
