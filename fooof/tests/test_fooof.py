@@ -13,7 +13,7 @@ def mk_fake_data(xs, bgp, oscs):
 
 	bg = quadratic_function(np.log10(xs), *bgp)
 	oscs = gaussian_function(xs, *oscs)
-	noise = np.random.normal(0, 0.01, len(xs))
+	noise = np.random.normal(0, 0.005, len(xs))
 
 	ys = bg + oscs + noise
 
