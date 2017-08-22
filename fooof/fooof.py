@@ -88,12 +88,17 @@ class FOOOF(object):
         # Threshold for how far (in units of std. dev) an oscillation has to be from edge to keep
         self._bw_std_thresh = 1.
 
+        ## INTERAL PARAMETERS
+        # Bandwidth limits are given in 2-sided oscillation bandwidth
+        #  Convert to gaussian std parameter limits
+        self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
+
         # Initialize all data attributes (to None)
         self._reset_dat()
 
 
     def _reset_dat(self):
-        """Set (or reset) all data attributes to empty"""
+        """Set (or reset) all data attributes to empty."""
 
         self.freqs = None
         self.psd = None
@@ -198,7 +203,7 @@ class FOOOF(object):
                                                  [osc[0], self.psd_fit[ind] - self._background_fit[ind], osc[2] * 2]))
 
         # Calculate error of the model fit
-        self._r_squared()
+        self._rmse_error()
 
 
     def plot(self, plt_log=False):
@@ -257,7 +262,7 @@ class FOOOF(object):
             print('CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]).center(cen_val))
 
         # Error
-        print('\n', 'R-squared error of model fit is {:5.4f}'.format(self.error).center(cen_val))
+        print('\n', 'Root mean squared error of model fit is {:5.4f}'.format(self.error).center(cen_val))
 
         # Footer
         print('\n', '=' * cen_val)
@@ -270,7 +275,7 @@ class FOOOF(object):
 
 
     def _quick_background_fit(self, freqs, psd):
-        """Fit the 1/f slope of PSD using a linear fit then quadratic fit
+        """Fit the 1/f slope of PSD using a linear fit then quadratic fit.
 
         Parameters
         ----------
@@ -358,9 +363,10 @@ class FOOOF(object):
         Returns
         -------
         guess : 2d array
-            Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, AMP, BW].
+            Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, AMP, STD].
         """
 
+        # Initialize matrix of guess parameters for gaussian fitting
         guess = np.empty([0, 3])
 
         # Find oscillations: loop through, checking residuals, stoppind based on STD check
@@ -379,7 +385,7 @@ class FOOOF(object):
 
             # Stop searching for oscillations peaks once drops below amplitude threshold
             if max_amp <= self._amp_std_thresh * np.std(flat_iter):
-                break
+               break
 
             # Set the guess parameters for gaussian fitting - CF & Amp
             guess_freq = self.freqs[max_ind]
@@ -394,30 +400,29 @@ class FOOOF(object):
                 if flat_iter[x] <= half_amp), None)
 
             # Keep bandwidth estimation from the shortest side
-            #  We grab shortest to avoid >> BW from overalapping oscillations
+            #  We grab shortest to avoid estimating very large std from overalapping oscillations
             # Grab the shortest side, ignoring a side if the half max was not found
             # Note: this will fail if both le & ri ind's end up as None (probably shouldn't happen)
             shortest_side = min([abs(ind-max_ind) for ind in [le_ind, ri_ind] if ind is not None])
 
-            # Estimate BW properly from FWHM
+            # Estimate std properly from FWHM
             # Calculate FWHM, converting to Hz
             fwhm = shortest_side * 2 * self.freq_res
-            # Calulate guess BW from FWHM
-            guess_bw = fwhm / (2 * np.sqrt(2 * np.log(2)))
+            # Calulate guess gaussian std from FWHM
+            guess_std = fwhm / (2 * np.sqrt(2 * np.log(2)))
 
-            # Check that guess BW isn't outside preset limits - restrict if so
-            #  Note: without this, curve_fitting fails if given guess > bounds
-            #   Between this, and index search above, covers checking of BWs
-            if guess_bw < self.bandwidth_limits[0]:
-                guess_bw = self.bandwidth_limits[0]
-            if guess_bw > self.bandwidth_limits[1]:
-                guess_bw = self.bandwidth_limits[1]
+            # Check that guess std isn't outside preset std limits - restrict if so
+            #  Note: without this, curve_fitting fails if given guess > or < bounds
+            if guess_std < self._std_limits[0]:
+                guess_std = self._std_limits[0]
+            if guess_std > self._std_limits[1]:
+                guess_std = self._std_limits[1]
 
             # Collect guess parameters
-            guess = np.vstack((guess, (guess_freq, guess_amp, guess_bw)))
+            guess = np.vstack((guess, (guess_freq, guess_amp, guess_std)))
 
             # Subtract best-guess gaussian
-            osc_gauss = gaussian_function(self.freqs, guess_freq, guess_amp, guess_bw)
+            osc_gauss = gaussian_function(self.freqs, guess_freq, guess_amp, guess_std)
             flat_iter = flat_iter - osc_gauss
 
         # Check oscillation based on edges
@@ -430,7 +435,6 @@ class FOOOF(object):
         # Sort oscillations
         _gaussian_params = _gaussian_params[_gaussian_params[:, 0].argsort()]
 
-        #return guess
         return _gaussian_params
 
 
@@ -448,9 +452,10 @@ class FOOOF(object):
             Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, AMP, BW].
         """
 
-        # Set the bounds, +/- 1 BW for center frequency, positively amp value, and with specified BW limits
-        lo_bound = [[osc[0]-osc[2], 0, self.bandwidth_limits[0]] for osc in guess]
-        hi_bound = [[osc[0]+osc[2], np.inf, self.bandwidth_limits[1]] for osc in guess]
+        # Set the bounds, +/- 1 BW for center frequency, positive amp value, & gauss limits
+        #  Note that osc_guess is in terms of gaussian std, so +/- 1 BW is 2 * the guess_gauss_std
+        lo_bound = [[osc[0]-2*osc[2], 0, self._std_limits[0]] for osc in guess]
+        hi_bound = [[osc[0]+2*osc[2], np.inf, self._std_limits[1]] for osc in guess]
         gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]), \
                              tuple([item for sublist in hi_bound for item in sublist]))
 
@@ -492,7 +497,7 @@ class FOOOF(object):
         return keep_parameter
 
 
-    def _r_squared(self):
-        """Calculate r-squared error of the full model fit."""
+    def _rmse_error(self):
+        """Calculate root mean squared error of the full model fit."""
 
         self.error = np.sqrt((self.psd - self.psd_fit) ** 2).mean()
