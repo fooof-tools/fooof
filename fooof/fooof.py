@@ -203,7 +203,11 @@ class FOOOF(object):
 
     def plot(self, plt_log=False):
         """Plot the original PSD, and full model fit.
-        NOTE: Should we plot in semi-log, or log-log?
+
+        Parameters
+        ----------
+        plt_log : boolean
+            Whether to plot the frequency axis in log space.
         """
 
         if not np.all(self.freqs):
