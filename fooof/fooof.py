@@ -229,6 +229,9 @@ class FOOOF(object):
         plt.plot(plt_freqs, self.psd_fit, 'b')
         plt.plot(plt_freqs, self._background_fit, '--g')
 
+        plt.xlabel('Frequency', fontsize=20)
+        plt.ylabel('Power', fontsize=20)
+
         plt.legend(['Original PSD', 'Full model fit', 'Background fit'], prop={'size': 18})
 
 
