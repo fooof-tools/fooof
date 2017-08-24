@@ -47,7 +47,7 @@ def trim_psd(freqs, psd, f_range):
     Notes
     -----
     This function extracts frequency ranges >= f_low and <= f_high.
-        - It does not round to below or above f_low & f_high, respectively.
+        - It does not round to below or above f_low and f_high, respectively.
     """
 
     # Create mask to index only requested frequencies
