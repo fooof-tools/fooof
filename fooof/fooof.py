@@ -70,12 +70,10 @@ class FOOOF(object):
         get smoother PSD's that will offer better FOOOF fits.
     """
 
-    def __init__(self, bandwidth_limits=None):
+    def __init__(self, bandwidth_limits=(0.5, 8.0)):
         """Initialize FOOOF object with run parameters."""
         
         # Set input parameters
-        if bandwidth_limits is None:
-            bandwidth_limits = (0.5, 8.0)
         self.bandwidth_limits = bandwidth_limits
 
         ## SETTINGS
