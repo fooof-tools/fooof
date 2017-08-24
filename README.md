@@ -2,7 +2,7 @@
 
 FOOOF is a fast, efficient, physiologically-informed model to parameterize neural power spectra.
 
-The model conceives of the neural power spectral density (PSD) as consisting of two distinct functional processes: 1) A 1/f background modeled as a curve with; 2) Band-limited oscillatory "bumps" rising above this background, modeled as Gaussians.
+The model conceives of the neural power spectral density (PSD) as consisting of two distinct functional processes: 1) A 1/f background modeled as a curve in log-log space with; 2) Band-limited oscillatory "bumps" rising above this background, modeled as Gaussians in log(power) space.
 
 Note that this conception of the 1/f as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the 1/f slope may index excitation/inhibition balance ([Gao, Peterson, Voytek, _NeuroImage_ 2017](http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf); [Voytek & Knight, _Biol Psychiatry_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf)). At the very least, however, the 1/f appears to change with task ([Podvalny _et al._, _J Neurophysiol_ 2015](http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf)), with aging ([Voytek _et al._, _J Neurosci_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf)).
 
@@ -30,3 +30,15 @@ foof_model.model(freqs, psd, freq_range)
 ```
 
 FOOOF.model() fits the model, plots the original PSD with the associated model of the PSD, and prints out the parameters of the model fit for both background 1/f (offset, slope, curve) and Gaussian parameters (center frequency, amplitude, and bandwidth) for any identified oscillations.
+
+FOOOF also accepts parameters for fine-tuning the fit. For example:
+
+```python
+foof_model = FOOOF(bandwidth_limits=(1.0,15.0))
+```
+
+Sets the possible lower- and upper-bounds for the fitted Gaussians bandwidths to 1.0 and 15.0 Hz, respectively.
+
+## Output
+Example output for MEG data:
+![alt text](tutorial/fooof_output.jpg "Example FOOOF output for MEG data")
