@@ -23,6 +23,10 @@ class FOOOF(object):
     ----------
     bandwidth_limits : tuple of (float, float)
         Setting to exclude gaussian fits where the bandwidth is implausibly narrow or wide
+    max_n_oscs : int
+        XX
+    min_amp : float
+        XX
 
     Attributes
     ----------
@@ -60,6 +64,8 @@ class FOOOF(object):
         Amplitude threshold for detecting oscillatory peaks, units of standard deviation.
     _bw_std_thresh : float
         Banwidth threshold for edge rejection of oscillations, units of standard deviation.
+    _std_limits : list of [float, float]
+        Bandwidth limits, converted to use for gaussian standard deviation parameter.
 
     Notes
     -----
@@ -70,11 +76,13 @@ class FOOOF(object):
         get smoother PSD's that will offer better FOOOF fits.
     """
 
-    def __init__(self, bandwidth_limits=(0.5, 8.0)):
+    def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf, min_amp=0):
         """Initialize FOOOF object with run parameters."""
 
         # Set input parameters
         self.bandwidth_limits = bandwidth_limits
+        self.max_n_oscs = max_n_oscs
+        self.min_amp = min_amp
 
         ## SETTINGS
         # Noise threshold, as a percentage of the data.
@@ -83,8 +91,7 @@ class FOOOF(object):
         # Default 1/f parameter bounds. This limits slope to be less than 2 and no steeper than -8.
         self._sl_param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
         # St. deviation threshold, above residuals, to consider a peak an oscillation
-        #   TODO: SEE NOTE IN FIT_OSCS about this parameter
-        self._amp_std_thresh = 2.0
+        self._amp_std_thresh = 2.5
         # Threshold for how far (in units of std. dev) an oscillation has to be from edge to keep
         self._bw_std_thresh = 1.
 
@@ -163,13 +170,19 @@ class FOOOF(object):
         self.freq_range = freq_range
         self.freqs, self.psd = trim_psd(freqs, psd, self.freq_range)
 
+        # TEST - NEW
+        # Check bandwidth limits against frequency resolution, warn if too close
+        if round(self.freq_res, 1) >= self.bandwidth_limits[0]:
+            print('\nFOOOF WARNING: Lower-bound Bandwidth limit is ~= the frequency resolution. \n', \
+                  '  This may lead to overfitting of small bandwidth oscillations.\n')
+
         # Fit the background 1/f
         self._background_fit, self.background_params = self._clean_background_fit(self.freqs, self.psd)
 
         # Flatten the PSD using fit background
         psd_flat = self.psd - self._background_fit
-        # NOTE: Still drop below zero points?
-        psd_flat[psd_flat < 0] = 0
+        # TEST - NOTE: Still drop below zero points?
+        #psd_flat[psd_flat < 0] = 0
         self._psd_flat = psd_flat
 
         # Fit initial oscillation gaussian fit
@@ -372,6 +385,9 @@ class FOOOF(object):
         # Initialize matrix of guess parameters for gaussian fitting
         guess = np.empty([0, 3])
 
+        # TEST: single estimate of amplitude std
+        #test_amp = self._amp_std_thresh * np.std(flat_iter)
+
         # Find oscillations: loop through, checking residuals, stoppind based on STD check
         #  NOTE: depending how good our osc_gauss guesses are, we are 'inducing' residuals
         #   As in - making negative error.
@@ -380,19 +396,34 @@ class FOOOF(object):
         #   Also: with low variance (no / small 'real' oscillation) this procedure is perhaps overzealous
         #       It finds and fits what we may want to consider small bumps.
         #           Perhaps play with STD val, or add an absolute threshold as well
-        while True:
+        while len(guess) < self.max_n_oscs:
 
             # Find candidate oscillation
             max_ind = np.argmax(flat_iter)
             max_amp = flat_iter[max_ind]
 
+            # TEST
+            #print('STD: ', np.std(flat_iter))
+            #print('VAR: ', np.var(flat_iter))
+            #plt.figure()
+            #plt.plot(flat_iter, '.')
+
             # Stop searching for oscillations peaks once drops below amplitude threshold
             if max_amp <= self._amp_std_thresh * np.std(flat_iter):
                break
 
+            # TEST:
+            #if max_amp <= test_amp:
+            #    break
+
             # Set the guess parameters for gaussian fitting - CF & Amp
             guess_freq = self.freqs[max_ind]
             guess_amp = max_amp
+
+            # TEST
+            if not guess_amp > self.min_amp:
+                print('AMP BREAK')
+                break
 
             # Data driven guess BW
             half_amp = 0.5 * max_amp
@@ -418,6 +449,9 @@ class FOOOF(object):
             #  Note: without this, curve_fitting fails if given guess > or < bounds
             if guess_std < self._std_limits[0]:
                 guess_std = self._std_limits[0]
+                # TEST
+                #print('BW Break!')
+                #break
             if guess_std > self._std_limits[1]:
                 guess_std = self._std_limits[1]
 
@@ -427,6 +461,10 @@ class FOOOF(object):
             # Subtract best-guess gaussian
             osc_gauss = gaussian_function(self.freqs, guess_freq, guess_amp, guess_std)
             flat_iter = flat_iter - osc_gauss
+
+        # TEST:
+        print('GUESS')
+        print(guess)
 
         # Check oscillation based on edges
         keep_osc = self._drop_osc_cf(guess)
