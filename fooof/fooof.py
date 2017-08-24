@@ -185,7 +185,7 @@ class FOOOF(object):
         #psd_flat[psd_flat < 0] = 0
         self._psd_flat = psd_flat
 
-        # Fit initial oscillation gaussian fit
+        # Find oscillations, and fit them with gaussians
         self._gaussian_params = self._fit_oscs(np.copy(self._psd_flat))
 
         # Calculate the oscillation fit
@@ -378,8 +378,8 @@ class FOOOF(object):
 
         Returns
         -------
-        guess : 2d array
-            Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, AMP, STD].
+        gaussian_params : 2d array
+            Parameters for gaussian fits to oscillations. Shape = [n_oscs, 3], row: [CF, AMP, STD].
         """
 
         # Initialize matrix of guess parameters for gaussian fitting
@@ -470,13 +470,14 @@ class FOOOF(object):
         keep_osc = self._drop_osc_cf(guess)
         guess = np.array([d for (d, remove) in zip(guess, keep_osc) if remove])
 
-        # Fit oscillations
-        _gaussian_params = self._fit_osc_guess(guess)
+        # If there are oscillation guess, fit the oscillations, and sort results
+        if len(guess) > 0 :
+            gaussian_params = self._fit_osc_guess(guess)
+            gaussian_params = gaussian_params[gaussian_params[:, 0].argsort()]
+        else:
+            gaussian_params = np.array([])
 
-        # Sort oscillations
-        _gaussian_params = _gaussian_params[_gaussian_params[:, 0].argsort()]
-
-        return _gaussian_params
+        return gaussian_params
 
 
     def _fit_osc_guess(self, guess):
