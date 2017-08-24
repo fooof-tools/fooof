@@ -1,1 +1,1 @@
-from .fooof import FOOOF
+from .fit import FOOOF

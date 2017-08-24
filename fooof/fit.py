@@ -17,8 +17,6 @@ from fooof.funcs import gaussian_function, linear_function, quadratic_function
 class FOOOF(object):
     """Model the physiological power spectrum as oscillatory peaks and 1/f background.
 
-    WARNING: INPUT IS LOGGED PSD & LINEAR FREQS (TO FIX, THEN UPDATE WARNING)
-
     Parameters
     ----------
     bandwidth_limits : tuple of (float, float)
