@@ -202,7 +202,8 @@ class FOOOF(object):
             self.oscillation_params = np.vstack((self.oscillation_params,
                                                  [osc[0], self.psd_fit[ind] - self._background_fit[ind], osc[2] * 2]))
 
-        # Calculate error of the model fit
+        # Calculate R^2 and error of the model fit
+        self._r_squared()
         self._rmse_error()
 
 
@@ -264,7 +265,8 @@ class FOOOF(object):
         for op in self.oscillation_params:
             print('CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]).center(cen_val))
 
-        # Error
+        # R^2 and Error
+        print('\n', 'R^2 of model fit is {:5.4f}'.format(self.r2).center(cen_val))
         print('\n', 'Root mean squared error of model fit is {:5.4f}'.format(self.error).center(cen_val))
 
         # Footer
@@ -500,7 +502,14 @@ class FOOOF(object):
         return keep_parameter
 
 
+    def _r_squared(self):
+        """Calculate R^2 of the full model fit."""
+
+        r_val = np.corrcoef(self.psd, self.psd_fit)
+        self.r2 = r_val[0][1] ** 2
+
     def _rmse_error(self):
         """Calculate root mean squared error of the full model fit."""
 
         self.error = np.sqrt((self.psd - self.psd_fit) ** 2).mean()
+
