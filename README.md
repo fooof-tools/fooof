@@ -34,10 +34,13 @@ FOOOF.model() fits the model, plots the original PSD with the associated model o
 FOOOF also accepts parameters for fine-tuning the fit. For example:
 
 ```python
-foof_model = FOOOF(bandwidth_limits=(1.0,15.0))
+foof_model = FOOOF(bandwidth_limits=(1.0,15.0), max_n_oscs=6, min_amp=0.1, amp_std_thresh=2.0)
 ```
 
-Sets the possible lower- and upper-bounds for the fitted Gaussians bandwidths to 1.0 and 15.0 Hz, respectively.
+* _bandwidth_limits_ sets the possible lower- and upper-bounds for the fitted Gaussians bandwidths to 1.0 and 15.0 Hz, respectively.
+* _max_n_oscs_ sets the maximum number of oscillations to find (in decreasing order of amplitude). Physiologically, rarely are there ever more than 5 or 6. This helps minimize overfitting.
+* _min_amp_ sets a hard limit on the maximum amplitude (above background 1/f) for any oscillation; that is, bumps below this amplitude will be ignored.
+* _amp_std_thresh_, similar to _min_amp_, sets a threshold above which oscillation amplitude must cross to be included in the model. However this parameter is in terms of standard deviation above the noise of the flattened spectrum.
 
 ## Output
 Example output for MEG data:
