@@ -229,14 +229,15 @@ class FOOOF(object):
             plt_freqs = self.freqs
 
         plt.plot(plt_freqs, self.psd, 'k', linewidth=1.0)
-        plt.plot(plt_freqs, self.psd_fit, 'r', linewidth=3.0)
-        plt.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0)
+        plt.plot(plt_freqs, self.psd_fit, 'r', linewidth=3.0, alpha=0.5)
+        plt.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0, alpha=0.5)
 
         plt.xlabel('Frequency', fontsize=20)
         plt.ylabel('Power', fontsize=20)
         plt.tick_params(axis='both', which='major', labelsize=16)
 
         plt.legend(['Original PSD', 'Full model fit', 'Background fit'], prop={'size': 16})
+        plt.grid()
 
 
     def print_params(self):
