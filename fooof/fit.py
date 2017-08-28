@@ -17,6 +17,10 @@ from fooof.funcs import gaussian_function, linear_function, quadratic_function
 class FOOOF(object):
     """Model the physiological power spectrum as oscillatory peaks and 1/f background.
 
+    NOTE: FOOOF expects frequency and power values in linear space.
+        Passing in logged frequencies and/or power spectra is not detected,
+            and will silently produce incorrect results.
+
     Parameters
     ----------
     bandwidth_limits : tuple of (float, float)
@@ -78,7 +82,7 @@ class FOOOF(object):
 
     def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf, min_amp=0.0, amp_std_thresh=2.0):
         """Initialize FOOOF object with run parameters."""
-        
+
         # Set input parameters
         self.bandwidth_limits = bandwidth_limits
         self.max_n_oscs = max_n_oscs
@@ -147,9 +151,9 @@ class FOOOF(object):
         Parameters
         ----------
         freqs : 1d array
-            Frequency values for the PSD.
+            Frequency values for the PSD, linear.
         psd : 1d array
-            Power spectral density values.
+            Power spectral density values, linear.
         freq_range : list of [float, float]
             Desired frequency range to run FOOOF on.
         """
@@ -165,6 +169,9 @@ class FOOOF(object):
 
         # Calculate and store frequency resolution.
         self.freq_res = freqs[1] - freqs[0]
+
+        # Log frequency inputs
+        psd = np.log10(psd)
 
         # Trim the PSD to requested frequency range.
         self.freq_range = freq_range
