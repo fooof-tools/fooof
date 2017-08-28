@@ -78,6 +78,9 @@ class FOOOF(object):
         procedure, or a median filter smoothing on the FFT output before running FOOOF.
         - Where possible and appropriate, use longer time segments for PSD calculation to
         get smoother PSDs; this will give better FOOOF fits.
+    - FOOOF is designed for (and expects) a PSD in which there is a single (log-log) slope.
+        - PSDs ranges which have a 'knee', or a change in the 1/f background, violate this assumption.
+        - When this assumption is violated, the fit is likely to be bad / wrong.
     """
 
     def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf, min_amp=0.0, amp_std_thresh=2.0):
