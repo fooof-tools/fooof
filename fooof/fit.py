@@ -98,8 +98,8 @@ class FOOOF(object):
         self._sl_amp_thresh = 0.025
         # Default 1/f parameter bounds. This limits slope to be less than 2 and no steeper than -8.
         self._sl_param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
-        # Threshold for how far (in units of std dev) an oscillation has to be from edge to keep.
-        self._bw_std_edge = 1.
+        # Threshold for how far (in units of gaussian std dev) an oscillation has to be from edge to keep.
+        self._bw_std_edge = 1.0
 
         ## INTERAL PARAMETERS
         # Bandwidth limits are given in 2-sided oscillation bandwidth.
@@ -475,10 +475,10 @@ class FOOOF(object):
             Parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
         """
 
-        # Set the bounds, +/- 1 BW for center frequency, positive amp value, and gauss limits.
+        # Set the bounds, +/- 1.5 BW for center frequency, positive amp value, and gauss limits.
         #  Note that osc_guess is in terms of gaussian std, so +/- 1 BW is 2 * the guess_gauss_std.
-        lo_bound = [[osc[0]-2*osc[2], 0, self._std_limits[0]] for osc in guess]
-        hi_bound = [[osc[0]+2*osc[2], np.inf, self._std_limits[1]] for osc in guess]
+        lo_bound = [[osc[0]-3*osc[2], 0, self._std_limits[0]] for osc in guess]
+        hi_bound = [[osc[0]+3*osc[2], np.inf, self._std_limits[1]] for osc in guess]
         gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]), \
                              tuple([item for sublist in hi_bound for item in sublist]))
 
@@ -487,7 +487,7 @@ class FOOOF(object):
 
         # Fit the oscillations.
         gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._psd_flat,
-                                        p0=guess, maxfev=5000, bounds=gaus_param_bounds)
+                                       p0=guess, maxfev=5000, bounds=gaus_param_bounds)
 
         # Re-organize params into 2d matrix.
         gaussian_params = np.array(group_three(gaussian_params))
