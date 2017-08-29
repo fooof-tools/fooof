@@ -100,6 +100,8 @@ class FOOOF(object):
         self._sl_param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
         # Threshold for how far (in units of gaussian std dev) an oscillation has to be from edge to keep.
         self._bw_std_edge = 1.0
+        # Parameter bounds for center frequency when fitting gaussians - in terms of +/- bandwidth
+        self._cf_bound = 2.0
 
         ## INTERAL PARAMETERS
         # Bandwidth limits are given in 2-sided oscillation bandwidth.
@@ -474,11 +476,13 @@ class FOOOF(object):
         gaussian_params : 2d array
             Parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
         """
+        print_guess = guess[guess[:, 0].argsort()]
+        print(print_guess)
 
-        # Set the bounds, +/- 1.5 BW for center frequency, positive amp value, and gauss limits.
-        #  Note that osc_guess is in terms of gaussian std, so +/- 1 BW is 2 * the guess_gauss_std.
-        lo_bound = [[osc[0]-3*osc[2], 0, self._std_limits[0]] for osc in guess]
-        hi_bound = [[osc[0]+3*osc[2], np.inf, self._std_limits[1]] for osc in guess]
+        # Set the bounds for center frequency, positive amp value, and gauss limits.
+        #  Note that osc_guess is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std.
+        lo_bound = [[osc[0] - 2 * self._cf_bound * osc[2], 0, self._std_limits[0]] for osc in guess]
+        hi_bound = [[osc[0] + 2 * self._cf_bound * osc[2], np.inf, self._std_limits[1]] for osc in guess]
         gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]), \
                              tuple([item for sublist in hi_bound for item in sublist]))
 
