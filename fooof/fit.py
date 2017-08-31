@@ -454,7 +454,7 @@ class FOOOF(object):
         guess = np.array([d for (d, remove) in zip(guess, keep_osc) if remove])
 
         # If there are oscillation guesses, fit the oscillations, and sort results.
-        if len(guess) > 0 :
+        if len(guess) > 0:
             gaussian_params = self._fit_osc_guess(guess)
             gaussian_params = gaussian_params[gaussian_params[:, 0].argsort()]
         else:
@@ -476,6 +476,7 @@ class FOOOF(object):
         gaussian_params : 2d array
             Parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
         """
+
         print_guess = guess[guess[:, 0].argsort()]
         print(print_guess)
 
