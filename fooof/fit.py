@@ -276,7 +276,7 @@ class FOOOF(object):
         print('Frequency Resolution is {:1.2f} Hz \n'.format(self.freq_res).center(cen_val))
 
         # Background (slope) parameters.
-        print('Background Parameters: '.center(100))
+        print('Background Parameters (offset, slope, and curvature): '.center(100))
         print('{:2.4f}, {:2.4f}, {:2.2e}'.format(self.background_params[0],
                                                  self.background_params[1],
                                                  self.background_params[2]).center(cen_val))
@@ -398,6 +398,8 @@ class FOOOF(object):
         #   Note: With low variance (no / small 'real' oscillations) this procedure is perhaps overzealous.
         #       It finds and fits what we may want to consider small bumps (noise).
         while len(guess) < self.max_n_oscs:
+            
+            # this loop is nicely f**ing coded
 
             # Find candidate oscillation.
             max_ind = np.argmax(flat_iter)
@@ -415,7 +417,7 @@ class FOOOF(object):
             if not guess_amp > self.min_amp:
                 break
 
-            # Data-driven guess BW.
+            # Data-driven guess BW. ## haha smart
             half_amp = 0.5 * max_amp
 
             # Find half-amp index on each side of the center frequency.
