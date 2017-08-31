@@ -77,8 +77,6 @@ def test_reset_dat():
 		and ff._psd_flat is None and ff._psd_osc_rm is None and ff._gaussian_params is None \
 		and ff._background_fit is None and ff._oscillation_fit is None
 
-# TODO: what are these?
-
 # def test_fit():
 # 	pass
 
