@@ -101,7 +101,7 @@ class FOOOF(object):
         # Threshold for how far (in units of gaussian std dev) an oscillation has to be from edge to keep.
         self._bw_std_edge = 1.0
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- bandwidth
-        self._cf_bound = 2.0
+        self._cf_bound = 1.5
 
         ## INTERAL PARAMETERS
         # Bandwidth limits are given in 2-sided oscillation bandwidth.
@@ -363,7 +363,11 @@ class FOOOF(object):
         # Amplitude threshold - in terms of # of points.
         perc_thresh = np.percentile(psd_flat, self._sl_amp_thresh)
         amp_mask = psd_flat <= perc_thresh
+
+        # TO CHECK
         log_f_ignore = log_f[amp_mask]
+        #log_f_ignore = freqs[amp_mask]
+
         psd_flat_ignore = psd[amp_mask]
 
         # Second background fit - using results of first fit as guess parameters.
@@ -449,9 +453,11 @@ class FOOOF(object):
             osc_gauss = gaussian_function(self.freqs, guess_freq, guess_amp, guess_std)
             flat_iter = flat_iter - osc_gauss
 
-        # Check oscillation based on edges.
-        keep_osc = self._drop_osc_cf(guess)
-        guess = np.array([d for (d, remove) in zip(guess, keep_osc) if remove])
+        # Check oscillations based on edges, drop any that violate requirements.
+        guess = self._drop_osc_cf(guess)
+
+        # Check oscillations based on overlap, drop any that violate requirements.
+        guess = self._drop_osc_overlap(guess)
 
         # If there are oscillation guesses, fit the oscillations, and sort results.
         if len(guess) > 0:
@@ -477,8 +483,8 @@ class FOOOF(object):
             Parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
         """
 
-        print_guess = guess[guess[:, 0].argsort()]
-        print(print_guess)
+        #print_guess = guess[guess[:, 0].argsort()]
+        #print(print_guess)
 
         # Set the bounds for center frequency, positive amp value, and gauss limits.
         #  Note that osc_guess is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std.
@@ -500,29 +506,70 @@ class FOOOF(object):
         return gaussian_params
 
 
-    def _drop_osc_cf(self, osc_params):
+    def _drop_osc_cf(self, guess):
         """Check whether to drop oscillations based CF proximity to edge.
 
         Parameters
         ----------
-        osc_params : 2d array
+        guess : 2d array
             Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
 
         Returns
         -------
-        keep_parameter : 1d array, dtype=bool
-            Whether to keep each oscillation.
+        guess : 2d array
+            Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
         """
 
-        cf_params = [item[0] for item in osc_params]
-        bw_params = [item[2] * self._bw_std_edge for item in osc_params]
+        cf_params = [item[0] for item in guess]
+        bw_params = [item[2] * self._bw_std_edge for item in guess]
 
-        # Drop if within 1 BW (std dev) of the edge.
-        keep_parameter = \
+        # Check if oscs within 1 BW (std dev) of the edge.
+        keep_osc = \
             (np.abs(np.subtract(cf_params, self.freq_range[0])) > bw_params) & \
             (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)
 
-        return keep_parameter
+        # Drop oscillations that fail CF edge criterion
+        guess = np.array([d for (d, keep) in zip(guess, keep_osc) if keep])
+
+        return guess
+
+
+    def _drop_osc_overlap(self, guess):
+        """Checks whether to drop oscillations based on overlap.
+
+        Parameters
+        ----------
+        guess : 2d array
+            Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
+
+        Returns
+        -------
+        guess : 2d array
+            Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
+        """
+
+        # Sort the oscillations guesses
+        guess = sorted(guess, key=lambda x: float(x[0]))
+
+        # Calculate standard deviation bounds
+        bounds = [[osc[0]-osc[2], osc[0], osc[0]+osc[2]] for osc in guess]
+
+        drop_inds = []
+
+        for i, b0 in enumerate(bounds[:-1]):
+
+            b1 = bounds[i+1]
+
+            if b0[1] > b1[0]:
+
+                # Get the index of the lowest amplitude oscillation
+                drop_inds.append([i, i+1][np.argmin([guess[i][1], guess[i+1][1]])])
+
+        keep_osc = [True if j not in drop_inds else False for j in range(len(guess))]
+
+        guess = np.array([d for (d, keep) in zip(guess, keep_osc) if keep])
+
+        return guess
 
 
     def _r_squared(self):
