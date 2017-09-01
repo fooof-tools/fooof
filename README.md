@@ -1,10 +1,23 @@
 # FOOOF - fitting oscillations & one over f
 
+WARNING: FOOOF is not yet tagged for a stable release version, and updates may change the internal workings, and/or the API. Prior to tagged release, tutorials may not be kept entirely up to date, but in-file documentation will be. 
+
+Current FOOOF (stable version on master) is designed for fitting Power Spectral Densities (PSDs) in which there is a single linear slope, with no 'bends' or 'knees', when plotted in log-log space. PSDs that violate this assumption will likely result in bad fits. Broad spectrum PSDs (greater than ~ 50 Hz fitting range) are very likely to violate this assumption of the algorithm. This limitations may change with updates to the background fitting procedure. 
+
+Inputs for FOOOF (fit & model) are 'freqs' and 'psd' in linear space (although internally various the algorithm does, at times, use log space for both variables). 
+
+---
+
 FOOOF is a fast, efficient, physiologically-informed model to parameterize neural power spectra.
 
 The model conceives of the neural power spectral density (PSD) as consisting of two distinct functional processes: 1) A 1/f background modeled as a curve in log-log space with; 2) Band-limited oscillatory "bumps" rising above this background, modeled as Gaussians in log(power) space.
 
 Note that this conception of the 1/f as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the 1/f slope may index excitation/inhibition balance ([Gao, Peterson, Voytek, _NeuroImage_ 2017](http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf); [Voytek & Knight, _Biol Psychiatry_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf)). At the very least, however, the 1/f appears to change with task ([Podvalny _et al._, _J Neurophysiol_ 2015](http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf)), with aging ([Voytek _et al._, _J Neurosci_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf)).
+
+
+## Python Version
+
+FOOOF is written and tested in Python 3.6. It is not currently tested or supported on earlier versions. 
 
 ## Dependencies
 
