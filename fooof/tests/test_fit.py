@@ -9,13 +9,30 @@ from fooof.funcs import gaussian_function, quadratic_function
 ##########################################################################################
 
 def mk_fake_data(xs, bgp, oscs):
-	"""Create fake PSD for testing."""
+	"""Create fake PSD for testing.
+
+	Parameters
+	----------
+	xs : 1d array
+		Frequency vector to create fake PSD with.
+	bgp : list of [float, float, float]
+		Parameters to create the background of PSD.
+	oscs : list of [float, float, float]
+		Parameters to create oscillations. Length of n_oscs * 3.
+
+	Returns
+	-------
+	xs : 1d array
+		Frequency values (linear).
+	ys : 1d array
+		Power values (linear).
+	"""
 
 	bg = quadratic_function(np.log10(xs), *bgp)
 	oscs = gaussian_function(xs, *oscs)
 	noise = np.random.normal(0, 0.005, len(xs))
 
-	ys = bg + oscs + noise
+	ys = np.power(10, bg + oscs + noise)
 
 	return xs, ys
 
