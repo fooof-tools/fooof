@@ -363,11 +363,7 @@ class FOOOF(object):
         # Amplitude threshold - in terms of # of points.
         perc_thresh = np.percentile(psd_flat, self._sl_amp_thresh)
         amp_mask = psd_flat <= perc_thresh
-
-        # TO CHECK
         log_f_ignore = log_f[amp_mask]
-        #log_f_ignore = freqs[amp_mask]
-
         psd_flat_ignore = psd[amp_mask]
 
         # Second background fit - using results of first fit as guess parameters.
@@ -578,8 +574,8 @@ class FOOOF(object):
         r_val = np.corrcoef(self.psd, self.psd_fit)
         self.r2 = r_val[0][1] ** 2
 
+
     def _rmse_error(self):
         """Calculate root mean squared error of the full model fit."""
 
         self.error = np.sqrt((self.psd - self.psd_fit) ** 2).mean()
-
