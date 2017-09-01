@@ -4,7 +4,7 @@ WARNING: FOOOF is not yet tagged for a stable release version, and updates may c
 
 Current FOOOF (stable version on master) is designed for fitting Power Spectral Densities (PSDs) in which there is a single linear slope, with no 'bends' or 'knees', when plotted in log-log space. PSDs that violate this assumption will likely result in bad fits. Broad spectrum PSDs (greater than ~ 50 Hz fitting range) are very likely to violate this assumption of the algorithm. This limitation may change with updates to the background fitting procedure. 
 
-Inputs for FOOOF (fit & model) are 'freqs' and 'psd' in linear space (although internally various the algorithm does, at times, use log space for both variables). 
+Inputs for FOOOF (fit & model) are 'freqs' and 'psd' in linear space (although internally the algorithm does, at times, use log space for both variables). 
 
 ---
 
