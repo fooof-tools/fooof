@@ -1,8 +1,8 @@
 # FOOOF - fitting oscillations & one over f
 
-WARNING: FOOOF is not yet tagged for a stable release version, and updates may change the internal workings, and/or the API. Prior to tagged release, tutorials may not be kept entirely up to date, but in-file documentation will be. 
+WARNING: FOOOF is not yet tagged for a stable release version, and updates may change the internal workings, and/or the API (although major changes to API are unlikely). Prior to tagged release, tutorials may not be kept entirely up to date, but in-file documentation will be. 
 
-Current FOOOF (stable version on master) is designed for fitting Power Spectral Densities (PSDs) in which there is a single linear slope, with no 'bends' or 'knees', when plotted in log-log space. PSDs that violate this assumption will likely result in bad fits. Broad spectrum PSDs (greater than ~ 50 Hz fitting range) are very likely to violate this assumption of the algorithm. This limitations may change with updates to the background fitting procedure. 
+Current FOOOF (stable version on master) is designed for fitting Power Spectral Densities (PSDs) in which there is a single linear slope, with no 'bends' or 'knees', when plotted in log-log space. PSDs that violate this assumption will likely result in bad fits. Broad spectrum PSDs (greater than ~ 50 Hz fitting range) are very likely to violate this assumption of the algorithm. This limitation may change with updates to the background fitting procedure. 
 
 Inputs for FOOOF (fit & model) are 'freqs' and 'psd' in linear space (although internally various the algorithm does, at times, use log space for both variables). 
 
@@ -17,7 +17,7 @@ Note that this conception of the 1/f as potentially functional (and therefore wo
 
 ## Python Version
 
-FOOOF is written and tested in Python 3.6. It is not currently tested or supported on earlier versions. 
+FOOOF is written and tested in Python 3.6. It is not currently tested or supported on earlier versions (but should work on earlier versions of Python3 and should be compatible with Python2.7)
 
 ## Dependencies
 
