@@ -405,7 +405,7 @@ class FOOOF(object):
 
             # Stop searching for oscillations peaks once drops below amplitude threshold.
             if max_amp <= self.amp_std_thresh * np.std(flat_iter):
-               break
+                break
 
             # Set the guess parameters for gaussian fitting - CF and amp.
             guess_freq = self.freqs[max_ind]
