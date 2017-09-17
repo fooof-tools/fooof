@@ -8,11 +8,12 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
 from fooof.utils import group_three, trim_psd
-from fooof.funcs import gaussian_function, linear_function, quadratic_function
+from fooof.funcs import gaussian_function, linear_function, quadratic_function, loglorentzian_function
 
 ###################################################################################################
 ###################################################################################################
 ###################################################################################################
+
 
 class FOOOF(object):
     """Model the physiological power spectrum as oscillatory peaks and 1/f background.
@@ -92,7 +93,7 @@ class FOOOF(object):
         self.min_amp = min_amp
         self.amp_std_thresh = amp_std_thresh
 
-        ## SETTINGS
+        # SETTINGS
         # Noise threshold, as a percentage of the lowest amplitude values in the total data to fit.
         #  Defines the minimum amplitude, above residuals, to be considered an oscillation.
         self._sl_amp_thresh = 0.025
@@ -103,14 +104,13 @@ class FOOOF(object):
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- bandwidth
         self._cf_bound = 1.5
 
-        ## INTERAL PARAMETERS
+        # INTERAL PARAMETERS
         # Bandwidth limits are given in 2-sided oscillation bandwidth.
         #  Convert to gaussian std parameter limits.
         self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
 
         # Initialize all data attributes (to None)
         self._reset_dat()
-
 
     def _reset_dat(self):
         """Set (or reset) all data attributes to empty."""
@@ -131,7 +131,6 @@ class FOOOF(object):
         self._background_fit = None
         self._oscillation_fit = None
 
-
     def model(self, freqs, psd, freq_range, plt_log=False):
         """Run model fit, plot, and print results.
 
@@ -148,7 +147,6 @@ class FOOOF(object):
         self.fit(freqs, psd, freq_range)
         self.plot(plt_log)
         self.print_params()
-
 
     def fit(self, freqs, psd, freq_range):
         """Fit the full PSD as 1/f and gaussian oscillations.
@@ -184,11 +182,12 @@ class FOOOF(object):
 
         # Check bandwidth limits against frequency resolution; warn if too close.
         if round(self.freq_res, 1) >= self.bandwidth_limits[0]:
-            print('\nFOOOF WARNING: Lower-bound Bandwidth limit is ~= the frequency resolution. \n', \
+            print('\nFOOOF WARNING: Lower-bound Bandwidth limit is ~= the frequency resolution. \n',
                   '  This may lead to overfitting of small bandwidth oscillations.\n')
 
         # Fit the background 1/f.
-        self._background_fit, self.background_params = self._clean_background_fit(self.freqs, self.psd)
+        self._background_fit, self.background_params = self._clean_background_fit(
+            self.freqs, self.psd)
 
         # Flatten the PSD using fit background.
         self._psd_flat = self.psd - self._background_fit
@@ -198,15 +197,16 @@ class FOOOF(object):
 
         # Calculate the oscillation fit.
         #  Note: if no oscillations are found, this creates a flat (all zero) oscillation fit.
-        self._oscillation_fit = gaussian_function(self.freqs, *np.ndarray.flatten(self._gaussian_params))
+        self._oscillation_fit = gaussian_function(
+            self.freqs, *np.ndarray.flatten(self._gaussian_params))
 
         # Create oscillation-removed (but not flattened) PSD.
         self._psd_osc_rm = self.psd - self._oscillation_fit
 
         # Run final slope fit on oscillation-removed PSD.
         #   Note: This overwrites previous slope fit.
-        self._background_fit, self.background_params = self._quick_background_fit(np.log10(self.freqs),
-                                                                                  self._psd_osc_rm)
+        #self._background_fit, self.background_params = self._quick_background_fit(np.log10(self.freqs), self._psd_osc_rm)
+        self._background_fit, self.background_params = self._quick_background_fit(self.freqs, self._psd_osc_rm)
 
         # Create full PSD model fit.
         self.psd_fit = self._oscillation_fit + self._background_fit
@@ -217,14 +217,13 @@ class FOOOF(object):
         #  Bandwidth is updated to be 'both-sided' (as opposed to gaussian std param, which is 1-sided).
         self.oscillation_params = np.empty([0, 3])
         for i, osc in enumerate(self._gaussian_params):
-            ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i]-osc[0]))
+            ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i] - osc[0]))
             self.oscillation_params = np.vstack((self.oscillation_params,
                                                  [osc[0], self.psd_fit[ind] - self._background_fit[ind], osc[2] * 2]))
 
         # Calculate R^2 and error of the model fit.
         self._r_squared()
         self._rmse_error()
-
 
     def plot(self, plt_log=False):
         """Plot the original PSD, and full model fit.
@@ -256,7 +255,6 @@ class FOOOF(object):
         plt.legend(['Original PSD', 'Full model fit', 'Background fit'], prop={'size': 16})
         plt.grid()
 
-
     def print_params(self):
         """Print out the PSD model fit parameters."""
 
@@ -271,88 +269,162 @@ class FOOOF(object):
         print(' FOOOF - PSD MODEL'.center(cen_val), '\n')
 
         # Frequency range and resolution.
-        print('The input PSD was modeled in the frequency range {}-{} Hz'.format( \
+        print('The input PSD was modeled in the frequency range {}-{} Hz'.format(
               self.freq_range[0], self.freq_range[1]).center(cen_val))
         print('Frequency Resolution is {:1.2f} Hz \n'.format(self.freq_res).center(cen_val))
 
         # Background (slope) parameters.
-        print('Background Parameters (offset, slope, and curvature): '.center(cen_val))
+        print('Background Parameters (offset, knee, slope): '.center(cen_val))
         print('{:2.4f}, {:2.4f}, {:2.2e}'.format(self.background_params[0],
                                                  self.background_params[1],
                                                  self.background_params[2]).center(cen_val))
 
         # Oscillation parameters.
-        print('\n', '{} oscillations were found:'.format(len(self.oscillation_params)).center(cen_val))
+        print('\n', '{} oscillations were found:'.format(
+            len(self.oscillation_params)).center(cen_val))
         for op in self.oscillation_params:
-            print('CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]).center(cen_val))
+            print('CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(
+                op[0], op[1], op[2]).center(cen_val))
 
         # R^2 and error.
         print('\n', 'R^2 of model fit is {:5.4f}'.format(self.r2).center(cen_val))
-        print('\n', 'Root mean squared error of model fit is {:5.4f}'.format(self.error).center(cen_val))
+        print('\n', 'Root mean squared error of model fit is {:5.4f}'.format(
+            self.error).center(cen_val))
 
         # Footer.
         print('\n', '=' * cen_val)
-
 
     def get_params(self):
         """Return model fit parameters and error."""
 
         return self.background_params, self.oscillation_params, self.r2, self.error
 
+    ### --- ORIGINAL FITTING ROUTINE --- ###
+    # def _quick_background_fit(self, freqs, psd):
+    #     """Fit the 1/f slope of PSD using a linear fit then quadratic fit.
+
+    #     Parameters
+    #     ----------
+    #     freqs : 1d array
+    #         Frequency values for the PSD.
+    #     psd : 1d array
+    #         Power spectral density values.
+
+    #     Returns
+    #     -------
+    #     psd_fit : 1d array
+    #         Values of fit slope.
+    #     popt : list of [offset, slope, curvature]
+    #         Parameter estimates.
+    #     """
+
+    #     # Linear fit - initialize guess with actual y-intercept, and guess slope of -2.
+    #     guess = np.array([psd[0], -2])
+    #     popt, _ = curve_fit(linear_function, freqs, psd, p0=guess)
+
+    #     # Quadratic fit (using guess parameters from linear fit).
+    #     guess = np.array([popt[0], popt[1], 0])
+    #     popt, _ = curve_fit(quadratic_function, freqs, psd, p0=guess, bounds=self._sl_param_bounds)
+
+    #     # Calculate the actual background fit.
+    #     psd_fit = quadratic_function(freqs, *popt)
+
+    #     return psd_fit, popt
+
+    # def _clean_background_fit(self, freqs, psd):
+    #     """Fit the 1/f slope of PSD using a linear and then quadratic fit, ignoring outliers.
+
+    #     Parameters
+    #     ----------
+    #     freqs : 1d array
+    #         Frequency values for the PSD.
+    #     psd : 1d array
+    #         Power spectral density values.
+
+    #     Returns
+    #     -------
+    #     background_fit : 1d array
+    #         Values of fit slope.
+    #     background_params : 1d array
+    #         Parameters of slope fit (length of 3: offset, slope, curvature).
+    #     """
+
+    #     # Do a quick, initial background fit.
+    #     log_f = np.log10(freqs)
+    #     initial_fit, popt = self._quick_background_fit(log_f, psd)
+
+    #     # Flatten PSD based on initial background fit.
+    #     psd_flat = psd - initial_fit
+
+    #     # Flatten outliers - any points that drop below 0.
+    #     psd_flat[psd_flat < 0] = 0
+
+    #     # Amplitude threshold - in terms of # of points.
+    #     perc_thresh = np.percentile(psd_flat, self._sl_amp_thresh)
+    #     amp_mask = psd_flat <= perc_thresh
+    #     log_f_ignore = log_f[amp_mask]
+    #     psd_flat_ignore = psd[amp_mask]
+
+    #     # Second background fit - using results of first fit as guess parameters.
+    #     guess = np.array([popt[0], popt[1], popt[2]])
+    #     background_params, _ = curve_fit(quadratic_function, log_f_ignore, psd_flat_ignore,
+    #                                      p0=guess, bounds=self._sl_param_bounds)
+
+    #     # Calculate the actual background fit.
+    #     background_fit = background_params[0] + (background_params[1]*(log_f)) + (background_params[2]*(log_f**2))
+
+    #     return background_fit, background_params
+        ### --- ORIGINAL FITTING ROUTINE END --- ###
 
     def _quick_background_fit(self, freqs, psd):
-        """Fit the 1/f slope of PSD using a linear fit then quadratic fit.
+        """Fit the 1/f slope of PSD using a lorentzian fit.
 
         Parameters
         ----------
         freqs : 1d array
-            Frequency values for the PSD.
+            Frequency values for the PSD, in linear scale.
         psd : 1d array
-            Power spectral density values.
+            Power spectral density values, in log10 scale.
 
         Returns
         -------
         psd_fit : 1d array
             Values of fit slope.
-        popt : list of [offset, slope, curvature]
+        popt : list of [offset, knee, slope]
             Parameter estimates.
         """
 
-        # Linear fit - initialize guess with actual y-intercept, and guess slope of -2.
-        guess = np.array([psd[0], -2])
-        popt, _ = curve_fit(linear_function, freqs, psd, p0=guess)
+        # Background fit using Lorentzian fit, guess knee and slope parameters
+        guess = np.array([psd[0], 1000., 2.])
 
-        # Quadratic fit (using guess parameters from linear fit).
-        guess = np.array([popt[0], popt[1], 0])
-        popt, _ = curve_fit(quadratic_function, freqs, psd, p0=guess, bounds=self._sl_param_bounds)
+        # currently no bounds on parameters because parameter position
+        #  is inconsistent with quadratic fit
+        popt, _ = curve_fit(loglorentzian_function, freqs, psd, p0=guess)
 
-        # Calculate the actual background fit.
-        psd_fit = quadratic_function(freqs, *popt)
-
+        # compute background fit
+        psd_fit = loglorentzian_function(freqs, *popt)
         return psd_fit, popt
 
-
     def _clean_background_fit(self, freqs, psd):
-        """Fit the 1/f slope of PSD using a linear and then quadratic fit, ignoring outliers.
+        """Fit the 1/f slope of PSD using an lorentzian fit, ignoring outliers.
 
         Parameters
         ----------
         freqs : 1d array
-            Frequency values for the PSD.
+            Frequency values for the PSD, in linear scale.
         psd : 1d array
-            Power spectral density values.
+            Power spectral density values, in log10 scale.
 
         Returns
         -------
         background_fit : 1d array
-            Values of fit slope.
+            background PSD.
         background_params : 1d array
-            Parameters of slope fit (length of 3: offset, slope, curvature).
+            Parameters of slope fit (length of 3: offset, knee, slope).
         """
 
         # Do a quick, initial background fit.
-        log_f = np.log10(freqs)
-        initial_fit, popt = self._quick_background_fit(log_f, psd)
+        initial_fit, popt = self._quick_background_fit(freqs, psd)
 
         # Flatten PSD based on initial background fit.
         psd_flat = psd - initial_fit
@@ -363,19 +435,17 @@ class FOOOF(object):
         # Amplitude threshold - in terms of # of points.
         perc_thresh = np.percentile(psd_flat, self._sl_amp_thresh)
         amp_mask = psd_flat <= perc_thresh
-        log_f_ignore = log_f[amp_mask]
-        psd_flat_ignore = psd[amp_mask]
+        f_ignore = freqs[amp_mask]
+        psd_ignore = psd[amp_mask]
 
         # Second background fit - using results of first fit as guess parameters.
         guess = np.array([popt[0], popt[1], popt[2]])
-        background_params, _ = curve_fit(quadratic_function, log_f_ignore, psd_flat_ignore,
-                                         p0=guess, bounds=self._sl_param_bounds)
+        background_params, _ = curve_fit(loglorentzian_function, f_ignore, psd_ignore, p0=guess)
 
         # Calculate the actual background fit.
-        background_fit = background_params[0] + (background_params[1]*(log_f)) + (background_params[2]*(log_f**2))
+        background_fit = loglorentzian_function(freqs, *background_params)
 
         return background_fit, background_params
-
 
     def _fit_oscs(self, flat_iter):
         """Iteratively fit oscillations to flattened spectrum.
@@ -419,15 +489,15 @@ class FOOOF(object):
             half_amp = 0.5 * max_amp
 
             # Find half-amp index on each side of the center frequency.
-            le_ind = next((x for x in range(max_ind-1, 0, -1) if flat_iter[x] <= half_amp), None)
-            ri_ind = next((x for x in range(max_ind+1, len(flat_iter), 1) \
-                if flat_iter[x] <= half_amp), None)
+            le_ind = next((x for x in range(max_ind - 1, 0, -1) if flat_iter[x] <= half_amp), None)
+            ri_ind = next((x for x in range(max_ind + 1, len(flat_iter), 1)
+                           if flat_iter[x] <= half_amp), None)
 
             # Keep bandwidth estimation from the shortest side.
             #  We grab shortest to avoid estimating very large std from overalapping oscillations.
             # Grab the shortest side, ignoring a side if the half max was not found.
             # Note: this will fail if both le & ri ind's end up as None (probably shouldn't happen).
-            shortest_side = min([abs(ind-max_ind) for ind in [le_ind, ri_ind] if ind is not None])
+            shortest_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
 
             # Estimate std properly from FWHM.
             # Calculate FWHM, converting to Hz.
@@ -464,7 +534,6 @@ class FOOOF(object):
 
         return gaussian_params
 
-
     def _fit_osc_guess(self, guess):
         """Fit a guess of oscillaton gaussian fit.
 
@@ -480,13 +549,14 @@ class FOOOF(object):
         """
 
         #print_guess = guess[guess[:, 0].argsort()]
-        #print(print_guess)
+        # print(print_guess)
 
         # Set the bounds for center frequency, positive amp value, and gauss limits.
         #  Note that osc_guess is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std.
         lo_bound = [[osc[0] - 2 * self._cf_bound * osc[2], 0, self._std_limits[0]] for osc in guess]
-        hi_bound = [[osc[0] + 2 * self._cf_bound * osc[2], np.inf, self._std_limits[1]] for osc in guess]
-        gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]), \
+        hi_bound = [[osc[0] + 2 * self._cf_bound * osc[2], np.inf, self._std_limits[1]]
+                    for osc in guess]
+        gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]),
                              tuple([item for sublist in hi_bound for item in sublist]))
 
         # Flatten guess, for use with curve fit.
@@ -500,7 +570,6 @@ class FOOOF(object):
         gaussian_params = np.array(group_three(gaussian_params))
 
         return gaussian_params
-
 
     def _drop_osc_cf(self, guess):
         """Check whether to drop oscillations based CF proximity to edge.
@@ -529,7 +598,6 @@ class FOOOF(object):
 
         return guess
 
-
     def _drop_osc_overlap(self, guess):
         """Checks whether to drop oscillations based on overlap.
 
@@ -548,18 +616,18 @@ class FOOOF(object):
         guess = sorted(guess, key=lambda x: float(x[0]))
 
         # Calculate standard deviation bounds
-        bounds = [[osc[0]-osc[2], osc[0], osc[0]+osc[2]] for osc in guess]
+        bounds = [[osc[0] - osc[2], osc[0], osc[0] + osc[2]] for osc in guess]
 
         drop_inds = []
 
         for i, b0 in enumerate(bounds[:-1]):
 
-            b1 = bounds[i+1]
+            b1 = bounds[i + 1]
 
             if b0[1] > b1[0]:
 
                 # Get the index of the lowest amplitude oscillation
-                drop_inds.append([i, i+1][np.argmin([guess[i][1], guess[i+1][1]])])
+                drop_inds.append([i, i + 1][np.argmin([guess[i][1], guess[i + 1][1]])])
 
         keep_osc = [True if j not in drop_inds else False for j in range(len(guess))]
 
@@ -567,13 +635,11 @@ class FOOOF(object):
 
         return guess
 
-
     def _r_squared(self):
         """Calculate R^2 of the full model fit."""
 
         r_val = np.corrcoef(self.psd, self.psd_fit)
         self.r2 = r_val[0][1] ** 2
-
 
     def _rmse_error(self):
         """Calculate root mean squared error of the full model fit."""

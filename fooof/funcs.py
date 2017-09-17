@@ -90,6 +90,9 @@ def quadratic_function(x, *params):
 def loglorentzian_function(x, *params):
     """Log-Lorentzian function to use for better fitting 1/f.
 
+    NOTE: this function requires linear frequency (not log) and all parameters
+    should be positive since function operates in log-Y domain
+
     Parameters
     ----------
     x : 1d array
