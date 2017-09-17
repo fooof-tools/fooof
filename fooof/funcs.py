@@ -85,3 +85,27 @@ def quadratic_function(x, *params):
     y = y + offset + (x*slope) + ((x**2)*curve)
 
     return y
+
+
+def loglorentzian_function(x, *params):
+    """Log-Lorentzian function to use for better fitting 1/f.
+
+    Parameters
+    ----------
+    x : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters (a, b, c) that define Lorentzian function:
+        y = a * (1/(b + x**c))
+
+    Returns
+    -------
+    y : 1d array
+        Output values for quadratic function.
+
+    """
+    y = np.zeros_like(x)
+    a, b, c = params
+    y = np.log10(a) - np.log10(b + x**c)
+
+    return y
