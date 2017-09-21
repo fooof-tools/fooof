@@ -99,7 +99,8 @@ def loglorentzian_function(x, *params):
         Input x-axis values.
     *params : float
         Parameters (a, b, c) that define Lorentzian function:
-        y = a * (1/(b + x**c))
+        y = 10^a * (1/(b + x^c))
+        a: constant; b: knee^2; c: slope past knee
 
     Returns
     -------
@@ -109,6 +110,6 @@ def loglorentzian_function(x, *params):
     """
     y = np.zeros_like(x)
     a, b, c = params
-    y = np.log10(a) - np.log10(b + x**c)
+    y = a - np.log10(b + x**c)
 
     return y

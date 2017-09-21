@@ -395,7 +395,7 @@ class FOOOF(object):
         """
 
         # Background fit using Lorentzian fit, guess knee and slope parameters
-        guess = np.array([psd[0], 1000., 2.])
+        guess = np.array([psd[0], 0., 2.])
 
         # currently no bounds on parameters because parameter position
         #  is inconsistent with quadratic fit
