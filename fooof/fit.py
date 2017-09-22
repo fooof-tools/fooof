@@ -38,15 +38,15 @@ class FOOOF(object):
         Frequency range of the PSD.
     freq_res : float
         Frequency resolution of the PSD.
-    psd_fit : 1d array
+    psd_fit_ : 1d array
         The full model fit of the PSD: 1/f and oscillations across freq_range.
-    background_params : 1d array
+    background_params_ : 1d array
         Parameters that define the background fit.
-    oscillation_params : 1d array
+    oscillation_params_ : 1d array
         Fitted parameter values for the oscillations.
-    r2 : float
+    r2_ : float
         R-squared between the input PSD and the full model fit.
-    error : float
+    error_ : float
         R-squared error of the full model fit.
     _psd_flat : 1d array
         Flattened PSD (background 1/f removed)
@@ -116,11 +116,11 @@ class FOOOF(object):
         self.psd = None
         self.freq_range = None
         self.freq_res = None
-        self.psd_fit = None
-        self.background_params = None
-        self.oscillation_params = None
-        self.r2 = None
-        self.error = None
+        self.psd_fit_ = None
+        self.background_params_ = None
+        self.oscillation_params_ = None
+        self.r2_ = None
+        self.error_ = None
 
         self._psd_flat = None
         self._psd_osc_rm = None
@@ -185,7 +185,7 @@ class FOOOF(object):
                   '  This may lead to overfitting of small bandwidth oscillations.\n')
 
         # Fit the background 1/f.
-        self._background_fit, self.background_params = self._clean_background_fit(
+        self._background_fit, self.background_params_ = self._clean_background_fit(
             self.freqs, self.psd)
 
         # Flatten the PSD using fit background.
@@ -204,11 +204,11 @@ class FOOOF(object):
 
         # Run final slope fit on oscillation-removed PSD.
         #   Note: This overwrites previous slope fit.
-        self._background_fit, self.background_params = self._quick_background_fit(
+        self._background_fit, self.background_params_ = self._quick_background_fit(
             self.freqs, self._psd_osc_rm)
 
         # Create full PSD model fit.
-        self.psd_fit = self._oscillation_fit + self._background_fit
+        self.psd_fit_ = self._oscillation_fit + self._background_fit
 
         # Copy the gaussian params to oscillations outputs, updating as appropriate.
         #  Amplitude is updated to the amplitude of oscillation above the background fit.
@@ -216,12 +216,12 @@ class FOOOF(object):
         #    Actual amplitude is harder to interpret, due to osc overlaps.
         #  Bandwidth is updated to be 'both-sided'
         #   This is as opposed to gaussian std param, which is 1-sided.
-        self.oscillation_params = np.empty([0, 3])
+        self.oscillation_params_ = np.empty([0, 3])
         for i, osc in enumerate(self._gaussian_params):
             ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i] - osc[0]))
-            self.oscillation_params = np.vstack((self.oscillation_params,
+            self.oscillation_params_ = np.vstack((self.oscillation_params_,
                                                  [osc[0],
-                                                  self.psd_fit[ind] - self._background_fit[ind],
+                                                  self.psd_fit_[ind] - self._background_fit[ind],
                                                   osc[2] * 2]))
 
         # Calculate R^2 and error of the model fit.
@@ -249,7 +249,7 @@ class FOOOF(object):
             plt_freqs = self.freqs
 
         plt.plot(plt_freqs, self.psd, 'k', linewidth=1.0)
-        plt.plot(plt_freqs, self.psd_fit, 'r', linewidth=3.0, alpha=0.5)
+        plt.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0, alpha=0.5)
         plt.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0, alpha=0.5)
 
         plt.xlabel('Frequency', fontsize=20)
@@ -280,21 +280,21 @@ class FOOOF(object):
 
         # Background (slope) parameters.
         print('Background Parameters (offset, knee, slope): '.center(cen_val))
-        print('{:2.4f}, {:2.4f}, {:2.2e}'.format(self.background_params[0],
-                                                 self.background_params[1],
-                                                 self.background_params[2]).center(cen_val))
+        print('{:2.4f}, {:2.4f}, {:2.2e}'.format(self.background_params_[0],
+                                                 self.background_params_[1],
+                                                 self.background_params_[2]).center(cen_val))
 
         # Oscillation parameters.
         print('\n', '{} oscillations were found:'.format(
-            len(self.oscillation_params)).center(cen_val))
-        for op in self.oscillation_params:
+            len(self.oscillation_params_)).center(cen_val))
+        for op in self.oscillation_params_:
             print('CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(
                 op[0], op[1], op[2]).center(cen_val))
 
         # R^2 and error.
-        print('\n', 'R^2 of model fit is {:5.4f}'.format(self.r2).center(cen_val))
-        print('\n', 'Root mean squared error of model fit is {:5.4f}'.format(
-            self.error).center(cen_val))
+        print('\n', 'R^2 of model fit is {:5.4f}'.format(self.r2_).center(cen_val))
+        print('\n', 'Root mean squared error_ of model fit is {:5.4f}'.format(
+            self.error_).center(cen_val))
 
         # Footer.
         print('\n', '=' * cen_val)
@@ -303,7 +303,7 @@ class FOOOF(object):
     def get_params(self):
         """Return model fit parameters and error."""
 
-        return self.background_params, self.oscillation_params, self.r2, self.error
+        return self.background_params_, self.oscillation_params_, self.r2_, self.error_
 
 
     def _quick_background_fit(self, freqs, psd):
@@ -318,7 +318,7 @@ class FOOOF(object):
 
         Returns
         -------
-        psd_fit : 1d array
+        psd_fit_ : 1d array
             Values of fit slope.
         popt : list of [offset, knee, slope]
             Parameter estimates.
@@ -329,9 +329,9 @@ class FOOOF(object):
         popt, _ = curve_fit(loglorentzian_function, freqs, psd, p0=guess)
 
         # Calculate the actual background fit
-        psd_fit = loglorentzian_function(freqs, *popt)
+        psd_fit_ = loglorentzian_function(freqs, *popt)
 
-        return psd_fit, popt
+        return psd_fit_, popt
 
 
     def _clean_background_fit(self, freqs, psd):
@@ -348,7 +348,7 @@ class FOOOF(object):
         -------
         background_fit : 1d array
             background PSD.
-        background_params : 1d array
+        background_params_ : 1d array
             Parameters of slope fit (length of 3: offset, knee, slope).
         """
 
@@ -369,12 +369,12 @@ class FOOOF(object):
 
         # Second background fit - using results of first fit as guess parameters.
         guess = np.array([popt[0], popt[1], popt[2]])
-        background_params, _ = curve_fit(loglorentzian_function, f_ignore, psd_ignore, p0=guess)
+        background_params_, _ = curve_fit(loglorentzian_function, f_ignore, psd_ignore, p0=guess)
 
         # Calculate the actual background fit.
-        background_fit = loglorentzian_function(freqs, *background_params)
+        background_fit = loglorentzian_function(freqs, *background_params_)
 
-        return background_fit, background_params
+        return background_fit, background_params_
 
 
     def _fit_oscs(self, flat_iter):
@@ -573,11 +573,11 @@ class FOOOF(object):
     def _r_squared(self):
         """Calculate R^2 of the full model fit."""
 
-        r_val = np.corrcoef(self.psd, self.psd_fit)
-        self.r2 = r_val[0][1] ** 2
+        r_val = np.corrcoef(self.psd, self.psd_fit_)
+        self.r2_ = r_val[0][1] ** 2
 
 
     def _rmse_error(self):
         """Calculate root mean squared error of the full model fit."""
 
-        self.error = np.sqrt((self.psd - self.psd_fit) ** 2).mean()
+        self.error_ = np.sqrt((self.psd - self.psd_fit_) ** 2).mean()
