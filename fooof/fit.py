@@ -75,11 +75,12 @@ class FOOOF(object):
         - Where possible and appropriate, use longer time segments for PSD calculation to
         get smoother PSDs; this will give better FOOOF fits.
     - FOOOF is designed for (and expects) a PSD in which there is a single (log-log) slope.
-        - PSDs ranges which have a 'knee', or a change in the 1/f background, violate this assumption.
+        - PSDs which have a 'knee', or a change in the 1/f background, violate this assumption.
         - When this assumption is violated, the fit is likely to be bad / wrong.
     """
 
-    def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf, min_amp=0.0, amp_std_thresh=2.0):
+    def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf,
+                 min_amp=0.0, amp_std_thresh=2.0):
         """Initialize FOOOF object with run parameters."""
 
         # Set input parameters
@@ -94,9 +95,9 @@ class FOOOF(object):
         self._sl_amp_thresh = 0.025
         # Default 1/f parameter bounds. This limits slope to be less than 2 and no steeper than -8.
         self._sl_param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
-        # Threshold for how far (in units of gaussian std dev) an oscillation has to be from edge to keep.
+        # Threshold for how far (units of gaus std dev) an oscillation has to be from edge to keep.
         self._bw_std_edge = 1.0
-        # Parameter bounds for center frequency when fitting gaussians - in terms of +/- bandwidth
+        # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
         self._cf_bound = 1.5
 
         # INTERAL PARAMETERS
@@ -203,21 +204,25 @@ class FOOOF(object):
 
         # Run final slope fit on oscillation-removed PSD.
         #   Note: This overwrites previous slope fit.
-        #self._background_fit, self.background_params = self._quick_background_fit(np.log10(self.freqs), self._psd_osc_rm)
-        self._background_fit, self.background_params = self._quick_background_fit(self.freqs, self._psd_osc_rm)
+        self._background_fit, self.background_params = self._quick_background_fit(
+            self.freqs, self._psd_osc_rm)
 
         # Create full PSD model fit.
         self.psd_fit = self._oscillation_fit + self._background_fit
 
         # Copy the gaussian params to oscillations outputs, updating as appropriate.
         #  Amplitude is updated to the amplitude of oscillation above the background fit.
-        #    This is returned instead of the gaussian amplitude, which is harder to interpret, due to osc overlaps.
-        #  Bandwidth is updated to be 'both-sided' (as opposed to gaussian std param, which is 1-sided).
+        #   This is returned instead of the gaussian amplitude
+        #    Actual amplitude is harder to interpret, due to osc overlaps.
+        #  Bandwidth is updated to be 'both-sided'
+        #   This is as opposed to gaussian std param, which is 1-sided.
         self.oscillation_params = np.empty([0, 3])
         for i, osc in enumerate(self._gaussian_params):
             ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i] - osc[0]))
             self.oscillation_params = np.vstack((self.oscillation_params,
-                                                 [osc[0], self.psd_fit[ind] - self._background_fit[ind], osc[2] * 2]))
+                                                 [osc[0],
+                                                  self.psd_fit[ind] - self._background_fit[ind],
+                                                  osc[2] * 2]))
 
         # Calculate R^2 and error of the model fit.
         self._r_squared()
@@ -270,7 +275,7 @@ class FOOOF(object):
 
         # Frequency range and resolution.
         print('The input PSD was modeled in the frequency range {}-{} Hz'.format(
-              self.freq_range[0], self.freq_range[1]).center(cen_val))
+            self.freq_range[0], self.freq_range[1]).center(cen_val))
         print('Frequency Resolution is {:1.2f} Hz \n'.format(self.freq_res).center(cen_val))
 
         # Background (slope) parameters.
@@ -321,13 +326,11 @@ class FOOOF(object):
 
         # Background fit using Lorentzian fit, guess knee and slope parameters
         guess = np.array([psd[0], 0., 2.])
-
-        # currently no bounds on parameters because parameter position
-        #  is inconsistent with quadratic fit
         popt, _ = curve_fit(loglorentzian_function, freqs, psd, p0=guess)
 
-        # compute background fit
+        # Calculate the actual background fit
         psd_fit = loglorentzian_function(freqs, *popt)
+
         return psd_fit, popt
 
 
@@ -391,9 +394,7 @@ class FOOOF(object):
         # Initialize matrix of guess parameters for gaussian fitting.
         guess = np.empty([0, 3])
 
-        # Find oscillations: Loop through, checking residuals, stopping based on std check.
-        #   Note: With low variance (no / small 'real' oscillations) this procedure is perhaps overzealous.
-        #       It finds and fits what we may want to consider small bumps (noise).
+        # Find oscillations: Loop through, checking residuals, stopping based on std check
         while len(guess) < self.max_n_oscs:
 
             # Find candidate oscillation.
@@ -423,7 +424,7 @@ class FOOOF(object):
             # Keep bandwidth estimation from the shortest side.
             #  We grab shortest to avoid estimating very large std from overalapping oscillations.
             # Grab the shortest side, ignoring a side if the half max was not found.
-            # Note: this will fail if both le & ri ind's end up as None (probably shouldn't happen).
+            #  Note: this will fail if both le & ri ind's end up as None (probably shouldn't happen).
             shortest_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
 
             # Estimate std properly from FWHM.
@@ -446,10 +447,9 @@ class FOOOF(object):
             osc_gauss = gaussian_function(self.freqs, guess_freq, guess_amp, guess_std)
             flat_iter = flat_iter - osc_gauss
 
-        # Check oscillations based on edges, drop any that violate requirements.
+        # Check oscillations based on edges, and on overlap
+        #  Drop any that violate requirements.
         guess = self._drop_osc_cf(guess)
-
-        # Check oscillations based on overlap, drop any that violate requirements.
         guess = self._drop_osc_overlap(guess)
 
         # If there are oscillation guesses, fit the oscillations, and sort results.
@@ -476,12 +476,10 @@ class FOOOF(object):
             Parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
         """
 
-        #print_guess = guess[guess[:, 0].argsort()]
-        # print(print_guess)
-
         # Set the bounds for center frequency, positive amp value, and gauss limits.
         #  Note that osc_guess is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std.
-        lo_bound = [[osc[0] - 2 * self._cf_bound * osc[2], 0, self._std_limits[0]] for osc in guess]
+        lo_bound = [[osc[0] - 2 * self._cf_bound * osc[2], 0, self._std_limits[0]]
+                    for osc in guess]
         hi_bound = [[osc[0] + 2 * self._cf_bound * osc[2], np.inf, self._std_limits[1]]
                     for osc in guess]
         gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]),
@@ -540,9 +538,14 @@ class FOOOF(object):
         -------
         guess : 2d array
             Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
+
+        Notes
+        -----
+        For any oscillation guesses with an overlap of their standard deviations,
+            only the large oscillation guess is kept.
         """
 
-        # Sort the oscillations guesses
+        # Sort the oscillations guesses, so can check overlap of adjacent oscillations
         guess = sorted(guess, key=lambda x: float(x[0]))
 
         # Calculate standard deviation bounds
@@ -550,17 +553,18 @@ class FOOOF(object):
 
         drop_inds = []
 
+        # Loop through oscillation bounds, comparing current bound to that of next osc
         for i, b0 in enumerate(bounds[:-1]):
-
             b1 = bounds[i + 1]
 
+            # Check if bound of current oscillations extends into next oscillation
             if b0[1] > b1[0]:
 
-                # Get the index of the lowest amplitude oscillation
+                # If so, get the index of the lowest amplitude oscillation (to drop)
                 drop_inds.append([i, i + 1][np.argmin([guess[i][1], guess[i + 1][1]])])
 
+        # Drop any oscillations guesses that overlap
         keep_osc = [True if j not in drop_inds else False for j in range(len(guess))]
-
         guess = np.array([d for (d, keep) in zip(guess, keep_osc) if keep])
 
         return guess
