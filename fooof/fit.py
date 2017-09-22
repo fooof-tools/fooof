@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
 from fooof.utils import group_three, trim_psd
-from fooof.funcs import gaussian_function, loglorentzian_function
+from fooof.funcs import gaussian_function, loglorentzian_function, loglorentzian_nk_function
 
 ###################################################################################################
 ###################################################################################################
@@ -19,14 +19,16 @@ class FOOOF(object):
 
     Parameters
     ----------
-    bandwidth_limits : tuple of (float, float)
+    bandwidth_limits : tuple of (float, float), optional (default: (0.5, 12.0)
         Setting to exclude gaussian fits where the bandwidth is implausibly narrow or wide.
-    max_n_oscs : int
+    max_n_oscs : int, optional (default: inf)
         Maximum number of oscillations to be modeled in a single PSD.
-    min_amp : float
+    min_amp : float, optional (default: 0)
         Minimum amplitude threshold for an oscillation to be modeled.
-    amp_std_thresh : float
+    amp_std_thresh : float, optional (default: 2.0)
         Amplitude threshold for detecting oscillatory peaks, units of standard deviation.
+    fit_knee : boolean, optional (default: False)
+        Whether to fit a knee parameter in the lorentzian background fit.
 
     Attributes
     ----------
@@ -74,14 +76,16 @@ class FOOOF(object):
         procedure, or a median filter smoothing on the FFT output before running FOOOF.
         - Where possible and appropriate, use longer time segments for PSD calculation to
         get smoother PSDs; this will give better FOOOF fits.
-    - FOOOF is designed for (and expects) a PSD in which there is a single (log-log) slope.
-        - PSDs which have a 'knee', or a change in the 1/f background, violate this assumption.
-        - When this assumption is violated, the fit is likely to be bad / wrong.
     """
 
     def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf,
-                 min_amp=0.0, amp_std_thresh=2.0):
+                 min_amp=0.0, amp_std_thresh=2.0, fit_knee=False):
         """Initialize FOOOF object with run parameters."""
+
+        # Set lorentzian function version for whether fitting knee or not
+        self.fit_knee = fit_knee
+        global lorentzian_function
+        lorentzian_function = loglorentzian_function if self.fit_knee else loglorentzian_nk_function
 
         # Set input parameters
         self.bandwidth_limits = bandwidth_limits
@@ -279,10 +283,10 @@ class FOOOF(object):
         print('Frequency Resolution is {:1.2f} Hz \n'.format(self.freq_res).center(cen_val))
 
         # Background (slope) parameters.
-        print('Background Parameters (offset, knee, slope): '.center(cen_val))
-        print('{:2.4f}, {:2.4f}, {:2.2e}'.format(self.background_params_[0],
-                                                 self.background_params_[1],
-                                                 self.background_params_[2]).center(cen_val))
+        print(('Background Parameters (offset, ' + ('knee, ' if self.fit_knee else '') + \
+               'slope): ').center(cen_val))
+        print(', '.join(['{:2.4f}'] * len(self.background_params_)).format(
+            *self.background_params_).center(cen_val))
 
         # Oscillation parameters.
         print('\n', '{} oscillations were found:'.format(
@@ -325,11 +329,13 @@ class FOOOF(object):
         """
 
         # Background fit using Lorentzian fit, guess knee and slope parameters
-        guess = np.array([psd[0], 0., 2.])
-        popt, _ = curve_fit(loglorentzian_function, freqs, psd, p0=guess)
+        guess = np.array([psd[0]] + ([0] if self.fit_knee else []) + [2])
+        #guess = np.array([psd[0], 0., 2.])
+
+        popt, _ = curve_fit(lorentzian_function, freqs, psd, p0=guess)
 
         # Calculate the actual background fit
-        psd_fit_ = loglorentzian_function(freqs, *popt)
+        psd_fit_ = lorentzian_function(freqs, *popt)
 
         return psd_fit_, popt
 
@@ -368,11 +374,10 @@ class FOOOF(object):
         psd_ignore = psd[amp_mask]
 
         # Second background fit - using results of first fit as guess parameters.
-        guess = np.array([popt[0], popt[1], popt[2]])
-        background_params_, _ = curve_fit(loglorentzian_function, f_ignore, psd_ignore, p0=guess)
+        background_params_, _ = curve_fit(lorentzian_function, f_ignore, psd_ignore, p0=popt)
 
         # Calculate the actual background fit.
-        background_fit = loglorentzian_function(freqs, *background_params_)
+        background_fit = lorentzian_function(freqs, *background_params_)
 
         return background_fit, background_params_
 

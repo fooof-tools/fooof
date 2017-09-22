@@ -35,10 +35,9 @@ def gaussian_function(x, *params):
 
 
 def loglorentzian_function(x, *params):
-    """Log-Lorentzian function to use for better fitting 1/f.
+    """Log-Lorentzian function to use for fitting 1/f.
 
-    NOTE: this function requires linear frequency (not log) and all parameters
-    should be positive since function operates in log-Y domain
+    NOTE: this function requires linear frequency (not log).
 
     Parameters
     ----------
@@ -58,5 +57,85 @@ def loglorentzian_function(x, *params):
     y = np.zeros_like(x)
     a, b, c = params
     y = a - np.log10(b + x**c)
+
+    return y
+
+
+def loglorentzian_nk_function(x, *params):
+    """Log-Lorentzian function to use for fitting 1/f, with no knee.
+
+    NOTE: this function requires linear frequency (not log).
+
+    Parameters
+    ----------
+    x : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters (a, c) that define Lorentzian function:
+        y = 10^a * (1/(1 + x^c))
+        a: constant; c: slope past knee
+
+    Returns
+    -------
+    y : 1d array
+        Output values for quadratic function.
+    """
+
+    y = np.zeros_like(x)
+    a, c = params
+    y = a - np.log10(1 + x**c)
+
+    return y
+
+
+def linear_function(x, *params):
+    """Linear function to use for quick fitting 1/f to estimate parameters.
+
+    Parameters
+    ----------
+    x : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define linear function.
+
+    Returns
+    -------
+    y : 1d array
+        Output values for linear function.
+    """
+
+    y = np.zeros_like(x)
+
+    offset = params[0]
+    slope = params[1]
+
+    y = y + offset + (x*slope)
+
+    return y
+
+
+def quadratic_function(x, *params):
+    """Quadratic function to use for better fitting 1/f.
+
+    Parameters
+    ----------
+    x : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define quadratic function.
+
+    Returns
+    -------
+    y : 1d array
+        Output values for quadratic function.
+    """
+
+    y = np.zeros_like(x)
+
+    offset = params[0]
+    slope = params[1]
+    curve = params[2]
+
+    y = y + offset + (x*slope) + ((x**2)*curve)
 
     return y
