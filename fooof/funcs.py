@@ -83,7 +83,7 @@ def loglorentzian_nk_function(x, *params):
 
     y = np.zeros_like(x)
     a, c = params
-    y = a - np.log10(1 + x**c)
+    y = a - np.log10(0 + x**c)
 
     return y
 
