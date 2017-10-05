@@ -63,7 +63,7 @@ class FOOOF(object):
     _sl_amp_thresh : float
         Noise threshold for slope fitting.
     _sl_guess: list of [float, float, float]
-    	Guess parameters for fitting slope.
+        Guess parameters for fitting slope.
     _bw_std_edge : float
         Banwidth threshold for edge rejection of oscillations, units of standard deviation.
     _std_limits : list of [float, float]
@@ -311,6 +311,41 @@ class FOOOF(object):
         return self.background_params_, self.oscillation_params_, self.r2_, self.error_
 
 
+    def check_settings(self, description=True):
+        """Prints out current settings for FOOOF.
+
+        Parameters
+        ----------
+        description : bool, optional (default: True)
+            Whether to print out a description with current settings.
+
+        Notes
+        -----
+        - This only prints out user defined settings, accessible at initialization.
+        - There are also internal settings, documented and defined in __init__
+        """
+
+        if description:
+            print('FOOOF SETTINGS:')
+            print('Fit Knee: ', self.fit_knee)
+            print('\t Whether to fit a knee parameter in background fitting.')
+            print('Bandwidth Limits (Hz): ', self.bandwidth_limits)
+            print('\t The possible range of bandwidths for extracted oscillations.')
+            print('Max number of oscillations (int): ', self.max_n_oscs)
+            print('\t The maximum number of oscillations FOOOF will seek to extract.')
+            print('Minimum amplitude (units of power): ', self.min_amp)
+            print('\t Minimum amplitude, above background, for an oscillation to be extracted.')
+            print('Amplitude threshold (units of std deviation): ', self.amp_std_thresh)
+            print('\t Threshold at which to stop searching for oscillations.')
+        else:
+            print('FOOOF SETTINGS:')
+            print('\tKnee: \t', self.fit_knee)
+            print('\tBW Limits \t: ', self.bandwidth_limits)
+            print('\tMax # Oscs \t: ', self.max_n_oscs)
+            print('\tMin Amp \t: ', self.min_amp)
+            print('\tAmp Thresh \t: ', self.amp_std_thresh)
+
+
     def _quick_background_fit(self, freqs, psd):
         """Fit the 1/f slope of PSD using a lorentzian fit.
 
@@ -331,8 +366,8 @@ class FOOOF(object):
 
         # Background fit using Lorentzian fit, guess params set at init
         guess = np.array(([psd[0]] if not self._sl_guess[0] else [self._sl_guess[0]]) +
-        				  ([0] if self.fit_knee else []) +
-        				  [self._sl_guess[2]])
+                          ([0] if self.fit_knee else []) +
+                          [self._sl_guess[2]])
         popt, _ = curve_fit(lorentzian_function, freqs, psd, p0=guess)
 
         # Calculate the actual background fit
