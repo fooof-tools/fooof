@@ -62,8 +62,8 @@ class FOOOF(object):
         Values of the oscillation fit (flattened).
     _sl_amp_thresh : float
         Noise threshold for slope fitting.
-    _sl_param_bounds :
-        Parameter bounds for background fitting, as [offset, slope, curve].
+    _sl_guess: list of [float, float, float]
+    	Guess parameters for fitting slope.
     _bw_std_edge : float
         Banwidth threshold for edge rejection of oscillations, units of standard deviation.
     _std_limits : list of [float, float]
@@ -93,12 +93,13 @@ class FOOOF(object):
         self.min_amp = min_amp
         self.amp_std_thresh = amp_std_thresh
 
-        # SETTINGS
+        ## SETTINGS
         # Noise threshold, as a percentage of the lowest amplitude values in the total data to fit.
         #  Defines the minimum amplitude, above residuals, to be considered an oscillation.
         self._sl_amp_thresh = 0.025
-        # Default 1/f parameter bounds. This limits slope to be less than 2 and no steeper than -8.
-        self._sl_param_bounds = (-np.inf, -8, 0), (np.inf, 2, np.inf)
+        # Guess parameters for slope fitting, [offset, knee, slope]
+        #  If offset guess is None, the first value of the PSD is used as offset guess
+        self._sl_guess = [None, 0, 2]
         # Threshold for how far (units of gaus std dev) an oscillation has to be from edge to keep.
         self._bw_std_edge = 1.0
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
@@ -328,10 +329,10 @@ class FOOOF(object):
             Parameter estimates.
         """
 
-        # Background fit using Lorentzian fit, guess knee and slope parameters
-        guess = np.array([psd[0]] + ([0] if self.fit_knee else []) + [2])
-        #guess = np.array([psd[0], 0., 2.])
-
+        # Background fit using Lorentzian fit, guess params set at init
+        guess = np.array(([psd[0]] if not self._sl_guess[0] else [self._sl_guess[0]]) +
+        				  ([0] if self.fit_knee else []) +
+        				  [self._sl_guess[2]])
         popt, _ = curve_fit(lorentzian_function, freqs, psd, p0=guess)
 
         # Calculate the actual background fit
@@ -418,10 +419,9 @@ class FOOOF(object):
             if not guess_amp > self.min_amp:
                 break
 
-            # Data-driven guess BW.
+            # Data-driven first guess BW
+            #  Find half-amp index on each side of the center frequency.
             half_amp = 0.5 * max_amp
-
-            # Find half-amp index on each side of the center frequency.
             le_ind = next((x for x in range(max_ind - 1, 0, -1) if flat_iter[x] <= half_amp), None)
             ri_ind = next((x for x in range(max_ind + 1, len(flat_iter), 1)
                            if flat_iter[x] <= half_amp), None)
@@ -433,9 +433,9 @@ class FOOOF(object):
             shortest_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
 
             # Estimate std properly from FWHM.
-            # Calculate FWHM, converting to Hz.
+            #  Calculate FWHM, converting to Hz.
             fwhm = shortest_side * 2 * self.freq_res
-            # Calulate guess gaussian std from FWHM.
+            #  Calulate guess gaussian std from FWHM.
             guess_std = fwhm / (2 * np.sqrt(2 * np.log(2)))
 
             # Check that guess std isn't outside preset std limits; restrict if so.
