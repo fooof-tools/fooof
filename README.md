@@ -52,4 +52,4 @@ foof_model = FOOOF(bandwidth_limits=(1.0,15.0), max_n_oscs=6, min_amp=0.1, amp_s
 
 ## Output
 Example output for MEG data:
-![alt text](tutorial/fooof_output.jpg "Example FOOOF output for MEG data")
+![alt text](img/fooof_output.png "Example FOOOF output for MEG data")
