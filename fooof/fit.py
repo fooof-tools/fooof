@@ -1,5 +1,6 @@
 """FOOOF - Fitting Oscillations & One-Over F"""
 
+import warnings
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
@@ -367,11 +368,17 @@ class FOOOF(object):
             Parameter estimates.
         """
 
-        # Background fit using Lorentzian fit, guess params set at init
+        # Set guess params for lorentzian background fit, guess params set at init
         guess = np.array(([psd[0]] if not self._sl_guess[0] else [self._sl_guess[0]]) +
                           ([self._sl_guess[1]] if self.fit_knee else []) +
                           [self._sl_guess[2]])
-        popt, _ = curve_fit(lorentzian_function, freqs, psd, p0=guess, maxfev=5000)
+
+        # Ignore warnings that are raised in curve_fit
+        #  A runtime warning can occur during exploring of parameters, but this doesn't effect outcome
+        #    It happens if / when b < 0 & |b| > x**2, as it leads to log of a negative number
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            popt, _ = curve_fit(lorentzian_function, freqs, psd, p0=guess, maxfev=5000)
 
         # Calculate the actual background fit
         psd_fit_ = lorentzian_function(freqs, *popt)
