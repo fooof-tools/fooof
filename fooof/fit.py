@@ -29,6 +29,8 @@ class FOOOF(object):
         Amplitude threshold for detecting oscillatory peaks, units of standard deviation.
     fit_knee : boolean, optional (default: False)
         Whether to fit a knee parameter in the lorentzian background fit.
+    verbose : boolean, optional (default: True)
+        Whether to be verbose in printing out warnings.
 
     Attributes
     ----------
@@ -79,7 +81,7 @@ class FOOOF(object):
     """
 
     def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf,
-                 min_amp=0.0, amp_std_thresh=2.0, fit_knee=False):
+                 min_amp=0.0, amp_std_thresh=2.0, fit_knee=False, verbose=True):
         """Initialize FOOOF object with run parameters."""
 
         # Set lorentzian function version for whether fitting knee or not
@@ -92,6 +94,7 @@ class FOOOF(object):
         self.max_n_oscs = max_n_oscs
         self.min_amp = min_amp
         self.amp_std_thresh = amp_std_thresh
+        self.verbose = verbose
 
         ## SETTINGS
         # Noise threshold, as a percentage of the lowest amplitude values in the total data to fit.
@@ -185,7 +188,7 @@ class FOOOF(object):
         self.freqs, self.psd = trim_psd(freqs, psd, self.freq_range)
 
         # Check bandwidth limits against frequency resolution; warn if too close.
-        if round(self.freq_res, 1) >= self.bandwidth_limits[0]:
+        if round(self.freq_res, 1) >= self.bandwidth_limits[0] and self.verbose:
             print('\nFOOOF WARNING: Lower-bound Bandwidth limit is ~= the frequency resolution. \n',
                   '  This may lead to overfitting of small bandwidth oscillations.\n')
 
