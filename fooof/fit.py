@@ -298,7 +298,7 @@ class FOOOF(object):
 
         # R^2 and error.
         print('\n', 'R^2 of model fit is {:5.4f}'.format(self.r2_).center(cen_val))
-        print('\n', 'Root mean squared error_ of model fit is {:5.4f}'.format(
+        print('\n', 'Root mean squared error of model fit is {:5.4f}'.format(
             self.error_).center(cen_val))
 
         # Footer.
@@ -328,15 +328,15 @@ class FOOOF(object):
         if description:
             print('FOOOF SETTINGS:')
             print('Fit Knee: ', self.fit_knee)
-            print('\t Whether to fit a knee parameter in background fitting.')
+            print('\tWhether to fit a knee parameter in background fitting.')
             print('Bandwidth Limits (Hz): ', self.bandwidth_limits)
-            print('\t The possible range of bandwidths for extracted oscillations.')
+            print('\tThe possible range of bandwidths for extracted oscillations.')
             print('Max number of oscillations (int): ', self.max_n_oscs)
-            print('\t The maximum number of oscillations FOOOF will seek to extract.')
+            print('\tThe maximum number of oscillations FOOOF will seek to extract.')
             print('Minimum amplitude (units of power): ', self.min_amp)
-            print('\t Minimum amplitude, above background, for an oscillation to be extracted.')
+            print('\tMinimum amplitude, above background, for an oscillation to be extracted.')
             print('Amplitude threshold (units of std deviation): ', self.amp_std_thresh)
-            print('\t Threshold at which to stop searching for oscillations.')
+            print('\tThreshold at which to stop searching for oscillations.')
         else:
             print('FOOOF SETTINGS:')
             print('\tKnee: \t', self.fit_knee)
@@ -366,9 +366,9 @@ class FOOOF(object):
 
         # Background fit using Lorentzian fit, guess params set at init
         guess = np.array(([psd[0]] if not self._sl_guess[0] else [self._sl_guess[0]]) +
-                          ([0] if self.fit_knee else []) +
+                          ([self._sl_guess[1]] if self.fit_knee else []) +
                           [self._sl_guess[2]])
-        popt, _ = curve_fit(lorentzian_function, freqs, psd, p0=guess)
+        popt, _ = curve_fit(lorentzian_function, freqs, psd, p0=guess, maxfev=5000)
 
         # Calculate the actual background fit
         psd_fit_ = lorentzian_function(freqs, *popt)
@@ -410,7 +410,7 @@ class FOOOF(object):
         psd_ignore = psd[amp_mask]
 
         # Second background fit - using results of first fit as guess parameters.
-        background_params_, _ = curve_fit(lorentzian_function, f_ignore, psd_ignore, p0=popt)
+        background_params_, _ = curve_fit(lorentzian_function, f_ignore, psd_ignore, p0=popt, maxfev=5000)
 
         # Calculate the actual background fit.
         background_fit = lorentzian_function(freqs, *background_params_)
