@@ -64,9 +64,11 @@ class FOOOF(object):
     _oscillation_fit : 1d array
         Values of the oscillation fit (flattened).
     _sl_amp_thresh : float
-        Noise threshold for slope fitting.
-    _sl_guess: list of [float, float, float]
-        Guess parameters for fitting slope.
+        Noise threshold for finding oscillations above the background.
+    _sl_guess : list of [float, float, float]
+        Guess parameters for fitting background.
+    _sl_bounds : tuple of tuple of float
+        Upper and lower bounds on fitting background.
     _bw_std_edge : float
         Banwidth threshold for edge rejection of oscillations, units of standard deviation.
     _std_limits : list of [float, float]
@@ -104,6 +106,11 @@ class FOOOF(object):
         # Guess parameters for slope fitting, [offset, knee, slope]
         #  If offset guess is None, the first value of the PSD is used as offset guess
         self._sl_guess = [None, 0, 2]
+        # Bounds for slope fitting, as: ((offset_low_bound, knee_low_bound, sl_low_bound),
+        #                                (offset_high_bound, knee_high_bound, sl_high_bound))
+        #  By default, slope fitting is unbound, but can be restricted here, if desired
+        #    Even if fitting without knee, leave bounds for knee (they are dropped later)
+        self._sl_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
         # Threshold for how far (units of gaus std dev) an oscillation has to be from edge to keep.
         self._bw_std_edge = 1.0
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
@@ -113,6 +120,8 @@ class FOOOF(object):
         # Bandwidth limits are given in 2-sided oscillation bandwidth.
         #  Convert to gaussian std parameter limits.
         self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
+        # Bounds for slope fitting. Drops bounds on knee parameter if not set to fit knee
+        self._sl_bounds = self._sl_bounds if self.fit_knee else tuple(b[0::2] for b in self._sl_bounds)
 
         # Initialize all data attributes (to None)
         self._reset_dat()
@@ -374,11 +383,13 @@ class FOOOF(object):
                           [self._sl_guess[2]])
 
         # Ignore warnings that are raised in curve_fit
-        #  A runtime warning can occur during exploring of parameters, but this doesn't effect outcome
-        #    It happens if / when b < 0 & |b| > x**2, as it leads to log of a negative number
+        #  A runtime warning can occur while exploring parameters in curve fitting
+        #    This doesn't effect outcome - it won't settle on an answer that does this
+        #  It happens if / when b < 0 & |b| > x**2, as it leads to log of a negative number
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            popt, _ = curve_fit(lorentzian_function, freqs, psd, p0=guess, maxfev=5000)
+            popt, _ = curve_fit(lorentzian_function, freqs, psd, p0=guess,
+                                maxfev=5000, bounds=self._sl_bounds)
 
         # Calculate the actual background fit
         psd_fit_ = lorentzian_function(freqs, *popt)
@@ -420,7 +431,11 @@ class FOOOF(object):
         psd_ignore = psd[amp_mask]
 
         # Second background fit - using results of first fit as guess parameters.
-        background_params_, _ = curve_fit(lorentzian_function, f_ignore, psd_ignore, p0=popt, maxfev=5000)
+        #  See note in _quick_background_fit about warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            background_params_, _ = curve_fit(lorentzian_function, f_ignore, psd_ignore,
+                                              p0=popt, maxfev=5000, bounds=self._sl_bounds)
 
         # Calculate the actual background fit.
         background_fit = lorentzian_function(freqs, *background_params_)
@@ -528,10 +543,14 @@ class FOOOF(object):
 
         # Set the bounds for center frequency, positive amp value, and gauss limits.
         #  Note that osc_guess is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std.
+        #  This set of list comprehensions is a way to end up with bounds in the form:
+        #   ((cf_low_bound_osc1, amp_low_bound_osc1, bw_low_bound_osc1, *repeated for n oscs*),
+        #    (cf_high_bound_osc1, amp_high_bound_osc1, bw_high_bound_osc1, *repeated for n oscs*))
         lo_bound = [[osc[0] - 2 * self._cf_bound * osc[2], 0, self._std_limits[0]]
                     for osc in guess]
         hi_bound = [[osc[0] + 2 * self._cf_bound * osc[2], np.inf, self._std_limits[1]]
                     for osc in guess]
+        # The double for-loop here unpacks the embedded lists
         gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]),
                              tuple([item for sublist in hi_bound for item in sublist]))
 
