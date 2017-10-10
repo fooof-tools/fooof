@@ -236,7 +236,9 @@ class FOOOF(object):
         #   This is as opposed to gaussian std param, which is 1-sided.
         self.oscillation_params_ = np.empty([0, 3])
         for i, osc in enumerate(self._gaussian_params):
+        	# Gets the index of the PSD at the frequency closest to the CF of the osc
             ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i] - osc[0]))
+            # Collect oscillation parameter data
             self.oscillation_params_ = np.vstack((self.oscillation_params_,
                                                  [osc[0],
                                                   self.psd_fit_[ind] - self._background_fit[ind],
@@ -379,8 +381,8 @@ class FOOOF(object):
 
         # Set guess params for lorentzian background fit, guess params set at init
         guess = np.array(([psd[0]] if not self._sl_guess[0] else [self._sl_guess[0]]) +
-                          ([self._sl_guess[1]] if self.fit_knee else []) +
-                          [self._sl_guess[2]])
+                         ([self._sl_guess[1]] if self.fit_knee else []) +
+                         [self._sl_guess[2]])
 
         # Ignore warnings that are raised in curve_fit
         #  A runtime warning can occur while exploring parameters in curve fitting
@@ -489,7 +491,7 @@ class FOOOF(object):
             # Keep bandwidth estimation from the shortest side.
             #  We grab shortest to avoid estimating very large std from overalapping oscillations.
             # Grab the shortest side, ignoring a side if the half max was not found.
-            #  Note: this will fail if both le & ri ind's end up as None (probably shouldn't happen).
+            #  Note: will fail if both le & ri ind's end up as None (probably shouldn't happen).
             shortest_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
 
             # Estimate std properly from FWHM.
