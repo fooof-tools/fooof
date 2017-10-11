@@ -66,11 +66,11 @@ class FOOOF(object):
         Values of the background fit.
     _oscillation_fit : 1d array
         Values of the oscillation fit (flattened).
-    _sl_amp_thresh : float
+    _bg_amp_thresh : float
         Noise threshold for finding oscillations above the background.
-    _sl_guess : list of [float, float, float]
+    _bg_guess : list of [float, float, float]
         Guess parameters for fitting background.
-    _sl_bounds : tuple of tuple of float
+    _bg_bounds : tuple of tuple of float
         Upper and lower bounds on fitting background.
     _bw_std_edge : float
         Banwidth threshold for edge rejection of oscillations, units of standard deviation.
@@ -105,15 +105,15 @@ class FOOOF(object):
         ## SETTINGS
         # Noise threshold, as a percentage of the lowest amplitude values in the total data to fit.
         #  Defines the minimum amplitude, above residuals, to be considered an oscillation.
-        self._sl_amp_thresh = 0.025
-        # Guess parameters for slope fitting, [offset, knee, slope]
+        self._bg_amp_thresh = 0.025
+        # Guess parameters for background fitting, [offset, knee, slope]
         #  If offset guess is None, the first value of the PSD is used as offset guess
-        self._sl_guess = [None, 0, 2]
-        # Bounds for slope fitting, as: ((offset_low_bound, knee_low_bound, sl_low_bound),
+        self._bg_guess = [None, 0, 2]
+        # Bounds for background fitting, as: ((offset_low_bound, knee_low_bound, sl_low_bound),
         #                                (offset_high_bound, knee_high_bound, sl_high_bound))
-        #  By default, slope fitting is unbound, but can be restricted here, if desired
+        #  By default, background fitting is unbound, but can be restricted here, if desired
         #    Even if fitting without knee, leave bounds for knee (they are dropped later)
-        self._sl_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
+        self._bg_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
         # Threshold for how far (units of gaus std dev) an oscillation has to be from edge to keep.
         self._bw_std_edge = 1.0
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
@@ -123,8 +123,8 @@ class FOOOF(object):
         # Bandwidth limits are given in 2-sided oscillation bandwidth.
         #  Convert to gaussian std parameter limits.
         self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
-        # Bounds for slope fitting. Drops bounds on knee parameter if not set to fit knee
-        self._sl_bounds = self._sl_bounds if self.fit_knee else tuple(b[0::2] for b in self._sl_bounds)
+        # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
+        self._bg_bounds = self._bg_bounds if self.fit_knee else tuple(b[0::2] for b in self._bg_bounds)
 
         # Initialize all data attributes (to None)
         self._reset_dat()
@@ -223,8 +223,8 @@ class FOOOF(object):
         # Create oscillation-removed (but not flattened) PSD.
         self._psd_osc_rm = self.psd - self._oscillation_fit
 
-        # Run final slope fit on oscillation-removed PSD.
-        #   Note: This overwrites previous slope fit.
+        # Run final background fit on oscillation-removed PSD.
+        #   Note: This overwrites previous background fit.
         self._background_fit, self.background_params_ = self._quick_background_fit(
             self.freqs, self._psd_osc_rm)
 
@@ -301,7 +301,7 @@ class FOOOF(object):
             self.freq_range[0], self.freq_range[1]).center(cen_val))
         print('Frequency Resolution is {:1.2f} Hz \n'.format(self.freq_res).center(cen_val))
 
-        # Background (slope) parameters.
+        # Background parameters.
         print(('Background Parameters (offset, ' + ('knee, ' if self.fit_knee else '') + \
                'slope): ').center(cen_val))
         print(', '.join(['{:2.4f}'] * len(self.background_params_)).format(
@@ -365,7 +365,7 @@ class FOOOF(object):
 
 
     def _quick_background_fit(self, freqs, psd):
-        """Fit the 1/f slope of PSD using a lorentzian fit.
+        """Fit the 1/f background of PSD using a lorentzian fit.
 
         Parameters
         ----------
@@ -377,15 +377,15 @@ class FOOOF(object):
         Returns
         -------
         psd_fit_ : 1d array
-            Values of fit slope.
+            Values of fit background.
         popt : list of [offset, knee, slope]
             Parameter estimates.
         """
 
         # Set guess params for lorentzian background fit, guess params set at init
-        guess = np.array(([psd[0]] if not self._sl_guess[0] else [self._sl_guess[0]]) +
-                         ([self._sl_guess[1]] if self.fit_knee else []) +
-                         [self._sl_guess[2]])
+        guess = np.array(([psd[0]] if not self._bg_guess[0] else [self._bg_guess[0]]) +
+                         ([self._bg_guess[1]] if self.fit_knee else []) +
+                         [self._bg_guess[2]])
 
         # Ignore warnings that are raised in curve_fit
         #  A runtime warning can occur while exploring parameters in curve fitting
@@ -394,7 +394,7 @@ class FOOOF(object):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             popt, _ = curve_fit(lorentzian_function, freqs, psd, p0=guess,
-                                maxfev=5000, bounds=self._sl_bounds)
+                                maxfev=5000, bounds=self._bg_bounds)
 
         # Calculate the actual background fit
         psd_fit_ = lorentzian_function(freqs, *popt)
@@ -403,7 +403,7 @@ class FOOOF(object):
 
 
     def _clean_background_fit(self, freqs, psd):
-        """Fit the 1/f slope of PSD using an lorentzian fit, ignoring outliers.
+        """Fit the 1/f background of PSD using an lorentzian fit, ignoring outliers.
 
         Parameters
         ----------
@@ -417,7 +417,7 @@ class FOOOF(object):
         background_fit : 1d array
             background PSD.
         background_params_ : 1d array
-            Parameters of slope fit (length of 3: offset, knee, slope).
+            Parameters of background fit (length of 3: offset, knee, slope).
         """
 
         # Do a quick, initial background fit.
@@ -430,7 +430,7 @@ class FOOOF(object):
         psd_flat[psd_flat < 0] = 0
 
         # Amplitude threshold - in terms of # of points.
-        perc_thresh = np.percentile(psd_flat, self._sl_amp_thresh)
+        perc_thresh = np.percentile(psd_flat, self._bg_amp_thresh)
         amp_mask = psd_flat <= perc_thresh
         f_ignore = freqs[amp_mask]
         psd_ignore = psd[amp_mask]
@@ -440,7 +440,7 @@ class FOOOF(object):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             background_params_, _ = curve_fit(lorentzian_function, f_ignore, psd_ignore,
-                                              p0=popt, maxfev=5000, bounds=self._sl_bounds)
+                                              p0=popt, maxfev=5000, bounds=self._bg_bounds)
 
         # Calculate the actual background fit.
         background_fit = lorentzian_function(freqs, *background_params_)
