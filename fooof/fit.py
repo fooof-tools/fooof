@@ -1,6 +1,7 @@
 """FOOOF - Fitting Oscillations & One-Over F"""
 
 import warnings
+from collections import namedtuple
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
@@ -10,6 +11,8 @@ from fooof.funcs import gaussian_function, loglorentzian_function, loglorentzian
 
 ###################################################################################################
 ###################################################################################################
+
+FOOOFResult = namedtuple('FOOOFResult', ['background_params', 'oscillations_params', 'r2', 'error'])
 
 class FOOOF(object):
     """Model the physiological power spectrum as oscillatory peaks and 1/f background.
@@ -323,7 +326,7 @@ class FOOOF(object):
     def get_params(self):
         """Return model fit parameters and error."""
 
-        return self.background_params_, self.oscillation_params_, self.r2_, self.error_
+        return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_, self.error_)
 
 
     def check_settings(self, description=True):
