@@ -254,7 +254,7 @@ class FOOOF(object):
         self._rmse_error()
 
 
-    def plot(self, plt_log=False, save_fig=False, save_path='', save_name='FOOOF_fit.png'):
+    def plot(self, plt_log=False, save_fig=False, save_path='', save_name='FOOOF_fit.png', ax=None):
         """Plot the original PSD, and full model fit.
 
         Parameters
@@ -267,29 +267,34 @@ class FOOOF(object):
             xx
         save_name : str, optional
             xx
+        ax : ?
+        	xx
         """
 
+        # Throw an error if FOOOF model hasn't been fit yet
         if not np.all(self.freqs):
             raise ValueError('Model fit has not been run - can not proceed.')
 
-        plt.figure(figsize=(12, 10))
+        # Set frequency vector, logged if requested
+        plt_freqs = np.log10(self.freqs) if plt_log else self.freqs
 
-        if plt_log:
-            plt_freqs = np.log10(self.freqs)
-        else:
-            plt_freqs = self.freqs
+        # Create plot axes, if not provided
+        if not ax:
+        	fig, ax = plt.subplots(figsize=(12, 10))
 
-        plt.plot(plt_freqs, self.psd, 'k', linewidth=1.0)
-        plt.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0, alpha=0.5)
-        plt.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0, alpha=0.5)
+        # Create the plot
+       	ax.plot(plt_freqs, self.psd, 'k', linewidth=1.0)
+        ax.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0, alpha=0.5)
+        ax.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0, alpha=0.5)
 
-        plt.xlabel('Frequency', fontsize=20)
-        plt.ylabel('Power', fontsize=20)
-        plt.tick_params(axis='both', which='major', labelsize=16)
+        ax.set_xlabel('Frequency', fontsize=20)
+        ax.set_ylabel('Power', fontsize=20)
+        ax.tick_params(axis='both', which='major', labelsize=16)
 
-        plt.legend(['Original PSD', 'Full model fit', 'Background fit'], prop={'size': 16})
-        plt.grid()
+        ax.legend(['Original PSD', 'Full model fit', 'Background fit'], prop={'size': 16})
+        ax.grid()
 
+        # Save out figure, if requested
         if save_fig:
             plt.savefig(os.path.join(save_path, save_name))
 
