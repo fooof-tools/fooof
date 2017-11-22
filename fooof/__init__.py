@@ -1,1 +1,1 @@
-from .fit import FOOOF
+from .fit import FOOOF, FOOOFGroup

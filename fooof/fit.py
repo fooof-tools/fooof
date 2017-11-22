@@ -82,11 +82,13 @@ class FOOOF(object):
 
     Notes
     -----
-    - Input PSD should be smooth - overly noisy power spectra may lead to bad fits.
+    Input PSD should be smooth - overly noisy power spectra may lead to bad fits.
         - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
         procedure, or a median filter smoothing on the FFT output before running FOOOF.
         - Where possible and appropriate, use longer time segments for PSD calculation to
         get smoother PSDs; this will give better FOOOF fits.
+    If using the FOOOFGroup Object, all parameters and attributes are the same.
+        - The main addition is 'group_results', which stores FOOOF results across the group of PSDs.
     """
 
     def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf,
@@ -177,9 +179,9 @@ class FOOOF(object):
         Parameters
         ----------
         freqs : 1d array
-            Frequency values for the PSD, linear.
+            Frequency values for the PSD, in linear space.
         psd : 1d array
-            Power spectral density values, linear.
+            Power spectral density values, in linear space.
         freq_range : list of [float, float]
             Desired frequency range to run FOOOF on.
         """
@@ -768,3 +770,43 @@ class FOOOF(object):
         ])
 
         return output
+
+
+class FOOOFGroup(FOOOF):
+
+    def __init__(self, *args, **kwargs):
+
+        FOOOF.__init__(self, *args, **kwargs)
+
+        self.group_results = []
+
+    def fit_group(self, freqs, psds, freq_range):
+        """Run FOOOF across a group of PSDs.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the PSDs, in linear space.
+        psds : 2d array
+            Matrix of power spectral density values, in linear space.
+        freq_range : list of [float, float]
+            Desired frequency range to run FOOOF on.
+        """
+
+        # Check PSD & freq dimensions
+        # TODO
+
+        # Fit FOOOF across matrix of PSDs
+        for psd in psds:
+            self.fit(freqs, psd, freq_range)
+            self.group_results.append(self.get_results())
+
+        # Clear out last run PSD (so it doesn't have data from an arbitrary PSD)
+        self._reset_dat()
+
+    def get_group_results(self):
+        """Initialize """
+
+        return self.group_results
+
+FOOOFGroup.__doc__ = FOOOF.__doc__
