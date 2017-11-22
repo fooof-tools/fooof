@@ -72,7 +72,7 @@ def loglorentzian_nk_function(x, *params):
         Input x-axis values.
     *params : float
         Parameters (a, c) that define Lorentzian function:
-        y = 10^a * (1/(1 + x^c))
+        y = 10^a * (1/(0 + x^c))
         a: constant; c: slope past knee
 
     Returns
