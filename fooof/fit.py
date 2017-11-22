@@ -241,7 +241,7 @@ class FOOOF(object):
         #   This is as opposed to gaussian std param, which is 1-sided.
         self.oscillation_params_ = np.empty([0, 3])
         for i, osc in enumerate(self._gaussian_params):
-        	# Gets the index of the PSD at the frequency closest to the CF of the osc
+            # Gets the index of the PSD at the frequency closest to the CF of the osc
             ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i] - osc[0]))
             # Collect oscillation parameter data
             self.oscillation_params_ = np.vstack((self.oscillation_params_,
@@ -268,7 +268,7 @@ class FOOOF(object):
         save_name : str, optional
             xx
         ax : ?
-        	xx
+            xx
         """
 
         # Throw an error if FOOOF model hasn't been fit yet
@@ -280,10 +280,10 @@ class FOOOF(object):
 
         # Create plot axes, if not provided
         if not ax:
-        	fig, ax = plt.subplots(figsize=(12, 10))
+            fig, ax = plt.subplots(figsize=(12, 10))
 
         # Create the plot
-       	ax.plot(plt_freqs, self.psd, 'k', linewidth=1.0)
+        ax.plot(plt_freqs, self.psd, 'k', linewidth=1.0)
         ax.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0, alpha=0.5)
         ax.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0, alpha=0.5)
 
@@ -297,6 +297,12 @@ class FOOOF(object):
         # Save out figure, if requested
         if save_fig:
             plt.savefig(os.path.join(save_path, save_name))
+
+
+    def get_params(self):
+        """Return model fit parameters and error."""
+
+        return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_, self.error_)
 
 
     def print_params(self):
@@ -351,13 +357,7 @@ class FOOOF(object):
         print(output)
 
 
-    def get_params(self):
-        """Return model fit parameters and error."""
-
-        return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_, self.error_)
-
-
-    def check_settings(self, description=True):
+    def check_settings(self, description=False):
         """Prints out current settings for FOOOF.
 
         Parameters
@@ -371,29 +371,45 @@ class FOOOF(object):
         - There are also internal settings, documented and defined in __init__
         """
 
+        # Center value for spacing
+        cen_val = 100
+
         # Parameter descriptions to print out
-        desc = {'fit_knee'   : '\n\tWhether to fit a knee parameter in background fitting.',
-                'bw_lims'    : '\n\tThe possible range of bandwidths for extracted oscillations, in Hz.',
-                'num_oscs'   : '\n\tThe maximum number of oscillations that can be extracted.',
-                'min_amp'    : '\n\tMinimum absolute amplitude, above background, for an oscillation to be extracted.',
-                'amp_thresh' : '\n\tThreshold, in units of standard deviation, at which to stop searching for oscillations.'}
+        desc = {'fit_knee'  : 'Whether to fit a knee parameter in background fitting.',
+                'bw_lims'    : 'The possible range of bandwidths for extracted oscillations, in Hz.',
+                'num_oscs'   : 'The maximum number of oscillations that can be extracted.',
+                'min_amp'    : 'Minimum absolute amplitude, above background, for an oscillation to be extracted.',
+                'amp_thresh' : 'Threshold, in units of standard deviation, at which to stop searching for oscillations.'}
 
         # Clear description for printing if not requested
         if not description:
             desc = {k : '' for k, v in desc.items()}
 
-        # Set up output string for printing
-        output = 'FOOOF SETTINGS:\n    ' + '\n    '.join([
-            'Fit Knee \t\t\t:  {fit_knee} {desc_knee}',
-            'Bandwidth Limits \t\t:  {bw_lims} {desc_bw_lims}',
-            'Max Number of Oscillations \t:  {max_oscs} {desc_max_oscs}',
-            'Minimum Amplitude \t\t:  {min_amp} {desc_min_amp}',
-            'Amplitude Threshold \t:  {amp_thresh} {desc_amp_thresh}'
-            ]).format(fit_knee=self.fit_knee, desc_knee=desc['fit_knee'],
-                      bw_lims=self.bandwidth_limits, desc_bw_lims=desc['bw_lims'],
-                      max_oscs=self.max_n_oscs, desc_max_oscs=desc['num_oscs'],
-                      min_amp=self.min_amp, desc_min_amp=desc['min_amp'],
-                      amp_thresh=self.amp_std_thresh, desc_amp_thresh=desc['amp_thresh'])
+        # Create output string
+        output = '\n'.join([
+
+            # Header
+            '=' * cen_val,
+            '',
+            'FOOOF - SETTINGS'.center(cen_val),
+            '',
+
+            # Settings - include descriptions if requested
+            *[el for el in ['Fit Knee : {}'.format(self.fit_knee).center(cen_val),
+            '{}'.format(desc['fit_knee']).center(cen_val),
+            'Bandwidth Limits : {}'.format(self.bandwidth_limits).center(cen_val),
+            '{}'.format(desc['bw_lims']).center(cen_val),
+            'Max Number of Oscillations : {}'.format(self.max_n_oscs).center(cen_val),
+            '{}'.format(desc['num_oscs']).center(cen_val),
+            'Minimum Amplitude : {}'.format(self.min_amp).center(cen_val),
+            '{}'.format(desc['min_amp']).center(cen_val),
+            'Amplitude Threshold: {}'.format(self.amp_std_thresh).center(cen_val),
+            '{}'.format(desc['amp_thresh']).center(cen_val)] if not el == ' '*cen_val],
+
+            # Footer
+            '',
+            '=' * cen_val
+        ])
 
         print(output)
 
