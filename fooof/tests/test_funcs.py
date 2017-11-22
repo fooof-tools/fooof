@@ -1,12 +1,12 @@
 """Tests for funcs from fooof."""
 
 import numpy as np
-from scipy.stats.mstats import normaltest
+from scipy.stats import normaltest
 
-from fooof.funcs import gaussian_function, linear_function, quadratic_function
+from fooof.funcs import gaussian_function, loglorentzian_function, loglorentzian_nk_function
 
-##
-##
+###################################################################################################
+###################################################################################################
 
 def test_gaussian_function():
 
@@ -19,16 +19,16 @@ def test_gaussian_function():
 
 	assert p < 0.001
 
-def test_linear_function():
+def test_loglorentzian_function():
 
 	xs = np.arange(1, 100)
-	ys = linear_function(xs, 1, 1)
+	ys = loglorentzian_function(xs, 2, 10, 100)
 
-	assert np.all(ys)
+	assert True
 
-def test_quadratic_function():
+def test_loglorentizian_nk_function():
 
 	xs = np.arange(1, 100)
-	ys = quadratic_function(xs, 1, 2, 3)
+	ys = loglorentzian_function(xs, 2, 100)
 
-	assert np.all(ys)
+	assert True
