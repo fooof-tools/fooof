@@ -272,7 +272,7 @@ class FOOOF(object):
         if not np.all(self.freqs):
             raise ValueError('Model fit has not been run - can not proceed.')
 
-        plt.figure(figsize=(14, 10))
+        plt.figure(figsize=(12, 10))
 
         if plt_log:
             plt_freqs = np.log10(self.freqs)
@@ -303,35 +303,46 @@ class FOOOF(object):
         # Set centering value.
         cen_val = 100
 
-        # Header
-        print('=' * cen_val, '\n')
-        print(' FOOOF - PSD MODEL'.center(cen_val), '\n')
+        # Create output string
+        output = '\n'.join([
 
-        # Frequency range and resolution.
-        print('The input PSD was modeled in the frequency range {}-{} Hz'.format(
-            self.freq_range[0], self.freq_range[1]).center(cen_val))
-        print('Frequency Resolution is {:1.2f} Hz \n'.format(self.freq_res).center(cen_val))
+            # Header
+            '=' * cen_val,
+            '',
+            ' FOOOF - PSD MODEL'.center(cen_val),
+            '',
 
-        # Background parameters.
-        print(('Background Parameters (offset, ' + ('knee, ' if self.fit_knee else '') + \
-               'slope): ').center(cen_val))
-        print(', '.join(['{:2.4f}'] * len(self.background_params_)).format(
-            *self.background_params_).center(cen_val))
+            # Frequency range and resolution
+            'The input PSD was modelled in the frequency range {}-{} Hz'.format(
+                self.freq_range[0], self.freq_range[1]).center(cen_val),
+            'Frequency Resolution is {:1.2f} Hz \n'.format(self.freq_res).center(cen_val),
 
-        # Oscillation parameters.
-        print('\n', '{} oscillations were found:'.format(
-            len(self.oscillation_params_)).center(cen_val))
-        for op in self.oscillation_params_:
-            print('CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(
-                op[0], op[1], op[2]).center(cen_val))
+            # Background parameters
+            ('Background Parameters (offset, ' + ('knee, ' if self.fit_knee else '') + \
+               'slope): ').center(cen_val),
+            ', '.join(['{:2.4f}'] * len(self.background_params_)).format(
+                *self.background_params_).center(cen_val),
+            '',
 
-        # R^2 and error.
-        print('\n', 'R^2 of model fit is {:5.4f}'.format(self.r2_).center(cen_val))
-        print('\n', 'Root mean squared error of model fit is {:5.4f}'.format(
-            self.error_).center(cen_val))
+            # Oscillation parameters
+            '{} oscillations were found:'.format(
+                len(self.oscillation_params_)).center(cen_val),
+            *['CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]).center(cen_val) \
+              for op in self.oscillation_params_],
+            '',
 
-        # Footer.
-        print('\n', '=' * cen_val)
+            # R^2 and error
+            'R^2 of model fit is {:5.4f}'.format(self.r2_).center(cen_val),
+            'Root mean squared error of model fit is {:5.4f}'.format(
+                self.error_).center(cen_val),
+            '',
+
+            # Footer
+            '=' * cen_val
+        ])
+
+        # Print out string
+        print(output)
 
 
     def get_params(self):
