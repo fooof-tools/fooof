@@ -354,25 +354,31 @@ class FOOOF(object):
         - There are also internal settings, documented and defined in __init__
         """
 
-        if description:
-            print('FOOOF SETTINGS:')
-            print('Fit Knee: ', self.fit_knee)
-            print('\tWhether to fit a knee parameter in background fitting.')
-            print('Bandwidth Limits (Hz): ', self.bandwidth_limits)
-            print('\tThe possible range of bandwidths for extracted oscillations.')
-            print('Max number of oscillations (int): ', self.max_n_oscs)
-            print('\tThe maximum number of oscillations FOOOF will seek to extract.')
-            print('Minimum amplitude (units of power): ', self.min_amp)
-            print('\tMinimum amplitude, above background, for an oscillation to be extracted.')
-            print('Amplitude threshold (units of std deviation): ', self.amp_std_thresh)
-            print('\tThreshold at which to stop searching for oscillations.')
-        else:
-            print('FOOOF SETTINGS:')
-            print('\tFit Knee \t: ', self.fit_knee)
-            print('\tBW Limits \t: ', self.bandwidth_limits)
-            print('\tMax # Oscs \t: ', self.max_n_oscs)
-            print('\tMin Amp \t: ', self.min_amp)
-            print('\tAmp Thresh \t: ', self.amp_std_thresh)
+        # Parameter descriptions to print out
+        desc = {'fit_knee'   : '\n\tWhether to fit a knee parameter in background fitting.',
+                'bw_lims'    : '\n\tThe possible range of bandwidths for extracted oscillations, in Hz.',
+                'num_oscs'   : '\n\tThe maximum number of oscillations that can be extracted.',
+                'min_amp'    : '\n\tMinimum absolute amplitude, above background, for an oscillation to be extracted.',
+                'amp_thresh' : '\n\tThreshold, in units of standard deviation, at which to stop searching for oscillations.'}
+
+        # Clear description for printing if not requested
+        if not description:
+            desc = {k : '' for k, v in desc.items()}
+
+        # Set up output string for printing
+        output = 'FOOOF SETTINGS:\n    ' + '\n    '.join([
+            'Fit Knee \t\t\t:  {fit_knee} {desc_knee}',
+            'Bandwidth Limits \t\t:  {bw_lims} {desc_bw_lims}',
+            'Max Number of Oscillations \t:  {max_oscs} {desc_max_oscs}',
+            'Minimum Amplitude \t\t:  {min_amp} {desc_min_amp}',
+            'Amplitude Threshold \t:  {amp_thresh} {desc_amp_thresh}'
+            ]).format(fit_knee=self.fit_knee, desc_knee=desc['fit_knee'],
+                      bw_lims=self.bandwidth_limits, desc_bw_lims=desc['bw_lims'],
+                      max_oscs=self.max_n_oscs, desc_max_oscs=desc['num_oscs'],
+                      min_amp=self.min_amp, desc_min_amp=desc['min_amp'],
+                      amp_thresh=self.amp_std_thresh, desc_amp_thresh=desc['amp_thresh'])
+
+        print(output)
 
 
     def _quick_background_fit(self, freqs, psd):
