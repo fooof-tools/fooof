@@ -313,9 +313,10 @@ class FOOOF(object):
             '',
 
             # Frequency range and resolution
-            'The input PSD was modelled in the frequency range {}-{} Hz'.format(
+            'The input PSD was modelled in the frequency range: {} - {} Hz'.format(
                 self.freq_range[0], self.freq_range[1]).center(cen_val),
-            'Frequency Resolution is {:1.2f} Hz \n'.format(self.freq_res).center(cen_val),
+            'Frequency Resolution is {:1.2f} Hz'.format(self.freq_res).center(cen_val),
+            '',
 
             # Background parameters
             ('Background Parameters (offset, ' + ('knee, ' if self.fit_knee else '') + \
