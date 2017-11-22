@@ -6,6 +6,7 @@ from collections import namedtuple
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import gridspec
 from scipy.optimize import curve_fit
 
 from fooof.utils import group_three, trim_psd
@@ -326,6 +327,43 @@ class FOOOF(object):
         """
 
         print(self._gen_settings_str(description))
+
+
+    def create_report(self):
+        """Generate and save out a report of the current FOOOF fit."""
+
+        # Set the font description for saving out text with matplotlib
+        font = {'family': 'monospace',
+                'weight': 'normal',
+                'size': 16}
+
+        # Set up outline figure, using gridspec
+        fig = plt.figure(figsize=(16, 20))
+        gs = gridspec.GridSpec(3, 1, height_ratios=[0.8, 1.0, 0.7])
+
+        # First - text results
+        ax0 = plt.subplot(gs[0])
+        results_str = self._gen_results_str()
+        ax0.text(0.5, 0.2, results_str, font, ha='center');
+        ax0.set_frame_on(False)
+        ax0.set_xticks([])
+        ax0.set_yticks([])
+
+        # Second - data plot
+        ax1 = plt.subplot(gs[1])
+        self.plot(ax=ax1)
+
+        # Third - FOOOF settings
+        ax2 = plt.subplot(gs[2])
+        settings_str = self._gen_settings_str(False)
+        ax2.text(0.5, 0.2, settings_str, font, ha='center')
+        ax2.set_frame_on(False)
+        ax2.set_xticks([])
+        ax2.set_yticks([])
+
+        # Save out the report
+        plt.savefig('whole_fig.pdf')
+        plt.close()
 
 
     def _quick_background_fit(self, freqs, psd):
