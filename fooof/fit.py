@@ -264,12 +264,12 @@ class FOOOF(object):
             Whether or not to plot the frequency axis in log space. default: False
         save_fig : boolean, optional
             Whether to save out a copy of the plot. default : False
-        save_path :
-            xx
+        save_path : str, optional
+            Path to directory in which to save the plot.
         save_name : str, optional
-            xx
-        ax : ?
-            xx
+            Name to give the saved out file.
+        ax : matplotlib.Axes, optional
+            Figure axes upon which to plot.
         """
 
         # Throw an error if FOOOF model hasn't been fit yet
@@ -329,8 +329,16 @@ class FOOOF(object):
         print(self._gen_settings_str(description))
 
 
-    def create_report(self):
-        """Generate and save out a report of the current FOOOF fit."""
+    def create_report(self, save_path='', save_name='FOOOF_Report.pdf'):
+        """Generate and save out a report of the current FOOOF fit.
+
+        Parameters
+        ----------
+        save_path : str, optional
+            Path to directory in which to save the plot.
+        save_name : str, optional
+            Name to give the saved out file.
+        """
 
         # Set the font description for saving out text with matplotlib
         font = {'family': 'monospace',
@@ -362,7 +370,7 @@ class FOOOF(object):
         ax2.set_yticks([])
 
         # Save out the report
-        plt.savefig('whole_fig.pdf')
+        plt.savefig(os.path.join(save_path, save_name))
         plt.close()
 
 
