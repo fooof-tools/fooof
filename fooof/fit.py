@@ -167,7 +167,7 @@ class FOOOF(object):
 
         self.fit(freqs, psd, freq_range)
         self.plot(plt_log)
-        self.print_params()
+        self.print_results()
 
 
     def fit(self, freqs, psd, freq_range):
@@ -299,66 +299,20 @@ class FOOOF(object):
             plt.savefig(os.path.join(save_path, save_name))
 
 
-    def get_params(self):
+    def get_results(self):
         """Return model fit parameters and error."""
 
         return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_, self.error_)
 
 
-    def print_params(self):
-        """Print out the PSD model fit parameters."""
+    def print_results(self):
+        """Print out the PSD model fit results."""
 
-        if not np.all(self.freqs):
-            raise ValueError('Model fit has not been run - can not proceed.')
-
-        # Set centering value.
-        cen_val = 100
-
-        # Create output string
-        output = '\n'.join([
-
-            # Header
-            '=' * cen_val,
-            '',
-            ' FOOOF - PSD MODEL'.center(cen_val),
-            '',
-
-            # Frequency range and resolution
-            'The input PSD was modelled in the frequency range: {} - {} Hz'.format(
-                self.freq_range[0], self.freq_range[1]).center(cen_val),
-            'Frequency Resolution is {:1.2f} Hz'.format(self.freq_res).center(cen_val),
-            '',
-
-            # Background parameters
-            ('Background Parameters (offset, ' + ('knee, ' if self.fit_knee else '') + \
-               'slope): ').center(cen_val),
-            ', '.join(['{:2.4f}'] * len(self.background_params_)).format(
-                *self.background_params_).center(cen_val),
-            '',
-
-            # Oscillation parameters
-            '{} oscillations were found:'.format(
-                len(self.oscillation_params_)).center(cen_val),
-            *['CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]).center(cen_val) \
-              for op in self.oscillation_params_],
-            '',
-
-            # R^2 and error
-            'R^2 of model fit is {:5.4f}'.format(self.r2_).center(cen_val),
-            'Root mean squared error of model fit is {:5.4f}'.format(
-                self.error_).center(cen_val),
-            '',
-
-            # Footer
-            '=' * cen_val
-        ])
-
-        # Print out string
-        print(output)
+        print(self._gen_results_str())
 
 
-    def check_settings(self, description=False):
-        """Prints out current settings for FOOOF.
+    def print_settings(self, description=False):
+        """Print out the current FOOOF settings.
 
         Parameters
         ----------
@@ -371,47 +325,7 @@ class FOOOF(object):
         - There are also internal settings, documented and defined in __init__
         """
 
-        # Center value for spacing
-        cen_val = 100
-
-        # Parameter descriptions to print out
-        desc = {'fit_knee'  : 'Whether to fit a knee parameter in background fitting.',
-                'bw_lims'    : 'The possible range of bandwidths for extracted oscillations, in Hz.',
-                'num_oscs'   : 'The maximum number of oscillations that can be extracted.',
-                'min_amp'    : 'Minimum absolute amplitude, above background, for an oscillation to be extracted.',
-                'amp_thresh' : 'Threshold, in units of standard deviation, at which to stop searching for oscillations.'}
-
-        # Clear description for printing if not requested
-        if not description:
-            desc = {k : '' for k, v in desc.items()}
-
-        # Create output string
-        output = '\n'.join([
-
-            # Header
-            '=' * cen_val,
-            '',
-            'FOOOF - SETTINGS'.center(cen_val),
-            '',
-
-            # Settings - include descriptions if requested
-            *[el for el in ['Fit Knee : {}'.format(self.fit_knee).center(cen_val),
-            '{}'.format(desc['fit_knee']).center(cen_val),
-            'Bandwidth Limits : {}'.format(self.bandwidth_limits).center(cen_val),
-            '{}'.format(desc['bw_lims']).center(cen_val),
-            'Max Number of Oscillations : {}'.format(self.max_n_oscs).center(cen_val),
-            '{}'.format(desc['num_oscs']).center(cen_val),
-            'Minimum Amplitude : {}'.format(self.min_amp).center(cen_val),
-            '{}'.format(desc['min_amp']).center(cen_val),
-            'Amplitude Threshold: {}'.format(self.amp_std_thresh).center(cen_val),
-            '{}'.format(desc['amp_thresh']).center(cen_val)] if not el == ' '*cen_val],
-
-            # Footer
-            '',
-            '=' * cen_val
-        ])
-
-        print(output)
+        print(self._gen_settings_str(description))
 
 
     def _quick_background_fit(self, freqs, psd):
@@ -705,3 +619,106 @@ class FOOOF(object):
         """Calculate root mean squared error of the full model fit."""
 
         self.error_ = np.sqrt((self.psd - self.psd_fit_) ** 2).mean()
+
+
+    def _gen_settings_str(self, description=False):
+        """Generate a string representation of current FOOOF settings.
+
+        Parameters
+        ----------
+        description : bool, optional (default: True)
+            Whether to print out a description with current settings.
+        """
+
+        # Center value for spacing
+        cen_val = 100
+
+        # Parameter descriptions to print out
+        desc = {'fit_knee'  : 'Whether to fit a knee parameter in background fitting.',
+                'bw_lims'    : 'The possible range of bandwidths for extracted oscillations, in Hz.',
+                'num_oscs'   : 'The maximum number of oscillations that can be extracted.',
+                'min_amp'    : 'Minimum absolute amplitude, above background, for an oscillation to be extracted.',
+                'amp_thresh' : 'Threshold, in units of standard deviation, at which to stop searching for oscillations.'}
+
+        # Clear description for printing if not requested
+        if not description:
+            desc = {k : '' for k, v in desc.items()}
+
+        # Create output string
+        output = '\n'.join([
+
+            # Header
+            '=' * cen_val,
+            '',
+            'FOOOF - SETTINGS'.center(cen_val),
+            '',
+
+            # Settings - include descriptions if requested
+            *[el for el in ['Fit Knee : {}'.format(self.fit_knee).center(cen_val),
+            '{}'.format(desc['fit_knee']).center(cen_val),
+            'Bandwidth Limits : {}'.format(self.bandwidth_limits).center(cen_val),
+            '{}'.format(desc['bw_lims']).center(cen_val),
+            'Max Number of Oscillations : {}'.format(self.max_n_oscs).center(cen_val),
+            '{}'.format(desc['num_oscs']).center(cen_val),
+            'Minimum Amplitude : {}'.format(self.min_amp).center(cen_val),
+            '{}'.format(desc['min_amp']).center(cen_val),
+            'Amplitude Threshold: {}'.format(self.amp_std_thresh).center(cen_val),
+            '{}'.format(desc['amp_thresh']).center(cen_val)] if not el == ' '*cen_val],
+
+            # Footer
+            '',
+            '=' * cen_val
+        ])
+
+        return output
+
+
+    def _gen_results_str(self):
+        """Generate a string representation of model fit results."""
+
+        if not np.all(self.freqs):
+            raise ValueError('Model fit has not been run - can not proceed.')
+
+        # Set centering value.
+        cen_val = 100
+
+        # Create output string
+        output = '\n'.join([
+
+            # Header
+            '=' * cen_val,
+            '',
+            ' FOOOF - PSD MODEL'.center(cen_val),
+            '',
+
+            # Frequency range and resolution
+            'The input PSD was modelled in the frequency range: {} - {} Hz'.format(
+                self.freq_range[0], self.freq_range[1]).center(cen_val),
+            'Frequency Resolution is {:1.2f} Hz'.format(self.freq_res).center(cen_val),
+            '',
+
+            # Background parameters
+            ('Background Parameters (offset, ' + ('knee, ' if self.fit_knee else '') + \
+               'slope): ').center(cen_val),
+            ', '.join(['{:2.4f}'] * len(self.background_params_)).format(
+                *self.background_params_).center(cen_val),
+            '',
+
+            # Oscillation parameters
+            '{} oscillations were found:'.format(
+                len(self.oscillation_params_)).center(cen_val),
+            *['CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]).center(cen_val) \
+              for op in self.oscillation_params_],
+            '',
+
+            # R^2 and error
+            'R^2 of model fit is {:5.4f}'.format(self.r2_).center(cen_val),
+            'Root mean squared error of model fit is {:5.4f}'.format(
+                self.error_).center(cen_val),
+            '',
+
+            # Footer
+            '=' * cen_val
+        ])
+
+        return output
