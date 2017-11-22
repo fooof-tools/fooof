@@ -1,7 +1,9 @@
 """FOOOF - Fitting Oscillations & One-Over F"""
 
+import os
 import warnings
 from collections import namedtuple
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
@@ -252,13 +254,19 @@ class FOOOF(object):
         self._rmse_error()
 
 
-    def plot(self, plt_log=False):
+    def plot(self, plt_log=False, save_fig=False, save_path='', save_name='FOOOF_fit.png'):
         """Plot the original PSD, and full model fit.
 
         Parameters
         ----------
-        plt_log : boolean
-            Whether or not to plot the frequency axis in log space.
+        plt_log : boolean, optional
+            Whether or not to plot the frequency axis in log space. default: False
+        save_fig : boolean, optional
+            Whether to save out a copy of the plot. default : False
+        save_path :
+            xx
+        save_name : str, optional
+            xx
         """
 
         if not np.all(self.freqs):
@@ -281,6 +289,9 @@ class FOOOF(object):
 
         plt.legend(['Original PSD', 'Full model fit', 'Background fit'], prop={'size': 16})
         plt.grid()
+
+        if save_fig:
+            plt.savefig(os.path.join(save_path, save_name))
 
 
     def print_params(self):
@@ -357,7 +368,7 @@ class FOOOF(object):
             print('\tThreshold at which to stop searching for oscillations.')
         else:
             print('FOOOF SETTINGS:')
-            print('\tKnee: \t', self.fit_knee)
+            print('\tFit Knee \t: ', self.fit_knee)
             print('\tBW Limits \t: ', self.bandwidth_limits)
             print('\tMax # Oscs \t: ', self.max_n_oscs)
             print('\tMin Amp \t: ', self.min_amp)
