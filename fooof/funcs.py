@@ -1,4 +1,10 @@
-"""Function defintions for FOOOF."""
+"""Function defintions for FOOOF.
+
+NOTES
+-----
+- FOOOF currently (only) uses the exponential and gaussian functions.
+- Linear & Quadratic functions are from previous version, left in for easy swapping back if desired.
+"""
 
 import numpy as np
 
@@ -34,8 +40,8 @@ def gaussian_function(x, *params):
     return y
 
 
-def loglorentzian_function(x, *params):
-    """Log-Lorentzian function to use for fitting 1/f.
+def expo_function(x, *params):
+    """Exponential function to use for fitting 1/f, with a 'knee'.
 
     NOTE: this function requires linear frequency (not log).
 
@@ -61,8 +67,8 @@ def loglorentzian_function(x, *params):
     return y
 
 
-def loglorentzian_nk_function(x, *params):
-    """Log-Lorentzian function to use for fitting 1/f, with no knee.
+def expo_nk_function(x, *params):
+    """Exponential function to use for fitting 1/f, with no 'knee'.
 
     NOTE: this function requires linear frequency (not log).
 

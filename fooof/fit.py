@@ -10,7 +10,7 @@ from matplotlib import gridspec
 from scipy.optimize import curve_fit
 
 from fooof.utils import group_three, trim_psd
-from fooof.funcs import gaussian_function, loglorentzian_function, loglorentzian_nk_function
+from fooof.funcs import gaussian_function, exp_function, exp_nk_function
 
 ###################################################################################################
 ###################################################################################################
@@ -97,8 +97,8 @@ class FOOOF(object):
 
         # Set lorentzian function version for whether fitting knee or not
         self.fit_knee = fit_knee
-        global lorentzian_function
-        lorentzian_function = loglorentzian_function if self.fit_knee else loglorentzian_nk_function
+        global exp_function
+        exp_function = expo_function if self.fit_knee else expo_nk_function
 
         # Set input parameters
         self.bandwidth_limits = bandwidth_limits
@@ -405,11 +405,11 @@ class FOOOF(object):
         #  It happens if / when b < 0 & |b| > x**2, as it leads to log of a negative number
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            popt, _ = curve_fit(lorentzian_function, freqs, psd, p0=guess,
+            popt, _ = curve_fit(exp_function, freqs, psd, p0=guess,
                                 maxfev=5000, bounds=self._bg_bounds)
 
         # Calculate the actual background fit
-        psd_fit_ = lorentzian_function(freqs, *popt)
+        psd_fit_ = exp_function(freqs, *popt)
 
         return psd_fit_, popt
 
@@ -451,11 +451,11 @@ class FOOOF(object):
         #  See note in _quick_background_fit about warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            background_params_, _ = curve_fit(lorentzian_function, f_ignore, psd_ignore,
+            background_params_, _ = curve_fit(exp_function, f_ignore, psd_ignore,
                                               p0=popt, maxfev=5000, bounds=self._bg_bounds)
 
         # Calculate the actual background fit.
-        background_fit = lorentzian_function(freqs, *background_params_)
+        background_fit = exp_function(freqs, *background_params_)
 
         return background_fit, background_params_
 
