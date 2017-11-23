@@ -1,4 +1,4 @@
-"""FOOOF - Fitting Oscillations & One-Over F"""
+"""FOOOF - Fitting Oscillations & One-Over F."""
 
 import os
 import warnings
@@ -10,7 +10,7 @@ from matplotlib import gridspec
 from scipy.optimize import curve_fit
 
 from fooof.utils import group_three, trim_psd
-from fooof.funcs import gaussian_function, exp_function, exp_nk_function
+from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 
 ###################################################################################################
 ###################################################################################################
@@ -95,7 +95,7 @@ class FOOOF(object):
                  min_amp=0.0, amp_std_thresh=2.0, fit_knee=False, verbose=True):
         """Initialize FOOOF object with run parameters."""
 
-        # Set lorentzian function version for whether fitting knee or not
+        # Set exponential function version for whether fitting knee or not
         self.fit_knee = fit_knee
         global exp_function
         exp_function = expo_function if self.fit_knee else expo_nk_function
