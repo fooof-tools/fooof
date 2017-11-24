@@ -155,7 +155,7 @@ class FOOOF(object):
         self._oscillation_fit = None
 
 
-    def model(self, freqs, psd, freq_range, plt_log=False):
+    def model(self, freqs, psd, freq_range=None, plt_log=False):
         """Run model fit, plot, and print results.
 
         Parameters
@@ -164,8 +164,8 @@ class FOOOF(object):
             Frequency values for the PSD.
         psd : 1d array
             Power spectral density values.
-        freq_range : list of [float, float]
-            Desired frequency range to run FOOOF on.
+        freq_range : list of [float, float], optional
+            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         """
 
         self.fit(freqs, psd, freq_range)
@@ -173,7 +173,7 @@ class FOOOF(object):
         self.print_results()
 
 
-    def fit(self, freqs, psd, freq_range):
+    def fit(self, freqs, psd, freq_range=None):
         """Fit the full PSD as 1/f and gaussian oscillations.
 
         Parameters
@@ -182,8 +182,8 @@ class FOOOF(object):
             Frequency values for the PSD, in linear space.
         psd : 1d array
             Power spectral density values, in linear space.
-        freq_range : list of [float, float]
-            Desired frequency range to run FOOOF on.
+        freq_range : list of [float, float], optional
+            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         """
 
         # Clear any potentially old data (that could interfere).
@@ -201,9 +201,13 @@ class FOOOF(object):
         # Log frequency inputs
         psd = np.log10(psd)
 
-        # Trim the PSD to requested frequency range.
-        self.freq_range = freq_range
-        self.freqs, self.psd = trim_psd(freqs, psd, self.freq_range)
+        # Check frequency range, trim the PSD range if requested
+        if not freq_range:
+            self.freq_range = [int(np.floor(freqs.min())), int(np.ceil(freqs.max()))]
+            self.freqs, self.psd = freqs, psd
+        else:
+            self.freq_range = freq_range
+            self.freqs, self.psd = trim_psd(freqs, psd, self.freq_range)
 
         # Check bandwidth limits against frequency resolution; warn if too close.
         if round(self.freq_res, 1) >= self.bandwidth_limits[0] and self.verbose:
