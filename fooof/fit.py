@@ -79,6 +79,8 @@ class FOOOF(object):
         Banwidth threshold for edge rejection of oscillations, units of standard deviation.
     _std_limits : list of [float, float]
         Bandwidth limits, converted to use for gaussian standard deviation parameter.
+    _bg_fit_func : function
+        Function used to fit the background.
 
     Notes
     -----
@@ -103,7 +105,7 @@ class FOOOF(object):
         self.amp_std_thresh = amp_std_thresh
         self.verbose = verbose
 
-        ## SETTINGS - these are updateable if required.
+        ## SETTINGS - these are updateable by the user if required.
         # Noise threshold, as a percentage of the lowest amplitude values in the total data to fit.
         #  Defines the minimum amplitude, above residuals, to be considered an oscillation.
         self._bg_amp_thresh = 0.025
@@ -126,7 +128,7 @@ class FOOOF(object):
 
 
     def _reset_settings(self):
-        """Set (or reset) internal settings, based on what is provided.
+        """Set (or reset) internal settings, based on what is provided in init.
 
         Notes
         -----
@@ -798,6 +800,7 @@ class FOOOFGroup(FOOOF):
 
         self.group_results = []
 
+
     def fit_group(self, freqs, psds, freq_range=None):
         """Run FOOOF across a group of PSDs.
 
@@ -820,9 +823,11 @@ class FOOOFGroup(FOOOF):
         # Clear out last run PSD (so it doesn't have data from an arbitrary PSD)
         self._reset_dat()
 
+
     def get_group_results(self):
         """Return the results run across a group of PSDs."""
 
         return self.group_results
+
 
 FOOOFGroup.__doc__ = FOOOF.__doc__
