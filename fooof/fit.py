@@ -97,8 +97,7 @@ class FOOOF(object):
 
         # Set exponential function version for whether fitting knee or not
         self.fit_knee = fit_knee
-        global exp_function
-        exp_function = expo_function if self.fit_knee else expo_nk_function
+        self._bg_fit_func = expo_function if self.fit_knee else expo_nk_function
 
         # Set input parameters
         self.bandwidth_limits = bandwidth_limits
@@ -415,11 +414,11 @@ class FOOOF(object):
         #  It happens if / when b < 0 & |b| > x**2, as it leads to log of a negative number
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            background_params, _ = curve_fit(exp_function, freqs, psd, p0=guess,
+            background_params, _ = curve_fit(self._bg_fit_func, freqs, psd, p0=guess,
                                              maxfev=5000, bounds=self._bg_bounds)
 
         # Calculate the actual background fit
-        background_fit = exp_function(freqs, *background_params)
+        background_fit = self._bg_fit_func(freqs, *background_params)
 
         return background_fit, background_params
 
@@ -461,11 +460,11 @@ class FOOOF(object):
         #  See note in _quick_background_fit about warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            background_params, _ = curve_fit(exp_function, f_ignore, psd_ignore,
+            background_params, _ = curve_fit(self._bg_fit_func, f_ignore, psd_ignore,
                                              p0=popt, maxfev=5000, bounds=self._bg_bounds)
 
         # Calculate the actual background fit.
-        background_fit = exp_function(freqs, *background_params)
+        background_fit = self._bg_fit_func(freqs, *background_params)
 
         return background_fit, background_params
 
