@@ -359,22 +359,22 @@ class FOOOF(object):
 
         # Set up outline figure, using gridspec
         fig = plt.figure(figsize=(16, 20))
-        gs = gridspec.GridSpec(3, 1, height_ratios=[0.8, 1.0, 0.7])
+        grid = gridspec.GridSpec(3, 1, height_ratios=[0.8, 1.0, 0.7])
 
         # First - text results
-        ax0 = plt.subplot(gs[0])
+        ax0 = plt.subplot(grid[0])
         results_str = self._gen_results_str()
-        ax0.text(0.5, 0.2, results_str, font, ha='center');
+        ax0.text(0.5, 0.2, results_str, font, ha='center')
         ax0.set_frame_on(False)
         ax0.set_xticks([])
         ax0.set_yticks([])
 
         # Second - data plot
-        ax1 = plt.subplot(gs[1])
+        ax1 = plt.subplot(grid[1])
         self.plot(ax=ax1)
 
         # Third - FOOOF settings
-        ax2 = plt.subplot(gs[2])
+        ax2 = plt.subplot(grid[2])
         settings_str = self._gen_settings_str(False)
         ax2.text(0.5, 0.2, settings_str, font, ha='center')
         ax2.set_frame_on(False)
@@ -613,8 +613,8 @@ class FOOOF(object):
 
         # Check if oscs within 1 BW (std dev) of the edge.
         keep_osc = \
-            (np.abs(np.subtract(cf_params, self.freq_range[0])) > bw_params) & \
-            (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)
+            (np.abs(np.subtract(cf_params, self.freqs.min())) > bw_params) & \
+            (np.abs(np.subtract(cf_params, self.freqs.max())) > bw_params)
 
         # Drop oscillations that fail CF edge criterion
         guess = np.array([d for (d, keep) in zip(guess, keep_osc) if keep])
@@ -650,14 +650,14 @@ class FOOOF(object):
         drop_inds = []
 
         # Loop through oscillation bounds, comparing current bound to that of next osc
-        for i, b0 in enumerate(bounds[:-1]):
-            b1 = bounds[i + 1]
+        for ind, b_0 in enumerate(bounds[:-1]):
+            b_1 = bounds[ind + 1]
 
             # Check if bound of current oscillations extends into next oscillation
-            if b0[1] > b1[0]:
+            if b_0[1] > b_1[0]:
 
                 # If so, get the index of the lowest amplitude oscillation (to drop)
-                drop_inds.append([i, i + 1][np.argmin([guess[i][1], guess[i + 1][1]])])
+                drop_inds.append([ind, ind + 1][np.argmin([guess[ind][1], guess[ind + 1][1]])])
 
         # Drop any oscillations guesses that overlap
         keep_osc = [True if j not in drop_inds else False for j in range(len(guess))]
@@ -692,8 +692,8 @@ class FOOOF(object):
         cen_val = 100
 
         # Parameter descriptions to print out
-        desc = {'fit_knee'  : 'Whether to fit a knee parameter in background fitting.',
-                'bw_lims'    : 'The possible range of bandwidths for extracted oscillations, in Hz.',
+        desc = {'fit_knee'   : 'Whether to fit a knee parameter in background fitting.',
+                'bw_lims'    : 'Possible range of bandwidths for extracted oscillations, in Hz.',
                 'num_oscs'   : 'The maximum number of oscillations that can be extracted.',
                 'min_amp'    : 'Minimum absolute amplitude, above background, for an oscillation to be extracted.',
                 'amp_thresh' : 'Threshold, in units of standard deviation, at which to stop searching for oscillations.'}
@@ -713,15 +713,15 @@ class FOOOF(object):
 
             # Settings - include descriptions if requested
             *[el for el in ['Fit Knee : {}'.format(self.fit_knee).center(cen_val),
-            '{}'.format(desc['fit_knee']).center(cen_val),
-            'Bandwidth Limits : {}'.format(self.bandwidth_limits).center(cen_val),
-            '{}'.format(desc['bw_lims']).center(cen_val),
-            'Max Number of Oscillations : {}'.format(self.max_n_oscs).center(cen_val),
-            '{}'.format(desc['num_oscs']).center(cen_val),
-            'Minimum Amplitude : {}'.format(self.min_amp).center(cen_val),
-            '{}'.format(desc['min_amp']).center(cen_val),
-            'Amplitude Threshold: {}'.format(self.amp_std_thresh).center(cen_val),
-            '{}'.format(desc['amp_thresh']).center(cen_val)] if not el == ' '*cen_val],
+                            '{}'.format(desc['fit_knee']).center(cen_val),
+                            'Bandwidth Limits : {}'.format(self.bandwidth_limits).center(cen_val),
+                            '{}'.format(desc['bw_lims']).center(cen_val),
+                            'Max Number of Oscillations : {}'.format(self.max_n_oscs).center(cen_val),
+                            '{}'.format(desc['num_oscs']).center(cen_val),
+                            'Minimum Amplitude : {}'.format(self.min_amp).center(cen_val),
+                            '{}'.format(desc['min_amp']).center(cen_val),
+                            'Amplitude Threshold: {}'.format(self.amp_std_thresh).center(cen_val),
+                            '{}'.format(desc['amp_thresh']).center(cen_val)] if el != ' '*cen_val],
 
             # Footer
             '',
@@ -798,13 +798,13 @@ class FOOOFGroup(FOOOF):
         freqs : 1d array
             Frequency values for the PSDs, in linear space.
         psds : 2d array
-            Matrix of power spectral density values, in linear space. Shape should be [n_psds, n_freqs].
+            Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         """
 
         # Fit FOOOF across matrix of PSDs.
-        #  Note that shape checking gets performed in fit. Wrong shapes/orientations will fail there.
+        #  Note: shape checking gets performed in fit - wrong shapes/orientations will fail there.
         for psd in psds:
             self.fit(freqs, psd, freq_range)
             self.group_results.append(self.get_results())
