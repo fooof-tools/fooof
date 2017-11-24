@@ -202,12 +202,18 @@ class FOOOF(object):
         psd = np.log10(psd)
 
         # Check frequency range, trim the PSD range if requested
-        if not freq_range:
-            self.freq_range = [int(np.floor(freqs.min())), int(np.ceil(freqs.max()))]
-            self.freqs, self.psd = freqs, psd
-        else:
+        if freq_range:
             self.freq_range = freq_range
             self.freqs, self.psd = trim_psd(freqs, psd, self.freq_range)
+        else:
+            self.freq_range = [int(np.floor(freqs.min())), int(np.ceil(freqs.max()))]
+            self.freqs, self.psd = freqs, psd
+
+        # Check if freqs start at 0 - move up one value if so.
+        #   Background fit gets an inf is freq of 0 is included, which leads to an error.
+        if self.freqs[0] == 0.0:
+            self.freqs, self.psd = trim_psd(freqs, psd, [self.freqs[1], self.freqs.max()])
+            self.freq_range = [int(np.floor(self.freqs.min())), int(np.ceil(self.freqs.max()))]
 
         # Check bandwidth limits against frequency resolution; warn if too close.
         if round(self.freq_res, 1) >= self.bandwidth_limits[0] and self.verbose:
