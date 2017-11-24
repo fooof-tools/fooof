@@ -312,18 +312,6 @@ class FOOOF(object):
             plt.savefig(os.path.join(save_path, save_name))
 
 
-    def get_results(self):
-        """Return model fit parameters and error."""
-
-        return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_, self.error_)
-
-
-    def print_results(self):
-        """Print out the PSD model fit results."""
-
-        print(self._gen_results_str())
-
-
     def print_settings(self, description=False):
         """Print out the current FOOOF settings.
 
@@ -339,6 +327,18 @@ class FOOOF(object):
         """
 
         print(self._gen_settings_str(description))
+
+
+    def print_results(self):
+        """Print out the PSD model fit results."""
+
+        print(self._gen_results_str())
+
+
+    def get_results(self):
+        """Return model fit parameters and error."""
+
+        return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_, self.error_)
 
 
     def create_report(self, save_path='', save_name='FOOOF_Report.pdf'):
