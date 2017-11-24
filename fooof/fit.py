@@ -790,7 +790,7 @@ class FOOOFGroup(FOOOF):
 
         self.group_results = []
 
-    def fit_group(self, freqs, psds, freq_range):
+    def fit_group(self, freqs, psds, freq_range=None):
         """Run FOOOF across a group of PSDs.
 
         Parameters
@@ -798,15 +798,13 @@ class FOOOFGroup(FOOOF):
         freqs : 1d array
             Frequency values for the PSDs, in linear space.
         psds : 2d array
-            Matrix of power spectral density values, in linear space.
-        freq_range : list of [float, float]
-            Desired frequency range to run FOOOF on.
+            Matrix of power spectral density values, in linear space. Shape should be [n_psds, n_freqs].
+        freq_range : list of [float, float], optional
+            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         """
 
-        # Check PSD & freq dimensions
-        # TODO
-
-        # Fit FOOOF across matrix of PSDs
+        # Fit FOOOF across matrix of PSDs.
+        #  Note that shape checking gets performed in fit. Wrong shapes/orientations will fail there.
         for psd in psds:
             self.fit(freqs, psd, freq_range)
             self.group_results.append(self.get_results())
@@ -815,7 +813,7 @@ class FOOOFGroup(FOOOF):
         self._reset_dat()
 
     def get_group_results(self):
-        """Initialize """
+        """Return the results run across a group of PSDs."""
 
         return self.group_results
 
