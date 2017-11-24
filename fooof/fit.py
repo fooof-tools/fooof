@@ -95,18 +95,15 @@ class FOOOF(object):
                  min_amp=0.0, amp_std_thresh=2.0, fit_knee=False, verbose=True):
         """Initialize FOOOF object with run parameters."""
 
-        # Set exponential function version for whether fitting knee or not
-        self.fit_knee = fit_knee
-        self._bg_fit_func = expo_function if self.fit_knee else expo_nk_function
-
         # Set input parameters
+        self.fit_knee = fit_knee
         self.bandwidth_limits = bandwidth_limits
         self.max_n_oscs = max_n_oscs
         self.min_amp = min_amp
         self.amp_std_thresh = amp_std_thresh
         self.verbose = verbose
 
-        ## SETTINGS
+        ## SETTINGS - these are updateable if required.
         # Noise threshold, as a percentage of the lowest amplitude values in the total data to fit.
         #  Defines the minimum amplitude, above residuals, to be considered an oscillation.
         self._bg_amp_thresh = 0.025
@@ -114,7 +111,7 @@ class FOOOF(object):
         #  If offset guess is None, the first value of the PSD is used as offset guess
         self._bg_guess = [None, 0, 2]
         # Bounds for background fitting, as: ((offset_low_bound, knee_low_bound, sl_low_bound),
-        #                                (offset_high_bound, knee_high_bound, sl_high_bound))
+        #                                     (offset_high_bound, knee_high_bound, sl_high_bound))
         #  By default, background fitting is unbound, but can be restricted here, if desired
         #    Even if fitting without knee, leave bounds for knee (they are dropped later)
         self._bg_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
@@ -123,15 +120,27 @@ class FOOOF(object):
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
         self._cf_bound = 1.5
 
-        # INTERAL PARAMETERS
+        # Initialize internal settings and data attributes (to None)
+        self._reset_settings()
+        self._reset_dat()
+
+
+    def _reset_settings(self):
+        """Set (or reset) internal settings, based on what is provided.
+
+        Notes
+        -----
+        These settings are for interal use, based on what is provided to, or set in init.
+            They should not be altered by the user.
+        """
+
+        # Set exponential function version for whether fitting knee or not
+        self._bg_fit_func = expo_function if self.fit_knee else expo_nk_function
         # Bandwidth limits are given in 2-sided oscillation bandwidth.
         #  Convert to gaussian std parameter limits.
         self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
         # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
         self._bg_bounds = self._bg_bounds if self.fit_knee else tuple(b[0::2] for b in self._bg_bounds)
-
-        # Initialize all data attributes (to None)
-        self._reset_dat()
 
 
     def _reset_dat(self):
