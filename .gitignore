@@ -16,3 +16,6 @@
 
 # Ignore temp file for linter output
 _lint.txt
+
+# Ignore reports generated during testing
+*/tests/reports/*
