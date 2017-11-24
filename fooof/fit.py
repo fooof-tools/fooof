@@ -398,10 +398,10 @@ class FOOOF(object):
 
         Returns
         -------
-        psd_fit_ : 1d array
+        background_fit : 1d array
             Values of fit background.
-        popt : list of [offset, knee, slope]
-            Parameter estimates.
+        background_params : 1d array of [offset, knee, slope]
+            Parameter estimates for background fit. Only includes knee if set to fit knee.
         """
 
         # Set guess params for lorentzian background fit, guess params set at init
@@ -415,13 +415,13 @@ class FOOOF(object):
         #  It happens if / when b < 0 & |b| > x**2, as it leads to log of a negative number
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            popt, _ = curve_fit(exp_function, freqs, psd, p0=guess,
-                                maxfev=5000, bounds=self._bg_bounds)
+            background_params, _ = curve_fit(exp_function, freqs, psd, p0=guess,
+                                             maxfev=5000, bounds=self._bg_bounds)
 
         # Calculate the actual background fit
-        psd_fit_ = exp_function(freqs, *popt)
+        background_fit = exp_function(freqs, *background_params)
 
-        return psd_fit_, popt
+        return background_fit, background_params
 
 
     def _clean_background_fit(self, freqs, psd):
@@ -438,8 +438,8 @@ class FOOOF(object):
         -------
         background_fit : 1d array
             background PSD.
-        background_params_ : 1d array
-            Parameters of background fit (length of 3: offset, knee, slope).
+        background_params : 1d array of [offset, knee, slope]
+            Parameter estimates for background fit. Only includes knee if set to fit knee.
         """
 
         # Do a quick, initial background fit.
@@ -461,13 +461,13 @@ class FOOOF(object):
         #  See note in _quick_background_fit about warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            background_params_, _ = curve_fit(exp_function, f_ignore, psd_ignore,
-                                              p0=popt, maxfev=5000, bounds=self._bg_bounds)
+            background_params, _ = curve_fit(exp_function, f_ignore, psd_ignore,
+                                             p0=popt, maxfev=5000, bounds=self._bg_bounds)
 
         # Calculate the actual background fit.
-        background_fit = exp_function(freqs, *background_params_)
+        background_fit = exp_function(freqs, *background_params)
 
-        return background_fit, background_params_
+        return background_fit, background_params
 
 
     def _fit_oscs(self, flat_iter):
