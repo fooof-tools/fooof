@@ -52,11 +52,11 @@ def test_fooof_checks():
 
 	# Check dimension error
 	with raises(ValueError):
-		fm.fit(xs[:-1], ys)
+		fm.fit(xs, np.reshape(ys, [1, len(ys)]))
 
 	# Check shape mismatch error
 	with raises(ValueError):
-		fm.fit(xs, np.reshape(ys, [1, len(ys)]))
+		fm.fit(xs[:-1], ys)
 
 	# Check trim_psd range
 	fm.fit(xs, ys, [3, 40])
@@ -65,8 +65,10 @@ def test_fooof_checks():
 	xs, ys = mk_fake_data(np.arange(0, 50, 0.5), [50, 2], [10, 0.5, 2])
 	fm.fit(xs, ys)
 
-	# Check plot and string report model error
+	# Check fit, plot and string report model error (no data / model fit)
 	fm = FOOOF()
+	with raises(ValueError):
+		fm.fit()
 	with raises(ValueError):
 		fm.print_results()
 	with raises(ValueError):

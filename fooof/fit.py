@@ -185,7 +185,7 @@ class FOOOF(object):
         self._reset_dat()
 
         # Check inputs dimensions & size
-        if freqs.ndim != freqs.ndim != 1:
+        if freqs.ndim != psd.ndim != 1:
             raise ValueError('Inputs are not 1 dimensional.')
         if freqs.shape != psd.shape:
             raise ValueError('Inputs are not consistent size.')
@@ -251,8 +251,8 @@ class FOOOF(object):
         Data is optional if data has been already been added to FOOOF object.
         """
 
-        # If provided, add data to object. Freqs skips first element in case it's empty.
-        if np.all(freqs[1:]) and np.all(psd):
+        # If provided, add data to object.
+        if np.all(isinstance(freqs, np.ndarray)) and isinstance(psd, np.ndarray):
             self.add_data(freqs, psd, freq_range)
 
         # Check that data is available
@@ -418,8 +418,8 @@ class FOOOF(object):
         plt.close()
 
 
-    def save_json(self, save_file='fooof_dat.json', save_path='', save_results=False, save_settings=False, save_dat=False):
-        """Save out data, results and/or settings.
+    def save(self, save_file='fooof_dat', save_path='', save_results=False, save_settings=False, save_dat=False):
+        """Save out data, results and/or settings. Saves out to a JSON file.
 
         Parameters
         ----------
@@ -451,7 +451,7 @@ class FOOOF(object):
 
         # Save out to json
         if isinstance(save_file, str):
-            with open(os.path.join(save_path, save_file), 'w') as outfile:
+            with open(os.path.join(save_path, save_file + '.json'), 'w') as outfile:
                 json.dump(obj_dict, outfile)
 
         elif isinstance(save_file, io.IOBase):
@@ -459,8 +459,8 @@ class FOOOF(object):
             save_file.write('\n')
 
 
-    def load_json(self, load_file='fooof_dat.json', file_path=''):
-        """Load in FOOOF json file.
+    def load(self, load_file='fooof_dat', file_path=''):
+        """Load in FOOOF file. Reads in a JSON file.
 
         Parameters
         ----------
@@ -478,7 +478,7 @@ class FOOOF(object):
 
         # Load from file
         if isinstance(load_file, str):
-            with open(os.path.join(file_path, load_file), 'r') as infile:
+            with open(os.path.join(file_path, load_file + '.json'), 'r') as infile:
                 dat = json.load(infile)
         elif isinstance(load_file, io.IOBase):
             dat = json.loads(load_file.readline())
