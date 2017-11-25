@@ -250,7 +250,7 @@ class FOOOF(object):
         self._rmse_error()
 
 
-    def plot(self, plt_log=False, save_fig=False, save_path='', save_name='FOOOF_fit.png', ax=None):
+    def plot(self, plt_log=False, save_fig=False, save_name='FOOOF_fit.png', save_path='', ax=None):
         """Plot the original PSD, and full model fit.
 
         Parameters
@@ -259,10 +259,10 @@ class FOOOF(object):
             Whether or not to plot the frequency axis in log space. default: False
         save_fig : boolean, optional
             Whether to save out a copy of the plot. default : False
-        save_path : str, optional
-            Path to directory in which to save the plot.
         save_name : str, optional
             Name to give the saved out file.
+        save_path : str, optional
+            Path to directory in which to save the plot. If not provided, saves to current directory.
         ax : matplotlib.Axes, optional
             Figure axes upon which to plot.
         """
@@ -326,15 +326,15 @@ class FOOOF(object):
         return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_, self.error_)
 
 
-    def create_report(self, save_path='', save_name='FOOOF_Report.pdf'):
+    def create_report(self, save_name='FOOOF_Report.pdf', save_path=''):
         """Generate and save out a report of the current FOOOF fit.
 
         Parameters
         ----------
-        save_path : str, optional
-            Path to directory in which to save the plot.
         save_name : str, optional
             Name to give the saved out file.
+        save_path : str, optional
+            Path to directory in which to save the plot. If not provided, saves to current directory.
         """
 
         # Set the font description for saving out text with matplotlib
