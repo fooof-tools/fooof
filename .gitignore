@@ -18,4 +18,5 @@
 _lint.txt
 
 # Ignore reports generated during testing
-*/tests/reports/*
+*/tests/test_reports/*
+*/tests/test_files/*
