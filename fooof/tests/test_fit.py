@@ -1,4 +1,4 @@
-"""Tests for the FOOOF fit objects and modules.
+"""Tests for the FOOOF fit object and methods.
 
 NOTES
 -----
@@ -8,11 +8,12 @@ The tests here are not strong tests for accuracy.
 
 from py.test import raises
 
+import os
 import numpy as np
 import pkg_resources as pkg
 
-from fooof import FOOOF, FOOOFGroup
-from fooof.tests.utils import mk_fake_data, mk_fake_group_data
+from fooof import FOOOF
+from fooof.tests.utils import mk_fake_data
 
 ##########################################################################################
 ##########################################################################################
@@ -94,7 +95,56 @@ def test_fooof_prints_plot_get_report():
 	out = fm.get_results()
 	assert out
 
-	fm.create_report(save_path=pkg.resource_filename(__name__, 'reports'))
+	fm.create_report(save_path=pkg.resource_filename(__name__, 'test_reports'))
+
+def test_fooof_save_load_str():
+	"""Check that FOOOF object saves & loads - given str input."""
+
+	xs, ys = mk_fake_data(np.arange(3, 50, 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4])
+
+	fm = FOOOF()
+	fm.fit(xs, ys)
+
+	file_name = 'test_fooof'
+	file_path = pkg.resource_filename(__name__, 'test_files')
+
+	fm.save(file_name, file_path, True, True, True)
+
+	assert os.path.exists(os.path.join(file_path, file_name + '.json'))
+
+	nfm = FOOOF()
+	nfm.load(file_name, file_path)
+
+	assert nfm
+
+def test_fooof_save_load_file_obj():
+	"""Check that FOOOF object saves & loads - given file obj input."""
+
+	xs, ys = mk_fake_data(np.arange(3, 50, 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4])
+
+	fm = FOOOF()
+	fm.fit(xs, ys)
+
+	file_name = 'test_fooof_obj'
+	file_path = pkg.resource_filename(__name__, 'test_files')
+
+	# Save, using file-object
+	with open(os.path.join(file_path, file_name + '.json'), 'w') as save_file_obj:
+		fm.save(save_file_obj, file_path, True, False, False)
+		fm.save(save_file_obj, file_path, False, True, False)
+		fm.save(save_file_obj, file_path, False, False, True)
+
+	assert os.path.exists(os.path.join(file_path, file_name + '.json'))
+
+	nfm1, nfm2, nfm3 = FOOOF(), FOOOF(), FOOOF()
+
+	# Load, using file object
+	with open(os.path.join(file_path, file_name + '.json'), 'r') as load_file_obj:
+		nfm1.load(load_file_obj, file_path)
+		nfm2.load(load_file_obj, file_path)
+		nfm3.load(load_file_obj, file_path)
+
+	assert nfm1 and nfm2 and nfm3
 
 def test_fooof_reset_dat():
 	"""Check that all relevant data is cleared in the resest method."""
@@ -109,21 +159,3 @@ def test_fooof_reset_dat():
 		and fm.oscillation_params_ is None and fm.r2_ is None and fm.error_ is None \
 		and fm._psd_flat is None and fm._psd_osc_rm is None and fm._gaussian_params is None \
 		and fm._background_fit is None and fm._oscillation_fit is None
-
-def test_fooof_group():
-	"""Check FOOOFGroup object initializes properly."""
-
-	assert FOOOFGroup()
-
-def test_fooof_group_fit():
-	"""Test FOOOFGroup fit, no knee."""
-
-	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
-
-	fg = FOOOFGroup()
-
-	fg.fit_group(xs, ys)
-
-	out = fg.get_group_results()
-
-	assert out
