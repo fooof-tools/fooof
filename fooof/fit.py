@@ -34,8 +34,8 @@ class FOOOF(object):
         Minimum amplitude threshold for an oscillation to be modeled.
     amp_std_thresh : float, optional (default: 2.0)
         Amplitude threshold for detecting oscillatory peaks, units of standard deviation.
-    fit_knee : boolean, optional (default: False)
-        Whether to fit a knee parameter in the lorentzian background fit.
+    bg_use_knee : boolean, optional (default: False)
+        Whether to fit a knee parameter when fitting the background.
     verbose : boolean, optional (default: True)
         Whether to be verbose in printing out warnings.
 
@@ -94,11 +94,11 @@ class FOOOF(object):
     """
 
     def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf,
-                 min_amp=0.0, amp_std_thresh=2.0, fit_knee=False, verbose=True):
+                 min_amp=0.0, amp_std_thresh=2.0, bg_use_knee=False, verbose=True):
         """Initialize FOOOF object with run parameters."""
 
         # Set input parameters
-        self.fit_knee = fit_knee
+        self.bg_use_knee = bg_use_knee
         self.bandwidth_limits = bandwidth_limits
         self.max_n_oscs = max_n_oscs
         self.min_amp = min_amp
@@ -137,12 +137,12 @@ class FOOOF(object):
         """
 
         # Set exponential function version for whether fitting knee or not
-        self._bg_fit_func = expo_function if self.fit_knee else expo_nk_function
+        self._bg_fit_func = expo_function if self.bg_use_knee else expo_nk_function
         # Bandwidth limits are given in 2-sided oscillation bandwidth.
         #  Convert to gaussian std parameter limits.
         self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
         # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
-        self._bg_bounds = self._bg_bounds if self.fit_knee else tuple(b[0::2] for b in self._bg_bounds)
+        self._bg_bounds = self._bg_bounds if self.bg_use_knee else tuple(b[0::2] for b in self._bg_bounds)
 
 
     def _reset_dat(self):
@@ -416,7 +416,7 @@ class FOOOF(object):
 
         # Set guess params for lorentzian background fit, guess params set at init
         guess = np.array(([psd[0]] if not self._bg_guess[0] else [self._bg_guess[0]]) +
-                         ([self._bg_guess[1]] if self.fit_knee else []) +
+                         ([self._bg_guess[1]] if self.bg_use_knee else []) +
                          [self._bg_guess[2]])
 
         # Ignore warnings that are raised in curve_fit
@@ -702,7 +702,7 @@ class FOOOF(object):
         cen_val = 100
 
         # Parameter descriptions to print out
-        desc = {'fit_knee'   : 'Whether to fit a knee parameter in background fitting.',
+        desc = {'bg_use_knee'   : 'Whether to fit a knee parameter in background fitting.',
                 'bw_lims'    : 'Possible range of bandwidths for extracted oscillations, in Hz.',
                 'num_oscs'   : 'The maximum number of oscillations that can be extracted.',
                 'min_amp'    : 'Minimum absolute amplitude, above background, for an oscillation to be extracted.',
@@ -722,8 +722,8 @@ class FOOOF(object):
             '',
 
             # Settings - include descriptions if requested
-            *[el for el in ['Fit Knee : {}'.format(self.fit_knee).center(cen_val),
-                            '{}'.format(desc['fit_knee']).center(cen_val),
+            *[el for el in ['Fit Knee : {}'.format(self.bg_use_knee).center(cen_val),
+                            '{}'.format(desc['bg_use_knee']).center(cen_val),
                             'Bandwidth Limits : {}'.format(self.bandwidth_limits).center(cen_val),
                             '{}'.format(desc['bw_lims']).center(cen_val),
                             'Max Number of Oscillations : {}'.format(self.max_n_oscs).center(cen_val),
@@ -766,7 +766,7 @@ class FOOOF(object):
             '',
 
             # Background parameters
-            ('Background Parameters (offset, ' + ('knee, ' if self.fit_knee else '') + \
+            ('Background Parameters (offset, ' + ('knee, ' if self.bg_use_knee else '') + \
                'slope): ').center(cen_val),
             ', '.join(['{:2.4f}'] * len(self.background_params_)).format(
                 *self.background_params_).center(cen_val),
