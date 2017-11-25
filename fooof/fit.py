@@ -288,15 +288,16 @@ class FOOOF(object):
             fig, ax = plt.subplots(figsize=(12, 10))
 
         # Create the plot
-        ax.plot(plt_freqs, self.psd, 'k', linewidth=1.0)
-        ax.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0, alpha=0.5)
-        ax.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0, alpha=0.5)
+        if np.all(self.psd):
+            ax.plot(plt_freqs, self.psd, 'k', linewidth=1.0, label='Original PSD')
+        ax.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0, alpha=0.5, label='Full model fit')
+        ax.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0, alpha=0.5, label='Background fit')
 
         ax.set_xlabel('Frequency', fontsize=20)
         ax.set_ylabel('Power', fontsize=20)
         ax.tick_params(axis='both', which='major', labelsize=16)
 
-        ax.legend(['Original PSD', 'Full model fit', 'Background fit'], prop={'size': 16})
+        ax.legend(prop={'size': 16})
         ax.grid()
 
         # Save out figure, if requested
@@ -388,7 +389,7 @@ class FOOOF(object):
         psd : 1d array
             Power spectral density values, in linear space.
         freq_range : list of [float, float], optional
-            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+            Frequency range to restrict PSD to. If not provided, keeps the entire range.
         """
 
         # Check inputs dimensions & size
