@@ -145,7 +145,8 @@ class FOOOF(object):
         #  Convert to gaussian std parameter limits.
         self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
         # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
-        self._bg_bounds = self._bg_bounds if self.bg_use_knee else tuple(b[0::2] for b in self._bg_bounds)
+        self._bg_bounds = self._bg_bounds if self.bg_use_knee \
+            else tuple(bound[0::2] for bound in self._bg_bounds)
 
 
     def _reset_dat(self):
@@ -309,7 +310,7 @@ class FOOOF(object):
         save_name : str, optional
             Name to give the saved out file.
         save_path : str, optional
-            Path to directory in which to save the plot. If not provided, saves to current directory.
+            Path to directory in which to save. If not provided, saves to current directory.
         ax : matplotlib.Axes, optional
             Figure axes upon which to plot.
         """
@@ -329,8 +330,10 @@ class FOOOF(object):
         if np.all(self.psd):
             ax.plot(plt_freqs, self.psd, 'k', linewidth=1.0, label='Original PSD')
         if np.all(self.psd_fit_):
-            ax.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0, alpha=0.5, label='Full model fit')
-            ax.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0, alpha=0.5, label='Background fit')
+            ax.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0,
+                    alpha=0.5, label='Full model fit')
+            ax.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0,
+                    alpha=0.5, label='Background fit')
 
         ax.set_xlabel('Frequency', fontsize=20)
         ax.set_ylabel('Power', fontsize=20)
@@ -381,7 +384,7 @@ class FOOOF(object):
         save_name : str, optional
             Name to give the saved out file.
         save_path : str, optional
-            Path to directory in which to save the plot. If not provided, saves to current directory.
+            Path to directory in which to save. If not provided, saves to current directory.
         """
 
         # Set the font description for saving out text with matplotlib
@@ -418,7 +421,8 @@ class FOOOF(object):
         plt.close()
 
 
-    def save(self, save_file='fooof_dat', save_path='', save_results=False, save_settings=False, save_dat=False):
+    def save(self, save_file='fooof_dat', save_path='',
+             save_results=False, save_settings=False, save_dat=False):
         """Save out data, results and/or settings. Saves out to a JSON file.
 
         Parameters
@@ -426,7 +430,7 @@ class FOOOF(object):
         save_file : str or FileObject, optional
             File to which to save data.
         save_path : str
-            Path to directory to which the save the file. If not provided, saves to current directory.
+            Path to directory to which the save. If not provided, saves to current directory.
         save_settings : bool, optional
             Whether to save out FOOOF settings.
         save_results : bool, optional
@@ -467,7 +471,7 @@ class FOOOF(object):
         load_file : str or FileObject, optional
             File from which to load data.
         file_path : str
-            Path to directory to which the load the file. If not provided, loads from current directory.
+            Path to directory from which to load. If not provided, loads from current directory.
         """
 
         # Get dictionary of all attributes
@@ -492,15 +496,16 @@ class FOOOF(object):
         self._reset_settings()
 
         # If settings not loaded from file, clear from object
-        #  This is so that default settings, which are potentially wrong for loaded data, aren't kept
+        #  So that default settings, which are potentially wrong for loaded data, aren't kept
         if not set(attributes['settings']).issubset(set(dat.keys())):
             for setting in attributes['all_settings']:
                 setattr(self, setting, None)
 
             # Infer and set background function, if settings not explicit, but results available
-            #  If results loaded (without settings), can tell which function was used from the params length
+            #  Given results, can tell which function was used from the length of bg_params
             if np.all(self.background_params_):
-                self._bg_fit_func = expo_function if len(self.background_params_) == 3 else expo_nk_function
+                self._bg_fit_func = expo_function if len(self.background_params_) == 3 \
+                    else expo_nk_function
 
         # Reconstruct frequency vector
         if self.freq_res:
@@ -615,7 +620,7 @@ class FOOOF(object):
         freqs : 1d array
             Frequency values for the PSD, in linear scale.
         gaus_params : 2d array
-            Parameters that define the gaussian fit(s). Each row is an oscillation, as [CF, amp, BW].
+            Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
 
         Returns
         -------
@@ -637,7 +642,7 @@ class FOOOF(object):
         Returns
         -------
         gaussian_params : 2d array
-            Parameters for gaussian fits to oscillations. Shape = [n_oscs, 3], row: [CF, AMP, STD].
+            Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
         """
 
         # Initialize matrix of guess parameters for gaussian fitting.
@@ -675,10 +680,8 @@ class FOOOF(object):
             #  Note: will fail if both le & ri ind's end up as None (probably shouldn't happen).
             shortest_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
 
-            # Estimate std properly from FWHM.
-            #  Calculate FWHM, converting to Hz.
+            # Estimate std from FWHM. Calculate FWHM, converting to Hz, get guess std from FWHM
             fwhm = shortest_side * 2 * self.freq_res
-            #  Calulate guess gaussian std from FWHM.
             guess_std = fwhm / (2 * np.sqrt(2 * np.log(2)))
 
             # Check that guess std isn't outside preset std limits; restrict if so.
@@ -784,8 +787,8 @@ class FOOOF(object):
             # Collect oscillation parameter data
             oscillation_params = np.vstack((oscillation_params,
                                             [osc[0],
-                                            self.psd_fit_[ind] - self._background_fit[ind],
-                                            osc[2] * 2]))
+                                             self.psd_fit_[ind] - self._background_fit[ind],
+                                             osc[2] * 2]))
 
         return oscillation_params
 
@@ -888,11 +891,13 @@ class FOOOF(object):
         cen_val = 100
 
         # Parameter descriptions to print out
-        desc = {'bg_use_knee'   : 'Whether to fit a knee parameter in background fitting.',
-                'bw_lims'    : 'Possible range of bandwidths for extracted oscillations, in Hz.',
-                'num_oscs'   : 'The maximum number of oscillations that can be extracted.',
-                'min_amp'    : 'Minimum absolute amplitude, above background, for an oscillation to be extracted.',
-                'amp_thresh' : 'Threshold, in units of standard deviation, at which to stop searching for oscillations.'}
+        desc = {'bg_use_knee' : 'Whether to fit a knee parameter in background fitting.',
+                'bw_lims'     : 'Possible range of bandwidths for extracted oscillations, in Hz.',
+                'num_oscs'    : 'The maximum number of oscillations that can be extracted.',
+                'min_amp'     : "Minimum absolute amplitude, above background, "
+                                "for an oscillation to be extracted.",
+                'amp_thresh'  : "Threshold, in units of standard deviation,"
+                                "at which to stop searching for oscillations."}
 
         # Clear description for printing if not requested
         if not description:
@@ -982,11 +987,13 @@ def get_attribute_names():
     """Get dictionary specifying FOOOF object names and kind of attributes."""
 
     attributes = {'results' : ['background_params_', 'oscillation_params_', 'error_', 'r2_',
-                                   '_gaussian_params', 'freq_range', 'freq_res'],
-                  'settings' : ['amp_std_thresh', 'bandwidth_limits', 'bg_use_knee', 'max_n_oscs', 'min_amp'],
+                               '_gaussian_params', 'freq_range', 'freq_res'],
+                  'settings' : ['amp_std_thresh', 'bandwidth_limits', 'bg_use_knee',
+                                'max_n_oscs', 'min_amp'],
                   'dat' : ['psd', 'freq_range', 'freq_res'],
                   'hidden_settings' : ['_bg_fit_func', '_std_limits', '_bg_bounds'],
-                  'arrays' : ['freqs', 'psd', 'background_params_', 'oscillation_params_', '_gaussian_params']}
+                  'arrays' : ['freqs', 'psd', 'background_params_', 'oscillation_params_',
+                              '_gaussian_params']}
     attributes['all_settings'] = attributes['settings'] + attributes['hidden_settings']
 
     return attributes
