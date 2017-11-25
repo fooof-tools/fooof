@@ -1,6 +1,8 @@
 """FOOOF - Fitting Oscillations & One-Over F."""
 
 import os
+import io
+import json
 import warnings
 from collections import namedtuple
 
@@ -10,6 +12,7 @@ from matplotlib import gridspec
 from scipy.optimize import curve_fit
 
 from fooof.utils import group_three, trim_psd
+from fooof.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
 from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 
 ###################################################################################################
@@ -163,6 +166,50 @@ class FOOOF(object):
         self._gaussian_params = None
         self._background_fit = None
         self._oscillation_fit = None
+
+
+    def add_data(self, freqs, psd, freq_range=None):
+        """Add data (frequencies and PSD values) to object.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the PSD, in linear space.
+        psd : 1d array
+            Power spectral density values, in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to restrict PSD to. If not provided, keeps the entire range.
+        """
+
+        # Clear any existing data from the object, that could potentially interfere
+        self._reset_dat()
+
+        # Check inputs dimensions & size
+        if freqs.ndim != freqs.ndim != 1:
+            raise ValueError('Inputs are not 1 dimensional.')
+        if freqs.shape != psd.shape:
+            raise ValueError('Inputs are not consistent size.')
+
+        # Calculate and store frequency resolution.
+        self.freq_res = freqs[1] - freqs[0]
+
+        # Log frequency inputs
+        psd = np.log10(psd)
+
+        # Check frequency range, trim the PSD range if requested
+        if freq_range:
+            self.freqs, self.psd = trim_psd(freqs, psd, freq_range)
+        else:
+            self.freqs, self.psd = freqs, psd
+
+        # Check if freqs start at 0 - move up one value if so.
+        #   Background fit gets an inf is freq of 0 is included, which leads to an error.
+        if self.freqs[0] == 0.0:
+            self.freqs, self.psd = trim_psd(freqs, psd, [self.freqs[1], self.freqs.max()])
+            print('\nFOOOF WARNING: Skipping frequency == 0, as this causes problem with fitting.')
+
+        # Set the actual frequency range used
+        self.freq_range = [self.freqs.min(), self.freqs.max()]
 
 
     def model(self, freqs=None, psd=None, freq_range=None, plt_log=False):
@@ -371,48 +418,99 @@ class FOOOF(object):
         plt.close()
 
 
-    def add_data(self, freqs, psd, freq_range=None):
-        """Add data (frequencies and PSD values) to object.
+    def save_json(self, save_file='fooof_dat.json', save_path='', save_results=False, save_settings=False, save_dat=False):
+        """Save out data, results and/or settings.
 
         Parameters
         ----------
-        freqs : 1d array
-            Frequency values for the PSD, in linear space.
-        psd : 1d array
-            Power spectral density values, in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to restrict PSD to. If not provided, keeps the entire range.
+        save_file : str or FileObject, optional
+            File to which to save data.
+        save_path : str
+            Path to directory to which the save the file. If not provided, saves to current directory.
+        save_settings : bool, optional
+            Whether to save out FOOOF settings.
+        save_results : bool, optional
+            Whether to save out FOOOF model fit results.
+        save_dat : bool, optional
+            Whether to save out input data.
         """
 
-        # Clear any existing data from the object, that could potentially interfere
+        # Get dictionary of all attributes
+        attributes = get_attribute_names()
+
+        # Convert object to dictionary & convert all arrays to lists - for JSON serializing
+        obj_dict = dict_array_to_lst(self.__dict__)
+
+        # Set which variables to keep. Use a set to drop any potential overlap
+        keep = set((attributes['results'] if save_results else []) + \
+                   (attributes['settings'] if save_settings else []) + \
+                   (attributes['dat'] if save_dat else []))
+
+        # Keep only requested vars
+        obj_dict = dict_select_keys(obj_dict, keep)
+
+        # Save out to json
+        if isinstance(save_file, str):
+            with open(os.path.join(save_path, save_file), 'w') as outfile:
+                json.dump(obj_dict, outfile)
+
+        elif isinstance(save_file, io.IOBase):
+            json.dump(obj_dict, save_file)
+            save_file.write('\n')
+
+
+    def load_json(self, load_file='fooof_dat.json', file_path=''):
+        """Load in FOOOF json file.
+
+        Parameters
+        ----------
+        load_file : str or FileObject, optional
+            File from which to load data.
+        file_path : str
+            Path to directory to which the load the file. If not provided, loads from current directory.
+        """
+
+        # Get dictionary of all attributes
+        attributes = get_attribute_names()
+
+        # Reset data in object, so old data can't interfere
         self._reset_dat()
 
-        # Check inputs dimensions & size
-        if freqs.ndim != freqs.ndim != 1:
-            raise ValueError('Inputs are not 1 dimensional.')
-        if freqs.shape != psd.shape:
-            raise ValueError('Inputs are not consistent size.')
+        # Load from file
+        if isinstance(load_file, str):
+            with open(os.path.join(file_path, load_file), 'r') as infile:
+                dat = json.load(infile)
+        elif isinstance(load_file, io.IOBase):
+            dat = json.loads(load_file.readline())
 
-        # Calculate and store frequency resolution.
-        self.freq_res = freqs[1] - freqs[0]
+        # Convert specified lists back into arrays
+        dat = dict_lst_to_array(dat, attributes['arrays'])
 
-        # Log frequency inputs
-        psd = np.log10(psd)
+        # Reconstruct FOOOF object
+        for key in dat.keys():
+            setattr(self, key, dat[key])
+        self._reset_settings()
 
-        # Check frequency range, trim the PSD range if requested
-        if freq_range:
-            self.freqs, self.psd = trim_psd(freqs, psd, freq_range)
-        else:
-            self.freqs, self.psd = freqs, psd
+        # If settings not loaded from file, clear from object
+        #  This is so that default settings, which are potentially wrong for loaded data, aren't kept
+        if not set(attributes['settings']).issubset(set(dat.keys())):
+            for setting in attributes['all_settings']:
+                setattr(self, setting, None)
 
-        # Check if freqs start at 0 - move up one value if so.
-        #   Background fit gets an inf is freq of 0 is included, which leads to an error.
-        if self.freqs[0] == 0.0:
-            self.freqs, self.psd = trim_psd(freqs, psd, [self.freqs[1], self.freqs.max()])
-            print('\nFOOOF WARNING: Skipping frequency == 0, as this causes problem with fitting.')
+            # Infer and set background function, if settings not explicit, but results available
+            #  If results loaded (without settings), can tell which function was used from the params length
+            if np.all(self.background_params_):
+                self._bg_fit_func = expo_function if len(self.background_params_) == 3 else expo_nk_function
 
-        # Set the actual frequency range used
-        self.freq_range = [self.freqs.min(), self.freqs.max()]
+        # Reconstruct frequency vector
+        if self.freq_res:
+            self.freqs = np.arange(self.freq_range[0], self.freq_range[1]+self.freq_res, self.freq_res)
+
+        # Recreate PSD model & components
+        if np.all(self.freqs) and np.all(self.background_params_):
+            self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
+            self._oscillation_fit = self._create_osc_fit(self.freqs, self._gaussian_params)
+            self.psd_fit_ = self._oscillation_fit + self._background_fit
 
 
     def _quick_background_fit(self, freqs, psd):
@@ -919,3 +1017,18 @@ class FOOOFGroup(FOOOF):
 
 
 FOOOFGroup.__doc__ = FOOOF.__doc__
+
+
+def get_attribute_names():
+    """Get dictionary specifying FOOOF object names and kind of attributes."""
+
+    # Types of attributes
+    attributes = {'results' : ['background_params_', 'oscillation_params_', 'error_', 'r2_',
+                                   '_gaussian_params', 'freq_range', 'freq_res'],
+                  'settings' : ['amp_std_thresh', 'bandwidth_limits', 'bg_use_knee', 'max_n_oscs', 'min_amp'],
+                  'dat' : ['psd', 'freq_range', 'freq_res'],
+                  'hidden_settings' : ['_bg_fit_func', '_std_limits', '_bg_bounds'],
+                  'arrays' : ['freqs', 'psd', 'background_params_', 'oscillation_params_', '_gaussian_params']}
+    attributes['all_settings'] = attributes['settings'] + attributes['hidden_settings']
+
+    return attributes
