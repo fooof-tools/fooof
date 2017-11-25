@@ -53,8 +53,8 @@ class FOOOF(object):
         The full model fit of the PSD: 1/f and oscillations across freq_range.
     background_params_ : 1d array
         Parameters that define the background fit.
-    oscillation_params_ : 1d array
-        Fitted parameter values for the oscillations.
+    oscillation_params_ : 2d array
+        Fitted parameter values for the oscillations. Each row is an oscillation, as [CF, Amp, BW].
     r2_ : float
         R-squared between the input PSD and the full model fit.
     error_ : float
@@ -64,7 +64,7 @@ class FOOOF(object):
     _psd_osc_rm : 1d array
         PSD with oscillations removed (not flattened).
     _gaussian_params : 2d array
-        Parameters that define the gaussian fit(s). Each row is an oscillation, as [CF, amp, BW].
+        Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
     _background_fit : 1d array
         Values of the background fit.
     _oscillation_fit : 1d array
@@ -230,21 +230,8 @@ class FOOOF(object):
         # Create full PSD model fit.
         self.psd_fit_ = self._oscillation_fit + self._background_fit
 
-        # Copy the gaussian params to oscillations outputs, updating as appropriate.
-        #  Amplitude is updated to the amplitude of oscillation above the background fit.
-        #   This is returned instead of the gaussian amplitude
-        #    Actual amplitude is harder to interpret, due to osc overlaps.
-        #  Bandwidth is updated to be 'both-sided'
-        #   This is as opposed to gaussian std param, which is 1-sided.
-        self.oscillation_params_ = np.empty([0, 3])
-        for i, osc in enumerate(self._gaussian_params):
-            # Gets the index of the PSD at the frequency closest to the CF of the osc
-            ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i] - osc[0]))
-            # Collect oscillation parameter data
-            self.oscillation_params_ = np.vstack((self.oscillation_params_,
-                                                 [osc[0],
-                                                  self.psd_fit_[ind] - self._background_fit[ind],
-                                                  osc[2] * 2]))
+        # Convert gaussian definitions to oscillation parameters
+        self.oscillation_params_ = self._create_osc_params(self._gaussian_params)
 
         # Calculate R^2 and error of the model fit.
         self._r_squared()
@@ -647,6 +634,46 @@ class FOOOF(object):
         gaussian_params = np.array(group_three(gaussian_params))
 
         return gaussian_params
+
+
+    def _create_osc_params(self, gaus_params):
+        """Copies over the gaussian params to oscillation outputs, updating as appropriate.
+
+        Parameters
+        ----------
+        gaus_params :  2d array
+            Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
+
+        Returns
+        -------
+        oscillation_params :  2d array
+            Fitted parameter values for the oscillations. Each row is an oscillation, as [CF, Amp, BW].
+
+        Notes
+        -----
+        Amplitude is updated to the amplitude of oscillation above the background fit.
+          - This is returned instead of the gaussian amplitude
+            - Gaussian amplitude is harder to interpret, due to osc overlaps.
+        Bandwidth is updated to be 'both-sided'
+          - This is as opposed to gaussian std param, which is 1-sided.
+        Performing this conversion requires that the model be run.
+          - In particular, freqs, psd_fit and _background_fit are required to be available.
+        """
+
+        oscillation_params = np.empty([0, 3])
+
+        for i, osc in enumerate(gaus_params):
+
+            # Gets the index of the PSD at the frequency closest to the CF of the osc
+            ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i] - osc[0]))
+
+            # Collect oscillation parameter data
+            oscillation_params = np.vstack((oscillation_params,
+                                            [osc[0],
+                                            self.psd_fit_[ind] - self._background_fit[ind],
+                                            osc[2] * 2]))
+
+        return oscillation_params
 
 
     def _drop_osc_cf(self, guess):
