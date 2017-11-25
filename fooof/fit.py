@@ -231,8 +231,8 @@ class FOOOF(object):
                   '  This may lead to overfitting of small bandwidth oscillations.\n')
 
         # Fit the background 1/f.
-        self._background_fit, self.background_params_ = self._clean_background_fit(
-            self.freqs, self.psd)
+        self.background_params_ = self._clean_background_fit(self.freqs, self.psd)
+        self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
 
         # Flatten the PSD using fit background.
         self._psd_flat = self.psd - self._background_fit
@@ -242,16 +242,15 @@ class FOOOF(object):
 
         # Calculate the oscillation fit.
         #  Note: if no oscillations are found, this creates a flat (all zero) oscillation fit.
-        self._oscillation_fit = gaussian_function(
-            self.freqs, *np.ndarray.flatten(self._gaussian_params))
+        self._oscillation_fit = self._create_osc_fit(self.freqs, self._gaussian_params)
 
         # Create oscillation-removed (but not flattened) PSD.
         self._psd_osc_rm = self.psd - self._oscillation_fit
 
         # Run final background fit on oscillation-removed PSD.
         #   Note: This overwrites previous background fit.
-        self._background_fit, self.background_params_ = self._quick_background_fit(
-            self.freqs, self._psd_osc_rm)
+        self.background_params_ = self._quick_background_fit(self.freqs, self._psd_osc_rm)
+        self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
 
         # Create full PSD model fit.
         self.psd_fit_ = self._oscillation_fit + self._background_fit
@@ -408,8 +407,6 @@ class FOOOF(object):
 
         Returns
         -------
-        background_fit : 1d array
-            Values of fit background.
         background_params : 1d array of [offset, knee, slope]
             Parameter estimates for background fit. Only includes knee if set to fit knee.
         """
@@ -428,10 +425,7 @@ class FOOOF(object):
             background_params, _ = curve_fit(self._bg_fit_func, freqs, psd, p0=guess,
                                              maxfev=5000, bounds=self._bg_bounds)
 
-        # Calculate the actual background fit
-        background_fit = self._bg_fit_func(freqs, *background_params)
-
-        return background_fit, background_params
+        return background_params
 
 
     def _clean_background_fit(self, freqs, psd):
@@ -446,14 +440,13 @@ class FOOOF(object):
 
         Returns
         -------
-        background_fit : 1d array
-            background PSD.
         background_params : 1d array of [offset, knee, slope]
             Parameter estimates for background fit. Only includes knee if set to fit knee.
         """
 
         # Do a quick, initial background fit.
-        initial_fit, popt = self._quick_background_fit(freqs, psd)
+        popt = self._quick_background_fit(freqs, psd)
+        initial_fit = self._create_bg_fit(freqs, popt)
 
         # Flatten PSD based on initial background fit.
         psd_flat = psd - initial_fit
@@ -474,10 +467,45 @@ class FOOOF(object):
             background_params, _ = curve_fit(self._bg_fit_func, f_ignore, psd_ignore,
                                              p0=popt, maxfev=5000, bounds=self._bg_bounds)
 
-        # Calculate the actual background fit.
-        background_fit = self._bg_fit_func(freqs, *background_params)
+        return background_params
 
-        return background_fit, background_params
+
+    def _create_bg_fit(self, freqs, bg_params):
+        """Generate the fit of the background component of the PSD.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the PSD, in linear scale.
+        bg_params : 1d array
+            Parameters that define the background fit.
+
+        Returns
+        -------
+        1d array
+            Values of the background fit.
+        """
+
+        return self._bg_fit_func(freqs, *bg_params)
+
+
+    def _create_osc_fit(self, freqs, gaus_params):
+        """Generate the fit of the oscillations component of the PSD.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the PSD, in linear scale.
+        gaus_params : 2d array
+            Parameters that define the gaussian fit(s). Each row is an oscillation, as [CF, amp, BW].
+
+        Returns
+        -------
+        1d array
+            Values of the oscillation fit.
+        """
+
+        return gaussian_function(freqs, *np.ndarray.flatten(gaus_params))
 
 
     def _fit_oscs(self, flat_iter):
