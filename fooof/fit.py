@@ -196,34 +196,17 @@ class FOOOF(object):
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         """
 
-        # Clear any potentially old data (that could interfere).
+        # Clear any potentially old data (that could interfere), and add incoming data.
         self._reset_dat()
-
-        # Check inputs dimensions & size
-        if freqs.ndim != freqs.ndim != 1:
-            raise ValueError('Inputs are not 1 dimensional.')
-        if freqs.shape != psd.shape:
-            raise ValueError('Inputs are not consistent size.')
-
-        # Calculate and store frequency resolution.
-        self.freq_res = freqs[1] - freqs[0]
-
-        # Log frequency inputs
-        psd = np.log10(psd)
-
-        # Check frequency range, trim the PSD range if requested
-        if freq_range:
-            self.freq_range = freq_range
-            self.freqs, self.psd = trim_psd(freqs, psd, self.freq_range)
-        else:
-            self.freq_range = [int(np.floor(freqs.min())), int(np.ceil(freqs.max()))]
-            self.freqs, self.psd = freqs, psd
+        self._add_data(freqs, psd, freq_range)
 
         # Check if freqs start at 0 - move up one value if so.
         #   Background fit gets an inf is freq of 0 is included, which leads to an error.
         if self.freqs[0] == 0.0:
             self.freqs, self.psd = trim_psd(freqs, psd, [self.freqs[1], self.freqs.max()])
-            self.freq_range = [int(np.floor(self.freqs.min())), int(np.ceil(self.freqs.max()))]
+
+        # Set the actual frequency range used
+        self.freq_range = [self.freqs.min(), self.freqs.max()]
 
         # Check bandwidth limits against frequency resolution; warn if too close.
         if round(self.freq_res, 1) >= self.bandwidth_limits[0] and self.verbose:
@@ -393,6 +376,38 @@ class FOOOF(object):
         # Save out the report
         plt.savefig(os.path.join(save_path, save_name))
         plt.close()
+
+
+    def _add_data(self, freqs, psd, freq_range=None):
+        """Add data (frequencies and PSD values) to object.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the PSD, in linear space.
+        psd : 1d array
+            Power spectral density values, in linear space.
+        freq_range : list of [float, float], optional
+            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+        """
+
+        # Check inputs dimensions & size
+        if freqs.ndim != freqs.ndim != 1:
+            raise ValueError('Inputs are not 1 dimensional.')
+        if freqs.shape != psd.shape:
+            raise ValueError('Inputs are not consistent size.')
+
+        # Calculate and store frequency resolution.
+        self.freq_res = freqs[1] - freqs[0]
+
+        # Log frequency inputs
+        psd = np.log10(psd)
+
+        # Check frequency range, trim the PSD range if requested
+        if freq_range:
+            self.freqs, self.psd = trim_psd(freqs, psd, freq_range)
+        else:
+            self.freqs, self.psd = freqs, psd
 
 
     def _quick_background_fit(self, freqs, psd):
@@ -651,8 +666,8 @@ class FOOOF(object):
 
         # Check if oscs within 1 BW (std dev) of the edge.
         keep_osc = \
-            (np.abs(np.subtract(cf_params, self.freqs.min())) > bw_params) & \
-            (np.abs(np.subtract(cf_params, self.freqs.max())) > bw_params)
+            (np.abs(np.subtract(cf_params, self.freq_range[0])) > bw_params) & \
+            (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)
 
         # Drop oscillations that fail CF edge criterion
         guess = np.array([d for (d, keep) in zip(guess, keep_osc) if keep])
@@ -789,7 +804,7 @@ class FOOOF(object):
 
             # Frequency range and resolution
             'The input PSD was modelled in the frequency range: {} - {} Hz'.format(
-                self.freq_range[0], self.freq_range[1]).center(cen_val),
+                int(np.floor(self.freq_range[0])), int(np.ceil(self.freq_range[1]))).center(cen_val),
             'Frequency Resolution is {:1.2f} Hz'.format(self.freq_res).center(cen_val),
             '',
 
