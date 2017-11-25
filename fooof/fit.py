@@ -165,17 +165,21 @@ class FOOOF(object):
         self._oscillation_fit = None
 
 
-    def model(self, freqs, psd, freq_range=None, plt_log=False):
+    def model(self, freqs=None, psd=None, freq_range=None, plt_log=False):
         """Run model fit, plot, and print results.
 
         Parameters
         ----------
-        freqs : 1d array
+        freqs : 1d array, optional
             Frequency values for the PSD.
-        psd : 1d array
+        psd : 1d array, optional
             Power spectral density values.
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+
+        Notes
+        -----
+        Data is optional if data has been already been added to FOOOF object.
         """
 
         self.fit(freqs, psd, freq_range)
@@ -183,22 +187,30 @@ class FOOOF(object):
         self.print_results()
 
 
-    def fit(self, freqs, psd, freq_range=None):
+    def fit(self, freqs=None, psd=None, freq_range=None):
         """Fit the full PSD as 1/f and gaussian oscillations.
 
         Parameters
         ----------
-        freqs : 1d array
+        freqs : 1d array, optional
             Frequency values for the PSD, in linear space.
-        psd : 1d array
+        psd : 1d array, optional
             Power spectral density values, in linear space.
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+
+        Notes
+        -----
+        Data is optional if data has been already been added to FOOOF object.
         """
 
-        # Clear any potentially old data (that could interfere), and add incoming data.
-        self._reset_dat()
-        self._add_data(freqs, psd, freq_range)
+        # If provided, add data to object. Freqs skips first element in case it's empty.
+        if np.all(freqs[1:]) and np.all(psd):
+            self.add_data(freqs, psd, freq_range)
+
+        # Check that data is available
+        if not np.all(self.freqs):
+            raise ValueError('No data available to fit - can not proceed.')
 
         # Check bandwidth limits against frequency resolution; warn if too close.
         if round(self.freq_res, 1) >= self.bandwidth_limits[0] and self.verbose:
@@ -257,7 +269,7 @@ class FOOOF(object):
 
         # Throw an error if FOOOF model hasn't been fit yet
         if not np.all(self.freqs):
-            raise ValueError('Model fit has not been run - can not proceed.')
+            raise ValueError('No data available to plot - can not proceed.')
 
         # Set frequency vector, logged if requested
         plt_freqs = np.log10(self.freqs) if plt_log else self.freqs
@@ -359,7 +371,7 @@ class FOOOF(object):
         plt.close()
 
 
-    def _add_data(self, freqs, psd, freq_range=None):
+    def add_data(self, freqs, psd, freq_range=None):
         """Add data (frequencies and PSD values) to object.
 
         Parameters
@@ -371,6 +383,9 @@ class FOOOF(object):
         freq_range : list of [float, float], optional
             Frequency range to restrict PSD to. If not provided, keeps the entire range.
         """
+
+        # Clear any existing data from the object, that could potentially interfere
+        self._reset_dat()
 
         # Check inputs dimensions & size
         if freqs.ndim != freqs.ndim != 1:
@@ -394,6 +409,7 @@ class FOOOF(object):
         #   Background fit gets an inf is freq of 0 is included, which leads to an error.
         if self.freqs[0] == 0.0:
             self.freqs, self.psd = trim_psd(freqs, psd, [self.freqs[1], self.freqs.max()])
+            print('\nFOOOF WARNING: Skipping frequency == 0, as this causes problem with fitting.')
 
         # Set the actual frequency range used
         self.freq_range = [self.freqs.min(), self.freqs.max()]
