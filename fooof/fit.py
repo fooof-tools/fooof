@@ -200,14 +200,6 @@ class FOOOF(object):
         self._reset_dat()
         self._add_data(freqs, psd, freq_range)
 
-        # Check if freqs start at 0 - move up one value if so.
-        #   Background fit gets an inf is freq of 0 is included, which leads to an error.
-        if self.freqs[0] == 0.0:
-            self.freqs, self.psd = trim_psd(freqs, psd, [self.freqs[1], self.freqs.max()])
-
-        # Set the actual frequency range used
-        self.freq_range = [self.freqs.min(), self.freqs.max()]
-
         # Check bandwidth limits against frequency resolution; warn if too close.
         if round(self.freq_res, 1) >= self.bandwidth_limits[0] and self.verbose:
             print('\nFOOOF WARNING: Lower-bound Bandwidth limit is ~= the frequency resolution. \n',
@@ -290,8 +282,9 @@ class FOOOF(object):
         # Create the plot
         if np.all(self.psd):
             ax.plot(plt_freqs, self.psd, 'k', linewidth=1.0, label='Original PSD')
-        ax.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0, alpha=0.5, label='Full model fit')
-        ax.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0, alpha=0.5, label='Background fit')
+        if np.all(self.psd_fit_):
+            ax.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0, alpha=0.5, label='Full model fit')
+            ax.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0, alpha=0.5, label='Background fit')
 
         ax.set_xlabel('Frequency', fontsize=20)
         ax.set_ylabel('Power', fontsize=20)
@@ -409,6 +402,14 @@ class FOOOF(object):
             self.freqs, self.psd = trim_psd(freqs, psd, freq_range)
         else:
             self.freqs, self.psd = freqs, psd
+
+        # Check if freqs start at 0 - move up one value if so.
+        #   Background fit gets an inf is freq of 0 is included, which leads to an error.
+        if self.freqs[0] == 0.0:
+            self.freqs, self.psd = trim_psd(freqs, psd, [self.freqs[1], self.freqs.max()])
+
+        # Set the actual frequency range used
+        self.freq_range = [self.freqs.min(), self.freqs.max()]
 
 
     def _quick_background_fit(self, freqs, psd):
