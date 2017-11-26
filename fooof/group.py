@@ -62,7 +62,7 @@ class FOOOFGroup(FOOOF):
         #  This is so that it doesn't retain data from an arbitrary PSD
         self._reset_dat(False)
 
-        # If savine, close file
+        # If saving, close file
         if save_dat:
             f_obj.close()
 
@@ -71,6 +71,17 @@ class FOOOFGroup(FOOOF):
         """Return the results run across a group of PSDs."""
 
         return self.group_results
+
+
+    def get_all_dat(self, name, ind=None):
+        """Return all data for a specified attribute across the group."""
+
+        out = np.array([getattr(dat, name) for dat in self.group_results])
+
+        if ind:
+            out = np.array([dat[ind] for dat in out])
+
+        return out
 
 
     def load_group_results(self, file_name='fooof_group_results', file_path=''):
@@ -103,6 +114,76 @@ class FOOOFGroup(FOOOF):
 
         # Reset peripheral data from last loaded result, keeping freqs info
         self._reset_dat(False)
+
+
+    def plot(self):
+        """   """
+
+        pass
+
+
+    def _gen_results_str(self):
+        """Generate a string representation of group fit results.
+
+        Notes
+        -----
+        This overloads the equivalent method in FOOOF base object, for group results.
+        - It therefore changes the behaviour (what is printed) for 'print_results'.
+        """
+
+        if not self.group_results:
+            raise ValueError('Model fit has not been run - can not proceed.')
+
+        # Set centering value
+        cen_val = 100
+
+        #
+        sls = self.get_all_dat('background_params', 1)
+        cens = self.get_all_dat('oscillations_params', 0)
+        r2s = self.get_all_dat('r2')
+        errors = self.get_all_dat('error')
+
+        # Create output string
+        output = '\n'.join([
+
+            # Header
+            '=' * cen_val,
+            '',
+            ' FOOOF - GROUP RESULTS'.center(cen_val),
+            '',
+
+            # Group information
+            'Number of PSDs in the Group: {}'.format(len(self.group_results)).center(cen_val),
+            '',
+
+            # Frequency range and resolution
+            'The input PSDs were modelled in the frequency range: {} - {} Hz'.format(
+                int(np.floor(self.freq_range[0])), int(np.ceil(self.freq_range[1]))).center(cen_val),
+            'Frequency Resolution is {:1.2f} Hz'.format(self.freq_res).center(cen_val),
+            '',
+
+            # Background parameters - knee fit status, and quick slope description
+            'PSDs were fit {} knee fitting.'.format('with' if self.bg_use_knee else 'without').center(cen_val),
+            '',
+            'Background Slope Values'.center(cen_val),
+            'Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'.format(sls.min(), sls.max(), sls.mean()).center(cen_val),
+            '',
+
+            # Oscillation Parameters
+            'In total {} oscillations were extracted from the group'.format(len(cens)).center(cen_val),
+            '',
+
+            # Fitting stats - error and r^2
+            'Fitting Performance'.center(cen_val),
+            '   R2s -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'.format(r2s.min(), r2s.max(), r2s.mean()).center(cen_val),
+            'Errors -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'.format(errors.min(), errors.max(), errors.mean()).center(cen_val),
+            '',
+
+            # Footer
+            '=' * cen_val
+        ])
+
+        return output
 
 
 FOOOFGroup.__doc__ = FOOOF.__doc__
