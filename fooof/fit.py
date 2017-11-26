@@ -373,7 +373,7 @@ class FOOOF(object):
 
 
     def print_results(self):
-        """Print out the PSD model fit results."""
+        """Print out FOOOF results."""
 
         print(self._gen_results_str())
 
@@ -946,7 +946,7 @@ class FOOOF(object):
     def _gen_results_str(self):
         """Generate a string representation of model fit results."""
 
-        if not np.all(self.freqs):
+        if not np.all(self.background_params_):
             raise ValueError('Model fit has not been run - can not proceed.')
 
         # Set centering value.
