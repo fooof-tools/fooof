@@ -1,8 +1,11 @@
 """FOOOF - Group fitting object and methods."""
 
 import os
-import numpy as np
 from json import JSONDecodeError
+
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import gridspec
 
 from fooof import FOOOF
 
@@ -103,6 +106,41 @@ class FOOOFGroup(FOOOF):
         return out
 
 
+    def plot(self, save_fig=False, save_name='FOOOF_fit.png', save_path=''):
+        """Plot some data descriptions of the group data.
+
+        Parameters
+        ----------
+        save_fig : boolean, optional
+            Whether to save out a copy of the plot. default : False
+        save_name : str, optional
+            Name to give the saved out file.
+        save_path : str, optional
+            Path to directory in which to save. If not provided, saves to current directory.
+        """
+
+        fit = plt.figure(figsize=(14, 10))
+        gs = gridspec.GridSpec(2, 2, height_ratios=[1, 1.2])
+
+        ax0 = plt.subplot(gs[0, 0])
+        self._plot_bg(ax0)
+
+        ax1 = plt.subplot(gs[0, 1])
+        self._plot_fit(ax1)
+
+        ax2 = plt.subplot(gs[1, :])
+        self._plot_oscs(ax2)
+
+        if save_fig:
+            plt.savefig(os.path.join(save_path, save_name))
+
+
+    def create_report(self):
+        """   """
+
+        pass
+
+
     def load_group_results(self, file_name='fooof_group_results', file_path=''):
         """Load data from file, reconstructing the group_results.
 
@@ -133,12 +171,6 @@ class FOOOFGroup(FOOOF):
 
         # Reset peripheral data from last loaded result, keeping freqs info
         self._reset_dat(False)
-
-
-    def plot(self):
-        """   """
-
-        pass
 
 
     def _gen_results_str(self):
@@ -203,6 +235,81 @@ class FOOOFGroup(FOOOF):
         ])
 
         return output
+
+
+    def _plot_bg(self, ax=None):
+        """Plot the background parameters, from across the group.
+
+        Parameters
+        ----------
+        ax : matplotlib.Axes, optional
+            Figure axes upon which to plot.
+        """
+
+        sls = self.get_all_dat('background_params', 1)
+
+        if not ax:
+            fig, ax = plt.subplots()
+
+        ax.scatter(np.zeros_like(sls) + np.random.normal(0, 0.025, sls.shape), sls, s=36, alpha=0.5)
+
+        ax.set_title('Slope Values', fontsize=16)
+        ax.set_ylabel('Slope Value', fontsize=12)
+
+        plt.xticks([0], ['Slope'], fontsize=12)
+
+        ax.set_xlim([-0.4, 0.4])
+
+
+    def _plot_fit(self, ax=None):
+        """Plot the goodness of fit measures - error & r^2, across the group.
+
+        Parameters
+        ----------
+        ax : matplotlib.Axes, optional
+            Figure axes upon which to plot.
+        """
+
+        errs = self.get_all_dat('error')
+        r2s = self.get_all_dat('r2')
+
+        if not ax:
+            fig, ax = plt.subplots()
+
+        ax1 = ax.twinx()
+
+        ax.scatter(np.zeros_like(errs) + np.random.normal(0, 0.025, errs.shape), errs, s=36, alpha=0.5)
+        ax.set_ylabel('Error', fontsize=12)
+
+        ax1.scatter(np.ones_like(r2s) + np.random.normal(0, 0.025, r2s.shape), r2s, s=36, alpha=0.5)
+        ax1.set_ylabel('R^2', fontsize=12)
+
+        ax.set_xlim([-0.5, 1.5])
+
+        ax.set_title('Goodness of Fit', fontsize=16)
+
+        plt.xticks([0, 1], ['Error', 'R^2'], fontsize=12)
+
+
+    def _plot_oscs(self, ax=None):
+        """Plot the oscillations parameters, from across the group.
+
+        Parameters
+        ----------
+        ax : matplotlib.Axes, optional
+            Figure axes upon which to plot.
+        """
+
+        cens = self.get_all_dat('oscillations_params', 0)
+
+        if not ax:
+            fig, ax = plt.subplots()
+
+        ax.hist(cens, 20, alpha=0.8);
+
+        ax.set_title('Oscillations - Center Frequencies', fontsize=16)
+        ax.set_xlabel('Frequency', fontsize=12)
+        ax.set_ylabel('Count', fontsize=12)
 
 
 FOOOFGroup.__doc__ = FOOOF.__doc__
