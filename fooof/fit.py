@@ -482,18 +482,18 @@ class FOOOF(object):
             Path to directory from which to load. If not provided, loads from current directory.
         """
 
-        # Get dictionary of all attributes
-        attributes = get_attribute_names()
-
-        # Reset data in object, so old data can't interfere
-        self._reset_dat()
-
-        # Load from file
+        # Load data from file
         if isinstance(load_file, str):
             with open(os.path.join(file_path, load_file + '.json'), 'r') as infile:
                 dat = json.load(infile)
         elif isinstance(load_file, io.IOBase):
             dat = json.loads(load_file.readline())
+
+        # Reset data in object, so old data can't interfere
+        self._reset_dat()
+
+        # Get dictionary of all attributes
+        attributes = get_attribute_names()
 
         # Convert specified lists back into arrays
         dat = dict_lst_to_array(dat, attributes['arrays'])
@@ -501,7 +501,6 @@ class FOOOF(object):
         # Reconstruct FOOOF object
         for key in dat.keys():
             setattr(self, key, dat[key])
-        self._reset_settings()
 
         # If settings not loaded from file, clear from object
         #  So that default settings, which are potentially wrong for loaded data, aren't kept
@@ -514,6 +513,10 @@ class FOOOF(object):
             if np.all(self.background_params_):
                 self._bg_fit_func = expo_function if len(self.background_params_) == 3 \
                     else expo_nk_function
+
+        # If settings were loaded, reset internal settings so that they are consistent
+        else:
+            self._reset_settings()
 
         # Reconstruct frequency vector
         if self.freq_res:
