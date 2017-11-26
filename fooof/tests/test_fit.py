@@ -97,7 +97,12 @@ def test_fooof_prints_plot_get_report():
 	out = fm.get_results()
 	assert out
 
-	fm.create_report(save_path=pkg.resource_filename(__name__, 'test_reports'))
+	file_name = 'test_report'
+	file_path = pkg.resource_filename(__name__, 'test_reports')
+
+	fm.create_report(save_name=file_name, save_path=file_path)
+
+	assert os.path.exists(os.path.join(file_path, file_name + '.pdf'))
 
 def test_fooof_save_load_str():
 	"""Check that FOOOF object saves & loads - given str input."""
