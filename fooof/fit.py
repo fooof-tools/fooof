@@ -511,8 +511,12 @@ class FOOOF(object):
             # Infer and set background function, if settings not explicit, but results available
             #  Given results, can tell which function was used from the length of bg_params
             if np.all(self.background_params_):
-                self._bg_fit_func = expo_function if len(self.background_params_) == 3 \
-                    else expo_nk_function
+                if len(self.background_params_) == 3:
+                    self.bg_use_knee = True
+                    self._bg_fit_func = expo_function
+                else:
+                    self.bg_use_knee = False
+                    self._bg_fit_func = expo_nk_function
 
         # If settings were loaded, reset internal settings so that they are consistent
         else:
