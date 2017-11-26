@@ -119,7 +119,7 @@ class FOOOFGroup(FOOOF):
             Path to directory in which to save. If not provided, saves to current directory.
         """
 
-        fit = plt.figure(figsize=(14, 10))
+        fig = plt.figure(figsize=(14, 10))
         gs = gridspec.GridSpec(2, 2, height_ratios=[1, 1.2])
 
         ax0 = plt.subplot(gs[0, 0])
@@ -135,10 +135,47 @@ class FOOOFGroup(FOOOF):
             plt.savefig(os.path.join(save_path, save_name))
 
 
-    def create_report(self):
-        """   """
+    def create_report(self, save_name='FOOOFGroup_Report.pdf', save_path=''):
+        """Generate and save out a report for the FOOOF Group results.
 
-        pass
+        Parameters
+        ----------
+        save_name : str, optional
+            Name to give the saved out file.
+        save_path : str, optional
+            Path to directory in which to save. If not provided, saves to current directory.
+        """
+
+        # Set the font description for saving out text with matplotlib
+        font = {'family': 'monospace',
+                'weight': 'normal',
+                'size': 16}
+
+        # Initialize figure
+        fig = plt.figure(figsize=(16, 20))
+        gs = gridspec.GridSpec(3, 2, height_ratios=[1.5, 1.0, 1.2])
+
+        # First / top: text results
+        ax0 = plt.subplot(gs[0, :])
+        results_str = self._gen_results_str()
+        ax0.text(0.5, 0.0, results_str, font, ha='center')
+        ax0.set_frame_on(False)
+        ax0.set_xticks([])
+        ax0.set_yticks([])
+
+        # Add plots (same as from plot())
+        ax1 = plt.subplot(gs[1, 0])
+        self._plot_bg(ax1)
+
+        ax2 = plt.subplot(gs[1, 1])
+        self._plot_fit(ax2)
+
+        ax3 = plt.subplot(gs[2, :])
+        self._plot_oscs(ax3)
+
+        # Save out the report
+        plt.savefig(os.path.join(save_path, save_name))
+        plt.close()
 
 
     def load_group_results(self, file_name='fooof_group_results', file_path=''):
