@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from scipy.optimize import curve_fit
 
-from fooof.utils import group_three, trim_psd
+from fooof.utils import group_three, trim_psd, get_attribute_names
 from fooof.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
 from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 
