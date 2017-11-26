@@ -74,12 +74,31 @@ class FOOOFGroup(FOOOF):
 
 
     def get_all_dat(self, name, ind=None):
-        """Return all data for a specified attribute across the group."""
+        """Return all data for a specified attribute across the group.
 
+        Parameters
+        ----------
+        name : str
+            Name of the data field to extract across the group.
+        ind : int, optional
+            Column index to extract from selected data, if requested.
+
+        Returns
+        -------
+        out : ndarray
+            Requested data.
+        """
+
+        # Pull out the requested data field from the group data
         out = np.array([getattr(dat, name) for dat in self.group_results])
 
-        if ind:
-            out = np.array([dat[ind] for dat in out])
+        # Some data can end up as a list of separate arrays. If so, concatenate it all into one 2d array
+        if isinstance(out[0], np.ndarray):
+            out = np.concatenate([arr.reshape(1, len(arr)) if arr.ndim == 1 else arr for arr in out], 0)
+
+        # Select out a specific column, if requested
+        if ind is not None:
+            out = out[:, ind]
 
         return out
 
