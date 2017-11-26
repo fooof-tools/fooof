@@ -135,7 +135,7 @@ class FOOOFGroup(FOOOF):
             plt.savefig(os.path.join(save_path, save_name))
 
 
-    def create_report(self, save_name='FOOOFGroup_Report.pdf', save_path=''):
+    def create_report(self, save_name='FOOOFGroup_Report', save_path=''):
         """Generate and save out a report for the FOOOF Group results.
 
         Parameters
@@ -174,7 +174,7 @@ class FOOOFGroup(FOOOF):
         self._plot_oscs(ax3)
 
         # Save out the report
-        plt.savefig(os.path.join(save_path, save_name))
+        plt.savefig(os.path.join(save_path, save_name + '.pdf'))
         plt.close()
 
 

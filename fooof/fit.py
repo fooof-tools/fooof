@@ -384,7 +384,7 @@ class FOOOF(object):
         return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_, self.error_)
 
 
-    def create_report(self, save_name='FOOOF_Report.pdf', save_path=''):
+    def create_report(self, save_name='FOOOF_Report', save_path=''):
         """Generate and save out a report of the current FOOOF fit.
 
         Parameters
@@ -425,7 +425,7 @@ class FOOOF(object):
         ax2.set_yticks([])
 
         # Save out the report
-        plt.savefig(os.path.join(save_path, save_name))
+        plt.savefig(os.path.join(save_path, save_name + '.pdf'))
         plt.close()
 
 
