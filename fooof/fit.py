@@ -149,13 +149,21 @@ class FOOOF(object):
             else tuple(bound[0::2] for bound in self._bg_bounds)
 
 
-    def _reset_dat(self):
-        """Set (or reset) all data attributes to empty."""
+    def _reset_dat(self, clear_freqs=True):
+        """Set (or reset) all data attributes to empty.
 
-        self.freqs = None
+        Parameters
+        ----------
+        clear_freqs : bool, optional
+            Whether to clear frequency information too.
+        """
+
+        if clear_freqs:
+            self.freqs = None
+            self.freq_range = None
+            self.freq_res = None
+
         self.psd = None
-        self.freq_range = None
-        self.freq_res = None
         self.psd_fit_ = None
         self.background_params_ = None
         self.oscillation_params_ = None
@@ -981,19 +989,3 @@ class FOOOF(object):
         ])
 
         return output
-
-
-def get_attribute_names():
-    """Get dictionary specifying FOOOF object names and kind of attributes."""
-
-    attributes = {'results' : ['background_params_', 'oscillation_params_', 'error_', 'r2_',
-                               '_gaussian_params', 'freq_range', 'freq_res'],
-                  'settings' : ['amp_std_thresh', 'bandwidth_limits', 'bg_use_knee',
-                                'max_n_oscs', 'min_amp'],
-                  'dat' : ['psd', 'freq_range', 'freq_res'],
-                  'hidden_settings' : ['_bg_fit_func', '_std_limits', '_bg_bounds'],
-                  'arrays' : ['freqs', 'psd', 'background_params_', 'oscillation_params_',
-                              '_gaussian_params']}
-    attributes['all_settings'] = attributes['settings'] + attributes['hidden_settings']
-
-    return attributes
