@@ -12,6 +12,11 @@ from fooof.funcs import gaussian_function, loglorentzian_function, loglorentzian
 ###################################################################################################
 ###################################################################################################
 
+# Check for python3
+import sys
+if sys.version_info[0] < 3:
+    raise ValueError("You should really be using a python3 environment.")
+
 FOOOFResult = namedtuple('FOOOFResult', ['background_params', 'oscillations_params', 'r2', 'error'])
 
 class FOOOF(object):
