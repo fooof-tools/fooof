@@ -46,7 +46,7 @@ class FOOOFGroup(FOOOF):
             Path to directory in which to save. If not provided, saves to current directory.
         """
 
-        self.fit_group(freqs, psds, freq_range, save_dat, file_name, file_path, plt_log)
+        self.fit_group(freqs, psds, freq_range, save_dat, file_name, file_path)
         self.plot()
         self.print_results()
 
