@@ -27,6 +27,30 @@ class FOOOFGroup(FOOOF):
         self.group_results = []
 
 
+    def model(self, freqs, psds, freq_range=None, save_dat=False, file_name='fooof_group_results', file_path=''):
+        """Run FOOOF across a group of PSDs, then plot and print results.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the PSDs, in linear space.
+        psds : 2d array
+            Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
+        freq_range : list of [float, float], optional
+            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+        save_dat : bool, optional
+            Whether to save data out to file while running. Default: False.
+        file_name : str, optional
+            File name to save to.
+        file_path : str, optional
+            Path to directory in which to save. If not provided, saves to current directory.
+        """
+
+        self.fit_group(freqs, psds, freq_range, save_dat, file_name, file_path, plt_log)
+        self.plot()
+        self.print_results()
+
+
     def fit_group(self, freqs, psds, freq_range=None, save_dat=False, file_name='fooof_group_results', file_path=''):
         """Run FOOOF across a group of PSDs.
 
