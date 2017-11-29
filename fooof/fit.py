@@ -492,7 +492,7 @@ class FOOOF(object):
         # Reset data in object, so old data can't interfere
         self._reset_dat()
 
-        # Get dictionary of all attributes
+        # Get dictionary of all attributes that are available for FOOOF
         attributes = get_attribute_names()
 
         # Convert specified lists back into arrays
@@ -517,6 +517,9 @@ class FOOOF(object):
                 else:
                     self.bg_use_knee = False
                     self._bg_fit_func = expo_nk_function
+                # Also reset oscillation_params, if it happens to be empty, to maintain shape
+                if self.oscillation_params_.ndim == 1:
+                    self.oscillation_params_ = np.empty([0, 3])
 
         # If settings were loaded, reset internal settings so that they are consistent
         else:
