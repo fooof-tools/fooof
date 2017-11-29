@@ -1,13 +1,19 @@
-"""FOOOF - Fitting Oscillations & One-Over F"""
+"""FOOOF - Fitting Oscillations & One-Over F."""
 
+import os
+import io
+import json
 import warnings
 from collections import namedtuple
+
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import gridspec
 from scipy.optimize import curve_fit
 
-from fooof.utils import group_three, trim_psd
-from fooof.funcs import gaussian_function, loglorentzian_function, loglorentzian_nk_function
+from fooof.utils import group_three, trim_psd, get_attribute_names
+from fooof.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
+from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 
 ###################################################################################################
 ###################################################################################################
@@ -31,8 +37,8 @@ class FOOOF(object):
         Minimum amplitude threshold for an oscillation to be modeled.
     amp_std_thresh : float, optional (default: 2.0)
         Amplitude threshold for detecting oscillatory peaks, units of standard deviation.
-    fit_knee : boolean, optional (default: False)
-        Whether to fit a knee parameter in the lorentzian background fit.
+    bg_use_knee : boolean, optional (default: False)
+        Whether to fit a knee parameter when fitting the background.
     verbose : boolean, optional (default: True)
         Whether to be verbose in printing out warnings.
 
@@ -50,8 +56,8 @@ class FOOOF(object):
         The full model fit of the PSD: 1/f and oscillations across freq_range.
     background_params_ : 1d array
         Parameters that define the background fit.
-    oscillation_params_ : 1d array
-        Fitted parameter values for the oscillations.
+    oscillation_params_ : 2d array
+        Fitted parameter values for the oscillations. Each row is an oscillation, as [CF, Amp, BW].
     r2_ : float
         R-squared between the input PSD and the full model fit.
     error_ : float
@@ -61,7 +67,7 @@ class FOOOF(object):
     _psd_osc_rm : 1d array
         PSD with oscillations removed (not flattened).
     _gaussian_params : 2d array
-        Parameters that define the gaussian fit(s). Each row is an oscillation, as [CF, amp, BW].
+        Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
     _background_fit : 1d array
         Values of the background fit.
     _oscillation_fit : 1d array
@@ -76,33 +82,33 @@ class FOOOF(object):
         Banwidth threshold for edge rejection of oscillations, units of standard deviation.
     _std_limits : list of [float, float]
         Bandwidth limits, converted to use for gaussian standard deviation parameter.
+    _bg_fit_func : function
+        Function used to fit the background.
 
     Notes
     -----
-    - Input PSD should be smooth - overly noisy power spectra may lead to bad fits.
+    Input PSD should be smooth - overly noisy power spectra may lead to bad fits.
         - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
         procedure, or a median filter smoothing on the FFT output before running FOOOF.
         - Where possible and appropriate, use longer time segments for PSD calculation to
         get smoother PSDs; this will give better FOOOF fits.
+    If using the FOOOFGroup Object, all parameters and attributes are the same.
+        - The main addition is 'group_results', which stores FOOOF results across the group of PSDs.
     """
 
     def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf,
-                 min_amp=0.0, amp_std_thresh=2.0, fit_knee=False, verbose=True):
+                 min_amp=0.0, amp_std_thresh=2.0, bg_use_knee=False, verbose=True):
         """Initialize FOOOF object with run parameters."""
 
-        # Set lorentzian function version for whether fitting knee or not
-        self.fit_knee = fit_knee
-        global lorentzian_function
-        lorentzian_function = loglorentzian_function if self.fit_knee else loglorentzian_nk_function
-
         # Set input parameters
+        self.bg_use_knee = bg_use_knee
         self.bandwidth_limits = bandwidth_limits
         self.max_n_oscs = max_n_oscs
         self.min_amp = min_amp
         self.amp_std_thresh = amp_std_thresh
         self.verbose = verbose
 
-        ## SETTINGS
+        ## SETTINGS - these are updateable by the user if required.
         # Noise threshold, as a percentage of the lowest amplitude values in the total data to fit.
         #  Defines the minimum amplitude, above residuals, to be considered an oscillation.
         self._bg_amp_thresh = 0.025
@@ -110,7 +116,7 @@ class FOOOF(object):
         #  If offset guess is None, the first value of the PSD is used as offset guess
         self._bg_guess = [None, 0, 2]
         # Bounds for background fitting, as: ((offset_low_bound, knee_low_bound, sl_low_bound),
-        #                                (offset_high_bound, knee_high_bound, sl_high_bound))
+        #                                     (offset_high_bound, knee_high_bound, sl_high_bound))
         #  By default, background fitting is unbound, but can be restricted here, if desired
         #    Even if fitting without knee, leave bounds for knee (they are dropped later)
         self._bg_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
@@ -119,24 +125,45 @@ class FOOOF(object):
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
         self._cf_bound = 1.5
 
-        # INTERAL PARAMETERS
+        # Initialize internal settings and data attributes (to None)
+        self._reset_settings()
+        self._reset_dat()
+
+
+    def _reset_settings(self):
+        """Set (or reset) internal settings, based on what is provided in init.
+
+        Notes
+        -----
+        These settings are for interal use, based on what is provided to, or set in init.
+            They should not be altered by the user.
+        """
+
+        # Set exponential function version for whether fitting knee or not
+        self._bg_fit_func = expo_function if self.bg_use_knee else expo_nk_function
         # Bandwidth limits are given in 2-sided oscillation bandwidth.
         #  Convert to gaussian std parameter limits.
         self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
         # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
-        self._bg_bounds = self._bg_bounds if self.fit_knee else tuple(b[0::2] for b in self._bg_bounds)
-
-        # Initialize all data attributes (to None)
-        self._reset_dat()
+        self._bg_bounds = self._bg_bounds if self.bg_use_knee \
+            else tuple(bound[0::2] for bound in self._bg_bounds)
 
 
-    def _reset_dat(self):
-        """Set (or reset) all data attributes to empty."""
+    def _reset_dat(self, clear_freqs=True):
+        """Set (or reset) all data attributes to empty.
 
-        self.freqs = None
+        Parameters
+        ----------
+        clear_freqs : bool, optional
+            Whether to clear frequency information too.
+        """
+
+        if clear_freqs:
+            self.freqs = None
+            self.freq_range = None
+            self.freq_res = None
+
         self.psd = None
-        self.freq_range = None
-        self.freq_res = None
         self.psd_fit_ = None
         self.background_params_ = None
         self.oscillation_params_ = None
@@ -150,42 +177,24 @@ class FOOOF(object):
         self._oscillation_fit = None
 
 
-    def model(self, freqs, psd, freq_range, plt_log=False):
-        """Run model fit, plot, and print results.
+    def add_data(self, freqs, psd, freq_range=None):
+        """Add data (frequencies and PSD values) to object.
 
         Parameters
         ----------
         freqs : 1d array
-            Frequency values for the PSD.
+            Frequency values for the PSD, in linear space.
         psd : 1d array
-            Power spectral density values.
-        freq_range : list of [float, float]
-            Desired frequency range to run FOOOF on.
+            Power spectral density values, in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to restrict PSD to. If not provided, keeps the entire range.
         """
 
-        self.fit(freqs, psd, freq_range)
-        self.plot(plt_log)
-        self.print_params()
-
-
-    def fit(self, freqs, psd, freq_range):
-        """Fit the full PSD as 1/f and gaussian oscillations.
-
-        Parameters
-        ----------
-        freqs : 1d array
-            Frequency values for the PSD, linear.
-        psd : 1d array
-            Power spectral density values, linear.
-        freq_range : list of [float, float]
-            Desired frequency range to run FOOOF on.
-        """
-
-        # Clear any potentially old data (that could interfere).
+        # Clear any existing data from the object, that could potentially interfere
         self._reset_dat()
 
         # Check inputs dimensions & size
-        if freqs.ndim != freqs.ndim != 1:
+        if freqs.ndim != psd.ndim != 1:
             raise ValueError('Inputs are not 1 dimensional.')
         if freqs.shape != psd.shape:
             raise ValueError('Inputs are not consistent size.')
@@ -196,9 +205,68 @@ class FOOOF(object):
         # Log frequency inputs
         psd = np.log10(psd)
 
-        # Trim the PSD to requested frequency range.
-        self.freq_range = freq_range
-        self.freqs, self.psd = trim_psd(freqs, psd, self.freq_range)
+        # Check frequency range, trim the PSD range if requested
+        if freq_range:
+            self.freqs, self.psd = trim_psd(freqs, psd, freq_range)
+        else:
+            self.freqs, self.psd = freqs, psd
+
+        # Check if freqs start at 0 - move up one value if so.
+        #   Background fit gets an inf is freq of 0 is included, which leads to an error.
+        if self.freqs[0] == 0.0:
+            self.freqs, self.psd = trim_psd(freqs, psd, [self.freqs[1], self.freqs.max()])
+            print('\nFOOOF WARNING: Skipping frequency == 0, as this causes problem with fitting.')
+
+        # Set the actual frequency range used
+        self.freq_range = [self.freqs.min(), self.freqs.max()]
+
+
+    def model(self, freqs=None, psd=None, freq_range=None, plt_log=False):
+        """Run model fit, plot, and print results.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the PSD.
+        psd : 1d array, optional
+            Power spectral density values.
+        freq_range : list of [float, float], optional
+            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+
+        Notes
+        -----
+        Data is optional if data has been already been added to FOOOF object.
+        """
+
+        self.fit(freqs, psd, freq_range)
+        self.plot(plt_log)
+        self.print_results()
+
+
+    def fit(self, freqs=None, psd=None, freq_range=None):
+        """Fit the full PSD as 1/f and gaussian oscillations.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the PSD, in linear space.
+        psd : 1d array, optional
+            Power spectral density values, in linear space.
+        freq_range : list of [float, float], optional
+            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+
+        Notes
+        -----
+        Data is optional if data has been already been added to FOOOF object.
+        """
+
+        # If provided, add data to object.
+        if np.all(isinstance(freqs, np.ndarray)) and isinstance(psd, np.ndarray):
+            self.add_data(freqs, psd, freq_range)
+
+        # Check that data is available
+        if not np.all(self.freqs):
+            raise ValueError('No data available to fit - can not proceed.')
 
         # Check bandwidth limits against frequency resolution; warn if too close.
         if round(self.freq_res, 1) >= self.bandwidth_limits[0] and self.verbose:
@@ -206,8 +274,8 @@ class FOOOF(object):
                   '  This may lead to overfitting of small bandwidth oscillations.\n')
 
         # Fit the background 1/f.
-        self._background_fit, self.background_params_ = self._clean_background_fit(
-            self.freqs, self.psd)
+        self.background_params_ = self._clean_background_fit(self.freqs, self.psd)
+        self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
 
         # Flatten the PSD using fit background.
         self._psd_flat = self.psd - self._background_fit
@@ -217,120 +285,78 @@ class FOOOF(object):
 
         # Calculate the oscillation fit.
         #  Note: if no oscillations are found, this creates a flat (all zero) oscillation fit.
-        self._oscillation_fit = gaussian_function(
-            self.freqs, *np.ndarray.flatten(self._gaussian_params))
+        self._oscillation_fit = self._create_osc_fit(self.freqs, self._gaussian_params)
 
         # Create oscillation-removed (but not flattened) PSD.
         self._psd_osc_rm = self.psd - self._oscillation_fit
 
         # Run final background fit on oscillation-removed PSD.
         #   Note: This overwrites previous background fit.
-        self._background_fit, self.background_params_ = self._quick_background_fit(
-            self.freqs, self._psd_osc_rm)
+        self.background_params_ = self._quick_background_fit(self.freqs, self._psd_osc_rm)
+        self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
 
         # Create full PSD model fit.
         self.psd_fit_ = self._oscillation_fit + self._background_fit
 
-        # Copy the gaussian params to oscillations outputs, updating as appropriate.
-        #  Amplitude is updated to the amplitude of oscillation above the background fit.
-        #   This is returned instead of the gaussian amplitude
-        #    Actual amplitude is harder to interpret, due to osc overlaps.
-        #  Bandwidth is updated to be 'both-sided'
-        #   This is as opposed to gaussian std param, which is 1-sided.
-        self.oscillation_params_ = np.empty([0, 3])
-        for i, osc in enumerate(self._gaussian_params):
-        	# Gets the index of the PSD at the frequency closest to the CF of the osc
-            ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i] - osc[0]))
-            # Collect oscillation parameter data
-            self.oscillation_params_ = np.vstack((self.oscillation_params_,
-                                                 [osc[0],
-                                                  self.psd_fit_[ind] - self._background_fit[ind],
-                                                  osc[2] * 2]))
+        # Convert gaussian definitions to oscillation parameters
+        self.oscillation_params_ = self._create_osc_params(self._gaussian_params)
 
         # Calculate R^2 and error of the model fit.
         self._r_squared()
         self._rmse_error()
 
 
-    def plot(self, plt_log=False):
+    def plot(self, plt_log=False, save_fig=False, save_name='FOOOF_fit.png', save_path='', ax=None):
         """Plot the original PSD, and full model fit.
 
         Parameters
         ----------
-        plt_log : boolean
-            Whether or not to plot the frequency axis in log space.
+        plt_log : boolean, optional
+            Whether or not to plot the frequency axis in log space. default: False
+        save_fig : boolean, optional
+            Whether to save out a copy of the plot. default : False
+        save_name : str, optional
+            Name to give the saved out file.
+        save_path : str, optional
+            Path to directory in which to save. If not provided, saves to current directory.
+        ax : matplotlib.Axes, optional
+            Figure axes upon which to plot.
         """
 
+        # Throw an error if FOOOF model hasn't been fit yet
         if not np.all(self.freqs):
-            raise ValueError('Model fit has not been run - can not proceed.')
+            raise ValueError('No data available to plot - can not proceed.')
 
-        plt.figure(figsize=(14, 10))
+        # Set frequency vector, logged if requested
+        plt_freqs = np.log10(self.freqs) if plt_log else self.freqs
 
-        if plt_log:
-            plt_freqs = np.log10(self.freqs)
-        else:
-            plt_freqs = self.freqs
+        # Create plot axes, if not provided
+        if not ax:
+            fig, ax = plt.subplots(figsize=(12, 10))
 
-        plt.plot(plt_freqs, self.psd, 'k', linewidth=1.0)
-        plt.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0, alpha=0.5)
-        plt.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0, alpha=0.5)
+        # Create the plot
+        if np.all(self.psd):
+            ax.plot(plt_freqs, self.psd, 'k', linewidth=1.0, label='Original PSD')
+        if np.all(self.psd_fit_):
+            ax.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0,
+                    alpha=0.5, label='Full model fit')
+            ax.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0,
+                    alpha=0.5, label='Background fit')
 
-        plt.xlabel('Frequency', fontsize=20)
-        plt.ylabel('Power', fontsize=20)
-        plt.tick_params(axis='both', which='major', labelsize=16)
+        ax.set_xlabel('Frequency', fontsize=20)
+        ax.set_ylabel('Power', fontsize=20)
+        ax.tick_params(axis='both', which='major', labelsize=16)
 
-        plt.legend(['Original PSD', 'Full model fit', 'Background fit'], prop={'size': 16})
-        plt.grid()
+        ax.legend(prop={'size': 16})
+        ax.grid()
 
-
-    def print_params(self):
-        """Print out the PSD model fit parameters."""
-
-        if not np.all(self.freqs):
-            raise ValueError('Model fit has not been run - can not proceed.')
-
-        # Set centering value.
-        cen_val = 100
-
-        # Header
-        print('=' * cen_val, '\n')
-        print(' FOOOF - PSD MODEL'.center(cen_val), '\n')
-
-        # Frequency range and resolution.
-        print('The input PSD was modeled in the frequency range {}-{} Hz'.format(
-            self.freq_range[0], self.freq_range[1]).center(cen_val))
-        print('Frequency Resolution is {:1.2f} Hz \n'.format(self.freq_res).center(cen_val))
-
-        # Background parameters.
-        print(('Background Parameters (offset, ' + ('knee, ' if self.fit_knee else '') + \
-               'slope): ').center(cen_val))
-        print(', '.join(['{:2.4f}'] * len(self.background_params_)).format(
-            *self.background_params_).center(cen_val))
-
-        # Oscillation parameters.
-        print('\n', '{} oscillations were found:'.format(
-            len(self.oscillation_params_)).center(cen_val))
-        for op in self.oscillation_params_:
-            print('CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(
-                op[0], op[1], op[2]).center(cen_val))
-
-        # R^2 and error.
-        print('\n', 'R^2 of model fit is {:5.4f}'.format(self.r2_).center(cen_val))
-        print('\n', 'Root mean squared error of model fit is {:5.4f}'.format(
-            self.error_).center(cen_val))
-
-        # Footer.
-        print('\n', '=' * cen_val)
+        # Save out figure, if requested
+        if save_fig:
+            plt.savefig(os.path.join(save_path, save_name))
 
 
-    def get_params(self):
-        """Return model fit parameters and error."""
-
-        return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_, self.error_)
-
-
-    def check_settings(self, description=True):
-        """Prints out current settings for FOOOF.
+    def print_settings(self, description=False):
+        """Print out the current FOOOF settings.
 
         Parameters
         ----------
@@ -343,25 +369,168 @@ class FOOOF(object):
         - There are also internal settings, documented and defined in __init__
         """
 
-        if description:
-            print('FOOOF SETTINGS:')
-            print('Fit Knee: ', self.fit_knee)
-            print('\tWhether to fit a knee parameter in background fitting.')
-            print('Bandwidth Limits (Hz): ', self.bandwidth_limits)
-            print('\tThe possible range of bandwidths for extracted oscillations.')
-            print('Max number of oscillations (int): ', self.max_n_oscs)
-            print('\tThe maximum number of oscillations FOOOF will seek to extract.')
-            print('Minimum amplitude (units of power): ', self.min_amp)
-            print('\tMinimum amplitude, above background, for an oscillation to be extracted.')
-            print('Amplitude threshold (units of std deviation): ', self.amp_std_thresh)
-            print('\tThreshold at which to stop searching for oscillations.')
+        print(self._gen_settings_str(description))
+
+
+    def print_results(self):
+        """Print out FOOOF results."""
+
+        print(self._gen_results_str())
+
+
+    def get_results(self):
+        """Return model fit parameters and error."""
+
+        return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_, self.error_)
+
+
+    def create_report(self, save_name='FOOOF_Report', save_path=''):
+        """Generate and save out a report of the current FOOOF fit.
+
+        Parameters
+        ----------
+        save_name : str, optional
+            Name to give the saved out file.
+        save_path : str, optional
+            Path to directory in which to save. If not provided, saves to current directory.
+        """
+
+        # Set the font description for saving out text with matplotlib
+        font = {'family': 'monospace',
+                'weight': 'normal',
+                'size': 16}
+
+        # Set up outline figure, using gridspec
+        fig = plt.figure(figsize=(16, 20))
+        grid = gridspec.GridSpec(3, 1, height_ratios=[0.8, 1.0, 0.7])
+
+        # First - text results
+        ax0 = plt.subplot(grid[0])
+        results_str = self._gen_results_str()
+        ax0.text(0.5, 0.2, results_str, font, ha='center')
+        ax0.set_frame_on(False)
+        ax0.set_xticks([])
+        ax0.set_yticks([])
+
+        # Second - data plot
+        ax1 = plt.subplot(grid[1])
+        self.plot(ax=ax1)
+
+        # Third - FOOOF settings
+        ax2 = plt.subplot(grid[2])
+        settings_str = self._gen_settings_str(False)
+        ax2.text(0.5, 0.2, settings_str, font, ha='center')
+        ax2.set_frame_on(False)
+        ax2.set_xticks([])
+        ax2.set_yticks([])
+
+        # Save out the report
+        plt.savefig(os.path.join(save_path, save_name + '.pdf'))
+        plt.close()
+
+
+    def save(self, save_file='fooof_dat', save_path='',
+             save_results=False, save_settings=False, save_dat=False):
+        """Save out data, results and/or settings. Saves out to a JSON file.
+
+        Parameters
+        ----------
+        save_file : str or FileObject, optional
+            File to which to save data.
+        save_path : str
+            Path to directory to which the save. If not provided, saves to current directory.
+        save_settings : bool, optional
+            Whether to save out FOOOF settings.
+        save_results : bool, optional
+            Whether to save out FOOOF model fit results.
+        save_dat : bool, optional
+            Whether to save out input data.
+        """
+
+        # Get dictionary of all attributes
+        attributes = get_attribute_names()
+
+        # Convert object to dictionary & convert all arrays to lists - for JSON serializing
+        obj_dict = dict_array_to_lst(self.__dict__)
+
+        # Set which variables to keep. Use a set to drop any potential overlap
+        keep = set((attributes['results'] if save_results else []) + \
+                   (attributes['settings'] if save_settings else []) + \
+                   (attributes['dat'] if save_dat else []))
+
+        # Keep only requested vars
+        obj_dict = dict_select_keys(obj_dict, keep)
+
+        # Save out to json
+        if isinstance(save_file, str):
+            with open(os.path.join(save_path, save_file + '.json'), 'w') as outfile:
+                json.dump(obj_dict, outfile)
+
+        elif isinstance(save_file, io.IOBase):
+            json.dump(obj_dict, save_file)
+            save_file.write('\n')
+
+
+    def load(self, load_file='fooof_dat', file_path=''):
+        """Load in FOOOF file. Reads in a JSON file.
+
+        Parameters
+        ----------
+        load_file : str or FileObject, optional
+            File from which to load data.
+        file_path : str
+            Path to directory from which to load. If not provided, loads from current directory.
+        """
+
+        # Load data from file
+        if isinstance(load_file, str):
+            with open(os.path.join(file_path, load_file + '.json'), 'r') as infile:
+                dat = json.load(infile)
+        elif isinstance(load_file, io.IOBase):
+            dat = json.loads(load_file.readline())
+
+        # Reset data in object, so old data can't interfere
+        self._reset_dat()
+
+        # Get dictionary of all attributes
+        attributes = get_attribute_names()
+
+        # Convert specified lists back into arrays
+        dat = dict_lst_to_array(dat, attributes['arrays'])
+
+        # Reconstruct FOOOF object
+        for key in dat.keys():
+            setattr(self, key, dat[key])
+
+        # If settings not loaded from file, clear from object
+        #  So that default settings, which are potentially wrong for loaded data, aren't kept
+        if not set(attributes['settings']).issubset(set(dat.keys())):
+            for setting in attributes['all_settings']:
+                setattr(self, setting, None)
+
+            # Infer and set background function, if settings not explicit, but results available
+            #  Given results, can tell which function was used from the length of bg_params
+            if np.all(self.background_params_):
+                if len(self.background_params_) == 3:
+                    self.bg_use_knee = True
+                    self._bg_fit_func = expo_function
+                else:
+                    self.bg_use_knee = False
+                    self._bg_fit_func = expo_nk_function
+
+        # If settings were loaded, reset internal settings so that they are consistent
         else:
-            print('FOOOF SETTINGS:')
-            print('\tKnee: \t', self.fit_knee)
-            print('\tBW Limits \t: ', self.bandwidth_limits)
-            print('\tMax # Oscs \t: ', self.max_n_oscs)
-            print('\tMin Amp \t: ', self.min_amp)
-            print('\tAmp Thresh \t: ', self.amp_std_thresh)
+            self._reset_settings()
+
+        # Reconstruct frequency vector
+        if self.freq_res:
+            self.freqs = np.arange(self.freq_range[0], self.freq_range[1]+self.freq_res, self.freq_res)
+
+        # Recreate PSD model & components
+        if np.all(self.freqs) and np.all(self.background_params_):
+            self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
+            self._oscillation_fit = self._create_osc_fit(self.freqs, self._gaussian_params)
+            self.psd_fit_ = self._oscillation_fit + self._background_fit
 
 
     def _quick_background_fit(self, freqs, psd):
@@ -376,15 +545,13 @@ class FOOOF(object):
 
         Returns
         -------
-        psd_fit_ : 1d array
-            Values of fit background.
-        popt : list of [offset, knee, slope]
-            Parameter estimates.
+        background_params : 1d array of [offset, knee, slope]
+            Parameter estimates for background fit. Only includes knee if set to fit knee.
         """
 
         # Set guess params for lorentzian background fit, guess params set at init
         guess = np.array(([psd[0]] if not self._bg_guess[0] else [self._bg_guess[0]]) +
-                         ([self._bg_guess[1]] if self.fit_knee else []) +
+                         ([self._bg_guess[1]] if self.bg_use_knee else []) +
                          [self._bg_guess[2]])
 
         # Ignore warnings that are raised in curve_fit
@@ -393,13 +560,10 @@ class FOOOF(object):
         #  It happens if / when b < 0 & |b| > x**2, as it leads to log of a negative number
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            popt, _ = curve_fit(lorentzian_function, freqs, psd, p0=guess,
-                                maxfev=5000, bounds=self._bg_bounds)
+            background_params, _ = curve_fit(self._bg_fit_func, freqs, psd, p0=guess,
+                                             maxfev=5000, bounds=self._bg_bounds)
 
-        # Calculate the actual background fit
-        psd_fit_ = lorentzian_function(freqs, *popt)
-
-        return psd_fit_, popt
+        return background_params
 
 
     def _clean_background_fit(self, freqs, psd):
@@ -414,14 +578,13 @@ class FOOOF(object):
 
         Returns
         -------
-        background_fit : 1d array
-            background PSD.
-        background_params_ : 1d array
-            Parameters of background fit (length of 3: offset, knee, slope).
+        background_params : 1d array of [offset, knee, slope]
+            Parameter estimates for background fit. Only includes knee if set to fit knee.
         """
 
         # Do a quick, initial background fit.
-        initial_fit, popt = self._quick_background_fit(freqs, psd)
+        popt = self._quick_background_fit(freqs, psd)
+        initial_fit = self._create_bg_fit(freqs, popt)
 
         # Flatten PSD based on initial background fit.
         psd_flat = psd - initial_fit
@@ -439,13 +602,48 @@ class FOOOF(object):
         #  See note in _quick_background_fit about warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            background_params_, _ = curve_fit(lorentzian_function, f_ignore, psd_ignore,
-                                              p0=popt, maxfev=5000, bounds=self._bg_bounds)
+            background_params, _ = curve_fit(self._bg_fit_func, f_ignore, psd_ignore,
+                                             p0=popt, maxfev=5000, bounds=self._bg_bounds)
 
-        # Calculate the actual background fit.
-        background_fit = lorentzian_function(freqs, *background_params_)
+        return background_params
 
-        return background_fit, background_params_
+
+    def _create_bg_fit(self, freqs, bg_params):
+        """Generate the fit of the background component of the PSD.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the PSD, in linear scale.
+        bg_params : 1d array
+            Parameters that define the background fit.
+
+        Returns
+        -------
+        1d array
+            Values of the background fit.
+        """
+
+        return self._bg_fit_func(freqs, *bg_params)
+
+
+    def _create_osc_fit(self, freqs, gaus_params):
+        """Generate the fit of the oscillations component of the PSD.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the PSD, in linear scale.
+        gaus_params : 2d array
+            Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
+
+        Returns
+        -------
+        1d array
+            Values of the oscillation fit.
+        """
+
+        return gaussian_function(freqs, *np.ndarray.flatten(gaus_params))
 
 
     def _fit_oscs(self, flat_iter):
@@ -459,7 +657,7 @@ class FOOOF(object):
         Returns
         -------
         gaussian_params : 2d array
-            Parameters for gaussian fits to oscillations. Shape = [n_oscs, 3], row: [CF, AMP, STD].
+            Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
         """
 
         # Initialize matrix of guess parameters for gaussian fitting.
@@ -497,10 +695,8 @@ class FOOOF(object):
             #  Note: will fail if both le & ri ind's end up as None (probably shouldn't happen).
             shortest_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
 
-            # Estimate std properly from FWHM.
-            #  Calculate FWHM, converting to Hz.
+            # Estimate std from FWHM. Calculate FWHM, converting to Hz, get guess std from FWHM
             fwhm = shortest_side * 2 * self.freq_res
-            #  Calulate guess gaussian std from FWHM.
             guess_std = fwhm / (2 * np.sqrt(2 * np.log(2)))
 
             # Check that guess std isn't outside preset std limits; restrict if so.
@@ -572,6 +768,46 @@ class FOOOF(object):
         return gaussian_params
 
 
+    def _create_osc_params(self, gaus_params):
+        """Copies over the gaussian params to oscillation outputs, updating as appropriate.
+
+        Parameters
+        ----------
+        gaus_params :  2d array
+            Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
+
+        Returns
+        -------
+        oscillation_params :  2d array
+            Fitted parameter values for the oscillations. Each row is an oscillation, as [CF, Amp, BW].
+
+        Notes
+        -----
+        Amplitude is updated to the amplitude of oscillation above the background fit.
+          - This is returned instead of the gaussian amplitude
+            - Gaussian amplitude is harder to interpret, due to osc overlaps.
+        Bandwidth is updated to be 'both-sided'
+          - This is as opposed to gaussian std param, which is 1-sided.
+        Performing this conversion requires that the model be run.
+          - In particular, freqs, psd_fit and _background_fit are required to be available.
+        """
+
+        oscillation_params = np.empty([0, 3])
+
+        for i, osc in enumerate(gaus_params):
+
+            # Gets the index of the PSD at the frequency closest to the CF of the osc
+            ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i] - osc[0]))
+
+            # Collect oscillation parameter data
+            oscillation_params = np.vstack((oscillation_params,
+                                            [osc[0],
+                                             self.psd_fit_[ind] - self._background_fit[ind],
+                                             osc[2] * 2]))
+
+        return oscillation_params
+
+
     def _drop_osc_cf(self, guess):
         """Check whether to drop oscillations based CF proximity to edge.
 
@@ -628,14 +864,14 @@ class FOOOF(object):
         drop_inds = []
 
         # Loop through oscillation bounds, comparing current bound to that of next osc
-        for i, b0 in enumerate(bounds[:-1]):
-            b1 = bounds[i + 1]
+        for ind, b_0 in enumerate(bounds[:-1]):
+            b_1 = bounds[ind + 1]
 
             # Check if bound of current oscillations extends into next oscillation
-            if b0[1] > b1[0]:
+            if b_0[1] > b_1[0]:
 
                 # If so, get the index of the lowest amplitude oscillation (to drop)
-                drop_inds.append([i, i + 1][np.argmin([guess[i][1], guess[i + 1][1]])])
+                drop_inds.append([ind, ind + 1][np.argmin([guess[ind][1], guess[ind + 1][1]])])
 
         # Drop any oscillations guesses that overlap
         keep_osc = [True if j not in drop_inds else False for j in range(len(guess))]
@@ -655,3 +891,108 @@ class FOOOF(object):
         """Calculate root mean squared error of the full model fit."""
 
         self.error_ = np.sqrt((self.psd - self.psd_fit_) ** 2).mean()
+
+
+    def _gen_settings_str(self, description=False):
+        """Generate a string representation of current FOOOF settings.
+
+        Parameters
+        ----------
+        description : bool, optional (default: True)
+            Whether to print out a description with current settings.
+        """
+
+        # Center value for spacing
+        cen_val = 100
+
+        # Parameter descriptions to print out
+        desc = {'bg_use_knee' : 'Whether to fit a knee parameter in background fitting.',
+                'bw_lims'     : 'Possible range of bandwidths for extracted oscillations, in Hz.',
+                'num_oscs'    : 'The maximum number of oscillations that can be extracted.',
+                'min_amp'     : "Minimum absolute amplitude, above background, "
+                                "for an oscillation to be extracted.",
+                'amp_thresh'  : "Threshold, in units of standard deviation,"
+                                "at which to stop searching for oscillations."}
+
+        # Clear description for printing if not requested
+        if not description:
+            desc = {k : '' for k, v in desc.items()}
+
+        # Create output string
+        output = '\n'.join([
+
+            # Header
+            '=' * cen_val,
+            '',
+            'FOOOF - SETTINGS'.center(cen_val),
+            '',
+
+            # Settings - include descriptions if requested
+            *[el for el in ['Fit Knee : {}'.format(self.bg_use_knee).center(cen_val),
+                            '{}'.format(desc['bg_use_knee']).center(cen_val),
+                            'Bandwidth Limits : {}'.format(self.bandwidth_limits).center(cen_val),
+                            '{}'.format(desc['bw_lims']).center(cen_val),
+                            'Max Number of Oscillations : {}'.format(self.max_n_oscs).center(cen_val),
+                            '{}'.format(desc['num_oscs']).center(cen_val),
+                            'Minimum Amplitude : {}'.format(self.min_amp).center(cen_val),
+                            '{}'.format(desc['min_amp']).center(cen_val),
+                            'Amplitude Threshold: {}'.format(self.amp_std_thresh).center(cen_val),
+                            '{}'.format(desc['amp_thresh']).center(cen_val)] if el != ' '*cen_val],
+
+            # Footer
+            '',
+            '=' * cen_val
+        ])
+
+        return output
+
+
+    def _gen_results_str(self):
+        """Generate a string representation of model fit results."""
+
+        if not np.all(self.background_params_):
+            raise ValueError('Model fit has not been run - can not proceed.')
+
+        # Set centering value.
+        cen_val = 100
+
+        # Create output string
+        output = '\n'.join([
+
+            # Header
+            '=' * cen_val,
+            '',
+            ' FOOOF - PSD MODEL'.center(cen_val),
+            '',
+
+            # Frequency range and resolution
+            'The input PSD was modelled in the frequency range: {} - {} Hz'.format(
+                int(np.floor(self.freq_range[0])), int(np.ceil(self.freq_range[1]))).center(cen_val),
+            'Frequency Resolution is {:1.2f} Hz'.format(self.freq_res).center(cen_val),
+            '',
+
+            # Background parameters
+            ('Background Parameters (offset, ' + ('knee, ' if self.bg_use_knee else '') + \
+               'slope): ').center(cen_val),
+            ', '.join(['{:2.4f}'] * len(self.background_params_)).format(
+                *self.background_params_).center(cen_val),
+            '',
+
+            # Oscillation parameters
+            '{} oscillations were found:'.format(
+                len(self.oscillation_params_)).center(cen_val),
+            *['CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]).center(cen_val) \
+              for op in self.oscillation_params_],
+            '',
+
+            # R^2 and error
+            'R^2 of model fit is {:5.4f}'.format(self.r2_).center(cen_val),
+            'Root mean squared error of model fit is {:5.4f}'.format(
+                self.error_).center(cen_val),
+            '',
+
+            # Footer
+            '=' * cen_val
+        ])
+
+        return output

@@ -10,7 +10,7 @@ printf "\n\n\n CLOC OUTPUT (EXCLUDING TESTS): \n"
 cloc fooof --exclude-dir='tests'
 
 printf "\n\n\n CLOC OUTPUT - TEST FILES: \n"
-cloc fooof/tests --exclude-dir='data'
+cloc fooof/tests --exclude-dir='test_files'
 
 # Run Tests & Check Coverage
 printf "\n\n\n RUN TESTS & TEST COVERAGE: \n"

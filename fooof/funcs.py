@@ -1,4 +1,10 @@
-"""Function defintions for FOOOF."""
+"""Function defintions for FOOOF.
+
+NOTES
+-----
+- FOOOF currently (only) uses the exponential and gaussian functions.
+- Linear & Quadratic functions are from previous version, left in for easy swapping back if desired.
+"""
 
 import numpy as np
 
@@ -25,17 +31,15 @@ def gaussian_function(x, *params):
 
     for i in range(0, len(params), 3):
 
-        ctr = params[i]
-        amp = params[i+1]
-        wid = params[i+2]
+        ctr, amp, wid = params[i:i+3]
 
         y = y + amp * np.exp(-(x-ctr)**2 / (2*wid**2))
 
     return y
 
 
-def loglorentzian_function(x, *params):
-    """Log-Lorentzian function to use for fitting 1/f.
+def expo_function(x, *params):
+    """Exponential function to use for fitting 1/f, with a 'knee'.
 
     NOTE: this function requires linear frequency (not log).
 
@@ -44,9 +48,8 @@ def loglorentzian_function(x, *params):
     x : 1d array
         Input x-axis values.
     *params : float
-        Parameters (a, b, c) that define Lorentzian function:
-        y = 10^a * (1/(b + x^c))
-        a: constant; b: knee^2; c: slope past knee
+        Parameters (offset, knee, exp) that define Lorentzian function:
+        y = 10^offset * (1/(knee + x^exp))
 
     Returns
     -------
@@ -55,14 +58,16 @@ def loglorentzian_function(x, *params):
     """
 
     y = np.zeros_like(x)
-    a, b, c = params
-    y = a - np.log10(b + x**c)
+
+    offset, knee, exp = params
+
+    y = y + offset - np.log10(knee + x**exp)
 
     return y
 
 
-def loglorentzian_nk_function(x, *params):
-    """Log-Lorentzian function to use for fitting 1/f, with no knee.
+def expo_nk_function(x, *params):
+    """Exponential function to use for fitting 1/f, with no 'knee'.
 
     NOTE: this function requires linear frequency (not log).
 
@@ -72,7 +77,7 @@ def loglorentzian_nk_function(x, *params):
         Input x-axis values.
     *params : float
         Parameters (a, c) that define Lorentzian function:
-        y = 10^a * (1/(0 + x^c))
+        y = 10^off * (1/(x^exp))
         a: constant; c: slope past knee
 
     Returns
@@ -82,8 +87,10 @@ def loglorentzian_nk_function(x, *params):
     """
 
     y = np.zeros_like(x)
-    a, c = params
-    y = a - np.log10(0 + x**c)
+
+    offset, exp = params
+
+    y = y + offset - np.log10(x**exp)
 
     return y
 
@@ -106,8 +113,7 @@ def linear_function(x, *params):
 
     y = np.zeros_like(x)
 
-    offset = params[0]
-    slope = params[1]
+    offset, slope = params
 
     y = y + offset + (x*slope)
 
@@ -132,9 +138,7 @@ def quadratic_function(x, *params):
 
     y = np.zeros_like(x)
 
-    offset = params[0]
-    slope = params[1]
-    curve = params[2]
+    offset, slope, curve = params
 
     y = y + offset + (x*slope) + ((x**2)*curve)
 
