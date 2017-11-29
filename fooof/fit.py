@@ -18,6 +18,11 @@ from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 ###################################################################################################
 ###################################################################################################
 
+# Check for python3
+import sys
+if sys.version_info[0] < 3:
+    raise ValueError("You should really be using a python3 environment.")
+
 FOOOFResult = namedtuple('FOOOFResult', ['background_params', 'oscillations_params', 'r2', 'error'])
 
 class FOOOF(object):
