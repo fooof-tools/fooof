@@ -100,7 +100,7 @@ class FOOOFGroup(FOOOF):
         return self.group_results
 
 
-    def get_all_dat(self, name, ind=None):
+    def get_all_data(self, name, ind=None):
         """Return all data for a specified attribute across the group.
 
         Parameters
@@ -250,10 +250,10 @@ class FOOOFGroup(FOOOF):
         cen_val = 100
 
         #
-        sls = self.get_all_dat('background_params', 1)
-        cens = self.get_all_dat('oscillations_params', 0)
-        r2s = self.get_all_dat('r2')
-        errors = self.get_all_dat('error')
+        sls = self.get_all_data('background_params', 1)
+        cens = self.get_all_data('oscillations_params', 0)
+        r2s = self.get_all_data('r2')
+        errors = self.get_all_data('error')
 
         # Create output string
         output = '\n'.join([
@@ -307,7 +307,7 @@ class FOOOFGroup(FOOOF):
             Figure axes upon which to plot.
         """
 
-        sls = self.get_all_dat('background_params', 1)
+        sls = self.get_all_data('background_params', 1)
 
         if not ax:
             fig, ax = plt.subplots()
@@ -331,8 +331,8 @@ class FOOOFGroup(FOOOF):
             Figure axes upon which to plot.
         """
 
-        errs = self.get_all_dat('error')
-        r2s = self.get_all_dat('r2')
+        errs = self.get_all_data('error')
+        r2s = self.get_all_data('r2')
 
         if not ax:
             fig, ax = plt.subplots()
@@ -361,7 +361,7 @@ class FOOOFGroup(FOOOF):
             Figure axes upon which to plot.
         """
 
-        cens = self.get_all_dat('oscillations_params', 0)
+        cens = self.get_all_data('oscillations_params', 0)
 
         if not ax:
             fig, ax = plt.subplots()
