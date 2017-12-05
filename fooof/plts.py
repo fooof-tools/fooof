@@ -1,4 +1,4 @@
-"""Plot templates for FOOOF."""
+"""Plot templates for FOOOF data."""
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 ###################################################################################################
 ###################################################################################################
 
-def plot_scatter_1(dat, label=None, title=None, x_val=0, ax=None):
+def plot_scatter_1(dat, label, title=None, x_val=0, ax=None):
     """Plot a scatter plot with the given data.
 
     Parameters
@@ -15,8 +15,10 @@ def plot_scatter_1(dat, label=None, title=None, x_val=0, ax=None):
         Data to plot.
     label : str
         Label for the data, to be set as the y-axis label.
-    title : str
+    title : str, optional
         Title for the plot.
+    x_val : int, optional
+    	Position along the x-axis to plot set of data. default: 0
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
 
