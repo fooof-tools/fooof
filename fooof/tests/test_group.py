@@ -12,7 +12,7 @@ import pkg_resources as pkg
 import numpy as np
 
 from fooof import FOOOFGroup
-from fooof.tests.utils import mk_fake_group_data
+from fooof.synth import mk_fake_group_data
 
 ##########################################################################################
 ##########################################################################################

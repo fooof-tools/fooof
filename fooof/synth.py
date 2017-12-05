@@ -1,4 +1,4 @@
-"""Util functions for FOOOF tests."""
+"""Creating synthetic PSDs for using with, and testing, FOOOF."""
 
 import numpy as np
 
@@ -38,6 +38,7 @@ def mk_fake_data(xs, bgp, oscs, knee=False, nlv=0.005):
 	ys = np.power(10, bg + oscs + noise)
 
 	return xs, ys
+
 
 def mk_fake_group_data(xs, n_psds=5):
 	"""Create a matrix of fake PSDs for testing.

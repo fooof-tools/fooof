@@ -13,7 +13,7 @@ import numpy as np
 import pkg_resources as pkg
 
 from fooof import FOOOF
-from fooof.tests.utils import mk_fake_data
+from fooof.synth import mk_fake_data
 
 ##########################################################################################
 ##########################################################################################
