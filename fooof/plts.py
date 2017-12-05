@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 ###################################################################################################
 ###################################################################################################
 
-def plot_scatter_1(dat, label, title, ax=None):
+def plot_scatter_1(dat, label=None, title=None, x_val=0, ax=None):
     """Plot a scatter plot with the given data.
 
     Parameters
@@ -28,17 +28,20 @@ def plot_scatter_1(dat, label, title, ax=None):
     if not ax:
         fig, ax = plt.subplots()
 
-    ax.scatter(np.zeros_like(dat) + np.random.normal(0, 0.025, dat.shape), dat, s=36, alpha=0.5)
-    ax.set_ylabel(label, fontsize=12)
+    ax.scatter(np.ones_like(dat) * x_val + np.random.normal(0, 0.025, dat.shape), dat, s=36, alpha=0.5)
 
-    ax.set_title(title, fontsize=16)
+    if label:
+	    ax.set_ylabel(label, fontsize=12)
 
-    plt.xticks([0], [label], fontsize=12)
+    if title:
+	    ax.set_title(title, fontsize=16)
+
+    plt.xticks([x_val], [label], fontsize=12)
 
     ax.set_xlim([-0.5, 0.5])
 
 
-def plot_scatter_2(dat_0, label_0, dat_1, label_1, title, ax=None):
+def plot_scatter_2(dat_0, label_0, dat_1, label_1, title=None, ax=None):
     """Plot a scatter plot with two y-axes, with the given data.
 
     Parameters
@@ -66,18 +69,13 @@ def plot_scatter_2(dat_0, label_0, dat_1, label_1, title, ax=None):
 
     ax1 = ax.twinx()
 
-    ax.scatter(np.zeros_like(dat_0) + np.random.normal(0, 0.025, dat_0.shape),
-               dat_0, s=36, alpha=0.5)
-    ax.set_ylabel(label_0, fontsize=12)
+    plot_scatter_1(dat_0, label_0, ax=ax)
+    plot_scatter_1(dat_1, label_1, x_val=1, ax=ax1)
 
-    ax1.scatter(np.ones_like(dat_1) + np.random.normal(0, 0.025, dat_1.shape),
-                dat_1, s=36, alpha=0.5)
-    ax1.set_ylabel(label_1, fontsize=12)
+    if title:
+	    ax.set_title(title, fontsize=16)
 
     ax.set_xlim([-0.5, 1.5])
-
-    ax.set_title(title, fontsize=16)
-
     plt.xticks([0, 1], [label_0, label_1], fontsize=12)
 
 
