@@ -384,7 +384,7 @@ class FOOOF(object):
         return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_, self.error_)
 
 
-    def create_report(self, save_name='FOOOF_Report', save_path=''):
+    def create_report(self, save_name='FOOOF_Report', save_path='', plt_log=False):
         """Generate and save out a report of the current FOOOF fit.
 
         Parameters
@@ -393,6 +393,8 @@ class FOOOF(object):
             Name to give the saved out file.
         save_path : str, optional
             Path to directory in which to save. If not provided, saves to current directory.
+        plt_log : bool, optional
+            Whether or not to plot the frequency axis in log space. default: False
         """
 
         # Set the font description for saving out text with matplotlib
