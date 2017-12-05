@@ -20,3 +20,7 @@ _lint.txt
 # Ignore reports generated during testing
 */tests/test_reports/*
 */tests/test_files/*
+
+# Ignore data files generated in the tutorial
+/tutorial/*.pdf
+/tutorial/*.json
