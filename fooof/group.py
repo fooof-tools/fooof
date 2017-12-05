@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 
 from fooof import FOOOF
+from fooof.plts import plot_scatter_1, plot_scatter_2, plot_hist
 
 ###################################################################################################
 ###################################################################################################
@@ -338,11 +339,11 @@ class FOOOFGroup(FOOOF):
         """
 
         if self.bg_use_knee:
-            self._plot_scatter_2(self.get_all_data('background_params', 1), 'Knee',
+            plot_scatter_2(self.get_all_data('background_params', 1), 'Knee',
                                  self.get_all_data('background_params', 2), 'Slope',
                                  'Background Fit', ax=ax)
         else:
-            self._plot_scatter_1(self.get_all_data('background_params', 1), 'Slope',
+            plot_scatter_1(self.get_all_data('background_params', 1), 'Slope',
                                  'Background Fit', ax=ax)
 
 
@@ -355,7 +356,7 @@ class FOOOFGroup(FOOOF):
             Figure axes upon which to plot.
         """
 
-        self._plot_scatter_2(self.get_all_data('error'), 'Error',
+        plot_scatter_2(self.get_all_data('error'), 'Error',
                              self.get_all_data('r2'), 'R^2', 'Goodness of Fit', ax=ax)
 
 
@@ -368,106 +369,8 @@ class FOOOFGroup(FOOOF):
             Figure axes upon which to plot.
         """
 
-        self._plot_hist(self.get_all_data('oscillations_params', 0),
+        plot_hist(self.get_all_data('oscillations_params', 0),
                         'Center Frequency', 'Oscillations', ax=ax)
-
-
-    @staticmethod
-    def _plot_scatter_1(dat, label, title, ax=None):
-        """Plot a scatter plot with the given data.
-
-        Parameters
-        ----------
-        dat : 1d array
-            Data to plot.
-        label : str
-            Label for the data, to be set as the y-axis label.
-        title : str
-            Title for the plot.
-        ax : matplotlib.Axes, optional
-            Figure axes upon which to plot.
-        """
-
-        if not ax:
-            fig, ax = plt.subplots()
-
-        ax.scatter(np.zeros_like(dat) + np.random.normal(0, 0.025, dat.shape), dat, s=36, alpha=0.5)
-        ax.set_ylabel(label, fontsize=12)
-
-        ax.set_title(title, fontsize=16)
-
-        plt.xticks([0], [label], fontsize=12)
-
-        ax.set_xlim([-0.5, 0.5])
-
-
-    @staticmethod
-    def _plot_scatter_2(dat_0, label_0, dat_1, label_1, title, ax=None):
-        """Plot a scatter plot with two y-axes, with the given data.
-
-        Parameters
-        ----------
-        dat_0 : 1d array
-            Data to plot on the first axis.
-        label_0 : str
-            Label for the data on the first axis, to be set as the y-axis label.
-        dat_1 : 1d array
-            Data to plot on the second axis.
-        label_0 : str
-            Label for the data on the second axis, to be set as the y-axis label.
-        title : str
-            Title for the plot.
-        ax : matplotlib.Axes, optional
-            Figure axes upon which to plot.
-        """
-
-        if not ax:
-            fig, ax = plt.subplots()
-
-        ax1 = ax.twinx()
-
-        ax.scatter(np.zeros_like(dat_0) + np.random.normal(0, 0.025, dat_0.shape),
-                   dat_0, s=36, alpha=0.5)
-        ax.set_ylabel(label_0, fontsize=12)
-
-        ax1.scatter(np.ones_like(dat_1) + np.random.normal(0, 0.025, dat_1.shape),
-                    dat_1, s=36, alpha=0.5)
-        ax1.set_ylabel(label_1, fontsize=12)
-
-        ax.set_xlim([-0.5, 1.5])
-
-        ax.set_title(title, fontsize=16)
-
-        plt.xticks([0, 1], [label_0, label_1], fontsize=12)
-
-
-    @staticmethod
-    def _plot_hist(dat, label, title, n_bins=20, ax=None):
-        """Plot a histogram with the given data.
-
-        Parameters
-        ----------
-        dat : 1d array
-            Data to plot.
-        label : str
-            Label for the data, to be set as the y-axis label.
-        title : str
-            Title for the plot.
-        n_bins : int, optional
-            Number of bins to use for the histogram. Default: 20
-        ax : matplotlib.Axes, optional
-            Figure axes upon which to plot.
-        """
-
-        if not ax:
-            fig, ax = plt.subplots()
-
-        ax.hist(dat, n_bins, alpha=0.8)
-
-        ax.set_xlabel(label, fontsize=12)
-        ax.set_ylabel('Count', fontsize=12)
-
-        ax.set_title(title, fontsize=16)
 
 
 FOOOFGroup.__doc__ = FOOOF.__doc__
