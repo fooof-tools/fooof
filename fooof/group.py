@@ -147,13 +147,24 @@ class FOOOFGroup(FOOOF):
         gs = gridspec.GridSpec(2, 2, height_ratios=[1, 1.2])
 
         ax0 = plt.subplot(gs[0, 0])
-        self._plot_bg(ax0)
+        #self._plot_bg(ax0)
+        if self.bg_use_knee:
+            self._plot_scatter_2(self.get_all_data('background_params', 1), 'Knee',
+                                 self.get_all_data('background_params', 2), 'Slope',
+                                 'Background Fit', ax=ax0)
+        else:
+            self._plot_scatter_1(self.get_all_data('background_params', 1), 'Slope',
+                                 'Background Fit', ax=ax0)
 
         ax1 = plt.subplot(gs[0, 1])
-        self._plot_fit(ax1)
+        #self._plot_fit(ax1)
+        self._plot_scatter_2(self.get_all_data('error'), 'Error',
+                             self.get_all_data('r2'), 'R^2', 'Goodness of Fit', ax=ax1)
 
         ax2 = plt.subplot(gs[1, :])
-        self._plot_oscs(ax2)
+        #self._plot_oscs(ax2)
+        self._plot_hist(self.get_all_data('oscillations_params', 0),
+                        'Center Frequency', 'Oscillations', ax=ax2)
 
         if save_fig:
             plt.savefig(os.path.join(save_path, save_name))
@@ -189,13 +200,24 @@ class FOOOFGroup(FOOOF):
 
         # Add plots (same as from plot())
         ax1 = plt.subplot(gs[1, 0])
-        self._plot_bg(ax1)
+        #self._plot_bg(ax1)
+        if self.bg_use_knee:
+            self._plot_scatter_2(self.get_all_data('background_params', 1), 'Knee',
+                                 self.get_all_data('background_params', 2), 'Slope',
+                                 'Background Fit', ax=ax1)
+        else:
+            self._plot_scatter_1(self.get_all_data('background_params', 1), 'Slope',
+                                 'Background Fit', ax=ax1)
 
         ax2 = plt.subplot(gs[1, 1])
-        self._plot_fit(ax2)
+        #self._plot_fit(ax2)
+        self._plot_scatter_2(self.get_all_data('error'), 'Error',
+                             self.get_all_data('r2'), 'R^2', 'Goodness of Fit', ax=ax2)
 
         ax3 = plt.subplot(gs[2, :])
-        self._plot_oscs(ax3)
+        #self._plot_oscs(ax3)
+        self._plot_hist(self.get_all_data('oscillations_params', 0),
+                        'Center Frequency', 'Oscillations', ax=ax3)
 
         # Save out the report
         plt.savefig(os.path.join(save_path, save_name + '.pdf'))
@@ -261,11 +283,16 @@ class FOOOFGroup(FOOOF):
         # Set centering value
         cen_val = 100
 
-        #
-        sls = self.get_all_data('background_params', 1)
+        # Extract all the relevant data for printing
         cens = self.get_all_data('oscillations_params', 0)
         r2s = self.get_all_data('r2')
         errors = self.get_all_data('error')
+        if self.bg_use_knee:
+            kns = self.get_all_data('background_params', 1)
+            sls = self.get_all_data('background_params', 2)
+        else:
+            kns = np.array([0])
+            sls = self.get_all_data('background_params', 1)
 
         # Create output string
         output = '\n'.join([
@@ -287,20 +314,28 @@ class FOOOFGroup(FOOOF):
             '',
 
             # Background parameters - knee fit status, and quick slope description
-            'PSDs were fit {} knee fitting.'.format('with' if self.bg_use_knee else 'without').center(cen_val),
+            'PSDs were fit {} a knee.'.format('with' if self.bg_use_knee else 'without').center(cen_val),
             '',
+            *[el for el in ['Background Knee Values'.center(cen_val),
+                            'Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
+                            .format(kns.min(), kns.max(), kns.mean()).center(cen_val)
+                           ] if self.bg_use_knee],
             'Background Slope Values'.center(cen_val),
-            'Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'.format(sls.min(), sls.max(), sls.mean()).center(cen_val),
+            'Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
+            .format(sls.min(), sls.max(), sls.mean()).center(cen_val),
             '',
 
             # Oscillation Parameters
-            'In total {} oscillations were extracted from the group'.format(len(cens)).center(cen_val),
+            'In total {} oscillations were extracted from the group'
+            .format(len(cens)).center(cen_val),
             '',
 
             # Fitting stats - error and r^2
             'Fitting Performance'.center(cen_val),
-            '   R2s -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'.format(r2s.min(), r2s.max(), r2s.mean()).center(cen_val),
-            'Errors -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'.format(errors.min(), errors.max(), errors.mean()).center(cen_val),
+            '   R2s -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
+            .format(r2s.min(), r2s.max(), r2s.mean()).center(cen_val),
+            'Errors -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
+            .format(errors.min(), errors.max(), errors.mean()).center(cen_val),
             '',
 
             # Footer
@@ -310,79 +345,102 @@ class FOOOFGroup(FOOOF):
         return output
 
 
-    def _plot_bg(self, ax=None):
-        """Plot the background parameters, from across the group.
+    @staticmethod
+    def _plot_scatter_1(dat, label, title, ax=None):
+        """Plot a scatter plot with the given data.
 
         Parameters
         ----------
+        dat : 1d array
+            Data to plot.
+        label : str
+            Label for the data, to be set as the y-axis label.
+        title : str
+            Title for the plot.
         ax : matplotlib.Axes, optional
             Figure axes upon which to plot.
         """
-
-        sls = self.get_all_data('background_params', 1)
 
         if not ax:
             fig, ax = plt.subplots()
 
-        ax.scatter(np.zeros_like(sls) + np.random.normal(0, 0.025, sls.shape), sls, s=36, alpha=0.5)
+        ax.scatter(np.zeros_like(dat) + np.random.normal(0, 0.025, dat.shape), dat, s=36, alpha=0.5)
+        ax.set_ylabel(label, fontsize=12)
 
-        ax.set_title('Slope Values', fontsize=16)
-        ax.set_ylabel('Slope Value', fontsize=12)
+        ax.set_title(title, fontsize=16)
 
-        plt.xticks([0], ['Slope'], fontsize=12)
+        plt.xticks([0], [label], fontsize=12)
 
         ax.set_xlim([-0.4, 0.4])
 
 
-    def _plot_fit(self, ax=None):
-        """Plot the goodness of fit measures - error & r^2, across the group.
+    @staticmethod
+    def _plot_scatter_2(dat_0, label_0, dat_1, label_1, title, ax=None):
+        """Plot a scatter plot with two y-axes, with the given data.
 
         Parameters
         ----------
+        dat_0 : 1d array
+            Data to plot on the first axis.
+        label_0 : str
+            Label for the data on the first axis, to be set as the y-axis label.
+        dat_1 : 1d array
+            Data to plot on the second axis.
+        label_0 : str
+            Label for the data on the second axis, to be set as the y-axis label.
+        title : str
+            Title for the plot.
         ax : matplotlib.Axes, optional
             Figure axes upon which to plot.
         """
-
-        errs = self.get_all_data('error')
-        r2s = self.get_all_data('r2')
 
         if not ax:
             fig, ax = plt.subplots()
 
         ax1 = ax.twinx()
 
-        ax.scatter(np.zeros_like(errs) + np.random.normal(0, 0.025, errs.shape), errs, s=36, alpha=0.5)
-        ax.set_ylabel('Error', fontsize=12)
+        ax.scatter(np.zeros_like(dat_0) + np.random.normal(0, 0.025, dat_0.shape),
+                   dat_0, s=36, alpha=0.5)
+        ax.set_ylabel(label_0, fontsize=12)
 
-        ax1.scatter(np.ones_like(r2s) + np.random.normal(0, 0.025, r2s.shape), r2s, s=36, alpha=0.5)
-        ax1.set_ylabel('R^2', fontsize=12)
+        ax1.scatter(np.ones_like(dat_1) + np.random.normal(0, 0.025, dat_1.shape),
+                    dat_1, s=36, alpha=0.5)
+        ax1.set_ylabel(label_1, fontsize=12)
 
         ax.set_xlim([-0.5, 1.5])
 
-        ax.set_title('Goodness of Fit', fontsize=16)
+        ax.set_title(title, fontsize=16)
 
-        plt.xticks([0, 1], ['Error', 'R^2'], fontsize=12)
+        plt.xticks([0, 1], [label_0, label_1], fontsize=12)
 
 
-    def _plot_oscs(self, ax=None):
-        """Plot the oscillations parameters, from across the group.
+    @staticmethod
+    def _plot_hist(dat, label, title, n_bins=20, ax=None):
+        """Plot a histogram with the given data.
 
         Parameters
         ----------
+        dat : 1d array
+            Data to plot.
+        label : str
+            Label for the data, to be set as the y-axis label.
+        title : str
+            Title for the plot.
+        n_bins : int, optional
+            Number of bins to use for the histogram. Default: 20
         ax : matplotlib.Axes, optional
             Figure axes upon which to plot.
         """
 
-        cens = self.get_all_data('oscillations_params', 0)
-
         if not ax:
             fig, ax = plt.subplots()
 
-        ax.hist(cens, 20, alpha=0.8);
+        ax.hist(dat, n_bins, alpha=0.8)
 
-        ax.set_title('Oscillations - Center Frequencies', fontsize=16)
-        ax.set_xlabel('Frequency', fontsize=12)
+        ax.set_xlabel(label, fontsize=12)
         ax.set_ylabel('Count', fontsize=12)
+
+        ax.set_title(title, fontsize=16)
 
 
 FOOOFGroup.__doc__ = FOOOF.__doc__
