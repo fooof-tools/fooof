@@ -416,7 +416,7 @@ class FOOOF(object):
 
         # Second - data plot
         ax1 = plt.subplot(grid[1])
-        self.plot(ax=ax1)
+        self.plot(plt_log=plt_log, ax=ax1)
 
         # Third - FOOOF settings
         ax2 = plt.subplot(grid[2])
