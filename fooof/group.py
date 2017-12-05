@@ -144,7 +144,7 @@ class FOOOFGroup(FOOOF):
         """
 
         fig = plt.figure(figsize=(14, 10))
-        gs = gridspec.GridSpec(2, 2, height_ratios=[1, 1.2])
+        gs = gridspec.GridSpec(2, 2, wspace=0.35, hspace=0.25, height_ratios=[1, 1.2])
 
         # Background parameters plot
         ax0 = plt.subplot(gs[0, 0])
@@ -180,7 +180,7 @@ class FOOOFGroup(FOOOF):
 
         # Initialize figure
         fig = plt.figure(figsize=(16, 20))
-        gs = gridspec.GridSpec(3, 2, height_ratios=[1.5, 1.0, 1.2])
+        gs = gridspec.GridSpec(3, 2, wspace=0.35, hspace=0.25, height_ratios=[1.5, 1.0, 1.2])
 
         # First / top: text results
         ax0 = plt.subplot(gs[0, :])
@@ -398,7 +398,7 @@ class FOOOFGroup(FOOOF):
 
         plt.xticks([0], [label], fontsize=12)
 
-        ax.set_xlim([-0.4, 0.4])
+        ax.set_xlim([-0.5, 0.5])
 
 
     @staticmethod
