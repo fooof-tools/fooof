@@ -202,8 +202,8 @@ class FOOOFGroup(FOOOF):
         plt.close()
 
 
-    def load_group_results(self, file_name='fooof_group_results', file_path=''):
-        """Load data from file, reconstructing the group_results.
+    def load(self, file_name='fooof_group_results', file_path=''):
+        """Load FOOOFGroup data from file, reconstructing the group_results.
 
         Parameters
         ----------
@@ -223,7 +223,7 @@ class FOOOFGroup(FOOOF):
 
                 # For each line, grab the FOOOFResults
                 try:
-                    self.load(f_obj)
+                    self._load(f_obj)
                     self.group_results.append(self.get_results())
 
                 # Break off when get a JSON error - end of the file
@@ -232,6 +232,18 @@ class FOOOFGroup(FOOOF):
 
         # Reset peripheral data from last loaded result, keeping freqs info
         self._reset_dat(False)
+
+
+    def _load(self, *args, **kwargs):
+        """Rename FOOOF.load for FOOOFGroup object.
+
+        Notes
+        -----
+        - Creates an alias to (with the same API as) FOOOF.load(), for internal use.
+        - This is done for a cleaner API: so that FOOOFGroup.load() loads a group data file.
+        """
+
+        super().load(*args, **kwargs)
 
 
     def _gen_results_str(self):

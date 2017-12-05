@@ -50,7 +50,7 @@ def test_fooof_group_fit_save_load():
 	assert os.path.exists(os.path.join(file_path, file_name + '.json'))
 
 	nfg = FOOOFGroup()
-	nfg.load_group_results(file_name=file_name, file_path=file_path)
+	nfg.load(file_name=file_name, file_path=file_path)
 
 	out = nfg.get_group_results()
 
