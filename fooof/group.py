@@ -52,7 +52,7 @@ class FOOOFGroup(FOOOF):
         self.print_results()
 
 
-    def fit_group(self, freqs, psds, freq_range=None, save_dat=False, file_name='fooof_group_results', file_path=''):
+    def fit(self, freqs, psds, freq_range=None, save_dat=False, file_name='fooof_group_results', file_path=''):
         """Run FOOOF across a group of PSDs.
 
         Parameters
@@ -81,7 +81,7 @@ class FOOOFGroup(FOOOF):
         # Fit FOOOF across matrix of PSDs.
         #  Note: shape checking gets performed in fit - wrong shapes/orientations will fail there.
         for psd in psds:
-            self.fit(freqs, psd, freq_range)
+            self._fit(freqs, psd, freq_range)
             self.group_results.append(self.get_results())
             if save_dat:
                 self.save(f_obj, save_results=True)
@@ -240,6 +240,18 @@ class FOOOFGroup(FOOOF):
         self._reset_dat(False)
 
 
+    def _fit(self, *args, **kwargs):
+        """Rename FOOOF.fit for FOOOFGroup object.
+
+        Notes
+        -----
+        - Creates an alias to (with the same API as) FOOOF.fit(), for internal use.
+        - This is done for a cleaner API: so that FOOOFGroup.fit() fits a group data file.
+        """
+
+        super().fit(*args, **kwargs)
+
+
     def _load(self, *args, **kwargs):
         """Rename FOOOF.load for FOOOFGroup object.
 
@@ -340,11 +352,11 @@ class FOOOFGroup(FOOOF):
 
         if self.bg_use_knee:
             plot_scatter_2(self.get_all_data('background_params', 1), 'Knee',
-                                 self.get_all_data('background_params', 2), 'Slope',
-                                 'Background Fit', ax=ax)
+                           self.get_all_data('background_params', 2), 'Slope',
+                           'Background Fit', ax=ax)
         else:
             plot_scatter_1(self.get_all_data('background_params', 1), 'Slope',
-                                 'Background Fit', ax=ax)
+                           'Background Fit', ax=ax)
 
 
     def _plot_gd(self, ax=None):
@@ -357,7 +369,7 @@ class FOOOFGroup(FOOOF):
         """
 
         plot_scatter_2(self.get_all_data('error'), 'Error',
-                             self.get_all_data('r2'), 'R^2', 'Goodness of Fit', ax=ax)
+                       self.get_all_data('r2'), 'R^2', 'Goodness of Fit', ax=ax)
 
 
     def _plot_osc_cens(self, ax=None):
@@ -370,7 +382,7 @@ class FOOOFGroup(FOOOF):
         """
 
         plot_hist(self.get_all_data('oscillations_params', 0),
-                        'Center Frequency', 'Oscillations', ax=ax)
+                  'Center Frequency', 'Oscillations', ax=ax)
 
 
 FOOOFGroup.__doc__ = FOOOF.__doc__

@@ -29,7 +29,7 @@ def test_fooof_group_fit():
 
 	fg = FOOOFGroup()
 
-	fg.fit_group(xs, ys)
+	fg.fit(xs, ys)
 
 	out = fg.get_group_results()
 
@@ -45,7 +45,7 @@ def test_fooof_group_fit_save_load():
 
 	fg = FOOOFGroup()
 
-	fg.fit_group(xs, ys, save_dat=True, file_name=file_name, file_path=file_path)
+	fg.fit(xs, ys, save_dat=True, file_name=file_name, file_path=file_path)
 
 	assert os.path.exists(os.path.join(file_path, file_name + '.json'))
 
@@ -63,7 +63,7 @@ def test_fooof_group_plot_get_report():
 
 	fg = FOOOFGroup()
 
-	fg.fit_group(xs, ys)
+	fg.fit(xs, ys)
 
 	fg.print_results()
 
