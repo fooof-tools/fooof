@@ -18,7 +18,7 @@ def plot_scatter_1(dat, label, title=None, x_val=0, ax=None):
     title : str, optional
         Title for the plot.
     x_val : int, optional
-    	Position along the x-axis to plot set of data. default: 0
+        Position along the x-axis to plot set of data. default: 0
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
 
@@ -33,10 +33,10 @@ def plot_scatter_1(dat, label, title=None, x_val=0, ax=None):
     ax.scatter(np.ones_like(dat) * x_val + np.random.normal(0, 0.025, dat.shape), dat, s=36, alpha=0.5)
 
     if label:
-	    ax.set_ylabel(label, fontsize=12)
+        ax.set_ylabel(label, fontsize=12)
 
     if title:
-	    ax.set_title(title, fontsize=16)
+        ax.set_title(title, fontsize=16)
 
     plt.xticks([x_val], [label], fontsize=12)
 
@@ -75,7 +75,7 @@ def plot_scatter_2(dat_0, label_0, dat_1, label_1, title=None, ax=None):
     plot_scatter_1(dat_1, label_1, x_val=1, ax=ax1)
 
     if title:
-	    ax.set_title(title, fontsize=16)
+        ax.set_title(title, fontsize=16)
 
     ax.set_xlim([-0.5, 1.5])
     plt.xticks([0, 1], [label_0, label_1], fontsize=12)
