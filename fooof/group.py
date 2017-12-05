@@ -131,7 +131,7 @@ class FOOOFGroup(FOOOF):
 
 
     def plot(self, save_fig=False, save_name='FOOOF_fit.png', save_path=''):
-        """Plot some data descriptions of the group data.
+        """Plot a multiplot figure of several aspects of the group data.
 
         Parameters
         ----------
@@ -146,25 +146,17 @@ class FOOOFGroup(FOOOF):
         fig = plt.figure(figsize=(14, 10))
         gs = gridspec.GridSpec(2, 2, height_ratios=[1, 1.2])
 
+        # Background parameters plot
         ax0 = plt.subplot(gs[0, 0])
-        #self._plot_bg(ax0)
-        if self.bg_use_knee:
-            self._plot_scatter_2(self.get_all_data('background_params', 1), 'Knee',
-                                 self.get_all_data('background_params', 2), 'Slope',
-                                 'Background Fit', ax=ax0)
-        else:
-            self._plot_scatter_1(self.get_all_data('background_params', 1), 'Slope',
-                                 'Background Fit', ax=ax0)
+        self._plot_bg(ax0)
 
+        # Goodness of fit plot
         ax1 = plt.subplot(gs[0, 1])
-        #self._plot_fit(ax1)
-        self._plot_scatter_2(self.get_all_data('error'), 'Error',
-                             self.get_all_data('r2'), 'R^2', 'Goodness of Fit', ax=ax1)
+        self._plot_gd(ax1)
 
+        # Oscillations plot
         ax2 = plt.subplot(gs[1, :])
-        #self._plot_oscs(ax2)
-        self._plot_hist(self.get_all_data('oscillations_params', 0),
-                        'Center Frequency', 'Oscillations', ax=ax2)
+        self._plot_osc_cens(ax2)
 
         if save_fig:
             plt.savefig(os.path.join(save_path, save_name))
@@ -198,26 +190,17 @@ class FOOOFGroup(FOOOF):
         ax0.set_xticks([])
         ax0.set_yticks([])
 
-        # Add plots (same as from plot())
+        # Background parameters plot
         ax1 = plt.subplot(gs[1, 0])
-        #self._plot_bg(ax1)
-        if self.bg_use_knee:
-            self._plot_scatter_2(self.get_all_data('background_params', 1), 'Knee',
-                                 self.get_all_data('background_params', 2), 'Slope',
-                                 'Background Fit', ax=ax1)
-        else:
-            self._plot_scatter_1(self.get_all_data('background_params', 1), 'Slope',
-                                 'Background Fit', ax=ax1)
+        self._plot_bg(ax1)
 
+        # Goodness of fit plot
         ax2 = plt.subplot(gs[1, 1])
-        #self._plot_fit(ax2)
-        self._plot_scatter_2(self.get_all_data('error'), 'Error',
-                             self.get_all_data('r2'), 'R^2', 'Goodness of Fit', ax=ax2)
+        self._plot_gd(ax2)
 
+        # Oscillations plot
         ax3 = plt.subplot(gs[2, :])
-        #self._plot_oscs(ax3)
-        self._plot_hist(self.get_all_data('oscillations_params', 0),
-                        'Center Frequency', 'Oscillations', ax=ax3)
+        self._plot_osc_cens(ax3)
 
         # Save out the report
         plt.savefig(os.path.join(save_path, save_name + '.pdf'))
@@ -343,6 +326,50 @@ class FOOOFGroup(FOOOF):
         ])
 
         return output
+
+
+    def _plot_bg(self, ax=None):
+        """Plot background fit parameters, in a scatter plot.
+
+        Parameters
+        ----------
+        ax : matplotlib.Axes, optional
+            Figure axes upon which to plot.
+        """
+
+        if self.bg_use_knee:
+            self._plot_scatter_2(self.get_all_data('background_params', 1), 'Knee',
+                                 self.get_all_data('background_params', 2), 'Slope',
+                                 'Background Fit', ax=ax)
+        else:
+            self._plot_scatter_1(self.get_all_data('background_params', 1), 'Slope',
+                                 'Background Fit', ax=ax)
+
+
+    def _plot_gd(self, ax=None):
+        """Plot goodness of fit results, in a scatter plot.
+
+        Parameters
+        ----------
+        ax : matplotlib.Axes, optional
+            Figure axes upon which to plot.
+        """
+
+        self._plot_scatter_2(self.get_all_data('error'), 'Error',
+                             self.get_all_data('r2'), 'R^2', 'Goodness of Fit', ax=ax)
+
+
+    def _plot_osc_cens(self, ax=None):
+        """Plot oscillation center frequencies, in a histogram.
+
+        Parameters
+        ----------
+        ax : matplotlib.Axes, optional
+            Figure axes upon which to plot.
+        """
+
+        self._plot_hist(self.get_all_data('oscillations_params', 0),
+                        'Center Frequency', 'Oscillations', ax=ax)
 
 
     @staticmethod
