@@ -431,8 +431,8 @@ class FOOOF(object):
         plt.close()
 
 
-    def save(self, save_file='fooof_dat', save_path='',
-             save_results=False, save_settings=False, save_dat=False):
+    def save(self, save_file='fooof_dat', save_path='', save_results=False,
+             save_settings=False, save_dat=False, append=False,):
         """Save out data, results and/or settings. Saves out to a JSON file.
 
         Parameters
@@ -441,12 +441,15 @@ class FOOOF(object):
             File to which to save data.
         save_path : str
             Path to directory to which the save. If not provided, saves to current directory.
-        save_settings : bool, optional
-            Whether to save out FOOOF settings.
         save_results : bool, optional
             Whether to save out FOOOF model fit results.
+        save_settings : bool, optional
+            Whether to save out FOOOF settings.
         save_dat : bool, optional
             Whether to save out input data.
+        append : bool, optional
+            Whether to append to an existing file, if available. default: False
+                This option is only valid (and only used) if save_file is a str.
         """
 
         # Get dictionary of all attributes
@@ -463,11 +466,18 @@ class FOOOF(object):
         # Keep only requested vars
         obj_dict = dict_select_keys(obj_dict, keep)
 
-        # Save out to json
-        if isinstance(save_file, str):
+        # Save out - create new file, (creates a JSON file)
+        if isinstance(save_file, str) and not append:
             with open(os.path.join(save_path, save_file + '.json'), 'w') as outfile:
                 json.dump(obj_dict, outfile)
 
+        # Save out - append to file_name (appends to a JSONlines file)
+        if isinstance(save_file, str) and append:
+            with open(os.path.join(save_path, save_file + '.json'), 'a') as outfile:
+                json.dump(obj_dict, outfile)
+                outfile.write('\n')
+
+        # Save out - append to given file object (appends to a JSONlines file)
         elif isinstance(save_file, io.IOBase):
             json.dump(obj_dict, save_file)
             save_file.write('\n')
