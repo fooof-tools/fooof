@@ -35,29 +35,21 @@ def test_fooof_group_fit():
 
 	assert out
 
-def test_fooof_group_save_asyougo_load():
-	"""Check that FOOOFGroup saves (as-you-go) and loads."""
+def test_fooof_group_fit_par():
+	"""Test FOOOFGroup fit, running in parallel."""
 
 	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
 
-	file_name = 'test_fooof_group'
-	file_path = pkg.resource_filename(__name__, 'test_files')
-
 	fg = FOOOFGroup()
 
-	fg.fit(xs, ys, save_dat=True, save_name=file_name, save_path=file_path)
+	fg.fit(xs, ys, n_jobs=-1)
 
-	assert os.path.exists(os.path.join(file_path, file_name + '.json'))
-
-	nfg = FOOOFGroup()
-	nfg.load(file_name=file_name, file_path=file_path)
-
-	out = nfg.get_group_results()
+	out = fg.get_group_results()
 
 	assert out
 
-def test_fooof_group_save_after_load():
-	"""Test that FOOOFGroup saves (after-running) and loads, including settings & results."""
+def test_fooof_group_save_load():
+	"""Test that FOOOFGroup saves and loads, including settings & results."""
 
 	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
 
