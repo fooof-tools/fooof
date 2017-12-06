@@ -11,14 +11,16 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from scipy.optimize import curve_fit
 
-from fooof.utils import group_three, trim_psd, get_attribute_names
+from fooof.utils import trim_psd, mk_freq_vector
+from fooof.utils import group_three, get_attribute_names, check_array_dim
 from fooof.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
 from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 
 ###################################################################################################
 ###################################################################################################
 
-FOOOFResult = namedtuple('FOOOFResult', ['background_params', 'oscillation_params', 'r2', 'error'])
+FOOOFResult = namedtuple('FOOOFResult', ['background_params', 'oscillation_params',
+                                         'r2', 'error', 'gaussian_params'])
 
 class FOOOF(object):
     """Model the physiological power spectrum as oscillatory peaks and 1/f background.
@@ -177,6 +179,34 @@ class FOOOF(object):
         self._oscillation_fit = None
 
 
+    @classmethod
+    def from_group(cls, fg, ind, regenerate=False):
+        """Initialize a FOOOF object from specified data in a FOOOFGroup object.
+
+        Parameters
+        ----------
+        fg : FOOOFGroup() object
+            An object with FOOOFResults available.
+        ind : int
+            The index of the FOOOFResult in FOOOFGroup.group_results to load.
+
+        Returns
+        -------
+        inst : FOOOF() object
+            The FOOOFResult data loaded into a FOOOF object.
+        """
+
+        # Initialize instance, inheriting settings from FOOOFGroup object, and copy over frequency information
+        inst = cls(fg.bandwidth_limits, fg.max_n_oscs, fg.min_amp, fg.amp_std_thresh, fg.bg_use_knee, fg.verbose)
+        inst.freq_range, inst.freq_res = fg.freq_range, fg.freq_res
+        inst.freqs = mk_freq_vector(inst.freq_range, inst.freq_res)
+
+        # Add results data from specified FOOOFResult, copy over frequency information, and infer knee
+        inst.add_results(fg.group_results[ind], regenerate=regenerate)
+
+        return inst
+
+
     def add_data(self, freqs, psd, freq_range=None):
         """Add data (frequencies and PSD values) to object.
 
@@ -219,6 +249,27 @@ class FOOOF(object):
 
         # Set the actual frequency range used
         self.freq_range = [self.freqs.min(), self.freqs.max()]
+
+
+    def add_results(self, fooof_result, regenerate=False):
+        """Add results data back into object from a FOOOFResult object.
+
+        Parameters
+        ----------
+        fooof_result : FOOOFResult
+            An object containing the results from fitting a FOOOF model.
+        regenerate : bool, optional
+            Whether to regenerate the model fits from the given fit parameters. default : False
+        """
+
+        self.background_params_ = fooof_result.background_params
+        self.oscillation_params_ = fooof_result.oscillation_params
+        self.r2_ = fooof_result.r2
+        self.error_ = fooof_result.error
+        self._gaussian_params = fooof_result.gaussian_params
+
+        if regenerate:
+            self._regenerate_model()
 
 
     def model(self, freqs=None, psd=None, freq_range=None, plt_log=False):
@@ -380,7 +431,8 @@ class FOOOF(object):
     def get_results(self):
         """Return model fit parameters and error."""
 
-        return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_, self.error_)
+        return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_,
+                           self.error_, self._gaussian_params)
 
 
     def create_report(self, save_name='FOOOF_Report', save_path='', plt_log=False):
@@ -511,38 +563,32 @@ class FOOOF(object):
         for key in dat.keys():
             setattr(self, key, dat[key])
 
-        # If settings not loaded from file, clear from object
-        #  So that default settings, which are potentially wrong for loaded data, aren't kept
+        # If settings not loaded from file, clear from object, so that default
+        #  settings, which are potentially wrong for loaded data, aren't kept
         if not set(attributes['settings']).issubset(set(dat.keys())):
-            for setting in attributes['all_settings']:
-                setattr(self, setting, None)
+            self._clear_settings()
 
-            # Infer and set background function, if settings not explicit, but results available
-            #  Given results, can tell which function was used from the length of bg_params
+            # Infer whether knee fitting was used, if background params have been loaded
             if np.all(self.background_params_):
-                if len(self.background_params_) == 3:
-                    self.bg_use_knee = True
-                    self._bg_fit_func = expo_function
-                else:
-                    self.bg_use_knee = False
-                    self._bg_fit_func = expo_nk_function
-                # Also reset oscillation_params, if it happens to be empty, to maintain shape
-                if self.oscillation_params_.ndim == 1:
-                    self.oscillation_params_ = np.empty([0, 3])
+                self._infer_knee()
 
-        # If settings were loaded, reset internal settings so that they are consistent
+        # Otherwise (settings were loaded), reset internal settings so that they are consistent
         else:
             self._reset_settings()
 
-        # Reconstruct frequency vector
+        # If results loaded, check dimensions of osc/gauss parameters
+        #  This fixes an issue where they end up the wrong shape if they are empty (no oscs)
+        if set(attributes['results']).issubset(set(dat.keys())):
+            self.oscillation_params_ = check_array_dim(self.oscillation_params_)
+            self._gaussian_params = check_array_dim(self._gaussian_params)
+
+        # Reconstruct frequency vector, if data available to do so
         if self.freq_res:
-            self.freqs = np.arange(self.freq_range[0], self.freq_range[1]+self.freq_res, self.freq_res)
+            self.freqs = mk_freq_vector(self.freq_range, self.freq_res)
 
         # Recreate PSD model & components
         if np.all(self.freqs) and np.all(self.background_params_):
-            self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
-            self._oscillation_fit = self._create_osc_fit(self.freqs, self._gaussian_params)
-            self.psd_fit_ = self._oscillation_fit + self._background_fit
+            self._regenerate_model()
 
 
     def _quick_background_fit(self, freqs, psd):
@@ -1008,3 +1054,31 @@ class FOOOF(object):
         ])
 
         return output
+
+
+    def _clear_settings(self):
+        """Clears all setting for current instance, setting them all to None."""
+
+        attributes = get_attribute_names()
+        for setting in attributes['all_settings']:
+            setattr(self, setting, None)
+
+
+    def _infer_knee(self):
+        """Infer from background params, whether knee fitting was used, and update settings."""
+
+        #  Given results, can tell which function was used from the length of bg_params
+        if len(self.background_params_) == 3:
+            self.bg_use_knee = True
+            self._bg_fit_func = expo_function
+        else:
+            self.bg_use_knee = False
+            self._bg_fit_func = expo_nk_function
+
+
+    def _regenerate_model(self):
+        """Regenerate model fit from parameters."""
+
+        self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
+        self._oscillation_fit = self._create_osc_fit(self.freqs, self._gaussian_params)
+        self.psd_fit_ = self._oscillation_fit + self._background_fit
