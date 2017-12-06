@@ -6,6 +6,7 @@ from json import JSONDecodeError
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
+from sklearn.externals.joblib import Parallel, delayed
 
 from fooof import FOOOF
 from fooof.plts import plot_scatter_1, plot_scatter_2, plot_hist
@@ -52,8 +53,9 @@ class FOOOFGroup(FOOOF):
         self.print_results()
 
 
-    def fit(self, freqs, psds, freq_range=None, save_dat=False, save_name='fooof_group_results', save_path=''):
-        """Run FOOOF across a group of PSDs.
+    def fit(self, freqs, psds, freq_range=None, save_dat=False,
+            save_name='fooof_group_results', save_path='', parallel=False):
+        """Run FOOOF across a group of PSDs, optionally saving results as it goes.
 
         Parameters
         ----------
@@ -74,25 +76,39 @@ class FOOOFGroup(FOOOF):
         # Clear results so that any prior data doesn't end up lumped together
         self._reset_group_results()
 
-        # If saving, open a file to save to
-        if save_dat:
-            f_obj = open(os.path.join(save_path, save_name + '.json'), 'w')
+        # self.add_data(freqs, psds[0], freq_range)
+        # self.group_results = Parallel(n_jobs=n_jobs)(delayed(_fit_ret)(self, freqs, psd, freq_range) \
+        #         for psd in psds)
 
-        # Fit FOOOF across matrix of PSDs.
+        ## Fit FOOOF across matrix of PSDs.
         #  Note: shape checking gets performed in fit - wrong shapes/orientations will fail there.
-        for psd in psds:
-            self._fit(freqs, psd, freq_range)
-            self.group_results.append(self.get_results())
+
+        ## Linear run - optionally with saving as you go
+        # If saving, open a file to save to
+        if not parallel:
+
             if save_dat:
-                self._save(f_obj, save_results=True)
+                f_obj = open(os.path.join(save_path, save_name + '.json'), 'w')
+
+            for psd in psds:
+                self._fit(freqs, psd, freq_range)
+                self.group_results.append(self.get_results())
+                if save_dat:
+                    self._save(f_obj, save_results=True)
+
+            # If saving, close file
+            if save_dat:
+                f_obj.close()
+
+        ## Parallel run
+        else:
+            self.add_data(freqs, psds[0], freq_range)
+            self.group_results = Parallel(n_jobs=1)(delayed(_fit_ret)(self, freqs, psd, freq_range) \
+                for psd in psds)
 
         # Clear out last run PSD, but while keeping frequency information
         #  This is so that it doesn't retain data from an arbitrary PSD
         self._reset_dat(False)
-
-        # If saving, close file
-        if save_dat:
-            f_obj.close()
 
 
     def get_group_results(self):
@@ -398,3 +414,10 @@ class FOOOFGroup(FOOOF):
 
 
 FOOOFGroup.__doc__ = FOOOF.__doc__
+
+
+def _fit_ret(fg, *args, **kwargs):
+    """Helper function for running in parallel."""
+
+    fg._fit(*args, **kwargs)
+    return fg.get_results()
