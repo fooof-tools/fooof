@@ -207,7 +207,7 @@ class FOOOF(object):
         return inst
 
 
-    def add_data(self, freqs, psd, freq_range=None):
+    def add_data(self, freqs, psd, freq_range=None, reset_dat=True):
         """Add data (frequencies and PSD values) to object.
 
         Parameters
@@ -218,10 +218,13 @@ class FOOOF(object):
             Power spectral density values, in linear space.
         freq_range : list of [float, float], optional
             Frequency range to restrict PSD to. If not provided, keeps the entire range.
+        reset_dat : bool, optional
+            Whether to clear the object of all prior data before loading. default: True
         """
 
         # Clear any existing data from the object, that could potentially interfere
-        self._reset_dat()
+        if reset_dat:
+            self._reset_dat()
 
         # Check inputs dimensions & size
         if freqs.ndim != psd.ndim != 1:
