@@ -47,7 +47,7 @@ class FOOOFGroup(FOOOF):
             Path to directory in which to save. If not provided, saves to current directory.
         """
 
-        self.fit_group(freqs, psds, freq_range, save_dat, file_name, file_path)
+        self.fit(freqs, psds, freq_range, save_dat, file_name, file_path)
         self.plot()
         self.print_results()
 
@@ -241,25 +241,19 @@ class FOOOFGroup(FOOOF):
 
 
     def _fit(self, *args, **kwargs):
-        """Rename FOOOF.fit for FOOOFGroup object.
-
-        Notes
-        -----
-        - Creates an alias to (with the same API as) FOOOF.fit(), for internal use.
-        - This is done for a cleaner API: so that FOOOFGroup.fit() fits a group data file.
-        """
+        """Create an alias to FOOOF.fit for FOOOFGroup object, for internal use."""
 
         super().fit(*args, **kwargs)
 
 
-    def _load(self, *args, **kwargs):
-        """Rename FOOOF.load for FOOOFGroup object.
+    def _save(self, *args, **kwargs):
+        """Create an alias to FOOOF.save for FOOOFGroup object, for internal use."""
 
-        Notes
-        -----
-        - Creates an alias to (with the same API as) FOOOF.load(), for internal use.
-        - This is done for a cleaner API: so that FOOOFGroup.load() loads a group data file.
-        """
+        super().save(*args, **kwargs)
+
+
+    def _load(self, *args, **kwargs):
+        """Create an alias to FOOOF.load for FOOOFGroup object, for internal use."""
 
         super().load(*args, **kwargs)
 
