@@ -35,8 +35,8 @@ def test_fooof_group_fit():
 
 	assert out
 
-def test_fooof_group_fit_save_load():
-	"""Check that FOOOFGroup saves and loads."""
+def test_fooof_group_save_asyougo_load():
+	"""Check that FOOOFGroup saves (as-you-go) and loads."""
 
 	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
 
@@ -55,6 +55,32 @@ def test_fooof_group_fit_save_load():
 	out = nfg.get_group_results()
 
 	assert out
+
+def test_fooof_group_save_after_load():
+	"""Test that FOOOFGroup saves (after-running) and loads, including settings & results."""
+
+	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
+
+	set_file_name = 'test_fooof_group_set'
+	res_file_name = 'test_fooof_group_res'
+	file_path = pkg.resource_filename(__name__, 'test_files')
+
+	fg = FOOOFGroup(min_amp=0.01)
+
+	fg.fit(xs, ys)
+	fg.save(save_file=set_file_name, save_path=file_path, save_settings=True)
+	fg.save(save_file=res_file_name, save_path=file_path, save_results=True)
+
+	assert os.path.exists(os.path.join(file_path, set_file_name + '.json'))
+	assert os.path.exists(os.path.join(file_path, res_file_name + '.json'))
+
+	nfg = FOOOFGroup()
+
+	nfg.load(file_name=set_file_name, file_path=file_path)
+	assert nfg.min_amp == 0.01
+
+	nfg.load(file_name=res_file_name, file_path=file_path)
+	assert nfg.get_group_results()
 
 def test_fooof_group_plot_get_report():
 	"""Check methods that print, plot, and create report."""
