@@ -208,7 +208,7 @@ class FOOOFGroup(FOOOF):
         plt.close()
 
 
-    def save(self, save_file='fooof_group_dat', save_path='', save_results=False, save_settings=False):
+    def save(self, save_file='fooof_group_results', save_path='', save_results=False, save_settings=False):
         """Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.
 
         Notes
@@ -217,10 +217,10 @@ class FOOOFGroup(FOOOF):
         """
 
         if save_results:
-            with open(os.path.join(file_path, file_name + '.json'), 'w') as f_obj:
+            with open(os.path.join(save_path, save_file + '.json'), 'w') as f_obj:
                 for ind in range(len(self.group_results)):
-                    fm = FOOOF.from_group(fg, ind)
-                    fm.save(save_file=f_obj, save_results=True)
+                    fm = FOOOF.from_group(self, ind, regenerate=False)
+                    fm.save(save_file=f_obj, save_results=True, save_settings=save_settings)
 
         if save_settings:
             self._save(save_file=save_file, save_path=save_path, save_settings=True)
