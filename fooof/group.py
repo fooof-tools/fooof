@@ -29,7 +29,7 @@ class FOOOFGroup(FOOOF):
         self.group_results = []
 
 
-    def model(self, freqs, psds, freq_range=None, save_dat=False, file_name='fooof_group_results', file_path=''):
+    def model(self, freqs, psds, freq_range=None, n_jobs=1):
         """Run FOOOF across a group of PSDs, then plot and print results.
 
         Parameters
@@ -40,21 +40,16 @@ class FOOOFGroup(FOOOF):
             Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
-        save_dat : bool, optional
-            Whether to save data out to file while running. Default: False.
-        file_name : str, optional
-            File name to save to.
-        file_path : str, optional
-            Path to directory in which to save. If not provided, saves to current directory.
+        n_jobs : int
+            Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
         """
 
-        self.fit(freqs, psds, freq_range, save_dat, file_name, file_path)
+        self.fit(freqs, psds, freq_range)
         self.plot()
         self.print_results()
 
 
-    def fit(self, freqs, psds, freq_range=None, save_dat=False,
-            save_name='fooof_group_results', save_path='', parallel=False):
+    def fit(self, freqs, psds, freq_range=None, n_jobs=1):
         """Run FOOOF across a group of PSDs, optionally saving results as it goes.
 
         Parameters
@@ -65,45 +60,16 @@ class FOOOFGroup(FOOOF):
             Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
-        save_dat : bool, optional
-            Whether to save data out to file while running. Default: False.
-        save_name : str, optional
-            File name to save to.
-        save_path : str, optional
-            Path to directory in which to save. If not provided, saves to current directory.
+        n_jobs : int
+            Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
         """
 
         # Clear results so that any prior data doesn't end up lumped together
         self._reset_group_results()
 
-        # self.add_data(freqs, psds[0], freq_range)
-        # self.group_results = Parallel(n_jobs=n_jobs)(delayed(_fit_ret)(self, freqs, psd, freq_range) \
-        #         for psd in psds)
-
-        ## Fit FOOOF across matrix of PSDs.
-        #  Note: shape checking gets performed in fit - wrong shapes/orientations will fail there.
-
-        ## Linear run - optionally with saving as you go
-        # If saving, open a file to save to
-        if not parallel:
-
-            if save_dat:
-                f_obj = open(os.path.join(save_path, save_name + '.json'), 'w')
-
-            for psd in psds:
-                self._fit(freqs, psd, freq_range)
-                self.group_results.append(self.get_results())
-                if save_dat:
-                    self._save(f_obj, save_results=True)
-
-            # If saving, close file
-            if save_dat:
-                f_obj.close()
-
-        ## Parallel run
-        else:
-            self.add_data(freqs, psds[0], freq_range)
-            self.group_results = Parallel(n_jobs=1)(delayed(_fit_ret)(self, freqs, psd, freq_range) \
+        # Add data (to set frequency information in object), then run FOOOF across the group.
+        self.add_data(freqs, psds[0], freq_range)
+        self.group_results = Parallel(n_jobs=n_jobs)(delayed(_fit_ret)(self, freqs, psd, freq_range) \
                 for psd in psds)
 
         # Clear out last run PSD, but while keeping frequency information
