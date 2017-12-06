@@ -75,3 +75,14 @@ def test_fooof_group_plot_get_report():
 	fg.create_report(save_name=file_name, save_path=file_path)
 
 	assert os.path.exists(os.path.join(file_path, file_name + '.pdf'))
+
+def test_fooof_group_model():
+	"""Check that running the top level model method runs."""
+
+	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
+
+	fg = FOOOFGroup()
+
+	fg.model(xs, ys)
+
+	assert fg

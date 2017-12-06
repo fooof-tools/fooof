@@ -158,7 +158,7 @@ def test_fooof_reset_dat():
 
 	fm = FOOOF()
 
-	fm.model(*mk_fake_data(np.arange(3, 50, 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+	fm.fit(*mk_fake_data(np.arange(3, 50, 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 	fm._reset_dat()
 
 	assert fm.freqs is None and fm.psd is None and fm.freq_range is None \
@@ -166,3 +166,12 @@ def test_fooof_reset_dat():
 		and fm.oscillation_params_ is None and fm.r2_ is None and fm.error_ is None \
 		and fm._psd_flat is None and fm._psd_osc_rm is None and fm._gaussian_params is None \
 		and fm._background_fit is None and fm._oscillation_fit is None
+
+def test_fooof_model():
+	"""Check that running the top level model method runs."""
+
+	fm = FOOOF()
+
+	fm.model(*mk_fake_data(np.arange(3, 50, 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+
+	assert fm
