@@ -81,7 +81,7 @@ def plot_scatter_2(dat_0, label_0, dat_1, label_1, title=None, ax=None):
     plt.xticks([0, 1], [label_0, label_1], fontsize=12)
 
 
-def plot_hist(dat, label, title, n_bins=20, ax=None):
+def plot_hist(dat, label, title=None, n_bins=20, ax=None):
     """Plot a histogram with the given data.
 
     Parameters
@@ -90,7 +90,7 @@ def plot_hist(dat, label, title, n_bins=20, ax=None):
         Data to plot.
     label : str
         Label for the data, to be set as the y-axis label.
-    title : str
+    title : str, optional
         Title for the plot.
     n_bins : int, optional
         Number of bins to use for the histogram. Default: 20
@@ -106,4 +106,5 @@ def plot_hist(dat, label, title, n_bins=20, ax=None):
     ax.set_xlabel(label, fontsize=12)
     ax.set_ylabel('Count', fontsize=12)
 
-    ax.set_title(title, fontsize=16)
+    if title:
+        ax.set_title(title, fontsize=16)
