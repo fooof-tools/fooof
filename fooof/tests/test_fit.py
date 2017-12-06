@@ -14,6 +14,7 @@ import pkg_resources as pkg
 
 from fooof import FOOOF
 from fooof.synth import mk_fake_data
+from fooof.utils import mk_freq_vector
 
 ##########################################################################################
 ##########################################################################################
@@ -26,7 +27,7 @@ def test_fooof():
 def test_fooof_fit_nk():
 	"""Test FOOOF fit, no knee."""
 
-	xs = np.arange(3, 50, 0.5)
+	xs = mk_freq_vector([3, 50], 0.5)
 	bgp = [50, 2]
 	oscs = [[10, 0.5, 2],
 			[20, 0.3, 4]]
@@ -46,7 +47,7 @@ def test_fooof_fit_nk():
 def test_fooof_checks():
 	"""Test various checks, errors and edge cases in FOOOF."""
 
-	xs, ys = mk_fake_data(np.arange(3, 50, 0.5), [50, 2], [10, 0.5, 2])
+	xs, ys = mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2])
 
 	fm = FOOOF()
 
@@ -62,7 +63,7 @@ def test_fooof_checks():
 	fm.fit(xs, ys, [3, 40])
 
 	# Check freq of 0 issue
-	xs, ys = mk_fake_data(np.arange(0, 50, 0.5), [50, 2], [10, 0.5, 2])
+	xs, ys = mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2])
 	fm.fit(xs, ys)
 
 	# Check fit, plot and string report model error (no data / model fit)
@@ -82,7 +83,7 @@ def test_fooof_prints_plot_get_report():
 	Note: minimal test - that methods run. No accuracy checking.
 	"""
 
-	xs, ys = mk_fake_data(np.arange(3, 50, 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4])
+	xs, ys = mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4])
 
 	fm = FOOOF()
 
@@ -107,7 +108,7 @@ def test_fooof_prints_plot_get_report():
 def test_fooof_save_load_str():
 	"""Check that FOOOF object saves & loads - given str input."""
 
-	xs, ys = mk_fake_data(np.arange(3, 50, 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4])
+	xs, ys = mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4])
 
 	fm = FOOOF()
 	fm.fit(xs, ys)
@@ -127,7 +128,7 @@ def test_fooof_save_load_str():
 def test_fooof_save_load_file_obj():
 	"""Check that FOOOF object saves & loads - given file obj input."""
 
-	xs, ys = mk_fake_data(np.arange(3, 50, 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4])
+	xs, ys = mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4])
 
 	fm = FOOOF()
 	fm.fit(xs, ys)
@@ -158,7 +159,7 @@ def test_fooof_reset_dat():
 
 	fm = FOOOF()
 
-	fm.fit(*mk_fake_data(np.arange(3, 50, 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+	fm.fit(*mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 	fm._reset_dat()
 
 	assert fm.freqs is None and fm.psd is None and fm.freq_range is None \
@@ -172,6 +173,6 @@ def test_fooof_model():
 
 	fm = FOOOF()
 
-	fm.model(*mk_fake_data(np.arange(3, 50, 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+	fm.model(*mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
 	assert fm

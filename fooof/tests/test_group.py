@@ -13,6 +13,7 @@ import numpy as np
 
 from fooof import FOOOFGroup
 from fooof.synth import mk_fake_group_data
+from fooof.utils import mk_freq_vector
 
 ##########################################################################################
 ##########################################################################################
@@ -25,7 +26,7 @@ def test_fooof_group():
 def test_fooof_group_fit():
 	"""Test FOOOFGroup fit, no knee."""
 
-	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
+	xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5))
 
 	fg = FOOOFGroup()
 
@@ -38,7 +39,7 @@ def test_fooof_group_fit():
 def test_fooof_group_fit_par():
 	"""Test FOOOFGroup fit, running in parallel."""
 
-	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
+	xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5))
 
 	fg = FOOOFGroup()
 
@@ -51,7 +52,7 @@ def test_fooof_group_fit_par():
 def test_fooof_group_save_load():
 	"""Test that FOOOFGroup saves and loads, including settings & results."""
 
-	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
+	xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5))
 
 	set_file_name = 'test_fooof_group_set'
 	res_file_name = 'test_fooof_group_res'
@@ -77,7 +78,7 @@ def test_fooof_group_save_load():
 def test_fooof_group_plot_get_report():
 	"""Check methods that print, plot, and create report."""
 
-	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
+	xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5))
 
 	fg = FOOOFGroup()
 
@@ -97,7 +98,7 @@ def test_fooof_group_plot_get_report():
 def test_fooof_group_model():
 	"""Check that running the top level model method runs."""
 
-	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
+	xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5))
 
 	fg = FOOOFGroup()
 
