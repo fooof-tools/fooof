@@ -45,7 +45,7 @@ def test_fooof_group_fit_save_load():
 
 	fg = FOOOFGroup()
 
-	fg.fit(xs, ys, save_dat=True, file_name=file_name, file_path=file_path)
+	fg.fit(xs, ys, save_dat=True, save_name=file_name, save_path=file_path)
 
 	assert os.path.exists(os.path.join(file_path, file_name + '.json'))
 

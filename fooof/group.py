@@ -52,7 +52,7 @@ class FOOOFGroup(FOOOF):
         self.print_results()
 
 
-    def fit(self, freqs, psds, freq_range=None, save_dat=False, file_name='fooof_group_results', file_path=''):
+    def fit(self, freqs, psds, freq_range=None, save_dat=False, save_name='fooof_group_results', save_path=''):
         """Run FOOOF across a group of PSDs.
 
         Parameters
@@ -65,9 +65,9 @@ class FOOOFGroup(FOOOF):
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         save_dat : bool, optional
             Whether to save data out to file while running. Default: False.
-        file_name : str, optional
+        save_name : str, optional
             File name to save to.
-        file_path : str, optional
+        save_path : str, optional
             Path to directory in which to save. If not provided, saves to current directory.
         """
 
@@ -76,7 +76,7 @@ class FOOOFGroup(FOOOF):
 
         # If saving, open a file to save to
         if save_dat:
-            f_obj = open(os.path.join(file_path, file_name + '.json'), 'w')
+            f_obj = open(os.path.join(save_path, save_name + '.json'), 'w')
 
         # Fit FOOOF across matrix of PSDs.
         #  Note: shape checking gets performed in fit - wrong shapes/orientations will fail there.
@@ -208,10 +208,22 @@ class FOOOFGroup(FOOOF):
         plt.close()
 
 
-    def save(self):
-        """   """
+    def save(self, save_file='fooof_group_dat', save_path='', save_results=False, save_settings=False):
+        """Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.
 
-        pass
+        Notes
+        -----
+        - save_data is not availabe with FOOOFGroup, as data are not stored after fitting.
+        """
+
+        if save_results:
+            with open(os.path.join(file_path, file_name + '.json'), 'w') as f_obj:
+                for ind in range(len(self.group_results)):
+                    fm = FOOOF.from_group(fg, ind)
+                    fm.save(save_file=f_obj, save_results=True)
+
+        if save_settings:
+            self._save(save_file=save_file, save_path=save_path, save_settings=True)
 
 
     def load(self, file_name='fooof_group_results', file_path=''):
