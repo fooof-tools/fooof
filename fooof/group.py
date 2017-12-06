@@ -84,7 +84,7 @@ class FOOOFGroup(FOOOF):
             self._fit(freqs, psd, freq_range)
             self.group_results.append(self.get_results())
             if save_dat:
-                self.save(f_obj, save_results=True)
+                self._save(f_obj, save_results=True)
 
         # Clear out last run PSD, but while keeping frequency information
         #  This is so that it doesn't retain data from an arbitrary PSD
@@ -131,7 +131,7 @@ class FOOOFGroup(FOOOF):
         return out
 
 
-    def plot(self, save_fig=False, save_name='FOOOF_fit.png', save_path=''):
+    def plot(self, save_fig=False, save_name='FOOOF_fit', save_path=''):
         """Plot a multiplot figure of several aspects of the group data.
 
         Parameters
@@ -160,7 +160,7 @@ class FOOOFGroup(FOOOF):
         self._plot_osc_cens(ax2)
 
         if save_fig:
-            plt.savefig(os.path.join(save_path, save_name))
+            plt.savefig(os.path.join(save_path, save_name + '.png'))
 
 
     def create_report(self, save_name='FOOOFGroup_Report', save_path=''):
@@ -206,6 +206,12 @@ class FOOOFGroup(FOOOF):
         # Save out the report
         plt.savefig(os.path.join(save_path, save_name + '.pdf'))
         plt.close()
+
+
+    def save(self):
+        """   """
+
+        pass
 
 
     def load(self, file_name='fooof_group_results', file_path=''):

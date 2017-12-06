@@ -306,7 +306,7 @@ class FOOOF(object):
         self._rmse_error()
 
 
-    def plot(self, plt_log=False, save_fig=False, save_name='FOOOF_fit.png', save_path='', ax=None):
+    def plot(self, plt_log=False, save_fig=False, save_name='FOOOF_fit', save_path='', ax=None):
         """Plot the original PSD, and full model fit.
 
         Parameters
@@ -323,7 +323,6 @@ class FOOOF(object):
             Figure axes upon which to plot.
         """
 
-        # Throw an error if FOOOF model hasn't been fit yet
         if not np.all(self.freqs):
             raise ValueError('No data available to plot - can not proceed.')
 
@@ -352,7 +351,7 @@ class FOOOF(object):
 
         # Save out figure, if requested
         if save_fig:
-            plt.savefig(os.path.join(save_path, save_name))
+            plt.savefig(os.path.join(save_path, save_name + '.png'))
 
 
     def print_settings(self, description=False):
@@ -504,10 +503,8 @@ class FOOOF(object):
         # Reset data in object, so old data can't interfere
         self._reset_dat()
 
-        # Get dictionary of all attributes that are available for FOOOF
+        # Get dictionary of available attributes, and convert specified lists back into arrays
         attributes = get_attribute_names()
-
-        # Convert specified lists back into arrays
         dat = dict_lst_to_array(dat, attributes['arrays'])
 
         # Reconstruct FOOOF object
