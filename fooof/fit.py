@@ -18,7 +18,7 @@ from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 ###################################################################################################
 ###################################################################################################
 
-FOOOFResult = namedtuple('FOOOFResult', ['background_params', 'oscillations_params', 'r2', 'error'])
+FOOOFResult = namedtuple('FOOOFResult', ['background_params', 'oscillation_params', 'r2', 'error'])
 
 class FOOOF(object):
     """Model the physiological power spectrum as oscillatory peaks and 1/f background.

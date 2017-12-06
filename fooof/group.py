@@ -274,7 +274,7 @@ class FOOOFGroup(FOOOF):
         cen_val = 100
 
         # Extract all the relevant data for printing
-        cens = self.get_all_data('oscillations_params', 0)
+        cens = self.get_all_data('oscillation_params', 0)
         r2s = self.get_all_data('r2')
         errors = self.get_all_data('error')
         if self.bg_use_knee:
@@ -375,7 +375,7 @@ class FOOOFGroup(FOOOF):
             Figure axes upon which to plot.
         """
 
-        plot_hist(self.get_all_data('oscillations_params', 0),
+        plot_hist(self.get_all_data('oscillation_params', 0),
                   'Center Frequency', 'Oscillations', ax=ax)
 
 
