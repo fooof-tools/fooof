@@ -431,8 +431,8 @@ class FOOOF(object):
 
 
     def save(self, save_file='fooof_dat', save_path='', save_results=False,
-             save_settings=False, save_dat=False, append=False,):
-        """Save out data, results and/or settings. Saves out to a JSON file.
+             save_settings=False, save_data=False, append=False):
+        """Save out data, results and/or settings from FOOOF object. Saves out to a JSON file.
 
         Parameters
         ----------
@@ -444,7 +444,7 @@ class FOOOF(object):
             Whether to save out FOOOF model fit results.
         save_settings : bool, optional
             Whether to save out FOOOF settings.
-        save_dat : bool, optional
+        save_data : bool, optional
             Whether to save out input data.
         append : bool, optional
             Whether to append to an existing file, if available. default: False
@@ -460,7 +460,7 @@ class FOOOF(object):
         # Set which variables to keep. Use a set to drop any potential overlap
         keep = set((attributes['results'] if save_results else []) + \
                    (attributes['settings'] if save_settings else []) + \
-                   (attributes['dat'] if save_dat else []))
+                   (attributes['dat'] if save_data else []))
 
         # Keep only requested vars
         obj_dict = dict_select_keys(obj_dict, keep)
