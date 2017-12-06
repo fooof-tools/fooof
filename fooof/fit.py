@@ -248,7 +248,8 @@ class FOOOF(object):
         #   Background fit gets an inf is freq of 0 is included, which leads to an error.
         if self.freqs[0] == 0.0:
             self.freqs, self.psd = trim_psd(freqs, psd, [self.freqs[1], self.freqs.max()])
-            print('\nFOOOF WARNING: Skipping frequency == 0, as this causes problem with fitting.')
+            if self.verbose:
+                print('\nFOOOF WARNING: Skipping frequency == 0, as this causes problem with fitting.')
 
         # Set the actual frequency range used
         self.freq_range = [self.freqs.min(), self.freqs.max()]
@@ -323,9 +324,11 @@ class FOOOF(object):
             raise ValueError('No data available to fit - can not proceed.')
 
         # Check bandwidth limits against frequency resolution; warn if too close.
-        if round(self.freq_res, 1) >= self.bandwidth_limits[0] and self.verbose:
-            print('\nFOOOF WARNING: Lower-bound Bandwidth limit is ~= the frequency resolution. \n',
-                  '  This may lead to overfitting of small bandwidth oscillations.\n')
+        if 1.5 * self.freq_res >= self.bandwidth_limits[0] and self.verbose:
+            print("\nFOOOF WARNING: Lower-bound bandwidth limit is < or ~= the frequency resolution: {:1.2f} <= {:1.2f}\
+                  \n\tLower bounds below frequency-resolution have no effect (effective lower bound is freq-res)\
+                  \n\tToo low a limit may lead to overfitting noise as small bandwidth oscillations.\
+                  \n\tWe recommend a lower bound of approximately 2x the frequency resolution.\n".format(self.freq_res, self.bandwidth_limits[0]))
 
         # Fit the background 1/f.
         self.background_params_ = self._clean_background_fit(self.freqs, self.psd)
