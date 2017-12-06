@@ -44,13 +44,13 @@ class FOOOFGroup(FOOOF):
             Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
         """
 
-        self.fit(freqs, psds, freq_range)
+        self.fit(freqs, psds, freq_range, n_jobs=n_jobs)
         self.plot()
         self.print_results()
 
 
     def fit(self, freqs, psds, freq_range=None, n_jobs=1):
-        """Run FOOOF across a group of PSDs, optionally saving results as it goes.
+        """Run FOOOF across a group of PSDs.
 
         Parameters
         ----------
