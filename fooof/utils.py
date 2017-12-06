@@ -115,6 +115,31 @@ def trim_psd(freqs, psd, f_range):
     return freqs_ext, psd_ext
 
 
+def mk_freq_vector(freq_range, freq_res):
+    """Regenerate a frequency vector, from the frequency range and resolution.
+
+    Parameters
+    ----------
+    freq_range : list of [float, float]
+        Frequency range of desired frequency vector, as [f_low, f_high].
+    freq_res : float
+        Frequency resolution of desired frequency vector.
+
+    Returns
+    -------
+    1d array
+        Vector of frequency values.
+    """
+
+    return np.arange(freq_range[0], freq_range[1]+freq_res, freq_res)
+
+
+def check_array_dim(arr):
+    """Check that parameter array has the correct shape, and reshape if not."""
+
+    return np.empty([0, 3]) if arr.ndim == 1 else arr
+
+
 def get_attribute_names():
     """Get dictionary specifying FOOOF object names and kind of attributes."""
 
