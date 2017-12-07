@@ -11,7 +11,7 @@ import pytest
 
 @pytest.fixture(scope='session', autouse=True)
 def check_dir():
-	"""Once, prior to session, this will clear and re-initialize the test file directories."""
+    """Once, prior to session, this will clear and re-initialize the test file directories."""
 
     rep_dir_name = pkg.resource_filename(__name__, 'test_reports')
     dat_dir_name = pkg.resource_filename(__name__, 'test_files')
