@@ -5,10 +5,9 @@ python:
 
 install:
   - pip install -r requirements.txt
-  - pip install codecov
 
 script:
   - coverage run --source fooof -m pytest
 
 after-success:
-  - codecov
+  - bash <(curl -s https://codecov.io/bash)
