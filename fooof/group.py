@@ -77,7 +77,7 @@ class FOOOFGroup(FOOOF):
         self._reset_dat(False)
 
 
-    def get_group_results(self):
+    def get_results(self):
         """Return the results run across a group of PSDs."""
 
         return self.group_results
@@ -230,7 +230,7 @@ class FOOOFGroup(FOOOF):
                 # For each line, grab the FOOOFResults
                 try:
                     self._load(f_obj)
-                    self.group_results.append(self.get_results())
+                    self.group_results.append(self._get_results())
 
                 # Break off when get a JSON error - end of the file
                 except JSONDecodeError:
@@ -244,6 +244,12 @@ class FOOOFGroup(FOOOF):
         """Create an alias to FOOOF.fit for FOOOFGroup object, for internal use."""
 
         super().fit(*args, **kwargs)
+
+
+    def _get_results(self):
+        """Create an alias to FOOOF.get_results for FOOOFGroup object, for internal use."""
+
+        return super().get_results()
 
 
     def _save(self, *args, **kwargs):
@@ -386,4 +392,4 @@ def _fit_ret(fg, *args, **kwargs):
     """Helper function for running in parallel."""
 
     fg._fit(*args, **kwargs)
-    return fg.get_results()
+    return fg._get_results()

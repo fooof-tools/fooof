@@ -32,7 +32,7 @@ def test_fooof_group_fit():
 
 	fg.fit(xs, ys)
 
-	out = fg.get_group_results()
+	out = fg.get_results()
 
 	assert out
 
@@ -45,7 +45,7 @@ def test_fooof_group_fit_par():
 
 	fg.fit(xs, ys, n_jobs=-1)
 
-	out = fg.get_group_results()
+	out = fg.get_results()
 
 	assert out
 
@@ -73,7 +73,7 @@ def test_fooof_group_save_load():
 	assert nfg.min_amp == 0.01
 
 	nfg.load(file_name=res_file_name, file_path=file_path)
-	assert nfg.get_group_results()
+	assert nfg.get_results()
 
 def test_fooof_group_plot_get_report():
 	"""Check methods that print, plot, and create report."""
