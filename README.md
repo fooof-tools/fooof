@@ -1,6 +1,8 @@
 # FOOOF - fitting oscillations & one over f
 
-WARNING: FOOOF is not yet tagged for a stable release version, and updates may change the internal workings, and/or the API (although major changes to API are unlikely). Prior to tagged release, tutorials may not be kept entirely up to date, but in-file documentation will be. 
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+
+WARNING: FOOOF is not yet tagged for a stable release version, and updates may change the internal workings, and/or the API (although major changes to API are unlikely). Prior to tagged release, tutorials may not be kept entirely up to date, but in-file documentation will be.
 
 ---
 
