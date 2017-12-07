@@ -5,6 +5,7 @@ python:
 
 install:
   - pip install -r requirements.txt
+  - pip install coverage
 
 script:
   - coverage run --source fooof -m pytest
