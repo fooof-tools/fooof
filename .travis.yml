@@ -6,9 +6,10 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install pytest-cov
+  - pip install codecov
 
 script:
   - py.test --cov=./
 
 after-success:
-  - bash <(curl -s https://codecov.io/bash)
+  - codecov
