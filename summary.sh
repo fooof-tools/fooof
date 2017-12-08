@@ -20,7 +20,7 @@ coverage report
 # Run pylint and print summary
 printf "\n\n\n RUN PYLINT ACROSS MODULE: \n"
 pylint fooof --ignore tests -> _lint.txt
-tail -n5 _lint.txt
+tail -n4 _lint.txt
 
 # Print out some new lines
 printf "\n\n\n"

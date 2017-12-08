@@ -12,7 +12,8 @@ import pkg_resources as pkg
 import numpy as np
 
 from fooof import FOOOFGroup
-from fooof.tests.utils import mk_fake_group_data
+from fooof.synth import mk_fake_group_data
+from fooof.utils import mk_freq_vector
 
 ##########################################################################################
 ##########################################################################################
@@ -25,45 +26,63 @@ def test_fooof_group():
 def test_fooof_group_fit():
 	"""Test FOOOFGroup fit, no knee."""
 
-	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
+	xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5))
 
 	fg = FOOOFGroup()
 
-	fg.fit_group(xs, ys)
+	fg.fit(xs, ys)
 
-	out = fg.get_group_results()
+	out = fg.get_results()
 
 	assert out
 
-def test_fooof_group_fit_save_load():
-	"""Check that FOOOFGroup saves and loads."""
+def test_fooof_group_fit_par():
+	"""Test FOOOFGroup fit, running in parallel."""
 
-	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
+	xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5))
 
-	file_name = 'test_fooof_group'
+	fg = FOOOFGroup()
+
+	fg.fit(xs, ys, n_jobs=-1)
+
+	out = fg.get_results()
+
+	assert out
+
+def test_fooof_group_save_load():
+	"""Test that FOOOFGroup saves and loads, including settings & results."""
+
+	xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5))
+
+	set_file_name = 'test_fooof_group_set'
+	res_file_name = 'test_fooof_group_res'
 	file_path = pkg.resource_filename(__name__, 'test_files')
 
-	fg = FOOOFGroup()
+	fg = FOOOFGroup(min_amp=0.01)
 
-	fg.fit_group(xs, ys, save_dat=True, file_name=file_name, file_path=file_path)
+	fg.fit(xs, ys)
+	fg.save(save_file=set_file_name, save_path=file_path, save_settings=True)
+	fg.save(save_file=res_file_name, save_path=file_path, save_results=True)
 
-	assert os.path.exists(os.path.join(file_path, file_name + '.json'))
+	assert os.path.exists(os.path.join(file_path, set_file_name + '.json'))
+	assert os.path.exists(os.path.join(file_path, res_file_name + '.json'))
 
 	nfg = FOOOFGroup()
-	nfg.load_group_results(file_name=file_name, file_path=file_path)
 
-	out = nfg.get_group_results()
+	nfg.load(file_name=set_file_name, file_path=file_path)
+	assert nfg.min_amp == 0.01
 
-	assert out
+	nfg.load(file_name=res_file_name, file_path=file_path)
+	assert nfg.get_results()
 
 def test_fooof_group_plot_get_report():
 	"""Check methods that print, plot, and create report."""
 
-	xs, ys = mk_fake_group_data(np.arange(3, 50, 0.5))
+	xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5))
 
 	fg = FOOOFGroup()
 
-	fg.fit_group(xs, ys)
+	fg.fit(xs, ys)
 
 	fg.print_results()
 
@@ -75,3 +94,14 @@ def test_fooof_group_plot_get_report():
 	fg.create_report(save_name=file_name, save_path=file_path)
 
 	assert os.path.exists(os.path.join(file_path, file_name + '.pdf'))
+
+def test_fooof_group_model():
+	"""Check that running the top level model method runs."""
+
+	xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5))
+
+	fg = FOOOFGroup()
+
+	fg.model(xs, ys)
+
+	assert fg
