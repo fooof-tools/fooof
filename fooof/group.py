@@ -6,7 +6,10 @@ from json import JSONDecodeError
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
-from sklearn.externals.joblib import Parallel, delayed
+#from sklearn.externals.joblib import Parallel, delayed
+
+from functools import partial
+from multiprocessing import Pool, cpu_count
 
 from fooof import FOOOF
 from fooof.plts import plot_scatter_1, plot_scatter_2, plot_hist
@@ -23,10 +26,16 @@ class FOOOFGroup(FOOOF):
         self._reset_group_results()
 
 
-    def _reset_group_results(self):
-        """Set (or reset) results to be empty."""
+    def _reset_group_results(self, length=0):
+        """Set (or reset) results to be empty.
 
-        self.group_results = []
+        Parameters
+        ----------
+        length : int, optional
+            Length of list of empty lists to initialize. If 0, single empty list. default: 0
+        """
+
+        self.group_results = [[]] * length
 
 
     def model(self, freqs, psds, freq_range=None, n_jobs=1):
@@ -60,21 +69,41 @@ class FOOOFGroup(FOOOF):
             Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
-        n_jobs : int
+        n_jobs : int, optional
             Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
         """
 
-        # Clear results so that any prior data doesn't end up lumped together
-        self._reset_group_results()
+        # NEW:
+        # Run linearly
+        if n_jobs == 1:
+            self._reset_group_results(len(psds))
+            for ind, psd in enumerate(psds):
+                self._fit(freqs, psd, freq_range)
+                self.group_results[ind] = self._get_results()
 
-        # Add data (to set frequency information in object), then run FOOOF across the group.
-        self.add_data(freqs, psds[0], freq_range)
-        self.group_results = Parallel(n_jobs=n_jobs)(delayed(_fit_ret)(self, freqs, psd, freq_range) \
-                for psd in psds)
+        # Run in parallel
+        else:
+            self._reset_group_results()
+            self.add_data(freqs, psds[0], freq_range)
+            n_jobs = cpu_count() if n_jobs == -1 else n_jobs
+            pool = Pool(processes=n_jobs)
+            self.group_results = pool.map(partial(_par_fit, fg=self, freqs=freqs, freq_range=freq_range), psds)
+            pool.close()
 
-        # Clear out last run PSD, but while keeping frequency information
-        #  This is so that it doesn't retain data from an arbitrary PSD
-        self._reset_dat(False)
+        self._reset_dat(clear_freqs=False)
+
+        # OLD:
+        # # Clear results so that any prior data doesn't end up lumped together
+        # self._reset_group_results()
+
+        # # Add data (to set frequency information in object), then run FOOOF across the group.
+        # self.add_data(freqs, psds[0], freq_range)
+        # self.group_results = Parallel(n_jobs=n_jobs)(delayed(_fit_ret)(self, freqs, psd, freq_range) \
+        #         for psd in psds)
+
+        # # Clear out last run PSD, but while keeping frequency information
+        # #  This is so that it doesn't retain data from an arbitrary PSD
+        # self._reset_dat(False)
 
 
     def get_results(self):
@@ -392,4 +421,11 @@ def _fit_ret(fg, *args, **kwargs):
     """Helper function for running in parallel."""
 
     fg._fit(*args, **kwargs)
+    return fg._get_results()
+
+
+def _par_fit(psd, fg, freqs, freq_range):
+    """Helper function for running in parallel."""
+
+    fg._fit(freqs, psd, freq_range)
     return fg._get_results()
