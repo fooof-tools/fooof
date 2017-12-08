@@ -3,11 +3,15 @@
 import os
 import shutil
 import pkg_resources as pkg
+import matplotlib.pyplot as plt
 
 import pytest
 
 ###################################################################################################
 ###################################################################################################
+
+def pytest_configure(config):
+    plt.switch_backend('agg')
 
 @pytest.fixture(scope='session', autouse=True)
 def check_dir():
