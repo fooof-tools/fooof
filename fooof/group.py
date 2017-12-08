@@ -6,8 +6,6 @@ from json import JSONDecodeError
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
-#from sklearn.externals.joblib import Parallel, delayed
-
 from functools import partial
 from multiprocessing import Pool, cpu_count
 
@@ -73,7 +71,6 @@ class FOOOFGroup(FOOOF):
             Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
         """
 
-        # NEW:
         # Run linearly
         if n_jobs == 1:
             self._reset_group_results(len(psds))
@@ -91,19 +88,6 @@ class FOOOFGroup(FOOOF):
             pool.close()
 
         self._reset_dat(clear_freqs=False)
-
-        # OLD:
-        # # Clear results so that any prior data doesn't end up lumped together
-        # self._reset_group_results()
-
-        # # Add data (to set frequency information in object), then run FOOOF across the group.
-        # self.add_data(freqs, psds[0], freq_range)
-        # self.group_results = Parallel(n_jobs=n_jobs)(delayed(_fit_ret)(self, freqs, psd, freq_range) \
-        #         for psd in psds)
-
-        # # Clear out last run PSD, but while keeping frequency information
-        # #  This is so that it doesn't retain data from an arbitrary PSD
-        # self._reset_dat(False)
 
 
     def get_results(self):
@@ -415,13 +399,6 @@ class FOOOFGroup(FOOOF):
 
 
 FOOOFGroup.__doc__ = FOOOF.__doc__
-
-
-def _fit_ret(fg, *args, **kwargs):
-    """Helper function for running in parallel."""
-
-    fg._fit(*args, **kwargs)
-    return fg._get_results()
 
 
 def _par_fit(psd, fg, freqs, freq_range):
