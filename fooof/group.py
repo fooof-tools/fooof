@@ -21,6 +21,8 @@ class FOOOFGroup(FOOOF):
 
         FOOOF.__init__(self, *args, **kwargs)
 
+        self.psds = np.array([])
+
         self._reset_group_results()
 
 
@@ -36,19 +38,43 @@ class FOOOFGroup(FOOOF):
         self.group_results = [[]] * length
 
 
-    def model(self, freqs, psds, freq_range=None, n_jobs=1):
-        """Run FOOOF across a group of PSDs, then plot and print results.
+    def add_data(self, freqs, psds, freq_range=None):
+        """Add data (frequencies and PSD values) to FOOOFGroup object.
 
         Parameters
         ----------
         freqs : 1d array
+            Frequency values for the PSD, in linear space.
+        psd : 2d array
+            Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
+        freq_range : list of [float, float], optional
+            Frequency range to restrict PSD to. If not provided, keeps the entire range.
+        """
+
+        if freqs.ndim != 1 or psds.ndim !=2:
+            raise ValueError('Inputs are not the right dimensions.')
+
+        self.freqs, self.psds, self.freq_range, self.freq_res = \
+            self._prepare_data(freqs, psds, freq_range, self.verbose)
+
+
+    def model(self, freqs=None, psds=None, freq_range=None, n_jobs=1):
+        """Run FOOOF across a group of PSDs, then plot and print results.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
             Frequency values for the PSDs, in linear space.
-        psds : 2d array
+        psds : 2d array, optional
             Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         n_jobs : int
             Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
+
+        Notes
+        -----
+        Data is optional if data has been already been added to FOOOF object.
         """
 
         self.fit(freqs, psds, freq_range, n_jobs=n_jobs)
@@ -56,35 +82,42 @@ class FOOOFGroup(FOOOF):
         self.print_results()
 
 
-    def fit(self, freqs, psds, freq_range=None, n_jobs=1):
+    def fit(self, freqs=None, psds=None, freq_range=None, n_jobs=1):
         """Run FOOOF across a group of PSDs.
 
         Parameters
         ----------
-        freqs : 1d array
+        freqs : 1d array, optional
             Frequency values for the PSDs, in linear space.
-        psds : 2d array
+        psds : 2d array, optional
             Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         n_jobs : int, optional
             Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
+
+        Notes
+        -----
+        Data is optional if data has been already been added to FOOOF object.
         """
+
+        # If freqs & psd provided together, add data to object.
+        if isinstance(freqs, np.ndarray) and isinstance(psds, np.ndarray):
+            self.add_data(freqs, psds, freq_range)
 
         # Run linearly
         if n_jobs == 1:
-            self._reset_group_results(len(psds))
-            for ind, psd in enumerate(psds):
-                self._fit(freqs, psd, freq_range)
+            self._reset_group_results(len(self.psds))
+            for ind, psd in enumerate(self.psds):
+                self._fit(psd=psd)
                 self.group_results[ind] = self._get_results()
 
         # Run in parallel
         else:
             self._reset_group_results()
-            self.add_data(freqs, psds[0], freq_range)
             n_jobs = cpu_count() if n_jobs == -1 else n_jobs
             pool = Pool(processes=n_jobs)
-            self.group_results = pool.map(partial(_par_fit, fg=self, freqs=freqs, freq_range=freq_range), psds)
+            self.group_results = pool.map(partial(_par_fit, fg=self), self.psds)
             pool.close()
 
         self._reset_dat(clear_freqs=False)
@@ -278,8 +311,7 @@ class FOOOFGroup(FOOOF):
                     self.amp_std_thresh, self.bg_use_knee, self.verbose)
 
         # Add data and results for specified single PSD
-        fm.freq_range, fm.freq_res = self.freq_range, self.freq_res
-        fm.freqs = self.freqs
+        fm.add_data(self.freqs, np.power(10, self.psds[ind]))
         fm.add_results(self.group_results[ind], regenerate=regenerate)
 
         return fm
@@ -433,8 +465,9 @@ class FOOOFGroup(FOOOF):
 FOOOFGroup.__doc__ = FOOOF.__doc__
 
 
-def _par_fit(psd, fg, freqs, freq_range):
+def _par_fit(psd, fg):#, freqs, freq_range):
     """Helper function for running in parallel."""
 
-    fg._fit(freqs, psd, freq_range)
+    #fg._fit(freqs, psd, freq_range)
+    fg._fit(psd=psd)
     return fg._get_results()

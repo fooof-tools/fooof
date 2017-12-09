@@ -208,7 +208,7 @@ class FOOOF(object):
 
 
     def add_data(self, freqs, psd, freq_range=None, reset_dat=True):
-        """Add data (frequencies and PSD values) to object.
+        """Add data (frequencies and PSD values) to FOOOF object.
 
         Parameters
         ----------
@@ -218,41 +218,13 @@ class FOOOF(object):
             Power spectral density values, in linear space.
         freq_range : list of [float, float], optional
             Frequency range to restrict PSD to. If not provided, keeps the entire range.
-        reset_dat : bool, optional
-            Whether to clear the object of all prior data before loading. default: True
         """
 
-        # Clear any existing data from the object, that could potentially interfere
-        if reset_dat:
-            self._reset_dat()
-
-        # Check inputs dimensions & size
         if freqs.ndim != psd.ndim != 1:
-            raise ValueError('Inputs are not 1 dimensional.')
-        if freqs.shape != psd.shape:
-            raise ValueError('Inputs are not consistent size.')
+            raise ValueError('Inputs are not the right dimensions.')
 
-        # Calculate and store frequency resolution.
-        self.freq_res = freqs[1] - freqs[0]
-
-        # Log frequency inputs
-        psd = np.log10(psd)
-
-        # Check frequency range, trim the PSD range if requested
-        if freq_range:
-            self.freqs, self.psd = trim_psd(freqs, psd, freq_range)
-        else:
-            self.freqs, self.psd = freqs, psd
-
-        # Check if freqs start at 0 - move up one value if so.
-        #   Background fit gets an inf is freq of 0 is included, which leads to an error.
-        if self.freqs[0] == 0.0:
-            self.freqs, self.psd = trim_psd(freqs, psd, [self.freqs[1], self.freqs.max()])
-            if self.verbose:
-                print('\nFOOOF WARNING: Skipping frequency == 0, as this causes problem with fitting.')
-
-        # Set the actual frequency range used
-        self.freq_range = [self.freqs.min(), self.freqs.max()]
+        self.freqs, self.psd, self.freq_range, self.freq_res = \
+            self._prepare_data(freqs, psd, freq_range, self.verbose)
 
 
     def add_results(self, fooof_result, regenerate=False):
@@ -315,12 +287,17 @@ class FOOOF(object):
         Data is optional if data has been already been added to FOOOF object.
         """
 
-        # If provided, add data to object.
-        if np.all(isinstance(freqs, np.ndarray)) and isinstance(psd, np.ndarray):
+        # If freqs & psd provided together, add data to object.
+        if isinstance(freqs, np.ndarray) and isinstance(psd, np.ndarray):
             self.add_data(freqs, psd, freq_range)
+        # If PSD provided alone, add to object, and use existing frequency data
+        #  Note: this option is for internal use (called from FOOOFGroup)
+        #    It assumes the PSD is already logged, with correct freq_range.
+        elif isinstance(psd, np.ndarray):
+            self.psd = psd
 
         # Check that data is available
-        if not np.all(self.freqs):
+        if not (np.all(self.freqs) and np.all(self.psd)):
             raise ValueError('No data available to fit - can not proceed.')
 
         # Check bandwidth limits against frequency resolution; warn if too close.
@@ -955,6 +932,59 @@ class FOOOF(object):
         """Calculate root mean squared error of the full model fit."""
 
         self.error_ = np.sqrt((self.psd - self.psd_fit_) ** 2).mean()
+
+
+    @staticmethod
+    def _prepare_data(freqs, psd, freq_range, verbose=True):
+        """Prepare input data for adding to FOOOF or FOOOFGroup object.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the PSD, in linear space.
+        psd : 1d or 2d array
+            Power spectral density values, in linear space. Either 1d vector, or 2d as [n_psds, n_freqs].
+        freq_range :
+            Frequency range to restrict PSD to. If None, keeps the entire range.
+        verbose : bool, optional
+            Whether to be verbose in printing out warnings.
+
+        Returns
+        -------
+        freqs : 1d array
+            Frequency values for the PSD, in linear space.
+        psd : 1d or 2d array
+            Power spectral density values, in linear space. Either 1d vector, or 2d as [n_psds, n_freqs].
+        freq_range : list of [float, float]
+            Frequency range - minimum and maximum values of the frequency vector.
+        freq_res : float
+            Frequency resolution of the PSD.
+        """
+
+        if freqs.shape[-1] != psd.shape[-1]:
+            raise ValueError('Inputs are not consistent size.')
+
+        # Check frequency range, trim the PSD range if requested
+        if freq_range:
+            freqs, psd = trim_psd(freqs, psd, freq_range)
+        else:
+            freqs, psd = freqs, psd
+
+        # Check if freqs start at 0 - move up one value if so.
+        #   Background fit gets an inf is freq of 0 is included, which leads to an error.
+        if freqs[0] == 0.0:
+            freqs, psd = trim_psd(freqs, psd, [freqs[1], freqs.max()])
+            if verbose:
+                print('\nFOOOF WARNING: Skipping frequency == 0, as this causes problem with fitting.')
+
+        # Calculate frequency resolution, and actual frequency range of the data
+        freq_range = [freqs.min(), freqs.max()]
+        freq_res = freqs[1] - freqs[0]
+
+        # Log power values
+        psd = np.log10(psd)
+
+        return freqs, psd, freq_range, freq_res
 
 
     def _gen_settings_str(self, description=False):
