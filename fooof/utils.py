@@ -87,7 +87,7 @@ def trim_psd(freqs, psd, f_range):
     ----------
     freqs : 1d array
         Frequency values for the PSD.
-    psd : 1d array
+    psd : 1d or 2d array
         Power spectral density values.
     f_range: list of [float, float]
         Frequency range to restrict to.
@@ -110,7 +110,7 @@ def trim_psd(freqs, psd, f_range):
 
     # Restrict freqs & psd to requested range
     freqs_ext = freqs[f_mask]
-    psd_ext = psd[f_mask]
+    psd_ext = psd[f_mask] if psd.ndim == 1 else psd[:, f_mask]
 
     return freqs_ext, psd_ext
 
