@@ -14,6 +14,7 @@ from scipy.optimize import curve_fit
 from fooof.utils import trim_psd, mk_freq_vector
 from fooof.utils import group_three, get_attribute_names, check_array_dim
 from fooof.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
+from fooof.strings import gen_settings_str, gen_results_str_fm
 from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 
 ###################################################################################################
@@ -402,13 +403,15 @@ class FOOOF(object):
         - There are also internal settings, documented and defined in __init__
         """
 
-        print(self._gen_settings_str(description))
+        print(gen_settings_str(self, description))
+        #print(self._gen_settings_str(description))
 
 
     def print_results(self):
         """Print out FOOOF results."""
 
-        print(self._gen_results_str())
+        print(gen_results_str_fm(self))
+        #print(self._gen_results_str())
 
 
     def get_results(self):
@@ -442,7 +445,8 @@ class FOOOF(object):
 
         # First - text results
         ax0 = plt.subplot(grid[0])
-        results_str = self._gen_results_str()
+        #results_str = self._gen_results_str()
+        results_str = gen_results_str_fm(self)
         ax0.text(0.5, 0.2, results_str, font, ha='center')
         ax0.set_frame_on(False)
         ax0.set_xticks([])
@@ -454,7 +458,8 @@ class FOOOF(object):
 
         # Third - FOOOF settings
         ax2 = plt.subplot(grid[2])
-        settings_str = self._gen_settings_str(False)
+        #settings_str = self._gen_settings_str(False)
+        settings_str = gen_settings_str(self, False)
         ax2.text(0.5, 0.2, settings_str, font, ha='center')
         ax2.set_frame_on(False)
         ax2.set_xticks([])
@@ -985,111 +990,6 @@ class FOOOF(object):
         psd = np.log10(psd)
 
         return freqs, psd, freq_range, freq_res
-
-
-    def _gen_settings_str(self, description=False):
-        """Generate a string representation of current FOOOF settings.
-
-        Parameters
-        ----------
-        description : bool, optional (default: True)
-            Whether to print out a description with current settings.
-        """
-
-        # Center value for spacing
-        cen_val = 100
-
-        # Parameter descriptions to print out
-        desc = {'bg_use_knee' : 'Whether to fit a knee parameter in background fitting.',
-                'bw_lims'     : 'Possible range of bandwidths for extracted oscillations, in Hz.',
-                'num_oscs'    : 'The maximum number of oscillations that can be extracted.',
-                'min_amp'     : "Minimum absolute amplitude, above background, "
-                                "for an oscillation to be extracted.",
-                'amp_thresh'  : "Threshold, in units of standard deviation,"
-                                "at which to stop searching for oscillations."}
-
-        # Clear description for printing if not requested
-        if not description:
-            desc = {k : '' for k, v in desc.items()}
-
-        # Create output string
-        output = '\n'.join([
-
-            # Header
-            '=' * cen_val,
-            '',
-            'FOOOF - SETTINGS'.center(cen_val),
-            '',
-
-            # Settings - include descriptions if requested
-            *[el for el in ['Fit Knee : {}'.format(self.bg_use_knee).center(cen_val),
-                            '{}'.format(desc['bg_use_knee']).center(cen_val),
-                            'Bandwidth Limits : {}'.format(self.bandwidth_limits).center(cen_val),
-                            '{}'.format(desc['bw_lims']).center(cen_val),
-                            'Max Number of Oscillations : {}'.format(self.max_n_oscs).center(cen_val),
-                            '{}'.format(desc['num_oscs']).center(cen_val),
-                            'Minimum Amplitude : {}'.format(self.min_amp).center(cen_val),
-                            '{}'.format(desc['min_amp']).center(cen_val),
-                            'Amplitude Threshold: {}'.format(self.amp_std_thresh).center(cen_val),
-                            '{}'.format(desc['amp_thresh']).center(cen_val)] if el != ' '*cen_val],
-
-            # Footer
-            '',
-            '=' * cen_val
-        ])
-
-        return output
-
-
-    def _gen_results_str(self):
-        """Generate a string representation of model fit results."""
-
-        if not np.all(self.background_params_):
-            raise ValueError('Model fit has not been run - can not proceed.')
-
-        # Set centering value.
-        cen_val = 100
-
-        # Create output string
-        output = '\n'.join([
-
-            # Header
-            '=' * cen_val,
-            '',
-            ' FOOOF - PSD MODEL'.center(cen_val),
-            '',
-
-            # Frequency range and resolution
-            'The input PSD was modelled in the frequency range: {} - {} Hz'.format(
-                int(np.floor(self.freq_range[0])), int(np.ceil(self.freq_range[1]))).center(cen_val),
-            'Frequency Resolution is {:1.2f} Hz'.format(self.freq_res).center(cen_val),
-            '',
-
-            # Background parameters
-            ('Background Parameters (offset, ' + ('knee, ' if self.bg_use_knee else '') + \
-               'slope): ').center(cen_val),
-            ', '.join(['{:2.4f}'] * len(self.background_params_)).format(
-                *self.background_params_).center(cen_val),
-            '',
-
-            # Oscillation parameters
-            '{} oscillations were found:'.format(
-                len(self.oscillation_params_)).center(cen_val),
-            *['CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]).center(cen_val) \
-              for op in self.oscillation_params_],
-            '',
-
-            # R^2 and error
-            'R^2 of model fit is {:5.4f}'.format(self.r2_).center(cen_val),
-            'Root mean squared error of model fit is {:5.4f}'.format(
-                self.error_).center(cen_val),
-            '',
-
-            # Footer
-            '=' * cen_val
-        ])
-
-        return output
 
 
     def _clear_settings(self):

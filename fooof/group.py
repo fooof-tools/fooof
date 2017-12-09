@@ -2,14 +2,15 @@
 
 import os
 from json import JSONDecodeError
+from multiprocessing import Pool, cpu_count
 
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from functools import partial
-from multiprocessing import Pool, cpu_count
 
 from fooof import FOOOF
+from fooof.strings import gen_results_str_fg
 from fooof.plts import plot_scatter_1, plot_scatter_2, plot_hist
 
 ###################################################################################################
@@ -51,7 +52,7 @@ class FOOOFGroup(FOOOF):
             Frequency range to restrict PSD to. If not provided, keeps the entire range.
         """
 
-        if freqs.ndim != 1 or psds.ndim !=2:
+        if freqs.ndim != 1 or psds.ndim != 2:
             raise ValueError('Inputs are not the right dimensions.')
 
         self.freqs, self.psds, self.freq_range, self.freq_res = \
@@ -213,7 +214,8 @@ class FOOOFGroup(FOOOF):
 
         # First / top: text results
         ax0 = plt.subplot(gs[0, :])
-        results_str = self._gen_results_str()
+        #results_str = self._gen_results_str()
+        results_str = gen_results_str_fg(self)
         ax0.text(0.5, 0.0, results_str, font, ha='center')
         ax0.set_frame_on(False)
         ax0.set_xticks([])
@@ -307,14 +309,20 @@ class FOOOFGroup(FOOOF):
         """
 
         # Initialize a FOOOF object, with same settings as current FOOOFGroup
-        fm =  FOOOF(self.bandwidth_limits, self.max_n_oscs, self.min_amp,
-                    self.amp_std_thresh, self.bg_use_knee, self.verbose)
+        fm = FOOOF(self.bandwidth_limits, self.max_n_oscs, self.min_amp,
+                   self.amp_std_thresh, self.bg_use_knee, self.verbose)
 
         # Add data and results for specified single PSD
+        #  Note that the PSD is inverted back to linear,
+        #    as it will be logged (again) within the method
         fm.add_data(self.freqs, np.power(10, self.psds[ind]))
         fm.add_results(self.group_results[ind], regenerate=regenerate)
 
         return fm
+
+    def print_results(self):
+
+        print(gen_results_str_fg(self))
 
 
     def _fit(self, *args, **kwargs):
@@ -339,83 +347,6 @@ class FOOOFGroup(FOOOF):
         """Create an alias to FOOOF.load for FOOOFGroup object, for internal use."""
 
         super().load(*args, **kwargs)
-
-
-    def _gen_results_str(self):
-        """Generate a string representation of group fit results.
-
-        Notes
-        -----
-        This overloads the equivalent method in FOOOF base object, for group results.
-        - It therefore changes the behaviour (what is printed) for 'print_results'.
-        """
-
-        if not self.group_results:
-            raise ValueError('Model fit has not been run - can not proceed.')
-
-        # Set centering value
-        cen_val = 100
-
-        # Extract all the relevant data for printing
-        cens = self.get_all_data('oscillation_params', 0)
-        r2s = self.get_all_data('r2')
-        errors = self.get_all_data('error')
-        if self.bg_use_knee:
-            kns = self.get_all_data('background_params', 1)
-            sls = self.get_all_data('background_params', 2)
-        else:
-            kns = np.array([0])
-            sls = self.get_all_data('background_params', 1)
-
-        # Create output string
-        output = '\n'.join([
-
-            # Header
-            '=' * cen_val,
-            '',
-            ' FOOOF - GROUP RESULTS'.center(cen_val),
-            '',
-
-            # Group information
-            'Number of PSDs in the Group: {}'.format(len(self.group_results)).center(cen_val),
-            '',
-
-            # Frequency range and resolution
-            'The input PSDs were modelled in the frequency range: {} - {} Hz'.format(
-                int(np.floor(self.freq_range[0])), int(np.ceil(self.freq_range[1]))).center(cen_val),
-            'Frequency Resolution is {:1.2f} Hz'.format(self.freq_res).center(cen_val),
-            '',
-
-            # Background parameters - knee fit status, and quick slope description
-            'PSDs were fit {} a knee.'.format('with' if self.bg_use_knee else 'without').center(cen_val),
-            '',
-            *[el for el in ['Background Knee Values'.center(cen_val),
-                            'Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
-                            .format(kns.min(), kns.max(), kns.mean()).center(cen_val)
-                           ] if self.bg_use_knee],
-            'Background Slope Values'.center(cen_val),
-            'Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-            .format(sls.min(), sls.max(), sls.mean()).center(cen_val),
-            '',
-
-            # Oscillation Parameters
-            'In total {} oscillations were extracted from the group'
-            .format(len(cens)).center(cen_val),
-            '',
-
-            # Fitting stats - error and r^2
-            'Fitting Performance'.center(cen_val),
-            '   R2s -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-            .format(r2s.min(), r2s.max(), r2s.mean()).center(cen_val),
-            'Errors -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-            .format(errors.min(), errors.max(), errors.mean()).center(cen_val),
-            '',
-
-            # Footer
-            '=' * cen_val
-        ])
-
-        return output
 
 
     def _plot_bg(self, ax=None):
@@ -465,9 +396,8 @@ class FOOOFGroup(FOOOF):
 FOOOFGroup.__doc__ = FOOOF.__doc__
 
 
-def _par_fit(psd, fg):#, freqs, freq_range):
+def _par_fit(psd, fg):
     """Helper function for running in parallel."""
 
-    #fg._fit(freqs, psd, freq_range)
     fg._fit(psd=psd)
     return fg._get_results()
