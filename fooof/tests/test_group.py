@@ -43,7 +43,7 @@ def test_fooof_group_fit_par():
 
 	fg = FOOOFGroup()
 
-	fg.fit(xs, ys, n_jobs=-1)
+	fg.fit(xs, ys, n_jobs=2)
 
 	out = fg.get_results()
 
@@ -105,3 +105,16 @@ def test_fooof_group_model():
 	fg.model(xs, ys)
 
 	assert fg
+
+
+def test_fooof_group_from_group():
+	"""Check return of an individual PSD in a FOOOF object from FOOOFGroup."""
+
+	xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5))
+
+	fg = FOOOFGroup()
+	fg.fit(xs, ys)
+
+	fm = fg.from_group(3, False)
+
+	assert fm
