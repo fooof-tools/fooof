@@ -14,7 +14,7 @@ setup(
     author_email = 'voyteklab@gmail.com',
     url = 'https://github.com/voytekresearch/fooof',
     packages=find_packages(),
-    license='MIT',
+    license='Apache License, 2.0',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Science/Research',
