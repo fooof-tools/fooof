@@ -3,8 +3,7 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![Build Status](https://travis-ci.org/voytekresearch/fooof.svg)](https://travis-ci.org/voytekresearch/fooof)
 [![codecov](https://codecov.io/gh/voytekresearch/fooof/branch/master/graph/badge.svg)](https://codecov.io/gh/voytekresearch/fooof)
-
-WARNING: FOOOF is not yet tagged for a stable release version, and updates may change the internal workings, and/or the API (although major changes to API are unlikely). Prior to tagged release, tutorials may not be kept entirely up to date, but in-file documentation will be.
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ---
 
@@ -16,7 +15,7 @@ Note that this conception of the 1/f as potentially functional (and therefore wo
 
 ## Python Version
 
-FOOOF is written and tested in Python 3.6. It is not currently tested or supported on earlier versions (but should work on earlier versions of Python3 and should be compatible with Python2.7)
+FOOOF runs on Python 3.5 and 3.6.
 
 ## Dependencies
 
