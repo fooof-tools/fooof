@@ -240,6 +240,17 @@ class FOOOFGroup(FOOOF):
     def save(self, save_file='fooof_group_results', save_path='', save_results=False, save_settings=False):
         """Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.
 
+        Parameters
+        ----------
+        save_file : str or FileObject, optional
+            File to which to save data.
+        save_path : str
+            Path to directory to which the save. If not provided, saves to current directory.
+        save_results : bool, optional
+            Whether to save out FOOOF model fit results.
+        save_settings : bool, optional
+            Whether to save out FOOOF settings.
+
         Notes
         -----
         - save_data is not availabe with FOOOFGroup, as data are not stored after fitting.
@@ -318,6 +329,7 @@ class FOOOFGroup(FOOOF):
         fm.add_results(self.group_results[ind], regenerate=regenerate)
 
         return fm
+
 
     def print_results(self):
         """Print out FOOOFGroup results."""
