@@ -36,38 +36,6 @@ class FOOOFGroup(FOOOF):
         self.group_results = [[]] * length
 
 
-    def from_group(self, ind, regenerate=False):
-        """Return a FOOOF object from specified data in a FOOOFGroup object.
-
-        Parameters
-        ----------
-        fg : FOOOFGroup() object
-            An object with FOOOFResults available.
-        ind : int
-            The index of the FOOOFResult in FOOOFGroup.group_results to load.
-
-        Returns
-        -------
-        inst : FOOOF() object
-            The FOOOFResult data loaded into a FOOOF object.
-
-        Notes
-        -----
-        - This method overloads what is a classmethod in FOOOF object base.
-        """
-
-        # Initialize a FOOOF object, with same settings as current FOOOFGroup
-        fm =  FOOOF(self.bandwidth_limits, self.max_n_oscs, self.min_amp,
-                    self.amp_std_thresh, self.bg_use_knee, self.verbose)
-
-        # Add data and results for specified single PSD
-        fm.freq_range, fm.freq_res = self.freq_range, self.freq_res
-        fm.freqs = self.freqs
-        fm.add_results(self.group_results[ind], regenerate=regenerate)
-
-        return fm
-
-
     def model(self, freqs, psds, freq_range=None, n_jobs=1):
         """Run FOOOF across a group of PSDs, then plot and print results.
 
@@ -283,6 +251,38 @@ class FOOOFGroup(FOOOF):
 
         # Reset peripheral data from last loaded result, keeping freqs info
         self._reset_dat(False)
+
+
+    def from_group(self, ind, regenerate=False):
+        """Return a FOOOF object from specified data in a FOOOFGroup object.
+
+        Parameters
+        ----------
+        fg : FOOOFGroup() object
+            An object with FOOOFResults available.
+        ind : int
+            The index of the FOOOFResult in FOOOFGroup.group_results to load.
+
+        Returns
+        -------
+        inst : FOOOF() object
+            The FOOOFResult data loaded into a FOOOF object.
+
+        Notes
+        -----
+        - This method overloads what is a classmethod in FOOOF object base.
+        """
+
+        # Initialize a FOOOF object, with same settings as current FOOOFGroup
+        fm =  FOOOF(self.bandwidth_limits, self.max_n_oscs, self.min_amp,
+                    self.amp_std_thresh, self.bg_use_knee, self.verbose)
+
+        # Add data and results for specified single PSD
+        fm.freq_range, fm.freq_res = self.freq_range, self.freq_res
+        fm.freqs = self.freqs
+        fm.add_results(self.group_results[ind], regenerate=regenerate)
+
+        return fm
 
 
     def _fit(self, *args, **kwargs):
