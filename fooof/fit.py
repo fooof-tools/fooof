@@ -94,9 +94,10 @@ class FOOOF(object):
         - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
         procedure, or a median filter smoothing on the FFT output before running FOOOF.
         - Where possible and appropriate, use longer time segments for PSD calculation to
-        get smoother PSDs; this will give better FOOOF fits.
+          get smoother PSDs; this will give better FOOOF fits.
     If using the FOOOFGroup Object, all parameters and attributes are the same.
-        - The main addition is 'group_results', which stores FOOOF results across the group of PSDs.
+        - In addition there is 'psds' and 'group_results' as additional attributes,
+          which store the data and results respectively for a group of PSDs.
     """
 
     def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf,
@@ -404,14 +405,12 @@ class FOOOF(object):
         """
 
         print(gen_settings_str(self, description))
-        #print(self._gen_settings_str(description))
 
 
     def print_results(self):
         """Print out FOOOF results."""
 
         print(gen_results_str_fm(self))
-        #print(self._gen_results_str())
 
 
     def get_results(self):
@@ -445,7 +444,6 @@ class FOOOF(object):
 
         # First - text results
         ax0 = plt.subplot(grid[0])
-        #results_str = self._gen_results_str()
         results_str = gen_results_str_fm(self)
         ax0.text(0.5, 0.2, results_str, font, ha='center')
         ax0.set_frame_on(False)
@@ -458,7 +456,6 @@ class FOOOF(object):
 
         # Third - FOOOF settings
         ax2 = plt.subplot(grid[2])
-        #settings_str = self._gen_settings_str(False)
         settings_str = gen_settings_str(self, False)
         ax2.text(0.5, 0.2, settings_str, font, ha='center')
         ax2.set_frame_on(False)

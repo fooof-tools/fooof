@@ -214,7 +214,6 @@ class FOOOFGroup(FOOOF):
 
         # First / top: text results
         ax0 = plt.subplot(gs[0, :])
-        #results_str = self._gen_results_str()
         results_str = gen_results_str_fg(self)
         ax0.text(0.5, 0.0, results_str, font, ha='center')
         ax0.set_frame_on(False)
@@ -321,6 +320,7 @@ class FOOOFGroup(FOOOF):
         return fm
 
     def print_results(self):
+        """Print out FOOOFGroup results."""
 
         print(gen_results_str_fg(self))
 

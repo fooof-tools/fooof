@@ -42,7 +42,7 @@ def test_fooof_fit_nk():
 
 	# Check model results - gaussian parameters
 	for i, osc in enumerate(oscs):
-		assert np.all(np.isclose(osc, fm._gaussian_params[i], [1, 0.2, 0.5]))
+		assert np.all(np.isclose(osc, fm._gaussian_params[i], [1.5, 0.25, 0.5]))
 
 def test_fooof_checks():
 	"""Test various checks, errors and edge cases in FOOOF."""
