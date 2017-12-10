@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 
 from fooof.strings import gen_settings_str, gen_results_str_fm, gen_results_str_fg
+from fooof.plts.fg import plot_fg_bg, plot_fg_gf, plot_fg_osc_cens
 
 ###################################################################################################
 ###################################################################################################
@@ -75,15 +76,15 @@ def create_report_fg(fg, save_name, save_path):
 
     # Background parameters plot
     ax1 = plt.subplot(gs[1, 0])
-    fg._plot_bg(ax1)
+    plot_fg_bg(fg, ax1)
 
     # Goodness of fit plot
     ax2 = plt.subplot(gs[1, 1])
-    fg._plot_gd(ax2)
+    plot_fg_gf(fg, ax2)
 
     # Oscillations plot
     ax3 = plt.subplot(gs[2, :])
-    fg._plot_osc_cens(ax3)
+    plot_fg_osc_cens(fg, ax3)
 
     # Save out the report
     plt.savefig(os.path.join(save_path, save_name + '.pdf'))

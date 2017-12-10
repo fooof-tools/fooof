@@ -1,23 +1,20 @@
 """FOOOF - Fitting Oscillations & One-Over F."""
 
 import os
-import io
 import warnings
 from collections import namedtuple
 
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
 from fooof.utils import trim_psd, mk_freq_vector
 from fooof.utils import group_three, get_attribute_names, check_array_dim
-from fooof.strings import gen_settings_str, gen_results_str_fm, gen_how_to_report_str
-from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 
 from fooof.io import save_fm, load_json
+from fooof.plts.fm import plot_fm
 from fooof.reports import create_report_fm
-
-from fooof.plts import plot_fm
+from fooof.strings import gen_settings_str, gen_results_str_fm, gen_how_to_report_str
+from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 
 ###################################################################################################
 ###################################################################################################

@@ -5,16 +5,16 @@ from functools import partial
 from multiprocessing import Pool, cpu_count
 
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 from fooof import FOOOF
 from fooof.io import save_fg, load_jsonlines
+from fooof.plts.fg import plot_fg
 from fooof.strings import gen_results_str_fg
-from fooof.plts import plot_scatter_1, plot_scatter_2, plot_hist
-
 from fooof.reports import create_report_fg
 
-from fooof.plts import plot_fg
+#from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
+
 
 ###################################################################################################
 ###################################################################################################
@@ -287,50 +287,6 @@ class FOOOFGroup(FOOOF):
         """Create an alias to FOOOF.get_results for FOOOFGroup object, for internal use."""
 
         return super().get_results()
-
-
-    def _plot_bg(self, ax=None):
-        """Plot background fit parameters, in a scatter plot.
-
-        Parameters
-        ----------
-        ax : matplotlib.Axes, optional
-            Figure axes upon which to plot.
-        """
-
-        if self.bg_use_knee:
-            plot_scatter_2(self.get_all_data('background_params', 1), 'Knee',
-                           self.get_all_data('background_params', 2), 'Slope',
-                           'Background Fit', ax=ax)
-        else:
-            plot_scatter_1(self.get_all_data('background_params', 1), 'Slope',
-                           'Background Fit', ax=ax)
-
-
-    def _plot_gd(self, ax=None):
-        """Plot goodness of fit results, in a scatter plot.
-
-        Parameters
-        ----------
-        ax : matplotlib.Axes, optional
-            Figure axes upon which to plot.
-        """
-
-        plot_scatter_2(self.get_all_data('error'), 'Error',
-                       self.get_all_data('r2'), 'R^2', 'Goodness of Fit', ax=ax)
-
-
-    def _plot_osc_cens(self, ax=None):
-        """Plot oscillation center frequencies, in a histogram.
-
-        Parameters
-        ----------
-        ax : matplotlib.Axes, optional
-            Figure axes upon which to plot.
-        """
-
-        plot_hist(self.get_all_data('oscillation_params', 0),
-                  'Center Frequency', 'Oscillations', ax=ax)
 
 
 # Update docs for FOOOFGroup object
