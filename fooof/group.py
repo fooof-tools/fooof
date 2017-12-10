@@ -1,15 +1,15 @@
 """FOOOF - Group fitting object and methods."""
 
 import os
-from json import JSONDecodeError
+from functools import partial
 from multiprocessing import Pool, cpu_count
 
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
-from functools import partial
 
 from fooof import FOOOF
+from fooof.io import save_fg, load_jsonlines
 from fooof.strings import gen_results_str_fg
 from fooof.plts import plot_scatter_1, plot_scatter_2, plot_hist
 
@@ -237,33 +237,25 @@ class FOOOFGroup(FOOOF):
         plt.close()
 
 
-    def save(self, save_file='fooof_group_results', save_path='', save_results=False, save_settings=False):
+    def save(self, save_file='fooof_group_results', save_path='',
+             save_results=False, save_settings=False, save_data=False):
         """Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.
 
         Parameters
         ----------
         save_file : str or FileObject, optional
             File to which to save data.
-        save_path : str
+        save_path : str, optional
             Path to directory to which the save. If not provided, saves to current directory.
         save_results : bool, optional
             Whether to save out FOOOF model fit results.
         save_settings : bool, optional
             Whether to save out FOOOF settings.
-
-        Notes
-        -----
-        - save_data is not availabe with FOOOFGroup, as data are not stored after fitting.
+        save_data : bool, optional
+            Whether to save out PSD data.
         """
 
-        if save_results:
-            with open(os.path.join(save_path, save_file + '.json'), 'w') as f_obj:
-                for ind in range(len(self.group_results)):
-                    fm = FOOOF.from_group(self, ind, regenerate=False)
-                    fm.save(save_file=f_obj, save_results=True, save_settings=save_settings)
-
-        if save_settings:
-            self._save(save_file=save_file, save_path=save_path, save_settings=True)
+        save_fg(self, save_file, save_path, save_results, save_settings, save_data)
 
 
     def load(self, file_name='fooof_group_results', file_path=''):
@@ -271,7 +263,7 @@ class FOOOFGroup(FOOOF):
 
         Parameters
         ----------
-        file_name : str
+        file_name : str, optional
             File from which to load data.
         file_path : str, optional
             Path to directory from which to load from. If not provided, saves to current directory.
@@ -280,19 +272,16 @@ class FOOOFGroup(FOOOF):
         # Clear results so as not to have possible prior results interfere
         self._reset_group_results()
 
-        # Load from jsonlines file
-        with open(os.path.join(file_path, file_name + '.json'), 'r') as f_obj:
+        for ind, dat in enumerate(load_jsonlines(file_name, file_path)):
 
-            while True:
+            self._add_from_dict(dat)
 
-                # For each line, grab the FOOOFResults
-                try:
-                    self._load(f_obj)
-                    self.group_results.append(self._get_results())
+            # Only load settings from first line (rest will be duplicates, if there)
+            if ind == 0:
+                self._check_loaded_settings(dat)
 
-                # Break off when get a JSON error - end of the file
-                except JSONDecodeError:
-                    break
+            self._check_loaded_results(dat, False)
+            self.group_results.append(self._get_results())
 
         # Reset peripheral data from last loaded result, keeping freqs info
         self._reset_dat(False)
@@ -323,8 +312,7 @@ class FOOOFGroup(FOOOF):
                    self.amp_std_thresh, self.bg_use_knee, self.verbose)
 
         # Add data and results for specified single PSD
-        #  Note that the PSD is inverted back to linear,
-        #    as it will be logged (again) within the method
+        #  The PSD is inverted back to linear, as it's re-logged when added to FOOOF
         fm.add_data(self.freqs, np.power(10, self.psds[ind]))
         fm.add_results(self.group_results[ind], regenerate=regenerate)
 
@@ -347,18 +335,6 @@ class FOOOFGroup(FOOOF):
         """Create an alias to FOOOF.get_results for FOOOFGroup object, for internal use."""
 
         return super().get_results()
-
-
-    def _save(self, *args, **kwargs):
-        """Create an alias to FOOOF.save for FOOOFGroup object, for internal use."""
-
-        super().save(*args, **kwargs)
-
-
-    def _load(self, *args, **kwargs):
-        """Create an alias to FOOOF.load for FOOOFGroup object, for internal use."""
-
-        super().load(*args, **kwargs)
 
 
     def _plot_bg(self, ax=None):

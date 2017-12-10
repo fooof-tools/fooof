@@ -2,7 +2,6 @@
 
 import os
 import io
-import json
 import warnings
 from collections import namedtuple
 
@@ -13,9 +12,10 @@ from scipy.optimize import curve_fit
 
 from fooof.utils import trim_psd, mk_freq_vector
 from fooof.utils import group_three, get_attribute_names, check_array_dim
-from fooof.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
 from fooof.strings import gen_settings_str, gen_results_str_fm, gen_how_to_report_str
 from fooof.funcs import gaussian_function, expo_function, expo_nk_function
+
+from fooof.io import save_fm, load_json
 
 ###################################################################################################
 ###################################################################################################
@@ -198,12 +198,15 @@ class FOOOF(object):
             The FOOOFResult data loaded into a FOOOF object.
         """
 
-        # Initialize instance, inheriting settings from FOOOFGroup object, and copy over frequency information
-        inst = cls(fg.bandwidth_limits, fg.max_n_oscs, fg.min_amp, fg.amp_std_thresh, fg.bg_use_knee, fg.verbose)
+        # Initialize instance, inheriting settings from FOOOFGroup object
+        inst = cls(fg.bandwidth_limits, fg.max_n_oscs, fg.min_amp,
+                   fg.amp_std_thresh, fg.bg_use_knee, fg.verbose)
+
+        # Reconstruct frequency information
         inst.freq_range, inst.freq_res = fg.freq_range, fg.freq_res
         inst.freqs = mk_freq_vector(inst.freq_range, inst.freq_res)
 
-        # Add results data from specified FOOOFResult, copy over frequency information, and infer knee
+        # Add results data from specified FOOOFResult
         inst.add_results(fg.group_results[ind], regenerate=regenerate)
 
         return inst
@@ -482,7 +485,7 @@ class FOOOF(object):
         ----------
         save_file : str or FileObject, optional
             File to which to save data.
-        save_path : str
+        save_path : str, optional
             Path to directory to which the save. If not provided, saves to current directory.
         save_results : bool, optional
             Whether to save out FOOOF model fit results.
@@ -495,35 +498,7 @@ class FOOOF(object):
                 This option is only valid (and only used) if save_file is a str.
         """
 
-        # Get dictionary of all attributes
-        attributes = get_attribute_names()
-
-        # Convert object to dictionary & convert all arrays to lists - for JSON serializing
-        obj_dict = dict_array_to_lst(self.__dict__)
-
-        # Set which variables to keep. Use a set to drop any potential overlap
-        keep = set((attributes['results'] if save_results else []) + \
-                   (attributes['settings'] if save_settings else []) + \
-                   (attributes['dat'] if save_data else []))
-
-        # Keep only requested vars
-        obj_dict = dict_select_keys(obj_dict, keep)
-
-        # Save out - create new file, (creates a JSON file)
-        if isinstance(save_file, str) and not append:
-            with open(os.path.join(save_path, save_file + '.json'), 'w') as outfile:
-                json.dump(obj_dict, outfile)
-
-        # Save out - append to file_name (appends to a JSONlines file)
-        if isinstance(save_file, str) and append:
-            with open(os.path.join(save_path, save_file + '.json'), 'a') as outfile:
-                json.dump(obj_dict, outfile)
-                outfile.write('\n')
-
-        # Save out - append to given file object (appends to a JSONlines file)
-        elif isinstance(save_file, io.IOBase):
-            json.dump(obj_dict, save_file)
-            save_file.write('\n')
+        save_fm(self, save_file, save_path, save_results, save_settings, save_data, append)
 
 
     def load(self, load_file='fooof_dat', file_path=''):
@@ -537,50 +512,37 @@ class FOOOF(object):
             Path to directory from which to load. If not provided, loads from current directory.
         """
 
-        # Load data from file
-        if isinstance(load_file, str):
-            with open(os.path.join(file_path, load_file + '.json'), 'r') as infile:
-                dat = json.load(infile)
-        elif isinstance(load_file, io.IOBase):
-            dat = json.loads(load_file.readline())
-
         # Reset data in object, so old data can't interfere
         self._reset_dat()
 
-        # Get dictionary of available attributes, and convert specified lists back into arrays
-        attributes = get_attribute_names()
-        dat = dict_lst_to_array(dat, attributes['arrays'])
+        # Load JSON file, add to self and check loaded data
+        dat = load_json(load_file, file_path)
+        self._add_from_dict(dat)
+        self._check_loaded_settings(dat)
+        self._check_loaded_results(dat)
 
-        # Reconstruct FOOOF object
-        for key in dat.keys():
-            setattr(self, key, dat[key])
 
-        # If settings not loaded from file, clear from object, so that default
-        #  settings, which are potentially wrong for loaded data, aren't kept
-        if not set(attributes['settings']).issubset(set(dat.keys())):
-            self._clear_settings()
+    def _check_loaded_results(self, dat, regenerate=True):
+        """Check if results added, check data, and regenerate model, if requested.
 
-            # Infer whether knee fitting was used, if background params have been loaded
-            if np.all(self.background_params_):
-                self._infer_knee()
-
-        # Otherwise (settings were loaded), reset internal settings so that they are consistent
-        else:
-            self._reset_settings()
+        Parameters
+        ----------
+        dat : dict
+            The dictionary of data that has been added to the object.
+        regenerate : bool, optional
+            Whether to regenerate the PSD model. default : True
+        """
 
         # If results loaded, check dimensions of osc/gauss parameters
         #  This fixes an issue where they end up the wrong shape if they are empty (no oscs)
-        if set(attributes['results']).issubset(set(dat.keys())):
+        if set(get_attribute_names()['results']).issubset(set(dat.keys())):
             self.oscillation_params_ = check_array_dim(self.oscillation_params_)
             self._gaussian_params = check_array_dim(self._gaussian_params)
 
-        # Reconstruct frequency vector, if data available to do so
-        if self.freq_res:
-            self.freqs = mk_freq_vector(self.freq_range, self.freq_res)
-
-        # Recreate PSD model & components
-        if np.all(self.freqs) and np.all(self.background_params_):
-            self._regenerate_model()
+        # Regenerate PSD model & components
+        if regenerate:
+            if np.all(self.freqs) and np.all(self.background_params_):
+                self._regenerate_model()
 
 
     def _quick_background_fit(self, freqs, psd):
@@ -996,11 +958,51 @@ class FOOOF(object):
         return freqs, psd, freq_range, freq_res
 
 
+    def _add_from_dict(self, dat):
+        """Add data to object from a dictionary.
+
+        Parameters
+        ----------
+        dat : dict
+            Dictionary of data to add to self.
+        """
+
+        # Reconstruct FOOOF object from loaded data
+        for key in dat.keys():
+            setattr(self, key, dat[key])
+
+        # Reconstruct frequency vector, if data available to do so
+        if self.freq_res:
+            self.freqs = mk_freq_vector(self.freq_range, self.freq_res)
+
+
+    def _check_loaded_settings(self, dat):
+        """Check if settings added, and update the object as needed.
+
+        Parameters
+        ----------
+        dat : dict
+            The dictionary of data that has been added to the object.
+        """
+
+        # If settings not loaded from file, clear from object, so that default
+        #  settings, which are potentially wrong for loaded data, aren't kept
+        if not set(get_attribute_names()['settings']).issubset(set(dat.keys())):
+            self._clear_settings()
+
+            # Infer whether knee fitting was used, if background params have been loaded
+            if np.all(self.background_params_):
+                self._infer_knee()
+
+        # Otherwise (settings were loaded), reset internal settings so that they are consistent
+        else:
+            self._reset_settings()
+
+
     def _clear_settings(self):
         """Clears all setting for current instance, setting them all to None."""
 
-        attributes = get_attribute_names()
-        for setting in attributes['all_settings']:
+        for setting in get_attribute_names()['all_settings']:
             setattr(self, setting, None)
 
 
