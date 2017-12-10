@@ -1,6 +1,5 @@
 """FOOOF - Fitting Oscillations & One-Over F."""
 
-import os
 import warnings
 from collections import namedtuple
 
@@ -8,7 +7,8 @@ import numpy as np
 from scipy.optimize import curve_fit
 
 from fooof.utils import trim_psd, mk_freq_vector
-from fooof.utils import group_three, get_attribute_names, check_array_dim
+from fooof.utils import group_three, check_array_dim
+from fooof.utils import get_attribute_names, docs_drop_param
 
 from fooof.io import save_fm, load_json
 from fooof.plts.fm import plot_fm
@@ -180,7 +180,7 @@ class FOOOF(object):
         self._oscillation_fit = None
 
 
-    def add_data(self, freqs, psd, freq_range=None, reset_dat=True):
+    def add_data(self, freqs, psd, freq_range=None):
         """Add data (frequencies and PSD values) to FOOOF object.
 
         Parameters
@@ -313,26 +313,6 @@ class FOOOF(object):
         self._rmse_error()
 
 
-    def plot(self, plt_log=False, save_fig=False, save_name='FOOOF_fit', save_path='', ax=None):
-        """Plot the original PSD, and full model fit.
-
-        Parameters
-        ----------
-        plt_log : boolean, optional
-            Whether or not to plot the frequency axis in log space. default: False
-        save_fig : boolean, optional
-            Whether to save out a copy of the plot. default : False
-        save_name : str, optional
-            Name to give the saved out file.
-        save_path : str, optional
-            Path to directory in which to save. If not provided, saves to current directory.
-        ax : matplotlib.Axes, optional
-            Figure axes upon which to plot.
-        """
-
-        plot_fm(self, plt_log, save_fig, save_name, save_path, ax)
-
-
     def print_settings(self, description=False):
         """Print out the current FOOOF settings.
 
@@ -340,11 +320,6 @@ class FOOOF(object):
         ----------
         description : bool, optional (default: True)
             Whether to print out a description with current settings.
-
-        Notes
-        -----
-        - This only prints out user defined settings, accessible at initialization.
-        - There are also internal settings, documented and defined in __init__
         """
 
         print(gen_settings_str(self, description))
@@ -370,42 +345,18 @@ class FOOOF(object):
                            self.error_, self._gaussian_params)
 
 
-    def create_report(self, save_name='FOOOF_Report', save_path='', plt_log=False):
-        """Generate and save out a report of the current FOOOF fit.
+    def plot(self, plt_log=False, save_fig=False, save_name='FOOOF_fit', save_path='', ax=None):
 
-        Parameters
-        ----------
-        save_name : str, optional
-            Name to give the saved out file.
-        save_path : str, optional
-            Path to directory in which to save. If not provided, saves to current directory.
-        plt_log : bool, optional
-            Whether or not to plot the frequency axis in log space. default: False
-        """
+        plot_fm(self, plt_log, save_fig, save_name, save_path, ax)
+
+
+    def create_report(self, save_name='FOOOF_Report', save_path='', plt_log=False):
 
         create_report_fm(self, save_name, save_path, plt_log)
 
 
     def save(self, save_file='fooof_dat', save_path='', save_results=False,
              save_settings=False, save_data=False, append=False):
-        """Save out data, results and/or settings from FOOOF object. Saves out to a JSON file.
-
-        Parameters
-        ----------
-        save_file : str or FileObject, optional
-            File to which to save data.
-        save_path : str, optional
-            Path to directory to which the save. If not provided, saves to current directory.
-        save_results : bool, optional
-            Whether to save out FOOOF model fit results.
-        save_settings : bool, optional
-            Whether to save out FOOOF settings.
-        save_data : bool, optional
-            Whether to save out input data.
-        append : bool, optional
-            Whether to append to an existing file, if available. default: False
-                This option is only valid (and only used) if save_file is a str.
-        """
 
         save_fm(self, save_file, save_path, save_results, save_settings, save_data, append)
 
@@ -548,7 +499,8 @@ class FOOOF(object):
         return self._bg_fit_func(freqs, *bg_params)
 
 
-    def _create_osc_fit(self, freqs, gaus_params):
+    @staticmethod
+    def _create_osc_fit(freqs, gaus_params):
         """Generate the fit of the oscillations component of the PSD.
 
         Parameters
@@ -715,10 +667,10 @@ class FOOOF(object):
 
         oscillation_params = np.empty([0, 3])
 
-        for i, osc in enumerate(gaus_params):
+        for ii, osc in enumerate(gaus_params):
 
             # Gets the index of the PSD at the frequency closest to the CF of the osc
-            ind = min(range(len(self.freqs)), key=lambda i: abs(self.freqs[i] - osc[0]))
+            ind = min(range(len(self.freqs)), key=lambda ii: abs(self.freqs[ii] - osc[0]))
 
             # Collect oscillation parameter data
             oscillation_params = np.vstack((oscillation_params,
@@ -933,3 +885,9 @@ class FOOOF(object):
         self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
         self._oscillation_fit = self._create_osc_fit(self.freqs, self._gaussian_params)
         self.psd_fit_ = self._oscillation_fit + self._background_fit
+
+
+# DOCS: Copy over docs for an aliased functions to the method docstrings
+for func_name in get_attribute_names()['alias_funcs']:
+    getattr(FOOOF, func_name).__doc__ = \
+        docs_drop_param(eval(func_name + '_' + 'fm').__doc__)

@@ -1,5 +1,6 @@
 """Plots for FOOOFGroup object."""
 
+import os
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from .templates import plot_scatter_1, plot_scatter_2, plot_hist
@@ -8,7 +9,19 @@ from .templates import plot_scatter_1, plot_scatter_2, plot_hist
 ###################################################################################################
 
 def plot_fg(fg, save_fig, save_name, save_path):
-    """   """
+    """Plots a figure with subplots covering several components for FOOOFGroup results.
+
+    Parameters
+    ----------
+    fg : FOOOFGroup() object
+        FOOOFGroup object, containing results from fitting a group of PSDs.
+    save_fig : boolean, optional
+        Whether to save out a copy of the plot. default : False
+    save_name : str, optional
+        Name to give the saved out file.
+    save_path : str, optional
+        Path to directory in which to save. If not provided, saves to current directory.
+    """
 
     fig = plt.figure(figsize=(14, 10))
     gs = gridspec.GridSpec(2, 2, wspace=0.35, hspace=0.25, height_ratios=[1, 1.2])

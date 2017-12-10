@@ -11,12 +11,14 @@ from fooof.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
 ###################################################################################################
 ###################################################################################################
 
-def save_fm(fm, save_file, save_path, save_results, save_settings, save_data, append):
-    """Save a FOOOF object to a json file.
+def save_fm(fm, save_file, save_path='', save_results=False, save_settings=False, save_data=False, append=False):
+    """Save out data, results and/or settings from FOOOF object. Saves out to a JSON file.
 
     Parameters
     ----------
-    save_file : str or FileObject, optional
+    fm : FOOOF() object
+        FOOOF object from which to save data.
+    save_file : str or FileObject
         File to which to save data.
     save_path : str, optional
         Path to directory to which the save. If not provided, saves to current directory.
@@ -46,11 +48,11 @@ def save_fm(fm, save_file, save_path, save_results, save_settings, save_data, ap
         with open(os.path.join(save_path, save_file + '.json'), 'w') as outfile:
             json.dump(obj_dict, outfile)
 
-    # # Save out - append to file_name (appends to a JSONlines file)
-    # elif isinstance(save_file, str) and append:
-    #     with open(os.path.join(save_path, save_file + '.json'), 'a') as outfile:
-    #         json.dump(obj_dict, outfile)
-    #         outfile.write('\n')
+    # Save out - append to file_name (appends to a JSONlines file)
+    elif isinstance(save_file, str) and append:
+        with open(os.path.join(save_path, save_file + '.json'), 'a') as outfile:
+            json.dump(obj_dict, outfile)
+            outfile.write('\n')
 
     # Save out - append to given file object (appends to a JSONlines file)
     elif isinstance(save_file, io.IOBase):
@@ -61,12 +63,14 @@ def save_fm(fm, save_file, save_path, save_results, save_settings, save_data, ap
         raise ValueError('Save file not understood.')
 
 
-def save_fg(fg, save_file, save_path, save_results, save_settings, save_data):
-    """Save a FOOOFGroup object to jsonlines file.
+def save_fg(fg, save_file, save_path='', save_results=False, save_settings=False, save_data=False):
+    """Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.
 
     Parameters
     ----------
-    save_file : str or FileObject, optional
+    fg : FOOOFGroup() object
+        FOOOFGroup object from which to save data.
+    save_file : str or FileObject
         File to which to save data.
     save_path : str, optional
         Path to directory to which the save. If not provided, saves to current directory.
@@ -77,6 +81,9 @@ def save_fg(fg, save_file, save_path, save_results, save_settings, save_data):
     save_data : bool, optional
         Whether to save out PSD data.
     """
+
+    if not save_results and not save_settings and not save_data:
+        raise ValueError('No data specified for saving.')
 
     # Loops through group object, creating a FOOOF object per PSD, and saves from there
     with open(os.path.join(save_path, save_file + '.json'), 'w') as f_obj:

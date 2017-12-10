@@ -11,14 +11,14 @@ from fooof.plts.fg import plot_fg_bg, plot_fg_gf, plot_fg_osc_cens
 ###################################################################################################
 ###################################################################################################
 
-def create_report_fm(fm, save_name='FOOOF_Report', save_path='', plt_log=False):
-    """Generate and save out a report of the current FOOOF fit.
+def create_report_fm(fm, save_name, save_path='', plt_log=False):
+    """Generate and save out a report for FOOOF object.
 
     Parameters
     ----------
     fm : FOOOF() object
-        FOOOF object, with data from fitting a PSD.
-    save_name : str, optional
+        FOOOF object, containing results from fitting a PSD.
+    save_name : str
         Name to give the saved out file.
     save_path : str, optional
         Path to directory in which to save. If not provided, saves to current directory.
@@ -57,8 +57,18 @@ def create_report_fm(fm, save_name='FOOOF_Report', save_path='', plt_log=False):
     plt.close()
 
 
-def create_report_fg(fg, save_name, save_path):
-    """   """
+def create_report_fg(fg, save_name, save_path=''):
+    """Generate and save out a report for FOOOFGroup object.
+
+    Parameters
+    ----------
+    fg : FOOOFGroup() object
+        FOOOFGroup object, containing results from fitting a group of PSDs.
+    save_name : str
+        Name to give the saved out file.
+    save_path : str, optional
+        Path to directory in which to save. If not provided, saves to current directory.
+    """
 
     font = _report_settings()
 

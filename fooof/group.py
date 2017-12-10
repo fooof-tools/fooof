@@ -1,20 +1,17 @@
 """FOOOF - Group fitting object and methods."""
 
-import os
 from functools import partial
 from multiprocessing import Pool, cpu_count
 
 import numpy as np
-#import matplotlib.pyplot as plt
+
+from fooof.utils import get_attribute_names, docs_drop_param
 
 from fooof import FOOOF
 from fooof.io import save_fg, load_jsonlines
 from fooof.plts.fg import plot_fg
 from fooof.strings import gen_results_str_fg
 from fooof.reports import create_report_fg
-
-#from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
-
 
 ###################################################################################################
 ###################################################################################################
@@ -164,52 +161,17 @@ class FOOOFGroup(FOOOF):
 
 
     def plot(self, save_fig=False, save_name='FOOOF_fit', save_path=''):
-        """Plot a multiplot figure of several aspects of the group data.
-
-        Parameters
-        ----------
-        save_fig : boolean, optional
-            Whether to save out a copy of the plot. default : False
-        save_name : str, optional
-            Name to give the saved out file.
-        save_path : str, optional
-            Path to directory in which to save. If not provided, saves to current directory.
-        """
 
         plot_fg(self, save_fig, save_name, save_path)
 
 
     def create_report(self, save_name='FOOOFGroup_Report', save_path=''):
-        """Generate and save out a report for the FOOOF Group results.
-
-        Parameters
-        ----------
-        save_name : str, optional
-            Name to give the saved out file.
-        save_path : str, optional
-            Path to directory in which to save. If not provided, saves to current directory.
-        """
 
         create_report_fg(self, save_name, save_path)
 
 
     def save(self, save_file='fooof_group_results', save_path='',
              save_results=False, save_settings=False, save_data=False):
-        """Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.
-
-        Parameters
-        ----------
-        save_file : str or FileObject, optional
-            File to which to save data.
-        save_path : str, optional
-            Path to directory to which the save. If not provided, saves to current directory.
-        save_results : bool, optional
-            Whether to save out FOOOF model fit results.
-        save_settings : bool, optional
-            Whether to save out FOOOF settings.
-        save_data : bool, optional
-            Whether to save out PSD data.
-        """
 
         save_fg(self, save_file, save_path, save_results, save_settings, save_data)
 
@@ -289,10 +251,15 @@ class FOOOFGroup(FOOOF):
         return super().get_results()
 
 
-# Update docs for FOOOFGroup object
+# DOCS: Copy over docs from FOOOF to FOOOFGroup
 FOOOFGroup.__doc__ = FOOOF.__doc__
+# Copy over docs for an aliased functions to the method docstrings
+for func_name in get_attribute_names()['alias_funcs']:
+    getattr(FOOOFGroup, func_name).__doc__ = \
+        docs_drop_param(eval(func_name + '_' + 'fg').__doc__)
 
 
+## Helper Functions
 def _par_fit(psd, fg):
     """Helper function for running in parallel."""
 
