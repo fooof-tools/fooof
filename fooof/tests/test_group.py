@@ -107,7 +107,7 @@ def test_fooof_group_model():
 	assert fg
 
 
-def test_fooof_group_from_group():
+def test_fooof_group_get_fooof():
 	"""Check return of an individual PSD in a FOOOF object from FOOOFGroup."""
 
 	xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5))
@@ -115,6 +115,6 @@ def test_fooof_group_from_group():
 	fg = FOOOFGroup()
 	fg.fit(xs, ys)
 
-	fm = fg.from_group(3, False)
+	fm = fg.get_fooof(3, False)
 
 	assert fm

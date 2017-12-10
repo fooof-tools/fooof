@@ -182,37 +182,6 @@ class FOOOF(object):
         self._oscillation_fit = None
 
 
-    @classmethod
-    def from_group(cls, fg, ind, regenerate=False):
-        """Initialize a FOOOF object from specified data in a FOOOFGroup object.
-
-        Parameters
-        ----------
-        fg : FOOOFGroup() object
-            An object with FOOOFResults available.
-        ind : int
-            The index of the FOOOFResult in FOOOFGroup.group_results to load.
-
-        Returns
-        -------
-        inst : FOOOF() object
-            The FOOOFResult data loaded into a FOOOF object.
-        """
-
-        # Initialize instance, inheriting settings from FOOOFGroup object
-        inst = cls(fg.bandwidth_limits, fg.max_n_oscs, fg.min_amp,
-                   fg.amp_std_thresh, fg.bg_use_knee, fg.verbose)
-
-        # Reconstruct frequency information
-        inst.freq_range, inst.freq_res = fg.freq_range, fg.freq_res
-        inst.freqs = mk_freq_vector(inst.freq_range, inst.freq_res)
-
-        # Add results data from specified FOOOFResult
-        inst.add_results(fg.group_results[ind], regenerate=regenerate)
-
-        return inst
-
-
     def add_data(self, freqs, psd, freq_range=None, reset_dat=True):
         """Add data (frequencies and PSD values) to FOOOF object.
 

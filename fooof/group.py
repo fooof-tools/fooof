@@ -258,24 +258,20 @@ class FOOOFGroup(FOOOF):
         self._reset_dat(False)
 
 
-    def from_group(self, ind, regenerate=False):
-        """Return a FOOOF object from specified data in a FOOOFGroup object.
+    def get_fooof(self, ind, regenerate=False):
+        """Return a FOOOF object from specified PSD / model in a FOOOFGroup object.
 
         Parameters
         ----------
-        fg : FOOOFGroup() object
-            An object with FOOOFResults available.
         ind : int
             The index of the FOOOFResult in FOOOFGroup.group_results to load.
+        regenerate : bool, optional
+            Whether to regenerate the model fits from the given fit parameters. default : False
 
         Returns
         -------
         inst : FOOOF() object
             The FOOOFResult data loaded into a FOOOF object.
-
-        Notes
-        -----
-        - This method overloads what is a classmethod in FOOOF object base.
         """
 
         # Initialize a FOOOF object, with same settings as current FOOOFGroup

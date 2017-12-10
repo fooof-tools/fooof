@@ -81,7 +81,7 @@ def save_fg(fg, save_file, save_path, save_results, save_settings, save_data):
     # Loops through group object, creating a FOOOF object per PSD, and saves from there
     with open(os.path.join(save_path, save_file + '.json'), 'w') as f_obj:
         for ind in range(len(fg.group_results)):
-            fm = fg.from_group(ind, regenerate=False)
+            fm = fg.get_fooof(ind, regenerate=False)
             save_fm(fm, save_file=f_obj, save_path='', save_results=save_results,
                     save_settings=save_settings, save_data=save_data, append=False)
 
