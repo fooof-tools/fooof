@@ -14,7 +14,7 @@ from scipy.optimize import curve_fit
 from fooof.utils import trim_psd, mk_freq_vector
 from fooof.utils import group_three, get_attribute_names, check_array_dim
 from fooof.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
-from fooof.strings import gen_settings_str, gen_results_str_fm
+from fooof.strings import gen_settings_str, gen_results_str_fm, gen_how_to_report_str
 from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 
 ###################################################################################################
@@ -411,6 +411,13 @@ class FOOOF(object):
         """Print out FOOOF results."""
 
         print(gen_results_str_fm(self))
+
+
+    @staticmethod
+    def print_report_issue():
+        """Prints instructions on how to report bugs and/or problematic fits."""
+
+        print(gen_how_to_report_str())
 
 
     def get_results(self):
