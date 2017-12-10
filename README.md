@@ -5,8 +5,6 @@
 [![codecov](https://codecov.io/gh/voytekresearch/fooof/branch/master/graph/badge.svg)](https://codecov.io/gh/voytekresearch/fooof)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
----
-
 FOOOF is a fast, efficient, physiologically-informed model to parameterize neural power spectra.
 
 The model conceives of the neural power spectral density (PSD) as consisting of two distinct functional processes: 1) A 1/f background modeled as a curve in log-log space with; 2) Band-limited oscillatory "bumps" rising above this background, modeled as Gaussians in log(power) space.
@@ -22,6 +20,26 @@ FOOOF runs on Python 3.5 and 3.6.
 - numpy
 - matplotlib
 - scipy >= 0.19
+
+## Install
+
+To install the latest stable release of fooof, you can use pip:
+
+`$ pip install fooof`
+
+## Development Branch
+
+To get the lastest, development version, you can get the code using git:
+
+`$ git clone https://github.com/voytekresearch/fooof`
+
+If you want to install the development version (without making changes), move into the directory you cloned and install with:
+
+`$ pip install .`
+
+Otherwise, if you want to install an editable, development version, move into the directory you cloned and install with:
+
+`$ pip install -e .`
 
 ## Usage
 
