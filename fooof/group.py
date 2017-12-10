@@ -13,6 +13,8 @@ from fooof.io import save_fg, load_jsonlines
 from fooof.strings import gen_results_str_fg
 from fooof.plts import plot_scatter_1, plot_scatter_2, plot_hist
 
+from fooof.reports import create_report_fg
+
 ###################################################################################################
 ###################################################################################################
 
@@ -203,38 +205,7 @@ class FOOOFGroup(FOOOF):
             Path to directory in which to save. If not provided, saves to current directory.
         """
 
-        # Set the font description for saving out text with matplotlib
-        font = {'family': 'monospace',
-                'weight': 'normal',
-                'size': 16}
-
-        # Initialize figure
-        fig = plt.figure(figsize=(16, 20))
-        gs = gridspec.GridSpec(3, 2, wspace=0.35, hspace=0.25, height_ratios=[1.5, 1.0, 1.2])
-
-        # First / top: text results
-        ax0 = plt.subplot(gs[0, :])
-        results_str = gen_results_str_fg(self)
-        ax0.text(0.5, 0.0, results_str, font, ha='center')
-        ax0.set_frame_on(False)
-        ax0.set_xticks([])
-        ax0.set_yticks([])
-
-        # Background parameters plot
-        ax1 = plt.subplot(gs[1, 0])
-        self._plot_bg(ax1)
-
-        # Goodness of fit plot
-        ax2 = plt.subplot(gs[1, 1])
-        self._plot_gd(ax2)
-
-        # Oscillations plot
-        ax3 = plt.subplot(gs[2, :])
-        self._plot_osc_cens(ax3)
-
-        # Save out the report
-        plt.savefig(os.path.join(save_path, save_name + '.pdf'))
-        plt.close()
+        create_report_fg(self, save_name, save_path)
 
 
     def save(self, save_file='fooof_group_results', save_path='',
@@ -381,6 +352,7 @@ class FOOOFGroup(FOOOF):
                   'Center Frequency', 'Oscillations', ax=ax)
 
 
+# Update docs for FOOOFGroup object
 FOOOFGroup.__doc__ = FOOOF.__doc__
 
 

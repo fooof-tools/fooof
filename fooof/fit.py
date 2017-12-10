@@ -7,7 +7,7 @@ from collections import namedtuple
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
+#from matplotlib import gridspec
 from scipy.optimize import curve_fit
 
 from fooof.utils import trim_psd, mk_freq_vector
@@ -16,6 +16,7 @@ from fooof.strings import gen_settings_str, gen_results_str_fm, gen_how_to_repor
 from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 
 from fooof.io import save_fm, load_json
+from fooof.reports import create_report_fm
 
 ###################################################################################################
 ###################################################################################################
@@ -443,38 +444,7 @@ class FOOOF(object):
             Whether or not to plot the frequency axis in log space. default: False
         """
 
-        # Set the font description for saving out text with matplotlib
-        font = {'family': 'monospace',
-                'weight': 'normal',
-                'size': 16}
-
-        # Set up outline figure, using gridspec
-        fig = plt.figure(figsize=(16, 20))
-        grid = gridspec.GridSpec(3, 1, height_ratios=[0.8, 1.0, 0.7])
-
-        # First - text results
-        ax0 = plt.subplot(grid[0])
-        results_str = gen_results_str_fm(self)
-        ax0.text(0.5, 0.2, results_str, font, ha='center')
-        ax0.set_frame_on(False)
-        ax0.set_xticks([])
-        ax0.set_yticks([])
-
-        # Second - data plot
-        ax1 = plt.subplot(grid[1])
-        self.plot(plt_log=plt_log, ax=ax1)
-
-        # Third - FOOOF settings
-        ax2 = plt.subplot(grid[2])
-        settings_str = gen_settings_str(self, False)
-        ax2.text(0.5, 0.2, settings_str, font, ha='center')
-        ax2.set_frame_on(False)
-        ax2.set_xticks([])
-        ax2.set_yticks([])
-
-        # Save out the report
-        plt.savefig(os.path.join(save_path, save_name + '.pdf'))
-        plt.close()
+        create_report_fm(self, save_name, save_path, plt_log)
 
 
     def save(self, save_file='fooof_dat', save_path='', save_results=False,
