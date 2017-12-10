@@ -7,7 +7,6 @@ from collections import namedtuple
 
 import numpy as np
 import matplotlib.pyplot as plt
-#from matplotlib import gridspec
 from scipy.optimize import curve_fit
 
 from fooof.utils import trim_psd, mk_freq_vector
@@ -17,6 +16,8 @@ from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 
 from fooof.io import save_fm, load_json
 from fooof.reports import create_report_fm
+
+from fooof.plts import plot_fm
 
 ###################################################################################################
 ###################################################################################################
@@ -332,35 +333,7 @@ class FOOOF(object):
             Figure axes upon which to plot.
         """
 
-        if not np.all(self.freqs):
-            raise ValueError('No data available to plot - can not proceed.')
-
-        # Set frequency vector, logged if requested
-        plt_freqs = np.log10(self.freqs) if plt_log else self.freqs
-
-        # Create plot axes, if not provided
-        if not ax:
-            fig, ax = plt.subplots(figsize=(12, 10))
-
-        # Create the plot
-        if np.all(self.psd):
-            ax.plot(plt_freqs, self.psd, 'k', linewidth=1.0, label='Original PSD')
-        if np.all(self.psd_fit_):
-            ax.plot(plt_freqs, self.psd_fit_, 'r', linewidth=3.0,
-                    alpha=0.5, label='Full model fit')
-            ax.plot(plt_freqs, self._background_fit, '--b', linewidth=3.0,
-                    alpha=0.5, label='Background fit')
-
-        ax.set_xlabel('Frequency', fontsize=20)
-        ax.set_ylabel('Power', fontsize=20)
-        ax.tick_params(axis='both', which='major', labelsize=16)
-
-        ax.legend(prop={'size': 16})
-        ax.grid()
-
-        # Save out figure, if requested
-        if save_fig:
-            plt.savefig(os.path.join(save_path, save_name + '.png'))
+        plot_fm(self, plt_log, save_fig, save_name, save_path, ax)
 
 
     def print_settings(self, description=False):

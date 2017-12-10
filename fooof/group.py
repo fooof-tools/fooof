@@ -6,7 +6,7 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
+#from matplotlib import gridspec
 
 from fooof import FOOOF
 from fooof.io import save_fg, load_jsonlines
@@ -14,6 +14,8 @@ from fooof.strings import gen_results_str_fg
 from fooof.plts import plot_scatter_1, plot_scatter_2, plot_hist
 
 from fooof.reports import create_report_fg
+
+from fooof.plts import plot_fg
 
 ###################################################################################################
 ###################################################################################################
@@ -175,23 +177,25 @@ class FOOOFGroup(FOOOF):
             Path to directory in which to save. If not provided, saves to current directory.
         """
 
-        fig = plt.figure(figsize=(14, 10))
-        gs = gridspec.GridSpec(2, 2, wspace=0.35, hspace=0.25, height_ratios=[1, 1.2])
+        plot_fg(self, save_fig, save_name, save_path)
 
-        # Background parameters plot
-        ax0 = plt.subplot(gs[0, 0])
-        self._plot_bg(ax0)
+        # fig = plt.figure(figsize=(14, 10))
+        # gs = gridspec.GridSpec(2, 2, wspace=0.35, hspace=0.25, height_ratios=[1, 1.2])
 
-        # Goodness of fit plot
-        ax1 = plt.subplot(gs[0, 1])
-        self._plot_gd(ax1)
+        # # Background parameters plot
+        # ax0 = plt.subplot(gs[0, 0])
+        # self._plot_bg(ax0)
 
-        # Oscillations plot
-        ax2 = plt.subplot(gs[1, :])
-        self._plot_osc_cens(ax2)
+        # # Goodness of fit plot
+        # ax1 = plt.subplot(gs[0, 1])
+        # self._plot_gd(ax1)
 
-        if save_fig:
-            plt.savefig(os.path.join(save_path, save_name + '.png'))
+        # # Oscillations plot
+        # ax2 = plt.subplot(gs[1, :])
+        # self._plot_osc_cens(ax2)
+
+        # if save_fig:
+        #     plt.savefig(os.path.join(save_path, save_name + '.png'))
 
 
     def create_report(self, save_name='FOOOFGroup_Report', save_path=''):

@@ -2,6 +2,64 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import gridspec
+
+###################################################################################################
+###################################################################################################
+
+def plot_fm(fm, plt_log, save_fig, save_name, save_path, ax):
+    """   """
+
+    if not np.all(fm.freqs):
+        raise ValueError('No data available to plot - can not proceed.')
+
+    # Set frequency vector, logged if requested
+    plt_freqs = np.log10(fm.freqs) if plt_log else fm.freqs
+
+    # Create plot axes, if not provided
+    if not ax:
+        fig, ax = plt.subplots(figsize=(12, 10))
+
+    # Create the plot
+    if np.all(fm.psd):
+        ax.plot(plt_freqs, fm.psd, 'k', linewidth=1.0, label='Original PSD')
+    if np.all(fm.psd_fit_):
+        ax.plot(plt_freqs, fm.psd_fit_, 'r', linewidth=3.0,
+                alpha=0.5, label='Full model fit')
+        ax.plot(plt_freqs, fm._background_fit, '--b', linewidth=3.0,
+                alpha=0.5, label='Background fit')
+
+    ax.set_xlabel('Frequency', fontsize=20)
+    ax.set_ylabel('Power', fontsize=20)
+    ax.tick_params(axis='both', which='major', labelsize=16)
+
+    ax.legend(prop={'size': 16})
+    ax.grid()
+
+    # Save out figure, if requested
+    if save_fig:
+        plt.savefig(os.path.join(save_path, save_name + '.png'))
+
+def plot_fg(fg, save_fig, save_name, save_path):
+    """   """
+
+    fig = plt.figure(figsize=(14, 10))
+    gs = gridspec.GridSpec(2, 2, wspace=0.35, hspace=0.25, height_ratios=[1, 1.2])
+
+    # Background parameters plot
+    ax0 = plt.subplot(gs[0, 0])
+    fg._plot_bg(ax0)
+
+    # Goodness of fit plot
+    ax1 = plt.subplot(gs[0, 1])
+    fg._plot_gd(ax1)
+
+    # Oscillations plot
+    ax2 = plt.subplot(gs[1, :])
+    fg._plot_osc_cens(ax2)
+
+    if save_fig:
+        plt.savefig(os.path.join(save_path, save_name + '.png'))
 
 ###################################################################################################
 ###################################################################################################
