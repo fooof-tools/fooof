@@ -10,7 +10,7 @@ from fooof.plts.fg import plot_fg
 from fooof.core.reports import create_report_fg
 from fooof.core.strings import gen_results_str_fg
 from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.utils import get_attribute_names, docs_drop_param
+from fooof.core.modutils import get_obj_desc, docs_drop_param
 
 ###################################################################################################
 ###################################################################################################
@@ -259,7 +259,7 @@ class FOOOFGroup(FOOOF):
 # DOCS: Copy over docs from FOOOF to FOOOFGroup
 FOOOFGroup.__doc__ = FOOOF.__doc__
 # DOCS: Copy over docs for an aliased functions to the method docstrings
-for func_name in get_attribute_names()['alias_funcs']:
+for func_name in get_obj_desc()['alias_funcs']:
     getattr(FOOOFGroup, func_name).__doc__ = \
         docs_drop_param(eval(func_name + '_' + 'fg').__doc__)
 

@@ -11,7 +11,8 @@ from fooof.plts.fm import plot_fm
 from fooof.core.io import save_fm, load_json
 from fooof.core.reports import create_report_fm
 from fooof.core.funcs import gaussian_function, expo_function, expo_nk_function
-from fooof.core.utils import group_three, check_array_dim, get_attribute_names, docs_drop_param
+from fooof.core.utils import group_three, check_array_dim
+from fooof.core.modutils import get_obj_desc, docs_drop_param
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_report_str, gen_bw_warn_str
 
 ###################################################################################################
@@ -395,7 +396,7 @@ class FOOOF(object):
 
         # If results loaded, check dimensions of osc/gauss parameters
         #  This fixes an issue where they end up the wrong shape if they are empty (no oscs)
-        if set(get_attribute_names()['results']).issubset(set(dat.keys())):
+        if set(get_obj_desc()['results']).issubset(set(dat.keys())):
             self.oscillation_params_ = check_array_dim(self.oscillation_params_)
             self._gaussian_params = check_array_dim(self._gaussian_params)
 
@@ -848,7 +849,7 @@ class FOOOF(object):
 
         # If settings not loaded from file, clear from object, so that default
         #  settings, which are potentially wrong for loaded data, aren't kept
-        if not set(get_attribute_names()['settings']).issubset(set(dat.keys())):
+        if not set(get_obj_desc()['settings']).issubset(set(dat.keys())):
             self._clear_settings()
 
             # Infer whether knee fitting was used, if background params have been loaded
@@ -863,7 +864,7 @@ class FOOOF(object):
     def _clear_settings(self):
         """Clears all setting for current instance, setting them all to None."""
 
-        for setting in get_attribute_names()['all_settings']:
+        for setting in get_obj_desc()['all_settings']:
             setattr(self, setting, None)
 
 
@@ -888,6 +889,6 @@ class FOOOF(object):
 
 
 # DOCS: Copy over docs for an aliased functions to the method docstrings
-for func_name in get_attribute_names()['alias_funcs']:
+for func_name in get_obj_desc()['alias_funcs']:
     getattr(FOOOF, func_name).__doc__ = \
         docs_drop_param(eval(func_name + '_' + 'fm').__doc__)

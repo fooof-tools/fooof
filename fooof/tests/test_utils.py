@@ -5,6 +5,7 @@ import numpy as np
 
 from fooof.utils import *
 from fooof.core.utils import *
+from fooof.core.modutils import *
 
 ###################################################################################################
 ###################################################################################################
@@ -59,6 +60,6 @@ def test_trim_psd():
     assert np.array_equal(f_out, np.array([2., 3., 4.]))
     assert np.array_equal(p_out, np.array([3., 4., 5.]))
 
-def test_get_attribute_names():
+def test_get_obj_desc():
 
-    assert get_attribute_names()
+    assert get_obj_desc()

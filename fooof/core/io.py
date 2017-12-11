@@ -5,7 +5,7 @@ import os
 import json
 from json import JSONDecodeError
 
-from fooof.core.utils import get_attribute_names
+from fooof.core.modutils import get_obj_desc
 from fooof.core.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
 
 ###################################################################################################
@@ -37,7 +37,7 @@ def save_fm(fm, save_file, save_path='', save_results=False, save_settings=False
     obj_dict = dict_array_to_lst(fm.__dict__)
 
     # Set and select which variables to keep. Use a set to drop any potential overlap
-    attributes = get_attribute_names()
+    attributes = get_obj_desc()
     keep = set((attributes['results'] if save_results else []) + \
                (attributes['settings'] if save_settings else []) + \
                (attributes['dat'] if save_data else []))
@@ -117,7 +117,7 @@ def load_json(file_name, file_path):
         dat = json.loads(file_name.readline())
 
     # Get dictionary of available attributes, and convert specified lists back into arrays
-    dat = dict_lst_to_array(dat, get_attribute_names()['arrays'])
+    dat = dict_lst_to_array(dat, get_obj_desc()['arrays'])
 
     return dat
 
