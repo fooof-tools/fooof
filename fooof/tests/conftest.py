@@ -7,6 +7,8 @@ import pkg_resources as pkg
 import numpy as np
 import matplotlib.pyplot as plt
 
+from fooof.tests.utils import get_fm, get_fg
+
 import pytest
 
 ###################################################################################################
@@ -32,3 +34,11 @@ def check_dir():
     # Remake (empty) directories
     os.mkdir(rep_dir_name)
     os.mkdir(dat_dir_name)
+
+@pytest.fixture(scope='session')
+def wfm():
+    yield get_fm()
+
+@pytest.fixture(scope='session')
+def wfg():
+    yield get_fg()
