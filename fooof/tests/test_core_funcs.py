@@ -1,9 +1,9 @@
-"""Tests for FOOOF funcs."""
+"""Tests for FOOOF core.funcs."""
 
 import numpy as np
 from scipy.stats import norm, linregress
 
-from fooof.funcs import *
+from fooof.core.funcs import *
 
 ###################################################################################################
 ###################################################################################################

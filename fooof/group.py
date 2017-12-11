@@ -1,16 +1,16 @@
 """FOOOF - Group fitting object and methods."""
 
-import os
-from json import JSONDecodeError
-
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib import gridspec
 from functools import partial
 from multiprocessing import Pool, cpu_count
 
+import numpy as np
+
 from fooof import FOOOF
-from fooof.plts import plot_scatter_1, plot_scatter_2, plot_hist
+from fooof.plts.fg import plot_fg
+from fooof.core.reports import create_report_fg
+from fooof.core.strings import gen_results_str_fg
+from fooof.core.io import save_fg, load_jsonlines
+from fooof.core.modutils import get_obj_desc, docs_drop_param
 
 ###################################################################################################
 ###################################################################################################
@@ -21,7 +21,15 @@ class FOOOFGroup(FOOOF):
 
         FOOOF.__init__(self, *args, **kwargs)
 
+        self.psds = np.array([])
+
         self._reset_group_results()
+
+
+    def __iter__(self):
+
+        for result in self.group_results:
+            yield result
 
 
     def _reset_group_results(self, length=0):
@@ -36,19 +44,43 @@ class FOOOFGroup(FOOOF):
         self.group_results = [[]] * length
 
 
-    def model(self, freqs, psds, freq_range=None, n_jobs=1):
-        """Run FOOOF across a group of PSDs, then plot and print results.
+    def add_data(self, freqs, psds, freq_range=None):
+        """Add data (frequencies and PSD values) to FOOOFGroup object.
 
         Parameters
         ----------
         freqs : 1d array
+            Frequency values for the PSD, in linear space.
+        psd : 2d array
+            Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
+        freq_range : list of [float, float], optional
+            Frequency range to restrict PSD to. If not provided, keeps the entire range.
+        """
+
+        if freqs.ndim != 1 or psds.ndim != 2:
+            raise ValueError('Inputs are not the right dimensions.')
+
+        self.freqs, self.psds, self.freq_range, self.freq_res = \
+            self._prepare_data(freqs, psds, freq_range, self.verbose)
+
+
+    def model(self, freqs=None, psds=None, freq_range=None, n_jobs=1):
+        """Run FOOOF across a group of PSDs, then plot and print results.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
             Frequency values for the PSDs, in linear space.
-        psds : 2d array
+        psds : 2d array, optional
             Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         n_jobs : int
             Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
+
+        Notes
+        -----
+        Data is optional if data has been already been added to FOOOF object.
         """
 
         self.fit(freqs, psds, freq_range, n_jobs=n_jobs)
@@ -56,35 +88,42 @@ class FOOOFGroup(FOOOF):
         self.print_results()
 
 
-    def fit(self, freqs, psds, freq_range=None, n_jobs=1):
+    def fit(self, freqs=None, psds=None, freq_range=None, n_jobs=1):
         """Run FOOOF across a group of PSDs.
 
         Parameters
         ----------
-        freqs : 1d array
+        freqs : 1d array, optional
             Frequency values for the PSDs, in linear space.
-        psds : 2d array
+        psds : 2d array, optional
             Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         n_jobs : int, optional
             Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
+
+        Notes
+        -----
+        Data is optional if data has been already been added to FOOOF object.
         """
+
+        # If freqs & psd provided together, add data to object.
+        if isinstance(freqs, np.ndarray) and isinstance(psds, np.ndarray):
+            self.add_data(freqs, psds, freq_range)
 
         # Run linearly
         if n_jobs == 1:
-            self._reset_group_results(len(psds))
-            for ind, psd in enumerate(psds):
-                self._fit(freqs, psd, freq_range)
+            self._reset_group_results(len(self.psds))
+            for ind, psd in enumerate(self.psds):
+                self._fit(psd=psd)
                 self.group_results[ind] = self._get_results()
 
         # Run in parallel
         else:
             self._reset_group_results()
-            self.add_data(freqs, psds[0], freq_range)
             n_jobs = cpu_count() if n_jobs == -1 else n_jobs
             pool = Pool(processes=n_jobs)
-            self.group_results = pool.map(partial(_par_fit, fg=self, freqs=freqs, freq_range=freq_range), psds)
+            self.group_results = pool.map(partial(_par_fit, fg=self), self.psds)
             pool.close()
 
         self._reset_dat(clear_freqs=False)
@@ -126,99 +165,20 @@ class FOOOFGroup(FOOOF):
         return out
 
 
-    def plot(self, save_fig=False, save_name='FOOOF_fit', save_path=''):
-        """Plot a multiplot figure of several aspects of the group data.
+    def plot(self, save_fig=False, save_name='FOOOF_group_fit', save_path=''):
 
-        Parameters
-        ----------
-        save_fig : boolean, optional
-            Whether to save out a copy of the plot. default : False
-        save_name : str, optional
-            Name to give the saved out file.
-        save_path : str, optional
-            Path to directory in which to save. If not provided, saves to current directory.
-        """
-
-        fig = plt.figure(figsize=(14, 10))
-        gs = gridspec.GridSpec(2, 2, wspace=0.35, hspace=0.25, height_ratios=[1, 1.2])
-
-        # Background parameters plot
-        ax0 = plt.subplot(gs[0, 0])
-        self._plot_bg(ax0)
-
-        # Goodness of fit plot
-        ax1 = plt.subplot(gs[0, 1])
-        self._plot_gd(ax1)
-
-        # Oscillations plot
-        ax2 = plt.subplot(gs[1, :])
-        self._plot_osc_cens(ax2)
-
-        if save_fig:
-            plt.savefig(os.path.join(save_path, save_name + '.png'))
+        plot_fg(self, save_fig, save_name, save_path)
 
 
     def create_report(self, save_name='FOOOFGroup_Report', save_path=''):
-        """Generate and save out a report for the FOOOF Group results.
 
-        Parameters
-        ----------
-        save_name : str, optional
-            Name to give the saved out file.
-        save_path : str, optional
-            Path to directory in which to save. If not provided, saves to current directory.
-        """
-
-        # Set the font description for saving out text with matplotlib
-        font = {'family': 'monospace',
-                'weight': 'normal',
-                'size': 16}
-
-        # Initialize figure
-        fig = plt.figure(figsize=(16, 20))
-        gs = gridspec.GridSpec(3, 2, wspace=0.35, hspace=0.25, height_ratios=[1.5, 1.0, 1.2])
-
-        # First / top: text results
-        ax0 = plt.subplot(gs[0, :])
-        results_str = self._gen_results_str()
-        ax0.text(0.5, 0.0, results_str, font, ha='center')
-        ax0.set_frame_on(False)
-        ax0.set_xticks([])
-        ax0.set_yticks([])
-
-        # Background parameters plot
-        ax1 = plt.subplot(gs[1, 0])
-        self._plot_bg(ax1)
-
-        # Goodness of fit plot
-        ax2 = plt.subplot(gs[1, 1])
-        self._plot_gd(ax2)
-
-        # Oscillations plot
-        ax3 = plt.subplot(gs[2, :])
-        self._plot_osc_cens(ax3)
-
-        # Save out the report
-        plt.savefig(os.path.join(save_path, save_name + '.pdf'))
-        plt.close()
+        create_report_fg(self, save_name, save_path)
 
 
-    def save(self, save_file='fooof_group_results', save_path='', save_results=False, save_settings=False):
-        """Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.
+    def save(self, save_file='fooof_group_results', save_path='',
+             save_results=False, save_settings=False, save_data=False):
 
-        Notes
-        -----
-        - save_data is not availabe with FOOOFGroup, as data are not stored after fitting.
-        """
-
-        if save_results:
-            with open(os.path.join(save_path, save_file + '.json'), 'w') as f_obj:
-                for ind in range(len(self.group_results)):
-                    fm = FOOOF.from_group(self, ind, regenerate=False)
-                    fm.save(save_file=f_obj, save_results=True, save_settings=save_settings)
-
-        if save_settings:
-            self._save(save_file=save_file, save_path=save_path, save_settings=True)
+        save_fg(self, save_file, save_path, save_results, save_settings, save_data)
 
 
     def load(self, file_name='fooof_group_results', file_path=''):
@@ -226,7 +186,7 @@ class FOOOFGroup(FOOOF):
 
         Parameters
         ----------
-        file_name : str
+        file_name : str, optional
             File from which to load data.
         file_path : str, optional
             Path to directory from which to load from. If not provided, saves to current directory.
@@ -235,22 +195,53 @@ class FOOOFGroup(FOOOF):
         # Clear results so as not to have possible prior results interfere
         self._reset_group_results()
 
-        # Load from jsonlines file
-        with open(os.path.join(file_path, file_name + '.json'), 'r') as f_obj:
+        for ind, dat in enumerate(load_jsonlines(file_name, file_path)):
 
-            while True:
+            self._add_from_dict(dat)
 
-                # For each line, grab the FOOOFResults
-                try:
-                    self._load(f_obj)
-                    self.group_results.append(self._get_results())
+            # Only load settings from first line (rest will be duplicates, if there)
+            if ind == 0:
+                self._check_loaded_settings(dat)
 
-                # Break off when get a JSON error - end of the file
-                except JSONDecodeError:
-                    break
+            self._check_loaded_results(dat, False)
+            self.group_results.append(self._get_results())
 
         # Reset peripheral data from last loaded result, keeping freqs info
         self._reset_dat(False)
+
+
+    def get_fooof(self, ind, regenerate=False):
+        """Return a FOOOF object from specified PSD / model in a FOOOFGroup object.
+
+        Parameters
+        ----------
+        ind : int
+            The index of the FOOOFResult in FOOOFGroup.group_results to load.
+        regenerate : bool, optional
+            Whether to regenerate the model fits from the given fit parameters. default : False
+
+        Returns
+        -------
+        inst : FOOOF() object
+            The FOOOFResult data loaded into a FOOOF object.
+        """
+
+        # Initialize a FOOOF object, with same settings as current FOOOFGroup
+        fm = FOOOF(self.bandwidth_limits, self.max_n_oscs, self.min_amp,
+                   self.amp_std_thresh, self.bg_use_knee, self.verbose)
+
+        # Add data and results for specified single PSD
+        #  The PSD is inverted back to linear, as it's re-logged when added to FOOOF
+        fm.add_data(self.freqs, np.power(10, self.psds[ind]))
+        fm.add_results(self.group_results[ind], regenerate=regenerate)
+
+        return fm
+
+
+    def print_results(self):
+        """Print out FOOOFGroup results."""
+
+        print(gen_results_str_fg(self))
 
 
     def _fit(self, *args, **kwargs):
@@ -265,144 +256,18 @@ class FOOOFGroup(FOOOF):
         return super().get_results()
 
 
-    def _save(self, *args, **kwargs):
-        """Create an alias to FOOOF.save for FOOOFGroup object, for internal use."""
-
-        super().save(*args, **kwargs)
-
-
-    def _load(self, *args, **kwargs):
-        """Create an alias to FOOOF.load for FOOOFGroup object, for internal use."""
-
-        super().load(*args, **kwargs)
-
-
-    def _gen_results_str(self):
-        """Generate a string representation of group fit results.
-
-        Notes
-        -----
-        This overloads the equivalent method in FOOOF base object, for group results.
-        - It therefore changes the behaviour (what is printed) for 'print_results'.
-        """
-
-        if not self.group_results:
-            raise ValueError('Model fit has not been run - can not proceed.')
-
-        # Set centering value
-        cen_val = 100
-
-        # Extract all the relevant data for printing
-        cens = self.get_all_data('oscillation_params', 0)
-        r2s = self.get_all_data('r2')
-        errors = self.get_all_data('error')
-        if self.bg_use_knee:
-            kns = self.get_all_data('background_params', 1)
-            sls = self.get_all_data('background_params', 2)
-        else:
-            kns = np.array([0])
-            sls = self.get_all_data('background_params', 1)
-
-        # Create output string
-        output = '\n'.join([
-
-            # Header
-            '=' * cen_val,
-            '',
-            ' FOOOF - GROUP RESULTS'.center(cen_val),
-            '',
-
-            # Group information
-            'Number of PSDs in the Group: {}'.format(len(self.group_results)).center(cen_val),
-            '',
-
-            # Frequency range and resolution
-            'The input PSDs were modelled in the frequency range: {} - {} Hz'.format(
-                int(np.floor(self.freq_range[0])), int(np.ceil(self.freq_range[1]))).center(cen_val),
-            'Frequency Resolution is {:1.2f} Hz'.format(self.freq_res).center(cen_val),
-            '',
-
-            # Background parameters - knee fit status, and quick slope description
-            'PSDs were fit {} a knee.'.format('with' if self.bg_use_knee else 'without').center(cen_val),
-            '',
-            *[el for el in ['Background Knee Values'.center(cen_val),
-                            'Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
-                            .format(kns.min(), kns.max(), kns.mean()).center(cen_val)
-                           ] if self.bg_use_knee],
-            'Background Slope Values'.center(cen_val),
-            'Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-            .format(sls.min(), sls.max(), sls.mean()).center(cen_val),
-            '',
-
-            # Oscillation Parameters
-            'In total {} oscillations were extracted from the group'
-            .format(len(cens)).center(cen_val),
-            '',
-
-            # Fitting stats - error and r^2
-            'Fitting Performance'.center(cen_val),
-            '   R2s -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-            .format(r2s.min(), r2s.max(), r2s.mean()).center(cen_val),
-            'Errors -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-            .format(errors.min(), errors.max(), errors.mean()).center(cen_val),
-            '',
-
-            # Footer
-            '=' * cen_val
-        ])
-
-        return output
-
-
-    def _plot_bg(self, ax=None):
-        """Plot background fit parameters, in a scatter plot.
-
-        Parameters
-        ----------
-        ax : matplotlib.Axes, optional
-            Figure axes upon which to plot.
-        """
-
-        if self.bg_use_knee:
-            plot_scatter_2(self.get_all_data('background_params', 1), 'Knee',
-                           self.get_all_data('background_params', 2), 'Slope',
-                           'Background Fit', ax=ax)
-        else:
-            plot_scatter_1(self.get_all_data('background_params', 1), 'Slope',
-                           'Background Fit', ax=ax)
-
-
-    def _plot_gd(self, ax=None):
-        """Plot goodness of fit results, in a scatter plot.
-
-        Parameters
-        ----------
-        ax : matplotlib.Axes, optional
-            Figure axes upon which to plot.
-        """
-
-        plot_scatter_2(self.get_all_data('error'), 'Error',
-                       self.get_all_data('r2'), 'R^2', 'Goodness of Fit', ax=ax)
-
-
-    def _plot_osc_cens(self, ax=None):
-        """Plot oscillation center frequencies, in a histogram.
-
-        Parameters
-        ----------
-        ax : matplotlib.Axes, optional
-            Figure axes upon which to plot.
-        """
-
-        plot_hist(self.get_all_data('oscillation_params', 0),
-                  'Center Frequency', 'Oscillations', ax=ax)
-
-
+# DOCS: Copy over docs from FOOOF to FOOOFGroup
 FOOOFGroup.__doc__ = FOOOF.__doc__
 
+# DOCS: Copy over docs for an aliased functions to the method docstrings
+for func_name in get_obj_desc()['alias_funcs']:
+    getattr(FOOOFGroup, func_name).__doc__ = \
+        docs_drop_param(eval(func_name + '_' + 'fg').__doc__)
 
-def _par_fit(psd, fg, freqs, freq_range):
+
+# Helper Functions
+def _par_fit(psd, fg):
     """Helper function for running in parallel."""
 
-    fg._fit(freqs, psd, freq_range)
+    fg._fit(psd=psd)
     return fg._get_results()

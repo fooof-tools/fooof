@@ -3,7 +3,7 @@
 NOTES
 -----
 The tests here are not strong tests for accuracy.
-	They serve rather as 'smoke tests', for if anything fails completely.
+    They serve rather as 'smoke tests', for if anything fails completely.
 """
 
 from py.test import raises
@@ -16,163 +16,134 @@ from fooof import FOOOF
 from fooof.synth import mk_fake_data
 from fooof.utils import mk_freq_vector
 
-##########################################################################################
-##########################################################################################
+from fooof.tests.utils import get_tfm
+
+###################################################################################################
+###################################################################################################
 
 def test_fooof():
-	"""Check FOOOF object initializes properly."""
+    """Check FOOOF object initializes properly."""
 
-	assert FOOOF()
+    assert FOOOF()
 
 def test_fooof_fit_nk():
-	"""Test FOOOF fit, no knee."""
+    """Test FOOOF fit, no knee."""
 
-	xs = mk_freq_vector([3, 50], 0.5)
-	bgp = [50, 2]
-	oscs = [[10, 0.5, 2],
-			[20, 0.3, 4]]
+    xs = mk_freq_vector([3, 50], 0.5)
+    bgp = [50, 2]
+    oscs = [[10, 0.5, 2],
+            [20, 0.3, 4]]
 
-	xs, ys = mk_fake_data(xs, bgp, [it for osc in oscs for it in osc])
+    xs, ys = mk_fake_data(xs, bgp, [it for osc in oscs for it in osc])
 
-	fm = FOOOF()
-	fm.fit(xs, ys)
+    tfm = FOOOF()
+    tfm.fit(xs, ys)
 
-	# Check model results - background parameters
-	assert np.all(np.isclose(bgp, fm.background_params_, [0.5, 0.1]))
+    # Check model results - background parameters
+    assert np.all(np.isclose(bgp, tfm.background_params_, [0.5, 0.1]))
 
-	# Check model results - gaussian parameters
-	for i, osc in enumerate(oscs):
-		assert np.all(np.isclose(osc, fm._gaussian_params[i], [1, 0.2, 0.5]))
+    # Check model results - gaussian parameters
+    for i, osc in enumerate(oscs):
+        assert np.all(np.isclose(osc, tfm._gaussian_params[i], [1.5, 0.25, 0.5]))
+
+def test_fooof_fit_knee():
+    """Test FOOOF fit, with a knee."""
+
+    xs = mk_freq_vector([3, 50], 0.5)
+    bgp = [50, 2, 1]
+    oscs = [[10, 0.5, 2],
+            [20, 0.3, 4]]
+
+    xs, ys = mk_fake_data(xs, bgp, [it for osc in oscs for it in osc], True)
+
+    tfm = FOOOF(bg_use_knee=True)
+    tfm.fit(xs, ys)
+
+    # Note: currently, this test has no accuracy checking at all
+    assert True
+
 
 def test_fooof_checks():
-	"""Test various checks, errors and edge cases in FOOOF."""
+    """Test various checks, errors and edge cases in FOOOF."""
 
-	xs, ys = mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2])
+    xs, ys = mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2])
 
-	fm = FOOOF()
+    tfm = FOOOF()
 
-	# Check dimension error
-	with raises(ValueError):
-		fm.fit(xs, np.reshape(ys, [1, len(ys)]))
+    # Check dimension error
+    with raises(ValueError):
+        tfm.fit(xs, np.reshape(ys, [1, len(ys)]))
 
-	# Check shape mismatch error
-	with raises(ValueError):
-		fm.fit(xs[:-1], ys)
+    # Check shape mismatch error
+    with raises(ValueError):
+        tfm.fit(xs[:-1], ys)
 
-	# Check trim_psd range
-	fm.fit(xs, ys, [3, 40])
+    # Check trim_psd range
+    tfm.fit(xs, ys, [3, 40])
 
-	# Check freq of 0 issue
-	xs, ys = mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2])
-	fm.fit(xs, ys)
+    # Check freq of 0 issue
+    xs, ys = mk_fake_data(mk_freq_vector([0, 50], 0.5), [50, 2], [10, 0.5, 2])
+    tfm.fit(xs, ys)
+    assert tfm.freqs[0] != 0
 
-	# Check fit, plot and string report model error (no data / model fit)
-	fm = FOOOF()
-	with raises(ValueError):
-		fm.fit()
-	with raises(ValueError):
-		fm.print_results()
-	with raises(ValueError):
-		fm.plot()
+    # Check fit, plot and string report model error (no data / model fit)
+    tfm = FOOOF()
+    with raises(ValueError):
+        tfm.fit()
+    with raises(ValueError):
+        tfm.print_results()
+    with raises(ValueError):
+        tfm.plot()
 
-def test_fooof_prints_plot_get_report():
-	"""Test methods that print, plot, return run through.
+def test_fooof_load():
+    """Test load into FOOOF. Note: loads files from test_core_io."""
 
-	Checks: print_settings, print_results, plot, get_results, create_report
+    file_name_all = 'test_fooof_str_all'
+    file_name_res = 'test_fooof_str_res'
+    file_path = pkg.resource_filename(__name__, 'test_files')
 
-	Note: minimal test - that methods run. No accuracy checking.
-	"""
+    tfm = FOOOF()
 
-	xs, ys = mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4])
+    tfm.load(file_name_all, file_path)
+    assert tfm
 
-	fm = FOOOF()
+    tfm.load(file_name_res, file_path)
+    assert tfm
 
-	fm.print_settings()
+def test_fooof_prints_plot_get(tfm):
+    """Test methods that print, plot, return results (alias and pass through methods).
 
-	fm.fit(xs, ys)
+    Checks: print_settings, print_results, plot, get_results."""
 
-	fm.print_results()
+    tfm.print_settings()
+    tfm.print_results()
+    tfm.print_report_issue()
 
-	fm.plot()
+    tfm.plot()
 
-	out = fm.get_results()
-	assert out
+    out = tfm.get_results()
+    assert out
 
-	file_name = 'test_report'
-	file_path = pkg.resource_filename(__name__, 'test_reports')
+def test_fooof_resets():
+    """Check that all relevant data is cleared in the resest method."""
 
-	fm.create_report(save_name=file_name, save_path=file_path)
+    # Note: uses it's own tfm, to not clear the global one
+    tfm = get_tfm()
 
-	assert os.path.exists(os.path.join(file_path, file_name + '.pdf'))
+    tfm._reset_dat()
+    tfm._reset_settings()
 
-def test_fooof_save_load_str():
-	"""Check that FOOOF object saves & loads - given str input."""
-
-	xs, ys = mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4])
-
-	fm = FOOOF()
-	fm.fit(xs, ys)
-
-	file_name = 'test_fooof'
-	file_path = pkg.resource_filename(__name__, 'test_files')
-
-	fm.save(file_name, file_path, True, True, True)
-
-	assert os.path.exists(os.path.join(file_path, file_name + '.json'))
-
-	nfm = FOOOF()
-	nfm.load(file_name, file_path)
-
-	assert nfm
-
-def test_fooof_save_load_file_obj():
-	"""Check that FOOOF object saves & loads - given file obj input."""
-
-	xs, ys = mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4])
-
-	fm = FOOOF()
-	fm.fit(xs, ys)
-
-	file_name = 'test_fooof_obj'
-	file_path = pkg.resource_filename(__name__, 'test_files')
-
-	# Save, using file-object
-	with open(os.path.join(file_path, file_name + '.json'), 'w') as save_file_obj:
-		fm.save(save_file_obj, file_path, True, False, False)
-		fm.save(save_file_obj, file_path, False, True, False)
-		fm.save(save_file_obj, file_path, False, False, True)
-
-	assert os.path.exists(os.path.join(file_path, file_name + '.json'))
-
-	nfm1, nfm2, nfm3 = FOOOF(), FOOOF(), FOOOF()
-
-	# Load, using file object
-	with open(os.path.join(file_path, file_name + '.json'), 'r') as load_file_obj:
-		nfm1.load(load_file_obj, file_path)
-		nfm2.load(load_file_obj, file_path)
-		nfm3.load(load_file_obj, file_path)
-
-	assert nfm1 and nfm2 and nfm3
-
-def test_fooof_reset_dat():
-	"""Check that all relevant data is cleared in the resest method."""
-
-	fm = FOOOF()
-
-	fm.fit(*mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
-	fm._reset_dat()
-
-	assert fm.freqs is None and fm.psd is None and fm.freq_range is None \
-		and fm.freq_res is None and fm.psd_fit_ is None and fm.background_params_ is None \
-		and fm.oscillation_params_ is None and fm.r2_ is None and fm.error_ is None \
-		and fm._psd_flat is None and fm._psd_osc_rm is None and fm._gaussian_params is None \
-		and fm._background_fit is None and fm._oscillation_fit is None
+    assert tfm.freqs is None and tfm.freq_range is None and tfm.freq_res is None  \
+        and tfm.psd is None and tfm.psd_fit_ is None and tfm.background_params_ is None \
+        and tfm.oscillation_params_ is None and tfm.r2_ is None and tfm.error_ is None \
+        and tfm._psd_flat is None and tfm._psd_osc_rm is None and tfm._gaussian_params is None \
+        and tfm._background_fit is None and tfm._oscillation_fit is None
 
 def test_fooof_model():
-	"""Check that running the top level model method runs."""
+    """Check that running the top level model method runs."""
 
-	fm = FOOOF()
+    tfm = FOOOF()
 
-	fm.model(*mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+    tfm.model(*mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
-	assert fm
+    assert tfm

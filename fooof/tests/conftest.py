@@ -3,7 +3,11 @@
 import os
 import shutil
 import pkg_resources as pkg
+
+import numpy as np
 import matplotlib.pyplot as plt
+
+from fooof.tests.utils import get_tfm, get_tfg
 
 import pytest
 
@@ -12,6 +16,7 @@ import pytest
 
 def pytest_configure(config):
     plt.switch_backend('agg')
+    np.random.seed(42)
 
 @pytest.fixture(scope='session', autouse=True)
 def check_dir():
@@ -29,3 +34,11 @@ def check_dir():
     # Remake (empty) directories
     os.mkdir(rep_dir_name)
     os.mkdir(dat_dir_name)
+
+@pytest.fixture(scope='session')
+def tfm():
+    yield get_tfm()
+
+@pytest.fixture(scope='session')
+def tfg():
+    yield get_tfg()

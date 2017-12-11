@@ -1,4 +1,4 @@
-"""Plot templates for FOOOF data."""
+"""Plot templates for the FOOOF module."""
 
 import numpy as np
 import matplotlib.pyplot as plt
