@@ -87,10 +87,18 @@ def save_fg(fg, save_file, save_path='', save_results=False, save_settings=False
 
     # Loops through group object, creating a FOOOF object per PSD, and saves from there
     with open(os.path.join(save_path, save_file + '.json'), 'w') as f_obj:
-        for ind in range(len(fg.group_results)):
-            fm = fg.get_fooof(ind, regenerate=False)
-            save_fm(fm, save_file=f_obj, save_path='', save_results=save_results,
+
+        # Save out single line, if just settings to be saved
+        if save_settings and not save_results and not save_data:
+            save_fm(fg, save_file=f_obj, save_path='', save_results=save_results,
                     save_settings=save_settings, save_data=save_data, append=False)
+
+        # Otherwise, loop through the results & data
+        else:
+            for ind in range(len(fg.group_results)):
+                fm = fg.get_fooof(ind, regenerate=False)
+                save_fm(fm, save_file=f_obj, save_path='', save_results=save_results,
+                        save_settings=save_settings, save_data=save_data, append=False)
 
 
 def load_json(file_name, file_path):
@@ -127,7 +135,7 @@ def load_jsonlines(file_name, file_path):
 
     Parameters
     ----------
-    load_file : str or FileObject, optional
+    load_file : str
             File from which to load data.
     file_path : str
         Path to directory from which to load. If not provided, loads from current directory.

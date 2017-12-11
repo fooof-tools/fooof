@@ -3,12 +3,12 @@
 import os
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
-from .templates import plot_scatter_1, plot_scatter_2, plot_hist
+from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
 
 ###################################################################################################
 ###################################################################################################
 
-def plot_fg(fg, save_fig, save_name, save_path):
+def plot_fg(fg, save_fig=False, save_name='FOOOF_group_fit', save_path=''):
     """Plots a figure with subplots covering several components for FOOOFGroup results.
 
     Parameters

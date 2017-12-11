@@ -165,7 +165,7 @@ class FOOOFGroup(FOOOF):
         return out
 
 
-    def plot(self, save_fig=False, save_name='FOOOF_fit', save_path=''):
+    def plot(self, save_fig=False, save_name='FOOOF_group_fit', save_path=''):
 
         plot_fg(self, save_fig, save_name, save_path)
 
@@ -258,6 +258,7 @@ class FOOOFGroup(FOOOF):
 
 # DOCS: Copy over docs from FOOOF to FOOOFGroup
 FOOOFGroup.__doc__ = FOOOF.__doc__
+
 # DOCS: Copy over docs for an aliased functions to the method docstrings
 for func_name in get_obj_desc()['alias_funcs']:
     getattr(FOOOFGroup, func_name).__doc__ = \
