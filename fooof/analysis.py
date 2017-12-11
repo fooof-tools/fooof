@@ -23,10 +23,6 @@ def get_band_osc(osc_params, band_def, ret_one=True):
         Osc data, form - (centers, powers, bws.
     """
 
-    # Catch & return if empty
-    if not np.all(osc_params):
-        return [np.nan, np.nan, np.nan]
-
     # Find indices of oscillations in the specified range
     osc_inds = (osc_params[:, 0] >= band_def[0]) & (osc_params[:, 0] <= band_def[1])
 
@@ -34,6 +30,7 @@ def get_band_osc(osc_params, band_def, ret_one=True):
     n_oscs = sum(osc_inds)
 
     # If there are no oscillation within the specified range
+    #  Note: this also catches and returns if the original input was empty
     if n_oscs == 0:
         return np.array([np.nan, np.nan, np.nan])
 
@@ -64,8 +61,8 @@ def get_highest_power_osc(band_oscs):
     """
 
     # Catch & return if empty
-    if not np.all(band_oscs):
-        return [np.nan, np.nan, np.nan]
+    if len(band_oscs) == 0:
+        return np.array([np.nan, np.nan, np.nan])
 
     high_ind = np.argmax(band_oscs[:, 1])
     return band_oscs[high_ind, :]
