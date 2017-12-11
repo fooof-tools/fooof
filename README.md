@@ -5,11 +5,13 @@
 [![codecov](https://codecov.io/gh/voytekresearch/fooof/branch/master/graph/badge.svg)](https://codecov.io/gh/voytekresearch/fooof)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-FOOOF is a fast, efficient, physiologically-informed model to parameterize neural power spectra.
+FOOOF is a fast, efficient, physiologically-informed model to parameterize neural power spectra, characterizing both oscillations and the background 1/f.
 
-The model conceives of the neural power spectral density (PSD) as consisting of two distinct functional processes: 1) A 1/f background modeled as a curve in log-log space with; 2) Band-limited oscillatory "bumps" rising above this background, modeled as Gaussians in log(power) space.
+The model conceives of the neural power spectral density (PSD) as consisting of two distinct functional processes:
+- A 1/f background modeled as a line in log-log space with;
+- Band-limited oscillatory "bumps" rising above this background, modeled as Gaussians in log(power) space.
 
-Note that this conception of the 1/f as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the 1/f slope may index excitation/inhibition balance ([Gao, Peterson, Voytek, _NeuroImage_ 2017](http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf); [Voytek & Knight, _Biol Psychiatry_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf)). At the very least, however, the 1/f appears to change with task ([Podvalny _et al._, _J Neurophysiol_ 2015](http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf)), with aging ([Voytek _et al._, _J Neurosci_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf)).
+With regards to oscillations, the benefit of the FOOOF approach is to characterize oscillations in terms of their center frequency, amplitude and bandwidth without requiring predefining specific bands of interest. In particular, it separates oscillations from a dynamic, and independently interesting 1/f background. This conception of the 1/f as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the 1/f slope may index excitation/inhibition balance ([Gao, Peterson, Voytek, _NeuroImage_ 2017](http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf); [Voytek & Knight, _Biol Psychiatry_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf)). At the very least, however, the 1/f appears to change with task ([Podvalny _et al._, _J Neurophysiol_ 2015](http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf)), with aging ([Voytek _et al._, _J Neurosci_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf)).
 
 ## Python Version
 
@@ -33,7 +35,7 @@ To get the lastest, development version, you can get the code using git:
 
 `$ git clone https://github.com/voytekresearch/fooof`
 
-If you want to install the development version (without making changes), move into the directory you cloned and install with:
+To then install the development version (without making changes), move into the directory you cloned and run:
 
 `$ pip install .`
 
@@ -49,13 +51,13 @@ FOOOF is object oriented. With a power spectrum loaded (with 'freqs' storing fre
 from fooof import FOOOF
 
 # Initialize FOOOF object
-foof_model = FOOOF()
+fm = FOOOF()
 
 # Define frequency range to model PSD
 freq_range = [3, 40]
 
 # Model the PSD with FOOOF
-foof_model.model(freqs, psd, freq_range)
+fm.model(freqs, psd, freq_range)
 ```
 
 FOOOF.model() fits the model, plots the original PSD with the associated model of the PSD, and prints out the parameters of the model fit for both background 1/f (offset, knee, exponent) and Gaussian parameters (center frequency, amplitude, and bandwidth) for any identified oscillations.
@@ -63,14 +65,36 @@ FOOOF.model() fits the model, plots the original PSD with the associated model o
 FOOOF also accepts parameters for fine-tuning the fit. For example:
 
 ```python
-foof_model = FOOOF(bandwidth_limits=(1.0,15.0), max_n_oscs=6, min_amp=0.1, amp_std_thresh=2.0)
+fm = FOOOF(bandwidth_limits=(1.0, 15.0), max_n_oscs=6, min_amp=0.1, amp_std_thresh=2.0)
 ```
 
-* _bandwidth_limits_ sets the possible lower- and upper-bounds for the fitted Gaussians bandwidths to 1.0 and 15.0 Hz, respectively.
-* _max_n_oscs_ sets the maximum number of oscillations to find (in decreasing order of amplitude). Physiologically, rarely are there ever more than 5 or 6. This helps minimize overfitting.
-* _min_amp_ sets a hard limit on the maximum amplitude (above background 1/f) for any oscillation; that is, bumps below this amplitude will be ignored.
+* _bandwidth_limits_ sets the possible lower- and upper-bounds for the fitted oscillation bandwidths.
+* _max_n_oscs_ sets the maximum number of oscillations to find (in decreasing order of amplitude).
+* _min_amp_ sets an absolute limit on the minimum amplitude (above background 1/f) for any oscillation.
 * _amp_std_thresh_, similar to _min_amp_, sets a threshold above which oscillation amplitude must cross to be included in the model. However this parameter is in terms of standard deviation above the noise of the flattened spectrum.
 
+FOOOF also has convenience methods for running the FOOOF model across matrices of PSDs, as well as functionality for saving and loading results, creating reports from FOOOF outputs, and utilities to further analize FOOOF results.
+
+An example workflow, with 'freqs' as 1D array of frequency values, and 'psds' as a 2D array of power spectra.
+
+```python
+
+# Initialize a FOOOFGroup object, specifying some parameters
+fg = FOOOFGroup(bandwidth_limits=(1.0, 8.0), max_n_oscs=8)
+
+# Fit FOOOF model across the matrix of PSDs
+fg.fit(freqs, psds)
+
+# Create a report summarizing the results across the group of PSDs
+fg.create_report()
+
+# Save out FOOOF results for further analysis later
+fg.save('fooof_group_results')
+```
+
 ## Output
-Example output for MEG data:
-![alt text](img/fooof_output.png "Example FOOOF output for MEG data")
+Example output for a FOOOF fit of MEG data:
+!["fooof_report"](img/FOOOF_report.pdf)
+
+Example output for running FOOOF across a group of PSDs (with FOOOFGroup):
+!["fooof_group_report"](img/FOOOF_group_report.pdf)
