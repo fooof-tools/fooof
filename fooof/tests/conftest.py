@@ -7,7 +7,7 @@ import pkg_resources as pkg
 import numpy as np
 import matplotlib.pyplot as plt
 
-from fooof.tests.utils import get_fm, get_fg
+from fooof.tests.utils import get_tfm, get_tfg
 
 import pytest
 
@@ -37,8 +37,8 @@ def check_dir():
 
 @pytest.fixture(scope='session')
 def tfm():
-    yield get_fm()
+    yield get_tfm()
 
 @pytest.fixture(scope='session')
 def tfg():
-    yield get_fg()
+    yield get_tfg()

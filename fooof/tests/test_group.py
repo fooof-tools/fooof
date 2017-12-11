@@ -12,11 +12,12 @@ import pkg_resources as pkg
 import numpy as np
 
 from fooof import FOOOFGroup
+from fooof.fit import FOOOFResult
 from fooof.synth import mk_fake_group_data
 from fooof.utils import mk_freq_vector
 
-##########################################################################################
-##########################################################################################
+###################################################################################################
+###################################################################################################
 
 def test_fg():
     """Check FOOOFGroup object initializes properly."""
@@ -32,27 +33,35 @@ def test_fg_iter(tfg):
 def test_fg_fit():
     """Test FOOOFGroup fit, no knee."""
 
-    xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=2)
+    n_psds = 2
+    xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=n_psds)
 
-    fg = FOOOFGroup()
-    fg.fit(xs, ys)
-    out = fg.get_results()
+    tfg = FOOOFGroup()
+    tfg.fit(xs, ys)
+    out = tfg.get_results()
 
     assert out
+    assert len(out) == n_psds
+    assert isinstance(out[0], FOOOFResult)
+    assert np.all(out[1].background_params)
 
 def test_fg_fit_par():
     """Test FOOOFGroup fit, running in parallel."""
 
-    xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=2)
+    n_psds = 2
+    xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=n_psds)
 
-    fg = FOOOFGroup()
-    fg.fit(xs, ys, n_jobs=2)
-    out = fg.get_results()
+    tfg = FOOOFGroup()
+    tfg.fit(xs, ys, n_jobs=2)
+    out = tfg.get_results()
 
     assert out
+    assert len(out) == n_psds
+    assert isinstance(out[0], FOOOFResult)
+    assert np.all(out[1].background_params)
 
 def test_fg_plot_get(tfg):
-    """Check methods that print, plot, and create report."""
+    """Check methods that print, plot."""
 
     tfg.print_results()
     tfg.plot()
@@ -66,29 +75,29 @@ def test_fg_load():
     res_file_name = 'test_fooof_group_res'
     file_path = pkg.resource_filename(__name__, 'test_files')
 
-    nfg = FOOOFGroup()
+    tfg = FOOOFGroup()
 
-    nfg.load(set_file_name, file_path)
-    assert nfg
+    tfg.load(set_file_name, file_path)
+    assert tfg
 
-    nfg.load(res_file_name, file_path)
-    assert nfg
+    tfg.load(res_file_name, file_path)
+    assert tfg
 
 def test_fg_model():
     """Check that running the top level model method runs."""
 
     xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=2)
 
-    fg = FOOOFGroup()
-    fg.model(xs, ys)
+    tfg = FOOOFGroup()
+    tfg.model(xs, ys)
 
-    assert fg
+    assert tfg
 
 def test_fg_get_fooof(tfg):
     """Check return of an individual PSD in a FOOOF object from FOOOFGroup."""
 
-    fm0 = tfg.get_fooof(0, False)
-    assert fm0
+    tfm0 = tfg.get_fooof(0, False)
+    assert tfm0
 
-    fm1 = tfg.get_fooof(1, True)
-    assert fm1
+    tfm1 = tfg.get_fooof(1, True)
+    assert tfm1
