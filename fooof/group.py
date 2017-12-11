@@ -27,6 +27,12 @@ class FOOOFGroup(FOOOF):
         self._reset_group_results()
 
 
+    def __iter__(self):
+
+        for result in self.group_results:
+            yield result
+
+
     def _reset_group_results(self, length=0):
         """Set (or reset) results to be empty.
 
