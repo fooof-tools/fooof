@@ -1,0 +1,95 @@
+"""Tests for fooof.core.io."""
+
+import os
+import pkg_resources as pkg
+
+from fooof import FOOOF
+
+from fooof.core.io import *
+
+###################################################################################################
+###################################################################################################
+
+def test_save_fm_str(tfm):
+    """Check saving fm data, with str file specifier."""
+
+    file_name_all = 'test_fooof_str_all'
+    file_name_res = 'test_fooof_str_res'
+    file_path = pkg.resource_filename(__name__, 'test_files')
+
+    save_fm(tfm, file_name_all, file_path, True, True, True)
+    save_fm(tfm, file_name_res, file_path, True, False, False)
+
+    assert os.path.exists(os.path.join(file_path, file_name_all + '.json'))
+    assert os.path.exists(os.path.join(file_path, file_name_res + '.json'))
+
+def test_save_fm_str_app(tfm):
+    """Check saving fm data, with str file specifier, with appending."""
+
+    file_name = 'test_fooof_str_app'
+    file_path = pkg.resource_filename(__name__, 'test_files')
+
+    save_fm(tfm, file_name, file_path, True, True, True, True)
+    save_fm(tfm, file_name, file_path, True, True, True, True)
+
+    assert os.path.exists(os.path.join(file_path, file_name + '.json'))
+
+def test_save_fm_fobj(tfm):
+    """Check saving fm data, with file object file specifier."""
+
+    file_name = 'test_fooof_fobj'
+    file_path = pkg.resource_filename(__name__, 'test_files')
+
+    # Save, using file-object: three successive lines with three possible save settings
+    with open(os.path.join(file_path, file_name + '.json'), 'w') as save_file_obj:
+        save_fm(tfm, save_file_obj, file_path, True, False, False)
+        save_fm(tfm, save_file_obj, file_path, False, True, False)
+        save_fm(tfm, save_file_obj, file_path, False, False, True)
+
+    assert os.path.exists(os.path.join(file_path, file_name + '.json'))
+
+def test_save_fg(tfg):
+    """Check saving fg data."""
+
+    set_file_name = 'test_fooof_group_set'
+    res_file_name = 'test_fooof_group_res'
+    dat_file_name = 'test_fooof_group_dat'
+    file_path = pkg.resource_filename(__name__, 'test_files')
+
+    save_fg(tfg, save_file=set_file_name, save_path=file_path, save_settings=True)
+    save_fg(tfg, save_file=res_file_name, save_path=file_path, save_results=True)
+    save_fg(tfg, save_file=dat_file_name, save_path=file_path, save_data=True)
+
+    assert os.path.exists(os.path.join(file_path, set_file_name + '.json'))
+    assert os.path.exists(os.path.join(file_path, res_file_name + '.json'))
+    assert os.path.exists(os.path.join(file_path, dat_file_name + '.json'))
+
+def test_load_json_str():
+    """Test loading JSON file, with str file specifier. Loads files from test_save_fm_str."""
+
+    file_name = 'test_fooof_str_all'
+    file_path = pkg.resource_filename(__name__, 'test_files')
+
+    dat = load_json(file_name, file_path)
+
+    assert dat
+
+def test_load_json_fobj():
+    """Test loading JSON file, with file object file specifier. Loads files from test_save_fm_str."""
+
+    file_name = 'test_fooof_str_all'
+    file_path = pkg.resource_filename(__name__, 'test_files')
+
+    with open(os.path.join(file_path, file_name + '.json'), 'r') as load_file_obj:
+        dat = load_json(load_file_obj, '')
+
+    assert dat
+
+def test_load_jsonlines():
+    """Test loading JSONlines file. Loads files from test_save_fg."""
+
+    res_file_name = 'test_fooof_group_res'
+    file_path = pkg.resource_filename(__name__, 'test_files')
+
+    for dat in load_jsonlines(res_file_name, file_path):
+        assert dat

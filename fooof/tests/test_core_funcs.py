@@ -1,4 +1,4 @@
-"""Tests for FOOOF funcs."""
+"""Tests for FOOOF core.funcs."""
 
 import numpy as np
 from scipy.stats import norm, linregress

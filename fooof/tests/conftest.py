@@ -36,9 +36,9 @@ def check_dir():
     os.mkdir(dat_dir_name)
 
 @pytest.fixture(scope='session')
-def wfm():
+def tfm():
     yield get_fm()
 
 @pytest.fixture(scope='session')
-def wfg():
+def tfg():
     yield get_fg()
