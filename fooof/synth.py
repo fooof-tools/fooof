@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from fooof.funcs import gaussian_function, expo_function, expo_nk_function
+from fooof.core.funcs import gaussian_function, expo_function, expo_nk_function
 
 ##########################################################################################
 ##########################################################################################

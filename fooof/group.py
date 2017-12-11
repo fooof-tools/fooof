@@ -5,13 +5,12 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
-from fooof.utils import get_attribute_names, docs_drop_param
-
 from fooof import FOOOF
-from fooof.io import save_fg, load_jsonlines
 from fooof.plts.fg import plot_fg
-from fooof.strings import gen_results_str_fg
-from fooof.reports import create_report_fg
+from fooof.core.reports import create_report_fg
+from fooof.core.strings import gen_results_str_fg
+from fooof.core.io import save_fg, load_jsonlines
+from fooof.core.utils import get_attribute_names, docs_drop_param
 
 ###################################################################################################
 ###################################################################################################

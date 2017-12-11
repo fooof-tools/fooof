@@ -5,8 +5,8 @@ import os
 import json
 from json import JSONDecodeError
 
-from fooof.utils import get_attribute_names
-from fooof.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
+from fooof.core.utils import get_attribute_names
+from fooof.core.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
 
 ###################################################################################################
 ###################################################################################################
