@@ -3,6 +3,8 @@
 import os
 import shutil
 import pkg_resources as pkg
+
+import numpy as np
 import matplotlib.pyplot as plt
 
 import pytest
@@ -12,6 +14,7 @@ import pytest
 
 def pytest_configure(config):
     plt.switch_backend('agg')
+    np.random.seed(42)
 
 @pytest.fixture(scope='session', autouse=True)
 def check_dir():
