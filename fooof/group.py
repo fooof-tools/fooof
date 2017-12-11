@@ -253,13 +253,13 @@ class FOOOFGroup(FOOOF):
 
 # DOCS: Copy over docs from FOOOF to FOOOFGroup
 FOOOFGroup.__doc__ = FOOOF.__doc__
-# Copy over docs for an aliased functions to the method docstrings
+# DOCS: Copy over docs for an aliased functions to the method docstrings
 for func_name in get_attribute_names()['alias_funcs']:
     getattr(FOOOFGroup, func_name).__doc__ = \
         docs_drop_param(eval(func_name + '_' + 'fg').__doc__)
 
 
-## Helper Functions
+# Helper Functions
 def _par_fit(psd, fg):
     """Helper function for running in parallel."""
 
