@@ -13,7 +13,7 @@ from fooof.utils import get_attribute_names, docs_drop_param
 from fooof.io import save_fm, load_json
 from fooof.plts.fm import plot_fm
 from fooof.reports import create_report_fm
-from fooof.strings import gen_settings_str, gen_results_str_fm, gen_how_to_report_str
+from fooof.strings import gen_settings_str, gen_results_str_fm, gen_report_str, gen_bw_warn_str
 from fooof.funcs import gaussian_function, expo_function, expo_nk_function
 
 ###################################################################################################
@@ -275,10 +275,12 @@ class FOOOF(object):
 
         # Check bandwidth limits against frequency resolution; warn if too close.
         if 1.5 * self.freq_res >= self.bandwidth_limits[0] and self.verbose:
-            print("\nFOOOF WARNING: Lower-bound bandwidth limit is < or ~= the frequency resolution: {:1.2f} <= {:1.2f}\
-                  \n\tLower bounds below frequency-resolution have no effect (effective lower bound is freq-res)\
-                  \n\tToo low a limit may lead to overfitting noise as small bandwidth oscillations.\
-                  \n\tWe recommend a lower bound of approximately 2x the frequency resolution.\n".format(self.freq_res, self.bandwidth_limits[0]))
+
+            # Skips the warning after first fit in a group, to not spam stdout.
+            if hasattr(self, 'group_results') and self.psds[0, 0] != psd[0]:
+                pass
+            else:
+                print(gen_bw_warn_str(self.freq_res, self.bandwidth_limits[0]))
 
         # Fit the background 1/f.
         self.background_params_ = self._clean_background_fit(self.freqs, self.psd)
@@ -335,7 +337,7 @@ class FOOOF(object):
     def print_report_issue():
         """Prints instructions on how to report bugs and/or problematic fits."""
 
-        print(gen_how_to_report_str())
+        print(gen_report_str())
 
 
     def get_results(self):

@@ -11,6 +11,30 @@ CV = 100                # Centering Value
 ###################################################################################################
 ###################################################################################################
 
+def gen_bw_warn_str(freq_res, bwl):
+    """Generate a string representation of warning about bandwidth limits.
+
+    Parameters
+    ----------
+    freq_res : float
+        Frequency resolution.
+    bwl : float
+        Lower bound bandwidth-limit.
+    """
+
+    output = '\n'.join([
+        '',
+        "FOOOF WARNING: Lower-bound bandwidth limit is < or ~= the frequency resolution: " + \
+            "{:1.2f} <= {:1.2f}".format(freq_res, bwl),
+        '\tLower bounds below frequency-resolution have no effect (effective lower bound is freq-res)',
+        '\tToo low a limit may lead to overfitting noise as small bandwidth oscillations.',
+        '\tWe recommend a lower bound of approximately 2x the frequency resolution.',
+        ''
+    ])
+
+    return output
+
+
 def gen_settings_str(f_obj, description=False):
     """Generate a string representation of current FOOOF settings.
 
@@ -207,7 +231,7 @@ def gen_results_str_fg(fg):
     return output
 
 
-def gen_how_to_report_str():
+def gen_report_str():
     """Generate a string representation of instructions to report an issue.
 
     Returns
