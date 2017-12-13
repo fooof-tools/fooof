@@ -143,12 +143,17 @@ class FOOOF(object):
 
         # Set exponential function version for whether fitting knee or not
         self._bg_fit_func = expo_function if self.bg_use_knee else expo_nk_function
-        # Bandwidth limits are given in 2-sided oscillation bandwidth.
-        #  Convert to gaussian std parameter limits.
-        self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
-        # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
-        self._bg_bounds = self._bg_bounds if self.bg_use_knee \
-            else tuple(bound[0::2] for bound in self._bg_bounds)
+
+        # Only update these settings if other relevant settings are available
+        #   Otherwise, assume settings are unknown (have been cleared) and leave as None
+        if self.bandwidth_limits:
+
+            # Bandwidth limits are given in 2-sided oscillation bandwidth.
+            #  Convert to gaussian std parameter limits.
+            self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
+            # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
+            self._bg_bounds = self._bg_bounds if self.bg_use_knee \
+                else tuple(bound[0::2] for bound in self._bg_bounds)
 
 
     def _reset_dat(self, clear_freqs=True):
