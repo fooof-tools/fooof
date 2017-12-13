@@ -6,6 +6,44 @@ import matplotlib.pyplot as plt
 ###################################################################################################
 ###################################################################################################
 
+def plot_psd(freqs, psd, plt_log=False, ax=None, **kwargs):
+    """
+
+    Parameters
+    ----------
+    freqs : 1d array
+        X-axis data, frequency values.
+    psd : 1d array
+        Y-axis data, PSD power values.
+    plt_log : boolean, optional
+        Whether or not to plot the frequency axis in log space. default: False
+    ax : matplotlib.Axes, optional
+        Figure axes upon which to plot.
+    **kwargs
+        Keyword arguments to be passed to the plot call.
+    """
+
+    # Create plot axes, if not provided
+    if not ax:
+        fig, ax = plt.subplots(figsize=(12, 10))
+
+    # Set frequency vector, logged if requested
+    plt_freqs = np.log10(freqs) if plt_log else freqs
+
+    # Create the plot
+    ax.plot(plt_freqs, psd, **kwargs)
+
+    # Aesthetics and axis labels
+    ax.set_xlabel('Frequency', fontsize=20)
+    ax.set_ylabel('Power', fontsize=20)
+    ax.tick_params(axis='both', which='major', labelsize=16)
+    ax.grid()
+
+    # If labels were provided, add a legend
+    if ax.get_legend_handles_labels()[0]:
+        ax.legend(prop={'size': 16})
+
+
 def plot_scatter_1(dat, label, title=None, x_val=0, ax=None):
     """Plot a scatter plot with the given data.
 
@@ -30,7 +68,10 @@ def plot_scatter_1(dat, label, title=None, x_val=0, ax=None):
     if not ax:
         fig, ax = plt.subplots()
 
-    ax.scatter(np.ones_like(dat) * x_val + np.random.normal(0, 0.025, dat.shape), dat, s=36, alpha=0.5)
+    # Create x-axis data, with small jitter for visualization purposes
+    x_dat = np.ones_like(dat) * x_val + np.random.normal(0, 0.025, dat.shape)
+
+    ax.scatter(x_dat, dat, s=36, alpha=0.5)
 
     if label:
         ax.set_ylabel(label, fontsize=12)

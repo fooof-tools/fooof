@@ -8,6 +8,18 @@ from fooof.plts.templates import *
 ###################################################################################################
 ###################################################################################################
 
+def test_plot_psd():
+
+	plt.close('all')
+
+	dat1 = np.random.randint(0, 100, 100)
+	dat2 = np.random.randint(0, 100, 100)
+
+	plot_psd(dat1, dat2, True)
+
+	ax = plt.gca()
+	assert ax.has_data()
+
 def test_plot_scatter_1():
 
 	plt.close('all')
