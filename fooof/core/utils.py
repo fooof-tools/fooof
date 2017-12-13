@@ -81,6 +81,17 @@ def dict_select_keys(in_dict, keep):
 
 
 def check_array_dim(arr):
-    """Check that parameter array has the correct shape, and reshape if not."""
+    """Check that parameter array has 2D shape, and reshape if not.
+
+    Parameters
+    ----------
+    arr : np.array
+        Array to check.
+
+    Returns
+    -------
+    np.array
+        Original array, if 2D, or 2D empty array.
+    """
 
     return np.empty([0, 3]) if arr.ndim == 1 else arr

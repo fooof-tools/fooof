@@ -1,4 +1,9 @@
-"""FOOOF - Fitting Oscillations & One-Over F."""
+"""FOOOF - Fitting Oscillations & One-Over F.
+
+Notes
+-----
+- Methods without defined docstrings import docs at runtime, from aliased external functions.
+"""
 
 import warnings
 from collections import namedtuple
@@ -236,6 +241,8 @@ class FOOOF(object):
             Power spectral density values.
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+        plt_log : boolean, optional
+            Whether or not to plot the frequency axis in log space. default: False
 
         Notes
         -----

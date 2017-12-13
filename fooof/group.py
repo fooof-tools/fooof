@@ -1,4 +1,10 @@
-"""FOOOF - Group fitting object and methods."""
+"""FOOOF - Group fitting object and methods.
+
+Notes
+-----
+- FOOOFGroup object docs are imported from FOOOF object at runtime.
+- Methods without defined docstrings import docs at runtime, from aliased external functions.
+"""
 
 from functools import partial
 from multiprocessing import Pool, cpu_count
