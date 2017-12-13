@@ -275,7 +275,7 @@ class FOOOF(object):
         if isinstance(freqs, np.ndarray) and isinstance(psd, np.ndarray):
             self.add_data(freqs, psd, freq_range)
         # If PSD provided alone, add to object, and use existing frequency data
-        #  Note: this option is for internal use (called from FOOOFGroup)
+        #  Note: be careful passing in PSD data like this:
         #    It assumes the PSD is already logged, with correct freq_range.
         elif isinstance(psd, np.ndarray):
             self.psd = psd
@@ -284,14 +284,9 @@ class FOOOF(object):
         if not (np.all(self.freqs) and np.all(self.psd)):
             raise ValueError('No data available to fit - can not proceed.')
 
-        # Check bandwidth limits against frequency resolution; warn if too close.
-        if 1.5 * self.freq_res >= self.bandwidth_limits[0] and self.verbose:
-
-            # Skips the warning after first fit in a group, to not spam stdout.
-            if hasattr(self, 'group_results') and self.psds[0, 0] != psd[0]:
-                pass
-            else:
-                print(gen_bw_warn_str(self.freq_res, self.bandwidth_limits[0]))
+        # Check and warn about bandwidth limits (if in verbose mode)
+        if self.verbose:
+            self._check_bw()
 
         # Fit the background 1/f.
         self.background_params_ = self._clean_background_fit(self.freqs, self.psd)
@@ -393,6 +388,14 @@ class FOOOF(object):
         self._add_from_dict(dat)
         self._check_loaded_settings(dat)
         self._check_loaded_results(dat)
+
+
+    def _check_bw(self):
+        """Check and warn about bandwidth limits / frequency resolution interaction."""
+
+        # Check bandwidth limits against frequency resolution; warn if too close.
+        if 1.5 * self.freq_res >= self.bandwidth_limits[0]:
+            print(gen_bw_warn_str(self.freq_res, self.bandwidth_limits[0]))
 
 
     def _check_loaded_results(self, dat, regenerate=True):

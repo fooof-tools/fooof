@@ -266,6 +266,13 @@ class FOOOFGroup(FOOOF):
 
         return super().get_results()
 
+    def _check_bw(self):
+        """Check and warn about bandwidth limits / frequency resolution interaction."""
+
+        # Only check & warn on first PSD (to avoid spamming stdout for every PSD)
+        if self.psds[0, 0] == self.psd[0]:
+            super()._check_bw()
+
 
 # DOCS: Copy over docs from FOOOF to FOOOFGroup
 FOOOFGroup.__doc__ = FOOOF.__doc__
