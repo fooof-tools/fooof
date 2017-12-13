@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 ###################################################################################################
 
 def plot_psd(freqs, psd, plt_log=False, ax=None, **kwargs):
-    """
+    """Plot a line plot of a power-spectrum.
 
     Parameters
     ----------
