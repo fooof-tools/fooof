@@ -22,7 +22,8 @@ from fooof.utils import mk_freq_vector
 def test_fg():
     """Check FOOOFGroup object initializes properly."""
 
-    assert FOOOFGroup()
+    fg = FOOOFGroup()
+    assert True
 
 def test_fg_iter(tfg):
     """Check iterating through FOOOFGroup."""

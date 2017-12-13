@@ -32,6 +32,11 @@ class FOOOFGroup(FOOOF):
             yield result
 
 
+    def __len__(self):
+
+        return len(self.group_results)
+
+
     def _reset_group_results(self, length=0):
         """Set (or reset) results to be empty.
 
