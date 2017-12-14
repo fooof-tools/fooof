@@ -37,7 +37,7 @@ def plot_psd(freqs, psd, plt_log=False, ax=None, **kwargs):
     ax.set_xlabel('Frequency', fontsize=20)
     ax.set_ylabel('Power', fontsize=20)
     ax.tick_params(axis='both', which='major', labelsize=16)
-    ax.grid()
+    ax.grid(True)
 
     # If labels were provided, add a legend
     if ax.get_legend_handles_labels()[0]:
