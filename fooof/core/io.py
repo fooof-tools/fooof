@@ -11,7 +11,8 @@ from fooof.core.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_ar
 ###################################################################################################
 ###################################################################################################
 
-def save_fm(fm, save_file, save_path='', save_results=False, save_settings=False, save_data=False, append=False):
+def save_fm(fm, save_file, save_path='', append=False,
+            save_results=False, save_settings=False, save_data=False):
     """Save out data, results and/or settings from FOOOF object. Saves out to a JSON file.
 
     Parameters
@@ -22,15 +23,15 @@ def save_fm(fm, save_file, save_path='', save_results=False, save_settings=False
         File to which to save data.
     save_path : str, optional
         Path to directory to which the save. If not provided, saves to current directory.
+    append : bool, optional
+        Whether to append to an existing file, if available. default: False
+            This option is only valid (and only used) if save_file is a str.
     save_results : bool, optional
         Whether to save out FOOOF model fit results.
     save_settings : bool, optional
         Whether to save out FOOOF settings.
     save_data : bool, optional
         Whether to save out input data.
-    append : bool, optional
-        Whether to append to an existing file, if available. default: False
-            This option is only valid (and only used) if save_file is a str.
     """
 
     # Convert object to dictionary & convert all arrays to lists - for JSON serializing
@@ -63,7 +64,8 @@ def save_fm(fm, save_file, save_path='', save_results=False, save_settings=False
         raise ValueError('Save file not understood.')
 
 
-def save_fg(fg, save_file, save_path='', save_results=False, save_settings=False, save_data=False):
+def save_fg(fg, save_file, save_path='', append=False,
+            save_results=False, save_settings=False, save_data=False):
     """Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.
 
     Parameters
@@ -74,6 +76,9 @@ def save_fg(fg, save_file, save_path='', save_results=False, save_settings=False
         File to which to save data.
     save_path : str, optional
         Path to directory to which the save. If not provided, saves to current directory.
+    append : bool, optional
+        Whether to append to an existing file, if available. default: False
+            This option is only valid (and only used) if save_file is a str.
     save_results : bool, optional
         Whether to save out FOOOF model fit results.
     save_settings : bool, optional
@@ -85,20 +90,22 @@ def save_fg(fg, save_file, save_path='', save_results=False, save_settings=False
     if not save_results and not save_settings and not save_data:
         raise ValueError('No data specified for saving.')
 
-    # Loops through group object, creating a FOOOF object per PSD, and saves from there
-    with open(os.path.join(save_path, save_file + '.json'), 'w') as f_obj:
+    # Save to string specified file, do not append
+    if isinstance(save_file, str) and not append:
+        with open(os.path.join(save_path, save_file + '.json'), 'w') as f_obj:
+            _save_fg(fg, f_obj, save_results, save_settings, save_data)
 
-        # Save out single line, if just settings to be saved
-        if save_settings and not save_results and not save_data:
-            save_fm(fg, save_file=f_obj, save_path='', save_results=save_results,
-                    save_settings=save_settings, save_data=save_data, append=False)
+    # Save to string specified file, appending
+    elif isinstance(save_file, str) and append:
+        with open(os.path.join(save_path, save_file + '.json'), 'a') as f_obj:
+            _save_fg(fg, f_obj, save_results, save_settings, save_data)
 
-        # Otherwise, loop through the results & data
-        else:
-            for ind in range(len(fg.group_results)):
-                fm = fg.get_fooof(ind, regenerate=False)
-                save_fm(fm, save_file=f_obj, save_path='', save_results=save_results,
-                        save_settings=save_settings, save_data=save_data, append=False)
+    # Save to file-object specified file
+    elif isinstance(save_file, io.IOBase):
+        _save_fg(fg, save_file, save_results, save_settings, save_data)
+
+    else:
+        raise ValueError('Save file not understood.')
 
 
 def load_json(file_name, file_path):
@@ -157,3 +164,33 @@ def load_jsonlines(file_name, file_path):
             # Break off when get a JSON error - end of the file
             except JSONDecodeError:
                 break
+
+
+def _save_fg(fg, f_obj, save_results, save_settings, save_data):
+    """Helper function for saving FOOOFGroup - saves data given a file object.
+
+    Parameters
+    ----------
+    fg : FOOOFGroup() object
+        FOOOFGroup object from which to save data.
+    save_file : FileObject
+        File object for file to which to save data.
+    save_results : bool, optional
+        Whether to save out FOOOF model fit results.
+    save_settings : bool, optional
+        Whether to save out FOOOF settings.
+    save_data : bool, optional
+        Whether to save out PSD data.
+    """
+
+    # Save out single line, if just settings to be saved
+    if save_settings and not save_results and not save_data:
+        save_fm(fg, save_file=f_obj, save_path='', append=False,
+                save_results=save_results, save_settings=save_settings, save_data=save_data)
+
+    # Loops through group object, creating a FOOOF object per PSD, and saves from there
+    else:
+        for ind in range(len(fg.group_results)):
+            fm = fg.get_fooof(ind, regenerate=False)
+            save_fm(fm, save_file=f_obj, save_path='', append=False,
+                    save_results=save_results, save_settings=save_settings, save_data=save_data)
