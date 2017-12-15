@@ -81,6 +81,6 @@ def plot_osc_iter(fm):
         if ind < n_gauss:
 
             gauss = gaussian_function(fm.freqs, *fm._gaussian_params[ind, :])
-            plot_psd(fm.freqs, gauss, label='Guassin Fit', linestyle=':', linewidth=2.0, ax=ax)
+            plot_psd(fm.freqs, gauss, label='Gaussian Fit', linestyle=':', linewidth=2.0, ax=ax)
 
             flatspec = flatspec - gauss
