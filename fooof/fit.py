@@ -134,7 +134,7 @@ class FOOOF(object):
 
         # Initialize internal settings and data attributes (to None)
         self._reset_settings()
-        self._reset_dat()
+        self._reset_data()
 
 
     def _reset_settings(self):
@@ -161,7 +161,7 @@ class FOOOF(object):
                 else tuple(bound[0::2] for bound in self._bg_bounds)
 
 
-    def _reset_dat(self, clear_freqs=True):
+    def _reset_data(self, clear_freqs=True):
         """Set (or reset) all data attributes to empty.
 
         Parameters
@@ -363,13 +363,13 @@ class FOOOF(object):
         create_report_fm(self, save_name, save_path, plt_log)
 
 
-    def save(self, save_file='fooof_dat', save_path='', save_results=False,
+    def save(self, save_file='fooof_data', save_path='', save_results=False,
              save_settings=False, save_data=False, append=False):
 
         save_fm(self, save_file, save_path, save_results, save_settings, save_data, append)
 
 
-    def load(self, load_file='fooof_dat', file_path=''):
+    def load(self, load_file='fooof_data', file_path=''):
         """Load in FOOOF file. Reads in a JSON file.
 
         Parameters
@@ -381,13 +381,13 @@ class FOOOF(object):
         """
 
         # Reset data in object, so old data can't interfere
-        self._reset_dat()
+        self._reset_data()
 
         # Load JSON file, add to self and check loaded data
-        dat = load_json(load_file, file_path)
-        self._add_from_dict(dat)
-        self._check_loaded_settings(dat)
-        self._check_loaded_results(dat)
+        data = load_json(load_file, file_path)
+        self._add_from_dict(data)
+        self._check_loaded_settings(data)
+        self._check_loaded_results(data)
 
 
     def _check_bw(self):
@@ -398,12 +398,12 @@ class FOOOF(object):
             print(gen_bw_warn_str(self.freq_res, self.bandwidth_limits[0]))
 
 
-    def _check_loaded_results(self, dat, regenerate=True):
+    def _check_loaded_results(self, data, regenerate=True):
         """Check if results added, check data, and regenerate model, if requested.
 
         Parameters
         ----------
-        dat : dict
+        data : dict
             The dictionary of data that has been added to the object.
         regenerate : bool, optional
             Whether to regenerate the PSD model. default : True
@@ -411,7 +411,7 @@ class FOOOF(object):
 
         # If results loaded, check dimensions of osc/gauss parameters
         #  This fixes an issue where they end up the wrong shape if they are empty (no oscs)
-        if set(get_obj_desc()['results']).issubset(set(dat.keys())):
+        if set(get_obj_desc()['results']).issubset(set(data.keys())):
             self.oscillation_params_ = check_array_dim(self.oscillation_params_)
             self._gaussian_params = check_array_dim(self._gaussian_params)
 
@@ -838,36 +838,36 @@ class FOOOF(object):
         return freqs, psd, freq_range, freq_res
 
 
-    def _add_from_dict(self, dat):
+    def _add_from_dict(self, data):
         """Add data to object from a dictionary.
 
         Parameters
         ----------
-        dat : dict
+        data : dict
             Dictionary of data to add to self.
         """
 
         # Reconstruct FOOOF object from loaded data
-        for key in dat.keys():
-            setattr(self, key, dat[key])
+        for key in data.keys():
+            setattr(self, key, data[key])
 
         # Reconstruct frequency vector, if data available to do so
         if self.freq_res:
             self.freqs = mk_freq_vector(self.freq_range, self.freq_res)
 
 
-    def _check_loaded_settings(self, dat):
+    def _check_loaded_settings(self, data):
         """Check if settings added, and update the object as needed.
 
         Parameters
         ----------
-        dat : dict
+        data : dict
             The dictionary of data that has been added to the object.
         """
 
         # If settings not loaded from file, clear from object, so that default
         #  settings, which are potentially wrong for loaded data, aren't kept
-        if not set(get_obj_desc()['settings']).issubset(set(dat.keys())):
+        if not set(get_obj_desc()['settings']).issubset(set(data.keys())):
             self._clear_settings()
 
             # Infer whether knee fitting was used, if background params have been loaded

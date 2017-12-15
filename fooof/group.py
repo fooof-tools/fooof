@@ -139,7 +139,7 @@ class FOOOFGroup(FOOOF):
             self.group_results = pool.map(partial(_par_fit, fg=self), self.psds)
             pool.close()
 
-        self._reset_dat(clear_freqs=False)
+        self._reset_data(clear_freqs=False)
 
 
     def get_results(self):
@@ -165,7 +165,7 @@ class FOOOFGroup(FOOOF):
         """
 
         # Pull out the requested data field from the group data
-        out = np.array([getattr(dat, name) for dat in self.group_results])
+        out = np.array([getattr(data, name) for data in self.group_results])
 
         # Some data can end up as a list of separate arrays.
         #   If so, concatenate it all into one 2d array
@@ -210,19 +210,19 @@ class FOOOFGroup(FOOOF):
         # Clear results so as not to have possible prior results interfere
         self._reset_group_results()
 
-        for ind, dat in enumerate(load_jsonlines(file_name, file_path)):
+        for ind, data in enumerate(load_jsonlines(file_name, file_path)):
 
-            self._add_from_dict(dat)
+            self._add_from_dict(data)
 
             # Only load settings from first line (rest will be duplicates, if there)
             if ind == 0:
-                self._check_loaded_settings(dat)
+                self._check_loaded_settings(data)
 
-            self._check_loaded_results(dat, False)
+            self._check_loaded_results(data, False)
             self.group_results.append(self._get_results())
 
         # Reset peripheral data from last loaded result, keeping freqs info
-        self._reset_dat(False)
+        self._reset_data(False)
 
 
     def get_fooof(self, ind, regenerate=False):

@@ -129,7 +129,7 @@ def test_fooof_resets():
     # Note: uses it's own tfm, to not clear the global one
     tfm = get_tfm()
 
-    tfm._reset_dat()
+    tfm._reset_data()
     tfm._reset_settings()
 
     assert tfm.freqs is None and tfm.freq_range is None and tfm.freq_res is None  \
