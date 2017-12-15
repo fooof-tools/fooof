@@ -86,8 +86,9 @@ class FOOOFGroup(FOOOF):
             Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
-        n_jobs : int
-            Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
+        n_jobs : int, optional
+            Number of jobs to run in parallel. default: 1
+                1 is no parallelization. -1 uses all available cores.
 
         Notes
         -----
@@ -111,7 +112,8 @@ class FOOOFGroup(FOOOF):
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         n_jobs : int, optional
-            Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
+            Number of jobs to run in parallel. default: 1
+                1 is no parallelization. -1 uses all available cores.
 
         Notes
         -----
@@ -165,9 +167,11 @@ class FOOOFGroup(FOOOF):
         # Pull out the requested data field from the group data
         out = np.array([getattr(dat, name) for dat in self.group_results])
 
-        # Some data can end up as a list of separate arrays. If so, concatenate it all into one 2d array
+        # Some data can end up as a list of separate arrays.
+        #   If so, concatenate it all into one 2d array
         if isinstance(out[0], np.ndarray):
-            out = np.concatenate([arr.reshape(1, len(arr)) if arr.ndim == 1 else arr for arr in out], 0)
+            out = np.concatenate([arr.reshape(1, len(arr)) \
+                if arr.ndim == 1 else arr for arr in out], 0)
 
         # Select out a specific column, if requested
         if ind is not None:

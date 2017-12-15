@@ -10,45 +10,45 @@ from fooof.plts.templates import *
 
 def test_plot_psd():
 
-	plt.close('all')
+    plt.close('all')
 
-	dat1 = np.random.randint(0, 100, 100)
-	dat2 = np.random.randint(0, 100, 100)
+    dat1 = np.random.randint(0, 100, 100)
+    dat2 = np.random.randint(0, 100, 100)
 
-	plot_psd(dat1, dat2, True)
+    plot_psd(dat1, dat2, True)
 
-	ax = plt.gca()
-	assert ax.has_data()
+    ax = plt.gca()
+    assert ax.has_data()
 
 def test_plot_scatter_1():
 
-	plt.close('all')
+    plt.close('all')
 
-	dat = np.random.randint(0, 100, 100)
+    dat = np.random.randint(0, 100, 100)
 
-	plot_scatter_1(dat, 'label', 'title')
+    plot_scatter_1(dat, 'label', 'title')
 
-	ax = plt.gca()
-	assert ax.has_data()
+    ax = plt.gca()
+    assert ax.has_data()
 
 def test_plot_scatter_2():
 
-	plt.close('all')
+    plt.close('all')
 
-	dat1 = np.random.randint(0, 100, 100)
-	dat2 = np.random.randint(0, 100, 100)
+    dat1 = np.random.randint(0, 100, 100)
+    dat2 = np.random.randint(0, 100, 100)
 
-	plot_scatter_2(dat1, 'label1', dat2, 'label2', 'title')
+    plot_scatter_2(dat1, 'label1', dat2, 'label2', 'title')
 
-	ax = plt.gca()
-	assert ax.has_data()
+    ax = plt.gca()
+    assert ax.has_data()
 
 def test_plot_hist():
 
-	plt.close('all')
+    plt.close('all')
 
-	dat = np.random.randint(0, 100, 100)
-	plot_hist(dat, 'label', 'title')
+    dat = np.random.randint(0, 100, 100)
+    plot_hist(dat, 'label', 'title')
 
-	ax = plt.gca()
-	assert ax.has_data()
+    ax = plt.gca()
+    assert ax.has_data()

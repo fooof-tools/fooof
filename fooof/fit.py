@@ -663,12 +663,14 @@ class FOOOF(object):
         Parameters
         ----------
         gaus_params :  2d array
-            Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
+            Parameters that define the gaussian fit(s).
+                Each row is a gaussian, as [mean, amp, std].
 
         Returns
         -------
         oscillation_params :  2d array
-            Fitted parameter values for the oscillations. Each row is an oscillation, as [CF, Amp, BW].
+            Fitted parameter values for the oscillations.
+                Each row is an oscillation, as [CF, Amp, BW].
 
         Notes
         -----
@@ -791,7 +793,7 @@ class FOOOF(object):
         freqs : 1d array
             Frequency values for the PSD, in linear space.
         psd : 1d or 2d array
-            Power spectral density values, in linear space. Either 1d vector, or 2d as [n_psds, n_freqs].
+            Power values, in linear space. Either 1d vector, or 2d as [n_psds, n_freqs].
         freq_range :
             Frequency range to restrict PSD to. If None, keeps the entire range.
         verbose : bool, optional
@@ -802,7 +804,7 @@ class FOOOF(object):
         freqs : 1d array
             Frequency values for the PSD, in linear space.
         psd : 1d or 2d array
-            Power spectral density values, in linear space. Either 1d vector, or 2d as [n_psds, n_freqs].
+            Power values, in linear space. Either 1d vector, or 2d as [n_psds, n_freqs].
         freq_range : list of [float, float]
             Frequency range - minimum and maximum values of the frequency vector.
         freq_res : float
@@ -823,7 +825,8 @@ class FOOOF(object):
         if freqs[0] == 0.0:
             freqs, psd = trim_psd(freqs, psd, [freqs[1], freqs.max()])
             if verbose:
-                print('\nFOOOF WARNING: Skipping frequency == 0, as this causes problem with fitting.')
+                print("\nFOOOF WARNING: Skipping frequency == 0,"
+                      " as this causes problem with fitting.")
 
         # Calculate frequency resolution, and actual frequency range of the data
         freq_range = [freqs.min(), freqs.max()]

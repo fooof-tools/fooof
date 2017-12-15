@@ -8,7 +8,6 @@ The tests here are not strong tests for accuracy.
 
 from py.test import raises
 
-import os
 import numpy as np
 import pkg_resources as pkg
 

@@ -25,7 +25,7 @@ def plot_psd(freqs, psd, plt_log=False, ax=None, **kwargs):
 
     # Create plot axes, if not provided
     if not ax:
-        fig, ax = plt.subplots(figsize=(12, 10))
+        _, ax = plt.subplots(figsize=(12, 10))
 
     # Set frequency vector, logged if requested
     plt_freqs = np.log10(freqs) if plt_log else freqs
@@ -66,7 +66,7 @@ def plot_scatter_1(dat, label, title=None, x_val=0, ax=None):
     """
 
     if not ax:
-        fig, ax = plt.subplots()
+        _, ax = plt.subplots()
 
     # Create x-axis data, with small jitter for visualization purposes
     x_dat = np.ones_like(dat) * x_val + np.random.normal(0, 0.025, dat.shape)
@@ -108,7 +108,7 @@ def plot_scatter_2(dat_0, label_0, dat_1, label_1, title=None, ax=None):
     """
 
     if not ax:
-        fig, ax = plt.subplots()
+        _, ax = plt.subplots()
 
     ax1 = ax.twinx()
 
@@ -140,7 +140,7 @@ def plot_hist(dat, label, title=None, n_bins=20, ax=None):
     """
 
     if not ax:
-        fig, ax = plt.subplots()
+        _, ax = plt.subplots()
 
     ax.hist(dat, n_bins, alpha=0.8)
 
