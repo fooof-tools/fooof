@@ -29,5 +29,6 @@ setup(
         'Programming Language :: Python :: 3.6'
     ]
     download_url = '',
-    keywords = ['neuroscience', 'neural oscillations', 'power spectra', '1/f', 'electrophysiology']
+    keywords = ['neuroscience', 'neural oscillations', 'power spectra', '1/f', 'electrophysiology'],
+    install_requires=['numpy', 'scipy>=0.19.0']
 )
