@@ -27,6 +27,11 @@ def docs_drop_param(ds):
     ----------
     ds : str
         Docstring to drop first parameter from.
+
+    Notes
+    -----
+    - This function assumes numpy docs standards.
+    - It also assumes the parameter description to be dropped is only 2 lines long.
     """
 
     tm = '----------\n'
@@ -37,3 +42,28 @@ def docs_drop_param(ds):
         ba = ba[ba.find('\n')+1:]
 
     return fr + ba
+
+
+def docs_append_to_section(ds, section, add):
+    """Append extra information to a specified section of a docstring.
+
+    Parameters
+    ----------
+    ds : str
+        Docstring to update.
+    section : str
+        Name of the section within the dostring to add to.
+    add : str
+        Text to append to specified section of the docstring.
+
+    Returns
+    -------
+    new_ds : str
+        Updated docstring.
+
+    Notes
+    -----
+    - This function assumes numpy docs standards.
+    """
+
+    return '\n\n'.join([split + add if section in split else split for split in ds.split('\n\n')])
