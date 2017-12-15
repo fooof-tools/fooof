@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from fooof.plts.templates import plot_psd
+from fooof.core.funcs import gaussian_function
 
 ###################################################################################################
 ###################################################################################################
@@ -46,3 +47,40 @@ def plot_fm(fm, plt_log=False, save_fig=False, save_name='FOOOF_fit', save_path=
     # Save out figure, if requested
     if save_fig:
         plt.savefig(os.path.join(save_path, save_name + '.png'))
+
+
+def plot_osc_iter(fm):
+    """Plots a series of plots illustrating the oscillations search from a flattened spectrum.
+
+    Parameters
+    ----------
+    fm : FOOOF() object
+        FOOOF object, with model fit and data and settings available.
+    """
+
+    flatspec = fm._psd_flat
+    n_gauss = fm._gaussian_params.shape[0]
+    ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
+
+    for ind in range(n_gauss + 1):
+
+        _, ax = plt.subplots(figsize=(12, 10))
+
+        plot_psd(fm.freqs, flatspec, linewidth=2.0, label='Flattened Spectrum', ax=ax)
+        plot_psd(fm.freqs, [fm.amp_std_thresh * np.std(flatspec)]*len(fm.freqs),
+                 color='orange', linestyle='dashed', label='Relative Threshold', ax=ax)
+        plot_psd(fm.freqs, [fm.min_amp]*len(fm.freqs),
+                 color='red', linestyle='dashed', label='Absolute Threshold', ax=ax)
+
+        maxi = np.argmax(flatspec)
+        ax.plot(fm.freqs[maxi], flatspec[maxi], '.', markersize=24)
+
+        ax.set_ylim(ylims)
+        ax.set_title('Iteration #' + str(ind+1), fontsize=16)
+
+        if ind < n_gauss:
+
+            gauss = gaussian_function(fm.freqs, *fm._gaussian_params[ind, :])
+            plot_psd(fm.freqs, gauss, label='Guassin Fit', linestyle=':', linewidth=2.0, ax=ax)
+
+            flatspec = flatspec - gauss

@@ -14,3 +14,12 @@ def test_plot_fm(tfm):
 
     ax = plt.gca()
     assert ax.has_data()
+
+def test_plot_osc_iter(tfm):
+
+    plt.close('all')
+
+    plot_osc_iter(tfm)
+
+    ax = plt.gca()
+    assert ax.has_data()
