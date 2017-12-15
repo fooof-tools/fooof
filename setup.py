@@ -1,5 +1,6 @@
 """FOOOF setup script."""
 
+import os
 from setuptools import setup, find_packages
 
 # Get the current version number from inside the module
@@ -27,8 +28,8 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6'
-    ]
-    download_url = '',
+    ],
+    download_url = 'https://github.com/voytekresearch/fooof/releases',
     keywords = ['neuroscience', 'neural oscillations', 'power spectra', '1/f', 'electrophysiology'],
     install_requires=['numpy', 'scipy>=0.19.0']
 )
