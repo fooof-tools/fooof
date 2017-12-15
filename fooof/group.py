@@ -190,10 +190,10 @@ class FOOOFGroup(FOOOF):
         create_report_fg(self, save_name, save_path)
 
 
-    def save(self, save_file='fooof_group_results', save_path='',
+    def save(self, save_file='fooof_group_results', save_path='', append=False,
              save_results=False, save_settings=False, save_data=False):
 
-        save_fg(self, save_file, save_path, save_results, save_settings, save_data)
+        save_fg(self, save_file, save_path, append, save_results, save_settings, save_data)
 
 
     def load(self, file_name='fooof_group_results', file_path=''):

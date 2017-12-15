@@ -363,10 +363,10 @@ class FOOOF(object):
         create_report_fm(self, save_name, save_path, plt_log)
 
 
-    def save(self, save_file='fooof_data', save_path='', save_results=False,
-             save_settings=False, save_data=False, append=False):
+    def save(self, save_file='fooof_data', save_path='', append=False,
+             save_results=False, save_settings=False, save_data=False):
 
-        save_fm(self, save_file, save_path, save_results, save_settings, save_data, append)
+        save_fm(self, save_file, save_path, append, save_results, save_settings, save_data)
 
 
     def load(self, load_file='fooof_data', file_path=''):
