@@ -3,6 +3,32 @@
 Notes
 -----
 - Methods without defined docstrings import docs at runtime, from aliased external functions.
+- Private attributes of the FOOOF method, not publicly exposed, are documented below.
+
+Attributes (private)
+----------
+_psd_flat : 1d array
+    Flattened PSD (background 1/f removed)
+_psd_osc_rm : 1d array
+    PSD with oscillations removed (not flattened).
+_gaussian_params : 2d array
+    Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
+_background_fit : 1d array
+    Values of the background fit.
+_oscillation_fit : 1d array
+    Values of the oscillation fit (flattened).
+_bg_amp_thresh : float
+    Noise threshold for finding oscillations above the background.
+_bg_guess : list of [float, float, float]
+    Guess parameters for fitting background.
+_bg_bounds : tuple of tuple of float
+    Upper and lower bounds on fitting background.
+_bw_std_edge : float
+    Banwidth threshold for edge rejection of oscillations, units of standard deviation.
+_std_limits : list of [float, float]
+    Bandwidth limits, converted to use for gaussian standard deviation parameter.
+_bg_fit_func : function
+    Function used to fit the background.
 """
 
 import warnings
@@ -29,7 +55,7 @@ FOOOFResult = namedtuple('FOOOFResult', ['background_params', 'oscillation_param
 class FOOOF(object):
     """Model the physiological power spectrum as oscillatory peaks and 1/f background.
 
-    NOTE: FOOOF expects frequency and power values in linear space.
+    WARNING: FOOOF expects frequency and power values in linear space.
         Passing in logged frequencies and/or power spectra is not detected,
             and will silently produce incorrect results.
 
@@ -68,39 +94,14 @@ class FOOOF(object):
         R-squared between the input PSD and the full model fit.
     error_ : float
         R-squared error of the full model fit.
-    _psd_flat : 1d array
-        Flattened PSD (background 1/f removed)
-    _psd_osc_rm : 1d array
-        PSD with oscillations removed (not flattened).
-    _gaussian_params : 2d array
-        Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
-    _background_fit : 1d array
-        Values of the background fit.
-    _oscillation_fit : 1d array
-        Values of the oscillation fit (flattened).
-    _bg_amp_thresh : float
-        Noise threshold for finding oscillations above the background.
-    _bg_guess : list of [float, float, float]
-        Guess parameters for fitting background.
-    _bg_bounds : tuple of tuple of float
-        Upper and lower bounds on fitting background.
-    _bw_std_edge : float
-        Banwidth threshold for edge rejection of oscillations, units of standard deviation.
-    _std_limits : list of [float, float]
-        Bandwidth limits, converted to use for gaussian standard deviation parameter.
-    _bg_fit_func : function
-        Function used to fit the background.
 
     Notes
     -----
-    Input PSD should be smooth - overly noisy power spectra may lead to bad fits.
-        - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
-        procedure, or a median filter smoothing on the FFT output before running FOOOF.
-        - Where possible and appropriate, use longer time segments for PSD calculation to
-          get smoother PSDs; this will give better FOOOF fits.
-    If using the FOOOFGroup Object, all parameters and attributes are the same.
-        - In addition there is 'psds' and 'group_results' as additional attributes,
-          which store the data and results respectively for a group of PSDs.
+    Input PSDs should be smooth - overly noisy power spectra may lead to bad fits.
+    - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
+      procedure, or a median filter smoothing on the FFT output before running FOOOF.
+    - Where possible and appropriate, use longer time segments for PSD calculation to
+      get smoother PSDs, as this will give better FOOOF fits.
     """
 
     def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf,

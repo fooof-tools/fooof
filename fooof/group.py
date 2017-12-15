@@ -16,7 +16,7 @@ from fooof.plts.fg import plot_fg
 from fooof.core.reports import create_report_fg
 from fooof.core.strings import gen_results_str_fg
 from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.modutils import get_obj_desc, docs_drop_param
+from fooof.core.modutils import get_obj_desc, docs_drop_param, docs_append_to_section
 
 ###################################################################################################
 ###################################################################################################
@@ -281,8 +281,13 @@ class FOOOFGroup(FOOOF):
             super()._check_bw()
 
 
-# DOCS: Copy over docs from FOOOF to FOOOFGroup
-FOOOFGroup.__doc__ = FOOOF.__doc__
+# DOCS: Copy over docs from FOOOF to FOOOFGroup, adding additional attributes
+att_add = """
+    psds : 2d array
+        Input matrix of power spectral density values.
+    group_results : list of FOOOFResults
+        Results of FOOOF model fit for each PSD."""
+FOOOFGroup.__doc__ = docs_append_to_section(FOOOF.__doc__, 'Attributes', att_add)
 
 # DOCS: Copy over docs for an aliased functions to the method docstrings
 for func_name in get_obj_desc()['alias_funcs']:
