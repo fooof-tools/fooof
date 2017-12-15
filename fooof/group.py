@@ -241,9 +241,12 @@ class FOOOFGroup(FOOOF):
         fm = FOOOF(self.bandwidth_limits, self.max_n_oscs, self.min_amp,
                    self.amp_std_thresh, self.bg_use_knee, self.verbose)
 
-        # Add data and results for specified single PSD
+        # Add data for specified single PSD, if available
         #  The PSD is inverted back to linear, as it's re-logged when added to FOOOF
-        fm.add_data(self.freqs, np.power(10, self.psds[ind]))
+        if np.any(self.psds):
+            fm.add_data(self.freqs, np.power(10, self.psds[ind]))
+
+        # Add results for specified PSD, regenerating full fit if requested
         fm.add_results(self.group_results[ind], regenerate=regenerate)
 
         return fm
