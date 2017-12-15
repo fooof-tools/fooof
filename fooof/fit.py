@@ -353,28 +353,28 @@ class FOOOF(object):
                            self.error_, self._gaussian_params)
 
 
-    def plot(self, plt_log=False, save_fig=False, save_name='FOOOF_fit', save_path='', ax=None):
+    def plot(self, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path='', ax=None):
 
-        plot_fm(self, plt_log, save_fig, save_name, save_path, ax)
-
-
-    def create_report(self, save_name='FOOOF_Report', save_path='', plt_log=False):
-
-        create_report_fm(self, save_name, save_path, plt_log)
+        plot_fm(self, plt_log, save_fig, file_name, file_path, ax)
 
 
-    def save(self, save_file='fooof_data', save_path='', append=False,
+    def create_report(self, file_name='FOOOF_Report', file_path='', plt_log=False):
+
+        create_report_fm(self, file_name, file_path, plt_log)
+
+
+    def save(self, file_name='fooof_data', file_path='', append=False,
              save_results=False, save_settings=False, save_data=False):
 
-        save_fm(self, save_file, save_path, append, save_results, save_settings, save_data)
+        save_fm(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
-    def load(self, load_file='fooof_data', file_path=''):
+    def load(self, file_name='fooof_data', file_path=''):
         """Load in FOOOF file. Reads in a JSON file.
 
         Parameters
         ----------
-        load_file : str or FileObject, optional
+        file_name : str or FileObject, optional
             File from which to load data.
         file_path : str
             Path to directory from which to load. If not provided, loads from current directory.
@@ -384,7 +384,7 @@ class FOOOF(object):
         self._reset_data()
 
         # Load JSON file, add to self and check loaded data
-        data = load_json(load_file, file_path)
+        data = load_json(file_name, file_path)
         self._add_from_dict(data)
         self._check_loaded_settings(data)
         self._check_loaded_results(data)

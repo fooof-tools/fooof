@@ -180,20 +180,20 @@ class FOOOFGroup(FOOOF):
         return out
 
 
-    def plot(self, save_fig=False, save_name='FOOOF_group_fit', save_path=''):
+    def plot(self, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
 
-        plot_fg(self, save_fig, save_name, save_path)
-
-
-    def create_report(self, save_name='FOOOFGroup_Report', save_path=''):
-
-        create_report_fg(self, save_name, save_path)
+        plot_fg(self, save_fig, file_name, file_path)
 
 
-    def save(self, save_file='fooof_group_results', save_path='', append=False,
+    def create_report(self, file_name='FOOOFGroup_Report', file_path=''):
+
+        create_report_fg(self, file_name, file_path)
+
+
+    def save(self, file_name='fooof_group_results', file_path='', append=False,
              save_results=False, save_settings=False, save_data=False):
 
-        save_fg(self, save_file, save_path, append, save_results, save_settings, save_data)
+        save_fg(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
     def load(self, file_name='fooof_group_results', file_path=''):

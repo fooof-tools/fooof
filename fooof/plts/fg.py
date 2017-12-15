@@ -8,7 +8,7 @@ from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
 ###################################################################################################
 ###################################################################################################
 
-def plot_fg(fg, save_fig=False, save_name='FOOOF_group_fit', save_path=''):
+def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
     """Plots a figure with subplots covering several components for FOOOFGroup results.
 
     Parameters
@@ -17,9 +17,9 @@ def plot_fg(fg, save_fig=False, save_name='FOOOF_group_fit', save_path=''):
         FOOOFGroup object, containing results from fitting a group of PSDs.
     save_fig : boolean, optional
         Whether to save out a copy of the plot. default : False
-    save_name : str, optional
+    file_name : str, optional
         Name to give the saved out file.
-    save_path : str, optional
+    file_path : str, optional
         Path to directory in which to save. If not provided, saves to current directory.
     """
 
@@ -39,7 +39,7 @@ def plot_fg(fg, save_fig=False, save_name='FOOOF_group_fit', save_path=''):
     plot_fg_osc_cens(fg, ax2)
 
     if save_fig:
-        plt.savefig(os.path.join(save_path, save_name + '.png'))
+        plt.savefig(os.path.join(file_path, file_name + '.png'))
 
 
 def plot_fg_bg(fg, ax=None):

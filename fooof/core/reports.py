@@ -11,16 +11,16 @@ from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_results
 ###################################################################################################
 ###################################################################################################
 
-def create_report_fm(fm, save_name, save_path='', plt_log=False):
+def create_report_fm(fm, file_name, file_path='', plt_log=False):
     """Generate and save out a report for FOOOF object.
 
     Parameters
     ----------
     fm : FOOOF() object
         FOOOF object, containing results from fitting a PSD.
-    save_name : str
+    file_name : str
         Name to give the saved out file.
-    save_path : str, optional
+    file_path : str, optional
         Path to directory in which to save. If not provided, saves to current directory.
     plt_log : bool, optional
         Whether or not to plot the frequency axis in log space. default: False
@@ -53,20 +53,20 @@ def create_report_fm(fm, save_name, save_path='', plt_log=False):
     ax2.set_yticks([])
 
     # Save out the report
-    plt.savefig(os.path.join(save_path, save_name + '.pdf'))
+    plt.savefig(os.path.join(file_path, file_name + '.pdf'))
     plt.close()
 
 
-def create_report_fg(fg, save_name, save_path=''):
+def create_report_fg(fg, file_name, file_path=''):
     """Generate and save out a report for FOOOFGroup object.
 
     Parameters
     ----------
     fg : FOOOFGroup() object
         FOOOFGroup object, containing results from fitting a group of PSDs.
-    save_name : str
+    file_name : str
         Name to give the saved out file.
-    save_path : str, optional
+    file_path : str, optional
         Path to directory in which to save. If not provided, saves to current directory.
     """
 
@@ -97,7 +97,7 @@ def create_report_fg(fg, save_name, save_path=''):
     plot_fg_osc_cens(fg, ax3)
 
     # Save out the report
-    plt.savefig(os.path.join(save_path, save_name + '.pdf'))
+    plt.savefig(os.path.join(file_path, file_name + '.pdf'))
     plt.close()
 
 

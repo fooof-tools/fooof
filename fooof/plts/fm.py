@@ -10,7 +10,7 @@ from fooof.core.funcs import gaussian_function
 ###################################################################################################
 ###################################################################################################
 
-def plot_fm(fm, plt_log=False, save_fig=False, save_name='FOOOF_fit', save_path='', ax=None):
+def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path='', ax=None):
     """Plot the original PSD, and full model fit from FOOOF object.
 
     Parameters
@@ -21,9 +21,9 @@ def plot_fm(fm, plt_log=False, save_fig=False, save_name='FOOOF_fit', save_path=
         Whether or not to plot the frequency axis in log space. default: False
     save_fig : boolean, optional
         Whether to save out a copy of the plot. default : False
-    save_name : str, optional
+    file_name : str, optional
         Name to give the saved out file.
-    save_path : str, optional
+    file_path : str, optional
         Path to directory in which to save. If not provided, saves to current directory.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -46,7 +46,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, save_name='FOOOF_fit', save_path=
 
     # Save out figure, if requested
     if save_fig:
-        plt.savefig(os.path.join(save_path, save_name + '.png'))
+        plt.savefig(os.path.join(file_path, file_name + '.png'))
 
 
 def plot_osc_iter(fm):
