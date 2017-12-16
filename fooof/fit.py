@@ -64,7 +64,7 @@ class FOOOF(object):
     bandwidth_limits : tuple of (float, float), optional (default: (0.5, 12.0)
         Setting to exclude gaussian fits where the bandwidth is implausibly narrow or wide.
     max_n_gauss : int, optional (default: inf)
-        Maximum number of oscillations to be modeled in a single PSD.
+        Maximum number of gaussians to be fit in a single PSD.
     min_amp : float, optional (default: 0)
         Minimum amplitude threshold for an oscillation to be modeled.
     amp_std_thresh : float, optional (default: 2.0)
