@@ -78,7 +78,7 @@ def gen_settings_str(f_obj, description=False):
                         '{}'.format(desc['bg_use_knee']).center(CV),
                         'Bandwidth Limits : {}'.format(f_obj.bandwidth_limits).center(CV),
                         '{}'.format(desc['bw_lims']).center(CV),
-                        'Max Number of Oscillations : {}'.format(f_obj.max_n_oscs).center(CV),
+                        'Max Number of Oscillations : {}'.format(f_obj.max_n_gauss).center(CV),
                         '{}'.format(desc['num_oscs']).center(CV),
                         'Minimum Amplitude : {}'.format(f_obj.min_amp).center(CV),
                         '{}'.format(desc['min_amp']).center(CV),

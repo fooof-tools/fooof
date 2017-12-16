@@ -63,7 +63,7 @@ class FOOOF(object):
     ----------
     bandwidth_limits : tuple of (float, float), optional (default: (0.5, 12.0)
         Setting to exclude gaussian fits where the bandwidth is implausibly narrow or wide.
-    max_n_oscs : int, optional (default: inf)
+    max_n_gauss : int, optional (default: inf)
         Maximum number of oscillations to be modeled in a single PSD.
     min_amp : float, optional (default: 0)
         Minimum amplitude threshold for an oscillation to be modeled.
@@ -104,14 +104,14 @@ class FOOOF(object):
       get smoother PSDs, as this will give better FOOOF fits.
     """
 
-    def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf,
+    def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_gauss=np.inf,
                  min_amp=0.0, amp_std_thresh=2.0, bg_use_knee=False, verbose=True):
         """Initialize FOOOF object with run parameters."""
 
         # Set input parameters
         self.bg_use_knee = bg_use_knee
         self.bandwidth_limits = bandwidth_limits
-        self.max_n_oscs = max_n_oscs
+        self.max_n_gauss = max_n_gauss
         self.min_amp = min_amp
         self.amp_std_thresh = amp_std_thresh
         self.verbose = verbose
@@ -554,7 +554,7 @@ class FOOOF(object):
         guess = np.empty([0, 3])
 
         # Find oscillations: Loop through, checking residuals, stopping based on std check
-        while len(guess) < self.max_n_oscs:
+        while len(guess) < self.max_n_gauss:
 
             # Find candidate oscillation.
             max_ind = np.argmax(flat_iter)

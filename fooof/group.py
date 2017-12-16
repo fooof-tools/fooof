@@ -242,7 +242,7 @@ class FOOOFGroup(FOOOF):
         """
 
         # Initialize a FOOOF object, with same settings as current FOOOFGroup
-        fm = FOOOF(self.bandwidth_limits, self.max_n_oscs, self.min_amp,
+        fm = FOOOF(self.bandwidth_limits, self.max_n_gauss, self.min_amp,
                    self.amp_std_thresh, self.bg_use_knee, self.verbose)
 
         # Add data for specified single PSD, if available

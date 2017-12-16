@@ -9,7 +9,7 @@ def get_obj_desc():
     attributes = {'results' : ['background_params_', 'oscillation_params_', 'error_', 'r2_',
                                '_gaussian_params', 'freq_range', 'freq_res'],
                   'settings' : ['amp_std_thresh', 'bandwidth_limits', 'bg_use_knee',
-                                'max_n_oscs', 'min_amp'],
+                                'max_n_gauss', 'min_amp'],
                   'dat' : ['psd', 'freq_range', 'freq_res'],
                   'hidden_settings' : ['_bg_fit_func', '_std_limits', '_bg_bounds'],
                   'arrays' : ['freqs', 'psd', 'background_params_', 'oscillation_params_',
