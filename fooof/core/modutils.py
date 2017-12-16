@@ -67,3 +67,49 @@ def docs_append_to_section(ds, section, add):
     """
 
     return '\n\n'.join([split + add if section in split else split for split in ds.split('\n\n')])
+
+
+def copy_doc_func_to_method(source):
+    """Copy method docstring from function, dropping first parameter (decorator).
+
+    Parameters
+    ----------
+    source : function
+        Source function to copy docstring from.
+
+    Returns
+    -------
+    wrapper : function
+        The decorated function, with updated docs.
+    """
+
+    def wrapper(func):
+
+        func.__doc__ = docs_drop_param(source.__doc__)
+
+        return func
+
+    return wrapper
+
+
+def copy_doc_class(source, section=None, att_add=''):
+    """Copy method docstring from class, to another class, adding extra info (decorator).
+
+    Parameters
+    ----------
+    source : cls
+        Source class to copy docstring from.
+
+    Returns
+    -------
+    wrapper : cls
+        The decorated class, with updated docs.
+    """
+
+    def wrapper(func):
+
+        func.__doc__ = docs_append_to_section(source.__doc__, 'Attributes', att_add)
+
+        return func
+
+    return wrapper

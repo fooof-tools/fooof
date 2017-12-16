@@ -16,11 +16,21 @@ from fooof.plts.fg import plot_fg
 from fooof.core.reports import create_report_fg
 from fooof.core.strings import gen_results_str_fg
 from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.modutils import get_obj_desc, docs_drop_param, docs_append_to_section
+from fooof.core.modutils import get_obj_desc, copy_doc_func_to_method, copy_doc_class
 
 ###################################################################################################
 ###################################################################################################
 
+# Set docstring attribute section to add when copying FOOOF docs -> FOOOFGroup
+#  This section will be appended to the FOOOF Attributes section when copying over
+ATT_ADD = """
+    psds : 2d array
+        Input matrix of power spectral density values.
+    group_results : list of FOOOFResults
+        Results of FOOOF model fit for each PSD."""
+
+
+@copy_doc_class(FOOOF, 'Attributes', ATT_ADD)
 class FOOOFGroup(FOOOF):
 
     def __init__(self, *args, **kwargs):
@@ -180,16 +190,19 @@ class FOOOFGroup(FOOOF):
         return out
 
 
+    @copy_doc_func_to_method(plot_fg)
     def plot(self, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
 
         plot_fg(self, save_fig, file_name, file_path)
 
 
+    @copy_doc_func_to_method(create_report_fg)
     def create_report(self, file_name='FOOOFGroup_Report', file_path=''):
 
         create_report_fg(self, file_name, file_path)
 
 
+    @copy_doc_func_to_method(save_fg)
     def save(self, file_name='fooof_group_results', file_path='', append=False,
              save_results=False, save_settings=False, save_data=False):
 
@@ -279,20 +292,6 @@ class FOOOFGroup(FOOOF):
         # Only check & warn on first PSD (to avoid spamming stdout for every PSD)
         if self.psds[0, 0] == self.psd[0]:
             super()._check_bw()
-
-
-# DOCS: Copy over docs from FOOOF to FOOOFGroup, adding additional attributes
-att_add = """
-    psds : 2d array
-        Input matrix of power spectral density values.
-    group_results : list of FOOOFResults
-        Results of FOOOF model fit for each PSD."""
-FOOOFGroup.__doc__ = docs_append_to_section(FOOOF.__doc__, 'Attributes', att_add)
-
-# DOCS: Copy over docs for an aliased functions to the method docstrings
-for func_name in get_obj_desc()['alias_funcs']:
-    getattr(FOOOFGroup, func_name).__doc__ = \
-        docs_drop_param(eval(func_name + '_' + 'fg').__doc__)
 
 
 # Helper Functions

@@ -43,7 +43,7 @@ from fooof.core.io import save_fm, load_json
 from fooof.core.reports import create_report_fm
 from fooof.core.funcs import gaussian_function, expo_function, expo_nk_function
 from fooof.core.utils import group_three, check_array_dim
-from fooof.core.modutils import get_obj_desc, docs_drop_param
+from fooof.core.modutils import get_obj_desc, copy_doc_func_to_method
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_report_str, gen_bw_warn_str
 
 ###################################################################################################
@@ -348,22 +348,24 @@ class FOOOF(object):
 
 
     def get_results(self):
-        """Return model fit parameters and error."""
+        """Return model fit parameters and goodness of fit metrics."""
 
         return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_,
                            self.error_, self._gaussian_params)
 
-
+    @copy_doc_func_to_method(plot_fm)
     def plot(self, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path='', ax=None):
 
         plot_fm(self, plt_log, save_fig, file_name, file_path, ax)
 
 
+    @copy_doc_func_to_method(create_report_fm)
     def create_report(self, file_name='FOOOF_Report', file_path='', plt_log=False):
 
         create_report_fm(self, file_name, file_path, plt_log)
 
 
+    @copy_doc_func_to_method(save_fm)
     def save(self, file_name='fooof_data', file_path='', append=False,
              save_results=False, save_settings=False, save_data=False):
 
@@ -905,9 +907,3 @@ class FOOOF(object):
         self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
         self._oscillation_fit = self._create_osc_fit(self.freqs, self._gaussian_params)
         self.psd_fit_ = self._oscillation_fit + self._background_fit
-
-
-# DOCS: Copy over docs for an aliased functions to the method docstrings
-for func_name in get_obj_desc()['alias_funcs']:
-    getattr(FOOOF, func_name).__doc__ = \
-        docs_drop_param(eval(func_name + '_' + 'fm').__doc__)
