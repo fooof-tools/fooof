@@ -65,11 +65,11 @@ FOOOF.model() fits the model, plots the original PSD with the associated model o
 FOOOF also accepts parameters for fine-tuning the fit. For example:
 
 ```python
-fm = FOOOF(bandwidth_limits=(1.0, 15.0), max_n_oscs=6, min_amp=0.1, amp_std_thresh=2.0)
+fm = FOOOF(bandwidth_limits=(1.0, 15.0), max_n_gauss=6, min_amp=0.1, amp_std_thresh=2.0)
 ```
 
 * _bandwidth_limits_ sets the possible lower- and upper-bounds for the fitted oscillation bandwidths.
-* _max_n_oscs_ sets the maximum number of oscillations to find (in decreasing order of amplitude).
+* _max_n_gauss_ sets the maximum number of gaussians to find (in decreasing order of amplitude).
 * _min_amp_ sets an absolute limit on the minimum amplitude (above background 1/f) for any oscillation.
 * _amp_std_thresh_, similar to _min_amp_, sets a threshold above which oscillation amplitude must cross to be included in the model. However this parameter is in terms of standard deviation above the noise of the flattened spectrum.
 
@@ -80,7 +80,7 @@ An example workflow, with 'freqs' as 1D array of frequency values, and 'psds' as
 ```python
 
 # Initialize a FOOOFGroup object, specifying some parameters
-fg = FOOOFGroup(bandwidth_limits=(1.0, 8.0), max_n_oscs=8)
+fg = FOOOFGroup(bandwidth_limits=(1.0, 8.0), max_n_gauss=8)
 
 # Fit FOOOF model across the matrix of PSDs
 fg.fit(freqs, psds)
