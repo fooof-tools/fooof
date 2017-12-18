@@ -85,8 +85,8 @@ class FOOOFGroup(FOOOF):
             self._prepare_data(freqs, psds, freq_range, self.verbose)
 
 
-    def model(self, freqs=None, psds=None, freq_range=None, n_jobs=1):
-        """Run FOOOF across a group of PSDs, then plot and print results.
+    def report(self, freqs=None, psds=None, freq_range=None, n_jobs=1):
+        """Run FOOOF across a group, and display a report, which includes a plot, and printed results.
 
         Parameters
         ----------

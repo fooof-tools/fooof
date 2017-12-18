@@ -138,11 +138,11 @@ def test_fooof_resets():
         and tfm._psd_flat is None and tfm._psd_osc_rm is None and tfm._gaussian_params is None \
         and tfm._background_fit is None and tfm._oscillation_fit is None
 
-def test_fooof_model():
+def test_fooof_report():
     """Check that running the top level model method runs."""
 
     tfm = FOOOF()
 
-    tfm.model(*mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+    tfm.report(*mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
     assert tfm

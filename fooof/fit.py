@@ -231,8 +231,8 @@ class FOOOF(object):
             self._regenerate_model()
 
 
-    def model(self, freqs=None, psd=None, freq_range=None, plt_log=False):
-        """Run model fit, plot, and print results.
+    def report(self, freqs=None, psd=None, freq_range=None, plt_log=False):
+        """Run model fit, and display a report, which includes a plot, and printed results.
 
         Parameters
         ----------

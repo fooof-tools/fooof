@@ -84,13 +84,13 @@ def test_fg_load():
     tfg.load(res_file_name, file_path)
     assert tfg
 
-def test_fg_model():
+def test_fg_report():
     """Check that running the top level model method runs."""
 
     xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=2)
 
     tfg = FOOOFGroup()
-    tfg.model(xs, ys)
+    tfg.report(xs, ys)
 
     assert tfg
 
