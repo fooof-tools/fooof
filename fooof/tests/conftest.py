@@ -5,9 +5,12 @@ import shutil
 import pkg_resources as pkg
 
 import numpy as np
-import matplotlib.pyplot as plt
 
-from fooof.tests.utils import get_tfm, get_tfg
+from fooof.core.modutils import safe_import
+plt = safe_import('.pyplot', 'matplotlib')
+#import matplotlib.pyplot as plt
+
+from fooof.tests.utils import get_tfm, get_tfg#, check_mpl
 
 import pytest
 
@@ -15,7 +18,8 @@ import pytest
 ###################################################################################################
 
 def pytest_configure(config):
-    plt.switch_backend('agg')
+    if plt:
+        plt.switch_backend('agg')
     np.random.seed(42)
 
 @pytest.fixture(scope='session', autouse=True)
@@ -42,3 +46,8 @@ def tfm():
 @pytest.fixture(scope='session')
 def tfg():
     yield get_tfg()
+
+@pytest.fixture(scope='session')
+def skip_if_no_mpl():
+    if not safe_import('matplotlib'):
+        pytest.skip('No Redis server found')
