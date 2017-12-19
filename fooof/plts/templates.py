@@ -1,11 +1,14 @@
 """Plot templates for the FOOOF module."""
 
 import numpy as np
-import matplotlib.pyplot as plt
+
+from fooof.core.modutils import safe_import, check_dependency
+plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
 
+@check_dependency(plt, 'matplotlib')
 def plot_psd(freqs, psd, plt_log=False, ax=None, **kwargs):
     """Plot a line plot of a power-spectrum.
 
@@ -44,6 +47,7 @@ def plot_psd(freqs, psd, plt_log=False, ax=None, **kwargs):
         ax.legend(prop={'size': 16})
 
 
+@check_dependency(plt, 'matplotlib')
 def plot_scatter_1(data, label, title=None, x_val=0, ax=None):
     """Plot a scatter plot with the given data.
 
@@ -84,6 +88,7 @@ def plot_scatter_1(data, label, title=None, x_val=0, ax=None):
     ax.set_xlim([-0.5, 0.5])
 
 
+@check_dependency(plt, 'matplotlib')
 def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
     """Plot a scatter plot with two y-axes, with the given data.
 
@@ -122,6 +127,7 @@ def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
     plt.xticks([0, 1], [label_0, label_1], fontsize=12)
 
 
+@check_dependency(plt, 'matplotlib')
 def plot_hist(data, label, title=None, n_bins=20, ax=None):
     """Plot a histogram with the given data.
 

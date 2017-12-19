@@ -2,8 +2,10 @@
 
 import os
 
-import matplotlib.pyplot as plt
-from matplotlib import gridspec
+from fooof.core.modutils import safe_import, check_dependency
+plt = safe_import('.pyplot', 'matplotlib')
+if plt:
+    from matplotlib import gridspec
 
 from fooof.plts.fg import plot_fg_bg, plot_fg_gf, plot_fg_osc_cens
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_results_str_fg
@@ -11,6 +13,7 @@ from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_results
 ###################################################################################################
 ###################################################################################################
 
+@check_dependency(plt, 'matplotlib')
 def create_report_fm(fm, file_name, file_path='', plt_log=False):
     """Generate and save out a as PDF a report for a FOOOF object.
 
@@ -57,6 +60,7 @@ def create_report_fm(fm, file_name, file_path='', plt_log=False):
     plt.close()
 
 
+@check_dependency(plt, 'matplotlib')
 def create_report_fg(fg, file_name, file_path=''):
     """Generate and save out as a PDF a report for a FOOOFGroup object.
 

@@ -1,13 +1,18 @@
 """Plots for FOOOFGroup object."""
 
 import os
-import matplotlib.pyplot as plt
-from matplotlib import gridspec
+
+from fooof.core.modutils import safe_import, check_dependency
+plt = safe_import('.pyplot', 'matplotlib')
+if plt:
+    from matplotlib import gridspec
+
 from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
 
 ###################################################################################################
 ###################################################################################################
 
+@check_dependency(plt, 'matplotlib')
 def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
     """Plots a figure with subplots covering several components for FOOOFGroup results.
 
@@ -42,6 +47,7 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
         plt.savefig(os.path.join(file_path, file_name + '.png'))
 
 
+@check_dependency(plt, 'matplotlib')
 def plot_fg_bg(fg, ax=None):
     """Plot background fit parameters, in a scatter plot.
 
@@ -62,6 +68,7 @@ def plot_fg_bg(fg, ax=None):
                        'Background Fit', ax=ax)
 
 
+@check_dependency(plt, 'matplotlib')
 def plot_fg_gf(fg, ax=None):
     """Plot goodness of fit results, in a scatter plot.
 
@@ -77,6 +84,7 @@ def plot_fg_gf(fg, ax=None):
                    fg.get_all_data('r2'), 'R^2', 'Goodness of Fit', ax=ax)
 
 
+@check_dependency(plt, 'matplotlib')
 def plot_fg_osc_cens(fg, ax=None):
     """Plot oscillation center frequencies, in a histogram.
 

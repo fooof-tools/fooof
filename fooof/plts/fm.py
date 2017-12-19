@@ -2,7 +2,9 @@
 
 import os
 import numpy as np
-import matplotlib.pyplot as plt
+
+from fooof.core.modutils import safe_import, check_dependency
+plt = safe_import('.pyplot', 'matplotlib')
 
 from fooof.plts.templates import plot_psd
 from fooof.core.funcs import gaussian_function
@@ -10,6 +12,7 @@ from fooof.core.funcs import gaussian_function
 ###################################################################################################
 ###################################################################################################
 
+@check_dependency(plt, 'matplotlib')
 def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path='', ax=None):
     """Plot the original PSD, and full model fit from FOOOF object.
 
@@ -49,6 +52,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
         plt.savefig(os.path.join(file_path, file_name + '.png'))
 
 
+@check_dependency(plt, 'matplotlib')
 def plot_osc_iter(fm):
     """Plots a series of plots illustrating the oscillations search from a flattened spectrum.
 
