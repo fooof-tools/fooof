@@ -5,7 +5,7 @@ from fooof.plts.fm import *
 ###################################################################################################
 ###################################################################################################
 
-def test_plot_fm(tfm):
+def test_plot_fm(tfm, skip_if_no_mpl):
 
     plt.close('all')
 
@@ -14,7 +14,7 @@ def test_plot_fm(tfm):
     ax = plt.gca()
     assert ax.has_data()
 
-def test_plot_osc_iter(tfm):
+def test_plot_osc_iter(tfm, skip_if_no_mpl):
 
     plt.close('all')
 

@@ -61,10 +61,17 @@ def test_fg_fit_par():
     assert isinstance(out[0], FOOOFResult)
     assert np.all(out[1].background_params)
 
-def test_fg_plot_get(tfg):
+def test_fg_print_get(tfg):
     """Check methods that print, plot."""
 
     tfg.print_results()
+    out = tfg.get_results()
+
+    assert True
+
+def test_fg_plot(tfg, skip_if_no_mpl):
+    """Check alias method for plot."""
+
     tfg.plot()
 
     assert True
@@ -84,7 +91,7 @@ def test_fg_load():
     tfg.load(res_file_name, file_path)
     assert tfg
 
-def test_fg_report():
+def test_fg_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
 
     xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=2)

@@ -85,14 +85,13 @@ def test_fooof_checks():
     tfm.fit(xs, ys)
     assert tfm.freqs[0] != 0
 
-    # Check fit, plot and string report model error (no data / model fit)
+    # Check fit, and string report model error (no data / model fit)
     tfm = FOOOF()
     with raises(ValueError):
         tfm.fit()
     with raises(ValueError):
         tfm.print_results()
-    with raises(ValueError):
-        tfm.plot()
+
 
 def test_fooof_load():
     """Test load into FOOOF. Note: loads files from test_core_io."""
@@ -112,16 +111,23 @@ def test_fooof_load():
 def test_fooof_prints_plot_get(tfm):
     """Test methods that print, plot, return results (alias and pass through methods).
 
-    Checks: print_settings, print_results, plot, get_results."""
+    Checks: print_settings, print_results, get_results."""
 
     tfm.print_settings()
     tfm.print_results()
     tfm.print_report_issue()
 
-    tfm.plot()
-
     out = tfm.get_results()
     assert out
+
+def test_fooof_plot(tfm, skip_if_no_mpl):
+
+    tfm.plot()
+
+    # Check raises error with no data
+    ntfm = FOOOF()
+    with raises(ValueError):
+        ntfm.plot()
 
 def test_fooof_resets():
     """Check that all relevant data is cleared in the resest method."""
@@ -138,7 +144,7 @@ def test_fooof_resets():
         and tfm._psd_flat is None and tfm._psd_osc_rm is None and tfm._gaussian_params is None \
         and tfm._background_fit is None and tfm._oscillation_fit is None
 
-def test_fooof_report():
+def test_fooof_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
 
     tfm = FOOOF()

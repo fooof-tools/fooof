@@ -1,14 +1,13 @@
 """Test functions for FOOOF plots."""
 
 import numpy as np
-import matplotlib.pyplot as plt
 
 from fooof.plts.templates import *
 
 ###################################################################################################
 ###################################################################################################
 
-def test_plot_psd():
+def test_plot_psd(skip_if_no_mpl):
 
     plt.close('all')
 
@@ -20,7 +19,7 @@ def test_plot_psd():
     ax = plt.gca()
     assert ax.has_data()
 
-def test_plot_scatter_1():
+def test_plot_scatter_1(skip_if_no_mpl):
 
     plt.close('all')
 
@@ -31,7 +30,7 @@ def test_plot_scatter_1():
     ax = plt.gca()
     assert ax.has_data()
 
-def test_plot_scatter_2():
+def test_plot_scatter_2(skip_if_no_mpl):
 
     plt.close('all')
 
@@ -43,7 +42,7 @@ def test_plot_scatter_2():
     ax = plt.gca()
     assert ax.has_data()
 
-def test_plot_hist():
+def test_plot_hist(skip_if_no_mpl):
 
     plt.close('all')
 

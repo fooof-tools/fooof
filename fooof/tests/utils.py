@@ -3,6 +3,7 @@
 from fooof import FOOOF, FOOOFGroup
 from fooof.synth import mk_fake_data, mk_fake_group_data
 from fooof.utils import mk_freq_vector
+from fooof.core.modutils import safe_import
 
 ###################################################################################################
 ###################################################################################################
@@ -26,3 +27,11 @@ def get_tfg():
     tfg.fit(xs, ys)
 
     return tfg
+
+# def check_mpl():
+#     """   """
+
+#     if safe_import('matplotlib'):
+#         return True
+#     else:
+#         return False
