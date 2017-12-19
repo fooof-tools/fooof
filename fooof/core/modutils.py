@@ -21,7 +21,9 @@ def safe_import(*args):
 
     Notes
     -----
-    *args accepts
+    *args accepts either 1 or 2 strings, as pass through inputs to import_module.
+        To import a whole module, pass a single string, ex: ('matplotlib').
+        To import a specific package, pass two strings, ex: ('.pyplot', 'matplotlib')
     """
 
     try:
