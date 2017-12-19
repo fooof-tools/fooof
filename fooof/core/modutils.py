@@ -1,7 +1,36 @@
 """Utility functions for dealing with FOOOF, as a module."""
 
+from importlib import import_module
+from functools import wraps
+
 ###################################################################################################
 ###################################################################################################
+
+def safe_import(*args):
+    """Import a module, with a safety net for if the module is not available.
+
+    Parameters
+    ----------
+    *args : str
+        Module to import.
+
+    Returns
+    -------
+    mod : module or False
+        Requested module, if successfully imported, otherwise boolean (False).
+
+    Notes
+    -----
+    *args accepts
+    """
+
+    try:
+        mod = import_module(*args)
+    except ImportError:
+        mod = False
+
+    return mod
+
 
 def get_obj_desc():
     """Get dictionary specifying FOOOF object names and kind of attributes."""
@@ -13,8 +42,7 @@ def get_obj_desc():
                   'dat' : ['psd', 'freq_range', 'freq_res'],
                   'hidden_settings' : ['_bg_fit_func', '_std_limits', '_bg_bounds'],
                   'arrays' : ['freqs', 'psd', 'background_params_', 'oscillation_params_',
-                              '_gaussian_params'],
-                  'alias_funcs' : ['plot', 'save', 'create_report']}
+                              '_gaussian_params']}
     attributes['all_settings'] = attributes['settings'] + attributes['hidden_settings']
 
     return attributes
@@ -113,3 +141,25 @@ def copy_doc_class(source, section=None, att_add=''):
         return func
 
     return wrapper
+
+
+def check_dependency(dep, name):
+    """Decorator to check if an optional dependency is available.
+
+    Parameters
+    ----------
+    dep : module or False
+        Module, if successfully imported, or boolean (False) if not.
+    name : str
+        Full name of the module, to be printed in message.
+    """
+
+    def wrap(func):
+        @wraps(func)
+        def wrapped_func(*args, **kwargs):
+            if not dep:
+                raise ImportError('Optional FOOOF dependency ' + name + \
+                                  ' is required for this functionality.')
+            func(*args, **kwargs)
+        return wrapped_func
+    return wrap
