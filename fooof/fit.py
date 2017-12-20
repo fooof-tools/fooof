@@ -252,7 +252,7 @@ class FOOOF(object):
 
         self.fit(freqs, psd, freq_range)
         self.plot(plt_log)
-        self.print_results()
+        self.print_results(False)
 
 
     def fit(self, freqs=None, psd=None, freq_range=None):
@@ -322,29 +322,43 @@ class FOOOF(object):
         self._rmse_error()
 
 
-    def print_settings(self, description=False):
+    def print_settings(self, description=False, concise=True):
         """Print out the current FOOOF settings.
 
         Parameters
         ----------
         description : bool, optional (default: True)
             Whether to print out a description with current settings.
+        concise : bool, optional
+            Whether to print the report in a concise mode, or not. default: True
         """
 
-        print(gen_settings_str(self, description))
+        print(gen_settings_str(self, description, concise))
 
 
-    def print_results(self):
-        """Print out FOOOF results."""
+    def print_results(self, concise=True):
+        """Print out FOOOF results.
 
-        print(gen_results_str_fm(self))
+        Parameters
+        ----------
+        concise : bool, optional
+            Whether to print the report in a concise mode, or not. default: True
+        """
+
+        print(gen_results_str_fm(self, concise))
 
 
     @staticmethod
-    def print_report_issue():
-        """Prints instructions on how to report bugs and/or problematic fits."""
+    def print_report_issue(concise=False):
+        """Prints instructions on how to report bugs and/or problematic fits.
 
-        print(gen_report_str())
+        Parameters
+        ----------
+        concise : bool, optional
+            Whether to print the report in a concise mode, or not. default: False
+        """
+
+        print(gen_report_str(concise))
 
 
     def get_results(self):

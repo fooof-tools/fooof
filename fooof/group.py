@@ -107,7 +107,7 @@ class FOOOFGroup(FOOOF):
 
         self.fit(freqs, psds, freq_range, n_jobs=n_jobs)
         self.plot()
-        self.print_results()
+        self.print_results(False)
 
 
     def fit(self, freqs=None, psds=None, freq_range=None, n_jobs=1):
@@ -269,10 +269,16 @@ class FOOOFGroup(FOOOF):
         return fm
 
 
-    def print_results(self):
-        """Print out FOOOFGroup results."""
+    def print_results(self, concise=True):
+        """Print out FOOOFGroup results.
 
-        print(gen_results_str_fg(self))
+        Parameters
+        ----------
+        concise : bool, optional
+            Whether to print the report in a concise mode, or not. default: True
+        """
+
+        print(gen_results_str_fg(self, concise))
 
 
     def _fit(self, *args, **kwargs):
