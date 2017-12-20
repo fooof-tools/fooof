@@ -54,9 +54,6 @@ def gen_settings_str(f_obj, description=False, concise=False):
         Formatted string of current settings.
     """
 
-    # Use a smaller centering value if in concise mode
-    cv = SCV if concise else LCV
-
     # Parameter descriptions to print out, if requested
     desc = {'bg_use_knee' : 'Whether to fit a knee parameter in background fitting.',
             'bw_lims'     : 'Possible range of bandwidths for extracted oscillations, in Hz.',
@@ -71,33 +68,32 @@ def gen_settings_str(f_obj, description=False, concise=False):
         desc = {k : '' for k, v in desc.items()}
 
     # Create output string
-    output = [
+    str_lst= [
 
         # Header
-        '=' * cv,
-        ' ' if not concise else None,
-        'FOOOF - SETTINGS'.center(cv),
-        ' ' if not concise else None,
+        '=',
+        '',
+        'FOOOF - SETTINGS',
+        '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Fit Knee : {}'.format(f_obj.bg_use_knee).center(cv),
-                        '{}'.format(desc['bg_use_knee']).center(cv),
-                        'Bandwidth Limits : {}'.format(f_obj.bandwidth_limits).center(cv),
-                        '{}'.format(desc['bw_lims']).center(cv),
-                        'Max Number of Oscillations : {}'.format(f_obj.max_n_gauss).center(cv),
-                        '{}'.format(desc['num_oscs']).center(cv),
-                        'Minimum Amplitude : {}'.format(f_obj.min_amp).center(cv),
-                        '{}'.format(desc['min_amp']).center(cv),
-                        'Amplitude Threshold: {}'.format(f_obj.amp_std_thresh).center(cv),
-                        '{}'.format(desc['amp_thresh']).center(cv)] if el != ' ' * cv],
+        *[el for el in ['Fit Knee : {}'.format(f_obj.bg_use_knee),
+                        '{}'.format(desc['bg_use_knee']),
+                        'Bandwidth Limits : {}'.format(f_obj.bandwidth_limits),
+                        '{}'.format(desc['bw_lims']),
+                        'Max Number of Oscillations : {}'.format(f_obj.max_n_gauss),
+                        '{}'.format(desc['num_oscs']),
+                        'Minimum Amplitude : {}'.format(f_obj.min_amp),
+                        '{}'.format(desc['min_amp']),
+                        'Amplitude Threshold: {}'.format(f_obj.amp_std_thresh),
+                        '{}'.format(desc['amp_thresh'])] if el != ''],
 
         # Footer
-        ' ' if not concise else None,
-        '=' * cv
+        '',
+        '='
     ]
 
-    # Converts list to string, dropping blank lines if concise
-    output = '\n'.join(filter(None, output))
+    output = _format(str_lst, concise)
 
     return output
 
@@ -119,51 +115,47 @@ def gen_results_str_fm(fm, concise=False):
     if not np.all(fm.background_params_):
         raise ValueError('Model fit has not been run - can not proceed.')
 
-    # Use a smaller centering value if in concise mode
-    cv = SCV if concise else LCV
-
     # Create the formatted strings for printing
-    output = [
+    str_lst = [
 
         # Header
-        '=' * cv,
-        ' ' if not concise else None,
-        ' FOOOF - PSD MODEL'.center(cv),
-        ' ' if not concise else None,
+        '=',
+        '',
+        ' FOOOF - PSD MODEL',
+        '',
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(fm.freq_range[0])), int(np.ceil(fm.freq_range[1]))).center(cv),
-        'Frequency Resolution is {:1.2f} Hz'.format(fm.freq_res).center(cv) if not concise else None,
-        ' ' if not concise else None,
+            int(np.floor(fm.freq_range[0])), int(np.ceil(fm.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(fm.freq_res),
+        '',
 
         # Background parameters
         ('Background Parameters (offset, ' + ('knee, ' if fm.bg_use_knee else '') + \
-           'slope): ').center(cv),
+           'slope): '),
         ', '.join(['{:2.4f}'] * len(fm.background_params_)).format(
-            *fm.background_params_).center(cv),
-        ' ' if not concise else None,
+            *fm.background_params_),
+        '',
 
         # Oscillation parameters
         '{} oscillations were found:'.format(
-            len(fm.oscillation_params_)).center(cv),
-        *['CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]).center(cv) \
+            len(fm.oscillation_params_)),
+        *['CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]) \
           for op in fm.oscillation_params_],
-        ' ' if not concise else None,
+        '',
 
         # R^2 and error
-        'Goodness of fit metrics:'.center(cv),
-        'R^2 of model fit is {:5.4f}'.format(fm.r2_).center(cv),
+        'Goodness of fit metrics:',
+        'R^2 of model fit is {:5.4f}'.format(fm.r2_),
         'Root mean squared error is {:5.4f}'.format(
-            fm.error_).center(cv),
-        ' ' if not concise else None,
+            fm.error_),
+        '',
 
         # Footer
-        '=' * cv
+        '='
     ]
 
-    # Converts list to string, dropping blank lines if concise
-    output = '\n'.join(filter(None, output))
+    output = _format(str_lst, concise)
 
     return output
 
@@ -185,9 +177,6 @@ def gen_results_str_fg(fg, concise=False):
     if not fg.group_results:
         raise ValueError('Model fit has not been run - can not proceed.')
 
-    # Use a smaller centering value if in concise mode
-    cv = SCV if concise else LCV
-
     # Extract all the relevant data for printing
     cens = fg.get_all_data('oscillation_params', 0)
     r2s = fg.get_all_data('r2')
@@ -199,56 +188,54 @@ def gen_results_str_fg(fg, concise=False):
         kns = np.array([0])
         sls = fg.get_all_data('background_params', 1)
 
-    # Create the formatted strings for printing
-    output = [
+    str_lst = [
 
         # Header
-        '=' * cv,
-        ' ' if not concise else None,
-        ' FOOOF - GROUP RESULTS'.center(cv),
-        ' ' if not concise else None,
+        '=',
+        '',
+        ' FOOOF - GROUP RESULTS',
+        '',
 
         # Group information
-        'Number of PSDs in the Group: {}'.format(len(fg.group_results)).center(cv),
-        ' ' if not concise else None,
+        'Number of PSDs in the Group: {}'.format(len(fg.group_results)),
+        '',
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(fg.freq_range[0])), int(np.ceil(fg.freq_range[1]))).center(cv),
-        'Frequency Resolution is {:1.2f} Hz'.format(fg.freq_res).center(cv),
-        ' ' if not concise else None,
+            int(np.floor(fg.freq_range[0])), int(np.ceil(fg.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(fg.freq_res),
+        '',
 
         # Background parameters - knee fit status, and quick slope description
-        'PSDs were fit {} a knee.'.format('with' if fg.bg_use_knee else 'without').center(cv),
-        ' ' if not concise else None,
-        *[el for el in ['Background Knee Values'.center(cv),
+        'PSDs were fit {} a knee.'.format('with' if fg.bg_use_knee else 'without'),
+        '',
+        *[el for el in ['Background Knee Values',
                         'Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
-                        .format(kns.min(), kns.max(), kns.mean()).center(cv)
+                        .format(kns.min(), kns.max(), kns.mean()),
                        ] if fg.bg_use_knee],
-        'Background Slope Values'.center(cv),
+        'Background Slope Values',
         'Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-        .format(sls.min(), sls.max(), sls.mean()).center(cv),
-        ' ' if not concise else None,
+        .format(sls.min(), sls.max(), sls.mean()),
+        '',
 
         # Oscillation Parameters
         'In total {} oscillations were extracted from the group'
-        .format(len(cens)).center(cv),
-        ' ' if not concise else None,
+        .format(len(cens)),
+        '',
 
         # Fitting stats - error and r^2
-        'Goodness of fit metrics:'.center(cv),
+        'Goodness of fit metrics:',
         '   R2s -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-        .format(r2s.min(), r2s.max(), r2s.mean()).center(cv),
+        .format(r2s.min(), r2s.max(), r2s.mean()),
         'Errors -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-        .format(errors.min(), errors.max(), errors.mean()).center(cv),
-        ' ' if not concise else None,
+        .format(errors.min(), errors.max(), errors.mean()),
+        '',
 
         # Footer
-        '=' * cv
+        '='
     ]
 
-    # Converts list to string, dropping blank lines if concise
-    output = '\n'.join(filter(None, output))
+    output = _format(str_lst, concise)
 
     return output
 
@@ -262,46 +249,68 @@ def gen_report_str(concise=False):
         Formatted string of how to provide feedback.
     """
 
+    str_lst = [
+
+        # Header
+        '=',
+        '',
+        'Contact / Reporting Information for FOOOF',
+        '',
+
+        # Reporting bugs
+        'Please report any bugs or unexpected errors on Github.',
+        'https://github.com/voytekresearch/fooof/issues',
+        '',
+
+        # Reporting a weird fit
+        'If FOOOF gives you any weird / bad fits, we would like to know, so we can make it better!',
+        'To help us with this, send us a FOOOF report, and a FOOOF data file, for any bad fits.',
+        '',
+        'With a FOOOF object (fm), after fitting, run the following commands:',
+        "fm.create_report('FOOOF_bad_fit_report')",
+        "fm.save('FOOOF_bad_fit_data', True, True, True)",
+        '',
+        "Send the generated files ('FOOOF_bad_fit_report.pdf' & 'FOOOF_bad_fit_data.json') to us.",
+        'We will have a look, and provide any feedback we can.',
+        '',
+        'We suggest sending individual examplars, but the above will also work with a FOOOFGroup.',
+        '',
+
+        # Contact
+        'Contact address: voytekresearch@gmail.com',
+        '',
+
+        # Footer
+        '='
+    ]
+
+    output = _format(str_lst, concise)
+
+    return output
+
+
+def _format(str_lst, concise):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
     # Use a smaller centering value if in concise mode
     cv = SCV if concise else LCV
 
-    # Create output string
-    output = [
+    # Expand the section markers to full width
+    str_lst[0] = str_lst[0] * cv
+    str_lst[-1] = str_lst[-1] * cv
 
-        # Header
-        '=' * cv,
-        ' ',
-        'Contact / Reporting Information for FOOOF'.center(cv),
-        ' ',
+    # Drop blank lines, if concise
+    str_lst = list(filter(lambda x: x != '', str_lst)) if concise else str_lst
 
-        # Reporting bugs
-        'Please report any bugs or unexpected errors on Github. '.center(cv),
-        'https://github.com/voytekresearch/fooof/issues'.center(cv),
-        ' ',
-
-        # Reporting a weird fit
-        'If FOOOF gives you any weird / bad fits, we would like to know, so we can make it better!'.center(cv),
-        'To help us with this, send us a FOOOF report, and a FOOOF data file, for any bad fits.'.center(cv),
-        ' ',
-        'With a FOOOF object (fm), after fitting, run the following commands:'.center(cv),
-        "fm.create_report('FOOOF_bad_fit_report')".center(cv),
-        "fm.save('FOOOF_bad_fit_data', True, True, True)".center(cv),
-        ' ',
-        "Send the generated files ('FOOOF_bad_fit_report.pdf' & 'FOOOF_bad_fit_data.json') to us.".center(cv),
-        'We will have a look, and provide any feedback we can.'.center(cv),
-        ' ',
-        'We suggest sending individual examplars, but the above will also work with a FOOOFGroup.'.center(cv),
-        ' ',
-
-        # Contact
-        'Contact address: voytekresearch@gmail.com'.center(cv),
-        ' ',
-
-        # Footer
-        '=' * cv
-    ]
-
-    # Converts list to string, dropping blank lines if concise
-    output = '\n'.join(filter(None, output))
+    # Convert list to a single string representation, centering each line
+    output = '\n'.join([string.center(cv) for string in str_lst])
 
     return output
