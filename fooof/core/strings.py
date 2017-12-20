@@ -45,8 +45,10 @@ def gen_settings_str(f_obj, description=False, concise=False):
     ----------
     f_obj : FOOOF or FOOOFGroup object
         A FOOOF derived object, from which settings are to be used.
-    description : bool, optional (default: True)
-        Whether to print out a description with current settings.
+    description : bool, optional
+        Whether to print out a description with current settings. default: True
+    concise : bool, optional
+        Whether to print the report in a concise mode, or not. default: False
 
     Returns
     -------
@@ -68,7 +70,7 @@ def gen_settings_str(f_obj, description=False, concise=False):
         desc = {k : '' for k, v in desc.items()}
 
     # Create output string
-    str_lst= [
+    str_lst = [
 
         # Header
         '=',
@@ -105,6 +107,8 @@ def gen_results_str_fm(fm, concise=False):
     ----------
     fm : FOOOF object
         Object for which results are to be printed.
+    concise : bool, optional
+        Whether to print the report in a concise mode, or not. default: False
 
     Returns
     -------
@@ -167,6 +171,8 @@ def gen_results_str_fg(fg, concise=False):
     ----------
     fg : FOOOFGroup() object
         Group object for which results are to be printed.
+    concise : bool, optional
+        Whether to print the report in a concise mode, or not. default: False
 
     Returns
     -------
@@ -243,6 +249,11 @@ def gen_results_str_fg(fg, concise=False):
 def gen_report_str(concise=False):
     """Generate a string representation of instructions to report an issue.
 
+    Parameters
+    ----------
+    concise : bool, optional
+        Whether to print the report in a concise mode, or not. default: False
+
     Returns
     -------
     output : str
@@ -296,8 +307,8 @@ def _format(str_lst, concise):
     ----------
     str_lst : list of str
         List containing all elements for the string, each element representing a line.
-    concise : boolean
-        Whether
+    concise : bool, optional
+        Whether to print the report in a concise mode, or not. default: False
 
     Returns
     -------
