@@ -290,14 +290,19 @@ def gen_report_str(concise=False):
 
 
 def _format(str_lst, concise):
-    """
+    """Format a string for printing.
 
     Parameters
     ----------
+    str_lst : list of str
+        List containing all elements for the string, each element representing a line.
+    concise : boolean
+        Whether
 
     Returns
     -------
-
+    output : str
+        Formatted string, ready for printing.
     """
 
     # Use a smaller centering value if in concise mode
