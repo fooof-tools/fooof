@@ -6,7 +6,6 @@ The tests here are not strong tests for accuracy.
     They serve rather as 'smoke tests', for if anything fails completely.
 """
 
-import os
 import pkg_resources as pkg
 
 import numpy as np

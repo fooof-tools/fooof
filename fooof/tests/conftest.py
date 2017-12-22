@@ -2,16 +2,15 @@
 
 import os
 import shutil
+import pytest
 import pkg_resources as pkg
 
 import numpy as np
 
 from fooof.core.modutils import safe_import
-plt = safe_import('.pyplot', 'matplotlib')
-
 from fooof.tests.utils import get_tfm, get_tfg
 
-import pytest
+plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################

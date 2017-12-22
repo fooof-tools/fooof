@@ -1,24 +1,17 @@
 """Tests for fooof.plts.fm."""
 
 from fooof.plts.fm import *
+from fooof.tests.utils import plot_test
 
 ###################################################################################################
 ###################################################################################################
 
+@plot_test
 def test_plot_fm(tfm, skip_if_no_mpl):
-
-    plt.close('all')
 
     plot_fm(tfm)
 
-    ax = plt.gca()
-    assert ax.has_data()
-
+@plot_test
 def test_plot_osc_iter(tfm, skip_if_no_mpl):
 
-    plt.close('all')
-
     plot_osc_iter(tfm)
-
-    ax = plt.gca()
-    assert ax.has_data()
