@@ -3,11 +3,10 @@
 import os
 
 from fooof.core.modutils import safe_import, check_dependency
-plt = safe_import('.pyplot', 'matplotlib')
-if plt:
-    from matplotlib import gridspec
-
 from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
+
+plt = safe_import('.pyplot', 'matplotlib')
+gridspec = safe_import('.gridspec', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################

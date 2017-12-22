@@ -3,6 +3,7 @@
 import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
+
 plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################

@@ -3,11 +3,11 @@
 import os
 import numpy as np
 
-from fooof.core.modutils import safe_import, check_dependency
-plt = safe_import('.pyplot', 'matplotlib')
-
 from fooof.plts.templates import plot_psd
 from fooof.core.funcs import gaussian_function
+from fooof.core.modutils import safe_import, check_dependency
+
+plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################

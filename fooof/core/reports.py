@@ -3,12 +3,11 @@
 import os
 
 from fooof.core.modutils import safe_import, check_dependency
-plt = safe_import('.pyplot', 'matplotlib')
-if plt:
-    from matplotlib import gridspec
-
-from fooof.plts.fg import plot_fg_bg, plot_fg_gf, plot_fg_osc_cens
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_results_str_fg
+from fooof.plts.fg import plot_fg_bg, plot_fg_gf, plot_fg_osc_cens
+
+plt = safe_import('.pyplot', 'matplotlib')
+gridspec = safe_import('.gridspec', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
