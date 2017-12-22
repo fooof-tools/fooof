@@ -8,9 +8,8 @@ import numpy as np
 
 from fooof.core.modutils import safe_import
 plt = safe_import('.pyplot', 'matplotlib')
-#import matplotlib.pyplot as plt
 
-from fooof.tests.utils import get_tfm, get_tfg#, check_mpl
+from fooof.tests.utils import get_tfm, get_tfg
 
 import pytest
 
@@ -50,4 +49,4 @@ def tfg():
 @pytest.fixture(scope='session')
 def skip_if_no_mpl():
     if not safe_import('matplotlib'):
-        pytest.skip('No Redis server found')
+        pytest.skip('Matplotlib not availabe: skipping test.')
