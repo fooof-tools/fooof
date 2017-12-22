@@ -12,8 +12,7 @@ import numpy as np
 import pkg_resources as pkg
 
 from fooof import FOOOF
-from fooof.synth import mk_fake_data
-from fooof.utils import mk_freq_vector
+from fooof.synth import gen_power_spectrum
 
 from fooof.tests.utils import get_tfm
 
@@ -28,12 +27,11 @@ def test_fooof():
 def test_fooof_fit_nk():
     """Test FOOOF fit, no knee."""
 
-    xs = mk_freq_vector([3, 50], 0.5)
     bgp = [50, 2]
     oscs = [[10, 0.5, 2],
             [20, 0.3, 4]]
 
-    xs, ys = mk_fake_data(xs, bgp, [it for osc in oscs for it in osc])
+    xs, ys = gen_power_spectrum([3, 50], bgp, [it for osc in oscs for it in osc])
 
     tfm = FOOOF()
     tfm.fit(xs, ys)
@@ -48,12 +46,11 @@ def test_fooof_fit_nk():
 def test_fooof_fit_knee():
     """Test FOOOF fit, with a knee."""
 
-    xs = mk_freq_vector([3, 50], 0.5)
     bgp = [50, 2, 1]
     oscs = [[10, 0.5, 2],
             [20, 0.3, 4]]
 
-    xs, ys = mk_fake_data(xs, bgp, [it for osc in oscs for it in osc], True)
+    xs, ys = gen_power_spectrum([3, 50], bgp, [it for osc in oscs for it in osc])
 
     tfm = FOOOF(bg_use_knee=True)
     tfm.fit(xs, ys)
@@ -65,7 +62,7 @@ def test_fooof_fit_knee():
 def test_fooof_checks():
     """Test various checks, errors and edge cases in FOOOF."""
 
-    xs, ys = mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2])
+    xs, ys = gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2])
 
     tfm = FOOOF()
 
@@ -81,7 +78,7 @@ def test_fooof_checks():
     tfm.fit(xs, ys, [3, 40])
 
     # Check freq of 0 issue
-    xs, ys = mk_fake_data(mk_freq_vector([0, 50], 0.5), [50, 2], [10, 0.5, 2])
+    xs, ys = gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2])
     tfm.fit(xs, ys)
     assert tfm.freqs[0] != 0
 
@@ -108,8 +105,8 @@ def test_fooof_load():
     tfm.load(file_name_res, file_path)
     assert tfm
 
-def test_fooof_prints_plot_get(tfm):
-    """Test methods that print, plot, return results (alias and pass through methods).
+def test_fooof_prints_get(tfm):
+    """Test methods that print, return results (alias and pass through methods).
 
     Checks: print_settings, print_results, get_results."""
 
@@ -149,6 +146,6 @@ def test_fooof_report(skip_if_no_mpl):
 
     tfm = FOOOF()
 
-    tfm.report(*mk_fake_data(mk_freq_vector([3, 50], 0.5), [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+    tfm.report(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
     assert tfm

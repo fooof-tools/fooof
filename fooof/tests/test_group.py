@@ -13,8 +13,9 @@ import numpy as np
 
 from fooof import FOOOFGroup
 from fooof.fit import FOOOFResult
-from fooof.synth import mk_fake_group_data
-from fooof.utils import mk_freq_vector
+from fooof.synth import gen_group_power_spectra
+
+from fooof.tests.utils import default_group_params
 
 ###################################################################################################
 ###################################################################################################
@@ -35,7 +36,7 @@ def test_fg_fit():
     """Test FOOOFGroup fit, no knee."""
 
     n_psds = 2
-    xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=n_psds)
+    xs, ys = gen_group_power_spectra(n_psds, *default_group_params())
 
     tfg = FOOOFGroup()
     tfg.fit(xs, ys)
@@ -50,7 +51,7 @@ def test_fg_fit_par():
     """Test FOOOFGroup fit, running in parallel."""
 
     n_psds = 2
-    xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=n_psds)
+    xs, ys = gen_group_power_spectra(n_psds, *default_group_params())
 
     tfg = FOOOFGroup()
     tfg.fit(xs, ys, n_jobs=2)
@@ -94,7 +95,8 @@ def test_fg_load():
 def test_fg_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
 
-    xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=2)
+    n_psds = 2
+    xs, ys = gen_group_power_spectra(n_psds, *default_group_params())
 
     tfg = FOOOFGroup()
     tfg.report(xs, ys)
