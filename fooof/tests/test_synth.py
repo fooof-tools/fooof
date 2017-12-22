@@ -1,31 +1,82 @@
 """Test functions for FOOOF synth."""
 
-from fooof.utils import mk_freq_vector
+from fooof.tests.utils import default_group_params
+
 from fooof.synth import *
+from fooof.synth import _gen_power_vals
 
 ###################################################################################################
 ###################################################################################################
 
-def test_mk_fake_data():
+def test_gen_freqs():
 
-    xs = mk_freq_vector([3, 50], 0.5)
+    f_range = [3, 40]
+    f_res = 0.5
 
+    freqs = gen_freqs(f_range, f_res)
+
+    assert freqs.min() == f_range[0]
+    assert freqs.max() == f_range[1]
+    assert np.mean(np.diff(freqs)) == f_res
+
+def test_gen_power_spectrum():
+
+    freq_range = [3, 50]
     bgp = [50, 2]
     oscs = [[10, 0.5, 2],
             [20, 0.3, 4]]
 
-    xs, ys = mk_fake_data(xs, bgp, [it for osc in oscs for it in osc])
+    xs, ys = gen_power_spectrum(freq_range, bgp, [it for osc in oscs for it in osc])
 
     assert np.all(xs)
     assert np.all(ys)
     assert len(xs) == len(ys)
 
-def test_mk_fake_group_data():
+def test_gen_group_power_spectra():
 
-    xs = mk_freq_vector([3, 50], 0.5)
+    n_psds = 2
 
-    xs, ys = mk_fake_group_data(xs)
+    xs, ys = gen_group_power_spectra(n_psds, *default_group_params())
 
     assert np.all(xs)
     assert np.all(ys)
-    assert ys.ndim == 2
+    assert ys.ndim == n_psds
+
+def test_gen_bg():
+
+    xs = gen_freqs([3, 50], 0.5)
+
+    bgp_nk = [50, 2]
+    bgv_nk = gen_bg(xs, bgp_nk, 'fixed')
+    assert np.all(bgv_nk)
+
+    bgp_kn = [50, 1, 1]
+    bgv_kn = gen_bg(xs, bgp_kn, 'knee')
+    assert np.all(bgv_kn)
+
+    # Check without specifying background mode
+    bgv_nk_2 = gen_bg(xs, bgp_nk)
+    assert np.array_equal(bgv_nk, bgv_nk_2)
+    bgv_kn_2 = gen_bg(xs, bgp_kn)
+    assert np.array_equal(bgv_kn, bgv_kn_2)
+
+def test_gen_peaks():
+
+    xs = gen_freqs([3, 50], 0.5)
+    gauss_params = [10, 2, 1]
+
+    peaks = gen_peaks(xs, gauss_params)
+
+    assert np.all(np.invert(np.isnan(peaks)))
+
+def test_gen_power_values():
+
+    xs = gen_freqs([3, 50], 0.5)
+
+    bg_params = [50, 2]
+    gauss_params = [10, 2, 1]
+    nlv = 0.1
+
+    ys = _gen_power_vals(xs, bg_params, gauss_params, nlv)
+
+    assert np.all(ys)
