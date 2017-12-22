@@ -24,7 +24,9 @@ _bg_guess : list of [float, float, float]
 _bg_bounds : tuple of tuple of float
     Upper and lower bounds on fitting background.
 _bw_std_edge : float
-    Banwidth threshold for edge rejection of oscillations, units of standard deviation.
+    Bandwidth threshold for edge rejection of oscillations, units of standard deviation.
+_gauss_overlap_thresh : float
+    Degree of overlap (in units of guassian std dev) between gaussian guesses to drop one.
 _std_limits : list of [float, float]
     Bandwidth limits, converted to use for gaussian standard deviation parameter.
 """
@@ -130,6 +132,8 @@ class FOOOF(object):
         self._bg_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
         # Threshold for how far (units of gaus std dev) an oscillation has to be from edge to keep.
         self._bw_std_edge = 1.0
+        # Degree of overlap  (units of gauss std dev) between oscillations at which level one is dropped
+        self._gauss_overlap_thresh = 1.0
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
         self._cf_bound = 1.5
 
@@ -724,8 +728,9 @@ class FOOOF(object):
         # Sort the oscillations guesses, so can check overlap of adjacent oscillations
         guess = sorted(guess, key=lambda x: float(x[0]))
 
-        # Calculate standard deviation bounds
-        bounds = [[osc[0] - osc[2], osc[0], osc[0] + osc[2]] for osc in guess]
+        # Calculate standard deviation bounds for checking amount of overlap
+        bounds = [[osc[0] - osc[2] * self._gauss_overlap_thresh, osc[0],
+                   osc[0] + osc[2] * self._gauss_overlap_thresh] for osc in guess]
 
         drop_inds = []
 
