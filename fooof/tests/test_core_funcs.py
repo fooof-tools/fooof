@@ -1,5 +1,7 @@
 """Tests for FOOOF core.funcs."""
 
+from py.test import raises
+
 import numpy as np
 from scipy.stats import norm, linregress
 
@@ -82,3 +84,29 @@ def test_quadratic_function():
     assert np.isclose(off_meas, off)
     assert np.isclose(sl_meas, sl)
     assert np.isclose(curve_meas, curve)
+
+def test_get_bg_func():
+
+    bgf_nk = get_bg_func('fixed')
+    assert bgf_nk
+
+    bgf_kn = get_bg_func('knee')
+    assert bgf_kn
+
+    # Check error
+    with raises(ValueError):
+        get_bg_func('bad')
+
+def test_infer_bg_func():
+
+    bgp_nk = [50, 1]
+    bgm_nk = infer_bg_func(bgp_nk)
+    assert bgm_nk == 'fixed'
+
+    bgp_kn = [50, 2, 1]
+    bgm_kn = infer_bg_func(bgp_kn)
+    assert bgm_kn == 'knee'
+
+    # Check error
+    with raises(ValueError):
+        infer_bg_func([1, 2, 3, 4])
