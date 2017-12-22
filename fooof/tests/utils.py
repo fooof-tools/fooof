@@ -1,7 +1,12 @@
 """Utilities for testing fooof."""
 
+from functools import wraps
+
 from fooof import FOOOF, FOOOFGroup
 from fooof.synth import gen_power_spectrum, gen_group_power_spectra
+from fooof.core.modutils import safe_import
+
+plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
@@ -39,3 +44,25 @@ def default_group_params():
     gauss_opts = [[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]]
 
     return freq_range, bgp_opts, gauss_opts
+
+def plot_test(func):
+    """Decorator for simple testing of plotting functions.
+
+    Notes
+    -----
+    This decorator closes all plots prior to the test.
+    After running the test function, it checks an axis was created with data.
+    It therefore performs a minimal test - asserting the plots exists, with no accuracy checking.
+    """
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+
+        plt.close('all')
+
+        func(*args, **kwargs)
+
+        ax = plt.gca()
+        assert ax.has_data()
+
+    return wrapper
