@@ -58,7 +58,7 @@ def plot_fg_bg(fg, ax=None):
         Figure axes upon which to plot.
     """
 
-    if fg.bg_use_knee:
+    if fg.background_mode == 'knee':
         plot_scatter_2(fg.get_all_data('background_params', 1), 'Knee',
                        fg.get_all_data('background_params', 2), 'Slope',
                        'Background Fit', ax=ax)

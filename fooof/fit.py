@@ -27,8 +27,6 @@ _bw_std_edge : float
     Banwidth threshold for edge rejection of oscillations, units of standard deviation.
 _std_limits : list of [float, float]
     Bandwidth limits, converted to use for gaussian standard deviation parameter.
-_bg_fit_func : function
-    Function used to fit the background.
 """
 
 import warnings
@@ -41,7 +39,7 @@ from fooof.utils import trim_psd
 from fooof.plts.fm import plot_fm
 from fooof.core.io import save_fm, load_json
 from fooof.core.reports import create_report_fm
-from fooof.core.funcs import gaussian_function, expo_function, expo_nk_function
+from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
 from fooof.core.utils import group_three, check_array_dim
 from fooof.core.modutils import get_obj_desc, copy_doc_func_to_method
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_report_str, gen_bw_warn_str
@@ -71,8 +69,8 @@ class FOOOF(object):
         Minimum amplitude threshold for an oscillation to be modeled.
     amp_std_thresh : float, optional (default: 2.0)
         Amplitude threshold for detecting oscillatory peaks, units of standard deviation.
-    bg_use_knee : boolean, optional (default: False)
-        Whether to fit a knee parameter when fitting the background.
+    background_mode : {'fixed', 'knee'}
+        Which approache to take to fitting the background process.
     verbose : boolean, optional (default: True)
         Whether to be verbose in printing out warnings.
 
@@ -107,11 +105,11 @@ class FOOOF(object):
     """
 
     def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_gauss=np.inf,
-                 min_amp=0.0, amp_std_thresh=2.0, bg_use_knee=False, verbose=True):
+                 min_amp=0.0, amp_std_thresh=2.0, background_mode='fixed', verbose=True):
         """Initialize FOOOF object with run parameters."""
 
         # Set input parameters
-        self.bg_use_knee = bg_use_knee
+        self.background_mode = background_mode
         self.bandwidth_limits = bandwidth_limits
         self.max_n_gauss = max_n_gauss
         self.min_amp = min_amp
@@ -149,9 +147,6 @@ class FOOOF(object):
             They should not be altered by the user.
         """
 
-        # Set exponential function version for whether fitting knee or not
-        self._bg_fit_func = expo_function if self.bg_use_knee else expo_nk_function
-
         # Only update these settings if other relevant settings are available
         #   Otherwise, assume settings are unknown (have been cleared) and leave as None
         if self.bandwidth_limits:
@@ -160,7 +155,7 @@ class FOOOF(object):
             #  Convert to gaussian std parameter limits.
             self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
             # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
-            self._bg_bounds = self._bg_bounds if self.bg_use_knee \
+            self._bg_bounds = self._bg_bounds if self.background_mode == 'knee' \
                 else tuple(bound[0::2] for bound in self._bg_bounds)
 
 
@@ -458,7 +453,7 @@ class FOOOF(object):
 
         # Set guess params for lorentzian background fit, guess params set at init
         guess = np.array(([psd[0]] if not self._bg_guess[0] else [self._bg_guess[0]]) +
-                         ([self._bg_guess[1]] if self.bg_use_knee else []) +
+                         ([self._bg_guess[1]] if self.background_mode == 'knee' else []) +
                          [self._bg_guess[2]])
 
         # Ignore warnings that are raised in curve_fit
@@ -467,8 +462,8 @@ class FOOOF(object):
         #  It happens if / when b < 0 & |b| > x**2, as it leads to log of a negative number
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            background_params, _ = curve_fit(self._bg_fit_func, freqs, psd, p0=guess,
-                                             maxfev=5000, bounds=self._bg_bounds)
+            background_params, _ = curve_fit(get_bg_func(self.background_mode), freqs, psd,
+                                             p0=guess, maxfev=5000, bounds=self._bg_bounds)
 
         return background_params
 
@@ -502,15 +497,15 @@ class FOOOF(object):
         # Amplitude threshold - in terms of # of points.
         perc_thresh = np.percentile(psd_flat, self._bg_amp_thresh)
         amp_mask = psd_flat <= perc_thresh
-        f_ignore = freqs[amp_mask]
+        freqs_ignore = freqs[amp_mask]
         psd_ignore = psd[amp_mask]
 
         # Second background fit - using results of first fit as guess parameters.
         #  See note in _quick_background_fit about warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            background_params, _ = curve_fit(self._bg_fit_func, f_ignore, psd_ignore,
-                                             p0=popt, maxfev=5000, bounds=self._bg_bounds)
+            background_params, _ = curve_fit(get_bg_func(self.background_mode), freqs_ignore,
+                                             psd_ignore, p0=popt, maxfev=5000, bounds=self._bg_bounds)
 
         return background_params
 
@@ -852,7 +847,7 @@ class FOOOF(object):
 
             # Infer whether knee fitting was used, if background params have been loaded
             if np.all(self.background_params_):
-                self._infer_knee()
+                self.background_mode = infer_bg_func(self.background_params_)
 
         # Otherwise (settings were loaded), reset internal settings so that they are consistent
         else:
@@ -864,19 +859,6 @@ class FOOOF(object):
 
         for setting in get_obj_desc()['all_settings']:
             setattr(self, setting, None)
-
-
-    # TODO: move to fooof.core.funcs / replace with function from there
-    def _infer_knee(self):
-        """Infer from background params, whether knee fitting was used, and update settings."""
-
-        #  Given results, can tell which function was used from the length of bg_params
-        if len(self.background_params_) == 3:
-            self.bg_use_knee = True
-            self._bg_fit_func = expo_function
-        else:
-            self.bg_use_knee = False
-            self._bg_fit_func = expo_nk_function
 
 
     def _regenerate_model(self):

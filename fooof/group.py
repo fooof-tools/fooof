@@ -256,7 +256,7 @@ class FOOOFGroup(FOOOF):
 
         # Initialize a FOOOF object, with same settings as current FOOOFGroup
         fm = FOOOF(self.bandwidth_limits, self.max_n_gauss, self.min_amp,
-                   self.amp_std_thresh, self.bg_use_knee, self.verbose)
+                   self.amp_std_thresh, self.background_mode, self.verbose)
 
         # Add data for specified single PSD, if available
         #  The PSD is inverted back to linear, as it's re-logged when added to FOOOF

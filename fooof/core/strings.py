@@ -57,13 +57,13 @@ def gen_settings_str(f_obj, description=False, concise=False):
     """
 
     # Parameter descriptions to print out, if requested
-    desc = {'bg_use_knee' : 'Whether to fit a knee parameter in background fitting.',
-            'bw_lims'     : 'Possible range of bandwidths for extracted oscillations, in Hz.',
-            'num_oscs'    : 'The maximum number of oscillations that can be extracted.',
-            'min_amp'     : "Minimum absolute amplitude, above background, "
-                            "for an oscillation to be extracted.",
-            'amp_thresh'  : "Threshold, in units of standard deviation, "
-                            "at which to stop searching for oscillations."}
+    desc = {'background_mode' : 'The aproach taken to fitting the background.',
+            'bw_lims'         : 'Possible range of bandwidths for extracted oscillations, in Hz.',
+            'num_oscs'        : 'The maximum number of oscillations that can be extracted.',
+            'min_amp'         : "Minimum absolute amplitude, above background, "
+                                "for an oscillation to be extracted.",
+            'amp_thresh'      : "Threshold, in units of standard deviation, "
+                                "at which to stop searching for oscillations."}
 
     # Clear description for printing if not requested
     if not description:
@@ -79,8 +79,8 @@ def gen_settings_str(f_obj, description=False, concise=False):
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Fit Knee : {}'.format(f_obj.bg_use_knee),
-                        '{}'.format(desc['bg_use_knee']),
+        *[el for el in ['Fit Knee : {}'.format(f_obj.background_mode),
+                        '{}'.format(desc['background_mode']),
                         'Bandwidth Limits : {}'.format(f_obj.bandwidth_limits),
                         '{}'.format(desc['bw_lims']),
                         'Max Number of Oscillations : {}'.format(f_obj.max_n_gauss),
@@ -135,7 +135,7 @@ def gen_results_str_fm(fm, concise=False):
         '',
 
         # Background parameters
-        ('Background Parameters (offset, ' + ('knee, ' if fm.bg_use_knee else '') + \
+        ('Background Parameters (offset, ' + ('knee, ' if fm.background_mode == 'knee' else '') + \
            'slope): '),
         ', '.join(['{:2.4f}'] * len(fm.background_params_)).format(
             *fm.background_params_),
@@ -187,7 +187,7 @@ def gen_results_str_fg(fg, concise=False):
     cens = fg.get_all_data('oscillation_params', 0)
     r2s = fg.get_all_data('r2')
     errors = fg.get_all_data('error')
-    if fg.bg_use_knee:
+    if fg.background_mode == 'knee':
         kns = fg.get_all_data('background_params', 1)
         sls = fg.get_all_data('background_params', 2)
     else:
@@ -213,12 +213,12 @@ def gen_results_str_fg(fg, concise=False):
         '',
 
         # Background parameters - knee fit status, and quick slope description
-        'PSDs were fit {} a knee.'.format('with' if fg.bg_use_knee else 'without'),
+        'PSDs were fit {} a knee.'.format('with' if fg.background_mode == 'knee' else 'without'),
         '',
         *[el for el in ['Background Knee Values',
                         'Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
                         .format(kns.min(), kns.max(), kns.mean()),
-                       ] if fg.bg_use_knee],
+                       ] if fg.background_mode == 'knee'],
         'Background Slope Values',
         'Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
         .format(sls.min(), sls.max(), sls.mean()),

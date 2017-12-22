@@ -52,7 +52,7 @@ def test_fooof_fit_knee():
 
     xs, ys = gen_power_spectrum([3, 50], bgp, [it for osc in oscs for it in osc])
 
-    tfm = FOOOF(bg_use_knee=True)
+    tfm = FOOOF(background_mode='knee')
     tfm.fit(xs, ys)
 
     # Note: currently, this test has no accuracy checking at all
