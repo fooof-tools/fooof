@@ -37,7 +37,7 @@ from collections import namedtuple
 import numpy as np
 from scipy.optimize import curve_fit
 
-from fooof.utils import trim_psd, mk_freq_vector
+from fooof.utils import trim_psd
 from fooof.plts.fm import plot_fm
 from fooof.core.io import save_fm, load_json
 from fooof.core.reports import create_report_fm
@@ -45,6 +45,8 @@ from fooof.core.funcs import gaussian_function, expo_function, expo_nk_function
 from fooof.core.utils import group_three, check_array_dim
 from fooof.core.modutils import get_obj_desc, copy_doc_func_to_method
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_report_str, gen_bw_warn_str
+
+from fooof.synth import gen_freqs, gen_bg, gen_peaks
 
 ###################################################################################################
 ###################################################################################################
@@ -291,7 +293,7 @@ class FOOOF(object):
 
         # Fit the background 1/f.
         self.background_params_ = self._clean_background_fit(self.freqs, self.psd)
-        self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
+        self._background_fit = gen_bg(self.freqs, self.background_params_)
 
         # Flatten the PSD using fit background.
         self._psd_flat = self.psd - self._background_fit
@@ -301,7 +303,7 @@ class FOOOF(object):
 
         # Calculate the oscillation fit.
         #  Note: if no oscillations are found, this creates a flat (all zero) oscillation fit.
-        self._oscillation_fit = self._create_osc_fit(self.freqs, self._gaussian_params)
+        self._oscillation_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
 
         # Create oscillation-removed (but not flattened) PSD.
         self._psd_osc_rm = self.psd - self._oscillation_fit
@@ -309,7 +311,7 @@ class FOOOF(object):
         # Run final background fit on oscillation-removed PSD.
         #   Note: This overwrites previous background fit.
         self.background_params_ = self._quick_background_fit(self.freqs, self._psd_osc_rm)
-        self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
+        self._background_fit = gen_bg(self.freqs, self.background_params_)
 
         # Create full PSD model fit.
         self.psd_fit_ = self._oscillation_fit + self._background_fit
@@ -489,7 +491,7 @@ class FOOOF(object):
 
         # Do a quick, initial background fit.
         popt = self._quick_background_fit(freqs, psd)
-        initial_fit = self._create_bg_fit(freqs, popt)
+        initial_fit = gen_bg(freqs, popt)
 
         # Flatten PSD based on initial background fit.
         psd_flat = psd - initial_fit
@@ -511,45 +513,6 @@ class FOOOF(object):
                                              p0=popt, maxfev=5000, bounds=self._bg_bounds)
 
         return background_params
-
-
-    def _create_bg_fit(self, freqs, bg_params):
-        """Generate the fit of the background component of the PSD.
-
-        Parameters
-        ----------
-        freqs : 1d array
-            Frequency values for the PSD, in linear scale.
-        bg_params : 1d array
-            Parameters that define the background fit.
-
-        Returns
-        -------
-        1d array
-            Values of the background fit.
-        """
-
-        return self._bg_fit_func(freqs, *bg_params)
-
-
-    @staticmethod
-    def _create_osc_fit(freqs, gaus_params):
-        """Generate the fit of the oscillations component of the PSD.
-
-        Parameters
-        ----------
-        freqs : 1d array
-            Frequency values for the PSD, in linear scale.
-        gaus_params : 2d array
-            Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
-
-        Returns
-        -------
-        1d array
-            Values of the oscillation fit.
-        """
-
-        return gaussian_function(freqs, *np.ndarray.flatten(gaus_params))
 
 
     def _fit_oscs(self, flat_iter):
@@ -811,7 +774,7 @@ class FOOOF(object):
             Frequency values for the PSD, in linear space.
         psd : 1d or 2d array
             Power values, in linear space. Either 1d vector, or 2d as [n_psds, n_freqs].
-        freq_range :
+        freq_range : list of [float, float]
             Frequency range to restrict PSD to. If None, keeps the entire range.
         verbose : bool, optional
             Whether to be verbose in printing out warnings.
@@ -823,9 +786,9 @@ class FOOOF(object):
         psd : 1d or 2d array
             Power values, in linear space. Either 1d vector, or 2d as [n_psds, n_freqs].
         freq_range : list of [float, float]
-            Frequency range - minimum and maximum values of the frequency vector.
+            Minimum and maximum values of the frequency vector.
         freq_res : float
-            Frequency resolution of the PSD.
+            Frequency resolution of the power spectrum.
         """
 
         if freqs.shape[-1] != psd.shape[-1]:
@@ -870,7 +833,7 @@ class FOOOF(object):
 
         # Reconstruct frequency vector, if data available to do so
         if self.freq_res:
-            self.freqs = mk_freq_vector(self.freq_range, self.freq_res)
+            self.freqs = gen_freqs(self.freq_range, self.freq_res)
 
 
     def _check_loaded_settings(self, data):
@@ -903,6 +866,7 @@ class FOOOF(object):
             setattr(self, setting, None)
 
 
+    # TODO: move to fooof.core.funcs / replace with function from there
     def _infer_knee(self):
         """Infer from background params, whether knee fitting was used, and update settings."""
 
@@ -918,6 +882,6 @@ class FOOOF(object):
     def _regenerate_model(self):
         """Regenerate model fit from parameters."""
 
-        self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
-        self._oscillation_fit = self._create_osc_fit(self.freqs, self._gaussian_params)
+        self._background_fit = gen_bg(self.freqs, self.background_params_)
+        self._oscillation_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
         self.psd_fit_ = self._oscillation_fit + self._background_fit
