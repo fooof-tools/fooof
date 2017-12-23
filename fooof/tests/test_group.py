@@ -14,7 +14,7 @@ from fooof import FOOOFGroup
 from fooof.fit import FOOOFResult
 from fooof.synth import gen_group_power_spectra
 
-from fooof.tests.utils import default_group_params
+from fooof.tests.utils import default_group_params, plot_test
 
 ###################################################################################################
 ###################################################################################################
@@ -22,6 +22,7 @@ from fooof.tests.utils import default_group_params
 def test_fg():
     """Check FOOOFGroup object initializes properly."""
 
+    # Doesn't assert fg itself, as it return false when group_results are empty
     fg = FOOOFGroup()
     assert True
 
@@ -61,20 +62,22 @@ def test_fg_fit_par():
     assert isinstance(out[0], FOOOFResult)
     assert np.all(out[1].background_params)
 
-def test_fg_print_get(tfg):
-    """Check methods that print, plot."""
+def test_fg_print(tfg):
+    """Check print method (alias)."""
 
     tfg.print_results()
-    out = tfg.get_results()
-
     assert True
 
+def test_get(tfg):
+    """Check get results method."""
+
+    assert tfg.get_results()
+
+@plot_test
 def test_fg_plot(tfg, skip_if_no_mpl):
     """Check alias method for plot."""
 
     tfg.plot()
-
-    assert True
 
 def test_fg_load():
     """Test load into FOOOFGroup. Note: loads files from test_core_io."""

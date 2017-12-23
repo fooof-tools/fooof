@@ -14,7 +14,7 @@ import pkg_resources as pkg
 from fooof import FOOOF
 from fooof.synth import gen_power_spectrum
 
-from fooof.tests.utils import get_tfm
+from fooof.tests.utils import get_tfm, plot_test
 
 ###################################################################################################
 ###################################################################################################
@@ -114,14 +114,11 @@ def test_fooof_prints_get(tfm):
     out = tfm.get_results()
     assert out
 
+@plot_test
 def test_fooof_plot(tfm, skip_if_no_mpl):
+    """Check the alias to plot FOOOF."""
 
     tfm.plot()
-
-    # Check raises error with no data
-    ntfm = FOOOF()
-    with raises(ValueError):
-        ntfm.plot()
 
 def test_fooof_resets():
     """Check that all relevant data is cleared in the resest method."""
