@@ -109,8 +109,8 @@ def gen_group_power_spectra(n_psds, freq_range, bgp_opts, gauss_opts, nlv=0.005,
     return xs, ys
 
 
-def gen_bg(xs, background_params, background_mode=None):
-    """Generate background values.
+def gen_background(xs, background_params, background_mode=None):
+    """Generate background values, from parameter definition.
 
     Parameters
     ----------
@@ -137,7 +137,7 @@ def gen_bg(xs, background_params, background_mode=None):
 
 
 def gen_peaks(xs, gauss_params):
-    """Generate peaks values.
+    """Generate peaks values, from parameter definition.
 
     Parameters
     ----------
@@ -175,7 +175,7 @@ def _gen_power_vals(xs, bg_params, gauss_params, nlv):
         Power values (linear).
     """
 
-    background = gen_bg(xs, bg_params, infer_bg_func(bg_params))
+    background = gen_background(xs, bg_params, infer_bg_func(bg_params))
     peaks = gen_peaks(xs, gauss_params)
     noise = np.random.normal(0, nlv, len(xs))
 

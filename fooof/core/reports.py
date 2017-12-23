@@ -13,7 +13,7 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def create_report_fm(fm, file_name, file_path='', plt_log=False):
+def save_report_fm(fm, file_name, file_path='', plt_log=False):
     """Generate and save out a as PDF a report for a FOOOF object.
 
     Parameters
@@ -60,7 +60,7 @@ def create_report_fm(fm, file_name, file_path='', plt_log=False):
 
 
 @check_dependency(plt, 'matplotlib')
-def create_report_fg(fg, file_name, file_path=''):
+def save_report_fg(fg, file_name, file_path=''):
     """Generate and save out as a PDF a report for a FOOOFGroup object.
 
     Parameters

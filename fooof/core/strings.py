@@ -14,8 +14,8 @@ SCV = 70
 ###################################################################################################
 ###################################################################################################
 
-def gen_bw_warn_str(freq_res, bwl):
-    """Generate a string representation of warning about bandwidth limits.
+def gen_wid_warn_str(freq_res, bwl):
+    """Generate a string representation of warning about peak width limits.
 
     Parameters
     ----------
@@ -81,13 +81,13 @@ def gen_settings_str(f_obj, description=False, concise=False):
         # Settings - include descriptions if requested
         *[el for el in ['Fit Knee : {}'.format(f_obj.background_mode),
                         '{}'.format(desc['background_mode']),
-                        'Bandwidth Limits : {}'.format(f_obj.bandwidth_limits),
+                        'Bandwidth Limits : {}'.format(f_obj.peak_width_limits),
                         '{}'.format(desc['bw_lims']),
-                        'Max Number of Oscillations : {}'.format(f_obj.max_n_gauss),
+                        'Max Number of Oscillations : {}'.format(f_obj.max_n_peaks),
                         '{}'.format(desc['num_oscs']),
-                        'Minimum Amplitude : {}'.format(f_obj.min_amp),
+                        'Minimum Amplitude : {}'.format(f_obj.min_peak_amplitude),
                         '{}'.format(desc['min_amp']),
-                        'Amplitude Threshold: {}'.format(f_obj.amp_std_thresh),
+                        'Amplitude Threshold: {}'.format(f_obj.min_peak_threshold),
                         '{}'.format(desc['amp_thresh'])] if el != ''],
 
         # Footer
@@ -144,14 +144,14 @@ def gen_results_str_fm(fm, concise=False):
 
         # Oscillation parameters
         '{} oscillations were found:'.format(
-            len(fm.oscillation_params_)),
+            len(fm.peak_params_)),
         *['CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]) \
-          for op in fm.oscillation_params_],
+          for op in fm.peak_params_],
         '',
 
         # R^2 and error
         'Goodness of fit metrics:',
-        'R^2 of model fit is {:5.4f}'.format(fm.r2_),
+        'R^2 of model fit is {:5.4f}'.format(fm.r_squared_),
         'Root mean squared error is {:5.4f}'.format(
             fm.error_),
         '',
@@ -185,8 +185,8 @@ def gen_results_str_fg(fg, concise=False):
         raise ValueError('Model fit has not been run - can not proceed.')
 
     # Extract all the relevant data for printing
-    cens = fg.get_all_data('oscillation_params', 0)
-    r2s = fg.get_all_data('r2')
+    cens = fg.get_all_data('peak_params', 0)
+    r2s = fg.get_all_data('r_squared')
     errors = fg.get_all_data('error')
     if fg.background_mode == 'knee':
         kns = fg.get_all_data('background_params', 1)
@@ -251,7 +251,7 @@ def gen_results_str_fg(fg, concise=False):
     return output
 
 
-def gen_report_str(concise=False):
+def gen_issue_str(concise=False):
     """Generate a string representation of instructions to report an issue.
 
     Parameters

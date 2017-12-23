@@ -83,7 +83,7 @@ def plot_fg_gf(fg, ax=None):
     """
 
     plot_scatter_2(fg.get_all_data('error'), 'Error',
-                   fg.get_all_data('r2'), 'R^2', 'Goodness of Fit', ax=ax)
+                   fg.get_all_data('r_squared'), 'R^2', 'Goodness of Fit', ax=ax)
 
 
 @check_dependency(plt, 'matplotlib')
@@ -98,5 +98,5 @@ def plot_fg_osc_cens(fg, ax=None):
         Figure axes upon which to plot.
     """
 
-    plot_hist(fg.get_all_data('oscillation_params', 0), 'Center Frequency',
+    plot_hist(fg.get_all_data('peak_params', 0), 'Center Frequency',
               'Oscillations', x_lims=fg.freq_range, ax=ax)

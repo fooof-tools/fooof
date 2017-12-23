@@ -39,13 +39,15 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
         fig, ax = plt.subplots(figsize=(12, 10))
 
     # Create the plot, adding data as is available
-    if np.all(fm.psd):
-        plot_psd(fm.freqs, fm.psd, plt_log, ax, color='k', linewidth=1.0, label='Original PSD')
-    if np.all(fm.psd_fit_):
-        plot_psd(fm.freqs, fm.psd_fit_, plt_log, ax,
+    if np.all(fm.power_spectrum):
+        plot_psd(fm.freqs, fm.power_spectrum, plt_log, ax,
+                 color='k', linewidth=1.0, label='Original PSD')
+    if np.all(fm.fooofed_spectrum_):
+        plot_psd(fm.freqs, fm.fooofed_spectrum_, plt_log, ax,
                  color='r', linewidth=3.0, alpha=0.5, label='Full model fit')
-        plot_psd(fm.freqs, fm._background_fit, plt_log, ax,
-                 color='b', linestyle='dashed', linewidth=3.0, alpha=0.5, label='Background Fit')
+        plot_psd(fm.freqs, fm._bg_fit, plt_log, ax,
+                 color='b', linestyle='dashed', linewidth=3.0,
+                 alpha=0.5, label='Background Fit')
 
     # Save out figure, if requested
     if save_fig:
@@ -62,7 +64,7 @@ def plot_osc_iter(fm):
         FOOOF object, with model fit and data and settings available.
     """
 
-    flatspec = fm._psd_flat
+    flatspec = fm._spectrum_flat
     n_gauss = fm._gaussian_params.shape[0]
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
 
@@ -71,9 +73,9 @@ def plot_osc_iter(fm):
         _, ax = plt.subplots(figsize=(12, 10))
 
         plot_psd(fm.freqs, flatspec, linewidth=2.0, label='Flattened Spectrum', ax=ax)
-        plot_psd(fm.freqs, [fm.amp_std_thresh * np.std(flatspec)]*len(fm.freqs),
+        plot_psd(fm.freqs, [fm.min_peak_threshold * np.std(flatspec)]*len(fm.freqs),
                  color='orange', linestyle='dashed', label='Relative Threshold', ax=ax)
-        plot_psd(fm.freqs, [fm.min_amp]*len(fm.freqs),
+        plot_psd(fm.freqs, [fm.min_peak_amplitude]*len(fm.freqs),
                  color='red', linestyle='dashed', label='Absolute Threshold', ax=ax)
 
         maxi = np.argmax(flatspec)

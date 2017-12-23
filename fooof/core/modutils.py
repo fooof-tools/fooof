@@ -37,7 +37,7 @@ def safe_import(*args):
 def get_obj_desc():
     """Get dictionary specifying FOOOF object names and kind of attributes."""
 
-    attributes = {'results' : ['background_params_', 'oscillation_params_', 'error_', 'r2_',
+    attributes = {'results' : ['background_params_', 'oscillation_params_', 'error_', 'r_squared_',
                                '_gaussian_params', 'freq_range', 'freq_res'],
                   'settings' : ['amp_std_thresh', 'bandwidth_limits', 'bg_use_knee',
                                 'max_n_gauss', 'min_amp'],
