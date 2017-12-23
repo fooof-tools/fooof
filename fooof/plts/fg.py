@@ -27,6 +27,9 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
         Path to directory in which to save. If not provided, saves to current directory.
     """
 
+    if not fg.group_results:
+        raise RuntimeError('No data available to plot - can not proceed.')
+
     fig = plt.figure(figsize=(14, 10))
     gs = gridspec.GridSpec(2, 2, wspace=0.35, hspace=0.25, height_ratios=[1, 1.2])
 

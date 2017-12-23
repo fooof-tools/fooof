@@ -33,7 +33,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
     """
 
     if not np.all(fm.freqs):
-        raise ValueError('No data available to plot - can not proceed.')
+        raise RuntimeError('No data available to plot - can not proceed.')
 
     if not ax:
         fig, ax = plt.subplots(figsize=(12, 10))
