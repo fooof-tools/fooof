@@ -116,9 +116,9 @@ def gen_results_str_fm(fm, concise=False):
         Formatted string of FOOOF model results.
     """
 
+    # Returns a null report if no results are available
     if np.all(np.isnan(fm.background_params_)):
         return _no_model_str(concise)
-        #raise ValueError('Model fit has not been run - can not proceed.')
 
     # Create the formatted strings for printing
     str_lst = [
@@ -338,6 +338,13 @@ def _format(str_lst, concise):
 
 
 def _no_model_str(concise=False):
+    """Creates a null report, for use if the model fit failed, or is unavailable.
+
+    Parameters
+    ----------
+    concise : bool, optional
+        Whether to print the report in a concise mode, or not. default: False
+    """
 
     str_lst = [
         '=',

@@ -1,6 +1,7 @@
 """Tests for fooof.core.strings."""
 
 from fooof.core.strings import *
+from fooof.core.strings import _format, _no_model_str
 
 ###################################################################################################
 ###################################################################################################
@@ -24,3 +25,19 @@ def test_gen_results_str_fg(tfg):
 def test_gen_report_str():
 
     assert gen_report_str()
+
+def test_no_model_str():
+
+    assert _no_model_str()
+
+def test_format():
+
+    str_lst = ['=', '', 'a', '', 'b', '', '=']
+
+    str_out_1 = _format(str_lst, False)
+    assert str_out_1
+    assert str_out_1.count('\n') == 6
+
+    str_out_2 = _format(str_lst, True)
+    assert str_out_2
+    assert str_out_2.count('\n') == 3

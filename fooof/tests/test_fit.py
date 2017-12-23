@@ -86,10 +86,6 @@ def test_fooof_checks():
     tfm = FOOOF()
     with raises(ValueError):
         tfm.fit()
-    # OLD
-    #with raises(ValueError):
-    #    tfm.print_results()
-
 
 def test_fooof_load():
     """Test load into FOOOF. Note: loads files from test_core_io."""
