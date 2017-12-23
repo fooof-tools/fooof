@@ -129,7 +129,7 @@ def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_hist(data, label, title=None, n_bins=20, ax=None):
+def plot_hist(data, label, title=None, n_bins=20, x_lims=None, ax=None):
     """Plot a histogram with the given data.
 
     Parameters
@@ -142,6 +142,8 @@ def plot_hist(data, label, title=None, n_bins=20, ax=None):
         Title for the plot.
     n_bins : int, optional
         Number of bins to use for the histogram. Default: 20
+    x_lims : list of float
+        X-axis limits for the plot.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     """
@@ -149,10 +151,13 @@ def plot_hist(data, label, title=None, n_bins=20, ax=None):
     if not ax:
         _, ax = plt.subplots()
 
-    ax.hist(data, n_bins, alpha=0.8)
+    ax.hist(data[~np.isnan(data)], n_bins, alpha=0.8)
 
     ax.set_xlabel(label, fontsize=12)
     ax.set_ylabel('Count', fontsize=12)
+
+    if x_lims:
+        ax.set_xlim(x_lims)
 
     if title:
         ax.set_title(title, fontsize=16)

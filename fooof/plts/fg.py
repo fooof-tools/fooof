@@ -95,5 +95,5 @@ def plot_fg_osc_cens(fg, ax=None):
         Figure axes upon which to plot.
     """
 
-    plot_hist(fg.get_all_data('oscillation_params', 0),
-              'Center Frequency', 'Oscillations', ax=ax)
+    plot_hist(fg.get_all_data('oscillation_params', 0), 'Center Frequency',
+              'Oscillations', x_lims=fg.freq_range, ax=ax)
