@@ -8,27 +8,27 @@ Notes
 Attributes (private)
 ----------
 _spectrum_flat : 1d array
-    Flattened power_spectrum (background 1/f removed)
+    Flattened power spectrum (background 1/f removed)
 _spectrum_peak_rm : 1d array
-    power_spectrum with oscillations removed (not flattened).
+    Power spectrum with peaks removed (not flattened).
 _gaussian_params : 2d array
     Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
 _bg_fit : 1d array
     Values of the background fit.
 _peak_fit : 1d array
-    Values of the oscillation fit (flattened).
+    Values of the peak fit (flattened).
 _bg_amp_thresh : float
-    Noise threshold for finding oscillations above the background.
+    Noise threshold for finding peaks above the background.
 _bg_guess : list of [float, float, float]
     Guess parameters for fitting background.
 _bg_bounds : tuple of tuple of float
     Upper and lower bounds on fitting background.
 _bw_std_edge : float
-    Bandwidth threshold for edge rejection of oscillations, units of standard deviation.
+    Bandwidth threshold for edge rejection of peaks, in units of gaussian std. deviation.
 _gauss_overlap_thresh : float
-    Degree of overlap (in units of guassian std dev) between gaussian guesses to drop one.
+    Degree of overlap (in units of guassian std. deviation) between gaussian guesses to drop one.
 _gauss_std_limits : list of [float, float]
-    Bandwidth limits, converted to use for gaussian standard deviation parameter.
+    Peak width limits, converted to use for gaussian standard deviation parameter.
 """
 
 import warnings
@@ -55,7 +55,7 @@ FOOOFResult = namedtuple('FOOOFResult', ['background_params', 'peak_params',
                                          'r_squared', 'error', 'gaussian_params'])
 
 class FOOOF(object):
-    """Model the physiological power spectrum as oscillatory peaks and 1/f background.
+    """Model the physiological power spectrum as a combination of 1/f background and peaks.
 
     WARNING: FOOOF expects frequency and power values in linear space.
         Passing in logged frequencies and/or power spectra is not detected,
@@ -63,50 +63,50 @@ class FOOOF(object):
 
     Parameters
     ----------
-    peak_width_limits : tuple of (float, float), optional (default: (0.5, 12.0)
-        Setting to exclude gaussian fits where the bandwidth is implausibly narrow or wide.
-    max_n_peaks : int, optional (default: inf)
-        Maximum number of gaussians to be fit in a single PSD.
-    min_peak_amplitude : float, optional (default: 0)
-        Minimum amplitude threshold for an oscillation to be modeled.
-    min_peak_threshold : float, optional (default: 2.0)
-        Amplitude threshold for detecting oscillatory peaks, units of standard deviation.
+    peak_width_limits : tuple of (float, float), optional
+        Limits on possible peak width, as [lower_bound, upper_bound]. default: [0.5, 12.0]
+    max_n_peaks : int, optional
+        Maximum number of gaussians to be fit in a single spectrum. default: inf
+    min_peak_amplitude : float, optional
+        Minimum amplitude threshold for a peak to be modeled. default: 0
+    min_peak_threshold : float, optional
+        Threshold for detecting peaks, units of standard deviation. default: 2.0
     background_mode : {'fixed', 'knee'}
-        Which approache to take to fitting the background process.
-    verbose : boolean, optional (default: True)
-        Whether to be verbose in printing out warnings.
+        Which approach to take to fitting the background.
+    verbose : boolean, optional
+        Whether to be verbose in printing out warnings. default: True
 
     Attributes
     ----------
     freqs : 1d array
-        Frequency values for the PSD.
+        Frequency values for the power spectrum.
     power_spectrum : 1d array
-        Input power spectral density values.
+        Power spectrum values.
     freq_range : list of [float, float]
-        Frequency range of the PSD.
+        Frequency range of the power spectrum.
     freq_res : float
-        Frequency resolution of the PSD.
+        Frequency resolution of the power spectrum.
     fooofed_spectrum_ : 1d array
-        The full model fit of the PSD: 1/f and oscillations across freq_range.
+        The full model fit of the power spectrum: background and peaks across freq_range.
     background_params_ : 1d array
         Parameters that define the background fit.
     peak_params_ : 2d array
-        Fitted parameter values for the oscillations. Each row is an oscillation, as [CF, Amp, BW].
+        Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
     r_squared_ : float
-        R-squared between the input power_spectrum and the full model fit.
+        R-squared fit between the input power spectrum and the full model fit.
     error_ : float
-        R-squared error of the full model fit.
+        Root mean squared error of the full model fit.
 
     Notes
     -----
-    Input PSDs should be smooth - overly noisy power spectra may lead to bad fits.
+    Input power spectra should be smooth - overly noisy power spectra may lead to bad fits.
     - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
       procedure, or a median filter smoothing on the FFT output before running FOOOF.
-    - Where possible and appropriate, use longer time segments for power_spectrum calculation to
-      get smoother PSDs, as this will give better FOOOF fits.
+    - Where possible and appropriate, use longer time segments for power spectrum calculation to
+      get smoother power spectra, as this will give better FOOOF fits.
     """
 
-    def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_amplitude=0.0,
+    def __init__(self, peak_width_limits=[0.5, 12.0], max_n_peaks=np.inf, min_peak_amplitude=0.0,
                  min_peak_threshold=2.0, background_mode='fixed', verbose=True):
         """Initialize FOOOF object with run parameters."""
 
@@ -120,17 +120,17 @@ class FOOOF(object):
 
         ## SETTINGS - these are updateable by the user if required.
         # Noise threshold, as a percentage of the lowest amplitude values in the total data to fit.
-        #  Defines the minimum amplitude, above residuals, to be considered an oscillation.
+        #  Defines the minimum amplitude, above residuals, to be considered a peak.
         self._bg_amp_thresh = 0.025
         # Guess parameters for background fitting, [offset, knee, slope]
-        #  If offset guess is None, the first value of the power_spectrum is used as offset guess
+        #  If offset guess is None, the first value of the power spectrum is used as offset guess
         self._bg_guess = [None, 0, 2]
         # Bounds for background fitting, as: ((offset_low_bound, knee_low_bound, sl_low_bound),
         #                                     (offset_high_bound, knee_high_bound, sl_high_bound))
         #  By default, background fitting is unbound, but can be restricted here, if desired
         #    Even if fitting without knee, leave bounds for knee (they are dropped later)
         self._bg_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
-        # Threshold for how far (units of gaus std dev) an oscillation has to be from edge to keep.
+        # Threshold for how far (units of gaus std dev) a peak has to be from edge to keep.
         self._bw_std_edge = 1.0
         # Degree of overlap  (units of gauss std dev) between gaussians for one to be dropped
         self._gauss_overlap_thresh = 1.0
@@ -155,7 +155,7 @@ class FOOOF(object):
         #   Otherwise, assume settings are unknown (have been cleared) and leave as None
         if self.peak_width_limits:
 
-            # Bandwidth limits are given in 2-sided oscillation bandwidth.
+            # Bandwidth limits are given in 2-sided peak bandwidth.
             #  Convert to gaussian std parameter limits.
             self._gauss_std_limits = [bwl / 2 for bwl in self.peak_width_limits]
             # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
@@ -163,7 +163,7 @@ class FOOOF(object):
                 else tuple(bound[0::2] for bound in self._bg_bounds)
 
 
-    def _reset_data_results(self, clear_freqs=True, clear_psd=True, clear_results=True):
+    def _reset_data_results(self, clear_freqs=True, clear_spectrum=True, clear_results=True):
         """Set (or reset) data & results attributes to empty.
 
         Parameters
@@ -181,7 +181,7 @@ class FOOOF(object):
             self.freq_range = None
             self.freq_res = None
 
-        if clear_psd:
+        if clear_spectrum:
             self.power_spectrum = None
 
         if clear_results:
@@ -200,16 +200,16 @@ class FOOOF(object):
 
 
     def add_data(self, freqs, power_spectrum, freq_range=None):
-        """Add data (frequencies and power_spectrum values) to FOOOF object.
+        """Add data (frequencies and power spectrum values) to FOOOF object.
 
         Parameters
         ----------
         freqs : 1d array
-            Frequency values for the power_spectrum, in linear space.
+            Frequency values for the power spectrum, in linear space.
         power_spectrum : 1d array
-            Power spectral density values, in linear space.
+            Power spectrum values, in linear space.
         freq_range : list of [float, float], optional
-            Frequency range to restrict power_spectrum to. If not provided, keeps the entire range.
+            Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
         """
 
         if freqs.ndim != power_spectrum.ndim != 1:
@@ -246,7 +246,7 @@ class FOOOF(object):
         Parameters
         ----------
         freqs : 1d array, optional
-            Frequency values for the power_spectrum.
+            Frequency values for the power spectrum.
         power_spectrum : 1d array, optional
             Power spectral density values.
         freq_range : list of [float, float], optional
@@ -265,16 +265,16 @@ class FOOOF(object):
 
 
     def fit(self, freqs=None, power_spectrum=None, freq_range=None):
-        """Fit the full power_spectrum as 1/f and gaussian oscillations.
+        """Fit the full power spectrum as a combination of background and peaks.
 
         Parameters
         ----------
         freqs : 1d array, optional
-            Frequency values for the power_spectrum, in linear space.
+            Frequency values for the power spectrum, in linear space.
         power_spectrum : 1d array, optional
-            Power spectral density values, in linear space.
+            Power spectrum values, in linear space.
         freq_range : list of [float, float], optional
-            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+            Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
 
         Notes
         -----
@@ -284,7 +284,7 @@ class FOOOF(object):
         # If freqs & power_spectrum provided together, add data to object.
         if isinstance(freqs, np.ndarray) and isinstance(power_spectrum, np.ndarray):
             self.add_data(freqs, power_spectrum, freq_range)
-        # If power_spectrum provided alone, add to object, and use existing frequency data
+        # If power spectrum provided alone, add to object, and use existing frequency data
         #  Note: be careful passing in power_spectrum data like this:
         #    It assumes the power_spectrum is already logged, with correct freq_range.
         elif isinstance(power_spectrum, np.ndarray):
@@ -294,7 +294,7 @@ class FOOOF(object):
         if not (np.all(self.freqs) and np.all(self.power_spectrum)):
             raise ValueError('No data available to fit - can not proceed.')
 
-        # Check and warn about bandwidth limits (if in verbose mode)
+        # Check and warn about width limits (if in verbose mode)
         if self.verbose:
             self._check_width_limits()
 
@@ -309,17 +309,17 @@ class FOOOF(object):
             # Flatten the power_spectrum using fit background.
             self._spectrum_flat = self.power_spectrum - self._bg_fit
 
-            # Find oscillations, and fit them with gaussians.
+            # Find peaks, and fit them with gaussians.
             self._gaussian_params = self._fit_peaks(np.copy(self._spectrum_flat))
 
-            # Calculate the oscillation fit.
-            #  Note: if no oscillations are found, this creates a flat (all zero) oscillation fit.
+            # Calculate the peak fit.
+            #  Note: if no peaks are found, this creates a flat (all zero) peak fit.
             self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
 
-            # Create oscillation-removed (but not flattened) PSD.
+            # Create peak-removed (but not flattened) power spectrum.
             self._spectrum_peak_rm = self.power_spectrum - self._peak_fit
 
-            # Run final background fit on oscillation-removed PSD.
+            # Run final background fit on peak-removed power spectrum.
             #   Note: This overwrites previous background fit.
             self.background_params_ = self._simple_bg_fit(self.freqs, self._spectrum_peak_rm)
             self._bg_fit = gen_background(self.freqs, self.background_params_)
@@ -327,7 +327,7 @@ class FOOOF(object):
             # Create full power_spectrum model fit.
             self.fooofed_spectrum_ = self._peak_fit + self._bg_fit
 
-            # Convert gaussian definitions to oscillation parameters
+            # Convert gaussian definitions to peak parameters
             self.peak_params_ = self._create_peak_params(self._gaussian_params)
 
             # Calculate R^2 and error of the model fit.
@@ -338,8 +338,8 @@ class FOOOF(object):
         except RuntimeError:
 
             # Clear any interim model results that may have run
-            #  Partial model results shouldn't be interpreted
-            self._reset_data_results(False, False, True)
+            #  Partial model results shouldn't be interpreted in light of overall failure
+            self._reset_data_results(clear_freqs=False, clear_spectrum=False, clear_results=True)
 
             # Print out status
             if self.verbose:
@@ -351,8 +351,8 @@ class FOOOF(object):
 
         Parameters
         ----------
-        description : bool, optional (default: True)
-            Whether to print out a description with current settings.
+        description : bool, optional
+            Whether to print out a description with current settings. default: False
         concise : bool, optional
             Whether to print the report in a concise mode, or not. default: True
         """
@@ -391,6 +391,7 @@ class FOOOF(object):
         return FOOOFResult(self.background_params_, self.peak_params_, self.r_squared_,
                            self.error_, self._gaussian_params)
 
+
     @copy_doc_func_to_method(plot_fm)
     def plot(self, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path='', ax=None):
 
@@ -417,7 +418,7 @@ class FOOOF(object):
         ----------
         file_name : str or FileObject, optional
             File from which to load data.
-        file_path : str
+        file_path : str, optional
             Path to directory from which to load. If not provided, loads from current directory.
         """
 
@@ -432,9 +433,9 @@ class FOOOF(object):
 
 
     def _check_width_limits(self):
-        """Check and warn about bandwidth limits / frequency resolution interaction."""
+        """Check and warn about peak width limits / frequency resolution interaction."""
 
-        # Check bandwidth limits against frequency resolution; warn if too close.
+        # Check peak width limits against frequency resolution; warn if too close.
         if 1.5 * self.freq_res >= self.peak_width_limits[0]:
             print(gen_wid_warn_str(self.freq_res, self.peak_width_limits[0]))
 
@@ -463,19 +464,19 @@ class FOOOF(object):
 
 
     def _simple_bg_fit(self, freqs, power_spectrum):
-        """Fit the 1/f background of power_spectrum using a lorentzian fit.
+        """Fit the 1/f background of power spectrum.
 
         Parameters
         ----------
         freqs : 1d array
             Frequency values for the power_spectrum, in linear scale.
         power_spectrum : 1d array
-            Power spectral density values, in log10 scale.
+            Power spectrum values, in log10 scale.
 
         Returns
         -------
-        background_params : 1d array of [offset, knee, slope]
-            Parameter estimates for background fit. Only includes knee if set to fit knee.
+        background_params : 1d array
+            Parameter estimates for background fit.
         """
 
         # Set guess params for lorentzian background fit, guess params set at init
@@ -497,19 +498,19 @@ class FOOOF(object):
 
 
     def _robust_bg_fit(self, freqs, power_spectrum):
-        """Fit the 1/f background of power_spectrum using an lorentzian fit, ignoring outliers.
+        """Fit the 1/f background of power spectrum robustly, ignoring outliers.
 
         Parameters
         ----------
         freqs : 1d array
-            Frequency values for the power_spectrum, in linear scale.
+            Frequency values for the power spectrum, in linear scale.
         power_spectrum : 1d array
-            Power spectral density values, in log10 scale.
+            Power spectrum values, in log10 scale.
 
         Returns
         -------
-        background_params : 1d array of [offset, knee, slope]
-            Parameter estimates for background fit. Only includes knee if set to fit knee.
+        background_params : 1d array
+            Parameter estimates for background fit.
         """
 
         # Do a quick, initial background fit.
@@ -517,35 +518,35 @@ class FOOOF(object):
         initial_fit = gen_background(freqs, popt)
 
         # Flatten power_spectrum based on initial background fit.
-        psd_flat = power_spectrum - initial_fit
+        flatspec = power_spectrum - initial_fit
 
         # Flatten outliers - any points that drop below 0.
-        psd_flat[psd_flat < 0] = 0
+        flatspec[flatspec < 0] = 0
 
         # Amplitude threshold - in terms of # of points.
-        perc_thresh = np.percentile(psd_flat, self._bg_amp_thresh)
-        amp_mask = psd_flat <= perc_thresh
+        perc_thresh = np.percentile(flatspec, self._bg_amp_thresh)
+        amp_mask = flatspec <= perc_thresh
         freqs_ignore = freqs[amp_mask]
-        psd_ignore = power_spectrum[amp_mask]
+        spectrum_ignore = power_spectrum[amp_mask]
 
         # Second background fit - using results of first fit as guess parameters.
         #  See note in _simple_bg_fit about warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             background_params, _ = curve_fit(get_bg_func(self.background_mode),
-                                             freqs_ignore, psd_ignore, p0=popt,
+                                             freqs_ignore, spectrum_ignore, p0=popt,
                                              maxfev=5000, bounds=self._bg_bounds)
 
         return background_params
 
 
     def _fit_peaks(self, flat_iter):
-        """Iteratively fit oscillations to flattened spectrum.
+        """Iteratively fit peaks to flattened spectrum.
 
         Parameters
         ----------
         flat_iter : 1d array
-            Flattened power_spectrum values.
+            Flattened power spectrum values.
 
         Returns
         -------
@@ -556,14 +557,15 @@ class FOOOF(object):
         # Initialize matrix of guess parameters for gaussian fitting.
         guess = np.empty([0, 3])
 
-        # Find oscillations: Loop through, checking residuals, stopping based on std check
+        # Find peak: Loop through, finding a candidate peak, and fitting with a guass gaussian.
+        #  Stopping procedure based on either # of peaks, or the threshold/amplitude limits.
         while len(guess) < self.max_n_peaks:
 
-            # Find candidate oscillation.
+            # Find candidate peak - the maximum point of the flattened spectrum.
             max_ind = np.argmax(flat_iter)
             max_amp = flat_iter[max_ind]
 
-            # Stop searching for oscillations peaks once drops below amplitude threshold.
+            # Stop searching for peaks peaks once drops below amplitude threshold.
             if max_amp <= self.min_peak_threshold * np.std(flat_iter):
                 break
 
@@ -583,7 +585,7 @@ class FOOOF(object):
                            if flat_iter[x] <= half_amp), None)
 
             # Keep bandwidth estimation from the shortest side.
-            #  We grab shortest to avoid estimating very large std from overalapping oscillations.
+            #  We grab shortest to avoid estimating very large std from overalapping peaks.
             # Grab the shortest side, ignoring a side if the half max was not found.
             #  Note: will fail if both le & ri ind's end up as None (probably shouldn't happen).
             shortest_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
@@ -606,12 +608,12 @@ class FOOOF(object):
             osc_gauss = gaussian_function(self.freqs, guess_freq, guess_amp, guess_std)
             flat_iter = flat_iter - osc_gauss
 
-        # Check oscillations based on edges, and on overlap
+        # Check peaks based on edges, and on overlap
         #  Drop any that violate requirements.
         guess = self._drop_peak_cf(guess)
         guess = self._drop_peak_overlap(guess)
 
-        # If there are oscillation guesses, fit the oscillations, and sort results.
+        # If there are peak guesses, fit the peaks, and sort results.
         if len(guess) > 0:
             gaussian_params = self._fit_peak_guess(guess)
             gaussian_params = gaussian_params[gaussian_params[:, 0].argsort()]
@@ -622,20 +624,20 @@ class FOOOF(object):
 
 
     def _fit_peak_guess(self, guess):
-        """Fit a guess of oscillaton gaussian fit.
+        """Fit a guess of peak gaussian fit(s).
 
         Parameters
         ----------
         guess : 2d array
-            Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks. [n_oscs, 3], row: [CF, amp, BW].
 
         Returns
         -------
         gaussian_params : 2d array
-            Parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
+            Parameters for gaussian fits to peaks. [n_oscs, 3], row: [CF, amp, BW].
         """
 
-        # Set the bounds for center frequency, positive amp value, and gauss limits.
+        # Set the bounds for center frequency, enforce positive amp value, and set width limits.
         #  Note that osc_guess is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std.
         #  This set of list comprehensions is a way to end up with bounds in the form:
         #   ((cf_low_bound_osc1, amp_low_bound_osc1, bw_low_bound_osc1, *repeated for n oscs*),
@@ -651,7 +653,7 @@ class FOOOF(object):
         # Flatten guess, for use with curve fit.
         guess = np.ndarray.flatten(guess)
 
-        # Fit the oscillations.
+        # Fit the peaks.
         gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._spectrum_flat,
                                        p0=guess, maxfev=5000, bounds=gaus_param_bounds)
 
@@ -662,7 +664,7 @@ class FOOOF(object):
 
 
     def _create_peak_params(self, gaus_params):
-        """Copies over the gaussian params to oscillation outputs, updating as appropriate.
+        """Copies over the gaussian params to peak outputs, updating as appropriate.
 
         Parameters
         ----------
@@ -672,104 +674,104 @@ class FOOOF(object):
 
         Returns
         -------
-        oscillation_params :  2d array
-            Fitted parameter values for the oscillations.
-                Each row is an oscillation, as [CF, Amp, BW].
+        peak_params :  2d array
+            Fitted parameter values for the peaks.
+                Each row is a peak, as [CF, Amp, BW].
 
         Notes
         -----
-        Amplitude is updated to the amplitude of oscillation above the background fit.
+        Amplitude is updated to the amplitude of peak above the background fit.
           - This is returned instead of the gaussian amplitude
-            - Gaussian amplitude is harder to interpret, due to osc overlaps.
+            - Gaussian amplitude is harder to interpret, due to peak overlaps.
         Bandwidth is updated to be 'both-sided'
           - This is as opposed to gaussian std param, which is 1-sided.
         Performing this conversion requires that the model be run.
-          - In particular, freqs, psd_fit and _bg_fit are required to be available.
+          - In particular, freqs, fooofed_spectrum and _bg_fit are required to be available.
         """
 
-        oscillation_params = np.empty([0, 3])
+        peak_params = np.empty([0, 3])
 
-        for ii, osc in enumerate(gaus_params):
+        for ii, peak in enumerate(gaus_params):
 
             # Gets the index of the power_spectrum at the frequency closest to the CF of the osc
-            ind = min(range(len(self.freqs)), key=lambda ii: abs(self.freqs[ii] - osc[0]))
+            ind = min(range(len(self.freqs)), key=lambda ii: abs(self.freqs[ii] - peak[0]))
 
-            # Collect oscillation parameter data
-            oscillation_params = np.vstack((oscillation_params,
-                                            [osc[0],
+            # Collect peak parameter data
+            peak_params = np.vstack((peak_params,
+                                            [peak[0],
                                              self.fooofed_spectrum_[ind] - self._bg_fit[ind],
-                                             osc[2] * 2]))
+                                             peak[2] * 2]))
 
-        return oscillation_params
+        return peak_params
 
 
     def _drop_peak_cf(self, guess):
-        """Check whether to drop oscillations based CF proximity to edge.
+        """Check whether to drop peaks based CF proximity to edge.
 
         Parameters
         ----------
         guess : 2d array
-            Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks. [n_oscs, 3], row: [CF, amp, BW].
 
         Returns
         -------
         guess : 2d array
-            Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks. [n_oscs, 3], row: [CF, amp, BW].
         """
 
         cf_params = [item[0] for item in guess]
         bw_params = [item[2] * self._bw_std_edge for item in guess]
 
-        # Check if oscs within 1 BW (std dev) of the edge.
+        # Check if peaks within drop threshold from the edge of the frequency range.
         keep_osc = \
             (np.abs(np.subtract(cf_params, self.freq_range[0])) > bw_params) & \
             (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)
 
-        # Drop oscillations that fail CF edge criterion
+        # Drop peaks that fail CF edge criterion
         guess = np.array([d for (d, keep) in zip(guess, keep_osc) if keep])
 
         return guess
 
 
     def _drop_peak_overlap(self, guess):
-        """Checks whether to drop oscillations based on overlap.
+        """Checks whether to drop peaks based on overlap.
 
         Parameters
         ----------
         guess : 2d array
-            Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks. [n_oscs, 3], row: [CF, amp, BW].
 
         Returns
         -------
         guess : 2d array
-            Guess parameters for gaussian fits to oscillations. [n_oscs, 3], row: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks. [n_oscs, 3], row: [CF, amp, BW].
 
         Notes
         -----
-        For any oscillation guesses with an overlap of their standard deviations,
-            only the large oscillation guess is kept.
+        For any peak guesses with an overlap that crosses threshold,
+            the lower amplitude guess is dropped.
         """
 
-        # Sort the oscillations guesses, so can check overlap of adjacent oscillations
+        # Sort the peak guesses, so can check overlap of adjacent peaks
         guess = sorted(guess, key=lambda x: float(x[0]))
 
         # Calculate standard deviation bounds for checking amount of overlap
-        bounds = [[osc[0] - osc[2] * self._gauss_overlap_thresh, osc[0],
-                   osc[0] + osc[2] * self._gauss_overlap_thresh] for osc in guess]
+        bounds = [[peak[0] - peak[2] * self._gauss_overlap_thresh, peak[0],
+                   peak[0] + peak[2] * self._gauss_overlap_thresh] for peak in guess]
 
         drop_inds = []
 
-        # Loop through oscillation bounds, comparing current bound to that of next osc
+        # Loop through peak bounds, comparing current bound to that of next peak
         for ind, b_0 in enumerate(bounds[:-1]):
             b_1 = bounds[ind + 1]
 
-            # Check if bound of current oscillations extends into next oscillation
+            # Check if bound of current peak extends into next peak
             if b_0[1] > b_1[0]:
 
-                # If so, get the index of the lowest amplitude oscillation (to drop)
+                # If so, get the index of the lowest amplitude peak (to drop)
                 drop_inds.append([ind, ind + 1][np.argmin([guess[ind][1], guess[ind + 1][1]])])
 
-        # Drop any oscillations guesses that overlap
+        # Drop any peaks guesses that overlap too much, based on threshold.
         keep_osc = [True if j not in drop_inds else False for j in range(len(guess))]
         guess = np.array([d for (d, keep) in zip(guess, keep_osc) if keep])
 
@@ -798,9 +800,9 @@ class FOOOF(object):
         freqs : 1d array
             Frequency values for the power_spectrum, in linear space.
         power_spectrum : 1d or 2d array
-            Power values, in linear space. Either 1d vector, or 2d as [n_power_spectra, n_freqs].
+            Power spectrum values, in linear space. 1d vector, or 2d as [n_power_spectra, n_freqs].
         freq_range : list of [float, float]
-            Frequency range to restrict power_spectrum to. If None, keeps the entire range.
+            Frequency range to restrict power spectrum to. If None, keeps the entire range.
         verbose : bool, optional
             Whether to be verbose in printing out warnings.
 
@@ -809,7 +811,7 @@ class FOOOF(object):
         freqs : 1d array
             Frequency values for the power_spectrum, in linear space.
         power_spectrum : 1d or 2d array
-            Power values, in linear space. Either 1d vector, or 2d as [n_power_specta, n_freqs].
+            Power spectrum values, in linear space. 1d vector, or 2d as [n_power_specta, n_freqs].
         freq_range : list of [float, float]
             Minimum and maximum values of the frequency vector.
         freq_res : float
@@ -831,7 +833,7 @@ class FOOOF(object):
             freqs, power_spectrum = trim_psd(freqs, power_spectrum, [freqs[1], freqs.max()])
             if verbose:
                 print("\nFOOOF WARNING: Skipping frequency == 0,"
-                      " as this causes problem with fitting.")
+                      " as this causes a problem with fitting.")
 
         # Calculate frequency resolution, and actual frequency range of the data
         freq_range = [freqs.min(), freqs.max()]

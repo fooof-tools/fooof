@@ -66,16 +66,16 @@ class FOOOFGroup(FOOOF):
 
 
     def add_data(self, freqs, power_spectra, freq_range=None):
-        """Add data (frequencies and PSD values) to FOOOFGroup object.
+        """Add data (frequencies and power spectrum values) to FOOOFGroup object.
 
         Parameters
         ----------
         freqs : 1d array
-            Frequency values for the PSD, in linear space.
-        psd : 2d array
-            Matrix of PSD values, in linear space. Shape should be [n_power_spectra, n_freqs].
+            Frequency values for the power spectra, in linear space.
+        power_spectra : 2d array
+            Matrix of power spectrum values, in linear space. Shape: [n_power_spectra, n_freqs].
         freq_range : list of [float, float], optional
-            Frequency range to restrict PSD to. If not provided, keeps the entire range.
+            Frequency range to restrict power spectra to. If not provided, keeps the entire range.
         """
 
         if freqs.ndim != 1 or power_spectra.ndim != 2:
@@ -93,7 +93,7 @@ class FOOOFGroup(FOOOF):
         freqs : 1d array, optional
             Frequency values for the power_spectra, in linear space.
         power_spectra : 2d array, optional
-            Matrix of PSD values, in linear space. Shape should be [n_power_spectra, n_freqs].
+            Matrix of power spectrum values, in linear space. Shape: [n_power_spectra, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         n_jobs : int, optional
@@ -118,7 +118,7 @@ class FOOOFGroup(FOOOF):
         freqs : 1d array, optional
             Frequency values for the power_spectra, in linear space.
         power_spectra : 2d array, optional
-            Matrix of PSD values, in linear space. Shape should be [n_power_spectra, n_freqs].
+            Matrix of power spectrum values, in linear space. Shape: [n_power_spectra, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         n_jobs : int, optional
@@ -130,7 +130,7 @@ class FOOOFGroup(FOOOF):
         Data is optional if data has been already been added to FOOOF object.
         """
 
-        # If freqs & psd provided together, add data to object.
+        # If freqs & power spectra provided together, add data to object.
         if isinstance(freqs, np.ndarray) and isinstance(power_spectra, np.ndarray):
             self.add_data(freqs, power_spectra, freq_range)
 
@@ -239,7 +239,7 @@ class FOOOFGroup(FOOOF):
 
 
     def get_fooof(self, ind, regenerate=False):
-        """Return a FOOOF object from specified PSD / model in a FOOOFGroup object.
+        """Return a FOOOF object from specified model in a FOOOFGroup object.
 
         Parameters
         ----------
@@ -258,12 +258,12 @@ class FOOOFGroup(FOOOF):
         fm = FOOOF(self.peak_width_limits, self.max_n_peaks, self.min_peak_amplitude,
                    self.min_peak_amplitude, self.background_mode, self.verbose)
 
-        # Add data for specified single PSD, if available
-        #  The PSD is inverted back to linear, as it's re-logged when added to FOOOF
+        # Add data for specified single power spectrum, if available
+        #  The power spectrum is inverted back to linear, as it's re-logged when added to FOOOF
         if np.any(self.power_spectra):
             fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
 
-        # Add results for specified PSD, regenerating full fit if requested
+        # Add results for specified power spectrum, regenerating full fit if requested
         fm.add_results(self.group_results[ind], regenerate=regenerate)
 
         return fm
@@ -295,7 +295,7 @@ class FOOOFGroup(FOOOF):
     def _check_width_limits(self):
         """Check and warn about bandwidth limits / frequency resolution interaction."""
 
-        # Only check & warn on first PSD (to avoid spamming stdout for every PSD)
+        # Only check & warn on first power spectrum (to avoid spamming stdout for each spectrum).
         if self.power_spectra[0, 0] == self.power_spectrum[0]:
             super()._check_width_limits()
 
