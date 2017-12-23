@@ -45,7 +45,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
         plot_psd(fm.freqs, fm.psd_fit_, plt_log, ax,
                  color='r', linewidth=3.0, alpha=0.5, label='Full model fit')
         plot_psd(fm.freqs, fm._background_fit, plt_log, ax,
-                 color='b', linestyle='dashed', linewidth=3.0, alpha=0.5, label='Full model fit')
+                 color='b', linestyle='dashed', linewidth=3.0, alpha=0.5, label='Background Fit')
 
     # Save out figure, if requested
     if save_fig:
