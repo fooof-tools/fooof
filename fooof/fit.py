@@ -163,13 +163,17 @@ class FOOOF(object):
                 else tuple(bound[0::2] for bound in self._bg_bounds)
 
 
-    def _reset_data(self, clear_freqs=True):
-        """Set (or reset) all data attributes to empty.
+    def _reset_data(self, clear_freqs=True, clear_psd=True, clear_results=True):
+        """Set (or reset) data & results attributes to empty.
 
         Parameters
         ----------
         clear_freqs : bool, optional
-            Whether to clear frequency information too.
+            Whether to clear frequency attributes.
+        clear_psd : bool, optional
+            Whether to clear power spectrum attribute.
+        clear_results : bool, optional
+            Whether to clear model results attributes.
         """
 
         if clear_freqs:
@@ -177,18 +181,22 @@ class FOOOF(object):
             self.freq_range = None
             self.freq_res = None
 
-        self.psd = None
-        self.psd_fit_ = None
-        self.background_params_ = None
-        self.oscillation_params_ = None
-        self.r2_ = None
-        self.error_ = None
+        if clear_psd:
+            self.psd = None
 
-        self._psd_flat = None
-        self._psd_osc_rm = None
-        self._gaussian_params = None
-        self._background_fit = None
-        self._oscillation_fit = None
+        if clear_results:
+            self.psd_fit_ = None
+            self.background_params_ = np.array([np.nan, np.nan]) if \
+                self.background_mode == 'fixed' else np.array([np.nan, np.nan, np.nan])
+            self.oscillation_params_ = np.array([np.nan, np.nan, np.nan])
+            self.r2_ = np.nan
+            self.error_ = np.nan
+
+            self._psd_flat = None
+            self._psd_osc_rm = None
+            self._gaussian_params = np.array([np.nan, np.nan, np.nan])
+            self._background_fit = None
+            self._oscillation_fit = None
 
 
     def add_data(self, freqs, psd, freq_range=None):
@@ -290,37 +298,52 @@ class FOOOF(object):
         if self.verbose:
             self._check_bw()
 
-        # Fit the background 1/f.
-        self.background_params_ = self._clean_background_fit(self.freqs, self.psd)
-        self._background_fit = gen_bg(self.freqs, self.background_params_)
+        # In rare cases, the model fails to fit. Therefore it's in a try/except
+        #  Cause of failure: RuntimeError, failure to find parameters in curve_fit
+        try:
 
-        # Flatten the PSD using fit background.
-        self._psd_flat = self.psd - self._background_fit
+            # Fit the background 1/f.
+            self.background_params_ = self._clean_background_fit(self.freqs, self.psd)
+            self._background_fit = gen_bg(self.freqs, self.background_params_)
 
-        # Find oscillations, and fit them with gaussians.
-        self._gaussian_params = self._fit_oscs(np.copy(self._psd_flat))
+            # Flatten the PSD using fit background.
+            self._psd_flat = self.psd - self._background_fit
 
-        # Calculate the oscillation fit.
-        #  Note: if no oscillations are found, this creates a flat (all zero) oscillation fit.
-        self._oscillation_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
+            # Find oscillations, and fit them with gaussians.
+            self._gaussian_params = self._fit_oscs(np.copy(self._psd_flat))
 
-        # Create oscillation-removed (but not flattened) PSD.
-        self._psd_osc_rm = self.psd - self._oscillation_fit
+            # Calculate the oscillation fit.
+            #  Note: if no oscillations are found, this creates a flat (all zero) oscillation fit.
+            self._oscillation_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
 
-        # Run final background fit on oscillation-removed PSD.
-        #   Note: This overwrites previous background fit.
-        self.background_params_ = self._quick_background_fit(self.freqs, self._psd_osc_rm)
-        self._background_fit = gen_bg(self.freqs, self.background_params_)
+            # Create oscillation-removed (but not flattened) PSD.
+            self._psd_osc_rm = self.psd - self._oscillation_fit
 
-        # Create full PSD model fit.
-        self.psd_fit_ = self._oscillation_fit + self._background_fit
+            # Run final background fit on oscillation-removed PSD.
+            #   Note: This overwrites previous background fit.
+            self.background_params_ = self._quick_background_fit(self.freqs, self._psd_osc_rm)
+            self._background_fit = gen_bg(self.freqs, self.background_params_)
 
-        # Convert gaussian definitions to oscillation parameters
-        self.oscillation_params_ = self._create_osc_params(self._gaussian_params)
+            # Create full PSD model fit.
+            self.psd_fit_ = self._oscillation_fit + self._background_fit
 
-        # Calculate R^2 and error of the model fit.
-        self._r_squared()
-        self._rmse_error()
+            # Convert gaussian definitions to oscillation parameters
+            self.oscillation_params_ = self._create_osc_params(self._gaussian_params)
+
+            # Calculate R^2 and error of the model fit.
+            self._r_squared()
+            self._rmse_error()
+
+        # Catch failure, stemming from curve_fit process
+        except RuntimeError:
+
+            # Clear any interim model results that may have run
+            #  Partial model results shouldn't be interpreted
+            self._reset_data(False, False, True)
+
+            # Print out status
+            if self.verbose:
+                print('Model fitting was unsuccessful.')
 
 
     def print_settings(self, description=False, concise=True):

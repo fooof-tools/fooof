@@ -116,8 +116,9 @@ def gen_results_str_fm(fm, concise=False):
         Formatted string of FOOOF model results.
     """
 
-    if not np.all(fm.background_params_):
-        raise ValueError('Model fit has not been run - can not proceed.')
+    if np.all(np.isnan(fm.background_params_)):
+        return _no_model_str(concise)
+        #raise ValueError('Model fit has not been run - can not proceed.')
 
     # Create the formatted strings for printing
     str_lst = [
@@ -194,6 +195,9 @@ def gen_results_str_fg(fg, concise=False):
         kns = np.array([0])
         sls = fg.get_all_data('background_params', 1)
 
+    # Check if there are any power spectra that failed to fit
+    n_failed = sum(np.isnan(sls))
+
     str_lst = [
 
         # Header
@@ -204,6 +208,7 @@ def gen_results_str_fg(fg, concise=False):
 
         # Group information
         'Number of PSDs in the Group: {}'.format(len(fg.group_results)),
+        *[el for el in ['{} PSD(s) failed to fit'.format(n_failed)] if n_failed],
         '',
 
         # Frequency range and resolution
@@ -217,24 +222,24 @@ def gen_results_str_fg(fg, concise=False):
         '',
         *[el for el in ['Background Knee Values',
                         'Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
-                        .format(kns.min(), kns.max(), kns.mean()),
+                        .format(np.nanmin(kns), np.nanmax(kns), np.nanmean(kns)),
                        ] if fg.background_mode == 'knee'],
         'Background Slope Values',
         'Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-        .format(sls.min(), sls.max(), sls.mean()),
+        .format(np.nanmin(sls), np.nanmax(sls), np.nanmean(sls)),
         '',
 
         # Oscillation Parameters
         'In total {} oscillations were extracted from the group'
-        .format(len(cens)),
+        .format(sum(~np.isnan(cens))),
         '',
 
         # Fitting stats - error and r^2
         'Goodness of fit metrics:',
         '   R2s -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-        .format(r2s.min(), r2s.max(), r2s.mean()),
+        .format(np.nanmin(r2s), np.nanmax(r2s), np.nanmean(r2s)),
         'Errors -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-        .format(errors.min(), errors.max(), errors.mean()),
+        .format(np.nanmin(errors), np.nanmax(errors), np.nanmean(errors)),
         '',
 
         # Footer
@@ -328,5 +333,20 @@ def _format(str_lst, concise):
 
     # Convert list to a single string representation, centering each line
     output = '\n'.join([string.center(cv) for string in str_lst])
+
+    return output
+
+
+def _no_model_str(concise=False):
+
+    str_lst = [
+        '=',
+        '',
+        'Model fit has not been run, or fitting was unsuccessful.',
+        '',
+        '='
+    ]
+
+    output = _format(str_lst, concise)
 
     return output

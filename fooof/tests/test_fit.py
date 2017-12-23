@@ -86,8 +86,9 @@ def test_fooof_checks():
     tfm = FOOOF()
     with raises(ValueError):
         tfm.fit()
-    with raises(ValueError):
-        tfm.print_results()
+    # OLD
+    #with raises(ValueError):
+    #    tfm.print_results()
 
 
 def test_fooof_load():
@@ -136,10 +137,11 @@ def test_fooof_resets():
     tfm._reset_settings()
 
     assert tfm.freqs is None and tfm.freq_range is None and tfm.freq_res is None  \
-        and tfm.psd is None and tfm.psd_fit_ is None and tfm.background_params_ is None \
-        and tfm.oscillation_params_ is None and tfm.r2_ is None and tfm.error_ is None \
-        and tfm._psd_flat is None and tfm._psd_osc_rm is None and tfm._gaussian_params is None \
-        and tfm._background_fit is None and tfm._oscillation_fit is None
+        and tfm.psd is None and tfm.psd_fit_ is None and tfm._psd_flat is None \
+        and tfm._psd_osc_rm is None and tfm._background_fit is None and tfm._oscillation_fit is None
+
+    assert np.all(np.isnan(tfm.background_params_)) and np.all(np.isnan(tfm.oscillation_params_)) \
+        and np.all(np.isnan(tfm.r2_)) and np.all(np.isnan(tfm.error_)) and np.all(np.isnan(tfm._gaussian_params))
 
 def test_fooof_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
