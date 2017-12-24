@@ -5,14 +5,14 @@ import numpy as np
 ###################################################################################################
 ###################################################################################################
 
-def trim_psd(freqs, psd, f_range):
-    """Extract frequency range of interest from PSD data.
+def trim_spectrum(freqs, power_spectra, f_range):
+    """Extract frequency range of interest from power spectra.
 
     Parameters
     ----------
     freqs : 1d array
         Frequency values for the PSD.
-    psd : 1d or 2d array
+    power_spectra : 1d or 2d array
         Power spectral density values.
     f_range: list of [float, float]
         Frequency range to restrict to.
@@ -21,7 +21,7 @@ def trim_psd(freqs, psd, f_range):
     -------
     freqs_ext : 1d array
         Extracted power spectral density values.
-    psd_ext : 1d array
+    power_spectra_ext : 1d array
         Extracted frequency values for the PSD.
 
     Notes
@@ -35,6 +35,7 @@ def trim_psd(freqs, psd, f_range):
 
     # Restrict freqs & psd to requested range
     freqs_ext = freqs[f_mask]
-    psd_ext = psd[f_mask] if psd.ndim == 1 else psd[:, f_mask]
+    power_spectra_ext = power_spectra[f_mask] if power_spectra.ndim == 1 \
+        else power_spectra[:, f_mask]
 
-    return freqs_ext, psd_ext
+    return freqs_ext, power_spectra_ext

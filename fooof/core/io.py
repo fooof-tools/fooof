@@ -84,7 +84,7 @@ def save_fg(fg, file_name, file_path='', append=False,
     save_settings : bool, optional
         Whether to save out FOOOF settings.
     save_data : bool, optional
-        Whether to save out PSD data.
+        Whether to save out power spectra data.
     """
 
     if not save_results and not save_settings and not save_data:
@@ -180,7 +180,7 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
     save_settings : bool, optional
         Whether to save out FOOOF settings.
     save_data : bool, optional
-        Whether to save out PSD data.
+        Whether to save out power spectra data.
     """
 
     # Save out single line, if just settings to be saved
@@ -188,7 +188,7 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
         save_fm(fg, file_name=f_obj, file_path='', append=False,
                 save_results=save_results, save_settings=save_settings, save_data=save_data)
 
-    # Loops through group object, creating a FOOOF object per PSD, and saves from there
+    # Loops through group object, creating a FOOOF object per power spectrum, and saves from there
     else:
         for ind in range(len(fg.group_results)):
             fm = fg.get_fooof(ind, regenerate=False)

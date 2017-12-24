@@ -37,15 +37,13 @@ def safe_import(*args):
 def get_obj_desc():
     """Get dictionary specifying FOOOF object names and kind of attributes."""
 
-    attributes = {'results' : ['background_params_', 'oscillation_params_', 'error_', 'r_squared_',
+    attributes = {'results' : ['background_params_', 'peak_params_', 'error_', 'r_squared_',
                                '_gaussian_params', 'freq_range', 'freq_res'],
-                  'settings' : ['amp_std_thresh', 'bandwidth_limits', 'bg_use_knee',
-                                'max_n_gauss', 'min_amp'],
-                  'dat' : ['psd', 'freq_range', 'freq_res'],
-                  'hidden_settings' : ['_bg_fit_func', '_std_limits', '_bg_bounds'],
-                  'arrays' : ['freqs', 'psd', 'background_params_', 'oscillation_params_',
-                              '_gaussian_params']}
-    attributes['all_settings'] = attributes['settings'] + attributes['hidden_settings']
+                  'settings' : ['peak_width_limits', 'max_n_peaks', 'min_peak_amplitude',
+                                'min_peak_threshhold', 'background_mode'],
+                  'dat' : ['power_spectrum', 'freq_range', 'freq_res'],
+                  'arrays' : ['freqs', 'power_spectrum', 'background_params_',
+                              'peak_params_', '_gaussian_params']}
 
     return attributes
 
@@ -68,7 +66,7 @@ def docs_drop_param(ds):
     ind = ds.find(tm) + len(tm)
     fr, ba = ds[:ind], ds[ind:]
 
-    for i in range(2):
+    for ii in range(2):
         ba = ba[ba.find('\n')+1:]
 
     return fr + ba
@@ -146,7 +144,7 @@ def copy_doc_class(source, section=None, att_add=''):
 
 
 def check_dependency(dep, name):
-    """Decorator to check if an optional dependency is available.
+    """Check if an optional dependency is available (decorator).
 
     Parameters
     ----------

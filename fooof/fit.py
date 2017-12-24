@@ -37,7 +37,7 @@ from collections import namedtuple
 import numpy as np
 from scipy.optimize import curve_fit
 
-from fooof.utils import trim_psd
+from fooof.utils import trim_spectrum
 from fooof.plts.fm import plot_fm
 from fooof.core.io import save_fm, load_json
 from fooof.core.reports import save_report_fm
@@ -702,9 +702,9 @@ class FOOOF(object):
 
             # Collect peak parameter data
             peak_params = np.vstack((peak_params,
-                                            [peak[0],
-                                             self.fooofed_spectrum_[ind] - self._bg_fit[ind],
-                                             peak[2] * 2]))
+                                     [peak[0],
+                                      self.fooofed_spectrum_[ind] - self._bg_fit[ind],
+                                      peak[2] * 2]))
 
         return peak_params
 
@@ -827,14 +827,14 @@ class FOOOF(object):
 
         # Check frequency range, trim the power_spectrum range if requested
         if freq_range:
-            freqs, power_spectrum = trim_psd(freqs, power_spectrum, freq_range)
+            freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, freq_range)
         else:
             freqs, power_spectrum = freqs, power_spectrum
 
         # Check if freqs start at 0 - move up one value if so.
         #   Background fit gets an inf is freq of 0 is included, which leads to an error.
         if freqs[0] == 0.0:
-            freqs, power_spectrum = trim_psd(freqs, power_spectrum, [freqs[1], freqs.max()])
+            freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, [freqs[1], freqs.max()])
             if verbose:
                 print("\nFOOOF WARNING: Skipping frequency == 0,"
                       " as this causes a problem with fitting.")

@@ -10,15 +10,15 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_psd(freqs, psd, plt_log=False, ax=None, **kwargs):
+def plot_spectrum(freqs, power_spectrum, plt_log=False, ax=None, **kwargs):
     """Plot a line plot of a power-spectrum.
 
     Parameters
     ----------
     freqs : 1d array
         X-axis data, frequency values.
-    psd : 1d array
-        Y-axis data, PSD power values.
+    power_spectrum : 1d array
+        Y-axis data, power_spectrum power values.
     plt_log : boolean, optional
         Whether or not to plot the frequency axis in log space. default: False
     ax : matplotlib.Axes, optional
@@ -35,7 +35,7 @@ def plot_psd(freqs, psd, plt_log=False, ax=None, **kwargs):
     plt_freqs = np.log10(freqs) if plt_log else freqs
 
     # Create the plot
-    ax.plot(plt_freqs, psd, **kwargs)
+    ax.plot(plt_freqs, power_spectrum, **kwargs)
 
     # Aesthetics and axis labels
     ax.set_xlabel('Frequency', fontsize=20)

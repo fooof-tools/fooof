@@ -18,7 +18,7 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
     Parameters
     ----------
     fg : FOOOFGroup() object
-        FOOOFGroup object, containing results from fitting a group of PSDs.
+        FOOOFGroup object, containing results from fitting a group of power spectra.
     save_fig : boolean, optional
         Whether to save out a copy of the plot. default : False
     file_name : str, optional
@@ -41,9 +41,9 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
     ax1 = plt.subplot(gs[0, 1])
     plot_fg_gf(fg, ax1)
 
-    # Oscillations plot
+    # Cneter frequencies plot
     ax2 = plt.subplot(gs[1, :])
-    plot_fg_osc_cens(fg, ax2)
+    plot_fg_peak_cens(fg, ax2)
 
     if save_fig:
         plt.savefig(os.path.join(file_path, file_name + '.png'))
@@ -87,8 +87,8 @@ def plot_fg_gf(fg, ax=None):
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_fg_osc_cens(fg, ax=None):
-    """Plot oscillation center frequencies, in a histogram.
+def plot_fg_peak_cens(fg, ax=None):
+    """Plot peak center frequencies, in a histogram.
 
     Parameters
     ----------
@@ -99,4 +99,4 @@ def plot_fg_osc_cens(fg, ax=None):
     """
 
     plot_hist(fg.get_all_data('peak_params', 0), 'Center Frequency',
-              'Oscillations', x_lims=fg.freq_range, ax=ax)
+              'Peaks', x_lims=fg.freq_range, ax=ax)

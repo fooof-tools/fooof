@@ -22,15 +22,15 @@ def gen_wid_warn_str(freq_res, bwl):
     freq_res : float
         Frequency resolution.
     bwl : float
-        Lower bound bandwidth-limit.
+        Lower bound peak width limit.
     """
 
     output = '\n'.join([
         '',
-        "FOOOF WARNING: Lower-bound bandwidth limit is < or ~= the frequency resolution: " + \
+        "FOOOF WARNING: Lower-bound peak width limit is < or ~= the frequency resolution: " + \
             "{:1.2f} <= {:1.2f}".format(freq_res, bwl),
         '\tLower bounds below frequency-resolution have no effect (effective lower bound is freq-res)',
-        '\tToo low a limit may lead to overfitting noise as small bandwidth oscillations.',
+        '\tToo low a limit may lead to overfitting noise as small bandwidth peaks.',
         '\tWe recommend a lower bound of approximately 2x the frequency resolution.',
         ''
     ])
@@ -57,13 +57,11 @@ def gen_settings_str(f_obj, description=False, concise=False):
     """
 
     # Parameter descriptions to print out, if requested
-    desc = {'background_mode' : 'The aproach taken to fitting the background.',
-            'bw_lims'         : 'Possible range of bandwidths for extracted oscillations, in Hz.',
-            'num_oscs'        : 'The maximum number of oscillations that can be extracted.',
-            'min_amp'         : "Minimum absolute amplitude, above background, "
-                                "for an oscillation to be extracted.",
-            'amp_thresh'      : "Threshold, in units of standard deviation, "
-                                "at which to stop searching for oscillations."}
+    desc = {'background_mode'       : 'The aproach taken to fitting the background.',
+            'peak_width_limits'     : 'Enforced limits for peak widths, in Hz.',
+            'max_n_peaks'           : 'The maximum number of peaks that can be extracted.',
+            'min_peak_amplitude'    : "Minimum absolute amplitude of a peak, above background.",
+            'min_peak_threshold'    : "Threshold at which to stop searching for peaks."}
 
     # Clear description for printing if not requested
     if not description:
@@ -79,16 +77,16 @@ def gen_settings_str(f_obj, description=False, concise=False):
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Fit Knee : {}'.format(f_obj.background_mode),
+        *[el for el in ['Background Mode : {}'.format(f_obj.background_mode),
                         '{}'.format(desc['background_mode']),
-                        'Bandwidth Limits : {}'.format(f_obj.peak_width_limits),
-                        '{}'.format(desc['bw_lims']),
-                        'Max Number of Oscillations : {}'.format(f_obj.max_n_peaks),
-                        '{}'.format(desc['num_oscs']),
+                        'Peak Width Limits : {}'.format(f_obj.peak_width_limits),
+                        '{}'.format(desc['peak_width_limits']),
+                        'Max Number of Peaks : {}'.format(f_obj.max_n_peaks),
+                        '{}'.format(desc['max_n_peaks']),
                         'Minimum Amplitude : {}'.format(f_obj.min_peak_amplitude),
-                        '{}'.format(desc['min_amp']),
+                        '{}'.format(desc['min_peak_amplitude']),
                         'Amplitude Threshold: {}'.format(f_obj.min_peak_threshold),
-                        '{}'.format(desc['amp_thresh'])] if el != ''],
+                        '{}'.format(desc['min_peak_threshold'])] if el != ''],
 
         # Footer
         '',
@@ -126,7 +124,7 @@ def gen_results_str_fm(fm, concise=False):
         # Header
         '=',
         '',
-        ' FOOOF - PSD MODEL',
+        ' FOOOF - POWER SPECTRUM MODEL',
         '',
 
         # Frequency range and resolution
@@ -142,8 +140,8 @@ def gen_results_str_fm(fm, concise=False):
             *fm.background_params_),
         '',
 
-        # Oscillation parameters
-        '{} oscillations were found:'.format(
+        # Peak parameters
+        '{} peaks were found:'.format(
             len(fm.peak_params_)),
         *['CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]) \
           for op in fm.peak_params_],
@@ -207,8 +205,8 @@ def gen_results_str_fg(fg, concise=False):
         '',
 
         # Group information
-        'Number of PSDs in the Group: {}'.format(len(fg.group_results)),
-        *[el for el in ['{} PSD(s) failed to fit'.format(n_failed)] if n_failed],
+        'Number of power spectra in the Group: {}'.format(len(fg.group_results)),
+        *[el for el in ['{} power spectra failed to fit'.format(n_failed)] if n_failed],
         '',
 
         # Frequency range and resolution
@@ -218,7 +216,7 @@ def gen_results_str_fg(fg, concise=False):
         '',
 
         # Background parameters - knee fit status, and quick slope description
-        'PSDs were fit {} a knee.'.format('with' if fg.background_mode == 'knee' else 'without'),
+        'Power spectra were fit {} a knee.'.format('with' if fg.background_mode == 'knee' else 'without'),
         '',
         *[el for el in ['Background Knee Values',
                         'Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
@@ -229,8 +227,8 @@ def gen_results_str_fg(fg, concise=False):
         .format(np.nanmin(sls), np.nanmax(sls), np.nanmean(sls)),
         '',
 
-        # Oscillation Parameters
-        'In total {} oscillations were extracted from the group'
+        # Peak Parameters
+        'In total {} peaks were extracted from the group'
         .format(sum(~np.isnan(cens))),
         '',
 
