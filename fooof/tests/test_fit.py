@@ -127,7 +127,7 @@ def test_fooof_resets():
     tfm = get_tfm()
 
     tfm._reset_data_results()
-    tfm._reset_settings()
+    tfm._reset_internal_settings()
 
     assert tfm.freqs is None and tfm.freq_range is None and tfm.freq_res is None  \
         and tfm.power_spectrum is None and tfm.fooofed_spectrum_ is None and tfm._spectrum_flat is None \

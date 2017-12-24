@@ -137,12 +137,12 @@ class FOOOF(object):
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
         self._cf_bound = 1.5
 
-        # Initialize internal settings and data attributes (to None)
-        self._reset_settings()
+        # Set internal settings (based on inputs). Initialize data attributes.
+        self._reset_internal_settings()
         self._reset_data_results()
 
 
-    def _reset_settings(self):
+    def _reset_internal_settings(self):
         """Set (or reset) internal settings, based on what is provided in init.
 
         Notes
@@ -152,7 +152,6 @@ class FOOOF(object):
         """
 
         # Only update these settings if other relevant settings are available
-        #   Otherwise, assume settings are unknown (have been cleared) and leave as None
         if self.peak_width_limits:
 
             # Bandwidth limits are given in 2-sided peak bandwidth.
@@ -161,6 +160,11 @@ class FOOOF(object):
             # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
             self._bg_bounds = self._bg_bounds if self.background_mode == 'knee' \
                 else tuple(bound[0::2] for bound in self._bg_bounds)
+
+        # Otherwise, assume settings are unknown (have been cleared) and set to None
+        else:
+            self._gauss_std_limits = None
+            self._bg_bounds = None
 
 
     def _reset_data_results(self, clear_freqs=True, clear_spectrum=True, clear_results=True):
@@ -875,22 +879,18 @@ class FOOOF(object):
         # If settings not loaded from file, clear from object, so that default
         #  settings, which are potentially wrong for loaded data, aren't kept
         if not set(get_obj_desc()['settings']).issubset(set(data.keys())):
-            self._clear_settings()
+
+            # Reset all public settings to None
+            for setting in get_obj_desc()['settings']:
+                setattr(self, setting, None)
 
             # Infer whether knee fitting was used, if background params have been loaded
             if np.all(self.background_params_):
                 self.background_mode = infer_bg_func(self.background_params_)
 
-        # Otherwise (settings were loaded), reset internal settings so that they are consistent
-        else:
-            self._reset_settings()
-
-
-    def _clear_settings(self):
-        """Clears all setting for current instance, setting them all to None."""
-
-        for setting in get_obj_desc()['all_settings']:
-            setattr(self, setting, None)
+        # Reset internal settings so that they are consistent with what was loaded
+        #  Note that this will set internal settings to None, if public settings unavailable
+        self._reset_internal_settings()
 
 
     def _regenerate_model(self):
