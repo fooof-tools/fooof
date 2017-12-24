@@ -22,6 +22,6 @@ def test_plot_fm_error():
         tfm.plot()
 
 @plot_test
-def test_plot_osc_iter(tfm, skip_if_no_mpl):
+def test_plot_peak_iter(tfm, skip_if_no_mpl):
 
-    plot_osc_iter(tfm)
+    plot_peak_iter(tfm)

@@ -13,7 +13,7 @@ import numpy as np
 
 from fooof import FOOOF
 from fooof.plts.fg import plot_fg
-from fooof.core.reports import create_report_fg
+from fooof.core.reports import save_report_fg
 from fooof.core.strings import gen_results_str_fg
 from fooof.core.io import save_fg, load_jsonlines
 from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class
@@ -24,10 +24,10 @@ from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class
 # Set docstring attribute section to add when copying FOOOF docs -> FOOOFGroup
 #  This section will be appended to the FOOOF Attributes section when copying over
 ATT_ADD = """
-    psds : 2d array
-        Input matrix of power spectral density values.
+    power_spectra : 2d array
+        Input matrix of power spectra values.
     group_results : list of FOOOFResults
-        Results of FOOOF model fit for each PSD."""
+        Results of FOOOF model fit for each power spectrum."""
 
 
 @copy_doc_class(FOOOF, 'Attributes', ATT_ADD)
@@ -37,7 +37,7 @@ class FOOOFGroup(FOOOF):
 
         FOOOF.__init__(self, *args, **kwargs)
 
-        self.psds = np.array([])
+        self.power_spectra = np.array([])
 
         self._reset_group_results()
 
@@ -65,35 +65,35 @@ class FOOOFGroup(FOOOF):
         self.group_results = [[]] * length
 
 
-    def add_data(self, freqs, psds, freq_range=None):
-        """Add data (frequencies and PSD values) to FOOOFGroup object.
+    def add_data(self, freqs, power_spectra, freq_range=None):
+        """Add data (frequencies and power spectrum values) to FOOOFGroup object.
 
         Parameters
         ----------
         freqs : 1d array
-            Frequency values for the PSD, in linear space.
-        psd : 2d array
-            Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
+            Frequency values for the power spectra, in linear space.
+        power_spectra : 2d array
+            Matrix of power spectrum values, in linear space. Shape: [n_power_spectra, n_freqs].
         freq_range : list of [float, float], optional
-            Frequency range to restrict PSD to. If not provided, keeps the entire range.
+            Frequency range to restrict power spectra to. If not provided, keeps the entire range.
         """
 
-        if freqs.ndim != 1 or psds.ndim != 2:
+        if freqs.ndim != 1 or power_spectra.ndim != 2:
             raise ValueError('Inputs are not the right dimensions.')
 
-        self.freqs, self.psds, self.freq_range, self.freq_res = \
-            self._prepare_data(freqs, psds, freq_range, self.verbose)
+        self.freqs, self.power_spectra, self.freq_range, self.freq_res = \
+            self._prepare_data(freqs, power_spectra, freq_range, self.verbose)
 
 
-    def report(self, freqs=None, psds=None, freq_range=None, n_jobs=1):
-        """Run FOOOF across a group, and display a report, which includes a plot, and printed results.
+    def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1):
+        """Run FOOOF across a group, and display a report, comprising a plot, and printed results.
 
         Parameters
         ----------
         freqs : 1d array, optional
-            Frequency values for the PSDs, in linear space.
-        psds : 2d array, optional
-            Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
+            Frequency values for the power_spectra, in linear space.
+        power_spectra : 2d array, optional
+            Matrix of power spectrum values, in linear space. Shape: [n_power_spectra, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         n_jobs : int, optional
@@ -105,20 +105,20 @@ class FOOOFGroup(FOOOF):
         Data is optional if data has been already been added to FOOOF object.
         """
 
-        self.fit(freqs, psds, freq_range, n_jobs=n_jobs)
+        self.fit(freqs, power_spectra, freq_range, n_jobs=n_jobs)
         self.plot()
         self.print_results(False)
 
 
-    def fit(self, freqs=None, psds=None, freq_range=None, n_jobs=1):
-        """Run FOOOF across a group of PSDs.
+    def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1):
+        """Run FOOOF across a group of power_spectra.
 
         Parameters
         ----------
         freqs : 1d array, optional
-            Frequency values for the PSDs, in linear space.
-        psds : 2d array, optional
-            Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
+            Frequency values for the power_spectra, in linear space.
+        power_spectra : 2d array, optional
+            Matrix of power spectrum values, in linear space. Shape: [n_power_spectra, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         n_jobs : int, optional
@@ -130,15 +130,15 @@ class FOOOFGroup(FOOOF):
         Data is optional if data has been already been added to FOOOF object.
         """
 
-        # If freqs & psd provided together, add data to object.
-        if isinstance(freqs, np.ndarray) and isinstance(psds, np.ndarray):
-            self.add_data(freqs, psds, freq_range)
+        # If freqs & power spectra provided together, add data to object.
+        if isinstance(freqs, np.ndarray) and isinstance(power_spectra, np.ndarray):
+            self.add_data(freqs, power_spectra, freq_range)
 
         # Run linearly
         if n_jobs == 1:
-            self._reset_group_results(len(self.psds))
-            for ind, psd in enumerate(self.psds):
-                self._fit(psd=psd)
+            self._reset_group_results(len(self.power_spectra))
+            for ind, power_spectrum in enumerate(self.power_spectra):
+                self._fit(power_spectrum=power_spectrum)
                 self.group_results[ind] = self._get_results()
 
         # Run in parallel
@@ -146,14 +146,14 @@ class FOOOFGroup(FOOOF):
             self._reset_group_results()
             n_jobs = cpu_count() if n_jobs == -1 else n_jobs
             pool = Pool(processes=n_jobs)
-            self.group_results = pool.map(partial(_par_fit, fg=self), self.psds)
+            self.group_results = pool.map(partial(_par_fit, fg=self), self.power_spectra)
             pool.close()
 
-        self._reset_data(clear_freqs=False)
+        self._reset_data_results(clear_freqs=False)
 
 
     def get_results(self):
-        """Return the results run across a group of PSDs."""
+        """Return the results run across a group of power_spectra."""
 
         return self.group_results
 
@@ -196,10 +196,10 @@ class FOOOFGroup(FOOOF):
         plot_fg(self, save_fig, file_name, file_path)
 
 
-    @copy_doc_func_to_method(create_report_fg)
-    def create_report(self, file_name='FOOOFGroup_Report', file_path=''):
+    @copy_doc_func_to_method(save_report_fg)
+    def save_report(self, file_name='FOOOFGroup_Report', file_path=''):
 
-        create_report_fg(self, file_name, file_path)
+        save_report_fg(self, file_name, file_path)
 
 
     @copy_doc_func_to_method(save_fg)
@@ -235,11 +235,11 @@ class FOOOFGroup(FOOOF):
             self.group_results.append(self._get_results())
 
         # Reset peripheral data from last loaded result, keeping freqs info
-        self._reset_data(False)
+        self._reset_data_results(False)
 
 
     def get_fooof(self, ind, regenerate=False):
-        """Return a FOOOF object from specified PSD / model in a FOOOFGroup object.
+        """Return a FOOOF object from specified model in a FOOOFGroup object.
 
         Parameters
         ----------
@@ -255,15 +255,15 @@ class FOOOFGroup(FOOOF):
         """
 
         # Initialize a FOOOF object, with same settings as current FOOOFGroup
-        fm = FOOOF(self.bandwidth_limits, self.max_n_gauss, self.min_amp,
-                   self.amp_std_thresh, self.background_mode, self.verbose)
+        fm = FOOOF(self.peak_width_limits, self.max_n_peaks, self.min_peak_amplitude,
+                   self.min_peak_amplitude, self.background_mode, self.verbose)
 
-        # Add data for specified single PSD, if available
-        #  The PSD is inverted back to linear, as it's re-logged when added to FOOOF
-        if np.any(self.psds):
-            fm.add_data(self.freqs, np.power(10, self.psds[ind]))
+        # Add data for specified single power spectrum, if available
+        #  The power spectrum is inverted back to linear, as it's re-logged when added to FOOOF
+        if np.any(self.power_spectra):
+            fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
 
-        # Add results for specified PSD, regenerating full fit if requested
+        # Add results for specified power spectrum, regenerating full fit if requested
         fm.add_results(self.group_results[ind], regenerate=regenerate)
 
         return fm
@@ -292,17 +292,16 @@ class FOOOFGroup(FOOOF):
 
         return super().get_results()
 
-    def _check_bw(self):
+    def _check_width_limits(self):
         """Check and warn about bandwidth limits / frequency resolution interaction."""
 
-        # Only check & warn on first PSD (to avoid spamming stdout for every PSD)
-        if self.psds[0, 0] == self.psd[0]:
-            super()._check_bw()
+        # Only check & warn on first power spectrum (to avoid spamming stdout for each spectrum).
+        if self.power_spectra[0, 0] == self.power_spectrum[0]:
+            super()._check_width_limits()
 
 
-# Helper Functions
-def _par_fit(psd, fg):
+def _par_fit(power_spectrum, fg):
     """Helper function for running in parallel."""
 
-    fg._fit(psd=psd)
+    fg._fit(power_spectrum=power_spectrum)
     return fg._get_results()

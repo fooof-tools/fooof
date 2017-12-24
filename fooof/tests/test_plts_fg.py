@@ -32,6 +32,6 @@ def test_plot_fg_gf(tfg, skip_if_no_mpl):
     plot_fg_gf(tfg)
 
 @plot_test
-def test_plot_fg_osc_cens(tfg, skip_if_no_mpl):
+def test_plot_fg_peak_cens(tfg, skip_if_no_mpl):
 
-    plot_fg_osc_cens(tfg)
+    plot_fg_peak_cens(tfg)

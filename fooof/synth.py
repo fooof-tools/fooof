@@ -36,7 +36,7 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
     background_params : list of float
         Parameters to create the background of a power spectrum.
     gauss_params : list of list of float
-        Parameters to create oscillations. Length of n_oscs * 3.
+        Parameters to create peaks. Length of n_peaks * 3.
     nlv : float, optional
         Noise level to add to generated power spectrum. Default: 0.005
     freq_res : float, optional
@@ -61,19 +61,19 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
     return xs, ys
 
 
-def gen_group_power_spectra(n_psds, freq_range, bgp_opts, gauss_opts, nlv=0.005, freq_res=0.5):
+def gen_group_power_spectra(n_spectra, freq_range, bgp_opts, gauss_opts, nlv=0.005, freq_res=0.5):
     """Generate a group of synthetic power spectra.
 
     Parameters
     ----------
-    n_psds : int
-        The number of PSDs to generate in the matrix.
+    n_spectra : int
+        The number of power spectra to generate in the matrix.
     freq_range : list of [float, float]
         Minimum and maximum values of the desired frequency vector.
     background_opts : list of list of float
         Group of parameter sets to create the background of power spectrum.
     gauss_opts : list of of list of float
-        Group of parameters sets to create oscillations. Length of n_oscs * 3.
+        Group of parameters sets to create peaks. Length of n_peaks * 3.
     nlv : float, optional
         Noise level to add to generated power spectrum. default: 0.005
     freq_res : float, optional
@@ -96,9 +96,9 @@ def gen_group_power_spectra(n_psds, freq_range, bgp_opts, gauss_opts, nlv=0.005,
 
     xs = gen_freqs(freq_range, freq_res)
 
-    ys = np.zeros([n_psds, len(xs)])
+    ys = np.zeros([n_spectra, len(xs)])
 
-    for ind in range(n_psds):
+    for ind in range(n_spectra):
 
         # Randomly select parameters from options to use for power spectrum
         bg_params = bgp_opts[np.random.randint(0, len(bgp_opts))]
@@ -109,8 +109,8 @@ def gen_group_power_spectra(n_psds, freq_range, bgp_opts, gauss_opts, nlv=0.005,
     return xs, ys
 
 
-def gen_bg(xs, background_params, background_mode=None):
-    """Generate background values.
+def gen_background(xs, background_params, background_mode=None):
+    """Generate background values, from parameter definition.
 
     Parameters
     ----------
@@ -137,14 +137,14 @@ def gen_bg(xs, background_params, background_mode=None):
 
 
 def gen_peaks(xs, gauss_params):
-    """Generate peaks values.
+    """Generate peaks values, from parameter definition.
 
     Parameters
     ----------
     xs : 1d array
         Frequency vector to create peak values from.
     gauss_params : list of list of float
-        Parameters to create oscillations. Length of n_oscs * 3.
+        Parameters to create peaks. Length of n_peaks * 3.
 
     Returns
     -------
@@ -165,7 +165,7 @@ def _gen_power_vals(xs, bg_params, gauss_params, nlv):
     background_params : list of float
         Parameters to create the background of power spectrum.
     gauss_params : list of float
-        Parameters to create oscillations. Length of n_oscs * 3.
+        Parameters to create peaks. Length of n_peaks * 3.
     nlv : float
         Noise level to add to generated power spectrum.
 
@@ -175,7 +175,7 @@ def _gen_power_vals(xs, bg_params, gauss_params, nlv):
         Power values (linear).
     """
 
-    background = gen_bg(xs, bg_params, infer_bg_func(bg_params))
+    background = gen_background(xs, bg_params, infer_bg_func(bg_params))
     peaks = gen_peaks(xs, gauss_params)
     noise = np.random.normal(0, nlv, len(xs))
 

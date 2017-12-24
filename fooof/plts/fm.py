@@ -3,7 +3,7 @@
 import os
 import numpy as np
 
-from fooof.plts.templates import plot_psd
+from fooof.plts.templates import plot_spectrum
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
 
@@ -14,12 +14,12 @@ plt = safe_import('.pyplot', 'matplotlib')
 
 @check_dependency(plt, 'matplotlib')
 def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path='', ax=None):
-    """Plot the original PSD, and full model fit from FOOOF object.
+    """Plot the original power spectrum, and full model fit from FOOOF object.
 
     Parameters
     ----------
     fm : FOOOF() object
-        FOOOF object, containing a PSD and (optionally) results from fitting.
+        FOOOF object, containing a power spectrum and (optionally) results from fitting.
     plt_log : boolean, optional
         Whether or not to plot the frequency axis in log space. default: False
     save_fig : boolean, optional
@@ -39,13 +39,15 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
         fig, ax = plt.subplots(figsize=(12, 10))
 
     # Create the plot, adding data as is available
-    if np.all(fm.psd):
-        plot_psd(fm.freqs, fm.psd, plt_log, ax, color='k', linewidth=1.0, label='Original PSD')
-    if np.all(fm.psd_fit_):
-        plot_psd(fm.freqs, fm.psd_fit_, plt_log, ax,
-                 color='r', linewidth=3.0, alpha=0.5, label='Full model fit')
-        plot_psd(fm.freqs, fm._background_fit, plt_log, ax,
-                 color='b', linestyle='dashed', linewidth=3.0, alpha=0.5, label='Background Fit')
+    if np.all(fm.power_spectrum):
+        plot_spectrum(fm.freqs, fm.power_spectrum, plt_log, ax,
+                      color='k', linewidth=1.0, label='Original Spectrum')
+    if np.all(fm.fooofed_spectrum_):
+        plot_spectrum(fm.freqs, fm.fooofed_spectrum_, plt_log, ax,
+                      color='r', linewidth=3.0, alpha=0.5, label='Full model fit')
+        plot_spectrum(fm.freqs, fm._bg_fit, plt_log, ax,
+                      color='b', linestyle='dashed', linewidth=3.0,
+                      alpha=0.5, label='Background Fit')
 
     # Save out figure, if requested
     if save_fig:
@@ -53,8 +55,8 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_osc_iter(fm):
-    """Plots a series of plots illustrating the oscillations search from a flattened spectrum.
+def plot_peak_iter(fm):
+    """Plots a series of plots illustrating the peak search from a flattened spectrum.
 
     Parameters
     ----------
@@ -62,7 +64,7 @@ def plot_osc_iter(fm):
         FOOOF object, with model fit and data and settings available.
     """
 
-    flatspec = fm._psd_flat
+    flatspec = fm._spectrum_flat
     n_gauss = fm._gaussian_params.shape[0]
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
 
@@ -70,11 +72,11 @@ def plot_osc_iter(fm):
 
         _, ax = plt.subplots(figsize=(12, 10))
 
-        plot_psd(fm.freqs, flatspec, linewidth=2.0, label='Flattened Spectrum', ax=ax)
-        plot_psd(fm.freqs, [fm.amp_std_thresh * np.std(flatspec)]*len(fm.freqs),
-                 color='orange', linestyle='dashed', label='Relative Threshold', ax=ax)
-        plot_psd(fm.freqs, [fm.min_amp]*len(fm.freqs),
-                 color='red', linestyle='dashed', label='Absolute Threshold', ax=ax)
+        plot_spectrum(fm.freqs, flatspec, linewidth=2.0, label='Flattened Spectrum', ax=ax)
+        plot_spectrum(fm.freqs, [fm.min_peak_threshold * np.std(flatspec)]*len(fm.freqs),
+                      color='orange', linestyle='dashed', label='Relative Threshold', ax=ax)
+        plot_spectrum(fm.freqs, [fm.min_peak_amplitude]*len(fm.freqs),
+                      color='red', linestyle='dashed', label='Absolute Threshold', ax=ax)
 
         maxi = np.argmax(flatspec)
         ax.plot(fm.freqs[maxi], flatspec[maxi], '.', markersize=24)
@@ -85,6 +87,7 @@ def plot_osc_iter(fm):
         if ind < n_gauss:
 
             gauss = gaussian_function(fm.freqs, *fm._gaussian_params[ind, :])
-            plot_psd(fm.freqs, gauss, label='Gaussian Fit', linestyle=':', linewidth=2.0, ax=ax)
+            plot_spectrum(fm.freqs, gauss, label='Gaussian Fit',
+                          linestyle=':', linewidth=2.0, ax=ax)
 
             flatspec = flatspec - gauss

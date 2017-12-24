@@ -4,7 +4,7 @@ import os
 
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_results_str_fg
-from fooof.plts.fg import plot_fg_bg, plot_fg_gf, plot_fg_osc_cens
+from fooof.plts.fg import plot_fg_bg, plot_fg_gf, plot_fg_peak_cens
 
 plt = safe_import('.pyplot', 'matplotlib')
 gridspec = safe_import('.gridspec', 'matplotlib')
@@ -13,13 +13,13 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def create_report_fm(fm, file_name, file_path='', plt_log=False):
+def save_report_fm(fm, file_name, file_path='', plt_log=False):
     """Generate and save out a as PDF a report for a FOOOF object.
 
     Parameters
     ----------
     fm : FOOOF() object
-        FOOOF object, containing results from fitting a PSD.
+        FOOOF object, containing results from fitting a power spectrum.
     file_name : str
         Name to give the saved out file.
     file_path : str, optional
@@ -60,13 +60,13 @@ def create_report_fm(fm, file_name, file_path='', plt_log=False):
 
 
 @check_dependency(plt, 'matplotlib')
-def create_report_fg(fg, file_name, file_path=''):
+def save_report_fg(fg, file_name, file_path=''):
     """Generate and save out as a PDF a report for a FOOOFGroup object.
 
     Parameters
     ----------
     fg : FOOOFGroup() object
-        FOOOFGroup object, containing results from fitting a group of PSDs.
+        FOOOFGroup object, containing results from fitting a group of power spectra.
     file_name : str
         Name to give the saved out file.
     file_path : str, optional
@@ -95,9 +95,9 @@ def create_report_fg(fg, file_name, file_path=''):
     ax2 = plt.subplot(gs[1, 1])
     plot_fg_gf(fg, ax2)
 
-    # Oscillations plot
+    # Peak center frequencies plot
     ax3 = plt.subplot(gs[2, :])
-    plot_fg_osc_cens(fg, ax3)
+    plot_fg_peak_cens(fg, ax3)
 
     # Save out the report
     plt.savefig(os.path.join(file_path, file_name + '.pdf'))
