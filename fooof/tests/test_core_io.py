@@ -17,8 +17,8 @@ def test_save_fm_str(tfm):
     file_name_res = 'test_fooof_str_res'
     file_path = pkg.resource_filename(__name__, 'test_files')
 
-    save_fm(tfm, file_name_all, file_path, True, True, True)
-    save_fm(tfm, file_name_res, file_path, True, False, False)
+    save_fm(tfm, file_name_all, file_path, False, True, True, True)
+    save_fm(tfm, file_name_res, file_path, False, True, False, False)
 
     assert os.path.exists(os.path.join(file_path, file_name_all + '.json'))
     assert os.path.exists(os.path.join(file_path, file_name_res + '.json'))
@@ -41,10 +41,10 @@ def test_save_fm_fobj(tfm):
     file_path = pkg.resource_filename(__name__, 'test_files')
 
     # Save, using file-object: three successive lines with three possible save settings
-    with open(os.path.join(file_path, file_name + '.json'), 'w') as save_file_obj:
-        save_fm(tfm, save_file_obj, file_path, True, False, False)
-        save_fm(tfm, save_file_obj, file_path, False, True, False)
-        save_fm(tfm, save_file_obj, file_path, False, False, True)
+    with open(os.path.join(file_path, file_name + '.json'), 'w') as f_obj:
+        save_fm(tfm, f_obj, file_path, False, True, False, False)
+        save_fm(tfm, f_obj, file_path, False, False, True, False)
+        save_fm(tfm, f_obj, file_path, False, False, False, True)
 
     assert os.path.exists(os.path.join(file_path, file_name + '.json'))
 
@@ -56,13 +56,35 @@ def test_save_fg(tfg):
     dat_file_name = 'test_fooof_group_dat'
     file_path = pkg.resource_filename(__name__, 'test_files')
 
-    save_fg(tfg, save_file=set_file_name, save_path=file_path, save_settings=True)
-    save_fg(tfg, save_file=res_file_name, save_path=file_path, save_results=True)
-    save_fg(tfg, save_file=dat_file_name, save_path=file_path, save_data=True)
+    save_fg(tfg, file_name=set_file_name, file_path=file_path, save_settings=True)
+    save_fg(tfg, file_name=res_file_name, file_path=file_path, save_results=True)
+    save_fg(tfg, file_name=dat_file_name, file_path=file_path, save_data=True)
 
     assert os.path.exists(os.path.join(file_path, set_file_name + '.json'))
     assert os.path.exists(os.path.join(file_path, res_file_name + '.json'))
     assert os.path.exists(os.path.join(file_path, dat_file_name + '.json'))
+
+def test_save_fg_app(tfg):
+    """Check saving fg data, appending to file."""
+
+    file_name = 'test_fooof_group_str_app'
+    file_path = pkg.resource_filename(__name__, 'test_files')
+
+    save_fg(tfg, file_name, file_path, True, save_results=True)
+    save_fg(tfg, file_name, file_path, True, save_results=True)
+
+    assert os.path.exists(os.path.join(file_path, file_name + '.json'))
+
+def test_save_fg_fobj(tfg):
+    """Check saving fg data, with file object file specifier."""
+
+    file_name = 'test_fooof_fobj'
+    file_path = pkg.resource_filename(__name__, 'test_files')
+
+    with open(os.path.join(file_path, file_name + '.json'), 'w') as f_obj:
+        save_fg(tfg, f_obj, file_path, False, True, False, False)
+
+    assert os.path.exists(os.path.join(file_path, file_name + '.json'))
 
 def test_load_json_str():
     """Test loading JSON file, with str file specifier. Loads files from test_save_fm_str."""
@@ -80,8 +102,8 @@ def test_load_json_fobj():
     file_name = 'test_fooof_str_all'
     file_path = pkg.resource_filename(__name__, 'test_files')
 
-    with open(os.path.join(file_path, file_name + '.json'), 'r') as load_file_obj:
-        dat = load_json(load_file_obj, '')
+    with open(os.path.join(file_path, file_name + '.json'), 'r') as f_obj:
+        dat = load_json(f_obj, '')
 
     assert dat
 

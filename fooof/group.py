@@ -1,4 +1,10 @@
-"""FOOOF - Group fitting object and methods."""
+"""FOOOF - Group fitting object and methods.
+
+Notes
+-----
+- FOOOFGroup object docs are imported from FOOOF object at runtime.
+- Methods without defined docstrings import docs at runtime, from aliased external functions.
+"""
 
 from functools import partial
 from multiprocessing import Pool, cpu_count
@@ -10,11 +16,21 @@ from fooof.plts.fg import plot_fg
 from fooof.core.reports import create_report_fg
 from fooof.core.strings import gen_results_str_fg
 from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.modutils import get_obj_desc, docs_drop_param
+from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class
 
 ###################################################################################################
 ###################################################################################################
 
+# Set docstring attribute section to add when copying FOOOF docs -> FOOOFGroup
+#  This section will be appended to the FOOOF Attributes section when copying over
+ATT_ADD = """
+    psds : 2d array
+        Input matrix of power spectral density values.
+    group_results : list of FOOOFResults
+        Results of FOOOF model fit for each PSD."""
+
+
+@copy_doc_class(FOOOF, 'Attributes', ATT_ADD)
 class FOOOFGroup(FOOOF):
 
     def __init__(self, *args, **kwargs):
@@ -30,6 +46,11 @@ class FOOOFGroup(FOOOF):
 
         for result in self.group_results:
             yield result
+
+
+    def __len__(self):
+
+        return len(self.group_results)
 
 
     def _reset_group_results(self, length=0):
@@ -64,8 +85,8 @@ class FOOOFGroup(FOOOF):
             self._prepare_data(freqs, psds, freq_range, self.verbose)
 
 
-    def model(self, freqs=None, psds=None, freq_range=None, n_jobs=1):
-        """Run FOOOF across a group of PSDs, then plot and print results.
+    def report(self, freqs=None, psds=None, freq_range=None, n_jobs=1):
+        """Run FOOOF across a group, and display a report, which includes a plot, and printed results.
 
         Parameters
         ----------
@@ -75,8 +96,9 @@ class FOOOFGroup(FOOOF):
             Matrix of PSD values, in linear space. Shape should be [n_psds, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
-        n_jobs : int
-            Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
+        n_jobs : int, optional
+            Number of jobs to run in parallel. default: 1
+                1 is no parallelization. -1 uses all available cores.
 
         Notes
         -----
@@ -85,7 +107,7 @@ class FOOOFGroup(FOOOF):
 
         self.fit(freqs, psds, freq_range, n_jobs=n_jobs)
         self.plot()
-        self.print_results()
+        self.print_results(False)
 
 
     def fit(self, freqs=None, psds=None, freq_range=None, n_jobs=1):
@@ -100,7 +122,8 @@ class FOOOFGroup(FOOOF):
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         n_jobs : int, optional
-            Number of jobs to run in parallel. 1 is no parallelization. -1 indicates to use all cores.
+            Number of jobs to run in parallel. default: 1
+                1 is no parallelization. -1 uses all available cores.
 
         Notes
         -----
@@ -126,7 +149,7 @@ class FOOOFGroup(FOOOF):
             self.group_results = pool.map(partial(_par_fit, fg=self), self.psds)
             pool.close()
 
-        self._reset_dat(clear_freqs=False)
+        self._reset_data(clear_freqs=False)
 
 
     def get_results(self):
@@ -152,11 +175,13 @@ class FOOOFGroup(FOOOF):
         """
 
         # Pull out the requested data field from the group data
-        out = np.array([getattr(dat, name) for dat in self.group_results])
+        out = np.array([getattr(data, name) for data in self.group_results])
 
-        # Some data can end up as a list of separate arrays. If so, concatenate it all into one 2d array
+        # Some data can end up as a list of separate arrays.
+        #   If so, concatenate it all into one 2d array
         if isinstance(out[0], np.ndarray):
-            out = np.concatenate([arr.reshape(1, len(arr)) if arr.ndim == 1 else arr for arr in out], 0)
+            out = np.concatenate([arr.reshape(1, len(arr)) \
+                if arr.ndim == 1 else arr for arr in out], 0)
 
         # Select out a specific column, if requested
         if ind is not None:
@@ -165,20 +190,23 @@ class FOOOFGroup(FOOOF):
         return out
 
 
-    def plot(self, save_fig=False, save_name='FOOOF_group_fit', save_path=''):
+    @copy_doc_func_to_method(plot_fg)
+    def plot(self, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
 
-        plot_fg(self, save_fig, save_name, save_path)
-
-
-    def create_report(self, save_name='FOOOFGroup_Report', save_path=''):
-
-        create_report_fg(self, save_name, save_path)
+        plot_fg(self, save_fig, file_name, file_path)
 
 
-    def save(self, save_file='fooof_group_results', save_path='',
+    @copy_doc_func_to_method(create_report_fg)
+    def create_report(self, file_name='FOOOFGroup_Report', file_path=''):
+
+        create_report_fg(self, file_name, file_path)
+
+
+    @copy_doc_func_to_method(save_fg)
+    def save(self, file_name='fooof_group_results', file_path='', append=False,
              save_results=False, save_settings=False, save_data=False):
 
-        save_fg(self, save_file, save_path, save_results, save_settings, save_data)
+        save_fg(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
     def load(self, file_name='fooof_group_results', file_path=''):
@@ -195,19 +223,19 @@ class FOOOFGroup(FOOOF):
         # Clear results so as not to have possible prior results interfere
         self._reset_group_results()
 
-        for ind, dat in enumerate(load_jsonlines(file_name, file_path)):
+        for ind, data in enumerate(load_jsonlines(file_name, file_path)):
 
-            self._add_from_dict(dat)
+            self._add_from_dict(data)
 
             # Only load settings from first line (rest will be duplicates, if there)
             if ind == 0:
-                self._check_loaded_settings(dat)
+                self._check_loaded_settings(data)
 
-            self._check_loaded_results(dat, False)
+            self._check_loaded_results(data, False)
             self.group_results.append(self._get_results())
 
         # Reset peripheral data from last loaded result, keeping freqs info
-        self._reset_dat(False)
+        self._reset_data(False)
 
 
     def get_fooof(self, ind, regenerate=False):
@@ -227,21 +255,30 @@ class FOOOFGroup(FOOOF):
         """
 
         # Initialize a FOOOF object, with same settings as current FOOOFGroup
-        fm = FOOOF(self.bandwidth_limits, self.max_n_oscs, self.min_amp,
-                   self.amp_std_thresh, self.bg_use_knee, self.verbose)
+        fm = FOOOF(self.bandwidth_limits, self.max_n_gauss, self.min_amp,
+                   self.amp_std_thresh, self.background_mode, self.verbose)
 
-        # Add data and results for specified single PSD
+        # Add data for specified single PSD, if available
         #  The PSD is inverted back to linear, as it's re-logged when added to FOOOF
-        fm.add_data(self.freqs, np.power(10, self.psds[ind]))
+        if np.any(self.psds):
+            fm.add_data(self.freqs, np.power(10, self.psds[ind]))
+
+        # Add results for specified PSD, regenerating full fit if requested
         fm.add_results(self.group_results[ind], regenerate=regenerate)
 
         return fm
 
 
-    def print_results(self):
-        """Print out FOOOFGroup results."""
+    def print_results(self, concise=True):
+        """Print out FOOOFGroup results.
 
-        print(gen_results_str_fg(self))
+        Parameters
+        ----------
+        concise : bool, optional
+            Whether to print the report in a concise mode, or not. default: True
+        """
+
+        print(gen_results_str_fg(self, concise))
 
 
     def _fit(self, *args, **kwargs):
@@ -255,14 +292,12 @@ class FOOOFGroup(FOOOF):
 
         return super().get_results()
 
+    def _check_bw(self):
+        """Check and warn about bandwidth limits / frequency resolution interaction."""
 
-# DOCS: Copy over docs from FOOOF to FOOOFGroup
-FOOOFGroup.__doc__ = FOOOF.__doc__
-
-# DOCS: Copy over docs for an aliased functions to the method docstrings
-for func_name in get_obj_desc()['alias_funcs']:
-    getattr(FOOOFGroup, func_name).__doc__ = \
-        docs_drop_param(eval(func_name + '_' + 'fg').__doc__)
+        # Only check & warn on first PSD (to avoid spamming stdout for every PSD)
+        if self.psds[0, 0] == self.psd[0]:
+            super()._check_bw()
 
 
 # Helper Functions

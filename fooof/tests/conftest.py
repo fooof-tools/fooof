@@ -2,20 +2,22 @@
 
 import os
 import shutil
+import pytest
 import pkg_resources as pkg
 
 import numpy as np
-import matplotlib.pyplot as plt
 
+from fooof.core.modutils import safe_import
 from fooof.tests.utils import get_tfm, get_tfg
 
-import pytest
+plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
 
 def pytest_configure(config):
-    plt.switch_backend('agg')
+    if plt:
+        plt.switch_backend('agg')
     np.random.seed(42)
 
 @pytest.fixture(scope='session', autouse=True)
@@ -42,3 +44,8 @@ def tfm():
 @pytest.fixture(scope='session')
 def tfg():
     yield get_tfg()
+
+@pytest.fixture(scope='session')
+def skip_if_no_mpl():
+    if not safe_import('matplotlib'):
+        pytest.skip('Matplotlib not availabe: skipping test.')

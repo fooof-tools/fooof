@@ -6,7 +6,10 @@ import numpy as np
 ###################################################################################################
 
 ## Settings & Globals
-CV = 100                # Centering Value
+# Centering Value - Long & Short options
+#  Note: Long CV of 98 is so that the max line length plays nice with notebook rendering on Github
+LCV = 98
+SCV = 70
 
 ###################################################################################################
 ###################################################################################################
@@ -35,15 +38,17 @@ def gen_bw_warn_str(freq_res, bwl):
     return output
 
 
-def gen_settings_str(f_obj, description=False):
+def gen_settings_str(f_obj, description=False, concise=False):
     """Generate a string representation of current FOOOF settings.
 
     Parameters
     ----------
     f_obj : FOOOF or FOOOFGroup object
         A FOOOF derived object, from which settings are to be used.
-    description : bool, optional (default: True)
-        Whether to print out a description with current settings.
+    description : bool, optional
+        Whether to print out a description with current settings. default: True
+    concise : bool, optional
+        Whether to print the report in a concise mode, or not. default: False
 
     Returns
     -------
@@ -52,54 +57,58 @@ def gen_settings_str(f_obj, description=False):
     """
 
     # Parameter descriptions to print out, if requested
-    desc = {'bg_use_knee' : 'Whether to fit a knee parameter in background fitting.',
-            'bw_lims'     : 'Possible range of bandwidths for extracted oscillations, in Hz.',
-            'num_oscs'    : 'The maximum number of oscillations that can be extracted.',
-            'min_amp'     : "Minimum absolute amplitude, above background, "
-                            "for an oscillation to be extracted.",
-            'amp_thresh'  : "Threshold, in units of standard deviation,"
-                            "at which to stop searching for oscillations."}
+    desc = {'background_mode' : 'The aproach taken to fitting the background.',
+            'bw_lims'         : 'Possible range of bandwidths for extracted oscillations, in Hz.',
+            'num_oscs'        : 'The maximum number of oscillations that can be extracted.',
+            'min_amp'         : "Minimum absolute amplitude, above background, "
+                                "for an oscillation to be extracted.",
+            'amp_thresh'      : "Threshold, in units of standard deviation, "
+                                "at which to stop searching for oscillations."}
 
     # Clear description for printing if not requested
     if not description:
         desc = {k : '' for k, v in desc.items()}
 
     # Create output string
-    output = '\n'.join([
+    str_lst = [
 
         # Header
-        '=' * CV,
+        '=',
         '',
-        'FOOOF - SETTINGS'.center(CV),
+        'FOOOF - SETTINGS',
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Fit Knee : {}'.format(f_obj.bg_use_knee).center(CV),
-                        '{}'.format(desc['bg_use_knee']).center(CV),
-                        'Bandwidth Limits : {}'.format(f_obj.bandwidth_limits).center(CV),
-                        '{}'.format(desc['bw_lims']).center(CV),
-                        'Max Number of Oscillations : {}'.format(f_obj.max_n_oscs).center(CV),
-                        '{}'.format(desc['num_oscs']).center(CV),
-                        'Minimum Amplitude : {}'.format(f_obj.min_amp).center(CV),
-                        '{}'.format(desc['min_amp']).center(CV),
-                        'Amplitude Threshold: {}'.format(f_obj.amp_std_thresh).center(CV),
-                        '{}'.format(desc['amp_thresh']).center(CV)] if el != ' '*CV],
+        *[el for el in ['Fit Knee : {}'.format(f_obj.background_mode),
+                        '{}'.format(desc['background_mode']),
+                        'Bandwidth Limits : {}'.format(f_obj.bandwidth_limits),
+                        '{}'.format(desc['bw_lims']),
+                        'Max Number of Oscillations : {}'.format(f_obj.max_n_gauss),
+                        '{}'.format(desc['num_oscs']),
+                        'Minimum Amplitude : {}'.format(f_obj.min_amp),
+                        '{}'.format(desc['min_amp']),
+                        'Amplitude Threshold: {}'.format(f_obj.amp_std_thresh),
+                        '{}'.format(desc['amp_thresh'])] if el != ''],
 
         # Footer
         '',
-        '=' * CV
-    ])
+        '='
+    ]
+
+    output = _format(str_lst, concise)
 
     return output
 
 
-def gen_results_str_fm(fm):
+def gen_results_str_fm(fm, concise=False):
     """Generate a string representation of model fit results.
 
     Parameters
     ----------
     fm : FOOOF object
         Object for which results are to be printed.
+    concise : bool, optional
+        Whether to print the report in a concise mode, or not. default: False
 
     Returns
     -------
@@ -107,58 +116,64 @@ def gen_results_str_fm(fm):
         Formatted string of FOOOF model results.
     """
 
-    if not np.all(fm.background_params_):
-        raise ValueError('Model fit has not been run - can not proceed.')
+    # Returns a null report if no results are available
+    if np.all(np.isnan(fm.background_params_)):
+        return _no_model_str(concise)
 
-    # Create output string
-    output = '\n'.join([
+    # Create the formatted strings for printing
+    str_lst = [
 
         # Header
-        '=' * CV,
+        '=',
         '',
-        ' FOOOF - PSD MODEL'.center(CV),
+        ' FOOOF - PSD MODEL',
         '',
 
         # Frequency range and resolution
-        'The input PSD was modelled in the frequency range: {} - {} Hz'.format(
-            int(np.floor(fm.freq_range[0])), int(np.ceil(fm.freq_range[1]))).center(CV),
-        'Frequency Resolution is {:1.2f} Hz'.format(fm.freq_res).center(CV),
+        'The model was run on the frequency range {} - {} Hz'.format(
+            int(np.floor(fm.freq_range[0])), int(np.ceil(fm.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(fm.freq_res),
         '',
 
         # Background parameters
-        ('Background Parameters (offset, ' + ('knee, ' if fm.bg_use_knee else '') + \
-           'slope): ').center(CV),
+        ('Background Parameters (offset, ' + ('knee, ' if fm.background_mode == 'knee' else '') + \
+           'slope): '),
         ', '.join(['{:2.4f}'] * len(fm.background_params_)).format(
-            *fm.background_params_).center(CV),
+            *fm.background_params_),
         '',
 
         # Oscillation parameters
         '{} oscillations were found:'.format(
-            len(fm.oscillation_params_)).center(CV),
-        *['CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]).center(CV) \
+            len(fm.oscillation_params_)),
+        *['CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]) \
           for op in fm.oscillation_params_],
         '',
 
         # R^2 and error
-        'R^2 of model fit is {:5.4f}'.format(fm.r2_).center(CV),
-        'Root mean squared error of model fit is {:5.4f}'.format(
-            fm.error_).center(CV),
+        'Goodness of fit metrics:',
+        'R^2 of model fit is {:5.4f}'.format(fm.r2_),
+        'Root mean squared error is {:5.4f}'.format(
+            fm.error_),
         '',
 
         # Footer
-        '=' * CV
-    ])
+        '='
+    ]
+
+    output = _format(str_lst, concise)
 
     return output
 
 
-def gen_results_str_fg(fg):
+def gen_results_str_fg(fg, concise=False):
     """Generate a string representation of group fit results.
 
     Parameters
     ----------
     fg : FOOOFGroup() object
         Group object for which results are to be printed.
+    concise : bool, optional
+        Whether to print the report in a concise mode, or not. default: False
 
     Returns
     -------
@@ -173,66 +188,76 @@ def gen_results_str_fg(fg):
     cens = fg.get_all_data('oscillation_params', 0)
     r2s = fg.get_all_data('r2')
     errors = fg.get_all_data('error')
-    if fg.bg_use_knee:
+    if fg.background_mode == 'knee':
         kns = fg.get_all_data('background_params', 1)
         sls = fg.get_all_data('background_params', 2)
     else:
         kns = np.array([0])
         sls = fg.get_all_data('background_params', 1)
 
-    # Create output string
-    output = '\n'.join([
+    # Check if there are any power spectra that failed to fit
+    n_failed = sum(np.isnan(sls))
+
+    str_lst = [
 
         # Header
-        '=' * CV,
+        '=',
         '',
-        ' FOOOF - GROUP RESULTS'.center(CV),
+        ' FOOOF - GROUP RESULTS',
         '',
 
         # Group information
-        'Number of PSDs in the Group: {}'.format(len(fg.group_results)).center(CV),
+        'Number of PSDs in the Group: {}'.format(len(fg.group_results)),
+        *[el for el in ['{} PSD(s) failed to fit'.format(n_failed)] if n_failed],
         '',
 
         # Frequency range and resolution
-        'The input PSDs were modelled in the frequency range: {} - {} Hz'.format(
-            int(np.floor(fg.freq_range[0])), int(np.ceil(fg.freq_range[1]))).center(CV),
-        'Frequency Resolution is {:1.2f} Hz'.format(fg.freq_res).center(CV),
+        'The model was run on the frequency range {} - {} Hz'.format(
+            int(np.floor(fg.freq_range[0])), int(np.ceil(fg.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(fg.freq_res),
         '',
 
         # Background parameters - knee fit status, and quick slope description
-        'PSDs were fit {} a knee.'.format('with' if fg.bg_use_knee else 'without').center(CV),
+        'PSDs were fit {} a knee.'.format('with' if fg.background_mode == 'knee' else 'without'),
         '',
-        *[el for el in ['Background Knee Values'.center(CV),
+        *[el for el in ['Background Knee Values',
                         'Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
-                        .format(kns.min(), kns.max(), kns.mean()).center(CV)
-                       ] if fg.bg_use_knee],
-        'Background Slope Values'.center(CV),
+                        .format(np.nanmin(kns), np.nanmax(kns), np.nanmean(kns)),
+                       ] if fg.background_mode == 'knee'],
+        'Background Slope Values',
         'Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-        .format(sls.min(), sls.max(), sls.mean()).center(CV),
+        .format(np.nanmin(sls), np.nanmax(sls), np.nanmean(sls)),
         '',
 
         # Oscillation Parameters
         'In total {} oscillations were extracted from the group'
-        .format(len(cens)).center(CV),
+        .format(sum(~np.isnan(cens))),
         '',
 
         # Fitting stats - error and r^2
-        'Fitting Performance'.center(CV),
+        'Goodness of fit metrics:',
         '   R2s -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-        .format(r2s.min(), r2s.max(), r2s.mean()).center(CV),
+        .format(np.nanmin(r2s), np.nanmax(r2s), np.nanmean(r2s)),
         'Errors -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-        .format(errors.min(), errors.max(), errors.mean()).center(CV),
+        .format(np.nanmin(errors), np.nanmax(errors), np.nanmean(errors)),
         '',
 
         # Footer
-        '=' * CV
-    ])
+        '='
+    ]
+
+    output = _format(str_lst, concise)
 
     return output
 
 
-def gen_report_str():
+def gen_report_str(concise=False):
     """Generate a string representation of instructions to report an issue.
+
+    Parameters
+    ----------
+    concise : bool, optional
+        Whether to print the report in a concise mode, or not. default: False
 
     Returns
     -------
@@ -240,40 +265,95 @@ def gen_report_str():
         Formatted string of how to provide feedback.
     """
 
-    # Create output string
-    output = '\n'.join([
+    str_lst = [
 
         # Header
-        '=' * CV,
+        '=',
         '',
-        'Contact / Reporting Information for FOOOF'.center(CV),
+        'Contact / Reporting Information for FOOOF',
         '',
 
         # Reporting bugs
-        'Please report any bugs or unexpected errors on Github. '.center(CV),
-        'https://github.com/voytekresearch/fooof/issues'.center(CV),
+        'Please report any bugs or unexpected errors on Github.',
+        'https://github.com/voytekresearch/fooof/issues',
         '',
 
         # Reporting a weird fit
-        'If FOOOF gives you any weird / bad fits, we would like to know, so we can make it better!'.center(CV),
-        'To help us with this, send us a FOOOF report, and a FOOOF data file, for any bad fits.'.center(CV),
+        'If FOOOF gives you any weird / bad fits, we would like to know, so we can make it better!',
+        'To help us with this, send us a FOOOF report, and a FOOOF data file, for any bad fits.',
         '',
-        'With a FOOOF object (fm), after fitting, run the following commands:'.center(CV),
-        "fm.create_report('FOOOF_bad_fit_report')".center(CV),
-        "fm.save('FOOOF_bad_fit_data', True, True, True)".center(CV),
+        'With a FOOOF object (fm), after fitting, run the following commands:',
+        "fm.create_report('FOOOF_bad_fit_report')",
+        "fm.save('FOOOF_bad_fit_data', True, True, True)",
         '',
-        "Send the generated files ('FOOOF_bad_fit_report.pdf' & 'FOOOF_bad_fit_data.json') to us.".center(CV),
-        'We will have a look, and provide any feedback we can.'.center(CV),
+        "Send the generated files ('FOOOF_bad_fit_report.pdf' & 'FOOOF_bad_fit_data.json') to us.",
+        'We will have a look, and provide any feedback we can.',
         '',
-        'We suggest sending individual examplars, but the above will also work with a FOOOFGroup.'.center(CV),
+        'We suggest sending individual examplars, but the above will also work with a FOOOFGroup.',
         '',
 
         # Contact
-        'Contact address: voytekresearch@gmail.com'.center(CV),
+        'Contact address: voytekresearch@gmail.com',
         '',
 
         # Footer
-        '=' * CV
-    ])
+        '='
+    ]
+
+    output = _format(str_lst, concise)
+
+    return output
+
+
+def _format(str_lst, concise):
+    """Format a string for printing.
+
+    Parameters
+    ----------
+    str_lst : list of str
+        List containing all elements for the string, each element representing a line.
+    concise : bool, optional
+        Whether to print the report in a concise mode, or not. default: False
+
+    Returns
+    -------
+    output : str
+        Formatted string, ready for printing.
+    """
+
+    # Use a smaller centering value if in concise mode
+    cv = SCV if concise else LCV
+
+    # Expand the section markers to full width
+    str_lst[0] = str_lst[0] * cv
+    str_lst[-1] = str_lst[-1] * cv
+
+    # Drop blank lines, if concise
+    str_lst = list(filter(lambda x: x != '', str_lst)) if concise else str_lst
+
+    # Convert list to a single string representation, centering each line
+    output = '\n'.join([string.center(cv) for string in str_lst])
+
+    return output
+
+
+def _no_model_str(concise=False):
+    """Creates a null report, for use if the model fit failed, or is unavailable.
+
+    Parameters
+    ----------
+    concise : bool, optional
+        Whether to print the report in a concise mode, or not. default: False
+    """
+
+    str_lst = [
+        '=',
+        '',
+        'Model fit has not been run, or fitting was unsuccessful.',
+        '',
+        '='
+    ]
+
+    output = _format(str_lst, concise)
 
     return output

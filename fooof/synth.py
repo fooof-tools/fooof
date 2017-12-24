@@ -1,27 +1,46 @@
-"""Creating synthetic PSDs for using with, and testing, FOOOF."""
+"""Synthesis functions for generating model components and synthetic power spectra."""
 
 import numpy as np
 
-from fooof.core.funcs import gaussian_function, expo_function, expo_nk_function
+from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
 
-##########################################################################################
-##########################################################################################
+###################################################################################################
+###################################################################################################
 
-def mk_fake_data(xs, bgp, oscs, knee=False, nlv=0.005):
-    """Create fake PSD for testing.
+def gen_freqs(freq_range, freq_res):
+    """Generate a frequency vector, from the frequency range and resolution.
 
     Parameters
     ----------
-    xs : 1d array
-        Frequency vector to create fake PSD with.
-    bgp : list of [float, float, float]
-        Parameters to create the background of PSD.
-    oscs : list of [float, float, float]
+    freq_range : list of [float, float]
+        Frequency range of desired frequency vector, as [f_low, f_high].
+    freq_res : float
+        Frequency resolution of desired frequency vector.
+
+    Returns
+    -------
+    1d array
+        Frequency values (linear).
+    """
+
+    return np.arange(freq_range[0], freq_range[1]+freq_res, freq_res)
+
+
+def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, freq_res=0.5):
+    """Generate a synthetic power spectrum.
+
+    Parameters
+    ----------
+    freq_range : list of [float, float]
+        Minimum and maximum values of the desired frequency vector.
+    background_params : list of float
+        Parameters to create the background of a power spectrum.
+    gauss_params : list of list of float
         Parameters to create oscillations. Length of n_oscs * 3.
-    knee : bool, optional
-        Whether to generate PSD with a knee of not. Default: False
     nlv : float, optional
-        Noise level to add to generated PSD. Default: 0.005
+        Noise level to add to generated power spectrum. Default: 0.005
+    freq_res : float, optional
+        Frequency resolution for the synthetic power spectra.
 
     Returns
     -------
@@ -29,26 +48,36 @@ def mk_fake_data(xs, bgp, oscs, knee=False, nlv=0.005):
         Frequency values (linear).
     ys : 1d array
         Power values (linear).
+
+    Notes
+    -----
+    - The type of background process to use is inferred from the provided parameters.
+        - If length of 2, 'fixed' background is used, if length of 3, 'knee' is used.
     """
 
-    bg = expo_function(xs, *bgp) if knee else expo_nk_function(xs, *bgp)
-    oscs = gaussian_function(xs, *oscs)
-    noise = np.random.normal(0, nlv, len(xs))
-
-    ys = np.power(10, bg + oscs + noise)
+    xs = gen_freqs(freq_range, freq_res)
+    ys = _gen_power_vals(xs, background_params, gauss_params, nlv)
 
     return xs, ys
 
 
-def mk_fake_group_data(xs, n_psds=5):
-    """Create a matrix of fake PSDs for testing.
+def gen_group_power_spectra(n_psds, freq_range, bgp_opts, gauss_opts, nlv=0.005, freq_res=0.5):
+    """Generate a group of synthetic power spectra.
 
     Parameters
     ----------
-    xs : 1d array
-        Frequency vector to create fake PSDs with.
-    n_psds : int, optional
+    n_psds : int
         The number of PSDs to generate in the matrix.
+    freq_range : list of [float, float]
+        Minimum and maximum values of the desired frequency vector.
+    background_opts : list of list of float
+        Group of parameter sets to create the background of power spectrum.
+    gauss_opts : list of of list of float
+        Group of parameters sets to create oscillations. Length of n_oscs * 3.
+    nlv : float, optional
+        Noise level to add to generated power spectrum. default: 0.005
+    freq_res : float, optional
+        Frequency resolution for the synthetic power spectra. default: 0.5
 
     Returns
     -------
@@ -56,15 +85,100 @@ def mk_fake_group_data(xs, n_psds=5):
         Frequency values (linear).
     ys : 2d array
         Matrix of power values (linear).
+
+    Notes
+    -----
+    - Paramaters options can contain more than one parameter description.
+        - If so, for each power spectrum, parameters are randomly chosen from the options.
+    - The type of background process to use is inferred from the provided parameters.
+        - If length of 2, 'fixed' background is used, if length of 3, 'knee' is used.
     """
+
+    xs = gen_freqs(freq_range, freq_res)
 
     ys = np.zeros([n_psds, len(xs)])
 
-    bgp_opts = [[20, 2], [50, 2.5], [35, 1.5]]
-    osc_opts = [[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]]
+    for ind in range(n_psds):
 
-    for i in range(n_psds):
-        _, ys[i, :] = mk_fake_data(xs, bgp_opts[np.random.randint(0, len(bgp_opts))],
-                                   osc_opts[np.random.randint(0, len(osc_opts))])
+        # Randomly select parameters from options to use for power spectrum
+        bg_params = bgp_opts[np.random.randint(0, len(bgp_opts))]
+        gauss_params = gauss_opts[np.random.randint(0, len(gauss_opts))]
+
+        ys[ind, :] = _gen_power_vals(xs, bg_params, gauss_params, nlv)
 
     return xs, ys
+
+
+def gen_bg(xs, background_params, background_mode=None):
+    """Generate background values.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Frequency vector to create background from.
+    background_params : list of float
+        Paramters that define the background process.
+    background_mode : {'fixed', 'knee'}, optional
+        Which kind of background to generate power spectra with.
+            If not provided, is infered from the parameters.
+
+    Returns
+    -------
+    1d array
+        Generated background values
+    """
+
+    if not background_mode:
+        background_mode = infer_bg_func(background_params)
+
+    bg_func = get_bg_func(background_mode)
+
+    return bg_func(xs, *background_params)
+
+
+def gen_peaks(xs, gauss_params):
+    """Generate peaks values.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Frequency vector to create peak values from.
+    gauss_params : list of list of float
+        Parameters to create oscillations. Length of n_oscs * 3.
+
+    Returns
+    -------
+    1d array
+        Generated background values.
+    """
+
+    return gaussian_function(xs, *gauss_params)
+
+
+def _gen_power_vals(xs, bg_params, gauss_params, nlv):
+    """Generate power values for a power spectrum.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Frequency vector to create power values from.
+    background_params : list of float
+        Parameters to create the background of power spectrum.
+    gauss_params : list of float
+        Parameters to create oscillations. Length of n_oscs * 3.
+    nlv : float
+        Noise level to add to generated power spectrum.
+
+    Returns
+    -------
+    ys : 1d vector
+        Power values (linear).
+    """
+
+    background = gen_bg(xs, bg_params, infer_bg_func(bg_params))
+    peaks = gen_peaks(xs, gauss_params)
+    noise = np.random.normal(0, nlv, len(xs))
+
+    ys = np.power(10, background + peaks + noise)
+
+    return ys

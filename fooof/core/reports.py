@@ -2,25 +2,27 @@
 
 import os
 
-import matplotlib.pyplot as plt
-from matplotlib import gridspec
-
-from fooof.plts.fg import plot_fg_bg, plot_fg_gf, plot_fg_osc_cens
+from fooof.core.modutils import safe_import, check_dependency
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_results_str_fg
+from fooof.plts.fg import plot_fg_bg, plot_fg_gf, plot_fg_osc_cens
+
+plt = safe_import('.pyplot', 'matplotlib')
+gridspec = safe_import('.gridspec', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
 
-def create_report_fm(fm, save_name, save_path='', plt_log=False):
-    """Generate and save out a report for FOOOF object.
+@check_dependency(plt, 'matplotlib')
+def create_report_fm(fm, file_name, file_path='', plt_log=False):
+    """Generate and save out a as PDF a report for a FOOOF object.
 
     Parameters
     ----------
     fm : FOOOF() object
         FOOOF object, containing results from fitting a PSD.
-    save_name : str
+    file_name : str
         Name to give the saved out file.
-    save_path : str, optional
+    file_path : str, optional
         Path to directory in which to save. If not provided, saves to current directory.
     plt_log : bool, optional
         Whether or not to plot the frequency axis in log space. default: False
@@ -53,20 +55,21 @@ def create_report_fm(fm, save_name, save_path='', plt_log=False):
     ax2.set_yticks([])
 
     # Save out the report
-    plt.savefig(os.path.join(save_path, save_name + '.pdf'))
+    plt.savefig(os.path.join(file_path, file_name + '.pdf'))
     plt.close()
 
 
-def create_report_fg(fg, save_name, save_path=''):
-    """Generate and save out a report for FOOOFGroup object.
+@check_dependency(plt, 'matplotlib')
+def create_report_fg(fg, file_name, file_path=''):
+    """Generate and save out as a PDF a report for a FOOOFGroup object.
 
     Parameters
     ----------
     fg : FOOOFGroup() object
         FOOOFGroup object, containing results from fitting a group of PSDs.
-    save_name : str
+    file_name : str
         Name to give the saved out file.
-    save_path : str, optional
+    file_path : str, optional
         Path to directory in which to save. If not provided, saves to current directory.
     """
 
@@ -97,7 +100,7 @@ def create_report_fg(fg, save_name, save_path=''):
     plot_fg_osc_cens(fg, ax3)
 
     # Save out the report
-    plt.savefig(os.path.join(save_path, save_name + '.pdf'))
+    plt.savefig(os.path.join(file_path, file_name + '.pdf'))
     plt.close()
 
 

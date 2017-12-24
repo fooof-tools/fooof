@@ -1,42 +1,37 @@
 """Tests for fooof.plts.fm."""
 
+from py.test import raises
+
+from fooof import FOOOFGroup
 from fooof.plts.fg import *
+from fooof.tests.utils import plot_test
 
 ###################################################################################################
 ###################################################################################################
 
-def test_plot_fg(tfg):
-
-    plt.close('all')
+@plot_test
+def test_plot_fg(tfg, skip_if_no_mpl):
 
     plot_fg(tfg)
 
-    ax = plt.gca()
-    assert ax.has_data()
+def test_plot_fg_error():
 
-def test_plot_fg_bg(tfg):
+    tfg = FOOOFGroup()
 
-    plt.close('all')
+    with raises(RuntimeError):
+        tfg.plot()
+
+@plot_test
+def test_plot_fg_bg(tfg, skip_if_no_mpl):
 
     plot_fg_bg(tfg)
 
-    ax = plt.gca()
-    assert ax.has_data()
-
-def test_plot_fg_gf(tfg):
-
-    plt.close('all')
+@plot_test
+def test_plot_fg_gf(tfg, skip_if_no_mpl):
 
     plot_fg_gf(tfg)
 
-    ax = plt.gca()
-    assert ax.has_data()
-
-def test_plot_fg_osc_cens(tfg):
-
-    plt.close('all')
+@plot_test
+def test_plot_fg_osc_cens(tfg, skip_if_no_mpl):
 
     plot_fg_osc_cens(tfg)
-
-    ax = plt.gca()
-    assert ax.has_data()

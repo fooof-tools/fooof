@@ -16,14 +16,3 @@ def test_trim_psd():
 
     assert np.array_equal(f_out, np.array([2., 3., 4.]))
     assert np.array_equal(p_out, np.array([3., 4., 5.]))
-
-def test_mk_freq_vector():
-
-    f_range = [3, 40]
-    f_res = 0.5
-
-    freqs = mk_freq_vector(f_range, f_res)
-
-    assert freqs.min() == f_range[0]
-    assert freqs.max() == f_range[1]
-    assert np.mean(np.diff(freqs)) == f_res

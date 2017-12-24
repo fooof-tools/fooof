@@ -1,4 +1,35 @@
-"""FOOOF - Fitting Oscillations & One-Over F."""
+"""FOOOF - Fitting Oscillations & One-Over F.
+
+Notes
+-----
+- Methods without defined docstrings import docs at runtime, from aliased external functions.
+- Private attributes of the FOOOF method, not publicly exposed, are documented below.
+
+Attributes (private)
+----------
+_psd_flat : 1d array
+    Flattened PSD (background 1/f removed)
+_psd_osc_rm : 1d array
+    PSD with oscillations removed (not flattened).
+_gaussian_params : 2d array
+    Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
+_background_fit : 1d array
+    Values of the background fit.
+_oscillation_fit : 1d array
+    Values of the oscillation fit (flattened).
+_bg_amp_thresh : float
+    Noise threshold for finding oscillations above the background.
+_bg_guess : list of [float, float, float]
+    Guess parameters for fitting background.
+_bg_bounds : tuple of tuple of float
+    Upper and lower bounds on fitting background.
+_bw_std_edge : float
+    Bandwidth threshold for edge rejection of oscillations, units of standard deviation.
+_gauss_overlap_thresh : float
+    Degree of overlap (in units of guassian std dev) between gaussian guesses to drop one.
+_std_limits : list of [float, float]
+    Bandwidth limits, converted to use for gaussian standard deviation parameter.
+"""
 
 import warnings
 from collections import namedtuple
@@ -6,14 +37,16 @@ from collections import namedtuple
 import numpy as np
 from scipy.optimize import curve_fit
 
-from fooof.utils import trim_psd, mk_freq_vector
+from fooof.utils import trim_psd
 from fooof.plts.fm import plot_fm
 from fooof.core.io import save_fm, load_json
 from fooof.core.reports import create_report_fm
-from fooof.core.funcs import gaussian_function, expo_function, expo_nk_function
+from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
 from fooof.core.utils import group_three, check_array_dim
-from fooof.core.modutils import get_obj_desc, docs_drop_param
+from fooof.core.modutils import get_obj_desc, copy_doc_func_to_method
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_report_str, gen_bw_warn_str
+
+from fooof.synth import gen_freqs, gen_bg, gen_peaks
 
 ###################################################################################################
 ###################################################################################################
@@ -24,7 +57,7 @@ FOOOFResult = namedtuple('FOOOFResult', ['background_params', 'oscillation_param
 class FOOOF(object):
     """Model the physiological power spectrum as oscillatory peaks and 1/f background.
 
-    NOTE: FOOOF expects frequency and power values in linear space.
+    WARNING: FOOOF expects frequency and power values in linear space.
         Passing in logged frequencies and/or power spectra is not detected,
             and will silently produce incorrect results.
 
@@ -32,14 +65,14 @@ class FOOOF(object):
     ----------
     bandwidth_limits : tuple of (float, float), optional (default: (0.5, 12.0)
         Setting to exclude gaussian fits where the bandwidth is implausibly narrow or wide.
-    max_n_oscs : int, optional (default: inf)
-        Maximum number of oscillations to be modeled in a single PSD.
+    max_n_gauss : int, optional (default: inf)
+        Maximum number of gaussians to be fit in a single PSD.
     min_amp : float, optional (default: 0)
         Minimum amplitude threshold for an oscillation to be modeled.
     amp_std_thresh : float, optional (default: 2.0)
         Amplitude threshold for detecting oscillatory peaks, units of standard deviation.
-    bg_use_knee : boolean, optional (default: False)
-        Whether to fit a knee parameter when fitting the background.
+    background_mode : {'fixed', 'knee'}
+        Which approache to take to fitting the background process.
     verbose : boolean, optional (default: True)
         Whether to be verbose in printing out warnings.
 
@@ -63,49 +96,24 @@ class FOOOF(object):
         R-squared between the input PSD and the full model fit.
     error_ : float
         R-squared error of the full model fit.
-    _psd_flat : 1d array
-        Flattened PSD (background 1/f removed)
-    _psd_osc_rm : 1d array
-        PSD with oscillations removed (not flattened).
-    _gaussian_params : 2d array
-        Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
-    _background_fit : 1d array
-        Values of the background fit.
-    _oscillation_fit : 1d array
-        Values of the oscillation fit (flattened).
-    _bg_amp_thresh : float
-        Noise threshold for finding oscillations above the background.
-    _bg_guess : list of [float, float, float]
-        Guess parameters for fitting background.
-    _bg_bounds : tuple of tuple of float
-        Upper and lower bounds on fitting background.
-    _bw_std_edge : float
-        Banwidth threshold for edge rejection of oscillations, units of standard deviation.
-    _std_limits : list of [float, float]
-        Bandwidth limits, converted to use for gaussian standard deviation parameter.
-    _bg_fit_func : function
-        Function used to fit the background.
 
     Notes
     -----
-    Input PSD should be smooth - overly noisy power spectra may lead to bad fits.
-        - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
-        procedure, or a median filter smoothing on the FFT output before running FOOOF.
-        - Where possible and appropriate, use longer time segments for PSD calculation to
-          get smoother PSDs; this will give better FOOOF fits.
-    If using the FOOOFGroup Object, all parameters and attributes are the same.
-        - In addition there is 'psds' and 'group_results' as additional attributes,
-          which store the data and results respectively for a group of PSDs.
+    Input PSDs should be smooth - overly noisy power spectra may lead to bad fits.
+    - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
+      procedure, or a median filter smoothing on the FFT output before running FOOOF.
+    - Where possible and appropriate, use longer time segments for PSD calculation to
+      get smoother PSDs, as this will give better FOOOF fits.
     """
 
-    def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_oscs=np.inf,
-                 min_amp=0.0, amp_std_thresh=2.0, bg_use_knee=False, verbose=True):
+    def __init__(self, bandwidth_limits=(0.5, 12.0), max_n_gauss=np.inf,
+                 min_amp=0.0, amp_std_thresh=2.0, background_mode='fixed', verbose=True):
         """Initialize FOOOF object with run parameters."""
 
         # Set input parameters
-        self.bg_use_knee = bg_use_knee
+        self.background_mode = background_mode
         self.bandwidth_limits = bandwidth_limits
-        self.max_n_oscs = max_n_oscs
+        self.max_n_gauss = max_n_gauss
         self.min_amp = min_amp
         self.amp_std_thresh = amp_std_thresh
         self.verbose = verbose
@@ -124,12 +132,14 @@ class FOOOF(object):
         self._bg_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
         # Threshold for how far (units of gaus std dev) an oscillation has to be from edge to keep.
         self._bw_std_edge = 1.0
+        # Degree of overlap  (units of gauss std dev) between oscillations at which level one is dropped
+        self._gauss_overlap_thresh = 1.0
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
         self._cf_bound = 1.5
 
         # Initialize internal settings and data attributes (to None)
         self._reset_settings()
-        self._reset_dat()
+        self._reset_data()
 
 
     def _reset_settings(self):
@@ -141,23 +151,29 @@ class FOOOF(object):
             They should not be altered by the user.
         """
 
-        # Set exponential function version for whether fitting knee or not
-        self._bg_fit_func = expo_function if self.bg_use_knee else expo_nk_function
-        # Bandwidth limits are given in 2-sided oscillation bandwidth.
-        #  Convert to gaussian std parameter limits.
-        self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
-        # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
-        self._bg_bounds = self._bg_bounds if self.bg_use_knee \
-            else tuple(bound[0::2] for bound in self._bg_bounds)
+        # Only update these settings if other relevant settings are available
+        #   Otherwise, assume settings are unknown (have been cleared) and leave as None
+        if self.bandwidth_limits:
+
+            # Bandwidth limits are given in 2-sided oscillation bandwidth.
+            #  Convert to gaussian std parameter limits.
+            self._std_limits = [bwl / 2 for bwl in self.bandwidth_limits]
+            # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
+            self._bg_bounds = self._bg_bounds if self.background_mode == 'knee' \
+                else tuple(bound[0::2] for bound in self._bg_bounds)
 
 
-    def _reset_dat(self, clear_freqs=True):
-        """Set (or reset) all data attributes to empty.
+    def _reset_data(self, clear_freqs=True, clear_psd=True, clear_results=True):
+        """Set (or reset) data & results attributes to empty.
 
         Parameters
         ----------
         clear_freqs : bool, optional
-            Whether to clear frequency information too.
+            Whether to clear frequency attributes.
+        clear_psd : bool, optional
+            Whether to clear power spectrum attribute.
+        clear_results : bool, optional
+            Whether to clear model results attributes.
         """
 
         if clear_freqs:
@@ -165,18 +181,22 @@ class FOOOF(object):
             self.freq_range = None
             self.freq_res = None
 
-        self.psd = None
-        self.psd_fit_ = None
-        self.background_params_ = None
-        self.oscillation_params_ = None
-        self.r2_ = None
-        self.error_ = None
+        if clear_psd:
+            self.psd = None
 
-        self._psd_flat = None
-        self._psd_osc_rm = None
-        self._gaussian_params = None
-        self._background_fit = None
-        self._oscillation_fit = None
+        if clear_results:
+            self.psd_fit_ = None
+            self.background_params_ = np.array([np.nan, np.nan]) if \
+                self.background_mode == 'fixed' else np.array([np.nan, np.nan, np.nan])
+            self.oscillation_params_ = np.array([np.nan, np.nan, np.nan])
+            self.r2_ = np.nan
+            self.error_ = np.nan
+
+            self._psd_flat = None
+            self._psd_osc_rm = None
+            self._gaussian_params = np.array([np.nan, np.nan, np.nan])
+            self._background_fit = None
+            self._oscillation_fit = None
 
 
     def add_data(self, freqs, psd, freq_range=None):
@@ -220,8 +240,8 @@ class FOOOF(object):
             self._regenerate_model()
 
 
-    def model(self, freqs=None, psd=None, freq_range=None, plt_log=False):
-        """Run model fit, plot, and print results.
+    def report(self, freqs=None, psd=None, freq_range=None, plt_log=False):
+        """Run model fit, and display a report, which includes a plot, and printed results.
 
         Parameters
         ----------
@@ -231,6 +251,8 @@ class FOOOF(object):
             Power spectral density values.
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+        plt_log : boolean, optional
+            Whether or not to plot the frequency axis in log space. default: False
 
         Notes
         -----
@@ -239,7 +261,7 @@ class FOOOF(object):
 
         self.fit(freqs, psd, freq_range)
         self.plot(plt_log)
-        self.print_results()
+        self.print_results(False)
 
 
     def fit(self, freqs=None, psd=None, freq_range=None):
@@ -263,7 +285,7 @@ class FOOOF(object):
         if isinstance(freqs, np.ndarray) and isinstance(psd, np.ndarray):
             self.add_data(freqs, psd, freq_range)
         # If PSD provided alone, add to object, and use existing frequency data
-        #  Note: this option is for internal use (called from FOOOFGroup)
+        #  Note: be careful passing in PSD data like this:
         #    It assumes the PSD is already logged, with correct freq_range.
         elif isinstance(psd, np.ndarray):
             self.psd = psd
@@ -272,123 +294,157 @@ class FOOOF(object):
         if not (np.all(self.freqs) and np.all(self.psd)):
             raise ValueError('No data available to fit - can not proceed.')
 
-        # Check bandwidth limits against frequency resolution; warn if too close.
-        if 1.5 * self.freq_res >= self.bandwidth_limits[0] and self.verbose:
+        # Check and warn about bandwidth limits (if in verbose mode)
+        if self.verbose:
+            self._check_bw()
 
-            # Skips the warning after first fit in a group, to not spam stdout.
-            if hasattr(self, 'group_results') and self.psds[0, 0] != psd[0]:
-                pass
-            else:
-                print(gen_bw_warn_str(self.freq_res, self.bandwidth_limits[0]))
+        # In rare cases, the model fails to fit. Therefore it's in a try/except
+        #  Cause of failure: RuntimeError, failure to find parameters in curve_fit
+        try:
 
-        # Fit the background 1/f.
-        self.background_params_ = self._clean_background_fit(self.freqs, self.psd)
-        self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
+            # Fit the background 1/f.
+            self.background_params_ = self._clean_background_fit(self.freqs, self.psd)
+            self._background_fit = gen_bg(self.freqs, self.background_params_)
 
-        # Flatten the PSD using fit background.
-        self._psd_flat = self.psd - self._background_fit
+            # Flatten the PSD using fit background.
+            self._psd_flat = self.psd - self._background_fit
 
-        # Find oscillations, and fit them with gaussians.
-        self._gaussian_params = self._fit_oscs(np.copy(self._psd_flat))
+            # Find oscillations, and fit them with gaussians.
+            self._gaussian_params = self._fit_oscs(np.copy(self._psd_flat))
 
-        # Calculate the oscillation fit.
-        #  Note: if no oscillations are found, this creates a flat (all zero) oscillation fit.
-        self._oscillation_fit = self._create_osc_fit(self.freqs, self._gaussian_params)
+            # Calculate the oscillation fit.
+            #  Note: if no oscillations are found, this creates a flat (all zero) oscillation fit.
+            self._oscillation_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
 
-        # Create oscillation-removed (but not flattened) PSD.
-        self._psd_osc_rm = self.psd - self._oscillation_fit
+            # Create oscillation-removed (but not flattened) PSD.
+            self._psd_osc_rm = self.psd - self._oscillation_fit
 
-        # Run final background fit on oscillation-removed PSD.
-        #   Note: This overwrites previous background fit.
-        self.background_params_ = self._quick_background_fit(self.freqs, self._psd_osc_rm)
-        self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
+            # Run final background fit on oscillation-removed PSD.
+            #   Note: This overwrites previous background fit.
+            self.background_params_ = self._quick_background_fit(self.freqs, self._psd_osc_rm)
+            self._background_fit = gen_bg(self.freqs, self.background_params_)
 
-        # Create full PSD model fit.
-        self.psd_fit_ = self._oscillation_fit + self._background_fit
+            # Create full PSD model fit.
+            self.psd_fit_ = self._oscillation_fit + self._background_fit
 
-        # Convert gaussian definitions to oscillation parameters
-        self.oscillation_params_ = self._create_osc_params(self._gaussian_params)
+            # Convert gaussian definitions to oscillation parameters
+            self.oscillation_params_ = self._create_osc_params(self._gaussian_params)
 
-        # Calculate R^2 and error of the model fit.
-        self._r_squared()
-        self._rmse_error()
+            # Calculate R^2 and error of the model fit.
+            self._r_squared()
+            self._rmse_error()
+
+        # Catch failure, stemming from curve_fit process
+        except RuntimeError:
+
+            # Clear any interim model results that may have run
+            #  Partial model results shouldn't be interpreted
+            self._reset_data(False, False, True)
+
+            # Print out status
+            if self.verbose:
+                print('Model fitting was unsuccessful.')
 
 
-    def print_settings(self, description=False):
+    def print_settings(self, description=False, concise=True):
         """Print out the current FOOOF settings.
 
         Parameters
         ----------
         description : bool, optional (default: True)
             Whether to print out a description with current settings.
+        concise : bool, optional
+            Whether to print the report in a concise mode, or not. default: True
         """
 
-        print(gen_settings_str(self, description))
+        print(gen_settings_str(self, description, concise))
 
 
-    def print_results(self):
-        """Print out FOOOF results."""
+    def print_results(self, concise=True):
+        """Print out FOOOF results.
 
-        print(gen_results_str_fm(self))
+        Parameters
+        ----------
+        concise : bool, optional
+            Whether to print the report in a concise mode, or not. default: True
+        """
+
+        print(gen_results_str_fm(self, concise))
 
 
     @staticmethod
-    def print_report_issue():
-        """Prints instructions on how to report bugs and/or problematic fits."""
+    def print_report_issue(concise=False):
+        """Prints instructions on how to report bugs and/or problematic fits.
 
-        print(gen_report_str())
+        Parameters
+        ----------
+        concise : bool, optional
+            Whether to print the report in a concise mode, or not. default: False
+        """
+
+        print(gen_report_str(concise))
 
 
     def get_results(self):
-        """Return model fit parameters and error."""
+        """Return model fit parameters and goodness of fit metrics."""
 
         return FOOOFResult(self.background_params_, self.oscillation_params_, self.r2_,
                            self.error_, self._gaussian_params)
 
+    @copy_doc_func_to_method(plot_fm)
+    def plot(self, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path='', ax=None):
 
-    def plot(self, plt_log=False, save_fig=False, save_name='FOOOF_fit', save_path='', ax=None):
-
-        plot_fm(self, plt_log, save_fig, save_name, save_path, ax)
-
-
-    def create_report(self, save_name='FOOOF_Report', save_path='', plt_log=False):
-
-        create_report_fm(self, save_name, save_path, plt_log)
+        plot_fm(self, plt_log, save_fig, file_name, file_path, ax)
 
 
-    def save(self, save_file='fooof_dat', save_path='', save_results=False,
-             save_settings=False, save_data=False, append=False):
+    @copy_doc_func_to_method(create_report_fm)
+    def create_report(self, file_name='FOOOF_Report', file_path='', plt_log=False):
 
-        save_fm(self, save_file, save_path, save_results, save_settings, save_data, append)
+        create_report_fm(self, file_name, file_path, plt_log)
 
 
-    def load(self, load_file='fooof_dat', file_path=''):
+    @copy_doc_func_to_method(save_fm)
+    def save(self, file_name='fooof_data', file_path='', append=False,
+             save_results=False, save_settings=False, save_data=False):
+
+        save_fm(self, file_name, file_path, append, save_results, save_settings, save_data)
+
+
+    def load(self, file_name='fooof_data', file_path=''):
         """Load in FOOOF file. Reads in a JSON file.
 
         Parameters
         ----------
-        load_file : str or FileObject, optional
+        file_name : str or FileObject, optional
             File from which to load data.
         file_path : str
             Path to directory from which to load. If not provided, loads from current directory.
         """
 
         # Reset data in object, so old data can't interfere
-        self._reset_dat()
+        self._reset_data()
 
         # Load JSON file, add to self and check loaded data
-        dat = load_json(load_file, file_path)
-        self._add_from_dict(dat)
-        self._check_loaded_settings(dat)
-        self._check_loaded_results(dat)
+        data = load_json(file_name, file_path)
+        self._add_from_dict(data)
+        self._check_loaded_settings(data)
+        self._check_loaded_results(data)
 
 
-    def _check_loaded_results(self, dat, regenerate=True):
+    def _check_bw(self):
+        """Check and warn about bandwidth limits / frequency resolution interaction."""
+
+        # Check bandwidth limits against frequency resolution; warn if too close.
+        if 1.5 * self.freq_res >= self.bandwidth_limits[0]:
+            print(gen_bw_warn_str(self.freq_res, self.bandwidth_limits[0]))
+
+
+    def _check_loaded_results(self, data, regenerate=True):
         """Check if results added, check data, and regenerate model, if requested.
 
         Parameters
         ----------
-        dat : dict
+        data : dict
             The dictionary of data that has been added to the object.
         regenerate : bool, optional
             Whether to regenerate the PSD model. default : True
@@ -396,7 +452,7 @@ class FOOOF(object):
 
         # If results loaded, check dimensions of osc/gauss parameters
         #  This fixes an issue where they end up the wrong shape if they are empty (no oscs)
-        if set(get_obj_desc()['results']).issubset(set(dat.keys())):
+        if set(get_obj_desc()['results']).issubset(set(data.keys())):
             self.oscillation_params_ = check_array_dim(self.oscillation_params_)
             self._gaussian_params = check_array_dim(self._gaussian_params)
 
@@ -424,7 +480,7 @@ class FOOOF(object):
 
         # Set guess params for lorentzian background fit, guess params set at init
         guess = np.array(([psd[0]] if not self._bg_guess[0] else [self._bg_guess[0]]) +
-                         ([self._bg_guess[1]] if self.bg_use_knee else []) +
+                         ([self._bg_guess[1]] if self.background_mode == 'knee' else []) +
                          [self._bg_guess[2]])
 
         # Ignore warnings that are raised in curve_fit
@@ -433,8 +489,8 @@ class FOOOF(object):
         #  It happens if / when b < 0 & |b| > x**2, as it leads to log of a negative number
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            background_params, _ = curve_fit(self._bg_fit_func, freqs, psd, p0=guess,
-                                             maxfev=5000, bounds=self._bg_bounds)
+            background_params, _ = curve_fit(get_bg_func(self.background_mode), freqs, psd,
+                                             p0=guess, maxfev=5000, bounds=self._bg_bounds)
 
         return background_params
 
@@ -457,7 +513,7 @@ class FOOOF(object):
 
         # Do a quick, initial background fit.
         popt = self._quick_background_fit(freqs, psd)
-        initial_fit = self._create_bg_fit(freqs, popt)
+        initial_fit = gen_bg(freqs, popt)
 
         # Flatten PSD based on initial background fit.
         psd_flat = psd - initial_fit
@@ -468,56 +524,17 @@ class FOOOF(object):
         # Amplitude threshold - in terms of # of points.
         perc_thresh = np.percentile(psd_flat, self._bg_amp_thresh)
         amp_mask = psd_flat <= perc_thresh
-        f_ignore = freqs[amp_mask]
+        freqs_ignore = freqs[amp_mask]
         psd_ignore = psd[amp_mask]
 
         # Second background fit - using results of first fit as guess parameters.
         #  See note in _quick_background_fit about warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            background_params, _ = curve_fit(self._bg_fit_func, f_ignore, psd_ignore,
-                                             p0=popt, maxfev=5000, bounds=self._bg_bounds)
+            background_params, _ = curve_fit(get_bg_func(self.background_mode), freqs_ignore,
+                                             psd_ignore, p0=popt, maxfev=5000, bounds=self._bg_bounds)
 
         return background_params
-
-
-    def _create_bg_fit(self, freqs, bg_params):
-        """Generate the fit of the background component of the PSD.
-
-        Parameters
-        ----------
-        freqs : 1d array
-            Frequency values for the PSD, in linear scale.
-        bg_params : 1d array
-            Parameters that define the background fit.
-
-        Returns
-        -------
-        1d array
-            Values of the background fit.
-        """
-
-        return self._bg_fit_func(freqs, *bg_params)
-
-
-    @staticmethod
-    def _create_osc_fit(freqs, gaus_params):
-        """Generate the fit of the oscillations component of the PSD.
-
-        Parameters
-        ----------
-        freqs : 1d array
-            Frequency values for the PSD, in linear scale.
-        gaus_params : 2d array
-            Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
-
-        Returns
-        -------
-        1d array
-            Values of the oscillation fit.
-        """
-
-        return gaussian_function(freqs, *np.ndarray.flatten(gaus_params))
 
 
     def _fit_oscs(self, flat_iter):
@@ -538,7 +555,7 @@ class FOOOF(object):
         guess = np.empty([0, 3])
 
         # Find oscillations: Loop through, checking residuals, stopping based on std check
-        while len(guess) < self.max_n_oscs:
+        while len(guess) < self.max_n_gauss:
 
             # Find candidate oscillation.
             max_ind = np.argmax(flat_iter)
@@ -648,12 +665,14 @@ class FOOOF(object):
         Parameters
         ----------
         gaus_params :  2d array
-            Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
+            Parameters that define the gaussian fit(s).
+                Each row is a gaussian, as [mean, amp, std].
 
         Returns
         -------
         oscillation_params :  2d array
-            Fitted parameter values for the oscillations. Each row is an oscillation, as [CF, Amp, BW].
+            Fitted parameter values for the oscillations.
+                Each row is an oscillation, as [CF, Amp, BW].
 
         Notes
         -----
@@ -732,8 +751,9 @@ class FOOOF(object):
         # Sort the oscillations guesses, so can check overlap of adjacent oscillations
         guess = sorted(guess, key=lambda x: float(x[0]))
 
-        # Calculate standard deviation bounds
-        bounds = [[osc[0] - osc[2], osc[0], osc[0] + osc[2]] for osc in guess]
+        # Calculate standard deviation bounds for checking amount of overlap
+        bounds = [[osc[0] - osc[2] * self._gauss_overlap_thresh, osc[0],
+                   osc[0] + osc[2] * self._gauss_overlap_thresh] for osc in guess]
 
         drop_inds = []
 
@@ -776,8 +796,8 @@ class FOOOF(object):
         freqs : 1d array
             Frequency values for the PSD, in linear space.
         psd : 1d or 2d array
-            Power spectral density values, in linear space. Either 1d vector, or 2d as [n_psds, n_freqs].
-        freq_range :
+            Power values, in linear space. Either 1d vector, or 2d as [n_psds, n_freqs].
+        freq_range : list of [float, float]
             Frequency range to restrict PSD to. If None, keeps the entire range.
         verbose : bool, optional
             Whether to be verbose in printing out warnings.
@@ -787,11 +807,11 @@ class FOOOF(object):
         freqs : 1d array
             Frequency values for the PSD, in linear space.
         psd : 1d or 2d array
-            Power spectral density values, in linear space. Either 1d vector, or 2d as [n_psds, n_freqs].
+            Power values, in linear space. Either 1d vector, or 2d as [n_psds, n_freqs].
         freq_range : list of [float, float]
-            Frequency range - minimum and maximum values of the frequency vector.
+            Minimum and maximum values of the frequency vector.
         freq_res : float
-            Frequency resolution of the PSD.
+            Frequency resolution of the power spectrum.
         """
 
         if freqs.shape[-1] != psd.shape[-1]:
@@ -808,7 +828,8 @@ class FOOOF(object):
         if freqs[0] == 0.0:
             freqs, psd = trim_psd(freqs, psd, [freqs[1], freqs.max()])
             if verbose:
-                print('\nFOOOF WARNING: Skipping frequency == 0, as this causes problem with fitting.')
+                print("\nFOOOF WARNING: Skipping frequency == 0,"
+                      " as this causes problem with fitting.")
 
         # Calculate frequency resolution, and actual frequency range of the data
         freq_range = [freqs.min(), freqs.max()]
@@ -820,41 +841,41 @@ class FOOOF(object):
         return freqs, psd, freq_range, freq_res
 
 
-    def _add_from_dict(self, dat):
+    def _add_from_dict(self, data):
         """Add data to object from a dictionary.
 
         Parameters
         ----------
-        dat : dict
+        data : dict
             Dictionary of data to add to self.
         """
 
         # Reconstruct FOOOF object from loaded data
-        for key in dat.keys():
-            setattr(self, key, dat[key])
+        for key in data.keys():
+            setattr(self, key, data[key])
 
         # Reconstruct frequency vector, if data available to do so
         if self.freq_res:
-            self.freqs = mk_freq_vector(self.freq_range, self.freq_res)
+            self.freqs = gen_freqs(self.freq_range, self.freq_res)
 
 
-    def _check_loaded_settings(self, dat):
+    def _check_loaded_settings(self, data):
         """Check if settings added, and update the object as needed.
 
         Parameters
         ----------
-        dat : dict
+        data : dict
             The dictionary of data that has been added to the object.
         """
 
         # If settings not loaded from file, clear from object, so that default
         #  settings, which are potentially wrong for loaded data, aren't kept
-        if not set(get_obj_desc()['settings']).issubset(set(dat.keys())):
+        if not set(get_obj_desc()['settings']).issubset(set(data.keys())):
             self._clear_settings()
 
             # Infer whether knee fitting was used, if background params have been loaded
             if np.all(self.background_params_):
-                self._infer_knee()
+                self.background_mode = infer_bg_func(self.background_params_)
 
         # Otherwise (settings were loaded), reset internal settings so that they are consistent
         else:
@@ -868,27 +889,9 @@ class FOOOF(object):
             setattr(self, setting, None)
 
 
-    def _infer_knee(self):
-        """Infer from background params, whether knee fitting was used, and update settings."""
-
-        #  Given results, can tell which function was used from the length of bg_params
-        if len(self.background_params_) == 3:
-            self.bg_use_knee = True
-            self._bg_fit_func = expo_function
-        else:
-            self.bg_use_knee = False
-            self._bg_fit_func = expo_nk_function
-
-
     def _regenerate_model(self):
         """Regenerate model fit from parameters."""
 
-        self._background_fit = self._create_bg_fit(self.freqs, self.background_params_)
-        self._oscillation_fit = self._create_osc_fit(self.freqs, self._gaussian_params)
+        self._background_fit = gen_bg(self.freqs, self.background_params_)
+        self._oscillation_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
         self.psd_fit_ = self._oscillation_fit + self._background_fit
-
-
-# DOCS: Copy over docs for an aliased functions to the method docstrings
-for func_name in get_obj_desc()['alias_funcs']:
-    getattr(FOOOF, func_name).__doc__ = \
-        docs_drop_param(eval(func_name + '_' + 'fm').__doc__)

@@ -6,15 +6,15 @@ The tests here are not strong tests for accuracy.
     They serve rather as 'smoke tests', for if anything fails completely.
 """
 
-import os
 import pkg_resources as pkg
 
 import numpy as np
 
 from fooof import FOOOFGroup
 from fooof.fit import FOOOFResult
-from fooof.synth import mk_fake_group_data
-from fooof.utils import mk_freq_vector
+from fooof.synth import gen_group_power_spectra
+
+from fooof.tests.utils import default_group_params, plot_test
 
 ###################################################################################################
 ###################################################################################################
@@ -22,7 +22,9 @@ from fooof.utils import mk_freq_vector
 def test_fg():
     """Check FOOOFGroup object initializes properly."""
 
-    assert FOOOFGroup()
+    # Doesn't assert fg itself, as it return false when group_results are empty
+    fg = FOOOFGroup()
+    assert True
 
 def test_fg_iter(tfg):
     """Check iterating through FOOOFGroup."""
@@ -34,7 +36,7 @@ def test_fg_fit():
     """Test FOOOFGroup fit, no knee."""
 
     n_psds = 2
-    xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=n_psds)
+    xs, ys = gen_group_power_spectra(n_psds, *default_group_params())
 
     tfg = FOOOFGroup()
     tfg.fit(xs, ys)
@@ -49,7 +51,7 @@ def test_fg_fit_par():
     """Test FOOOFGroup fit, running in parallel."""
 
     n_psds = 2
-    xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=n_psds)
+    xs, ys = gen_group_power_spectra(n_psds, *default_group_params())
 
     tfg = FOOOFGroup()
     tfg.fit(xs, ys, n_jobs=2)
@@ -60,13 +62,22 @@ def test_fg_fit_par():
     assert isinstance(out[0], FOOOFResult)
     assert np.all(out[1].background_params)
 
-def test_fg_plot_get(tfg):
-    """Check methods that print, plot."""
+def test_fg_print(tfg):
+    """Check print method (alias)."""
 
     tfg.print_results()
-    tfg.plot()
-
     assert True
+
+def test_get(tfg):
+    """Check get results method."""
+
+    assert tfg.get_results()
+
+@plot_test
+def test_fg_plot(tfg, skip_if_no_mpl):
+    """Check alias method for plot."""
+
+    tfg.plot()
 
 def test_fg_load():
     """Test load into FOOOFGroup. Note: loads files from test_core_io."""
@@ -83,13 +94,14 @@ def test_fg_load():
     tfg.load(res_file_name, file_path)
     assert tfg
 
-def test_fg_model():
+def test_fg_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
 
-    xs, ys = mk_fake_group_data(mk_freq_vector([3, 50], 0.5), n_psds=2)
+    n_psds = 2
+    xs, ys = gen_group_power_spectra(n_psds, *default_group_params())
 
     tfg = FOOOFGroup()
-    tfg.model(xs, ys)
+    tfg.report(xs, ys)
 
     assert tfg
 
