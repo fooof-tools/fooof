@@ -4,6 +4,7 @@ import os
 import pkg_resources as pkg
 
 from fooof import FOOOF
+from fooof.core.modutils import get_obj_desc
 
 from fooof.core.io import *
 
@@ -115,3 +116,28 @@ def test_load_jsonlines():
 
     for dat in load_jsonlines(res_file_name, file_path):
         assert dat
+
+def test_load_file_contents():
+    """Check that loaded files contain the contents they should.
+
+    Note that is this test fails, it likely stems from an issue from saving.
+    """
+
+    file_name = 'test_fooof_str_all'
+    file_path = pkg.resource_filename(__name__, 'test_files')
+
+    loaded_data = load_json(file_name, file_path)
+
+    desc = get_obj_desc()
+
+    # Check settings
+    for setting in desc['settings']:
+        assert setting in loaded_data.keys()
+
+    # Check results
+    for result in desc['results']:
+        assert result in loaded_data.keys()
+
+    # Check results
+    for datum in desc['data']:
+        assert datum in loaded_data.keys()
