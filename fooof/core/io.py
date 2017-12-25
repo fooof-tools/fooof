@@ -41,7 +41,7 @@ def save_fm(fm, file_name, file_path='', append=False,
     attributes = get_obj_desc()
     keep = set((attributes['results'] if save_results else []) + \
                (attributes['settings'] if save_settings else []) + \
-               (attributes['dat'] if save_data else []))
+               (attributes['data'] if save_data else []))
     obj_dict = dict_select_keys(obj_dict, keep)
 
     # Save out - create new file, (creates a JSON file)

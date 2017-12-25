@@ -41,7 +41,7 @@ def get_obj_desc():
                                '_gaussian_params', 'freq_range', 'freq_res'],
                   'settings' : ['peak_width_limits', 'max_n_peaks', 'min_peak_amplitude',
                                 'min_peak_threshold', 'background_mode'],
-                  'dat' : ['power_spectrum', 'freq_range', 'freq_res'],
+                  'data' : ['power_spectrum', 'freq_range', 'freq_res'],
                   'arrays' : ['freqs', 'power_spectrum', 'background_params_',
                               'peak_params_', '_gaussian_params']}
 
