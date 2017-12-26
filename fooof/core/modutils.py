@@ -40,7 +40,7 @@ def get_obj_desc():
     attributes = {'results' : ['background_params_', 'peak_params_', 'error_',
                                'r_squared_', '_gaussian_params'],
                   'settings' : ['peak_width_limits', 'max_n_peaks', 'min_peak_amplitude',
-                                'min_peak_threshold', 'background_mode'],
+                                'peak_threshold', 'background_mode'],
                   'data' : ['power_spectrum', 'freq_range', 'freq_res'],
                   'freq_info' : ['freq_range', 'freq_res'],
                   'arrays' : ['freqs', 'power_spectrum', 'background_params_',

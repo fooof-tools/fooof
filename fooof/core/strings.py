@@ -61,7 +61,7 @@ def gen_settings_str(f_obj, description=False, concise=False):
             'peak_width_limits'     : 'Enforced limits for peak widths, in Hz.',
             'max_n_peaks'           : 'The maximum number of peaks that can be extracted.',
             'min_peak_amplitude'    : "Minimum absolute amplitude of a peak, above background.",
-            'min_peak_threshold'    : "Threshold at which to stop searching for peaks."}
+            'peak_threshold'    : "Threshold at which to stop searching for peaks."}
 
     # Clear description for printing if not requested
     if not description:
@@ -85,8 +85,8 @@ def gen_settings_str(f_obj, description=False, concise=False):
                         '{}'.format(desc['max_n_peaks']),
                         'Minimum Amplitude : {}'.format(f_obj.min_peak_amplitude),
                         '{}'.format(desc['min_peak_amplitude']),
-                        'Amplitude Threshold: {}'.format(f_obj.min_peak_threshold),
-                        '{}'.format(desc['min_peak_threshold'])] if el != ''],
+                        'Amplitude Threshold: {}'.format(f_obj.peak_threshold),
+                        '{}'.format(desc['peak_threshold'])] if el != ''],
 
         # Footer
         '',

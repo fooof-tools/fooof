@@ -69,7 +69,7 @@ class FOOOF(object):
         Maximum number of gaussians to be fit in a single spectrum. default: inf
     min_peak_amplitude : float, optional
         Minimum amplitude threshold for a peak to be modeled. default: 0
-    min_peak_threshold : float, optional
+    peak_threshold : float, optional
         Threshold for detecting peaks, units of standard deviation. default: 2.0
     background_mode : {'fixed', 'knee'}
         Which approach to take to fitting the background.
@@ -107,7 +107,7 @@ class FOOOF(object):
     """
 
     def __init__(self, peak_width_limits=[0.5, 12.0], max_n_peaks=np.inf, min_peak_amplitude=0.0,
-                 min_peak_threshold=2.0, background_mode='fixed', verbose=True):
+                 peak_threshold=2.0, background_mode='fixed', verbose=True):
         """Initialize FOOOF object with run parameters."""
 
         # Double check correct scipy version is being used
@@ -121,7 +121,7 @@ class FOOOF(object):
         self.peak_width_limits = peak_width_limits
         self.max_n_peaks = max_n_peaks
         self.min_peak_amplitude = min_peak_amplitude
-        self.min_peak_threshold = min_peak_threshold
+        self.peak_threshold = peak_threshold
         self.verbose = verbose
 
         ## SETTINGS - these are updateable by the user if required.
@@ -576,7 +576,7 @@ class FOOOF(object):
             max_amp = flat_iter[max_ind]
 
             # Stop searching for peaks peaks once drops below amplitude threshold.
-            if max_amp <= self.min_peak_threshold * np.std(flat_iter):
+            if max_amp <= self.peak_threshold * np.std(flat_iter):
                 break
 
             # Set the guess parameters for gaussian fitting - CF and amp.
