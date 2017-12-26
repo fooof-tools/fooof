@@ -13,6 +13,7 @@ import numpy as np
 from fooof import FOOOFGroup
 from fooof.fit import FOOOFResult
 from fooof.synth import gen_group_power_spectra
+from fooof.core.modutils import get_obj_desc
 
 from fooof.tests.utils import default_group_params, plot_test
 
@@ -106,10 +107,20 @@ def test_fg_report(skip_if_no_mpl):
     assert tfg
 
 def test_fg_get_fooof(tfg):
-    """Check return of an individual PSD in a FOOOF object from FOOOFGroup."""
+    """Check return of an individual model fit to a FOOOF object from FOOOFGroup."""
 
+    desc = get_obj_desc()
+
+    # Check without regenerating
     tfm0 = tfg.get_fooof(0, False)
     assert tfm0
+    # Check that settings are copied over properly
+    for setting in desc['settings']:
+        assert getattr(tfg, setting) == getattr(tfm0, setting)
 
+    # Check with regenerating
     tfm1 = tfg.get_fooof(1, True)
     assert tfm1
+    # Check that regenerated model is created
+    for result in desc['results']:
+        assert np.all(getattr(tfm1, result))
