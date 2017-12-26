@@ -256,7 +256,7 @@ class FOOOFGroup(FOOOF):
 
         # Initialize a FOOOF object, with same settings as current FOOOFGroup
         fm = FOOOF(self.peak_width_limits, self.max_n_peaks, self.min_peak_amplitude,
-                   self.min_peak_amplitude, self.background_mode, self.verbose)
+                   self.min_peak_threshold, self.background_mode, self.verbose)
 
         # Add data for specified single power spectrum, if available
         #  The power spectrum is inverted back to linear, as it's re-logged when added to FOOOF
