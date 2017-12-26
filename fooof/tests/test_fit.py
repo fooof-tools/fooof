@@ -13,6 +13,7 @@ import pkg_resources as pkg
 
 from fooof import FOOOF
 from fooof.synth import gen_power_spectrum
+from fooof.core.modutils import get_obj_desc
 
 from fooof.tests.utils import get_tfm, plot_test
 
@@ -144,3 +145,21 @@ def test_fooof_report(skip_if_no_mpl):
     tfm.report(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
     assert tfm
+
+def test_fooof_fit_failure():
+    """Test that fit handles a failure."""
+
+    # Use a new FOOOF, that is monkey-patched to raise an error
+    #  This mimicks the main fit-failure, without requiring bad data / waiting for it to fail.
+    tfm = FOOOF()
+    def raise_runtime_error(*args, **kwargs):
+        raise RuntimeError('Test-MonkeyPatch')
+    tfm._fit_peaks = raise_runtime_error
+
+    # Run a FOOOF fit - this should raise an error, but continue in try/except
+    tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+
+    # Check after failing out of fit, all results are reset
+    for result in get_obj_desc()['results']:
+        cur_res = getattr(tfm, result)
+        assert cur_res is None or np.all(np.isnan(cur_res))
