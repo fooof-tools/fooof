@@ -269,13 +269,13 @@ class FOOOFGroup(FOOOF):
         return fm
 
 
-    def print_results(self, concise=True):
+    def print_results(self, concise=False):
         """Print out FOOOFGroup results.
 
         Parameters
         ----------
         concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: True
+            Whether to print the report in a concise mode, or not. default: False
         """
 
         print(gen_results_str_fg(self, concise))

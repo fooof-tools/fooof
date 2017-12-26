@@ -350,7 +350,7 @@ class FOOOF(object):
                 print('Model fitting was unsuccessful.')
 
 
-    def print_settings(self, description=False, concise=True):
+    def print_settings(self, description=False, concise=False):
         """Print out the current FOOOF settings.
 
         Parameters
@@ -358,19 +358,19 @@ class FOOOF(object):
         description : bool, optional
             Whether to print out a description with current settings. default: False
         concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: True
+            Whether to print the report in a concise mode, or not. default: False
         """
 
         print(gen_settings_str(self, description, concise))
 
 
-    def print_results(self, concise=True):
+    def print_results(self, concise=False):
         """Print out FOOOF results.
 
         Parameters
         ----------
         concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: True
+            Whether to print the report in a concise mode, or not. default: False
         """
 
         print(gen_results_str_fm(self, concise))
