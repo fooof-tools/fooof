@@ -41,7 +41,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
     # Create the plot, adding data as is available
     if np.all(fm.power_spectrum):
         plot_spectrum(fm.freqs, fm.power_spectrum, plt_log, ax,
-                      color='k', linewidth=1.0, label='Original Spectrum')
+                      color='k', linewidth=1.25, label='Original Spectrum')
     if np.all(fm.fooofed_spectrum_):
         plot_spectrum(fm.freqs, fm.fooofed_spectrum_, plt_log, ax,
                       color='r', linewidth=3.0, alpha=0.5, label='Full model fit')
