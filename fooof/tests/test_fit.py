@@ -14,6 +14,7 @@ import pkg_resources as pkg
 from fooof import FOOOF
 from fooof.synth import gen_power_spectrum
 from fooof.core.modutils import get_obj_desc
+from fooof.core.utils import group_three
 
 from fooof.tests.utils import get_tfm, plot_test
 
@@ -29,10 +30,9 @@ def test_fooof_fit_nk():
     """Test FOOOF fit, no knee."""
 
     bgp = [50, 2]
-    oscs = [[10, 0.5, 2],
-            [20, 0.3, 4]]
+    gauss_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = gen_power_spectrum([3, 50], bgp, [it for osc in oscs for it in osc])
+    xs, ys = gen_power_spectrum([3, 50], bgp, gauss_params)
 
     tfm = FOOOF()
     tfm.fit(xs, ys)
@@ -41,17 +41,16 @@ def test_fooof_fit_nk():
     assert np.all(np.isclose(bgp, tfm.background_params_, [0.5, 0.1]))
 
     # Check model results - gaussian parameters
-    for i, osc in enumerate(oscs):
-        assert np.all(np.isclose(osc, tfm._gaussian_params[i], [1.5, 0.25, 0.5]))
+    for ii, gauss in enumerate(group_three(gauss_params)):
+        assert np.all(np.isclose(gauss, tfm._gaussian_params[ii], [1.5, 0.25, 0.5]))
 
 def test_fooof_fit_knee():
     """Test FOOOF fit, with a knee."""
 
     bgp = [50, 2, 1]
-    oscs = [[10, 0.5, 2],
-            [20, 0.3, 4]]
+    gauss_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = gen_power_spectrum([3, 50], bgp, [it for osc in oscs for it in osc])
+    xs, ys = gen_power_spectrum([3, 50], bgp, gauss_params)
 
     tfm = FOOOF(background_mode='knee')
     tfm.fit(xs, ys)
@@ -75,7 +74,7 @@ def test_fooof_checks():
     with raises(ValueError):
         tfm.fit(xs[:-1], ys)
 
-    # Check trim_psd range
+    # Check trim_spectrum range
     tfm.fit(xs, ys, [3, 40])
 
     # Check freq of 0 issue

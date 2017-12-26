@@ -42,10 +42,10 @@ def test_dict_select_keys():
 
     out = dict_select_keys(t_dict, keep)
 
+    # Check the right number of items are kept, and that they are the ones specified
+    assert len(out) == len(keep)
     for ke, va in out.items():
-        if ke in keep:
-            continue
-        assert False
+        assert ke in keep
 
 def test_check_array_dim():
 

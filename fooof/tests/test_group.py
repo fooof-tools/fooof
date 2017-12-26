@@ -36,30 +36,30 @@ def test_fg_iter(tfg):
 def test_fg_fit():
     """Test FOOOFGroup fit, no knee."""
 
-    n_psds = 2
-    xs, ys = gen_group_power_spectra(n_psds, *default_group_params())
+    n_spectra = 2
+    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = FOOOFGroup()
     tfg.fit(xs, ys)
     out = tfg.get_results()
 
     assert out
-    assert len(out) == n_psds
+    assert len(out) == n_spectra
     assert isinstance(out[0], FOOOFResult)
     assert np.all(out[1].background_params)
 
 def test_fg_fit_par():
     """Test FOOOFGroup fit, running in parallel."""
 
-    n_psds = 2
-    xs, ys = gen_group_power_spectra(n_psds, *default_group_params())
+    n_spectra = 2
+    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = FOOOFGroup()
     tfg.fit(xs, ys, n_jobs=2)
     out = tfg.get_results()
 
     assert out
-    assert len(out) == n_psds
+    assert len(out) == n_spectra
     assert isinstance(out[0], FOOOFResult)
     assert np.all(out[1].background_params)
 
@@ -98,8 +98,8 @@ def test_fg_load():
 def test_fg_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
 
-    n_psds = 2
-    xs, ys = gen_group_power_spectra(n_psds, *default_group_params())
+    n_spectra = 2
+    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = FOOOFGroup()
     tfg.report(xs, ys)
