@@ -113,7 +113,7 @@ class FOOOF(object):
         # Double check correct scipy version is being used
         from scipy import __version__
         major, minor, _ = __version__.split('.')
-        if int(major) <= 1 and int(minor) < 19:
+        if int(major) < 1 and int(minor) < 19:
             raise ImportError('Scipy version of >= 0.19.0 required.')
 
         # Set input parameters
