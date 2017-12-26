@@ -268,7 +268,7 @@ def gen_issue_str(concise=False):
         # Header
         '=',
         '',
-        'Contact / Reporting Information for FOOOF',
+        'CONTACT / REPORTING ISSUES WITH FOOOF',
         '',
 
         # Reporting bugs
@@ -277,17 +277,15 @@ def gen_issue_str(concise=False):
         '',
 
         # Reporting a weird fit
-        'If FOOOF gives you any weird / bad fits, we would like to know, so we can make it better!',
-        'To help us with this, send us a FOOOF report, and a FOOOF data file, for any bad fits.',
+        'If FOOOF gives you any weird / bad fits, please let us know!',
+        'To do so, send us a FOOOF report, and a FOOOF data file, ',
         '',
-        'With a FOOOF object (fm), after fitting, run the following commands:',
+        "With a FOOOF object (fm), after fitting, run the following commands:",
         "fm.create_report('FOOOF_bad_fit_report')",
         "fm.save('FOOOF_bad_fit_data', True, True, True)",
         '',
-        "Send the generated files ('FOOOF_bad_fit_report.pdf' & 'FOOOF_bad_fit_data.json') to us.",
+        'Send the generated files to us.',
         'We will have a look, and provide any feedback we can.',
-        '',
-        'We suggest sending individual examplars, but the above will also work with a FOOOFGroup.',
         '',
 
         # Contact
