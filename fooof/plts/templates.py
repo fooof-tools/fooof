@@ -79,12 +79,14 @@ def plot_scatter_1(data, label, title=None, x_val=0, ax=None):
     ax.scatter(x_data, data, s=36, alpha=0.5)
 
     if label:
-        ax.set_ylabel(label, fontsize=12)
+        ax.set_ylabel(label, fontsize=16)
 
     if title:
-        ax.set_title(title, fontsize=16)
+        ax.set_title(title, fontsize=20)
 
-    plt.xticks([x_val], [label], fontsize=12)
+    plt.xticks([x_val], [label])
+    ax.tick_params(axis='x', labelsize=16)
+    ax.tick_params(axis='y', labelsize=10)
 
     ax.set_xlim([-0.5, 0.5])
 
@@ -122,10 +124,12 @@ def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
     plot_scatter_1(data_1, label_1, x_val=1, ax=ax1)
 
     if title:
-        ax.set_title(title, fontsize=16)
+        ax.set_title(title, fontsize=20)
 
     ax.set_xlim([-0.5, 1.5])
-    plt.xticks([0, 1], [label_0, label_1], fontsize=12)
+
+    plt.xticks([0, 1], [label_0, label_1])
+    ax.tick_params(axis='x', labelsize=16)
 
 
 @check_dependency(plt, 'matplotlib')
@@ -153,11 +157,13 @@ def plot_hist(data, label, title=None, n_bins=20, x_lims=None, ax=None):
 
     ax.hist(data[~np.isnan(data)], n_bins, alpha=0.8)
 
-    ax.set_xlabel(label, fontsize=12)
-    ax.set_ylabel('Count', fontsize=12)
+    ax.set_xlabel(label, fontsize=16)
+    ax.set_ylabel('Count', fontsize=16)
 
     if x_lims:
         ax.set_xlim(x_lims)
 
     if title:
-        ax.set_title(title, fontsize=16)
+        ax.set_title(title, fontsize=20)
+
+    ax.tick_params(axis='both', labelsize=12)
