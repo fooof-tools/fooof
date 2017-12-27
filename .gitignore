@@ -1,3 +1,7 @@
+# Ignore source release files
+/dist/*
+/fooof.egg-info/*
+
 # Ignore notebook checkpoints
 *.ipynb_checkpoints*
 
