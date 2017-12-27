@@ -42,14 +42,6 @@ If you don't already have matplotlib, and want to include it for plotting functi
 
 `$ pip install fooof[plot]`
 
-If you want to include the requirement for running the test suite, install as:
-
-`pip install fooof[tests]`
-
-If you want to install fooof with all optional dependencies, install as:
-
-`pip install fooof[all]`
-
 ## Development Branch
 
 To get the lastest, development version, you can get the code using git:
