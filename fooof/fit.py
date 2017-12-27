@@ -139,11 +139,11 @@ class FOOOF(object):
         # Threshold for how far (units of gaus std dev) a peak has to be from edge to keep.
         self._bw_std_edge = 1.0
         # Degree of overlap  (units of gauss std dev) between gaussians for one to be dropped
-        self._gauss_overlap_thresh = 1.0
+        self._gauss_overlap_thresh = 1.5
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
         self._cf_bound = 1.5
 
-        # Set internal settings (based on inputs). Initialize data attributes.
+        # Set internal settings (based on inputs). Initialize data & results attributes.
         self._reset_internal_settings()
         self._reset_data_results()
 
