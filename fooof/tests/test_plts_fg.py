@@ -14,7 +14,7 @@ def test_plot_fg(tfg, skip_if_no_mpl):
 
     plot_fg(tfg)
 
-def test_plot_fg_error():
+def test_plot_fg_error(skip_if_no_mpl):
 
     tfg = FOOOFGroup()
 

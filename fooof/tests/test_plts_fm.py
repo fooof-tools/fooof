@@ -14,7 +14,7 @@ def test_plot_fm(tfm, skip_if_no_mpl):
 
     plot_fm(tfm)
 
-def test_plot_fm_error():
+def test_plot_fm_error(skip_if_no_mpl):
 
     # Check raises error with no data
     tfm = FOOOF()
