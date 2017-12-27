@@ -133,7 +133,7 @@ def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_hist(data, label, title=None, n_bins=20, x_lims=None, ax=None):
+def plot_hist(data, label, title=None, n_bins=25, x_lims=None, ax=None):
     """Plot a histogram with the given data.
 
     Parameters

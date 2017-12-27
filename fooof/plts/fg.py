@@ -99,4 +99,4 @@ def plot_fg_peak_cens(fg, ax=None):
     """
 
     plot_hist(fg.get_all_data('peak_params', 0), 'Center Frequency',
-              'Peaks', x_lims=fg.freq_range, ax=ax)
+              'Peaks - Center Frequencies', x_lims=fg.freq_range, ax=ax)
