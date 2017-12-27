@@ -109,7 +109,7 @@ fg.save(file_name='fooof_group_results', save_results=True)
 
 ## Output
 Example output for a FOOOF fit of MEG data:
-!["fooof_report"](img/FOOOF_report.png)
+!["fooof_report"](img/FOOOF_Report.png)
 
 Example output for running FOOOF across a group of power spectra (with FOOOFGroup):
-!["fooof_group_report"](img/FOOOF_group_report.png)
+!["fooof_group_report"](img/FOOOFGroup_Report.png)
