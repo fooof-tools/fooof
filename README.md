@@ -23,7 +23,8 @@ FOOOF runs on Python 3.5 and 3.6.
 - scipy >= 0.19
 - matplotlib (optional)
 
-That is, we assume [Anaconda](https://www.anaconda.com/download/) is installed.
+That is, if you are using [Anaconda](https://www.anaconda.com/download/), then you are good to go.
+If you aren't using Anaconda, it is one way to get and manage these dependencies).
 
 ## Install
 
@@ -69,13 +70,13 @@ FOOOF.report() fits the model, plots the original power spectrum with the associ
 FOOOF also accepts parameters for fine-tuning the fit. For example:
 
 ```python
-fm = FOOOF(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_amplitude=0.1, min_peak_threshold=2.0)
+fm = FOOOF(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_amplitude=0.1, peak_threshold=2.0)
 ```
 
 * _peak_width_limits_ sets the possible lower- and upper-bounds for the fitted peak widths.
 * _max_n_peaks_ sets the maximum number of peaks to fit (in decreasing order of amplitude).
 * _min_peak_amp_ sets an absolute limit on the minimum amplitude (above background) for any extracted peak.
-* _min_peak_threshold_, also sets a threshold above which oscillation amplitude must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.
+* _peak_threshold_, also sets a threshold above which oscillation amplitude must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.
 
 FOOOF also has convenience methods for running the FOOOF model across matrices of multiple power spectra, as well as functionality for saving and loading results, creating reports from FOOOF outputs, and utilities to further analize FOOOF results.
 

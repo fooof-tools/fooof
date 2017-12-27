@@ -17,19 +17,21 @@ FOOOF: Fitting Oscillations & One-Over F
 ========================================
 
 FOOOF is a fast, efficient, physiologically-informed model to parameterize
-neural power spectra, characterizing both oscillations and the background 1/f.
+neural power spectra, characterizing both the 1/f background, and overlying
+peaks (putative oscillations).
 
-The model conceives of the neural power spectral density (PSD) as consisting
-of two distinct functional processes:
-- A 1/f background modeled as a line in log-log space with;
-- Band-limited oscillatory "bumps" rising above this background, modeled as Gaussians in log(power) space.
+The model conceives of the neural power spectrum as consisting of two distinct functional processes:
+- A 1/f background, modeled with an exponential fit, with:
+- Band-limited peaks rising above this background (modeled as Gaussians).
 
-With regards to oscillations, the benefit of the FOOOF approach is to characterize
-oscillations in terms of their center frequency, amplitude and bandwidth without
-requiring predefining specific bands of interest. In particular, it separates oscillations
-from a dynamic, and independently interesting 1/f background. This conception of the 1/f
-as potentially functional (and therefore worth carefully modeling) is based on work from
-the Voytek lab, and others suggesting that the 1/f slope may index excitation/inhibition balance.
+With regards to examing peaks in the frequency domain, as putative oscillations, the benefit
+of the FOOOF approach is that these peaks are characterized in terms of their specific center
+frequency, amplitude and bandwidth without requiring predefining specific bands of interest.
+In particular, it separates these peaks from a dynamic, and independently interesting 1/f
+background. This conception of the 1/f as potentially functional (and therefore worth carefully
+modeling) is based on work from the Voytek lab and others that collectively shows that 1/f changes
+across task demands and participant demographics, and that it may index underlying
+excitation/inhibition (EI) balance.
 """
 
 setup(
