@@ -22,9 +22,13 @@ FOOOF runs on Python 3.5 and 3.6.
 - numpy
 - scipy >= 0.19
 - matplotlib (optional)
+- pytest (optional)
 
 That is, if you are using [Anaconda](https://www.anaconda.com/download/), then you are good to go.
 If you aren't using Anaconda, it is one way to get and manage these dependencies).
+
+Matplotlib is not required for running the model fitting, but is used if you want to visualize model fits, and/or create and save out reports.
+Pytest is only required to run the test suite.
 
 ## Install
 
@@ -32,13 +36,27 @@ To install the latest stable release of fooof, you can use pip:
 
 `$ pip install fooof`
 
+Note that this will install only the core (non-optional) fooof requirements.
+
+If you don't already have matplotlib, and want to include it for plotting functionally, install fooof by:
+
+`$ pip install fooof[plot]`
+
+If you want to include the requirement for running the test suite, install as:
+
+`pip install fooof[tests]`
+
+If you want to install fooof with all optional dependencies, install as:
+
+`pip install fooof[all]`
+
 ## Development Branch
 
 To get the lastest, development version, you can get the code using git:
 
 `$ git clone https://github.com/voytekresearch/fooof`
 
-To then install the development version (without making changes), move into the directory you cloned and run:
+To then install the development version (without making changes to it), move into the directory you cloned and run:
 
 `$ pip install .`
 

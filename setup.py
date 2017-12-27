@@ -42,9 +42,9 @@ setup(
     author = 'The Voytek Lab',
     author_email = 'voyteklab@gmail.com',
     url = 'https://github.com/voytekresearch/fooof',
-    packages=find_packages(),
-    license='Apache License, 2.0',
-    classifiers=[
+    packages = find_packages(),
+    license = 'Apache License, 2.0',
+    classifiers = [
         'Development Status :: 4 - Beta',
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering',
@@ -59,5 +59,11 @@ setup(
     ],
     download_url = 'https://github.com/voytekresearch/fooof/releases',
     keywords = ['neuroscience', 'neural oscillations', 'power spectra', '1/f', 'electrophysiology'],
-    install_requires=['numpy', 'scipy>=0.19.0']
+    install_requires = ['numpy', 'scipy>=0.19.0'],
+    tests_require = ['pytest'],
+    extras_require = {
+        'plot'    : ['matplotlib'],
+        'tests'   : ['pytest'],
+        'all'     : ['matplotlib', 'pytest']
+    }
 )
