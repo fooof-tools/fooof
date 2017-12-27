@@ -25,9 +25,11 @@ FOOOF runs on Python 3.5 and 3.6.
 - pytest (optional)
 
 That is, if you are using [Anaconda](https://www.anaconda.com/download/), then you are good to go.
-If you aren't using Anaconda, it is one way to get and manage these dependencies).
 
-Matplotlib is not required for running the model fitting, but is used if you want to visualize model fits, and/or create and save out reports.
+If you aren't using Anaconda, it is one way to get and manage these dependencies.
+
+Matplotlib is not required for running the model fitting, but is used if you want to visualize model fits.
+
 Pytest is only required to run the test suite.
 
 ## Install
@@ -109,7 +111,10 @@ fg.save(file_name='fooof_group_results', save_results=True)
 
 ## Output
 Example output for a FOOOF fit of MEG data:
+
 !["fooof_report"](img/FOOOF_Report.png)
 
+
 Example output for running FOOOF across a group of power spectra (with FOOOFGroup):
+
 !["fooof_group_report"](img/FOOOFGroup_Report.png)
