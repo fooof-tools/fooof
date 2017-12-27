@@ -38,7 +38,7 @@ To install the latest stable release of fooof, you can use pip:
 
 Note that this will install only the core (non-optional) fooof requirements.
 
-If you don't already have matplotlib, and want to include it for plotting functionally, install fooof by:
+If you don't have matplotlib installed, and want to include it for plotting functionally, install using:
 
 `$ pip install fooof[plot]`
 
@@ -71,7 +71,7 @@ fm = FOOOF()
 # Define frequency range across which to model the spectrum
 freq_range = [3, 40]
 
-# Model the PSD with FOOOF, and print out a report
+# Model the power spectrum with FOOOF, and print out a report
 fm.report(freqs, spectrum, freq_range)
 ```
 
@@ -86,7 +86,7 @@ fm = FOOOF(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_amplitude=0.1, 
 * _peak_width_limits_ sets the possible lower- and upper-bounds for the fitted peak widths.
 * _max_n_peaks_ sets the maximum number of peaks to fit (in decreasing order of amplitude).
 * _min_peak_amp_ sets an absolute limit on the minimum amplitude (above background) for any extracted peak.
-* _peak_threshold_, also sets a threshold above which oscillation amplitude must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.
+* _peak_threshold_, also sets a threshold above which a peak amplitude must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.
 
 FOOOF also has convenience methods for running the FOOOF model across matrices of multiple power spectra, as well as functionality for saving and loading results, creating reports from FOOOF outputs, and utilities to further analize FOOOF results.
 
