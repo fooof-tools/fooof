@@ -69,7 +69,7 @@ class FOOOF(object):
         Maximum number of gaussians to be fit in a single spectrum. default: inf
     min_peak_amplitude : float, optional
         Minimum amplitude threshold for a peak to be modeled. default: 0
-    min_peak_threshold : float, optional
+    peak_threshold : float, optional
         Threshold for detecting peaks, units of standard deviation. default: 2.0
     background_mode : {'fixed', 'knee'}
         Which approach to take to fitting the background.
@@ -107,15 +107,21 @@ class FOOOF(object):
     """
 
     def __init__(self, peak_width_limits=[0.5, 12.0], max_n_peaks=np.inf, min_peak_amplitude=0.0,
-                 min_peak_threshold=2.0, background_mode='fixed', verbose=True):
+                 peak_threshold=2.0, background_mode='fixed', verbose=True):
         """Initialize FOOOF object with run parameters."""
+
+        # Double check correct scipy version is being used
+        from scipy import __version__
+        major, minor, _ = __version__.split('.')
+        if int(major) < 1 and int(minor) < 19:
+            raise ImportError('Scipy version of >= 0.19.0 required.')
 
         # Set input parameters
         self.background_mode = background_mode
         self.peak_width_limits = peak_width_limits
         self.max_n_peaks = max_n_peaks
         self.min_peak_amplitude = min_peak_amplitude
-        self.min_peak_threshold = min_peak_threshold
+        self.peak_threshold = peak_threshold
         self.verbose = verbose
 
         ## SETTINGS - these are updateable by the user if required.
@@ -133,11 +139,11 @@ class FOOOF(object):
         # Threshold for how far (units of gaus std dev) a peak has to be from edge to keep.
         self._bw_std_edge = 1.0
         # Degree of overlap  (units of gauss std dev) between gaussians for one to be dropped
-        self._gauss_overlap_thresh = 1.0
+        self._gauss_overlap_thresh = 1.5
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
         self._cf_bound = 1.5
 
-        # Set internal settings (based on inputs). Initialize data attributes.
+        # Set internal settings (based on inputs). Initialize data & results attributes.
         self._reset_internal_settings()
         self._reset_data_results()
 
@@ -350,7 +356,7 @@ class FOOOF(object):
                 print('Model fitting was unsuccessful.')
 
 
-    def print_settings(self, description=False, concise=True):
+    def print_settings(self, description=False, concise=False):
         """Print out the current FOOOF settings.
 
         Parameters
@@ -358,19 +364,19 @@ class FOOOF(object):
         description : bool, optional
             Whether to print out a description with current settings. default: False
         concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: True
+            Whether to print the report in a concise mode, or not. default: False
         """
 
         print(gen_settings_str(self, description, concise))
 
 
-    def print_results(self, concise=True):
+    def print_results(self, concise=False):
         """Print out FOOOF results.
 
         Parameters
         ----------
         concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: True
+            Whether to print the report in a concise mode, or not. default: False
         """
 
         print(gen_results_str_fm(self, concise))
@@ -570,7 +576,7 @@ class FOOOF(object):
             max_amp = flat_iter[max_ind]
 
             # Stop searching for peaks peaks once drops below amplitude threshold.
-            if max_amp <= self.min_peak_threshold * np.std(flat_iter):
+            if max_amp <= self.peak_threshold * np.std(flat_iter):
                 break
 
             # Set the guess parameters for gaussian fitting - CF and amp.

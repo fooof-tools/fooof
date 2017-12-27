@@ -32,12 +32,12 @@ def save_report_fm(fm, file_name, file_path='', plt_log=False):
 
     # Set up outline figure, using gridspec
     fig = plt.figure(figsize=(16, 20))
-    grid = gridspec.GridSpec(3, 1, height_ratios=[0.8, 1.0, 0.7])
+    grid = gridspec.GridSpec(3, 1, height_ratios=[0.45, 1.0, 0.25])
 
     # First - text results
     ax0 = plt.subplot(grid[0])
     results_str = gen_results_str_fm(fm)
-    ax0.text(0.5, 0.2, results_str, font, ha='center')
+    ax0.text(0.5, 0.7, results_str, font, ha='center', va='center')
     ax0.set_frame_on(False)
     ax0.set_xticks([])
     ax0.set_yticks([])
@@ -49,7 +49,7 @@ def save_report_fm(fm, file_name, file_path='', plt_log=False):
     # Third - FOOOF settings
     ax2 = plt.subplot(grid[2])
     settings_str = gen_settings_str(fm, False)
-    ax2.text(0.5, 0.2, settings_str, font, ha='center')
+    ax2.text(0.5, 0.1, settings_str, font, ha='center', va='center')
     ax2.set_frame_on(False)
     ax2.set_xticks([])
     ax2.set_yticks([])
@@ -77,12 +77,12 @@ def save_report_fg(fg, file_name, file_path=''):
 
     # Initialize figure
     fig = plt.figure(figsize=(16, 20))
-    gs = gridspec.GridSpec(3, 2, wspace=0.35, hspace=0.25, height_ratios=[1.5, 1.0, 1.2])
+    gs = gridspec.GridSpec(3, 2, wspace=0.35, hspace=0.25, height_ratios=[0.8, 1.0, 1.0])
 
     # First / top: text results
     ax0 = plt.subplot(gs[0, :])
     results_str = gen_results_str_fg(fg)
-    ax0.text(0.5, 0.0, results_str, font, ha='center')
+    ax0.text(0.5, 0.7, results_str, font, ha='center', va='center')
     ax0.set_frame_on(False)
     ax0.set_xticks([])
     ax0.set_yticks([])

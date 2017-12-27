@@ -12,7 +12,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 def get_tfm():
-    """Get a FOOOF object, with a fit PSD, for testing."""
+    """Get a FOOOF object, with a fit power spectrum, for testing."""
 
     freq_range = [3, 50]
     bg_params = [50, 2]
@@ -26,10 +26,10 @@ def get_tfm():
     return tfm
 
 def get_tfg():
-    """Get a FOOOFGroup object, with some fit PSDs, for testing."""
+    """Get a FOOOFGroup object, with some fit power spectra, for testing."""
 
-    n_psds = 2
-    xs, ys = gen_group_power_spectra(n_psds, *default_group_params())
+    n_spectra = 2
+    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = FOOOFGroup()
     tfg.fit(xs, ys)

@@ -23,10 +23,9 @@ def test_gen_power_spectrum():
 
     freq_range = [3, 50]
     bgp = [50, 2]
-    oscs = [[10, 0.5, 2],
-            [20, 0.3, 4]]
+    gauss_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = gen_power_spectrum(freq_range, bgp, [it for osc in oscs for it in osc])
+    xs, ys = gen_power_spectrum(freq_range, bgp, gauss_params)
 
     assert np.all(xs)
     assert np.all(ys)
@@ -34,13 +33,13 @@ def test_gen_power_spectrum():
 
 def test_gen_group_power_spectra():
 
-    n_psds = 2
+    n_spectra = 2
 
-    xs, ys = gen_group_power_spectra(n_psds, *default_group_params())
+    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
 
     assert np.all(xs)
     assert np.all(ys)
-    assert ys.ndim == n_psds
+    assert ys.ndim == n_spectra
 
 def test_gen_background():
 

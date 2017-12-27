@@ -61,7 +61,7 @@ def gen_settings_str(f_obj, description=False, concise=False):
             'peak_width_limits'     : 'Enforced limits for peak widths, in Hz.',
             'max_n_peaks'           : 'The maximum number of peaks that can be extracted.',
             'min_peak_amplitude'    : "Minimum absolute amplitude of a peak, above background.",
-            'min_peak_threshold'    : "Threshold at which to stop searching for peaks."}
+            'peak_threshold'    : "Threshold at which to stop searching for peaks."}
 
     # Clear description for printing if not requested
     if not description:
@@ -85,8 +85,8 @@ def gen_settings_str(f_obj, description=False, concise=False):
                         '{}'.format(desc['max_n_peaks']),
                         'Minimum Amplitude : {}'.format(f_obj.min_peak_amplitude),
                         '{}'.format(desc['min_peak_amplitude']),
-                        'Amplitude Threshold: {}'.format(f_obj.min_peak_threshold),
-                        '{}'.format(desc['min_peak_threshold'])] if el != ''],
+                        'Amplitude Threshold: {}'.format(f_obj.peak_threshold),
+                        '{}'.format(desc['peak_threshold'])] if el != ''],
 
         # Footer
         '',
@@ -268,7 +268,7 @@ def gen_issue_str(concise=False):
         # Header
         '=',
         '',
-        'Contact / Reporting Information for FOOOF',
+        'CONTACT / REPORTING ISSUES WITH FOOOF',
         '',
 
         # Reporting bugs
@@ -277,17 +277,15 @@ def gen_issue_str(concise=False):
         '',
 
         # Reporting a weird fit
-        'If FOOOF gives you any weird / bad fits, we would like to know, so we can make it better!',
-        'To help us with this, send us a FOOOF report, and a FOOOF data file, for any bad fits.',
+        'If FOOOF gives you any weird / bad fits, please let us know!',
+        'To do so, send us a FOOOF report, and a FOOOF data file, ',
         '',
-        'With a FOOOF object (fm), after fitting, run the following commands:',
+        "With a FOOOF object (fm), after fitting, run the following commands:",
         "fm.create_report('FOOOF_bad_fit_report')",
         "fm.save('FOOOF_bad_fit_data', True, True, True)",
         '',
-        "Send the generated files ('FOOOF_bad_fit_report.pdf' & 'FOOOF_bad_fit_data.json') to us.",
+        'Send the generated files to us.',
         'We will have a look, and provide any feedback we can.',
-        '',
-        'We suggest sending individual examplars, but the above will also work with a FOOOFGroup.',
         '',
 
         # Contact
