@@ -31,6 +31,16 @@ def safe_import(*args):
     except ImportError:
         mod = False
 
+    # Prior to py 3.5.4, import module could throw a SystemError
+    #  Older approach requires the parent module be imported first
+    #  If triggered, re-check for module after first importing the parent
+    except SystemError:
+        try:
+            _ = import_module(args[-1])
+            mod = import_module(*args)
+        except ImportError:
+            mod = False
+
     return mod
 
 
