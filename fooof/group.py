@@ -16,7 +16,7 @@ from fooof.plts.fg import plot_fg
 from fooof.core.reports import save_report_fg
 from fooof.core.strings import gen_results_str_fg
 from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class
+from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class, safe_import
 
 ###################################################################################################
 ###################################################################################################
@@ -157,6 +157,14 @@ class FOOOFGroup(FOOOF):
 
         return self.group_results
 
+    def get_results_peak_dataframe(self):
+        """Return a pandas dataframe containing information of each peak in self.group_results"""
+        pd = safe_import('pandas')
+        df = pd.DataFrame(self.get_all_data('peak_params'),
+                          columns=['center_frequency', 'amplitude', 'bandwidth', 'psd_index'])
+        df['psd_index'] = df['psd_index'].astype(int)
+        return df
+
 
     def get_all_data(self, name, ind=None):
         """Return all data for a specified attribute across the group.
@@ -175,7 +183,13 @@ class FOOOFGroup(FOOOF):
         """
 
         # Pull out the requested data field from the group data
-        out = np.array([getattr(data, name) for data in self.group_results])
+        if name == 'peak_params':
+            out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
+                            for index, data in enumerate(self.group_results)])
+            if ind is not None:
+                ind = [ind, -1]
+        else:
+            out = np.array([getattr(data, name) for data in self.group_results])
 
         # Some data can end up as a list of separate arrays.
         #   If so, concatenate it all into one 2d array
