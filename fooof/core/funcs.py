@@ -55,7 +55,7 @@ def expo_function(xs, *params):
     Returns
     -------
     ys : 1d array
-        Output values for quadratic function.
+        Output values for exponential function.
     """
 
     ys = np.zeros_like(xs)
@@ -84,7 +84,7 @@ def expo_nk_function(xs, *params):
     Returns
     -------
     ys : 1d array
-        Output values for quadratic function.
+        Output values for exponential (no-knee) function.
     """
 
     ys = np.zeros_like(xs)
