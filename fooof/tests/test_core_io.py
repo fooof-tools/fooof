@@ -7,6 +7,7 @@ from fooof import FOOOF
 from fooof.core.modutils import get_obj_desc
 
 from fooof.core.io import *
+from fooof.core.io import _check_fname
 
 ###################################################################################################
 ###################################################################################################
@@ -141,3 +142,9 @@ def test_load_file_contents():
     # Check results
     for datum in desc['data']:
         assert datum in loaded_data.keys()
+
+def test_check_fname():
+    """Check that the file name checker helper function properly checks / adds file extensions."""
+
+    assert _check_fname('dat') == 'dat.json'
+    assert _check_fname('dat.json') == 'dat.json'

@@ -47,12 +47,12 @@ def save_fm(fm, file_name, file_path='', append=False,
 
     # Save out - create new file, (creates a JSON file)
     if isinstance(file_name, str) and not append:
-        with open(os.path.join(file_path, file_name + '.json'), 'w') as outfile:
+        with open(os.path.join(file_path, _check_fname(file_name)), 'w') as outfile:
             json.dump(obj_dict, outfile)
 
     # Save out - append to file_name (appends to a JSONlines file)
     elif isinstance(file_name, str) and append:
-        with open(os.path.join(file_path, file_name + '.json'), 'a') as outfile:
+        with open(os.path.join(file_path, _check_fname(file_name)), 'a') as outfile:
             json.dump(obj_dict, outfile)
             outfile.write('\n')
 
@@ -93,12 +93,12 @@ def save_fg(fg, file_name, file_path='', append=False,
 
     # Save to string specified file, do not append
     if isinstance(file_name, str) and not append:
-        with open(os.path.join(file_path, file_name + '.json'), 'w') as f_obj:
+        with open(os.path.join(file_path, _check_fname(file_name)), 'w') as f_obj:
             _save_fg(fg, f_obj, save_results, save_settings, save_data)
 
     # Save to string specified file, appending
     elif isinstance(file_name, str) and append:
-        with open(os.path.join(file_path, file_name + '.json'), 'a') as f_obj:
+        with open(os.path.join(file_path, _check_fname(file_name)), 'a') as f_obj:
             _save_fg(fg, f_obj, save_results, save_settings, save_data)
 
     # Save to file-object specified file
@@ -127,7 +127,7 @@ def load_json(file_name, file_path):
 
     # Load data from file
     if isinstance(file_name, str):
-        with open(os.path.join(file_path, file_name + '.json'), 'r') as infile:
+        with open(os.path.join(file_path, _check_fname(file_name)), 'r') as infile:
             dat = json.load(infile)
     elif isinstance(file_name, io.IOBase):
         dat = json.loads(file_name.readline())
@@ -154,7 +154,7 @@ def load_jsonlines(file_name, file_path):
         Dictionary of data loaded from file.
     """
 
-    with open(os.path.join(file_path, file_name + '.json'), 'r') as f_obj:
+    with open(os.path.join(file_path, _check_fname(file_name)), 'r') as f_obj:
 
         while True:
 
@@ -174,7 +174,7 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
     ----------
     fg : FOOOFGroup() object
         FOOOFGroup object from which to save data.
-    file_name : FileObject
+    f_obj : FileObject
         File object for file to which to save data.
     save_results : bool, optional
         Whether to save out FOOOF model fit results.
@@ -195,3 +195,23 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
             fm = fg.get_fooof(ind, regenerate=False)
             save_fm(fm, file_name=f_obj, file_path='', append=False,
                     save_results=save_results, save_settings=save_settings, save_data=save_data)
+
+
+def _check_fname(file_name):
+    """Check a filename, adding '.json' extension if not already specified.
+
+    Parameters
+    ----------
+    file_name : str
+        String that specifies a file name.
+
+    Outputs
+    -------
+    file_name : str
+        String that specifies a file name.
+    """
+
+    if file_name.split('.')[-1] != 'json':
+        file_name = file_name + '.json'
+
+    return file_name
