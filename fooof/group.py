@@ -157,14 +157,6 @@ class FOOOFGroup(FOOOF):
 
         return self.group_results
 
-    def get_results_peak_dataframe(self):
-        """Return a pandas dataframe containing information of each peak in self.group_results"""
-        pd = safe_import('pandas')
-        df = pd.DataFrame(self.get_all_data('peak_params'),
-                          columns=['center_frequency', 'amplitude', 'bandwidth', 'psd_index'])
-        df['psd_index'] = df['psd_index'].astype(int)
-        return df
-
 
     def get_all_data(self, name, ind=None):
         """Return all data for a specified attribute across the group.
