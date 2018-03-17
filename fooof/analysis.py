@@ -5,8 +5,46 @@ import numpy as np
 ###################################################################################################
 ###################################################################################################
 
+def get_band_peak_group(peak_params, band_def, n_fits):
+    """Extracts peaks within a given band of interest, for a group of FOOOF model fits.
+
+    Parameters
+    ----------
+    peak_params : 2d array
+        Peak parameters, for a group fit, from FOOOF. [n_peaks, 4]
+    band_def : [float, float]
+        Defines the band of interest.
+    n_fits : int
+        The number of model fits in the FOOOFGroup data.
+
+    Returns
+    -------
+    band_peaks : 2d array
+        Peak data. Each row is a peak, as [CF, Amp, BW].
+
+    Notes
+    -----
+    - This function conserves the shape of the array, return a [n_fits, 3] array.
+      - Each row reflects a FOOOF model fit, in order, filled with NaN if no peak was present.
+    - To do so, this function necessarily extracts and returns one peak per model fit.
+    - For extracting all peaks within a band, per model fit, you can do:
+    $ peaks = np.empty((0, 3))
+    $ for f_res in fg:
+    $     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band_def, ret_one=False)))
+    """
+
+    band_peaks = np.array([n_fooofs, 3])
+    for ind in range(n_fits):
+
+        # Extacts an array per FOOOF fit, and extracts band peaks from it
+        band_peaks[ind, :] = get_band_peak(peak_params[np.where[peak_params[:, -1] == ind]],
+                                           band_def=band_def, ret_one=True)
+
+    return band_peaks
+
+
 def get_band_peak(peak_params, band_def, ret_one=True):
-    """Searches for peaks within a given band of interest.
+    """Extracts peaks within a given band of interest, for a FOOOF model fit.
 
     Parameters
     ----------
@@ -16,17 +54,20 @@ def get_band_peak(peak_params, band_def, ret_one=True):
         Defines the band of interest.
     ret_one : bool
         Whether to return single peak (or all found).
+            If True, returns the highest amplitude peak.
 
-    Return
-    ---------
-    band_peaks : array
-        Peak data, form - (centers, powers, bws).
+    Returns
+    -------
+    band_peaks : 1d or 2d array
+        Peak data. Each row is a peak, as [CF, Amp, BW].
     """
 
-    # Find indices of peaks in the specified range
-    peak_inds = (peak_params[:, 0] >= band_def[0]) & (peak_params[:, 0] <= band_def[1])
+    # Return nan array if empty input
+    if peak_params.size == 0:
+        return np.array([np.nan, np.nan, np.nan])
 
-    # Gets the number of peaks within the specified range
+    # Find indices of peaks in the specified range, and check the number found
+    peak_inds = (peak_params[:, 0] >= band_def[0]) & (peak_params[:, 0] <= band_def[1])
     n_peaks = sum(peak_inds)
 
     # If there are no peaks within the specified range
@@ -37,9 +78,8 @@ def get_band_peak(peak_params, band_def, ret_one=True):
     band_peaks = peak_params[peak_inds, :]
 
     # If results > 1 and ret_one, then we return the highest amplitude peak
-    #    Call a sub-function to select highest power peak
+    #    Call a sub-function to select highest power peak in band
     if n_peaks > 1 and ret_one:
-        # Get highest amplitude peak in band
         band_peaks = get_highest_amp_peak(band_peaks)
 
     # If results == 1, return peak - [cen, power, bw]
@@ -54,8 +94,8 @@ def get_highest_amp_peak(band_peaks):
     peak_params : 2d array
         Peak parameters, from FOOOF. [n_peaks, 3]
 
-    Return
-    ---------
+    Returns
+    -------
     band_peaks : array
         Peak parameters, form - (centers, powers, bws).
     """
