@@ -54,6 +54,23 @@ from fooof.synth import gen_freqs, gen_background, gen_peaks
 
 FOOOFResult = namedtuple('FOOOFResult', ['background_params', 'peak_params',
                                          'r_squared', 'error', 'gaussian_params'])
+FOOOFResult.__doc__ = """\
+The resulting parameters and associated data of a FOOOF model fit.
+
+Attributes
+----------
+background_params : 1d array, len 2 or 3
+    Parameters that define the background fit. As [Intercept, (Knee), Slope].
+        The knee parameter is only included if background fit with knee. Otherwise, length is 2.
+peak_params : 2d array, shape=[n_peaks, 3]
+    Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
+r_squared : float
+    R-squared of the fit between the input power spectrum and the full model fit.
+error : float
+    Root mean squared error of the full model fit.
+gaussian_params : 2d array, shape=[n_peaks, 3]
+    Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
+"""
 
 class FOOOF(object):
     """Model the physiological power spectrum as a combination of 1/f background and peaks.
@@ -90,11 +107,12 @@ class FOOOF(object):
     fooofed_spectrum_ : 1d array
         The full model fit of the power spectrum: background and peaks across freq_range.
     background_params_ : 1d array
-        Parameters that define the background fit.
+        Parameters that define the background fit. As [Intercept, (Knee), Slope].
+                The knee parameter is only included if background fit with knee.
     peak_params_ : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
     r_squared_ : float
-        R-squared fit between the input power spectrum and the full model fit.
+        R-squared of the fit between the input power spectrum and the full model fit.
     error_ : float
         Root mean squared error of the full model fit.
 
