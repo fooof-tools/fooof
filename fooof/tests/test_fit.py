@@ -102,6 +102,14 @@ def test_fooof_load():
     tfm.load(file_name_res, file_path)
     assert tfm
 
+def test_copy():
+    """Test copy FOOOF method."""
+
+    tfm = FOOOF()
+    ntfm = tfm.copy()
+
+    assert tfm != ntfm
+
 def test_fooof_prints_get(tfm):
     """Test methods that print, return results (alias and pass through methods).
 

@@ -32,6 +32,7 @@ _gauss_std_limits : list of [float, float]
 """
 
 import warnings
+from copy import deepcopy
 from collections import namedtuple
 
 import numpy as np
@@ -440,6 +441,12 @@ class FOOOF(object):
         self._add_from_dict(data)
         self._check_loaded_settings(data)
         self._check_loaded_results(data)
+
+
+    def copy(self):
+        """Return a copy of the FOOOF object."""
+
+        return deepcopy(self)
 
 
     def _check_width_limits(self):
