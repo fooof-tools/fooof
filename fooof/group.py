@@ -178,6 +178,12 @@ class FOOOFGroup(FOOOF):
         -------
         out : ndarray
             Requested data.
+
+        Notes
+        -----
+        For further description of the data you can extract, check the FOOOFResults documentation.
+            For example:
+                $ print(fg[0].__doc__)
         """
 
         # If col specified as string, get mapping back to integer
