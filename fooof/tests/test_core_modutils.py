@@ -29,6 +29,21 @@ def test_get_obj_desc():
         for it in va:
             assert it in objs
 
+def test_get_data_indices():
+
+    indices_fixed = get_data_indices('fixed')
+    assert indices_fixed
+    for ke, va in indices_fixed.items():
+        if ke == 'knee':
+            assert not va
+        else:
+            assert isinstance(va, int)
+
+    indices_knee = get_data_indices('knee')
+    assert indices_knee
+    for ke, va in indices_knee.items():
+        assert isinstance(va, int)
+
 def test_docs_drop_param():
 
     ds = """STUFF
@@ -36,14 +51,14 @@ def test_docs_drop_param():
     Parameters
     ----------
     first : thing
-        xx
+        Words, words, words.
     second : stuff
-        xx
+        Words, words, words.
 
     Returns
     -------
     out : yay
-        xx
+        Words, words, words.
     """
 
     out = docs_drop_param(ds)
@@ -57,14 +72,14 @@ def test_docs_append_to_section():
     Parameters
     ----------
     first : thing
-        xx
+        Words, words, words.
     second : stuff
-        xx
+        Words, words, words.
 
     Returns
     -------
     out : yay
-        xx
+        Words, words, words.
     """
 
     section = 'Parameters'
