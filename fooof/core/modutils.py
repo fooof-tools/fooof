@@ -45,7 +45,13 @@ def safe_import(*args):
 
 
 def get_obj_desc():
-    """Get dictionary specifying FOOOF object names and kind of attributes."""
+    """Get dictionary specifying FOOOF object names and kind of attributes.
+
+    Returns
+    -------
+    attibutes : dict
+        Mapping of FOOOF object attributes, and what kind of data they are.
+    """
 
     attributes = {'results' : ['background_params_', 'peak_params_', 'error_',
                                'r_squared_', '_gaussian_params'],
@@ -59,6 +65,32 @@ def get_obj_desc():
     return attributes
 
 
+def get_data_indices(background_mode):
+    """Get a dictionary mapping the column labels to indices in FOOOF data (FOOOFResults).
+
+    Parameters
+    ----------
+    background_mode : {'fixed', 'knee'}
+        Which approach taken to fit the background.
+
+    Returns
+    -------
+    indices : dict
+        Mapping for data columns to the column indices in which they appear.
+    """
+
+    indices = {
+        'CF'  : 0,
+        'Amp' : 1,
+        'BW'  : 2,
+        'intercept' : 0,
+        'knee'      : 1 if background_mode == 'knee' else None,
+        'slope'     : 1 if background_mode == 'fixed' else 2
+    }
+
+    return indices
+
+
 def docs_drop_param(docstring):
     """Drop the first parameter description for a string representation of a docstring.
 
@@ -66,6 +98,11 @@ def docs_drop_param(docstring):
     ----------
     docstring : str
         Docstring to drop first parameter from.
+
+    Returns
+    -------
+    str
+        New docstring, with first parameter dropped.
 
     Notes
     -----
@@ -97,7 +134,7 @@ def docs_append_to_section(docstring, section, add):
 
     Returns
     -------
-    new_ds : str
+    str
         Updated docstring.
 
     Notes
@@ -164,6 +201,11 @@ def check_dependency(dep, name):
         Module, if successfully imported, or boolean (False) if not.
     name : str
         Full name of the module, to be printed in message.
+
+    Returns
+    -------
+    wrap : callable
+        The decorated function.
     """
 
     def wrap(func):
