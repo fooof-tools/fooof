@@ -53,6 +53,11 @@ class FOOOFGroup(FOOOF):
         return len(self.group_results)
 
 
+    def __getitem__(self, index):
+
+        return self.group_results[index]
+
+
     def _reset_group_results(self, length=0):
         """Set (or reset) results to be empty.
 
