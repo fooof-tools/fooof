@@ -59,12 +59,12 @@ def get_obj_desc():
     return attributes
 
 
-def docs_drop_param(ds):
+def docs_drop_param(docstring):
     """Drop the first parameter description for a string representation of a docstring.
 
     Parameters
     ----------
-    ds : str
+    docstring : str
         Docstring to drop first parameter from.
 
     Notes
@@ -73,17 +73,17 @@ def docs_drop_param(ds):
     - It also assumes the parameter description to be dropped is only 2 lines long.
     """
 
-    tm = '----------\n'
-    ind = ds.find(tm) + len(tm)
-    fr, ba = ds[:ind], ds[ind:]
+    sep = '----------\n'
+    ind = docstring.find(sep) + len(sep)
+    front, back = docstring[:ind], docstring[ind:]
 
-    for ii in range(2):
-        ba = ba[ba.find('\n')+1:]
+    for loop in range(2):
+        back = back[back.find('\n')+1:]
 
-    return fr + ba
+    return front + back
 
 
-def docs_append_to_section(ds, section, add):
+def docs_append_to_section(docstring, section, add):
     """Append extra information to a specified section of a docstring.
 
     Parameters
@@ -105,7 +105,8 @@ def docs_append_to_section(ds, section, add):
     - This function assumes numpy docs standards.
     """
 
-    return '\n\n'.join([split + add if section in split else split for split in ds.split('\n\n')])
+    return '\n\n'.join([split + add if section in split else split \
+                        for split in docstring.split('\n\n')])
 
 
 def copy_doc_func_to_method(source):
