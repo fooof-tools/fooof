@@ -16,7 +16,7 @@ from fooof.plts.fg import plot_fg
 from fooof.core.reports import save_report_fg
 from fooof.core.strings import gen_results_str_fg
 from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class, safe_import
+from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class, get_data_indices
 
 ###################################################################################################
 ###################################################################################################
@@ -158,21 +158,26 @@ class FOOOFGroup(FOOOF):
         return self.group_results
 
 
-    def get_all_data(self, name, ind=None):
+    def get_all_data(self, name, col=None):
         """Return all data for a specified attribute across the group.
 
         Parameters
         ----------
-        name : str
+        name : {'background_params', 'peak_params', 'error', 'r_squared', 'gaussian_params'}
             Name of the data field to extract across the group.
-        ind : int, optional
-            Column index to extract from selected data, if requested.
+        col : {'CF', 'Amp', 'BW', 'intercept', 'knee', 'slope'} or int, optional
+            Column name / index to extract from selected data, if requested.
+                Only used for name of {'background_params', 'peak_params', 'gaussian_params'}.
 
         Returns
         -------
         out : ndarray
             Requested data.
         """
+
+        # If col specified as string, get mapping back to integer
+        if isinstance(col, str):
+            col = get_data_indices(self.background_mode)[col]
 
         # Pull out the requested data field from the group data
         # As a special case, peak_params are pulled out in a way that appends
@@ -182,8 +187,8 @@ class FOOOFGroup(FOOOF):
                             for index, data in enumerate(self.group_results)])
             # This updates index to grab selected column, and the last colum
             #  This last column is the 'index' column (FOOOF object source)
-            if ind is not None:
-                ind = [ind, -1]
+            if col is not None:
+                col = [col, -1]
         else:
             out = np.array([getattr(data, name) for data in self.group_results])
 
@@ -194,8 +199,8 @@ class FOOOFGroup(FOOOF):
                 if arr.ndim == 1 else arr for arr in out], 0)
 
         # Select out a specific column, if requested
-        if ind is not None:
-            out = out[:, ind]
+        if col is not None:
+            out = out[:, col]
 
         return out
 
