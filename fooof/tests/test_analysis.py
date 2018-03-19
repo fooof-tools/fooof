@@ -7,6 +7,18 @@ from fooof.analysis import *
 ###################################################################################################
 ###################################################################################################
 
+def test_get_band_peak_group():
+
+    dat = np.array([[10, 1, 1.8, 0], [13, 1, 2, 2], [14, 2, 4, 2]])
+
+    out1 = get_band_peak_group(dat, [8, 12], 3)
+    assert out1.shape == (3, 3)
+    assert np.array_equal(out1[0, :], [10, 1, 1.8])
+
+    out2 = get_band_peak_group(dat, [12, 16], 3)
+    assert out2.shape == (3, 3)
+    assert np.array_equal(out2[2, :], [14, 2, 4])
+
 def test_get_band_peak():
 
     dat = np.array([[10, 1, 1.8], [14, 2, 4]])
@@ -35,3 +47,7 @@ def test_empty_inputs():
 
     assert np.all(get_band_peak(dat, [8, 12]))
     assert np.all(get_highest_amp_peak(dat))
+
+    dat = np.empty(shape=[0, 4])
+
+    assert np.all(get_band_peak_group(dat, [8, 12], 0))
