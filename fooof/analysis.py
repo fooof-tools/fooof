@@ -33,11 +33,11 @@ def get_band_peak_group(peak_params, band_def, n_fits):
     $     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band_def, ret_one=False)))
     """
 
-    band_peaks = np.array([n_fooofs, 3])
+    band_peaks = np.zeros(shape=[n_fits, 3])
     for ind in range(n_fits):
 
         # Extacts an array per FOOOF fit, and extracts band peaks from it
-        band_peaks[ind, :] = get_band_peak(peak_params[np.where[peak_params[:, -1] == ind]],
+        band_peaks[ind, :] = get_band_peak(peak_params[[peak_params[:, -1] == ind]][:, 0:3],
                                            band_def=band_def, ret_one=True)
 
     return band_peaks
