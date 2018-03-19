@@ -33,6 +33,11 @@ def test_fg_iter(tfg):
     for res in tfg:
         assert res
 
+def test_fg_getitem(tfg):
+    """Check indexing, from custom __getitem__, in FOOOFGroup."""
+
+    assert tfg[0]
+
 def test_fg_fit():
     """Test FOOOFGroup fit, no knee."""
 
@@ -69,10 +74,24 @@ def test_fg_print(tfg):
     tfg.print_results()
     assert True
 
-def test_get(tfg):
+def test_get_results(tfg):
     """Check get results method."""
 
     assert tfg.get_results()
+
+def test_get_all_data(tfg):
+    """Check get_all_data method."""
+
+    for dname in ['background_params', 'peak_params', 'error', 'r_squared', 'gaussian_params']:
+        assert np.any(tfg.get_all_data(dname))
+
+        if dname == 'background_params':
+            for dtype in ['intercept', 'slope']:
+                assert np.any(tfg.get_all_data(dname, dtype))
+
+        if dname == 'peak_params':
+            for dtype in ['CF', 'Amp', 'BW']:
+                assert np.any(tfg.get_all_data(dname, dtype))
 
 @plot_test
 def test_fg_plot(tfg, skip_if_no_mpl):
