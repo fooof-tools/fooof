@@ -2,7 +2,6 @@
 
 import numpy as np
 
-from fooof import FOOOFGroup
 from fooof.core.modutils import get_obj_desc
 
 ###################################################################################################
@@ -110,7 +109,8 @@ def combine_fooofs(fooofs):
     if not compare_settings(fooofs):
         raise ValueError('These objects have incompatible settings, and so cannot be combined.')
 
-    # Initialize FOOOFGroup object
+    # Initialize FOOOFGroup object, with settings derived from input objects
+    from fooof import FOOOFGroup
     fg = FOOOFGroup(**get_settings(fooofs[0]), verbose=fooofs[0].verbose)
 
     # Add FOOOF results from each FOOOF object to group
@@ -138,7 +138,8 @@ def combine_fooof_groups(fooof_groups):
     if not compare_settings(fooof_groups):
         raise ValueError('These objects have incompatible settings, and so cannot be combined.')
 
-    # Initialize FOOOFGroup object
+    # Initialize FOOOFGroup object, with settings derived from input objects
+    from fooof import FOOOFGroup
     fg = FOOOFGroup(**get_settings(fooof_groups[0]), verbose=fooof_groups[0].verbose)
 
     # Add FOOOF results from each FOOOF object to group
