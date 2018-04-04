@@ -1,4 +1,4 @@
-"""Utility functions for dealing with FOOOF, as a module."""
+"""Utility functions & decorators for dealing with FOOOF, as a module."""
 
 from importlib import import_module
 from functools import wraps
