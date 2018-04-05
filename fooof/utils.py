@@ -1,10 +1,4 @@
-"""Utility functions for FOOOF.
-
-Notes
------
-- FOOOFGroup is imported directly in the functions that require it.
-    - This is to avoid a broken import circularity otherwise.
-"""
+"""Utility functions for FOOOF."""
 
 import numpy as np
 
@@ -149,17 +143,21 @@ def combine_fooofs(fooofs):
         raise ValueError('These objects have incompatible settings or data, and so cannot be combined.')
 
     # Initialize FOOOFGroup object, with settings derived from input objects
+    #  Note: FOOOFGroup imported here to avoid an import circularity if imported at the top
     from fooof import FOOOFGroup
     fg = FOOOFGroup(**get_settings(fooofs[0]), verbose=fooofs[0].verbose)
+    fg.power_spectra = np.empty([0, len(fooofs[0].freqs)])
 
     # Add FOOOF results from each FOOOF object to group
     for f_obj in fooofs:
         # Add FOOOFGroup object
         if isinstance(f_obj, FOOOFGroup):
             fg.group_results.extend(f_obj.group_results)
+            fg.power_spectra = np.vstack([fg.power_spectra, f_obj.power_spectra])
         # Add FOOOF object
         else:
             fg.group_results.append(f_obj.get_results())
+            fg.power_spectra = np.vstack([fg.power_spectra, f_obj.power_spectrum])
 
     # Add data information information
     for data_info in get_obj_desc()['freq_info']:
