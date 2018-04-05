@@ -21,33 +21,36 @@ def test_trim_spectrum():
 
 def test_get_settings(tfm, tfg):
 
-    fm_settings = get_settings(tfm)
-    assert fm_settings
+    for f_obj in [tfm, tfg]:
+        assert get_settings(f_obj)
 
-    fg_settings = get_settings(tfg)
-    assert fg_settings
+def test_get_data_info(tfm, tfg):
+
+    for f_obj in [tfm, tfg]:
+        assert get_data_info(f_obj)
 
 def test_compare_settings(tfm, tfg):
 
-    # Check with FOOOF object
-    tfm2 = tfm.copy()
+    for f_obj in [tfm, tfg]:
+        f_obj2 = f_obj.copy()
 
-    assert compare_settings([tfm, tfm2])
+        assert compare_settings([f_obj, f_obj2])
 
-    tfm2.peak_width_limits = [2, 4]
-    tfm2._reset_internal_settings()
+        f_obj2.peak_width_limits = [2, 4]
+        f_obj2._reset_internal_settings()
 
-    assert not compare_settings([tfm, tfm2])
+        assert not compare_settings([f_obj, f_obj2])
 
-    # Check with FOOOFGroup object
-    tfg2 = tfg.copy()
+def test_compare_data_info(tfm, tfg):
 
-    assert compare_settings([tfg, tfg2])
+    for f_obj in [tfm, tfg]:
+        f_obj2 = f_obj.copy()
 
-    tfg2.peak_width_limits = [2, 4]
-    tfg2._reset_internal_settings()
+        assert compare_data_info([f_obj, f_obj2])
 
-    assert not compare_settings([tfg, tfg2])
+        f_obj2.freq_range = [5, 25]
+
+        assert not compare_data_info([f_obj, f_obj2])
 
 def test_combine_fooofs(tfm):
 
@@ -93,21 +96,15 @@ def test_combine_fooof_groups(tfg):
 
 def test_combine_errors(tfm, tfg):
 
-    # Check incompatible settings error with FOOOFs
-    tfm2 = tfm.copy()
-    tfm2.peak_width_limits = [2, 4]
-    tfm2._reset_internal_settings()
+    for f_obj in [tfm, tfg]:
+        f_obj2 = f_obj.copy()
+        f_obj2.peak_width_limits = [2, 4]
+        f_obj2._reset_internal_settings()
 
-    with raises(ValueError):
-        combine_fooofs([tfm, tfm2])
-
-    # Check incompatible settings error with FOOOFGroups
-    tfg2 = tfg.copy()
-    tfg2.peak_width_limits = [2, 4]
-    tfg2._reset_internal_settings()
-
-    assert tfg.peak_width_limits == [0.5, 12]
-    assert tfg2.peak_width_limits == [2, 4]
-
-    with raises(ValueError):
-        combine_fooof_groups([tfg, tfg2])
+        with raises(ValueError):
+            # FOOOF
+            if f_obj.power_spectrum:
+                combine_fooofs([f_obj, f_obj2])
+            # FOOOFGroup
+            else:
+                combine_fooof_groups([f_obj, f_obj2])
