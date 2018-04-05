@@ -8,6 +8,7 @@ Notes
 
 import numpy as np
 
+from fooof.synth import gen_freqs
 from fooof.core.modutils import get_obj_desc
 
 ###################################################################################################
@@ -130,7 +131,7 @@ def compare_data_info(lst):
 
 
 def combine_fooofs(fooofs):
-    """Combine a group of FOOOF objects into a single FOOOFGroup object.
+    """Combine a group of FOOOF and/or FOOOFGroup objects into a single FOOOFGroup object.
 
     Parameters
     ----------
@@ -144,44 +145,25 @@ def combine_fooofs(fooofs):
     """
 
     # Compare settings
-    if not compare_settings(fooofs):
-        raise ValueError('These objects have incompatible settings, and so cannot be combined.')
+    if not compare_settings(fooofs) or not compare_data_info(fooofs):
+        raise ValueError('These objects have incompatible settings or data, and so cannot be combined.')
 
     # Initialize FOOOFGroup object, with settings derived from input objects
     from fooof import FOOOFGroup
     fg = FOOOFGroup(**get_settings(fooofs[0]), verbose=fooofs[0].verbose)
 
     # Add FOOOF results from each FOOOF object to group
-    for fm in fooofs:
-        fg.group_results.append(fm.get_results())
+    for f_obj in fooofs:
+        # Add FOOOFGroup object
+        if isinstance(f_obj, FOOOFGroup):
+            fg.group_results.extend(f_obj.group_results)
+        # Add FOOOF object
+        else:
+            fg.group_results.append(f_obj.get_results())
 
-    return fg
-
-
-def combine_fooof_groups(fooof_groups):
-    """Combine a group of FOOOFGroup objects into a new combined FOOOFGroup object.
-
-    Parameters
-    ----------
-    fooof_groups : list of FOOOFGroup objects
-        FOOOFGroup objectst to be concatenated into a single new FOOOFGroup object.
-
-    Returns
-    -------
-    fg : FOOOFGroup object
-        New FOOOFGroup object built from input FOOOFGroups.
-    """
-
-    # Compare settings
-    if not compare_settings(fooof_groups):
-        raise ValueError('These objects have incompatible settings, and so cannot be combined.')
-
-    # Initialize FOOOFGroup object, with settings derived from input objects
-    from fooof import FOOOFGroup
-    fg = FOOOFGroup(**get_settings(fooof_groups[0]), verbose=fooof_groups[0].verbose)
-
-    # Add FOOOF results from each FOOOF object to group
-    for tfg in fooof_groups:
-        fg.group_results.extend(tfg.group_results)
+    # Add data information information
+    for data_info in get_obj_desc()['freq_info']:
+        setattr(fg, data_info, getattr(fooofs[0], data_info))
+    fg.freqs = gen_freqs(fg.freq_range, fg.freq_res)
 
     return fg
