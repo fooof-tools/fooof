@@ -1,4 +1,10 @@
-"""Utility functions for FOOOF."""
+"""Utility functions for FOOOF.
+
+Notes
+-----
+- FOOOFGroup is imported directly in the functions that require it.
+    - This is to avoid a broken import circularity otherwise.
+"""
 
 import numpy as np
 
@@ -54,15 +60,11 @@ def get_settings(f_obj):
 
     Returns
     -------
-    settings : dictionary
+    dictionary
         Settings for the input FOOOF derived object.
     """
 
-    settings = {}
-    for setting in get_obj_desc()['settings']:
-        settings[setting] = getattr(f_obj, setting)
-
-    return settings
+    return {setting : getattr(f_obj, setting) for setting in get_obj_desc()['settings']}
 
 
 def compare_settings(lst):
