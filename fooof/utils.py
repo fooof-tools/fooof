@@ -140,7 +140,8 @@ def combine_fooofs(fooofs):
 
     # Compare settings
     if not compare_settings(fooofs) or not compare_data_info(fooofs):
-        raise ValueError('These objects have incompatible settings or data, and so cannot be combined.')
+        raise ValueError("These objects have incompatible settings or data," \
+                         "and so cannot be combined.")
 
     # Initialize FOOOFGroup object, with settings derived from input objects
     #  Note: FOOOFGroup imported here to avoid an import circularity if imported at the top
