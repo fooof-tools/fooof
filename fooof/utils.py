@@ -67,6 +67,23 @@ def get_settings(f_obj):
     return {setting : getattr(f_obj, setting) for setting in get_obj_desc()['settings']}
 
 
+def get_data_info(f_obj):
+    """Get a dictionary of current data information from a FOOOF or FOOOFGroup object.
+
+    Parameters
+    ----------
+    f_obj : FOOOF or FOOOFGroup
+        FOOOF derived object to get data information from.
+
+    Returns
+    -------
+    dictionary
+        Data information for the input FOOOF derived object.
+    """
+
+    return {dat_info : getattr(f_obj, dat_info) for dat_info in get_obj_desc()['freq_info']}
+
+
 def compare_settings(lst):
     """Compare the settings between FOOOF and/or FOOOFGroup objects.
 
@@ -81,15 +98,34 @@ def compare_settings(lst):
         Whether the settings are consistent across the input list of objects.
     """
 
-    # Runs through all settings, and
-    for setting in get_obj_desc()['settings']:
-        for ind, f_obj in enumerate(lst[:-1]):
-
-            # If any setting fails comparison, return that objects are incompatible
-            if getattr(f_obj, setting) != getattr(lst[ind+1], setting):
-                return False
+    # Check settings are the same across list of given objects
+    for ind, f_obj in enumerate(lst[:-1]):
+        if get_settings(f_obj) != get_settings(lst[ind+1]):
+            return False
 
     # If no settings fail comparison, return that objects have consistent settings
+    return True
+
+def compare_data_info(lst):
+    """Compare the data information between FOOOF and/or FOOOFGroup objects.
+
+    Parameters
+    ----------
+    lst : list of FOOOF or FOOOFGroup objects
+        FOOOF related objects whose settings are to be compared.
+
+    Returns
+    -------
+    bool
+        Whether the data information is consistent across the input list of objects.
+    """
+
+    # Check data information is the same across the list of given objects
+    for ind, f_obj in enumerate(lst[:-1]):
+        if get_data_info(f_obj) != get_data_info(lst[ind+1]):
+            return False
+
+    # If no data info comparisons fail, return that objects have consistent information
     return True
 
 
