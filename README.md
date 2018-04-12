@@ -15,6 +15,18 @@ The model conceives of the neural power spectrum as consisting of two distinct f
 
 With regards to examing peaks in the frequency domain, as putative oscillations, the benefit of the FOOOF approach is that these peaks are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest. In particular, it separates these peaks from a dynamic, and independently interesting 1/f background. This conception of the 1/f as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the 1/f slope may index excitation/inhibition balance ([Gao, Peterson, Voytek, _NeuroImage_ 2017](http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf); [Voytek & Knight, _Biol Psychiatry_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf)). At the very least, however, the 1/f appears to change with task ([Podvalny _et al._, _J Neurophysiol_ 2015](http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf)), with aging ([Voytek _et al._, _J Neurosci_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf)).
 
+## Reference / Citation
+
+A full description of the method and approach is available in the paper linked below. 
+
+If you use this code in your project, please cite:
+
+    Haller M, Donoghue T, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Knight RT, Shestyuk A,
+    Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859.
+    doi: https://doi.org/10.1101/299859
+
+Link: https://www.biorxiv.org/content/early/2018/04/11/299859
+
 ## Python Version
 
 FOOOF runs on Python 3.5 and 3.6.
