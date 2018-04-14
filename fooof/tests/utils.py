@@ -41,7 +41,7 @@ def default_group_params():
 
     freq_range = [3, 50]
     bgp_opts = [[20, 2], [50, 2.5], [35, 1.5]]
-    gauss_opts = [[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]]
+    gauss_opts = [[10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]]
 
     return freq_range, bgp_opts, gauss_opts
 
