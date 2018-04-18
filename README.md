@@ -7,17 +7,17 @@
 [![License](https://img.shields.io/pypi/l/fooof.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/fooof.svg)](https://pypi.python.org/pypi/fooof/)
 
-FOOOF is a fast, efficient, physiologically-informed model to parameterize neural power spectra, characterizing both the 1/f background, and overlying peaks (putative oscillations).
+FOOOF is a fast, efficient, physiologically-informed model to parameterize neural power spectra, characterizing both the aperiodic 'background' component, and periodic compenents as overlying peaks, reflecting putative oscillations.
 
 The model conceives of the neural power spectrum as consisting of two distinct functional processes:
-- A 1/f background, modeled with an exponential fit, with:
-- Band-limited peaks rising above this background (modeled as Gaussians).
+- An aperiodic component, typically reflecting 1/f like characteristics, modeled with an exponential fit, with:
+- Band-limited peaks rising above this background, reflecting putative oscillations, and modeled as Gaussians.
 
-With regards to examing peaks in the frequency domain, as putative oscillations, the benefit of the FOOOF approach is that these peaks are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest. In particular, it separates these peaks from a dynamic, and independently interesting 1/f background. This conception of the 1/f as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the 1/f slope may index excitation/inhibition balance ([Gao, Peterson, Voytek, _NeuroImage_ 2017](http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf); [Voytek & Knight, _Biol Psychiatry_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf)). At the very least, however, the 1/f appears to change with task ([Podvalny _et al._, _J Neurophysiol_ 2015](http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf)), with aging ([Voytek _et al._, _J Neurosci_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf)).
+With regards to examing peaks in the frequency domain, as putative oscillations, the benefit of the FOOOF approach is that these peaks are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest. In particular, it separates these peaks from a dynamic, and independently interesting aperiodic background. This conception of the aperiodic background, as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the slope of this approximately 1/f distributed aperiodic background may reflect physiological parameters, particularly excitation/inhibition balance ([Gao, Peterson, Voytek, _NeuroImage_ 2017](http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf); [Voytek & Knight, _Biol Psychiatry_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf)). This aperiodic component changes with task ([Podvalny _et al._, _J Neurophysiol_ 2015](http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf)), with aging ([Voytek _et al._, _J Neurosci_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf)), and is thus interesting and important to measure, both in of itself, and to address potential confounds of the aperiodic components on the measurement of band-limited periodic components.
 
-## Reference / Citation
+## Reference
 
-A full description of the method and approach is available in the paper linked below. 
+A full description of the method and approach is available in the paper linked below.
 
 If you use this code in your project, please cite:
 
@@ -40,7 +40,7 @@ FOOOF runs on Python 3.5 and 3.6.
 
 That is, if you are using [Anaconda](https://www.anaconda.com/download/), then you are good to go.
 
-If you aren't using Anaconda, it is one way to get and manage these dependencies.
+If you aren't already using Anaconda, it is a useful tool to get and manage these dependencies.
 
 Matplotlib is not required for running the model fitting, but is used if you want to visualize model fits.
 
@@ -53,10 +53,6 @@ To install the latest stable release of fooof, you can use pip:
 `$ pip install fooof`
 
 Note that this will install only the core (non-optional) fooof requirements.
-
-If you don't have matplotlib installed, and want to include it for plotting functionally, install using:
-
-`$ pip install fooof[plot]`
 
 ## Development Branch
 
@@ -76,6 +72,8 @@ Otherwise, if you want to install an editable, development version, move into th
 
 FOOOF is object oriented, and generally follows a similar approach as used in scikit-learn.
 
+The algorithm works on frequency representations, that is power spectra in linear space.
+
 With a power spectrum loaded (with 'freqs' storing frequency values, and 'spectrum' storing the power spectrum, both as 1D arrays in linear space) FOOOF can be used as follows:
 
 ```python
@@ -91,7 +89,7 @@ freq_range = [3, 40]
 fm.report(freqs, spectrum, freq_range)
 ```
 
-FOOOF.report() fits the model, plots the original power spectrum with the associated FOOOF model, and prints out the parameters of the model fit for both background 1/f and Gaussian parameters for any identified peaks.
+FOOOF.report() fits the model, plots the original power spectrum with the associated FOOOF model fit, and prints out the parameters of the model fit for both aperiodic 'background' and Gaussian parameters for any identified peaks.
 
 FOOOF also accepts parameters for fine-tuning the fit. For example:
 
