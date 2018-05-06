@@ -326,6 +326,37 @@ class FOOOFGroup(FOOOF):
             super()._check_width_limits()
 
 
+def fit_fooof_group_3d(fg, freqs, psds, freq_range=None, n_jobs=1):
+    """Run FOOOFGroup across a 3D collection of power spectra.
+
+    Parameters
+    ----------
+    fg : FOOOFGroup
+        Fitting object, pre-initialized with desired settings, to fit with.
+    freqs : 1d array
+        Frequency values
+    psds : 3d array
+        Power spectrum values, as [n_conditions, n_power_spectra, n_freqs].
+    freq_range : list of [float, float], optional
+        Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+    n_jobs : int, optional
+        Number of jobs to run in parallel. default: 1
+            1 is no parallelization. -1 uses all available cores.
+
+    Returns
+    -------
+    fgs : list of FOOOFGroups
+        Collected FOOOFGroups after fitting across PSDs, length of n_conditions.
+    """
+
+    fgs = []
+    for cond_psds in psds:
+        fg.fit(freqs, cond_psds, freq_range, n_jobs)
+        fgs.append(fg.copy())
+
+    return fgs
+
+
 def _par_fit(power_spectrum, fg):
     """Helper function for running in parallel."""
 

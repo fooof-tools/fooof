@@ -10,7 +10,7 @@ import pkg_resources as pkg
 
 import numpy as np
 
-from fooof import FOOOFGroup
+from fooof import FOOOFGroup, fit_fooof_group_3d
 from fooof.fit import FOOOFResult
 from fooof.synth import gen_group_power_spectra
 from fooof.core.modutils import get_obj_desc
@@ -143,3 +143,17 @@ def test_fg_get_fooof(tfg):
     # Check that regenerated model is created
     for result in desc['results']:
         assert np.all(getattr(tfm1, result))
+
+def test_fit_fooof_group_3d(tfg):
+    """   """
+
+    n_spectra = 2
+    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
+    ys = np.stack([ys, ys], axis=0)
+
+    tfg = FOOOFGroup()
+    fgs = fit_fooof_group_3d(tfg, xs, ys)
+
+    assert len(fgs) == 2
+    for fg in fgs:
+        assert fg
