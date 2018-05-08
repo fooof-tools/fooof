@@ -288,6 +288,9 @@ class FOOOFGroup(FOOOF):
         #  The power spectrum is inverted back to linear, as it's re-logged when added to FOOOF
         if np.any(self.power_spectra):
             fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
+        # If no psd data available, copy over frequency information
+        else:
+            fm._add_from_dict({'freq_range': self.freq_range, 'freq_res': self.freq_res})
 
         # Add results for specified power spectrum, regenerating full fit if requested
         fm.add_results(self.group_results[ind], regenerate=regenerate)
