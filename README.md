@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/pypi/l/fooof.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/fooof.svg)](https://pypi.python.org/pypi/fooof/)
 
-FOOOF is a fast, efficient, physiologically-informed model to parameterize neural power spectra, characterizing both the aperiodic 'background' component, and periodic compenents as overlying peaks, reflecting putative oscillations.
+FOOOF is a fast, efficient, physiologically-informed model to parameterize neural power spectra, characterizing both the aperiodic 'background' component, and periodic components as overlying peaks, reflecting putative oscillations.
 
 The model conceives of the neural power spectrum as consisting of two distinct functional processes:
 - An aperiodic component, typically reflecting 1/f like characteristics, modeled with an exponential fit, with:
