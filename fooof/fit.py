@@ -653,7 +653,6 @@ class FOOOF(object):
             gaussian_params = self._fit_peak_guess(guess)
             gaussian_params = gaussian_params[gaussian_params[:, 0].argsort()]
         else:
-            #gaussian_params = np.array([])
             gaussian_params = np.empty([0, 3])
 
         return gaussian_params
