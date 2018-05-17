@@ -3,10 +3,17 @@
 from fooof.tests.utils import default_group_params
 
 from fooof.synth import *
-from fooof.synth import _gen_power_vals
 
 ###################################################################################################
 ###################################################################################################
+
+def test_param_sampler():
+
+    pos = [1, 2, 3, 4]
+    gen = param_sampler(pos)
+
+    for ind, el in zip(range(3), gen):
+        assert el in pos
 
 def test_gen_freqs():
 
@@ -35,7 +42,7 @@ def test_gen_group_power_spectra():
 
     n_spectra = 2
 
-    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys, params = gen_group_power_spectra(n_spectra, *default_group_params())
 
     assert np.all(xs)
     assert np.all(ys)
@@ -76,6 +83,6 @@ def test_gen_power_values():
     gauss_params = [10, 2, 1]
     nlv = 0.1
 
-    ys = _gen_power_vals(xs, bg_params, gauss_params, nlv)
+    ys = gen_power_vals(xs, bg_params, gauss_params, nlv)
 
     assert np.all(ys)
