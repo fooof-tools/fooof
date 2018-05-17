@@ -134,14 +134,14 @@ def gen_group_power_spectra(n_spectra, freq_range, bg_params, gauss_params, nlvs
 
     # Check if inputs are generators, if not, make them into repeat generators
     bg_params = _check_iter(bg_params, n_spectra)
-    peak_params = _check_iter(peak_params, n_spectra)
+    gauss_params = _check_iter(gauss_params, n_spectra)
     nlvs = _check_iter(nlvs, n_spectra)
 
     # Synthesize power spectra
-    for ind, bgp, pp, nlv in zip(range(n_spectra), bg_params, peak_params, nlvs):
+    for ind, bgp, gp, nlv in zip(range(n_spectra), bg_params, gauss_params, nlvs):
 
-        syn_params[ind] = SynParams(bgp, pp, nlv)
-        ys[ind, :] = gen_power_vals(xs, bgp, pp, nlv)
+        syn_params[ind] = SynParams(bgp, gp, nlv)
+        ys[ind, :] = gen_power_vals(xs, bgp, gp, nlv)
 
     return xs, ys, syn_params
 
