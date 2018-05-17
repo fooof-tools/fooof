@@ -86,53 +86,6 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
     return xs, ys
 
 
-def gen_group_power_spectra_old(n_spectra, freq_range, bgp_opts, gauss_opts, nlv=0.005, freq_res=0.5):
-    """OLD: Generate a group of synthetic power spectra.
-
-    Parameters
-    ----------
-    n_spectra : int
-        The number of power spectra to generate in the matrix.
-    freq_range : list of [float, float]
-        Minimum and maximum values of the desired frequency vector.
-    background_opts : list of list of float
-        Group of parameter sets to create the background of power spectrum.
-    gauss_opts : list of of list of float
-        Group of parameters sets to create peaks. Length of n_peaks * 3.
-    nlv : float, optional
-        Noise level to add to generated power spectrum. default: 0.005
-    freq_res : float, optional
-        Frequency resolution for the synthetic power spectra. default: 0.5
-
-    Returns
-    -------
-    xs : 1d array
-        Frequency values (linear).
-    ys : 2d array
-        Matrix of power values (linear).
-
-    Notes
-    -----
-    - Paramaters options can contain more than one parameter description.
-        - If so, for each power spectrum, parameters are randomly chosen from the options.
-    - The type of background process to use is inferred from the provided parameters.
-        - If length of 2, 'fixed' background is used, if length of 3, 'knee' is used.
-    """
-
-    xs = gen_freqs(freq_range, freq_res)
-    ys = np.zeros([n_spectra, len(xs)])
-
-    for ind in range(n_spectra):
-
-        # Randomly select parameters from options to use for power spectrum
-        bg_params = bgp_opts[np.random.randint(0, len(bgp_opts))]
-        gauss_params = gauss_opts[np.random.randint(0, len(gauss_opts))]
-
-        ys[ind, :] = gen_power_vals(xs, bg_params, gauss_params, nlv)
-
-    return xs, ys
-
-
 def gen_group_power_spectra(n_spectra, freq_range, bg_params, peak_params, nlvs=0.005, freq_res=0.5):
     """Generate a group of synthetic power spectra.
 
