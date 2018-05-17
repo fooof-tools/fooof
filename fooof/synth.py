@@ -86,7 +86,7 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
     return xs, ys
 
 
-def gen_group_power_spectra(n_spectra, freq_range, bg_params, peak_params, nlvs=0.005, freq_res=0.5):
+def gen_group_power_spectra(n_spectra, freq_range, bg_params, gauss_params, nlvs=0.005, freq_res=0.5):
     """Generate a group of synthetic power spectra.
 
     Parameters
@@ -95,12 +95,12 @@ def gen_group_power_spectra(n_spectra, freq_range, bg_params, peak_params, nlvs=
         The number of power spectra to generate in the matrix.
     freq_range : list of [float, float]
         Minimum and maximum values of the desired frequency vector.
-    background_params : list of float or callable
+    background_params : list of float or generator
         Parameter for the background of the power spectra.
-    peak_params : list of float or callable
+    gauss_params : list of float or generator
         Parameters for the peaks of the power spectra.
             Length of n_peaks * 3.
-    nlv : float, optional
+    nlvs : float or list of float or generator, optional
         Noise level to add to generated power spectrum. default: 0.005
     freq_res : float, optional
         Frequency resolution for the synthetic power spectra. default: 0.5
@@ -112,12 +112,17 @@ def gen_group_power_spectra(n_spectra, freq_range, bg_params, peak_params, nlvs=
     ys : 2d array
         Matrix of power values (linear).
     syn_params : list of SynParams
-        xx
+        Definitions of parameters used for each spectrum. Has length of n_spectra.
 
     Notes
     -----
-    - Paramaters options can contain more than one parameter description.
-        - If so, for each power spectrum, parameters are randomly chosen from the options.
+    - Parameters options can be:
+        - A single set of parameters
+            - If so, these same parameters are used for all spectra.
+        - A list of parameters whose length is n_spectra.
+            - If so, each successive parameter set is such for each successive spectrum.
+        - A generator object that returns parameters for a power spectrum.
+            - If so, each spectrum has parameters pulled from the generator.
     - The type of background process to use is inferred from the provided parameters.
         - If length of 2, 'fixed' background is used, if length of 3, 'knee' is used.
     """
