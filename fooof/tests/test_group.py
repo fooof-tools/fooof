@@ -23,7 +23,8 @@ from fooof.tests.utils import default_group_params, plot_test
 def test_fg():
     """Check FOOOFGroup object initializes properly."""
 
-    # Doesn't assert fg itself, as it return false when group_results are empty
+    # Note: doesn't assert fg itself, as it return false when group_results are empty
+    #  This is due to the __len__ used in FOOOFGroup
     fg = FOOOFGroup()
     assert True
 
@@ -42,7 +43,7 @@ def test_fg_fit():
     """Test FOOOFGroup fit, no knee."""
 
     n_spectra = 2
-    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = FOOOFGroup()
     tfg.fit(xs, ys)
@@ -57,7 +58,7 @@ def test_fg_fit_par():
     """Test FOOOFGroup fit, running in parallel."""
 
     n_spectra = 2
-    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = FOOOFGroup()
     tfg.fit(xs, ys, n_jobs=2)
@@ -118,7 +119,7 @@ def test_fg_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
 
     n_spectra = 2
-    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = FOOOFGroup()
     tfg.report(xs, ys)
@@ -148,7 +149,7 @@ def test_fit_fooof_group_3d(tfg):
     """   """
 
     n_spectra = 2
-    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
     ys = np.stack([ys, ys], axis=0)
 
     tfg = FOOOFGroup()
