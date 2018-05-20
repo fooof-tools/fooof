@@ -83,11 +83,8 @@ class FOOOFGroup(FOOOF):
             Frequency range to restrict power spectra to. If not provided, keeps the entire range.
         """
 
-        if freqs.ndim != 1 or power_spectra.ndim != 2:
-            raise ValueError('Inputs are not the right dimensions.')
-
         self.freqs, self.power_spectra, self.freq_range, self.freq_res = \
-            self._prepare_data(freqs, power_spectra, freq_range, self.verbose)
+            self._prepare_data(freqs, power_spectra, freq_range, 2, self.verbose)
 
 
     def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1):
@@ -136,7 +133,7 @@ class FOOOFGroup(FOOOF):
         """
 
         # If freqs & power spectra provided together, add data to object.
-        if isinstance(freqs, np.ndarray) and isinstance(power_spectra, np.ndarray):
+        if freqs is not None and power_spectra is not None:
             self.add_data(freqs, power_spectra, freq_range)
 
         # Run linearly

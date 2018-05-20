@@ -241,11 +241,8 @@ class FOOOF(object):
             Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
         """
 
-        if freqs.ndim != power_spectrum.ndim != 1:
-            raise ValueError('Inputs are not the right dimensions.')
-
         self.freqs, self.power_spectrum, self.freq_range, self.freq_res = \
-            self._prepare_data(freqs, power_spectrum, freq_range, self.verbose)
+            self._prepare_data(freqs, power_spectrum, freq_range, 1, self.verbose)
 
 
     def add_results(self, fooof_result, regenerate=False):
@@ -311,7 +308,7 @@ class FOOOF(object):
         """
 
         # If freqs & power_spectrum provided together, add data to object.
-        if isinstance(freqs, np.ndarray) and isinstance(power_spectrum, np.ndarray):
+        if freqs is not None and power_spectrum is not None:
             self.add_data(freqs, power_spectrum, freq_range)
         # If power spectrum provided alone, add to object, and use existing frequency data
         #  Note: be careful passing in power_spectrum data like this:
@@ -827,7 +824,7 @@ class FOOOF(object):
 
 
     @staticmethod
-    def _prepare_data(freqs, power_spectrum, freq_range, verbose=True):
+    def _prepare_data(freqs, power_spectrum, freq_range, psd_dim=1, verbose=True):
         """Prepare input data for adding to FOOOF or FOOOFGroup object.
 
         Parameters
@@ -838,6 +835,8 @@ class FOOOF(object):
             Power spectrum values, in linear space. 1d vector, or 2d as [n_power_spectra, n_freqs].
         freq_range : list of [float, float]
             Frequency range to restrict power spectrum to. If None, keeps the entire range.
+        psd_dim : int, optional default: 1
+            Dimensionality that the power_spectrum should have.
         verbose : bool, optional
             Whether to be verbose in printing out warnings.
 
@@ -853,6 +852,15 @@ class FOOOF(object):
             Frequency resolution of the power spectrum.
         """
 
+        # Check that data are the right types
+        if not isinstance(freqs, np.ndarray) or not isinstance(power_spectrum, np.ndarray):
+            raise ValueError('Input data must be numpy arrays.')
+
+        # Check that data have the right dimensionality
+        if freqs.ndim != 1 or (power_spectrum.ndim != psd_dim):
+            raise ValueError('Inputs are not the right dimensions.')
+
+        # Check that data sizes are compatible
         if freqs.shape[-1] != power_spectrum.shape[-1]:
             raise ValueError('Inputs are not consistent size.')
 
