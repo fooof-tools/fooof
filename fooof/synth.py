@@ -6,6 +6,7 @@ from collections import namedtuple
 
 import numpy as np
 
+from fooof.core.utils import group_three
 from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
 
 ###################################################################################################
@@ -140,7 +141,7 @@ def gen_group_power_spectra(n_spectra, freq_range, bg_params, gauss_params, nlvs
     # Synthesize power spectra
     for ind, bgp, gp, nlv in zip(range(n_spectra), bg_params, gauss_params, nlvs):
 
-        syn_params[ind] = SynParams(bgp, gp, nlv)
+        syn_params[ind] = SynParams(bgp, sorted(group_three(gp)), nlv)
         ys[ind, :] = gen_power_vals(xs, bgp, gp, nlv)
 
     return xs, ys, syn_params
