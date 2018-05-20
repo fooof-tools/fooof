@@ -180,7 +180,7 @@ def gen_peaks(xs, gauss_params):
     ----------
     xs : 1d array
         Frequency vector to create peak values from.
-    gauss_params : list of list of float
+    gauss_params : list of float
         Parameters to create peaks. Length of n_peaks * 3.
 
     Returns
