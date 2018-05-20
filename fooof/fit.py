@@ -317,7 +317,7 @@ class FOOOF(object):
             self.power_spectrum = power_spectrum
 
         # Check that data is available
-        if not (np.all(self.freqs) and np.all(self.power_spectrum)):
+        if self.freqs is None or self.power_spectrum is None:
             raise ValueError('No data available to fit - can not proceed.')
 
         # Check and warn about width limits (if in verbose mode)
