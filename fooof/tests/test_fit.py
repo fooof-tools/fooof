@@ -74,6 +74,10 @@ def test_fooof_checks():
     with raises(ValueError):
         tfm.fit(xs[:-1], ys)
 
+    # Check wrong data type error
+    with raises(ValueError):
+        tfm.fit(list(xs), list(ys))
+
     # Check trim_spectrum range
     tfm.fit(xs, ys, [3, 40])
 
