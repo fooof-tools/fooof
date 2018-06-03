@@ -669,16 +669,21 @@ class FOOOF(object):
             Parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
         """
 
-        # Set the bounds for center frequency, enforce positive amp value, and set width limits.
-        #  Note that osc_guess is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std.
+        # Set the bounds for center frequency, enforce positive amp value, and set bandwidth limits.
+        #  Note that 'guess' is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std.
         #  This set of list comprehensions is a way to end up with bounds in the form:
-        #   ((cf_low_bound_osc1, amp_low_bound_osc1, bw_low_bound_osc1, *repeated for n oscs*),
-        #    (cf_high_bound_osc1, amp_high_bound_osc1, bw_high_bound_osc1, *repeated for n oscs*))
+        #   ((cf_low_bound_peak1, amp_low_bound_peak1, bw_low_bound_peak1, *repeated for n_peak*),
+        #    (cf_high_bound_peak1, amp_high_bound_peak1, bw_high_bound_peak, *repeated for n_peak*))
         lo_bound = [[peak[0] - 2 * self._cf_bound * peak[2], 0, self._gauss_std_limits[0]]
                     for peak in guess]
         hi_bound = [[peak[0] + 2 * self._cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]
                     for peak in guess]
-        # The double for-loop here unpacks the embedded lists
+
+        # Check that CF bounds are within frequency range, and, if not, updates them to be restricted to frequency range.
+        lo_bound = [bound if bound[0] > self.freq_range[0] else [self.freq_range[0], *bound[1:]] for bound in lo_bound]
+        hi_bound = [bound if bound[0] < self.freq_range[1] else [self.freq_range[1], *bound[1:]] for bound in hi_bound]
+
+        # Unpacks the embedded lists into flat tuples, which is what the fit function requires as input.
         gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]),
                              tuple([item for sublist in hi_bound for item in sublist]))
 
