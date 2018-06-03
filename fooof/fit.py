@@ -483,8 +483,8 @@ class FOOOF(object):
             Whether to regenerate the power_spectrum model. default : True
         """
 
-        # If results loaded, check dimensions of osc/gauss parameters
-        #  This fixes an issue where they end up the wrong shape if they are empty (no oscs)
+        # If results loaded, check dimensions of peak parameters
+        #  This fixes an issue where they end up the wrong shape if they are empty (no peaks)
         if set(get_obj_desc()['results']).issubset(set(data.keys())):
             self.peak_params_ = check_array_dim(self.peak_params_)
             self._gaussian_params = check_array_dim(self._gaussian_params)
@@ -605,7 +605,7 @@ class FOOOF(object):
             guess_freq = self.freqs[max_ind]
             guess_amp = max_amp
 
-            # Halt fitting process if candidate osc drops below minimum amp size.
+            # Halt fitting process if candidate peak drops below minimum amp size.
             if not guess_amp > self.min_peak_amplitude:
                 break
 
@@ -637,8 +637,8 @@ class FOOOF(object):
             guess = np.vstack((guess, (guess_freq, guess_amp, guess_std)))
 
             # Subtract best-guess gaussian.
-            osc_gauss = gaussian_function(self.freqs, guess_freq, guess_amp, guess_std)
-            flat_iter = flat_iter - osc_gauss
+            peak_gauss = gaussian_function(self.freqs, guess_freq, guess_amp, guess_std)
+            flat_iter = flat_iter - peak_gauss
 
         # Check peaks based on edges, and on overlap
         #  Drop any that violate requirements.
@@ -656,17 +656,17 @@ class FOOOF(object):
 
 
     def _fit_peak_guess(self, guess):
-        """Fit a guess of peak gaussian fit(s).
+        """Fits a group of peak guesses with a fit function.
 
         Parameters
         ----------
         guess : 2d array
-            Guess parameters for gaussian fits to peaks. [n_oscs, 3], row: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
 
         Returns
         -------
         gaussian_params : 2d array
-            Parameters for gaussian fits to peaks. [n_oscs, 3], row: [CF, amp, BW].
+            Parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
         """
 
         # Set the bounds for center frequency, enforce positive amp value, and set width limits.
@@ -674,10 +674,10 @@ class FOOOF(object):
         #  This set of list comprehensions is a way to end up with bounds in the form:
         #   ((cf_low_bound_osc1, amp_low_bound_osc1, bw_low_bound_osc1, *repeated for n oscs*),
         #    (cf_high_bound_osc1, amp_high_bound_osc1, bw_high_bound_osc1, *repeated for n oscs*))
-        lo_bound = [[osc[0] - 2 * self._cf_bound * osc[2], 0, self._gauss_std_limits[0]]
-                    for osc in guess]
-        hi_bound = [[osc[0] + 2 * self._cf_bound * osc[2], np.inf, self._gauss_std_limits[1]]
-                    for osc in guess]
+        lo_bound = [[peak[0] - 2 * self._cf_bound * peak[2], 0, self._gauss_std_limits[0]]
+                    for peak in guess]
+        hi_bound = [[peak[0] + 2 * self._cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]
+                    for peak in guess]
         # The double for-loop here unpacks the embedded lists
         gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]),
                              tuple([item for sublist in hi_bound for item in sublist]))
@@ -725,7 +725,7 @@ class FOOOF(object):
 
         for ii, peak in enumerate(gaus_params):
 
-            # Gets the index of the power_spectrum at the frequency closest to the CF of the osc
+            # Gets the index of the power_spectrum at the frequency closest to the CF of the peak
             ind = min(range(len(self.freqs)), key=lambda ii: abs(self.freqs[ii] - peak[0]))
 
             # Collect peak parameter data
@@ -743,24 +743,24 @@ class FOOOF(object):
         Parameters
         ----------
         guess : 2d array
-            Guess parameters for gaussian fits to peaks. [n_oscs, 3], row: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
 
         Returns
         -------
         guess : 2d array
-            Guess parameters for gaussian fits to peaks. [n_oscs, 3], row: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
         """
 
         cf_params = [item[0] for item in guess]
         bw_params = [item[2] * self._bw_std_edge for item in guess]
 
         # Check if peaks within drop threshold from the edge of the frequency range.
-        keep_osc = \
+        keep_peak = \
             (np.abs(np.subtract(cf_params, self.freq_range[0])) > bw_params) & \
             (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)
 
         # Drop peaks that fail CF edge criterion
-        guess = np.array([d for (d, keep) in zip(guess, keep_osc) if keep])
+        guess = np.array([d for (d, keep) in zip(guess, keep_peak) if keep])
 
         return guess
 
@@ -771,12 +771,12 @@ class FOOOF(object):
         Parameters
         ----------
         guess : 2d array
-            Guess parameters for gaussian fits to peaks. [n_oscs, 3], row: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
 
         Returns
         -------
         guess : 2d array
-            Guess parameters for gaussian fits to peaks. [n_oscs, 3], row: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
 
         Notes
         -----
@@ -804,8 +804,8 @@ class FOOOF(object):
                 drop_inds.append([ind, ind + 1][np.argmin([guess[ind][1], guess[ind + 1][1]])])
 
         # Drop any peaks guesses that overlap too much, based on threshold.
-        keep_osc = [True if j not in drop_inds else False for j in range(len(guess))]
-        guess = np.array([d for (d, keep) in zip(guess, keep_osc) if keep])
+        keep_peak = [True if j not in drop_inds else False for j in range(len(guess))]
+        guess = np.array([d for (d, keep) in zip(guess, keep_peak) if keep])
 
         return guess
 
