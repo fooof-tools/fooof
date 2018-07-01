@@ -27,12 +27,11 @@ If you use this code in your project, please cite:
 
 Link: https://www.biorxiv.org/content/early/2018/04/11/299859
 
-## Python Version
-
-FOOOF runs on Python 3.5 and 3.6.
-
 ## Dependencies
 
+FOOOF is written in Python, and requires Python >= 3.5 to run. 
+
+It has the following dependencies:
 - numpy
 - scipy >= 0.19
 - matplotlib (optional)
@@ -45,6 +44,10 @@ If you aren't already using Anaconda, it is a useful tool to get and manage thes
 Matplotlib is not required for running the model fitting, but is used if you want to visualize model fits.
 
 Pytest is only required to run the test suite.
+
+## Matlab Support
+
+FOOOF is implemented in Python, but there is also Matlab wrapper, as well as other support utilities for using FOOOF in a Matlab pipeline, all of which is available in [fooof_mat](http://github.com/voytekresearch/fooof_mat). 
 
 ## Install
 
