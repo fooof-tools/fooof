@@ -14,13 +14,16 @@ from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
 
 SynParams = namedtuple('SynParams', ['background_params', 'gaussian_params', 'nlv'])
 
-def param_sampler(params):
+def param_sampler(params, probs=None):
     """Make a generator to sample randomly from possible params.
 
     Parameters
     ----------
     params : list
         Possible parameter values.
+    probs : list of float, optional
+        Probabilities with which to sample each parameter option. Default: None
+            If None, each parameter option is sampled uniformly.
 
     Yields
     ------
@@ -28,9 +31,13 @@ def param_sampler(params):
         A randomly sampled element from params.
     """
 
+    # In order to use numpy's choice, with probabilities, choices are made on indices
+    #  This is because the params can be a messy-sized list, that numpy choice does not like
+    inds = np.array(range(len(params)))
+
     # While loop allows the generator to be called an arbitrary number of times.
     while True:
-        yield choice(params)
+        yield params[np.random.choice(inds, p=probs)]
 
 
 def gen_freqs(freq_range, freq_res):
@@ -66,7 +73,7 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
     nlv : float, optional
         Noise level to add to generated power spectrum. Default: 0.005
     freq_res : float, optional
-        Frequency resolution for the synthetic power spectra.
+        Frequency resolution for the synthetic power spectra. Default: 0.5
 
     Returns
     -------
