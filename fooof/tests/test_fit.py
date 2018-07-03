@@ -42,7 +42,7 @@ def test_fooof_fit_nk():
 
     # Check model results - gaussian parameters
     for ii, gauss in enumerate(group_three(gauss_params)):
-        assert np.all(np.isclose(gauss, tfm._gaussian_params[ii], [1.5, 0.25, 0.5]))
+        assert np.all(np.isclose(gauss, tfm._gaussian_params[ii], [2.0, 0.5, 1.0]))
 
 def test_fooof_fit_knee():
     """Test FOOOF fit, with a knee."""
