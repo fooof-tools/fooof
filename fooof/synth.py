@@ -20,7 +20,7 @@ def param_sampler(params):
     Parameters
     ----------
     params : list
-        Possible parameter value
+        Possible parameter values.
 
     Yields
     ------
@@ -87,7 +87,7 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
     return xs, ys
 
 
-def gen_group_power_spectra(n_spectra, freq_range, bg_params, gauss_params, nlvs=0.005, freq_res=0.5):
+def gen_group_power_spectra(n_spectra, freq_range, background_params, gauss_params, nlvs=0.005, freq_res=0.5):
     """Generate a group of synthetic power spectra.
 
     Parameters
@@ -134,12 +134,12 @@ def gen_group_power_spectra(n_spectra, freq_range, bg_params, gauss_params, nlvs
     syn_params = [None] * n_spectra
 
     # Check if inputs are generators, if not, make them into repeat generators
-    bg_params = _check_iter(bg_params, n_spectra)
+    background_params = _check_iter(background_params, n_spectra)
     gauss_params = _check_iter(gauss_params, n_spectra)
     nlvs = _check_iter(nlvs, n_spectra)
 
     # Synthesize power spectra
-    for ind, bgp, gp, nlv in zip(range(n_spectra), bg_params, gauss_params, nlvs):
+    for ind, bgp, gp, nlv in zip(range(n_spectra), background_params, gauss_params, nlvs):
 
         syn_params[ind] = SynParams(bgp, sorted(group_three(gp)), nlv)
         ys[ind, :] = gen_power_vals(xs, bgp, gp, nlv)
@@ -155,7 +155,7 @@ def gen_background(xs, background_params, background_mode=None):
     xs : 1d array
         Frequency vector to create background from.
     background_params : list of float
-        Paramters that define the background process.
+        Parameters that define the background process.
     background_mode : {'fixed', 'knee'}, optional
         Which kind of background to generate power spectra with.
             If not provided, is infered from the parameters.
@@ -193,7 +193,7 @@ def gen_peaks(xs, gauss_params):
     return gaussian_function(xs, *gauss_params)
 
 
-def gen_power_vals(xs, bg_params, gauss_params, nlv):
+def gen_power_vals(xs, background_params, gauss_params, nlv):
     """Generate power values for a power spectrum.
 
     Parameters
@@ -213,7 +213,7 @@ def gen_power_vals(xs, bg_params, gauss_params, nlv):
         Power values (linear).
     """
 
-    background = gen_background(xs, bg_params)
+    background = gen_background(xs, background_params)
     peaks = gen_peaks(xs, gauss_params)
     noise = np.random.normal(0, nlv, len(xs))
 
@@ -225,7 +225,7 @@ def gen_power_vals(xs, bg_params, gauss_params, nlv):
 ###################################################################################################
 
 def _check_iter(obj, length):
-    """Check an object to ensure it's iterable, and make it iterable if not.
+    """Check an object to ensure that it is iterable, and make it iterable if not.
 
     Parameters
     ----------
@@ -240,7 +240,7 @@ def _check_iter(obj, length):
         Iterable object.
     """
 
-    # If it's a generator, leave as is
+    # If object is a generator, leave as is
     try:
         next(obj)
 
@@ -253,7 +253,7 @@ def _check_iter(obj, length):
             if len(obj) != length:
                 obj = repeat(obj)
 
-        # If it's not a list (for example, float), make it a repeat generator
+        # If it is not a list (for example, float), make it a repeat generator
         except:
             obj = repeat(obj)
 
