@@ -1,7 +1,7 @@
 """Synthesis functions for generating model components and synthetic power spectra."""
 
 from random import choice
-from itertools import repeat
+from itertools import chain, repeat
 from collections import namedtuple
 
 import numpy as np
@@ -67,9 +67,9 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
     freq_range : list of [float, float]
         Minimum and maximum values of the desired frequency vector.
     background_params : list of float
-        Parameters to create the background of a power spectrum. Length of 2 or 3.
-    gauss_params : list of list of float
-        Parameters to create peaks. Length of n_peaks * 3.
+        Parameters to create the background of a power spectrum. Length of 2 or 3 (see note).
+    gauss_params : list of float or list of list of float
+        Parameters to create peaks. Total length of n_peaks * 3 (see note).
     nlv : float, optional
         Noise level to add to generated power spectrum. Default: 0.005
     freq_res : float, optional
@@ -84,12 +84,21 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
 
     Notes
     -----
-    - The type of background process to use is inferred from the provided parameters.
-        - If length of 2, 'fixed' background is used, if length of 3, 'knee' is used.
+    Background Parameters:
+        - The type of background process to use is inferred from the provided parameters.
+            - If length of 2, the 'fixed' background is used, if length of 3, 'knee' is used.
+    Gaussian Parameters:
+        - Each gaussian description is a set of three values:
+            - mean (CF), amplitude (Amp), and std (BW)
+        - The total number of parameters that need to be specified is number of peaks * 3
+            - These can be specified in as all together in a flat list.
+                - For example: [10, 1, 1, 20, 0.5, 1]
+            - They can also be grouped into a list of lists
+                - For example: [[10, 1, 1], [20, 0.5, 1]]
     """
 
     xs = gen_freqs(freq_range, freq_res)
-    ys = gen_power_vals(xs, background_params, gauss_params, nlv)
+    ys = gen_power_vals(xs, background_params, _check_flat(gauss_params), nlv)
 
     return xs, ys
 
@@ -124,15 +133,19 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params, gauss_para
 
     Notes
     -----
-    - Parameters options can be:
+    Parameters options can be:
         - A single set of parameters
             - If so, these same parameters are used for all spectra.
         - A list of parameters whose length is n_spectra.
             - If so, each successive parameter set is such for each successive spectrum.
         - A generator object that returns parameters for a power spectrum.
             - If so, each spectrum has parameters pulled from the generator.
-    - The type of background process to use is inferred from the provided parameters.
-        - If length of 2, 'fixed' background is used, if length of 3, 'knee' is used.
+    Background Parameters:
+        - The type of background process to use is inferred from the provided parameters.
+            - If length of 2, 'fixed' background is used, if length of 3, 'knee' is used.
+    Gaussian Parameters:
+        - Each gaussian description is a set of three values:
+            - mean (CF), amplitude (Amp), and std (BW)
     """
 
     # Initialize things
@@ -265,3 +278,23 @@ def _check_iter(obj, length):
             obj = repeat(obj)
 
     return obj
+
+
+def _check_flat(lst):
+    """Check whether a list is flat, and flatten if not.
+
+    Parameters
+    ----------
+    lst : list or list of lists
+        A list object to be checked and potentially flattened.
+
+    Returns
+    -------
+    list
+        A '1D' list, which is a flattened version of the input.
+    """
+
+    if isinstance(lst[0], list):
+        lst = list(chain(*lst))
+
+    return lst
