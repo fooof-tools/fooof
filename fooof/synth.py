@@ -67,7 +67,7 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
     freq_range : list of [float, float]
         Minimum and maximum values of the desired frequency vector.
     background_params : list of float
-        Parameters to create the background of a power spectrum.
+        Parameters to create the background of a power spectrum. Length of 2 or 3.
     gauss_params : list of list of float
         Parameters to create peaks. Length of n_peaks * 3.
     nlv : float, optional
