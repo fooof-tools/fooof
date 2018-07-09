@@ -19,7 +19,7 @@ def param_sampler(params, probs=None):
 
     Parameters
     ----------
-    params : list
+    params : list of lists or list of float
         Possible parameter values.
     probs : list of float, optional
         Probabilities with which to sample each parameter option. Default: None
@@ -30,6 +30,10 @@ def param_sampler(params, probs=None):
     obj
         A randomly sampled element from params.
     """
+
+    # If input is a list of lists, check each element, and flatten if needed
+    if isinstance(params[0], list):
+        params = [_check_flat(lst) for lst in params]
 
     # In order to use numpy's choice, with probabilities, choices are made on indices
     #  This is because the params can be a messy-sized list, that numpy choice does not like
