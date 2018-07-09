@@ -95,6 +95,14 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
                 - For example: [10, 1, 1, 20, 0.5, 1]
             - They can also be grouped into a list of lists
                 - For example: [[10, 1, 1], [20, 0.5, 1]]
+
+    Examples
+    --------
+    Generate a power spectrum with a single
+    >>> freqs, psd = gen_power_spectrum([1, 50], [0, 2], [10, 1, 1])
+
+    Generate a power spectrum with alpha and beta peaks
+    >>> freqs, psd = gen_power_spectrum([1, 50], [0, 2], [[10, 1, 1], [20, 0.5, 1]])
     """
 
     xs = gen_freqs(freq_range, freq_res)
@@ -146,6 +154,17 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params, gauss_para
     Gaussian Parameters:
         - Each gaussian description is a set of three values:
             - mean (CF), amplitude (Amp), and std (BW)
+
+
+    Examples
+    --------
+    Generate 2 power spectra using the same parameters.
+    >>> freqs, psds, _ = gen_group_power_spectra(2, [1, 50], [0, 2], [10, 1, 1])
+
+    Generate 10 power spectra, randomly sampling possible parameters
+    >>> bg_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
+    >>> gauss_opts = param_sampler([[], [10, 1, 1], [10, 1, 1, 20, 2, 1]])
+    >>> freqs, psds, syn_params = gen_group_power_spectra(10, [1, 50], bg_opts, gauss_opts)
     """
 
     # Initialize things
