@@ -8,17 +8,19 @@
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/fooof.svg)](https://pypi.python.org/pypi/fooof/)
 [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial)
 
-FOOOF is a fast, efficient, physiologically-informed model to parameterize neural power spectra, characterizing both the aperiodic 'background' component, and periodic components as overlying peaks, reflecting putative oscillations.
+FOOOF is a fast, efficient, physiologically-informed tool to parameterize neural power spectra into aperiodic and periodic components. 
 
-The model conceives of the neural power spectrum as consisting of two distinct functional processes:
-- An aperiodic component, typically reflecting 1/f like characteristics, modeled with an exponential fit, with:
-- Band-limited peaks rising above this background, reflecting putative oscillations, and modeled as Gaussians.
+## Overview
+
+FOOOF conceives of a model of the power spectrum as a combination of two distinct functional processes:
+- An aperiodic 'background' component, typically reflecting 1/f like characteristics, modeled with an exponential fit
+- A variable number of band-limited peaks that rise above this background, reflecting putative oscillations, and modeled as Gaussians
 
 With regards to examing peaks in the frequency domain, as putative oscillations, the benefit of the FOOOF approach is that these peaks are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest. In particular, it separates these peaks from a dynamic, and independently interesting aperiodic background. This conception of the aperiodic background, as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the slope of this approximately 1/f distributed aperiodic background may reflect physiological parameters, particularly excitation/inhibition balance ([Gao, Peterson, Voytek, _NeuroImage_ 2017](http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf); [Voytek & Knight, _Biol Psychiatry_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf)). This aperiodic component changes with task ([Podvalny _et al._, _J Neurophysiol_ 2015](http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf)), with aging ([Voytek _et al._, _J Neurosci_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf)), and is thus interesting and important to measure, both in of itself, and to address potential confounds of the aperiodic components on the measurement of band-limited periodic components.
 
-## Reference
+A full description of the method and approach is available in the paper below.
 
-A full description of the method and approach is available in the paper linked below.
+## Reference
 
 If you use this code in your project, please cite:
 
@@ -27,6 +29,12 @@ If you use this code in your project, please cite:
     doi: https://doi.org/10.1101/299859
 
 Link: https://www.biorxiv.org/content/early/2018/04/11/299859
+
+## Try it out with Binder
+
+If you want to try it out, click [here](https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial) to jump straight into a live version of the tutorials. 
+
+This link uses [Binder](https://mybinder.org) to launch a JupyterHub on the cloud for you, meaning you will jump straight into a live code environments with our tutorial [notebooks](http://jupyter.org). 
 
 ## Dependencies
 
