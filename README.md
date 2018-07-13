@@ -34,7 +34,7 @@ Link: https://www.biorxiv.org/content/early/2018/04/11/299859
 
 If you want to try it out, click [here](https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial) to jump straight into a live version of the tutorials. 
 
-This link uses [Binder](https://mybinder.org) to launch a JupyterHub on the cloud for you, meaning you will jump straight into a live code environments with our tutorial [notebooks](http://jupyter.org). 
+This link uses [Binder](https://mybinder.org) to launch a JupyterHub on the cloud for you. 
 
 ## Dependencies
 
