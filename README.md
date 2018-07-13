@@ -8,13 +8,13 @@
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/fooof.svg)](https://pypi.python.org/pypi/fooof/)
 [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial)
 
-FOOOF is a fast, efficient, physiologically-informed tool to parameterize neural power spectra into aperiodic and periodic components. 
+FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
 
 ## Overview
 
 FOOOF conceives of a model of the power spectrum as a combination of two distinct functional processes:
-- An aperiodic 'background' component, typically reflecting 1/f like characteristics, modeled with an exponential fit
-- A variable number of band-limited peaks that rise above this background, reflecting putative oscillations, and modeled as Gaussians
+- An aperiodic 'background' component, reflecting 1/f like characteristics, modeled with an exponential fit, with
+- A variable number of periodic components, that exhibit as band-limited peaks rising above this background, reflecting putative oscillations, modeled as Gaussians
 
 With regards to examing peaks in the frequency domain, as putative oscillations, the benefit of the FOOOF approach is that these peaks are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest. In particular, it separates these peaks from a dynamic, and independently interesting aperiodic background. This conception of the aperiodic background, as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the slope of this approximately 1/f distributed aperiodic background may reflect physiological parameters, particularly excitation/inhibition balance ([Gao, Peterson, Voytek, _NeuroImage_ 2017](http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf); [Voytek & Knight, _Biol Psychiatry_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf)). This aperiodic component changes with task ([Podvalny _et al._, _J Neurophysiol_ 2015](http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf)), with aging ([Voytek _et al._, _J Neurosci_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf)), and is thus interesting and important to measure, both in of itself, and to address potential confounds of the aperiodic components on the measurement of band-limited periodic components.
 
