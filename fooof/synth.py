@@ -318,7 +318,7 @@ def _check_flat(lst):
     """
 
     # Note: flatten if list contains list(s), but skip if list is empty (which is valid)
-    if isinstance(lst[0], list) and len(lst) !=0:
+    if len(lst) !=0 and isinstance(lst[0], list):
         lst = list(chain(*lst))
 
     return lst
