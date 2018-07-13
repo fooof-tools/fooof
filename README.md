@@ -6,6 +6,7 @@
 [![codecov](https://codecov.io/gh/voytekresearch/fooof/branch/master/graph/badge.svg)](https://codecov.io/gh/voytekresearch/fooof)
 [![License](https://img.shields.io/pypi/l/fooof.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/fooof.svg)](https://pypi.python.org/pypi/fooof/)
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial)
 
 FOOOF is a fast, efficient, physiologically-informed model to parameterize neural power spectra, characterizing both the aperiodic 'background' component, and periodic components as overlying peaks, reflecting putative oscillations.
 
