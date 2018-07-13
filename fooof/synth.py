@@ -317,7 +317,8 @@ def _check_flat(lst):
         A '1D' list, which is a flattened version of the input.
     """
 
-    if isinstance(lst[0], list):
+    # Note: flatten if list contains list(s), but skip if list is empty (which is valid)
+    if isinstance(lst[0], list) and len(lst) !=0:
         lst = list(chain(*lst))
 
     return lst
