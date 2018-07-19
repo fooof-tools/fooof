@@ -239,7 +239,14 @@ class FOOOF(object):
             Power spectrum values, in linear space.
         freq_range : list of [float, float], optional
             Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
+
+        Notes
+        -----
+        If called on an object with existing data / results they will be cleared by this method call.
         """
+
+        # Clear data & results - this is to ensure object consistency of all data & results
+        self._reset_data_results()
 
         self.freqs, self.power_spectrum, self.freq_range, self.freq_res = \
             self._prepare_data(freqs, power_spectrum, freq_range, 1, self.verbose)
