@@ -245,8 +245,10 @@ class FOOOF(object):
         If called on an object with existing data / results they will be cleared by this method call.
         """
 
-        # Clear data & results - this is to ensure object consistency of all data & results
-        self._reset_data_results()
+        # If any data is already present, then clear data & results
+        #   This is to ensure object consistency of all data & results
+        if np.any(self.freqs):
+            self._reset_data_results()
 
         self.freqs, self.power_spectrum, self.freq_range, self.freq_res = \
             self._prepare_data(freqs, power_spectrum, freq_range, 1, self.verbose)

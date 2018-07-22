@@ -87,9 +87,11 @@ class FOOOFGroup(FOOOF):
         If called on an object with existing data / results they will be cleared by this method call.
         """
 
-        # Clear data & results - this is to ensure object consistency of all data & results
-        self._reset_data_results()
-        self._reset_group_results()
+        # If any data is already present, then clear data & results
+        #  This is to ensure object consistency of all data & results
+        if np.any(self.freqs):
+            self._reset_data_results()
+            self._reset_group_results()
 
         self.freqs, self.power_spectra, self.freq_range, self.freq_res = \
             self._prepare_data(freqs, power_spectra, freq_range, 2, self.verbose)
