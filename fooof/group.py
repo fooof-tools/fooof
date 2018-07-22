@@ -88,7 +88,7 @@ class FOOOFGroup(FOOOF):
         """
 
         # If any data is already present, then clear data & results
-        #  This is to ensure object consistency of all data & results
+        #   This is to ensure object consistency of all data & results
         if np.any(self.freqs):
             self._reset_data_results()
             self._reset_group_results()
