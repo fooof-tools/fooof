@@ -23,9 +23,9 @@ def trim_spectrum(freqs, power_spectra, f_range):
     Returns
     -------
     freqs_ext : 1d array
+        Extracted frequency values for the power spectrum.
+    power_spectra_ext : 1d or 2d array
         Extracted power spectral density values.
-    power_spectra_ext : 1d array
-        Extracted frequency values for the PSD.
 
     Notes
     -----
