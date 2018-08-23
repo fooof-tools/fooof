@@ -183,7 +183,7 @@ def gen_results_str_fg(fg, concise=False):
         raise ValueError('Model fit has not been run - can not proceed.')
 
     # Extract all the relevant data for printing
-    cens = fg.get_all_data('peak_params', 0)
+    n_peaks = len(fg.get_all_data('peak_params'))
     r2s = fg.get_all_data('r_squared')
     errors = fg.get_all_data('error')
     if fg.background_mode == 'knee':
@@ -229,7 +229,7 @@ def gen_results_str_fg(fg, concise=False):
 
         # Peak Parameters
         'In total {} peaks were extracted from the group'
-        .format(sum(~np.isnan(cens))),
+        .format(n_peaks),
         '',
 
         # Fitting stats - error and r^2
