@@ -98,5 +98,5 @@ def plot_fg_peak_cens(fg, ax=None):
         Figure axes upon which to plot.
     """
 
-    plot_hist(fg.get_all_data('peak_params', 0), 'Center Frequency',
+    plot_hist(fg.get_all_data('peak_params', 0)[:, 0], 'Center Frequency',
               'Peaks - Center Frequencies', x_lims=fg.freq_range, ax=ax)
