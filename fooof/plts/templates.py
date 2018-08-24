@@ -1,5 +1,7 @@
 """Plot templates for the FOOOF module."""
 
+from collections import OrderedDict
+
 import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
@@ -76,7 +78,7 @@ def plot_scatter_1(data, label, title=None, x_val=0, ax=None):
     # Create x-axis data, with small jitter for visualization purposes
     x_data = np.ones_like(data) * x_val + np.random.normal(0, 0.025, data.shape)
 
-    ax.scatter(x_data, data, s=36, alpha=0.5)
+    ax.scatter(x_data, data, s=36, alpha=_set_alpha(len(data)))
 
     if label:
         ax.set_ylabel(label, fontsize=16)
@@ -167,3 +169,26 @@ def plot_hist(data, label, title=None, n_bins=25, x_lims=None, ax=None):
         ax.set_title(title, fontsize=20)
 
     ax.tick_params(axis='both', labelsize=12)
+
+
+def _set_alpha(n_pts):
+    """Set an alpha value for plot that is scaled by the number of points to be plotted.
+
+    Parameters
+    ----------
+    n_pts : int
+        Number of points that will be in the plot.
+
+    Returns
+    -------
+    n_pts : float
+        Value for alpha to use for plotting.
+    """
+
+    alpha_levels = OrderedDict({0 : 0.50, 100  : 0.40, 500  : 0.25, 1000 : 0.10})
+
+    for ke, va in alpha_levels.items():
+        if n_pts > ke:
+            alpha = va
+
+    return alpha
