@@ -1,0 +1,35 @@
+fooof.FOOOF
+===========
+
+.. currentmodule:: fooof
+
+.. autoclass:: FOOOF
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~FOOOF.__init__
+      ~FOOOF.add_data
+      ~FOOOF.add_results
+      ~FOOOF.copy
+      ~FOOOF.fit
+      ~FOOOF.get_results
+      ~FOOOF.load
+      ~FOOOF.plot
+      ~FOOOF.print_report_issue
+      ~FOOOF.print_results
+      ~FOOOF.print_settings
+      ~FOOOF.report
+      ~FOOOF.save
+      ~FOOOF.save_report
+   
+   
+
+   
+   
+   
