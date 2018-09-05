@@ -16,7 +16,7 @@ If you want to skip right to the quickest, most hands-on tutorial to get started
 - [04-FOOOFGroup](04-FOOOFGroup.ipynb)
     - Scaling up: using FOOOFGroup to parameterize groups of PSDs.
 
-- [05-Tuning & Troubleshooting](05-Tuning&Troubleshooting)
+- [05-Tuning & Troubleshooting](05-Tuning%26Troubleshooting.ipynb)
     - Tips & tricks for getting the best out of FOOOF, and what to do if it goes wrong.
 
 - [06-Further Analysis](06-FurtherAnalysis.ipynb)
