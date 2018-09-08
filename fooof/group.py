@@ -17,6 +17,7 @@ from fooof.core.reports import save_report_fg
 from fooof.core.strings import gen_results_str_fg
 from fooof.core.io import save_fg, load_jsonlines
 from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class, get_data_indices
+from fooof.core.modutils import safe_import
 
 ###################################################################################################
 ###################################################################################################
@@ -84,7 +85,8 @@ class FOOOFGroup(FOOOF):
 
         Notes
         -----
-        If called on an object with existing data / results they will be cleared by this method call.
+        - If called on an object with existing data / results.
+            they will be cleared by this method call.
         """
 
         # If any data is already present, then clear data & results
@@ -149,7 +151,7 @@ class FOOOFGroup(FOOOF):
         # Run linearly
         if n_jobs == 1:
             self._reset_group_results(len(self.power_spectra))
-            for ind, power_spectrum in enumerate(self.power_spectra):
+            for ind, power_spectrum in _progress(enumerate(self.power_spectra), self.verbose, len(self)):
                 self._fit(power_spectrum=power_spectrum)
                 self.group_results[ind] = self._get_results()
 
@@ -157,9 +159,10 @@ class FOOOFGroup(FOOOF):
         else:
             self._reset_group_results()
             n_jobs = cpu_count() if n_jobs == -1 else n_jobs
-            pool = Pool(processes=n_jobs)
-            self.group_results = pool.map(partial(_par_fit, fg=self), self.power_spectra)
-            pool.close()
+            with Pool(processes=n_jobs) as pool:
+                self.group_results = list(_progress(pool.imap(partial(_par_fit, fg=self),
+                                                              self.power_spectra),
+                                                    self.verbose, len(self)))
 
         self._reset_data_results(clear_freqs=False)
 
@@ -371,4 +374,46 @@ def _par_fit(power_spectrum, fg):
     """Helper function for running in parallel."""
 
     fg._fit(power_spectrum=power_spectrum)
+
     return fg._get_results()
+
+
+def _progress(iterable, verbose, n_to_run):
+    """Add a progress bar.
+
+    Parameters
+    ----------
+    iterable : ?
+        xx
+    verbose : ?
+        xx
+    n_to_run : ?
+        xx
+
+    Returns
+    -------
+    pbar : ?
+        xx
+    """
+
+    if verbose:
+
+        if verbose == 'tqdm' or verbose == 'tqdm_notebook':
+
+            tqdm = safe_import('tqdm')
+
+            if not tqdm:
+                print('tqdm requested but is not installed. Proceeding without progress bar.')
+                return iterable
+
+            tqdm = getattr(tqdm, verbose)
+            pbar = tqdm(iterable, desc='Running FOOOFGroup:', total=n_to_run)
+
+        else:
+            print('Running FOOOFGroup across {} power spectra.'.format(n_to_run))
+            pbar = iterable
+
+    else:
+        pbar = iterable
+
+    return pbar
