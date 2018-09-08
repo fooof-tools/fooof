@@ -1,1 +1,8 @@
-This folder will be used to contain example analysis scripts, using the FOOOF module. 
+.. _general_examples:
+
+Examples Gallery
+================
+
+.. contents:: Contents
+   :local:
+   :depth: 3

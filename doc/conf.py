@@ -55,6 +55,9 @@ extensions = [
 
     #'numpydoc'
 
+# generate autosummary even if no references
+autosummary_generate = True
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
