@@ -32,18 +32,19 @@ Link: https://www.biorxiv.org/content/early/2018/04/11/299859
 
 ## Try it out with Binder
 
-If you want to try it out, click [here](https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial) to jump straight into a live version of the tutorials. 
+If you want to try it out, click [here](https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial) to jump straight into a live version of the tutorials.
 
-This link uses [Binder](https://mybinder.org) to launch a JupyterHub on the cloud for you. 
+This link uses [Binder](https://mybinder.org) to launch a JupyterHub on the cloud for you.
 
 ## Dependencies
 
-FOOOF is written in Python, and requires Python >= 3.5 to run. 
+FOOOF is written in Python, and requires Python >= 3.5 to run.
 
 It has the following dependencies:
 - numpy
 - scipy >= 0.19
 - matplotlib (optional)
+- tqdm (optional)
 - pytest (optional)
 
 That is, if you are using [Anaconda](https://www.anaconda.com/download/), then you are good to go.
@@ -52,11 +53,13 @@ If you aren't already using Anaconda, it is a useful tool to get and manage thes
 
 Matplotlib is not required for running the model fitting, but is used if you want to visualize model fits.
 
+tqdm is also not required for running the model fitting, but can be used to print progress bars when fitting many models.
+
 Pytest is only required to run the test suite.
 
 ## Matlab Support
 
-FOOOF is implemented in Python, but there is also Matlab wrapper, as well as other support utilities for using FOOOF in a Matlab pipeline, all of which is available in [fooof_mat](http://github.com/voytekresearch/fooof_mat). 
+FOOOF is implemented in Python, but there is also Matlab wrapper, as well as other support utilities for using FOOOF in a Matlab pipeline, all of which is available in [fooof_mat](http://github.com/voytekresearch/fooof_mat).
 
 ## Install
 
