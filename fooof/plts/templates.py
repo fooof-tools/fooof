@@ -1,10 +1,9 @@
 """Plot templates for the FOOOF module."""
 
-from collections import OrderedDict
-
 import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
+from fooof.plts.utils import _set_alpha
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -12,7 +11,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_spectrum(freqs, power_spectrum, plt_log=False, ax=None, **kwargs):
+def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False, ax=None, **kwargs):
     """Plot a line plot of a power-spectrum.
 
     Parameters
@@ -21,8 +20,10 @@ def plot_spectrum(freqs, power_spectrum, plt_log=False, ax=None, **kwargs):
         X-axis data, frequency values.
     power_spectrum : 1d array
         Y-axis data, power_spectrum power values.
-    plt_log : boolean, optional
-        Whether or not to plot the frequency axis in log space. default: False
+    log_freqs : boolean, optional
+        Whether or not to take the log of the power axis before plotting. default: False
+    log_powers : boolean, optional
+        Whether or not to take the log of the power axis before plotting. default: False
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **kwargs
@@ -33,11 +34,12 @@ def plot_spectrum(freqs, power_spectrum, plt_log=False, ax=None, **kwargs):
     if not ax:
         _, ax = plt.subplots(figsize=(12, 10))
 
-    # Set frequency vector, logged if requested
-    plt_freqs = np.log10(freqs) if plt_log else freqs
+    # Set plot data, logging if requested
+    plt_freqs = np.log10(freqs) if log_freqs else freqs
+    plt_powers = np.log10(power_spectrum) if log_powers else power_spectrum
 
     # Create the plot
-    ax.plot(plt_freqs, power_spectrum, **kwargs)
+    ax.plot(plt_freqs, plt_powers, **kwargs)
 
     # Aesthetics and axis labels
     ax.set_xlabel('Frequency', fontsize=20)
@@ -169,26 +171,3 @@ def plot_hist(data, label, title=None, n_bins=25, x_lims=None, ax=None):
         ax.set_title(title, fontsize=20)
 
     ax.tick_params(axis='both', labelsize=12)
-
-
-def _set_alpha(n_pts):
-    """Set an alpha value for plot that is scaled by the number of points to be plotted.
-
-    Parameters
-    ----------
-    n_pts : int
-        Number of points that will be in the plot.
-
-    Returns
-    -------
-    n_pts : float
-        Value for alpha to use for plotting.
-    """
-
-    alpha_levels = OrderedDict({0 : 0.50, 100  : 0.40, 500  : 0.25, 1000 : 0.10})
-
-    for ke, va in alpha_levels.items():
-        if n_pts > ke:
-            alpha = va
-
-    return alpha
