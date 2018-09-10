@@ -41,7 +41,7 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, ax=Non
 
 @check_dependency(plt, 'matplotlib')
 def plot_spectrum_shading(freqs, power_spectrum, shades, add_center=False, ax=None, **kwargs):
-    """Plot a power spectrum with a shaded region (or regions).
+    """Plot a power spectrum with a shaded frequency region (or regions).
 
     Parameters
     ----------
@@ -50,9 +50,9 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, add_center=False, ax=No
     power_spectrum : list of 1d array
         Y-axis data, power spectrum power values for spectrum to plot.
     shades : list of [float, float] or list of list of [float, float]
-        xx
-    add_centers : boolean
-        Whether to also add a line at the center point of the shaded regions.
+        Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
+    add_center : boolean
+        Whether to add a line at the center point of the shaded regions.
     """
 
     ax = check_ax(ax)
@@ -62,7 +62,7 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, add_center=False, ax=No
 
 @check_dependency(plt, 'matplotlib')
 def plot_spectra_shading(freqs, power_spectra, shades, add_center=False, ax=None, **kwargs):
-    """Plot a group of power spectra on with a shaded region (or regions).
+    """Plot a group of power spectra on with a shaded frequency region (or regions).
 
     Parameters
     ----------
@@ -71,9 +71,9 @@ def plot_spectra_shading(freqs, power_spectra, shades, add_center=False, ax=None
     power_spectrum : list of 1d array
         Y-axis data, power spectrum power values for spectrum to plot.
     shades : list of [float, float] or list of list of [float, float]
-        xx
-    add_centers : boolean
-        Whether to also add a line at the center point of the shaded regions.
+        Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
+    add_center : boolean
+        Whether to add a line at the center point of the shaded regions.
     """
 
     ax = check_ax(ax)

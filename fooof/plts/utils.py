@@ -44,14 +44,15 @@ def add_shades(ax, shades, add_center):
 
     Parameters
     ----------
-    ax : xx
-        xx
-    shades :
-        xx
-    add_center :
-        xx
+    ax : matplotlib.Axes
+        Figure axes upon which to plot.
+    shades : list of [float, float] or list of list of [float, float]
+        Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
+    add_center : boolean
+        Whether to add a line at the center point of the shaded regions.
     """
 
+    # If only only one shade region is specified, this embeds in a list, so that the loop works
     if not isinstance(shades[0], list):
         shades = [shades]
 
@@ -65,17 +66,17 @@ def add_shades(ax, shades, add_center):
 
 
 def check_ax(ax):
-    """
+    """Check whether a figure axes object is defined, define if not.
 
     Parameters
     ----------
-    ax : xx
-        xx
+    ax : matplotlib.Axes or None
+        Axes object to check if is defined.
 
     Returns
     -------
-    ax :
-        xx
+    ax : matplotlib.Axes
+        Figure axes object to use.
     """
 
     if not ax:
