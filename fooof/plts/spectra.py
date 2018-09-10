@@ -35,12 +35,12 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, ax=Non
     """
 
     ax = check_ax(ax)
-    for plt_spectrum in plt_powers:
-        plot_spectrum(plt_freqs, spectrum, log_freqs, log_powers, ax=ax, **kwargs)
+    for power_spectrum in power_spectra:
+        plot_spectrum(freqs, power_spectrum, log_freqs, log_powers, ax=ax, **kwargs)
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_spectrum_shading(freqs, power_spectrum, shades, centers=False, ax=None, **kwargs):
+def plot_spectrum_shading(freqs, power_spectrum, shades, add_center=False, ax=None, **kwargs):
     """Plot a power spectrum with a shaded region (or regions).
 
     Parameters
@@ -57,10 +57,11 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, centers=False, ax=None,
 
     ax = check_ax(ax)
     plot_spectrum(freqs, power_spectrum, ax=ax)
-    add_shades(ax, shades, centers)
+    add_shades(ax, shades, add_center)
 
 
-def plot_spectra_shading(freqs, power_spectra, shades, centers=False, ax=None, **kwargs):
+@check_dependency(plt, 'matplotlib')
+def plot_spectra_shading(freqs, power_spectra, shades, add_center=False, ax=None, **kwargs):
     """Plot a group of power spectra on with a shaded region (or regions).
 
     Parameters
@@ -77,4 +78,4 @@ def plot_spectra_shading(freqs, power_spectra, shades, centers=False, ax=None, *
 
     ax = check_ax(ax)
     plot_spectra(freqs, power_spectra, ax=ax, **kwargs)
-    add_shades(ax, shades, centers)
+    add_shades(ax, shades, add_center)

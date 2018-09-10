@@ -39,7 +39,7 @@ def set_alpha(n_pts):
     return alpha
 
 
-def add_shades(ax, shades, centers):
+def add_shades(ax, shades, add_center):
     """Add shaded regions to a specified graph.
 
     Parameters
@@ -48,15 +48,18 @@ def add_shades(ax, shades, centers):
         xx
     shades :
         xx
-    centers :
+    add_center :
         xx
     """
+
+    if not isinstance(shades[0], list):
+        shades = [shades]
 
     for shade in shades:
 
         ax.axvspan(shade[0], shade[1], color='r', alpha=0.2, lw=0)
 
-        if centers:
+        if add_center:
             center = sum(shade) / 2
             ax.axvspan(center, center, color='g')
 
