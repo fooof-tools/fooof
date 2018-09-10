@@ -1,4 +1,9 @@
-"""Plots for FOOOF object."""
+"""Plots for FOOOF object.
+
+Notes
+-----
+This file contains plotting functions that take as input a FOOOF() object.
+"""
 
 import os
 import numpy as np
@@ -38,14 +43,18 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
     if not ax:
         fig, ax = plt.subplots(figsize=(12, 10))
 
+    # Log Plot Settings - note that power values in FOOOF objects are already logged
+    log_freqs = plt_log
+    log_powers = False
+
     # Create the plot, adding data as is available
     if np.all(fm.power_spectrum):
-        plot_spectrum(fm.freqs, fm.power_spectrum, plt_log, ax,
+        plot_spectrum(fm.freqs, fm.power_spectrum, log_freqs, log_powers, ax,
                       color='k', linewidth=1.25, label='Original Spectrum')
     if np.all(fm.fooofed_spectrum_):
-        plot_spectrum(fm.freqs, fm.fooofed_spectrum_, plt_log, ax,
+        plot_spectrum(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers, ax,
                       color='r', linewidth=3.0, alpha=0.5, label='Full Model Fit')
-        plot_spectrum(fm.freqs, fm._bg_fit, plt_log, ax,
+        plot_spectrum(fm.freqs, fm._bg_fit, log_freqs, log_powers, ax,
                       color='b', linestyle='dashed', linewidth=3.0,
                       alpha=0.5, label='Background Fit')
 

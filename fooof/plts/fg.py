@@ -1,4 +1,9 @@
-"""Plots for FOOOFGroup object."""
+"""Plots for FOOOFGroup object.
+
+Notes
+-----
+This file contains plotting functions that take as input a FOOOFGroup() object.
+"""
 
 import os
 
