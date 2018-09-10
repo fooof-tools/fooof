@@ -8,6 +8,7 @@ This file contains plotting functions that take as input a FOOOF() object.
 import os
 import numpy as np
 
+from fooof.plts.utils import check_ax
 from fooof.plts.templates import plot_spectrum
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
@@ -40,8 +41,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
     if not np.all(fm.freqs):
         raise RuntimeError('No data available to plot - can not proceed.')
 
-    if not ax:
-        fig, ax = plt.subplots(figsize=(12, 10))
+    ax = check_ax(ax)
 
     # Log Plot Settings - note that power values in FOOOF objects are already logged
     log_freqs = plt_log
@@ -79,7 +79,8 @@ def plot_peak_iter(fm):
 
     for ind in range(n_gauss + 1):
 
-        _, ax = plt.subplots(figsize=(12, 10))
+        # Note: this forces to create a new plotting axes per iteration
+        ax = check_ax(None)
 
         plot_spectrum(fm.freqs, flatspec, linewidth=2.0, label='Flattened Spectrum', ax=ax)
         plot_spectrum(fm.freqs, [fm.peak_threshold * np.std(flatspec)]*len(fm.freqs),

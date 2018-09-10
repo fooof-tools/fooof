@@ -3,7 +3,7 @@
 import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.utils import _set_alpha
+from fooof.plts.utils import set_alpha
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -80,7 +80,7 @@ def plot_scatter_1(data, label, title=None, x_val=0, ax=None):
     # Create x-axis data, with small jitter for visualization purposes
     x_data = np.ones_like(data) * x_val + np.random.normal(0, 0.025, data.shape)
 
-    ax.scatter(x_data, data, s=36, alpha=_set_alpha(len(data)))
+    ax.scatter(x_data, data, s=36, alpha=set_alpha(len(data)))
 
     if label:
         ax.set_ylabel(label, fontsize=16)
