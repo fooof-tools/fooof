@@ -15,13 +15,13 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="TEST EXAMPLE">
+    <div class="sphx-glr-thumbcontainer" tooltip="Fit FOOOFGroup 3D">
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_example01_test_thumb.png
+    .. figure:: /auto_examples/images/thumb/sphx_glr_ex_fit_fooog_group_3d_thumb.png
 
-        :ref:`sphx_glr_auto_examples_example01_test.py`
+        :ref:`sphx_glr_auto_examples_ex_fit_fooog_group_3d.py`
 
 .. raw:: html
 
@@ -31,17 +31,17 @@ Examples
 .. toctree::
    :hidden:
 
-   /auto_examples/example01_test
+   /auto_examples/ex_fit_fooog_group_3d
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="TEST EXAMPLE">
+    <div class="sphx-glr-thumbcontainer" tooltip="Extract Bands">
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_example02_other_test_thumb.png
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_extract_bands_thumb.png
 
-        :ref:`sphx_glr_auto_examples_example02_other_test.py`
+        :ref:`sphx_glr_auto_examples_plot_extract_bands.py`
 
 .. raw:: html
 
@@ -51,7 +51,7 @@ Examples
 .. toctree::
    :hidden:
 
-   /auto_examples/example02_other_test
+   /auto_examples/plot_extract_bands
 .. raw:: html
 
     <div style='clear:both'></div>

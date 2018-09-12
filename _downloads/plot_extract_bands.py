@@ -1,6 +1,6 @@
 """
-TEST EXAMPLE
-======================================
+Extract Bands
+=============
 """
 ###############################################################################
 # This is a test example.
@@ -12,7 +12,8 @@ import numpy as np
 
 # FOOOF imports
 from fooof import FOOOF, FOOOFGroup
+from fooof.analysis import get_band_peak, get_band_peak_group
 
-# Import some utilities, and tools for creating synthetic power-spectra
-from fooof.synth import gen_power_spectrum, gen_group_power_spectra, param_sampler
-from fooof.core.utils import group_three
+###############################################################################
+
+print('Hello World.')

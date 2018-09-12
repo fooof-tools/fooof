@@ -12,13 +12,13 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 05">
+    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 01">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial05_troubleshooting_thumb.png
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial01-ModelDescription_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_tutorial05_troubleshooting.py`
+        :ref:`sphx_glr_auto_tutorials_tutorial01-ModelDescription.py`
 
 .. raw:: html
 
@@ -28,7 +28,107 @@ Tutorial
 .. toctree::
    :hidden:
 
-   /auto_tutorials/tutorial05_troubleshooting
+   /auto_tutorials/tutorial01-ModelDescription
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 06">
+
+.. only:: html
+
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial06-FurtherAnalysis_thumb.png
+
+        :ref:`sphx_glr_auto_tutorials_tutorial06-FurtherAnalysis.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_tutorials/tutorial06-FurtherAnalysis
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 03">
+
+.. only:: html
+
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial03-FOOOFAlgorithm_thumb.png
+
+        :ref:`sphx_glr_auto_tutorials_tutorial03-FOOOFAlgorithm.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_tutorials/tutorial03-FOOOFAlgorithm
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 02">
+
+.. only:: html
+
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial02-FOOOF_thumb.png
+
+        :ref:`sphx_glr_auto_tutorials_tutorial02-FOOOF.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_tutorials/tutorial02-FOOOF
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 04">
+
+.. only:: html
+
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial04-FOOOFGroup_thumb.png
+
+        :ref:`sphx_glr_auto_tutorials_tutorial04-FOOOFGroup.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_tutorials/tutorial04-FOOOFGroup
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 05">
+
+.. only:: html
+
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial05-Troubleshooting_thumb.png
+
+        :ref:`sphx_glr_auto_tutorials_tutorial05-Troubleshooting.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_tutorials/tutorial05-Troubleshooting
 .. raw:: html
 
     <div style='clear:both'></div>
