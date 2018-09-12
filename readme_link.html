@@ -1,0 +1,184 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>README &#8212; fooof 0.1.3 documentation</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Documentation" href="api.html" />
+    <link rel="prev" title="Fitting Oscillations &amp; One-Over F" href="index.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>fooof 0.1.3 documentation</span></a></h1>
+        <h2 class="heading"><span>README</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">Fitting Oscillations &amp; One-Over F</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="api.html">API Documentation</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="readme">
+<h1>README<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fooof-fitting-oscillations-one-over-f">
+<h2>FOOOF - fitting oscillations &amp; one over f<a class="headerlink" href="#fooof-fitting-oscillations-one-over-f" title="Permalink to this headline">¶</a></h2>
+<a class="reference external image-reference" href="http://www.repostatus.org/#active"><img alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed." src="http://www.repostatus.org/badges/latest/active.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/fooof/"><img alt="Latest Version" src="https://img.shields.io/pypi/v/fooof.svg" /></a>
+<a class="reference external image-reference" href="https://travis-ci.org/voytekresearch/fooof"><img alt="Build Status" src="https://travis-ci.org/voytekresearch/fooof.svg" /></a>
+<a class="reference external image-reference" href="https://codecov.io/gh/voytekresearch/fooof"><img alt="codecov" src="https://codecov.io/gh/voytekresearch/fooof/branch/master/graph/badge.svg" /></a>
+<a class="reference external image-reference" href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/pypi/l/fooof.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/fooof/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/fooof.svg" /></a>
+<a class="reference external image-reference" href="https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial"><img alt="Binder" src="https://mybinder.org/badge.svg" /></a>
+<p>FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.</p>
+<div class="section" id="overview">
+<h3>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h3>
+<p>FOOOF conceives of a model of the power spectrum as a combination of two distinct functional processes:</p>
+<ul class="simple">
+<li>An aperiodic ‘background’ component, reflecting 1/f like characteristics, modeled with an exponential fit, with</li>
+<li>A variable number of periodic components, that exhibit as band-limited peaks rising above this background, reflecting putative oscillations, modeled as Gaussians</li>
+</ul>
+<p>With regards to examining peaks in the frequency domain, as putative oscillations, the benefit of the FOOOF approach is that these peaks are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest. In particular, it separates these peaks from a dynamic, and independently interesting aperiodic background. This conception of the aperiodic background, as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the slope of this approximately 1/f distributed aperiodic background may reflect physiological parameters, particularly excitation/inhibition balance (<a class="reference external" href="http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf">Gao, Peterson, Voytek, *NeuroImage* 2017</a>; <a class="reference external" href="http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf">Voytek &amp; Knight, *Biol Psychiatry* 2015</a>). This aperiodic component changes with task (<a class="reference external" href="http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf">Podvalny *et al.*, *J Neurophysiol* 2015</a>), with aging (<a class="reference external" href="http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf">Voytek *et al.*, *J Neurosci* 2015</a>), and is thus interesting and important to measure, both in of itself, and to address potential confounds of the aperiodic components on the measurement of band-limited periodic components.</p>
+<p>A full description of the method and approach is available in the paper below.</p>
+</div>
+<div class="section" id="reference">
+<h3>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
+<p>If you use this code in your project, please cite:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>Haller M, Donoghue T, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Knight RT, Shestyuk A,
+Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859.
+doi: https://doi.org/10.1101/299859
+</pre></div>
+</div>
+<p>Link: <a class="reference external" href="https://www.biorxiv.org/content/early/2018/04/11/299859">https://www.biorxiv.org/content/early/2018/04/11/299859</a></p>
+</div>
+<div class="section" id="try-it-out-with-binder">
+<h3>Try it out with Binder<a class="headerlink" href="#try-it-out-with-binder" title="Permalink to this headline">¶</a></h3>
+<p>If you want to try it out, click <a class="reference external" href="https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial">here</a> to jump straight into a live version of the tutorials.</p>
+<p>This link uses <a class="reference external" href="https://mybinder.org">Binder</a> to launch a JupyterHub on the cloud for you.</p>
+</div>
+<div class="section" id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
+<p>FOOOF is written in Python, and requires Python &gt;= 3.5 to run.</p>
+<p>It has the following dependencies:</p>
+<ul class="simple">
+<li>numpy</li>
+<li>scipy &gt;= 0.19</li>
+<li>matplotlib (optional)</li>
+<li>pytest (optional)</li>
+</ul>
+<p>That is, if you are using <a class="reference external" href="https://www.anaconda.com/download/">Anaconda</a>, then you are good to go.</p>
+<p>If you aren’t already using Anaconda, it is a useful tool to get and manage these dependencies.</p>
+<p>Matplotlib is not required for running the model fitting, but is used if you want to visualize model fits.</p>
+<p>Pytest is only required to run the test suite.</p>
+</div>
+<div class="section" id="matlab-support">
+<h3>Matlab Support<a class="headerlink" href="#matlab-support" title="Permalink to this headline">¶</a></h3>
+<p>FOOOF is implemented in Python, but there is also Matlab wrapper, as well as other support utilities for using FOOOF in a Matlab pipeline, all of which is available in <a class="reference external" href="http://github.com/voytekresearch/fooof_mat">fooof_mat</a>.</p>
+</div>
+<div class="section" id="install">
+<h3>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h3>
+<p>To install the latest stable release of fooof, you can use pip:</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fooof</span></code></p>
+<p>Note that this will install only the core (non-optional) fooof requirements.</p>
+</div>
+<div class="section" id="development-branch">
+<h3>Development Branch<a class="headerlink" href="#development-branch" title="Permalink to this headline">¶</a></h3>
+<p>To get the lastest, development version, you can get the code using git:</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/voytekresearch/fooof</span></code></p>
+<p>To then install the development version (without making changes to it), move into the directory you cloned and run:</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">.</span></code></p>
+<p>Otherwise, if you want to install an editable, development version, move into the directory you cloned and install with:</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code></p>
+</div>
+<div class="section" id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<p>FOOOF is object oriented, and generally follows a similar approach as used in scikit-learn.</p>
+<p>The algorithm works on frequency representations, that is power spectra in linear space.</p>
+<p>With a power spectrum loaded (with ‘freqs’ storing frequency values, and ‘spectrum’ storing the power spectrum, both as 1D arrays in linear space) FOOOF can be used as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <span class="n">FOOOF</span>
+
+<span class="c1"># Initialize FOOOF object</span>
+<span class="n">fm</span> <span class="o">=</span> <span class="n">FOOOF</span><span class="p">()</span>
+
+<span class="c1"># Define frequency range across which to model the spectrum</span>
+<span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+
+<span class="c1"># Model the power spectrum with FOOOF, and print out a report</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>FOOOF.report() fits the model, plots the original power spectrum with the associated FOOOF model fit, and prints out the parameters of the model fit for both aperiodic ‘background’ and Gaussian parameters for any identified peaks.</p>
+<p>FOOOF also accepts parameters for fine-tuning the fit. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fm</span> <span class="o">=</span> <span class="n">FOOOF</span><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_amplitude</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">peak_threshold</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>_peak_width<em>limits</em> sets the possible lower- and upper-bounds for the fitted peak widths.</li>
+<li>_max_n<em>peaks</em> sets the maximum number of peaks to fit (in decreasing order of amplitude).</li>
+<li>_min_peak<em>amp</em> sets an absolute limit on the minimum amplitude (above background) for any extracted peak.</li>
+<li>_peak<em>threshold</em>, also sets a threshold above which a peak amplitude must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.</li>
+</ul>
+<p>FOOOF also has convenience methods for running the FOOOF model across matrices of multiple power spectra, as well as functionality for saving and loading results, creating reports from FOOOF outputs, and utilities to further analize FOOOF results.</p>
+<p>An example workflow, with ‘freqs’ as 1D array of frequency values, and ‘spectra’ as a 2D array of power spectra.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object, specifying some parameters</span>
+<span class="n">fg</span> <span class="o">=</span> <span class="n">FOOOFGroup</span><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Fit FOOOF model across the matrix of power spectra</span>
+<span class="n">fg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">)</span>
+
+<span class="c1"># Create and save out a report summarizing the results across the group of power spectra</span>
+<span class="n">fg</span><span class="o">.</span><span class="n">save_report</span><span class="p">()</span>
+
+<span class="c1"># Save out FOOOF results for further analysis later</span>
+<span class="n">fg</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;fooof_group_results&#39;</span><span class="p">,</span> <span class="n">save_results</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="output">
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<p>Example output for a FOOOF fit of MEG data:</p>
+<a class="reference external image-reference" href="img/FOOOF_Report.png"><img alt="&quot;fooof_report&quot;" src="img/FOOOF_Report.png" /></a>
+<p>Example output for running FOOOF across a group of power spectra (with FOOOFGroup):</p>
+<a class="reference external image-reference" href="img/FOOOFGroup_Report.png"><img alt="&quot;fooof_group_report&quot;" src="img/FOOOFGroup_Report.png" /></a>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">Fitting Oscillations &amp; One-Over F</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="api.html">API Documentation</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Thomas Donoghue.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+    </div>
+  </body>
+</html>

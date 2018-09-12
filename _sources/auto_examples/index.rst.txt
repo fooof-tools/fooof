@@ -1,6 +1,6 @@
 :orphan:
 
-.. _general_examples:
+.. _examples:
 
 Examples
 ========
@@ -9,24 +9,19 @@ Examples
    :local:
    :depth: 3
 
-Tutorial
-========
 
-.. contents:: Contents
-   :local:
-   :depth: 3
 
 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 05">
+    <div class="sphx-glr-thumbcontainer" tooltip="TEST EXAMPLE">
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_05-TuningAndTroubleshooting_thumb.png
+    .. figure:: /auto_examples/images/thumb/sphx_glr_example01_test_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_05-TuningAndTroubleshooting.py`
+        :ref:`sphx_glr_auto_examples_example01_test.py`
 
 .. raw:: html
 
@@ -36,7 +31,27 @@ Tutorial
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_05-TuningAndTroubleshooting
+   /auto_examples/example01_test
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="TEST EXAMPLE">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_example02_other_test_thumb.png
+
+        :ref:`sphx_glr_auto_examples_example02_other_test.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/example02_other_test
 .. raw:: html
 
     <div style='clear:both'></div>

@@ -49,3 +49,11 @@ Plotting Functions
     :toctree: generated/
 
     plts.templates.plot_spectrum
+
+Data Objects
+============
+
+.. autosummary::
+    :toctree: generated/
+
+    fit.FOOOFResult

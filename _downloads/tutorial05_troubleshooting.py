@@ -167,6 +167,7 @@ for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
 # ------------------------
 #
 # FOOOF currently offers two approaches for fitting the aperiodic 'background':
+#
 # - Fitting with just an offset and a slope, equivalent to a linear fit in log-log space
 #     - background_mode = 'fixed'
 # - Including a 'knee' parameter, reflecting a fit with a bend, in log-log space
@@ -179,6 +180,7 @@ for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
 # - Fitting FOOOF with knee fits may perform sub-optimally in ambiguous cases (where the data may or may not have a knee).
 #
 # Given this, we recommend:
+#
 # - Check your data, across the frequency range of interest, for what the aperiodic signal looks like.
 #     - If it looks roughly linear (in log-log space), fit without a knee.
 #         - This is likely across smaller frequency ranges, such as 3-30.

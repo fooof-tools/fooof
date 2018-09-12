@@ -4,6 +4,9 @@ Frequently asked questions
 Why should I use FOOOF?
 -----------------------
 
+Because it's super-duper fun.
+
+
 How do I pick settings?
 -----------------------
 
@@ -30,15 +33,15 @@ Basically, any power spectra from neuro-electrophysiological field data
 How should I make the power spectra? Does it matter?
 ----------------------------------------------------
 
-Doesn't really matter.
-
-Does how I make the power spectra matter? Probably. Perhaps a note on frequency resolution?
+It doesn't really matter.
 
 
 Why is this different from prior things / what makes it work?
 -------------------------------------------------------------
 
-Broadly: by jointly learning aperiodic & periodic, and in particular, gains in slope fitting (otherwise: once one thing goes awry, everything else fails apart with it. )
+Broadly: by jointly learning aperiodic & periodic, and in particular, gains in slope fitting (otherwise: once one thing goes awry, everything else fails apart with it.)
 
 Does this work on epoched data? Is there a time resolved version?
 -----------------------------------------------------------------
+
+Yes.
