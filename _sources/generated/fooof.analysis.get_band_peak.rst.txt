@@ -1,0 +1,6 @@
+fooof.analysis.get\_band\_peak
+==============================
+
+.. currentmodule:: fooof.analysis
+
+.. autofunction:: get_band_peak

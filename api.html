@@ -41,7 +41,6 @@
 <span id="id1"></span><h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="fooof">
 <h2>FOOOF<a class="headerlink" href="#fooof" title="Permalink to this headline">¶</a></h2>
-<p>Classes</p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
@@ -51,11 +50,73 @@
 <tr class="row-odd"><td><a class="reference internal" href="generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOF</span></code></a>([peak_width_limits,&nbsp;max_n_peaks,&nbsp;…])</td>
 <td>Model the physiological power spectrum as a combination of 1/f background and peaks.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a>(*args,&nbsp;**kwargs)</td>
+</tbody>
+</table>
+</div>
+<div class="section" id="fooofgroup-object">
+<h2>FOOOFGroup Object<a class="headerlink" href="#fooofgroup-object" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a>(*args,&nbsp;**kwargs)</td>
 <td>Model the physiological power spectrum as a combination of 1/f background and peaks.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/fooof.fit_fooof_group_3d.html#fooof.fit_fooof_group_3d" title="fooof.fit_fooof_group_3d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_fooof_group_3d</span></code></a>(fg,&nbsp;freqs,&nbsp;psds[,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/fooof.fit_fooof_group_3d.html#fooof.fit_fooof_group_3d" title="fooof.fit_fooof_group_3d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_fooof_group_3d</span></code></a>(fg,&nbsp;freqs,&nbsp;psds[,&nbsp;…])</td>
 <td>Run FOOOFGroup across a 3D collection of power spectra.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="analysis-functions">
+<h2>Analysis Functions<a class="headerlink" href="#analysis-functions" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/fooof.analysis.get_band_peak.html#fooof.analysis.get_band_peak" title="fooof.analysis.get_band_peak"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analysis.get_band_peak</span></code></a>(peak_params,&nbsp;band_def)</td>
+<td>Extracts peaks within a given band of interest, for a FOOOF model fit.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/fooof.analysis.get_band_peak_group.html#fooof.analysis.get_band_peak_group" title="fooof.analysis.get_band_peak_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analysis.get_band_peak_group</span></code></a>(peak_params,&nbsp;…)</td>
+<td>Extracts peaks within a given band of interest, for a group of FOOOF model fits.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="synthesis-functions">
+<h2>Synthesis Functions<a class="headerlink" href="#synthesis-functions" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/fooof.synth.param_sampler.html#fooof.synth.param_sampler" title="fooof.synth.param_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synth.param_sampler</span></code></a>(params[,&nbsp;probs])</td>
+<td>Make a generator to sample randomly from possible params.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/fooof.synth.gen_power_spectrum.html#fooof.synth.gen_power_spectrum" title="fooof.synth.gen_power_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synth.gen_power_spectrum</span></code></a>(freq_range,&nbsp;…[,&nbsp;…])</td>
+<td>Generate a synthetic power spectrum.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/fooof.synth.gen_group_power_spectra.html#fooof.synth.gen_group_power_spectra" title="fooof.synth.gen_group_power_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synth.gen_group_power_spectra</span></code></a>(n_spectra,&nbsp;…)</td>
+<td>Generate a group of synthetic power spectra.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="plotting-functions">
+<h2>Plotting Functions<a class="headerlink" href="#plotting-functions" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/fooof.plts.templates.plot_spectrum.html#fooof.plts.templates.plot_spectrum" title="fooof.plts.templates.plot_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plts.templates.plot_spectrum</span></code></a>(freqs,&nbsp;…[,&nbsp;…])</td>
+<td>Plot a line plot of a power-spectrum.</td>
 </tr>
 </tbody>
 </table>

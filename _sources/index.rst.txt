@@ -12,6 +12,7 @@ Welcome to fooof's documentation!
 
    api.rst
    auto_examples/index.rst
+   faq.rst
 
 
 Indices and tables

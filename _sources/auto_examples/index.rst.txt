@@ -2,8 +2,15 @@
 
 .. _general_examples:
 
-Examples Gallery
-================
+Examples
+========
+
+.. contents:: Contents
+   :local:
+   :depth: 3
+
+Tutorial
+========
 
 .. contents:: Contents
    :local:
@@ -13,7 +20,7 @@ Examples Gallery
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tuning &amp; Troubleshooting ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 05">
 
 .. only:: html
 

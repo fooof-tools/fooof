@@ -1,0 +1,6 @@
+fooof.plts.templates.plot\_spectrum
+===================================
+
+.. currentmodule:: fooof.plts.templates
+
+.. autofunction:: plot_spectrum
