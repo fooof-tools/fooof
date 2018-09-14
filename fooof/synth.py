@@ -17,6 +17,40 @@ from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
 
 SynParams = namedtuple('SynParams', ['background_params', 'gaussian_params', 'nlv'])
 
+def _number_iter(start, stop, step):
+
+    current = start
+    while current <= stop:
+        yield current
+        current += step
+
+def param_iter(params):
+    # This function will be used generally to iterate through a slope or oscillation parameter 
+    # Find index we're going to iterate
+    for ind, el in enumerate(params):
+        if isinstance(el, list):
+            iter_index = ind
+            break
+    
+    temp = params    
+    for step in _number_iter(*params[iter_index]):
+        temp[iter_index] = step
+        yield temp
+        
+def osc_param_iter(cf=[10, 20, 1], amp=1, bw=2):
+    # Helper function, nicer API
+    #  What it does: takes inputs, passes them into param_iter
+    x = param_iter([cf,amp,bw])
+    while True:
+        yield next(x)
+
+def bg_param_iter(off=0, sl=[0, 2, 0.1]):
+    # Helper function, nicer API
+    #  What it does: takes inputs, passes them into param_iter
+    x = param_iter([off, sl])
+    while True:
+        yield next(x)
+
 def param_sampler(params, probs=None):
     """Make a generator to sample randomly from possible params.
 
@@ -39,7 +73,7 @@ def param_sampler(params, probs=None):
         params = [_check_flat(lst) for lst in params]
 
     # In order to use numpy's choice, with probabilities, choices are made on indices
-    #  This is because the params can be a messy-sized list, that numpy choice does not like
+    #  This is gbecause the params can be a messy-sized list, that numpy choice does not like
     inds = np.array(range(len(params)))
 
     # While loop allows the generator to be called an arbitrary number of times.
