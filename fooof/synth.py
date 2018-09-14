@@ -2,6 +2,9 @@
 
 from random import choice
 from itertools import chain, repeat
+
+from inspect import isgenerator
+
 from collections import namedtuple
 
 import numpy as np
@@ -283,12 +286,8 @@ def _check_iter(obj, length):
         Iterable object.
     """
 
-    # If object is a generator, leave as is
-    try:
-        next(obj)
-
-    # If next fails, it's not a generator
-    except TypeError:
+    # If object is not a generator, update to become one - otherwise, get's left as is
+    if not isgenerator(obj):
 
         # If it's a list, make it a repeat generator
         #  Unless it's the right length, then it will iterate through each element
