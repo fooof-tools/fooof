@@ -118,7 +118,7 @@ class FOOOF(object):
 
     Notes
     -----
-    Input power spectra should be smooth - overly noisy power spectra may lead to bad fits.
+    Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
 
     - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
       procedure, or a median filter smoothing on the FFT output before running FOOOF.

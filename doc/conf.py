@@ -10,6 +10,7 @@ import os
 from os.path import dirname as up
 
 import sphinx_gallery
+import sphinx_bootstrap_theme
 
 # -- Path setup --------------------------------------------------------------
 
@@ -25,7 +26,7 @@ import sphinx_gallery
 # -- Project information -----------------------------------------------------
 
 project = 'fooof'
-copyright = '2018, Thomas Donoghue'
+copyright = '2018 - VoytekLab'
 author = 'Thomas Donoghue'
 
 # Get the current version number from inside the module
@@ -53,6 +54,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.coverage',
     'sphinx.ext.githubpages',
+    'sphinx.ext.mathjax',
     'sphinx_gallery.gen_gallery',
     'sphinx.ext.napoleon',
     'm2r'
@@ -94,13 +96,26 @@ pygments_style = 'sphinx'
 #
 #html_theme = 'alabaster'
 #html_theme = 'classic'
-html_theme = 'haiku'
+#html_theme = 'haiku'
+html_theme = 'bootstrap'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-#html_theme_options = {}
+html_theme_options = {
+    'navbar_sidebarrel': False,
+    'navbar_links': [
+        ("API", "api"),
+        ("FAQ", "faq"),
+        ("Tutorial", "auto_tutorials/index"),
+        ("Examples", "auto_examples/index"),
+        ("GitHub", "https://github.com/voytekresearch/fooof", True)
+    ],
+    'bootswatch_theme': "flatly"
+}
+
+# Nice other theme options: sandstone
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -118,11 +133,18 @@ html_static_path = ['_static']
 # html_sidebars = {}
 
 
+####
+
+# def setup(app):
+#     app.add_stylesheet("my-styles.css") # also can be a full URL
+#     # app.add_stylesheet("ANOTHER.css")
+#     # app.add_stylesheet("AND_ANOTHER.css")
+
+
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'fooofdoc'
-
 
 # -- Options for LaTeX output ------------------------------------------------
 
