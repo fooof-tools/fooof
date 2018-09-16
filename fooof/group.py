@@ -426,7 +426,7 @@ def _progress(iterable, verbose, n_to_run):
                 pbar = iterable
             else:
                 pbar = tqdm(iterable, desc='Running FOOOFGroup:', total=n_to_run,
-                            dynamic_n_cols=True)
+                            dynamic_ncols=True)
 
         # If 'verbose' was just 'True', print out a marker of what is being run (no progress bar)
         else:
