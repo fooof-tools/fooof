@@ -379,36 +379,55 @@ def _par_fit(power_spectrum, fg):
 
 
 def _progress(iterable, verbose, n_to_run):
-    """Add a progress bar.
+    """Add a progress bar to an iterable to be processed.
 
     Parameters
     ----------
-    iterable : ?
-        xx
-    verbose : ?
-        xx
-    n_to_run : ?
-        xx
+    iterable : list or iterable
+        Iterable object to potentially apply progress tracking to.
+    verbose : 'tqdm', 'tqdm_notebook' or boolean
+        Which type of verbosity to do.
+    n_to_run : int
+        Number of jobs to complete.
 
     Returns
     -------
-    pbar : ?
-        xx
+    pbar : iterable or tqdm object
+        Iterable object, with TQDM progress functionality, if requested.
+
+    Notes
+    -----
+    - The explicit n_to_run input is required as tqdm requires this in the parallel case.
+    - The tqdm object that is potentially returned acts the same as the underlying iterable,
+        with the addition of printing out progress everytime items are requested.
     """
+
+    # Check verbose specifier is okay
+    tqdm_options = ['tqdm', 'tqdm_notebook']
+    if not isinstance(verbose, bool) and not verbose in tqdm_options:
+        #print('Verbose option not understood. Proceeding without any.')
+        raise ValueError('Verbose option not understood.')
 
     if verbose:
 
-        if verbose == 'tqdm' or verbose == 'tqdm_notebook':
+        # Progress bar options, using tqdm
+        if verbose in tqdm_options:
 
-            tqdm = safe_import('tqdm')
+            # Get tqdm, and set which approach to use from tqdm
+            #   Approch to use from tqdm should be what's specified in 'verbose'
+            tqdm_mod = safe_import('tqdm')
+            tqdm_type = verbose
+
+            # Pulls out the specific tqdm approach to be used from the tqdm module, if available
+            tqdm = getattr(tqdm_mod, tqdm_type) if tqdm_mod else None
 
             if not tqdm:
                 print('tqdm requested but is not installed. Proceeding without progress bar.')
-                return iterable
+                pbar = iterable
+            else:
+                pbar = tqdm(iterable, desc='Running FOOOFGroup:', total=n_to_run)
 
-            tqdm = getattr(tqdm, verbose)
-            pbar = tqdm(iterable, desc='Running FOOOFGroup:', total=n_to_run)
-
+        # If 'verbose' was just 'True', print out a marker of what is being run (no progress bar)
         else:
             print('Running FOOOFGroup across {} power spectra.'.format(n_to_run))
             pbar = iterable
