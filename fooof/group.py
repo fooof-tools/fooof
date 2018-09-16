@@ -162,7 +162,7 @@ class FOOOFGroup(FOOOF):
             with Pool(processes=n_jobs) as pool:
                 self.group_results = list(_progress(pool.imap(partial(_par_fit, fg=self),
                                                               self.power_spectra),
-                                                    self.verbose, len(self)))
+                                                    self.verbose, len(self.power_spectra)))
 
         self._reset_data_results(clear_freqs=False)
 
@@ -425,7 +425,8 @@ def _progress(iterable, verbose, n_to_run):
                 print('tqdm requested but is not installed. Proceeding without progress bar.')
                 pbar = iterable
             else:
-                pbar = tqdm(iterable, desc='Running FOOOFGroup:', total=n_to_run)
+                pbar = tqdm(iterable, desc='Running FOOOFGroup:', total=n_to_run,
+                            dynamic_n_cols=True)
 
         # If 'verbose' was just 'True', print out a marker of what is being run (no progress bar)
         else:
