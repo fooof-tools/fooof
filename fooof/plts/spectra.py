@@ -56,8 +56,8 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, add_center=False, ax=No
     """
 
     ax = check_ax(ax)
-    plot_spectrum(freqs, power_spectrum, ax=ax)
-    add_shades(ax, shades, add_center)
+    plot_spectrum(freqs, power_spectrum, ax=ax, **kwargs)
+    add_shades(ax, shades, add_center, kwargs.get('log_freqs', False))
 
 
 @check_dependency(plt, 'matplotlib')
@@ -78,4 +78,4 @@ def plot_spectra_shading(freqs, power_spectra, shades, add_center=False, ax=None
 
     ax = check_ax(ax)
     plot_spectra(freqs, power_spectra, ax=ax, **kwargs)
-    add_shades(ax, shades, add_center)
+    add_shades(ax, shades, add_center, kwargs.get('log_freqs', False))

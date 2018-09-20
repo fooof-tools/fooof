@@ -8,6 +8,8 @@ These utility functions should be considered private.
 
 from collections import OrderedDict
 
+from numpy import log10
+
 from fooof.plts.settings import DEFAULT_FIGSIZE
 from fooof.core.modutils import safe_import
 
@@ -39,7 +41,7 @@ def set_alpha(n_pts):
     return alpha
 
 
-def add_shades(ax, shades, add_center):
+def add_shades(ax, shades, add_center, logged):
     """Add shaded regions to a specified graph.
 
     Parameters
@@ -57,6 +59,8 @@ def add_shades(ax, shades, add_center):
         shades = [shades]
 
     for shade in shades:
+
+        shade = log10(shade) if logged else shade
 
         ax.axvspan(shade[0], shade[1], color='r', alpha=0.2, lw=0)
 

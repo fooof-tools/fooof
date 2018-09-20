@@ -34,6 +34,10 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False, ax=N
     if not ax:
         _, ax = plt.subplots(figsize=(12, 10))
 
+    # Check for plot log options in **kwargs, extract if present
+    #log_freqs = kwargs.pop('log_freqs', False)
+    #log_powers = kwargs.pop('log_powers', False)
+
     # Set plot data, logging if requested
     plt_freqs = np.log10(freqs) if log_freqs else freqs
     plt_powers = np.log10(power_spectrum) if log_powers else power_spectrum
