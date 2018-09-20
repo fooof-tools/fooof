@@ -6,11 +6,10 @@ These utility functions should be considered private.
     They are not expected to be called directly by the user.
 """
 
-from collections import OrderedDict
 
 from numpy import log10
 
-from fooof.plts.settings import DEFAULT_FIGSIZE
+from fooof.plts.settings import DEFAULT_FIGSIZE, ALPHA_LEVELS
 from fooof.core.modutils import safe_import
 
 plt = safe_import('.pyplot', 'matplotlib')
@@ -32,9 +31,7 @@ def set_alpha(n_pts):
         Value for alpha to use for plotting.
     """
 
-    alpha_levels = OrderedDict({0 : 0.50, 100  : 0.40, 500  : 0.25, 1000 : 0.10})
-
-    for ke, va in alpha_levels.items():
+    for ke, va in ALPHA_LEVELS.items():
         if n_pts > ke:
             alpha = va
 
@@ -52,6 +49,8 @@ def add_shades(ax, shades, add_center, logged):
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
     add_center : boolean
         Whether to add a line at the center point of the shaded regions.
+    logged : boolean
+        Whether the shade values should be logged before applying to plot axes.
     """
 
     # If only only one shade region is specified, this embeds in a list, so that the loop works
