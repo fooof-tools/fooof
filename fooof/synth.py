@@ -60,6 +60,25 @@ def param_iter(params):
     return (c, length)
 
 def _param_generator(params, ind, chg):
+    """
+    Private generator to generate the next element when iterating over parameters
+
+    Parameters
+    ----------
+    params: List
+        list of all params - of which one will be iterated over
+
+    ind: int
+        location in params where iteration will occur
+
+    chg: float
+        element which will be updated to
+
+    Return
+    ------
+        List of updated parameters
+
+    """
     params[ind] = chg
     return params
     
