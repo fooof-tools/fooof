@@ -4,6 +4,8 @@ from random import choice
 from itertools import chain, repeat
 
 from inspect import isgenerator
+import types
+import warnings
 
 from collections import namedtuple
 
@@ -17,40 +19,50 @@ from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
 
 SynParams = namedtuple('SynParams', ['background_params', 'gaussian_params', 'nlv'])
 
-def _number_iter(start, stop, step):
-
-    current = start
-    while current <= stop:
-        yield current
-        current += step
-
 def param_iter(params):
-    # This function will be used generally to iterate through a slope or oscillation parameter 
-    # Find index we're going to iterate
-    for ind, el in enumerate(params):
-        if isinstance(el, list):
-            iter_index = ind
-            break
+    """
+    This generator finds which parameter will be iterated through then
+    genertaes those iterations. params is a list given either as 
+    [cf, amp, bw] or [offset, slope]. The intended parameter to iterate
+    over will be replaced with a list in the form of [start, stop, step].
     
-    temp = params    
-    for step in _number_iter(*params[iter_index]):
-        temp[iter_index] = step
-        yield temp
+    Parameter
+    ---------
+    params : list
+        each element is a float except the parameter to be iterated over
+        that is a list itself
         
-def osc_param_iter(cf=[10, 20, 1], amp=1, bw=2):
-    # Helper function, nicer API
-    #  What it does: takes inputs, passes them into param_iter
-    x = param_iter([cf,amp,bw])
-    while True:
-        yield next(x)
+    Yields
+    -----
+        A 2 element tuple where the first value is a list of the next iterated 
+        parameters and the second element is the length of the generator
 
-def bg_param_iter(off=0, sl=[0, 2, 0.1]):
-    # Helper function, nicer API
-    #  What it does: takes inputs, passes them into param_iter
-    x = param_iter([off, sl])
-    while True:
-        yield next(x)
+    Example
+    -------
+    Example: if we want to iterate over center frequency values from
+    8 to 12 in increments of .25: params = [[8,12,.25], amp, bw]
+    """
 
+    
+    num_iters = 0
+    
+    for i in range(len(params)):
+        if isinstance(params[i], np.ndarray):
+            length = len(params[i])
+            num_iters += 1
+            ind = i
+    
+        if num_iters > 1:
+            raise Warning("Iteration is only supported on one parameter")
+            
+    temp = params
+    c = ( _param_generator(params,ind,x) for x in params[ind])     
+    return (c, length)
+
+def _param_generator(params, ind, chg):
+    params[ind] = chg
+    return params
+    
 def param_sampler(params, probs=None):
     """Make a generator to sample randomly from possible params.
 
