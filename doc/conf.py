@@ -11,6 +11,7 @@ from os.path import dirname as up
 
 import sphinx_gallery
 import sphinx_bootstrap_theme
+from sphinx_gallery.sorting import FileNameSortKey
 
 # -- Path setup --------------------------------------------------------------
 
@@ -202,6 +203,7 @@ texinfo_documents = [
 sphinx_gallery_conf = {
     'examples_dirs': ['../examples', '../tutorials'],
     'gallery_dirs': ['auto_examples', 'auto_tutorials'],
+    'within_subsection_order': FileNameSortKey,
     'backreferences_dir': 'generated',
     'reference_url': {
         'fooof': None,
