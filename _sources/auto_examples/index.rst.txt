@@ -35,26 +35,6 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Extract Bands">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_extract_bands_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_extract_bands.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_extract_bands
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Tuning &amp; Troubleshooting ">
 
 .. only:: html
@@ -72,6 +52,26 @@ Examples
    :hidden:
 
    /auto_examples/plot_05-TuningAndTroubleshooting
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Extract Bands">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_extract_bands_thumb.png
+
+        :ref:`sphx_glr_auto_examples_plot_extract_bands.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_extract_bands
 .. raw:: html
 
     <div style='clear:both'></div>
