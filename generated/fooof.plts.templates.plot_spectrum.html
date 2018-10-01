@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/my-styles.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
@@ -20,6 +19,8 @@
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="fooof.fit.FOOOFResult" href="fooof.fit.FOOOFResult.html" />
+    <link rel="prev" title="fooof.synth.gen_group_power_spectra" href="fooof.synth.gen_group_power_spectra.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -44,6 +45,12 @@
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
             
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="../auto_tutorials/index.html">Tutorial</a></li>
+                <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
+            
             
               <li class="dropdown globaltoc-container">
   <a role="button"
@@ -53,7 +60,15 @@
      href="../index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"></ul>
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme_link.html">README</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_tutorials/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../contents.html">Table of Contents</a></li>
+</ul>
+</ul>
 </li>
               
                 <li class="dropdown">
@@ -71,10 +86,6 @@
 </li>
               
             
-            
-              
-                
-              
             
             
             
@@ -109,7 +120,7 @@
 <h1>fooof.plts.templates.plot_spectrum<a class="headerlink" href="#fooof-plts-templates-plot-spectrum" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="fooof.plts.templates.plot_spectrum">
-<code class="descclassname">fooof.plts.templates.</code><code class="descname">plot_spectrum</code><span class="sig-paren">(</span><em>freqs</em>, <em>power_spectrum</em>, <em>plt_log=False</em>, <em>ax=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.plts.templates.plot_spectrum" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">fooof.plts.templates.</code><code class="descname">plot_spectrum</code><span class="sig-paren">(</span><em>freqs</em>, <em>power_spectrum</em>, <em>log_freqs=False</em>, <em>log_powers=False</em>, <em>ax=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.plts.templates.plot_spectrum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a line plot of a power-spectrum.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -118,7 +129,8 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>freqs</strong> (<em>1d array</em>) – X-axis data, frequency values.</li>
 <li><strong>power_spectrum</strong> (<em>1d array</em>) – Y-axis data, power_spectrum power values.</li>
-<li><strong>plt_log</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether or not to plot the frequency axis in log space. default: False</li>
+<li><strong>log_freqs</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether or not to take the log of the power axis before plotting. default: False</li>
+<li><strong>log_powers</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether or not to take the log of the power axis before plotting. default: False</li>
 <li><strong>ax</strong> (<em>matplotlib.Axes</em><em>, </em><em>optional</em>) – Figure axes upon which to plot.</li>
 <li><strong>**kwargs</strong> – Keyword arguments to be passed to the plot call.</li>
 </ul>

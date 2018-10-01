@@ -16,8 +16,10 @@
 
 
 
-    @import url("./bootstrap-3.3.7/css/bootstrap.min.css");
-    @import url("./bootstrap-3.3.7/css/bootstrap-theme.min.css");
+  
+  
+    @import url("./bootswatch-3.3.7/flatly/bootstrap.min.css");
+  
 
 
 /*
@@ -57,12 +59,12 @@
 
   body {
     
-      padding-top: 40px;
+      padding-top: 60px;
     
   }
   .page-top {
     
-      top: 40px;
+      top: 60px;
     
   }
 
