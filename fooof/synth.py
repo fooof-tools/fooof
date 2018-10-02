@@ -4,8 +4,6 @@ from random import choice
 from itertools import chain, repeat
 
 from inspect import isgenerator
-import types
-import warnings
 
 from collections import namedtuple
 
@@ -19,69 +17,96 @@ from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
 
 SynParams = namedtuple('SynParams', ['background_params', 'gaussian_params', 'nlv'])
 
-def param_iter(params):
+class Stepper():
+    """Object to generate next parameter value.
+
+    Attributes
+    ----------
+    dat : numpy.arange
+        Range of parameters to generate over.
+    _len : int
+        Length of generator range.
+    data : iterable
+        Stored data. 
+
     """
-    This generator finds which parameter will be iterated through then
-    genertaes those iterations. params is a list given either as 
-    [cf, amp, bw] or [offset, slope]. The intended parameter to iterate
-    over will be replaced with a list in the form of [start, stop, step].
+
+    def __init__(self, lst):
+        """Initializes generator.
     
-    Parameter
-    ---------
-    params : list
-        each element is a float except the parameter to be iterated over
-        that is a list itself
+        Parameters
+        ----------
+        lst : range
+            Range of parameters to generate over.
+        """
         
-    Yields
-    -----
-        A 2 element tuple where the first value is a list of the next iterated 
-        parameters and the second element is the length of the generator
+        dat = np.arange(*lst)
+        self._len = len(dat)
+        self.data = iter(dat)
+    
+    def __len__(self):
+        """Returns length of generator.
+        """
+
+        return self._len
+        
+    def __next__(self):
+        """Generates next element in parameter range
+        """
+
+        return next(self.data)
+
+    def __iter__(self):
+        """Defines Stepper to be iterator
+        """
+
+        return self.data
+
+
+def param_iter(params):
+    """Generates parameters to iterate over.
+    
+    Parameters
+    ----------
+    params : list of floats and Stepper
+        Parameters over which to iterate, where:
+            Stepper object defines iterated parameter and its range
+            floats are other parameters held constant.
+        
+    Yields  
+    ------
+    list of floats
+        Next generated list of parameters.
 
     Example
     -------
-    Example: if we want to iterate over center frequency values from
-    8 to 12 in increments of .25: params = [[8,12,.25], amp, bw]
+    Iterates over center frequency values from 8 to 12 in increments of .25.
+    >>> osc = param_iter([[8,12,.25], 1, 1])
     """
+    
+    # If input is a list of lists, check each element, and flatten if needed
+    if isinstance(params[0], list):
+        params = [item for sublist in params for item in sublist]
 
-    
     num_iters = 0
+    ind = 0
     
-    for i in range(len(params)):
-        if isinstance(params[i], np.ndarray):
-            length = len(params[i])
+    # Finds where Stepper is, if more than one, raise error
+    for i, param in enumerate(params):
+        if isinstance(param, Stepper):
             num_iters += 1
             ind = i
     
         if num_iters > 1:
             raise Warning("Iteration is only supported on one parameter")
-            
-    temp = params
-    c = ( _param_generator(params,ind,x) for x in params[ind])     
-    return (c, length)
 
-def _param_generator(params, ind, chg):
-    """
-    Private generator to generate the next element when iterating over parameters
-
-    Parameters
-    ----------
-    params: List
-        list of all params - of which one will be iterated over
-
-    ind: int
-        location in params where iteration will occur
-
-    chg: float
-        element which will be updated to
-
-    Return
-    ------
-        List of updated parameters
-
-    """
-    params[ind] = chg
-    return params
+    # Generates parameters
+    gen = params[ind]
+    while True:
+        params[ind] = next(gen)
+        yield params
     
+
 def param_sampler(params, probs=None):
     """Make a generator to sample randomly from possible params.
 
@@ -104,7 +129,7 @@ def param_sampler(params, probs=None):
         params = [_check_flat(lst) for lst in params]
 
     # In order to use numpy's choice, with probabilities, choices are made on indices
-    #  This is gbecause the params can be a messy-sized list, that numpy choice does not like
+    # This is because the params can be a messy-sized list, that numpy choice does not like
     inds = np.array(range(len(params)))
 
     # While loop allows the generator to be called an arbitrary number of times.
