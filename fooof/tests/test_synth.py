@@ -1,4 +1,5 @@
 """Test functions for FOOOF synth."""
+import numpy as np
 
 from fooof.tests.utils import default_group_params
 
@@ -6,6 +7,27 @@ from fooof.synth import *
 
 ###################################################################################################
 ###################################################################################################
+
+def test_param_iter():
+
+    # Test list of params
+    step = Stepper([8, 12, .1])
+    osc = [1, 2, 3, step, 5]
+    iter_1 = param_iter(osc)
+
+    for i in range(len(step)):
+        assert np.isclose(next(iter_1), [1, 2, 3 ,8 + (.1*i) , 5]).all()
+
+    # Test list of lists
+    step = Stepper([8, 12, .1])
+    osc_1 = [1, 2, 3]
+    osc_2 = [4, 5, 6]
+    osc_3 = [7, 8, step]
+    oscs = [osc_1, osc_2, osc_3]
+    iter_2 = param_iter(oscs)
+
+    for i in range(len(step)):
+        assert np.isclose(next(iter_2), [1, 2, 3, 4, 5, 6, 7, 8, 8 + (.1*i)]).all()
 
 def test_param_sampler():
 
