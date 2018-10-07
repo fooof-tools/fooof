@@ -4,6 +4,13 @@ python:
   - "3.5"
   - "3.6"
 
+# Current workaround to test on Python 3.7
+matrix:
+  include:
+    - python: 3.7
+      dist: xenial
+      sudo: true
+
 install:
   - pip install -r requirements.txt
   - pip install pytest-cov
