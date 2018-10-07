@@ -64,7 +64,8 @@ setup(
         'Operating System :: Unix',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6'
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7'
     ],
     download_url = 'https://github.com/voytekresearch/fooof/releases',
     keywords = ['neuroscience', 'neural oscillations', 'power spectra', '1/f', 'electrophysiology'],
