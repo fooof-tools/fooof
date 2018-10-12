@@ -33,35 +33,24 @@ class Stepper():
     ----------
     dat : numpy.arange
         Range of parameters to generate over.
-    _len : int
+    len : int
         Length of generator range.
     data : iterator
         Stored data. 
 
     """
-    @staticmethod
-    def _check_values(self, start, stop, step):
-        """Checks if parameters are valid."""
-
-        if any(i < 0 for i in [start, stop, step]):
-            raise ValueError("'start', 'stop', and 'step' should all be positive values")
-
-        if not start < stop:
-            raise ValueError("'start' should be less than stop")
-
-        if not step < (stop - start):
-            raise ValueError("'step' is too large for given 'start' and 'stop' values")
 
     def __init__(self, start, stop, step):
         """Initializes generator."""
 
-        self._check_values(self, start, stop, step)
+        self._check_values(start, stop, step)
         
         self.start = start
         self.stop = stop
         self.step = step
         self.len = int((stop-start)/step)
         self.data = iter(np.arange(start, stop, step))
+    
     
     def __len__(self):
         """Returns length of generator."""
@@ -79,6 +68,20 @@ class Stepper():
         """Defines Stepper to be iterator."""
 
         return self.data
+    
+    
+    @staticmethod
+    def _check_values(start, stop, step):
+        """Checks if parameters are valid."""
+
+        if any(i < 0 for i in [start, stop, step]):
+            raise ValueError("'start', 'stop', and 'step' should all be positive values")
+
+        if not start < stop:
+            raise ValueError("'start' should be less than stop")
+
+        if not step < (stop - start):
+            raise ValueError("'step' is too large for given 'start' and 'stop' values")
 
 
 def param_iter(params):

@@ -17,9 +17,8 @@ def test_param_iter():
 
     for ind, val in enumerate(iter_1):
         assert val == [8 + (.1*ind), .5 , .5]
-        
-        
-    # Test bg
+          
+    # Test background
     step = Stepper(.25, 3, .25)
     bg = [0, step]
     iter_1 = param_iter(bg)
@@ -34,8 +33,7 @@ def test_param_iter():
 
     for ind, val in enumerate(iter_1):
         assert val == [8 + (.1*ind), .5 , .5, 10, .25, 1]
-    
-    
+     
     # Test list of lists
     step = Stepper(8, 12, .1)
     osc_1 = [1, 2, 3]
