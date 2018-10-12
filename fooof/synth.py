@@ -187,7 +187,7 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params, gauss_para
     # Synthesize power spectra
     for ind, bgp, gp, nlv in zip(range(n_spectra), background_params, gauss_params, nlvs):
 
-        syn_params[ind] = SynParams(bgp, sorted(group_three(gp)), nlv)
+        syn_params[ind] = SynParams(bgp.copy(), sorted(group_three(gp)), nlv)
         ys[ind, :] = gen_power_vals(xs, bgp, gp, nlv)
 
     return xs, ys, syn_params
