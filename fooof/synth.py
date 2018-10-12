@@ -19,6 +19,15 @@ SynParams = namedtuple('SynParams', ['background_params', 'gaussian_params', 'nl
 
 class Stepper():
     """Object to generate next parameter value.
+    
+    Parameters
+    ----------
+    start : float
+        Start value to iterate from.
+    stop : float
+        End value to iterate to.
+    step : float
+        Incremet of each iteration.
 
     Attributes
     ----------
@@ -26,39 +35,48 @@ class Stepper():
         Range of parameters to generate over.
     _len : int
         Length of generator range.
-    data : iterable
+    data : iterator
         Stored data. 
 
     """
+    @staticmethod
+    def _check_values(self, start, stop, step):
+        """Checks if parameters are valid."""
 
-    def __init__(self, lst):
-        """Initializes generator.
-    
-        Parameters
-        ----------
-        lst : range
-            Range of parameters to generate over.
-        """
+        if any(i < 0 for i in [start, stop, step]):
+            raise ValueError("'start', 'stop', and 'step' should all be positive values")
+
+        if not start < stop:
+            raise ValueError("'start' should be less than stop")
+
+        if not step < (stop - start):
+            raise ValueError("'step' is too large for given 'start' and 'stop' values")
+
+    def __init__(self, start, stop, step):
+        """Initializes generator."""
+
+        self._check_values(self, start, stop, step)
         
-        dat = np.arange(*lst)
-        self._len = len(dat)
-        self.data = iter(dat)
+        self.start = start
+        self.stop = stop
+        self.step = step
+        self.len = int((stop-start)/step)
+        self.data = iter(np.arange(start, stop, step))
     
     def __len__(self):
-        """Returns length of generator.
-        """
+        """Returns length of generator."""
 
-        return self._len
+        return self.len
         
-    def __next__(self):
-        """Generates next element in parameter range
-        """
 
-        return next(self.data)
+    def __next__(self):
+        """Generates next element in parameter range."""
+
+        return round(next(self.data), 4)
+
 
     def __iter__(self):
-        """Defines Stepper to be iterator
-        """
+        """Defines Stepper to be iterator."""
 
         return self.data
 
@@ -81,7 +99,7 @@ def param_iter(params):
     Example
     -------
     Iterates over center frequency values from 8 to 12 in increments of .25.
-    >>> osc = param_iter([[8,12,.25], 1, 1])
+    >>> osc = param_iter([Stepper(8, 12, .25), 1, 1])
     """
     
     # If input is a list of lists, check each element, and flatten if needed
@@ -98,7 +116,7 @@ def param_iter(params):
             ind = i
     
         if num_iters > 1:
-            raise Warning("Iteration is only supported on one parameter")
+            raise ValueError("Iteration is only supported on one parameter")
 
     # Generates parameters
     gen = params[ind]
