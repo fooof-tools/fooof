@@ -19,7 +19,7 @@ SynParams = namedtuple('SynParams', ['background_params', 'gaussian_params', 'nl
 
 class Stepper():
     """Object to generate next parameter value.
-    
+
     Parameters
     ----------
     start : float
@@ -36,7 +36,7 @@ class Stepper():
     len : int
         Length of generator range.
     data : iterator
-        Stored data. 
+        Stored data.
 
     """
 
@@ -44,19 +44,19 @@ class Stepper():
         """Initializes generator."""
 
         self._check_values(start, stop, step)
-        
+
         self.start = start
         self.stop = stop
         self.step = step
         self.len = int((stop-start)/step)
         self.data = iter(np.arange(start, stop, step))
-    
-    
+
+
     def __len__(self):
         """Returns length of generator."""
 
         return self.len
-        
+
 
     def __next__(self):
         """Generates next element in parameter range."""
@@ -68,8 +68,8 @@ class Stepper():
         """Defines Stepper to be iterator."""
 
         return self.data
-    
-    
+
+
     @staticmethod
     def _check_values(start, stop, step):
         """Checks if parameters are valid."""
@@ -86,15 +86,15 @@ class Stepper():
 
 def param_iter(params):
     """Generates parameters to iterate over.
-    
+
     Parameters
     ----------
     params : list of floats and Stepper
         Parameters over which to iterate, where:
             Stepper object defines iterated parameter and its range
             floats are other parameters held constant.
-        
-    Yields  
+
+    Yields
     ------
     list of floats
         Next generated list of parameters.
@@ -104,29 +104,32 @@ def param_iter(params):
     Iterates over center frequency values from 8 to 12 in increments of .25.
     >>> osc = param_iter([Stepper(8, 12, .25), 1, 1])
     """
-    
+
     # If input is a list of lists, check each element, and flatten if needed
     if isinstance(params[0], list):
         params = [item for sublist in params for item in sublist]
 
     num_iters = 0
     ind = 0
-    
+
     # Finds where Stepper is, if more than one, raise error
     for i, param in enumerate(params):
         if isinstance(param, Stepper):
             num_iters += 1
             ind = i
-    
+
         if num_iters > 1:
             raise ValueError("Iteration is only supported on one parameter")
 
     # Generates parameters
     gen = params[ind]
     while True:
-        params[ind] = next(gen)
-        yield params
-    
+        try:
+            params[ind] = next(gen)
+            yield params
+        except StopIteration:
+            return
+
 
 def param_sampler(params, probs=None):
     """Make a generator to sample randomly from possible params.
