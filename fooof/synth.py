@@ -1,11 +1,9 @@
 """Synthesis functions for generating model components and synthetic power spectra."""
 
 from random import choice
-from itertools import chain, repeat
-
 from inspect import isgenerator
-
 from collections import namedtuple
+from itertools import chain, repeat
 
 import numpy as np
 
@@ -31,13 +29,10 @@ class Stepper():
 
     Attributes
     ----------
-    dat : numpy.arange
-        Range of parameters to generate over.
     len : int
         Length of generator range.
     data : iterator
-        Stored data.
-
+        Set of specified parameters to iterate across.
     """
 
     def __init__(self, start, stop, step):
@@ -65,7 +60,7 @@ class Stepper():
 
 
     def __iter__(self):
-        """Defines Stepper to be iterator."""
+        """Defines Stepper to be iterator, across the data attribute."""
 
         return self.data
 
@@ -81,7 +76,7 @@ class Stepper():
             raise ValueError("'start' should be less than stop")
 
         if not step < (stop - start):
-            raise ValueError("'step' is too large for given 'start' and 'stop' values")
+            raise ValueError("'step' is too large given 'start' and 'stop' values")
 
 
 def param_iter(params):
@@ -91,8 +86,8 @@ def param_iter(params):
     ----------
     params : list of floats and Stepper
         Parameters over which to iterate, where:
-            Stepper object defines iterated parameter and its range
-            floats are other parameters held constant.
+            Stepper object defines iterated parameter and its range and,
+            floats are other parameters that will be held constant.
 
     Yields
     ------
@@ -109,23 +104,22 @@ def param_iter(params):
     if isinstance(params[0], list):
         params = [item for sublist in params for item in sublist]
 
+    # Finds where Stepper object is. If there is more than one, raise an error
+    iter_ind = 0
     num_iters = 0
-    ind = 0
-
-    # Finds where Stepper is, if more than one, raise error
-    for i, param in enumerate(params):
+    for cur_ind, param in enumerate(params):
         if isinstance(param, Stepper):
             num_iters += 1
-            ind = i
+            iter_ind = cur_ind
 
         if num_iters > 1:
             raise ValueError("Iteration is only supported on one parameter")
 
-    # Generates parameters
-    gen = params[ind]
+    # Generate and yield next set of parameters
+    gen = params[iter_ind]
     while True:
         try:
-            params[ind] = next(gen)
+            params[iter_ind] = next(gen)
             yield params
         except StopIteration:
             return
