@@ -236,7 +236,7 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params, gauss_para
     freq_range : list of [float, float]
         Minimum and maximum values of the desired frequency vector.
     background_params : list of float or generator
-        Parameter for the background of the power spectra.
+        Parameters for the background of the power spectra.
     gauss_params : list of float or generator
         Parameters for the peaks of the power spectra.
             Length of n_peaks * 3.
@@ -398,13 +398,15 @@ def _check_iter(obj, length):
     if not isgenerator(obj):
 
         # If it's a list, make it a repeat generator
-        #  Unless it's the right length, then it will iterate through each element
-        try:
-            if len(obj) != length:
+        if isinstance(obj, list):
+
+            #  Unless its a list of lists of the right length - in this case, leave as is
+            #    This will leave it as a list of list that will iterate through each element
+            if not (isinstance(obj[0], list) and len(obj) != length):
                 obj = repeat(obj)
 
-        # If it is not a list (for example, float), make it a repeat generator
-        except:
+        # If it's not a list
+        else:
             obj = repeat(obj)
 
     return obj
@@ -422,6 +424,10 @@ def _check_flat(lst):
     -------
     list
         A '1D' list, which is a flattened version of the input.
+
+    Notes
+    -----
+    This function only deals with one level of nesting.
     """
 
     # Note: flatten if list contains list(s), but skip if list is empty (which is valid)
