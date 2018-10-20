@@ -1,9 +1,14 @@
 """Test functions for FOOOF synth."""
+
+from collections import Iterable
+from itertools import repeat
+
 import numpy as np
 
 from fooof.tests.utils import default_group_params
 
 from fooof.synth import *
+from fooof.synth import _check_flat, _check_iter
 
 ###################################################################################################
 ###################################################################################################
@@ -17,7 +22,7 @@ def test_param_iter():
 
     for ind, val in enumerate(iter_1):
         assert val == [8 + (.1*ind), .5 , .5]
-          
+
     # Test background
     step = Stepper(.25, 3, .25)
     bg = [0, step]
@@ -25,7 +30,7 @@ def test_param_iter():
 
     for ind, val in enumerate(iter_1):
         assert val == [0, .25 + (.25*ind)]
-    
+
     # Test n oscillations
     step = Stepper(8, 12, .1)
     oscs = [step, .5, .5, 10, .25, 1]
@@ -33,7 +38,7 @@ def test_param_iter():
 
     for ind, val in enumerate(iter_1):
         assert val == [8 + (.1*ind), .5 , .5, 10, .25, 1]
-     
+
     # Test list of lists
     step = Stepper(8, 12, .1)
     osc_1 = [1, 2, 3]
@@ -44,13 +49,13 @@ def test_param_iter():
 
     for ind, val in enumerate(iter_2):
         assert val == [1, 2, 3, 4, 5, 6, 7, 8, 8 + (.1*ind)]
-    
-    
+
+
 def test_stepper():
-    
+
     assert Stepper(8,12,.1)
 
-    
+
 def test_param_sampler():
 
     pos = [1, 2, 3, 4]
@@ -130,3 +135,40 @@ def test_gen_power_values():
     ys = gen_power_vals(xs, bg_params, gauss_params, nlv)
 
     assert np.all(ys)
+
+def test_check_iter():
+
+    # Note: generator case not tested
+
+    # Check that a number input becomes an iterable
+    out = _check_iter(12, 3)
+    assert isinstance(out, Iterable)
+    assert isinstance(out, repeat)
+
+    # Check that single list becomes repeat iterable
+    out = _check_iter([1, 1], 2)
+    assert isinstance(out, Iterable)
+    assert isinstance(out, repeat)
+
+    # Check that a list of lists, of right length stays list of list
+    out = _check_iter([[1, 1], [1, 1], [1, 1]], 3)
+    assert isinstance(out, Iterable)
+    assert isinstance(out, list)
+    assert isinstance(out[0], list)
+
+def test_check_flat():
+
+    # Check an empty list stays the same
+    assert _check_flat([]) == []
+
+    # Check an already flat list gets left the same
+    lst = [1, 2, 3, 4]
+    flat_lst = _check_flat(lst)
+    assert flat_lst == lst
+
+    # Check a nested list gets flattened
+    lst = [[1, 2], [3, 4]]
+    flat_lst = _check_flat(lst)
+    for el in flat_lst:
+        assert isinstance(el, int)
+    assert len(flat_lst) == 4
