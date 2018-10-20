@@ -1,6 +1,5 @@
 """Synthesis functions for generating model components and synthetic power spectra."""
 
-from random import choice
 from inspect import isgenerator
 from collections import namedtuple
 from itertools import chain, repeat
@@ -226,7 +225,8 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
     return xs, ys
 
 
-def gen_group_power_spectra(n_spectra, freq_range, background_params, gauss_params, nlvs=0.005, freq_res=0.5):
+def gen_group_power_spectra(n_spectra, freq_range, background_params,
+                            gauss_params, nlvs=0.005, freq_res=0.5):
     """Generate a group of synthetic power spectra.
 
     Parameters
@@ -402,7 +402,7 @@ def _check_iter(obj, length):
 
             #  Unless its a list of lists of the right length - in this case, leave as is
             #    This will leave it as a list of list that will iterate through each element
-            if not (isinstance(obj[0], list) and len(obj) != length):
+            if not (isinstance(obj[0], list) and len(obj) == length):
                 obj = repeat(obj)
 
         # If it's not a list
@@ -431,7 +431,7 @@ def _check_flat(lst):
     """
 
     # Note: flatten if list contains list(s), but skip if list is empty (which is valid)
-    if len(lst) !=0 and isinstance(lst[0], list):
+    if len(lst) != 0 and isinstance(lst[0], list):
         lst = list(chain(*lst))
 
     return lst
