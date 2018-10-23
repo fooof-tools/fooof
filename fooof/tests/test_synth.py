@@ -136,6 +136,16 @@ def test_gen_power_values():
 
     assert np.all(ys)
 
+def test_rotate_powerlaw():
+    # Not the best test right now, just checking that a change in slope of 0
+    # does nothing to a flat spectrum.
+    freqs = np.arange(500.)
+
+    psd_sim = np.ones_like(freqs)
+    psd_rot = rotate_powerlaw(psd_sim, freqs, delta_f=0.)
+
+    assert np.all(psd_rot==psd_sim)
+
 def test_check_iter():
 
     # Note: generator case not tested

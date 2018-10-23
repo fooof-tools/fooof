@@ -375,6 +375,50 @@ def gen_power_vals(xs, background_params, gauss_params, nlv):
 
     return ys
 
+def rotate_powerlaw(psd, freqs, delta_f, f_rotation=30):
+    """Change the power law exponent of a PSD about an axis frequency.
+
+    Parameters
+    ----------
+    psd : 1d array
+        Power spectrum to be rotated.
+    freqs : 1d array, Hz
+        Frequency axis of input PSD. Must be same length as psd.
+    delta_f : float
+        Change in power law exponent to be applied. Positive is counterclockwise
+        rotation (flatten), negative is clockwise rotation (steepen).
+    f_rotation : float, Hz, optional
+        Axis of rotation frequency, such that power at that frequency is unchanged
+        by the rotation. Only matters if not further normalizing signal variance.
+
+    Returns
+    -------
+    x : 1d array
+        Rotated psd.
+
+    """
+    if np.all(f_rotation<np.abs(freqs).min()) or np.all(f_rotation>np.abs(freqs).max()):
+        raise ValueError('Rotation frequency not within frequency range.')
+
+    # make the 1/f rotation mask
+    f_mask = np.zeros_like(freqs)
+    if freqs[0] == 0.:
+        # If starting freq is 0Hz, default power at 0Hz to old value because log
+        # will return inf. Use case occurs in simulating/manipulating time series.
+        f_mask[0] = 1.
+        f_mask[1:] = 10**(np.log10(np.abs(freqs[1:])) * (delta_f))
+    else:
+        # Otherwise, apply rotation to all frequencies.
+        f_mask = 10**(np.log10(np.abs(freqs)) * (delta_f))
+
+    # normalize power at rotation frequency
+    f_mask = f_mask / f_mask[np.where(freqs >= f_rotation)[0][0]]
+
+    # apply mask
+    return psd * f_mask
+
+
+
 ###################################################################################################
 ###################################################################################################
 
