@@ -146,6 +146,10 @@ def test_rotate_powerlaw():
 
     assert np.all(psd_rot==psd_sim)
 
+    psd_rot = rotate_powerlaw(psd_sim, freqs, delta_f=0., f_rotation=30.)
+
+    assert np.all(psd_rot==psd_sim)
+
 def test_check_iter():
 
     # Note: generator case not tested

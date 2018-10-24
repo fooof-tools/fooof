@@ -375,7 +375,7 @@ def gen_power_vals(xs, background_params, gauss_params, nlv):
 
     return ys
 
-def rotate_powerlaw(psd, freqs, delta_f, f_rotation=30):
+def rotate_powerlaw(psd, freqs, delta_f, f_rotation=None):
     """Change the power law exponent of a PSD about an axis frequency.
 
     Parameters
@@ -390,6 +390,7 @@ def rotate_powerlaw(psd, freqs, delta_f, f_rotation=30):
     f_rotation : float, Hz, optional
         Axis of rotation frequency, such that power at that frequency is unchanged
         by the rotation. Only matters if not further normalizing signal variance.
+        If None, the transform normalizes to power at 1Hz by defaults.
 
     Returns
     -------
@@ -397,9 +398,6 @@ def rotate_powerlaw(psd, freqs, delta_f, f_rotation=30):
         Rotated psd.
 
     """
-    if np.all(f_rotation<np.abs(freqs).min()) or np.all(f_rotation>np.abs(freqs).max()):
-        raise ValueError('Rotation frequency not within frequency range.')
-
     # make the 1/f rotation mask
     f_mask = np.zeros_like(freqs)
     if freqs[0] == 0.:
@@ -412,7 +410,11 @@ def rotate_powerlaw(psd, freqs, delta_f, f_rotation=30):
         f_mask = 10**(np.log10(np.abs(freqs)) * (delta_f))
 
     # normalize power at rotation frequency
-    f_mask = f_mask / f_mask[np.where(freqs >= f_rotation)[0][0]]
+    if f_rotation is not None:
+        if np.all(f_rotation<np.abs(freqs).min()) or np.all(f_rotation>np.abs(freqs).max()):
+            raise ValueError('Rotation frequency not within frequency range.')
+
+        f_mask = f_mask / f_mask[np.where(freqs >= f_rotation)[0][0]]
 
     # apply mask
     return psd * f_mask
