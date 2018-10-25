@@ -375,50 +375,49 @@ def gen_power_vals(xs, background_params, gauss_params, nlv):
 
     return ys
 
-def rotate_powerlaw(psd, freqs, delta_f, f_rotation=None):
-    """Change the power law exponent of a PSD about an axis frequency.
+def rotate_spectrum(freqs, power_spectrum, delta_f, f_rotation):
+    """Rotate a power spectrum about a frequency point, changing the power law exponent.
 
     Parameters
     ----------
-    psd : 1d array
-        Power spectrum to be rotated.
-    freqs : 1d array, Hz
-        Frequency axis of input PSD. Must be same length as psd.
+    freqs : 1d array
+        Frequency axis of input power spectrum, in Hz.
+    power_spectrum : 1d array
+        Power values of the spectrum that is to be rotated.
     delta_f : float
-        Change in power law exponent to be applied. Positive is counterclockwise
-        rotation (flatten), negative is clockwise rotation (steepen).
-    f_rotation : float, Hz, optional
-        Axis of rotation frequency, such that power at that frequency is unchanged
-        by the rotation. Only matters if not further normalizing signal variance.
-        If None, the transform normalizes to power at 1Hz by defaults.
+        Change in power law exponent to be applied.
+            Positive is counterclockwise rotation (flatten)
+            Negative is clockwise rotation (steepen).
+    f_rotation : float
+        Frequency, in Hz, at which to do the rotation, such that power at that frequency is unchanged.
 
     Returns
     -------
-    x : 1d array
+    1d array
         Rotated psd.
 
     """
-    # make the 1/f rotation mask
+
+    # Check that the requested frequency rotation value is within the given range
+    if f_rotation < freqs.min() or f_rotation > freqs.max():
+        raise ValueError('Rotation frequency not within frequency range.')
+
     f_mask = np.zeros_like(freqs)
+
+
+    # NOTE: Update this to use data checking from fooof.fit
     if freqs[0] == 0.:
         # If starting freq is 0Hz, default power at 0Hz to old value because log
-        # will return inf. Use case occurs in simulating/manipulating time series.
+        #   will return inf. Use case occurs in simulating/manipulating time series.
         f_mask[0] = 1.
         f_mask[1:] = 10**(np.log10(np.abs(freqs[1:])) * (delta_f))
     else:
         # Otherwise, apply rotation to all frequencies.
         f_mask = 10**(np.log10(np.abs(freqs)) * (delta_f))
 
-    # normalize power at rotation frequency
-    if f_rotation is not None:
-        if np.all(f_rotation<np.abs(freqs).min()) or np.all(f_rotation>np.abs(freqs).max()):
-            raise ValueError('Rotation frequency not within frequency range.')
+    f_mask = f_mask / f_mask[np.where(freqs >= f_rotation)[0][0]]
 
-        f_mask = f_mask / f_mask[np.where(freqs >= f_rotation)[0][0]]
-
-    # apply mask
-    return psd * f_mask
-
+    return f_mask * power_spectrum
 
 
 ###################################################################################################
