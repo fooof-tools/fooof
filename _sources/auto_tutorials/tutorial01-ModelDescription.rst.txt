@@ -158,15 +158,6 @@ Options:
 Default='fixed'
 
 
-
-.. code-block:: python
-
-
-    # <hr>
-    # <div class="alert alert-info">
-    # To continue with the tutorial, to a hands-on introduction to the codebase, go [here](02-FOOOF.ipynb).
-    # </div>
-
 **Total running time of the script:** ( 0 minutes  0.000 seconds)
 
 

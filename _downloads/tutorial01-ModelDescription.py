@@ -146,8 +146,3 @@ Tutorial 01 - Model Description
 #     - 'knee' : fits the full exponential equation, including the 'knee' parameter. (experimental)
 #
 # Default='fixed'
-
-# <hr>
-# <div class="alert alert-info">
-# To continue with the tutorial, to a hands-on introduction to the codebase, go [here](02-FOOOF.ipynb).
-# </div>
