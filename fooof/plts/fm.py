@@ -39,10 +39,10 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
         fig, ax = plt.subplots(figsize=(12, 10))
 
     # Create the plot, adding data as is available
-    if np.all(fm.power_spectrum):
+    if np.any(fm.power_spectrum):
         plot_spectrum(fm.freqs, fm.power_spectrum, plt_log, ax,
                       color='k', linewidth=1.25, label='Original Spectrum')
-    if np.all(fm.fooofed_spectrum_):
+    if np.any(fm.fooofed_spectrum_):
         plot_spectrum(fm.freqs, fm.fooofed_spectrum_, plt_log, ax,
                       color='r', linewidth=3.0, alpha=0.5, label='Full Model Fit')
         plot_spectrum(fm.freqs, fm._bg_fit, plt_log, ax,
