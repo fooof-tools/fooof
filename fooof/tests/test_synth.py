@@ -55,6 +55,8 @@ def test_stepper():
 
     assert Stepper(8,12,.1)
 
+    # TODO: add more tests of Stepper
+
 
 def test_param_sampler():
 
@@ -135,6 +137,20 @@ def test_gen_power_values():
     ys = gen_power_vals(xs, bg_params, gauss_params, nlv)
 
     assert np.all(ys)
+
+def test_rotate_spectrum():
+
+    # Create a spectrum to use for test rotations
+    freqs, spectrum = gen_power_spectrum([1, 100], [1, 1], [])
+
+    # Check that rotation transforms the power spectrum
+    rotated_spectrum = rotate_spectrum(freqs, spectrum, delta_f=0.5, f_rotation=25.)
+    assert not np.all(rotated_spectrum == spectrum)
+
+    # Check that 0 rotation returns the same spectrum
+    rotated_spectrum = rotate_spectrum(freqs, spectrum, delta_f=0., f_rotation=25.)
+    assert np.all(rotated_spectrum == spectrum)
+
 
 def test_check_iter():
 
