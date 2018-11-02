@@ -105,7 +105,7 @@ class FOOOF(object):
     freq_res : float
         Frequency resolution of the power spectrum.
     fooofed_spectrum_ : 1d array
-        The full model fit of the power spectrum: background and peaks across freq_range.
+        The full model fit of the power spectrum, including background & peaks.
     background_params_ : 1d array
         Parameters that define the background fit. As [Intercept, (Knee), Slope].
                 The knee parameter is only included if background fit with knee.
@@ -123,6 +123,8 @@ class FOOOF(object):
       procedure, or a median filter smoothing on the FFT output before running FOOOF.
     - Where possible and appropriate, use longer time segments for power spectrum calculation to
       get smoother power spectra, as this will give better FOOOF fits.
+    - Internally power values, including 'power_spectrum' and 'fooofed_spectrum_' are
+      stored as logged power (log10), as this is what the model actually fits it.
     """
 
     def __init__(self, peak_width_limits=[0.5, 12.0], max_n_peaks=np.inf, min_peak_amplitude=0.0,
