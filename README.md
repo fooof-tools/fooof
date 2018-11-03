@@ -2,11 +2,11 @@
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![Latest Version](https://img.shields.io/pypi/v/fooof.svg)](https://pypi.python.org/pypi/fooof/)
-[![Build Status](https://travis-ci.org/fooof-tools/fooof.svg)](https://travis-ci.org/voytekresearch/fooof)
-[![codecov](https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg)](https://codecov.io/gh/voytekresearch/fooof)
+[![Build Status](https://travis-ci.org/fooof-tools/fooof.svg)](https://travis-ci.org/fooof-tools/fooof)
+[![codecov](https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg)](https://codecov.io/gh/fooof-tools/fooof)
 [![License](https://img.shields.io/pypi/l/fooof.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/fooof.svg)](https://pypi.python.org/pypi/fooof/)
-[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial)
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/fooof-tools/fooof/master?filepath=%2Ftutorial)
 
 FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
 
@@ -32,7 +32,7 @@ Link: https://www.biorxiv.org/content/early/2018/04/11/299859
 
 ## Try it out with Binder
 
-If you want to try it out, click [here](https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial) to jump straight into a live version of the tutorials.
+If you want to try it out, click [here](https://mybinder.org/v2/gh/fooof-tools/fooof/master?filepath=%2Ftutorial) to jump straight into a live version of the tutorials.
 
 This link uses [Binder](https://mybinder.org) to launch a JupyterHub on the cloud for you.
 
@@ -59,7 +59,7 @@ Pytest is only required to run the test suite.
 
 ## Matlab Support
 
-FOOOF is implemented in Python, but there is also Matlab wrapper, as well as other support utilities for using FOOOF in a Matlab pipeline, all of which is available in [fooof_mat](http://github.com/voytekresearch/fooof_mat).
+FOOOF is implemented in Python, but there is also Matlab wrapper, as well as other support utilities for using FOOOF in a Matlab pipeline, all of which is available in [fooof_mat](http://github.com/fooof-tools/fooof_mat).
 
 ## Install
 
@@ -73,7 +73,7 @@ Note that this will install only the core (non-optional) fooof requirements.
 
 To get the lastest, development version, you can get the code using git:
 
-`$ git clone https://github.com/voytekresearch/fooof`
+`$ git clone https://github.com/fooof-tools/fooof`
 
 To then install the development version (without making changes to it), move into the directory you cloned and run:
 
