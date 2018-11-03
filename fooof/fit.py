@@ -108,7 +108,7 @@ class FOOOF(object):
         The full model fit of the power spectrum, including background & peaks.
     background_params_ : 1d array
         Parameters that define the background fit. As [Intercept, (Knee), Slope].
-                The knee parameter is only included if background fit with knee.
+        The knee parameter is only included if background fit with knee.
     peak_params_ : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
     r_squared_ : float
@@ -118,9 +118,11 @@ class FOOOF(object):
 
     Notes
     -----
-    Input power spectra should be smooth - overly noisy power spectra may lead to bad fits.
+    Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
+
     - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
       procedure, or a median filter smoothing on the FFT output before running FOOOF.
+
     - Where possible and appropriate, use longer time segments for power spectrum calculation to
       get smoother power spectra, as this will give better FOOOF fits.
     - Internally power values, including 'power_spectrum' and 'fooofed_spectrum_' are
