@@ -6,9 +6,12 @@
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
 
+import os
+from os.path import dirname as up
+
 import sphinx_gallery
-#import fooof
-#from numpydoc import numpydoc, docscrape  # noqa
+import sphinx_bootstrap_theme
+from sphinx_gallery.sorting import FileNameSortKey
 
 # -- Path setup --------------------------------------------------------------
 
@@ -24,12 +27,15 @@ import sphinx_gallery
 # -- Project information -----------------------------------------------------
 
 project = 'fooof'
-copyright = '2018, Thomas Donoghue'
+copyright = '2018 - VoytekLab'
 author = 'Thomas Donoghue'
 
+# Get the current version number from inside the module
+with open(os.path.join(up(up(__file__)), 'fooof', 'version.py')) as vf:
+    exec(vf.read())
+
 # The short X.Y version
-version = '0.1.3'
-#version = fooof.__version__
+version = __version__
 # The full version, including alpha/beta/rc tags
 release = version
 
@@ -41,32 +47,29 @@ release = version
 # needs_sphinx = '1.0'
 
 # Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
+# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
+# Note: uses extra dependency 'm2r' to convert markdown README to an rst file
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.doctest',
     'sphinx.ext.coverage',
     'sphinx.ext.githubpages',
+    'sphinx.ext.mathjax',
     'sphinx_gallery.gen_gallery',
-    'sphinx.ext.napoleon'
+    'sphinx.ext.napoleon',
+    'm2r'
 ]
-
-    #'numpydoc'
 
 # generate autosummary even if no references
 autosummary_generate = True
-
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
-#
-# source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = '.rst' # ['.rst', '.md']
 
 # The master toctree document.
 master_doc = 'index'
@@ -92,13 +95,28 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+#html_theme = 'alabaster'
+#html_theme = 'classic'
+#html_theme = 'haiku'
+html_theme = 'bootstrap'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    'navbar_sidebarrel': False,
+    'navbar_links': [
+        ("API", "api"),
+        ("FAQ", "faq"),
+        ("Tutorial", "auto_tutorials/index"),
+        ("Examples", "auto_examples/index"),
+        ("GitHub", "https://github.com/voytekresearch/fooof", True)
+    ],
+    'bootswatch_theme': "flatly"
+}
+
+# Nice other theme options: sandstone
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -116,11 +134,18 @@ html_static_path = ['_static']
 # html_sidebars = {}
 
 
+####
+
+# def setup(app):
+#     app.add_stylesheet("my-styles.css") # also can be a full URL
+#     # app.add_stylesheet("ANOTHER.css")
+#     # app.add_stylesheet("AND_ANOTHER.css")
+
+
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'fooofdoc'
-
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -176,8 +201,9 @@ texinfo_documents = [
 # -- Extension configuration -------------------------------------------------
 
 sphinx_gallery_conf = {
-    'examples_dirs': '../examples',
-    'gallery_dirs': 'auto_examples',
+    'examples_dirs': ['../examples', '../tutorials'],
+    'gallery_dirs': ['auto_examples', 'auto_tutorials'],
+    'within_subsection_order': FileNameSortKey,
     'backreferences_dir': 'generated',
     'reference_url': {
         'fooof': None,

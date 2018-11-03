@@ -37,7 +37,7 @@ def get_band_peak_group(peak_params, band_def, n_fits):
     for ind in range(n_fits):
 
         # Extacts an array per FOOOF fit, and extracts band peaks from it
-        band_peaks[ind, :] = get_band_peak(peak_params[[peak_params[:, -1] == ind]][:, 0:3],
+        band_peaks[ind, :] = get_band_peak(peak_params[tuple([peak_params[:, -1] == ind])][:, 0:3],
                                            band_def=band_def, ret_one=True)
 
     return band_peaks

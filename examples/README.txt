@@ -1,8 +1,10 @@
-.. _general_examples:
+.. _examples:
 
-Examples Gallery
-================
+Examples
+========
 
 .. contents:: Contents
    :local:
    :depth: 3
+
+

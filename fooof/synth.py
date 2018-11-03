@@ -1,8 +1,8 @@
 """Synthesis functions for generating model components and synthetic power spectra."""
 
-from random import choice
-from itertools import chain, repeat
+from inspect import isgenerator
 from collections import namedtuple
+from itertools import chain, repeat
 
 import numpy as np
 
@@ -13,6 +13,116 @@ from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
 ###################################################################################################
 
 SynParams = namedtuple('SynParams', ['background_params', 'gaussian_params', 'nlv'])
+
+class Stepper():
+    """Object to generate next parameter value.
+
+    Parameters
+    ----------
+    start : float
+        Start value to iterate from.
+    stop : float
+        End value to iterate to.
+    step : float
+        Incremet of each iteration.
+
+    Attributes
+    ----------
+    len : int
+        Length of generator range.
+    data : iterator
+        Set of specified parameters to iterate across.
+    """
+
+    def __init__(self, start, stop, step):
+        """Initializes generator."""
+
+        self._check_values(start, stop, step)
+
+        self.start = start
+        self.stop = stop
+        self.step = step
+        self.len = int((stop-start)/step)
+        self.data = iter(np.arange(start, stop, step))
+
+
+    def __len__(self):
+        """Returns length of generator."""
+
+        return self.len
+
+
+    def __next__(self):
+        """Generates next element in parameter range."""
+
+        return round(next(self.data), 4)
+
+
+    def __iter__(self):
+        """Defines Stepper to be iterator, across the data attribute."""
+
+        return self.data
+
+
+    @staticmethod
+    def _check_values(start, stop, step):
+        """Checks if parameters are valid."""
+
+        if any(i < 0 for i in [start, stop, step]):
+            raise ValueError("'start', 'stop', and 'step' should all be positive values")
+
+        if not start < stop:
+            raise ValueError("'start' should be less than stop")
+
+        if not step < (stop - start):
+            raise ValueError("'step' is too large given 'start' and 'stop' values")
+
+
+def param_iter(params):
+    """Generates parameters to iterate over.
+
+    Parameters
+    ----------
+    params : list of floats and Stepper
+        Parameters over which to iterate, where:
+            Stepper object defines iterated parameter and its range and,
+            floats are other parameters that will be held constant.
+
+    Yields
+    ------
+    list of floats
+        Next generated list of parameters.
+
+    Example
+    -------
+    Iterates over center frequency values from 8 to 12 in increments of .25.
+    >>> osc = param_iter([Stepper(8, 12, .25), 1, 1])
+    """
+
+    # If input is a list of lists, check each element, and flatten if needed
+    if isinstance(params[0], list):
+        params = [item for sublist in params for item in sublist]
+
+    # Finds where Stepper object is. If there is more than one, raise an error
+    iter_ind = 0
+    num_iters = 0
+    for cur_ind, param in enumerate(params):
+        if isinstance(param, Stepper):
+            num_iters += 1
+            iter_ind = cur_ind
+
+        if num_iters > 1:
+            raise ValueError("Iteration is only supported on one parameter")
+
+    # Generate and yield next set of parameters
+    gen = params[iter_ind]
+    while True:
+        try:
+            params[iter_ind] = next(gen)
+            yield params
+        except StopIteration:
+            return
+
 
 def param_sampler(params, probs=None):
     """Make a generator to sample randomly from possible params.
@@ -36,7 +146,7 @@ def param_sampler(params, probs=None):
         params = [_check_flat(lst) for lst in params]
 
     # In order to use numpy's choice, with probabilities, choices are made on indices
-    #  This is because the params can be a messy-sized list, that numpy choice does not like
+    # This is because the params can be a messy-sized list, that numpy choice does not like
     inds = np.array(range(len(params)))
 
     # While loop allows the generator to be called an arbitrary number of times.
@@ -115,7 +225,8 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
     return xs, ys
 
 
-def gen_group_power_spectra(n_spectra, freq_range, background_params, gauss_params, nlvs=0.005, freq_res=0.5):
+def gen_group_power_spectra(n_spectra, freq_range, background_params,
+                            gauss_params, nlvs=0.005, freq_res=0.5):
     """Generate a group of synthetic power spectra.
 
     Parameters
@@ -125,7 +236,7 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params, gauss_para
     freq_range : list of [float, float]
         Minimum and maximum values of the desired frequency vector.
     background_params : list of float or generator
-        Parameter for the background of the power spectra.
+        Parameters for the background of the power spectra.
     gauss_params : list of float or generator
         Parameters for the peaks of the power spectra.
             Length of n_peaks * 3.
@@ -184,7 +295,7 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params, gauss_para
     # Synthesize power spectra
     for ind, bgp, gp, nlv in zip(range(n_spectra), background_params, gauss_params, nlvs):
 
-        syn_params[ind] = SynParams(bgp, sorted(group_three(gp)), nlv)
+        syn_params[ind] = SynParams(bgp.copy(), sorted(group_three(gp)), nlv)
         ys[ind, :] = gen_power_vals(xs, bgp, gp, nlv)
 
     return xs, ys, syn_params
@@ -264,6 +375,51 @@ def gen_power_vals(xs, background_params, gauss_params, nlv):
 
     return ys
 
+def rotate_spectrum(freqs, power_spectrum, delta_f, f_rotation):
+    """Rotate a power spectrum about a frequency point, changing the power law exponent.
+
+    Parameters
+    ----------
+    freqs : 1d array
+        Frequency axis of input power spectrum, in Hz.
+    power_spectrum : 1d array
+        Power values of the spectrum that is to be rotated.
+    delta_f : float
+        Change in power law exponent to be applied.
+            Positive is counterclockwise rotation (flatten)
+            Negative is clockwise rotation (steepen).
+    f_rotation : float
+        Frequency, in Hz, at which to do the rotation, such that power at that frequency is unchanged.
+
+    Returns
+    -------
+    1d array
+        Rotated psd.
+
+    """
+
+    # Check that the requested frequency rotation value is within the given range
+    if f_rotation < freqs.min() or f_rotation > freqs.max():
+        raise ValueError('Rotation frequency not within frequency range.')
+
+    f_mask = np.zeros_like(freqs)
+
+
+    # NOTE: Update this to use data checking from fooof.fit
+    if freqs[0] == 0.:
+        # If starting freq is 0Hz, default power at 0Hz to old value because log
+        #   will return inf. Use case occurs in simulating/manipulating time series.
+        f_mask[0] = 1.
+        f_mask[1:] = 10**(np.log10(np.abs(freqs[1:])) * (delta_f))
+    else:
+        # Otherwise, apply rotation to all frequencies.
+        f_mask = 10**(np.log10(np.abs(freqs)) * (delta_f))
+
+    f_mask = f_mask / f_mask[np.where(freqs >= f_rotation)[0][0]]
+
+    return f_mask * power_spectrum
+
+
 ###################################################################################################
 ###################################################################################################
 
@@ -283,21 +439,19 @@ def _check_iter(obj, length):
         Iterable object.
     """
 
-    # If object is a generator, leave as is
-    try:
-        next(obj)
-
-    # If next fails, it's not a generator
-    except TypeError:
+    # If object is not a generator, update to become one - otherwise, get's left as is
+    if not isgenerator(obj):
 
         # If it's a list, make it a repeat generator
-        #  Unless it's the right length, then it will iterate through each element
-        try:
-            if len(obj) != length:
+        if isinstance(obj, list):
+
+            #  Unless its a list of lists of the right length - in this case, leave as is
+            #    This will leave it as a list of list that will iterate through each element
+            if not (isinstance(obj[0], list) and len(obj) == length):
                 obj = repeat(obj)
 
-        # If it is not a list (for example, float), make it a repeat generator
-        except:
+        # If it's not a list
+        else:
             obj = repeat(obj)
 
     return obj
@@ -315,10 +469,14 @@ def _check_flat(lst):
     -------
     list
         A '1D' list, which is a flattened version of the input.
+
+    Notes
+    -----
+    This function only deals with one level of nesting.
     """
 
     # Note: flatten if list contains list(s), but skip if list is empty (which is valid)
-    if len(lst) !=0 and isinstance(lst[0], list):
+    if len(lst) != 0 and isinstance(lst[0], list):
         lst = list(chain(*lst))
 
     return lst
