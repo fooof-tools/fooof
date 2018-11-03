@@ -17,6 +17,7 @@ from fooof.core.reports import save_report_fg
 from fooof.core.strings import gen_results_str_fg
 from fooof.core.io import save_fg, load_jsonlines
 from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class, get_data_indices
+from fooof.core.modutils import safe_import
 
 ###################################################################################################
 ###################################################################################################
@@ -84,7 +85,8 @@ class FOOOFGroup(FOOOF):
 
         Notes
         -----
-        If called on an object with existing data / results they will be cleared by this method call.
+        - If called on an object with existing data / results.
+            they will be cleared by this method call.
         """
 
         # If any data is already present, then clear data & results
@@ -149,7 +151,7 @@ class FOOOFGroup(FOOOF):
         # Run linearly
         if n_jobs == 1:
             self._reset_group_results(len(self.power_spectra))
-            for ind, power_spectrum in enumerate(self.power_spectra):
+            for ind, power_spectrum in _progress(enumerate(self.power_spectra), self.verbose, len(self)):
                 self._fit(power_spectrum=power_spectrum)
                 self.group_results[ind] = self._get_results()
 
@@ -157,9 +159,10 @@ class FOOOFGroup(FOOOF):
         else:
             self._reset_group_results()
             n_jobs = cpu_count() if n_jobs == -1 else n_jobs
-            pool = Pool(processes=n_jobs)
-            self.group_results = pool.map(partial(_par_fit, fg=self), self.power_spectra)
-            pool.close()
+            with Pool(processes=n_jobs) as pool:
+                self.group_results = list(_progress(pool.imap(partial(_par_fit, fg=self),
+                                                              self.power_spectra),
+                                                    self.verbose, len(self.power_spectra)))
 
         self._reset_data_results(clear_freqs=False)
 
@@ -371,4 +374,66 @@ def _par_fit(power_spectrum, fg):
     """Helper function for running in parallel."""
 
     fg._fit(power_spectrum=power_spectrum)
+
     return fg._get_results()
+
+
+def _progress(iterable, verbose, n_to_run):
+    """Add a progress bar to an iterable to be processed.
+
+    Parameters
+    ----------
+    iterable : list or iterable
+        Iterable object to potentially apply progress tracking to.
+    verbose : 'tqdm', 'tqdm_notebook' or boolean
+        Which type of verbosity to do.
+    n_to_run : int
+        Number of jobs to complete.
+
+    Returns
+    -------
+    pbar : iterable or tqdm object
+        Iterable object, with TQDM progress functionality, if requested.
+
+    Notes
+    -----
+    - The explicit n_to_run input is required as tqdm requires this in the parallel case.
+    - The tqdm object that is potentially returned acts the same as the underlying iterable,
+        with the addition of printing out progress everytime items are requested.
+    """
+
+    # Check verbose specifier is okay
+    tqdm_options = ['tqdm', 'tqdm_notebook']
+    if not isinstance(verbose, bool) and not verbose in tqdm_options:
+        #print('Verbose option not understood. Proceeding without any.')
+        raise ValueError('Verbose option not understood.')
+
+    if verbose:
+
+        # Progress bar options, using tqdm
+        if verbose in tqdm_options:
+
+            # Get tqdm, and set which approach to use from tqdm
+            #   Approch to use from tqdm should be what's specified in 'verbose'
+            tqdm_mod = safe_import('tqdm')
+            tqdm_type = verbose
+
+            # Pulls out the specific tqdm approach to be used from the tqdm module, if available
+            tqdm = getattr(tqdm_mod, tqdm_type) if tqdm_mod else None
+
+            if not tqdm:
+                print('tqdm requested but is not installed. Proceeding without progress bar.')
+                pbar = iterable
+            else:
+                pbar = tqdm(iterable, desc='Running FOOOFGroup:', total=n_to_run,
+                            dynamic_ncols=True)
+
+        # If 'verbose' was just 'True', print out a marker of what is being run (no progress bar)
+        else:
+            print('Running FOOOFGroup across {} power spectra.'.format(n_to_run))
+            pbar = iterable
+
+    else:
+        pbar = iterable
+
+    return pbar

@@ -74,6 +74,6 @@ setup(
     extras_require = {
         'plot'    : ['matplotlib'],
         'tests'   : ['pytest'],
-        'all'     : ['matplotlib', 'pytest']
+        'all'     : ['matplotlib', 'tqdm', 'pytest']
     }
 )
