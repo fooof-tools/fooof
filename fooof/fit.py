@@ -882,6 +882,13 @@ class FOOOF(object):
         if freqs.shape[-1] != power_spectrum.shape[-1]:
             raise ValueError('Inputs are not consistent size.')
 
+        # Force data to be dtype of float64.
+        #   If they end up as float32, or less, scipy curve_fit fails (sometimes implicitly)
+        if freqs.dtype != 'float64':
+            freqs = freqs.astype('float64')
+        if power_spectrum.dtype != 'float64':
+            power_spectrum = power_spectrum.astype('float64')
+
         # Check frequency range, trim the power_spectrum range if requested
         if freq_range:
             freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, freq_range)
