@@ -26,7 +26,7 @@ from fooof.core.modutils import safe_import
 #  This section will be appended to the FOOOF Attributes section when copying over
 ATT_ADD = """
     power_spectra : 2d array
-        Input matrix of power spectra values, as [n_power_spectra, n_freqs].
+        Input matrix of power spectra values, in linear space, as [n_power_spectra, n_freqs].
     group_results : list of FOOOFResults
         Results of FOOOF model fit for each power spectrum."""
 
@@ -298,7 +298,7 @@ class FOOOFGroup(FOOOF):
         #  The power spectrum is inverted back to linear, as it's re-logged when added to FOOOF
         if np.any(self.power_spectra):
             fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
-        # If no psd data available, copy over frequency information
+        # If no power spectrum data available, copy over frequency information
         else:
             fm._add_from_dict({'freq_range': self.freq_range, 'freq_res': self.freq_res})
 
@@ -349,7 +349,7 @@ def fit_fooof_group_3d(fg, freqs, psds, freq_range=None, n_jobs=1):
     freqs : 1d array
         Frequency values
     psds : 3d array
-        Power spectrum values, as [n_conditions, n_power_spectra, n_freqs].
+        Power spectrum values, in linear space, as [n_conditions, n_power_spectra, n_freqs].
     freq_range : list of [float, float], optional
         Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
     n_jobs : int, optional

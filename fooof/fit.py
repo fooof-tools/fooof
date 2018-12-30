@@ -99,16 +99,17 @@ class FOOOF(object):
     freqs : 1d array
         Frequency values for the power spectrum.
     power_spectrum : 1d array
-        Power spectrum values.
+        Power values, stored internally in log10 scale.
     freq_range : list of [float, float]
         Frequency range of the power spectrum, as [lowest_freq, highest_freq].
     freq_res : float
         Frequency resolution of the power spectrum.
     fooofed_spectrum_ : 1d array
         The full model fit of the power spectrum, including background & peaks.
+            Stored internally in log10 scale.
     background_params_ : 1d array
         Parameters that define the background fit. As [Intercept, (Knee), Slope].
-        The knee parameter is only included if background fit with knee.
+            The knee parameter is only included if background fit with knee.
     peak_params_ : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
     r_squared_ : float
@@ -120,14 +121,13 @@ class FOOOF(object):
     -----
     - Commonly used abbreviations used in FOOOF:
         - CF: Center Frequencies, Amp: Amplitude Values, BW: Bandwidths
+    - Input power spectra must be provided in linear scale, but internally they are in log10 scale.
+        - This is because logged values are what the model actually fits.
     - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
         - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
         procedure, or a median filter smoothing on the FFT output before running FOOOF.
     - Where possible and appropriate, use longer time segments for power spectrum calculation to
       get smoother power spectra, as this will give better FOOOF fits.
-    - Internally power values, including 'power_spectrum' and 'fooofed_spectrum_' are
-      stored as logged power values (log10).
-        - This is because logged values are what the model actually fits.
     """
 
     def __init__(self, peak_width_limits=[0.5, 12.0], max_n_peaks=np.inf, min_peak_amplitude=0.0,
@@ -241,7 +241,7 @@ class FOOOF(object):
         freqs : 1d array
             Frequency values for the power spectrum, in linear space.
         power_spectrum : 1d array
-            Power spectrum values, in linear space.
+            Power spectrum values, which must be input in linear space.
         freq_range : list of [float, float], optional
             Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
 
@@ -288,7 +288,7 @@ class FOOOF(object):
         freqs : 1d array, optional
             Frequency values for the power spectrum.
         power_spectrum : 1d array, optional
-            Power spectral density values.
+            Power values, which must be input in linear space.
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
         plt_log : boolean, optional
@@ -312,7 +312,7 @@ class FOOOF(object):
         freqs : 1d array, optional
             Frequency values for the power spectrum, in linear space.
         power_spectrum : 1d array, optional
-            Power spectrum values, in linear space.
+            Power values, which must be input in linear space.
         freq_range : list of [float, float], optional
             Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
 
@@ -517,7 +517,7 @@ class FOOOF(object):
         freqs : 1d array
             Frequency values for the power_spectrum, in linear scale.
         power_spectrum : 1d array
-            Power spectrum values, in log10 scale.
+            Power values, in log10 scale.
 
         Returns
         -------
@@ -551,7 +551,7 @@ class FOOOF(object):
         freqs : 1d array
             Frequency values for the power spectrum, in linear scale.
         power_spectrum : 1d array
-            Power spectrum values, in log10 scale.
+            Power values, in log10 scale.
 
         Returns
         -------
@@ -851,7 +851,8 @@ class FOOOF(object):
         freqs : 1d array
             Frequency values for the power_spectrum, in linear space.
         power_spectrum : 1d or 2d array
-            Power spectrum values, in linear space. 1d vector, or 2d as [n_power_spectra, n_freqs].
+            Power values, which must be input in linear space.
+                1d vector, or 2d as [n_power_spectra, n_freqs].
         freq_range : list of [float, float]
             Frequency range to restrict power spectrum to. If None, keeps the entire range.
         spectra_dim : int, optional default: 1
@@ -864,7 +865,8 @@ class FOOOF(object):
         freqs : 1d array
             Frequency values for the power_spectrum, in linear space.
         power_spectrum : 1d or 2d array
-            Power spectrum values, in linear space. 1d vector, or 2d as [n_power_specta, n_freqs].
+            Power spectrum values, in log10 scale.
+                1d vector, or 2d as [n_power_specta, n_freqs].
         freq_range : list of [float, float]
             Minimum and maximum values of the frequency vector.
         freq_res : float
