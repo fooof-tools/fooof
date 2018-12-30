@@ -389,7 +389,7 @@ def rotate_spectrum(freqs, power_spectrum, delta_f, f_rotation):
 
     Returns
     -------
-    1d array
+    rotated_spectrum : 1d array
         Rotated power spectrum.
     """
 
@@ -399,20 +399,17 @@ def rotate_spectrum(freqs, power_spectrum, delta_f, f_rotation):
 
     f_mask = np.zeros_like(freqs)
 
-    # NOTE: Update this to use data checking from fooof.fit
+    f_mask = 10**(np.log10(np.abs(freqs)) * (delta_f))
+
+    # If starting freq is 0Hz, default power at 0Hz to keep same value because log will return inf.
     if freqs[0] == 0.:
-        # If starting freq is 0Hz, default power at 0Hz to old value because log
-        #   will return inf. Use case occurs in simulating/manipulating time series.
         f_mask[0] = 1.
-        f_mask[1:] = 10**(np.log10(np.abs(freqs[1:])) * (delta_f))
-    else:
-        # Otherwise, apply rotation to all frequencies.
-        f_mask = 10**(np.log10(np.abs(freqs)) * (delta_f))
 
     f_mask = f_mask / f_mask[np.where(freqs >= f_rotation)[0][0]]
 
-    return f_mask * power_spectrum
+    rotated_spectrum = f_mask * power_spectrum
 
+    return rotated_spectrum
 
 ###################################################################################################
 ###################################################################################################
