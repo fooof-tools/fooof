@@ -437,18 +437,19 @@ def _check_iter(obj, length):
     #   Otherwise (if the object already is a generator) then it gets left as it is
     if not isgenerator(obj):
 
-        # If it's list, make it a repeat generator
         if isinstance(obj, list):
 
-            # Check that it's not an empty list
-            #   If it is, this will leave the obj as an empty list
-            if len(obj) > 0:
+            # Check if it's an empty list, if so make it a repeat generator of empty lists
+            if len(obj) == 0:
+                obj = repeat(obj)
 
-                # If obj is a list of lists of the right length, then we will leave it as is:
-                #    (as a list of list that will iterate through each element
-                # If it is not, then turned into a repeat object
-                if not (isinstance(obj[0], list) and len(obj) == length):
-                    obj = repeat(obj)
+            # If obj is a list of lists of the right length, then we will leave it as is:
+            #   as a list of list that will iterate through each element
+            # If it is not, then it's turned into a repeat generator
+            # Note: checks that it's a list to not have an implicit error
+            #   when it's a list of numbers, that happens to be same length as n_spectra
+            elif not (isinstance(obj[0], list) and len(obj) == length):
+                obj = repeat(obj)
 
         # If it's not a list, make it a repeat object (repeat int/float)
         else:
