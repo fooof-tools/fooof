@@ -99,6 +99,17 @@ def test_gen_group_power_spectra():
     assert np.all(ys)
     assert ys.ndim == n_spectra
 
+def test_gen_group_power_spectra_empty_gauss():
+
+    n_spectra = 2
+
+    # Test the case in which gaussian params are an empty list
+    xs, ys, params = gen_group_power_spectra(2, [3, 50], [1, 1], [])
+
+    assert np.all(xs)
+    assert np.all(ys)
+    assert ys.ndim == n_spectra
+
 def test_gen_background():
 
     xs = gen_freqs([3, 50], 0.5)
