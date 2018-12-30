@@ -15,7 +15,7 @@ from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
 SynParams = namedtuple('SynParams', ['background_params', 'gaussian_params', 'nlv'])
 
 class Stepper():
-    """Object to generate next parameter value.
+    """Object for stepping across parameter values.
 
     Parameters
     ----------
@@ -35,7 +35,6 @@ class Stepper():
     """
 
     def __init__(self, start, stop, step):
-        """Initializes generator."""
 
         self._check_values(start, stop, step)
 
@@ -47,26 +46,23 @@ class Stepper():
 
 
     def __len__(self):
-        """Returns length of generator."""
 
         return self.len
 
 
     def __next__(self):
-        """Generates next element in parameter range."""
 
         return round(next(self.data), 4)
 
 
     def __iter__(self):
-        """Defines Stepper to be iterator, across the data attribute."""
 
         return self.data
 
 
     @staticmethod
     def _check_values(start, stop, step):
-        """Checks if parameters are valid."""
+        """Checks if provided values are valid for use."""
 
         if any(i < 0 for i in [start, stop, step]):
             raise ValueError("'start', 'stop', and 'step' should all be positive values")
@@ -125,7 +121,7 @@ def param_iter(params):
 
 
 def param_sampler(params, probs=None):
-    """Make a generator to sample randomly from possible params.
+    """Makes a generator to sample randomly from possible parameters.
 
     Parameters
     ----------
@@ -250,7 +246,7 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params,
     xs : 1d array
         Frequency values (linear).
     ys : 2d array
-        Matrix of power values (linear).
+        Matrix of power values (linear), as [n_power_spectra, n_freqs].
     syn_params : list of SynParams
         Definitions of parameters used for each spectrum. Has length of n_spectra.
 
@@ -269,7 +265,6 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params,
     Gaussian Parameters:
         - Each gaussian description is a set of three values:
             - mean (CF), amplitude (Amp), and std (BW)
-
 
     Examples
     --------
@@ -375,6 +370,7 @@ def gen_power_vals(xs, background_params, gauss_params, nlv):
 
     return ys
 
+
 def rotate_spectrum(freqs, power_spectrum, delta_f, f_rotation):
     """Rotate a power spectrum about a frequency point, changing the power law exponent.
 
@@ -394,8 +390,7 @@ def rotate_spectrum(freqs, power_spectrum, delta_f, f_rotation):
     Returns
     -------
     1d array
-        Rotated psd.
-
+        Rotated power spectrum.
     """
 
     # Check that the requested frequency rotation value is within the given range
@@ -403,7 +398,6 @@ def rotate_spectrum(freqs, power_spectrum, delta_f, f_rotation):
         raise ValueError('Rotation frequency not within frequency range.')
 
     f_mask = np.zeros_like(freqs)
-
 
     # NOTE: Update this to use data checking from fooof.fit
     if freqs[0] == 0.:

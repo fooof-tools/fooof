@@ -101,6 +101,7 @@ def compare_settings(lst):
     # If no settings fail comparison, return that objects have consistent settings
     return True
 
+
 def compare_data_info(lst):
     """Compare the data information between FOOOF and/or FOOOFGroup objects.
 

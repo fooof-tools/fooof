@@ -101,7 +101,7 @@ class FOOOF(object):
     power_spectrum : 1d array
         Power spectrum values.
     freq_range : list of [float, float]
-        Frequency range of the power spectrum.
+        Frequency range of the power spectrum, as [lowest_freq, highest_freq].
     freq_res : float
         Frequency resolution of the power spectrum.
     fooofed_spectrum_ : 1d array
@@ -118,15 +118,16 @@ class FOOOF(object):
 
     Notes
     -----
-    Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
-
-    - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
-      procedure, or a median filter smoothing on the FFT output before running FOOOF.
-
+    - Commonly used abbreviations used in FOOOF:
+        - CF: Center Frequencies, Amp: Amplitude Values, BW: Bandwidths
+    - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
+        - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
+        procedure, or a median filter smoothing on the FFT output before running FOOOF.
     - Where possible and appropriate, use longer time segments for power spectrum calculation to
       get smoother power spectra, as this will give better FOOOF fits.
     - Internally power values, including 'power_spectrum' and 'fooofed_spectrum_' are
-      stored as logged power (log10), as this is what the model actually fits it.
+      stored as logged power values (log10).
+        - This is because logged values are what the model actually fits.
     """
 
     def __init__(self, peak_width_limits=[0.5, 12.0], max_n_peaks=np.inf, min_peak_amplitude=0.0,
@@ -718,13 +719,13 @@ class FOOOF(object):
 
         Parameters
         ----------
-        gaus_params :  2d array
+        gaus_params : 2d array
             Parameters that define the gaussian fit(s).
                 Each row is a gaussian, as [mean, amp, std].
 
         Returns
         -------
-        peak_params :  2d array
+        peak_params : 2d array
             Fitted parameter values for the peaks.
                 Each row is a peak, as [CF, Amp, BW].
 
@@ -798,7 +799,7 @@ class FOOOF(object):
 
         Notes
         -----
-        For any peak guesses with an overlap that crosses threshold,
+        For any peak guesses with an overlap that crosses the threshold,
             the lower amplitude guess is dropped.
         """
 

@@ -26,7 +26,7 @@ from fooof.core.modutils import safe_import
 #  This section will be appended to the FOOOF Attributes section when copying over
 ATT_ADD = """
     power_spectra : 2d array
-        Input matrix of power spectra values.
+        Input matrix of power spectra values, as [n_power_spectra, n_freqs].
     group_results : list of FOOOFResults
         Results of FOOOF model fit for each power spectrum."""
 

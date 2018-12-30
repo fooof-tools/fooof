@@ -11,9 +11,9 @@ def get_band_peak_group(peak_params, band_def, n_fits):
     Parameters
     ----------
     peak_params : 2d array
-        Peak parameters, for a group fit, from FOOOF. [n_peaks, 4]
+        Peak parameters, for a group fit, from FOOOF, with shape of [n_peaks, 4]
     band_def : [float, float]
-        Defines the band of interest.
+        Defines the band of interest, as [lower_frequency_bound, upper_frequency_bound]
     n_fits : int
         The number of model fits in the FOOOFGroup data.
 
@@ -49,17 +49,17 @@ def get_band_peak(peak_params, band_def, ret_one=True):
     Parameters
     ----------
     peak_params : 2d array
-        Peak parameters, from FOOOF. [n_peaks, 3]
+        Peak parameters, from FOOOF, with shape of [n_peaks, 3]
     band_def : [float, float]
-        Defines the band of interest.
+        Defines the band of interest, as [lower_frequency_bound, upper_frequency_bound]
     ret_one : bool
-        Whether to return single peak (or all found).
-            If True, returns the highest amplitude peak.
+        Whether to return single peak (or all found)
+            If True, returns the highest amplitude peak
 
     Returns
     -------
     band_peaks : 1d or 2d array
-        Peak data. Each row is a peak, as [CF, Amp, BW].
+        Peak data. Each row is a peak, as [CF, Amp, BW]
     """
 
     # Return nan array if empty input
@@ -92,15 +92,15 @@ def get_highest_amp_peak(band_peaks):
     Parameters
     ----------
     peak_params : 2d array
-        Peak parameters, from FOOOF. [n_peaks, 3]
+        Peak parameters, from FOOOF, with shape of [n_peaks, 3]
 
     Returns
     -------
     band_peaks : array
-        Peak parameters, form - (centers, powers, bws).
+        Peak data. Each row is a peak, as [CF, Amp, BW]
     """
 
-    # Catch & return if empty
+    # Catch & return NaN if empty
     if len(band_peaks) == 0:
         return np.array([np.nan, np.nan, np.nan])
 
