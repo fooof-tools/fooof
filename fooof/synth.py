@@ -433,18 +433,24 @@ def _check_iter(obj, length):
         Iterable object.
     """
 
-    # If object is not a generator, update to become one - otherwise, get's left as is
+    # If object is not a generator, update to become one
+    #   Otherwise (if the object already is a generator) then it gets left as it is
     if not isgenerator(obj):
 
-        # If it's a list, make it a repeat generator
+        # If it's list, make it a repeat generator
         if isinstance(obj, list):
 
-            #  Unless its a list of lists of the right length - in this case, leave as is
-            #    This will leave it as a list of list that will iterate through each element
-            if not (isinstance(obj[0], list) and len(obj) == length):
-                obj = repeat(obj)
+            # Check that it's not an empty list
+            #   If it is, this will leave the obj as an empty list
+            if len(obj) > 0:
 
-        # If it's not a list
+                # If obj is a list of lists of the right length, then we will leave it as is:
+                #    (as a list of list that will iterate through each element
+                # If it is not, then turned into a repeat object
+                if not (isinstance(obj[0], list) and len(obj) == length):
+                    obj = repeat(obj)
+
+        # If it's not a list, make it a repeat object (repeat int/float)
         else:
             obj = repeat(obj)
 
