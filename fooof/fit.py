@@ -843,7 +843,7 @@ class FOOOF(object):
 
 
     @staticmethod
-    def _prepare_data(freqs, power_spectrum, freq_range, psd_dim=1, verbose=True):
+    def _prepare_data(freqs, power_spectrum, freq_range, spectra_dim=1, verbose=True):
         """Prepare input data for adding to FOOOF or FOOOFGroup object.
 
         Parameters
@@ -854,8 +854,8 @@ class FOOOF(object):
             Power spectrum values, in linear space. 1d vector, or 2d as [n_power_spectra, n_freqs].
         freq_range : list of [float, float]
             Frequency range to restrict power spectrum to. If None, keeps the entire range.
-        psd_dim : int, optional default: 1
-            Dimensionality that the power_spectrum should have.
+        spectra_dim : int, optional default: 1
+            Dimensionality that the power spectra should have.
         verbose : bool, optional
             Whether to be verbose in printing out warnings.
 
@@ -876,7 +876,7 @@ class FOOOF(object):
             raise ValueError('Input data must be numpy arrays.')
 
         # Check that data have the right dimensionality
-        if freqs.ndim != 1 or (power_spectrum.ndim != psd_dim):
+        if freqs.ndim != 1 or (power_spectrum.ndim != spectra_dim):
             raise ValueError('Inputs are not the right dimensions.')
 
         # Check that data sizes are compatible
