@@ -273,7 +273,7 @@ def gen_issue_str(concise=False):
 
         # Reporting bugs
         'Please report any bugs or unexpected errors on Github.',
-        'https://github.com/voytekresearch/fooof/issues',
+        'https://github.com/fooof-tools/fooof/issues',
         '',
 
         # Reporting a weird fit
