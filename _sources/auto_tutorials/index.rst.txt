@@ -12,13 +12,13 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 01">
+    <div class="sphx-glr-thumbcontainer" tooltip="01">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial01-ModelDescription_thumb.png
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_01-ModelDescription_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_tutorial01-ModelDescription.py`
+        :ref:`sphx_glr_auto_tutorials_plot_01-ModelDescription.py`
 
 .. raw:: html
 
@@ -28,17 +28,17 @@ Tutorial
 .. toctree::
    :hidden:
 
-   /auto_tutorials/tutorial01-ModelDescription
+   /auto_tutorials/plot_01-ModelDescription
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 02">
+    <div class="sphx-glr-thumbcontainer" tooltip="02">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial02-FOOOF_thumb.png
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_02-FOOOF_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_tutorial02-FOOOF.py`
+        :ref:`sphx_glr_auto_tutorials_plot_02-FOOOF.py`
 
 .. raw:: html
 
@@ -48,17 +48,17 @@ Tutorial
 .. toctree::
    :hidden:
 
-   /auto_tutorials/tutorial02-FOOOF
+   /auto_tutorials/plot_02-FOOOF
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 03">
+    <div class="sphx-glr-thumbcontainer" tooltip="03">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial03-FOOOFAlgorithm_thumb.png
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_03-FOOOFAlgorithm_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_tutorial03-FOOOFAlgorithm.py`
+        :ref:`sphx_glr_auto_tutorials_plot_03-FOOOFAlgorithm.py`
 
 .. raw:: html
 
@@ -68,17 +68,17 @@ Tutorial
 .. toctree::
    :hidden:
 
-   /auto_tutorials/tutorial03-FOOOFAlgorithm
+   /auto_tutorials/plot_03-FOOOFAlgorithm
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 04">
+    <div class="sphx-glr-thumbcontainer" tooltip="04">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial04-FOOOFGroup_thumb.png
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_04-FOOOFGroup_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_tutorial04-FOOOFGroup.py`
+        :ref:`sphx_glr_auto_tutorials_plot_04-FOOOFGroup.py`
 
 .. raw:: html
 
@@ -88,17 +88,17 @@ Tutorial
 .. toctree::
    :hidden:
 
-   /auto_tutorials/tutorial04-FOOOFGroup
+   /auto_tutorials/plot_04-FOOOFGroup
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 05">
+    <div class="sphx-glr-thumbcontainer" tooltip="05">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial05-Troubleshooting_thumb.png
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_05-Troubleshooting_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_tutorial05-Troubleshooting.py`
+        :ref:`sphx_glr_auto_tutorials_plot_05-Troubleshooting.py`
 
 .. raw:: html
 
@@ -108,17 +108,17 @@ Tutorial
 .. toctree::
    :hidden:
 
-   /auto_tutorials/tutorial05-Troubleshooting
+   /auto_tutorials/plot_05-Troubleshooting
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tutorial 06">
+    <div class="sphx-glr-thumbcontainer" tooltip="06">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_tutorial06-FurtherAnalysis_thumb.png
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_06-FurtherAnalysis_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_tutorial06-FurtherAnalysis.py`
+        :ref:`sphx_glr_auto_tutorials_plot_06-FurtherAnalysis.py`
 
 .. raw:: html
 
@@ -128,7 +128,7 @@ Tutorial
 .. toctree::
    :hidden:
 
-   /auto_tutorials/tutorial06-FurtherAnalysis
+   /auto_tutorials/plot_06-FurtherAnalysis
 .. raw:: html
 
     <div style='clear:both'></div>

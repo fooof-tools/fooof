@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>05: Tuning &amp; Troubleshooting &#8212; fooof 0.1.3 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="06: Further Analysis" href="plot_06-FurtherAnalysis.html" />
+    <link rel="prev" title="04: FOOOFGroup" href="plot_04-FOOOFGroup.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.3</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="index.html">Tutorial</a></li>
+                <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme_link.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../contents.html">Table of Contents</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-05-troubleshooting-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="tuning-troubleshooting">
+<span id="sphx-glr-auto-tutorials-plot-05-troubleshooting-py"></span><h1>05: Tuning &amp; Troubleshooting<a class="headerlink" href="#tuning-troubleshooting" title="Permalink to this headline">¶</a></h1>
+<p>This notebook covers tips &amp; tricks for setting FOOOF parameters, tuning fits, and troubleshooting any issues.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="c1"># FOOOF imports</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">FOOOFGroup</span></a>
+
+<span class="c1"># Import some utilities, and tools for creating synthetic power-spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.synth</span> <span class="kn">import</span> <a href="../generated/fooof.synth.gen_power_spectrum.html#fooof.synth.gen_power_spectrum" title="View documentation for fooof.synth.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">,</span> <a href="../generated/fooof.synth.gen_group_power_spectra.html#fooof.synth.gen_group_power_spectra" title="View documentation for fooof.synth.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a><span class="p">,</span> <a href="../generated/fooof.synth.param_sampler.html#fooof.synth.param_sampler" title="View documentation for fooof.synth.param_sampler"><span class="n">param_sampler</span></a>
+<span class="kn">from</span> <span class="nn">fooof.core.utils</span> <span class="kn">import</span> <span class="n">group_three</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set random state, for consistency for generating synthetic data</span>
+<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.random.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">321</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="fooof-settings">
+<h2>FOOOF Settings<a class="headerlink" href="#fooof-settings" title="Permalink to this headline">¶</a></h2>
+<p>With default settings, FOOOF is minimally constrained. It defaults as such since there are not universal settings that work across all different dataset modalities. Appropriate settings also vary with power spectrum quality (noise, or effectively, the smoothness of the power spectrum), and frequency ranges.</p>
+<p>For any given dataset, FOOOF will likely need some tuning of parameters for optimal performance.</p>
+<p>To do so, we suggest using a combination of the following considerations:</p>
+<ul class="simple">
+<li>A priori constraints, given your data, such as the number of peaks you expect to extract</li>
+<li>Qualitative analysis, guided by examing the the plotted model fit results, as compared to input data</li>
+<li>Quantitative analysis, considering the model fit and error (however, see note at the bottom regarding interpreting model fit error)</li>
+</ul>
+<p>Tuning FOOOF is an imperfect art, and should be done carefully, as assumptions built into the settings chosen will impact the model results.</p>
+<p>We also recommend that FOOOF settings should not be changed between power spectra (across channels, trials, or subjects), if they are to be meaningfully compared. We therefore recommend first testing out FOOOF across some representative spectra, in order to select FOOOF settings, which you then keep constant for the full analysis.</p>
+</div>
+<div class="section" id="tuning-fooof">
+<h2>Tuning FOOOF<a class="headerlink" href="#tuning-fooof" title="Permalink to this headline">¶</a></h2>
+<p>With the defaults, FOOOF is relatively unconstrained, and therefore, most commonly FOOOF will overfit, being overzealous at fitting small noisy bumps as peaks. If you move to a new dataset, you may also find you need to relax some settings, for better fits. You also need to make sure you pick an appropriate aperiodic fitting procedure, and that your data meets the assumptions of the approach you choose.</p>
+<p>The remainder of this notebook goes through some examples of setting FOOOF parameters to be most appropriate for various datasetes.</p>
+</div>
+<div class="section" id="interpreting-model-fit-quality-measures">
+<h2>Interpreting Model Fit Quality Measures<a class="headerlink" href="#interpreting-model-fit-quality-measures" title="Permalink to this headline">¶</a></h2>
+<p>FOOOF calculates and returns a couple metrics to assist with assessing the quality of the model fits. It calculates both the model fit error, as the root mean-squared error (RMSE) between the full model fit (‘fooofed_spectrum_)’ and the original power spectrum, as well as the R-squared correspondance between the original spectrum and the FOOOFed result.</p>
+<p>These scores can be used to assess how the model is performing. However interpreting these measures requires a bit of nuance. FOOOF is NOT optimized to minimize fit error / maximize r-squared at all costs. To do so typically results in fitting a large number of gaussian processes, in a way that overfits noise.</p>
+<p>FOOOF is therefore tuned to try and measure the aperiodic signal and peaks in a parsimonious manner, such as to not overfit noise, and following a fuzzy definition of only fitting peaks where there are actually significant peaks over and above the aperiodic signal, and the noise. One way we tested this is by assessing the model as compared to how expert human raters labeled putative oscillatory ‘peaks’. As such, overall the model is not directly designed to optimize model fit error / r-squared.</p>
+<p>Given this, while high error / low r-squared may indicate a poor model fit, very low error / high r-squared may also indicate a power spectrum that is overfit, in particular in which the peak parameters from the model may reflect overfitting by modelling too many peaks, and thus not offer a good description of the underlying data.</p>
+<p>We therefore recommend that, for a given dataset, initial explorations should involve checking both cases in which model fit error is particularly large, as well as when it is particularly low. These explorations can be used to set parameters that are suitable for running across a group. There are not universal parameters that optimize this, and so FOOOF leaves it up to the user to set parameters appropriately to not under- or over-fit for a given modality / dataset / application.</p>
+</div>
+<div class="section" id="reducing-overfitting">
+<h2>Reducing Overfitting<a class="headerlink" href="#reducing-overfitting" title="Permalink to this headline">¶</a></h2>
+<p>If FOOOF appears to be overfitting (for example, fitting too many Gaussians to small bumps), try:</p>
+<ul class="simple">
+<li>Setting a lower-bound bandwidth-limit, to exclude fitting very narrow peaks, that may be noise</li>
+<li><dl class="first docutils">
+<dt>Setting a maximum number of peaks that the algorithm may fit: max_n_peaks</dt>
+<dd><ul class="first last">
+<li>If set, the algorithm will fit (up to) the max_n_peaks highest power peaks.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>Setting a minimum absolute amplitude for peaks: min_peak_amplitude</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a noisy synthetic power spectrum</span>
+
+<span class="c1"># Set the frequency range to generate the power spectrum</span>
+<span class="n">f_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+<span class="c1"># Set aperiodic background signal parameters, as [offset, slope]</span>
+<span class="n">bg_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="c1"># Gaussian peak parameters</span>
+<span class="n">gauss_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="c1"># Set the level of noise to generate the power spectrum with</span>
+<span class="n">nlv</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="c1"># Create a synthetic power spectrum</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span> <span class="o">=</span> <a href="../generated/fooof.synth.gen_power_spectrum.html#fooof.synth.gen_power_spectrum" title="View documentation for fooof.synth.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">bg_params</span><span class="p">,</span> <span class="n">gauss_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit an (unconstrained) FOOOF model, liable to overfit</span>
+<span class="n">fm</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">()</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_05-Troubleshooting_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_05-Troubleshooting_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>FOOOF WARNING: Lower-bound peak width limit is &lt; or ~= the frequency resolution: 0.50 &lt;= 0.50
+        Lower bounds below frequency-resolution have no effect (effective lower bound is freq-res)
+        Too low a limit may lead to overfitting noise as small bandwidth peaks.
+        We recommend a lower bound of approximately 2x the frequency resolution.
+
+==================================================================================================
+
+                                   FOOOF - POWER SPECTRUM MODEL
+
+                        The model was run on the frequency range 1 - 50 Hz
+                                 Frequency Resolution is 0.50 Hz
+
+                             Background Parameters (offset, slope):
+                                         20.0547, 2.0236
+
+                                       6 peaks were found:
+                                CF:  10.09, Amp:  0.892, BW:  4.86
+                                CF:  20.05, Amp:  0.822, BW:  3.32
+                                CF:  31.50, Amp:  0.529, BW:  1.60
+                                CF:  32.45, Amp:  0.522, BW:  0.50
+                                CF:  33.62, Amp:  0.287, BW:  0.50
+                                CF:  47.99, Amp:  0.252, BW:  0.50
+
+                                     Goodness of fit metrics:
+                                    R^2 of model fit is 0.9908
+                                Root mean squared error is 0.0667
+
+==================================================================================================
+</pre></div>
+</div>
+<p>Notice that in the above fit, we are very likely to think that FOOOF has been overzealous in fitting peaks, and is therefore overfitting.</p>
+<p>This is also suggested by the model r-squared, which is suspiciously high, given the amount of noise we expect.</p>
+<p>To reduce this kind of overfitting, we can update the FOOOF parameters.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update settings to fit a more constrained FOOOF model, to reduce overfitting</span>
+<span class="n">fm</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_amplitude</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_05-Troubleshooting_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_05-Troubleshooting_002.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                   FOOOF - POWER SPECTRUM MODEL
+
+                        The model was run on the frequency range 1 - 50 Hz
+                                 Frequency Resolution is 0.50 Hz
+
+                             Background Parameters (offset, slope):
+                                         20.0466, 2.0155
+
+                                       3 peaks were found:
+                                CF:  10.09, Amp:  0.892, BW:  4.86
+                                CF:  20.05, Amp:  0.822, BW:  3.32
+                                CF:  31.80, Amp:  0.522, BW:  2.21
+
+                                     Goodness of fit metrics:
+                                    R^2 of model fit is 0.9892
+                                Root mean squared error is 0.0722
+
+==================================================================================================
+</pre></div>
+</div>
+<p>The synthetic definition is defined in terms of Gaussian parameters (these are slightly different from the peak parameters - see the note in tutorial 02).</p>
+<p>We can compare how FOOOF, with our updated settings, compares to the ground truth of the synthetic spectrum.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare ground truth synthetic parameters to model fit results</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Ground Truth </span><span class="se">\t\t</span><span class="s1"> FOOOF Reconstructions&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">sy</span><span class="p">,</span> <span class="n">fi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">group_three</span><span class="p">(</span><span class="n">gauss_params</span><span class="p">)),</span> <span class="n">fm</span><span class="o">.</span><span class="n">_gaussian_params</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{:5.2f} {:5.2f} {:5.2f} </span><span class="se">\t</span><span class="s1"> {:5.2f} {:5.2f} {:5.2f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">sy</span><span class="p">,</span> <span class="o">*</span><span class="n">fi</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Ground Truth             FOOOF Reconstructions
+10.00  1.00  2.50        10.09  0.89  2.43
+20.00  0.80  2.00        20.05  0.82  1.66
+32.00  0.60  1.00        31.80  0.53  1.10
+</pre></div>
+</div>
+</div>
+<div class="section" id="power-spectra-with-no-peaks">
+<h2>Power Spectra with No Peaks<a class="headerlink" href="#power-spectra-with-no-peaks" title="Permalink to this headline">¶</a></h2>
+<p>A known case in which FOOOF can overfit is in power spectra in which no peaks are present. In this case, the standard deviation can be very low, and so the relative amplitude check (‘min_peak_threshold’) is very liberal at keeping gaussian fits.</p>
+<p>If you expect, or know, you have power spectra without peaks in your data, we therefore recommend making sure you set some value for ‘min_peak_amplitude’, as otherwise FOOOF is unlikely to appropriately fit power spectra as having no peaks. Setting this value requires checking the scale of your power spectra, allowing you to define an absolute threshold for extracting peaks.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ### Reducing Underfitting</span>
+<span class="c1">#</span>
+<span class="c1"># If you are finding that FOOOF is underfitting:</span>
+<span class="c1"># - First check and perhaps loosen any restrictions from &#39;max_n_peaks&#39; and &#39;min_peak_amplitude&#39;</span>
+<span class="c1"># - Try updating &#39;amp_std_thresh&#39; to a lower value</span>
+<span class="c1"># - Bad fits may come from issues with aperiodic signal fitting. If so, see below.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-a-cleaner-synthetic-power-spectrum">
+<h2>Create a cleaner synthetic power spectrum<a class="headerlink" href="#create-a-cleaner-synthetic-power-spectrum" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the frequency range to generate the power spectrum</span>
+<span class="n">f_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+<span class="c1"># Aperiodic parameters, as [offset, slope]</span>
+<span class="n">bg_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="c1"># Gaussian peak parameters</span>
+<span class="n">gauss_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="c1"># Set the level of noise to generate the power spectrum with</span>
+<span class="n">nlv</span> <span class="o">=</span> <span class="mf">0.025</span>
+
+<span class="c1"># Create a synthetic power spectrum</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span> <span class="o">=</span> <a href="../generated/fooof.synth.gen_power_spectrum.html#fooof.synth.gen_power_spectrum" title="View documentation for fooof.synth.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="n">bg_params</span><span class="p">,</span> <span class="n">gauss_params</span><span class="p">,</span> <span class="n">nlv</span><span class="o">=</span><span class="n">nlv</span><span class="p">)</span>
+
+
+<span class="c1"># Update settings to make sure they are sensitive to smaller peaks in smoother power spectra</span>
+<span class="n">fm</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_amplitude</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_05-Troubleshooting_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_05-Troubleshooting_003.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                   FOOOF - POWER SPECTRUM MODEL
+
+                        The model was run on the frequency range 1 - 50 Hz
+                                 Frequency Resolution is 0.50 Hz
+
+                             Background Parameters (offset, slope):
+                                         20.0090, 2.0051
+
+                                       3 peaks were found:
+                                CF:  10.00, Amp:  1.019, BW:  1.89
+                                CF:  20.00, Amp:  0.306, BW:  2.90
+                                CF:  32.08, Amp:  0.297, BW:  1.83
+
+                                     Goodness of fit metrics:
+                                    R^2 of model fit is 0.9993
+                                Root mean squared error is 0.0169
+
+==================================================================================================
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check reconstructed parameters from synthetic definition</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Ground Truth </span><span class="se">\t\t</span><span class="s1"> FOOOF Reconstructions&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">sy</span><span class="p">,</span> <span class="n">fi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">group_three</span><span class="p">(</span><span class="n">gauss_params</span><span class="p">)),</span> <span class="n">fm</span><span class="o">.</span><span class="n">_gaussian_params</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{:5.2f} {:5.2f} {:5.2f} </span><span class="se">\t</span><span class="s1"> {:5.2f} {:5.2f} {:5.2f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">sy</span><span class="p">,</span> <span class="o">*</span><span class="n">fi</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Ground Truth             FOOOF Reconstructions
+10.00  1.00  1.00        10.00  1.02  0.95
+20.00  0.30  1.50        20.00  0.31  1.45
+32.00  0.25  1.00        32.08  0.30  0.92
+</pre></div>
+</div>
+</div>
+<div class="section" id="aperiodic-signal-fitting">
+<h2>Aperiodic Signal Fitting<a class="headerlink" href="#aperiodic-signal-fitting" title="Permalink to this headline">¶</a></h2>
+<p>FOOOF currently offers two approaches for fitting the aperiodic ‘background’:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>Fitting with just an offset and a slope, equivalent to a linear fit in log-log space</dt>
+<dd><ul class="first last">
+<li>background_mode = ‘fixed’</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Including a ‘knee’ parameter, reflecting a fit with a bend, in log-log space</dt>
+<dd><ul class="first last">
+<li>background_mode = ‘knee’</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Fitting without a knee assumes a single linear 1/f like characteristic to aperiodic signal, in log-log space. Fitting will go wrong if this assumption is violated. In particular, broad frequency ranges (often, greater than ~40 Hz range) don’t meet this criterion, as they also exhibit a ‘bend’ in the aperiodic signal. For these cases, fitting should be done using a ‘knee’ parameter.</p>
+<p>Fitting with a knee is still experimental, with a couple outstanding issues:</p>
+<ul class="simple">
+<li>Interpreting the fit results when using knee fits is more complex, as the slope result is no longer a simple measure of a singular property, but rather reflects the slope past the ‘knee’ inflecting point, and as such, knee &amp; slope values should be considered together.</li>
+<li>Fitting FOOOF with knee fits may perform sub-optimally in ambiguous cases (where the data may or may not have a knee).</li>
+</ul>
+<p>Given this, we recommend:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>Check your data, across the frequency range of interest, for what the aperiodic signal looks like.</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>If it looks roughly linear (in log-log space), fit without a knee.</dt>
+<dd><ul class="first last">
+<li>This is likely across smaller frequency ranges, such as 3-30.</li>
+<li>Do not perform no-knee fits across a range in which this does not hold.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>If there is a clear knee, then use knee fits.</dt>
+<dd><ul class="first last">
+<li>This is likely across larger fitting ranges such as 1-150 Hz.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Be wary of ambiguous ranges, where there may or may not be a knee.</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Trying to fit without a knee, when there is not a single consistent aperiodic signal, can lead to very bad fits. But it is also a known issue that trying to fit with a knee can lead to suboptimal fits when no knee is present.</dt>
+<dd><ul class="first last">
+<li>We therefore currently recommend picking frequency ranges in which the expected aperiodic signal process is relatively clear.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="checking-fits-across-a-group">
+<h2>Checking Fits Across a Group<a class="headerlink" href="#checking-fits-across-a-group" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the parameters options for aperiodic signal and Gaussian peaks</span>
+<span class="n">bgp_opts</span> <span class="o">=</span> <a href="../generated/fooof.synth.param_sampler.html#fooof.synth.param_sampler" title="View documentation for fooof.synth.param_sampler"><span class="n">param_sampler</span></a><span class="p">([[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]])</span>
+<span class="n">gauss_opts</span> <span class="o">=</span> <a href="../generated/fooof.synth.param_sampler.html#fooof.synth.param_sampler" title="View documentation for fooof.synth.param_sampler"><span class="n">param_sampler</span></a><span class="p">([[],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+
+<span class="c1"># Generate a group of power spectra</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectra</span><span class="p">,</span> <span class="n">syn_params</span> <span class="o">=</span> <a href="../generated/fooof.synth.gen_group_power_spectra.html#fooof.synth.gen_group_power_spectra" title="View documentation for fooof.synth.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="n">bgp_opts</span><span class="p">,</span> <span class="n">gauss_opts</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup</span>
+<span class="n">fg</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit FOOOF and report on the group</span>
+<span class="n">fg</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectra</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_05-Troubleshooting_004.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_05-Troubleshooting_004.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 10 power spectra.
+==================================================================================================
+
+                                       FOOOF - GROUP RESULTS
+
+                             Number of power spectra in the Group: 10
+
+                        The model was run on the frequency range 3 - 50 Hz
+                                 Frequency Resolution is 0.50 Hz
+
+                              Power spectra were fit without a knee.
+
+                                     Background Slope Values
+                              Min: 1.4995, Max: 2.4996, Mean: 1.9097
+
+                         In total 62 peaks were extracted from the group
+
+                                     Goodness of fit metrics:
+                            R2s -  Min: 0.9991, Max: 1.0000, Mean: 0.9998
+                         Errors -  Min: 0.0025, Max: 0.0165, Mean: 0.0055
+
+==================================================================================================
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the index of the worst FOOOF fit from the group</span>
+<span class="n">worst_fit_ind</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.argmax" title="View documentation for numpy.argmax"><span class="n">np</span><span class="o">.</span><span class="n">argmax</span></a><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">get_all_data</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">))</span>
+
+<span class="c1"># Extract this FOOOF fit from the group, into a FOOOF object</span>
+<span class="n">fm</span> <span class="o">=</span> <span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span><span class="p">(</span><span class="n">worst_fit_ind</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Check out the model fit of the extracted FOOOF model</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fm</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_05-Troubleshooting_005.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_05-Troubleshooting_005.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                   FOOOF - POWER SPECTRUM MODEL
+
+                        The model was run on the frequency range 3 - 50 Hz
+                                 Frequency Resolution is 0.50 Hz
+
+                             Background Parameters (offset, slope):
+                                         20.0684, 2.0359
+
+                                       2 peaks were found:
+                                CF:  10.20, Amp:  0.472, BW:  3.88
+                                CF:  20.13, Amp:  0.300, BW:  6.00
+
+                                     Goodness of fit metrics:
+                                    R^2 of model fit is 0.9991
+                                Root mean squared error is 0.0165
+
+==================================================================================================
+</pre></div>
+</div>
+<p>You can also loop through all the results in a test group, extracting all fits that meet some criterion that makes them worth checking.</p>
+<p>This might be checking for fits above some error threshold, as below, but note that you may also want to do a similar procedure to examine fits with the lowest error, to check if FOOOF may be overfitting, or perhaps fits with a particularly large number of gaussians.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract all fits that are above some error threshold, for further examination.</span>
+<span class="c1">#  You could also do a similar analysis for particularly low errors</span>
+<span class="n">to_check</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fg</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">error</span> <span class="o">&gt;</span> <span class="mf">0.010</span><span class="p">:</span>
+        <span class="n">to_check</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+
+<span class="c1"># A more condensed version of the procedure above can also be used, like this:</span>
+<span class="c1">#to_check = [fg.get_fooof(ind, True) for ind, res in enumerate(fg) if res.error &gt; 0.010]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Loop through the problem fits, checking the plots, and saving out reports, to check later.</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">fm</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">to_check</span><span class="p">):</span>
+    <span class="n">fm</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">fm</span><span class="o">.</span><span class="n">save_report</span><span class="p">(</span><span class="s1">&#39;Report_ToCheck_#&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ind</span><span class="p">))</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_05-Troubleshooting_006.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_05-Troubleshooting_006.png" />
+</div>
+<div class="section" id="reporting-bad-fits">
+<h2>Reporting Bad Fits<a class="headerlink" href="#reporting-bad-fits" title="Permalink to this headline">¶</a></h2>
+<p>If, after working through these suggestions, you are still getting bad fits, and/or are just not sure what is going on, please get in touch! We will hopefully be able to make further recommendations, and this also serves as a way for us to investigate when and why FOOOF fails, so that we can continue to make it better.</p>
+<p>You can report issues on Github [here](<a class="reference external" href="https://github.com/voytekresearch/fooof/issues">https://github.com/voytekresearch/fooof/issues</a>), or get in touch with us by e-mail at <a class="reference external" href="mailto:voytekresearch&#37;&#52;&#48;gmail&#46;com">voytekresearch<span>&#64;</span>gmail<span>&#46;</span>com</a>.</p>
+<p>FOOOF also includes a helper method to print out instructions for reporting bad fits / bugs back to us, as demonstrated below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out instructions to report bad fits</span>
+<span class="c1">#  Note you can also call this from FOOOFGroup, and from instances (ex: fm.print_report_issue())</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="o">.</span><span class="n">print_report_issue</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                              CONTACT / REPORTING ISSUES WITH FOOOF
+
+                      Please report any bugs or unexpected errors on Github.
+                          https://github.com/voytekresearch/fooof/issues
+
+                   If FOOOF gives you any weird / bad fits, please let us know!
+                    To do so, send us a FOOOF report, and a FOOOF data file,
+
+               With a FOOOF object (fm), after fitting, run the following commands:
+                             fm.create_report(&#39;FOOOF_bad_fit_report&#39;)
+                         fm.save(&#39;FOOOF_bad_fit_data&#39;, True, True, True)
+
+                                 Send the generated files to us.
+                      We will have a look, and provide any feedback we can.
+
+                            Contact address: voytekresearch@gmail.com
+
+==================================================================================================
+</pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  1.126 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-05-troubleshooting-py">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/plot_05-Troubleshooting.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_05-Troubleshooting.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/plot_05-Troubleshooting.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_05-Troubleshooting.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018 - VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

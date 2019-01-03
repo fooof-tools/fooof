@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>01: Model Description &#8212; fooof 0.1.3 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="02: FOOOF" href="plot_02-FOOOF.html" />
+    <link rel="prev" title="Tutorial" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.3</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="index.html">Tutorial</a></li>
+                <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme_link.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../contents.html">Table of Contents</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-01-modeldescription-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="model-description">
+<span id="sphx-glr-auto-tutorials-plot-01-modeldescription-py"></span><h1>01: Model Description<a class="headerlink" href="#model-description" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial provides a more theoretical / mathematical description of the FOOOF model and parameters.</p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>A neural power spectrum is fit as a combination of the aperiodic signal and periodic oscillations.</p>
+<p>The aperiodic component of the signal displays 1/f like properties, and is referred to in the code as the ‘background’.</p>
+<p>Putative oscillations (hereafter referred to as ‘peaks’), are frequency regions in which there are ‘bumps’ of power over and above the aperiodic signal.</p>
+<p>This formulation roughly translates to fitting the power spectrum as:</p>
+<div class="math notranslate nohighlight">
+\[P = L + \sum_{n=0}^{N} G_n\]</div>
+<p>Where <cite>P</cite> is the power spectrum, <cite>L</cite> is the aperiodic signal, and each <span class="math notranslate nohighlight">\(G_n\)</span> is a Gaussian fit to a peak, for <cite>N</cite> total peaks extracted from the power spectrum.</p>
+</div>
+<div class="section" id="aperiodic-background-fit">
+<h2>Aperiodic (‘background’) Fit<a class="headerlink" href="#aperiodic-background-fit" title="Permalink to this headline">¶</a></h2>
+<p>The aperiodic fit uses an exponential function, fit on the semilog power spectrum (linear frequencies and $log10$ power values).</p>
+<p>The exponential is of the form:</p>
+<div class="math notranslate nohighlight">
+\[L = 10^b * \frac{1}{(k + F^\chi)}\]</div>
+<p>Or, equivalently:</p>
+<div class="math notranslate nohighlight">
+\[L = b - \log(k + F^\chi)\]</div>
+<p>In this formulation, the 3 parameters <cite>b</cite>, <cite>k</cite>, and <span class="math notranslate nohighlight">\(\chi\)</span> define the aperiodic signal, as:</p>
+<ul class="simple">
+<li><cite>b</cite> is the broadband ‘offset’</li>
+<li><cite>k</cite> relates to the ‘knee’</li>
+<li><span class="math notranslate nohighlight">\(\chi\)</span> is the ‘slope’</li>
+<li><cite>F</cite> is the vector of input frequencies</li>
+</ul>
+<p>Note that fitting the knee parameter is optional. If used, the knee defines a bend in the 1/f.</p>
+<p>By default the aperiodic signal is fit with the ‘knee’ parameter set to zero. This fits the aperiodic signal equivalently to fitting a linear fit in log-log space.</p>
+<p>Broader frequency ranges typically do not display a single 1/f like characteristic, and so for these cases fitting with the knee parameter allows for modelling bends in the aperiodic signal.</p>
+</div>
+<div class="section" id="peaks">
+<h2>Peaks<a class="headerlink" href="#peaks" title="Permalink to this headline">¶</a></h2>
+<p>Regions of power over above this aperiodic signal, as defined above, are considered to be putative oscillations and are fit in the model by a Gaussian.</p>
+<p>For each Gaussian, <span class="math notranslate nohighlight">\(G_n\)</span>, with the form:</p>
+<div class="math notranslate nohighlight">
+\[G_n = a * exp (\frac{- (F - c)^2}{2 * w^2})\]</div>
+<p>Each peak is defined in terms of parameters <cite>a</cite>, <cite>c</cite> and <cite>w</cite>, where:</p>
+<ul class="simple">
+<li><cite>a</cite> is the amplitude of the peak, over and above the aperiodic signal</li>
+<li><cite>c</cite> is the center frequency of the peak</li>
+<li><cite>w</cite> is the width of the peak</li>
+<li><cite>F</cite> is the vector of input frequencies</li>
+</ul>
+<p>The full power spectrum fit is therefore the combination of the aperiodic fit, <cite>L</cite> defined by the exponential fit, and <cite>N</cite> peaks, where each <span class="math notranslate nohighlight">\(G_n\)</span> is formalized as a Gaussian process.</p>
+<p>Full method details are available in the paper: <a class="reference external" href="https://www.biorxiv.org/content/early/2018/04/11/299859">https://www.biorxiv.org/content/early/2018/04/11/299859</a></p>
+</div>
+<div class="section" id="algorithmic-description">
+<h2>Algorithmic Description<a class="headerlink" href="#algorithmic-description" title="Permalink to this headline">¶</a></h2>
+<p>Briefly, the algorithm proceeds as such:</p>
+<ul class="simple">
+<li>An initial fit of the aperiodic ‘background’ signal is taken across the power spectrum</li>
+<li>This aperiodic fit is subtracted from the power spectrum, creating a flattened spectrum</li>
+<li>Peaks are iteratively found in this flattened spectrum</li>
+<li>A full peak fit is created of all peak candidates found</li>
+<li>The peak fit is subtracted from the original power spectrum, creating a peak-removed power spectrum</li>
+<li>A final fit of the aperiodic signal is taken of the peak-removed power spectrum</li>
+</ul>
+<p>This procedure is able to create a model of the neural power spectrum, that is fully described mathematical by the mathematical model from above:</p>
+<img alt="../_images/FOOOF_model_pic.png" src="../_images/FOOOF_model_pic.png" />
+</div>
+<div class="section" id="fooof-parameters">
+<h2>FOOOF Parameters<a class="headerlink" href="#fooof-parameters" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of parameters that control the FOOOF fitting algorithm.</p>
+<p>Parameters that are exposed in the API and that can be set by the user are explained in detail below.</p>
+<div class="section" id="controlling-peak-fits">
+<h3>Controlling Peak Fits<a class="headerlink" href="#controlling-peak-fits" title="Permalink to this headline">¶</a></h3>
+<p><strong>peak_width_limits (Hz)</strong></p>
+<p>Enforced limits on the minimum and maximum widths of extracted peaks, given as a list of [minimum bandwidth, maximum bandwidth]. We recommend bandwidths be set to be at last twice the frequency resolution of the power spectrum.</p>
+<p>Default: [0.5, 12]</p>
+</div>
+<div class="section" id="peak-search-stopping-criteria">
+<h3>Peak Search Stopping Criteria<a class="headerlink" href="#peak-search-stopping-criteria" title="Permalink to this headline">¶</a></h3>
+<p>An iterative procedures searches for candidate peaks in the flattened spectrum. Candidate peaks are extracted in order of decreasing amplitude, until some stopping criterion is met, which is controlled by the following parameters:</p>
+<p><strong>max_n_peaks (int)</strong></p>
+<p>The maximum number of peaks that can be extracted from a given power spectrum. FOOOF will halt searching for new peaks when this number is reached. Note that FOOOF extracts peaks iteratively by amplitude (over and above the aperiodic signal), and so this approach will extract (up to) the _n_ largest peaks.</p>
+<p>Default: infinite</p>
+<p><strong>peak_threshold (in units of standard deviation)</strong></p>
+<p>The threshold, in terms of standard deviation of the aperiodic signal-removed power spectrum, above which a data point must pass to be considered a candidate peak. Once a candidate peak drops below this threshold, the peak search is halted (without including the most recent candidate).</p>
+<p>Default: 2.0</p>
+<p><strong>min_peak_amplitude (units of power - same as the input spectrum)</strong></p>
+<p>The minimum amplitude, above the aperiodic fit, that a peak must have to be extracted in the initial fit stage. Once a candidate peak drops below this threshold, the peak search is halted (without including the most recent candidate). Note that because this constraint is enforced during peak search, and prior to final peak fit, returned peaks are not guaranteed to surpass this value in amplitude.</p>
+<p>Default: 0</p>
+<p>Note: there are two different amplitude-related halting conditions for the peak searching. By default, the relative (standard-deviation based) threshold is defined, whereas the absolute threshold is set to zero (this default is because there is no general way to set this value without knowing the scale of the data). If both are defined, both are used and the peak search will halt when a candidate peak fails to pass either the absolute, or relative threshold.</p>
+</div>
+<div class="section" id="aperiodic-signal-fitting-approach">
+<h3>Aperiodic Signal Fitting Approach<a class="headerlink" href="#aperiodic-signal-fitting-approach" title="Permalink to this headline">¶</a></h3>
+<p><strong>background_mode (string)</strong></p>
+<p>The fitting approach to use for the aperiodic ‘background’ signal.</p>
+<dl class="docutils">
+<dt>Options:</dt>
+<dd><ul class="first last simple">
+<li>‘fixed’ : fits without a knee parameter (with the knee parameter ‘fixed’ at 0)</li>
+<li>‘knee’ : fits the full exponential equation, including the ‘knee’ parameter. (experimental)</li>
+</ul>
+</dd>
+</dl>
+<p>Default=’fixed’</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-01-modeldescription-py">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/plot_01-ModelDescription.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_01-ModelDescription.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/plot_01-ModelDescription.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_01-ModelDescription.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018 - VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

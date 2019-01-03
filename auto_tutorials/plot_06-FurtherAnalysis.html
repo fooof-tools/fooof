@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>06: Further Analysis &#8212; fooof 0.1.3 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="../auto_examples/index.html" />
+    <link rel="prev" title="05: Tuning &amp; Troubleshooting" href="plot_05-Troubleshooting.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.3</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="index.html">Tutorial</a></li>
+                <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme_link.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../contents.html">Table of Contents</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-06-furtheranalysis-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="further-analysis">
+<span id="sphx-glr-auto-tutorials-plot-06-furtheranalysis-py"></span><h1>06: Further Analysis<a class="headerlink" href="#further-analysis" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial explores some basic examples analyzing the results from fitting FOOOF models.</p>
+<div class="section" id="exploring-fooof-analyses">
+<h2>Exploring FOOOF Analyses<a class="headerlink" href="#exploring-fooof-analyses" title="Permalink to this headline">¶</a></h2>
+<p>FOOOF is really a way to extract features of interest from your data.</p>
+<p>These features can then be examined across or between groups of interest, or perhaps fed into further analysis.</p>
+<p>Largely, it is up to you what to do after running FOOOF, and depends on your questions of interest.</p>
+<p>Here, we briefly introduce some analysis utilities that are packaged with FOOOF, and explore some simple analyses that can be done with FOOOF outputs.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="c1"># Import FOOOF objects &amp; synth utilities</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">FOOOFGroup</span></a>
+<span class="kn">from</span> <span class="nn">fooof.synth</span> <span class="kn">import</span> <a href="../generated/fooof.synth.gen_group_power_spectra.html#fooof.synth.gen_group_power_spectra" title="View documentation for fooof.synth.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a><span class="p">,</span> <a href="../generated/fooof.synth.param_sampler.html#fooof.synth.param_sampler" title="View documentation for fooof.synth.param_sampler"><span class="n">param_sampler</span></a>
+
+<span class="c1"># FOOOF comes with some basic analysis function to work with FOOOF outputs</span>
+<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="kn">import</span> <a href="../generated/fooof.analysis.get_band_peak.html#fooof.analysis.get_band_peak" title="View documentation for fooof.analysis.get_band_peak"><span class="n">get_band_peak</span></a><span class="p">,</span> <a href="../generated/fooof.analysis.get_band_peak_group.html#fooof.analysis.get_band_peak_group" title="View documentation for fooof.analysis.get_band_peak_group"><span class="n">get_band_peak_group</span></a>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reload some data and fit a FOOOF model to use</span>
+<span class="n">freqs</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.load" title="View documentation for numpy.load"><span class="n">np</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;dat/freqs_lfp.npy&#39;</span><span class="p">)</span>
+<span class="n">spectrum</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.load" title="View documentation for numpy.load"><span class="n">np</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;dat/spectrum_lfp.npy&#39;</span><span class="p">)</span>
+<span class="n">fm</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate some synthetic power spectra and fit a FOOOFGroup to use</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <a href="../generated/fooof.synth.gen_group_power_spectra.html#fooof.synth.gen_group_power_spectra" title="View documentation for fooof.synth.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="n">n_spectra</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                            <span class="n">freq_range</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+                                            <span class="n">background_params</span><span class="o">=</span><a href="../generated/fooof.synth.param_sampler.html#fooof.synth.param_sampler" title="View documentation for fooof.synth.param_sampler"><span class="n">param_sampler</span></a><span class="p">([[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]]),</span>
+                                            <span class="n">gauss_params</span><span class="o">=</span><a href="../generated/fooof.synth.param_sampler.html#fooof.synth.param_sampler" title="View documentation for fooof.synth.param_sampler"><span class="n">param_sampler</span></a><span class="p">([[],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]))</span>
+<span class="n">fg</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">min_peak_amplitude</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">fg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fooof-analysis-utilities">
+<h2>FOOOF Analysis Utilities<a class="headerlink" href="#fooof-analysis-utilities" title="Permalink to this headline">¶</a></h2>
+<p>FOOOF is packaged with minimal analysis utility functions.</p>
+<p>The plan is for the FOOOF module to stay this way, as supporting further analysis of FOOOF-derived results is largely outside the scope of the current module.</p>
+<p>Here we only directly include and demonstrate utility functions covering very general use cases.</p>
+<p>In particular, we include some utilities that are useful for parsing peak results, and extracting peaks from frequency ranges of interest.</p>
+</div>
+<div class="section" id="analyzing-band-specific-oscillations">
+<h2>Analyzing Band-Specific Oscillations<a class="headerlink" href="#analyzing-band-specific-oscillations" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up indexes for accessing data, for convenience</span>
+<span class="n">cf_ind</span><span class="p">,</span> <span class="n">am_ind</span><span class="p">,</span> <span class="n">bw_ind</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
+
+<span class="c1"># Define frequency bands of interest</span>
+<span class="n">theta_band</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="n">alpha_band</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
+<span class="n">beta_band</span> <span class="o">=</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">get_band_peak()</span></code> to extract oscillations from a single FOOOF model</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract any beta band oscillations from the FOOOF model</span>
+<a href="../generated/fooof.analysis.get_band_peak.html#fooof.analysis.get_band_peak" title="View documentation for fooof.analysis.get_band_peak"><span class="n">get_band_peak</span></a><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">peak_params_</span><span class="p">,</span> <span class="n">beta_band</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">get_band_peak()</span></code> function will extract peaks within a specified band from the results of a FOOOF fit.</p>
+<p>You can optionally specify whether to return all oscillations within that band, or a singular result, which returns the highest power peak (if there are multiple).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get all alpha oscillations from a FOOOFGroup object</span>
+<span class="n">alphas</span> <span class="o">=</span> <a href="../generated/fooof.analysis.get_band_peak_group.html#fooof.analysis.get_band_peak_group" title="View documentation for fooof.analysis.get_band_peak_group"><span class="n">get_band_peak_group</span></a><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">get_all_data</span><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">),</span> <span class="n">alpha_band</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">fg</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out some of the alpha data</span>
+<span class="n">alphas</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:]</span>
+</pre></div>
+</div>
+<p><strong>get_band_peak_group</strong></p>
+<p>Note that the design of <code class="xref py py-func docutils literal notranslate"><span class="pre">get_band_peak_group()</span></code> is such that it will retain information regarding which oscillation came from with model fit.</p>
+<p>To do so, it’s output is organized such that each row corresponds to a specific model fit, such that the matrix returned is size [n_fits, 3].</p>
+<p>For this to work, at most 1 peak is extracted for each model fit within the specified band.</p>
+<p>If more than 1 peak are found within the band, the peak with the highest power is extracted. If no peaks are found, that row is filled with ‘nan’.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check descriptive statistics of oscillation data</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Alpha CF : &#39;</span><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.nanmean" title="View documentation for numpy.nanmean"><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span></a><span class="p">(</span><span class="n">alphas</span><span class="p">[:,</span> <span class="n">cf_ind</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Alpha Amp: &#39;</span><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.nanmean" title="View documentation for numpy.nanmean"><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span></a><span class="p">(</span><span class="n">alphas</span><span class="p">[:,</span> <span class="n">am_ind</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Alpha BW : &#39;</span><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.nanmean" title="View documentation for numpy.nanmean"><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span></a><span class="p">(</span><span class="n">alphas</span><span class="p">[:,</span> <span class="n">bw_ind</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Alpha CF :  10.039767564428377
+Alpha Amp:  0.48743021014203114
+Alpha BW :  3.7847615186181307
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-note-on-frequency-ranges">
+<h2>A Note on Frequency Ranges<a class="headerlink" href="#a-note-on-frequency-ranges" title="Permalink to this headline">¶</a></h2>
+<p>A benefit of using FOOOF to model power spectra is that you do not have to define a priori frequency ranges from which to extract oscillations.</p>
+<p>Nevertheless, it may still be useful to group extracted peaks into ‘bands’ of interest, which is why the aforementioned functions are offered.</p>
+<p>Since this frequency-range selection can be done after model fitting, we do recommend checking the model results, for example by checking a histogram of the center frequencies extracted across a group, in order to ensure the frequency ranges you choose reflect the characteristics of the data under studty.</p>
+</div>
+<div class="section" id="analyzing-the-aperiodic-background-signal">
+<h2>Analyzing the Aperiodic (‘background’) Signal<a class="headerlink" href="#analyzing-the-aperiodic-background-signal" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract slope data from group results</span>
+<span class="n">sls</span> <span class="o">=</span> <span class="n">fg</span><span class="o">.</span><span class="n">get_all_data</span><span class="p">(</span><span class="s1">&#39;background_params&#39;</span><span class="p">,</span> <span class="s1">&#39;slope&#39;</span><span class="p">)</span>
+
+<span class="c1"># Check out slope data</span>
+<span class="n">sls</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="comparing-across-psds">
+<h2>Comparing Across PSDs<a class="headerlink" href="#comparing-across-psds" title="Permalink to this headline">¶</a></h2>
+<p>Both of the examples above preserve information about which PSD particular features come from. If the PSDs come from across electrodes, channels or source reconstructed vertices, for example, extracting data in this way can be used to examine topographical relationships within and between these features.</p>
+<p>If your data comes from M/EEG, <a class="reference external" href="https://github.com/mne-tools/mne-python">MNE</a> has visualization tools that you can use to, with a channel file and a vector of FOOOF output data, visualize FOOOF results across the scalp and/or cortex.</p>
+</div>
+<div class="section" id="example-fooof-related-analyses">
+<h2>Example FOOOF-related analyses<a class="headerlink" href="#example-fooof-related-analyses" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Characterizing oscillations &amp; aperiodic properties, and analyzing spatial topographies, across demographics, modalities, and tasks</li>
+<li>Comparing oscillations within and between subjects across different tasks of interest</li>
+<li>Predicting disease state based on FOOOF derived oscillation &amp; aperiodic features</li>
+<li>Using FOOOF on a trial by trial manner to decode task properties, and behavioural states</li>
+</ul>
+<p>This is the end of the FOOOF tutorial materials!</p>
+<p>If you are having any troubles, please submit an issue on Github <a class="reference external" href="https://github.com/voytekresearch/fooof">here</a>, and/or get in contact with us at <a class="reference external" href="mailto:voytekresearch&#37;&#52;&#48;gmail&#46;com">voytekresearch<span>&#64;</span>gmail<span>&#46;</span>com</a>.</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.057 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-06-furtheranalysis-py">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/plot_06-FurtherAnalysis.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_06-FurtherAnalysis.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/plot_06-FurtherAnalysis.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_06-FurtherAnalysis.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018 - VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

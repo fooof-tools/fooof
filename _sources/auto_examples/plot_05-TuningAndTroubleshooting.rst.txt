@@ -465,13 +465,13 @@ Tuning & Troubleshooting
                                   Power spectra were fit without a knee.                              
                                                                                                   
                                          Background Slope Values                                      
-                                  Min: 1.5023, Max: 2.5040, Mean: 1.9112                              
+                                  Min: 1.4995, Max: 2.4996, Mean: 1.9097                              
                                                                                                   
-                             In total 57 peaks were extracted from the group                          
+                             In total 62 peaks were extracted from the group                          
                                                                                                   
                                          Goodness of fit metrics:                                     
-                                R2s -  Min: 0.9996, Max: 1.0000, Mean: 0.9999                         
-                             Errors -  Min: 0.0033, Max: 0.0101, Mean: 0.0050                         
+                                R2s -  Min: 0.9991, Max: 1.0000, Mean: 0.9998                         
+                             Errors -  Min: 0.0025, Max: 0.0165, Mean: 0.0055                         
                                                                                                   
     ==================================================================================================
     ==================================================================================================
@@ -482,16 +482,15 @@ Tuning & Troubleshooting
                                      Frequency Resolution is 0.50 Hz                                  
                                                                                                   
                                  Background Parameters (offset, slope):                               
-                                             20.0565, 2.0313                                          
+                                             20.0684, 2.0359                                          
                                                                                                   
-                                           3 peaks were found:                                        
-                                    CF:  10.07, Amp:  0.484, BW:  3.70                                
-                                    CF:  17.52, Amp:  0.223, BW:  6.00                                
-                                    CF:  21.72, Amp:  0.259, BW:  6.00                                
+                                           2 peaks were found:                                        
+                                    CF:  10.20, Amp:  0.472, BW:  3.88                                
+                                    CF:  20.13, Amp:  0.300, BW:  6.00                                
                                                                                                   
                                          Goodness of fit metrics:                                     
-                                        R^2 of model fit is 0.9996                                    
-                                    Root mean squared error is 0.0101                                 
+                                        R^2 of model fit is 0.9991                                    
+                                    Root mean squared error is 0.0165                                 
                                                                                                   
     ==================================================================================================
     ==================================================================================================
@@ -516,7 +515,7 @@ Tuning & Troubleshooting
     ==================================================================================================
 
 
-**Total running time of the script:** ( 0 minutes  1.237 seconds)
+**Total running time of the script:** ( 0 minutes  1.140 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_05-TuningAndTroubleshooting.py:

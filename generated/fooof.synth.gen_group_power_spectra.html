@@ -71,30 +71,10 @@
 </ul>
 </li>
               
-                <li class="dropdown">
-  <a role="button"
-     id="dLabelLocalToc"
-     data-toggle="dropdown"
-     data-target="#"
-     href="#">Page <b class="caret"></b></a>
-  <ul class="dropdown-menu localtoc"
-      role="menu"
-      aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">fooof.synth.gen_group_power_spectra</a></li>
-</ul>
-</ul>
-</li>
-              
             
             
             
             
-            
-              <li class="hidden-sm">
-<div id="sourcelink">
-  <a href="../_sources/generated/fooof.synth.gen_group_power_spectra.rst.txt"
-     rel="nofollow">Source</a>
-</div></li>
             
           </ul>
 
@@ -129,7 +109,7 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>n_spectra</strong> (<em>int</em>) – The number of power spectra to generate in the matrix.</li>
 <li><strong>freq_range</strong> (<em>list of</em><em> [</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Minimum and maximum values of the desired frequency vector.</li>
-<li><strong>background_params</strong> (<em>list of float</em><em> or </em><em>generator</em>) – Parameter for the background of the power spectra.</li>
+<li><strong>background_params</strong> (<em>list of float</em><em> or </em><em>generator</em>) – Parameters for the background of the power spectra.</li>
 <li><strong>gauss_params</strong> (<em>list of float</em><em> or </em><em>generator</em>) – <dl class="docutils">
 <dt>Parameters for the peaks of the power spectra.</dt>
 <dd>Length of n_peaks * 3.</dd>
@@ -142,7 +122,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
 <li><strong>xs</strong> (<em>1d array</em>) – Frequency values (linear).</li>
-<li><strong>ys</strong> (<em>2d array</em>) – Matrix of power values (linear).</li>
+<li><strong>ys</strong> (<em>2d array</em>) – Matrix of power values (linear), as [n_power_spectra, n_freqs].</li>
 <li><strong>syn_params</strong> (<em>list of SynParams</em>) – Definitions of parameters used for each spectrum. Has length of n_spectra.</li>
 </ul>
 </p>

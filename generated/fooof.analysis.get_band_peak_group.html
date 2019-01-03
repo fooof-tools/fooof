@@ -71,30 +71,10 @@
 </ul>
 </li>
               
-                <li class="dropdown">
-  <a role="button"
-     id="dLabelLocalToc"
-     data-toggle="dropdown"
-     data-target="#"
-     href="#">Page <b class="caret"></b></a>
-  <ul class="dropdown-menu localtoc"
-      role="menu"
-      aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">fooof.analysis.get_band_peak_group</a></li>
-</ul>
-</ul>
-</li>
-              
             
             
             
             
-            
-              <li class="hidden-sm">
-<div id="sourcelink">
-  <a href="../_sources/generated/fooof.analysis.get_band_peak_group.rst.txt"
-     rel="nofollow">Source</a>
-</div></li>
             
           </ul>
 
@@ -127,8 +107,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>peak_params</strong> (<em>2d array</em>) – Peak parameters, for a group fit, from FOOOF. [n_peaks, 4]</li>
-<li><strong>band_def</strong> (<em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Defines the band of interest.</li>
+<li><strong>peak_params</strong> (<em>2d array</em>) – Peak parameters, for a group fit, from FOOOF, with shape of [n_peaks, 4]</li>
+<li><strong>band_def</strong> (<em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Defines the band of interest, as [lower_frequency_bound, upper_frequency_bound]</li>
 <li><strong>n_fits</strong> (<em>int</em>) – The number of model fits in the FOOOFGroup data.</li>
 </ul>
 </td>

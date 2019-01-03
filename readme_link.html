@@ -71,44 +71,10 @@
 </ul>
 </li>
               
-                <li class="dropdown">
-  <a role="button"
-     id="dLabelLocalToc"
-     data-toggle="dropdown"
-     data-target="#"
-     href="#">Page <b class="caret"></b></a>
-  <ul class="dropdown-menu localtoc"
-      role="menu"
-      aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">README</a><ul>
-<li><a class="reference internal" href="#fooof-fitting-oscillations-one-over-f">FOOOF - fitting oscillations &amp; one over f</a><ul>
-<li><a class="reference internal" href="#overview">Overview</a></li>
-<li><a class="reference internal" href="#reference">Reference</a></li>
-<li><a class="reference internal" href="#try-it-out-with-binder">Try it out with Binder</a></li>
-<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
-<li><a class="reference internal" href="#matlab-support">Matlab Support</a></li>
-<li><a class="reference internal" href="#install">Install</a></li>
-<li><a class="reference internal" href="#development-branch">Development Branch</a></li>
-<li><a class="reference internal" href="#usage">Usage</a></li>
-<li><a class="reference internal" href="#output">Output</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</ul>
-</li>
-              
             
             
             
             
-            
-              <li class="hidden-sm">
-<div id="sourcelink">
-  <a href="_sources/readme_link.rst.txt"
-     rel="nofollow">Source</a>
-</div></li>
             
           </ul>
 
@@ -136,11 +102,11 @@
 <h2>FOOOF - fitting oscillations &amp; one over f<a class="headerlink" href="#fooof-fitting-oscillations-one-over-f" title="Permalink to this headline">¶</a></h2>
 <a class="reference external image-reference" href="http://www.repostatus.org/#active"><img alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed." src="http://www.repostatus.org/badges/latest/active.svg" /></a>
 <a class="reference external image-reference" href="https://pypi.python.org/pypi/fooof/"><img alt="Latest Version" src="https://img.shields.io/pypi/v/fooof.svg" /></a>
-<a class="reference external image-reference" href="https://travis-ci.org/voytekresearch/fooof"><img alt="Build Status" src="https://travis-ci.org/voytekresearch/fooof.svg" /></a>
-<a class="reference external image-reference" href="https://codecov.io/gh/voytekresearch/fooof"><img alt="codecov" src="https://codecov.io/gh/voytekresearch/fooof/branch/master/graph/badge.svg" /></a>
+<a class="reference external image-reference" href="https://travis-ci.org/fooof-tools/fooof"><img alt="Build Status" src="https://travis-ci.org/fooof-tools/fooof.svg" /></a>
+<a class="reference external image-reference" href="https://codecov.io/gh/fooof-tools/fooof"><img alt="codecov" src="https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg" /></a>
 <a class="reference external image-reference" href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/pypi/l/fooof.svg" /></a>
 <a class="reference external image-reference" href="https://pypi.python.org/pypi/fooof/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/fooof.svg" /></a>
-<a class="reference external image-reference" href="https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial"><img alt="Binder" src="https://mybinder.org/badge.svg" /></a>
+<a class="reference external image-reference" href="https://mybinder.org/v2/gh/fooof-tools/fooof/master?filepath=%2Ftutorial"><img alt="Binder" src="https://mybinder.org/badge.svg" /></a>
 <p>FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.</p>
 <div class="section" id="overview">
 <h3>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h3>
@@ -164,7 +130,7 @@ doi: https://doi.org/10.1101/299859
 </div>
 <div class="section" id="try-it-out-with-binder">
 <h3>Try it out with Binder<a class="headerlink" href="#try-it-out-with-binder" title="Permalink to this headline">¶</a></h3>
-<p>If you want to try it out, click <a class="reference external" href="https://mybinder.org/v2/gh/voytekresearch/fooof/master?filepath=%2Ftutorial">here</a> to jump straight into a live version of the tutorials.</p>
+<p>If you want to try it out, click <a class="reference external" href="https://mybinder.org/v2/gh/fooof-tools/fooof/master?filepath=%2Ftutorial">here</a> to jump straight into a live version of the tutorials.</p>
 <p>This link uses <a class="reference external" href="https://mybinder.org">Binder</a> to launch a JupyterHub on the cloud for you.</p>
 </div>
 <div class="section" id="dependencies">
@@ -175,16 +141,18 @@ doi: https://doi.org/10.1101/299859
 <li>numpy</li>
 <li>scipy &gt;= 0.19</li>
 <li>matplotlib (optional)</li>
+<li>tqdm (optional)</li>
 <li>pytest (optional)</li>
 </ul>
 <p>That is, if you are using <a class="reference external" href="https://www.anaconda.com/download/">Anaconda</a>, then you are good to go.</p>
 <p>If you aren’t already using Anaconda, it is a useful tool to get and manage these dependencies.</p>
 <p>Matplotlib is not required for running the model fitting, but is used if you want to visualize model fits.</p>
+<p>tqdm is also not required for running the model fitting, but can be used to print progress bars when fitting many models.</p>
 <p>Pytest is only required to run the test suite.</p>
 </div>
 <div class="section" id="matlab-support">
 <h3>Matlab Support<a class="headerlink" href="#matlab-support" title="Permalink to this headline">¶</a></h3>
-<p>FOOOF is implemented in Python, but there is also Matlab wrapper, as well as other support utilities for using FOOOF in a Matlab pipeline, all of which is available in <a class="reference external" href="http://github.com/voytekresearch/fooof_mat">fooof_mat</a>.</p>
+<p>FOOOF is implemented in Python, but there is also Matlab wrapper, as well as other support utilities for using FOOOF in a Matlab pipeline, all of which is available in <a class="reference external" href="http://github.com/fooof-tools/fooof_mat">fooof_mat</a>.</p>
 </div>
 <div class="section" id="install">
 <h3>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h3>
@@ -195,7 +163,7 @@ doi: https://doi.org/10.1101/299859
 <div class="section" id="development-branch">
 <h3>Development Branch<a class="headerlink" href="#development-branch" title="Permalink to this headline">¶</a></h3>
 <p>To get the lastest, development version, you can get the code using git:</p>
-<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/voytekresearch/fooof</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/fooof-tools/fooof</span></code></p>
 <p>To then install the development version (without making changes to it), move into the directory you cloned and run:</p>
 <p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">.</span></code></p>
 <p>Otherwise, if you want to install an editable, development version, move into the directory you cloned and install with:</p>

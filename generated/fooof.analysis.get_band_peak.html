@@ -71,30 +71,10 @@
 </ul>
 </li>
               
-                <li class="dropdown">
-  <a role="button"
-     id="dLabelLocalToc"
-     data-toggle="dropdown"
-     data-target="#"
-     href="#">Page <b class="caret"></b></a>
-  <ul class="dropdown-menu localtoc"
-      role="menu"
-      aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">fooof.analysis.get_band_peak</a></li>
-</ul>
-</ul>
-</li>
-              
             
             
             
             
-            
-              <li class="hidden-sm">
-<div id="sourcelink">
-  <a href="../_sources/generated/fooof.analysis.get_band_peak.rst.txt"
-     rel="nofollow">Source</a>
-</div></li>
             
           </ul>
 
@@ -127,17 +107,17 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>peak_params</strong> (<em>2d array</em>) – Peak parameters, from FOOOF. [n_peaks, 3]</li>
-<li><strong>band_def</strong> (<em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Defines the band of interest.</li>
+<li><strong>peak_params</strong> (<em>2d array</em>) – Peak parameters, from FOOOF, with shape of [n_peaks, 3]</li>
+<li><strong>band_def</strong> (<em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Defines the band of interest, as [lower_frequency_bound, upper_frequency_bound]</li>
 <li><strong>ret_one</strong> (<em>bool</em>) – <dl class="docutils">
-<dt>Whether to return single peak (or all found).</dt>
-<dd>If True, returns the highest amplitude peak.</dd>
+<dt>Whether to return single peak (or all found)</dt>
+<dd>If True, returns the highest amplitude peak</dd>
 </dl>
 </li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>band_peaks</strong> – Peak data. Each row is a peak, as [CF, Amp, BW].</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>band_peaks</strong> – Peak data. Each row is a peak, as [CF, Amp, BW]</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1d or 2d array</p>
