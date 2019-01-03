@@ -25,21 +25,30 @@
 # General imports
 import numpy as np
 
-# Import FOOOF objects
+# Import FOOOF objects & synth utilities
 from fooof import FOOOF, FOOOFGroup
+from fooof.synth import gen_group_power_spectra, param_sampler
 
 # FOOOF comes with some basic analysis function to work with FOOOF outputs
 from fooof.analysis import get_band_peak, get_band_peak_group
 
 ###############################################################################
 
-# Initialize a FOOOF object, and load data saved from previous tutorials
-fm = FOOOF()
-fm.load()
+# Reload some data and fit a FOOOF model to use
+freqs = np.load('dat/freqs_lfp.npy')
+spectrum = np.load('dat/spectrum_lfp.npy')
+fm = FOOOF(peak_width_limits=[2, 8])
+fm.fit(freqs, spectrum, [3, 30])
 
-# Initialize a FOOOFGroup, and load data saved from the previous tutorials
-fg = FOOOFGroup()
-fg.load()
+###############################################################################
+
+# Generate some synthetic power spectra and fit a FOOOFGroup to use
+freqs, spectra, _ = gen_group_power_spectra(n_spectra=10,
+                                            freq_range=[3, 40],
+                                            background_params=param_sampler([[20, 2], [35, 1.5]]),
+                                            gauss_params=param_sampler([[], [10, 0.5, 2]]))
+fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_amplitude=0.05, max_n_peaks=6, verbose=False)
+fg.fit(freqs, spectra)
 
 ###############################################################################
 # FOOOF Analysis Utilities
@@ -66,12 +75,13 @@ cf_ind, am_ind, bw_ind = 0, 1, 2
 # Define frequency bands of interest
 theta_band = [4, 8]
 alpha_band = [8, 12]
+beta_band = [15, 30]
 
 ###############################################################################
-# Use :func:`get_band_peak` to extract oscillations
+# Use :func:`get_band_peak` to extract oscillations from a single FOOOF model
 
-# Extract any theta band oscillations from the FOOOF model
-get_band_peak(fm.peak_params_, theta_band)
+# Extract any beta band oscillations from the FOOOF model
+get_band_peak(fm.peak_params_, beta_band)
 
 ###############################################################################
 #
