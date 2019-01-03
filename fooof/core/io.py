@@ -11,7 +11,7 @@ from fooof.core.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_ar
 ###################################################################################################
 ###################################################################################################
 
-def save_fm(fm, file_name, file_path='', append=False,
+def save_fm(fm, file_name, file_path=None, append=False,
             save_results=False, save_settings=False, save_data=False):
     """Save out data, results and/or settings from FOOOF object. Saves out to a JSON file.
 
@@ -22,7 +22,7 @@ def save_fm(fm, file_name, file_path='', append=False,
     file_name : str or FileObject
         File to which to save data.
     file_path : str, optional
-        Path to directory to which the save. If not provided, saves to current directory.
+        Path to directory to which the save. If None, saves to current directory.
     append : bool, optional
         Whether to append to an existing file, if available. default: False
             This option is only valid (and only used) if file_name is a str.
@@ -33,6 +33,9 @@ def save_fm(fm, file_name, file_path='', append=False,
     save_data : bool, optional
         Whether to save out input data.
     """
+
+    # Check whether filepath is provided, and default to empty string if not
+    file_path = '' if not file_path else file_path
 
     # Convert object to dictionary & convert all arrays to lists - for JSON serializing
     obj_dict = dict_array_to_lst(fm.__dict__)
@@ -65,7 +68,7 @@ def save_fm(fm, file_name, file_path='', append=False,
         raise ValueError('Save file not understood.')
 
 
-def save_fg(fg, file_name, file_path='', append=False,
+def save_fg(fg, file_name, file_path=None, append=False,
             save_results=False, save_settings=False, save_data=False):
     """Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.
 
@@ -76,7 +79,7 @@ def save_fg(fg, file_name, file_path='', append=False,
     file_name : str or FileObject
         File to which to save data.
     file_path : str, optional
-        Path to directory to which the save. If not provided, saves to current directory.
+        Path to directory to which the save. If None, saves to current directory.
     append : bool, optional
         Whether to append to an existing file, if available. default: False
             This option is only valid (and only used) if file_name is a str.
@@ -87,6 +90,9 @@ def save_fg(fg, file_name, file_path='', append=False,
     save_data : bool, optional
         Whether to save out power spectra data.
     """
+
+    # Check whether filepath is provided, and default to empty string if not
+    file_path = '' if not file_path else file_path
 
     if not save_results and not save_settings and not save_data:
         raise ValueError('No data specified for saving.')
@@ -117,7 +123,7 @@ def load_json(file_name, file_path):
     file_name : str or FileObject, optional
             File from which to load data.
     file_path : str
-        Path to directory from which to load. If not provided, loads from current directory.
+        Path to directory from which to load.
 
     Returns
     -------
@@ -146,7 +152,7 @@ def load_jsonlines(file_name, file_path):
     file_name : str
             File from which to load data.
     file_path : str
-        Path to directory from which to load. If not provided, loads from current directory.
+        Path to directory from which to load.
 
     Yields
     ------

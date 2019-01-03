@@ -227,25 +227,25 @@ class FOOOFGroup(FOOOF):
 
 
     @copy_doc_func_to_method(plot_fg)
-    def plot(self, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
+    def plot(self, save_fig=False, file_name='FOOOFGroup_plot', file_path=None):
 
         plot_fg(self, save_fig, file_name, file_path)
 
 
     @copy_doc_func_to_method(save_report_fg)
-    def save_report(self, file_name='FOOOFGroup_Report', file_path=''):
+    def save_report(self, file_name='FOOOFGroup_report', file_path=None):
 
         save_report_fg(self, file_name, file_path)
 
 
     @copy_doc_func_to_method(save_fg)
-    def save(self, file_name='fooof_group_results', file_path='', append=False,
+    def save(self, file_name='FOOOFGroup_results', file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 
         save_fg(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
-    def load(self, file_name='fooof_group_results', file_path=''):
+    def load(self, file_name='FOOOFGroup_results', file_path=None):
         """Load FOOOFGroup data from file, reconstructing the group_results.
 
         Parameters

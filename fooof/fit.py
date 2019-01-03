@@ -433,25 +433,25 @@ class FOOOF(object):
 
 
     @copy_doc_func_to_method(plot_fm)
-    def plot(self, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path='', ax=None):
+    def plot(self, plt_log=False, save_fig=False, file_name='FOOOF_plot', file_path=None, ax=None):
 
         plot_fm(self, plt_log, save_fig, file_name, file_path, ax)
 
 
     @copy_doc_func_to_method(save_report_fm)
-    def save_report(self, file_name='FOOOF_Report', file_path='', plt_log=False):
+    def save_report(self, file_name='FOOOF_report', file_path=None, plt_log=False):
 
         save_report_fm(self, file_name, file_path, plt_log)
 
 
     @copy_doc_func_to_method(save_fm)
-    def save(self, file_name='fooof_data', file_path='', append=False,
+    def save(self, file_name='FOOOF_results', file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 
         save_fm(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
-    def load(self, file_name='fooof_data', file_path=''):
+    def load(self, file_name='FOOOF_results', file_path=None):
         """Load in FOOOF file. Reads in a JSON file.
 
         Parameters

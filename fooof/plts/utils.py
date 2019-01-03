@@ -6,7 +6,6 @@ These utility functions should be considered private.
     They are not expected to be called directly by the user.
 """
 
-
 from numpy import log10
 
 from fooof.plts.settings import DEFAULT_FIGSIZE, ALPHA_LEVELS
