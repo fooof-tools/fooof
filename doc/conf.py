@@ -58,6 +58,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx_gallery.gen_gallery',
     'sphinx.ext.napoleon',
+    'sphinx.ext.intersphinx',
     'm2r'
 ]
 
@@ -95,9 +96,6 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'alabaster'
-#html_theme = 'classic'
-#html_theme = 'haiku'
 html_theme = 'bootstrap'
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -113,7 +111,11 @@ html_theme_options = {
         ("Examples", "auto_examples/index"),
         ("GitHub", "https://github.com/voytekresearch/fooof", True)
     ],
-    'bootswatch_theme': "flatly"
+    'bootswatch_theme': "flatly",
+
+    # Drop the page & source links in the navbar
+    'navbar_pagenav': False,
+    'source_link_position': False
 }
 
 # Nice other theme options: sandstone
