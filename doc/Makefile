@@ -33,7 +33,7 @@ install:
 	#   --depth 1 is a speed optimization since we don't need the
 	#     history prior to the last commit
 	#   -b gh-pages fetches only the branch for the gh-pages
-	git clone -b gh-pages --single-branch --no-checkout --depth 1 https://github.com/voytekresearch/fooof _build/tmp_html
+	git clone -b gh-pages --single-branch --no-checkout --depth 1 https://github.com/fooof-tools/fooof _build/tmp_html
 	touch _build/tmp_html/.nojekyll
 	make html
 	cd _build/ && \

@@ -19,6 +19,9 @@
 # Ignore coverage file
 .coverage
 
+# Ignore testing related files
+.pytest_cache/*
+
 # Ignore temp file for linter output
 _lint.txt
 
