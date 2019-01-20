@@ -199,7 +199,8 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
             - If length of 2, the 'fixed' background is used, if length of 3, 'knee' is used.
     Gaussian Parameters:
         - Each gaussian description is a set of three values:
-            - mean (CF), amplitude (Amp), and std (BW)
+            - mean (Center Frequency), amplitude (Amplitude), and std (Bandwidth)
+            - Make sure any center frequencies you request are within the simulated frequency range
         - The total number of parameters that need to be specified is number of peaks * 3
             - These can be specified in as all together in a flat list.
                 - For example: [10, 1, 1, 20, 0.5, 1]
@@ -264,7 +265,8 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params,
             - If length of 2, 'fixed' background is used, if length of 3, 'knee' is used.
     Gaussian Parameters:
         - Each gaussian description is a set of three values:
-            - mean (CF), amplitude (Amp), and std (BW)
+            - mean (Center Frequency), amplitude (Amplitude), and std (Bandwidth)
+            - Make sure any center frequencies you request are within the simulated frequency range
 
     Examples
     --------
