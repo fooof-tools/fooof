@@ -3,7 +3,6 @@
 Note: decorators (that are in modutils) are currently not tested.
 """
 
-from fooof import FOOOF
 from fooof.core.modutils import *
 
 ###################################################################################################
@@ -16,33 +15,6 @@ def test_safe_import():
 
     bad = safe_import('bad')
     assert not bad
-
-def test_get_obj_desc():
-
-    desc =  get_obj_desc()
-
-    tfm = FOOOF()
-    objs = dir(tfm)
-
-    # Test that everything in dict is a valid component of the fooof object
-    for ke, va in desc.items():
-        for it in va:
-            assert it in objs
-
-def test_get_data_indices():
-
-    indices_fixed = get_data_indices('fixed')
-    assert indices_fixed
-    for ke, va in indices_fixed.items():
-        if ke == 'knee':
-            assert not va
-        else:
-            assert isinstance(va, int)
-
-    indices_knee = get_data_indices('knee')
-    assert indices_knee
-    for ke, va in indices_knee.items():
-        assert isinstance(va, int)
 
 def test_docs_drop_param():
 

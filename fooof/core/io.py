@@ -5,8 +5,7 @@ import os
 import json
 from json import JSONDecodeError
 
-from fooof.core.modutils import get_obj_desc
-from fooof.core.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
+from fooof.core.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array, get_obj_desc
 
 ###################################################################################################
 ###################################################################################################

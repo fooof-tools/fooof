@@ -13,7 +13,7 @@ import numpy as np
 from fooof import FOOOFGroup, fit_fooof_group_3d
 from fooof.fit import FOOOFResult
 from fooof.synth import gen_group_power_spectra
-from fooof.core.modutils import get_obj_desc
+from fooof.core.utils import get_obj_desc
 
 from fooof.tests.utils import default_group_params, plot_test
 

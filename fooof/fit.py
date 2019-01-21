@@ -43,8 +43,8 @@ from fooof.plts.fm import plot_fm
 from fooof.core.io import save_fm, load_json
 from fooof.core.reports import save_report_fm
 from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
-from fooof.core.utils import group_three, check_array_dim
-from fooof.core.modutils import get_obj_desc, copy_doc_func_to_method
+from fooof.core.utils import group_three, check_array_dim, get_obj_desc
+from fooof.core.modutils import copy_doc_func_to_method
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_issue_str, gen_wid_warn_str
 
 from fooof.synth.gen import gen_freqs, gen_background, gen_peaks
