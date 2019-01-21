@@ -47,7 +47,7 @@ from fooof.core.utils import group_three, check_array_dim
 from fooof.core.modutils import get_obj_desc, copy_doc_func_to_method
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_issue_str, gen_wid_warn_str
 
-from fooof.synth import gen_freqs, gen_background, gen_peaks
+from fooof.synth.gen import gen_freqs, gen_background, gen_peaks
 
 ###################################################################################################
 ###################################################################################################
