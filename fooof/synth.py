@@ -89,9 +89,10 @@ def param_iter(params):
     list of floats
         Next generated list of parameters.
 
-    Example
-    -------
+    Examples
+    --------
     Iterates over center frequency values from 8 to 12 in increments of .25.
+
     >>> osc = param_iter([Stepper(8, 12, .25), 1, 1])
     """
 
@@ -209,10 +210,13 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
 
     Examples
     --------
+
     Generate a power spectrum with a single
+
     >>> freqs, psd = gen_power_spectrum([1, 50], [0, 2], [10, 1, 1])
 
     Generate a power spectrum with alpha and beta peaks
+
     >>> freqs, psd = gen_power_spectrum([1, 50], [0, 2], [[10, 1, 1], [20, 0.5, 1]])
     """
 

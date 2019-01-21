@@ -76,8 +76,9 @@ class FOOOF(object):
     """Model the physiological power spectrum as a combination of 1/f background and peaks.
 
     WARNING: FOOOF expects frequency and power values in linear space.
-        Passing in logged frequencies and/or power spectra is not detected,
-            and will silently produce incorrect results.
+
+    Passing in logged frequencies and/or power spectra is not detected,
+    and will silently produce incorrect results.
 
     Parameters
     ----------
@@ -127,7 +128,7 @@ class FOOOF(object):
         - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
         procedure, or a median filter smoothing on the FFT output before running FOOOF.
     - Where possible and appropriate, use longer time segments for power spectrum calculation to
-      get smoother power spectra, as this will give better FOOOF fits.
+    get smoother power spectra, as this will give better FOOOF fits.
     """
 
     def __init__(self, peak_width_limits=[0.5, 12.0], max_n_peaks=np.inf, min_peak_amplitude=0.0,
@@ -177,7 +178,7 @@ class FOOOF(object):
 
         Notes
         -----
-        These settings are for interal use, based on what is provided to, or set in init.
+        These settings are for internal use, based on what is provided to, or set in init.
             They should not be altered by the user.
         """
 

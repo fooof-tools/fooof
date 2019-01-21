@@ -1,4 +1,4 @@
-"""FOOOF - Group fitting object and methods.
+"""FOOOFGroup object and associated code for using the FOOOF model on 2D groups of power spectra.
 
 Notes
 -----

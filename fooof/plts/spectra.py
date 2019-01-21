@@ -17,7 +17,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 
 @check_dependency(plt, 'matplotlib')
 def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False, ax=None, **kwargs):
-    """Plot a line plot of a power-spectrum.
+    """Plot a power spectrum.
 
     Parameters
     ----------
