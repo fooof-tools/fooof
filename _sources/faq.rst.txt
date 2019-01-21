@@ -102,6 +102,7 @@ Does this work on epoched data? Can I fit single trials?
 Yes, FOOOF can be used in task based analyses.
 
 There are broadly two approaches you can take:
+
 - Calculate FFT's or power spectra per trial, and average across all trials in a condition, to fit one FOOOF model per condition
     - This approach is better if you want to use FOOOF to characterize short time segments in a task design
 - Calculate power spectra per trial, and fit FOOOF models per trial, analyzing the ditribution of FOOOF outputs per condition
