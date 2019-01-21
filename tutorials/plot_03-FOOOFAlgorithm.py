@@ -20,7 +20,7 @@ from fooof import FOOOF
 #  Note that these are used here for demonstration: - you do not need to import them to run FOOOF
 from fooof.synth import gen_background
 from fooof.core.funcs import gaussian_function
-from fooof.plts.templates import plot_spectrum
+from fooof.plts.spectra import plot_spectrum
 from fooof.plts.fm import plot_peak_iter
 
 ###############################################################################
