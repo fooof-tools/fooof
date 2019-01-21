@@ -23,6 +23,7 @@ clean:
 	rm -rf $(BUILDDIR)/*
 	rm -rf auto_examples
 	rm -rf auto_tutorials
+	rm -rf generated
 
 ## make install:
 # Build the html site, and push it to gh-pages branch of repo to deploy

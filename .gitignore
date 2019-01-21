@@ -32,3 +32,15 @@ _lint.txt
 # Ignore data files generated in the tutorial
 /tutorial/*.pdf
 /tutorial/*.json
+/tutorials/*.pdf
+/tutorials/*.json
+/examples/*.pdf
+/exmaples/*.json
+#^Note: 'tutorial' is old Jupyter notebook folder
+#  'tutorials' & 'examples' are sphinx folders
+
+# Ignore documentation files
+doc/_build/*
+doc/auto_examples/*
+doc/auto_tutorials/*
+doc/generated/*

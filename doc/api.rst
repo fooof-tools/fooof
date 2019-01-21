@@ -6,8 +6,8 @@ API Documentation
 
 .. currentmodule:: fooof
 
-FOOOF
-=====
+FOOOF Object
+============
 
 .. autosummary::
    :toctree: generated/
@@ -38,9 +38,12 @@ Synthesis Functions
 .. autosummary::
     :toctree: generated/
 
+    synth.Stepper
+    synth.param_iter
     synth.param_sampler
     synth.gen_power_spectrum
     synth.gen_group_power_spectra
+    synth.rotate_spectrum
 
 Plotting Functions
 ==================
@@ -48,7 +51,26 @@ Plotting Functions
 .. autosummary::
     :toctree: generated/
 
-    plts.templates.plot_spectrum
+    plts.spectra.plot_spectrum
+    plts.spectra.plot_spectra
+    plts.spectra.plot_spectrum_shading
+    plts.spectra.plot_spectra_shading
+    plts.fm.plot_fm
+    plts.fm.plot_peak_iter
+    plts.fg.plot_fg
+
+Utility Functions
+=================
+
+.. autosummary::
+    :toctree: generated/
+
+    utils.trim_spectrum
+    utils.get_settings
+    utils.get_data_info
+    utils.compare_settings
+    utils.compare_data_info
+    utils.combine_fooofs
 
 Data Objects
 ============
