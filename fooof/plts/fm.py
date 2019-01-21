@@ -9,7 +9,7 @@ import os
 import numpy as np
 
 from fooof.plts.utils import check_ax
-from fooof.plts.templates import plot_spectrum
+from fooof.plts.spectra import plot_spectrum
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
 

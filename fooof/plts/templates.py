@@ -1,4 +1,9 @@
-"""Plot templates for the FOOOF module."""
+"""Plot templates for the FOOOF module.
+
+Notes:
+- These are template plot structures used in reports and/or other plots.
+    - They are not expected to be used / imported separately.
+"""
 
 import numpy as np
 
@@ -9,52 +14,6 @@ plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
-
-@check_dependency(plt, 'matplotlib')
-def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False, ax=None, **kwargs):
-    """Plot a line plot of a power-spectrum.
-
-    Parameters
-    ----------
-    freqs : 1d array
-        X-axis data, frequency values.
-    power_spectrum : 1d array
-        Y-axis data, power_spectrum power values.
-    log_freqs : boolean, optional
-        Whether or not to take the log of the power axis before plotting. default: False
-    log_powers : boolean, optional
-        Whether or not to take the log of the power axis before plotting. default: False
-    ax : matplotlib.Axes, optional
-        Figure axes upon which to plot.
-    **kwargs
-        Keyword arguments to be passed to the plot call.
-    """
-
-    # Create plot axes, if not provided
-    if not ax:
-        _, ax = plt.subplots(figsize=(12, 10))
-
-    # Check for plot log options in **kwargs, extract if present
-    #log_freqs = kwargs.pop('log_freqs', False)
-    #log_powers = kwargs.pop('log_powers', False)
-
-    # Set plot data, logging if requested
-    plt_freqs = np.log10(freqs) if log_freqs else freqs
-    plt_powers = np.log10(power_spectrum) if log_powers else power_spectrum
-
-    # Create the plot
-    ax.plot(plt_freqs, plt_powers, **kwargs)
-
-    # Aesthetics and axis labels
-    ax.set_xlabel('Frequency', fontsize=20)
-    ax.set_ylabel('Power', fontsize=20)
-    ax.tick_params(axis='both', which='major', labelsize=16)
-    ax.grid(True)
-
-    # If labels were provided, add a legend
-    if ax.get_legend_handles_labels()[0]:
-        ax.legend(prop={'size': 16})
-
 
 @check_dependency(plt, 'matplotlib')
 def plot_scatter_1(data, label, title=None, x_val=0, ax=None):

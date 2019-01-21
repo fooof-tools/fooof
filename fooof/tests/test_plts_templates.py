@@ -9,15 +9,6 @@ from fooof.tests.utils import plot_test
 ###################################################################################################
 
 @plot_test
-def test_plot_spectrum(skip_if_no_mpl):
-
-
-    dat1 = np.random.randint(1, 100, 100)
-    dat2 = np.random.randint(1, 100, 100)
-
-    plot_spectrum(dat1, dat2, True)
-
-@plot_test
 def test_plot_scatter_1(skip_if_no_mpl):
 
     dat = np.random.randint(0, 100, 100)

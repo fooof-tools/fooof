@@ -7,6 +7,17 @@ from fooof.plts.spectra import *
 ###################################################################################################
 
 @plot_test
+def test_plot_spectrum(tfm, skip_if_no_mpl):
+
+    # dat1 = np.random.randint(1, 100, 100)
+    # dat2 = np.random.randint(1, 100, 100)
+
+    # plot_spectrum(dat1, dat2, True)
+
+    plot_spectrum(tfm.freqs, tfm.power_spectrum, True)
+
+
+@plot_test
 def test_plot_spectra(tfg, skip_if_no_mpl):
 
     plot_spectra(tfg.freqs, [tfg.power_spectra[0, :], tfg.power_spectra[1, :]])
