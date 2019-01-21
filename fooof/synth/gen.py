@@ -2,9 +2,8 @@
 
 import numpy as np
 
-from fooof.core.utils import group_three
+from fooof.core.utils import group_three, check_iter, check_flat
 from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
-from fooof.synth.utils import _check_iter, _check_flat
 from fooof.synth.params import SynParams
 
 ###################################################################################################
@@ -80,7 +79,7 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
     """
 
     xs = gen_freqs(freq_range, freq_res)
-    ys = gen_power_vals(xs, background_params, _check_flat(gauss_params), nlv)
+    ys = gen_power_vals(xs, background_params, check_flat(gauss_params), nlv)
 
     return xs, ys
 
@@ -148,9 +147,9 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params,
     syn_params = [None] * n_spectra
 
     # Check if inputs are generators, if not, make them into repeat generators
-    background_params = _check_iter(background_params, n_spectra)
-    gauss_params = _check_iter(gauss_params, n_spectra)
-    nlvs = _check_iter(nlvs, n_spectra)
+    background_params = check_iter(background_params, n_spectra)
+    gauss_params = check_iter(gauss_params, n_spectra)
+    nlvs = check_iter(nlvs, n_spectra)
 
     # Synthesize power spectra
     for ind, bgp, gp, nlv in zip(range(n_spectra), background_params, gauss_params, nlvs):

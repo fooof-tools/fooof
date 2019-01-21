@@ -1,5 +1,8 @@
 """Tests for FOOOF core.utils."""
 
+from collections import Iterable
+from itertools import repeat
+
 from fooof import FOOOF
 from fooof.core.utils import *
 
@@ -82,3 +85,40 @@ def test_get_data_indices():
     assert indices_knee
     for ke, va in indices_knee.items():
         assert isinstance(va, int)
+
+def test_check_iter():
+
+    # Note: generator case not tested
+
+    # Check that a number input becomes an iterable
+    out = check_iter(12, 3)
+    assert isinstance(out, Iterable)
+    assert isinstance(out, repeat)
+
+    # Check that single list becomes repeat iterable
+    out = check_iter([1, 1], 2)
+    assert isinstance(out, Iterable)
+    assert isinstance(out, repeat)
+
+    # Check that a list of lists, of right length stays list of list
+    out = check_iter([[1, 1], [1, 1], [1, 1]], 3)
+    assert isinstance(out, Iterable)
+    assert isinstance(out, list)
+    assert isinstance(out[0], list)
+
+def test_check_flat():
+
+    # Check an empty list stays the same
+    assert check_flat([]) == []
+
+    # Check an already flat list gets left the same
+    lst = [1, 2, 3, 4]
+    flat_lst = check_flat(lst)
+    assert flat_lst == lst
+
+    # Check a nested list gets flattened
+    lst = [[1, 2], [3, 4]]
+    flat_lst = check_flat(lst)
+    for el in flat_lst:
+        assert isinstance(el, int)
+    assert len(flat_lst) == 4

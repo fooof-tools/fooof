@@ -4,7 +4,7 @@ from collections import namedtuple
 
 import numpy as np
 
-from fooof.synth.utils import _check_flat
+from fooof.core.utils import check_flat
 
 ###################################################################################################
 ###################################################################################################
@@ -133,7 +133,7 @@ def param_sampler(params, probs=None):
 
     # If input is a list of lists, check each element, and flatten if needed
     if isinstance(params[0], list):
-        params = [_check_flat(lst) for lst in params]
+        params = [check_flat(lst) for lst in params]
 
     # In order to use numpy's choice, with probabilities, choices are made on indices
     # This is because the params can be a messy-sized list, that numpy choice does not like
