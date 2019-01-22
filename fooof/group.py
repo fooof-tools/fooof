@@ -178,11 +178,11 @@ class FOOOFGroup(FOOOF):
 
         Parameters
         ----------
-        name : {'background_params', 'peak_params', 'error', 'r_squared', 'gaussian_params'}
+        name : {'aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params'}
             Name of the data field to extract across the group.
-        col : {'CF', 'Amp', 'BW', 'intercept', 'knee', 'slope'} or int, optional
+        col : {'CF', 'Amp', 'BW', 'intercept', 'knee', 'exponent'} or int, optional
             Column name / index to extract from selected data, if requested.
-                Only used for name of {'background_params', 'peak_params', 'gaussian_params'}.
+                Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
 
         Returns
         -------
@@ -198,7 +198,7 @@ class FOOOFGroup(FOOOF):
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
-            col = get_data_indices(self.background_mode)[col]
+            col = get_data_indices(self.aperiodic_mode)[col]
 
         # Pull out the requested data field from the group data
         # As a special case, peak_params are pulled out in a way that appends
@@ -292,7 +292,7 @@ class FOOOFGroup(FOOOF):
 
         # Initialize a FOOOF object, with same settings as current FOOOFGroup
         fm = FOOOF(self.peak_width_limits, self.max_n_peaks, self.min_peak_amplitude,
-                   self.peak_threshold, self.background_mode, self.verbose)
+                   self.peak_threshold, self.aperiodic_mode, self.verbose)
 
         # Add data for specified single power spectrum, if available
         #  The power spectrum is inverted back to linear, as it's re-logged when added to FOOOF

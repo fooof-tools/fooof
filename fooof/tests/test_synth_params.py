@@ -21,7 +21,7 @@ def test_param_iter():
     for ind, val in enumerate(iter_1):
         assert val == [8 + (.1*ind), .5 , .5]
 
-    # Test background
+    # Test aperiodic
     step = Stepper(.25, 3, .25)
     bg = [0, step]
     iter_1 = param_iter(bg)

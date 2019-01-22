@@ -87,7 +87,7 @@ def save_report_fg(fg, file_name, file_path=''):
     ax0.set_xticks([])
     ax0.set_yticks([])
 
-    # Background parameters plot
+    # Aperiodic parameters plot
     ax1 = plt.subplot(gs[1, 0])
     plot_fg_bg(fg, ax1)
 

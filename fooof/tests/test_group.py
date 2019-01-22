@@ -52,7 +52,7 @@ def test_fg_fit():
     assert out
     assert len(out) == n_spectra
     assert isinstance(out[0], FOOOFResult)
-    assert np.all(out[1].background_params)
+    assert np.all(out[1].aperiodic_params)
 
 def test_fg_fit_par():
     """Test FOOOFGroup fit, running in parallel."""
@@ -67,7 +67,7 @@ def test_fg_fit_par():
     assert out
     assert len(out) == n_spectra
     assert isinstance(out[0], FOOOFResult)
-    assert np.all(out[1].background_params)
+    assert np.all(out[1].aperiodic_params)
 
 def test_fg_print(tfg):
     """Check print method (alias)."""
@@ -83,11 +83,11 @@ def test_get_results(tfg):
 def test_get_all_data(tfg):
     """Check get_all_data method."""
 
-    for dname in ['background_params', 'peak_params', 'error', 'r_squared', 'gaussian_params']:
+    for dname in ['aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params']:
         assert np.any(tfg.get_all_data(dname))
 
-        if dname == 'background_params':
-            for dtype in ['intercept', 'slope']:
+        if dname == 'aperiodic_params':
+            for dtype in ['intercept', 'exponent']:
                 assert np.any(tfg.get_all_data(dname, dtype))
 
         if dname == 'peak_params':
