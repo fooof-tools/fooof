@@ -21,7 +21,15 @@ FOOOFGroup Object
    :toctree: generated/
 
    FOOOFGroup
-   fit_fooof_group_3d
+
+FOOOF Object Functions
+======================
+
+.. autosummary::
+   :toctree: generated/
+
+   funcs.combine_fooofs
+   funcs.fit_fooof_group_3d
 
 Analysis Functions
 ==================
@@ -38,12 +46,13 @@ Synthesis Functions
 .. autosummary::
     :toctree: generated/
 
-    synth.Stepper
-    synth.param_iter
-    synth.param_sampler
-    synth.gen_power_spectrum
-    synth.gen_group_power_spectra
-    synth.rotate_spectrum
+    synth.params.Stepper
+    synth.params.param_iter
+    synth.params.param_sampler
+    synth.gen.gen_freqs
+    synth.gen.gen_power_spectrum
+    synth.gen.gen_group_power_spectra
+    synth.transform.rotate_spectrum
 
 Plotting Functions
 ==================
@@ -70,7 +79,6 @@ Utility Functions
     utils.get_data_info
     utils.compare_settings
     utils.compare_data_info
-    utils.combine_fooofs
 
 Data Objects
 ============
@@ -79,3 +87,4 @@ Data Objects
     :toctree: generated/
 
     fit.FOOOFResult
+    synth.params.SynParams

@@ -14,7 +14,8 @@
 from fooof import FOOOFGroup
 
 # Import some utilities for synthesizing some test data
-from fooof.synth import gen_group_power_spectra, param_sampler
+from fooof.synth.params import param_sampler
+from fooof.synth.gen import gen_group_power_spectra
 
 ###############################################################################
 # Synthesizing Power Spectra
@@ -35,7 +36,7 @@ n_psds = 10
 f_range = [3, 40]
 
 # Set some options for background parameters
-#  Generated spectra will have an offset of either [20, 50, 35], and corresponding slope of [2., 2.5, 1.5]
+#  Generated spectra will have an offset of either [20, 50, 35], and corresponding exponent of [2., 2.5, 1.5]
 bgp_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
 
 # Set some options for peak parameters
@@ -88,7 +89,7 @@ fg.print_results()
 ###############################################################################
 
 # Plot a summary of the results across the group
-#  Note: given the simulations, we expect slopes at {1.5, 2.0. 2.5} and peaks around {10, 20}
+#  Note: given the simulations, we expect exponents at {1.5, 2.0. 2.5} and peaks around {10, 20}
 fg.plot()
 
 ###############################################################################
@@ -126,8 +127,8 @@ fg.group_results[0:2]
 ###############################################################################
 
 # Extract aperiodic data
-bgps = fg.get_all_data('background_params')
-sls = fg.get_all_data('background_params', 'slope')
+bgps = fg.get_all_data('aperiodic_params')
+exps = fg.get_all_data('aperiodic_params', 'exponent')
 
 # Extract peak data
 peaks = fg.get_all_data('peak_params')
@@ -158,14 +159,14 @@ print(f_res.__doc__)
 ###############################################################################
 ###############################################################################
 
-# Check out the extracted slope values
+# Check out the extracted exponent values
 #  Note that this extraction will return an array of length equal to the number of model fits
 #    The model fit from which each data element originated is the index of this vector
-print(sls)
+print(exps)
 
 ###############################################################################
 
-# Check the fit center-frequencies and slope values
+# Check the fit center-frequencies
 #  Note that when you extract peak data, an additional column is appended, specifying which model fit it came from
 print(cfs)
 

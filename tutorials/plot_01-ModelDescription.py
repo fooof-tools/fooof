@@ -14,7 +14,7 @@
 #
 # A neural power spectrum is fit as a combination of the aperiodic signal and periodic oscillations.
 #
-# The aperiodic component of the signal displays 1/f like properties, and is referred to in the code as the 'background'.
+# The aperiodic component of the signal displays 1/f like properties.
 #
 # Putative oscillations (hereafter referred to as 'peaks'), are frequency regions in which there are 'bumps' of power over and above the aperiodic signal.
 #
@@ -26,8 +26,8 @@
 # Where `P` is the power spectrum, `L` is the aperiodic signal, and each :math:`G_n` is a Gaussian fit to a peak, for `N` total peaks extracted from the power spectrum.
 
 ###############################################################################
-# Aperiodic ('background') Fit
-# ----------------------------
+# Aperiodic Fit
+# -------------
 #
 # The aperiodic fit uses an exponential function, fit on the semilog power spectrum (linear frequencies and $log10$ power values).
 #
@@ -45,7 +45,7 @@
 #
 # - `b` is the broadband 'offset'
 # - `k` relates to the 'knee'
-# - :math:`\chi` is the 'slope'
+# - :math:`\chi` is the 'exponent' of the aperiodic fit
 # - `F` is the vector of input frequencies
 #
 # Note that fitting the knee parameter is optional. If used, the knee defines a bend in the 1/f.
@@ -82,7 +82,7 @@
 #
 # Briefly, the algorithm proceeds as such:
 #
-# - An initial fit of the aperiodic 'background' signal is taken across the power spectrum
+# - An initial fit of the aperiodic signal is taken across the power spectrum
 # - This aperiodic fit is subtracted from the power spectrum, creating a flattened spectrum
 # - Peaks are iteratively found in this flattened spectrum
 # - A full peak fit is created of all peak candidates found
@@ -141,9 +141,9 @@
 # Aperiodic Signal Fitting Approach
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# **background_mode (string)**
+# **aperiodic_mode (string)**
 #
-# The fitting approach to use for the aperiodic 'background' signal.
+# The fitting approach to use for the aperiodic signal.
 #
 # Options:
 #   - 'fixed' : fits without a knee parameter (with the knee parameter 'fixed' at 0)

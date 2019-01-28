@@ -16,7 +16,8 @@ import numpy as np
 from fooof import FOOOF, FOOOFGroup
 
 # Import some utilities, and tools for creating synthetic power-spectra
-from fooof.synth import gen_power_spectrum, gen_group_power_spectra, param_sampler
+from fooof.synth.params import param_sampler
+from fooof.synth.gen import gen_power_spectrum, gen_group_power_spectra
 from fooof.core.utils import group_three
 
 ###############################################################################
@@ -81,15 +82,15 @@ np.random.seed(321)
 
 # Set the frequency range to generate the power spectrum
 f_range = [1, 50]
-# Set aperiodic background signal parameters, as [offset, slope]
-bg_params = [20, 2]
+# Set aperiodic background signal parameters, as [offset, exponent]
+ap_params = [20, 2]
 # Gaussian peak parameters
 gauss_params = [10, 1.0, 2.5, 20, 0.8, 2, 32, 0.6, 1]
 # Set the level of noise to generate the power spectrum with
 nlv = 0.1
 
 # Create a synthetic power spectrum
-freqs, spectrum = gen_power_spectrum(f_range, bg_params, gauss_params, nlv)
+freqs, spectrum = gen_power_spectrum(f_range, ap_params, gauss_params, nlv)
 
 ###############################################################################
 
@@ -141,15 +142,15 @@ for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
 
 # Set the frequency range to generate the power spectrum
 f_range = [1, 50]
-# Aperiodic parameters, as [offset, slope]
-bg_params = [20, 2]
+# Aperiodic parameters, as [offset, exponent]
+ap_params = [20, 2]
 # Gaussian peak parameters
 gauss_params = [10, 1.0, 1.0, 20, 0.3, 1.5, 32, 0.25, 1]
 # Set the level of noise to generate the power spectrum with
 nlv = 0.025
 
 # Create a synthetic power spectrum
-freqs, spectrum = gen_power_spectrum([1, 50], bg_params, gauss_params, nlv=nlv)
+freqs, spectrum = gen_power_spectrum([1, 50], ap_params, gauss_params, nlv=nlv)
 
 
 # Update settings to make sure they are sensitive to smaller peaks in smoother power spectra
@@ -170,16 +171,16 @@ for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
 #
 # FOOOF currently offers two approaches for fitting the aperiodic 'background':
 #
-# - Fitting with just an offset and a slope, equivalent to a linear fit in log-log space
-#     - background_mode = 'fixed'
+# - Fitting with just an offset and a exponent, equivalent to a linear fit in log-log space
+#     - aperiodic_mode = 'fixed'
 # - Including a 'knee' parameter, reflecting a fit with a bend, in log-log space
-#     - background_mode = 'knee'
+#     - aperiodic_mode = 'knee'
 #
 # Fitting without a knee assumes a single linear 1/f like characteristic to aperiodic signal, in log-log space. Fitting will go wrong if this assumption is violated. In particular, broad frequency ranges (often, greater than ~40 Hz range) don't meet this criterion, as they also exhibit a 'bend' in the aperiodic signal. For these cases, fitting should be done using a 'knee' parameter.
 #
 # Fitting with a knee is still experimental, with a couple outstanding issues:
 #
-# - Interpreting the fit results when using knee fits is more complex, as the slope result is no longer a simple measure of a singular property, but rather reflects the slope past the 'knee' inflecting point, and as such, knee & slope values should be considered together.
+# - Interpreting the fit results when using knee fits is more complex, as the exponent result is no longer a simple measure of a singular property, but rather reflects the slope past the 'knee' inflecting point, and as such, knee & exponent values should be considered together.
 # - Fitting FOOOF with knee fits may perform sub-optimally in ambiguous cases (where the data may or may not have a knee).
 #
 # Given this, we recommend:

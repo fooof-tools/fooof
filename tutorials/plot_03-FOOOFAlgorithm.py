@@ -18,7 +18,7 @@ from fooof import FOOOF
 
 # Import some internal functions from FOOOF
 #  Note that these are used here for demonstration: - you do not need to import them to run FOOOF
-from fooof.synth import gen_background
+from fooof.synth.gen import gen_aperiodic
 from fooof.core.funcs import gaussian_function
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.fm import plot_peak_iter
@@ -64,14 +64,14 @@ fm.fit(freqs, spectrum, [3, 40])
 
 ###############################################################################
 
-# Do an initial aperiodic signal fit - a robust background fit (excluding outliers)
+# Do an initial aperiodic signal fit - a robust fit, that excludes outliers
 #  This recreates an initial fit that isn't ultimately stored in the FOOOF object)
-init_bg_fit = gen_background(fm.freqs, fm._robust_bg_fit(fm.freqs, fm.power_spectrum))
+init_ap_fit = gen_aperiodic(fm.freqs, fm._robust_ap_fit(fm.freqs, fm.power_spectrum))
 
-# Plot the initial aperiodic 'background' fit
+# Plot the initial aperiodic fit
 _, ax = plt.subplots(figsize=(12, 10))
 plot_spectrum(fm.freqs, fm.power_spectrum, plt_log, label='Original Power Spectrum', ax=ax)
-plot_spectrum(fm.freqs, init_bg_fit, plt_log, label='Initial Background Fit', ax=ax)
+plot_spectrum(fm.freqs, init_ap_fit, plt_log, label='Initial Aperiodic Fit', ax=ax)
 
 ###############################################################################
 #
@@ -121,10 +121,10 @@ plot_spectrum(fm.freqs, fm._spectrum_peak_rm, plt_log, label='Peak Removed Spect
 
 ###############################################################################
 
-# Fit the final aperiodic 'background' fit on the peak removed power spectrum
+# Fit the final aperiodic fit on the peak removed power spectrum
 _, ax = plt.subplots(figsize=(12, 10))
 plot_spectrum(fm.freqs, fm._spectrum_peak_rm, plt_log, label='Peak Removed Spectrum', ax=ax)
-plot_spectrum(fm.freqs, fm._bg_fit, plt_log, label='Final Background Fit', ax=ax)
+plot_spectrum(fm.freqs, fm._ap_fit, plt_log, label='Final Aperiodic Fit', ax=ax)
 
 ###############################################################################
 # The aperiodic fit component of the model is now also complete. The two components can now be combined.
@@ -143,5 +143,5 @@ fm.print_results()
 ###############################################################################
 
 # Plot the full model fit of the power spectrum
-#  The final fit (red), and aperiodic 'background' fit (blue), are the same as we plotted above
+#  The final fit (red), and aperiodic fit (blue), are the same as we plotted above
 fm.plot(plt_log)

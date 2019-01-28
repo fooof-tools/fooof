@@ -27,7 +27,8 @@ import numpy as np
 
 # Import FOOOF objects & synth utilities
 from fooof import FOOOF, FOOOFGroup
-from fooof.synth import gen_group_power_spectra, param_sampler
+from fooof.synth.params import param_sampler
+from fooof.synth.gen import gen_group_power_spectra
 
 # FOOOF comes with some basic analysis function to work with FOOOF outputs
 from fooof.analysis import get_band_peak, get_band_peak_group
@@ -45,7 +46,7 @@ fm.fit(freqs, spectrum, [3, 30])
 # Generate some synthetic power spectra and fit a FOOOFGroup to use
 freqs, spectra, _ = gen_group_power_spectra(n_spectra=10,
                                             freq_range=[3, 40],
-                                            background_params=param_sampler([[20, 2], [35, 1.5]]),
+                                            aperiodic_params=param_sampler([[20, 2], [35, 1.5]]),
                                             gauss_params=param_sampler([[], [10, 0.5, 2]]))
 fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_amplitude=0.05, max_n_peaks=6, verbose=False)
 fg.fit(freqs, spectra)
@@ -133,11 +134,11 @@ print('Alpha BW : ', np.nanmean(alphas[:, bw_ind]))
 
 ###############################################################################
 
-# Extract slope data from group results
-sls = fg.get_all_data('background_params', 'slope')
+# Extract aperiodic exponent data from group results
+exps = fg.get_all_data('aperiodic_params', 'exponent')
 
-# Check out slope data
-sls
+# Check out the aperiodic exponent results
+exps
 
 ###############################################################################
 # Comparing Across PSDs

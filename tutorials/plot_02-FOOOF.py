@@ -79,7 +79,7 @@ fm.fit(freqs, spectrum, freq_range)
 #
 # Following the sklearn convention, attributes that are fit as a result of the model have a trailing underscore:
 #
-# - background\_params_
+# - aperiodic\_params_
 # - peak\_params_
 # - error\_
 # - r2\_
@@ -87,8 +87,8 @@ fm.fit(freqs, spectrum, freq_range)
 ###############################################################################
 # Access model fit parameters from FOOOF object, after fitting
 
-# Aperiodic 'background' parameters
-print('Aperiodic signal (background) parameters: \n', fm.background_params_, '\n')
+# Aperiodic parameters
+print('Aperiodic signal parameters: \n', fm.aperiodic_params_, '\n')
 
 # Peak parameters
 print('Peak parameters: \n', fm.peak_params_, '\n')
@@ -140,7 +140,7 @@ for peak, gau in zip(fm.peak_params_, fm._gaussian_params):
 ###############################################################################
 
 # Grab each model fit result with convenience method to gather all results
-bg_params, peak_params, r_squared, fit_error, gauss_params = fm.get_results()
+ap_params, peak_params, r_squared, fit_error, gauss_params = fm.get_results()
 
 # Get results actually returns a FOOOFResult object (a named tuple)
 fres = fm.get_results()
@@ -151,7 +151,7 @@ fres = fm.get_results()
 print(fres, '\n')
 
 # From FOOOFResults, you can access the different results
-print('Aperiodic Signal (Background) Parameters: \n', fres.background_params)
+print('Aperiodic Signal Parameters: \n', fres.aperiodic_params)
 
 
 # Check the r^2 and error of the model fit
@@ -171,7 +171,7 @@ print('Fit error: \n {:5.4f}'.format(fm.error_))
 #
 # - Settings (attributes)
 #     - User exposed settings are all set in object initialization.
-#         - peak_width_limits, max_n_peaks, min_peak_amplitude, peak_threshold, background_mode, verbose
+#         - peak_width_limits, max_n_peaks, min_peak_amplitude, peak_threshold, aperiodic_mode, verbose
 #     - There are some internal settings that are not exposed at initialization. These settings are unlikely to need to be accessed by the user, but can be if desired - they are  all defined and documented in \__init\__ (there should be no other settings, or 'magic numbers' in any other parts of the code).
 # - Data (attributes)
 #     - FOOOF stores the frequency vector, power spectrum, frequency range, and frequency resolution.
@@ -179,7 +179,7 @@ print('Fit error: \n {:5.4f}'.format(fm.error_))
 #     - During the fit procedure, interim (hidden) data variables are also created and used
 # - Results (attributes)
 #     - FOOOF follows the scipy convention in that any attributes that result from fitting to the data are indicated by a trailing underscore
-#         - fm.background\_params_, fm.peak\_params\_, fm.fooofed\_spectrum\_, fm.r\_squared\_, fm.error\_
+#         - fm.aperiodic\_params_, fm.peak\_params\_, fm.fooofed\_spectrum\_, fm.r\_squared\_, fm.error\_
 # - Functions (methods)
 #     - Functions that operate on the FOOOF object data.
 #     - In addition to the exposed methods, there are some internal methods called in the fitting procedure. These methods should not be called independently, as they may depend on internal state as defined from other methods.
@@ -219,15 +219,15 @@ fm.report(freqs, spectrum, f_range)
 # Simply resetting the relevant attribute may not appropriately propragate the value, and may fail (either by erroring out, or not applying the settings properly during fit and returning erroneous results).
 
 ###############################################################################
-# Fitting FOOOF with Background 'Knee'
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Fitting FOOOF with Aperiodic 'Knee'
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Load example data (LFP)
 freqs = np.load('dat/freqs_lfp.npy')
 spectrum = np.load('dat/spectrum_lfp.npy')
 
-# Initialize FOOOF - setting to aperiodic / background mode to use a knee fit
-fm = FOOOF(peak_width_limits=[2, 8], background_mode='knee')
+# Initialize FOOOF - setting to aperiodic mode to use a knee fit
+fm = FOOOF(peak_width_limits=[2, 8], aperiodic_mode='knee')
 
 # Fit FOOOF model
 #  Note that this time we're specifying an optional parameter to plot in log-log
