@@ -26,8 +26,8 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
     ----------
     fm : FOOOF() object
         FOOOF object, containing a power spectrum and (optionally) results from fitting.
-    plt_log : boolean, optional
-        Whether or not to plot the frequency axis in log space. default: False
+    plt_log : boolean, optional, default: False
+        Whether or not to plot the frequency axis in log space.
     save_fig : boolean, optional
         Whether to save out a copy of the plot. default : False
     file_name : str, optional

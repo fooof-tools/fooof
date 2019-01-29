@@ -22,8 +22,8 @@ def save_fm(fm, file_name, file_path=None, append=False,
         File to which to save data.
     file_path : str, optional
         Path to directory to which the save. If None, saves to current directory.
-    append : bool, optional
-        Whether to append to an existing file, if available. default: False
+    append : bool, optional, default: False
+        Whether to append to an existing file, if available.
             This option is only valid (and only used) if file_name is a str.
     save_results : bool, optional
         Whether to save out FOOOF model fit results.
@@ -79,8 +79,8 @@ def save_fg(fg, file_name, file_path=None, append=False,
         File to which to save data.
     file_path : str, optional
         Path to directory to which the save. If None, saves to current directory.
-    append : bool, optional
-        Whether to append to an existing file, if available. default: False
+    append : bool, optional, default: False
+        Whether to append to an existing file, if available.
             This option is only valid (and only used) if file_name is a str.
     save_results : bool, optional
         Whether to save out FOOOF model fit results.

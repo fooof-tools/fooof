@@ -82,18 +82,18 @@ class FOOOF(object):
 
     Parameters
     ----------
-    peak_width_limits : tuple of (float, float), optional
-        Limits on possible peak width, as [lower_bound, upper_bound]. default: [0.5, 12.0]
-    max_n_peaks : int, optional
-        Maximum number of gaussians to be fit in a single spectrum. default: inf
-    min_peak_amplitude : float, optional
-        Minimum amplitude threshold for a peak to be modeled. default: 0
-    peak_threshold : float, optional
-        Threshold for detecting peaks, units of standard deviation. default: 2.0
+    peak_width_limits : tuple of (float, float), optional, default: [0.5, 12.0]
+        Limits on possible peak width, as [lower_bound, upper_bound].
+    max_n_peaks : int, optional, default: inf
+        Maximum number of gaussians to be fit in a single spectrum.
+    min_peak_amplitude : float, optional, default: 0
+        Minimum amplitude threshold for a peak to be modeled.
+    peak_threshold : float, optional, default: 2.0
+        Threshold for detecting peaks, units of standard deviation.
     aperiodic_mode : {'fixed', 'knee'}
         Which approach to take to fitting the aperiodic component.
-    verbose : boolean, optional
-        Whether to be verbose in printing out warnings. default: True
+    verbose : boolean, optional, default: True
+        Whether to be verbose in printing out warnings.
 
     Attributes
     ----------
@@ -106,11 +106,10 @@ class FOOOF(object):
     freq_res : float
         Frequency resolution of the power spectrum.
     fooofed_spectrum_ : 1d array
-        The full model fit of the power spectrum, including aperiodic and periodic components.
-            Stored internally in log10 scale.
+        The full model fit of the power spectrum, in log10 scale
     aperiodic_params_ : 1d array
         Parameters that define the aperiodic fit. As [Intercept, (Knee), Exponent].
-            The knee parameter is only included if aperiodic component is fit with a knee.
+        The knee parameter is only included if aperiodic component is fit with a knee.
     peak_params_ : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
     r_squared_ : float
@@ -267,8 +266,8 @@ class FOOOF(object):
         ----------
         fooof_result : FOOOFResult
             An object containing the results from fitting a FOOOF model.
-        regenerate : bool, optional
-            Whether to regenerate the model fits from the given fit parameters. default : False
+        regenerate : bool, optional, default : False
+            Whether to regenerate the model fits from the given fit parameters.
         """
 
         self.aperiodic_params_ = fooof_result.aperiodic_params
@@ -292,8 +291,8 @@ class FOOOF(object):
             Power values, which must be input in linear space.
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
-        plt_log : boolean, optional
-            Whether or not to plot the frequency axis in log space. default: False
+        plt_log : boolean, optional, default: False
+            Whether or not to plot the frequency axis in log space.
 
         Notes
         -----
@@ -392,10 +391,10 @@ class FOOOF(object):
 
         Parameters
         ----------
-        description : bool, optional
-            Whether to print out a description with current settings. default: False
-        concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: False
+        description : bool, optional, default: False
+            Whether to print out a description with current settings.
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
         """
 
         print(gen_settings_str(self, description, concise))
@@ -406,8 +405,8 @@ class FOOOF(object):
 
         Parameters
         ----------
-        concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: False
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
         """
 
         print(gen_results_str_fm(self, concise))
@@ -419,8 +418,8 @@ class FOOOF(object):
 
         Parameters
         ----------
-        concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: False
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
         """
 
         print(gen_issue_str(concise))
@@ -494,8 +493,8 @@ class FOOOF(object):
         ----------
         data : dict
             The dictionary of data that has been added to the object.
-        regenerate : bool, optional
-            Whether to regenerate the power_spectrum model. default : True
+        regenerate : bool, optional, default : True
+            Whether to regenerate the power_spectrum model.
         """
 
         # If results loaded, check dimensions of peak parameters

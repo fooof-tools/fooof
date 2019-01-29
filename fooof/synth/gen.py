@@ -39,10 +39,10 @@ def gen_power_spectrum(freq_range, aperiodic_params, gauss_params, nlv=0.005, fr
         Parameters to create the aperiodic component of a power spectrum. Length of 2 or 3 (see note).
     gauss_params : list of float or list of list of float
         Parameters to create peaks. Total length of n_peaks * 3 (see note).
-    nlv : float, optional
-        Noise level to add to generated power spectrum. Default: 0.005
-    freq_res : float, optional
-        Frequency resolution for the synthetic power spectra. Default: 0.5
+    nlv : float, optional, default: 0.005
+        Noise level to add to generated power spectrum.
+    freq_res : float, optional, default: 0.5
+        Frequency resolution for the synthetic power spectra.
 
     Returns
     -------
@@ -99,10 +99,10 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
     gauss_params : list of float or generator
         Parameters for the peaks of the power spectra.
             Length of n_peaks * 3.
-    nlvs : float or list of float or generator, optional
-        Noise level to add to generated power spectrum. default: 0.005
-    freq_res : float, optional
-        Frequency resolution for the synthetic power spectra. default: 0.5
+    nlvs : float or list of float or generator, optional, default: 0.005
+        Noise level to add to generated power spectrum.
+    freq_res : float, optional, default: 0.5
+        Frequency resolution for the synthetic power spectra.
 
     Returns
     -------

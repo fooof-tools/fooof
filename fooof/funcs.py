@@ -64,9 +64,9 @@ def fit_fooof_group_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
         Power values, in linear space, as [n_conditions, n_power_spectra, n_freqs].
     freq_range : list of [float, float], optional
         Desired frequency range to fit. If not provided, fits the entire given range.
-    n_jobs : int, optional
-        Number of jobs to run in parallel. default: 1
-            1 is no parallelization. -1 uses all available cores.
+    n_jobs : int, optional, default: 1
+        Number of jobs to run in parallel.
+        1 is no parallelization. -1 uses all available cores.
 
     Returns
     -------

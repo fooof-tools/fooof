@@ -136,7 +136,7 @@ def param_sampler(params, probs=None):
     params : list of lists or list of float
         Possible parameter values.
     probs : list of float, optional
-        Probabilities with which to sample each parameter option. Default: None
+        Probabilities with which to sample each parameter option.
         If None, each parameter option is sampled uniformly.
 
     Yields

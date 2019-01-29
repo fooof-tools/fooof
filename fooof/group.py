@@ -64,8 +64,8 @@ class FOOOFGroup(FOOOF):
 
         Parameters
         ----------
-        length : int, optional
-            Length of list of empty lists to initialize. If 0, single empty list. default: 0
+        length : int, optional, default: 0
+            Length of list of empty lists to initialize. If 0, single empty list.
         """
 
         self.group_results = [[]] * length
@@ -110,9 +110,9 @@ class FOOOFGroup(FOOOF):
             Matrix of power spectrum values, in linear space. Shape: [n_power_spectra, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
-        n_jobs : int, optional
-            Number of jobs to run in parallel. default: 1
-                1 is no parallelization. -1 uses all available cores.
+        n_jobs : int, optional, default: 1
+            Number of jobs to run in parallel.
+            1 is no parallelization. -1 uses all available cores.
 
         Notes
         -----
@@ -135,9 +135,9 @@ class FOOOFGroup(FOOOF):
             Matrix of power spectrum values, in linear space. Shape: [n_power_spectra, n_freqs].
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
-        n_jobs : int, optional
-            Number of jobs to run in parallel. default: 1
-                1 is no parallelization. -1 uses all available cores.
+        n_jobs : int, optional, default: 1
+            Number of jobs to run in parallel.
+            1 is no parallelization. -1 uses all available cores.
 
         Notes
         -----
@@ -281,8 +281,8 @@ class FOOOFGroup(FOOOF):
         ----------
         ind : int
             The index of the FOOOFResult in FOOOFGroup.group_results to load.
-        regenerate : bool, optional
-            Whether to regenerate the model fits from the given fit parameters. default : False
+        regenerate : bool, optional, default : False
+            Whether to regenerate the model fits from the given fit parameters.
 
         Returns
         -------
@@ -313,8 +313,8 @@ class FOOOFGroup(FOOOF):
 
         Parameters
         ----------
-        concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: False
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
         """
 
         print(gen_results_str_fg(self, concise))

@@ -25,10 +25,10 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False, ax=N
         X-axis data, frequency values.
     power_spectrum : 1d array
         Y-axis data, power_spectrum power values.
-    log_freqs : boolean, optional
-        Whether or not to take the log of the power axis before plotting. default: False
-    log_powers : boolean, optional
-        Whether or not to take the log of the power axis before plotting. default: False
+    log_freqs : boolean, optional, default: False
+        Whether or not to take the log of the power axis before plotting.
+    log_powers : boolean, optional, default: False
+        Whether or not to take the log of the power axis before plotting.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **kwargs
@@ -71,10 +71,10 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, ax=Non
         X-axis data, frequency values.
     power_spectra : list of 1d array
         Y-axis data, power spectrum power values for spectra to plot.
-    log_freqs : boolean, optional
-        Whether or not to take the log of the power axis before plotting. default: False
-    log_powers : boolean, optional
-        Whether or not to take the log of the power axis before plotting. default: False
+    log_freqs : boolean, optional, default: False
+        Whether or not to take the log of the power axis before plotting.
+    log_powers : boolean, optional, default: False
+        Whether or not to take the log of the power axis before plotting.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **kwargs
