@@ -7,24 +7,44 @@ Table of Contents
    :local:
    :backlinks: none
 
-What does FOOOF stand for?
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+What is FOOOF?
+~~~~~~~~~~~~~~
+
+FOOOF is an open-source Python toolbox to parameterize neural power spectra.
+
+In particular, FOOOF is a model driven approach that assumes that neurophysiological times series are comprised of two separable components, reflecting periodic and aperiodic activity. FOOOF does therefore rely on the assumption that these two components are indeed separable components of the underyling data, though it is agnostic to their physiological origin and putative functional roles.
+
+FOOOF operates on frequency representation of neurophysiological times series (power spectra). At it's core, FOOOF is a fitting procedure to measure these two components, periodic and aperiodic, in the power spectrum. The full model fit consists of a parameterizing of these aperiodic and periodic components, as well as a full (combined) model fit of the whole power spectrum.
+
+The full mathematical description of the model is described in the tutorials.
+
+Why is it called FOOOF?
+~~~~~~~~~~~~~~~~~~~~~~~
 
 FOOOF stands for "fitting oscillations and one-over f".
 
 This was a working title for the project that stuck as the name of the tool. The way we think of it now is in terms of being a tool for parameterizing neural power spectra - and, in particular, as tool for measuring both periodic and aperiodic activity in neural time series.
 
+Why should I use FOOOF?
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Though we often focus on the rhythmic (periodic) components, neurophysiological recordings of electromagnetic activity in the brain are fundamentally composed of aperiodic activity upon which there is (sometimes) also rhythmic components.
+
+These two components of the signal, periodic and aperiodic have very different properties and interpretations, and thus it is of the utmost importance to explicitly measure both components of the signal to be sure what is changing in the data. This is what FOOOF is designed to do, by explicitly modelling and measuring both aperiodic and periodic components of the signal.
+
+Many other methods and canonical approaches do not systematically separate aperiodic and periodic components of the signal, and results can be confounded between the two, and/or be misinterpreted.
+
 What do you mean by 'periodic' and 'aperiodic' activity?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By 'periodic' activity we mean features of the signal that are rhythmic, that are typically referred to as oscillations.
+By 'periodic' activity we mean features of the signal that are rhythmic, that are typically referred to as oscillations. This does not require that periodic activity be continuous, as oscillatory activity often exhibits as 'bursts' in the time series. In practice, putative oscillations, reflecting periodic activity, are operationally defined and detectable by FOOOF if they exhibit as band-limited power over and above the aperiodic component of the signal in the power spectrum.
 
-By 'aperiodic' activity we mean the arythmic component of the signal, that typically has a 1/f like distribution, whereby the power systematically decreases with increasing frequencies.
+By 'aperiodic' activity we mean the arhythmic component of the signal, that typically follow a 1/f like function, whereby the power systematically decreases with increasing frequencies.
 
 Why call it 'aperiodic'? Why not call it '1/f' or 'noise'?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-What we know call the 'aperiodic' component of the signal has variously been called, by us and others, either the '1/f' component activity of the signal (also referred to as 'scale free'), or sometimes the 'background' activity, or '1/f noise' or 'background noise'.
+What we now call the 'aperiodic' component of the signal has variously been called, by us and others, either the '1/f' component activity of the signal (also referred to as 'scale free'), or sometimes the 'background' activity, or '1/f noise' or 'background noise'.
 
 We have moved away from these terms, as they are imprecise, and/or theoretically loaded. In terms of calling it the '1/f', though the signal often approximates '1/f' over at least some frequency ranges, it is not truly '1/f' across all frequencies.
 
@@ -32,19 +52,10 @@ Also, from the physics perspective, '1/f' like activity is sometimes referred to
 
 For these reasons, we prefer and use the term 'aperiodic' as a neutral description of this component of the signal.
 
-Why should I use FOOOF?
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Though we often focus on the rhythmic (periodic) components, neurophysiological recordings of electromagnetic activity in the brain are fundamentally composed of aperiodic activity upon which there is (sometimes) also rythmic components.
-
-These two components of the signal, periodic and aperiodic have very different properties and interpretations, and thus it is of the utmost importance to explicitly measure both components of the signal to be sure what is changing in the data. This is what FOOOF is designed to do, by explicitly modelling and measuring both aperiodic and periodic components of the signal.
-
-Many other methods and canonical approaches do not systematically separate aperiodic and periodic components of the signal, and results can be confounded between the two, and/or be misinterpreted.
-
 Why is this different from other methods / what makes it work?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Many existing approaches do no attempt to separate the periodic and aperiodic components of the signal. Of methods that do attempt to measure periodic and/or aperiodic signal properties, one difference is that FOOOF does not prioritize one of the other component, but attempts to jointly learn both components.
+Many existing approaches do not attempt to separate the periodic and aperiodic components of the signal. Of methods that do attempt to measure periodic and/or aperiodic signal properties, one difference is that FOOOF does not prioritize one or the other component, but attempts to jointly learn both components.
 
 As a quick version, the joint learning procedure and some developments in fitting the aperiodic component are why we think FOOOF seems to do better at measuring these signal properties. More in depth analysis of the properties of FOOOF, and systematic comparisons with other methods (through simulations) are upcoming.
 
@@ -67,7 +78,7 @@ FOOOF tends not to be overly sensitive to small changes in parameter settings. Y
 I'm interested in a particular oscillation band, should I fit a small range?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Generally, no, it is better to always try and fit a broad range, rather then to fit a small frequency range, even if one is interested in a specific oscillation band in particular.
+Generally, no, it is better to always try and fit a broad range, rather than to fit a small frequency range, even if one is interested in a specific oscillation band in particular.
 
 This is because the if a small frequency range is used, it becomes much more difficult to estimate the aperiodic component of the data, and without a good estimate of the aperiodic component, it can also be more difficult to effectively estimate the periodic components.
 
@@ -92,7 +103,7 @@ Within these modalities, FOOOF is broadly agnostic to the details of the data, a
 Does it matter how I calculate the power spectra?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For the most part, no, it doesn't matter exactly how you calculate power spectra that you will fit with FOOOF, for example, using different methdos to estimate the power spectrum, such as Welch's or wavelet approaches.
+For the most part, no, it does not matter exactly how you calculate power spectra that you will fit with FOOOF. For example, using different methods to estimate the power spectrum, such as Welch's or wavelet approaches, should all be fine.
 
 Regardless of how you calculate them, the properties of the power spectra do matter somewhat to FOOOF - for example, the better the frequency resolution the more resolution you will have for estimating center frequencies and bandwidths of detected peaks, and the 'smoother' the spectra, the better FOOOF will be able to fit.
 
