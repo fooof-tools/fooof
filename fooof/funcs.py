@@ -59,7 +59,7 @@ def fit_fooof_group_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
     fg : FOOOFGroup
         Fitting object, pre-initialized with desired settings, to fit with.
     freqs : 1d array
-        Frequency values.
+        Frequency values for the power spectra, in linear space.
     power_spectra : 3d array
         Power values, in linear space, as [n_conditions, n_power_spectra, n_freqs].
     freq_range : list of [float, float], optional

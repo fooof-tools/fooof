@@ -10,7 +10,7 @@ from fooof.synth.params import SynParams
 ###################################################################################################
 
 def gen_freqs(freq_range, freq_res):
-    """Generate a frequency vector, from the frequency range and resolution.
+    """Generate a frequency vector.
 
     Parameters
     ----------
@@ -54,26 +54,29 @@ def gen_power_spectrum(freq_range, aperiodic_params, gauss_params, nlv=0.005, fr
     Notes
     -----
     Aperiodic Parameters:
-        - The function for the aperiodic process to use is inferred from the provided parameters.
-            - If length of 2, the 'fixed' aperiodic mode is used, if length of 3, 'knee' is used.
+
+    - The function for the aperiodic process to use is inferred from the provided parameters.
+    - If length of 2, the 'fixed' aperiodic mode is used, if length of 3, 'knee' is used.
+
     Gaussian Parameters:
-        - Each gaussian description is a set of three values:
-            - mean (Center Frequency), amplitude (Amplitude), and std (Bandwidth)
-            - Make sure any center frequencies you request are within the simulated frequency range
-        - The total number of parameters that need to be specified is number of peaks * 3
-            - These can be specified in as all together in a flat list.
-                - For example: [10, 1, 1, 20, 0.5, 1]
-            - They can also be grouped into a list of lists
-                - For example: [[10, 1, 1], [20, 0.5, 1]]
+
+    - Each gaussian description is a set of three values:
+
+      * Mean (Center Frequency), amplitude (Amplitude), and std (Bandwidth).
+      * Make sure any center frequencies you request are within the simulated frequency range
+
+    - The total number of parameters that need to be specified is number of peaks * 3
+
+      * These can be specified in as all together in a flat list (ex: [10, 1, 1, 20, 0.5, 1])
+      * They can also be grouped into a list of lists (ex: [[10, 1, 1], [20, 0.5, 1]])
 
     Examples
     --------
-
-    Generate a power spectrum with a single
+    Generate a power spectrum with a single peak, at 10 Hz:
 
     >>> freqs, psd = gen_power_spectrum([1, 50], [0, 2], [10, 1, 1])
 
-    Generate a power spectrum with alpha and beta peaks
+    Generate a power spectrum with alpha and beta peaks:
 
     >>> freqs, psd = gen_power_spectrum([1, 50], [0, 2], [[10, 1, 1], [20, 0.5, 1]])
     """
@@ -116,29 +119,37 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
     Notes
     -----
     Parameters options can be:
-        - A single set of parameters
-            - If so, these same parameters are used for all spectra.
-        - A list of parameters whose length is n_spectra.
-            - If so, each successive parameter set is such for each successive spectrum.
-        - A generator object that returns parameters for a power spectrum.
-            - If so, each spectrum has parameters pulled from the generator.
+
+    - A single set of parameters.
+      If so, these same parameters are used for all spectra.
+    - A list of parameters whose length is n_spectra.
+      If so, each successive parameter set is such for each successive spectrum.
+    - A generator object that returns parameters for a power spectrum.
+      If so, each spectrum has parameters pulled from the generator.
+
     Aperiodic Parameters:
-        - The function for the aperiodic process to use is inferred from the provided parameters.
-            - If length of 2, the 'fixed' aperiodic mode is used, if length of 3, 'knee' is used.
+
+    - The function for the aperiodic process to use is inferred from the provided parameters.
+    - If length of 2, the 'fixed' aperiodic mode is used, if length of 3, 'knee' is used.
+
     Gaussian Parameters:
-        - Each gaussian description is a set of three values:
-            - mean (Center Frequency), amplitude (Amplitude), and std (Bandwidth)
-            - Make sure any center frequencies you request are within the simulated frequency range
+
+    - Each gaussian description is a set of three values:
+
+      * mean (Center Frequency), amplitude (Amplitude), and std (Bandwidth).
+      * Make sure any center frequencies you request are within the simulated frequency range.
 
     Examples
     --------
-    Generate 2 power spectra using the same parameters.
+    Generate 2 power spectra using the same parameters:
+
     >>> freqs, psds, _ = gen_group_power_spectra(2, [1, 50], [0, 2], [10, 1, 1])
 
-    Generate 10 power spectra, randomly sampling possible parameters
-    >>> bg_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
+    Generate 10 power spectra, randomly sampling possible parameters:
+
+    >>> ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
     >>> gauss_opts = param_sampler([[], [10, 1, 1], [10, 1, 1, 20, 2, 1]])
-    >>> freqs, psds, syn_params = gen_group_power_spectra(10, [1, 50], bg_opts, gauss_opts)
+    >>> freqs, psds, syn_params = gen_group_power_spectra(10, [1, 50], ap_opts, gauss_opts)
     """
 
     # Initialize things
@@ -171,7 +182,7 @@ def gen_aperiodic(xs, aperiodic_params, aperiodic_mode=None):
         Parameters that define the aperiodic component.
     aperiodic_mode : {'fixed', 'knee'}, optional
         Which kind of aperiodic component to generate power spectra with.
-            If not provided, is infered from the parameters.
+        If not provided, is infered from the parameters.
 
     Returns
     -------

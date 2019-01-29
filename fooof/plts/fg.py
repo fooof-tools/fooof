@@ -18,14 +18,14 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 
 @check_dependency(plt, 'matplotlib')
 def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
-    """Plots a figure with subplots covering several components for FOOOFGroup results.
+    """Plots a figure with subplots covering the group results from a FOOOFGroup object.
 
     Parameters
     ----------
     fg : FOOOFGroup() object
         FOOOFGroup object, containing results from fitting a group of power spectra.
-    save_fig : boolean, optional
-        Whether to save out a copy of the plot. default : False
+    save_fig : boolean, optional, default: False
+        Whether to save out a copy of the plot.
     file_name : str, optional
         Name to give the saved out file.
     file_path : str, optional

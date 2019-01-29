@@ -20,7 +20,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 
 @check_dependency(plt, 'matplotlib')
 def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path='', ax=None):
-    """Plot the original power spectrum, and full model fit from FOOOF object.
+    """Plot the power spectrum and model fit results from a FOOOF object.
 
     Parameters
     ----------
@@ -28,8 +28,8 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
         FOOOF object, containing a power spectrum and (optionally) results from fitting.
     plt_log : boolean, optional, default: False
         Whether or not to plot the frequency axis in log space.
-    save_fig : boolean, optional
-        Whether to save out a copy of the plot. default : False
+    save_fig : boolean, optional, default: False
+        Whether to save out a copy of the plot.
     file_name : str, optional
         Name to give the saved out file.
     file_path : str, optional
@@ -70,7 +70,7 @@ def plot_peak_iter(fm):
     Parameters
     ----------
     fm : FOOOF() object
-        FOOOF object, with model fit and data and settings available.
+        FOOOF object, with model fit, data and settings available.
     """
 
     flatspec = fm._spectrum_flat
