@@ -39,6 +39,7 @@ Analysis Functions
 
     analysis.get_band_peak
     analysis.get_band_peak_group
+    analysis.get_highest_amp_peak
 
 Synthesis Functions
 ===================
@@ -79,12 +80,3 @@ Utility Functions
     utils.get_data_info
     utils.compare_settings
     utils.compare_data_info
-
-Data Objects
-============
-
-.. autosummary::
-    :toctree: generated/
-
-    fit.FOOOFResult
-    synth.params.SynParams
