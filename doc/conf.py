@@ -113,6 +113,7 @@ html_theme_options = {
     'navbar_links': [
         ("API", "api"),
         ("FAQ", "faq"),
+        ('Glossary', 'glossary'),
         ("Tutorial", "auto_tutorials/index"),
         ("Examples", "auto_examples/index"),
         ("GitHub", "https://github.com/voytekresearch/fooof", True)
