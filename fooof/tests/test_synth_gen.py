@@ -53,22 +53,22 @@ def test_gen_group_power_spectra_empty_gauss():
     assert np.all(ys)
     assert ys.ndim == n_spectra
 
-def test_gen_background():
+def test_gen_aperiodic():
 
     xs = gen_freqs([3, 50], 0.5)
 
     bgp_nk = [50, 2]
-    bgv_nk = gen_background(xs, bgp_nk, 'fixed')
+    bgv_nk = gen_aperiodic(xs, bgp_nk, 'fixed')
     assert np.all(bgv_nk)
 
     bgp_kn = [50, 1, 1]
-    bgv_kn = gen_background(xs, bgp_kn, 'knee')
+    bgv_kn = gen_aperiodic(xs, bgp_kn, 'knee')
     assert np.all(bgv_kn)
 
-    # Check without specifying background mode
-    bgv_nk_2 = gen_background(xs, bgp_nk)
+    # Check without specifying aperiodic mode
+    bgv_nk_2 = gen_aperiodic(xs, bgp_nk)
     assert np.array_equal(bgv_nk, bgv_nk_2)
-    bgv_kn_2 = gen_background(xs, bgp_kn)
+    bgv_kn_2 = gen_aperiodic(xs, bgp_kn)
     assert np.array_equal(bgv_kn, bgv_kn_2)
 
 def test_gen_peaks():

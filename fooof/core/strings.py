@@ -57,10 +57,10 @@ def gen_settings_str(f_obj, description=False, concise=False):
     """
 
     # Parameter descriptions to print out, if requested
-    desc = {'background_mode'       : 'The aproach taken to fitting the background.',
+    desc = {'aperiodic_mode'       : 'The aproach taken to fitting the aperiodic component.',
             'peak_width_limits'     : 'Enforced limits for peak widths, in Hz.',
             'max_n_peaks'           : 'The maximum number of peaks that can be extracted.',
-            'min_peak_amplitude'    : "Minimum absolute amplitude of a peak, above background.",
+            'min_peak_amplitude'    : "Minimum absolute amplitude of a peak, above aperiodic component.",
             'peak_threshold'    : "Threshold at which to stop searching for peaks."}
 
     # Clear description for printing if not requested
@@ -77,8 +77,8 @@ def gen_settings_str(f_obj, description=False, concise=False):
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Background Mode : {}'.format(f_obj.background_mode),
-                        '{}'.format(desc['background_mode']),
+        *[el for el in ['Aperiodic Mode : {}'.format(f_obj.aperiodic_mode),
+                        '{}'.format(desc['aperiodic_mode']),
                         'Peak Width Limits : {}'.format(f_obj.peak_width_limits),
                         '{}'.format(desc['peak_width_limits']),
                         'Max Number of Peaks : {}'.format(f_obj.max_n_peaks),
@@ -115,7 +115,7 @@ def gen_results_str_fm(fm, concise=False):
     """
 
     # Returns a null report if no results are available
-    if np.all(np.isnan(fm.background_params_)):
+    if np.all(np.isnan(fm.aperiodic_params_)):
         return _no_model_str(concise)
 
     # Create the formatted strings for printing
@@ -133,11 +133,11 @@ def gen_results_str_fm(fm, concise=False):
         'Frequency Resolution is {:1.2f} Hz'.format(fm.freq_res),
         '',
 
-        # Background parameters
-        ('Background Parameters (offset, ' + ('knee, ' if fm.background_mode == 'knee' else '') + \
-           'slope): '),
-        ', '.join(['{:2.4f}'] * len(fm.background_params_)).format(
-            *fm.background_params_),
+        # Aperiodic parameters
+        ('Aperiodic Parameters (offset, ' + ('knee, ' if fm.aperiodic_mode == 'knee' else '') + \
+           'exponent): '),
+        ', '.join(['{:2.4f}'] * len(fm.aperiodic_params_)).format(
+            *fm.aperiodic_params_),
         '',
 
         # Peak parameters
@@ -186,12 +186,12 @@ def gen_results_str_fg(fg, concise=False):
     n_peaks = len(fg.get_all_data('peak_params'))
     r2s = fg.get_all_data('r_squared')
     errors = fg.get_all_data('error')
-    if fg.background_mode == 'knee':
-        kns = fg.get_all_data('background_params', 1)
-        sls = fg.get_all_data('background_params', 2)
+    if fg.aperiodic_mode == 'knee':
+        kns = fg.get_all_data('aperiodic_params', 1)
+        sls = fg.get_all_data('aperiodic_params', 2)
     else:
         kns = np.array([0])
-        sls = fg.get_all_data('background_params', 1)
+        sls = fg.get_all_data('aperiodic_params', 1)
 
     # Check if there are any power spectra that failed to fit
     n_failed = sum(np.isnan(sls))
@@ -215,14 +215,14 @@ def gen_results_str_fg(fg, concise=False):
         'Frequency Resolution is {:1.2f} Hz'.format(fg.freq_res),
         '',
 
-        # Background parameters - knee fit status, and quick slope description
-        'Power spectra were fit {} a knee.'.format('with' if fg.background_mode == 'knee' else 'without'),
+        # Aperiodic parameters - knee fit status, and quick exponent description
+        'Power spectra were fit {} a knee.'.format('with' if fg.aperiodic_mode == 'knee' else 'without'),
         '',
-        *[el for el in ['Background Knee Values',
+        *[el for el in ['Aperiodic Knee Values',
                         'Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
                         .format(np.nanmin(kns), np.nanmax(kns), np.nanmean(kns)),
-                       ] if fg.background_mode == 'knee'],
-        'Background Slope Values',
+                       ] if fg.aperiodic_mode == 'knee'],
+        'Aperiodic Exponent Values',
         'Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
         .format(np.nanmin(sls), np.nanmax(sls), np.nanmean(sls)),
         '',

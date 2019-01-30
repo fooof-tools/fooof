@@ -36,8 +36,8 @@ def test_fooof_fit_nk():
     tfm = FOOOF()
     tfm.fit(xs, ys)
 
-    # Check model results - background parameters
-    assert np.all(np.isclose(bgp, tfm.background_params_, [0.5, 0.1]))
+    # Check model results - aperiodic parameters
+    assert np.all(np.isclose(bgp, tfm.aperiodic_params_, [0.5, 0.1]))
 
     # Check model results - gaussian parameters
     for ii, gauss in enumerate(group_three(gauss_params)):
@@ -51,7 +51,7 @@ def test_fooof_fit_knee():
 
     xs, ys = gen_power_spectrum([3, 50], bgp, gauss_params)
 
-    tfm = FOOOF(background_mode='knee')
+    tfm = FOOOF(aperiodic_mode='knee')
     tfm.fit(xs, ys)
 
     # Note: currently, this test has no accuracy checking at all
@@ -142,9 +142,9 @@ def test_fooof_resets():
 
     assert tfm.freqs is None and tfm.freq_range is None and tfm.freq_res is None  \
         and tfm.power_spectrum is None and tfm.fooofed_spectrum_ is None and tfm._spectrum_flat is None \
-        and tfm._spectrum_peak_rm is None and tfm._bg_fit is None and tfm._peak_fit is None
+        and tfm._spectrum_peak_rm is None and tfm._ap_fit is None and tfm._peak_fit is None
 
-    assert np.all(np.isnan(tfm.background_params_)) and np.all(np.isnan(tfm.peak_params_)) \
+    assert np.all(np.isnan(tfm.aperiodic_params_)) and np.all(np.isnan(tfm.peak_params_)) \
         and np.all(np.isnan(tfm.r_squared_)) and np.all(np.isnan(tfm.error_)) and np.all(np.isnan(tfm._gaussian_params))
 
 def test_fooof_report(skip_if_no_mpl):

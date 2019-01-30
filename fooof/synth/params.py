@@ -9,7 +9,7 @@ from fooof.core.utils import check_flat
 ###################################################################################################
 ###################################################################################################
 
-SynParams = namedtuple('SynParams', ['background_params', 'gaussian_params', 'nlv'])
+SynParams = namedtuple('SynParams', ['aperiodic_params', 'gaussian_params', 'nlv'])
 
 class Stepper():
     """Object for stepping across parameter values.

@@ -146,49 +146,49 @@ def quadratic_function(xs, *params):
     return ys
 
 
-def get_bg_func(background_mode):
-    """Select and return specified function for background process.
+def get_ap_func(aperiodic_mode):
+    """Select and return specified function for fitting aperiodic component.
 
     Parameters
     ----------
-    background_mode : {'fixed', 'knee'}
-        Which kind of background function to return.
+    aperiodic_mode : {'fixed', 'knee'}
+        Which aperiodic fitting function to return.
 
     Returns
     -------
-    bg_func : function
-        Function for the background process.
+    ap_func : function
+        Function for the aperiodic process.
     """
 
-    if background_mode == 'fixed':
-        bg_func = expo_nk_function
-    elif background_mode == 'knee':
-        bg_func = expo_function
+    if aperiodic_mode == 'fixed':
+        ap_func = expo_nk_function
+    elif aperiodic_mode == 'knee':
+        ap_func = expo_function
     else:
-        raise ValueError('Background mode not understood.')
+        raise ValueError('Aperiodic mode not understood.')
 
-    return bg_func
+    return ap_func
 
 
-def infer_bg_func(background_params):
-    """Infers which background function was used, from parameters.
+def infer_ap_func(aperiodic_params):
+    """Infers which aperiodic function was used, from parameters.
 
     Parameters
     ----------
-    background_params : list of float
-        Parameters that describe the background of a power spectrum.
+    aperiodic_params : list of float
+        Parameters that describe the aperiodic component of a power spectrum.
 
     Returns
     -------
-    background_mode : {'fixed', 'knee'}
-        Which kind of background process parameters are consistent with.
+    aperiodic_mode : {'fixed', 'knee'}
+        Which kind of aperiodic fitting function parameters are consistent with.
     """
 
-    if len(background_params) == 2:
-        background_mode = 'fixed'
-    elif len(background_params) == 3:
-        background_mode = 'knee'
+    if len(aperiodic_params) == 2:
+        aperiodic_mode = 'fixed'
+    elif len(aperiodic_params) == 3:
+        aperiodic_mode = 'knee'
     else:
-        raise ValueError('Background parameters not consistent with any available option.')
+        raise ValueError('Aperiodic parameters not consistent with any available option.')
 
-    return background_mode
+    return aperiodic_mode

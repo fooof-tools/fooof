@@ -8,21 +8,21 @@ Notes
 Attributes (private)
 ----------
 _spectrum_flat : 1d array
-    Flattened power spectrum (background 1/f removed)
+    Flattened power spectrum (aperiodic component removed)
 _spectrum_peak_rm : 1d array
     Power spectrum with peaks removed (not flattened).
 _gaussian_params : 2d array
     Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
-_bg_fit : 1d array
-    Values of the background fit.
+_ap_fit : 1d array
+    Values of the aperiodic fit.
 _peak_fit : 1d array
     Values of the peak fit (flattened).
-_bg_amp_thresh : float
-    Noise threshold for finding peaks above the background.
-_bg_guess : list of [float, float, float]
-    Guess parameters for fitting background.
-_bg_bounds : tuple of tuple of float
-    Upper and lower bounds on fitting background.
+_ap_amp_thresh : float
+    Noise threshold for finding peaks above the aperiodic component.
+_ap_guess : list of [float, float, float]
+    Guess parameters for fitting the aperiodic component.
+_ap_bounds : tuple of tuple of float
+    Upper and lower bounds on fitting aperiodic component.
 _bw_std_edge : float
     Bandwidth threshold for edge rejection of peaks, in units of gaussian std. deviation.
 _gauss_overlap_thresh : float
@@ -42,26 +42,26 @@ from fooof.utils import trim_spectrum
 from fooof.plts.fm import plot_fm
 from fooof.core.io import save_fm, load_json
 from fooof.core.reports import save_report_fm
-from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
+from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
 from fooof.core.utils import group_three, check_array_dim, get_obj_desc
 from fooof.core.modutils import copy_doc_func_to_method
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_issue_str, gen_wid_warn_str
 
-from fooof.synth.gen import gen_freqs, gen_background, gen_peaks
+from fooof.synth.gen import gen_freqs, gen_aperiodic, gen_peaks
 
 ###################################################################################################
 ###################################################################################################
 
-FOOOFResult = namedtuple('FOOOFResult', ['background_params', 'peak_params',
+FOOOFResult = namedtuple('FOOOFResult', ['aperiodic_params', 'peak_params',
                                          'r_squared', 'error', 'gaussian_params'])
 FOOOFResult.__doc__ = """\
 The resulting parameters and associated data of a FOOOF model fit.
 
 Attributes
 ----------
-background_params : 1d array, len 2 or 3
-    Parameters that define the background fit. As [Intercept, (Knee), Slope].
-        The knee parameter is only included if background fit with knee. Otherwise, length is 2.
+aperiodic_params : 1d array, len 2 or 3
+    Parameters that define the aperiodic fit. As [Intercept, (Knee), Exponent].
+        The knee parameter is only included if aperiodic is fit with knee. Otherwise, length is 2.
 peak_params : 2d array, shape=[n_peaks, 3]
     Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
 r_squared : float
@@ -73,7 +73,7 @@ gaussian_params : 2d array, shape=[n_peaks, 3]
 """
 
 class FOOOF(object):
-    """Model the physiological power spectrum as a combination of 1/f background and peaks.
+    """Model the physiological power spectrum as a combination of aperiodic and periodic components.
 
     WARNING: FOOOF expects frequency and power values in linear space.
 
@@ -90,8 +90,8 @@ class FOOOF(object):
         Minimum amplitude threshold for a peak to be modeled. default: 0
     peak_threshold : float, optional
         Threshold for detecting peaks, units of standard deviation. default: 2.0
-    background_mode : {'fixed', 'knee'}
-        Which approach to take to fitting the background.
+    aperiodic_mode : {'fixed', 'knee'}
+        Which approach to take to fitting the aperiodic component.
     verbose : boolean, optional
         Whether to be verbose in printing out warnings. default: True
 
@@ -106,11 +106,11 @@ class FOOOF(object):
     freq_res : float
         Frequency resolution of the power spectrum.
     fooofed_spectrum_ : 1d array
-        The full model fit of the power spectrum, including background & peaks.
+        The full model fit of the power spectrum, including aperiodic and periodic components.
             Stored internally in log10 scale.
-    background_params_ : 1d array
-        Parameters that define the background fit. As [Intercept, (Knee), Slope].
-            The knee parameter is only included if background fit with knee.
+    aperiodic_params_ : 1d array
+        Parameters that define the aperiodic fit. As [Intercept, (Knee), Exponent].
+            The knee parameter is only included if aperiodic component is fit with a knee.
     peak_params_ : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
     r_squared_ : float
@@ -132,7 +132,7 @@ class FOOOF(object):
     """
 
     def __init__(self, peak_width_limits=[0.5, 12.0], max_n_peaks=np.inf, min_peak_amplitude=0.0,
-                 peak_threshold=2.0, background_mode='fixed', verbose=True):
+                 peak_threshold=2.0, aperiodic_mode='fixed', verbose=True):
         """Initialize FOOOF object with run parameters."""
 
         # Double check correct scipy version is being used
@@ -142,7 +142,7 @@ class FOOOF(object):
             raise ImportError('Scipy version of >= 0.19.0 required.')
 
         # Set input parameters
-        self.background_mode = background_mode
+        self.aperiodic_mode = aperiodic_mode
         self.peak_width_limits = peak_width_limits
         self.max_n_peaks = max_n_peaks
         self.min_peak_amplitude = min_peak_amplitude
@@ -152,15 +152,15 @@ class FOOOF(object):
         ## SETTINGS - these are updateable by the user if required.
         # Noise threshold, as a percentage of the lowest amplitude values in the total data to fit.
         #  Defines the minimum amplitude, above residuals, to be considered a peak.
-        self._bg_amp_thresh = 0.025
-        # Guess parameters for background fitting, [offset, knee, slope]
+        self._ap_amp_thresh = 0.025
+        # Guess parameters for aperiodic fitting, [offset, knee, exponent]
         #  If offset guess is None, the first value of the power spectrum is used as offset guess
-        self._bg_guess = [None, 0, 2]
-        # Bounds for background fitting, as: ((offset_low_bound, knee_low_bound, sl_low_bound),
+        self._ap_guess = [None, 0, 2]
+        # Bounds for aperiodic fitting, as: ((offset_low_bound, knee_low_bound, sl_low_bound),
         #                                     (offset_high_bound, knee_high_bound, sl_high_bound))
-        #  By default, background fitting is unbound, but can be restricted here, if desired
+        #  By default, aperiodic fitting is unbound, but can be restricted here, if desired
         #    Even if fitting without knee, leave bounds for knee (they are dropped later)
-        self._bg_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
+        self._ap_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
         # Threshold for how far (units of gaus std dev) a peak has to be from edge to keep.
         self._bw_std_edge = 1.0
         # Degree of overlap  (units of gauss std dev) between gaussians for one to be dropped
@@ -188,14 +188,14 @@ class FOOOF(object):
             # Bandwidth limits are given in 2-sided peak bandwidth.
             #  Convert to gaussian std parameter limits.
             self._gauss_std_limits = [bwl / 2 for bwl in self.peak_width_limits]
-            # Bounds for background fitting. Drops bounds on knee parameter if not set to fit knee
-            self._bg_bounds = self._bg_bounds if self.background_mode == 'knee' \
-                else tuple(bound[0::2] for bound in self._bg_bounds)
+            # Bounds for aperiodic fitting. Drops bounds on knee parameter if not set to fit knee
+            self._ap_bounds = self._ap_bounds if self.aperiodic_mode == 'knee' \
+                else tuple(bound[0::2] for bound in self._ap_bounds)
 
         # Otherwise, assume settings are unknown (have been cleared) and set to None
         else:
             self._gauss_std_limits = None
-            self._bg_bounds = None
+            self._ap_bounds = None
 
 
     def _reset_data_results(self, clear_freqs=True, clear_spectrum=True, clear_results=True):
@@ -221,8 +221,8 @@ class FOOOF(object):
 
         if clear_results:
             self.fooofed_spectrum_ = None
-            self.background_params_ = np.array([np.nan, np.nan]) if \
-                self.background_mode == 'fixed' else np.array([np.nan, np.nan, np.nan])
+            self.aperiodic_params_ = np.array([np.nan, np.nan]) if \
+                self.aperiodic_mode == 'fixed' else np.array([np.nan, np.nan, np.nan])
             self.peak_params_ = np.array([np.nan, np.nan, np.nan])
             self.r_squared_ = np.nan
             self.error_ = np.nan
@@ -230,7 +230,7 @@ class FOOOF(object):
             self._spectrum_flat = None
             self._spectrum_peak_rm = None
             self._gaussian_params = np.array([np.nan, np.nan, np.nan])
-            self._bg_fit = None
+            self._ap_fit = None
             self._peak_fit = None
 
 
@@ -271,7 +271,7 @@ class FOOOF(object):
             Whether to regenerate the model fits from the given fit parameters. default : False
         """
 
-        self.background_params_ = fooof_result.background_params
+        self.aperiodic_params_ = fooof_result.aperiodic_params
         self.peak_params_ = fooof_result.peak_params
         self.r_squared_ = fooof_result.r_squared
         self.error_ = fooof_result.error
@@ -306,7 +306,7 @@ class FOOOF(object):
 
 
     def fit(self, freqs=None, power_spectrum=None, freq_range=None):
-        """Fit the full power spectrum as a combination of background and peaks.
+        """Fit the full power spectrum as a combination of aperiodic and periodic components.
 
         Parameters
         ----------
@@ -343,30 +343,30 @@ class FOOOF(object):
         #  Cause of failure: RuntimeError, failure to find parameters in curve_fit
         try:
 
-            # Fit the background 1/f.
-            self.background_params_ = self._robust_bg_fit(self.freqs, self.power_spectrum)
-            self._bg_fit = gen_background(self.freqs, self.background_params_)
+            # Fit the aperiodic component
+            self.aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
+            self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
 
-            # Flatten the power_spectrum using fit background.
-            self._spectrum_flat = self.power_spectrum - self._bg_fit
+            # Flatten the power_spectrum using fit aperiodic fit
+            self._spectrum_flat = self.power_spectrum - self._ap_fit
 
-            # Find peaks, and fit them with gaussians.
+            # Find peaks, and fit them with gaussians
             self._gaussian_params = self._fit_peaks(np.copy(self._spectrum_flat))
 
-            # Calculate the peak fit.
+            # Calculate the peak fit
             #  Note: if no peaks are found, this creates a flat (all zero) peak fit.
             self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
 
             # Create peak-removed (but not flattened) power spectrum.
             self._spectrum_peak_rm = self.power_spectrum - self._peak_fit
 
-            # Run final background fit on peak-removed power spectrum.
-            #   Note: This overwrites previous background fit.
-            self.background_params_ = self._simple_bg_fit(self.freqs, self._spectrum_peak_rm)
-            self._bg_fit = gen_background(self.freqs, self.background_params_)
+            # Run final aperiodic fit on peak-removed power spectrum
+            #   Note: This overwrites previous aperiodic fit
+            self.aperiodic_params_ = self._simple_ap_fit(self.freqs, self._spectrum_peak_rm)
+            self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
 
-            # Create full power_spectrum model fit.
-            self.fooofed_spectrum_ = self._peak_fit + self._bg_fit
+            # Create full power_spectrum model fit
+            self.fooofed_spectrum_ = self._peak_fit + self._ap_fit
 
             # Convert gaussian definitions to peak parameters
             self.peak_params_ = self._create_peak_params(self._gaussian_params)
@@ -429,7 +429,7 @@ class FOOOF(object):
     def get_results(self):
         """Return model fit parameters and goodness of fit metrics."""
 
-        return FOOOFResult(self.background_params_, self.peak_params_, self.r_squared_,
+        return FOOOFResult(self.aperiodic_params_, self.peak_params_, self.r_squared_,
                            self.error_, self._gaussian_params)
 
 
@@ -506,12 +506,12 @@ class FOOOF(object):
 
         # Regenerate power_spectrum model & components
         if regenerate:
-            if np.all(self.freqs) and np.all(self.background_params_):
+            if np.all(self.freqs) and np.all(self.aperiodic_params_):
                 self._regenerate_model()
 
 
-    def _simple_bg_fit(self, freqs, power_spectrum):
-        """Fit the 1/f background of power spectrum.
+    def _simple_ap_fit(self, freqs, power_spectrum):
+        """Fit the aperiodic component of the power spectrum.
 
         Parameters
         ----------
@@ -522,14 +522,14 @@ class FOOOF(object):
 
         Returns
         -------
-        background_params : 1d array
-            Parameter estimates for background fit.
+        aperiodic_params : 1d array
+            Parameter estimates for aperiodic fit.
         """
 
-        # Set guess params for lorentzian background fit, guess params set at init
-        guess = np.array(([power_spectrum[0]] if not self._bg_guess[0] else [self._bg_guess[0]]) +
-                         ([self._bg_guess[1]] if self.background_mode == 'knee' else []) +
-                         [self._bg_guess[2]])
+        # Set guess params for lorentzian aperiodic fit, guess params set at init
+        guess = np.array(([power_spectrum[0]] if not self._ap_guess[0] else [self._ap_guess[0]]) +
+                         ([self._ap_guess[1]] if self.aperiodic_mode == 'knee' else []) +
+                         [self._ap_guess[2]])
 
         # Ignore warnings that are raised in curve_fit
         #  A runtime warning can occur while exploring parameters in curve fitting
@@ -537,15 +537,15 @@ class FOOOF(object):
         #  It happens if / when b < 0 & |b| > x**2, as it leads to log of a negative number
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            background_params, _ = curve_fit(get_bg_func(self.background_mode),
-                                             freqs, power_spectrum, p0=guess,
-                                             maxfev=5000, bounds=self._bg_bounds)
+            aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
+                                            freqs, power_spectrum, p0=guess,
+                                            maxfev=5000, bounds=self._ap_bounds)
 
-        return background_params
+        return aperiodic_params
 
 
-    def _robust_bg_fit(self, freqs, power_spectrum):
-        """Fit the 1/f background of power spectrum robustly, ignoring outliers.
+    def _robust_ap_fit(self, freqs, power_spectrum):
+        """Fit the aperiodic component of the power spectrum robustly, ignoring outliers.
 
         Parameters
         ----------
@@ -556,35 +556,35 @@ class FOOOF(object):
 
         Returns
         -------
-        background_params : 1d array
-            Parameter estimates for background fit.
+        aperiodic_params : 1d array
+            Parameter estimates for aperiodic fit.
         """
 
-        # Do a quick, initial background fit.
-        popt = self._simple_bg_fit(freqs, power_spectrum)
-        initial_fit = gen_background(freqs, popt)
+        # Do a quick, initial aperiodic fit
+        popt = self._simple_ap_fit(freqs, power_spectrum)
+        initial_fit = gen_aperiodic(freqs, popt)
 
-        # Flatten power_spectrum based on initial background fit.
+        # Flatten power_spectrum based on initial aperiodic fit
         flatspec = power_spectrum - initial_fit
 
-        # Flatten outliers - any points that drop below 0.
+        # Flatten outliers - any points that drop below 0
         flatspec[flatspec < 0] = 0
 
-        # Amplitude threshold - in terms of # of points.
-        perc_thresh = np.percentile(flatspec, self._bg_amp_thresh)
+        # Amplitude threshold - in terms of # of points
+        perc_thresh = np.percentile(flatspec, self._ap_amp_thresh)
         amp_mask = flatspec <= perc_thresh
         freqs_ignore = freqs[amp_mask]
         spectrum_ignore = power_spectrum[amp_mask]
 
-        # Second background fit - using results of first fit as guess parameters.
-        #  See note in _simple_bg_fit about warnings
+        # Second aperiodic fit - using results of first fit as guess parameters
+        #  See note in _simple_ap_fit about warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            background_params, _ = curve_fit(get_bg_func(self.background_mode),
-                                             freqs_ignore, spectrum_ignore, p0=popt,
-                                             maxfev=5000, bounds=self._bg_bounds)
+            aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
+                                            freqs_ignore, spectrum_ignore, p0=popt,
+                                            maxfev=5000, bounds=self._ap_bounds)
 
-        return background_params
+        return aperiodic_params
 
 
     def _fit_peaks(self, flat_iter):
@@ -732,13 +732,13 @@ class FOOOF(object):
 
         Notes
         -----
-        Amplitude is updated to the amplitude of peak above the background fit.
+        Amplitude is updated to the amplitude of peak above the aperiodic fit.
           - This is returned instead of the gaussian amplitude
             - Gaussian amplitude is harder to interpret, due to peak overlaps.
         Bandwidth is updated to be 'both-sided'
           - This is as opposed to gaussian std param, which is 1-sided.
         Performing this conversion requires that the model be run.
-          - In particular, freqs, fooofed_spectrum and _bg_fit are required to be available.
+          - In particular, freqs, fooofed_spectrum and _ap_fit are required to be available.
         """
 
         peak_params = np.empty([0, 3])
@@ -751,7 +751,7 @@ class FOOOF(object):
             # Collect peak parameter data
             peak_params = np.vstack((peak_params,
                                      [peak[0],
-                                      self.fooofed_spectrum_[ind] - self._bg_fit[ind],
+                                      self.fooofed_spectrum_[ind] - self._ap_fit[ind],
                                       peak[2] * 2]))
 
         return peak_params
@@ -900,7 +900,7 @@ class FOOOF(object):
             freqs, power_spectrum = freqs, power_spectrum
 
         # Check if freqs start at 0 - move up one value if so.
-        #   Background fit gets an inf is freq of 0 is included, which leads to an error.
+        #   Aperiodic fit gets an inf is freq of 0 is included, which leads to an error.
         if freqs[0] == 0.0:
             freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, [freqs[1], freqs.max()])
             if verbose:
@@ -952,9 +952,9 @@ class FOOOF(object):
             for setting in get_obj_desc()['settings']:
                 setattr(self, setting, None)
 
-            # Infer whether knee fitting was used, if background params have been loaded
-            if np.all(self.background_params_):
-                self.background_mode = infer_bg_func(self.background_params_)
+            # Infer whether knee fitting was used, if aperiodic params have been loaded
+            if np.all(self.aperiodic_params_):
+                self.aperiodic_mode = infer_ap_func(self.aperiodic_params_)
 
         # Reset internal settings so that they are consistent with what was loaded
         #  Note that this will set internal settings to None, if public settings unavailable
@@ -964,6 +964,6 @@ class FOOOF(object):
     def _regenerate_model(self):
         """Regenerate model fit from parameters."""
 
-        self._bg_fit = gen_background(self.freqs, self.background_params_)
+        self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
         self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
-        self.fooofed_spectrum_ = self._peak_fit + self._bg_fit
+        self.fooofed_spectrum_ = self._peak_fit + self._ap_fit
