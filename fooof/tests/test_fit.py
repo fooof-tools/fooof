@@ -13,8 +13,7 @@ import pkg_resources as pkg
 
 from fooof import FOOOF
 from fooof.synth import gen_power_spectrum
-from fooof.core.modutils import get_obj_desc
-from fooof.core.utils import group_three
+from fooof.core.utils import group_three, get_obj_desc
 
 from fooof.tests.utils import get_tfm, plot_test
 

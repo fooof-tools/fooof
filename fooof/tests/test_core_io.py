@@ -4,7 +4,7 @@ import os
 import pkg_resources as pkg
 
 from fooof import FOOOF
-from fooof.core.modutils import get_obj_desc
+from fooof.core.utils import get_obj_desc
 
 from fooof.core.io import *
 from fooof.core.io import _check_fname

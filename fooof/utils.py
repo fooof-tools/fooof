@@ -3,7 +3,7 @@
 import numpy as np
 
 from fooof.synth import gen_freqs
-from fooof.core.modutils import get_obj_desc
+from fooof.core.utils import get_obj_desc
 
 ###################################################################################################
 ###################################################################################################
@@ -123,47 +123,3 @@ def compare_data_info(lst):
 
     # If no data info comparisons fail, return that objects have consistent information
     return True
-
-
-def combine_fooofs(fooofs):
-    """Combine a group of FOOOF and/or FOOOFGroup objects into a single FOOOFGroup object.
-
-    Parameters
-    ----------
-    fooofs : list of FOOOF objects
-        FOOOF objects to be concatenated into a FOOOFGroup.
-
-    Returns
-    -------
-    fg : FOOOFGroup object
-        Resultant FOOOFGroup object created from input FOOOFs.
-    """
-
-    # Compare settings
-    if not compare_settings(fooofs) or not compare_data_info(fooofs):
-        raise ValueError("These objects have incompatible settings or data," \
-                         "and so cannot be combined.")
-
-    # Initialize FOOOFGroup object, with settings derived from input objects
-    #  Note: FOOOFGroup imported here to avoid an import circularity if imported at the top
-    from fooof import FOOOFGroup
-    fg = FOOOFGroup(**get_settings(fooofs[0]), verbose=fooofs[0].verbose)
-    fg.power_spectra = np.empty([0, len(fooofs[0].freqs)])
-
-    # Add FOOOF results from each FOOOF object to group
-    for f_obj in fooofs:
-        # Add FOOOFGroup object
-        if isinstance(f_obj, FOOOFGroup):
-            fg.group_results.extend(f_obj.group_results)
-            fg.power_spectra = np.vstack([fg.power_spectra, f_obj.power_spectra])
-        # Add FOOOF object
-        else:
-            fg.group_results.append(f_obj.get_results())
-            fg.power_spectra = np.vstack([fg.power_spectra, f_obj.power_spectrum])
-
-    # Add data information information
-    for data_info in get_obj_desc()['freq_info']:
-        setattr(fg, data_info, getattr(fooofs[0], data_info))
-    fg.freqs = gen_freqs(fg.freq_range, fg.freq_res)
-
-    return fg
