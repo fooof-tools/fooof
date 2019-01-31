@@ -5,13 +5,12 @@
 
 ###################################################################################################
 #
-# This tutorial covers running FOOOF across multiple power spectra, using FOOOFGroup,
-# an object derived from the base FOOOF object.
+# This tutorial covers running FOOOF across multiple power spectra, using FOOOFGroup.
 #
 
 ###################################################################################################
 
-# FOOOF imports: get FOOOF & FOOOFGroup objects
+# FOOOF imports: import FOOOFGroup object
 from fooof import FOOOFGroup
 
 # Import some utilities for synthesizing some test data
@@ -41,7 +40,7 @@ f_range = [3, 40]
 
 # Set some options for background parameters
 #  Generated spectra will have an offset of either [20, 50, 35], and exponent of [2., 2.5, 1.5]
-bgp_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
+ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
 
 # Set some options for peak parameters
 #  Generated power spectra will have either no peaks, a 10 Hz peak, or a 10 Hz & 20 Hz peak
@@ -59,7 +58,7 @@ gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
 # Generate the group of synthetic spectra
 #  Note that this function also returns a list of the parameters for each func
-freqs, spectra, syn_params = gen_group_power_spectra(n_spectra, f_range, bgp_opts, gauss_opts)
+freqs, spectra, syn_params = gen_group_power_spectra(n_spectra, f_range, ap_opts, gauss_opts)
 
 ###################################################################################################
 # FOOOFGroup
@@ -137,7 +136,8 @@ IFrame("FOOOFGroup_Report.pdf", width=950, height=1200)
 fg.group_results[0:2]
 
 ###################################################################################################
-# **get_all_data**
+# get_all_data
+# ------------
 #
 # To collect data across all model fits, and to select specific data results from this data
 # you can use the :func:`get_all_data` method. This method lets you extract specific results
@@ -147,7 +147,7 @@ fg.group_results[0:2]
 ###################################################################################################
 
 # Extract aperiodic data
-bgps = fg.get_all_data('aperiodic_params')
+aps = fg.get_all_data('aperiodic_params')
 exps = fg.get_all_data('aperiodic_params', 'exponent')
 
 # Extract peak data
@@ -176,7 +176,6 @@ f_res = fg[0]
 # Check the documentation for the FOOOFResults - with full descriptions of the resulting data.
 print(f_res.__doc__)
 
-###################################################################################################
 ###################################################################################################
 
 # Check out the extracted exponent values

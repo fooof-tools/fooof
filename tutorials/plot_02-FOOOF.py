@@ -1,6 +1,6 @@
 """
-02: FOOOF
-=========
+02: Fitting FOOOF Models
+========================
 """
 
 ###################################################################################################
@@ -92,7 +92,7 @@ fm.fit(freqs, spectrum, freq_range)
 # Access model fit parameters from FOOOF object, after fitting
 
 # Aperiodic parameters
-print('Aperiodic signal parameters: \n', fm.aperiodic_params_, '\n')
+print('Aperiodic parameters: \n', fm.aperiodic_params_, '\n')
 
 # Peak parameters
 print('Peak parameters: \n', fm.peak_params_, '\n')
@@ -162,170 +162,6 @@ print(fres, '\n')
 # From FOOOFResults, you can access the different results
 print('Aperiodic Signal Parameters: \n', fres.aperiodic_params)
 
-
 # Check the r^2 and error of the model fit
 print('R-squared: \n {:5.4f}'.format(fm.r_squared_))
 print('Fit error: \n {:5.4f}'.format(fm.error_))
-
-
-###################################################################################################
-# Description of FOOOF methods and parameters
-# -------------------------------------------
-#
-# FOOOF follows the following Python conventions:
-#
-# - all user exposed settings, data, and methods are directly accessible through the object
-# - 'hidden' (internal) settings and methods ones have a leading underscore
-#
-# The FOOOF object contents consist of 4 main components (groups of data / code):
-#
-# - Settings (attributes)
-#
-#     - User exposed settings are all set in object initialization.
-#
-#         - peak_width_limits, max_n_peaks, min_peak_amplitude, peak_threshold, aperiodic_mode, verbose
-#     - There are some internal settings that are not exposed at initialization.
-#       These settings are unlikely to need to be accessed by the user, but can be if desired -
-#       they are all defined and documented in \__init\__ (there should be no other settings, or
-#       'magic numbers' in any other parts of the code).
-#
-# - Data (attributes)
-#
-#     - FOOOF stores the frequency vector, power spectrum, frequency range, and frequency resolution.
-#
-#         - fm.freqs, fm.power_spectrum, fm.freq_range, fm.freq_res
-#     - During the fit procedure, interim (hidden) data variables are also created and used
-#
-# - Results (attributes)
-#
-#     - FOOOF follows the scipy convention in that any attributes that result from fitting
-#       to the data are indicated by a trailing underscore
-#
-#         - fm.aperiodic\_params_, fm.peak\_params\_, fm.fooofed\_spectrum\_, fm.r\_squared\_, fm.error\_
-#
-# - Functions (methods)
-#
-#     - Functions that operate on the FOOOF object data.
-#     - In addition to the exposed methods, there are some internal methods called in the
-#       fitting procedure. These methods should not be called independently, as they may
-#       depend on internal state as defined from other methods.
-
-###################################################################################################
-#
-# You can check all the user defined FOOOF settings with check_settings
-#  The description parameter here is set to print out descriptions of the settings
-fm.print_settings(description=True)
-
-###################################################################################################
-# Fitting FOOOF with Different Settings
-# -------------------------------------
-
-###################################################################################################
-
-# Load example data - a different power spectrum
-freqs = np.load('dat/freqs_2.npy')
-spectrum = np.load('dat/spectrum_2.npy')
-
-###################################################################################################
-
-# Initialize FOOOF model, with different settings
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_amplitude=0.15)
-
-# Fit FOOOF
-f_range = [2, 40]
-fm.report(freqs, spectrum, f_range)
-
-###################################################################################################
-# Updating Settings
-# -----------------
-#
-# If you wish to change these settings, then you should re-initialize
-# the FOOOF object with new settings.
-#
-# Simply resetting the relevant attribute may not appropriately propragate the value,
-# and may fail (either by erroring out, or not applying the settings properly during
-# fit and returning erroneous results).
-
-###################################################################################################
-# Fitting FOOOF with Aperiodic 'Knee'
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# Load example data (LFP)
-freqs = np.load('dat/freqs_lfp.npy')
-spectrum = np.load('dat/spectrum_lfp.npy')
-
-# Initialize FOOOF - setting to aperiodic mode to use a knee fit
-fm = FOOOF(peak_width_limits=[2, 8], aperiodic_mode='knee')
-
-# Fit FOOOF model
-#  Note that this time we're specifying an optional parameter to plot in log-log
-fm.report(freqs, spectrum, [2, 60], plt_log=True)
-
-###################################################################################################
-# A note on interpreting the "knee" parameter
-# -------------------------------------------
-#
-# The aperiodic fit has the form:
-#
-# .. math::
-#    BG = 10^b * \ \frac{1}{(k + F^\chi)}
-#
-# The knee parameter reported above corresponds to `k` in the equation.
-#
-# This parameter is dependent on the frequency at which the aperiodic fit
-# transitions from horizontal to negatively sloped.
-#
-# To interpret this parameter as a frequency, take the :math:`\chi`-th root of `k`, i.e.:
-#
-# .. math::
-#    knee \ frequency = k^{1/\ \chi}
-
-###################################################################################################
-# FOOOF - Saving & Reports
-# ------------------------
-#
-# FOOOF also has report for saving out, and loading back in, data.
-#
-# You have the option to specify which data to save.
-#
-# - results: model fit results (same as is returned in FOOOFResult)
-# - settings: all public settings (everything available at initialization)
-# - data: freqs & power spectrum
-#
-# FOOOF save creates JSON files. You can specify a file name to save or append to,
-# or pass in a valid JSON file object.
-
-###################################################################################################
-
-# Saving FOOOF results, settings, and data
-fm.save(save_results=True, save_settings=True, save_data=True)
-
-###################################################################################################
-
-# Loading FOOOF results
-nfm = FOOOF()
-nfm.load()
-
-# Plot loaded results
-#   Note: plot log to match the plot from above
-nfm.plot(plt_log=True)
-
-###################################################################################################
-# Create a Report
-# ---------------
-#
-# FOOOF also has functionality to save out a 'report' of a particular model fit.
-#
-# This generates and saves a PDF which contains the same output as
-# 'print_results', 'plot', and 'print_settings'.
-
-###################################################################################################
-
-# Save out a report of the current FOOOF model fit & results
-#  By default (with no inputs) this saves a PDF to current directory, with the name 'FOOOF_Report'
-#    Add inputs to the method call to specify a file-name, and save-location
-fm.save_report()
-
-# Check what the generated report looks like
-from IPython.display import IFrame
-IFrame("FOOOF_Report.pdf", width=950, height=1200)

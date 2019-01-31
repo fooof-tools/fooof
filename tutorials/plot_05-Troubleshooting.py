@@ -208,7 +208,6 @@ nlv = 0.025
 # Create a synthetic power spectrum
 freqs, spectrum = gen_power_spectrum([1, 50], ap_params, gauss_params, nlv=nlv)
 
-
 # Update settings to make sure they are sensitive to smaller peaks in smoother power spectra
 fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_amplitude=0.2)
 fm.report(freqs, spectrum)
@@ -221,64 +220,15 @@ for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*sy, *fi))
 
 ###################################################################################################
-#
-# Aperiodic Signal Fitting
-# ------------------------
-#
-# FOOOF currently offers two approaches for fitting the aperiodic 'background':
-#
-# - Fitting with just an offset and a exponent, equivalent to a linear fit in log-log space
-#
-#   - aperiodic_mode = 'fixed'
-# - Including a 'knee' parameter, reflecting a fit with a bend, in log-log space
-#
-#   - aperiodic_mode = 'knee'
-#
-# Fitting without a knee assumes a single linear 1/f like characteristic to aperiodic signal,
-# in log-log space. Fitting will go wrong if this assumption is violated. In particular, broad
-# frequency ranges (often, greater than ~40 Hz range) don't meet this criterion, as they also
-# exhibit a 'bend' in the aperiodic signal. For these cases, fitting should be done using a
-# 'knee' parameter.
-#
-# Fitting with a knee is still experimental, with a couple outstanding issues:
-#
-# - Interpreting the fit results when using knee fits is more complex, as the exponent result is
-#   no longer a simple measure of a singular property, but rather reflects the slope past the
-#   'knee' inflecting point, and as such, knee & exponent values should be considered together.
-# - Fitting FOOOF with knee fits may perform sub-optimally in ambiguous cases (where the data
-#   may or may not have a knee).
-#
-# Given this, we recommend:
-#
-# - Check your data, across the frequency range of interest,
-#   for what the aperiodic signal looks like.
-#
-#   - If it looks roughly linear (in log-log space), fit without a knee.
-#
-#     - This is likely across smaller frequency ranges, such as 3-30.
-#     - Do not perform no-knee fits across a range in which this does not hold.
-#   - If there is a clear knee, then use knee fits.
-#
-#     - This is likely across larger fitting ranges such as 1-150 Hz.
-# - Be wary of ambiguous ranges, where there may or may not be a knee.
-#
-#   - Trying to fit without a knee, when there is not a single consistent aperiodic signal,
-#     can lead to very bad fits. But it is also a known issue that trying to fit with a knee
-#     can lead to suboptimal fits when no knee is present.
-#
-#     - We therefore currently recommend picking frequency ranges in which the expected
-#       aperiodic signal process is relatively clear.
-
-###################################################################################################
 # Checking Fits Across a Group
 # ----------------------------
 
 # Set the parameters options for aperiodic signal and Gaussian peaks
-bgp_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
+ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
 gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
 # Generate a group of power spectra
-freqs, power_spectra, syn_params = gen_group_power_spectra(10, [3, 50], bgp_opts, gauss_opts)
+freqs, power_spectra, syn_params = gen_group_power_spectra(10, [3, 50], ap_opts, gauss_opts)
 
 ###################################################################################################
 
