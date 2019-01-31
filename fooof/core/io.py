@@ -10,6 +10,26 @@ from fooof.core.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_ar
 ###################################################################################################
 ###################################################################################################
 
+def fname(file_name, extension):
+    """Check a filename, adding an extension if not already specified.
+
+    Parameters
+    ----------
+    file_name : str
+        String that specifies a file name.
+
+    Outputs
+    -------
+    file_name : str
+        String that specifies a file name.
+    """
+
+    if file_name.split('.')[-1] != extension:
+        file_name = file_name + '.' + extension
+
+    return file_name
+
+
 def save_fm(fm, file_name, file_path=None, append=False,
             save_results=False, save_settings=False, save_data=False):
     """Save out data, results and/or settings from FOOOF object. Saves out to a JSON file.
@@ -49,12 +69,12 @@ def save_fm(fm, file_name, file_path=None, append=False,
 
     # Save out - create new file, (creates a JSON file)
     if isinstance(file_name, str) and not append:
-        with open(os.path.join(file_path, _check_fname(file_name)), 'w') as outfile:
+        with open(os.path.join(file_path, fname(file_name, 'json')), 'w') as outfile:
             json.dump(obj_dict, outfile)
 
     # Save out - append to file_name (appends to a JSONlines file)
     elif isinstance(file_name, str) and append:
-        with open(os.path.join(file_path, _check_fname(file_name)), 'a') as outfile:
+        with open(os.path.join(file_path, fname(file_name, 'json')), 'a') as outfile:
             json.dump(obj_dict, outfile)
             outfile.write('\n')
 
@@ -98,12 +118,12 @@ def save_fg(fg, file_name, file_path=None, append=False,
 
     # Save to string specified file, do not append
     if isinstance(file_name, str) and not append:
-        with open(os.path.join(file_path, _check_fname(file_name)), 'w') as f_obj:
+        with open(os.path.join(file_path, fname(file_name, 'json')), 'w') as f_obj:
             _save_fg(fg, f_obj, save_results, save_settings, save_data)
 
     # Save to string specified file, appending
     elif isinstance(file_name, str) and append:
-        with open(os.path.join(file_path, _check_fname(file_name)), 'a') as f_obj:
+        with open(os.path.join(file_path, fname(file_name, 'json')), 'a') as f_obj:
             _save_fg(fg, f_obj, save_results, save_settings, save_data)
 
     # Save to file-object specified file
@@ -132,7 +152,7 @@ def load_json(file_name, file_path):
 
     # Load data from file
     if isinstance(file_name, str):
-        with open(os.path.join(file_path, _check_fname(file_name)), 'r') as infile:
+        with open(os.path.join(file_path, fname(file_name, 'json')), 'r') as infile:
             dat = json.load(infile)
     elif isinstance(file_name, io.IOBase):
         dat = json.loads(file_name.readline())
@@ -159,7 +179,7 @@ def load_jsonlines(file_name, file_path):
         Dictionary of data loaded from file.
     """
 
-    with open(os.path.join(file_path, _check_fname(file_name)), 'r') as f_obj:
+    with open(os.path.join(file_path, fname(file_name, 'json')), 'r') as f_obj:
 
         while True:
 
@@ -202,21 +222,4 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
                     save_results=save_results, save_settings=save_settings, save_data=save_data)
 
 
-def _check_fname(file_name):
-    """Check a filename, adding '.json' extension if not already specified.
 
-    Parameters
-    ----------
-    file_name : str
-        String that specifies a file name.
-
-    Outputs
-    -------
-    file_name : str
-        String that specifies a file name.
-    """
-
-    if file_name.split('.')[-1] != 'json':
-        file_name = file_name + '.json'
-
-    return file_name

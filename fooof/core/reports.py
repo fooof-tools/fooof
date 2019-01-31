@@ -2,6 +2,7 @@
 
 import os
 
+from fooof.core.io import fname
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_results_str_fg
 from fooof.plts.fg import plot_fg_bg, plot_fg_gf, plot_fg_peak_cens
@@ -55,7 +56,7 @@ def save_report_fm(fm, file_name, file_path='', plt_log=False):
     ax2.set_yticks([])
 
     # Save out the report
-    plt.savefig(os.path.join(file_path, file_name + '.pdf'))
+    plt.savefig(os.path.join(file_path, fname(file_name, 'pdf')))
     plt.close()
 
 
@@ -100,7 +101,7 @@ def save_report_fg(fg, file_name, file_path=''):
     plot_fg_peak_cens(fg, ax3)
 
     # Save out the report
-    plt.savefig(os.path.join(file_path, file_name + '.pdf'))
+    plt.savefig(os.path.join(file_path, fname(file_name, 'pdf')))
     plt.close()
 
 
