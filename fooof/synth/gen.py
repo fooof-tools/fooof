@@ -15,17 +15,22 @@ def gen_freqs(freq_range, freq_res):
     Parameters
     ----------
     freq_range : list of [float, float]
-        Frequency range of desired frequency vector, as [f_low, f_high].
+        Frequency range of desired frequency vector, as [f_low, f_high], inclusive.
     freq_res : float
         Frequency resolution of desired frequency vector.
 
     Returns
     -------
-    1d array
-        Frequency values (linear).
+    freqs : 1d array
+        Frequency values, in linear space.
     """
 
-    return np.arange(freq_range[0], freq_range[1]+freq_res, freq_res)
+    # The end value has something added to it, to make sure the last value is included
+    #   It adds a fraction to not accidentally include points beyond range
+    #   due to rounding / or uneven division of the freq_res into range to simulate
+    freqs = np.arange(freq_range[0], freq_range[1] + (0.5 * freq_res), freq_res)
+
+    return freqs
 
 
 def gen_power_spectrum(freq_range, aperiodic_params, gauss_params, nlv=0.005, freq_res=0.5):
@@ -46,10 +51,10 @@ def gen_power_spectrum(freq_range, aperiodic_params, gauss_params, nlv=0.005, fr
 
     Returns
     -------
-    xs : 1d array
-        Frequency values (linear).
-    ys : 1d array
-        Power values (linear).
+    freqs : 1d array
+        Frequency values, in linear space.
+    powers : 1d array
+        Power values, in linear space.
 
     Notes
     -----
@@ -81,10 +86,10 @@ def gen_power_spectrum(freq_range, aperiodic_params, gauss_params, nlv=0.005, fr
     >>> freqs, psd = gen_power_spectrum([1, 50], [0, 2], [[10, 1, 1], [20, 0.5, 1]])
     """
 
-    xs = gen_freqs(freq_range, freq_res)
-    ys = gen_power_vals(xs, aperiodic_params, check_flat(gauss_params), nlv)
+    freqs = gen_freqs(freq_range, freq_res)
+    powers = gen_power_vals(freqs, aperiodic_params, check_flat(gauss_params), nlv)
 
-    return xs, ys
+    return freqs, powers
 
 
 def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
@@ -109,9 +114,9 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
 
     Returns
     -------
-    xs : 1d array
+    freqs : 1d array
         Frequency values (linear).
-    ys : 2d array
+    powers : 2d array
         Matrix of power values (linear), as [n_power_spectra, n_freqs].
     syn_params : list of SynParams
         Definitions of parameters used for each spectrum. Has length of n_spectra.
@@ -153,8 +158,8 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
     """
 
     # Initialize things
-    xs = gen_freqs(freq_range, freq_res)
-    ys = np.zeros([n_spectra, len(xs)])
+    freqs = gen_freqs(freq_range, freq_res)
+    powers = np.zeros([n_spectra, len(freqs)])
     syn_params = [None] * n_spectra
 
     # Check if inputs are generators, if not, make them into repeat generators
@@ -166,17 +171,17 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
     for ind, bgp, gp, nlv in zip(range(n_spectra), aperiodic_params, gauss_params, nlvs):
 
         syn_params[ind] = SynParams(bgp.copy(), sorted(group_three(gp)), nlv)
-        ys[ind, :] = gen_power_vals(xs, bgp, gp, nlv)
+        powers[ind, :] = gen_power_vals(freqs, bgp, gp, nlv)
 
-    return xs, ys, syn_params
+    return freqs, powers, syn_params
 
 
-def gen_aperiodic(xs, aperiodic_params, aperiodic_mode=None):
+def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):
     """Generate aperiodic values, from parameter definition.
 
     Parameters
     ----------
-    xs : 1d array
+    freqs : 1d array
         Frequency vector to create aperiodic component for.
     aperiodic_params : list of float
         Parameters that define the aperiodic component.
@@ -186,7 +191,7 @@ def gen_aperiodic(xs, aperiodic_params, aperiodic_mode=None):
 
     Returns
     -------
-    1d array
+    ap_vals : 1d array
         Generated aperiodic values.
     """
 
@@ -195,34 +200,38 @@ def gen_aperiodic(xs, aperiodic_params, aperiodic_mode=None):
 
     ap_func = get_ap_func(aperiodic_mode)
 
-    return ap_func(xs, *aperiodic_params)
+    ap_vals = ap_func(freqs, *aperiodic_params)
+
+    return ap_vals
 
 
-def gen_peaks(xs, gauss_params):
+def gen_peaks(freqs, gauss_params):
     """Generate peaks values, from parameter definition.
 
     Parameters
     ----------
-    xs : 1d array
+    freqs : 1d array
         Frequency vector to create peak values from.
     gauss_params : list of float
         Parameters to create peaks. Length of n_peaks * 3.
 
     Returns
     -------
-    1d array
+    peak_vals : 1d array
         Generated aperiodic values.
     """
 
-    return gaussian_function(xs, *gauss_params)
+    peak_vals = gaussian_function(freqs, *gauss_params)
+
+    return peak_vals
 
 
-def gen_power_vals(xs, aperiodic_params, gauss_params, nlv):
+def gen_power_vals(freqs, aperiodic_params, gauss_params, nlv):
     """Generate power values for a power spectrum.
 
     Parameters
     ----------
-    xs : 1d array
+    freqs : 1d array
         Frequency vector to create power values from.
     aperiodic_params : list of float
         Parameters to create the aperiodic component of the power spectrum.
@@ -233,14 +242,14 @@ def gen_power_vals(xs, aperiodic_params, gauss_params, nlv):
 
     Returns
     -------
-    ys : 1d vector
+    powers : 1d vector
         Power values (linear).
     """
 
-    aperiodic = gen_aperiodic(xs, aperiodic_params)
-    peaks = gen_peaks(xs, gauss_params)
-    noise = np.random.normal(0, nlv, len(xs))
+    aperiodic = gen_aperiodic(freqs, aperiodic_params)
+    peaks = gen_peaks(freqs, gauss_params)
+    noise = np.random.normal(0, nlv, len(freqs))
 
-    ys = np.power(10, aperiodic + peaks + noise)
+    powers = np.power(10, aperiodic + peaks + noise)
 
-    return ys
+    return powers
