@@ -3,7 +3,7 @@
 import numpy as np
 
 from fooof.core.utils import group_three, check_iter, check_flat
-from fooof.core.funcs import gaussian_function, get_bg_func, infer_bg_func
+from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
 from fooof.synth.params import SynParams
 
 ###################################################################################################
@@ -28,15 +28,15 @@ def gen_freqs(freq_range, freq_res):
     return np.arange(freq_range[0], freq_range[1]+freq_res, freq_res)
 
 
-def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, freq_res=0.5):
+def gen_power_spectrum(freq_range, aperiodic_params, gauss_params, nlv=0.005, freq_res=0.5):
     """Generate a synthetic power spectrum.
 
     Parameters
     ----------
     freq_range : list of [float, float]
         Minimum and maximum values of the desired frequency vector.
-    background_params : list of float
-        Parameters to create the background of a power spectrum. Length of 2 or 3 (see note).
+    aperiodic_params : list of float
+        Parameters to create the aperiodic component of a power spectrum. Length of 2 or 3 (see note).
     gauss_params : list of float or list of list of float
         Parameters to create peaks. Total length of n_peaks * 3 (see note).
     nlv : float, optional
@@ -53,9 +53,9 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
 
     Notes
     -----
-    Background Parameters:
-        - The type of background process to use is inferred from the provided parameters.
-            - If length of 2, the 'fixed' background is used, if length of 3, 'knee' is used.
+    Aperiodic Parameters:
+        - The function for the aperiodic process to use is inferred from the provided parameters.
+            - If length of 2, the 'fixed' aperiodic mode is used, if length of 3, 'knee' is used.
     Gaussian Parameters:
         - Each gaussian description is a set of three values:
             - mean (Center Frequency), amplitude (Amplitude), and std (Bandwidth)
@@ -79,12 +79,12 @@ def gen_power_spectrum(freq_range, background_params, gauss_params, nlv=0.005, f
     """
 
     xs = gen_freqs(freq_range, freq_res)
-    ys = gen_power_vals(xs, background_params, check_flat(gauss_params), nlv)
+    ys = gen_power_vals(xs, aperiodic_params, check_flat(gauss_params), nlv)
 
     return xs, ys
 
 
-def gen_group_power_spectra(n_spectra, freq_range, background_params,
+def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
                             gauss_params, nlvs=0.005, freq_res=0.5):
     """Generate a group of synthetic power spectra.
 
@@ -94,8 +94,8 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params,
         The number of power spectra to generate in the matrix.
     freq_range : list of [float, float]
         Minimum and maximum values of the desired frequency vector.
-    background_params : list of float or generator
-        Parameters for the background of the power spectra.
+    aperiodic_params : list of float or generator
+        Parameters for the aperiodic component of the power spectra.
     gauss_params : list of float or generator
         Parameters for the peaks of the power spectra.
             Length of n_peaks * 3.
@@ -122,9 +122,9 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params,
             - If so, each successive parameter set is such for each successive spectrum.
         - A generator object that returns parameters for a power spectrum.
             - If so, each spectrum has parameters pulled from the generator.
-    Background Parameters:
-        - The type of background process to use is inferred from the provided parameters.
-            - If length of 2, 'fixed' background is used, if length of 3, 'knee' is used.
+    Aperiodic Parameters:
+        - The function for the aperiodic process to use is inferred from the provided parameters.
+            - If length of 2, the 'fixed' aperiodic mode is used, if length of 3, 'knee' is used.
     Gaussian Parameters:
         - Each gaussian description is a set of three values:
             - mean (Center Frequency), amplitude (Amplitude), and std (Bandwidth)
@@ -147,12 +147,12 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params,
     syn_params = [None] * n_spectra
 
     # Check if inputs are generators, if not, make them into repeat generators
-    background_params = check_iter(background_params, n_spectra)
+    aperiodic_params = check_iter(aperiodic_params, n_spectra)
     gauss_params = check_iter(gauss_params, n_spectra)
     nlvs = check_iter(nlvs, n_spectra)
 
     # Synthesize power spectra
-    for ind, bgp, gp, nlv in zip(range(n_spectra), background_params, gauss_params, nlvs):
+    for ind, bgp, gp, nlv in zip(range(n_spectra), aperiodic_params, gauss_params, nlvs):
 
         syn_params[ind] = SynParams(bgp.copy(), sorted(group_three(gp)), nlv)
         ys[ind, :] = gen_power_vals(xs, bgp, gp, nlv)
@@ -160,31 +160,31 @@ def gen_group_power_spectra(n_spectra, freq_range, background_params,
     return xs, ys, syn_params
 
 
-def gen_background(xs, background_params, background_mode=None):
-    """Generate background values, from parameter definition.
+def gen_aperiodic(xs, aperiodic_params, aperiodic_mode=None):
+    """Generate aperiodic values, from parameter definition.
 
     Parameters
     ----------
     xs : 1d array
-        Frequency vector to create background from.
-    background_params : list of float
-        Parameters that define the background process.
-    background_mode : {'fixed', 'knee'}, optional
-        Which kind of background to generate power spectra with.
+        Frequency vector to create aperiodic component for.
+    aperiodic_params : list of float
+        Parameters that define the aperiodic component.
+    aperiodic_mode : {'fixed', 'knee'}, optional
+        Which kind of aperiodic component to generate power spectra with.
             If not provided, is infered from the parameters.
 
     Returns
     -------
     1d array
-        Generated background values.
+        Generated aperiodic values.
     """
 
-    if not background_mode:
-        background_mode = infer_bg_func(background_params)
+    if not aperiodic_mode:
+        aperiodic_mode = infer_ap_func(aperiodic_params)
 
-    bg_func = get_bg_func(background_mode)
+    ap_func = get_ap_func(aperiodic_mode)
 
-    return bg_func(xs, *background_params)
+    return ap_func(xs, *aperiodic_params)
 
 
 def gen_peaks(xs, gauss_params):
@@ -200,21 +200,21 @@ def gen_peaks(xs, gauss_params):
     Returns
     -------
     1d array
-        Generated background values.
+        Generated aperiodic values.
     """
 
     return gaussian_function(xs, *gauss_params)
 
 
-def gen_power_vals(xs, background_params, gauss_params, nlv):
+def gen_power_vals(xs, aperiodic_params, gauss_params, nlv):
     """Generate power values for a power spectrum.
 
     Parameters
     ----------
     xs : 1d array
         Frequency vector to create power values from.
-    background_params : list of float
-        Parameters to create the background of power spectrum.
+    aperiodic_params : list of float
+        Parameters to create the aperiodic component of the power spectrum.
     gauss_params : list of float
         Parameters to create peaks. Length of n_peaks * 3.
     nlv : float
@@ -226,10 +226,10 @@ def gen_power_vals(xs, background_params, gauss_params, nlv):
         Power values (linear).
     """
 
-    background = gen_background(xs, background_params)
+    aperiodic = gen_aperiodic(xs, aperiodic_params)
     peaks = gen_peaks(xs, gauss_params)
     noise = np.random.normal(0, nlv, len(xs))
 
-    ys = np.power(10, background + peaks + noise)
+    ys = np.power(10, aperiodic + peaks + noise)
 
     return ys

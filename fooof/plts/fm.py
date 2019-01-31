@@ -55,9 +55,9 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
     if np.any(fm.fooofed_spectrum_):
         plot_spectrum(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers, ax,
                       color='r', linewidth=3.0, alpha=0.5, label='Full Model Fit')
-        plot_spectrum(fm.freqs, fm._bg_fit, log_freqs, log_powers, ax,
+        plot_spectrum(fm.freqs, fm._ap_fit, log_freqs, log_powers, ax,
                       color='b', linestyle='dashed', linewidth=3.0,
-                      alpha=0.5, label='Background Fit')
+                      alpha=0.5, label='Aperiodic Fit')
 
     # Save out figure, if requested
     if save_fig:

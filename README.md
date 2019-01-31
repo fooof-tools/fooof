@@ -13,10 +13,10 @@ FOOOF is a fast, efficient, and physiologically-informed tool to parameterize ne
 ## Overview
 
 FOOOF conceives of a model of the power spectrum as a combination of two distinct functional processes:
-- An aperiodic 'background' component, reflecting 1/f like characteristics, modeled with an exponential fit, with
-- A variable number of periodic components, that exhibit as band-limited peaks rising above this background, reflecting putative oscillations, modeled as Gaussians
+- An aperiodic component, reflecting 1/f like characteristics, modeled with an exponential fit, with
+- A variable number of periodic components, that exhibit as band-limited peaks rising above the aperiodic component, reflecting putative oscillations, modeled as Gaussians
 
-With regards to examining peaks in the frequency domain, as putative oscillations, the benefit of the FOOOF approach is that these peaks are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest. In particular, it separates these peaks from a dynamic, and independently interesting aperiodic background. This conception of the aperiodic background, as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the slope of this approximately 1/f distributed aperiodic background may reflect physiological parameters, particularly excitation/inhibition balance ([Gao, Peterson, Voytek, _NeuroImage_ 2017](http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf); [Voytek & Knight, _Biol Psychiatry_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf)). This aperiodic component changes with task ([Podvalny _et al._, _J Neurophysiol_ 2015](http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf)), with aging ([Voytek _et al._, _J Neurosci_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf)), and is thus interesting and important to measure, both in of itself, and to address potential confounds of the aperiodic components on the measurement of band-limited periodic components.
+With regards to examining peaks in the frequency domain, as putative oscillations, the benefit of the FOOOF approach is that these peaks are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest. In particular, it separates these peaks from a dynamic, and independently interesting aperiodic component. This conception of the aperiodic component, as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the properties of this approximately 1/f distributed aperiodic component may reflect physiological parameters, particularly excitation/inhibition balance ([Gao, Peterson, Voytek, _NeuroImage_ 2017](http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf); [Voytek & Knight, _Biol Psychiatry_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf)). This aperiodic component changes with task ([Podvalny _et al._, _J Neurophysiol_ 2015](http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf)), with aging ([Voytek _et al._, _J Neurosci_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf)), and is thus interesting and important to measure, both in of itself, and to address potential confounds of the aperiodic components on the measurement of band-limited periodic components.
 
 A full description of the method and approach is available in the paper below.
 
@@ -104,7 +104,7 @@ freq_range = [3, 40]
 fm.report(freqs, spectrum, freq_range)
 ```
 
-FOOOF.report() fits the model, plots the original power spectrum with the associated FOOOF model fit, and prints out the parameters of the model fit for both aperiodic 'background' and Gaussian parameters for any identified peaks.
+FOOOF.report() fits the model, plots the original power spectrum with the associated FOOOF model fit, and prints out the parameters of the model fit for both the aperiodic component, and parameters for any identified peaks, reflecting periodic components.
 
 FOOOF also accepts parameters for fine-tuning the fit. For example:
 
@@ -114,7 +114,7 @@ fm = FOOOF(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_amplitude=0.1, 
 
 * _peak_width_limits_ sets the possible lower- and upper-bounds for the fitted peak widths.
 * _max_n_peaks_ sets the maximum number of peaks to fit (in decreasing order of amplitude).
-* _min_peak_amp_ sets an absolute limit on the minimum amplitude (above background) for any extracted peak.
+* _min_peak_amp_ sets an absolute limit on the minimum amplitude (above aperiodic) for any extracted peak.
 * _peak_threshold_, also sets a threshold above which a peak amplitude must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.
 
 FOOOF also has convenience methods for running the FOOOF model across matrices of multiple power spectra, as well as functionality for saving and loading results, creating reports from FOOOF outputs, and utilities to further analize FOOOF results.

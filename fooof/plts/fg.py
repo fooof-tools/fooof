@@ -39,7 +39,7 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
     fig = plt.figure(figsize=(14, 10))
     gs = gridspec.GridSpec(2, 2, wspace=0.35, hspace=0.25, height_ratios=[1, 1.2])
 
-    # Background parameters plot
+    # Aperiodic parameters plot
     ax0 = plt.subplot(gs[0, 0])
     plot_fg_bg(fg, ax0)
 
@@ -57,7 +57,7 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
 
 @check_dependency(plt, 'matplotlib')
 def plot_fg_bg(fg, ax=None):
-    """Plot background fit parameters, in a scatter plot.
+    """Plot aperiodic fit parameters, in a scatter plot.
 
     Parameters
     ----------
@@ -67,13 +67,13 @@ def plot_fg_bg(fg, ax=None):
         Figure axes upon which to plot.
     """
 
-    if fg.background_mode == 'knee':
-        plot_scatter_2(fg.get_all_data('background_params', 1), 'Knee',
-                       fg.get_all_data('background_params', 2), 'Slope',
-                       'Background Fit', ax=ax)
+    if fg.aperiodic_mode == 'knee':
+        plot_scatter_2(fg.get_all_data('aperiodic_params', 1), 'Knee',
+                       fg.get_all_data('aperiodic_params', 2), 'Exponent',
+                       'Aperiodic Fit', ax=ax)
     else:
-        plot_scatter_1(fg.get_all_data('background_params', 1), 'Slope',
-                       'Background Fit', ax=ax)
+        plot_scatter_1(fg.get_all_data('aperiodic_params', 1), 'Exponent',
+                       'Aperiodic Fit', ax=ax)
 
 
 @check_dependency(plt, 'matplotlib')
