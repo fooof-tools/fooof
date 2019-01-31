@@ -7,10 +7,23 @@ from fooof import FOOOF
 from fooof.core.utils import get_obj_desc
 
 from fooof.core.io import *
-from fooof.core.io import _check_fname
 
 ###################################################################################################
 ###################################################################################################
+
+def test_fname():
+    """Check that the file name checker helper function properly checks / adds file extensions."""
+
+    assert fname('dat', 'json') == 'dat.json'
+    assert fname('dat.json', 'json') == 'dat.json'
+    assert fname('pic', 'png') == 'pic.png'
+    assert fname('pic.png', 'png') == 'pic.png'
+
+def test_fpath():
+    """Check that the file path checker helper function properly checks / combines file paths."""
+
+    assert fpath(None, 'dat.json') == 'dat.json'
+    assert fpath('/path/', 'dat.json') == '/path/dat.json'
 
 def test_save_fm_str(tfm):
     """Check saving fm data, with str file specifier."""
@@ -142,9 +155,3 @@ def test_load_file_contents():
     # Check results
     for datum in desc['data']:
         assert datum in loaded_data.keys()
-
-def test_check_fname():
-    """Check that the file name checker helper function properly checks / adds file extensions."""
-
-    assert _check_fname('dat') == 'dat.json'
-    assert _check_fname('dat.json') == 'dat.json'

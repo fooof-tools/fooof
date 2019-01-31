@@ -7,6 +7,7 @@ This file contains plotting functions that take as input a FOOOFGroup() object.
 
 import os
 
+from fooof.core.io import fname, fpath
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
 
@@ -17,7 +18,7 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
+def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
     """Plots a figure with subplots covering the group results from a FOOOFGroup object.
 
     Parameters
@@ -46,12 +47,12 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=''):
     ax1 = plt.subplot(gs[0, 1])
     plot_fg_gf(fg, ax1)
 
-    # Cneter frequencies plot
+    # Center frequencies plot
     ax2 = plt.subplot(gs[1, :])
     plot_fg_peak_cens(fg, ax2)
 
     if save_fig:
-        plt.savefig(os.path.join(file_path, file_name + '.png'))
+        plt.savefig(fpath(file_path, fname(file_name, 'png')))
 
 
 @check_dependency(plt, 'matplotlib')

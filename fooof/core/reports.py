@@ -2,6 +2,7 @@
 
 import os
 
+from fooof.core.io import fname, fpath
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_results_str_fg
 from fooof.plts.fg import plot_fg_bg, plot_fg_gf, plot_fg_peak_cens
@@ -13,7 +14,7 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def save_report_fm(fm, file_name, file_path='', plt_log=False):
+def save_report_fm(fm, file_name, file_path=None, plt_log=False):
     """Generate and save out a as PDF a report for a FOOOF object.
 
     Parameters
@@ -55,12 +56,12 @@ def save_report_fm(fm, file_name, file_path='', plt_log=False):
     ax2.set_yticks([])
 
     # Save out the report
-    plt.savefig(os.path.join(file_path, file_name + '.pdf'))
+    plt.savefig(fpath(file_path, fname(file_name, 'pdf')))
     plt.close()
 
 
 @check_dependency(plt, 'matplotlib')
-def save_report_fg(fg, file_name, file_path=''):
+def save_report_fg(fg, file_name, file_path=None):
     """Generate and save out as a PDF a report for a FOOOFGroup object.
 
     Parameters
@@ -100,7 +101,7 @@ def save_report_fg(fg, file_name, file_path=''):
     plot_fg_peak_cens(fg, ax3)
 
     # Save out the report
-    plt.savefig(os.path.join(file_path, file_name + '.pdf'))
+    plt.savefig(fpath(file_path, fname(file_name, 'pdf')))
     plt.close()
 
 

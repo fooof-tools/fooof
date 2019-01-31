@@ -10,6 +10,7 @@ import numpy as np
 
 from fooof.plts.utils import check_ax
 from fooof.plts.spectra import plot_spectrum
+from fooof.core.io import fname, fpath
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
 
@@ -19,7 +20,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path='', ax=None):
+def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=None, ax=None):
     """Plot the power spectrum and model fit results from a FOOOF object.
 
     Parameters
@@ -33,7 +34,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
     file_name : str, optional
         Name to give the saved out file.
     file_path : str, optional
-        Path to directory in which to save. If not provided, saves to current directory.
+        Path to directory in which to save. If None, saves to current directory.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     """
@@ -60,7 +61,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
 
     # Save out figure, if requested
     if save_fig:
-        plt.savefig(os.path.join(file_path, file_name + '.png'))
+        plt.savefig(fpath(file_path, fname(file_name, 'png')))
 
 
 @check_dependency(plt, 'matplotlib')
