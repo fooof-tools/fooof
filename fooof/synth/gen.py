@@ -21,11 +21,16 @@ def gen_freqs(freq_range, freq_res):
 
     Returns
     -------
-    1d array
+    freqs : 1d array
         Frequency values, in linear space.
     """
 
-    return np.arange(freq_range[0], freq_range[1]+freq_res, freq_res)
+    # The end value has something added to it, to make sure the last value is included
+    #   It adds a fraction to not accidentally include points beyond range
+    #   due to rounding / or uneven division of the freq_res into range to simulate
+    freqs = np.arange(freq_range[0], freq_range[1] + (0.5 * freq_res), freq_res)
+
+    return freqs
 
 
 def gen_power_spectrum(freq_range, aperiodic_params, gauss_params, nlv=0.005, freq_res=0.5):
