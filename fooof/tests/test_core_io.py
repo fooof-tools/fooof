@@ -19,6 +19,12 @@ def test_fname():
     assert fname('pic', 'png') == 'pic.png'
     assert fname('pic.png', 'png') == 'pic.png'
 
+def test_fpath():
+    """Check that the file path checker helper function properly checks / combines file paths."""
+
+    assert fpath(None, 'dat.json') == 'dat.json'
+    assert fpath('/path/', 'dat.json') == '/path/dat.json'
+
 def test_save_fm_str(tfm):
     """Check saving fm data, with str file specifier."""
 

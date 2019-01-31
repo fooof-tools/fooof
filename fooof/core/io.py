@@ -17,6 +17,8 @@ def fname(file_name, extension):
     ----------
     file_name : str
         String that specifies a file name.
+    extensions : str
+        String that specifies the extension to be added, not including a period.
 
     Outputs
     -------
@@ -30,6 +32,34 @@ def fname(file_name, extension):
     return file_name
 
 
+def fpath(file_path, file_name):
+    """Build the full file path from file name and directory.
+
+    Parameters
+    ----------
+    file_path : str or None
+        Path to the directory where the file is located.
+    file_name : str
+        Name of the file.
+
+    Returns
+    -------
+    full_path : str
+        Full file path to the file, including directory, if provided.
+
+    Notes
+    -----
+    This function is mainly used to deal with the case in which file_path is None.
+    """
+
+    if not file_path:
+        full_path = file_name
+    else:
+        full_path = os.path.join(file_path, file_name)
+
+    return full_path
+
+
 def save_fm(fm, file_name, file_path=None, append=False,
             save_results=False, save_settings=False, save_data=False):
     """Save out data, results and/or settings from FOOOF object. Saves out to a JSON file.
@@ -41,7 +71,7 @@ def save_fm(fm, file_name, file_path=None, append=False,
     file_name : str or FileObject
         File to which to save data.
     file_path : str, optional
-        Path to directory to which the save. If None, saves to current directory.
+        Path to directory in which to save. If not provided, saves to current directory.
     append : bool, optional
         Whether to append to an existing file, if available. default: False
             This option is only valid (and only used) if file_name is a str.
@@ -52,9 +82,6 @@ def save_fm(fm, file_name, file_path=None, append=False,
     save_data : bool, optional
         Whether to save out input data.
     """
-
-    # Check whether filepath is provided, and default to empty string if not
-    file_path = '' if not file_path else file_path
 
     # Convert object to dictionary & convert all arrays to lists - for JSON serializing
     obj_dict = dict_array_to_lst(fm.__dict__)
@@ -69,12 +96,12 @@ def save_fm(fm, file_name, file_path=None, append=False,
 
     # Save out - create new file, (creates a JSON file)
     if isinstance(file_name, str) and not append:
-        with open(os.path.join(file_path, fname(file_name, 'json')), 'w') as outfile:
+        with open(fpath(file_path, fname(file_name, 'json')), 'w') as outfile:
             json.dump(obj_dict, outfile)
 
     # Save out - append to file_name (appends to a JSONlines file)
     elif isinstance(file_name, str) and append:
-        with open(os.path.join(file_path, fname(file_name, 'json')), 'a') as outfile:
+        with open(fpath(file_path, fname(file_name, 'json')), 'a') as outfile:
             json.dump(obj_dict, outfile)
             outfile.write('\n')
 
@@ -98,7 +125,7 @@ def save_fg(fg, file_name, file_path=None, append=False,
     file_name : str or FileObject
         File to which to save data.
     file_path : str, optional
-        Path to directory to which the save. If None, saves to current directory.
+        Path to directory in which to save. If not provided, saves to current directory.
     append : bool, optional
         Whether to append to an existing file, if available. default: False
             This option is only valid (and only used) if file_name is a str.
@@ -110,20 +137,17 @@ def save_fg(fg, file_name, file_path=None, append=False,
         Whether to save out power spectra data.
     """
 
-    # Check whether filepath is provided, and default to empty string if not
-    file_path = '' if not file_path else file_path
-
     if not save_results and not save_settings and not save_data:
         raise ValueError('No data specified for saving.')
 
     # Save to string specified file, do not append
     if isinstance(file_name, str) and not append:
-        with open(os.path.join(file_path, fname(file_name, 'json')), 'w') as f_obj:
+        with open(fpath(file_path, fname(file_name, 'json')), 'w') as f_obj:
             _save_fg(fg, f_obj, save_results, save_settings, save_data)
 
     # Save to string specified file, appending
     elif isinstance(file_name, str) and append:
-        with open(os.path.join(file_path, fname(file_name, 'json')), 'a') as f_obj:
+        with open(fpath(file_path, fname(file_name, 'json')), 'a') as f_obj:
             _save_fg(fg, f_obj, save_results, save_settings, save_data)
 
     # Save to file-object specified file
@@ -152,7 +176,7 @@ def load_json(file_name, file_path):
 
     # Load data from file
     if isinstance(file_name, str):
-        with open(os.path.join(file_path, fname(file_name, 'json')), 'r') as infile:
+        with open(fpath(file_path, fname(file_name, 'json')), 'r') as infile:
             dat = json.load(infile)
     elif isinstance(file_name, io.IOBase):
         dat = json.loads(file_name.readline())
@@ -179,7 +203,7 @@ def load_jsonlines(file_name, file_path):
         Dictionary of data loaded from file.
     """
 
-    with open(os.path.join(file_path, fname(file_name, 'json')), 'r') as f_obj:
+    with open(fpath(file_path, fname(file_name, 'json')), 'r') as f_obj:
 
         while True:
 
@@ -211,15 +235,12 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
 
     # Save out single line, if just settings to be saved
     if save_settings and not save_results and not save_data:
-        save_fm(fg, file_name=f_obj, file_path='', append=False,
+        save_fm(fg, file_name=f_obj, file_path=None, append=False,
                 save_results=save_results, save_settings=save_settings, save_data=save_data)
 
     # Loops through group object, creating a FOOOF object per power spectrum, and saves from there
     else:
         for ind in range(len(fg.group_results)):
             fm = fg.get_fooof(ind, regenerate=False)
-            save_fm(fm, file_name=f_obj, file_path='', append=False,
+            save_fm(fm, file_name=f_obj, file_path=None, append=False,
                     save_results=save_results, save_settings=save_settings, save_data=save_data)
-
-
-
