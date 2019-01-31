@@ -30,7 +30,8 @@ from fooof.synth.gen import gen_group_power_spectra
 # them to generate power spectra.
 #
 # If you would like to generate single power spectra, you can use :func:`gen_power_spectrum`,
-# also in fooof.synth.
+# also in `fooof.synth.gen`.
+#
 
 ###################################################################################################
 
@@ -53,6 +54,7 @@ gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 #
 # Note that this function also returns a list of the parameters
 # used to generate each power spectrum.
+#
 
 ###################################################################################################
 
@@ -76,13 +78,14 @@ freqs, spectra, syn_params = gen_group_power_spectra(n_spectra, f_range, ap_opts
 # channels, and/or across trials, within or across subjects.
 #
 # The main difference with the FOOOFGroup object, is that it also contains a
-# 'power_spectra' attribute, which stores the matrix of power-spectra to be fit,
-# and collects fit results into a 'group_results' attribute.
+# `power_spectra` attribute, which stores the matrix of power-spectra to be fit,
+# and collects fit results into a `group_results` attribute.
 #
 # Otherwise, FOOOFGroup supports all the same functionality,
 # accessed in the same way as the FOOOF object.
 #
 # Internally, it runs the exact same fitting procedure, per spectrum, as the FOOOF object.
+#
 
 ###################################################################################################
 
@@ -109,8 +112,9 @@ fg.plot()
 
 ###################################################################################################
 #
-# Just as with the FOOOF object, you can call the convenience method 'report' to run
+# Just as with the FOOOF object, you can call the convenience method `report` to run
 # the fitting, and print results & plots, printing out the same as above.
+#
 
 ###################################################################################################
 
@@ -118,22 +122,17 @@ fg.plot()
 fg.save_report()
 
 ###################################################################################################
-
-# Check what the generated report looks like
-from IPython.display import IFrame
-IFrame("FOOOFGroup_Report.pdf", width=950, height=1200)
-
-###################################################################################################
 # FOOOFGroup Data
 # ---------------
 #
 # FOOOFGroup collects fits across power spectra into a list of FOOOFResults objects.
+#
 
 ###################################################################################################
 
 # As it runs, FOOOFGroup collects each fit results in 'group_results'
-#  'group_results' is a list of FOOOFResult objects
-fg.group_results[0:2]
+#  `group_results` is a list of FOOOFResult objects
+print(fg.group_results[0:2])
 
 ###################################################################################################
 # get_all_data
@@ -143,6 +142,7 @@ fg.group_results[0:2]
 # you can use the :func:`get_all_data` method. This method lets you extract specific results
 # by specifying a field, as a string, and (optionally) a specific column of that data, also
 # as a string (or, optionally, as an integer index).
+#
 
 ###################################################################################################
 
@@ -166,6 +166,7 @@ print(fg.get_all_data.__doc__)
 ###################################################################################################
 #
 # More information about the data you can extract is also documented in the FOOOFResults object
+#
 
 ###################################################################################################
 
@@ -204,6 +205,7 @@ print(cfs)
 # to each line in the output file, corresponding to each individual spectrum in the group,
 # and so is somewhat inefficient. It is more parsimonious to save out a single settings file,
 # and a separate file that includes the results.
+#
 
 ###################################################################################################
 
@@ -239,6 +241,7 @@ nfg.print_results()
 # 'complexity' of the power spectra, in terms of number of peaks. For relatively small
 # numbers of power spectra (less than ~100), across relatively small frequency ranges
 # (say ~3-40Hz), running in parallel may offer no appreciable speed up.
+#
 
 ###################################################################################################
 
@@ -246,14 +249,15 @@ nfg.print_results()
 fg.fit(freqs, spectra, n_jobs=-1)
 
 ###################################################################################################
-# Plotting Individual Fits
-# ------------------------
+# Extacting Individual Fits
+# -------------------------
 #
 # When running FOOOF across a group of power spectra, results are stored as the FOOOFResults,
 # which stores (only) the results of the model fit, not the full model fits themselves.
 #
 # To examine individual model fits, FOOOFGroup can regenerate FOOOF objects for individual
 # power spectra, with the full model available for visualization.
+#
 
 ###################################################################################################
 

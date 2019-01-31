@@ -5,7 +5,7 @@
 
 ###################################################################################################
 #
-# This tutorial provides a more theoretical / mathematical description
+# This tutorial provides a theoretical / mathematical description
 # of the FOOOF model and parameters.
 #
 
@@ -27,13 +27,14 @@
 #
 # Where `P` is the power spectrum, `L` is the aperiodic signal, and each :math:`G_n`
 # is a Gaussian fit to a peak, for `N` total peaks extracted from the power spectrum.
+#
 
 ###################################################################################################
 # Aperiodic Fit
 # -------------
 #
 # The aperiodic fit uses an exponential function, fit on the semilog power spectrum
-# (linear frequencies and $log10$ power values).
+# (linear frequencies and :math:`log_{10}` power values).
 #
 # The exponential is of the form:
 #
@@ -45,7 +46,7 @@
 # .. math::
 #    L = b - \log(k + F^\chi)
 #
-# In this formulation, the 3 parameters `b`, `k`, and :math:`\chi`
+# In this formulation, the parameters `b`, `k`, and :math:`\chi`
 # define the aperiodic signal, as:
 #
 # - `b` is the broadband 'offset'
@@ -53,7 +54,8 @@
 # - :math:`\chi` is the 'exponent' of the aperiodic fit
 # - `F` is the vector of input frequencies
 #
-# Note that fitting the knee parameter is optional. If used, the knee defines a bend in the 1/f.
+# Note that fitting the knee parameter is optional. If used, the knee defines a bend in the
+# aperiodic `1/f` like component of the signal.
 #
 # By default the aperiodic signal is fit with the 'knee' parameter set to zero.
 # This fits the aperiodic signal equivalently to fitting a linear fit in log-log space.
@@ -61,6 +63,7 @@
 # Broader frequency ranges typically do not display a single 1/f like characteristic,
 # and so for these cases fitting with the knee parameter allows for modelling bends
 # in the aperiodic signal.
+#
 
 ###################################################################################################
 # Peaks
@@ -87,10 +90,11 @@
 #
 # Full method details are available in the paper:
 # https://www.biorxiv.org/content/early/2018/04/11/299859
+#
 
 ###################################################################################################
-#
 # This procedure is able to create a model of the neural power spectrum,
 # that is fully described mathematical by the mathematical model from above:
 #
 #.. image:: ../../img/FOOOF_Report.png
+#

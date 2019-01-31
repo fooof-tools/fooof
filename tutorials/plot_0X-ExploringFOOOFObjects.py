@@ -5,9 +5,8 @@
 
 ###################################################################################################
 
-# Imports
+# Import numpy for loading data, and FOOOF object
 import numpy as np
-
 from fooof import FOOOF
 
 ###################################################################################################
@@ -106,9 +105,10 @@ fm = FOOOF()
 # **verbose (boolean)** default='True'
 #
 # Whether to print out status updates and warnings.
+#
 
 ###################################################################################################
-#
+
 # You can check all the user defined FOOOF settings with check_settings
 #  The description parameter here is set to print out quick descriptions of the settings
 fm.print_settings(description=True)
@@ -148,8 +148,11 @@ print('Power Values: \t\t', fm.power_spectrum[0:5])
 # Methods
 # ^^^^^^^
 #
-# Functions that operate on the FOOOF object data.
-# In addition to the exposed methods, there are some internal methods called in the
+# The FOOOF object contains a number of methods that operate on the FOOOF
+# object data, and/or do utility functions.
+#
+# In addition to the exposed methods, there are some internal private methods,
+# with a leading underscore in their name, that are called in the
 # fitting procedure. These methods should not be called independently, as they may
 # depend on internal state as defined from other methods.
 #
@@ -168,10 +171,11 @@ print('Power Values: \t\t', fm.power_spectrum[0:5])
 # the FOOOF object with new settings.
 #
 # Simply resetting the relevant attribute may not appropriately propragate the value,
-# and may fail (either by erroring out, or not applying the settings properly during
-# fit and returning erroneous results).
+# and may fail, either by erroring out, or not applying the settings properly during
+# fit and returning erroneous results.
 #
 # Here we will re-initialize a new FOOOF object, with some new settings, and fit the model.
+#
 
 ###################################################################################################
 
@@ -187,20 +191,20 @@ fm.report(freqs, spectrum, freq_range)
 # ^^^^^^^^^^^^^^^^^^^^
 #
 # FOOOF follows the scipy convention in that any attributes that result from fitting
-# to the data are indicated by a trailing underscore
+# to the data are indicated by a trailing underscore:
 #
-# - fm.aperiodic\_params_, fm.peak\_params\_, fm.fooofed\_spectrum\_, fm.r\_squared\_, fm.error\_
+# - `fm.aperiodic\_params_`, `fm.peak\_params\_`, `fm.fooofed\_spectrum\_`,
+#   `fm.r\_squared\_`, `fm.error\_`
 #
 
-print(fm.aperiodic_params_)
+###################################################################################################
 
-print(fm.peak_params_)
-
-print(fm.r_squared_)
-
-print(fm.error_)
-
-print(fm.fooofed_spectrum_)
+# Print out model fit results
+print('aperiodic params: \t', fm.aperiodic_params_)
+print('peak params: \t',fm.peak_params_)
+print('r-squared: \t', fm.r_squared_)
+print('fit error: \t', fm.error_)
+print('fooofed spectrum: \t',fm.fooofed_spectrum_[0:5])
 
 ###################################################################################################
 # FOOOF - Saving & Reports
@@ -214,8 +218,9 @@ print(fm.fooofed_spectrum_)
 # - settings: all public settings (everything available at initialization)
 # - data: freqs & power spectrum
 #
-# FOOOF save creates JSON files. You can specify a file name to save or append to,
-# or pass in a valid JSON file object.
+# FOOOF saves data out to JSON files. You can specify a file name to save
+# or append to, or pass in a JSON file object.
+#
 
 ###################################################################################################
 
@@ -231,8 +236,7 @@ nfm.load()
 ###################################################################################################
 
 # Plot loaded results
-#   Note: plot log to match the plot from above
-nfm.plot(plt_log=True)
+nfm.plot()
 
 ###################################################################################################
 # Create a Report
@@ -242,6 +246,7 @@ nfm.plot(plt_log=True)
 #
 # This generates and saves a PDF which contains the same output as
 # 'print_results', 'plot', and 'print_settings'.
+#
 
 ###################################################################################################
 
@@ -250,6 +255,8 @@ nfm.plot(plt_log=True)
 #    Add inputs to the method call to specify a file-name, and save-location
 fm.save_report()
 
-# Check what the generated report looks like
+###################################################################################################
+
+# If you're in a notebook, you can use this code to check what the generated report looks like
 from IPython.display import IFrame
 IFrame("FOOOF_Report.pdf", width=950, height=1200)

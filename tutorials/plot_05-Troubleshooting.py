@@ -55,6 +55,7 @@ np.random.seed(321)
 # compared. We therefore recommend first testing out FOOOF across some
 # representative spectra, in order to select FOOOF settings, which you then keep
 # constant for the full analysis.
+#
 
 ####################################################################################################
 # Tuning FOOOF
@@ -70,6 +71,7 @@ np.random.seed(321)
 #
 # The remainder of this notebook goes through some examples of setting FOOOF
 # parameters to be most appropriate for various datasetes.
+#
 
 ###################################################################################################
 # Interpreting Model Fit Quality Measures
@@ -77,7 +79,7 @@ np.random.seed(321)
 #
 # FOOOF calculates and returns a couple metrics to assist with assessing the
 # quality of the model fits. It calculates both the model fit error, as the
-# root mean-squared error (RMSE) between the full model fit ('fooofed\_spectrum\_)'
+# root mean-squared error (RMSE) between the full model fit (`fooofed\_spectrum\_`)
 # and the original power spectrum, as well as the R-squared correspondance
 # between the original spectrum and the FOOOFed result.
 #
@@ -108,6 +110,7 @@ np.random.seed(321)
 # There are not universal parameters that optimize this, and so FOOOF
 # leaves it up to the user to set parameters appropriately to not
 # under- or over-fit for a given modality / dataset / application.
+#
 
 ###################################################################################################
 # Reducing Overfitting
@@ -116,10 +119,11 @@ np.random.seed(321)
 # If FOOOF appears to be overfitting (for example, fitting too many Gaussians to small bumps), try:
 #
 # - Setting a lower-bound bandwidth-limit, to exclude fitting very narrow peaks, that may be noise
-# - Setting a maximum number of peaks that the algorithm may fit: max_n_peaks
+# - Setting a maximum number of peaks that the algorithm may fit: `max_n_peaks`
 #
-#   - If set, the algorithm will fit (up to) the max_n_peaks highest power peaks.
-# - Setting a minimum absolute amplitude for peaks: min_peak_amplitude
+#   - If set, the algorithm will fit (up to) the `max_n_peaks` highest power peaks.
+# - Setting a minimum absolute amplitude for peaks: `min_peak_amplitude`
+#
 
 ###################################################################################################
 
@@ -152,6 +156,9 @@ fm.report(freqs, spectrum)
 # high, given the amount of noise we expect.
 #
 # To reduce this kind of overfitting, we can update the FOOOF parameters.
+#
+
+###################################################################################################
 
 # Update settings to fit a more constrained FOOOF model, to reduce overfitting
 fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_amplitude=0.4)
@@ -164,6 +171,9 @@ fm.report(freqs, spectrum)
 #
 # We can compare how FOOOF, with our updated settings, compares to the
 # ground truth of the synthetic spectrum.
+#
+
+###################################################################################################
 
 # Compare ground truth synthetic parameters to model fit results
 print('Ground Truth \t\t FOOOF Reconstructions')
@@ -176,21 +186,25 @@ for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
 #
 # A known case in which FOOOF can overfit is in power spectra in which no peaks
 # are present. In this case, the standard deviation can be very low, and so the
-# relative amplitude check ('min_peak_threshold') is very liberal at keeping gaussian fits.
+# relative amplitude check (`min_peak_threshold`) is very liberal at keeping gaussian fits.
 #
 # If you expect, or know, you have power spectra without peaks in your data,
-# we therefore recommend making sure you set some value for 'min_peak_amplitude',
+# we therefore recommend making sure you set some value for `min_peak_amplitude`,
 # as otherwise FOOOF is unlikely to appropriately fit power spectra as having
 # no peaks. Setting this value requires checking the scale of your power spectra,
 # allowing you to define an absolute threshold for extracting peaks.
-# allowing you to define an absolute threshold for extracting peaks.
+#
 
-# ### Reducing Underfitting
+###################################################################################################
+# Reducing Underfitting
+# ---------------------
 #
 # If you are finding that FOOOF is underfitting:
-# - First check and perhaps loosen any restrictions from 'max_n_peaks' and 'min_peak_amplitude'
-# - Try updating 'amp_std_thresh' to a lower value
-# - Bad fits may come from issues with aperiodic signal fitting. If so, see below.
+#
+# - First check and perhaps loosen any restrictions from `max_n_peaks` and `min_peak_amplitude`
+# - Try updating `peak_threshold` to a lower value
+# - Bad fits may come from issues with aperiodic signal fitting
+#
 
 ###################################################################################################
 # Create a cleaner synthetic power spectrum
@@ -293,7 +307,7 @@ for ind, fm in enumerate(to_check):
 # be able to make further recommendations, and this also serves as a way for us to
 # investigate when and why FOOOF fails, so that we can continue to make it better.
 #
-# You can report issues on Github [here](https://github.com/voytekresearch/fooof/issues),
+# You can report issues on Github `here <https://github.com/fooof-tools/fooof>`_
 # or get in touch with us by e-mail at voytekresearch@gmail.com.
 #
 # FOOOF also includes a helper method to print out instructions for reporting

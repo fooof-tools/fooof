@@ -5,19 +5,33 @@
 
 ###################################################################################################
 #
+# This tutorials covers how to choose and use different approaches for
+# fitting the aperiodic component of the signal.
+#
+
+###################################################################################################
+
+# Import numpy for loading data, and FOOOF object
+import numpy as np
+from fooof import FOOOF
+
+###################################################################################################
+# Aperiodic Fitting Approaches
+# ----------------------------
+#
 # FOOOF currently offers two approaches for fitting the aperiodic component:
 #
 # - Fitting with just an offset and a exponent, equivalent to a linear fit in log-log space
 #
-#   - aperiodic_mode = 'fixed'
+#   - `aperiodic_mode` = 'fixed'
 # - Including a 'knee' parameter, reflecting a fit with a bend, in log-log space
 #
-#   - aperiodic_mode = 'knee'
+#   - `aperiodic_mode` = 'knee'
 #
 # Fitting in the 'fixed' mode assumes a single 1/f like characteristic to the aperiodic
 # signal, meaning it looks linear across all frequencies in log-log space.
 #
-# Though this assumption is true across _some_ frequency ranges in neural data, it does
+# Though this assumption is true across *some* frequency ranges in neural data, it does
 # does not hold up across broad freequency ranges. If fitting is done in the 'fixed' mode,
 # but the assumption of a single 1/f is violated, then fitting will go wrong.
 #
@@ -29,21 +43,22 @@
 #
 
 ###################################################################################################
-
-# Imports
-import numpy as np
-from fooof import FOOOF
-
-###################################################################################################
 # Fitting FOOOF with Aperiodic 'Knee'
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+
+###################################################################################################
 
 # Load example data (LFP)
 freqs = np.load('dat/freqs_lfp.npy')
 spectrum = np.load('dat/spectrum_lfp.npy')
 
+###################################################################################################
+
 # Initialize FOOOF - setting to aperiodic mode to use a knee fit
 fm = FOOOF(peak_width_limits=[2, 8], aperiodic_mode='knee')
+
+###################################################################################################
 
 # Fit FOOOF model
 #  Note that this time we're specifying an optional parameter to plot in log-log
@@ -73,12 +88,12 @@ fm.report(freqs, spectrum, [2, 60], plt_log=True)
 # aperiodic component past the 'knee' inflecting point. Becaues of this, when doing knee fits,
 # knee & exponent values should be considered together.
 #
+
 ###################################################################################################
 # Choosing an Aperiodic Fitting Procedure
 # ---------------------------------------
 #
-# It is important to choose the appropriate aperiodic fitting approach for
-# your data.
+# It is important to choose the appropriate aperiodic fitting approach for your data.
 #
 # If there is a clear knee in the power spectrum, fitting in 'fixed' mode
 # will not work well. However fitting FOOOF with knee fits may perform sub-optimally

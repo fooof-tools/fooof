@@ -6,11 +6,12 @@
 ###################################################################################################
 #
 # FOOOF (fitting oscillations & one over f) is a module to fit neural power spectra.
-# This tutorial covers the fundamentals of the FOOOF codebase.
+# This tutorial covers the basic use of the FOOOF object to do so.
 #
 
 ###################################################################################################
 
+# Import numpy to load example data
 import numpy as np
 
 # Import the FOOOF object
@@ -36,10 +37,14 @@ spectrum = np.load('dat/spectrum.npy')
 # - A model object is initialized, with relevant settings
 # - The model is used to fit the data
 # - Results can be extracted from the object
+#
 
 ###################################################################################################
 # FOOOF Example
 # -------------
+#
+# The following example demonstrates fitting a FOOOF model on a single power spectrum.
+#
 
 ###################################################################################################
 
@@ -62,11 +67,12 @@ fm.report(freqs, spectrum, freq_range)
 # - :func:`print_results`: prints out the results, in string form
 # - :func:`plot`: plots to data and model fit
 #
-# Each of these methods ('fit', 'print_results' and 'plot') can each be called individually.
+# Each of these methods can each be called individually.
+#
 
 ###################################################################################################
 
-# Alternatively, just fit the model with FOOOF.fit() (without any printing)
+# Alternatively, just fit the model with FOOOF.fit() (without printing anything)
 fm.fit(freqs, spectrum, freq_range)
 
 # After fitting, plotting and parameter fitting can be called independently:
@@ -87,9 +93,13 @@ fm.fit(freqs, spectrum, freq_range)
 # - peak\_params_
 # - error\_
 # - r2\_
+#
 
 ###################################################################################################
-# Access model fit parameters from FOOOF object, after fitting
+# Access model fit parameters from FOOOF object, after fitting:
+#
+
+###################################################################################################
 
 # Aperiodic parameters
 print('Aperiodic parameters: \n', fm.aperiodic_params_, '\n')
@@ -121,12 +131,14 @@ print(' R^2   - ', fm.r_squared_)
 # when considering all Gaussians. To be better able to interpret amplitudes
 # for single peak fits, we re-define the peak amplitude as above.
 #
-# [2] Standard deviation is '1 sided', returned BW is '2 sided'.
+# [2] Standard deviation is '1 sided', where as the returned BW is '2 sided'.
+#
 
 ###################################################################################################
 #
-# The underlying gaussian parameters are also availabe from the FOOOF object
-# fm._gaussian_params
+# The underlying gaussian parameters are also availabe from the FOOOF object,
+# in the '_gaussian_params' attribute.
+#
 
 ###################################################################################################
 #
@@ -139,12 +151,13 @@ for peak, gau in zip(fm.peak_params_, fm._gaussian_params):
 # FOOOFResults object
 # ~~~~~~~~~~~~~~~~~~~
 #
-# FOOOF also has a convenience method to return all model fit results: get_results().
+# FOOOF also has a convenience method to return all model fit results: :func:`get_results`.
 #
 # It returns all the model fit parameters, including the underlying Gaussian parameters.
 #
-# Get parameters actually collects and returns these results as a FOOOFResults object
+# The `get_results` methods collects and returns these results as a FOOOFResults object
 # (a named tuple), to keep data organized, and allow for easier collecting.
+#
 
 ###################################################################################################
 
