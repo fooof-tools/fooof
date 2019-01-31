@@ -6,8 +6,8 @@ API Documentation
 
 .. currentmodule:: fooof
 
-FOOOF
-=====
+FOOOF Object
+============
 
 .. autosummary::
    :toctree: generated/
@@ -21,7 +21,15 @@ FOOOFGroup Object
    :toctree: generated/
 
    FOOOFGroup
-   fit_fooof_group_3d
+
+FOOOF Object Functions
+======================
+
+.. autosummary::
+   :toctree: generated/
+
+   funcs.combine_fooofs
+   funcs.fit_fooof_group_3d
 
 Analysis Functions
 ==================
@@ -31,6 +39,7 @@ Analysis Functions
 
     analysis.get_band_peak
     analysis.get_band_peak_group
+    analysis.get_highest_amp_peak
 
 Synthesis Functions
 ===================
@@ -38,9 +47,13 @@ Synthesis Functions
 .. autosummary::
     :toctree: generated/
 
-    synth.param_sampler
-    synth.gen_power_spectrum
-    synth.gen_group_power_spectra
+    synth.params.Stepper
+    synth.params.param_iter
+    synth.params.param_sampler
+    synth.gen.gen_freqs
+    synth.gen.gen_power_spectrum
+    synth.gen.gen_group_power_spectra
+    synth.transform.rotate_spectrum
 
 Plotting Functions
 ==================
@@ -48,12 +61,22 @@ Plotting Functions
 .. autosummary::
     :toctree: generated/
 
-    plts.templates.plot_spectrum
+    plts.spectra.plot_spectrum
+    plts.spectra.plot_spectra
+    plts.spectra.plot_spectrum_shading
+    plts.spectra.plot_spectra_shading
+    plts.fm.plot_fm
+    plts.fm.plot_peak_iter
+    plts.fg.plot_fg
 
-Data Objects
-============
+Utility Functions
+=================
 
 .. autosummary::
     :toctree: generated/
 
-    fit.FOOOFResult
+    utils.trim_spectrum
+    utils.get_settings
+    utils.get_data_info
+    utils.compare_settings
+    utils.compare_data_info

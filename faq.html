@@ -7,20 +7,18 @@
     <title>Frequently Asked Questions &#8212; fooof 1.0.0-dev documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Table of Contents" href="contents.html" />
-    <link rel="prev" title="Extract Bands" href="auto_examples/plot_extract_bands.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -47,6 +45,7 @@
             
                 <li><a href="api.html">API</a></li>
                 <li><a href="#">FAQ</a></li>
+                <li><a href="glossary.html">Glossary</a></li>
                 <li><a href="auto_tutorials/index.html">Tutorial</a></li>
                 <li><a href="auto_examples/index.html">Examples</a></li>
                 <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
@@ -60,15 +59,7 @@
      href="index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"><ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="readme_link.html">README</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auto_tutorials/index.html">Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Frequently Asked Questions</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Table of Contents</a></li>
-</ul>
-</ul>
+      aria-labelledby="dLabelGlobalToc"></ul>
 </li>
               
             
@@ -102,48 +93,56 @@
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#what-does-fooof-stand-for" id="id1">What does FOOOF stand for?</a></li>
-<li><a class="reference internal" href="#what-do-you-mean-by-periodic-and-aperiodic-activity" id="id2">What do you mean by ‘periodic’ and ‘aperiodic’ activity?</a></li>
-<li><a class="reference internal" href="#why-call-it-aperiodic-why-not-call-it-1-f-or-noise" id="id3">Why call it ‘aperiodic’? Why not call it ‘1/f’ or ‘noise’?</a></li>
-<li><a class="reference internal" href="#why-should-i-use-fooof" id="id4">Why should I use FOOOF?</a></li>
-<li><a class="reference internal" href="#why-is-this-different-from-other-methods-what-makes-it-work" id="id5">Why is this different from other methods / what makes it work?</a></li>
-<li><a class="reference internal" href="#are-there-settings-for-the-fooof-algorithm" id="id6">Are there settings for the FOOOF algorithm?</a></li>
-<li><a class="reference internal" href="#how-do-i-pick-settings" id="id7">How do I pick settings?</a></li>
-<li><a class="reference internal" href="#i-m-interested-in-a-particular-oscillation-band-should-i-fit-a-small-range" id="id8">I’m interested in a particular oscillation band, should I fit a small range?</a></li>
-<li><a class="reference internal" href="#what-does-the-aperiodic-component-of-the-signal-mean-reflect" id="id9">What does the ‘aperiodic’ component of the signal mean / reflect?</a></li>
-<li><a class="reference internal" href="#what-data-can-i-use-with-fooof" id="id10">What data can I use with FOOOF?</a></li>
-<li><a class="reference internal" href="#does-it-matter-how-i-calculate-the-power-spectra" id="id11">Does it matter how I calculate the power spectra?</a></li>
-<li><a class="reference internal" href="#does-this-work-on-epoched-data-can-i-fit-single-trials" id="id12">Does this work on epoched data? Can I fit single trials?</a></li>
-<li><a class="reference internal" href="#is-there-a-time-resolved-version" id="id13">Is there a time resolved version?</a></li>
-<li><a class="reference internal" href="#what-colour-is-fooof" id="id14">What colour is FOOOF?</a></li>
+<li><a class="reference internal" href="#what-is-fooof" id="id1">What is FOOOF?</a></li>
+<li><a class="reference internal" href="#why-is-it-called-fooof" id="id2">Why is it called FOOOF?</a></li>
+<li><a class="reference internal" href="#why-should-i-use-fooof" id="id3">Why should I use FOOOF?</a></li>
+<li><a class="reference internal" href="#what-do-you-mean-by-periodic-and-aperiodic-activity" id="id4">What do you mean by ‘periodic’ and ‘aperiodic’ activity?</a></li>
+<li><a class="reference internal" href="#why-call-it-aperiodic-why-not-call-it-1-f-or-noise" id="id5">Why call it ‘aperiodic’? Why not call it ‘1/f’ or ‘noise’?</a></li>
+<li><a class="reference internal" href="#why-is-this-different-from-other-methods-what-makes-it-work" id="id6">Why is this different from other methods / what makes it work?</a></li>
+<li><a class="reference internal" href="#are-there-settings-for-the-fooof-algorithm" id="id7">Are there settings for the FOOOF algorithm?</a></li>
+<li><a class="reference internal" href="#how-do-i-pick-settings" id="id8">How do I pick settings?</a></li>
+<li><a class="reference internal" href="#i-m-interested-in-a-particular-oscillation-band-should-i-fit-a-small-range" id="id9">I’m interested in a particular oscillation band, should I fit a small range?</a></li>
+<li><a class="reference internal" href="#what-does-the-aperiodic-component-of-the-signal-mean-reflect" id="id10">What does the ‘aperiodic’ component of the signal mean / reflect?</a></li>
+<li><a class="reference internal" href="#what-data-can-i-use-with-fooof" id="id11">What data can I use with FOOOF?</a></li>
+<li><a class="reference internal" href="#does-it-matter-how-i-calculate-the-power-spectra" id="id12">Does it matter how I calculate the power spectra?</a></li>
+<li><a class="reference internal" href="#does-this-work-on-epoched-data-can-i-fit-single-trials" id="id13">Does this work on epoched data? Can I fit single trials?</a></li>
+<li><a class="reference internal" href="#is-there-a-time-resolved-version" id="id14">Is there a time resolved version?</a></li>
+<li><a class="reference internal" href="#what-colour-is-fooof" id="id15">What colour is FOOOF?</a></li>
 </ul>
 </div>
-<div class="section" id="what-does-fooof-stand-for">
-<h3>What does FOOOF stand for?<a class="headerlink" href="#what-does-fooof-stand-for" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="what-is-fooof">
+<h3>What is FOOOF?<a class="headerlink" href="#what-is-fooof" title="Permalink to this headline">¶</a></h3>
+<p>FOOOF is an open-source Python toolbox to parameterize neural power spectra.</p>
+<p>In particular, FOOOF is a model driven approach that assumes that neurophysiological times series are comprised of two separable components, reflecting periodic and aperiodic activity. FOOOF does therefore rely on the assumption that these two components are indeed separable components of the underyling data, though it is agnostic to their physiological origin and putative functional roles.</p>
+<p>FOOOF operates on frequency representation of neurophysiological times series (power spectra). At it’s core, FOOOF is a fitting procedure to measure these two components, periodic and aperiodic, in the power spectrum. The full model fit consists of a parameterizing of these aperiodic and periodic components, as well as a full (combined) model fit of the whole power spectrum.</p>
+<p>The full mathematical description of the model is described in the tutorials.</p>
+</div>
+<div class="section" id="why-is-it-called-fooof">
+<h3>Why is it called FOOOF?<a class="headerlink" href="#why-is-it-called-fooof" title="Permalink to this headline">¶</a></h3>
 <p>FOOOF stands for “fitting oscillations and one-over f”.</p>
 <p>This was a working title for the project that stuck as the name of the tool. The way we think of it now is in terms of being a tool for parameterizing neural power spectra - and, in particular, as tool for measuring both periodic and aperiodic activity in neural time series.</p>
 </div>
+<div class="section" id="why-should-i-use-fooof">
+<h3>Why should I use FOOOF?<a class="headerlink" href="#why-should-i-use-fooof" title="Permalink to this headline">¶</a></h3>
+<p>Though we often focus on the rhythmic (periodic) components, neurophysiological recordings of electromagnetic activity in the brain are fundamentally composed of aperiodic activity upon which there is (sometimes) also rhythmic components.</p>
+<p>These two components of the signal, periodic and aperiodic have very different properties and interpretations, and thus it is of the utmost importance to explicitly measure both components of the signal to be sure what is changing in the data. This is what FOOOF is designed to do, by explicitly modelling and measuring both aperiodic and periodic components of the signal.</p>
+<p>Many other methods and canonical approaches do not systematically separate aperiodic and periodic components of the signal, and results can be confounded between the two, and/or be misinterpreted.</p>
+</div>
 <div class="section" id="what-do-you-mean-by-periodic-and-aperiodic-activity">
 <h3>What do you mean by ‘periodic’ and ‘aperiodic’ activity?<a class="headerlink" href="#what-do-you-mean-by-periodic-and-aperiodic-activity" title="Permalink to this headline">¶</a></h3>
-<p>By ‘periodic’ activity we mean features of the signal that are rhythmic, that are typically referred to as oscillations.</p>
-<p>By ‘aperiodic’ activity we mean the arythmic component of the signal, that typically has a 1/f like distribution, whereby the power systematically decreases with increasing frequencies.</p>
+<p>By ‘periodic’ activity we mean features of the signal that are rhythmic, that are typically referred to as oscillations. This does not require that periodic activity be continuous, as oscillatory activity often exhibits as ‘bursts’ in the time series. In practice, putative oscillations, reflecting periodic activity, are operationally defined and detectable by FOOOF if they exhibit as band-limited power over and above the aperiodic component of the signal in the power spectrum.</p>
+<p>By ‘aperiodic’ activity we mean the arhythmic component of the signal, that typically follow a 1/f like function, whereby the power systematically decreases with increasing frequencies.</p>
 </div>
 <div class="section" id="why-call-it-aperiodic-why-not-call-it-1-f-or-noise">
 <h3>Why call it ‘aperiodic’? Why not call it ‘1/f’ or ‘noise’?<a class="headerlink" href="#why-call-it-aperiodic-why-not-call-it-1-f-or-noise" title="Permalink to this headline">¶</a></h3>
-<p>What we know call the ‘aperiodic’ component of the signal has variously been called, by us and others, either the ‘1/f’ component activity of the signal (also referred to as ‘scale free’), or sometimes the ‘background’ activity, or ‘1/f noise’ or ‘background noise’.</p>
+<p>What we now call the ‘aperiodic’ component of the signal has variously been called, by us and others, either the ‘1/f’ component activity of the signal (also referred to as ‘scale free’), or sometimes the ‘background’ activity, or ‘1/f noise’ or ‘background noise’.</p>
 <p>We have moved away from these terms, as they are imprecise, and/or theoretically loaded. In terms of calling it the ‘1/f’, though the signal often approximates ‘1/f’ over at least some frequency ranges, it is not truly ‘1/f’ across all frequencies.</p>
 <p>Also, from the physics perspective, ‘1/f’ like activity is sometimes referred to as ‘noise’, as shorthand for ‘statistical noise’. This is different however to how the terms ‘signal’ &amp; ‘noise’ are typically used in neuroscience, and so we have moved away from this term so as not to imply it is merely ‘noise’. For similar reasons, we have moved away from calling it ‘background’ activity, as the aperiodic properties are of theoretical interest themself, and not merely the ‘background’ to periodic activity.</p>
 <p>For these reasons, we prefer and use the term ‘aperiodic’ as a neutral description of this component of the signal.</p>
 </div>
-<div class="section" id="why-should-i-use-fooof">
-<h3>Why should I use FOOOF?<a class="headerlink" href="#why-should-i-use-fooof" title="Permalink to this headline">¶</a></h3>
-<p>Though we often focus on the rhythmic (periodic) components, neurophysiological recordings of electromagnetic activity in the brain are fundamentally composed of aperiodic activity upon which there is (sometimes) also rythmic components.</p>
-<p>These two components of the signal, periodic and aperiodic have very different properties and interpretations, and thus it is of the utmost importance to explicitly measure both components of the signal to be sure what is changing in the data. This is what FOOOF is designed to do, by explicitly modelling and measuring both aperiodic and periodic components of the signal.</p>
-<p>Many other methods and canonical approaches do not systematically separate aperiodic and periodic components of the signal, and results can be confounded between the two, and/or be misinterpreted.</p>
-</div>
 <div class="section" id="why-is-this-different-from-other-methods-what-makes-it-work">
 <h3>Why is this different from other methods / what makes it work?<a class="headerlink" href="#why-is-this-different-from-other-methods-what-makes-it-work" title="Permalink to this headline">¶</a></h3>
-<p>Many existing approaches do no attempt to separate the periodic and aperiodic components of the signal. Of methods that do attempt to measure periodic and/or aperiodic signal properties, one difference is that FOOOF does not prioritize one of the other component, but attempts to jointly learn both components.</p>
+<p>Many existing approaches do not attempt to separate the periodic and aperiodic components of the signal. Of methods that do attempt to measure periodic and/or aperiodic signal properties, one difference is that FOOOF does not prioritize one or the other component, but attempts to jointly learn both components.</p>
 <p>As a quick version, the joint learning procedure and some developments in fitting the aperiodic component are why we think FOOOF seems to do better at measuring these signal properties. More in depth analysis of the properties of FOOOF, and systematic comparisons with other methods (through simulations) are upcoming.</p>
 </div>
 <div class="section" id="are-there-settings-for-the-fooof-algorithm">
@@ -159,7 +158,7 @@
 </div>
 <div class="section" id="i-m-interested-in-a-particular-oscillation-band-should-i-fit-a-small-range">
 <h3>I’m interested in a particular oscillation band, should I fit a small range?<a class="headerlink" href="#i-m-interested-in-a-particular-oscillation-band-should-i-fit-a-small-range" title="Permalink to this headline">¶</a></h3>
-<p>Generally, no, it is better to always try and fit a broad range, rather then to fit a small frequency range, even if one is interested in a specific oscillation band in particular.</p>
+<p>Generally, no, it is better to always try and fit a broad range, rather than to fit a small frequency range, even if one is interested in a specific oscillation band in particular.</p>
 <p>This is because the if a small frequency range is used, it becomes much more difficult to estimate the aperiodic component of the data, and without a good estimate of the aperiodic component, it can also be more difficult to effectively estimate the periodic components.</p>
 <p>Therefore, if one is interested in, for example, alpha oscillations (approximately 7-14 Hz), the we still recommend fitting a broad range (for example, 3-40 Hz), and then extracting the alpha oscillations post-hoc. There are utilities in fooof.analysis to extract oscillations from particular bands, and examples of this on the examples page.</p>
 </div>
@@ -175,7 +174,7 @@
 </div>
 <div class="section" id="does-it-matter-how-i-calculate-the-power-spectra">
 <h3>Does it matter how I calculate the power spectra?<a class="headerlink" href="#does-it-matter-how-i-calculate-the-power-spectra" title="Permalink to this headline">¶</a></h3>
-<p>For the most part, no, it doesn’t matter exactly how you calculate power spectra that you will fit with FOOOF, for example, using different methdos to estimate the power spectrum, such as Welch’s or wavelet approaches.</p>
+<p>For the most part, no, it does not matter exactly how you calculate power spectra that you will fit with FOOOF. For example, using different methods to estimate the power spectrum, such as Welch’s or wavelet approaches, should all be fine.</p>
 <p>Regardless of how you calculate them, the properties of the power spectra do matter somewhat to FOOOF - for example, the better the frequency resolution the more resolution you will have for estimating center frequencies and bandwidths of detected peaks, and the ‘smoother’ the spectra, the better FOOOF will be able to fit.</p>
 </div>
 <div class="section" id="does-this-work-on-epoched-data-can-i-fit-single-trials">
@@ -226,7 +225,7 @@
     </p>
     <p>
         &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.<br/>
     </p>
   </div>
 </footer>

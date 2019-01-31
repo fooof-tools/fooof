@@ -1,0 +1,516 @@
+.. note::
+    :class: sphx-glr-download-link-note
+
+    Click :ref:`here <sphx_glr_download_auto_tutorials_plot_04-MoreFOOOF.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
+
+.. _sphx_glr_auto_tutorials_plot_04-MoreFOOOF.py:
+
+
+04: Exploring the FOOOF Object
+==============================
+
+
+
+.. code-block:: python
+
+
+    # Import numpy for loading data, and FOOOF object
+    import numpy as np
+    from fooof import FOOOF
+
+
+
+
+
+
+
+
+.. code-block:: python
+
+
+    # Create a FOOOF object to explore
+    fm = FOOOF()
+
+
+
+
+
+
+
+Description of FOOOF methods and parameters
+-------------------------------------------
+
+FOOOF follows the following Python conventions:
+
+- all user exposed settings, data, and methods are directly accessible through the object
+- 'hidden' (internal) settings and methods have a leading underscore, indicating they are private
+
+The FOOOF object contents consist of 4 main components (groups of data / code), settings,
+data attributes, result attributes, and methods, each of which are described in more
+detail below.
+
+
+
+Settings (attributes)
+^^^^^^^^^^^^^^^^^^^^^
+
+There are a number of parameters that control the FOOOF fitting algorithm, that
+can be set by the user when initializing the FOOOF model.
+
+There are some internal settings that are not exposed at initialization.
+These settings are unlikely to need to be accessed by the user, but can be if desired -
+they are all defined and documented in \__init\__ (there should be no other settings, or
+'magic numbers' in any other parts of the code).
+
+
+
+Controlling Peak Fits
+~~~~~~~~~~~~~~~~~~~~~
+
+**peak_width_limits (Hz)** default: [0.5, 12]
+
+Enforced limits on the minimum and maximum widths of extracted peaks, given as a list of
+[minimum bandwidth, maximum bandwidth]. We recommend bandwidths be set to be at last twice
+the frequency resolution of the power spectrum.
+
+Peak Search Stopping Criteria
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+An iterative procedures searches for candidate peaks in the flattened spectrum. Candidate
+peaks are extracted in order of decreasing amplitude, until some stopping criterion is met,
+which is controlled by the following parameters:
+
+**max_n_peaks (int)** default: infinite
+
+The maximum number of peaks that can be extracted from a given power spectrum. FOOOF will
+halt searching for new peaks when this number is reached. Note that FOOOF extracts peaks
+iteratively by amplitude (over and above the aperiodic signal), and so this approach will
+extract (up to) the _n_ largest peaks.
+
+**peak_threshold (in units of standard deviation)** default: 2.0
+
+The threshold, in terms of standard deviation of the aperiodic signal-removed power
+spectrum, above which a data point must pass to be considered a candidate peak.
+Once a candidate peak drops below this threshold, the peak search is halted (without
+including the most recent candidate).
+
+**min_peak_amplitude (units of power - same as the input spectrum)** default: 0
+
+The minimum amplitude, above the aperiodic fit, that a peak must have to be extracted
+in the initial fit stage. Once a candidate peak drops below this threshold, the peak
+search is halted (without including the most recent candidate). Note that because
+this constraint is enforced during peak search, and prior to final peak fit, returned
+peaks are not guaranteed to surpass this value in amplitude.
+
+Note: there are two different amplitude-related halting conditions for the peak searching.
+By default, the relative (standard-deviation based) threshold is defined, whereas the
+absolute threshold is set to zero (this default is because there is no general way to
+set this value without knowing the scale of the data). If both are defined, both are
+used and the peak search will halt when a candidate peak fails to pass either the absolute,
+or relative threshold.
+
+Aperiodic Signal Fitting Approach
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**aperiodic_mode (string)** default='fixed'
+
+The fitting approach to use for the aperiodic signal.
+
+Options:
+  - 'fixed' : fits without a knee parameter (with the knee parameter 'fixed' at 0)
+  - 'knee' : fits the full exponential equation, including the 'knee' parameter
+
+Verbosity
+~~~~~~~~~
+
+**verbose (boolean)** default='True'
+
+Whether to print out status updates and warnings.
+
+
+
+
+.. code-block:: python
+
+
+    # You can check all the user defined FOOOF settings with check_settings
+    #  The description parameter here is set to print out quick descriptions of the settings
+    fm.print_settings(description=True)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    ==================================================================================================
+                                                                                                  
+                                             FOOOF - SETTINGS                                         
+                                                                                                  
+                                          Aperiodic Mode : fixed                                      
+                          The aproach taken to fitting the aperiodic component.                       
+                                     Peak Width Limits : [0.5, 12.0]                                  
+                                 Enforced limits for peak widths, in Hz.                              
+                                        Max Number of Peaks : inf                                     
+                            The maximum number of peaks that can be extracted.                        
+                                         Minimum Amplitude : 0.0                                      
+                     Minimum absolute amplitude of a peak, above aperiodic component.                 
+                                         Amplitude Threshold: 2.0                                     
+                             Threshold at which to stop searching for peaks.                          
+                                                                                                  
+    ==================================================================================================
+
+
+Data (attributes)
+^^^^^^^^^^^^^^^^^
+
+FOOOF stores the frequency vector, power spectrum, frequency range, and frequency resolution.
+
+During the fit procedure, interim (hidden) data variables are also created and used.
+
+
+
+
+.. code-block:: python
+
+
+    # Load a piece of example data
+    freqs = np.load('dat/freqs_2.npy')
+    spectrum = np.load('dat/spectrum_2.npy')
+
+
+
+
+
+
+
+
+.. code-block:: python
+
+
+    # Set a frequency range and add the data to the FOOOF object
+    freq_range = [2, 40]
+    fm.add_data(freqs, spectrum, freq_range)
+
+
+
+
+
+
+
+
+.. code-block:: python
+
+
+    # Check out the data attributes in the FOOOF object
+    print('Frequency Vector: \t', fm.freqs[0:5])
+    print('Frequency Range: \t', fm.freq_range)
+    print('Frequency Resolution: \t', fm.freq_res)
+    print('Power Values: \t\t', fm.power_spectrum[0:5])
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Frequency Vector:        [2.44140625 2.9296875  3.41796875 3.90625    4.39453125]
+    Frequency Range:         [2.441406250001353, 39.55078125002192]
+    Frequency Resolution:    0.48828125000027045
+    Power Values:            [-21.99921865 -21.99669556 -22.02605736 -21.96875308 -22.15436702]
+
+
+Methods
+^^^^^^^
+
+The FOOOF object contains a number of methods that operate on the FOOOF
+object data, and/or do utility functions.
+
+In addition to the exposed methods, there are some internal private methods,
+with a leading underscore in their name, that are called in the
+fitting procedure. These methods should not be called independently, as they may
+depend on internal state as defined from other methods.
+
+
+
+
+.. code-block:: python
+
+
+    # This piece of code is just a way to print out all the public methods with their description
+    [print(it + '\n\t' + eval('fm.' + it + '.__doc__').split('\n')[0]) \
+     for it in dir(fm) if it[0] != '_' and callable(eval('fm.' + it))];
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    add_data
+            Add data (frequencies and power spectrum values) to FOOOF object.
+    add_results
+            Add results data back into object from a FOOOFResult object.
+    copy
+            Return a copy of the FOOOF object.
+    fit
+            Fit the full power spectrum as a combination of periodic and aperiodic components.
+    get_results
+            Return model fit parameters and goodness of fit metrics.
+    load
+            Load in FOOOF file. Reads in a JSON file.
+    plot
+            Plot the power spectrum and model fit results from a FOOOF object.
+    print_report_issue
+            Prints instructions on how to report bugs and/or problematic fits.
+    print_results
+            Print out FOOOF results.
+    print_settings
+            Print out the current FOOOF settings.
+    report
+            Run model fit, and display a report, which includes a plot, and printed results.
+    save
+            Save out data, results and/or settings from FOOOF object. Saves out to a JSON file.
+    save_report
+            Generate and save out a as PDF a report for a FOOOF object.
+
+
+Fitting FOOOF with Different Settings
+-------------------------------------
+
+If you wish to change these settings, then you should re-initialize
+the FOOOF object with new settings.
+
+Simply resetting the relevant attribute may not appropriately propragate the value,
+and may fail, either by erroring out, or not applying the settings properly during
+fit and returning erroneous results.
+
+Here we will re-initialize a new FOOOF object, with some new settings, and fit the model.
+
+
+
+
+.. code-block:: python
+
+
+    # Initialize FOOOF model, with some specified settings
+    fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_amplitude=0.15)
+
+    # Fit FOOOF
+    fm.report(freqs, spectrum, freq_range)
+
+
+
+
+.. image:: /auto_tutorials/images/sphx_glr_plot_04-MoreFOOOF_001.png
+    :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    ==================================================================================================
+                                                                                                  
+                                       FOOOF - POWER SPECTRUM MODEL                                   
+                                                                                                  
+                            The model was run on the frequency range 2 - 40 Hz                        
+                                     Frequency Resolution is 0.49 Hz                                  
+                                                                                                  
+                                Aperiodic Parameters (offset, exponent):                              
+                                             -21.4437, 1.0751                                         
+                                                                                                  
+                                           3 peaks were found:                                        
+                                    CF:   9.82, Amp:  0.728, BW:  3.00                                
+                                    CF:  13.04, Amp:  0.260, BW:  2.54                                
+                                    CF:  18.13, Amp:  0.151, BW:  4.63                                
+                                                                                                  
+                                         Goodness of fit metrics:                                     
+                                        R^2 of model fit is 0.9923                                    
+                                    Root mean squared error is 0.0294                                 
+                                                                                                  
+    ==================================================================================================
+
+
+Results (attributes)
+^^^^^^^^^^^^^^^^^^^^
+
+FOOOF follows the scipy convention in that any attributes that result from fitting
+to the data are indicated by a trailing underscore:
+
+- `fm.aperiodic\_params_`, `fm.peak\_params\_`, `fm.fooofed\_spectrum\_`,
+  `fm.r\_squared\_`, `fm.error\_`
+
+
+
+
+.. code-block:: python
+
+
+    # Print out model fit results
+    print('aperiodic params: \t', fm.aperiodic_params_)
+    print('peak params: \t',fm.peak_params_)
+    print('r-squared: \t', fm.r_squared_)
+    print('fit error: \t', fm.error_)
+    print('fooofed spectrum: \t',fm.fooofed_spectrum_[0:5])
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    aperiodic params:        [-21.44372545   1.07510692]
+    peak params:     [[ 9.81511889  0.72768575  3.00442105]
+     [13.04276125  0.25957047  2.54345973]
+     [18.12826746  0.15093637  4.62563192]]
+    r-squared:       0.9922991772406238
+    fit error:       0.029372423372964467
+    fooofed spectrum:        [-21.86047573 -21.94558849 -22.01750003 -22.07961578 -22.13385217]
+
+
+FOOOF - Saving & Reports
+------------------------
+
+FOOOF also has support for saving out, and loading back in, data.
+
+You have the option to specify which data to save.
+
+- results: model fit results (same as is returned in FOOOFResult)
+- settings: all public settings (everything available at initialization)
+- data: freqs & power spectrum
+
+FOOOF saves data out to JSON files. You can specify a file name to save
+or append to, or pass in a JSON file object.
+
+
+
+
+.. code-block:: python
+
+
+    # Saving FOOOF results, settings, and data
+    fm.save(save_results=True, save_settings=True, save_data=True)
+
+
+
+
+
+
+
+
+.. code-block:: python
+
+
+    # Loading FOOOF results
+    nfm = FOOOF()
+    nfm.load()
+
+
+
+
+
+
+
+
+.. code-block:: python
+
+
+    # Plot loaded results
+    nfm.plot()
+
+
+
+
+.. image:: /auto_tutorials/images/sphx_glr_plot_04-MoreFOOOF_002.png
+    :class: sphx-glr-single-img
+
+
+
+
+Create a Report
+---------------
+
+FOOOF also has functionality to save out a 'report' of a particular model fit.
+
+This generates and saves a PDF which contains the same output as
+'print_results', 'plot', and 'print_settings'.
+
+
+
+
+.. code-block:: python
+
+
+    # Save out a report of the current FOOOF model fit & results
+    #  By default (with no inputs) this saves a PDF to current directory, with the name 'FOOOF_Report'
+    #    Add inputs to the method call to specify a file-name, and save-location
+    fm.save_report()
+
+
+
+
+
+
+
+
+.. code-block:: python
+
+
+    # If you're in a notebook, you can use this code to check what the generated report looks like
+    from IPython.display import IFrame
+    IFrame("FOOOF_Report.pdf", width=950, height=1200)
+
+
+
+
+
+
+**Total running time of the script:** ( 0 minutes  0.537 seconds)
+
+
+.. _sphx_glr_download_auto_tutorials_plot_04-MoreFOOOF.py:
+
+
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
+
+
+  .. container:: sphx-glr-download
+
+     :download:`Download Python source code: plot_04-MoreFOOOF.py <plot_04-MoreFOOOF.py>`
+
+
+
+  .. container:: sphx-glr-download
+
+     :download:`Download Jupyter notebook: plot_04-MoreFOOOF.ipynb <plot_04-MoreFOOOF.ipynb>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_

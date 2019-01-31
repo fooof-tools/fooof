@@ -1,0 +1,6 @@
+fooof.synth.params.param\_iter
+==============================
+
+.. currentmodule:: fooof.synth.params
+
+.. autofunction:: param_iter

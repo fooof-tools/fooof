@@ -1,0 +1,6 @@
+fooof.plts.fg.plot\_fg
+======================
+
+.. currentmodule:: fooof.plts.fg
+
+.. autofunction:: plot_fg

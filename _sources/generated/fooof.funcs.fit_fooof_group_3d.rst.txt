@@ -1,0 +1,6 @@
+fooof.funcs.fit\_fooof\_group\_3d
+=================================
+
+.. currentmodule:: fooof.funcs
+
+.. autofunction:: fit_fooof_group_3d

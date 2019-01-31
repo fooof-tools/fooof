@@ -7,20 +7,18 @@
     <title>03: FOOOF Algorithm &#8212; fooof 1.0.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="04: FOOOFGroup" href="plot_04-FOOOFGroup.html" />
-    <link rel="prev" title="02: FOOOF" href="plot_02-FOOOF.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -47,6 +45,7 @@
             
                 <li><a href="../api.html">API</a></li>
                 <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="../glossary.html">Glossary</a></li>
                 <li><a href="index.html">Tutorial</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
                 <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
@@ -60,15 +59,7 @@
      href="../index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"><ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../readme_link.html">README</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../contents.html">Table of Contents</a></li>
-</ul>
-</ul>
+      aria-labelledby="dLabelGlobalToc"></ul>
 </li>
               
             
@@ -102,19 +93,37 @@
 </div>
 <div class="sphx-glr-example-title section" id="fooof-algorithm">
 <span id="sphx-glr-auto-tutorials-plot-03-fooofalgorithm-py"></span><h1>03: FOOOF Algorithm<a class="headerlink" href="#fooof-algorithm" title="Permalink to this headline">¶</a></h1>
-<p>This tutorial takes a step by step approach using the code, to show how the FOOOF fitting algorithm works.</p>
-<p>Note that this notebook is for demonstrative purposes, and does not represent recommended usage of the FOOOF module.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<p>This tutorial takes a step by step approach to to show how the
+FOOOF fitting algorithm works, through code.</p>
+<p>Note that this notebook is for demonstrative purposes, and does not
+represent recommended usage of the FOOOF module.</p>
+<div class="section" id="algorithmic-description">
+<h2>Algorithmic Description<a class="headerlink" href="#algorithmic-description" title="Permalink to this headline">¶</a></h2>
+<p>Briefly, the algorithm proceeds as such:</p>
+<ul class="simple">
+<li>An initial fit of the aperiodic signal is taken across the power spectrum</li>
+<li>This aperiodic fit is subtracted from the power spectrum, creating a flattened spectrum</li>
+<li>Peaks are iteratively found in this flattened spectrum</li>
+<li>A full peak fit is created of all peak candidates found</li>
+<li>The peak fit is subtracted from the original power spectrum,
+creating a peak-removed power spectrum</li>
+<li>A final fit of the aperiodic signal is taken of the peak-removed power spectrum</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
+<span class="c1"># Import the FOOOF object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a>
+
+<span class="c1"># Import a function to generate synthetic power spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.synth.gen</span> <span class="kn">import</span> <span class="n">gen_aperiodic</span>
 
 <span class="c1"># Import some internal functions from FOOOF</span>
 <span class="c1">#  Note that these are used here for demonstration: - you do not need to import them to run FOOOF</span>
-<span class="kn">from</span> <span class="nn">fooof.synth</span> <span class="kn">import</span> <span class="n">gen_background</span>
 <span class="kn">from</span> <span class="nn">fooof.core.funcs</span> <span class="kn">import</span> <span class="n">gaussian_function</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.templates</span> <span class="kn">import</span> <span class="n">plot_spectrum</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.fm</span> <span class="kn">import</span> <span class="n">plot_peak_iter</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <span class="n">plot_spectrum</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.fm</span> <span class="kn">import</span> <a href="../generated/fooof.plts.fm.plot_peak_iter.html#fooof.plts.fm.plot_peak_iter" title="View documentation for fooof.plts.fm.plot_peak_iter"><span class="n">plot_peak_iter</span></a>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set whether to plot in log-log space (used across the whole notebook)</span>
@@ -126,38 +135,41 @@
 <span class="n">spectrum</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.load" title="View documentation for numpy.load"><span class="n">np</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;./dat/spectrum_2.npy&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize FOOOF object</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object, with some settings</span>
 <span class="n">fm</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span> <span class="p">,</span> <span class="n">min_peak_amplitude</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Note that data can be added to FOOOF independent of fitting the model. You can then plot input data.</p>
+<p>Note that data can be added to FOOOF independent of fitting the model.
+You can then plot input data.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add data to FOOOF object</span>
 <span class="n">fm</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectrum that we just added</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectrum that we just created</span>
 <span class="n">fm</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plt_log</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_001.png" />
 <p>The FOOOF object stores most of the intermediate steps internally.</p>
-<p>For this notebook, we will first fit the full model, as normal, but then step through, and visualize each step the algorithm takes to come to that final fit.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the FOOOF model.</span>
+<p>For this notebook, we will first fit the full model, as normal, but then step through,
+and visualize each step the algorithm takes to come to that final fit.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the FOOOF model</span>
 <span class="n">fm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Do an initial aperiodic signal fit - a robust background fit (excluding outliers)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Do an initial aperiodic signal fit - a robust fit, that excludes outliers</span>
 <span class="c1">#  This recreates an initial fit that isn&#39;t ultimately stored in the FOOOF object)</span>
-<span class="n">init_bg_fit</span> <span class="o">=</span> <span class="n">gen_background</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">_robust_bg_fit</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">))</span>
+<span class="n">init_ap_fit</span> <span class="o">=</span> <span class="n">gen_aperiodic</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">_robust_ap_fit</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">))</span>
 
-<span class="c1"># Plot the initial aperiodic &#39;background&#39; fit</span>
+<span class="c1"># Plot the initial aperiodic fit</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Power Spectrum&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">init_bg_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Initial Background Fit&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">init_ap_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Initial Aperiodic Fit&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_002.png" />
-<p>The initial fit, as above, is used to create a flattened spectrum, from which peaks can be extracted.</p>
+<p>The initial fit, as above, is used to create a flattened spectrum,
+from which peaks can be extracted.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Flatten the power spectrum, by subtracting out the initial aperiodic fit</span>
 <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Flattened Spectrum&#39;</span><span class="p">)</span>
 </pre></div>
@@ -166,20 +178,18 @@
 <p>With the flattened spectrum, FOOOF then initiates an iterative procedure to find peaks.</p>
 <p>For each iteration:</p>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt>The maximum point of the flattened spectrum is found.</dt>
-<dd><ul class="first last">
-<li>If this point fails to pass the relative or absolute amplitude threshold, the procedure halts.</li>
+<li>The maximum point of the flattened spectrum is found.<ul>
+<li>If this point fails to pass the relative or absolute amplitude threshold,
+the procedure halts.</li>
 </ul>
-</dd>
-</dl>
 </li>
 <li>A Gaussian is fit around this maximum point</li>
 <li>This ‘guess’ Gaussian is then subtracted from the flatted spectrum</li>
-<li>The procedure continues to a new iteration with the new version of the flattend spectrum, unless ‘max_n_peaks’ has been reached</li>
+<li>The procedure continues to a new iteration with the new version of the flattend spectrum,
+unless <cite>max_n_peaks</cite> has been reached</li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the iterative approach to finding peaks from the flattened spectrum</span>
-<span class="n">plot_peak_iter</span><span class="p">(</span><span class="n">fm</span><span class="p">)</span>
+<a href="../generated/fooof.plts.fm.plot_peak_iter.html#fooof.plts.fm.plot_peak_iter" title="View documentation for fooof.plts.fm.plot_peak_iter"><span class="n">plot_peak_iter</span></a><span class="p">(</span><span class="n">fm</span><span class="p">)</span>
 </pre></div>
 </div>
 <ul class="sphx-glr-horizontal">
@@ -190,27 +200,31 @@
 <li><img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_006.png" class="sphx-glr-multi-img first" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_006.png" />
 </li>
 </ul>
-<p>Once the iterative procedure has halted, the extracted ‘guess’ peaks, are then re-fit, all together, to the flattened spectrum, creating a peak fit.</p>
+<p>Once the iterative procedure has halted, the extracted ‘guess’ peaks,
+are then re-fit, all together, to the flattened spectrum, creating a peak fit.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit gaussians to all candidate peaks together, and create peak fit</span>
 <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">_peak_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_007.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_007.png" />
-<p>This is now the peak component of the fit completed. This fit is then used to go back and try and get a better aperiodic fit.</p>
-<p>To do so, the peak fit is removed from the original power spectrum, leaving an ‘aperiodic-only’ spectrum for re-fitting.</p>
+<p>This is now the peak component of the fit completed. This fit is then used to go
+back and try and get a better aperiodic fit.</p>
+<p>To do so, the peak fit is removed from the original power spectrum,
+leaving an ‘aperiodic-only’ spectrum for re-fitting.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create peak removed power spectrum (by removing peak fit from original spectrum)</span>
 <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">_spectrum_peak_rm</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Peak Removed Spectrum&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_008.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_008.png" />
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the final aperiodic &#39;background&#39; fit on the peak removed power spectrum</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the final aperiodic fit on the peak removed power spectrum</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">_spectrum_peak_rm</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Peak Removed Spectrum&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">_bg_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Final Background Fit&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">_ap_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Final Aperiodic Fit&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_009.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_009.png" />
-<p>The aperiodic fit component of the model is now also complete. The two components can now be combined.</p>
+<p>The aperiodic fit component of the model is now also complete.
+The two components can now be combined.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Recreate the full FOOOF model, by combining the peak and aperiodic fits</span>
 <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Full Model&#39;</span><span class="p">)</span>
 </pre></div>
@@ -229,7 +243,7 @@
                         The model was run on the frequency range 3 - 40 Hz
                                  Frequency Resolution is 0.49 Hz
 
-                             Background Parameters (offset, slope):
+                            Aperiodic Parameters (offset, exponent):
                                          -21.3713, 1.1239
 
                                        2 peaks were found:
@@ -244,19 +258,20 @@
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the full model fit of the power spectrum</span>
-<span class="c1">#  The final fit (red), and aperiodic &#39;background&#39; fit (blue), are the same as we plotted above</span>
+<span class="c1">#  The final fit (red), and aperiodic fit (blue), are the same as we plotted above</span>
 <span class="n">fm</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plt_log</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_011.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_011.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.206 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.192 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-03-fooofalgorithm-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_03-FOOOFAlgorithm.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_03-FOOOFAlgorithm.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/8749599d5f0d0cd9ce04d583fb7cda50/plot_03-FOOOFAlgorithm.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_03-FOOOFAlgorithm.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_03-FOOOFAlgorithm.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_03-FOOOFAlgorithm.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/451cd2664b6ccbb7e79b9bc0053f2b03/plot_03-FOOOFAlgorithm.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_03-FOOOFAlgorithm.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
 </div>
 
 
@@ -272,7 +287,7 @@
     </p>
     <p>
         &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.<br/>
     </p>
   </div>
 </footer>

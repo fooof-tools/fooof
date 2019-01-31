@@ -76,9 +76,9 @@ Tutorial
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_04-FOOOFGroup_thumb.png
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_04-MoreFOOOF_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_plot_04-FOOOFGroup.py`
+        :ref:`sphx_glr_auto_tutorials_plot_04-MoreFOOOF.py`
 
 .. raw:: html
 
@@ -88,7 +88,7 @@ Tutorial
 .. toctree::
    :hidden:
 
-   /auto_tutorials/plot_04-FOOOFGroup
+   /auto_tutorials/plot_04-MoreFOOOF
 
 .. raw:: html
 
@@ -96,9 +96,9 @@ Tutorial
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_05-Troubleshooting_thumb.png
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_05-AperiodicFitting_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_plot_05-Troubleshooting.py`
+        :ref:`sphx_glr_auto_tutorials_plot_05-AperiodicFitting.py`
 
 .. raw:: html
 
@@ -108,7 +108,7 @@ Tutorial
 .. toctree::
    :hidden:
 
-   /auto_tutorials/plot_05-Troubleshooting
+   /auto_tutorials/plot_05-AperiodicFitting
 
 .. raw:: html
 
@@ -116,9 +116,9 @@ Tutorial
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_06-FurtherAnalysis_thumb.png
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_06-FOOOFGroup_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_plot_06-FurtherAnalysis.py`
+        :ref:`sphx_glr_auto_tutorials_plot_06-FOOOFGroup.py`
 
 .. raw:: html
 
@@ -128,7 +128,47 @@ Tutorial
 .. toctree::
    :hidden:
 
-   /auto_tutorials/plot_06-FurtherAnalysis
+   /auto_tutorials/plot_06-FOOOFGroup
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="07">
+
+.. only:: html
+
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_07-TroubleShooting_thumb.png
+
+        :ref:`sphx_glr_auto_tutorials_plot_07-TroubleShooting.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_tutorials/plot_07-TroubleShooting
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="08">
+
+.. only:: html
+
+    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_08-FurtherAnalysis_thumb.png
+
+        :ref:`sphx_glr_auto_tutorials_plot_08-FurtherAnalysis.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_tutorials/plot_08-FurtherAnalysis
 .. raw:: html
 
     <div style='clear:both'></div>

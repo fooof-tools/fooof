@@ -7,20 +7,18 @@
     <title>fooof.analysis.get_band_peak_group &#8212; fooof 1.0.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="fooof.synth.param_sampler" href="fooof.synth.param_sampler.html" />
-    <link rel="prev" title="fooof.analysis.get_band_peak" href="fooof.analysis.get_band_peak.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -47,6 +45,7 @@
             
                 <li><a href="../api.html">API</a></li>
                 <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="../glossary.html">Glossary</a></li>
                 <li><a href="../auto_tutorials/index.html">Tutorial</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
                 <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
@@ -60,15 +59,7 @@
      href="../index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"><ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../readme_link.html">README</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../auto_tutorials/index.html">Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../contents.html">Table of Contents</a></li>
-</ul>
-</ul>
+      aria-labelledby="dLabelGlobalToc"></ul>
 </li>
               
             
@@ -106,31 +97,40 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>peak_params</strong> (<em>2d array</em>) – Peak parameters, for a group fit, from FOOOF, with shape of [n_peaks, 4]</li>
-<li><strong>band_def</strong> (<em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Defines the band of interest, as [lower_frequency_bound, upper_frequency_bound]</li>
-<li><strong>n_fits</strong> (<em>int</em>) – The number of model fits in the FOOOFGroup data.</li>
-</ul>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>peak_params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">2d array</span></dt>
+<dd><p class="first last">Peak parameters, for a group fit, from FOOOF, with shape of [n_peaks, 4].</p>
+</dd>
+<dt><strong>band_def</strong> <span class="classifier-delimiter">:</span> <span class="classifier">[float, float]</span></dt>
+<dd><p class="first last">Defines the band of interest, as [lower_frequency_bound, upper_frequency_bound].</p>
+</dd>
+<dt><strong>n_fits</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">The number of model fits in the FOOOFGroup data.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>band_peaks</strong> – Peak data. Each row is a peak, as [CF, Amp, BW].</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2d array</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>band_peaks</strong> <span class="classifier-delimiter">:</span> <span class="classifier">2d array</span></dt>
+<dd><p class="first last">Peak data. Each row is a peak, as [CF, Amp, BW].</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Notes</p>
+<p>This function conserves the shape of the array, returning a [n_fits, 3] array.</p>
 <ul class="simple">
-<li>This function conserves the shape of the array, return a [n_fits, 3] array.
-- Each row reflects a FOOOF model fit, in order, filled with NaN if no peak was present.</li>
+<li>Each row reflects a FOOOF model fit, in order, filled with NaN if no peak was present.</li>
 <li>To do so, this function necessarily extracts and returns one peak per model fit.</li>
-<li>For extracting all peaks within a band, per model fit, you can do:</li>
 </ul>
-<p>$ peaks = np.empty((0, 3))
-$ for f_res in fg:
-$     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band_def, ret_one=False)))</p>
+<p>If, instead, you with to extract all peaks within a band, per model fit, you can do:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">peaks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">f_res</span> <span class="ow">in</span> <span class="n">fg</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">peaks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">peaks</span><span class="p">,</span> <span class="n">get_band_peak</span><span class="p">(</span><span class="n">f_res</span><span class="o">.</span><span class="n">peak_params</span><span class="p">,</span> <span class="n">band_def</span><span class="p">,</span> <span class="n">ret_one</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>
@@ -148,7 +148,7 @@ $     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band_def, ret_o
     </p>
     <p>
         &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.<br/>
     </p>
   </div>
 </footer>

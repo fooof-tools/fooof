@@ -1,0 +1,22 @@
+fooof.synth.params.Stepper
+==========================
+
+.. currentmodule:: fooof.synth.params
+
+.. autoclass:: Stepper
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Stepper.__init__
+   
+   
+
+   
+   
+   

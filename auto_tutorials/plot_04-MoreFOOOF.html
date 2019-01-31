@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>04: Exploring the FOOOF Object &#8212; fooof 1.0.0-dev documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0-dev</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="../glossary.html">Glossary</a></li>
+                <li><a href="index.html">Tutorial</a></li>
+                <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-04-morefooof-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="exploring-the-fooof-object">
+<span id="sphx-glr-auto-tutorials-plot-04-morefooof-py"></span><h1>04: Exploring the FOOOF Object<a class="headerlink" href="#exploring-the-fooof-object" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import numpy for loading data, and FOOOF object</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a FOOOF object to explore</span>
+<span class="n">fm</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="description-of-fooof-methods-and-parameters">
+<h2>Description of FOOOF methods and parameters<a class="headerlink" href="#description-of-fooof-methods-and-parameters" title="Permalink to this headline">¶</a></h2>
+<p>FOOOF follows the following Python conventions:</p>
+<ul class="simple">
+<li>all user exposed settings, data, and methods are directly accessible through the object</li>
+<li>‘hidden’ (internal) settings and methods have a leading underscore, indicating they are private</li>
+</ul>
+<p>The FOOOF object contents consist of 4 main components (groups of data / code), settings,
+data attributes, result attributes, and methods, each of which are described in more
+detail below.</p>
+<div class="section" id="settings-attributes">
+<h3>Settings (attributes)<a class="headerlink" href="#settings-attributes" title="Permalink to this headline">¶</a></h3>
+<p>There are a number of parameters that control the FOOOF fitting algorithm, that
+can be set by the user when initializing the FOOOF model.</p>
+<p>There are some internal settings that are not exposed at initialization.
+These settings are unlikely to need to be accessed by the user, but can be if desired -
+they are all defined and documented in __init__ (there should be no other settings, or
+‘magic numbers’ in any other parts of the code).</p>
+<div class="section" id="controlling-peak-fits">
+<h4>Controlling Peak Fits<a class="headerlink" href="#controlling-peak-fits" title="Permalink to this headline">¶</a></h4>
+<p><strong>peak_width_limits (Hz)</strong> default: [0.5, 12]</p>
+<p>Enforced limits on the minimum and maximum widths of extracted peaks, given as a list of
+[minimum bandwidth, maximum bandwidth]. We recommend bandwidths be set to be at last twice
+the frequency resolution of the power spectrum.</p>
+</div>
+<div class="section" id="peak-search-stopping-criteria">
+<h4>Peak Search Stopping Criteria<a class="headerlink" href="#peak-search-stopping-criteria" title="Permalink to this headline">¶</a></h4>
+<p>An iterative procedures searches for candidate peaks in the flattened spectrum. Candidate
+peaks are extracted in order of decreasing amplitude, until some stopping criterion is met,
+which is controlled by the following parameters:</p>
+<p><strong>max_n_peaks (int)</strong> default: infinite</p>
+<p>The maximum number of peaks that can be extracted from a given power spectrum. FOOOF will
+halt searching for new peaks when this number is reached. Note that FOOOF extracts peaks
+iteratively by amplitude (over and above the aperiodic signal), and so this approach will
+extract (up to) the _n_ largest peaks.</p>
+<p><strong>peak_threshold (in units of standard deviation)</strong> default: 2.0</p>
+<p>The threshold, in terms of standard deviation of the aperiodic signal-removed power
+spectrum, above which a data point must pass to be considered a candidate peak.
+Once a candidate peak drops below this threshold, the peak search is halted (without
+including the most recent candidate).</p>
+<p><strong>min_peak_amplitude (units of power - same as the input spectrum)</strong> default: 0</p>
+<p>The minimum amplitude, above the aperiodic fit, that a peak must have to be extracted
+in the initial fit stage. Once a candidate peak drops below this threshold, the peak
+search is halted (without including the most recent candidate). Note that because
+this constraint is enforced during peak search, and prior to final peak fit, returned
+peaks are not guaranteed to surpass this value in amplitude.</p>
+<p>Note: there are two different amplitude-related halting conditions for the peak searching.
+By default, the relative (standard-deviation based) threshold is defined, whereas the
+absolute threshold is set to zero (this default is because there is no general way to
+set this value without knowing the scale of the data). If both are defined, both are
+used and the peak search will halt when a candidate peak fails to pass either the absolute,
+or relative threshold.</p>
+</div>
+<div class="section" id="aperiodic-signal-fitting-approach">
+<h4>Aperiodic Signal Fitting Approach<a class="headerlink" href="#aperiodic-signal-fitting-approach" title="Permalink to this headline">¶</a></h4>
+<p><strong>aperiodic_mode (string)</strong> default=’fixed’</p>
+<p>The fitting approach to use for the aperiodic signal.</p>
+<dl class="docutils">
+<dt>Options:</dt>
+<dd><ul class="first last simple">
+<li>‘fixed’ : fits without a knee parameter (with the knee parameter ‘fixed’ at 0)</li>
+<li>‘knee’ : fits the full exponential equation, including the ‘knee’ parameter</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="verbosity">
+<h4>Verbosity<a class="headerlink" href="#verbosity" title="Permalink to this headline">¶</a></h4>
+<p><strong>verbose (boolean)</strong> default=’True’</p>
+<p>Whether to print out status updates and warnings.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can check all the user defined FOOOF settings with check_settings</span>
+<span class="c1">#  The description parameter here is set to print out quick descriptions of the settings</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">print_settings</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                         FOOOF - SETTINGS
+
+                                      Aperiodic Mode : fixed
+                      The aproach taken to fitting the aperiodic component.
+                                 Peak Width Limits : [0.5, 12.0]
+                             Enforced limits for peak widths, in Hz.
+                                    Max Number of Peaks : inf
+                        The maximum number of peaks that can be extracted.
+                                     Minimum Amplitude : 0.0
+                 Minimum absolute amplitude of a peak, above aperiodic component.
+                                     Amplitude Threshold: 2.0
+                         Threshold at which to stop searching for peaks.
+
+==================================================================================================
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="data-attributes">
+<h3>Data (attributes)<a class="headerlink" href="#data-attributes" title="Permalink to this headline">¶</a></h3>
+<p>FOOOF stores the frequency vector, power spectrum, frequency range, and frequency resolution.</p>
+<p>During the fit procedure, interim (hidden) data variables are also created and used.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load a piece of example data</span>
+<span class="n">freqs</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.load" title="View documentation for numpy.load"><span class="n">np</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;dat/freqs_2.npy&#39;</span><span class="p">)</span>
+<span class="n">spectrum</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.load" title="View documentation for numpy.load"><span class="n">np</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;dat/spectrum_2.npy&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set a frequency range and add the data to the FOOOF object</span>
+<span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out the data attributes in the FOOOF object</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Frequency Vector: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Frequency Range: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">freq_range</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Frequency Resolution: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">freq_res</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Power Values: </span><span class="se">\t\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Frequency Vector:        [2.44140625 2.9296875  3.41796875 3.90625    4.39453125]
+Frequency Range:         [2.441406250001353, 39.55078125002192]
+Frequency Resolution:    0.48828125000027045
+Power Values:            [-21.99921865 -21.99669556 -22.02605736 -21.96875308 -22.15436702]
+</pre></div>
+</div>
+</div>
+<div class="section" id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
+<p>The FOOOF object contains a number of methods that operate on the FOOOF
+object data, and/or do utility functions.</p>
+<p>In addition to the exposed methods, there are some internal private methods,
+with a leading underscore in their name, that are called in the
+fitting procedure. These methods should not be called independently, as they may
+depend on internal state as defined from other methods.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This piece of code is just a way to print out all the public methods with their description</span>
+<span class="p">[</span><span class="k">print</span><span class="p">(</span><span class="n">it</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;fm.&#39;</span> <span class="o">+</span> <span class="n">it</span> <span class="o">+</span> <span class="s1">&#39;.__doc__&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> \
+ <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">fm</span><span class="p">)</span> <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;fm.&#39;</span> <span class="o">+</span> <span class="n">it</span><span class="p">))];</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>add_data
+        Add data (frequencies and power spectrum values) to FOOOF object.
+add_results
+        Add results data back into object from a FOOOFResult object.
+copy
+        Return a copy of the FOOOF object.
+fit
+        Fit the full power spectrum as a combination of periodic and aperiodic components.
+get_results
+        Return model fit parameters and goodness of fit metrics.
+load
+        Load in FOOOF file. Reads in a JSON file.
+plot
+        Plot the power spectrum and model fit results from a FOOOF object.
+print_report_issue
+        Prints instructions on how to report bugs and/or problematic fits.
+print_results
+        Print out FOOOF results.
+print_settings
+        Print out the current FOOOF settings.
+report
+        Run model fit, and display a report, which includes a plot, and printed results.
+save
+        Save out data, results and/or settings from FOOOF object. Saves out to a JSON file.
+save_report
+        Generate and save out a as PDF a report for a FOOOF object.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="fitting-fooof-with-different-settings">
+<h2>Fitting FOOOF with Different Settings<a class="headerlink" href="#fitting-fooof-with-different-settings" title="Permalink to this headline">¶</a></h2>
+<p>If you wish to change these settings, then you should re-initialize
+the FOOOF object with new settings.</p>
+<p>Simply resetting the relevant attribute may not appropriately propragate the value,
+and may fail, either by erroring out, or not applying the settings properly during
+fit and returning erroneous results.</p>
+<p>Here we will re-initialize a new FOOOF object, with some new settings, and fit the model.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize FOOOF model, with some specified settings</span>
+<span class="n">fm</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_amplitude</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+
+<span class="c1"># Fit FOOOF</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_04-MoreFOOOF_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_04-MoreFOOOF_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                   FOOOF - POWER SPECTRUM MODEL
+
+                        The model was run on the frequency range 2 - 40 Hz
+                                 Frequency Resolution is 0.49 Hz
+
+                            Aperiodic Parameters (offset, exponent):
+                                         -21.4437, 1.0751
+
+                                       3 peaks were found:
+                                CF:   9.82, Amp:  0.728, BW:  3.00
+                                CF:  13.04, Amp:  0.260, BW:  2.54
+                                CF:  18.13, Amp:  0.151, BW:  4.63
+
+                                     Goodness of fit metrics:
+                                    R^2 of model fit is 0.9923
+                                Root mean squared error is 0.0294
+
+==================================================================================================
+</pre></div>
+</div>
+<div class="section" id="results-attributes">
+<h3>Results (attributes)<a class="headerlink" href="#results-attributes" title="Permalink to this headline">¶</a></h3>
+<p>FOOOF follows the scipy convention in that any attributes that result from fitting
+to the data are indicated by a trailing underscore:</p>
+<ul class="simple">
+<li><cite>fm.aperiodic_params_</cite>, <cite>fm.peak_params_</cite>, <cite>fm.fooofed_spectrum_</cite>,
+<cite>fm.r_squared_</cite>, <cite>fm.error_</cite></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out model fit results</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;aperiodic params: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">aperiodic_params_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;peak params: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">fm</span><span class="o">.</span><span class="n">peak_params_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;r-squared: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">r_squared_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;fit error: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">error_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;fooofed spectrum: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">fm</span><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>aperiodic params:        [-21.44372545   1.07510692]
+peak params:     [[ 9.81511889  0.72768575  3.00442105]
+ [13.04276125  0.25957047  2.54345973]
+ [18.12826746  0.15093637  4.62563192]]
+r-squared:       0.9922991772406238
+fit error:       0.029372423372964467
+fooofed spectrum:        [-21.86047573 -21.94558849 -22.01750003 -22.07961578 -22.13385217]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="fooof-saving-reports">
+<h2>FOOOF - Saving &amp; Reports<a class="headerlink" href="#fooof-saving-reports" title="Permalink to this headline">¶</a></h2>
+<p>FOOOF also has support for saving out, and loading back in, data.</p>
+<p>You have the option to specify which data to save.</p>
+<ul class="simple">
+<li>results: model fit results (same as is returned in FOOOFResult)</li>
+<li>settings: all public settings (everything available at initialization)</li>
+<li>data: freqs &amp; power spectrum</li>
+</ul>
+<p>FOOOF saves data out to JSON files. You can specify a file name to save
+or append to, or pass in a JSON file object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Saving FOOOF results, settings, and data</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">save_results</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">save_settings</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">save_data</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Loading FOOOF results</span>
+<span class="n">nfm</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">()</span>
+<span class="n">nfm</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot loaded results</span>
+<span class="n">nfm</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_04-MoreFOOOF_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_04-MoreFOOOF_002.png" />
+</div>
+<div class="section" id="create-a-report">
+<h2>Create a Report<a class="headerlink" href="#create-a-report" title="Permalink to this headline">¶</a></h2>
+<p>FOOOF also has functionality to save out a ‘report’ of a particular model fit.</p>
+<p>This generates and saves a PDF which contains the same output as
+‘print_results’, ‘plot’, and ‘print_settings’.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save out a report of the current FOOOF model fit &amp; results</span>
+<span class="c1">#  By default (with no inputs) this saves a PDF to current directory, with the name &#39;FOOOF_Report&#39;</span>
+<span class="c1">#    Add inputs to the method call to specify a file-name, and save-location</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">save_report</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you&#39;re in a notebook, you can use this code to check what the generated report looks like</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">IFrame</span>
+<span class="n">IFrame</span><span class="p">(</span><span class="s2">&quot;FOOOF_Report.pdf&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">950</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">1200</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.537 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-04-morefooof-py">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" download="" href="../_downloads/05034283d511e24db87f106f2d2ec6e2/plot_04-MoreFOOOF.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_04-MoreFOOOF.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" download="" href="../_downloads/ccbcc346485e2a310409bd27ddcae4a3/plot_04-MoreFOOOF.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_04-MoreFOOOF.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018 - VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

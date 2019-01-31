@@ -1,0 +1,6 @@
+fooof.plts.spectra.plot\_spectra\_shading
+=========================================
+
+.. currentmodule:: fooof.plts.spectra
+
+.. autofunction:: plot_spectra_shading

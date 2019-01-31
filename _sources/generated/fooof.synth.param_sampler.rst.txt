@@ -1,6 +1,0 @@
-fooof.synth.param\_sampler
-==========================
-
-.. currentmodule:: fooof.synth
-
-.. autofunction:: param_sampler

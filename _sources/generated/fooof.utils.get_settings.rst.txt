@@ -1,0 +1,6 @@
+fooof.utils.get\_settings
+=========================
+
+.. currentmodule:: fooof.utils
+
+.. autofunction:: get_settings

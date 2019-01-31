@@ -7,19 +7,18 @@
     <title>Table of Contents &#8212; fooof 1.0.0-dev documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Frequently Asked Questions" href="faq.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -46,6 +45,7 @@
             
                 <li><a href="api.html">API</a></li>
                 <li><a href="faq.html">FAQ</a></li>
+                <li><a href="glossary.html">Glossary</a></li>
                 <li><a href="auto_tutorials/index.html">Tutorial</a></li>
                 <li><a href="auto_examples/index.html">Examples</a></li>
                 <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
@@ -59,15 +59,7 @@
      href="index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"><ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="readme_link.html">README</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auto_tutorials/index.html">Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Table of Contents</a></li>
-</ul>
-</ul>
+      aria-labelledby="dLabelGlobalToc"></ul>
 </li>
               
             
@@ -115,32 +107,51 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.html#fooof">FOOOF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#fooof-object">FOOOF Object</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/fooof.FOOOF.html">fooof.FOOOF</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#fooofgroup-object">FOOOFGroup Object</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/fooof.FOOOFGroup.html">fooof.FOOOFGroup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/fooof.fit_fooof_group_3d.html">fooof.fit_fooof_group_3d</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#fooof-object-functions">FOOOF Object Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.funcs.combine_fooofs.html">fooof.funcs.combine_fooofs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.funcs.fit_fooof_group_3d.html">fooof.funcs.fit_fooof_group_3d</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#analysis-functions">Analysis Functions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/fooof.analysis.get_band_peak.html">fooof.analysis.get_band_peak</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/fooof.analysis.get_band_peak_group.html">fooof.analysis.get_band_peak_group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.analysis.get_highest_amp_peak.html">fooof.analysis.get_highest_amp_peak</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#synthesis-functions">Synthesis Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/fooof.synth.param_sampler.html">fooof.synth.param_sampler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/fooof.synth.gen_power_spectrum.html">fooof.synth.gen_power_spectrum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/fooof.synth.gen_group_power_spectra.html">fooof.synth.gen_group_power_spectra</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.synth.params.Stepper.html">fooof.synth.params.Stepper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.synth.params.param_iter.html">fooof.synth.params.param_iter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.synth.params.param_sampler.html">fooof.synth.params.param_sampler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.synth.gen.gen_freqs.html">fooof.synth.gen.gen_freqs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.synth.gen.gen_power_spectrum.html">fooof.synth.gen.gen_power_spectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.synth.gen.gen_group_power_spectra.html">fooof.synth.gen.gen_group_power_spectra</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.synth.transform.rotate_spectrum.html">fooof.synth.transform.rotate_spectrum</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#plotting-functions">Plotting Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/fooof.plts.templates.plot_spectrum.html">fooof.plts.templates.plot_spectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.plts.spectra.plot_spectrum.html">fooof.plts.spectra.plot_spectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.plts.spectra.plot_spectra.html">fooof.plts.spectra.plot_spectra</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.plts.spectra.plot_spectrum_shading.html">fooof.plts.spectra.plot_spectrum_shading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.plts.spectra.plot_spectra_shading.html">fooof.plts.spectra.plot_spectra_shading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.plts.fm.plot_fm.html">fooof.plts.fm.plot_fm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.plts.fm.plot_peak_iter.html">fooof.plts.fm.plot_peak_iter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.plts.fg.plot_fg.html">fooof.plts.fg.plot_fg</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#data-objects">Data Objects</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/fooof.fit.FOOOFResult.html">fooof.fit.FOOOFResult</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#utility-functions">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.utils.trim_spectrum.html">fooof.utils.trim_spectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.utils.get_settings.html">fooof.utils.get_settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.utils.get_data_info.html">fooof.utils.get_data_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.utils.compare_settings.html">fooof.utils.compare_settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/fooof.utils.compare_data_info.html">fooof.utils.compare_data_info</a></li>
 </ul>
 </li>
 </ul>
@@ -153,10 +164,11 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#table-of-contents">Table of Contents</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#what-does-fooof-stand-for">What does FOOOF stand for?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#what-is-fooof">What is FOOOF?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#why-is-it-called-fooof">Why is it called FOOOF?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#why-should-i-use-fooof">Why should I use FOOOF?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#what-do-you-mean-by-periodic-and-aperiodic-activity">What do you mean by ‘periodic’ and ‘aperiodic’ activity?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#why-call-it-aperiodic-why-not-call-it-1-f-or-noise">Why call it ‘aperiodic’? Why not call it ‘1/f’ or ‘noise’?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#why-should-i-use-fooof">Why should I use FOOOF?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#why-is-this-different-from-other-methods-what-makes-it-work">Why is this different from other methods / what makes it work?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#are-there-settings-for-the-fooof-algorithm">Are there settings for the FOOOF algorithm?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#how-do-i-pick-settings">How do I pick settings?</a></li>
@@ -188,7 +200,7 @@
     </p>
     <p>
         &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.<br/>
     </p>
   </div>
 </footer>

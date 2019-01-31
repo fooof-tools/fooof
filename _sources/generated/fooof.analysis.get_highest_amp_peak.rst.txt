@@ -1,0 +1,6 @@
+fooof.analysis.get\_highest\_amp\_peak
+======================================
+
+.. currentmodule:: fooof.analysis
+
+.. autofunction:: get_highest_amp_peak
