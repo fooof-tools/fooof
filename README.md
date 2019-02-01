@@ -137,8 +137,8 @@ fg.save(file_name='fooof_group_results', save_results=True)
 
 Example output for a FOOOF fit on an individual power spectrum:
 
-!["fooof_report"](img/FOOOF_Report.png)
+!["fooof_report"](./img/FOOOF_report.png)
 
 Example output from using FOOOFGroup across a group of power spectra:
 
-!["fooof_group_report"](img/FOOOFGroup_Report.png)
+!["fooof_group_report"](./img/FOOOFGroup_report.png)

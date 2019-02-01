@@ -94,7 +94,5 @@
 
 ###################################################################################################
 # This procedure is able to create a model of the neural power spectrum,
-# that is fully described mathematical by the mathematical model from above:
-#
-#.. image:: ../../img/FOOOF_Report.png
+# that is fully described mathematical by the mathematical model from above.
 #
