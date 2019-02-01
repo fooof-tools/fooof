@@ -64,7 +64,7 @@ fm = FOOOF()
 # The maximum number of peaks that can be extracted from a given power spectrum. FOOOF will
 # halt searching for new peaks when this number is reached. Note that FOOOF extracts peaks
 # iteratively by amplitude (over and above the aperiodic signal), and so this approach will
-# extract (up to) the _n_ largest peaks.
+# extract (up to) the *n* largest peaks.
 #
 # **peak_threshold (in units of standard deviation)** default: 2.0
 #
