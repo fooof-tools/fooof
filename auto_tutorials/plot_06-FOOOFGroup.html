@@ -181,13 +181,13 @@ accessed in the same way as the FOOOF object.</p>
                               Power spectra were fit without a knee.
 
                                     Aperiodic Exponent Values
-                              Min: 1.4968, Max: 2.5295, Mean: 1.8123
+                              Min: 1.4987, Max: 2.5253, Mean: 1.8187
 
-                          In total 8 peaks were extracted from the group
+                         In total 13 peaks were extracted from the group
 
                                      Goodness of fit metrics:
-                            R2s -  Min: 0.9990, Max: 1.0000, Mean: 0.9997
-                         Errors -  Min: 0.0037, Max: 0.0151, Mean: 0.0067
+                            R2s -  Min: 0.9988, Max: 0.9999, Mean: 0.9995
+                         Errors -  Min: 0.0040, Max: 0.0152, Mean: 0.0094
 
 ==================================================================================================
 </pre></div>
@@ -214,7 +214,9 @@ the fitting, and print results &amp; plots, printing out the same as above.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[FOOOFResult(aperiodic_params=array([35.02811117,  1.51802629]), peak_params=array([[10.04281525,  0.48458575,  3.77807492]]), r_squared=0.9997768516066498, error=0.005909901297500634, gaussian_params=array([[10.04281525,  0.48471023,  1.88903746]])), FOOOFResult(aperiodic_params=array([50.02968896,  2.51842153]), peak_params=array([[10.01208832,  0.4799107 ,  3.79829583]]), r_squared=0.9999134160564168, error=0.005091718470213399, gaussian_params=array([[10.01208832,  0.47992042,  1.89914792]]))]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[FOOOFResult(aperiodic_params=array([20.00102218,  2.00083427]), peak_params=array([], shape=(0, 3), dtype=float64), r_squared=0.9999293487828523, error=0.00399996162009387, gaussian_params=array([], shape=(0, 3), dtype=float64)), FOOOFResult(aperiodic_params=array([50.05256147,  2.52533479]), peak_params=array([[10.08072385,  0.47934609,  3.72394705],
+       [19.94355226,  0.27322883,  7.44132956]]), r_squared=0.9996338966087166, error=0.012098351516201263, gaussian_params=array([[10.08072385,  0.47210478,  1.86197352],
+       [19.94355226,  0.27325995,  3.72066478]]))]
 </pre></div>
 </div>
 </div>
@@ -297,8 +299,8 @@ gaussian_params : 2d array, shape=[n_peaks, 3]
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[1.51802629 2.51842153 1.51756276 2.52953985 1.52994842 1.49792081
- 1.49681373 2.49797502 1.49951606 1.51761509]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[2.00083427 2.52533479 1.49865029 1.51920928 1.52949705 1.52757242
+ 2.02936854 1.52782852 1.51228722 2.5160606 ]
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the fit center-frequencies</span>
@@ -308,14 +310,19 @@ gaussian_params : 2d array, shape=[n_peaks, 3]
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[10.04281525  0.        ]
- [10.01208832  1.        ]
- [10.02372301  2.        ]
- [10.10944851  3.        ]
- [19.96341403  3.        ]
- [10.11542468  4.        ]
- [19.97826464  4.        ]
- [10.04856105  9.        ]]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[10.08072385  1.        ]
+ [19.94355226  1.        ]
+ [10.04401541  3.        ]
+ [10.08665251  4.        ]
+ [20.00374622  4.        ]
+ [10.10104439  5.        ]
+ [19.98591905  5.        ]
+ [10.08531434  6.        ]
+ [20.0144028   6.        ]
+ [10.13054056  7.        ]
+ [20.0118005   7.        ]
+ [10.0186393   8.        ]
+ [10.0326748   9.        ]]
 </pre></div>
 </div>
 </div>
@@ -356,13 +363,13 @@ and a separate file that includes the results.</p>
                               Power spectra were fit without a knee.
 
                                     Aperiodic Exponent Values
-                              Min: 1.4968, Max: 2.5295, Mean: 1.8123
+                              Min: 1.4987, Max: 2.5253, Mean: 1.8187
 
-                          In total 8 peaks were extracted from the group
+                         In total 13 peaks were extracted from the group
 
                                      Goodness of fit metrics:
-                            R2s -  Min: 0.9990, Max: 1.0000, Mean: 0.9997
-                         Errors -  Min: 0.0037, Max: 0.0151, Mean: 0.0067
+                            R2s -  Min: 0.9988, Max: 0.9999, Mean: 0.9995
+                         Errors -  Min: 0.0040, Max: 0.0152, Mean: 0.0094
 
 ==================================================================================================
 </pre></div>
@@ -416,19 +423,18 @@ power spectra, with the full model available for visualization.</p>
                                  Frequency Resolution is 0.50 Hz
 
                             Aperiodic Parameters (offset, exponent):
-                                         35.0267, 1.5176
+                                         34.9979, 1.4987
 
-                                       1 peaks were found:
-                                CF:  10.02, Amp:  0.493, BW:  3.78
+                                       0 peaks were found:
 
                                      Goodness of fit metrics:
-                                    R^2 of model fit is 0.9998
-                                Root mean squared error is 0.0059
+                                    R^2 of model fit is 0.9999
+                                Root mean squared error is 0.0041
 
 ==================================================================================================
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.499 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.686 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-06-fooofgroup-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/72fe75b5ddc1fd9509b23bf5607f5272/plot_06-FOOOFGroup.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_06-FOOOFGroup.py</span></code></a></div>

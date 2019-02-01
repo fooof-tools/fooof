@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Extract Bands &#8212; fooof 1.0.0-dev documentation</title>
+    <title>Transforming Power Spectra &#8212; fooof 1.0.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
@@ -89,33 +89,45 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-extract-bands-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-transforms-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="extract-bands">
-<span id="sphx-glr-auto-examples-plot-extract-bands-py"></span><h1>Extract Bands<a class="headerlink" href="#extract-bands" title="Permalink to this headline">¶</a></h1>
-<p>This is a test example.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="sphx-glr-example-title section" id="transforming-power-spectra">
+<span id="sphx-glr-auto-examples-plot-transforms-py"></span><h1>Transforming Power Spectra<a class="headerlink" href="#transforming-power-spectra" title="Permalink to this headline">¶</a></h1>
+<p>This example covers transformations that can be applied to power spectra.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
+<span class="kn">from</span> <span class="nn">fooof.synth.gen</span> <span class="kn">import</span> <span class="n">gen_power_spectrum</span>
+<span class="kn">from</span> <span class="nn">fooof.synth.transform</span> <span class="kn">import</span> <span class="n">rotate_spectrum</span>
 
-<span class="c1"># FOOOF imports</span>
-<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <span class="n">FOOOF</span><span class="p">,</span> <span class="n">FOOOFGroup</span>
-<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="kn">import</span> <span class="n">get_band_peak</span><span class="p">,</span> <span class="n">get_band_peak_group</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <span class="n">plot_spectra</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Hello World.&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a synthetic power spectrum</span>
+<span class="n">fs</span><span class="p">,</span> <span class="n">ps</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Hello World.
+<div class="section" id="rotate-spectrum">
+<h2>rotate_spectrum<a class="headerlink" href="#rotate-spectrum" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">rotate_spectrum()</span></code> function takes in a power spectrum, and rotates the
+power spectrum a specified amount, around a specified frequency point, changing
+the aperiodic exponent of the spectrum.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rotate the power spectrum</span>
+<span class="n">nps</span> <span class="o">=</span> <span class="n">rotate_spectrum</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-extract-bands-py">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the two power spectra</span>
+<span class="n">plot_spectra</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="p">[</span><span class="n">ps</span><span class="p">,</span> <span class="n">nps</span><span class="p">],</span> <span class="n">log_freqs</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_transforms_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_transforms_001.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.011 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-transforms-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/6b1af01c50491e4d0457fb497f5403f5/plot_extract_bands.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_extract_bands.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/ec261ddeeb796a211e3d51b7d8e2c3e0/plot_transforms.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_transforms.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/eef67244d0f645f7ec69d508c887a2ed/plot_extract_bands.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_extract_bands.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/40669f3996c3b8470ae2600da1fa5d44/plot_transforms.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_transforms.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
 </div>
 
 

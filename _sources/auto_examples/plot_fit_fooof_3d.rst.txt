@@ -1,0 +1,266 @@
+.. note::
+    :class: sphx-glr-download-link-note
+
+    Click :ref:`here <sphx_glr_download_auto_examples_plot_fit_fooof_3d.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
+
+.. _sphx_glr_auto_examples_plot_fit_fooof_3d.py:
+
+
+Fit FOOOFGroup 3D
+=================
+
+
+This example shows how to run FOOOF across 3D matrices of power spectra
+
+
+
+
+.. code-block:: python
+
+
+    import numpy as np
+
+    # FOOOF imports
+    from fooof import FOOOFGroup
+    from fooof.funcs import fit_fooof_group_3d, combine_fooofs
+    from fooof.synth.gen import gen_group_power_spectra
+    from fooof.synth.params import param_sampler
+
+
+
+
+
+
+
+
+.. code-block:: python
+
+
+    # Settings for creating synthetic data
+    n_spectra = 10
+    freq_range = [3, 40]
+    ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
+    gauss_opts = param_sampler([[], [10, 1, 1], [10, 1, 1, 20, 2, 1]])
+
+
+
+
+
+
+
+
+.. code-block:: python
+
+
+    # Generate some synthetic power spectra, and organize into a 3D matrix
+    spectra = []
+    for ind in range(3):
+        fs, ps, _ = gen_group_power_spectra(n_spectra, freq_range, ap_opts, gauss_opts)
+        spectra.append(ps)
+    spectra = np.array(spectra)
+
+
+
+
+
+
+
+
+.. code-block:: python
+
+
+    # Check the shape of the spectra
+    #   This kind of 3D organization can be thought to represent [n_conditions, n_channels, n_freqs]
+    print(spectra.shape)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    (3, 10, 75)
+
+
+fit_fooof_group_3d
+------------------
+
+The :func:`fit_fooof_group_3d` is a function that takes in a FOOOFGroup object,
+which has been initialized with the desired settings, as well as a frequency
+vector and a 3D matrix of power spectra. The FOOOFGroup object is used to fit
+FOOOF models across the power spectra. A list of FOOOFGroup objects is returned.
+
+
+
+
+.. code-block:: python
+
+
+    # Initialize a FOOOF group object, with desired settings
+    fg = FOOOFGroup(peak_width_limits=[1, 6], peak_threshold=0.5)
+
+
+
+
+
+
+
+
+.. code-block:: python
+
+
+    # Fit the 3D matrix of power spectra
+    fgs = fit_fooof_group_3d(fg, fs, spectra)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Running FOOOFGroup across 10 power spectra.
+    Running FOOOFGroup across 10 power spectra.
+    Running FOOOFGroup across 10 power spectra.
+
+
+
+.. code-block:: python
+
+
+    # This returns a list of FOOOFGRoup objects
+    print(fgs)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    [<fooof.group.FOOOFGroup object at 0x1012acfe10>, <fooof.group.FOOOFGroup object at 0x1012aeaeb8>, <fooof.group.FOOOFGroup object at 0x1012afd8d0>]
+
+
+
+.. code-block:: python
+
+
+    # Compare the aperiodic exponent results across conditions
+    for ind, fg in enumerate(fgs):
+        print("Aperiodic exponent for condition {} is {:1.4f}".format(
+            ind, np.mean(fg.get_all_data('aperiodic_params', 'exponent'))))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Aperiodic exponent for condition 0 is 1.3528
+    Aperiodic exponent for condition 1 is 1.4536
+    Aperiodic exponent for condition 2 is 1.3537
+
+
+combine_fooofs
+--------------
+
+Depending what the organization of the data is, you might also want to collapse
+FOOOF models dimensions that have been fit.
+
+
+To do so, you can use the :func:`combine_fooofs` function, which takes
+a list of FOOOF or FOOOFGroup objects, and combines them together into
+a single FOOOFGroup object (assuming the settings and data definitions
+are consistent to do so).
+
+
+
+.. code-block:: python
+
+
+    # You can also combine a list of FOOOF objects into a single FOOOF object
+    all_fg = combine_fooofs(fgs)
+
+    # Explore the results from across all FOOOF fits
+    all_fg.print_results()
+    all_fg.plot()
+
+
+
+.. image:: /auto_examples/images/sphx_glr_plot_fit_fooof_3d_001.png
+    :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    ==================================================================================================
+                                                                                                  
+                                           FOOOF - GROUP RESULTS                                      
+                                                                                                  
+                                 Number of power spectra in the Group: 30                             
+                                                                                                  
+                            The model was run on the frequency range 3 - 40 Hz                        
+                                     Frequency Resolution is 0.50 Hz                                  
+                                                                                                  
+                                  Power spectra were fit without a knee.                              
+                                                                                                  
+                                        Aperiodic Exponent Values                                     
+                                  Min: 1.0013, Max: 2.0043, Mean: 1.3867                              
+                                                                                                  
+                             In total 216 peaks were extracted from the group                         
+                                                                                                  
+                                         Goodness of fit metrics:                                     
+                                R2s -  Min: 0.9998, Max: 1.0000, Mean: 0.9999                         
+                             Errors -  Min: 0.0023, Max: 0.0063, Mean: 0.0044                         
+                                                                                                  
+    ==================================================================================================
+
+
+**Total running time of the script:** ( 0 minutes  15.950 seconds)
+
+
+.. _sphx_glr_download_auto_examples_plot_fit_fooof_3d.py:
+
+
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
+
+
+  .. container:: sphx-glr-download
+
+     :download:`Download Python source code: plot_fit_fooof_3d.py <plot_fit_fooof_3d.py>`
+
+
+
+  .. container:: sphx-glr-download
+
+     :download:`Download Jupyter notebook: plot_fit_fooof_3d.ipynb <plot_fit_fooof_3d.ipynb>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_

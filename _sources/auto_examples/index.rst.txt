@@ -19,9 +19,9 @@ Examples
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_ex_fit_fooog_group_3d_thumb.png
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_fit_fooof_3d_thumb.png
 
-        :ref:`sphx_glr_auto_examples_ex_fit_fooog_group_3d.py`
+        :ref:`sphx_glr_auto_examples_plot_fit_fooof_3d.py`
 
 .. raw:: html
 
@@ -31,17 +31,17 @@ Examples
 .. toctree::
    :hidden:
 
-   /auto_examples/ex_fit_fooog_group_3d
+   /auto_examples/plot_fit_fooof_3d
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Extract Bands">
+    <div class="sphx-glr-thumbcontainer" tooltip="FOOOF Plots">
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_extract_bands_thumb.png
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_plots_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_extract_bands.py`
+        :ref:`sphx_glr_auto_examples_plot_plots.py`
 
 .. raw:: html
 
@@ -51,7 +51,47 @@ Examples
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_extract_bands
+   /auto_examples/plot_plots
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Synthetic Parameters">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_synth_params_thumb.png
+
+        :ref:`sphx_glr_auto_examples_plot_synth_params.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_synth_params
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Transforming Power Spectra">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_transforms_thumb.png
+
+        :ref:`sphx_glr_auto_examples_plot_transforms.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_transforms
 .. raw:: html
 
     <div style='clear:both'></div>
