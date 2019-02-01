@@ -1,6 +1,0 @@
-fooof.plts.fm.plot\_peak\_iter
-==============================
-
-.. currentmodule:: fooof.plts.fm
-
-.. autofunction:: plot_peak_iter

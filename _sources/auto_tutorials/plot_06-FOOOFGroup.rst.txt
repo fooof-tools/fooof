@@ -181,13 +181,13 @@ Internally, it runs the exact same fitting procedure, per spectrum, as the FOOOF
                                   Power spectra were fit without a knee.                              
                                                                                                   
                                         Aperiodic Exponent Values                                     
-                                  Min: 1.4987, Max: 2.5253, Mean: 1.8187                              
+                                  Min: 1.5021, Max: 2.5158, Mean: 2.1590                              
                                                                                                   
-                             In total 13 peaks were extracted from the group                          
+                              In total 5 peaks were extracted from the group                          
                                                                                                   
                                          Goodness of fit metrics:                                     
-                                R2s -  Min: 0.9988, Max: 0.9999, Mean: 0.9995                         
-                             Errors -  Min: 0.0040, Max: 0.0152, Mean: 0.0094                         
+                                R2s -  Min: 0.9992, Max: 1.0000, Mean: 0.9998                         
+                             Errors -  Min: 0.0035, Max: 0.0153, Mean: 0.0056                         
                                                                                                   
     ==================================================================================================
 
@@ -252,9 +252,7 @@ FOOOFGroup collects fits across power spectra into a list of FOOOFResults object
 
  .. code-block:: none
 
-    [FOOOFResult(aperiodic_params=array([20.00102218,  2.00083427]), peak_params=array([], shape=(0, 3), dtype=float64), r_squared=0.9999293487828523, error=0.00399996162009387, gaussian_params=array([], shape=(0, 3), dtype=float64)), FOOOFResult(aperiodic_params=array([50.05256147,  2.52533479]), peak_params=array([[10.08072385,  0.47934609,  3.72394705],
-           [19.94355226,  0.27322883,  7.44132956]]), r_squared=0.9996338966087166, error=0.012098351516201263, gaussian_params=array([[10.08072385,  0.47210478,  1.86197352],
-           [19.94355226,  0.27325995,  3.72066478]]))]
+    [FOOOFResult(aperiodic_params=array([50.00166861,  2.50060337]), peak_params=array([], shape=(0, 3), dtype=float64), r_squared=0.9999549424038805, error=0.003906588602745557, gaussian_params=array([], shape=(0, 3), dtype=float64)), FOOOFResult(aperiodic_params=array([50.00324297,  2.50254397]), peak_params=array([], shape=(0, 3), dtype=float64), r_squared=0.9999551661714683, error=0.003804914590040956, gaussian_params=array([], shape=(0, 3), dtype=float64))]
 
 
 get_all_data
@@ -388,8 +386,8 @@ More information about the data you can extract is also documented in the FOOOFR
 
  .. code-block:: none
 
-    [2.00083427 2.52533479 1.49865029 1.51920928 1.52949705 1.52757242
-     2.02936854 1.52782852 1.51228722 2.5160606 ]
+    [2.50060337 2.50254397 2.49818788 2.50010158 2.51580599 2.01661242
+     1.50214355 2.03224721 2.01896949 1.50309078]
 
 
 
@@ -411,19 +409,11 @@ More information about the data you can extract is also documented in the FOOOFR
 
  .. code-block:: none
 
-    [[10.08072385  1.        ]
-     [19.94355226  1.        ]
-     [10.04401541  3.        ]
-     [10.08665251  4.        ]
-     [20.00374622  4.        ]
-     [10.10104439  5.        ]
-     [19.98591905  5.        ]
-     [10.08531434  6.        ]
-     [20.0144028   6.        ]
-     [10.13054056  7.        ]
-     [20.0118005   7.        ]
-     [10.0186393   8.        ]
-     [10.0326748   9.        ]]
+    [[10.03351546  4.        ]
+     [10.03056825  5.        ]
+     [10.08972486  7.        ]
+     [19.96415616  7.        ]
+     [10.03931895  8.        ]]
 
 
 Saving & Loading with FOOOFGroup
@@ -499,13 +489,13 @@ and a separate file that includes the results.
                                   Power spectra were fit without a knee.                              
                                                                                                   
                                         Aperiodic Exponent Values                                     
-                                  Min: 1.4987, Max: 2.5253, Mean: 1.8187                              
+                                  Min: 1.5021, Max: 2.5158, Mean: 2.1590                              
                                                                                                   
-                             In total 13 peaks were extracted from the group                          
+                              In total 5 peaks were extracted from the group                          
                                                                                                   
                                          Goodness of fit metrics:                                     
-                                R2s -  Min: 0.9988, Max: 0.9999, Mean: 0.9995                         
-                             Errors -  Min: 0.0040, Max: 0.0152, Mean: 0.0094                         
+                                R2s -  Min: 0.9992, Max: 1.0000, Mean: 0.9998                         
+                             Errors -  Min: 0.0035, Max: 0.0153, Mean: 0.0056                         
                                                                                                   
     ==================================================================================================
 
@@ -602,18 +592,18 @@ power spectra, with the full model available for visualization.
                                      Frequency Resolution is 0.50 Hz                                  
                                                                                                   
                                 Aperiodic Parameters (offset, exponent):                              
-                                             34.9979, 1.4987                                          
+                                             49.9974, 2.4982                                          
                                                                                                   
                                            0 peaks were found:                                        
                                                                                                   
                                          Goodness of fit metrics:                                     
                                         R^2 of model fit is 0.9999                                    
-                                    Root mean squared error is 0.0041                                 
+                                    Root mean squared error is 0.0043                                 
                                                                                                   
     ==================================================================================================
 
 
-**Total running time of the script:** ( 0 minutes  0.686 seconds)
+**Total running time of the script:** ( 0 minutes  0.590 seconds)
 
 
 .. _sphx_glr_download_auto_tutorials_plot_06-FOOOFGroup.py:

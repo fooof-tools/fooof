@@ -1,5 +1,5 @@
-FOOOF Glossary
-==============
+Glossary
+========
 
 .. glossary::
 

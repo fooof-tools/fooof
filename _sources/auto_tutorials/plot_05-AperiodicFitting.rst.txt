@@ -188,7 +188,7 @@ Given this, we recommend:
 
 
 
-**Total running time of the script:** ( 0 minutes  0.032 seconds)
+**Total running time of the script:** ( 0 minutes  0.038 seconds)
 
 
 .. _sphx_glr_download_auto_tutorials_plot_05-AperiodicFitting.py:

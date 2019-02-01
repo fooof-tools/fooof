@@ -339,7 +339,7 @@ us at voytekresearch@gmail.com.
 
 
 
-**Total running time of the script:** ( 0 minutes  0.054 seconds)
+**Total running time of the script:** ( 0 minutes  0.043 seconds)
 
 
 .. _sphx_glr_download_auto_tutorials_plot_08-FurtherAnalysis.py:

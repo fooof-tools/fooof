@@ -149,7 +149,7 @@ FOOOF models across the power spectra. A list of FOOOFGroup objects is returned.
 
  .. code-block:: none
 
-    [<fooof.group.FOOOFGroup object at 0x1012acfe10>, <fooof.group.FOOOFGroup object at 0x1012aeaeb8>, <fooof.group.FOOOFGroup object at 0x1012afd8d0>]
+    [<fooof.group.FOOOFGroup object at 0x101c8a2c88>, <fooof.group.FOOOFGroup object at 0x101c8be4a8>, <fooof.group.FOOOFGroup object at 0x101fc1a828>]
 
 
 
@@ -171,9 +171,9 @@ FOOOF models across the power spectra. A list of FOOOFGroup objects is returned.
 
  .. code-block:: none
 
-    Aperiodic exponent for condition 0 is 1.3528
-    Aperiodic exponent for condition 1 is 1.4536
-    Aperiodic exponent for condition 2 is 1.3537
+    Aperiodic exponent for condition 0 is 1.4524
+    Aperiodic exponent for condition 1 is 1.6031
+    Aperiodic exponent for condition 2 is 1.5530
 
 
 combine_fooofs
@@ -224,18 +224,18 @@ are consistent to do so).
                                   Power spectra were fit without a knee.                              
                                                                                                   
                                         Aperiodic Exponent Values                                     
-                                  Min: 1.0013, Max: 2.0043, Mean: 1.3867                              
+                                  Min: 0.9972, Max: 2.0073, Mean: 1.5361                              
                                                                                                   
-                             In total 216 peaks were extracted from the group                         
+                             In total 356 peaks were extracted from the group                         
                                                                                                   
                                          Goodness of fit metrics:                                     
                                 R2s -  Min: 0.9998, Max: 1.0000, Mean: 0.9999                         
-                             Errors -  Min: 0.0023, Max: 0.0063, Mean: 0.0044                         
+                             Errors -  Min: 0.0021, Max: 0.0065, Mean: 0.0041                         
                                                                                                   
     ==================================================================================================
 
 
-**Total running time of the script:** ( 0 minutes  15.950 seconds)
+**Total running time of the script:** ( 0 minutes  23.189 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_fit_fooof_3d.py:
