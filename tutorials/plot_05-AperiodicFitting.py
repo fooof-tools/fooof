@@ -62,7 +62,7 @@ fm = FOOOF(peak_width_limits=[2, 8], aperiodic_mode='knee')
 
 # Fit FOOOF model
 #  Note that this time we're specifying an optional parameter to plot in log-log
-fm.report(freqs, spectrum, [2, 60], plt_log=True)
+fm.report(freqs, spectrum, [2, 70], plt_log=True)
 
 ###################################################################################################
 # A note on interpreting the "knee" parameter
@@ -87,6 +87,34 @@ fm.report(freqs, spectrum, [2, 60], plt_log=True)
 # no longer a simple measure of the aperiodic component as a whole, but instead reflects the
 # aperiodic component past the 'knee' inflecting point. Becaues of this, when doing knee fits,
 # knee & exponent values should be considered together.
+#
+
+###################################################################################################
+# Example: Aperiodic Fitting Gone Wrong
+# -------------------------------------
+#
+# In the example above, we jumped directly to fitting with a knee.
+#
+# Here we will explore what it looks like if we don't use the appropriate
+# background fitting - fitting a 'fixed' background when we should use 'knee'
+#
+
+###################################################################################################
+
+# Create and fit a FOOOF model in fixed mode to the same data as above
+fm = FOOOF(peak_width_limits=[2, 8], aperiodic_mode='fixed')
+fm.report(freqs, spectrum, [2, 70], plt_log=True)
+
+###################################################################################################
+#
+# In this case, we see that the 'fixed' aperiodic component (equivalent to a line
+# in log-log space) is not able to capture the data, which has a curve.
+#
+# To compensate, the model adds extra peaks, but these are also not a good
+# characterization of the data.
+#
+# In this exampe, the data, over this frequency range, needs to be fit in
+# 'knee' mode to be able to appropriately characterize the data.
 #
 
 ###################################################################################################
