@@ -104,17 +104,18 @@ aspects of using FOOOF are covered in the Tutorials &amp; Examples.</p>
 <li><a class="reference internal" href="#why-is-it-important-to-measure-aperiodic-activity" id="id4">Why is it important to measure aperiodic activity?</a></li>
 <li><a class="reference internal" href="#what-do-you-mean-by-periodic-and-aperiodic-activity" id="id5">What do you mean by ‘periodic’ and ‘aperiodic’ activity?</a></li>
 <li><a class="reference internal" href="#why-call-it-aperiodic-why-not-call-it-1-f-or-noise" id="id6">Why call it ‘aperiodic’? Why not call it ‘1/f’ or ‘noise’?</a></li>
-<li><a class="reference internal" href="#why-is-this-different-from-other-methods-what-makes-it-work" id="id7">Why is this different from other methods / what makes it work?</a></li>
-<li><a class="reference internal" href="#are-there-settings-for-the-fooof-algorithm" id="id8">Are there settings for the FOOOF algorithm?</a></li>
-<li><a class="reference internal" href="#how-do-i-pick-settings" id="id9">How do I pick settings?</a></li>
-<li><a class="reference internal" href="#i-m-interested-in-a-particular-oscillation-band-should-i-fit-a-small-range" id="id10">I’m interested in a particular oscillation band, should I fit a small range?</a></li>
-<li><a class="reference internal" href="#what-does-the-aperiodic-component-of-the-signal-mean-reflect" id="id11">What does the ‘aperiodic’ component of the signal mean / reflect?</a></li>
-<li><a class="reference internal" href="#what-data-can-i-use-with-fooof" id="id12">What data can I use with FOOOF?</a></li>
-<li><a class="reference internal" href="#does-it-matter-how-i-calculate-the-power-spectra" id="id13">Does it matter how I calculate the power spectra?</a></li>
-<li><a class="reference internal" href="#does-this-work-on-epoched-data-can-i-fit-single-trials" id="id14">Does this work on epoched data? Can I fit single trials?</a></li>
-<li><a class="reference internal" href="#is-there-a-time-resolved-version" id="id15">Is there a time resolved version?</a></li>
-<li><a class="reference internal" href="#how-do-i-cite-fooof" id="id16">How do I cite FOOOF?</a></li>
-<li><a class="reference internal" href="#what-colour-is-fooof" id="id17">What colour is FOOOF?</a></li>
+<li><a class="reference internal" href="#how-should-i-interpret-peaks-are-they-equivalent-to-oscillations" id="id7">How should I interpret peaks? Are they equivalent to oscillations?</a></li>
+<li><a class="reference internal" href="#why-is-this-different-from-other-methods-what-makes-it-work" id="id8">Why is this different from other methods / what makes it work?</a></li>
+<li><a class="reference internal" href="#are-there-settings-for-the-fooof-algorithm" id="id9">Are there settings for the FOOOF algorithm?</a></li>
+<li><a class="reference internal" href="#how-do-i-pick-settings" id="id10">How do I pick settings?</a></li>
+<li><a class="reference internal" href="#i-m-interested-in-a-particular-oscillation-band-should-i-fit-a-small-range" id="id11">I’m interested in a particular oscillation band, should I fit a small range?</a></li>
+<li><a class="reference internal" href="#what-does-the-aperiodic-component-of-the-signal-mean-reflect" id="id12">What does the ‘aperiodic’ component of the signal mean / reflect?</a></li>
+<li><a class="reference internal" href="#what-data-can-i-use-with-fooof" id="id13">What data can I use with FOOOF?</a></li>
+<li><a class="reference internal" href="#does-it-matter-how-i-calculate-the-power-spectra" id="id14">Does it matter how I calculate the power spectra?</a></li>
+<li><a class="reference internal" href="#does-this-work-on-epoched-data-can-i-fit-single-trials" id="id15">Does this work on epoched data? Can I fit single trials?</a></li>
+<li><a class="reference internal" href="#is-there-a-time-resolved-version" id="id16">Is there a time resolved version?</a></li>
+<li><a class="reference internal" href="#how-do-i-cite-fooof" id="id17">How do I cite FOOOF?</a></li>
+<li><a class="reference internal" href="#what-colour-is-fooof" id="id18">What colour is FOOOF?</a></li>
 </ul>
 </div>
 <div class="section" id="what-is-fooof">
@@ -199,6 +200,29 @@ not to imply it is merely ‘noise’. For similar reasons, we have moved away f
 not merely the ‘background’ to periodic activity.</p>
 <p>For these reasons, we prefer and use the term ‘aperiodic’ as a neutral description
 of this component of the signal.</p>
+</div>
+<div class="section" id="how-should-i-interpret-peaks-are-they-equivalent-to-oscillations">
+<h3>How should I interpret peaks? Are they equivalent to oscillations?<a class="headerlink" href="#how-should-i-interpret-peaks-are-they-equivalent-to-oscillations" title="Permalink to this headline">¶</a></h3>
+<p>Peaks, defined as regions of power over and above the aperiodic background
+are considered as putative oscillations. However, there is not necessarily a
+one-to-one mapping of peaks, as detected by the FOOOF algorithm, and oscillations
+in the data.</p>
+<p>One reason for this is that peaks are fit as gaussians, and multiple overlapping
+gaussians can, in some cases, be fit to what one might otherwise consider to likely
+comprise a single oscillatory component in the data. This is a consequence of fitting a
+symmetric function (gaussians) to what can be an asymetric peak power spectrum.</p>
+<p>Because of this, it is often useful to focus on the dominant (highest power) peak within a
+given frequency band from a FOOOF analysis, as this peak will offer the best estimate of
+the putative oscillations center frequency and amplitude. If analyzing bandwidth of extracted peaks,
+than overlapping peaks should always be considered. FOOOF is not currently optimized for inferring
+whether multiple peaks within a frequency band likely reflect distinct oscillations or not.</p>
+<p>It can also be the case that peaks in the power spectrum may reflect harmonic power from an
+asymmetric oscillation in the time domain, and so a band-specific peak in a particular
+frequency range does not necessarily imply that there is a true oscillation at that particular
+frequency in the data. For example, an asymmetric wave at 10 Hz can exhibit power at a 20 Hz harmonic,
+but this does not necessarily imply there are any 20 Hz rhythmic components in the signal.
+For more information on asymmetric oscillatins, harmonics and how to analyze them, see the Cycle-By-Cycle
+<a class="reference external" href="https://bycycle-tools.github.io/bycycle/">module</a> and associated <a class="reference external" href="https://doi.org/10.1101/302000">paper</a>.</p>
 </div>
 <div class="section" id="why-is-this-different-from-other-methods-what-makes-it-work">
 <h3>Why is this different from other methods / what makes it work?<a class="headerlink" href="#why-is-this-different-from-other-methods-what-makes-it-work" title="Permalink to this headline">¶</a></h3>

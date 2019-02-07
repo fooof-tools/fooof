@@ -114,6 +114,33 @@ not merely the 'background' to periodic activity.
 For these reasons, we prefer and use the term 'aperiodic' as a neutral description
 of this component of the signal.
 
+How should I interpret peaks? Are they equivalent to oscillations?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Peaks, defined as regions of power over and above the aperiodic background
+are considered as putative oscillations. However, there is not necessarily a
+one-to-one mapping of peaks, as detected by the FOOOF algorithm, and oscillations
+in the data.
+
+One reason for this is that peaks are fit as gaussians, and multiple overlapping
+gaussians can, in some cases, be fit to what one might otherwise consider to likely
+comprise a single oscillatory component in the data. This is a consequence of fitting a
+symmetric function (gaussians) to what can be an asymetric peak power spectrum.
+
+Because of this, it is often useful to focus on the dominant (highest power) peak within a
+given frequency band from a FOOOF analysis, as this peak will offer the best estimate of
+the putative oscillations center frequency and amplitude. If analyzing bandwidth of extracted peaks,
+than overlapping peaks should always be considered. FOOOF is not currently optimized for inferring
+whether multiple peaks within a frequency band likely reflect distinct oscillations or not.
+
+It can also be the case that peaks in the power spectrum may reflect harmonic power from an
+asymmetric oscillation in the time domain, and so a band-specific peak in a particular
+frequency range does not necessarily imply that there is a true oscillation at that particular
+frequency in the data. For example, an asymmetric wave at 10 Hz can exhibit power at a 20 Hz harmonic,
+but this does not necessarily imply there are any 20 Hz rhythmic components in the signal.
+For more information on asymmetric oscillatins, harmonics and how to analyze them, see the Cycle-By-Cycle
+`module <https://bycycle-tools.github.io/bycycle/>`_ and associated `paper <https://doi.org/10.1101/302000>`_.
+
 Why is this different from other methods / what makes it work?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

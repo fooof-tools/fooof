@@ -137,7 +137,7 @@ this, in ‘knee’ mode.</p>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit FOOOF model</span>
 <span class="c1">#  Note that this time we&#39;re specifying an optional parameter to plot in log-log</span>
-<span class="n">fm</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span> <span class="n">plt_log</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">70</span><span class="p">],</span> <span class="n">plt_log</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_05-AperiodicFitting_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_05-AperiodicFitting_001.png" />
@@ -146,19 +146,19 @@ this, in ‘knee’ mode.</p>
 
                                    FOOOF - POWER SPECTRUM MODEL
 
-                        The model was run on the frequency range 2 - 60 Hz
+                        The model was run on the frequency range 2 - 70 Hz
                                  Frequency Resolution is 1.00 Hz
 
                          Aperiodic Parameters (offset, knee, exponent):
-                                     6.3562, 47.5550, 1.8879
+                                     6.5759, 87.2217, 2.0354
 
                                        2 peaks were found:
-                                CF:   7.99, Amp:  0.822, BW:  2.06
-                                CF:  16.29, Amp:  0.246, BW:  2.37
+                                CF:   7.98, Amp:  0.806, BW:  2.03
+                                CF:  16.32, Amp:  0.233, BW:  2.29
 
                                      Goodness of fit metrics:
-                                    R^2 of model fit is 0.9935
-                                Root mean squared error is 0.0370
+                                    R^2 of model fit is 0.9925
+                                Root mean squared error is 0.0405
 
 ==================================================================================================
 </pre></div>
@@ -180,6 +180,47 @@ transitions from horizontal to negatively sloped.</p>
 no longer a simple measure of the aperiodic component as a whole, but instead reflects the
 aperiodic component past the ‘knee’ inflecting point. Becaues of this, when doing knee fits,
 knee &amp; exponent values should be considered together.</p>
+</div>
+<div class="section" id="example-aperiodic-fitting-gone-wrong">
+<h2>Example: Aperiodic Fitting Gone Wrong<a class="headerlink" href="#example-aperiodic-fitting-gone-wrong" title="Permalink to this headline">¶</a></h2>
+<p>In the example above, we jumped directly to fitting with a knee.</p>
+<p>Here we will explore what it looks like if we don’t use the appropriate
+background fitting - fitting a ‘fixed’ background when we should use ‘knee’</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create and fit a FOOOF model in fixed mode to the same data as above</span>
+<span class="n">fm</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;fixed&#39;</span><span class="p">)</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">70</span><span class="p">],</span> <span class="n">plt_log</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_05-AperiodicFitting_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_05-AperiodicFitting_002.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                   FOOOF - POWER SPECTRUM MODEL
+
+                        The model was run on the frequency range 2 - 70 Hz
+                                 Frequency Resolution is 1.00 Hz
+
+                            Aperiodic Parameters (offset, exponent):
+                                          5.3476, 1.3360
+
+                                       3 peaks were found:
+                                CF:   8.01, Amp:  1.020, BW:  2.41
+                                CF:  17.02, Amp:  0.369, BW:  8.00
+                                CF:  31.05, Amp:  0.273, BW:  8.00
+
+                                     Goodness of fit metrics:
+                                    R^2 of model fit is 0.9847
+                                Root mean squared error is 0.0607
+
+==================================================================================================
+</pre></div>
+</div>
+<p>In this case, we see that the ‘fixed’ aperiodic component (equivalent to a line
+in log-log space) is not able to capture the data, which has a curve.</p>
+<p>To compensate, the model adds extra peaks, but these are also not a good
+characterization of the data.</p>
+<p>In this exampe, the data, over this frequency range, needs to be fit in
+‘knee’ mode to be able to appropriately characterize the data.</p>
 </div>
 <div class="section" id="choosing-an-aperiodic-fitting-procedure">
 <h2>Choosing an Aperiodic Fitting Procedure<a class="headerlink" href="#choosing-an-aperiodic-fitting-procedure" title="Permalink to this headline">¶</a></h2>
@@ -213,7 +254,7 @@ aperiodic signal process is relatively clear.</li>
 </ul>
 </li>
 </ul>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.038 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.104 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-05-aperiodicfitting-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/764b59029bd0183d2c4db7da9a173e16/plot_05-AperiodicFitting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_05-AperiodicFitting.py</span></code></a></div>

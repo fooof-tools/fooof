@@ -95,7 +95,7 @@ Fitting FOOOF with Aperiodic 'Knee'
 
     # Fit FOOOF model
     #  Note that this time we're specifying an optional parameter to plot in log-log
-    fm.report(freqs, spectrum, [2, 60], plt_log=True)
+    fm.report(freqs, spectrum, [2, 70], plt_log=True)
 
 
 
@@ -114,19 +114,19 @@ Fitting FOOOF with Aperiodic 'Knee'
                                                                                                   
                                        FOOOF - POWER SPECTRUM MODEL                                   
                                                                                                   
-                            The model was run on the frequency range 2 - 60 Hz                        
+                            The model was run on the frequency range 2 - 70 Hz                        
                                      Frequency Resolution is 1.00 Hz                                  
                                                                                                   
                              Aperiodic Parameters (offset, knee, exponent):                           
-                                         6.3562, 47.5550, 1.8879                                      
+                                         6.5759, 87.2217, 2.0354                                      
                                                                                                   
                                            2 peaks were found:                                        
-                                    CF:   7.99, Amp:  0.822, BW:  2.06                                
-                                    CF:  16.29, Amp:  0.246, BW:  2.37                                
+                                    CF:   7.98, Amp:  0.806, BW:  2.03                                
+                                    CF:  16.32, Amp:  0.233, BW:  2.29                                
                                                                                                   
                                          Goodness of fit metrics:                                     
-                                        R^2 of model fit is 0.9935                                    
-                                    Root mean squared error is 0.0370                                 
+                                        R^2 of model fit is 0.9925                                    
+                                    Root mean squared error is 0.0405                                 
                                                                                                   
     ==================================================================================================
 
@@ -153,6 +153,70 @@ Interpreting the fit results when using knee fits is more complex, as the expone
 no longer a simple measure of the aperiodic component as a whole, but instead reflects the
 aperiodic component past the 'knee' inflecting point. Becaues of this, when doing knee fits,
 knee & exponent values should be considered together.
+
+
+
+Example: Aperiodic Fitting Gone Wrong
+-------------------------------------
+
+In the example above, we jumped directly to fitting with a knee.
+
+Here we will explore what it looks like if we don't use the appropriate
+background fitting - fitting a 'fixed' background when we should use 'knee'
+
+
+
+
+.. code-block:: python
+
+
+    # Create and fit a FOOOF model in fixed mode to the same data as above
+    fm = FOOOF(peak_width_limits=[2, 8], aperiodic_mode='fixed')
+    fm.report(freqs, spectrum, [2, 70], plt_log=True)
+
+
+
+
+.. image:: /auto_tutorials/images/sphx_glr_plot_05-AperiodicFitting_002.png
+    :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    ==================================================================================================
+                                                                                                  
+                                       FOOOF - POWER SPECTRUM MODEL                                   
+                                                                                                  
+                            The model was run on the frequency range 2 - 70 Hz                        
+                                     Frequency Resolution is 1.00 Hz                                  
+                                                                                                  
+                                Aperiodic Parameters (offset, exponent):                              
+                                              5.3476, 1.3360                                          
+                                                                                                  
+                                           3 peaks were found:                                        
+                                    CF:   8.01, Amp:  1.020, BW:  2.41                                
+                                    CF:  17.02, Amp:  0.369, BW:  8.00                                
+                                    CF:  31.05, Amp:  0.273, BW:  8.00                                
+                                                                                                  
+                                         Goodness of fit metrics:                                     
+                                        R^2 of model fit is 0.9847                                    
+                                    Root mean squared error is 0.0607                                 
+                                                                                                  
+    ==================================================================================================
+
+
+In this case, we see that the 'fixed' aperiodic component (equivalent to a line
+in log-log space) is not able to capture the data, which has a curve.
+
+To compensate, the model adds extra peaks, but these are also not a good
+characterization of the data.
+
+In this exampe, the data, over this frequency range, needs to be fit in
+'knee' mode to be able to appropriately characterize the data.
 
 
 
@@ -188,7 +252,7 @@ Given this, we recommend:
 
 
 
-**Total running time of the script:** ( 0 minutes  0.038 seconds)
+**Total running time of the script:** ( 0 minutes  0.104 seconds)
 
 
 .. _sphx_glr_download_auto_tutorials_plot_05-AperiodicFitting.py:
