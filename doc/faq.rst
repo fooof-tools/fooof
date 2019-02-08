@@ -134,11 +134,11 @@ than overlapping peaks should always be considered. FOOOF is not currently optim
 whether multiple peaks within a frequency band likely reflect distinct oscillations or not.
 
 It can also be the case that peaks in the power spectrum may reflect harmonic power from an
-asymmetric oscillation in the time domain, and so a band-specific peak in a particular
-frequency range does not necessarily imply that there is a true oscillation at that particular
-frequency in the data. For example, an asymmetric wave at 10 Hz can exhibit power at a 20 Hz harmonic,
-but this does not necessarily imply there are any 20 Hz rhythmic components in the signal.
-For more information on asymmetric oscillatins, harmonics and how to analyze them, see the Cycle-By-Cycle
+asymmetric oscillation in the time domain, and so a peak in a particular frequency range does not
+necessarily imply that there is a true oscillation at that particular frequency in the data. For example,
+an asymmetric wave at 10 Hz can exhibit power at a 20 Hz harmonic, but this does not necessarily imply
+there are any 20 Hz rhythmic components in the signal. For more information on asymmetric oscillations,
+harmonics and how to analyze them, see the Cycle-By-Cycle
 `module <https://bycycle-tools.github.io/bycycle/>`_ and associated `paper <https://doi.org/10.1101/302000>`_.
 
 Why is this different from other methods / what makes it work?
