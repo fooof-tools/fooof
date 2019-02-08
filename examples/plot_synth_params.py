@@ -4,7 +4,7 @@ Synthetic Parameters
 """
 
 ###################################################################################################
-# This example covers using FOOOF to create synthetic power spectra.
+# This example explores tools to manage parameters when creating synthetic power spectra.
 #
 
 ###################################################################################################
@@ -15,55 +15,6 @@ from fooof.synth.gen import gen_power_spectrum, gen_group_power_spectra
 
 # Import some fooof plotting functions
 from fooof.plts.spectra import plot_spectrum, plot_spectra
-
-###################################################################################################
-# Creating Synthetic Power Spectra
-# --------------------------------
-#
-# FOOOF has utilities to create synthetic power spectra, whereby spectra
-# are simulated with an aperiodic component with overlying peaks,
-# using specified parameters.
-#
-# Note that all FOOOF functions that synthesize power spectra take in
-# gaussian parameters, not the modified peak parameters.
-#
-
-###################################################################################################
-
-# Settings for creating a synthetic power spectrum
-freq_range = [3, 40]            # The frequency range to simulate
-aperiodic_params = [1, 1]       # Parameters defining the aperiodic component
-gaussian_params = [10, 0.5, 1]  # Parameters for any periodic components
-nlv = 0.05                      # The amount of noise to add to the spectrum
-
-###################################################################################################
-
-# Generate a synthetic power spectrum
-fs, ps = gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv)
-
-###################################################################################################
-
-# Plot our synthetic power spectrum
-plot_spectrum(fs, ps, log_powers=True)
-
-###################################################################################################
-
-# Create some new settings for synthesizing a group of power spectra
-n_spectra = 2
-freq_range = [3, 40]
-ap_params = [[0.5, 1], [1, 1.5]]
-gauss_params = [10, 0.4, 1]
-nlv = 0.02
-
-###################################################################################################
-
-# Synthesize a group of power spectra
-fs, ps, syn_params = gen_group_power_spectra(n_spectra, freq_range, ap_params, gauss_params, nlv)
-
-###################################################################################################
-
-# Plot the power spectra that were just generated
-plot_spectra(fs, ps, log_freqs=True, log_powers=True)
 
 ###################################################################################################
 # SynParams
@@ -77,6 +28,20 @@ plot_spectra(fs, ps, log_freqs=True, log_powers=True)
 # - `gaussian_params`
 # - `nlv`
 #
+
+###################################################################################################
+
+# Set up settings for synthesizing a group of power spectra
+n_spectra = 2
+freq_range = [3, 40]
+ap_params = [[0.5, 1], [1, 1.5]]
+gauss_params = [[10, 0.4, 1], [10, 0.2, 1, 22, 0.1, 3]]
+nlv = 0.02
+
+###################################################################################################
+
+# Synthesize a group of power spectra
+fs, ps, syn_params = gen_group_power_spectra(n_spectra, freq_range, ap_params, gauss_params, nlv)
 
 ###################################################################################################
 
