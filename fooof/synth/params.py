@@ -11,6 +11,20 @@ from fooof.core.utils import check_flat
 
 SynParams = namedtuple('SynParams', ['aperiodic_params', 'gaussian_params', 'nlv'])
 
+SynParams.__doc__ = """\
+Stores parameters used to synthesize a single power spectra.
+
+Attributes
+----------
+aperiodic_params : 1d array, len 2 or 3
+    Parameters that define the aperiodic fit. As [Intercept, (Knee), Exponent].
+        The knee parameter is only included if aperiodic is fit with knee. Otherwise, length is 2.
+gaussian_params : 2d array, shape=[n_peaks, 3]
+    Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
+nlv : float
+    Noise level added to the generated power spectrum.
+"""
+
 class Stepper():
     """Object for stepping across parameter values.
 
@@ -73,9 +87,9 @@ def param_iter(params):
     Parameters
     ----------
     params : list of floats and Stepper
-        Parameters over which to iterate, where:
-            Stepper object defines iterated parameter and its range and,
-            floats are other parameters that will be held constant.
+        Parameters over which to iterate in which the
+        Stepper object defines iterated parameter and its range and,
+        floats are other parameters that will be held constant.
 
     Yields
     ------
@@ -122,8 +136,8 @@ def param_sampler(params, probs=None):
     params : list of lists or list of float
         Possible parameter values.
     probs : list of float, optional
-        Probabilities with which to sample each parameter option. Default: None
-            If None, each parameter option is sampled uniformly.
+        Probabilities with which to sample each parameter option.
+        If None, each parameter option is sampled uniformly.
 
     Yields
     ------

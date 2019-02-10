@@ -6,35 +6,20 @@
 [![codecov](https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg)](https://codecov.io/gh/fooof-tools/fooof)
 [![License](https://img.shields.io/pypi/l/fooof.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/fooof.svg)](https://pypi.python.org/pypi/fooof/)
-[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/fooof-tools/fooof/master?filepath=%2Ftutorial)
-
-FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
 
 ## Overview
+
+FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
 
 FOOOF conceives of a model of the power spectrum as a combination of two distinct functional processes:
 - An aperiodic component, reflecting 1/f like characteristics, modeled with an exponential fit, with
 - A variable number of periodic components, that exhibit as band-limited peaks rising above the aperiodic component, reflecting putative oscillations, modeled as Gaussians
 
-With regards to examining peaks in the frequency domain, as putative oscillations, the benefit of the FOOOF approach is that these peaks are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest. In particular, it separates these peaks from a dynamic, and independently interesting aperiodic component. This conception of the aperiodic component, as potentially functional (and therefore worth carefully modeling) is based on work from our lab suggesting that the properties of this approximately 1/f distributed aperiodic component may reflect physiological parameters, particularly excitation/inhibition balance ([Gao, Peterson, Voytek, _NeuroImage_ 2017](http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf); [Voytek & Knight, _Biol Psychiatry_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-BiolPsychiatry2015.pdf)). This aperiodic component changes with task ([Podvalny _et al._, _J Neurophysiol_ 2015](http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf)), with aging ([Voytek _et al._, _J Neurosci_ 2015](http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf)), and is thus interesting and important to measure, both in of itself, and to address potential confounds of the aperiodic components on the measurement of band-limited periodic components.
+This model driven approach can be used to measure periodic and aperiodic properties of electrophysiological data, including EEG, MEG, ECoG and LFP data.
 
-A full description of the method and approach is available in the paper below.
+The benefit of using FOOOF for measuring putative oscillations, is that peaks in the power spectrum are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest and controlling for the aperiodic component. FOOOF also gives you a measure of this aperiodic components of the signal, allowing for measuring and comparison of 1/f like components of the signal within and between subjects.
 
-## Reference
-
-If you use this code in your project, please cite:
-
-    Haller M, Donoghue T, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Knight RT, Shestyuk A,
-    Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859.
-    doi: https://doi.org/10.1101/299859
-
-Link: https://www.biorxiv.org/content/early/2018/04/11/299859
-
-## Try it out with Binder
-
-If you want to try it out, click [here](https://mybinder.org/v2/gh/fooof-tools/fooof/master?filepath=%2Ftutorial) to jump straight into a live version of the tutorials.
-
-This link uses [Binder](https://mybinder.org) to launch a JupyterHub on the cloud for you.
+More information on the module and it's approach is available in the [documentation](https://fooof-tools.github.io/fooof/index.html), including more information regarding the model in the [FAQ](https://fooof-tools.github.io/fooof/faq.html). Full descriptions of the FOOOF model and how to use the codebase are available in the [Tutorials](https://fooof-tools.github.io/fooof/auto_tutorials/index.html), with additional examples on the [Examples](https://fooof-tools.github.io/fooof/auto_examples/index.html) page.
 
 ## Dependencies
 
@@ -57,11 +42,9 @@ tqdm is also not required for running the model fitting, but can be used to prin
 
 Pytest is only required to run the test suite.
 
-## Matlab Support
+## Installation
 
-FOOOF is implemented in Python, but there is also Matlab wrapper, as well as other support utilities for using FOOOF in a Matlab pipeline, all of which is available in [fooof_mat](http://github.com/fooof-tools/fooof_mat).
-
-## Install
+**Stable Version**
 
 To install the latest stable release of fooof, you can use pip:
 
@@ -69,7 +52,7 @@ To install the latest stable release of fooof, you can use pip:
 
 Note that this will install only the core (non-optional) fooof requirements.
 
-## Development Branch
+**Development Version**
 
 To get the lastest, development version, you can get the code using git:
 
@@ -83,7 +66,23 @@ Otherwise, if you want to install an editable, development version, move into th
 
 `$ pip install -e .`
 
-## Usage
+## Matlab Support
+
+FOOOF is implemented in Python, but there is also Matlab wrapper with which you can use FOOOF from Matlab, which is available in the [fooof_mat](http://github.com/fooof-tools/fooof_mat) repository.
+
+If you would like to use FOOOF, from Python, within a pipeline that is mostly in Matlab, the [mat_py_mat](https://github.com/fooof-tools/mat_py_mat) repository also has some examples and utilities for doing so.
+
+## Reference
+
+If you use this code in your project, please cite:
+
+    Haller M, Donoghue T, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Knight RT, Shestyuk A,
+    Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859.
+    doi: https://doi.org/10.1101/299859
+
+Direct Link: https://doi.org/10.1101/299859
+
+## Quickstart
 
 FOOOF is object oriented, and generally follows a similar approach as used in scikit-learn.
 
@@ -112,14 +111,14 @@ FOOOF also accepts parameters for fine-tuning the fit. For example:
 fm = FOOOF(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_amplitude=0.1, peak_threshold=2.0)
 ```
 
-* _peak_width_limits_ sets the possible lower- and upper-bounds for the fitted peak widths.
-* _max_n_peaks_ sets the maximum number of peaks to fit (in decreasing order of amplitude).
-* _min_peak_amp_ sets an absolute limit on the minimum amplitude (above aperiodic) for any extracted peak.
-* _peak_threshold_, also sets a threshold above which a peak amplitude must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.
+* `peak_width_limits` sets the possible lower- and upper-bounds for the fitted peak widths.
+* `max_n_peaks` sets the maximum number of peaks to fit.
+* `min_peak_amp` sets an absolute limit on the minimum amplitude (above aperiodic) for any extracted peak.
+* `peak_threshold`, also sets a threshold above which a peak amplitude must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.
 
 FOOOF also has convenience methods for running the FOOOF model across matrices of multiple power spectra, as well as functionality for saving and loading results, creating reports from FOOOF outputs, and utilities to further analize FOOOF results.
 
-An example workflow, with 'freqs' as 1D array of frequency values, and 'spectra' as a 2D array of power spectra.
+An example workflow for fitting a group of neural power spectra with 'freqs' as 1D array of frequency values, and 'spectra' as a 2D array of power spectra:
 
 ```python
 
@@ -136,12 +135,10 @@ fg.save_report()
 fg.save(file_name='fooof_group_results', save_results=True)
 ```
 
-## Output
-Example output for a FOOOF fit of MEG data:
+Example output for a FOOOF fit on an individual power spectrum:
 
-!["fooof_report"](img/FOOOF_Report.png)
+!["fooof_report"](img/FOOOF_report.png)
 
+Example output from using FOOOFGroup across a group of power spectra:
 
-Example output for running FOOOF across a group of power spectra (with FOOOFGroup):
-
-!["fooof_group_report"](img/FOOOFGroup_Report.png)
+!["fooof_group_report"](img/FOOOFGroup_report.png)

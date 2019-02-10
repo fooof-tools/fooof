@@ -2,8 +2,8 @@
 
 Notes
 -----
-- FOOOFGroup object docs are imported from FOOOF object at runtime.
-- Methods without defined docstrings import docs at runtime, from aliased external functions.
+FOOOFGroup object docs are imported from FOOOF object at runtime.
+Methods without defined docstrings import docs at runtime, from aliased external functions.
 """
 
 from functools import partial
@@ -64,8 +64,8 @@ class FOOOFGroup(FOOOF):
 
         Parameters
         ----------
-        length : int, optional
-            Length of list of empty lists to initialize. If 0, single empty list. default: 0
+        length : int, optional, default: 0
+            Length of list of empty lists to initialize. If 0, creates a single empty list.
         """
 
         self.group_results = [[]] * length
@@ -78,15 +78,15 @@ class FOOOFGroup(FOOOF):
         ----------
         freqs : 1d array
             Frequency values for the power spectra, in linear space.
-        power_spectra : 2d array
-            Matrix of power spectrum values, in linear space. Shape: [n_power_spectra, n_freqs].
+        power_spectra : 2d array, shape=[n_power_spectra, n_freqs]
+            Matrix of power values, in linear space.
         freq_range : list of [float, float], optional
             Frequency range to restrict power spectra to. If not provided, keeps the entire range.
 
         Notes
         -----
-        - If called on an object with existing data / results.
-            they will be cleared by this method call.
+        If called on an object with existing data and/or results
+        they will be cleared by this method call.
         """
 
         # If any data is already present, then clear data & results
@@ -106,13 +106,13 @@ class FOOOFGroup(FOOOF):
         ----------
         freqs : 1d array, optional
             Frequency values for the power_spectra, in linear space.
-        power_spectra : 2d array, optional
-            Matrix of power spectrum values, in linear space. Shape: [n_power_spectra, n_freqs].
+        power_spectra : 2d array, shape: [n_power_spectra, n_freqs], optional
+            Matrix of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
-        n_jobs : int, optional
-            Number of jobs to run in parallel. default: 1
-                1 is no parallelization. -1 uses all available cores.
+        n_jobs : int, optional, default: 1
+            Number of jobs to run in parallel.
+            1 is no parallelization. -1 uses all available cores.
 
         Notes
         -----
@@ -131,13 +131,13 @@ class FOOOFGroup(FOOOF):
         ----------
         freqs : 1d array, optional
             Frequency values for the power_spectra, in linear space.
-        power_spectra : 2d array, optional
-            Matrix of power spectrum values, in linear space. Shape: [n_power_spectra, n_freqs].
+        power_spectra : 2d array, shape: [n_power_spectra, n_freqs], optional
+            Matrix of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
-        n_jobs : int, optional
-            Number of jobs to run in parallel. default: 1
-                1 is no parallelization. -1 uses all available cores.
+        n_jobs : int, optional, default: 1
+            Number of jobs to run in parallel.
+            1 is no parallelization. -1 uses all available cores.
 
         Notes
         -----
@@ -168,7 +168,7 @@ class FOOOFGroup(FOOOF):
 
 
     def get_results(self):
-        """Return the results run across a group of power_spectra."""
+        """Return the results run across a group of power spectra."""
 
         return self.group_results
 
@@ -182,7 +182,7 @@ class FOOOFGroup(FOOOF):
             Name of the data field to extract across the group.
         col : {'CF', 'Amp', 'BW', 'intercept', 'knee', 'exponent'} or int, optional
             Column name / index to extract from selected data, if requested.
-                Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
 
         Returns
         -------
@@ -192,8 +192,7 @@ class FOOOFGroup(FOOOF):
         Notes
         -----
         For further description of the data you can extract, check the FOOOFResults documentation.
-            For example:
-                $ print(fg[0].__doc__)
+        For example `print(fg[0].__doc__)`
         """
 
         # If col specified as string, get mapping back to integer
@@ -253,7 +252,7 @@ class FOOOFGroup(FOOOF):
         file_name : str, optional
             File from which to load data.
         file_path : str, optional
-            Path to directory from which to load from. If not provided, saves to current directory.
+            Path to directory from which to load from. If not provided, loads from current directory.
         """
 
         # Clear results so as not to have possible prior results interfere
@@ -281,8 +280,8 @@ class FOOOFGroup(FOOOF):
         ----------
         ind : int
             The index of the FOOOFResult in FOOOFGroup.group_results to load.
-        regenerate : bool, optional
-            Whether to regenerate the model fits from the given fit parameters. default : False
+        regenerate : bool, optional, default: False
+            Whether to regenerate the model fits from the given fit parameters.
 
         Returns
         -------
@@ -313,8 +312,8 @@ class FOOOFGroup(FOOOF):
 
         Parameters
         ----------
-        concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: False
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
         """
 
         print(gen_results_str_fg(self, concise))
@@ -368,9 +367,9 @@ def _progress(iterable, verbose, n_to_run):
 
     Notes
     -----
-    - The explicit n_to_run input is required as tqdm requires this in the parallel case.
-    - The tqdm object that is potentially returned acts the same as the underlying iterable,
-        with the addition of printing out progress everytime items are requested.
+    The explicit n_to_run input is required as tqdm requires this in the parallel case.
+    The `tqdm` object that is potentially returned acts the same as the underlying iterable,
+    with the addition of printing out progress everytime items are requested.
     """
 
     # Check verbose specifier is okay

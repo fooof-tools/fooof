@@ -4,10 +4,19 @@
 API Documentation
 =================
 
+This is the API reference for classes & functions in the FOOOF module.
+
+Table of Contents
+=================
+
+.. contents::
+   :local:
+   :depth: 2
+
 .. currentmodule:: fooof
 
 FOOOF Object
-============
+------------
 
 .. autosummary::
    :toctree: generated/
@@ -15,67 +24,96 @@ FOOOF Object
    FOOOF
 
 FOOOFGroup Object
-=================
+-----------------
 
 .. autosummary::
    :toctree: generated/
 
    FOOOFGroup
+
+FOOOF Object Functions
+----------------------
+
+.. currentmodule:: fooof.funcs
+
+.. autosummary::
+   :toctree: generated/
+
+   combine_fooofs
    fit_fooof_group_3d
 
 Analysis Functions
-==================
+------------------
+
+.. currentmodule:: fooof.analysis
 
 .. autosummary::
     :toctree: generated/
 
-    analysis.get_band_peak
-    analysis.get_band_peak_group
+    get_band_peak
+    get_band_peak_group
+    get_highest_amp_peak
 
-Synthesis Functions
-===================
+Synth Code
+----------
+
+Generating Power Spectra
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: fooof.synth.gen
 
 .. autosummary::
     :toctree: generated/
 
-    synth.Stepper
-    synth.param_iter
-    synth.param_sampler
-    synth.gen_power_spectrum
-    synth.gen_group_power_spectra
-    synth.rotate_spectrum
+    gen_freqs
+    gen_power_spectrum
+    gen_group_power_spectra
+
+Parameter Management
+~~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: fooof.synth.params
+
+.. autosummary::
+    :toctree: generated/
+
+    Stepper
+    param_iter
+    param_sampler
+
+Transforming Power Spectra
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: fooof.synth.transform
+
+.. autosummary::
+    :toctree: generated/
+
+    rotate_spectrum
 
 Plotting Functions
-==================
+------------------
+
+.. currentmodule:: fooof.plts.spectra
 
 .. autosummary::
     :toctree: generated/
 
-    plts.spectra.plot_spectrum
-    plts.spectra.plot_spectra
-    plts.spectra.plot_spectrum_shading
-    plts.spectra.plot_spectra_shading
-    plts.fm.plot_fm
-    plts.fm.plot_peak_iter
-    plts.fg.plot_fg
+    plot_spectrum
+    plot_spectra
+    plot_spectrum_shading
+    plot_spectra_shading
 
 Utility Functions
-=================
+-----------------
+
+.. currentmodule:: fooof.utils
 
 .. autosummary::
     :toctree: generated/
 
-    utils.trim_spectrum
-    utils.get_settings
-    utils.get_data_info
-    utils.compare_settings
-    utils.compare_data_info
-    utils.combine_fooofs
-
-Data Objects
-============
-
-.. autosummary::
-    :toctree: generated/
-
-    fit.FOOOFResult
+    trim_spectrum
+    get_settings
+    get_data_info
+    compare_settings
+    compare_data_info

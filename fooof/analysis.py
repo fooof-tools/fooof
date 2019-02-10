@@ -11,9 +11,9 @@ def get_band_peak_group(peak_params, band_def, n_fits):
     Parameters
     ----------
     peak_params : 2d array
-        Peak parameters, for a group fit, from FOOOF, with shape of [n_peaks, 4]
+        Peak parameters, for a group fit, from FOOOF, with shape of [n_peaks, 4].
     band_def : [float, float]
-        Defines the band of interest, as [lower_frequency_bound, upper_frequency_bound]
+        Defines the band of interest, as [lower_frequency_bound, upper_frequency_bound].
     n_fits : int
         The number of model fits in the FOOOFGroup data.
 
@@ -24,13 +24,18 @@ def get_band_peak_group(peak_params, band_def, n_fits):
 
     Notes
     -----
-    - This function conserves the shape of the array, return a [n_fits, 3] array.
-      - Each row reflects a FOOOF model fit, in order, filled with NaN if no peak was present.
-    - To do so, this function necessarily extracts and returns one peak per model fit.
-    - For extracting all peaks within a band, per model fit, you can do:
-    $ peaks = np.empty((0, 3))
-    $ for f_res in fg:
-    $     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band_def, ret_one=False)))
+    This function conserves the shape of the array, returning a [n_fits, 3] array.
+
+    * Each row reflects a FOOOF model fit, in order, filled with NaN if no peak was present.
+
+    * To do so, this function necessarily extracts and returns one peak per model fit.
+
+    If, instead, you with to extract all peaks within a band, per model fit, you can do:
+
+    >>> peaks = np.empty((0, 3))
+    >>> for f_res in fg:
+    >>>     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band_def, ret_one=False)))
+
     """
 
     band_peaks = np.zeros(shape=[n_fits, 3])
@@ -49,12 +54,12 @@ def get_band_peak(peak_params, band_def, ret_one=True):
     Parameters
     ----------
     peak_params : 2d array
-        Peak parameters, from FOOOF, with shape of [n_peaks, 3]
+        Peak parameters, from FOOOF, with shape of [n_peaks, 3].
     band_def : [float, float]
-        Defines the band of interest, as [lower_frequency_bound, upper_frequency_bound]
-    ret_one : bool
-        Whether to return single peak (or all found)
-            If True, returns the highest amplitude peak
+        Defines the band of interest, as [lower_frequency_bound, upper_frequency_bound].
+    ret_one : bool, optional, default: True
+        Whether to return single peak (if True) or all peaks within the range found (if False).
+        If True, returns the highest amplitude peak within the search range.
 
     Returns
     -------
@@ -92,12 +97,12 @@ def get_highest_amp_peak(band_peaks):
     Parameters
     ----------
     peak_params : 2d array
-        Peak parameters, from FOOOF, with shape of [n_peaks, 3]
+        Peak parameters, from FOOOF, with shape of [n_peaks, 3].
 
     Returns
     -------
     band_peaks : array
-        Peak data. Each row is a peak, as [CF, Amp, BW]
+        Peak data. Each row is a peak, as [CF, Amp, BW].
     """
 
     # Catch & return NaN if empty

@@ -16,8 +16,8 @@ def rotate_spectrum(freqs, power_spectrum, delta_f, f_rotation):
         Power values of the spectrum that is to be rotated.
     delta_f : float
         Change in power law exponent to be applied.
-            Positive is counterclockwise rotation (flatten)
-            Negative is clockwise rotation (steepen).
+        Positive is counterclockwise rotation (flatten).
+        Negative is clockwise rotation (steepen).
     f_rotation : float
         Frequency (Hz) at which to do the rotation, such that power at that frequency is unchanged.
 

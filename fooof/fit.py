@@ -2,8 +2,8 @@
 
 Notes
 -----
-- Methods without defined docstrings import docs at runtime, from aliased external functions.
-- Private attributes of the FOOOF method, not publicly exposed, are documented below.
+Methods without defined docstrings import docs at runtime, from aliased external functions.
+Private attributes of the FOOOF method, not publicly exposed, are documented below.
 
 Attributes (private)
 ----------
@@ -82,18 +82,18 @@ class FOOOF(object):
 
     Parameters
     ----------
-    peak_width_limits : tuple of (float, float), optional
-        Limits on possible peak width, as [lower_bound, upper_bound]. default: [0.5, 12.0]
-    max_n_peaks : int, optional
-        Maximum number of gaussians to be fit in a single spectrum. default: inf
-    min_peak_amplitude : float, optional
-        Minimum amplitude threshold for a peak to be modeled. default: 0
-    peak_threshold : float, optional
-        Threshold for detecting peaks, units of standard deviation. default: 2.0
+    peak_width_limits : tuple of (float, float), optional, default: [0.5, 12.0]
+        Limits on possible peak width, as [lower_bound, upper_bound].
+    max_n_peaks : int, optional, default: inf
+        Maximum number of gaussians to be fit in a single spectrum.
+    min_peak_amplitude : float, optional, default: 0
+        Minimum amplitude threshold for a peak to be modeled.
+    peak_threshold : float, optional, default: 2.0
+        Threshold for detecting peaks, units of standard deviation.
     aperiodic_mode : {'fixed', 'knee'}
         Which approach to take to fitting the aperiodic component.
-    verbose : boolean, optional
-        Whether to be verbose in printing out warnings. default: True
+    verbose : boolean, optional, default: True
+        Whether to be verbose in printing out warnings.
 
     Attributes
     ----------
@@ -106,11 +106,10 @@ class FOOOF(object):
     freq_res : float
         Frequency resolution of the power spectrum.
     fooofed_spectrum_ : 1d array
-        The full model fit of the power spectrum, including aperiodic and periodic components.
-            Stored internally in log10 scale.
+        The full model fit of the power spectrum, in log10 scale
     aperiodic_params_ : 1d array
         Parameters that define the aperiodic fit. As [Intercept, (Knee), Exponent].
-            The knee parameter is only included if aperiodic component is fit with a knee.
+        The knee parameter is only included if aperiodic component is fit with a knee.
     peak_params_ : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
     r_squared_ : float
@@ -120,15 +119,15 @@ class FOOOF(object):
 
     Notes
     -----
-    - Commonly used abbreviations used in FOOOF:
-        - CF: Center Frequencies, Amp: Amplitude Values, BW: Bandwidths
-    - Input power spectra must be provided in linear scale, but internally they are in log10 scale.
-        - This is because logged values are what the model actually fits.
+    - Commonly used abbreviations used in FOOOF include
+      CF: center frequency, Amp: amplitude, BW: Bandwidth, ap: aperiodic
+    - Input power spectra must be provided in linear scale.
+      Internally they are stored in log10 scale, as this is what the model operates upon.
     - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
-        - In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
-        procedure, or a median filter smoothing on the FFT output before running FOOOF.
+      In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
+      procedure, or a median filter smoothing on the FFT output before running FOOOF.
     - Where possible and appropriate, use longer time segments for power spectrum calculation to
-    get smoother power spectra, as this will give better FOOOF fits.
+      get smoother power spectra, as this will give better FOOOF fits.
     """
 
     def __init__(self, peak_width_limits=[0.5, 12.0], max_n_peaks=np.inf, min_peak_amplitude=0.0,
@@ -178,8 +177,8 @@ class FOOOF(object):
 
         Notes
         -----
-        These settings are for internal use, based on what is provided to, or set in init.
-            They should not be altered by the user.
+        These settings are for internal use, based on what is provided to, or set in `__init__`.
+        They should not be altered by the user.
         """
 
         # Only update these settings if other relevant settings are available
@@ -203,11 +202,11 @@ class FOOOF(object):
 
         Parameters
         ----------
-        clear_freqs : bool, optional
+        clear_freqs : bool, optional, default: True
             Whether to clear frequency attributes.
-        clear_power_spectrum : bool, optional
+        clear_power_spectrum : bool, optional, default: True
             Whether to clear power spectrum attribute.
-        clear_results : bool, optional
+        clear_results : bool, optional, default: True
             Whether to clear model results attributes.
         """
 
@@ -248,7 +247,8 @@ class FOOOF(object):
 
         Notes
         -----
-        If called on an object with existing data / results they will be cleared by this method call.
+        If called on an object with existing data and/or results
+        they will be cleared by this method call.
         """
 
         # If any data is already present, then clear data & results
@@ -267,8 +267,8 @@ class FOOOF(object):
         ----------
         fooof_result : FOOOFResult
             An object containing the results from fitting a FOOOF model.
-        regenerate : bool, optional
-            Whether to regenerate the model fits from the given fit parameters. default : False
+        regenerate : bool, optional, default: False
+            Whether to regenerate the model fits from the given fit parameters.
         """
 
         self.aperiodic_params_ = fooof_result.aperiodic_params
@@ -292,8 +292,8 @@ class FOOOF(object):
             Power values, which must be input in linear space.
         freq_range : list of [float, float], optional
             Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
-        plt_log : boolean, optional
-            Whether or not to plot the frequency axis in log space. default: False
+        plt_log : boolean, optional, default: False
+            Whether or not to plot the frequency axis in log space.
 
         Notes
         -----
@@ -306,7 +306,7 @@ class FOOOF(object):
 
 
     def fit(self, freqs=None, power_spectrum=None, freq_range=None):
-        """Fit the full power spectrum as a combination of aperiodic and periodic components.
+        """Fit the full power spectrum as a combination of periodic and aperiodic components.
 
         Parameters
         ----------
@@ -392,10 +392,10 @@ class FOOOF(object):
 
         Parameters
         ----------
-        description : bool, optional
-            Whether to print out a description with current settings. default: False
-        concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: False
+        description : bool, optional, default: False
+            Whether to print out a description with current settings.
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
         """
 
         print(gen_settings_str(self, description, concise))
@@ -406,8 +406,8 @@ class FOOOF(object):
 
         Parameters
         ----------
-        concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: False
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
         """
 
         print(gen_results_str_fm(self, concise))
@@ -419,8 +419,8 @@ class FOOOF(object):
 
         Parameters
         ----------
-        concise : bool, optional
-            Whether to print the report in a concise mode, or not. default: False
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
         """
 
         print(gen_issue_str(concise))
@@ -494,8 +494,8 @@ class FOOOF(object):
         ----------
         data : dict
             The dictionary of data that has been added to the object.
-        regenerate : bool, optional
-            Whether to regenerate the power_spectrum model. default : True
+        regenerate : bool, optional, default: True
+            Whether to regenerate the power_spectrum model.
         """
 
         # If results loaded, check dimensions of peak parameters
@@ -675,13 +675,13 @@ class FOOOF(object):
 
         Parameters
         ----------
-        guess : 2d array
-            Guess parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
+        guess : 2d array, shape=[n_peaks, 3]
+            Guess parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
 
         Returns
         -------
-        gaussian_params : 2d array
-            Parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
+        gaussian_params : 2d array, shape=[n_peaks, 3]
+            Parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
         """
 
         # Set the bounds for center frequency, enforce positive amp value, and set bandwidth limits.
@@ -721,24 +721,24 @@ class FOOOF(object):
         Parameters
         ----------
         gaus_params : 2d array
-            Parameters that define the gaussian fit(s).
-                Each row is a gaussian, as [mean, amp, std].
+            Parameters that define the gaussian fit(s), with each row as [mean, amp, std].
 
         Returns
         -------
         peak_params : 2d array
-            Fitted parameter values for the peaks.
-                Each row is a peak, as [CF, Amp, BW].
+            Fitted parameter values for the peaks, with each row as [CF, Amp, BW].
 
         Notes
         -----
         Amplitude is updated to the amplitude of peak above the aperiodic fit.
-          - This is returned instead of the gaussian amplitude
-            - Gaussian amplitude is harder to interpret, due to peak overlaps.
-        Bandwidth is updated to be 'both-sided'
-          - This is as opposed to gaussian std param, which is 1-sided.
-        Performing this conversion requires that the model be run.
-          - In particular, freqs, fooofed_spectrum and _ap_fit are required to be available.
+        This is returned instead of the gaussian amplitude, as Gaussian amplitude
+        is harder to interpret, due to peak overlaps.
+
+        Bandwidth is updated to be 'both-sided', as opposed to the gaussian
+        standard deviation parameter, which is 1-sided.
+
+        Performing this conversion requires that the model has been run,
+        with `freqs`, `fooofed_spectrum_` and `ap_fit` all required to be available.
         """
 
         peak_params = np.empty([0, 3])
@@ -762,13 +762,13 @@ class FOOOF(object):
 
         Parameters
         ----------
-        guess : 2d array
-            Guess parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
+        guess : 2d array, shape=[n_peaks, 3]
+            Guess parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
 
         Returns
         -------
-        guess : 2d array
-            Guess parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
+        guess : 2d array, shape=[n_peaks, 3]
+            Guess parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
         """
 
         cf_params = [item[0] for item in guess]
@@ -790,18 +790,18 @@ class FOOOF(object):
 
         Parameters
         ----------
-        guess : 2d array
-            Guess parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
+        guess : 2d array, shape=[n_peaks, 3]
+            Guess parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
 
         Returns
         -------
-        guess : 2d array
-            Guess parameters for gaussian fits to peaks. [n_peaks, 3], row: [CF, amp, BW].
+        guess : 2d array, shape=[n_peaks, 3]
+            Guess parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
 
         Notes
         -----
         For any peak guesses with an overlap that crosses the threshold,
-            the lower amplitude guess is dropped.
+        the lower amplitude guess is dropped.
         """
 
         # Sort the peak guesses, so can check overlap of adjacent peaks
@@ -853,7 +853,7 @@ class FOOOF(object):
             Frequency values for the power_spectrum, in linear space.
         power_spectrum : 1d or 2d array
             Power values, which must be input in linear space.
-                1d vector, or 2d as [n_power_spectra, n_freqs].
+            1d vector, or 2d as [n_power_spectra, n_freqs].
         freq_range : list of [float, float]
             Frequency range to restrict power spectrum to. If None, keeps the entire range.
         spectra_dim : int, optional default: 1
@@ -867,7 +867,7 @@ class FOOOF(object):
             Frequency values for the power_spectrum, in linear space.
         power_spectrum : 1d or 2d array
             Power spectrum values, in log10 scale.
-                1d vector, or 2d as [n_power_specta, n_freqs].
+            1d vector, or 2d as [n_power_specta, n_freqs].
         freq_range : list of [float, float]
             Minimum and maximum values of the frequency vector.
         freq_res : float

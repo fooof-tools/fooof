@@ -27,8 +27,8 @@ def plot_scatter_1(data, label, title=None, x_val=0, ax=None):
         Label for the data, to be set as the y-axis label.
     title : str, optional
         Title for the plot.
-    x_val : int, optional
-        Position along the x-axis to plot set of data. default: 0
+    x_val : int, optional, default: 0
+        Position along the x-axis to plot set of data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
 
@@ -111,9 +111,9 @@ def plot_hist(data, label, title=None, n_bins=25, x_lims=None, ax=None):
         Label for the data, to be set as the y-axis label.
     title : str, optional
         Title for the plot.
-    n_bins : int, optional
-        Number of bins to use for the histogram. Default: 20
-    x_lims : list of float
+    n_bins : int, optional, default: 25
+        Number of bins to use for the histogram.
+    x_lims : list of float, optional
         X-axis limits for the plot.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.

@@ -30,15 +30,14 @@ def trim_spectrum(freqs, power_spectra, f_range):
     Notes
     -----
     This function extracts frequency ranges >= f_low and <= f_high.
-        - It does not round to below or above f_low and f_high, respectively.
+    It does not round to below or above f_low and f_high, respectively.
     """
 
     # Create mask to index only requested frequencies
     f_mask = np.logical_and(freqs >= f_range[0], freqs <= f_range[1])
 
-    # Restrict freqs & psd to requested range
+    # Restrict freqs & psd to requested range. The if/else is to cover both 1d or 2d arrays
     freqs_ext = freqs[f_mask]
-    # The if/else is to cover both 1d or 2d arrays
     power_spectra_ext = power_spectra[f_mask] if power_spectra.ndim == 1 \
         else power_spectra[:, f_mask]
 
@@ -74,6 +73,10 @@ def get_data_info(f_obj):
     -------
     dictionary
         Data information for the input FOOOF derived object.
+
+    Notes
+    -----
+    Data information for a FOOOF object is the frequency range and frequency resolution.
     """
 
     return {dat_info : getattr(f_obj, dat_info) for dat_info in get_obj_desc()['freq_info']}
@@ -114,6 +117,10 @@ def compare_data_info(lst):
     -------
     bool
         Whether the data information is consistent across the input list of objects.
+
+    Notes
+    -----
+    Data information for a FOOOF object is the frequency range and frequency resolution.
     """
 
     # Check data information is the same across the list of given objects

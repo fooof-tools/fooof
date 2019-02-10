@@ -23,7 +23,6 @@ from sphinx_gallery.sorting import FileNameSortKey
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'fooof'
@@ -53,15 +52,18 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.doctest',
-    'sphinx.ext.coverage',
     'sphinx.ext.githubpages',
     'sphinx.ext.mathjax',
-    'sphinx.ext.napoleon',
     'sphinx.ext.intersphinx',
     'sphinx_gallery.gen_gallery',
+    'numpydoc',
     'm2r'
 ]
-# ^Note: can also use 'numpydoc' for rendering numpy style docs
+
+# This is a hack to deal with an issue that otherwise raises a lot of warning when building documentation.
+#   See: https://github.com/numpy/numpydoc/issues/69
+#   Also related: https://stackoverflow.com/questions/34216659/sphinx-autosummary-produces-two-summaries-for-each-class
+numpydoc_show_class_members = False
 
 # Set to generate sphinx docs for class members (methods)
 autodoc_default_flags = ['members']
@@ -111,8 +113,10 @@ html_theme_options = {
     'navbar_links': [
         ("API", "api"),
         ("FAQ", "faq"),
+        ('Glossary', "glossary"),
         ("Tutorial", "auto_tutorials/index"),
         ("Examples", "auto_examples/index"),
+        ("Index", "contents"),
         ("GitHub", "https://github.com/voytekresearch/fooof", True)
     ],
     'bootswatch_theme': "flatly",
@@ -121,8 +125,6 @@ html_theme_options = {
     'navbar_pagenav': False,
     'source_link_position': False
 }
-
-# Nice other theme options: sandstone
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -210,6 +212,7 @@ sphinx_gallery_conf = {
     'examples_dirs': ['../examples', '../tutorials'],
     'gallery_dirs': ['auto_examples', 'auto_tutorials'],
     'within_subsection_order': FileNameSortKey,
+    'default_thumb_file': 'img/spectrum.png',
     'backreferences_dir': 'generated',
     'reference_url': {
         'fooof': None,
