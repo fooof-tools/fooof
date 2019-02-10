@@ -94,7 +94,7 @@
 </div>
 <div class="sphx-glr-example-title section" id="synthetic-parameters">
 <span id="sphx-glr-auto-examples-plot-synth-params-py"></span><h1>Synthetic Parameters<a class="headerlink" href="#synthetic-parameters" title="Permalink to this headline">¶</a></h1>
-<p>This example covers using FOOOF to create synthetic power spectra.</p>
+<p>This example explores tools to manage parameters when creating synthetic power spectra.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import fooof functions for creating spectra and managing parameters</span>
 <span class="kn">from</span> <span class="nn">fooof.synth.params</span> <span class="kn">import</span> <span class="n">param_sampler</span><span class="p">,</span> <span class="n">param_iter</span><span class="p">,</span> <span class="n">Stepper</span>
 <span class="kn">from</span> <span class="nn">fooof.synth.gen</span> <span class="kn">import</span> <span class="n">gen_power_spectrum</span><span class="p">,</span> <span class="n">gen_group_power_spectra</span>
@@ -103,34 +103,19 @@
 <span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <span class="n">plot_spectrum</span><span class="p">,</span> <span class="n">plot_spectra</span>
 </pre></div>
 </div>
-<div class="section" id="creating-synthetic-power-spectra">
-<h2>Creating Synthetic Power Spectra<a class="headerlink" href="#creating-synthetic-power-spectra" title="Permalink to this headline">¶</a></h2>
-<p>FOOOF has utilities to create synthetic power spectra, whereby spectra
-are simulated with an aperiodic component with overlying peaks,
-using specified parameters.</p>
-<p>Note that all FOOOF functions that synthesize power spectra take in
-gaussian parameters, not the modified peak parameters.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Settings for creating a synthetic power spectrum</span>
-<span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>            <span class="c1"># The frequency range to simulate</span>
-<span class="n">aperiodic_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>       <span class="c1"># Parameters defining the aperiodic component</span>
-<span class="n">gaussian_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># Parameters for any periodic components</span>
-<span class="n">nlv</span> <span class="o">=</span> <span class="mf">0.05</span>                      <span class="c1"># The amount of noise to add to the spectrum</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a synthetic power spectrum</span>
-<span class="n">fs</span><span class="p">,</span> <span class="n">ps</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">gaussian_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot our synthetic power spectrum</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="../_images/sphx_glr_plot_synth_params_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_synth_params_001.png" />
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create some new settings for synthesizing a group of power spectra</span>
+<div class="section" id="synparams">
+<h2>SynParams<a class="headerlink" href="#synparams" title="Permalink to this headline">¶</a></h2>
+<p>When you synthesize multiple power spectra, FOOOF uses <cite>SynParams</cite> objects to
+keep track of the parameters used for each power spectrum.</p>
+<p>SynParams objects are named tuples with the following fields:
+- <cite>aperiodic_params</cite>
+- <cite>gaussian_params</cite>
+- <cite>nlv</cite></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up settings for synthesizing a group of power spectra</span>
 <span class="n">n_spectra</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
 <span class="n">ap_params</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]]</span>
-<span class="n">gauss_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">gauss_params</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
 <span class="n">nlv</span> <span class="o">=</span> <span class="mf">0.02</span>
 </pre></div>
 </div>
@@ -138,19 +123,6 @@ gaussian parameters, not the modified peak parameters.</p>
 <span class="n">fs</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="n">syn_params</span> <span class="o">=</span> <span class="n">gen_group_power_spectra</span><span class="p">(</span><span class="n">n_spectra</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">gauss_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra that were just generated</span>
-<span class="n">plot_spectra</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="n">log_freqs</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="../_images/sphx_glr_plot_synth_params_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_synth_params_002.png" />
-<div class="section" id="synparams">
-<h3>SynParams<a class="headerlink" href="#synparams" title="Permalink to this headline">¶</a></h3>
-<p>When you synthesize multiple power spectra, FOOOF uses <cite>SynParams</cite> objects to
-keep track of the parameters used for each power spectrum.</p>
-<p>SynParams objects are named tuples with the following fields:
-- <cite>aperiodic_params</cite>
-- <cite>gaussian_params</cite>
-- <cite>nlv</cite></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out the SynParams objects that track the parameters used to create power spectra</span>
 <span class="k">for</span> <span class="n">syn_param</span> <span class="ow">in</span> <span class="n">syn_params</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="n">syn_param</span><span class="p">)</span>
@@ -158,7 +130,7 @@ keep track of the parameters used for each power spectrum.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SynParams(aperiodic_params=[0.5, 1], gaussian_params=[[10, 0.4, 1]], nlv=0.02)
-SynParams(aperiodic_params=[1, 1.5], gaussian_params=[[10, 0.4, 1]], nlv=0.02)
+SynParams(aperiodic_params=[1, 1.5], gaussian_params=[[10, 0.2, 1], [22, 0.1, 3]], nlv=0.02)
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can also use a SynParams object to regenerate a particular power spectrum</span>
@@ -166,16 +138,16 @@ SynParams(aperiodic_params=[1, 1.5], gaussian_params=[[10, 0.4, 1]], nlv=0.02)
 <span class="n">fs</span><span class="p">,</span> <span class="n">ps</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="o">*</span><span class="n">cur_params</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
 <div class="section" id="managing-parameters">
-<h2>Managing Parameters<a class="headerlink" href="#managing-parameters" title="Permalink to this headline">¶</a></h2>
+<h3>Managing Parameters<a class="headerlink" href="#managing-parameters" title="Permalink to this headline">¶</a></h3>
 <p>FOOOF provides some helper functions for managing and selecting parameters for
 simulating groups of power spectra, including <code class="xref py py-func docutils literal notranslate"><span class="pre">param_sampler()</span></code>
 which can be used to sample parameters from list of options, and <code class="xref py py-func docutils literal notranslate"><span class="pre">param_iter()</span></code>
 which can be used to iterate across parameters.</p>
+</div>
+</div>
 <div class="section" id="param-sampler">
-<h3>param_sampler<a class="headerlink" href="#param-sampler" title="Permalink to this headline">¶</a></h3>
+<h2>param_sampler<a class="headerlink" href="#param-sampler" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">param_sampler()</span></code> function takes a list of parameter options and randomly selects from
 the parameters to create each power spectrum. You can optionally specify the
 probabilities with which to sample from the parameter options.</p>
@@ -194,10 +166,10 @@ probabilities with which to sample from the parameter options.</p>
 <span class="n">plot_spectra</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="p">:],</span> <span class="n">log_powers</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_plot_synth_params_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_synth_params_003.png" />
+<img alt="../_images/sphx_glr_plot_synth_params_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_synth_params_001.png" />
 </div>
 <div class="section" id="param-iter">
-<h3>param_iter<a class="headerlink" href="#param-iter" title="Permalink to this headline">¶</a></h3>
+<h2>param_iter<a class="headerlink" href="#param-iter" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">param_iter()</span></code> function can be used to create iterators that can ‘step’ across
 a range of parameter values to be simulated.</p>
 <p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">Stepper</span></code> object needs to be used in conjuction with <code class="xref py py-func docutils literal notranslate"><span class="pre">param_iter()</span></code>,
@@ -218,8 +190,8 @@ as it specifies the values to be iterated across.</p>
 <span class="n">plot_spectra</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="n">log_freqs</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_plot_synth_params_004.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_synth_params_004.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.048 seconds)</p>
+<img alt="../_images/sphx_glr_plot_synth_params_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_synth_params_002.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.063 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-synth-params-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/2b3c3f99509c5e46a1b75fb0f0ea1a5d/plot_synth_params.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_synth_params.py</span></code></a></div>
@@ -227,7 +199,6 @@ as it specifies the values to be iterated across.</p>
 <a class="reference download internal" download="" href="../_downloads/3c8e00379d0b5483dad2c73e1abb0fa7/plot_synth_params.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_synth_params.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
 </div>
 </div>
 

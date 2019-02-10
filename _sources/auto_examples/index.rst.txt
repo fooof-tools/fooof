@@ -75,6 +75,26 @@ Examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Creating Synthetic Power Spectra">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_synthetic_power_spectra_thumb.png
+
+        :ref:`sphx_glr_auto_examples_plot_synthetic_power_spectra.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_synthetic_power_spectra
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Transforming Power Spectra">
 
 .. only:: html
