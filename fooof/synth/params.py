@@ -52,7 +52,7 @@ class Stepper():
         self.start = start
         self.stop = stop
         self.step = step
-        self.len = int((stop-start)/step)
+        self.len = round((stop-start)/step)
         self.data = iter(np.arange(start, stop, step))
 
     def __len__(self):
