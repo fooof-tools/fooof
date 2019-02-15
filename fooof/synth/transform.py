@@ -44,3 +44,26 @@ def rotate_spectrum(freqs, power_spectrum, delta_f, f_rotation):
     rotated_spectrum = f_mask * power_spectrum
 
     return rotated_spectrum
+
+
+def translate_spectrum(power_spectrum, delta):
+    """Translate a spectrum, changing the offset value.
+
+    Parameters
+    ----------
+    power_spectrum : 1d array
+        Power values of the spectrum that is to be translated.
+    delta : float
+        Amount to change the offset by.
+        Positive is an upwards translation.
+        Negative is a downwards translation.
+
+    Returns
+    -------
+    translated_spectrum : 1d array
+        Translated power spectrum.
+    """
+
+    translated_spectrum = np.power(10, delta, dtype='float') * power_spectrum
+
+    return translated_spectrum
