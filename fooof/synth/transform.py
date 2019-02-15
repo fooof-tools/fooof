@@ -5,7 +5,7 @@ import numpy as np
 ###################################################################################################
 ###################################################################################################
 
-def rotate_spectrum(freqs, power_spectrum, delta_f, f_rotation):
+def rotate_spectrum(freqs, power_spectrum, delta, f_rotation):
     """Rotate a power spectrum about a frequency point, changing the power law exponent.
 
     Parameters
@@ -14,7 +14,7 @@ def rotate_spectrum(freqs, power_spectrum, delta_f, f_rotation):
         Frequency axis of input power spectrum, in Hz.
     power_spectrum : 1d array
         Power values of the spectrum that is to be rotated.
-    delta_f : float
+    delta : float
         Change in power law exponent to be applied.
         Positive is counterclockwise rotation (flatten).
         Negative is clockwise rotation (steepen).
@@ -33,7 +33,7 @@ def rotate_spectrum(freqs, power_spectrum, delta_f, f_rotation):
 
     f_mask = np.zeros_like(freqs)
 
-    f_mask = 10**(np.log10(np.abs(freqs)) * (delta_f))
+    f_mask = 10**(np.log10(np.abs(freqs)) * (delta))
 
     # If starting freq is 0Hz, default power at 0Hz to keep same value because log will return inf.
     if freqs[0] == 0.:
