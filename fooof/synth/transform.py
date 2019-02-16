@@ -27,21 +27,8 @@ def rotate_spectrum(freqs, power_spectrum, delta, f_rotation):
         Rotated power spectrum.
     """
 
-    # Check that the requested frequency rotation value is within the given range
-    if f_rotation < freqs.min() or f_rotation > freqs.max():
-        raise ValueError('Rotation frequency not within frequency range.')
-
-    f_mask = np.zeros_like(freqs)
-
-    f_mask = 10**(np.log10(np.abs(freqs)) * (delta))
-
-    # If starting freq is 0Hz, default power at 0Hz to keep same value because log will return inf.
-    if freqs[0] == 0.:
-        f_mask[0] = 1.
-
-    f_mask = f_mask / f_mask[np.where(freqs >= f_rotation)[0][0]]
-
-    rotated_spectrum = f_mask * power_spectrum
+    mask = (np.abs(freqs) / f_rotation)**delta
+    rotated_spectrum = mask * power_spectrum
 
     return rotated_spectrum
 
@@ -67,3 +54,9 @@ def translate_spectrum(power_spectrum, delta):
     translated_spectrum = np.power(10, delta, dtype='float') * power_spectrum
 
     return translated_spectrum
+
+
+def calc_rot_offset(delta, f_rotation):
+    """Calculate the change in offset from a given rotation"""
+
+    return -np.log10(f_rotation) * delta
