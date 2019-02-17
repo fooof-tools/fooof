@@ -24,9 +24,9 @@ def test_gen_power_spectrum():
 
     freq_range = [3, 50]
     bgp = [50, 2]
-    gauss_params = [10, 0.5, 2, 20, 0.3, 4]
+    gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = gen_power_spectrum(freq_range, bgp, gauss_params)
+    xs, ys = gen_power_spectrum(freq_range, bgp, gaussian_params)
 
     assert np.all(xs)
     assert np.all(ys)
@@ -74,9 +74,9 @@ def test_gen_aperiodic():
 def test_gen_peaks():
 
     xs = gen_freqs([3, 50], 0.5)
-    gauss_params = [10, 2, 1]
+    gaussian_params = [10, 2, 1]
 
-    peaks = gen_peaks(xs, gauss_params)
+    peaks = gen_peaks(xs, gaussian_params)
 
     assert np.all(np.invert(np.isnan(peaks)))
 
@@ -85,9 +85,9 @@ def test_gen_power_values():
     xs = gen_freqs([3, 50], 0.5)
 
     bg_params = [50, 2]
-    gauss_params = [10, 2, 1]
+    gaussian_params = [10, 2, 1]
     nlv = 0.1
 
-    ys = gen_power_vals(xs, bg_params, gauss_params, nlv)
+    ys = gen_power_vals(xs, bg_params, gaussian_params, nlv)
 
     assert np.all(ys)

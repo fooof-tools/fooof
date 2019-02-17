@@ -29,9 +29,9 @@ def test_fooof_fit_nk():
     """Test FOOOF fit, no knee."""
 
     bgp = [50, 2]
-    gauss_params = [10, 0.5, 2, 20, 0.3, 4]
+    gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = gen_power_spectrum([3, 50], bgp, gauss_params)
+    xs, ys = gen_power_spectrum([3, 50], bgp, gaussian_params)
 
     tfm = FOOOF()
     tfm.fit(xs, ys)
@@ -40,16 +40,16 @@ def test_fooof_fit_nk():
     assert np.all(np.isclose(bgp, tfm.aperiodic_params_, [0.5, 0.1]))
 
     # Check model results - gaussian parameters
-    for ii, gauss in enumerate(group_three(gauss_params)):
+    for ii, gauss in enumerate(group_three(gaussian_params)):
         assert np.all(np.isclose(gauss, tfm._gaussian_params[ii], [2.0, 0.5, 1.0]))
 
 def test_fooof_fit_knee():
     """Test FOOOF fit, with a knee."""
 
     bgp = [50, 2, 1]
-    gauss_params = [10, 0.5, 2, 20, 0.3, 4]
+    gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = gen_power_spectrum([3, 50], bgp, gauss_params)
+    xs, ys = gen_power_spectrum([3, 50], bgp, gaussian_params)
 
     tfm = FOOOF(aperiodic_mode='knee')
     tfm.fit(xs, ys)

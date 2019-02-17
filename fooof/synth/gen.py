@@ -33,7 +33,7 @@ def gen_freqs(freq_range, freq_res):
     return freqs
 
 
-def gen_power_spectrum(freq_range, aperiodic_params, gauss_params, nlv=0.005, freq_res=0.5):
+def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005, freq_res=0.5):
     """Generate a synthetic power spectrum.
 
     Parameters
@@ -42,7 +42,7 @@ def gen_power_spectrum(freq_range, aperiodic_params, gauss_params, nlv=0.005, fr
         Minimum and maximum values of the desired frequency vector.
     aperiodic_params : list of float
         Parameters to create the aperiodic component of a power spectrum. Length of 2 or 3 (see note).
-    gauss_params : list of float or list of list of float
+    gaussian_params : list of float or list of list of float
         Parameters to create peaks. Total length of n_peaks * 3 (see note).
     nlv : float, optional, default: 0.005
         Noise level to add to generated power spectrum.
@@ -87,13 +87,13 @@ def gen_power_spectrum(freq_range, aperiodic_params, gauss_params, nlv=0.005, fr
     """
 
     freqs = gen_freqs(freq_range, freq_res)
-    powers = gen_power_vals(freqs, aperiodic_params, check_flat(gauss_params), nlv)
+    powers = gen_power_vals(freqs, aperiodic_params, check_flat(gaussian_params), nlv)
 
     return freqs, powers
 
 
 def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
-                            gauss_params, nlvs=0.005, freq_res=0.5):
+                            gaussian_params, nlvs=0.005, freq_res=0.5):
     """Generate a group of synthetic power spectra.
 
     Parameters
@@ -104,7 +104,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
         Minimum and maximum values of the desired frequency vector.
     aperiodic_params : list of float or generator
         Parameters for the aperiodic component of the power spectra.
-    gauss_params : list of float or generator
+    gaussian_params : list of float or generator
         Parameters for the peaks of the power spectra.
             Length of n_peaks * 3.
     nlvs : float or list of float or generator, optional, default: 0.005
@@ -164,11 +164,11 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
 
     # Check if inputs are generators, if not, make them into repeat generators
     aperiodic_params = check_iter(aperiodic_params, n_spectra)
-    gauss_params = check_iter(gauss_params, n_spectra)
+    gaussian_params = check_iter(gaussian_params, n_spectra)
     nlvs = check_iter(nlvs, n_spectra)
 
     # Synthesize power spectra
-    for ind, bgp, gp, nlv in zip(range(n_spectra), aperiodic_params, gauss_params, nlvs):
+    for ind, bgp, gp, nlv in zip(range(n_spectra), aperiodic_params, gaussian_params, nlvs):
 
         syn_params[ind] = SynParams(bgp.copy(), sorted(group_three(gp)), nlv)
         powers[ind, :] = gen_power_vals(freqs, bgp, gp, nlv)
@@ -205,14 +205,14 @@ def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):
     return ap_vals
 
 
-def gen_peaks(freqs, gauss_params):
+def gen_peaks(freqs, gaussian_params):
     """Generate peaks values, from parameter definition.
 
     Parameters
     ----------
     freqs : 1d array
         Frequency vector to create peak values from.
-    gauss_params : list of float
+    gaussian_params : list of float
         Parameters to create peaks. Length of n_peaks * 3.
 
     Returns
@@ -221,12 +221,12 @@ def gen_peaks(freqs, gauss_params):
         Generated aperiodic values.
     """
 
-    peak_vals = gaussian_function(freqs, *gauss_params)
+    peak_vals = gaussian_function(freqs, *gaussian_params)
 
     return peak_vals
 
 
-def gen_power_vals(freqs, aperiodic_params, gauss_params, nlv):
+def gen_power_vals(freqs, aperiodic_params, gaussian_params, nlv):
     """Generate power values for a power spectrum.
 
     Parameters
@@ -235,7 +235,7 @@ def gen_power_vals(freqs, aperiodic_params, gauss_params, nlv):
         Frequency vector to create power values from.
     aperiodic_params : list of float
         Parameters to create the aperiodic component of the power spectrum.
-    gauss_params : list of float
+    gaussian_params : list of float
         Parameters to create peaks. Length of n_peaks * 3.
     nlv : float
         Noise level to add to generated power spectrum.
@@ -247,7 +247,7 @@ def gen_power_vals(freqs, aperiodic_params, gauss_params, nlv):
     """
 
     aperiodic = gen_aperiodic(freqs, aperiodic_params)
-    peaks = gen_peaks(freqs, gauss_params)
+    peaks = gen_peaks(freqs, gaussian_params)
     noise = np.random.normal(0, nlv, len(freqs))
 
     powers = np.power(10, aperiodic + peaks + noise)
