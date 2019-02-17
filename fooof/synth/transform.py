@@ -18,8 +18,8 @@ def rotate_spectrum(freqs, power_spectrum, delta, f_rotation):
         Power values of the spectrum that is to be rotated.
     delta : float
         Change in aperiodic exponent to be applied.
-        Positive is counterclockwise rotation (flatten).
-        Negative is clockwise rotation (steepen).
+        Positive is clockwise rotation (steepen).
+        Negative is counterclockwise rotation (flatten).
     f_rotation : float
         Frequency value, in Hz, about which rotation is applied, at which power is unchanged.
 
@@ -29,7 +29,7 @@ def rotate_spectrum(freqs, power_spectrum, delta, f_rotation):
         Rotated power spectrum.
     """
 
-    mask = (np.abs(freqs) / f_rotation)**delta
+    mask = (np.abs(freqs) / f_rotation)**-delta
     rotated_spectrum = mask * power_spectrum
 
     return rotated_spectrum
@@ -69,8 +69,8 @@ def rotate_syn_spectrum(freqs, power_spectrum, delta, f_rotation, syn_params):
         Power values of the spectrum that is to be rotated.
     delta : float
         Change in aperiodic exponent to be applied.
-        Positive is counterclockwise rotation (flatten).
-        Negative is clockwise rotation (steepen).
+        Positive is clockwise rotation (steepen).
+        Negative is counterclockwise rotation (flatten).
     f_rotation : float
         Frequency value, in Hz, about which rotation is applied, at which power is unchanged.
     syn_params : SynParams object
@@ -136,4 +136,4 @@ def calc_rot_offset(delta, f_rotation):
         The amount the offset will change for the specified exponent change.
     """
 
-    return -np.log10(f_rotation) * delta
+    return -np.log10(f_rotation) * -delta
