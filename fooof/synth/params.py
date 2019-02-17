@@ -18,7 +18,7 @@ Stores parameters used to synthesize a single power spectra.
 Attributes
 ----------
 aperiodic_params : list, len 2 or 3
-    Parameters that define the aperiodic fit. As [Intercept, (Knee), Exponent].
+    Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
         The knee parameter is only included if aperiodic is fit with knee. Otherwise, length is 2.
 gaussian_params : list or list of lists
     Fitted parameter values for the peaks. Each list is a peak, as [CF, Amp, BW].

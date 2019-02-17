@@ -115,7 +115,7 @@ def translate_syn_spectrum(power_spectrum, delta, syn_params):
     """
 
     translated_spectrum = translate_spectrum(power_spectrum, delta)
-    new_syn_params = update_syn_ap_params(syn_params, delta, 'intercept')
+    new_syn_params = update_syn_ap_params(syn_params, delta, 'offset')
 
     return translated_spectrum, new_syn_params
 

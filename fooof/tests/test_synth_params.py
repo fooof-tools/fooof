@@ -20,7 +20,7 @@ def test_update_syn_ap_params():
     assert new_syn_params.aperiodic_params == [1, 2]
 
     # Check updating of multiple specified parameters
-    new_syn_params = update_syn_ap_params(syn_params, [1, 1], ['intercept', 'exponent'])
+    new_syn_params = update_syn_ap_params(syn_params, [1, 1], ['offset', 'exponent'])
     assert new_syn_params.aperiodic_params == [2, 2]
 
     # Check updating of all parameters

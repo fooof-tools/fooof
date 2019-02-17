@@ -87,7 +87,7 @@ def test_get_all_data(tfg):
         assert np.any(tfg.get_all_data(dname))
 
         if dname == 'aperiodic_params':
-            for dtype in ['intercept', 'exponent']:
+            for dtype in ['offset', 'exponent']:
                 assert np.any(tfg.get_all_data(dname, dtype))
 
         if dname == 'peak_params':
