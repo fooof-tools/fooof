@@ -453,7 +453,7 @@ class FOOOF(object):
 
 
     def load(self, file_name='FOOOF_results', file_path=None):
-        """Load in FOOOF file. Reads in a JSON file.
+        """Load a FOOOF file. Reads in a JSON file.
 
         Parameters
         ----------

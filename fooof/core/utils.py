@@ -198,8 +198,8 @@ def check_flat(lst):
 
     Returns
     -------
-    list
-        A '1D' list, which is a flattened version of the input.
+    lst: list
+        A flat (1d) list, which is a flattened version of the input.
 
     Notes
     -----
