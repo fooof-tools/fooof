@@ -41,7 +41,7 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
 
     # Aperiodic parameters plot
     ax0 = plt.subplot(gs[0, 0])
-    plot_fg_bg(fg, ax0)
+    plot_fg_ap(fg, ax0)
 
     # Goodness of fit plot
     ax1 = plt.subplot(gs[0, 1])
@@ -56,7 +56,7 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_fg_bg(fg, ax=None):
+def plot_fg_ap(fg, ax=None):
     """Plot aperiodic fit parameters, in a scatter plot.
 
     Parameters

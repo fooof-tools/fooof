@@ -49,8 +49,8 @@ def test_param_iter():
 
     # Test aperiodic
     step = Stepper(.25, 3, .25)
-    bg = [0, step]
-    iter_1 = param_iter(bg)
+    ap_params = [0, step]
+    iter_1 = param_iter(ap_params)
 
     for ind, val in enumerate(iter_1):
         assert val == [0, .25 + (.25*ind)]

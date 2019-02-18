@@ -1,6 +1,6 @@
 """Tests for FOOOF core.utils."""
 
-from collections import Iterable
+from collections.abc import Iterable
 from itertools import repeat
 
 from fooof import FOOOF

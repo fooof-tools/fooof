@@ -15,10 +15,10 @@ def get_tfm():
     """Get a FOOOF object, with a fit power spectrum, for testing."""
 
     freq_range = [3, 50]
-    bg_params = [50, 2]
+    ap_params = [50, 2]
     gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = gen_power_spectrum(freq_range, bg_params, gaussian_params)
+    xs, ys = gen_power_spectrum(freq_range, ap_params, gaussian_params)
 
     tfm = FOOOF()
     tfm.fit(xs, ys)
@@ -40,10 +40,10 @@ def default_group_params():
     """Create default parameters for generating a test group of power spectra."""
 
     freq_range = [3, 50]
-    bgp_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
+    ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
     gauss_opts = param_sampler([[10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
-    return freq_range, bgp_opts, gauss_opts
+    return freq_range, ap_opts, gauss_opts
 
 def plot_test(func):
     """Decorator for simple testing of plotting functions.

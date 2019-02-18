@@ -34,7 +34,7 @@ def test_expo_function():
     assert np.all(ys)
 
     # Note: no obvious way to test the knee specifically
-    #  Here - test that past the knee, has expected slope & offset value
+    #  Here - test that past the knee, has expected exponent & offset value
     exp_meas, off_meas, _, _, _ = linregress(np.log10(xs[knee**2:]), ys[knee**2:])
 
     assert np.isclose(off_meas, off, 0.1)
@@ -87,11 +87,11 @@ def test_quadratic_function():
 
 def test_get_ap_func():
 
-    bgf_nk = get_ap_func('fixed')
-    assert bgf_nk
+    apf_nk = get_ap_func('fixed')
+    assert apf_nk
 
-    bgf_kn = get_ap_func('knee')
-    assert bgf_kn
+    apf_kn = get_ap_func('knee')
+    assert apf_kn
 
     # Check error
     with raises(ValueError):
@@ -99,13 +99,13 @@ def test_get_ap_func():
 
 def test_infer_ap_func():
 
-    bgp_nk = [50, 1]
-    bgm_nk = infer_ap_func(bgp_nk)
-    assert bgm_nk == 'fixed'
+    ap_nk = [50, 1]
+    apf_nk = infer_ap_func(ap_nk)
+    assert apf_nk == 'fixed'
 
-    bgp_kn = [50, 2, 1]
-    bgm_kn = infer_ap_func(bgp_kn)
-    assert bgm_kn == 'knee'
+    ap_kn = [50, 2, 1]
+    apf_kn = infer_ap_func(ap_kn)
+    assert apf_kn == 'knee'
 
     # Check error
     with raises(ValueError):

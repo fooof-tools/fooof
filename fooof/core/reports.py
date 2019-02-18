@@ -5,7 +5,7 @@ import os
 from fooof.core.io import fname, fpath
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_results_str_fg
-from fooof.plts.fg import plot_fg_bg, plot_fg_gf, plot_fg_peak_cens
+from fooof.plts.fg import plot_fg_ap, plot_fg_gf, plot_fg_peak_cens
 
 plt = safe_import('.pyplot', 'matplotlib')
 gridspec = safe_import('.gridspec', 'matplotlib')
@@ -90,7 +90,7 @@ def save_report_fg(fg, file_name, file_path=None):
 
     # Aperiodic parameters plot
     ax1 = plt.subplot(gs[1, 0])
-    plot_fg_bg(fg, ax1)
+    plot_fg_ap(fg, ax1)
 
     # Goodness of fit plot
     ax2 = plt.subplot(gs[1, 1])
