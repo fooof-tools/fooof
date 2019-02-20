@@ -15,11 +15,11 @@ def test_rotate_spectrum():
     freqs, spectrum = gen_power_spectrum([1, 100], [1, 1], [])
 
     # Check that rotation transforms the power spectrum
-    rotated_spectrum = rotate_spectrum(freqs, spectrum, delta=0.5, f_rotation=25.)
+    rotated_spectrum = rotate_spectrum(freqs, spectrum, delta_exponent=0.5, f_rotation=25.)
     assert not np.all(rotated_spectrum == spectrum)
 
     # Check that 0 rotation returns the same spectrum
-    rotated_spectrum = rotate_spectrum(freqs, spectrum, delta=0., f_rotation=25.)
+    rotated_spectrum = rotate_spectrum(freqs, spectrum, delta_exponent=0., f_rotation=25.)
     assert np.all(rotated_spectrum == spectrum)
 
 def test_translate_spectrum():
@@ -28,11 +28,11 @@ def test_translate_spectrum():
     freqs, spectrum = gen_power_spectrum([1, 100], [1, 1], [])
 
     # Check that translation transforms the power spectrum
-    translated_spectrum = translate_spectrum(spectrum, delta=1.)
+    translated_spectrum = translate_spectrum(spectrum, delta_offset=1.)
     assert not np.all(translated_spectrum == spectrum)
 
     # Check that 0 translation returns the same spectrum
-    translated_spectrum = translate_spectrum(spectrum, delta=0.)
+    translated_spectrum = translate_spectrum(spectrum, delta_offset=0.)
     assert np.all(translated_spectrum == spectrum)
 
 def test_rotate_syn_spectrum():
