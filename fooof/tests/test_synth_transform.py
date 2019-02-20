@@ -54,6 +54,6 @@ def test_translate_syn_spectrum():
     assert not np.all(translated_spectrum == spectrum)
     assert new_syn_params.aperiodic_params[0] == 1.5
 
-def cal_rot_offset():
+def cal_rotation_offset():
 
-    assert calc_rot_offset(20, 0.5)
+    assert calc_rotation_offset(20, 0.5)
