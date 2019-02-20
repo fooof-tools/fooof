@@ -27,6 +27,14 @@ def rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation):
     -------
     rotated_spectrum : 1d array
         Rotated power spectrum.
+
+    Notes
+    -----
+    Warning: This function should only be applied to spectra without a knee.
+    If using simulated data, this is spectra created in 'fixed' mode.
+    This is because the rotation applied will is inconsistent with
+    the formulation of knee spectra, and will change them in an
+    unspecified way, not just limited to doing the rotation.
     """
 
     mask = (np.abs(freqs) / f_rotation)**-delta_exponent
@@ -82,6 +90,14 @@ def rotate_syn_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, syn_p
         Rotated power spectrum.
     new_syn_params : SynParams object
         Updated object storing the new parameter definitions.
+
+    Notes
+    -----
+    Warning: This function should only be applied to spectra without a knee.
+    If using simulated data, this is spectra created in 'fixed' mode.
+    This is because the rotation applied will is inconsistent with
+    the formulation of knee spectra, and will change them in an
+    unspecified way, not just limited to doing the rotation.
     """
 
     rotated_spectrum = rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation)
