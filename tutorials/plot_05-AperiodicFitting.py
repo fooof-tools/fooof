@@ -1,13 +1,9 @@
 """
 05: Aperiodic Component Fitting
 ===============================
-"""
 
-###################################################################################################
-#
-# This tutorials covers how to choose and use different approaches for
-# fitting the aperiodic component of the signal.
-#
+Choosing and using different approaches for fitting the aperiodic signal.
+"""
 
 ###################################################################################################
 

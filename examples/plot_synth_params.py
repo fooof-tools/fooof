@@ -1,11 +1,9 @@
 """
 Synthetic Parameters
 ====================
-"""
 
-###################################################################################################
-# This example explores tools to manage parameters when creating synthetic power spectra.
-#
+Manage parameters for creating synthetic power spectra.
+"""
 
 ###################################################################################################
 

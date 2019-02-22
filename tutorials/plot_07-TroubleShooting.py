@@ -1,13 +1,9 @@
 """
 07: Tuning & Troubleshooting
 ============================
-"""
 
-###################################################################################################
-#
-# This notebook covers tips & tricks for setting FOOOF parameters,
-# tuning fits, and troubleshooting any issues.
-#
+Tips & tricks for choosing FOOOF parameters, tuning fits, and troubleshooting.
+"""
 
 ###################################################################################################
 

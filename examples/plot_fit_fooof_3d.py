@@ -1,11 +1,9 @@
 """
 Fit FOOOFGroup 3D
 =================
-"""
 
-###################################################################################################
-# This example shows how to run FOOOF across 3D matrices of power spectra
-#
+Run FOOOF across 3D matrices of power spectra.
+"""
 
 ###################################################################################################
 

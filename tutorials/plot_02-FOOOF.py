@@ -1,13 +1,9 @@
 """
 02: Fitting FOOOF Models
 ========================
-"""
 
-###################################################################################################
-#
-# FOOOF (fitting oscillations & one over f) is a module to fit neural power spectra.
-# This tutorial covers the basic use of the FOOOF object to do so.
-#
+Basic usage of the FOOOF object.
+"""
 
 ###################################################################################################
 

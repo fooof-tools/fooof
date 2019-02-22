@@ -1,11 +1,9 @@
 """
 Creating Synthetic Power Spectra
 ================================
-"""
 
-###################################################################################################
-# This example covers using FOOOF to create synthetic power spectra.
-#
+Use FOOOF to create synthetic power spectra.
+"""
 
 ###################################################################################################
 
