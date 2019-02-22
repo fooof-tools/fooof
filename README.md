@@ -7,9 +7,9 @@
 [![License](https://img.shields.io/pypi/l/fooof.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/fooof.svg)](https://pypi.python.org/pypi/fooof/)
 
-## Overview
-
 FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
+
+## Overview
 
 FOOOF conceives of a model of the power spectrum as a combination of two distinct functional processes:
 - An aperiodic component, reflecting 1/f like characteristics, modeled with an exponential fit, with
@@ -19,7 +19,13 @@ This model driven approach can be used to measure periodic and aperiodic propert
 
 The benefit of using FOOOF for measuring putative oscillations, is that peaks in the power spectrum are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest and controlling for the aperiodic component. FOOOF also gives you a measure of this aperiodic components of the signal, allowing for measuring and comparison of 1/f like components of the signal within and between subjects.
 
-More information on the module and it's approach is available in the [documentation](https://fooof-tools.github.io/fooof/index.html), including more information regarding the model in the [FAQ](https://fooof-tools.github.io/fooof/faq.html). Full descriptions of the FOOOF model and how to use the codebase are available in the [Tutorials](https://fooof-tools.github.io/fooof/auto_tutorials/index.html), with additional examples on the [Examples](https://fooof-tools.github.io/fooof/auto_examples/index.html) page.
+## Documentation
+
+Documentation for FOOOF is available [here](https://fooof-tools.github.io/fooof/index.html).
+
+The [tutorials](https://fooof-tools.github.io/fooof/auto_tutorials/index.html) describe the FOOOF algorithm and it's usage, as well as additional examples on the [Examples](https://fooof-tools.github.io/fooof/auto_examples/index.html) page.
+
+The documentation also includes an [FAQ](https://fooof-tools.github.io/fooof/faq.html).
 
 ## Dependencies
 
