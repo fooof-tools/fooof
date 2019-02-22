@@ -4,7 +4,8 @@ from collections import namedtuple
 
 import numpy as np
 
-from fooof.core.utils import check_flat
+from fooof.core.utils import check_flat, get_data_indices
+from fooof.core.funcs import infer_ap_func
 
 ###################################################################################################
 ###################################################################################################
@@ -16,14 +17,57 @@ Stores parameters used to synthesize a single power spectra.
 
 Attributes
 ----------
-aperiodic_params : 1d array, len 2 or 3
-    Parameters that define the aperiodic fit. As [Intercept, (Knee), Exponent].
+aperiodic_params : list, len 2 or 3
+    Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
         The knee parameter is only included if aperiodic is fit with knee. Otherwise, length is 2.
-gaussian_params : 2d array, shape=[n_peaks, 3]
-    Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
+gaussian_params : list or list of lists
+    Fitted parameter values for the peaks. Each list is a peak, as [CF, Amp, BW].
 nlv : float
     Noise level added to the generated power spectrum.
 """
+
+def update_syn_ap_params(syn_params, delta, field=None):
+    """Update the aperiodic parameter definition in a SynParams object.
+
+    Parameters
+    ----------
+    syn_params : SynParams object
+        Object storing the current parameter definitions.
+    delta : float or list
+        Value(s) by which to update the parameters.
+    field : {'offset', 'knee', 'exponent'} or list of string
+        Field of the aperiodic parameters to update.
+
+    Returns
+    -------
+    new_syn_params : SynParams object
+        Updated object storing the new parameter definitions.
+
+    Notes
+    -----
+    SynParams is a `namedtuple`, which is immutable.
+    Therefore, this function constructs and returns a new `SynParams` object.
+    """
+
+    ap_params = syn_params.aperiodic_params.copy()
+
+    if not field:
+        if not len(ap_params) == len(delta):
+            raise ValueError('')
+        ap_params = [ii + jj for ii, jj in zip(ap_params, delta)]
+
+    else:
+        field = list([field]) if not isinstance(field, list) else field
+        delta = list([delta]) if not isinstance(delta, list) else delta
+
+        for cur_field, cur_delta in zip(field, delta):
+            dat_ind = get_data_indices(infer_ap_func(syn_params.aperiodic_params))[cur_field]
+            ap_params[dat_ind] = ap_params[dat_ind] + cur_delta
+
+    new_syn_params = SynParams(ap_params, *syn_params[1:])
+
+    return new_syn_params
+
 
 class Stepper():
     """Object for stepping across parameter values.

@@ -60,7 +60,7 @@ The resulting parameters and associated data of a FOOOF model fit.
 Attributes
 ----------
 aperiodic_params : 1d array, len 2 or 3
-    Parameters that define the aperiodic fit. As [Intercept, (Knee), Exponent].
+    Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
         The knee parameter is only included if aperiodic is fit with knee. Otherwise, length is 2.
 peak_params : 2d array, shape=[n_peaks, 3]
     Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
@@ -108,7 +108,7 @@ class FOOOF(object):
     fooofed_spectrum_ : 1d array
         The full model fit of the power spectrum, in log10 scale
     aperiodic_params_ : 1d array
-        Parameters that define the aperiodic fit. As [Intercept, (Knee), Exponent].
+        Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
         The knee parameter is only included if aperiodic component is fit with a knee.
     peak_params_ : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].

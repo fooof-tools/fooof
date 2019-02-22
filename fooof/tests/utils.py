@@ -16,9 +16,9 @@ def get_tfm():
 
     freq_range = [3, 50]
     bg_params = [50, 2]
-    gauss_params = [10, 0.5, 2, 20, 0.3, 4]
+    gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = gen_power_spectrum(freq_range, bg_params, gauss_params)
+    xs, ys = gen_power_spectrum(freq_range, bg_params, gaussian_params)
 
     tfm = FOOOF()
     tfm.fit(xs, ys)

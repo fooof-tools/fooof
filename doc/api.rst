@@ -89,7 +89,11 @@ Transforming Power Spectra
 .. autosummary::
     :toctree: generated/
 
+    translate_spectrum
+    translate_syn_spectrum
     rotate_spectrum
+    rotate_syn_spectrum
+    calc_rotation_offset
 
 Plotting Functions
 ------------------

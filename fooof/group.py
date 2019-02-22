@@ -180,7 +180,7 @@ class FOOOFGroup(FOOOF):
         ----------
         name : {'aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params'}
             Name of the data field to extract across the group.
-        col : {'CF', 'Amp', 'BW', 'intercept', 'knee', 'exponent'} or int, optional
+        col : {'CF', 'Amp', 'BW', 'offset', 'knee', 'exponent'} or int, optional
             Column name / index to extract from selected data, if requested.
             Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
 

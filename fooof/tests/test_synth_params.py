@@ -1,9 +1,35 @@
-"""   """
+"""Test functions for FOOOF synth.params."""
+
+from py.test import raises
 
 from fooof.synth.params import *
 
 ###################################################################################################
 ###################################################################################################
+
+def test_syn_params():
+
+    assert SynParams([1, 1], [10, 1, 1], 0.05)
+
+def test_update_syn_ap_params():
+
+    syn_params = SynParams([1, 1], [10, 1, 1], 0.05)
+
+    # Check updating of a single specified parameter
+    new_syn_params = update_syn_ap_params(syn_params, 1, 'exponent')
+    assert new_syn_params.aperiodic_params == [1, 2]
+
+    # Check updating of multiple specified parameters
+    new_syn_params = update_syn_ap_params(syn_params, [1, 1], ['offset', 'exponent'])
+    assert new_syn_params.aperiodic_params == [2, 2]
+
+    # Check updating of all parameters
+    new_syn_params = update_syn_ap_params(syn_params, [1, 1])
+    assert new_syn_params.aperiodic_params == [2, 2]
+
+    # Check error with invalid overwrite
+    with raises(ValueError):
+        new_syn_params = update_syn_ap_params(syn_params, [1, 1, 1])
 
 def test_stepper():
 
