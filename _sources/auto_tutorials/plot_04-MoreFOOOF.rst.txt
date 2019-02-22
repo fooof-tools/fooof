@@ -10,6 +10,8 @@
 04: Exploring the FOOOF Object
 ==============================
 
+More exploration and use of the FOOOF object.
+
 
 
 .. code-block:: python
@@ -485,7 +487,7 @@ This generates and saves a PDF which contains the same output as
 
 
 
-**Total running time of the script:** ( 0 minutes  0.487 seconds)
+**Total running time of the script:** ( 0 minutes  0.433 seconds)
 
 
 .. _sphx_glr_download_auto_tutorials_plot_04-MoreFOOOF.py:

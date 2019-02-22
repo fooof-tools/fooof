@@ -10,9 +10,7 @@
 Fit FOOOFGroup 3D
 =================
 
-
-This example shows how to run FOOOF across 3D matrices of power spectra
-
+Run FOOOF across 3D matrices of power spectra.
 
 
 
@@ -149,7 +147,7 @@ FOOOF models across the power spectra. A list of FOOOFGroup objects is returned.
 
  .. code-block:: none
 
-    [<fooof.group.FOOOFGroup object at 0x101c8a2c88>, <fooof.group.FOOOFGroup object at 0x101c8be4a8>, <fooof.group.FOOOFGroup object at 0x101fc1a828>]
+    [<fooof.group.FOOOFGroup object at 0x1017ba07b8>, <fooof.group.FOOOFGroup object at 0x1017bd36d8>, <fooof.group.FOOOFGroup object at 0x1017bd9a20>]
 
 
 
@@ -171,9 +169,9 @@ FOOOF models across the power spectra. A list of FOOOFGroup objects is returned.
 
  .. code-block:: none
 
-    Aperiodic exponent for condition 0 is 1.4524
-    Aperiodic exponent for condition 1 is 1.6031
-    Aperiodic exponent for condition 2 is 1.5530
+    Aperiodic exponent for condition 0 is 1.3018
+    Aperiodic exponent for condition 1 is 1.4027
+    Aperiodic exponent for condition 2 is 1.3032
 
 
 combine_fooofs
@@ -224,18 +222,18 @@ are consistent to do so).
                                   Power spectra were fit without a knee.                              
                                                                                                   
                                         Aperiodic Exponent Values                                     
-                                  Min: 0.9972, Max: 2.0073, Mean: 1.5361                              
+                                  Min: 0.9967, Max: 2.0071, Mean: 1.3359                              
                                                                                                   
-                             In total 356 peaks were extracted from the group                         
+                             In total 291 peaks were extracted from the group                         
                                                                                                   
                                          Goodness of fit metrics:                                     
                                 R2s -  Min: 0.9998, Max: 1.0000, Mean: 0.9999                         
-                             Errors -  Min: 0.0021, Max: 0.0065, Mean: 0.0041                         
+                             Errors -  Min: 0.0022, Max: 0.0063, Mean: 0.0041                         
                                                                                                   
     ==================================================================================================
 
 
-**Total running time of the script:** ( 0 minutes  23.189 seconds)
+**Total running time of the script:** ( 0 minutes  27.675 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_fit_fooof_3d.py:

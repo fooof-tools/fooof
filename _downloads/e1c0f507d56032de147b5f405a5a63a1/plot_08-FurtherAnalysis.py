@@ -1,12 +1,9 @@
 """
 08: Further Analysis
 ====================
-"""
 
-###################################################################################################
-#
-# This tutorial explores some basic examples analyzing the results from fitting FOOOF models.
-#
+Analyze results from fitting FOOOF models.
+"""
 
 ###################################################################################################
 # Exploring FOOOF Analyses

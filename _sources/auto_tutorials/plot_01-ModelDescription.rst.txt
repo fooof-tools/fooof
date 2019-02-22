@@ -10,10 +10,7 @@
 01: Model Description
 =====================
 
-
-This tutorial provides a theoretical / mathematical description
-of the FOOOF model and parameters.
-
+A theoretical / mathematical description of the FOOOF model.
 
 
 Introduction

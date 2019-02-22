@@ -1,12 +1,9 @@
 """
 06: FOOOFGroup
 ==============
-"""
 
-###################################################################################################
-#
-# This tutorial covers running FOOOF across multiple power spectra, using FOOOFGroup.
-#
+Using FOOOFGroup to run FOOOF across multiple power spectra.
+"""
 
 ###################################################################################################
 

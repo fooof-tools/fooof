@@ -10,9 +10,7 @@
 Transforming Power Spectra
 ==========================
 
-
-This example covers transformations that can be applied to power spectra.
-
+Apply transformations to power spectra.
 
 
 
@@ -81,7 +79,7 @@ the aperiodic exponent of the spectrum.
 
 
 
-**Total running time of the script:** ( 0 minutes  0.012 seconds)
+**Total running time of the script:** ( 0 minutes  0.011 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_transforms.py:

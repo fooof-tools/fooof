@@ -10,9 +10,7 @@
 FOOOF Plots
 ===========
 
-
-This example covers the plots available with FOOOF
-
+Use the plots available with FOOOF.
 
 
 
@@ -118,7 +116,7 @@ matplotlib keyword arguments, that will be passed into the plot call.
 
 
 
-**Total running time of the script:** ( 0 minutes  0.040 seconds)
+**Total running time of the script:** ( 0 minutes  0.051 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_plots.py:

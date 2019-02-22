@@ -92,7 +92,7 @@
 <h1>fooof.synth.transform.rotate_spectrum<a class="headerlink" href="#fooof-synth-transform-rotate-spectrum" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="fooof.synth.transform.rotate_spectrum">
-<code class="descclassname">fooof.synth.transform.</code><code class="descname">rotate_spectrum</code><span class="sig-paren">(</span><em>freqs</em>, <em>power_spectrum</em>, <em>delta_f</em>, <em>f_rotation</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.synth.transform.rotate_spectrum" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">fooof.synth.transform.</code><code class="descname">rotate_spectrum</code><span class="sig-paren">(</span><em>freqs</em>, <em>power_spectrum</em>, <em>delta</em>, <em>f_rotation</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.synth.transform.rotate_spectrum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rotate a power spectrum about a frequency point, changing the power law exponent.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -105,13 +105,13 @@
 <dt><strong>power_spectrum</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array</span></dt>
 <dd><p class="first last">Power values of the spectrum that is to be rotated.</p>
 </dd>
-<dt><strong>delta_f</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">Change in power law exponent to be applied.
+<dt><strong>delta</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Change in aperiodic exponent to be applied.
 Positive is counterclockwise rotation (flatten).
 Negative is clockwise rotation (steepen).</p>
 </dd>
 <dt><strong>f_rotation</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">Frequency (Hz) at which to do the rotation, such that power at that frequency is unchanged.</p>
+<dd><p class="first last">Frequency value, in Hz, about which rotation is applied, at which power is unchanged.</p>
 </dd>
 </dl>
 </td>

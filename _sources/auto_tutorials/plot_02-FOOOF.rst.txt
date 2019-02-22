@@ -10,10 +10,7 @@
 02: Fitting FOOOF Models
 ========================
 
-
-FOOOF (fitting oscillations & one over f) is a module to fit neural power spectra.
-This tutorial covers the basic use of the FOOOF object to do so.
-
+Basic usage of the FOOOF object.
 
 
 
@@ -343,7 +340,7 @@ The `get_results` methods collects and returns these results as a FOOOFResults o
      0.0480
 
 
-**Total running time of the script:** ( 0 minutes  0.070 seconds)
+**Total running time of the script:** ( 0 minutes  0.114 seconds)
 
 
 .. _sphx_glr_download_auto_tutorials_plot_02-FOOOF.py:

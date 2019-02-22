@@ -10,10 +10,7 @@
 07: Tuning & Troubleshooting
 ============================
 
-
-This notebook covers tips & tricks for setting FOOOF parameters,
-tuning fits, and troubleshooting any issues.
-
+Tips & tricks for choosing FOOOF parameters, tuning fits, and troubleshooting.
 
 
 
@@ -659,7 +656,7 @@ bad fits / bugs back to us, as demonstrated below.
     ==================================================================================================
 
 
-**Total running time of the script:** ( 0 minutes  1.338 seconds)
+**Total running time of the script:** ( 0 minutes  1.380 seconds)
 
 
 .. _sphx_glr_download_auto_tutorials_plot_07-TroubleShooting.py:

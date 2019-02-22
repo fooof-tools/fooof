@@ -10,10 +10,7 @@
 05: Aperiodic Component Fitting
 ===============================
 
-
-This tutorials covers how to choose and use different approaches for
-fitting the aperiodic component of the signal.
-
+Choosing and using different approaches for fitting the aperiodic signal.
 
 
 
@@ -252,7 +249,7 @@ Given this, we recommend:
 
 
 
-**Total running time of the script:** ( 0 minutes  0.104 seconds)
+**Total running time of the script:** ( 0 minutes  0.105 seconds)
 
 
 .. _sphx_glr_download_auto_tutorials_plot_05-AperiodicFitting.py:

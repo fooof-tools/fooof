@@ -15,7 +15,7 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Fit FOOOFGroup 3D">
+    <div class="sphx-glr-thumbcontainer" tooltip="Run FOOOF across 3D matrices of power spectra. ">
 
 .. only:: html
 
@@ -35,7 +35,7 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="FOOOF Plots">
+    <div class="sphx-glr-thumbcontainer" tooltip="Use the plots available with FOOOF. ">
 
 .. only:: html
 
@@ -55,7 +55,7 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Synthetic Parameters">
+    <div class="sphx-glr-thumbcontainer" tooltip="Manage parameters for creating synthetic power spectra. ">
 
 .. only:: html
 
@@ -75,7 +75,7 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Creating Synthetic Power Spectra">
+    <div class="sphx-glr-thumbcontainer" tooltip="Use FOOOF to create synthetic power spectra. ">
 
 .. only:: html
 
@@ -95,7 +95,7 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Transforming Power Spectra">
+    <div class="sphx-glr-thumbcontainer" tooltip="Apply transformations to power spectra. ">
 
 .. only:: html
 

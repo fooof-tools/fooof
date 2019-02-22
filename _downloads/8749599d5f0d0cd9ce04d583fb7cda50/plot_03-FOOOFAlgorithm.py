@@ -1,15 +1,12 @@
 """
 03: FOOOF Algorithm
 ===================
-"""
 
-###################################################################################################
-#
-# This tutorial takes a step by step approach to to show how the
-# FOOOF fitting algorithm works, through code.
-#
-# Note that this notebook is for demonstrative purposes, and does not
-# represent recommended usage of the FOOOF module.
+A step by step overview of the FOOOF algorithm.
+
+Note that this notebook is for demonstrative purposes, and does not
+represent recommended usage of the FOOOF module.
+"""
 
 ###################################################################################################
 # Algorithmic Description

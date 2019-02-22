@@ -12,7 +12,7 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="01">
+    <div class="sphx-glr-thumbcontainer" tooltip="A theoretical / mathematical description of the FOOOF model. ">
 
 .. only:: html
 
@@ -32,7 +32,7 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="02">
+    <div class="sphx-glr-thumbcontainer" tooltip="Basic usage of the FOOOF object. ">
 
 .. only:: html
 
@@ -52,7 +52,7 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="03">
+    <div class="sphx-glr-thumbcontainer" tooltip="A step by step overview of the FOOOF algorithm.">
 
 .. only:: html
 
@@ -72,7 +72,7 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="04">
+    <div class="sphx-glr-thumbcontainer" tooltip="More exploration and use of the FOOOF object. ">
 
 .. only:: html
 
@@ -92,7 +92,7 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="05">
+    <div class="sphx-glr-thumbcontainer" tooltip="Choosing and using different approaches for fitting the aperiodic signal. ">
 
 .. only:: html
 
@@ -112,7 +112,7 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="06">
+    <div class="sphx-glr-thumbcontainer" tooltip="Using FOOOFGroup to run FOOOF across multiple power spectra. ">
 
 .. only:: html
 
@@ -132,7 +132,7 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="07">
+    <div class="sphx-glr-thumbcontainer" tooltip="Tips &amp; tricks for choosing FOOOF parameters, tuning fits, and troubleshooting. ">
 
 .. only:: html
 
@@ -152,7 +152,7 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="08">
+    <div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting FOOOF models. ">
 
 .. only:: html
 

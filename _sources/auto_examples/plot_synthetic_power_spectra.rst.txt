@@ -10,9 +10,7 @@
 Creating Synthetic Power Spectra
 ================================
 
-
-This example covers using FOOOF to create synthetic power spectra.
-
+Use FOOOF to create synthetic power spectra.
 
 
 
@@ -215,7 +213,7 @@ parameter definitions for synthesizing groups of power spectra are covered in th
 
 
 
-**Total running time of the script:** ( 0 minutes  0.076 seconds)
+**Total running time of the script:** ( 0 minutes  0.031 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_synthetic_power_spectra.py:
