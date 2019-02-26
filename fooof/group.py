@@ -279,14 +279,14 @@ class FOOOFGroup(FOOOF):
         Parameters
         ----------
         ind : int
-            The index of the FOOOFResult in FOOOFGroup.group_results to load.
+            The index of the FOOOFResults in FOOOFGroup.group_results to load.
         regenerate : bool, optional, default: False
             Whether to regenerate the model fits from the given fit parameters.
 
         Returns
         -------
         inst : FOOOF() object
-            The FOOOFResult data loaded into a FOOOF object.
+            The FOOOFResults data loaded into a FOOOF object.
         """
 
         # Initialize a FOOOF object, with same settings as current FOOOFGroup

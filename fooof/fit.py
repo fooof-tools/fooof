@@ -33,13 +33,10 @@ _gauss_std_limits : list of [float, float]
 
 import warnings
 from copy import deepcopy
-from collections import namedtuple
 
 import numpy as np
 from scipy.optimize import curve_fit
 
-from fooof.utils import trim_spectrum
-from fooof.plts.fm import plot_fm
 from fooof.core.io import save_fm, load_json
 from fooof.core.reports import save_report_fm
 from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
@@ -47,30 +44,13 @@ from fooof.core.utils import group_three, check_array_dim, get_obj_desc
 from fooof.core.modutils import copy_doc_func_to_method
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_issue_str, gen_wid_warn_str
 
+from fooof.plts.fm import plot_fm
+from fooof.utils import trim_spectrum
+from fooof.data import FOOOFResults, FOOOFSettings
 from fooof.synth.gen import gen_freqs, gen_aperiodic, gen_peaks
 
 ###################################################################################################
 ###################################################################################################
-
-FOOOFResult = namedtuple('FOOOFResult', ['aperiodic_params', 'peak_params',
-                                         'r_squared', 'error', 'gaussian_params'])
-FOOOFResult.__doc__ = """\
-The resulting parameters and associated data of a FOOOF model fit.
-
-Attributes
-----------
-aperiodic_params : 1d array, len 2 or 3
-    Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
-        The knee parameter is only included if aperiodic is fit with knee. Otherwise, length is 2.
-peak_params : 2d array, shape=[n_peaks, 3]
-    Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
-r_squared : float
-    R-squared of the fit between the input power spectrum and the full model fit.
-error : float
-    Root mean squared error of the full model fit.
-gaussian_params : 2d array, shape=[n_peaks, 3]
-    Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
-"""
 
 class FOOOF(object):
     """Model the physiological power spectrum as a combination of aperiodic and periodic components.
@@ -261,11 +241,11 @@ class FOOOF(object):
 
 
     def add_results(self, fooof_result, regenerate=False):
-        """Add results data back into object from a FOOOFResult object.
+        """Add results data back into object from a FOOOFResults object.
 
         Parameters
         ----------
-        fooof_result : FOOOFResult
+        fooof_result : FOOOFResults
             An object containing the results from fitting a FOOOF model.
         regenerate : bool, optional, default: False
             Whether to regenerate the model fits from the given fit parameters.
@@ -429,8 +409,8 @@ class FOOOF(object):
     def get_results(self):
         """Return model fit parameters and goodness of fit metrics."""
 
-        return FOOOFResult(self.aperiodic_params_, self.peak_params_, self.r_squared_,
-                           self.error_, self._gaussian_params)
+        return FOOOFResults(self.aperiodic_params_, self.peak_params_, self.r_squared_,
+                            self.error_, self._gaussian_params)
 
 
     @copy_doc_func_to_method(plot_fm)

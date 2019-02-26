@@ -11,7 +11,7 @@ import pkg_resources as pkg
 import numpy as np
 
 from fooof.group import *
-from fooof.fit import FOOOFResult
+from fooof.fit import FOOOFResults
 from fooof.synth import gen_group_power_spectra
 from fooof.core.utils import get_obj_desc
 
@@ -51,7 +51,7 @@ def test_fg_fit():
 
     assert out
     assert len(out) == n_spectra
-    assert isinstance(out[0], FOOOFResult)
+    assert isinstance(out[0], FOOOFResults)
     assert np.all(out[1].aperiodic_params)
 
 def test_fg_fit_par():
@@ -66,7 +66,7 @@ def test_fg_fit_par():
 
     assert out
     assert len(out) == n_spectra
-    assert isinstance(out[0], FOOOFResult)
+    assert isinstance(out[0], FOOOFResults)
     assert np.all(out[1].aperiodic_params)
 
 def test_fg_print(tfg):
