@@ -136,7 +136,7 @@ def translate_syn_spectrum(power_spectrum, delta_offset, syn_params):
     return translated_spectrum, new_syn_params
 
 
-def calc_rotation_offset(delta_exponent, f_rotation):
+def compute_rotation_offset(delta_exponent, f_rotation):
     """Calculate the change in offset from a given rotation.
 
     Parameters
