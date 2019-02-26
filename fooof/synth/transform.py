@@ -101,7 +101,7 @@ def rotate_syn_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, syn_p
     """
 
     rotated_spectrum = rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation)
-    delta_offset = calc_rotation_offset(delta_exponent, f_rotation)
+    delta_offset = compute_rotation_offset(delta_exponent, f_rotation)
 
     new_syn_params = update_syn_ap_params(syn_params, [delta_offset, delta_exponent])
 
