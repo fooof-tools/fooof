@@ -116,14 +116,17 @@ def test_copy():
 def test_fooof_prints_get(tfm):
     """Test methods that print, return results (alias and pass through methods).
 
-    Checks: print_settings, print_results, get_results."""
+    Checks: print_settings, print_results, get_results, get_settings."""
 
     tfm.print_settings()
     tfm.print_results()
     tfm.print_report_issue()
 
-    out = tfm.get_results()
-    assert out
+    results = tfm.get_results()
+    assert results
+
+    settings = tfm.get_settings()
+    assert settings
 
 @plot_test
 def test_fooof_plot(tfm, skip_if_no_mpl):

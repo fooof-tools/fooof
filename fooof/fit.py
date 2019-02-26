@@ -407,10 +407,29 @@ class FOOOF(object):
 
 
     def get_results(self):
-        """Return model fit parameters and goodness of fit metrics."""
+        """Return model fit parameters and goodness of fit metrics.
+
+        Returns
+        -------
+        FOOOFResults
+            Object containing the FOOOF model fit results from the current FOOOF object.
+        """
 
         return FOOOFResults(self.aperiodic_params_, self.peak_params_, self.r_squared_,
                             self.error_, self._gaussian_params)
+
+
+    def get_settings(self):
+        """Return user defined settings of the FOOOF object.
+
+        Returns
+        -------
+        FOOOFSettings
+            Object containing the settings from the current FOOOF object.
+        """
+
+        return FOOOFSettings(self.peak_width_limits, self.max_n_peaks, self.min_peak_amplitude,
+                             self.peak_threshold, self.aperiodic_mode)
 
 
     @copy_doc_func_to_method(plot_fm)
