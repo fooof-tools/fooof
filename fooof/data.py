@@ -1,4 +1,4 @@
-"""   """
+"""Data objects for FOOOF."""
 
 from collections import namedtuple
 
@@ -17,16 +17,16 @@ The resulting parameters and associated data of a FOOOF model fit.
 
 Attributes
 ----------
-aperiodic_params : 1d array, len 2 or 3
+aperiodic_params : 1d array
     Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
-        The knee parameter is only included if aperiodic is fit with knee. Otherwise, length is 2.
-peak_params : 2d array, shape=[n_peaks, 3]
+    The knee parameter is only included if aperiodic is fit with knee.
+peak_params : 2d array
     Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
 r_squared : float
     R-squared of the fit between the input power spectrum and the full model fit.
 error : float
     Root mean squared error of the full model fit.
-gaussian_params : 2d array, shape=[n_peaks, 3]
+gaussian_params : 2d array
     Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
 """
 
@@ -35,8 +35,8 @@ The user defined settings for a FOOOF object.
 
 Attributes
 ----------
-peak_width_limits : tuple of (float, float), optional, default: [0.5, 12.0]
-    Limits on possible peak width, as [lower_bound, upper_bound].
+peak_width_limits : tuple of (float, float), optional, default: (0.5, 12.0)
+    Limits on possible peak width, as (lower_bound, upper_bound).
 max_n_peaks : int, optional, default: inf
     Maximum number of gaussians to be fit in a single spectrum.
 min_peak_amplitude : float, optional, default: 0
@@ -44,5 +44,5 @@ min_peak_amplitude : float, optional, default: 0
 peak_threshold : float, optional, default: 2.0
     Threshold for detecting peaks, units of standard deviation.
 aperiodic_mode : {'fixed', 'knee'}
-    Which approach to take to fitting the aperiodic component.
+    Which approach to take for fitting the aperiodic component.
 """

@@ -5,10 +5,10 @@ Notes
 Methods without defined docstrings import docs at runtime, from aliased external functions.
 Private attributes of the FOOOF method, not publicly exposed, are documented below.
 
-Attributes (private)
-----------
+Private Attributes
+------------------
 _spectrum_flat : 1d array
-    Flattened power spectrum (aperiodic component removed)
+    Flattened power spectrum (aperiodic component removed).
 _spectrum_peak_rm : 1d array
     Power spectrum with peaks removed (not flattened).
 _gaussian_params : 2d array
@@ -24,7 +24,7 @@ _ap_guess : list of [float, float, float]
 _ap_bounds : tuple of tuple of float
     Upper and lower bounds on fitting aperiodic component.
 _bw_std_edge : float
-    Bandwidth threshold for edge rejection of peaks, in units of gaussian std. deviation.
+    Bandwidth threshold for edge rejection of peaks, in units of gaussian standard deviation.
 _gauss_overlap_thresh : float
     Degree of overlap (in units of guassian std. deviation) between gaussian guesses to drop one.
 _gauss_std_limits : list of [float, float]
@@ -62,8 +62,8 @@ class FOOOF(object):
 
     Parameters
     ----------
-    peak_width_limits : tuple of (float, float), optional, default: [0.5, 12.0]
-        Limits on possible peak width, as [lower_bound, upper_bound].
+    peak_width_limits : tuple of (float, float), optional, default: (0.5, 12.0)
+        Limits on possible peak width, as (lower_bound, upper_bound).
     max_n_peaks : int, optional, default: inf
         Maximum number of gaussians to be fit in a single spectrum.
     min_peak_amplitude : float, optional, default: 0
@@ -71,7 +71,7 @@ class FOOOF(object):
     peak_threshold : float, optional, default: 2.0
         Threshold for detecting peaks, units of standard deviation.
     aperiodic_mode : {'fixed', 'knee'}
-        Which approach to take to fitting the aperiodic component.
+        Which approach to take for fitting the aperiodic component.
     verbose : boolean, optional, default: True
         Whether to be verbose in printing out warnings.
 
@@ -110,7 +110,7 @@ class FOOOF(object):
       get smoother power spectra, as this will give better FOOOF fits.
     """
 
-    def __init__(self, peak_width_limits=[0.5, 12.0], max_n_peaks=np.inf, min_peak_amplitude=0.0,
+    def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_amplitude=0.0,
                  peak_threshold=2.0, aperiodic_mode='fixed', verbose=True):
         """Initialize FOOOF object with run parameters."""
 
@@ -134,7 +134,7 @@ class FOOOF(object):
         self._ap_amp_thresh = 0.025
         # Guess parameters for aperiodic fitting, [offset, knee, exponent]
         #  If offset guess is None, the first value of the power spectrum is used as offset guess
-        self._ap_guess = [None, 0, 2]
+        self._ap_guess = (None, 0, 2)
         # Bounds for aperiodic fitting, as: ((offset_low_bound, knee_low_bound, sl_low_bound),
         #                                     (offset_high_bound, knee_high_bound, sl_high_bound))
         #  By default, aperiodic fitting is unbound, but can be restricted here, if desired
@@ -166,7 +166,7 @@ class FOOOF(object):
 
             # Bandwidth limits are given in 2-sided peak bandwidth.
             #  Convert to gaussian std parameter limits.
-            self._gauss_std_limits = [bwl / 2 for bwl in self.peak_width_limits]
+            self._gauss_std_limits = tuple([bwl / 2 for bwl in self.peak_width_limits])
             # Bounds for aperiodic fitting. Drops bounds on knee parameter if not set to fit knee
             self._ap_bounds = self._ap_bounds if self.aperiodic_mode == 'knee' \
                 else tuple(bound[0::2] for bound in self._ap_bounds)
