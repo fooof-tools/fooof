@@ -266,7 +266,7 @@ class FOOOFGroup(FOOOF):
             if ind == 0:
                 self._check_loaded_settings(data)
 
-            self._check_loaded_results(data, False)
+            self._check_loaded_results(data)
             self.group_results.append(self._get_results())
 
         # Reset peripheral data from last loaded result, keeping freqs info
@@ -302,7 +302,9 @@ class FOOOFGroup(FOOOF):
             fm._add_from_dict({'freq_range': self.freq_range, 'freq_res': self.freq_res})
 
         # Add results for specified power spectrum, regenerating full fit if requested
-        fm.add_results(self.group_results[ind], regenerate=regenerate)
+        fm.add_results(self.group_results[ind])
+        if regenerate:
+            fm._regenerate_model()
 
         return fm
 
