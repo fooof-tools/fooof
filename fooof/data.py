@@ -5,13 +5,29 @@ from collections import namedtuple
 ###################################################################################################
 ###################################################################################################
 
-FOOOFResults = namedtuple('FOOOFResults', ['aperiodic_params', 'peak_params',
-                                         'r_squared', 'error', 'gaussian_params'])
-
 FOOOFSettings = namedtuple('FOOOFSettings', ['peak_width_limits', 'max_n_peaks',
                                              'min_peak_amplitude', 'peak_threshold',
                                              'aperiodic_mode'])
+FOOOFSettings.__doc__ = """\
+The user defined settings for a FOOOF object.
 
+Attributes
+----------
+peak_width_limits : tuple of (float, float), optional, default: (0.5, 12.0)
+    Limits on possible peak width, as (lower_bound, upper_bound).
+max_n_peaks : int, optional, default: inf
+    Maximum number of gaussians to be fit in a single spectrum.
+min_peak_amplitude : float, optional, default: 0
+    Minimum amplitude threshold for a peak to be modeled.
+peak_threshold : float, optional, default: 2.0
+    Threshold for detecting peaks, units of standard deviation.
+aperiodic_mode : {'fixed', 'knee'}
+    Which approach to take for fitting the aperiodic component.
+"""
+
+
+FOOOFResults = namedtuple('FOOOFResults', ['aperiodic_params', 'peak_params',
+                                           'r_squared', 'error', 'gaussian_params'])
 FOOOFResults.__doc__ = """\
 The resulting parameters and associated data of a FOOOF model fit.
 
@@ -30,19 +46,19 @@ gaussian_params : 2d array
     Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
 """
 
-FOOOFSettings.__doc__ = """\
-The user defined settings for a FOOOF object.
+
+SynParams = namedtuple('SynParams', ['aperiodic_params', 'gaussian_params', 'nlv'])
+
+SynParams.__doc__ = """\
+Stores parameters used to synthesize a single power spectra.
 
 Attributes
 ----------
-peak_width_limits : tuple of (float, float), optional, default: (0.5, 12.0)
-    Limits on possible peak width, as (lower_bound, upper_bound).
-max_n_peaks : int, optional, default: inf
-    Maximum number of gaussians to be fit in a single spectrum.
-min_peak_amplitude : float, optional, default: 0
-    Minimum amplitude threshold for a peak to be modeled.
-peak_threshold : float, optional, default: 2.0
-    Threshold for detecting peaks, units of standard deviation.
-aperiodic_mode : {'fixed', 'knee'}
-    Which approach to take for fitting the aperiodic component.
+aperiodic_params : list, len 2 or 3
+    Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
+        The knee parameter is only included if aperiodic is fit with knee. Otherwise, length is 2.
+gaussian_params : list or list of lists
+    Fitted parameter values for the peaks. Each list is a peak, as [CF, Amp, BW].
+nlv : float
+    Noise level added to the generated power spectrum.
 """
