@@ -12,6 +12,7 @@ import numpy as np
 import pkg_resources as pkg
 
 from fooof import FOOOF
+from fooof.data import FOOOFSettings, FOOOFResults
 from fooof.synth import gen_power_spectrum
 from fooof.core.utils import group_three, get_obj_desc
 
@@ -105,6 +106,44 @@ def test_fooof_load():
     tfm.load(file_name_res, file_path)
     assert tfm
 
+def test_adds():
+    """Tests methods that add data to FOOOF objects.
+
+    Checks: add_data, add_settings, add_results.
+    """
+
+    # Note: uses it's own tfm, to not add stuff to the global one
+    tfm = get_tfm()
+
+    # Test adding data
+    freqs, pows = np.array([1, 2, 3]), np.array([10, 10, 10])
+    tfm.add_data(freqs, pows)
+    assert np.all(tfm.freqs == freqs)
+    assert np.all(tfm.power_spectrum == np.log10(pows))
+
+    # Test adding settings
+    fooof_settings = FOOOFSettings([1, 4], 6, 0, 2, 'fixed')
+    tfm.add_settings(fooof_settings)
+    for setting in get_obj_desc()['settings']:
+        assert getattr(tfm, setting) == getattr(fooof_settings, setting)
+
+    # Test adding results
+    fooof_results = FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25])
+    tfm.add_results(fooof_results)
+    for setting in get_obj_desc()['results']:
+        assert getattr(tfm, setting) == getattr(fooof_results, setting.strip('_'))
+
+def test_gets(tfm):
+    """Tests methods that return FOOOF data objects.
+
+    Checks: get_settings, get_results
+    """
+
+    settings = tfm.get_settings()
+    assert isinstance(settings, FOOOFSettings)
+    results = tfm.get_results()
+    assert isinstance(results, FOOOFResults)
+
 def test_copy():
     """Test copy FOOOF method."""
 
@@ -121,12 +160,6 @@ def test_fooof_prints_get(tfm):
     tfm.print_settings()
     tfm.print_results()
     tfm.print_report_issue()
-
-    results = tfm.get_results()
-    assert results
-
-    settings = tfm.get_settings()
-    assert settings
 
 @plot_test
 def test_fooof_plot(tfm, skip_if_no_mpl):
