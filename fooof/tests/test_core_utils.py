@@ -61,7 +61,7 @@ def test_check_array_dim():
 
 def test_get_obj_desc():
 
-    desc =  get_obj_desc()
+    desc = get_obj_desc()
 
     tfm = FOOOF()
     objs = dir(tfm)

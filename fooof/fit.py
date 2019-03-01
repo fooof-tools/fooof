@@ -72,7 +72,7 @@ gaussian_params : 2d array, shape=[n_peaks, 3]
     Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
 """
 
-class FOOOF(object):
+class FOOOF():
     """Model the physiological power spectrum as a combination of aperiodic and periodic components.
 
     WARNING: FOOOF expects frequency and power values in linear space.

@@ -202,7 +202,7 @@ class FOOOFGroup(FOOOF):
         # Pull out the requested data field from the group data
         # As a special case, peak_params are pulled out in a way that appends
         #  an extra column, indicating from which FOOOF run each peak comes from
-        if name == 'peak_params' or name == 'gaussian_params':
+        if name in ('peak_params', 'gaussian_params'):
             out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
                             for index, data in enumerate(self.group_results)])
             # This updates index to grab selected column, and the last colum

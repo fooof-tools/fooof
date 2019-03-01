@@ -5,7 +5,6 @@ Notes
 This file contains plotting functions that take as input a FOOOF() object.
 """
 
-import os
 import numpy as np
 
 from fooof.plts.utils import check_ax

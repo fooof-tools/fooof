@@ -33,7 +33,7 @@ def test_update_syn_ap_params():
 
 def test_stepper():
 
-    assert Stepper(8,12,.1)
+    assert Stepper(8, 12, .1)
 
     # TODO: add more tests of Stepper
 
@@ -45,7 +45,7 @@ def test_param_iter():
     iter_1 = param_iter(osc)
 
     for ind, val in enumerate(iter_1):
-        assert val == [8 + (.1*ind), .5 , .5]
+        assert val == [8 + (.1*ind), .5, .5]
 
     # Test aperiodic
     step = Stepper(.25, 3, .25)
@@ -61,7 +61,7 @@ def test_param_iter():
     iter_1 = param_iter(oscs)
 
     for ind, val in enumerate(iter_1):
-        assert val == [8 + (.1*ind), .5 , .5, 10, .25, 1]
+        assert val == [8 + (.1*ind), .5, .5, 10, .25, 1]
 
     # Test list of lists
     step = Stepper(8, 12, .1)

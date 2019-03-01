@@ -73,7 +73,7 @@ def test_combine_errors(tfm, tfg):
     # Incompatible data information
     for f_obj in [tfm, tfg]:
         f_obj2 = f_obj.copy()
-        f_obj2.freq_range= [5, 30]
+        f_obj2.freq_range = [5, 30]
 
         with raises(ValueError):
             combine_fooofs([f_obj, f_obj2])

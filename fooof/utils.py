@@ -2,7 +2,6 @@
 
 import numpy as np
 
-from fooof.synth import gen_freqs
 from fooof.core.utils import get_obj_desc
 
 ###################################################################################################

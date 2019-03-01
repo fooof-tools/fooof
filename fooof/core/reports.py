@@ -1,7 +1,5 @@
 """Generate reports from FOOOF and FOOOF derivative objects."""
 
-import os
-
 from fooof.core.io import fname, fpath
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_results_str_fg

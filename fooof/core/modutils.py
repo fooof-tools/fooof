@@ -122,13 +122,17 @@ def copy_doc_func_to_method(source):
     return wrapper
 
 
-def copy_doc_class(source, section=None, att_add=''):
+def copy_doc_class(source, section='Attributes', add=''):
     """Copy method docstring from class, to another class, adding extra info (decorator).
 
     Parameters
     ----------
     source : cls
         Source class to copy docstring from.
+    section : str, optional, default: 'Attributes'
+        Name of the section within the dostring to add to.
+     add : str, optional
+        Text to append to specified section of the docstring.
 
     Returns
     -------
@@ -138,7 +142,7 @@ def copy_doc_class(source, section=None, att_add=''):
 
     def wrapper(func):
 
-        func.__doc__ = docs_append_to_section(source.__doc__, 'Attributes', att_add)
+        func.__doc__ = docs_append_to_section(source.__doc__, section, add)
 
         return func
 

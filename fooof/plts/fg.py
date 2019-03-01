@@ -5,8 +5,6 @@ Notes
 This file contains plotting functions that take as input a FOOOFGroup() object.
 """
 
-import os
-
 from fooof.core.io import fname, fpath
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
