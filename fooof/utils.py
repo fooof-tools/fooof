@@ -45,7 +45,7 @@ def trim_spectrum(freqs, power_spectra, f_range):
 
 
 def get_info(f_obj, aspect):
-    """
+    """Get a specified selection of information from a FOOOF derived object.
 
     Parameters
     ----------
@@ -57,7 +57,7 @@ def get_info(f_obj, aspect):
     Returns
     -------
     dict
-        xx
+        The set of specified info from the FOOOF derived object.
     """
 
     return {key : getattr(f_obj, key) for key in get_obj_desc()[aspect]}
@@ -88,98 +88,3 @@ def compare_info(lst, aspect):
         consistent = True
 
     return consistent
-
-
-
-
-
-# def get_settings(f_obj):
-#     """Get a dictionary of current settings from a FOOOF or FOOOFGroup object.
-
-#     Parameters
-#     ----------
-#     f_obj : FOOOF or FOOOFGroup
-#         FOOOF derived object to get settings from.
-
-#     Returns
-#     -------
-#     dictionary
-#         Settings for the input FOOOF derived object.
-#     """
-
-#     return {setting : getattr(f_obj, setting) for setting in get_obj_desc()['settings']}
-
-
-# def get_data_info(f_obj):
-#     """Get a dictionary of current data information from a FOOOF or FOOOFGroup object.
-
-#     Parameters
-#     ----------
-#     f_obj : FOOOF or FOOOFGroup
-#         FOOOF derived object to get data information from.
-
-#     Returns
-#     -------
-#     dictionary
-#         Data information for the input FOOOF derived object.
-
-#     Notes
-#     -----
-#     Data information for a FOOOF object is the frequency range and frequency resolution.
-#     """
-
-#     return {dat_info : getattr(f_obj, dat_info) for dat_info in get_obj_desc()['data_info']}
-
-
-# def compare_settings(lst):
-#     """Compare the settings between FOOOF and/or FOOOFGroup objects.
-
-#     Parameters
-#     ----------
-#     lst : list of FOOOF or FOOOFGroup objects
-#         FOOOF related objects whose settings are to be compared.
-
-#     Returns
-#     -------
-#     consistent : bool
-#         Whether the settings are consistent across the input list of objects.
-#     """
-
-#     # Check settings are the same across list of given objects
-#     for f_obj_1, f_obj_2 in zip(lst[:-1], lst[1:]):
-#         if f_obj_1.get_settings() != f_obj_2.get_settings():
-#             consistent = False
-#             break
-#     else:
-#         consistent = True
-
-#     return consistent
-
-
-# def compare_data_info(lst):
-#     """Compare the data information between FOOOF and/or FOOOFGroup objects.
-
-#     Parameters
-#     ----------
-#     lst : list of FOOOF or FOOOFGroup objects
-#         FOOOF related objects whose settings are to be compared.
-
-#     Returns
-#     -------
-#     consistent : bool
-#         Whether the data information is consistent across the input list of objects.
-
-#     Notes
-#     -----
-#     Data information for a FOOOF object is the frequency range and frequency resolution.
-#     """
-
-#     # Check data information is the same across the list of given objects
-#     for f_obj_1, f_obj_2 in zip(lst[:-1], lst[1:]):
-#         if get_data_info(f_obj_1) != get_data_info(f_obj_2):
-#             consistent = False
-#             break
-#     else:
-#         consistent = True
-
-#     return consistent

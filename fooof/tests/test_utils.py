@@ -22,6 +22,7 @@ def test_get_info(tfm, tfg):
     for f_obj in [tfm, tfg]:
         assert get_info(f_obj, 'settings')
         assert get_info(f_obj, 'data_info')
+        assert get_info(f_obj, 'results')
 
 def test_compare_info(tfm, tfg):
 
