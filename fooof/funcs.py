@@ -5,7 +5,6 @@ import numpy as np
 from fooof import FOOOFGroup
 from fooof.synth.gen import gen_freqs
 from fooof.utils import compare_info
-from fooof.core.info import get_obj_desc
 
 ###################################################################################################
 ###################################################################################################
@@ -31,23 +30,29 @@ def combine_fooofs(fooofs):
 
     # Initialize FOOOFGroup object, with settings derived from input objects
     fg = FOOOFGroup(*fooofs[0].get_settings(), verbose=fooofs[0].verbose)
-    fg.power_spectra = np.empty([0, len(fooofs[0].freqs)])
+
+    # Use a temporary store to collect spectra, because we only add them if consistently present
+    temp_power_spectra = np.empty([0, len(fooofs[0].freqs)])
 
     # Add FOOOF results from each FOOOF object to group
     for f_obj in fooofs:
         # Add FOOOFGroup object
         if isinstance(f_obj, FOOOFGroup):
             fg.group_results.extend(f_obj.group_results)
-            fg.power_spectra = np.vstack([fg.power_spectra, f_obj.power_spectra])
+            if f_obj.power_spectra is not None:
+                temp_power_spectra = np.vstack([temp_power_spectra, f_obj.power_spectra])
         # Add FOOOF object
         else:
             fg.group_results.append(f_obj.get_results())
-            fg.power_spectra = np.vstack([fg.power_spectra, f_obj.power_spectrum])
+            if f_obj.power_spectrum is not None:
+                temp_power_spectra = np.vstack([temp_power_spectra, f_obj.power_spectrum])
+
+    # If the number of collected power spectra is consistent, then add them to object
+    if len(fg) == temp_power_spectra.shape[0]:
+        fg.power_spectra = temp_power_spectra
 
     # Add data information information
-    for data_info in get_obj_desc()['data_info']:
-        setattr(fg, data_info, getattr(fooofs[0], data_info))
-    fg.freqs = gen_freqs(fg.freq_range, fg.freq_res)
+    fg.add_data_info(fooofs[0].get_data_info())
 
     return fg
 

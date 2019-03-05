@@ -200,16 +200,16 @@ class FOOOF(object):
             self.power_spectrum = None
 
         if clear_results:
+            self.aperiodic_params_ = None
+            self.peak_params_ = None
+            self.r_squared_ = None
+            self.error_ = None
+            self._gaussian_params = None
+
             self.fooofed_spectrum_ = None
-            self.aperiodic_params_ = np.array([np.nan, np.nan]) if \
-                self.aperiodic_mode == 'fixed' else np.array([np.nan, np.nan, np.nan])
-            self.peak_params_ = np.array([np.nan, np.nan, np.nan])
-            self.r_squared_ = np.nan
-            self.error_ = np.nan
 
             self._spectrum_flat = None
             self._spectrum_peak_rm = None
-            self._gaussian_params = np.array([np.nan, np.nan, np.nan])
             self._ap_fit = None
             self._peak_fit = None
 
@@ -247,7 +247,7 @@ class FOOOF(object):
         Parameters
         ----------
         fooof_settings : FOOOFSettings
-            An object containing the settings for a FOOOF model.
+            A FOOOF data object containing the settings for a FOOOF model.
         """
 
         for setting in get_obj_desc()['settings']:
@@ -256,13 +256,28 @@ class FOOOF(object):
         self._check_loaded_settings(fooof_settings._asdict())
 
 
+    def add_data_info(self, fooof_data_info):
+        """Add data information into object from a FOOOFDataInfo object.
+
+        Parameters
+        ----------
+        fooof_data_info : FOOOFDataInfo
+            A FOOOF data object containing information about the data.
+        """
+
+        for data_info in get_obj_desc()['data_info']:
+            setattr(self, data_info, getattr(fooof_data_info, data_info))
+
+        self._regenerate_freqs()
+
+
     def add_results(self, fooof_result):
         """Add results data into object from a FOOOFResults object.
 
         Parameters
         ----------
         fooof_result : FOOOFResults
-            An object containing the results from fitting a FOOOF model.
+            A FOOOF data object containing the results from fitting a FOOOF model.
         """
 
         self.aperiodic_params_ = fooof_result.aperiodic_params

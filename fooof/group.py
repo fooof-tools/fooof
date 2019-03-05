@@ -38,7 +38,7 @@ class FOOOFGroup(FOOOF):
 
         FOOOF.__init__(self, *args, **kwargs)
 
-        self.power_spectra = np.array([])
+        self.power_spectra = None#np.array([])
 
         self._reset_group_results()
 
@@ -57,6 +57,26 @@ class FOOOFGroup(FOOOF):
     def __getitem__(self, index):
 
         return self.group_results[index]
+
+
+    def _reset_data_results(self, clear_freqs=True, clear_spectrum=True, clear_results=True, clear_spectra=True):
+        """Set (or reset) data & results attributes to empty.
+
+        Parameters
+        ----------
+        clear_freqs : bool, optional, default: True
+            Whether to clear frequency attributes.
+        clear_power_spectrum : bool, optional, default: True
+            Whether to clear power spectrum attribute.
+        clear_results : bool, optional, default: True
+            Whether to clear model results attributes.
+        clear_spectra : bool, optional, default: True
+            Whether to clear power spectra attribute.
+        """
+
+        super()._reset_data_results(clear_freqs, clear_spectrum, clear_results)
+        if clear_spectra:
+            self.power_spectra = None
 
 
     def _reset_group_results(self, length=0):
@@ -164,7 +184,7 @@ class FOOOFGroup(FOOOF):
                                                               self.power_spectra),
                                                     self.verbose, len(self.power_spectra)))
 
-        self._reset_data_results(clear_freqs=False)
+        self._reset_data_results(clear_freqs=False, clear_spectra=False)
 
 
     def get_results(self):
@@ -290,16 +310,15 @@ class FOOOFGroup(FOOOF):
         """
 
         # Initialize a FOOOF object, with same settings as current FOOOFGroup
-        fm = FOOOF(self.peak_width_limits, self.max_n_peaks, self.min_peak_amplitude,
-                   self.peak_threshold, self.aperiodic_mode, self.verbose)
+        fm = FOOOF(*self.get_settings(), verbose=self.verbose)
 
         # Add data for specified single power spectrum, if available
         #  The power spectrum is inverted back to linear, as it's re-logged when added to FOOOF
         if np.any(self.power_spectra):
             fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
-        # If no power spectrum data available, copy over frequency information
+        # If no power spectrum data available, copy over data information & regenerate freqs
         else:
-            fm._add_from_dict({'freq_range': self.freq_range, 'freq_res': self.freq_res})
+            fm.add_data_info(self.get_data_info)
 
         # Add results for specified power spectrum, regenerating full fit if requested
         fm.add_results(self.group_results[ind])
