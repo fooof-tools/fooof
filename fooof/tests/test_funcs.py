@@ -20,44 +20,51 @@ def test_combine_fooofs(tfm, tfg):
     tfg2 = tfg.copy(); tfg3 = tfg.copy()
 
     # Check combining 2 FOOOFs
-    fg1 = combine_fooofs([tfm, tfm2])
-    assert fg1
-    assert len(fg1) == 2
-    assert compare_info([fg1, tfm], 'settings')
-    assert fg1.group_results[0] == tfm.get_results()
-    assert fg1.group_results[-1] == tfm2.get_results()
+    nfg1 = combine_fooofs([tfm, tfm2])
+    assert nfg1
+    assert len(nfg1) == 2
+    assert compare_info([nfg1, tfm], 'settings')
+    assert nfg1.group_results[0] == tfm.get_results()
+    assert nfg1.group_results[-1] == tfm2.get_results()
 
     # Check combining 3 FOOOFs
-    fg2 = combine_fooofs([tfm, tfm2, tfm3])
-    assert fg2
-    assert len(fg2) == 3
-    assert compare_info([fg2, tfm], 'settings')
-    assert fg2.group_results[0] == tfm.get_results()
-    assert fg2.group_results[-1] == tfm3.get_results()
+    nfg2 = combine_fooofs([tfm, tfm2, tfm3])
+    assert nfg2
+    assert len(nfg2) == 3
+    assert compare_info([nfg2, tfm], 'settings')
+    assert nfg2.group_results[0] == tfm.get_results()
+    assert nfg2.group_results[-1] == tfm3.get_results()
 
     # Check combining 2 FOOOFGroups
-    nfg1 = combine_fooofs([tfg, tfg2])
-    assert nfg1
-    assert len(nfg1) == len(tfg) + len(tfg2)
-    assert compare_info([nfg1, tfg, tfg2], 'settings')
-    assert nfg1.group_results[0] == tfg.group_results[0]
-    assert nfg1.group_results[-1] == tfg2.group_results[-1]
+    nfg3 = combine_fooofs([tfg, tfg2])
+    assert nfg3
+    assert len(nfg3) == len(tfg) + len(tfg2)
+    assert compare_info([nfg3, tfg, tfg2], 'settings')
+    assert nfg3.group_results[0] == tfg.group_results[0]
+    assert nfg3.group_results[-1] == tfg2.group_results[-1]
 
     # Check combining 3 FOOOFGroups
-    nfg2 = combine_fooofs([tfg, tfg2, tfg3])
-    assert nfg2
-    assert len(nfg2) == len(tfg) + len(tfg2) + len(tfg3)
-    assert compare_info([nfg2, tfg, tfg2, tfg3], 'settings')
-    assert nfg2.group_results[0] == tfg.group_results[0]
-    assert nfg2.group_results[-1] == tfg3.group_results[-1]
+    nfg4 = combine_fooofs([tfg, tfg2, tfg3])
+    assert nfg4
+    assert len(nfg4) == len(tfg) + len(tfg2) + len(tfg3)
+    assert compare_info([nfg4, tfg, tfg2, tfg3], 'settings')
+    assert nfg4.group_results[0] == tfg.group_results[0]
+    assert nfg4.group_results[-1] == tfg3.group_results[-1]
 
     # Check combining a mixture of FOOOF & FOOOFGroup
-    mfg3 = combine_fooofs([tfg, tfm, tfg2, tfm2])
-    assert mfg3
-    assert len(mfg3) == len(tfg) + 1 + len(tfg2) + 1
-    assert compare_info([tfg, tfm, tfg2, tfm2], 'settings')
-    assert mfg3.group_results[0] == tfg.group_results[0]
-    assert mfg3.group_results[-1] == tfm2.get_results()
+    nfg5 = combine_fooofs([tfg, tfm, tfg2, tfm2])
+    assert nfg5
+    assert len(nfg5) == len(tfg) + 1 + len(tfg2) + 1
+    assert compare_info([nfg5, tfg, tfm, tfg2, tfm2], 'settings')
+    assert nfg5.group_results[0] == tfg.group_results[0]
+    assert nfg5.group_results[-1] == tfm2.get_results()
+
+    # Check combining objects with no data
+    tfm2._reset_data_results(False, True, True)
+    tfg2._reset_data_results(False, True, True, True)
+    nfg6 = combine_fooofs([tfm2, tfg2])
+    assert len(nfg6) == 1 + len(tfg2)
+    assert nfg6.power_spectra == None
 
 def test_combine_errors(tfm, tfg):
 

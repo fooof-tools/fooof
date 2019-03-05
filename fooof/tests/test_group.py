@@ -144,3 +144,12 @@ def test_fg_get_fooof(tfg):
     # Check that regenerated model is created
     for result in desc['results']:
         assert np.all(getattr(tfm1, result))
+
+    # Test when object has no data (clear a copy of tfg)
+    new_tfg = tfg.copy()
+    new_tfg._reset_data_results(False, True, True, True)
+    tfm2 = new_tfg.get_fooof(0, True)
+    assert tfm2
+    # Check that data info is copied over properly
+    for data_info in desc['data_info']:
+        assert getattr(tfm2, data_info)

@@ -128,6 +128,12 @@ def test_adds():
     for setting in get_obj_desc()['settings']:
         assert getattr(tfm, setting) == getattr(fooof_settings, setting)
 
+    # Test adding data info
+    fooof_data_info = FOOOFDataInfo([3, 40], 0.5)
+    tfm.add_data_info(fooof_data_info)
+    for data_info in get_obj_desc()['data_info']:
+        assert getattr(tfm, data_info) == getattr(fooof_data_info, data_info)
+
     # Test adding results
     fooof_results = FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25])
     tfm.add_results(fooof_results)
@@ -180,12 +186,12 @@ def test_fooof_resets():
     tfm._reset_data_results()
     tfm._reset_internal_settings()
 
-    assert tfm.freqs is None and tfm.freq_range is None and tfm.freq_res is None  \
-        and tfm.power_spectrum is None and tfm.fooofed_spectrum_ is None and tfm._spectrum_flat is None \
-        and tfm._spectrum_peak_rm is None and tfm._ap_fit is None and tfm._peak_fit is None
+    desc = get_obj_desc()
 
-    # assert np.all(np.isnan(tfm.aperiodic_params_)) and np.all(np.isnan(tfm.peak_params_)) \
-    #     and np.all(np.isnan(tfm.r_squared_)) and np.all(np.isnan(tfm.error_)) and np.all(np.isnan(tfm._gaussian_params))
+    for data in ['data', 'results', 'model_components']:
+        for field in desc[data]:
+            assert getattr(tfm, field) == None
+    assert tfm.freqs == None and tfm.fooofed_spectrum_ == None
 
 def test_fooof_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""

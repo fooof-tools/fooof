@@ -318,7 +318,7 @@ class FOOOFGroup(FOOOF):
             fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
         # If no power spectrum data available, copy over data information & regenerate freqs
         else:
-            fm.add_data_info(self.get_data_info)
+            fm.add_data_info(self.get_data_info())
 
         # Add results for specified power spectrum, regenerating full fit if requested
         fm.add_results(self.group_results[ind])
