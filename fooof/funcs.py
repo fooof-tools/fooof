@@ -4,7 +4,7 @@ import numpy as np
 
 from fooof import FOOOFGroup
 from fooof.synth.gen import gen_freqs
-from fooof.utils import get_settings, get_obj_desc, compare_settings, compare_data_info
+from fooof.utils import get_obj_desc, compare_info
 
 ###################################################################################################
 ###################################################################################################
@@ -24,12 +24,12 @@ def combine_fooofs(fooofs):
     """
 
     # Compare settings
-    if not compare_settings(fooofs) or not compare_data_info(fooofs):
+    if not compare_info(fooofs, 'settings') or not compare_info(fooofs, 'data_info'):
         raise ValueError("These objects have incompatible settings or data," \
                          "and so cannot be combined.")
 
     # Initialize FOOOFGroup object, with settings derived from input objects
-    fg = FOOOFGroup(**get_settings(fooofs[0]), verbose=fooofs[0].verbose)
+    fg = FOOOFGroup(*fooofs[0].get_settings(), verbose=fooofs[0].verbose)
     fg.power_spectra = np.empty([0, len(fooofs[0].freqs)])
 
     # Add FOOOF results from each FOOOF object to group
@@ -44,7 +44,7 @@ def combine_fooofs(fooofs):
             fg.power_spectra = np.vstack([fg.power_spectra, f_obj.power_spectrum])
 
     # Add data information information
-    for data_info in get_obj_desc()['freq_info']:
+    for data_info in get_obj_desc()['data_info']:
         setattr(fg, data_info, getattr(fooofs[0], data_info))
     fg.freqs = gen_freqs(fg.freq_range, fg.freq_res)
 

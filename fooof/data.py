@@ -26,6 +26,20 @@ aperiodic_mode : {'fixed', 'knee'}
 """
 
 
+FOOOFDataInfo = namedtuple('FOOOFDataInfo', ['freq_range', 'freq_res'])
+
+FOOOFDataInfo.__doc__ = """\
+Data related information for a FOOOF object.
+
+Attributes
+----------
+freq_range : list of [float, float]
+    Frequency range of the power spectrum, as [lowest_freq, highest_freq].
+freq_res : float
+    Frequency resolution of the power spectrum.
+"""
+
+
 FOOOFResults = namedtuple('FOOOFResults', ['aperiodic_params', 'peak_params',
                                            'r_squared', 'error', 'gaussian_params'])
 FOOOFResults.__doc__ = """\

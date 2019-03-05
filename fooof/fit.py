@@ -46,7 +46,7 @@ from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_issue_s
 
 from fooof.plts.fm import plot_fm
 from fooof.utils import trim_spectrum
-from fooof.data import FOOOFResults, FOOOFSettings
+from fooof.data import FOOOFResults, FOOOFSettings, FOOOFDataInfo
 from fooof.synth.gen import gen_freqs, gen_aperiodic, gen_peaks
 
 ###################################################################################################
@@ -249,11 +249,8 @@ class FOOOF(object):
             An object containing the settings for a FOOOF model.
         """
 
-        self.aperiodic_mode = fooof_settings.aperiodic_mode
-        self.peak_width_limits = fooof_settings.peak_width_limits
-        self.max_n_peaks = fooof_settings.max_n_peaks
-        self.min_peak_amplitude = fooof_settings.min_peak_amplitude
-        self.peak_threshold = fooof_settings.peak_threshold
+        for setting in get_obj_desc()['settings']:
+            setattr(self, setting, getattr(fooof_settings, setting))
 
         self._check_loaded_settings(fooof_settings._asdict())
 
@@ -421,19 +418,6 @@ class FOOOF(object):
         print(gen_issue_str(concise))
 
 
-    def get_results(self):
-        """Return model fit parameters and goodness of fit metrics.
-
-        Returns
-        -------
-        FOOOFResults
-            Object containing the FOOOF model fit results from the current FOOOF object.
-        """
-
-        return FOOOFResults(self.aperiodic_params_, self.peak_params_,
-                            self.r_squared_, self.error_, self._gaussian_params)
-
-
     def get_settings(self):
         """Return user defined settings of the FOOOF object.
 
@@ -443,9 +427,31 @@ class FOOOF(object):
             Object containing the settings from the current FOOOF object.
         """
 
-        return FOOOFSettings(self.peak_width_limits, self.max_n_peaks,
-                             self.min_peak_amplitude, self.peak_threshold,
-                             self.aperiodic_mode)
+        return FOOOFSettings(**{key : getattr(self, key) for key in get_obj_desc()['settings']})
+
+
+    def get_data_info(self):
+        """Return data information from the FOOOF object.
+
+        Returns
+        -------
+        FOOOFDataInfo
+            Object containing information about the data from the current FOOOF object.
+        """
+
+        return FOOOFDataInfo(**{key : getattr(self, key) for key in get_obj_desc()['data_info']})
+
+
+    def get_results(self):
+        """Return model fit parameters and goodness of fit metrics.
+
+        Returns
+        -------
+        FOOOFResults
+            Object containing the FOOOF model fit results from the current FOOOF object.
+        """
+
+        return FOOOFResults(**{key.strip('_') : getattr(self, key) for key in get_obj_desc()['results']})
 
 
     @copy_doc_func_to_method(plot_fm)

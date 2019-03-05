@@ -114,7 +114,7 @@ def get_obj_desc():
                   'settings' : ['peak_width_limits', 'max_n_peaks', 'min_peak_amplitude',
                                 'peak_threshold', 'aperiodic_mode'],
                   'data' : ['power_spectrum', 'freq_range', 'freq_res'],
-                  'freq_info' : ['freq_range', 'freq_res'],
+                  'data_info' : ['freq_range', 'freq_res'],
                   'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',
                               'peak_params_', '_gaussian_params']}
 

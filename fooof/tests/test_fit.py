@@ -12,7 +12,7 @@ import numpy as np
 import pkg_resources as pkg
 
 from fooof import FOOOF
-from fooof.data import FOOOFSettings, FOOOFResults
+from fooof.data import FOOOFSettings, FOOOFDataInfo, FOOOFResults
 from fooof.synth import gen_power_spectrum
 from fooof.core.utils import group_three, get_obj_desc
 
@@ -136,11 +136,13 @@ def test_adds():
 def test_gets(tfm):
     """Tests methods that return FOOOF data objects.
 
-    Checks: get_settings, get_results
+    Checks: get_settings, get_data_info, get_results
     """
 
     settings = tfm.get_settings()
     assert isinstance(settings, FOOOFSettings)
+    data_info = tfm.get_data_info()
+    assert isinstance(data_info, FOOOFDataInfo)
     results = tfm.get_results()
     assert isinstance(results, FOOOFResults)
 
@@ -152,10 +154,11 @@ def test_copy():
 
     assert tfm != ntfm
 
-def test_fooof_prints_get(tfm):
-    """Test methods that print, return results (alias and pass through methods).
+def test_fooof_prints(tfm):
+    """Test methods that print (alias and pass through methods).
 
-    Checks: print_settings, print_results, get_results, get_settings."""
+    Checks: print_settings, print_results.
+    """
 
     tfm.print_settings()
     tfm.print_results()

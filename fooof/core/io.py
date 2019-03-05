@@ -89,7 +89,7 @@ def save_fm(fm, file_name, file_path=None, append=False,
     # Set and select which variables to keep. Use a set to drop any potential overlap
     #  Note that results also saves frequency information to be able to recreate freq vector
     attributes = get_obj_desc()
-    keep = set((attributes['results'] + attributes['freq_info'] if save_results else []) + \
+    keep = set((attributes['results'] + attributes['data_info'] if save_results else []) + \
                (attributes['settings'] if save_settings else []) + \
                (attributes['data'] if save_data else []))
     obj_dict = dict_select_keys(obj_dict, keep)
