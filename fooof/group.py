@@ -16,7 +16,7 @@ from fooof.plts.fg import plot_fg
 from fooof.core.reports import save_report_fg
 from fooof.core.strings import gen_results_str_fg
 from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.utils import get_data_indices
+from fooof.core.info import get_data_indices
 from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class, safe_import
 
 ###################################################################################################

@@ -1,6 +1,6 @@
 """Tests for the FOOOF data objects."""
 
-from fooof.core.utils import get_obj_desc
+from fooof.core.info import get_obj_desc
 
 from fooof.data import *
 

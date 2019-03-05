@@ -4,7 +4,8 @@ import numpy as np
 
 from fooof import FOOOFGroup
 from fooof.synth.gen import gen_freqs
-from fooof.utils import get_obj_desc, compare_info
+from fooof.utils import compare_info
+from fooof.core.info import get_obj_desc
 
 ###################################################################################################
 ###################################################################################################

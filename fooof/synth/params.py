@@ -3,7 +3,8 @@
 import numpy as np
 
 from fooof.core.funcs import infer_ap_func
-from fooof.core.utils import check_flat, get_data_indices
+from fooof.core.utils import check_flat
+from fooof.core.info import get_data_indices
 from fooof.data import SynParams
 
 ###################################################################################################
