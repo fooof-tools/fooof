@@ -129,7 +129,7 @@ symmetric function (gaussians) to what can be an asymetric peak power spectrum.
 
 Because of this, it is often useful to focus on the dominant (highest power) peak within a
 given frequency band from a FOOOF analysis, as this peak will offer the best estimate of
-the putative oscillations center frequency and amplitude. If analyzing bandwidth of extracted peaks,
+the putative oscillations center frequency and power. If analyzing bandwidth of extracted peaks,
 than overlapping peaks should always be considered. FOOOF is not currently optimized for inferring
 whether multiple peaks within a frequency band likely reflect distinct oscillations or not.
 

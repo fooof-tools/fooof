@@ -118,7 +118,7 @@ np.random.seed(321)
 # - Setting a maximum number of peaks that the algorithm may fit: `max_n_peaks`
 #
 #   - If set, the algorithm will fit (up to) the `max_n_peaks` highest power peaks.
-# - Setting a minimum absolute amplitude for peaks: `min_peak_height`
+# - Setting a minimum absolute peak height: `min_peak_height`
 #
 
 ###################################################################################################
@@ -182,7 +182,7 @@ for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
 #
 # A known case in which FOOOF can overfit is in power spectra in which no peaks
 # are present. In this case, the standard deviation can be very low, and so the
-# relative amplitude check (`min_peak_threshold`) is very liberal at keeping gaussian fits.
+# relative peak height check (`min_peak_threshold`) is very liberal at keeping gaussian fits.
 #
 # If you expect, or know, you have power spectra without peaks in your data,
 # we therefore recommend making sure you set some value for `min_peak_height`,

@@ -68,7 +68,7 @@ fm.fit(freqs, spectrum, [3, 30])
 ###################################################################################################
 
 # Set up indexes for accessing data, for convenience
-cf_ind, amp_ind, bw_ind = 0, 1, 2
+cf_ind, pw_ind, bw_ind = 0, 1, 2
 
 # Define frequency bands of interest
 theta_band = [4, 8]
@@ -144,7 +144,7 @@ print(alphas[0:5, :])
 
 # Check descriptive statistics of oscillation data
 print('Alpha CF : ', np.nanmean(alphas[:, cf_ind]))
-print('Alpha Amp: ', np.nanmean(alphas[:, amp_ind]))
+print('Alpha PW : ', np.nanmean(alphas[:, pw_ind]))
 print('Alpha BW : ', np.nanmean(alphas[:, bw_ind]))
 
 ###################################################################################################

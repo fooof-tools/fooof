@@ -113,7 +113,7 @@ plot_spectrum(fm.freqs, fm._spectrum_flat, plt_log, label='Flattened Spectrum')
 #
 # - The maximum point of the flattened spectrum is found.
 #
-#   - If this point fails to pass the relative or absolute amplitude threshold,
+#   - If this point fails to pass the relative or absolute height threshold,
 #     the procedure halts.
 # - A Gaussian is fit around this maximum point
 # - This 'guess' Gaussian is then subtracted from the flatted spectrum
