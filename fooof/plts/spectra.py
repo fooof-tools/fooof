@@ -5,6 +5,8 @@ Notes
 This file contains functions for plotting power spectra, that take in data directly.
 """
 
+from itertools import repeat
+
 import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
@@ -59,20 +61,21 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
+def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels=None,
                  ax=None, style_plot=style_spectrum_plot, **kwargs):
     """Plot multiple power spectra on the same plot.
 
     Parameters
     ----------
-    freqs : 1d array
+    freqs : 2d array or 1d array or list of 1d array
         X-axis data, frequency values.
-    power_spectra : list of 1d array
+    power_spectra : 2d array or list of 1d array
         Y-axis data, power values for spectra to plot.
     log_freqs : boolean, optional, default: False
         Whether or not to take the log of the power axis before plotting.
     log_powers : boolean, optional, default: False
         Whether or not to take the log of the power axis before plotting.
+    labels " "
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     style_plot : callable, optional, default: style_spectrum_plot
@@ -81,9 +84,12 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
         Keyword arguments to be passed to the plot call.
     """
 
+    freqs = repeat(freqs) if isinstance(freqs, np.ndarray) and freqs.ndim == 1 else freqs
+    labels = repeat(labels) if not isinstance(labels, list) else labels
+
     ax = check_ax(ax)
-    for power_spectrum in power_spectra:
-        plot_spectrum(freqs, power_spectrum, log_freqs, log_powers,
+    for freq, power_spectrum, label in zip(freqs, power_spectra, labels):
+        plot_spectrum(freq, power_spectrum, log_freqs, log_powers, label=label,
                       style_plot=None, ax=ax, **kwargs)
     check_n_style(style_plot, ax, log_freqs, log_powers)
 
@@ -97,7 +103,7 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, add_center=False,
     ----------
     freqs : 1d array
         X-axis data, frequency values.
-    power_spectrum : list of 1d array
+    power_spectrum : 1d array
         Y-axis data, power values for spectrum to plot.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
@@ -124,9 +130,9 @@ def plot_spectra_shading(freqs, power_spectra, shades, add_center=False,
 
     Parameters
     ----------
-    freqs : 1d array
+    freqs : 2d array or 1d array or list of 1d array
         X-axis data, frequency values.
-    power_spectra : list of 1d array
+    power_spectra : 2d array or list of 1d array
         Y-axis data, power values for spectra to plot.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
@@ -137,7 +143,12 @@ def plot_spectra_shading(freqs, power_spectra, shades, add_center=False,
     style_plot : callable, optional, default: style_spectrum_plot
         A function to call to apply styling & aesthetics to the plot.
     **kwargs
-        Keyword arguments to be passed to the plot call.
+        Keyword arguments to be passed to plot_spectra or the plot call.
+
+    Notes
+    -----
+    Parameters for `plot_spectra` can also be passed into this function as **kwargs.
+    This includes `log_freqs`, `log_powers` & `labels`. See `plot_spectra for usage details.
     """
 
     ax = check_ax(ax)
