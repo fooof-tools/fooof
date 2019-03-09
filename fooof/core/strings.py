@@ -59,7 +59,7 @@ def gen_settings_str(f_obj, description=False, concise=False):
     # Parameter descriptions to print out, if requested
     desc = {'peak_width_limits'     : 'Enforced limits for peak widths, in Hz.',
             'max_n_peaks'           : 'The maximum number of peaks that can be extracted.',
-            'min_peak_height'    : 'Minimum absolute amplitude of a peak, above aperiodic component.',
+            'min_peak_height'       : 'Minimum absolute height of a peak, above the aperiodic component.',
             'peak_threshold'        : 'Threshold at which to stop searching for peaks.',
             'aperiodic_mode'        : 'The aproach taken to fitting the aperiodic component.'}
 
@@ -81,9 +81,9 @@ def gen_settings_str(f_obj, description=False, concise=False):
                         '{}'.format(desc['peak_width_limits']),
                         'Max Number of Peaks : {}'.format(f_obj.max_n_peaks),
                         '{}'.format(desc['max_n_peaks']),
-                        'Minimum Amplitude : {}'.format(f_obj.min_peak_height),
+                        'Minimum Peak Height : {}'.format(f_obj.min_peak_height),
                         '{}'.format(desc['min_peak_height']),
-                        'Amplitude Threshold: {}'.format(f_obj.peak_threshold),
+                        'Peak Threshold: {}'.format(f_obj.peak_threshold),
                         '{}'.format(desc['peak_threshold']),
                         'Aperiodic Mode : {}'.format(f_obj.aperiodic_mode),
                         '{}'.format(desc['aperiodic_mode'])] if el != ''],
@@ -143,7 +143,7 @@ def gen_results_str_fm(fm, concise=False):
         # Peak parameters
         '{} peaks were found:'.format(
             len(fm.peak_params_)),
-        *['CF: {:6.2f}, Amp: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]) \
+        *['CF: {:6.2f}, PW: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]) \
           for op in fm.peak_params_],
         '',
 
