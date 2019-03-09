@@ -39,16 +39,16 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False, ax=N
     if not ax:
         _, ax = plt.subplots(figsize=(12, 10))
 
-    # Set plot data, logging if requested
-    plt_freqs = np.log10(freqs) if log_freqs else freqs
-    plt_powers = np.log10(power_spectrum) if log_powers else power_spectrum
+    # Set plot data & labels, logging if requested
+    freqs_label, plt_freqs = _log_helper(log_freqs, 'Frequency', freqs)
+    powers_label, plt_powers = _log_helper(log_powers, 'Power', power_spectrum)
 
     # Create the plot
     ax.plot(plt_freqs, plt_powers, **kwargs)
 
     # Aesthetics and axis labels
-    ax.set_xlabel('Frequency', fontsize=20)
-    ax.set_ylabel('Power', fontsize=20)
+    ax.set_xlabel(freqs_label, fontsize=20)
+    ax.set_ylabel(powers_label, fontsize=20)
     ax.tick_params(axis='both', which='major', labelsize=16)
     ax.grid(True)
 
@@ -130,3 +130,15 @@ def plot_spectra_shading(freqs, power_spectra, shades, add_center=False, ax=None
     ax = check_ax(ax)
     plot_spectra(freqs, power_spectra, ax=ax, **kwargs)
     add_shades(ax, shades, add_center, kwargs.get('log_freqs', False))
+
+
+##
+##
+
+def _log_helper(log_data, label, data):
+
+    if log_data:
+        data = np.log10(data)
+        label = 'log(' + label + ')'
+
+    return label, data
