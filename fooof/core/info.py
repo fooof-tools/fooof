@@ -13,7 +13,7 @@ def get_obj_desc():
                                'r_squared_', 'error_',
                                '_gaussian_params'],
                   'settings' : ['peak_width_limits', 'max_n_peaks',
-                                'min_peak_amplitude', 'peak_threshold',
+                                'min_peak_height', 'peak_threshold',
                                 'aperiodic_mode'],
                   'data' : ['power_spectrum', 'freq_range', 'freq_res'],
                   'data_info' : ['freq_range', 'freq_res'],

@@ -118,7 +118,7 @@ np.random.seed(321)
 # - Setting a maximum number of peaks that the algorithm may fit: `max_n_peaks`
 #
 #   - If set, the algorithm will fit (up to) the `max_n_peaks` highest power peaks.
-# - Setting a minimum absolute amplitude for peaks: `min_peak_amplitude`
+# - Setting a minimum absolute amplitude for peaks: `min_peak_height`
 #
 
 ###################################################################################################
@@ -157,7 +157,7 @@ fm.report(freqs, spectrum)
 ###################################################################################################
 
 # Update settings to fit a more constrained FOOOF model, to reduce overfitting
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_amplitude=0.4)
+fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.4)
 fm.report(freqs, spectrum)
 
 ###################################################################################################
@@ -185,7 +185,7 @@ for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
 # relative amplitude check (`min_peak_threshold`) is very liberal at keeping gaussian fits.
 #
 # If you expect, or know, you have power spectra without peaks in your data,
-# we therefore recommend making sure you set some value for `min_peak_amplitude`,
+# we therefore recommend making sure you set some value for `min_peak_height`,
 # as otherwise FOOOF is unlikely to appropriately fit power spectra as having
 # no peaks. Setting this value requires checking the scale of your power spectra,
 # allowing you to define an absolute threshold for extracting peaks.
@@ -197,7 +197,7 @@ for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
 #
 # If you are finding that FOOOF is underfitting:
 #
-# - First check and perhaps loosen any restrictions from `max_n_peaks` and `min_peak_amplitude`
+# - First check and perhaps loosen any restrictions from `max_n_peaks` and `min_peak_height`
 # - Try updating `peak_threshold` to a lower value
 # - Bad fits may come from issues with aperiodic signal fitting
 #
@@ -219,7 +219,7 @@ nlv = 0.025
 freqs, spectrum = gen_power_spectrum([1, 50], ap_params, gauss_params, nlv=nlv)
 
 # Update settings to make sure they are sensitive to smaller peaks in smoother power spectra
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_amplitude=0.2)
+fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.2)
 fm.report(freqs, spectrum)
 
 ###################################################################################################

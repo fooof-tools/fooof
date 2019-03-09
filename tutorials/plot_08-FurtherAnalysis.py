@@ -113,7 +113,7 @@ freqs, spectra, _ = gen_group_power_spectra(n_spectra=10,
 ###################################################################################################
 
 # Fit FOOOF models across the group of synthesized power spectra
-fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_amplitude=0.05, max_n_peaks=6, verbose=False)
+fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_height=0.05, max_n_peaks=6, verbose=False)
 fg.fit(freqs, spectra)
 
 ###################################################################################################

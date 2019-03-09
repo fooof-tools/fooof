@@ -75,7 +75,7 @@ fm = FOOOF()
 # Once a candidate peak drops below this threshold, the peak search is halted (without
 # including the most recent candidate).
 #
-# **min_peak_amplitude (units of power - same as the input spectrum)** default: 0
+# **min_peak_height (units of power - same as the input spectrum)** default: 0
 #
 # The minimum amplitude, above the aperiodic fit, that a peak must have to be extracted
 # in the initial fit stage. Once a candidate peak drops below this threshold, the peak
@@ -182,7 +182,7 @@ print('Power Values: \t\t', fm.power_spectrum[0:5])
 ###################################################################################################
 
 # Initialize FOOOF model, with some specified settings
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_amplitude=0.15)
+fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 
 # Fit FOOOF
 fm.report(freqs, spectrum, freq_range)

@@ -6,7 +6,7 @@ from collections import namedtuple
 ###################################################################################################
 
 FOOOFSettings = namedtuple('FOOOFSettings', ['peak_width_limits', 'max_n_peaks',
-                                             'min_peak_amplitude', 'peak_threshold',
+                                             'min_peak_height', 'peak_threshold',
                                              'aperiodic_mode'])
 FOOOFSettings.__doc__ = """\
 The user defined settings for a FOOOF object.
@@ -17,7 +17,7 @@ peak_width_limits : tuple of (float, float), optional, default: (0.5, 12.0)
     Limits on possible peak width, as (lower_bound, upper_bound).
 max_n_peaks : int, optional, default: inf
     Maximum number of gaussians to be fit in a single spectrum.
-min_peak_amplitude : float, optional, default: 0
+min_peak_height : float, optional, default: 0
     Minimum amplitude threshold for a peak to be modeled.
 peak_threshold : float, optional, default: 2.0
     Threshold for detecting peaks, units of standard deviation.

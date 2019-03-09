@@ -114,12 +114,12 @@ FOOOF.report() fits the model, plots the original power spectrum with the associ
 FOOOF also accepts parameters for fine-tuning the fit. For example:
 
 ```python
-fm = FOOOF(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_amplitude=0.1, peak_threshold=2.0)
+fm = FOOOF(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_height=0.1, peak_threshold=2.0)
 ```
 
 * `peak_width_limits` sets the possible lower- and upper-bounds for the fitted peak widths.
 * `max_n_peaks` sets the maximum number of peaks to fit.
-* `min_peak_amp` sets an absolute limit on the minimum amplitude (above aperiodic) for any extracted peak.
+* `min_peak_height` sets an absolute limit on the minimum amplitude (above aperiodic) for any extracted peak.
 * `peak_threshold`, also sets a threshold above which a peak amplitude must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.
 
 FOOOF also has convenience methods for running the FOOOF model across matrices of multiple power spectra, as well as functionality for saving and loading results, creating reports from FOOOF outputs, and utilities to further analize FOOOF results.

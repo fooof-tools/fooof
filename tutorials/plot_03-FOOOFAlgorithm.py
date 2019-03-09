@@ -54,7 +54,7 @@ spectrum = np.load('./dat/spectrum_2.npy')
 ###################################################################################################
 
 # Initialize a FOOOF object, with some settings
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6 , min_peak_amplitude=0.15)
+fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6 , min_peak_height=0.15)
 
 ###################################################################################################
 #

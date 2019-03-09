@@ -67,10 +67,10 @@ class FOOOF(object):
         Limits on possible peak width, as (lower_bound, upper_bound).
     max_n_peaks : int, optional, default: inf
         Maximum number of gaussians to be fit in a single spectrum.
-    min_peak_amplitude : float, optional, default: 0
-        Minimum amplitude threshold for a peak to be modeled.
+    min_peak_height : float, optional, default: 0
+        Minimum height threshold for a peak to be modeled, in units of the input data.
     peak_threshold : float, optional, default: 2.0
-        Threshold for detecting peaks, units of standard deviation.
+        Threshold for detecting peaks, in units of standard deviation of the input data.
     aperiodic_mode : {'fixed', 'knee'}
         Which approach to take for fitting the aperiodic component.
     verbose : boolean, optional, default: True
@@ -111,7 +111,7 @@ class FOOOF(object):
       get smoother power spectra, as this will give better FOOOF fits.
     """
 
-    def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_amplitude=0.0,
+    def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
                  peak_threshold=2.0, aperiodic_mode='fixed', verbose=True):
         """Initialize FOOOF object with run parameters."""
 
@@ -124,7 +124,7 @@ class FOOOF(object):
         # Set input parameters
         self.peak_width_limits = peak_width_limits
         self.max_n_peaks = max_n_peaks
-        self.min_peak_amplitude = min_peak_amplitude
+        self.min_peak_height = min_peak_height
         self.peak_threshold = peak_threshold
         self.aperiodic_mode = aperiodic_mode
         self.verbose = verbose
@@ -644,7 +644,7 @@ class FOOOF(object):
             guess_amp = max_amp
 
             # Halt fitting process if candidate peak drops below minimum amp size.
-            if not guess_amp > self.min_peak_amplitude:
+            if not guess_amp > self.min_peak_height:
                 break
 
             # Data-driven first guess BW

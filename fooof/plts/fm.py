@@ -86,7 +86,7 @@ def plot_peak_iter(fm):
         plot_spectrum(fm.freqs, flatspec, linewidth=2.0, label='Flattened Spectrum', ax=ax)
         plot_spectrum(fm.freqs, [fm.peak_threshold * np.std(flatspec)]*len(fm.freqs),
                       color='orange', linestyle='dashed', label='Relative Threshold', ax=ax)
-        plot_spectrum(fm.freqs, [fm.min_peak_amplitude]*len(fm.freqs),
+        plot_spectrum(fm.freqs, [fm.min_peak_height]*len(fm.freqs),
                       color='red', linestyle='dashed', label='Absolute Threshold', ax=ax)
 
         maxi = np.argmax(flatspec)
