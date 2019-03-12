@@ -806,7 +806,7 @@ class FOOOF(object):
             (np.abs(np.subtract(cf_params, self.freq_range[0])) > bw_params) & \
             (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)
 
-        # Drop peaks that fail the center edge criterion
+        # Drop peaks that fail the center frequency edge criterion
         guess = np.array([d for (d, keep) in zip(guess, keep_peak) if keep])
 
         return guess
