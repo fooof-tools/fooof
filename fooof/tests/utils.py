@@ -20,7 +20,7 @@ def get_tfm():
 
     xs, ys = gen_power_spectrum(freq_range, ap_params, gaussian_params)
 
-    tfm = FOOOF()
+    tfm = FOOOF(verbose=False)
     tfm.fit(xs, ys)
 
     return tfm
@@ -31,7 +31,7 @@ def get_tfg():
     n_spectra = 2
     xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
 
-    tfg = FOOOFGroup()
+    tfg = FOOOFGroup(verbose=False)
     tfg.fit(xs, ys)
 
     return tfg

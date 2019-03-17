@@ -25,8 +25,8 @@ def test_fg():
 
     # Note: doesn't assert fg itself, as it return false when group_results are empty
     #  This is due to the __len__ used in FOOOFGroup
-    fg = FOOOFGroup()
-    assert True
+    fg = FOOOFGroup(verbose=False)
+    assert isinstance(fg, FOOOFGroup)
 
 def test_fg_iter(tfg):
     """Check iterating through FOOOFGroup."""
@@ -45,7 +45,7 @@ def test_fg_fit():
     n_spectra = 2
     xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
 
-    tfg = FOOOFGroup()
+    tfg = FOOOFGroup(verbose=False)
     tfg.fit(xs, ys)
     out = tfg.get_results()
 
@@ -60,7 +60,7 @@ def test_fg_fit_par():
     n_spectra = 2
     xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
 
-    tfg = FOOOFGroup()
+    tfg = FOOOFGroup(verbose=False)
     tfg.fit(xs, ys, n_jobs=2)
     out = tfg.get_results()
 
@@ -107,7 +107,7 @@ def test_fg_load():
     res_file_name = 'test_fooof_group_res'
     file_path = pkg.resource_filename(__name__, 'test_files')
 
-    tfg = FOOOFGroup()
+    tfg = FOOOFGroup(verbose=False)
 
     tfg.load(set_file_name, file_path)
     assert tfg
@@ -121,7 +121,7 @@ def test_fg_report(skip_if_no_mpl):
     n_spectra = 2
     xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
 
-    tfg = FOOOFGroup()
+    tfg = FOOOFGroup(verbose=False)
     tfg.report(xs, ys)
 
     assert tfg
