@@ -1,4 +1,4 @@
-"""Oscillation band defintion object for OM."""
+"""A class for managing band definitions."""
 
 from collections import OrderedDict
 
@@ -6,12 +6,13 @@ from collections import OrderedDict
 ###################################################################################################
 
 class Bands():
-    """Class to hold definitions of oscillation bands.
+    """Class to hold bands definitions.
 
     Attributes
     ----------
     bands : dict
         Dictionary of band definitions.
+        Each entry should be as {'label' : (f_low, f_high)}.
     """
 
     def __init__(self, input_bands={}):
@@ -28,37 +29,32 @@ class Bands():
         for label, band_def in input_bands.items():
             self.add_band(label, band_def)
 
-
-    def __getitem__(self, name):
+    def __getitem__(self, label):
 
         try:
-            return self.bands[name]
+            return self.bands[label]
         except KeyError:
-            raise BandNotDefinedError from None
+            message = "The label '{}' was not found in the defined bands.".format(label)
+            raise BandNotDefinedError(message) from None
 
+    def __getattr__(self, label):
 
-    def __getattr__(self, name):
-
-        return self.__getitem__(name)
-
+        return self.__getitem__(label)
 
     def __repr__(self):
 
         return '\n'.join(['{:8} :  {:2} - {:2}  Hz'.format(key, *val) \
             for key, val in self.bands.items()])
 
-
     def __len__(self):
 
         return self.n_bands
-
 
     @property
     def labels(self):
         """Get the labels for all bands defined in the object."""
 
         return list(self.bands.keys())
-
 
     @property
     def n_bands(self):
@@ -73,7 +69,7 @@ class Bands():
         Parameters
         ----------
         label : str
-            Label of the band to add.
+            Band label to add.
         band_definition : tuple of (float, float)
             The lower and upper frequency limit of the band, in Hz.
         """
@@ -121,7 +117,7 @@ class Bands():
 
         # Safety check that limits are in correct order
         if not band_definition[0] < band_definition[1]:
-            raise InconsistentDataError('Band limits are incorrect.')
+            raise InconsistentDataError('Band limit definitions are invalid.')
 
 
 class BandNotDefinedError(Exception):
