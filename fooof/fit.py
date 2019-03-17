@@ -627,9 +627,9 @@ class FOOOF():
             # Data-driven first guess BW
             #  Find half-amp index on each side of the center frequency.
             half_amp = 0.5 * max_amp
-            le_ind = next((x for x in range(max_ind - 1, 0, -1) if flat_iter[x] <= half_amp), None)
-            ri_ind = next((x for x in range(max_ind + 1, len(flat_iter), 1)
-                           if flat_iter[x] <= half_amp), None)
+            le_ind = next((ind for ind in range(max_ind - 1, 0, -1) if flat_iter[ind] <= half_amp), None)
+            ri_ind = next((ind for ind in range(max_ind + 1, len(flat_iter), 1)
+                           if flat_iter[ind] <= half_amp), None)
 
             # Keep bandwidth estimation from the shortest side.
             #  We grab shortest to avoid estimating very large std from overalapping peaks.
@@ -684,21 +684,25 @@ class FOOOF():
             Parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
         """
 
-        # Set the bounds for center frequency, enforce positive amp value, and set bandwidth limits.
+        # Set the bounds for center frequency, enforce positive amp value & set bandwidth limits.
         #  Note that 'guess' is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std.
         #  This set of list comprehensions is a way to end up with bounds in the form:
-        #   ((cf_low_bound_peak1, amp_low_bound_peak1, bw_low_bound_peak1, *repeated for n_peak*),
-        #    (cf_high_bound_peak1, amp_high_bound_peak1, bw_high_bound_peak, *repeated for n_peak*))
+        #  ((cf_low_bound_peak1, amp_low_bound_peak1, bw_low_bound_peak1, *repeated for n_peak*),
+        #   (cf_high_bound_peak1, amp_high_bound_peak1, bw_high_bound_peak, *repeated for n_peak*))
         lo_bound = [[peak[0] - 2 * self._cf_bound * peak[2], 0, self._gauss_std_limits[0]]
                     for peak in guess]
         hi_bound = [[peak[0] + 2 * self._cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]
                     for peak in guess]
 
-        # Check that CF bounds are within frequency range, and, if not, updates them to be restricted to frequency range.
-        lo_bound = [bound if bound[0] > self.freq_range[0] else [self.freq_range[0], *bound[1:]] for bound in lo_bound]
-        hi_bound = [bound if bound[0] < self.freq_range[1] else [self.freq_range[1], *bound[1:]] for bound in hi_bound]
+        # Check that CF bounds are within frequency range
+        #   If they are  not, update them to be restricted to frequency range.
+        lo_bound = [bound if bound[0] > self.freq_range[0] else \
+            [self.freq_range[0], *bound[1:]] for bound in lo_bound]
+        hi_bound = [bound if bound[0] < self.freq_range[1] else \
+            [self.freq_range[1], *bound[1:]] for bound in hi_bound]
 
-        # Unpacks the embedded lists into flat tuples, which is what the fit function requires as input.
+        # Unpacks the embedded lists into flat tuples
+        #   This is what the fit function requires as input.
         gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]),
                              tuple([item for sublist in hi_bound for item in sublist]))
 
@@ -780,7 +784,7 @@ class FOOOF():
             (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)
 
         # Drop peaks that fail CF edge criterion
-        guess = np.array([d for (d, keep) in zip(guess, keep_peak) if keep])
+        guess = np.array([gu for (gu, keep) in zip(guess, keep_peak) if keep])
 
         return guess
 
@@ -811,9 +815,8 @@ class FOOOF():
         bounds = [[peak[0] - peak[2] * self._gauss_overlap_thresh, peak[0],
                    peak[0] + peak[2] * self._gauss_overlap_thresh] for peak in guess]
 
-        drop_inds = []
-
         # Loop through peak bounds, comparing current bound to that of next peak
+        drop_inds = []
         for ind, b_0 in enumerate(bounds[:-1]):
             b_1 = bounds[ind + 1]
 
@@ -824,8 +827,8 @@ class FOOOF():
                 drop_inds.append([ind, ind + 1][np.argmin([guess[ind][1], guess[ind + 1][1]])])
 
         # Drop any peaks guesses that overlap too much, based on threshold.
-        keep_peak = [True if j not in drop_inds else False for j in range(len(guess))]
-        guess = np.array([d for (d, keep) in zip(guess, keep_peak) if keep])
+        keep_peak = [not ind in drop_inds for ind in range(len(guess))]
+        guess = np.array([gu for (gu, keep) in zip(guess, keep_peak) if keep])
 
         return guess
 
