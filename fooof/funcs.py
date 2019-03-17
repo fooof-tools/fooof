@@ -2,12 +2,46 @@
 
 import numpy as np
 
-from fooof import FOOOFGroup
+from fooof import FOOOF, FOOOFGroup
 from fooof.synth.gen import gen_freqs
 from fooof.utils import compare_info
 
 ###################################################################################################
 ###################################################################################################
+
+def average_fg(fg, bands, avg='mean'):
+    """Average across a FOOOFGroup object."""
+
+    if avg == 'mean':
+        avg_func = np.nanmean
+    elif avg == 'median':
+        avg_func = np.nanmedian
+
+    ap_params = avg_func(fg.get_all_data('aperiodic_params'), 0)
+
+    peak_params, gaussian_params = np.empty([0, 3]), np.empty([0, 3])
+
+    for label, band in bands:
+
+        peak_params = np.vstack([peak_params,
+                                 avg_func(get_band_peak_group(fg.get_all_data('peak_params'), band, len(fg)), 0)])
+
+        gaussian_params = np.vstack([gaussian_params,
+                                     avg_func(get_band_peak_group(fg.get_all_data('gaussian_params'), band, len(fg)), 0)])
+
+    r2 = avg_func(fg.get_all_data('r_squared'))
+    error = avg_func(fg.get_all_data('error'))
+
+    results = FOOOFResults(ap_params, peak_params, r2, error, gaussian_params)
+
+    # Create the new FOOOF object, with settings, data info & results
+    fm = FOOOF()
+    fm.add_settings(fg.get_settings())
+    fm.add_data_info(fg.get_data_info())
+    fm.add_results(results)
+
+    return fm
+
 
 def combine_fooofs(fooofs):
     """Combine a group of FOOOF and/or FOOOFGroup objects into a single FOOOFGroup object.
