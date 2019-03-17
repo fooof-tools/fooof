@@ -3,6 +3,7 @@
 from functools import wraps
 
 from fooof import FOOOF, FOOOFGroup
+from fooof.bands import Bands
 from fooof.synth import gen_power_spectrum, gen_group_power_spectra, param_sampler
 from fooof.core.modutils import safe_import
 
@@ -35,6 +36,11 @@ def get_tfg():
     tfg.fit(xs, ys)
 
     return tfg
+
+def get_tbands():
+    """Get a bands object, for testing."""
+
+    return Bands({'theta' : (4, 8), 'alpha' : (8, 12), 'beta' : (13, 30)})
 
 def default_group_params():
     """Create default parameters for generating a test group of power spectra."""

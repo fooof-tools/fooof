@@ -2,12 +2,10 @@
 
 from collections import OrderedDict
 
-import numpy as np
-
 ###################################################################################################
 ###################################################################################################
 
-class Bands(object):
+class Bands():
     """Class to hold definitions of oscillation bands.
 
     Attributes
@@ -16,19 +14,19 @@ class Bands(object):
         Dictionary of band definitions.
     """
 
-    def __init__(self, input_bands=None):
+    def __init__(self, input_bands={}):
         """Initialize the Bands object.
 
         Parameters
         ----------
-        input_bands : dict, optional (default = None)
+        input_bands : dict, optional
             A dictionary of oscillation bands to use.
         """
 
         self.bands = OrderedDict()
 
         for label, band_def in input_bands.items():
-            self.add_band(label)
+            self.add_band(label, band_def)
 
 
     def __getitem__(self, name):
@@ -46,7 +44,7 @@ class Bands(object):
 
     def __repr__(self):
 
-        return '\n'.join(['{:8} :  {:2} - {:2}  Hz'.format(*val) \
+        return '\n'.join(['{:8} :  {:2} - {:2}  Hz'.format(key, *val) \
             for key, val in self.bands.items()])
 
 
@@ -57,12 +55,14 @@ class Bands(object):
 
     @property
     def labels(self):
+        """Get the labels for all bands defined in the object."""
 
         return list(self.bands.keys())
 
 
     @property
     def n_bands(self):
+        """Get the number of bands defined in the object."""
 
         return len(self.bands)
 
@@ -78,8 +78,7 @@ class Bands(object):
             The lower and upper frequency limit of the band, in Hz.
         """
 
-        # Check that band definition is properly formatted & add if so
-        _check_band(label, band_definition)
+        self._check_band(label, band_definition)
         self.bands[label] = band_definition
 
 
@@ -92,24 +91,24 @@ class Bands(object):
             Band label to remove from band definitions.
         """
 
-        self.bands.pop(rm_band)
+        self.bands.pop(label)
 
 
     @staticmethod
     def _check_band(label, band_definition):
-        """Check that a proposed band definition is properly formatted.
+        """Check that a proposed band definition is valid.
 
         Parameters
         ----------
         label : str
-            The name of the new oscillation band.
+            The name of the new band.
         band_definition : tuple of (float, float)
             The lower and upper frequency limit of the band, in Hz.
 
         Raises
         ------
         InconsistentDataError
-            If oscillation band definition is not properly formatted.
+            If band definition is not properly formatted.
         """
 
         # Check that band name is a string
