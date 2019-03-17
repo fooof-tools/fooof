@@ -50,6 +50,11 @@ class Bands():
 
         return self.n_bands
 
+    def __iter__(self):
+
+        for label, band_definition in self.bands.items():
+            yield (label, band_definition)
+
     @property
     def labels(self):
         """Get the labels for all bands defined in the object."""
