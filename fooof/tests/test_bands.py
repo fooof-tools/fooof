@@ -44,5 +44,5 @@ def test_bands_dunders(tbands):
 
 def test_bands_properties(tbands):
 
-    assert tbands.labels == ['theta', 'alpha', 'beta']
+    assert set(tbands.labels) == set(['theta', 'alpha', 'beta'])
     assert tbands.n_bands == 3
