@@ -3,31 +3,48 @@
 import numpy as np
 
 from fooof import FOOOF, FOOOFGroup
-from fooof.synth.gen import gen_freqs
+from fooof.data import FOOOFResults
 from fooof.utils import compare_info
+from fooof.synth.gen import gen_freqs
+from fooof.analysis import get_band_peaks_fg
 
 ###################################################################################################
 ###################################################################################################
 
-def average_fg(fg, bands, avg='mean'):
-    """Average across a FOOOFGroup object."""
+def average_fg(fg, bands, avg_method='mean'):
+    """Average across a FOOOFGroup object.
 
-    if avg == 'mean':
+    Parameters
+    ----------
+    fg : FOOOFGroup
+        A FOOOFGroup object with data to average across.
+    bands : Bands
+        Bands object that defines the frequency bands to collapse peaks across.
+    avg : {'mean', 'median'}
+        Averaging function to use.
+
+    Returns
+    -------
+    fm : FOOOF
+        FOOOF object containing the average results from the FOOOFGroup input.
+    """
+
+    if avg_method not in ['mean', 'median']:
+        raise ValueError('Requested average method not understood.')
+    if not len(fg):
+        raise ValueError('Input FOOOFGroup has no fit results - can not proceed.')
+
+    if avg_method == 'mean':
         avg_func = np.nanmean
-    elif avg == 'median':
+    elif avg_method == 'median':
         avg_func = np.nanmedian
 
     ap_params = avg_func(fg.get_all_data('aperiodic_params'), 0)
 
-    peak_params, gaussian_params = np.empty([0, 3]), np.empty([0, 3])
-
-    for label, band in bands:
-
-        peak_params = np.vstack([peak_params,
-                                 avg_func(get_band_peak_group(fg.get_all_data('peak_params'), band, len(fg)), 0)])
-
-        gaussian_params = np.vstack([gaussian_params,
-                                     avg_func(get_band_peak_group(fg.get_all_data('gaussian_params'), band, len(fg)), 0)])
+    peak_params = np.array([avg_func(get_band_peaks_fg(fg, band, 'peak_params'), 0) \
+                            for label, band in bands])
+    gaussian_params = np.array([avg_func(get_band_peaks_fg(fg, band, 'gaussian_params'), 0) \
+                                for label, band in bands])
 
     r2 = avg_func(fg.get_all_data('r_squared'))
     error = avg_func(fg.get_all_data('error'))
