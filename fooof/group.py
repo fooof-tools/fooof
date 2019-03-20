@@ -38,7 +38,7 @@ class FOOOFGroup(FOOOF):
 
         FOOOF.__init__(self, *args, **kwargs)
 
-        self.power_spectra = None#np.array([])
+        self.power_spectra = None
 
         self._reset_group_results()
 
