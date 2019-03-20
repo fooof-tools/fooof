@@ -1,12 +1,9 @@
 """
 08: Further Analysis
 ====================
-"""
 
-###################################################################################################
-#
-# This tutorial explores some basic examples analyzing the results from fitting FOOOF models.
-#
+Analyze results from fitting FOOOF models.
+"""
 
 ###################################################################################################
 # Exploring FOOOF Analyses
@@ -71,7 +68,7 @@ fm.fit(freqs, spectrum, [3, 30])
 ###################################################################################################
 
 # Set up indexes for accessing data, for convenience
-cf_ind, amp_ind, bw_ind = 0, 1, 2
+cf_ind, pw_ind, bw_ind = 0, 1, 2
 
 # Define frequency bands of interest
 theta_band = [4, 8]
@@ -116,7 +113,7 @@ freqs, spectra, _ = gen_group_power_spectra(n_spectra=10,
 ###################################################################################################
 
 # Fit FOOOF models across the group of synthesized power spectra
-fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_amplitude=0.05, max_n_peaks=6, verbose=False)
+fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_height=0.05, max_n_peaks=6, verbose=False)
 fg.fit(freqs, spectra)
 
 ###################################################################################################
@@ -147,7 +144,7 @@ print(alphas[0:5, :])
 
 # Check descriptive statistics of oscillation data
 print('Alpha CF : ', np.nanmean(alphas[:, cf_ind]))
-print('Alpha Amp: ', np.nanmean(alphas[:, amp_ind]))
+print('Alpha PW : ', np.nanmean(alphas[:, pw_ind]))
 print('Alpha BW : ', np.nanmean(alphas[:, bw_ind]))
 
 ###################################################################################################

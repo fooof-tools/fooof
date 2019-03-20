@@ -4,7 +4,7 @@ import os
 import pkg_resources as pkg
 
 from fooof import FOOOF
-from fooof.core.utils import get_obj_desc
+from fooof.core.info import get_obj_desc
 
 from fooof.core.io import *
 

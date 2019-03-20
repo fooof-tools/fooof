@@ -1,11 +1,9 @@
 """
 Transforming Power Spectra
 ==========================
-"""
 
-###################################################################################################
-# This example covers transformations that can be applied to power spectra.
-#
+Apply transformations to power spectra.
+"""
 
 ###################################################################################################
 

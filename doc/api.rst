@@ -52,7 +52,7 @@ Analysis Functions
 
     get_band_peak
     get_band_peak_group
-    get_highest_amp_peak
+    get_highest_peak
 
 Synth Code
 ----------
@@ -89,7 +89,11 @@ Transforming Power Spectra
 .. autosummary::
     :toctree: generated/
 
+    translate_spectrum
+    translate_syn_spectrum
     rotate_spectrum
+    rotate_syn_spectrum
+    compute_rotation_offset
 
 Plotting Functions
 ------------------

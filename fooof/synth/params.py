@@ -1,30 +1,14 @@
 """Classes & functions for managing parameter choices for synthesizing power spectra."""
 
-from collections import namedtuple
-
 import numpy as np
 
-from fooof.core.utils import check_flat, get_data_indices
 from fooof.core.funcs import infer_ap_func
+from fooof.core.utils import check_flat
+from fooof.core.info import get_data_indices
+from fooof.data import SynParams
 
 ###################################################################################################
 ###################################################################################################
-
-SynParams = namedtuple('SynParams', ['aperiodic_params', 'gaussian_params', 'nlv'])
-
-SynParams.__doc__ = """\
-Stores parameters used to synthesize a single power spectra.
-
-Attributes
-----------
-aperiodic_params : list, len 2 or 3
-    Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
-        The knee parameter is only included if aperiodic is fit with knee. Otherwise, length is 2.
-gaussian_params : list or list of lists
-    Fitted parameter values for the peaks. Each list is a peak, as [CF, Amp, BW].
-nlv : float
-    Noise level added to the generated power spectrum.
-"""
 
 def update_syn_ap_params(syn_params, delta, field=None):
     """Update the aperiodic parameter definition in a SynParams object.

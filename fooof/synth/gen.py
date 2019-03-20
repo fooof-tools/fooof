@@ -67,7 +67,7 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
 
     - Each gaussian description is a set of three values:
 
-      * Mean (Center Frequency), amplitude (Amplitude), and std (Bandwidth).
+      * mean (Center Frequency), height (Power), and standard deviation (Bandwidth).
       * Make sure any center frequencies you request are within the simulated frequency range
 
     - The total number of parameters that need to be specified is number of peaks * 3
@@ -141,7 +141,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
 
     - Each gaussian description is a set of three values:
 
-      * mean (Center Frequency), amplitude (Amplitude), and std (Bandwidth).
+      * mean (Center Frequency), height (Power), and standard deviation (Bandwidth).
       * Make sure any center frequencies you request are within the simulated frequency range.
 
     Examples

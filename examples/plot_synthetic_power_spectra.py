@@ -1,11 +1,9 @@
 """
 Creating Synthetic Power Spectra
 ================================
-"""
 
-###################################################################################################
-# This example covers using FOOOF to create synthetic power spectra.
-#
+Use FOOOF to create synthetic power spectra.
+"""
 
 ###################################################################################################
 
@@ -59,7 +57,7 @@ plot_spectrum(fs, ps, log_freqs=True, log_powers=False)
 # the example below, this is interpreted as [offset, knee, exponent] for a 'knee' spectrum.
 #
 # Power spectra can also be simulated with any number of peaks. Peaks can be listed in a flat
-# list with [center frequency, amplitude, bandwidth] listed for as many peaks as you would
+# list with [center frequency, height, bandwidth] listed for as many peaks as you would
 # like to add, or as a list of lists containing the same information.
 #
 # The following example shows simulating a different power spectrum with some different
