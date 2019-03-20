@@ -12,16 +12,16 @@ from fooof.core.funcs import *
 
 def test_gaussian_function():
 
-    ctr, amp, wid = 50, 5, 10
+    ctr, hgt, wid = 50, 5, 10
 
     xs = np.arange(1, 100)
-    ys = gaussian_function(xs, ctr, amp, wid)
+    ys = gaussian_function(xs, ctr, hgt, wid)
 
     assert np.all(ys)
 
     # Check distribution matches generated gaussian from scipy
-    #  Generated gaussian is normalized for this comparison, amp tested separately
-    assert max(ys) == amp
+    #  Generated gaussian is normalized for this comparison, height tested separately
+    assert max(ys) == hgt
     assert np.allclose([i/sum(ys) for i in ys], norm.pdf(xs, ctr, wid))
 
 def test_expo_function():

@@ -87,7 +87,7 @@ freqs, spectra, syn_params = gen_group_power_spectra(n_spectra, f_range, ap_opts
 ###################################################################################################
 
 # Initialize a FOOOFGroup object - it accepts all the same settings as FOOOF
-fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_amplitude=0.05, max_n_peaks=6)
+fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_height=0.05, max_n_peaks=6)
 
 ###################################################################################################
 

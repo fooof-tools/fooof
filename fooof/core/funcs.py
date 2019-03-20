@@ -32,9 +32,9 @@ def gaussian_function(xs, *params):
 
     for ii in range(0, len(params), 3):
 
-        ctr, amp, wid = params[ii:ii+3]
+        ctr, hgt, wid = params[ii:ii+3]
 
-        ys = ys + amp * np.exp(-(xs-ctr)**2 / (2*wid**2))
+        ys = ys + hgt * np.exp(-(xs-ctr)**2 / (2*wid**2))
 
     return ys
 

@@ -58,14 +58,14 @@ fm = FOOOF()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # An iterative procedures searches for candidate peaks in the flattened spectrum. Candidate
-# peaks are extracted in order of decreasing amplitude, until some stopping criterion is met,
+# peaks are extracted in order of decreasing height, until some stopping criterion is met,
 # which is controlled by the following parameters:
 #
 # **max_n_peaks (int)** default: infinite
 #
 # The maximum number of peaks that can be extracted from a given power spectrum. FOOOF will
 # halt searching for new peaks when this number is reached. Note that FOOOF extracts peaks
-# iteratively by amplitude (over and above the aperiodic signal), and so this approach will
+# iteratively by height (over and above the aperiodic signal), and so this approach will
 # extract (up to) the *n* largest peaks.
 #
 # **peak_threshold (in units of standard deviation)** default: 2.0
@@ -75,15 +75,15 @@ fm = FOOOF()
 # Once a candidate peak drops below this threshold, the peak search is halted (without
 # including the most recent candidate).
 #
-# **min_peak_amplitude (units of power - same as the input spectrum)** default: 0
+# **min_peak_height (units of power - same as the input spectrum)** default: 0
 #
-# The minimum amplitude, above the aperiodic fit, that a peak must have to be extracted
+# The minimum height, above the aperiodic fit, that a peak must have to be extracted
 # in the initial fit stage. Once a candidate peak drops below this threshold, the peak
 # search is halted (without including the most recent candidate). Note that because
 # this constraint is enforced during peak search, and prior to final peak fit, returned
-# peaks are not guaranteed to surpass this value in amplitude.
+# peaks are not guaranteed to surpass this value in height.
 #
-# Note: there are two different amplitude-related halting conditions for the peak searching.
+# Note: there are two different height-related halting conditions for the peak searching.
 # By default, the relative (standard-deviation based) threshold is defined, whereas the
 # absolute threshold is set to zero (this default is because there is no general way to
 # set this value without knowing the scale of the data). If both are defined, both are
@@ -182,7 +182,7 @@ print('Power Values: \t\t', fm.power_spectrum[0:5])
 ###################################################################################################
 
 # Initialize FOOOF model, with some specified settings
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_amplitude=0.15)
+fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 
 # Fit FOOOF
 fm.report(freqs, spectrum, freq_range)

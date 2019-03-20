@@ -52,7 +52,7 @@ Analysis Functions
 
     get_band_peak
     get_band_peak_group
-    get_highest_amp_peak
+    get_highest_peak
 
 Synth Code
 ----------

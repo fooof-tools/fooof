@@ -12,13 +12,14 @@ _spectrum_flat : 1d array
 _spectrum_peak_rm : 1d array
     Power spectrum with peaks removed (not flattened).
 _gaussian_params : 2d array
-    Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
+    Parameters that define the gaussian fit(s).
+    Each row is a gaussian, as [mean, height, standard deviation].
 _ap_fit : 1d array
     Values of the aperiodic fit.
 _peak_fit : 1d array
     Values of the peak fit (flattened).
-_ap_amp_thresh : float
-    Noise threshold for finding peaks above the aperiodic component.
+_ap_percentile_thresh : float
+    Percentile threshold for finding peaks above the aperiodic component.
 _ap_guess : list of [float, float, float]
     Guess parameters for fitting the aperiodic component.
 _ap_bounds : tuple of tuple of float
@@ -67,10 +68,10 @@ class FOOOF(object):
         Limits on possible peak width, as (lower_bound, upper_bound).
     max_n_peaks : int, optional, default: inf
         Maximum number of gaussians to be fit in a single spectrum.
-    min_peak_amplitude : float, optional, default: 0
-        Minimum amplitude threshold for a peak to be modeled.
+    min_peak_height : float, optional, default: 0
+        Absolute threshold for detecting peaks, in units of the input data.
     peak_threshold : float, optional, default: 2.0
-        Threshold for detecting peaks, units of standard deviation.
+        Relative threshold for detecting peaks, in units of standard deviation of the input data.
     aperiodic_mode : {'fixed', 'knee'}
         Which approach to take for fitting the aperiodic component.
     verbose : boolean, optional, default: True
@@ -92,7 +93,7 @@ class FOOOF(object):
         Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
         The knee parameter is only included if aperiodic component is fit with a knee.
     peak_params_ : 2d array
-        Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
+        Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
     r_squared_ : float
         R-squared of the fit between the input power spectrum and the full model fit.
     error_ : float
@@ -101,7 +102,7 @@ class FOOOF(object):
     Notes
     -----
     - Commonly used abbreviations used in FOOOF include
-      CF: center frequency, Amp: amplitude, BW: Bandwidth, ap: aperiodic
+      CF: center frequency, PW: power, BW: Bandwidth, ap: aperiodic
     - Input power spectra must be provided in linear scale.
       Internally they are stored in log10 scale, as this is what the model operates upon.
     - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
@@ -111,7 +112,7 @@ class FOOOF(object):
       get smoother power spectra, as this will give better FOOOF fits.
     """
 
-    def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_amplitude=0.0,
+    def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
                  peak_threshold=2.0, aperiodic_mode='fixed', verbose=True):
         """Initialize FOOOF object with run parameters."""
 
@@ -124,15 +125,15 @@ class FOOOF(object):
         # Set input parameters
         self.peak_width_limits = peak_width_limits
         self.max_n_peaks = max_n_peaks
-        self.min_peak_amplitude = min_peak_amplitude
+        self.min_peak_height = min_peak_height
         self.peak_threshold = peak_threshold
         self.aperiodic_mode = aperiodic_mode
         self.verbose = verbose
 
         ## SETTINGS - these are updateable by the user if required.
-        # Noise threshold, as a percentage of the lowest amplitude values in the total data to fit.
-        #  Defines the minimum amplitude, above residuals, to be considered a peak.
-        self._ap_amp_thresh = 0.025
+        # Noise threshold, as a percentage of the lowest magnitude values in the total data to fit.
+        #  Defines the minimum height, above residuals, to be considered a peak.
+        self._ap_percentile_thresh = 0.025
         # Guess parameters for aperiodic fitting, [offset, knee, exponent]
         #  If offset guess is None, the first value of the power spectrum is used as offset guess
         self._ap_guess = (None, 0, 2)
@@ -593,11 +594,11 @@ class FOOOF(object):
         # Flatten outliers - any points that drop below 0
         flatspec[flatspec < 0] = 0
 
-        # Amplitude threshold - in terms of # of points
-        perc_thresh = np.percentile(flatspec, self._ap_amp_thresh)
-        amp_mask = flatspec <= perc_thresh
-        freqs_ignore = freqs[amp_mask]
-        spectrum_ignore = power_spectrum[amp_mask]
+        # Use percential threshold, in terms of # of points, to extract and re-fit
+        perc_thresh = np.percentile(flatspec, self._ap_percentile_thresh)
+        perc_mask = flatspec <= perc_thresh
+        freqs_ignore = freqs[perc_mask]
+        spectrum_ignore = power_spectrum[perc_mask]
 
         # Second aperiodic fit - using results of first fit as guess parameters
         #  See note in _simple_ap_fit about warnings
@@ -621,38 +622,39 @@ class FOOOF(object):
         Returns
         -------
         gaussian_params : 2d array
-            Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
+            Parameters that define the gaussian fit(s).
+            Each row is a gaussian, as [mean, height, standard deviation].
         """
 
         # Initialize matrix of guess parameters for gaussian fitting.
         guess = np.empty([0, 3])
 
         # Find peak: Loop through, finding a candidate peak, and fitting with a guass gaussian.
-        #  Stopping procedure based on either # of peaks, or the threshold/amplitude limits.
+        #  Stopping procedure based on either # of peaks, or the relative or absolute height thresholds.
         while len(guess) < self.max_n_peaks:
 
             # Find candidate peak - the maximum point of the flattened spectrum.
             max_ind = np.argmax(flat_iter)
-            max_amp = flat_iter[max_ind]
+            max_height = flat_iter[max_ind]
 
-            # Stop searching for peaks peaks once drops below amplitude threshold.
-            if max_amp <= self.peak_threshold * np.std(flat_iter):
+            # Stop searching for peaks peaks once drops below height threshold.
+            if max_height <= self.peak_threshold * np.std(flat_iter):
                 break
 
-            # Set the guess parameters for gaussian fitting - CF and amp.
+            # Set the guess parameters for gaussian fitting - mean and height.
             guess_freq = self.freqs[max_ind]
-            guess_amp = max_amp
+            guess_height = max_height
 
-            # Halt fitting process if candidate peak drops below minimum amp size.
-            if not guess_amp > self.min_peak_amplitude:
+            # Halt fitting process if candidate peak drops below minimum height.
+            if not guess_height > self.min_peak_height:
                 break
 
-            # Data-driven first guess BW
-            #  Find half-amp index on each side of the center frequency.
-            half_amp = 0.5 * max_amp
-            le_ind = next((x for x in range(max_ind - 1, 0, -1) if flat_iter[x] <= half_amp), None)
+            # Data-driven first guess at standard deviation
+            #  Find half height index on each side of the center frequency.
+            half_height = 0.5 * max_height
+            le_ind = next((x for x in range(max_ind - 1, 0, -1) if flat_iter[x] <= half_height), None)
             ri_ind = next((x for x in range(max_ind + 1, len(flat_iter), 1)
-                           if flat_iter[x] <= half_amp), None)
+                           if flat_iter[x] <= half_height), None)
 
             # Keep bandwidth estimation from the shortest side.
             #  We grab shortest to avoid estimating very large std from overalapping peaks.
@@ -672,10 +674,10 @@ class FOOOF(object):
                 guess_std = self._gauss_std_limits[1]
 
             # Collect guess parameters.
-            guess = np.vstack((guess, (guess_freq, guess_amp, guess_std)))
+            guess = np.vstack((guess, (guess_freq, guess_height, guess_std)))
 
             # Subtract best-guess gaussian.
-            peak_gauss = gaussian_function(self.freqs, guess_freq, guess_amp, guess_std)
+            peak_gauss = gaussian_function(self.freqs, guess_freq, guess_height, guess_std)
             flat_iter = flat_iter - peak_gauss
 
         # Check peaks based on edges, and on overlap
@@ -699,19 +701,19 @@ class FOOOF(object):
         Parameters
         ----------
         guess : 2d array, shape=[n_peaks, 3]
-            Guess parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks, as gaussian parameters.
 
         Returns
         -------
         gaussian_params : 2d array, shape=[n_peaks, 3]
-            Parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
+            Parameters for gaussian fits to peaks, as gaussian parameters.
         """
 
-        # Set the bounds for center frequency, enforce positive amp value, and set bandwidth limits.
-        #  Note that 'guess' is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std.
+        # Set the bounds for center frequency, enforce positive height value, and set bandwidth limits.
+        #  Note that 'guess' is in terms of gaussian standard deviation, so +/- BW is 2 * the guess_gauss_std.
         #  This set of list comprehensions is a way to end up with bounds in the form:
-        #   ((cf_low_bound_peak1, amp_low_bound_peak1, bw_low_bound_peak1, *repeated for n_peak*),
-        #    (cf_high_bound_peak1, amp_high_bound_peak1, bw_high_bound_peak, *repeated for n_peak*))
+        #   ((cf_low_bound_peak1, height_low_bound_peak1, bw_low_bound_peak1, *repeated for n_peak*),
+        #    (cf_high_bound_peak1, height_high_bound_peak1, bw_high_bound_peak, *repeated for n_peak*))
         lo_bound = [[peak[0] - 2 * self._cf_bound * peak[2], 0, self._gauss_std_limits[0]]
                     for peak in guess]
         hi_bound = [[peak[0] + 2 * self._cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]
@@ -744,21 +746,23 @@ class FOOOF(object):
         Parameters
         ----------
         gaus_params : 2d array
-            Parameters that define the gaussian fit(s), with each row as [mean, amp, std].
+            Parameters that define the gaussian fit(s), as gaussian parameters.
 
         Returns
         -------
         peak_params : 2d array
-            Fitted parameter values for the peaks, with each row as [CF, Amp, BW].
+            Fitted parameter values for the peaks, with each row as [CF, PW, BW].
 
         Notes
         -----
-        Amplitude is updated to the amplitude of peak above the aperiodic fit.
-        This is returned instead of the gaussian amplitude, as Gaussian amplitude
-        is harder to interpret, due to peak overlaps.
+        The gaussian center is unchanged as the peak center frequency.
 
-        Bandwidth is updated to be 'both-sided', as opposed to the gaussian
-        standard deviation parameter, which is 1-sided.
+        The gaussian height is updated to reflect the height of the peak above
+        the aperiodic fit. This is returned instead of the gaussian height, as
+        the gaussian height is harder to interpret, due to peak overlaps.
+
+        The gaussian standard deviation is updated to be 'both-sided', to reflect the
+        'bandwidth' of the peak, as opposed to the gaussian parameter, which is 1-sided.
 
         Performing this conversion requires that the model has been run,
         with `freqs`, `fooofed_spectrum_` and `ap_fit` all required to be available.
@@ -781,17 +785,17 @@ class FOOOF(object):
 
 
     def _drop_peak_cf(self, guess):
-        """Check whether to drop peaks based CF proximity to edge.
+        """Check whether to drop peaks based on center's proximity to the edge of the spectrum.
 
         Parameters
         ----------
         guess : 2d array, shape=[n_peaks, 3]
-            Guess parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks, as gaussian parameters.
 
         Returns
         -------
         guess : 2d array, shape=[n_peaks, 3]
-            Guess parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks, as gaussian parameters.
         """
 
         cf_params = [item[0] for item in guess]
@@ -802,29 +806,29 @@ class FOOOF(object):
             (np.abs(np.subtract(cf_params, self.freq_range[0])) > bw_params) & \
             (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)
 
-        # Drop peaks that fail CF edge criterion
+        # Drop peaks that fail the center frequency edge criterion
         guess = np.array([d for (d, keep) in zip(guess, keep_peak) if keep])
 
         return guess
 
 
     def _drop_peak_overlap(self, guess):
-        """Checks whether to drop peaks based on overlap.
+        """Checks whether to drop gaussians based on amount of overlap.
 
         Parameters
         ----------
         guess : 2d array, shape=[n_peaks, 3]
-            Guess parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks, as gaussian parameters.
 
         Returns
         -------
         guess : 2d array, shape=[n_peaks, 3]
-            Guess parameters for gaussian fits to peaks, with each row as: [CF, amp, BW].
+            Guess parameters for gaussian fits to peaks, as gaussian parameters.
 
         Notes
         -----
-        For any peak guesses with an overlap that crosses the threshold,
-        the lower amplitude guess is dropped.
+        For any gaussians with an overlap that crosses the threshold,
+        the lowest height guess guassian is dropped.
         """
 
         # Sort the peak guesses, so can check overlap of adjacent peaks
@@ -843,7 +847,7 @@ class FOOOF(object):
             # Check if bound of current peak extends into next peak
             if b_0[1] > b_1[0]:
 
-                # If so, get the index of the lowest amplitude peak (to drop)
+                # If so, get the index of the gaussian with the lowest height (to drop)
                 drop_inds.append([ind, ind + 1][np.argmin([guess[ind][1], guess[ind + 1][1]])])
 
         # Drop any peaks guesses that overlap too much, based on threshold.

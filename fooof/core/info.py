@@ -13,7 +13,7 @@ def get_obj_desc():
                                'r_squared_', 'error_',
                                '_gaussian_params'],
                   'settings' : ['peak_width_limits', 'max_n_peaks',
-                                'min_peak_amplitude', 'peak_threshold',
+                                'min_peak_height', 'peak_threshold',
                                 'aperiodic_mode'],
                   'data' : ['power_spectrum', 'freq_range', 'freq_res'],
                   'data_info' : ['freq_range', 'freq_res'],
@@ -40,12 +40,12 @@ def get_data_indices(aperiodic_mode):
     """
 
     indices = {
-        'CF'  : 0,
-        'Amp' : 1,
-        'BW'  : 2,
+        'CF' : 0,
+        'PW' : 1,
+        'BW' : 2,
         'offset' : 0,
-        'knee'      : 1 if aperiodic_mode == 'knee' else None,
-        'exponent'  : 1 if aperiodic_mode == 'fixed' else 2
+        'knee' : 1 if aperiodic_mode == 'knee' else None,
+        'exponent' : 1 if aperiodic_mode == 'fixed' else 2
     }
 
     return indices

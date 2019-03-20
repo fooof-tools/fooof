@@ -54,7 +54,7 @@ spectrum = np.load('./dat/spectrum_2.npy')
 ###################################################################################################
 
 # Initialize a FOOOF object, with some settings
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6 , min_peak_amplitude=0.15)
+fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6 , min_peak_height=0.15)
 
 ###################################################################################################
 #
@@ -113,7 +113,7 @@ plot_spectrum(fm.freqs, fm._spectrum_flat, plt_log, label='Flattened Spectrum')
 #
 # - The maximum point of the flattened spectrum is found.
 #
-#   - If this point fails to pass the relative or absolute amplitude threshold,
+#   - If this point fails to pass the relative or absolute height threshold,
 #     the procedure halts.
 # - A Gaussian is fit around this maximum point
 # - This 'guess' Gaussian is then subtracted from the flatted spectrum

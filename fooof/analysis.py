@@ -65,7 +65,7 @@ def get_band_peaks_group(peak_params, band, n_fits):
     Returns
     -------
     band_peaks : 2d array
-        Peak data. Each row is a peak, as [CF, Amp, BW].
+        Peak data. Each row is a peak, as [CF, PW, BW].
 
     Notes
     -----
@@ -104,12 +104,12 @@ def get_band_peak(peak_params, band, ret_one=True):
         Defines the band of interest, as (lower_frequency_bound, upper_frequency_bound).
     ret_one : bool, optional, default: True
         Whether to return single peak (if True) or all peaks within the range found (if False).
-        If True, returns the highest power peak within the search range.
+        If True, returns the highest peak within the search range.
 
     Returns
     -------
     band_peaks : 1d or 2d array
-        Peak data. Each row is a peak, as [CF, Amp, BW]
+        Peak data. Each row is a peak, as [CF, PW, BW]
     """
 
     # Return nan array if empty input
@@ -127,17 +127,17 @@ def get_band_peak(peak_params, band, ret_one=True):
 
     band_peaks = peak_params[peak_inds, :]
 
-    # If results > 1 and ret_one, then we return the highest power peak
+    # If results > 1 and ret_one, then we return the highest peak
     #    Call a sub-function to select highest power peak in band
     if n_peaks > 1 and ret_one:
-        band_peaks = get_highest_amp_peak(band_peaks)
+        band_peaks = get_highest_peak(band_peaks)
 
     # If results == 1, return single peak
     return np.squeeze(band_peaks)
 
 
-def get_highest_amp_peak(band_peaks):
-    """Searches for the highest amplitude peak.
+def get_highest_peak(band_peaks):
+    """Searches for the highest peak.
 
     Parameters
     ----------
@@ -147,7 +147,7 @@ def get_highest_amp_peak(band_peaks):
     Returns
     -------
     1d array
-        Seleced peak data. Row is a peak, as [CF, Amp, BW].
+        Peak data. Each row is a peak, as [CF, PW, BW].
     """
 
     # Catch & return NaN if empty

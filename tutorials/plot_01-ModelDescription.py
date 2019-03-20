@@ -75,7 +75,7 @@ A theoretical / mathematical description of the FOOOF model.
 #
 # Each peak is defined in terms of parameters `a`, `c` and `w`, where:
 #
-# - `a` is the amplitude of the peak, over and above the aperiodic signal
+# - `a` is the height of the peak, over and above the aperiodic signal
 # - `c` is the center frequency of the peak
 # - `w` is the width of the peak
 # - `F` is the vector of input frequencies

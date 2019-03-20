@@ -17,7 +17,7 @@ FOOOF conceives of a model of the power spectrum as a combination of two distinc
 
 This model driven approach can be used to measure periodic and aperiodic properties of electrophysiological data, including EEG, MEG, ECoG and LFP data.
 
-The benefit of using FOOOF for measuring putative oscillations, is that peaks in the power spectrum are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest and controlling for the aperiodic component. FOOOF also gives you a measure of this aperiodic components of the signal, allowing for measuring and comparison of 1/f like components of the signal within and between subjects.
+The benefit of using FOOOF for measuring putative oscillations, is that peaks in the power spectrum are characterized in terms of their specific center frequency, power and bandwidth without requiring predefining specific bands of interest and controlling for the aperiodic component. FOOOF also gives you a measure of this aperiodic components of the signal, allowing for measuring and comparison of 1/f like components of the signal within and between subjects.
 
 ## Documentation
 
@@ -114,13 +114,13 @@ FOOOF.report() fits the model, plots the original power spectrum with the associ
 FOOOF also accepts parameters for fine-tuning the fit. For example:
 
 ```python
-fm = FOOOF(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_amplitude=0.1, peak_threshold=2.0)
+fm = FOOOF(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_height=0.1, peak_threshold=2.0)
 ```
 
 * `peak_width_limits` sets the possible lower- and upper-bounds for the fitted peak widths.
 * `max_n_peaks` sets the maximum number of peaks to fit.
-* `min_peak_amp` sets an absolute limit on the minimum amplitude (above aperiodic) for any extracted peak.
-* `peak_threshold`, also sets a threshold above which a peak amplitude must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.
+* `min_peak_height` sets an absolute limit on the minimum height (above aperiodic) for any extracted peak.
+* `peak_threshold`, also sets a threshold above which a peak height must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.
 
 FOOOF also has convenience methods for running the FOOOF model across matrices of multiple power spectra, as well as functionality for saving and loading results, creating reports from FOOOF outputs, and utilities to further analize FOOOF results.
 

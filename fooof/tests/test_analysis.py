@@ -43,18 +43,18 @@ def test_get_band_peak():
     # Test multiple results - return one
     assert np.array_equal(get_band_peak(dat, [10, 15], ret_one=True), [14, 2, 4])
 
-def test_get_highest_amp_osc():
+def test_get_highest_peak():
 
     dat = np.array([[10, 1, 1.8], [14, 2, 4], [12, 3, 2]])
 
-    assert np.array_equal(get_highest_amp_peak(dat), [12, 3, 2])
+    assert np.array_equal(get_highest_peak(dat), [12, 3, 2])
 
 def test_empty_inputs():
 
     dat = np.empty(shape=[0, 3])
 
     assert np.all(get_band_peak(dat, [8, 12]))
-    assert np.all(get_highest_amp_peak(dat))
+    assert np.all(get_highest_peak(dat))
 
     dat = np.empty(shape=[0, 4])
 
