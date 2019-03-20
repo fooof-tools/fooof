@@ -12,8 +12,10 @@ import numpy as np
 import pkg_resources as pkg
 
 from fooof import FOOOF
+from fooof.data import FOOOFSettings, FOOOFDataInfo, FOOOFResults
 from fooof.synth import gen_power_spectrum
-from fooof.core.utils import group_three, get_obj_desc
+from fooof.core.utils import group_three
+from fooof.core.info import get_obj_desc
 
 from fooof.tests.utils import get_tfm, plot_test
 
@@ -105,6 +107,52 @@ def test_fooof_load():
     tfm.load(file_name_res, file_path)
     assert tfm
 
+def test_adds():
+    """Tests methods that add data to FOOOF objects.
+
+    Checks: add_data, add_settings, add_results.
+    """
+
+    # Note: uses it's own tfm, to not add stuff to the global one
+    tfm = get_tfm()
+
+    # Test adding data
+    freqs, pows = np.array([1, 2, 3]), np.array([10, 10, 10])
+    tfm.add_data(freqs, pows)
+    assert np.all(tfm.freqs == freqs)
+    assert np.all(tfm.power_spectrum == np.log10(pows))
+
+    # Test adding settings
+    fooof_settings = FOOOFSettings([1, 4], 6, 0, 2, 'fixed')
+    tfm.add_settings(fooof_settings)
+    for setting in get_obj_desc()['settings']:
+        assert getattr(tfm, setting) == getattr(fooof_settings, setting)
+
+    # Test adding data info
+    fooof_data_info = FOOOFDataInfo([3, 40], 0.5)
+    tfm.add_data_info(fooof_data_info)
+    for data_info in get_obj_desc()['data_info']:
+        assert getattr(tfm, data_info) == getattr(fooof_data_info, data_info)
+
+    # Test adding results
+    fooof_results = FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25])
+    tfm.add_results(fooof_results)
+    for setting in get_obj_desc()['results']:
+        assert getattr(tfm, setting) == getattr(fooof_results, setting.strip('_'))
+
+def test_gets(tfm):
+    """Tests methods that return FOOOF data objects.
+
+    Checks: get_settings, get_data_info, get_results
+    """
+
+    settings = tfm.get_settings()
+    assert isinstance(settings, FOOOFSettings)
+    data_info = tfm.get_data_info()
+    assert isinstance(data_info, FOOOFDataInfo)
+    results = tfm.get_results()
+    assert isinstance(results, FOOOFResults)
+
 def test_copy():
     """Test copy FOOOF method."""
 
@@ -113,17 +161,15 @@ def test_copy():
 
     assert tfm != ntfm
 
-def test_fooof_prints_get(tfm):
-    """Test methods that print, return results (alias and pass through methods).
+def test_fooof_prints(tfm):
+    """Test methods that print (alias and pass through methods).
 
-    Checks: print_settings, print_results, get_results."""
+    Checks: print_settings, print_results.
+    """
 
     tfm.print_settings()
     tfm.print_results()
     tfm.print_report_issue()
-
-    out = tfm.get_results()
-    assert out
 
 @plot_test
 def test_fooof_plot(tfm, skip_if_no_mpl):
@@ -140,12 +186,12 @@ def test_fooof_resets():
     tfm._reset_data_results()
     tfm._reset_internal_settings()
 
-    assert tfm.freqs is None and tfm.freq_range is None and tfm.freq_res is None  \
-        and tfm.power_spectrum is None and tfm.fooofed_spectrum_ is None and tfm._spectrum_flat is None \
-        and tfm._spectrum_peak_rm is None and tfm._ap_fit is None and tfm._peak_fit is None
+    desc = get_obj_desc()
 
-    assert np.all(np.isnan(tfm.aperiodic_params_)) and np.all(np.isnan(tfm.peak_params_)) \
-        and np.all(np.isnan(tfm.r_squared_)) and np.all(np.isnan(tfm.error_)) and np.all(np.isnan(tfm._gaussian_params))
+    for data in ['data', 'results', 'model_components']:
+        for field in desc[data]:
+            assert getattr(tfm, field) == None
+    assert tfm.freqs == None and tfm.fooofed_spectrum_ == None
 
 def test_fooof_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""

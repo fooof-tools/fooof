@@ -27,8 +27,8 @@ def gen_wid_warn_str(freq_res, bwl):
 
     output = '\n'.join([
         '',
-        "FOOOF WARNING: Lower-bound peak width limit is < or ~= the frequency resolution: " + \
-            "{:1.2f} <= {:1.2f}".format(freq_res, bwl),
+        'FOOOF WARNING: Lower-bound peak width limit is < or ~= the frequency resolution: ' + \
+            '{:1.2f} <= {:1.2f}'.format(freq_res, bwl),
         '\tLower bounds below frequency-resolution have no effect (effective lower bound is freq-res)',
         '\tToo low a limit may lead to overfitting noise as small bandwidth peaks.',
         '\tWe recommend a lower bound of approximately 2x the frequency resolution.',
@@ -57,11 +57,11 @@ def gen_settings_str(f_obj, description=False, concise=False):
     """
 
     # Parameter descriptions to print out, if requested
-    desc = {'aperiodic_mode'       : 'The aproach taken to fitting the aperiodic component.',
-            'peak_width_limits'     : 'Enforced limits for peak widths, in Hz.',
+    desc = {'peak_width_limits'     : 'Enforced limits for peak widths, in Hz.',
             'max_n_peaks'           : 'The maximum number of peaks that can be extracted.',
-            'min_peak_amplitude'    : "Minimum absolute amplitude of a peak, above aperiodic component.",
-            'peak_threshold'    : "Threshold at which to stop searching for peaks."}
+            'min_peak_amplitude'    : 'Minimum absolute amplitude of a peak, above aperiodic component.',
+            'peak_threshold'        : 'Threshold at which to stop searching for peaks.',
+            'aperiodic_mode'        : 'The aproach taken to fitting the aperiodic component.'}
 
     # Clear description for printing if not requested
     if not description:
@@ -77,16 +77,16 @@ def gen_settings_str(f_obj, description=False, concise=False):
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Aperiodic Mode : {}'.format(f_obj.aperiodic_mode),
-                        '{}'.format(desc['aperiodic_mode']),
-                        'Peak Width Limits : {}'.format(f_obj.peak_width_limits),
+        *[el for el in ['Peak Width Limits : {}'.format(f_obj.peak_width_limits),
                         '{}'.format(desc['peak_width_limits']),
                         'Max Number of Peaks : {}'.format(f_obj.max_n_peaks),
                         '{}'.format(desc['max_n_peaks']),
                         'Minimum Amplitude : {}'.format(f_obj.min_peak_amplitude),
                         '{}'.format(desc['min_peak_amplitude']),
                         'Amplitude Threshold: {}'.format(f_obj.peak_threshold),
-                        '{}'.format(desc['peak_threshold'])] if el != ''],
+                        '{}'.format(desc['peak_threshold']),
+                        'Aperiodic Mode : {}'.format(f_obj.aperiodic_mode),
+                        '{}'.format(desc['aperiodic_mode'])] if el != ''],
 
         # Footer
         '',
@@ -280,7 +280,7 @@ def gen_issue_str(concise=False):
         'If FOOOF gives you any weird / bad fits, please let us know!',
         'To do so, send us a FOOOF report, and a FOOOF data file, ',
         '',
-        "With a FOOOF object (fm), after fitting, run the following commands:",
+        'With a FOOOF object (fm), after fitting, run the following commands:',
         "fm.create_report('FOOOF_bad_fit_report')",
         "fm.save('FOOOF_bad_fit_data', True, True, True)",
         '',

@@ -11,9 +11,9 @@ import pkg_resources as pkg
 import numpy as np
 
 from fooof.group import *
-from fooof.fit import FOOOFResult
+from fooof.fit import FOOOFResults
 from fooof.synth import gen_group_power_spectra
-from fooof.core.utils import get_obj_desc
+from fooof.core.info import get_obj_desc
 
 from fooof.tests.utils import default_group_params, plot_test
 
@@ -51,7 +51,7 @@ def test_fg_fit():
 
     assert out
     assert len(out) == n_spectra
-    assert isinstance(out[0], FOOOFResult)
+    assert isinstance(out[0], FOOOFResults)
     assert np.all(out[1].aperiodic_params)
 
 def test_fg_fit_par():
@@ -66,7 +66,7 @@ def test_fg_fit_par():
 
     assert out
     assert len(out) == n_spectra
-    assert isinstance(out[0], FOOOFResult)
+    assert isinstance(out[0], FOOOFResults)
     assert np.all(out[1].aperiodic_params)
 
 def test_fg_print(tfg):
@@ -144,3 +144,12 @@ def test_fg_get_fooof(tfg):
     # Check that regenerated model is created
     for result in desc['results']:
         assert np.all(getattr(tfm1, result))
+
+    # Test when object has no data (clear a copy of tfg)
+    new_tfg = tfg.copy()
+    new_tfg._reset_data_results(False, True, True, True)
+    tfm2 = new_tfg.get_fooof(0, True)
+    assert tfm2
+    # Check that data info is copied over properly
+    for data_info in desc['data_info']:
+        assert getattr(tfm2, data_info)
