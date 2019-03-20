@@ -2,12 +2,63 @@
 
 import numpy as np
 
-from fooof import FOOOFGroup
-from fooof.synth.gen import gen_freqs
+from fooof import FOOOF, FOOOFGroup
+from fooof.data import FOOOFResults
 from fooof.utils import compare_info
+from fooof.synth.gen import gen_freqs
+from fooof.analysis import get_band_peaks_fg
 
 ###################################################################################################
 ###################################################################################################
+
+def average_fg(fg, bands, avg_method='mean'):
+    """Average across a FOOOFGroup object.
+
+    Parameters
+    ----------
+    fg : FOOOFGroup
+        A FOOOFGroup object with data to average across.
+    bands : Bands
+        Bands object that defines the frequency bands to collapse peaks across.
+    avg : {'mean', 'median'}
+        Averaging function to use.
+
+    Returns
+    -------
+    fm : FOOOF
+        FOOOF object containing the average results from the FOOOFGroup input.
+    """
+
+    if avg_method not in ['mean', 'median']:
+        raise ValueError('Requested average method not understood.')
+    if not len(fg):
+        raise ValueError('Input FOOOFGroup has no fit results - can not proceed.')
+
+    if avg_method == 'mean':
+        avg_func = np.nanmean
+    elif avg_method == 'median':
+        avg_func = np.nanmedian
+
+    ap_params = avg_func(fg.get_all_data('aperiodic_params'), 0)
+
+    peak_params = np.array([avg_func(get_band_peaks_fg(fg, band, 'peak_params'), 0) \
+                            for label, band in bands])
+    gaussian_params = np.array([avg_func(get_band_peaks_fg(fg, band, 'gaussian_params'), 0) \
+                                for label, band in bands])
+
+    r2 = avg_func(fg.get_all_data('r_squared'))
+    error = avg_func(fg.get_all_data('error'))
+
+    results = FOOOFResults(ap_params, peak_params, r2, error, gaussian_params)
+
+    # Create the new FOOOF object, with settings, data info & results
+    fm = FOOOF()
+    fm.add_settings(fg.get_settings())
+    fm.add_data_info(fg.get_data_info())
+    fm.add_results(results)
+
+    return fm
+
 
 def combine_fooofs(fooofs):
     """Combine a group of FOOOF and/or FOOOFGroup objects into a single FOOOFGroup object.

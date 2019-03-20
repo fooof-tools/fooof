@@ -14,6 +14,11 @@ from fooof.tests.utils import default_group_params
 ###################################################################################################
 ###################################################################################################
 
+def test_average_fg(tfg, tbands):
+
+    nfm = average_fg(tfg, tbands)
+    assert nfm
+
 def test_combine_fooofs(tfm, tfg):
 
     tfm2 = tfm.copy(); tfm3 = tfm.copy()

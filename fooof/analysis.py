@@ -1,19 +1,64 @@
-"""Basic analysis functions for FOOOF results."""
+"""Analysis functions for FOOOF results."""
 
 import numpy as np
 
 ###################################################################################################
 ###################################################################################################
 
-def get_band_peak_group(peak_params, band_def, n_fits):
-    """Extracts peaks within a given band of interest, for a group of FOOOF model fits.
+def get_band_peak_fm(fm, band, ret_one=True, attribute='peak_params'):
+    """Extract peaks from a band of interest from a FOOOFGroup object.
+
+    Parameters
+    ----------
+    fm : FOOOF
+        FOOOF object to extract peak data from.
+    band : tuple of (float, float)
+        Defines the band of interest, as (lower_frequency_bound, upper_frequency_bound).
+    ret_one : bool, optional, default: True
+        Whether to return single peak (if True) or all peaks within the range found (if False).
+        If True, returns the highest power peak within the search range.
+    attribute : {'peak_params', 'gaussian_params'}
+        Which attribute of peak data to extract data from.
+
+    Returns
+    -------
+    1d or 2d array
+        Peak data. Each row is a peak, as [CF, Amp, BW]
+    """
+
+    return get_band_peak(getattr(fm, attribute + '_'), band, ret_one)
+
+
+def get_band_peaks_fg(fg, band, attribute='peak_params'):
+    """Extract peaks from a band of interest from a FOOOF object.
+
+    Parameters
+    ----------
+    fg : FOOOFGroup
+        FOOOFGroup object to extract peak data from.
+    band : tuple of (float, float)
+        Defines the band of interest, as (lower_frequency_bound, upper_frequency_bound).
+    attribute : {'peak_params', 'gaussian_params'}
+        Which attribute of peak data to extract data from.
+
+    Returns
+    -------
+    2d array
+        Peak data. Each row is a peak, as [CF, Amp, BW].
+    """
+
+    return get_band_peaks_group(fg.get_all_data(attribute), band, len(fg))
+
+
+def get_band_peaks_group(peak_params, band, n_fits):
+    """Extracts peaks within a given band of interest.
 
     Parameters
     ----------
     peak_params : 2d array
         Peak parameters, for a group fit, from FOOOF, with shape of [n_peaks, 4].
-    band_def : [float, float]
-        Defines the band of interest, as [lower_frequency_bound, upper_frequency_bound], in Hz.
+    band : tuple of (float, float)
+        Defines the band of interest, as (lower_frequency_bound, upper_frequency_bound).
     n_fits : int
         The number of model fits in the FOOOFGroup data.
 
@@ -34,29 +79,29 @@ def get_band_peak_group(peak_params, band_def, n_fits):
 
     >>> peaks = np.empty((0, 3))
     >>> for f_res in fg:
-    >>>     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band_def, ret_one=False)))
+    >>>     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band, ret_one=False)))
 
     """
 
     band_peaks = np.zeros(shape=[n_fits, 3])
-    for ind in range(n_fits):
 
-        # Extacts an array per FOOOF fit, and extracts band peaks from it
+    # Extacts an array per FOOOF fit, and extracts band peaks from it
+    for ind in range(n_fits):
         band_peaks[ind, :] = get_band_peak(peak_params[tuple([peak_params[:, -1] == ind])][:, 0:3],
-                                           band_def=band_def, ret_one=True)
+                                           band=band, ret_one=True)
 
     return band_peaks
 
 
-def get_band_peak(peak_params, band_def, ret_one=True):
-    """Extracts peaks within a given band of interest, for a FOOOF model fit.
+def get_band_peak(peak_params, band, ret_one=True):
+    """Extracts peaks within a given band of interest.
 
     Parameters
     ----------
     peak_params : 2d array
         Peak parameters, from FOOOF, with shape of [n_peaks, 3].
-    band_def : [float, float]
-        Defines the band of interest, as [lower_frequency_bound, upper_frequency_bound].
+    band : tuple of (float, float)
+        Defines the band of interest, as (lower_frequency_bound, upper_frequency_bound).
     ret_one : bool, optional, default: True
         Whether to return single peak (if True) or all peaks within the range found (if False).
         If True, returns the highest peak within the search range.
@@ -72,7 +117,7 @@ def get_band_peak(peak_params, band_def, ret_one=True):
         return np.array([np.nan, np.nan, np.nan])
 
     # Find indices of peaks in the specified range, and check the number found
-    peak_inds = (peak_params[:, 0] >= band_def[0]) & (peak_params[:, 0] <= band_def[1])
+    peak_inds = (peak_params[:, 0] >= band[0]) & (peak_params[:, 0] <= band[1])
     n_peaks = sum(peak_inds)
 
     # If there are no peaks within the specified range
@@ -87,7 +132,7 @@ def get_band_peak(peak_params, band_def, ret_one=True):
     if n_peaks > 1 and ret_one:
         band_peaks = get_highest_peak(band_peaks)
 
-    # If results == 1, return peak - [cen, power, bw]
+    # If results == 1, return single peak
     return np.squeeze(band_peaks)
 
 
@@ -96,12 +141,12 @@ def get_highest_peak(band_peaks):
 
     Parameters
     ----------
-    peak_params : 2d array
+    band_peaks : 2d array
         Peak parameters, from FOOOF, with shape of [n_peaks, 3].
 
     Returns
     -------
-    band_peaks : array
+    1d array
         Peak data. Each row is a peak, as [CF, PW, BW].
     """
 
