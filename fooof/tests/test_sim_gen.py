@@ -4,7 +4,7 @@ import numpy as np
 
 from fooof.tests.utils import default_group_params
 
-from fooof.synth.gen import *
+from fooof.sim.gen import *
 
 ###################################################################################################
 ###################################################################################################

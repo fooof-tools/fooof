@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from fooof.synth.params import update_syn_ap_params
+from fooof.sim.params import update_syn_ap_params
 
 ###################################################################################################
 ###################################################################################################

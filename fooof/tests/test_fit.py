@@ -13,7 +13,7 @@ import pkg_resources as pkg
 
 from fooof import FOOOF
 from fooof.data import FOOOFSettings, FOOOFDataInfo, FOOOFResults
-from fooof.synth import gen_power_spectrum
+from fooof.sim import gen_power_spectrum
 from fooof.core.utils import group_three
 from fooof.core.info import get_obj_desc
 

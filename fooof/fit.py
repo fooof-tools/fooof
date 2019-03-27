@@ -49,7 +49,7 @@ from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_issue_s
 from fooof.plts.fm import plot_fm
 from fooof.utils import trim_spectrum
 from fooof.data import FOOOFResults, FOOOFSettings, FOOOFDataInfo
-from fooof.synth.gen import gen_freqs, gen_aperiodic, gen_peaks
+from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_peaks
 
 ###################################################################################################
 ###################################################################################################

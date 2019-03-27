@@ -12,7 +12,7 @@ import numpy as np
 
 from fooof.group import *
 from fooof.fit import FOOOFResults
-from fooof.synth import gen_group_power_spectra
+from fooof.sim import gen_group_power_spectra
 from fooof.core.info import get_obj_desc
 
 from fooof.tests.utils import default_group_params, plot_test

@@ -6,7 +6,7 @@ import numpy as np
 
 from fooof.utils import compare_info
 from fooof.group import FOOOFGroup
-from fooof.synth import gen_group_power_spectra
+from fooof.sim import gen_group_power_spectra
 
 from fooof.funcs import *
 from fooof.tests.utils import default_group_params

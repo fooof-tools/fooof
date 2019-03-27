@@ -2,9 +2,9 @@
 
 import numpy as np
 
-from fooof.synth.gen import gen_power_spectrum
-from fooof.synth.params import SynParams
-from fooof.synth.transform import *
+from fooof.sim.gen import gen_power_spectrum
+from fooof.sim.params import SynParams
+from fooof.sim.transform import *
 
 ###################################################################################################
 ###################################################################################################
