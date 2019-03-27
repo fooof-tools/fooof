@@ -10,15 +10,15 @@ Using FOOOFGroup to run FOOOF across multiple power spectra.
 # FOOOF imports: import FOOOFGroup object
 from fooof import FOOOFGroup
 
-# Import some utilities for synthesizing some test data
-from fooof.synth.params import param_sampler
-from fooof.synth.gen import gen_group_power_spectra
+# Import some utilities for simulating some test data
+from fooof.sim.params import param_sampler
+from fooof.sim.gen import gen_group_power_spectra
 
 ###################################################################################################
-# Synthesizing Power Spectra
+# Simulated Power Spectra
 # --------------------------
 #
-# FOOOF includes some support for creating synthetic power-spectra, that mimic real data.
+# FOOOF includes some support for creating simulated power-spectra, that mimic real data.
 #
 # Here we will use that functionality to create a matrix of power spectra to test with.
 #
@@ -27,12 +27,12 @@ from fooof.synth.gen import gen_group_power_spectra
 # them to generate power spectra.
 #
 # If you would like to generate single power spectra, you can use :func:`gen_power_spectrum`,
-# also in `fooof.synth.gen`.
+# also in `fooof.sim.gen`.
 #
 
 ###################################################################################################
 
-# Settings for synthesizing power spectra
+# Settings for simulating power spectra
 n_spectra = 10
 f_range = [3, 40]
 
@@ -55,7 +55,7 @@ gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
 ###################################################################################################
 
-# Generate the group of synthetic spectra
+# Generate the group of simulated spectra
 #  Note that this function also returns a list of the parameters for each func
 freqs, spectra, syn_params = gen_group_power_spectra(n_spectra, f_range, ap_opts, gauss_opts)
 

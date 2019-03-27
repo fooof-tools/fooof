@@ -1,15 +1,15 @@
 """
-Synthetic Parameters
+Simulated Parameters
 ====================
 
-Manage parameters for creating synthetic power spectra.
+Manage parameters for creating simulated power spectra.
 """
 
 ###################################################################################################
 
 # Import fooof functions for creating spectra and managing parameters
-from fooof.synth.params import param_sampler, param_iter, Stepper
-from fooof.synth.gen import gen_power_spectrum, gen_group_power_spectra
+from fooof.sim.params import param_sampler, param_iter, Stepper
+from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
 
 # Import some fooof plotting functions
 from fooof.plts.spectra import plot_spectrum, plot_spectra
@@ -18,7 +18,7 @@ from fooof.plts.spectra import plot_spectrum, plot_spectra
 # SynParams
 # ~~~~~~~~~
 #
-# When you synthesize multiple power spectra, FOOOF uses `SynParams` objects to
+# When you simulate multiple power spectra, FOOOF uses `SynParams` objects to
 # keep track of the parameters used for each power spectrum.
 #
 # SynParams objects are named tuples with the following fields:
@@ -29,7 +29,7 @@ from fooof.plts.spectra import plot_spectrum, plot_spectra
 
 ###################################################################################################
 
-# Set up settings for synthesizing a group of power spectra
+# Set up settings for simulating a group of power spectra
 n_spectra = 2
 freq_range = [3, 40]
 ap_params = [[0.5, 1], [1, 1.5]]
@@ -38,7 +38,7 @@ nlv = 0.02
 
 ###################################################################################################
 
-# Synthesize a group of power spectra
+# Simulate a group of power spectra
 fs, ps, syn_params = gen_group_power_spectra(n_spectra, freq_range, ap_params, gauss_params, nlv)
 
 ###################################################################################################

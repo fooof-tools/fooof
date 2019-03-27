@@ -12,14 +12,14 @@ import numpy as np
 # FOOOF imports
 from fooof import FOOOF, FOOOFGroup
 
-# Import some utilities, and tools for creating synthetic power-spectra
-from fooof.synth.params import param_sampler
-from fooof.synth.gen import gen_power_spectrum, gen_group_power_spectra
+# Import some utilities, and tools for creating simulated power-spectra
+from fooof.sim.params import param_sampler
+from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
 from fooof.core.utils import group_three
 
 ###################################################################################################
 
-# Set random state, for consistency for generating synthetic data
+# Set random state, for consistency for generating simulated data
 np.random.seed(321)
 
 ####################################################################################################
@@ -123,7 +123,7 @@ np.random.seed(321)
 
 ###################################################################################################
 
-# Generate a noisy synthetic power spectrum
+# Generate a noisy simulated power spectrum
 
 # Set the frequency range to generate the power spectrum
 f_range = [1, 50]
@@ -134,7 +134,7 @@ gauss_params = [10, 1.0, 2.5, 20, 0.8, 2, 32, 0.6, 1]
 # Set the level of noise to generate the power spectrum with
 nlv = 0.1
 
-# Create a synthetic power spectrum
+# Create a simulated power spectrum
 freqs, spectrum = gen_power_spectrum(f_range, ap_params, gauss_params, nlv)
 
 ###################################################################################################
@@ -162,16 +162,16 @@ fm.report(freqs, spectrum)
 
 ###################################################################################################
 #
-# The synthetic definition is defined in terms of Gaussian parameters (these are
+# The simulated definition is defined in terms of Gaussian parameters (these are
 # slightly different from the peak parameters - see the note in tutorial 02).
 #
 # We can compare how FOOOF, with our updated settings, compares to the
-# ground truth of the synthetic spectrum.
+# ground truth of the simulated spectrum.
 #
 
 ###################################################################################################
 
-# Compare ground truth synthetic parameters to model fit results
+# Compare ground truth simulated parameters to model fit results
 print('Ground Truth \t\t FOOOF Reconstructions')
 for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*sy, *fi))
@@ -203,7 +203,7 @@ for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
 #
 
 ###################################################################################################
-# Create a cleaner synthetic power spectrum
+# Create a cleaner simulated power spectrum
 # -----------------------------------------
 
 # Set the frequency range to generate the power spectrum
@@ -215,7 +215,7 @@ gauss_params = [10, 1.0, 1.0, 20, 0.3, 1.5, 32, 0.25, 1]
 # Set the level of noise to generate the power spectrum with
 nlv = 0.025
 
-# Create a synthetic power spectrum
+# Create a simulated power spectrum
 freqs, spectrum = gen_power_spectrum([1, 50], ap_params, gauss_params, nlv=nlv)
 
 # Update settings to make sure they are sensitive to smaller peaks in smoother power spectra
@@ -224,7 +224,7 @@ fm.report(freqs, spectrum)
 
 ###################################################################################################
 
-# Check reconstructed parameters from synthetic definition
+# Check reconstructed parameters from simulated definition
 print('Ground Truth \t\t FOOOF Reconstructions')
 for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*sy, *fi))

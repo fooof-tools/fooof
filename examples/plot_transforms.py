@@ -8,14 +8,14 @@ Apply transformations to power spectra.
 ###################################################################################################
 
 # Imports
-from fooof.synth.gen import gen_power_spectrum
-from fooof.synth.transform import rotate_spectrum
+from fooof.sim.gen import gen_power_spectrum
+from fooof.sim.transform import rotate_spectrum
 
 from fooof.plts.spectra import plot_spectra
 
 ###################################################################################################
 
-# Generate a synthetic power spectrum
+# Generate a simulated power spectrum
 fs, ps = gen_power_spectrum([3, 40], [1, 1], [10, 0.5, 1])
 
 ###################################################################################################
