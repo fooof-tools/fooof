@@ -12,11 +12,11 @@ This documents is a set of guidelines for contributing to FOOOF on GitHub. This 
 
 ## Participation guidelines
 
-Please note that this project adheres to a [code of conduct](https://github.com/voytekresearch/fooof/CODE_OF_CONDUCT.md), that you are expected to uphold when participating in this project. 
+Please note that this project adheres to a [code of conduct](https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md), that you are expected to uphold when participating in this project. 
 
 ## How to report bugs
 
-If you are reporting a bug, please submit it to our [issue tracker](https://github.com/voytekresearch/fooof/issues). Please do your best to include the following:
+If you are reporting a bug, please submit it to our [issue tracker](https://github.com/fooof-tools/fooof/issues). Please do your best to include the following:
 
 1. A short, top-level summary of the bug (usually 1-2 sentences)
 2. A short, self-contained code snippet to reproduce the bug, ideally allowing a simple copy and paste to reproduce. Please do your best to reduce the code snippet to the minimum required.
@@ -25,7 +25,7 @@ If you are reporting a bug, please submit it to our [issue tracker](https://gith
 
 ## How to suggest changes or updates
 
-If there is a feature you would like to see, please submit it as an [issue](https://github.com/voytekresearch/fooof/issues), with a brief description of what you would like to see added / changed, and why. If it is feature that you would be willing to implement, please indicate that and, and follow the guidelines below for making a contribution. 
+If there is a feature you would like to see, please submit it as an [issue](https://github.com/fooof-tools/fooof/issues), with a brief description of what you would like to see added / changed, and why. If it is feature that you would be willing to implement, please indicate that and, and follow the guidelines below for making a contribution. 
 
 Note that, in terms of scope, FOOOF is quite specifically focused on it's core functionality of parameterizing neural power spectra, and helper utilities to visualize and work with model results, as well as tools to create synthetic power spectra. Procedures and utilities that do not deal with operating upon power spectra or FOOOF outputs directly will most likely be considered out of scope, and won't be added into FOOOF.
 
