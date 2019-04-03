@@ -117,7 +117,7 @@ html_theme_options = {
         ("Tutorial", "auto_tutorials/index"),
         ("Examples", "auto_examples/index"),
         ("Index", "contents"),
-        ("GitHub", "https://github.com/voytekresearch/fooof", True)
+        ("GitHub", "https://github.com/fooof-tools/fooof", True)
     ],
     'bootswatch_theme': "flatly",
 
