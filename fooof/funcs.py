@@ -6,7 +6,7 @@ from fooof import FOOOF, FOOOFGroup
 from fooof.data import FOOOFResults
 from fooof.utils import compare_info
 from fooof.sim.gen import gen_freqs
-from fooof.analysis import get_band_peaks_fg
+from fooof.analysis import get_band_peak_fg
 
 ###################################################################################################
 ###################################################################################################
@@ -41,9 +41,9 @@ def average_fg(fg, bands, avg_method='mean'):
 
     ap_params = avg_func(fg.get_all_data('aperiodic_params'), 0)
 
-    peak_params = np.array([avg_func(get_band_peaks_fg(fg, band, 'peak_params'), 0) \
+    peak_params = np.array([avg_func(get_band_peak_fg(fg, band, 'peak_params'), 0) \
                             for label, band in bands])
-    gaussian_params = np.array([avg_func(get_band_peaks_fg(fg, band, 'gaussian_params'), 0) \
+    gaussian_params = np.array([avg_func(get_band_peak_fg(fg, band, 'gaussian_params'), 0) \
                                 for label, band in bands])
 
     r2 = avg_func(fg.get_all_data('r_squared'))
