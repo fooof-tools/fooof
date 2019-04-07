@@ -1,4 +1,4 @@
-"""Test functions for FOOOF sim.params."""
+"""Test functions for fooof.sim.params."""
 
 from py.test import raises
 
@@ -29,9 +29,23 @@ def test_update_sim_ap_params():
 
 def test_stepper():
 
-    assert Stepper(8, 12, .1)
+    stepper = Stepper(8, 12, 1)
+    assert stepper
+    assert len(stepper) == 4
+    for val in stepper:
+        assert True
 
-    # TODO: add more tests of Stepper
+def test_stepper_errors():
+    """Test the checks in Stepper._check_values()"""
+
+    with raises(ValueError):
+        Stepper(-1, 0, 0)
+
+    with raises(ValueError):
+        Stepper(10, 8, 1)
+
+    with raises(ValueError):
+        Stepper(8, 12, 5)
 
 def test_param_iter():
 
@@ -69,6 +83,11 @@ def test_param_iter():
 
     for ind, val in enumerate(iter_2):
         assert val == [1, 2, 3, 4, 5, 6, 7, 8, 8 + (.1*ind)]
+
+    # Test multiple stepper error
+    step = Stepper(8, 12, .1)
+    with raises(ValueError):
+        for params in param_iter([[step, step, step]]): pass
 
 def test_param_sampler():
 

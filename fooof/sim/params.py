@@ -115,9 +115,9 @@ def param_iter(params):
     Parameters
     ----------
     params : list of floats and Stepper
-        Parameters over which to iterate in which the
-        Stepper object defines iterated parameter and its range and,
-        floats are other parameters that will be held constant.
+        Parameters over which to iterate, including a Stepper object.
+        The Stepper defines the iterated parameter and its range.
+        Floats define the other parameters, that will be held constant.
 
     Yields
     ------
@@ -139,12 +139,13 @@ def param_iter(params):
     iter_ind = 0
     num_iters = 0
     for cur_ind, param in enumerate(params):
+
         if isinstance(param, Stepper):
             num_iters += 1
             iter_ind = cur_ind
 
         if num_iters > 1:
-            raise ValueError("Iteration is only supported on one parameter")
+            raise ValueError("Iteration is only supported across one parameter at a time.")
 
     # Generate and yield next set of parameters
     gen = params[iter_ind]
