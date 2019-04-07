@@ -5,7 +5,6 @@ import numpy as np
 from fooof import FOOOF, FOOOFGroup
 from fooof.data import FOOOFResults
 from fooof.utils import compare_info
-from fooof.sim.gen import gen_freqs
 from fooof.analysis import get_band_peak_fg
 
 ###################################################################################################

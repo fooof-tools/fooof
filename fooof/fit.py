@@ -468,7 +468,8 @@ class FOOOF():
             Object containing the FOOOF model fit results from the current FOOOF object.
         """
 
-        return FOOOFResults(**{key.strip('_') : getattr(self, key) for key in get_obj_desc()['results']})
+        return FOOOFResults(**{key.strip('_') : getattr(self, key) \
+            for key in get_obj_desc()['results']})
 
 
     @copy_doc_func_to_method(plot_fm)
@@ -629,8 +630,9 @@ class FOOOF():
         # Initialize matrix of guess parameters for gaussian fitting.
         guess = np.empty([0, 3])
 
-        # Find peak: Loop through, finding a candidate peak, and fitting with a guass gaussian.
-        #  Stopping procedure based on either # of peaks, or the relative or absolute height thresholds.
+        # Find peak: Loop through, finding a candidate peak, and fitting with a guess gaussian.
+        #  Stopping procedure based on either the limit on # of peaks,
+        #    or the relative or absolute height thresholds.
         while len(guess) < self.max_n_peaks:
 
             # Find candidate peak - the maximum point of the flattened spectrum.
@@ -652,18 +654,19 @@ class FOOOF():
             # Data-driven first guess at standard deviation
             #  Find half height index on each side of the center frequency.
             half_height = 0.5 * max_height
-            le_ind = next((x for x in range(max_ind - 1, 0, -1) if flat_iter[x] <= half_height), None)
-            ri_ind = next((x for x in range(max_ind + 1, len(flat_iter), 1)
-                           if flat_iter[x] <= half_height), None)
+            le_ind = next((val for val in range(max_ind - 1, 0, -1)
+                           if flat_iter[val] <= half_height), None)
+            ri_ind = next((val for val in range(max_ind + 1, len(flat_iter), 1)
+                           if flat_iter[val] <= half_height), None)
 
             # Keep bandwidth estimation from the shortest side.
             #  We grab shortest to avoid estimating very large std from overalapping peaks.
             # Grab the shortest side, ignoring a side if the half max was not found.
             #  Note: will fail if both le & ri ind's end up as None (probably shouldn't happen).
-            shortest_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
+            short_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
 
             # Estimate std from FWHM. Calculate FWHM, converting to Hz, get guess std from FWHM
-            fwhm = shortest_side * 2 * self.freq_res
+            fwhm = short_side * 2 * self.freq_res
             guess_std = fwhm / (2 * np.sqrt(2 * np.log(2)))
 
             # Check that guess std isn't outside preset std limits; restrict if so.
@@ -709,11 +712,12 @@ class FOOOF():
             Parameters for gaussian fits to peaks, as gaussian parameters.
         """
 
-        # Set the bounds for center frequency, enforce positive height value, and set bandwidth limits.
-        #  Note that 'guess' is in terms of gaussian standard deviation, so +/- BW is 2 * the guess_gauss_std.
+        # Set the bounds for CF, enforce positive height value, and set bandwidth limits.
+        #  Note that 'guess' is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std.
         #  This set of list comprehensions is a way to end up with bounds in the form:
-        #   ((cf_low_bound_peak1, height_low_bound_peak1, bw_low_bound_peak1, *repeated for n_peak*),
-        #    (cf_high_bound_peak1, height_high_bound_peak1, bw_high_bound_peak, *repeated for n_peak*))
+        #   ((cf_low_peak1, height_low_peak1, bw_low_peak1, *repeated for n_peaks*),
+        #    (cf_high_peak1, height_high_peak1, bw_high_peak, *repeated for n_peaks*))
+        #   ^where each value sets the bound on the specified parameter.
         lo_bound = [[peak[0] - 2 * self._cf_bound * peak[2], 0, self._gauss_std_limits[0]]
                     for peak in guess]
         hi_bound = [[peak[0] + 2 * self._cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]

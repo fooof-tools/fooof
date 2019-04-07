@@ -59,7 +59,8 @@ class FOOOFGroup(FOOOF):
         return self.group_results[index]
 
 
-    def _reset_data_results(self, clear_freqs=True, clear_spectrum=True, clear_results=True, clear_spectra=True):
+    def _reset_data_results(self, clear_freqs=True, clear_spectrum=True,
+                            clear_results=True, clear_spectra=True):
         """Set (or reset) data & results attributes to empty.
 
         Parameters
@@ -171,7 +172,8 @@ class FOOOFGroup(FOOOF):
         # Run linearly
         if n_jobs == 1:
             self._reset_group_results(len(self.power_spectra))
-            for ind, power_spectrum in _progress(enumerate(self.power_spectra), self.verbose, len(self)):
+            for ind, power_spectrum in \
+                _progress(enumerate(self.power_spectra), self.verbose, len(self)):
                 self._fit(power_spectrum=power_spectrum)
                 self.group_results[ind] = self._get_results()
 
@@ -272,7 +274,8 @@ class FOOOFGroup(FOOOF):
         file_name : str, optional
             File from which to load data.
         file_path : str, optional
-            Path to directory from which to load from. If not provided, loads from current directory.
+            Path to directory from which to load from.
+            If not provided, loads from current directory.
         """
 
         # Clear results so as not to have possible prior results interfere

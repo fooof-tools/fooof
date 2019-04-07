@@ -29,7 +29,8 @@ def gen_wid_warn_str(freq_res, bwl):
         '',
         'FOOOF WARNING: Lower-bound peak width limit is < or ~= the frequency resolution: ' + \
             '{:1.2f} <= {:1.2f}'.format(freq_res, bwl),
-        '\tLower bounds below frequency-resolution have no effect (effective lower bound is freq-res)',
+        '\tLower bounds below frequency-resolution have no effect \
+        (effective lower bound is the frequency resolution).',
         '\tToo low a limit may lead to overfitting noise as small bandwidth peaks.',
         '\tWe recommend a lower bound of approximately 2x the frequency resolution.',
         ''
