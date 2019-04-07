@@ -7,25 +7,25 @@ from fooof.sim.params import *
 ###################################################################################################
 ###################################################################################################
 
-def test_update_syn_ap_params():
+def test_update_sim_ap_params():
 
-    syn_params = SynParams([1, 1], [10, 1, 1], 0.05)
+    sim_params = SimParams([1, 1], [10, 1, 1], 0.05)
 
     # Check updating of a single specified parameter
-    new_syn_params = update_syn_ap_params(syn_params, 1, 'exponent')
-    assert new_syn_params.aperiodic_params == [1, 2]
+    new_sim_params = update_sim_ap_params(sim_params, 1, 'exponent')
+    assert new_sim_params.aperiodic_params == [1, 2]
 
     # Check updating of multiple specified parameters
-    new_syn_params = update_syn_ap_params(syn_params, [1, 1], ['offset', 'exponent'])
-    assert new_syn_params.aperiodic_params == [2, 2]
+    new_sim_params = update_sim_ap_params(sim_params, [1, 1], ['offset', 'exponent'])
+    assert new_sim_params.aperiodic_params == [2, 2]
 
     # Check updating of all parameters
-    new_syn_params = update_syn_ap_params(syn_params, [1, 1])
-    assert new_syn_params.aperiodic_params == [2, 2]
+    new_sim_params = update_sim_ap_params(sim_params, [1, 1])
+    assert new_sim_params.aperiodic_params == [2, 2]
 
     # Check error with invalid overwrite
     with raises(ValueError):
-        new_syn_params = update_syn_ap_params(syn_params, [1, 1, 1])
+        new_sim_params = update_sim_ap_params(sim_params, [1, 1, 1])
 
 def test_stepper():
 

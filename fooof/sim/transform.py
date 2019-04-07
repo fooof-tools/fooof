@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from fooof.sim.params import update_syn_ap_params
+from fooof.sim.params import update_sim_ap_params
 
 ###################################################################################################
 ###################################################################################################
@@ -66,8 +66,8 @@ def translate_spectrum(power_spectrum, delta_offset):
     return translated_spectrum
 
 
-def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, syn_params):
-    """Rotate a simulated power spectrum, updating that SynParams object.
+def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, sim_params):
+    """Rotate a simulated power spectrum, updating that SimParams object.
 
     Parameters
     ----------
@@ -81,14 +81,14 @@ def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, syn_p
         Negative is counterclockwise rotation (flatten).
     f_rotation : float
         Frequency value, in Hz, about which rotation is applied, at which power is unchanged.
-    syn_params : SynParams object
+    sim_params : SimParams object
         Object storing the current parameter definitions.
 
     Returns
     -------
     rotated_spectrum : 1d array
         Rotated power spectrum.
-    new_syn_params : SynParams object
+    new_sim_params : SimParams object
         Updated object storing the new parameter definitions.
 
     Notes
@@ -103,13 +103,13 @@ def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, syn_p
     rotated_spectrum = rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation)
     delta_offset = compute_rotation_offset(delta_exponent, f_rotation)
 
-    new_syn_params = update_syn_ap_params(syn_params, [delta_offset, delta_exponent])
+    new_sim_params = update_sim_ap_params(sim_params, [delta_offset, delta_exponent])
 
-    return rotated_spectrum, new_syn_params
+    return rotated_spectrum, new_sim_params
 
 
-def translate_sim_spectrum(power_spectrum, delta_offset, syn_params):
-    """Translate a simulated spectrum, updating that SynParams object.
+def translate_sim_spectrum(power_spectrum, delta_offset, sim_params):
+    """Translate a simulated spectrum, updating that SimParams object.
 
     Parameters
     ----------
@@ -119,21 +119,21 @@ def translate_sim_spectrum(power_spectrum, delta_offset, syn_params):
         Amount to change the offset by.
         Positive is an upwards translation.
         Negative is a downwards translation.
-    syn_params : SynParams object
+    sim_params : SimParams object
         Object storing the current parameter definitions.
 
     Returns
     -------
     translated_spectrum : 1d array
         Translated power spectrum.
-    new_syn_params : SynParams object
+    new_sim_params : SimParams object
         Updated object storing the new parameter definitions.
     """
 
     translated_spectrum = translate_spectrum(power_spectrum, delta_offset)
-    new_syn_params = update_syn_ap_params(syn_params, delta_offset, 'offset')
+    new_sim_params = update_sim_ap_params(sim_params, delta_offset, 'offset')
 
-    return translated_spectrum, new_syn_params
+    return translated_spectrum, new_sim_params
 
 
 def compute_rotation_offset(delta_exponent, f_rotation):

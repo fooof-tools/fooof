@@ -3,7 +3,7 @@
 import numpy as np
 
 from fooof.sim.gen import gen_power_spectrum
-from fooof.sim.params import SynParams
+from fooof.sim.params import SimParams
 from fooof.sim.transform import *
 
 ###################################################################################################
@@ -37,22 +37,22 @@ def test_translate_spectrum():
 
 def test_rotate_sim_spectrum():
 
-    syn_params = SynParams([1, 1], [10, 0.5, 1], 0)
-    freqs, spectrum = gen_power_spectrum([3, 40], *syn_params)
+    sim_params = SimParams([1, 1], [10, 0.5, 1], 0)
+    freqs, spectrum = gen_power_spectrum([3, 40], *sim_params)
 
-    rotated_spectrum, new_syn_params = rotate_sim_spectrum(freqs, spectrum, 0.5, 20, syn_params)
+    rotated_spectrum, new_sim_params = rotate_sim_spectrum(freqs, spectrum, 0.5, 20, sim_params)
 
     assert not np.all(rotated_spectrum == spectrum)
-    assert new_syn_params.aperiodic_params[1] == 1.5
+    assert new_sim_params.aperiodic_params[1] == 1.5
 
-def test_translate_syn_spectrum():
+def test_translate_sim_spectrum():
 
-    syn_params = SynParams([1, 1], [10, 0.5, 1], 0)
-    freqs, spectrum = gen_power_spectrum([3, 40], *syn_params)
+    sim_params = SimParams([1, 1], [10, 0.5, 1], 0)
+    freqs, spectrum = gen_power_spectrum([3, 40], *sim_params)
 
-    translated_spectrum, new_syn_params = translate_sim_spectrum(spectrum, 0.5, syn_params)
+    translated_spectrum, new_sim_params = translate_sim_spectrum(spectrum, 0.5, sim_params)
     assert not np.all(translated_spectrum == spectrum)
-    assert new_syn_params.aperiodic_params[0] == 1.5
+    assert new_sim_params.aperiodic_params[0] == 1.5
 
 def test_compute_rotation_offset():
 

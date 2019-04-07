@@ -5,17 +5,17 @@ import numpy as np
 from fooof.core.funcs import infer_ap_func
 from fooof.core.utils import check_flat
 from fooof.core.info import get_data_indices
-from fooof.data import SynParams
+from fooof.data import SimParams
 
 ###################################################################################################
 ###################################################################################################
 
-def update_syn_ap_params(syn_params, delta, field=None):
-    """Update the aperiodic parameter definition in a SynParams object.
+def update_sim_ap_params(sim_params, delta, field=None):
+    """Update the aperiodic parameter definition in a SimParams object.
 
     Parameters
     ----------
-    syn_params : SynParams object
+    sim_params : SimParams object
         Object storing the current parameter definitions.
     delta : float or list
         Value(s) by which to update the parameters.
@@ -24,16 +24,16 @@ def update_syn_ap_params(syn_params, delta, field=None):
 
     Returns
     -------
-    new_syn_params : SynParams object
+    new_sim_params : SimParams object
         Updated object storing the new parameter definitions.
 
     Notes
     -----
-    SynParams is a `namedtuple`, which is immutable.
-    Therefore, this function constructs and returns a new `SynParams` object.
+    SimParams is a `namedtuple`, which is immutable.
+    Therefore, this function constructs and returns a new `SimParams` object.
     """
 
-    ap_params = syn_params.aperiodic_params.copy()
+    ap_params = sim_params.aperiodic_params.copy()
 
     if not field:
         if not len(ap_params) == len(delta):
@@ -45,12 +45,12 @@ def update_syn_ap_params(syn_params, delta, field=None):
         delta = list([delta]) if not isinstance(delta, list) else delta
 
         for cur_field, cur_delta in zip(field, delta):
-            dat_ind = get_data_indices(infer_ap_func(syn_params.aperiodic_params))[cur_field]
+            dat_ind = get_data_indices(infer_ap_func(sim_params.aperiodic_params))[cur_field]
             ap_params[dat_ind] = ap_params[dat_ind] + cur_delta
 
-    new_syn_params = SynParams(ap_params, *syn_params[1:])
+    new_sim_params = SimParams(ap_params, *sim_params[1:])
 
-    return new_syn_params
+    return new_sim_params
 
 
 class Stepper():

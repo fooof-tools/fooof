@@ -62,10 +62,10 @@ gaussian_params : 2d array
 """
 
 
-SynParams = namedtuple('SynParams', ['aperiodic_params', 'gaussian_params', 'nlv'])
+SimParams = namedtuple('SimParams', ['aperiodic_params', 'gaussian_params', 'nlv'])
 
-SynParams.__doc__ = """\
-Stores parameters used to synthesize a single power spectra.
+SimParams.__doc__ = """\
+Stores parameters used to simulate a single power spectra.
 
 Attributes
 ----------

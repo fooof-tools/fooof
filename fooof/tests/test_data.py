@@ -29,12 +29,12 @@ def test_fooof_results():
         getattr(results, field.strip('_'))
     assert True
 
-def test_syn_params():
+def test_sim_params():
 
-    syn_params = SynParams([1, 1], [10, 1, 1], 0.05)
-    assert syn_params
+    sim_params = SimParams([1, 1], [10, 1, 1], 0.05)
+    assert sim_params
 
     # Check that the object has the correct fields
     for field in ['aperiodic_params', 'gaussian_params', 'nlv']:
-        getattr(syn_params, field)
+        getattr(sim_params, field)
     assert True

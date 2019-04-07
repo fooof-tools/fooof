@@ -4,7 +4,7 @@ import numpy as np
 
 from fooof.core.utils import group_three, check_iter, check_flat
 from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
-from fooof.sim.params import SynParams
+from fooof.sim.params import SimParams
 
 ###################################################################################################
 ###################################################################################################
@@ -118,7 +118,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
         Frequency values (linear).
     powers : 2d array
         Matrix of power values (linear), as [n_power_spectra, n_freqs].
-    syn_params : list of SynParams
+    sim_params : list of SimParams
         Definitions of parameters used for each spectrum. Has length of n_spectra.
 
     Notes
@@ -154,13 +154,13 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
 
     >>> ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
     >>> gauss_opts = param_sampler([[], [10, 1, 1], [10, 1, 1, 20, 2, 1]])
-    >>> freqs, psds, syn_params = gen_group_power_spectra(10, [1, 50], ap_opts, gauss_opts)
+    >>> freqs, psds, sim_params = gen_group_power_spectra(10, [1, 50], ap_opts, gauss_opts)
     """
 
     # Initialize things
     freqs = gen_freqs(freq_range, freq_res)
     powers = np.zeros([n_spectra, len(freqs)])
-    syn_params = [None] * n_spectra
+    sim_params = [None] * n_spectra
 
     # Check if inputs are generators, if not, make them into repeat generators
     aperiodic_params = check_iter(aperiodic_params, n_spectra)
@@ -170,10 +170,10 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
     # Simulate power spectra
     for ind, bgp, gp, nlv in zip(range(n_spectra), aperiodic_params, gaussian_params, nlvs):
 
-        syn_params[ind] = SynParams(bgp.copy(), sorted(group_three(gp)), nlv)
+        sim_params[ind] = SimParams(bgp.copy(), sorted(group_three(gp)), nlv)
         powers[ind, :] = gen_power_vals(freqs, bgp, gp, nlv)
 
-    return freqs, powers, syn_params
+    return freqs, powers, sim_params
 
 
 def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):
