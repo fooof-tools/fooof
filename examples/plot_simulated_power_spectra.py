@@ -110,7 +110,7 @@ nlv = 0.02
 ###################################################################################################
 
 # Simulate a group of power spectra
-fs, ps, syn_params = gen_group_power_spectra(n_spectra, freq_range, ap_params, gauss_params, nlv)
+fs, ps, sim_params = gen_group_power_spectra(n_spectra, freq_range, ap_params, gauss_params, nlv)
 
 ###################################################################################################
 
@@ -119,7 +119,7 @@ plot_spectra(fs, ps, log_freqs=True, log_powers=True)
 
 ###################################################################################################
 #
-# Note that when you simulate a group of power spectra, FOOOF returns SynParam objects that
+# Note that when you simulate a group of power spectra, FOOOF returns SimParam objects that
 # keep track of the simulations. This, and other utilties to manage parameters and provide
 # parameter definitions for simulating groups of power spectra are covered in the
 # `Simulated Parameters` example.

@@ -237,8 +237,8 @@ for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
 ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
 gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
-# Generate a group of power spectra
-freqs, power_spectra, syn_params = gen_group_power_spectra(10, [3, 50], ap_opts, gauss_opts)
+# Simulate a group of power spectra
+freqs, power_spectra, sim_params = gen_group_power_spectra(10, [3, 50], ap_opts, gauss_opts)
 
 ###################################################################################################
 

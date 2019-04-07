@@ -55,9 +55,9 @@ gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
 ###################################################################################################
 
-# Generate the group of simulated spectra
+# Simulate the group of simulated spectra
 #  Note that this function also returns a list of the parameters for each func
-freqs, spectra, syn_params = gen_group_power_spectra(n_spectra, f_range, ap_opts, gauss_opts)
+freqs, spectra, sim_params = gen_group_power_spectra(n_spectra, f_range, ap_opts, gauss_opts)
 
 ###################################################################################################
 # FOOOFGroup
