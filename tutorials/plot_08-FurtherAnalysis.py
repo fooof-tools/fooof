@@ -108,7 +108,7 @@ print(get_band_peak(fm.peak_params_, alpha_band))
 freqs, spectra, _ = gen_group_power_spectra(n_spectra=10,
                                             freq_range=[3, 40],
                                             aperiodic_params=param_sampler([[20, 2], [35, 1.5]]),
-                                            gauss_params=param_sampler([[], [10, 0.5, 2]]))
+                                            gaussian_params=param_sampler([[], [10, 0.5, 2]]))
 
 ###################################################################################################
 
