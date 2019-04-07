@@ -1,4 +1,4 @@
-"""Synthesis functions for generating model components and synthetic power spectra."""
+"""Functions for generating model components and simulated power spectra."""
 
 import numpy as np
 
@@ -34,7 +34,7 @@ def gen_freqs(freq_range, freq_res):
 
 
 def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005, freq_res=0.5):
-    """Generate a synthetic power spectrum.
+    """Generate a simualted power spectrum.
 
     Parameters
     ----------
@@ -47,7 +47,7 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
     nlv : float, optional, default: 0.005
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
-        Frequency resolution for the synthetic power spectra.
+        Frequency resolution for the simulated power spectrum.
 
     Returns
     -------
@@ -94,7 +94,7 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
 
 def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
                             gaussian_params, nlvs=0.005, freq_res=0.5):
-    """Generate a group of synthetic power spectra.
+    """Generate a group of simulated power spectra.
 
     Parameters
     ----------
@@ -110,7 +110,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
     nlvs : float or list of float or generator, optional, default: 0.005
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
-        Frequency resolution for the synthetic power spectra.
+        Frequency resolution for the simulated power spectra.
 
     Returns
     -------
@@ -167,7 +167,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
     gaussian_params = check_iter(gaussian_params, n_spectra)
     nlvs = check_iter(nlvs, n_spectra)
 
-    # Synthesize power spectra
+    # Simulate power spectra
     for ind, bgp, gp, nlv in zip(range(n_spectra), aperiodic_params, gaussian_params, nlvs):
 
         syn_params[ind] = SynParams(bgp.copy(), sorted(group_three(gp)), nlv)

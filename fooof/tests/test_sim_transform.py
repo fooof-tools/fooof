@@ -1,4 +1,4 @@
-"""Test functions for FOOOF synth.transform"""
+"""Test functions for FOOOF sim.transform"""
 
 import numpy as np
 
@@ -35,12 +35,12 @@ def test_translate_spectrum():
     translated_spectrum = translate_spectrum(spectrum, delta_offset=0.)
     assert np.all(translated_spectrum == spectrum)
 
-def test_rotate_syn_spectrum():
+def test_rotate_sim_spectrum():
 
     syn_params = SynParams([1, 1], [10, 0.5, 1], 0)
     freqs, spectrum = gen_power_spectrum([3, 40], *syn_params)
 
-    rotated_spectrum, new_syn_params = rotate_syn_spectrum(freqs, spectrum, 0.5, 20, syn_params)
+    rotated_spectrum, new_syn_params = rotate_sim_spectrum(freqs, spectrum, 0.5, 20, syn_params)
 
     assert not np.all(rotated_spectrum == spectrum)
     assert new_syn_params.aperiodic_params[1] == 1.5
@@ -50,7 +50,7 @@ def test_translate_syn_spectrum():
     syn_params = SynParams([1, 1], [10, 0.5, 1], 0)
     freqs, spectrum = gen_power_spectrum([3, 40], *syn_params)
 
-    translated_spectrum, new_syn_params = translate_syn_spectrum(spectrum, 0.5, syn_params)
+    translated_spectrum, new_syn_params = translate_sim_spectrum(spectrum, 0.5, syn_params)
     assert not np.all(translated_spectrum == spectrum)
     assert new_syn_params.aperiodic_params[0] == 1.5
 

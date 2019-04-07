@@ -1,4 +1,4 @@
-"""Test functions for FOOOF synth.params."""
+"""Test functions for FOOOF sim.params."""
 
 from py.test import raises
 

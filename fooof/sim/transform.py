@@ -66,8 +66,8 @@ def translate_spectrum(power_spectrum, delta_offset):
     return translated_spectrum
 
 
-def rotate_syn_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, syn_params):
-    """Rotate a power spectrum about a frequency point, changing the power law exponent.
+def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, syn_params):
+    """Rotate a simulated power spectrum, updating that SynParams object.
 
     Parameters
     ----------
@@ -108,8 +108,8 @@ def rotate_syn_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, syn_p
     return rotated_spectrum, new_syn_params
 
 
-def translate_syn_spectrum(power_spectrum, delta_offset, syn_params):
-    """Translate a spectrum, changing the offset value.
+def translate_sim_spectrum(power_spectrum, delta_offset, syn_params):
+    """Translate a simulated spectrum, updating that SynParams object.
 
     Parameters
     ----------

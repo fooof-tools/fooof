@@ -1,4 +1,4 @@
-"""Classes & functions for managing parameter choices for synthesizing power spectra."""
+"""Classes & functions for managing parameter choices for simulating power spectra."""
 
 import numpy as np
 
