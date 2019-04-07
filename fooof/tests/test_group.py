@@ -1,4 +1,4 @@
-"""Tests for the FOOOFGroup fit object and methods.
+"""Tests for the fooof.group, including the FOOOFGroup object and it's methods.
 
 NOTES
 -----

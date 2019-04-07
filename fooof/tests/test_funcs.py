@@ -1,4 +1,4 @@
-"""Test functions for ..."""
+"""Test functions for fooof.funcs."""
 
 from py.test import raises
 

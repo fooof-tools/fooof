@@ -1,4 +1,4 @@
-"""Tests for FOOOF core.funcs."""
+"""Tests for fooof.core.funcs."""
 
 from py.test import raises
 
@@ -93,7 +93,6 @@ def test_get_ap_func():
     apf_kn = get_ap_func('knee')
     assert apf_kn
 
-    # Check error
     with raises(ValueError):
         get_ap_func('bad')
 
@@ -107,6 +106,5 @@ def test_infer_ap_func():
     apf_kn = infer_ap_func(ap_kn)
     assert apf_kn == 'knee'
 
-    # Check error
     with raises(ValueError):
         infer_ap_func([1, 2, 3, 4])

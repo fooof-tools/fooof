@@ -1,4 +1,4 @@
-"""Test functions for FOOOF analysis."""
+"""Test functions for fooof.analysis."""
 
 import numpy as np
 

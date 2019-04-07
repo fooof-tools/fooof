@@ -1,4 +1,4 @@
-"""Tests for the FOOOF fit object and methods.
+"""Tests for fooof.fit, including the FOOOF object it's methods.
 
 NOTES
 -----
@@ -164,7 +164,7 @@ def test_copy():
 def test_fooof_prints(tfm):
     """Test methods that print (alias and pass through methods).
 
-    Checks: print_settings, print_results.
+    Checks: print_settings, print_results, print_report_issue.
     """
 
     tfm.print_settings()

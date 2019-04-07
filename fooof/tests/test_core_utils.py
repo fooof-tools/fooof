@@ -1,4 +1,4 @@
-"""Tests for FOOOF core.utils."""
+"""Tests for fooof.core.utils."""
 
 from collections.abc import Iterable
 from itertools import repeat

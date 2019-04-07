@@ -1,4 +1,4 @@
-"""Tests for FOOOF core.info."""
+"""Tests for fooof.core.info."""
 
 from fooof.core.info import *
 

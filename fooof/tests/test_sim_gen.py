@@ -1,4 +1,4 @@
-"""Test functions for FOOOF sim.gen"""
+"""Test functions for fooof.sim.gen"""
 
 import numpy as np
 

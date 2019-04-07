@@ -1,4 +1,4 @@
-"""Tests for FOOOF core.modutils.
+"""Tests for fooof.core.modutils.
 
 Note: decorators (that are in modutils) are currently not tested.
 """

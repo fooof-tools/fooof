@@ -1,4 +1,4 @@
-"""Tests for the FOOOF data objects."""
+"""Tests for the fooof.data."""
 
 from fooof.core.info import get_obj_desc
 

@@ -1,4 +1,4 @@
-"""Test functions for FOOOF utils."""
+"""Test functions for fooof.utils."""
 
 import numpy as np
 
