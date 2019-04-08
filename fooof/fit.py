@@ -24,6 +24,8 @@ _ap_guess : list of [float, float, float]
     Guess parameters for fitting the aperiodic component.
 _ap_bounds : tuple of tuple of float
     Upper and lower bounds on fitting aperiodic component.
+_cf_bound : float
+    Parameter bounds for center frequency when fitting gaussians.
 _bw_std_edge : float
     Bandwidth threshold for edge rejection of peaks, in units of gaussian standard deviation.
 _gauss_overlap_thresh : float
