@@ -28,7 +28,7 @@ With regards to examing peaks in the frequency domain, as putative oscillations,
 of the FOOOF approach is that these peaks are characterized in terms of their specific center
 frequency, amplitude and bandwidth without requiring predefining specific bands of interest.
 In particular, it separates these peaks from a dynamic, and independently interesting 1/f
-background. This conception of the 1/f as potentially functional (and therefore worth carefully
+background. This conception of the 1/f as potenhttps://github.com/voytekresearch/fooof/releasestially functional (and therefore worth carefully
 modeling) is based on work from the Voytek lab and others that collectively shows that 1/f changes
 across task demands and participant demographics, and that it may index underlying
 excitation/inhibition (EI) balance.
@@ -50,7 +50,7 @@ setup(
     long_description = long_description,
     author = 'The Voytek Lab',
     author_email = 'voyteklab@gmail.com',
-    url = 'https://github.com/voytekresearch/fooof',
+    url = 'https://github.com/fooof-tools/fooof',
     packages = find_packages(),
     license = 'Apache License, 2.0',
     classifiers = [
@@ -67,7 +67,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7'
     ],
-    download_url = 'https://github.com/voytekresearch/fooof/releases',
+    download_url = '',
     keywords = ['neuroscience', 'neural oscillations', 'power spectra', '1/f', 'electrophysiology'],
     install_requires = ['numpy', 'scipy>=0.19.0'],
     tests_require = ['pytest'],
