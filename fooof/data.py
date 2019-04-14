@@ -26,9 +26,9 @@ aperiodic_mode : {'fixed', 'knee'}
 """
 
 
-FOOOFDataInfo = namedtuple('FOOOFDataInfo', ['freq_range', 'freq_res'])
+FOOOFMetaData = namedtuple('FOOOFMetaData', ['freq_range', 'freq_res'])
 
-FOOOFDataInfo.__doc__ = """\
+FOOOFMetaData.__doc__ = """\
 Data related information for a FOOOF object.
 
 Attributes

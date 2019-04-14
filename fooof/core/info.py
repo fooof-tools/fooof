@@ -16,7 +16,7 @@ def get_obj_desc():
                                 'min_peak_height', 'peak_threshold',
                                 'aperiodic_mode'],
                   'data' : ['power_spectrum', 'freq_range', 'freq_res'],
-                  'data_info' : ['freq_range', 'freq_res'],
+                  'meta_data' : ['freq_range', 'freq_res'],
                   'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',
                               'peak_params_', '_gaussian_params'],
                   'model_components' : ['_spectrum_flat', '_spectrum_peak_rm',

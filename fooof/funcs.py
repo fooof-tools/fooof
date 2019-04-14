@@ -53,7 +53,7 @@ def average_fg(fg, bands, avg_method='mean'):
     # Create the new FOOOF object, with settings, data info & results
     fm = FOOOF()
     fm.add_settings(fg.get_settings())
-    fm.add_data_info(fg.get_data_info())
+    fm.add_meta_data(fg.get_meta_data())
     fm.add_results(results)
 
     return fm
@@ -74,8 +74,8 @@ def combine_fooofs(fooofs):
     """
 
     # Compare settings
-    if not compare_info(fooofs, 'settings') or not compare_info(fooofs, 'data_info'):
-        raise ValueError("These objects have incompatible settings or data," \
+    if not compare_info(fooofs, 'settings') or not compare_info(fooofs, 'meta_data'):
+        raise ValueError("These objects have incompatible settings or meta data," \
                          "and so cannot be combined.")
 
     # Initialize FOOOFGroup object, with settings derived from input objects
@@ -102,7 +102,7 @@ def combine_fooofs(fooofs):
         fg.power_spectra = temp_power_spectra
 
     # Add data information information
-    fg.add_data_info(fooofs[0].get_data_info())
+    fg.add_meta_data(fooofs[0].get_meta_data())
 
     return fg
 

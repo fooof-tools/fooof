@@ -48,7 +48,7 @@ from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_issue_s
 
 from fooof.plts.fm import plot_fm
 from fooof.utils import trim_spectrum
-from fooof.data import FOOOFResults, FOOOFSettings, FOOOFDataInfo
+from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
 from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_peaks
 
 ###################################################################################################
@@ -257,17 +257,17 @@ class FOOOF():
         self._check_loaded_settings(fooof_settings._asdict())
 
 
-    def add_data_info(self, fooof_data_info):
-        """Add data information into object from a FOOOFDataInfo object.
+    def add_meta_data(self, fooof_meta_data):
+        """Add data information into object from a FOOOFMetaData object.
 
         Parameters
         ----------
-        fooof_data_info : FOOOFDataInfo
-            A FOOOF data object containing information about the data.
+        fooof_meta_data : FOOOFMetaData
+            A FOOOF meta data object containing meta data information.
         """
 
-        for data_info in get_obj_desc()['data_info']:
-            setattr(self, data_info, getattr(fooof_data_info, data_info))
+        for meta_dat in get_obj_desc()['meta_data']:
+            setattr(self, meta_dat, getattr(fooof_meta_data, meta_dat))
 
         self._regenerate_freqs()
 
@@ -447,16 +447,16 @@ class FOOOF():
         return FOOOFSettings(**{key : getattr(self, key) for key in get_obj_desc()['settings']})
 
 
-    def get_data_info(self):
+    def get_meta_data(self):
         """Return data information from the FOOOF object.
 
         Returns
         -------
-        FOOOFDataInfo
-            Object containing information about the data from the current FOOOF object.
+        FOOOFMetaData
+            Object containing meta data from the current FOOOF object.
         """
 
-        return FOOOFDataInfo(**{key : getattr(self, key) for key in get_obj_desc()['data_info']})
+        return FOOOFMetaData(**{key : getattr(self, key) for key in get_obj_desc()['meta_data']})
 
 
     def get_results(self):

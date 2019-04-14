@@ -151,5 +151,5 @@ def test_fg_get_fooof(tfg):
     tfm2 = new_tfg.get_fooof(0, True)
     assert tfm2
     # Check that data info is copied over properly
-    for data_info in desc['data_info']:
-        assert getattr(tfm2, data_info)
+    for meta_dat in desc['meta_data']:
+        assert getattr(tfm2, meta_dat)

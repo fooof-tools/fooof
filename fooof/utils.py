@@ -50,7 +50,7 @@ def get_info(f_obj, aspect):
     ----------
     f_obj : FOOOF or FOOOFGroup
         FOOOF derived object to get attributes from.
-    aspect : {'settings', 'data_info', 'results'}
+    aspect : {'settings', 'meta_data', 'results'}
         Which set of attributes to compare the objects across.
 
     Returns
@@ -69,7 +69,7 @@ def compare_info(lst, aspect):
     ----------
     lst : list of FOOOF or FOOOFGroup objects
         FOOOF related objects whose attibutes are to be compared.
-    aspect : {'setting', 'data_info'}
+    aspect : {'setting', 'meta_data'}
         Which set of attributes to compare the objects across.
 
     Returns
