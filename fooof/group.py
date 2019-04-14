@@ -196,11 +196,11 @@ class FOOOFGroup(FOOOF):
 
 
     def get_all_data(self, name, col=None):
-        """Return all data for a specified attribute across the group.
+        """Return data for a specified attribute.
 
         Parameters
         ----------
-        name : {'aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params'}
+        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
             Name of the data field to extract across the group.
         col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
             Column name / index to extract from selected data, if requested.
@@ -214,8 +214,10 @@ class FOOOFGroup(FOOOF):
         Notes
         -----
         For further description of the data you can extract, check the FOOOFResults documentation.
-        For example `print(fg[0].__doc__)`
         """
+
+        if not self.group_results:
+            raise RuntimeError('No model fit data is available to extract - can not proceed.')
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):

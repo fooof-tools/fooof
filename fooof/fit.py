@@ -42,7 +42,7 @@ from fooof.core.io import save_fm, load_json
 from fooof.core.reports import save_report_fm
 from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
 from fooof.core.utils import group_three, check_array_dim
-from fooof.core.info import get_obj_desc
+from fooof.core.info import get_obj_desc, get_data_indices
 from fooof.core.modutils import copy_doc_func_to_method
 from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_issue_str, gen_wid_warn_str
 
@@ -459,8 +459,55 @@ class FOOOF():
         return FOOOFMetaData(**{key : getattr(self, key) for key in get_obj_desc()['meta_data']})
 
 
+    def get_data(self, name, col=None):
+        """Return data for a specified attribute.
+
+        Parameters
+        ----------
+        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
+            Name of the data field to extract.
+        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+            Column name / index to extract from selected data, if requested.
+            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+
+        Returns
+        -------
+        out : float or 1d array
+            Requested data.
+
+        Notes
+        -----
+        For further description of the data you can extract, check the FOOOFResults documentation.
+
+        If there is no data on periodic features, this method will return NaN.
+        """
+
+        if self.aperiodic_params_ is None:
+            raise RuntimeError('No model fit data is available to extract - can not proceed.')
+
+        # If col specified as string, get mapping back to integer
+        if isinstance(col, str):
+            col = get_data_indices(self.aperiodic_mode)[col]
+
+        # Extract the request data field from object
+        out = getattr(self, name + '_')
+
+        # Periodic values can be empty arrays - if so replace with NaN array
+        if isinstance(out, np.ndarray) and out.size == 0:
+            out = np.array([np.nan, np.nan, np.nan])
+
+        # Select out a specific column, if requested
+        if col is not None:
+
+            # Extract column, & if result is a single value in an array, unpack from array
+            out = out[col] if out.ndim == 1 else out[:, col]
+            out = out[0] if isinstance(out, np.ndarray) and out.size == 1 else out
+
+        return out
+
+
     def get_results(self):
-        """Return model fit parameters and goodness of fit metrics.
+        """Return model fit parameters and goodness of fit metrics in a FOOOFResults object.
 
         Returns
         -------

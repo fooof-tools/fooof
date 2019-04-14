@@ -140,7 +140,7 @@ def test_adds():
     for setting in get_obj_desc()['results']:
         assert getattr(tfm, setting) == getattr(fooof_results, setting.strip('_'))
 
-def test_gets(tfm):
+def test_obj_gets(tfm):
     """Tests methods that return FOOOF data objects.
 
     Checks: get_settings, get_meta_data, get_results
@@ -152,6 +152,20 @@ def test_gets(tfm):
     assert isinstance(meta_data, FOOOFMetaData)
     results = tfm.get_results()
     assert isinstance(results, FOOOFResults)
+
+def test_get_data(tfm):
+    """   """
+
+    for dname in ['aperiodic_params', 'peak_params', 'error', 'r_squared']:#, 'gaussian_params']:
+        assert np.any(tfm.get_data(dname))
+
+        if dname == 'aperiodic_params':
+            for dtype in ['offset', 'exponent']:
+                assert np.any(tfm.get_data(dname, dtype))
+
+        if dname == 'peak_params':
+            for dtype in ['CF', 'PW', 'BW']:
+                assert np.any(tfm.get_data(dname, dtype))
 
 def test_copy():
     """Test copy FOOOF method."""
