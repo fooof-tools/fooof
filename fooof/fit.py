@@ -11,9 +11,6 @@ _spectrum_flat : 1d array
     Flattened power spectrum (aperiodic component removed).
 _spectrum_peak_rm : 1d array
     Power spectrum with peaks removed (not flattened).
-_gaussian_params : 2d array
-    Parameters that define the gaussian fit(s).
-    Each row is a gaussian, as [mean, height, standard deviation].
 _ap_fit : 1d array
     Values of the aperiodic fit.
 _peak_fit : 1d array
@@ -94,6 +91,9 @@ class FOOOF():
         The knee parameter is only included if aperiodic component is fit with a knee.
     peak_params_ : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
+    gaussian_params : 2d array
+        Parameters that define the gaussian fit(s).
+        Each row is a gaussian, as [mean, height, standard deviation].
     r_squared_ : float
         R-squared of the fit between the input power spectrum and the full model fit.
     error_ : float
@@ -110,6 +110,10 @@ class FOOOF():
       procedure, or a median filter smoothing on the FFT output before running FOOOF.
     - Where possible and appropriate, use longer time segments for power spectrum calculation to
       get smoother power spectra, as this will give better FOOOF fits.
+    - The gaussian params are those that define the gaussian of the fit, where as the peak
+      params are a modified version, in which the CF of the peak is the mean of the gaussian,
+      the PW of the peak is the height of the gaussian over and above the aperiodic component,
+      and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
     """
 
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
@@ -202,10 +206,10 @@ class FOOOF():
 
         if clear_results:
             self.aperiodic_params_ = None
+            self.gaussian_params_ = None
             self.peak_params_ = None
             self.r_squared_ = None
             self.error_ = None
-            self._gaussian_params = None
 
             self.fooofed_spectrum_ = None
 
@@ -282,10 +286,10 @@ class FOOOF():
         """
 
         self.aperiodic_params_ = fooof_result.aperiodic_params
+        self.gaussian_params_ = fooof_result.gaussian_params
         self.peak_params_ = fooof_result.peak_params
         self.r_squared_ = fooof_result.r_squared
         self.error_ = fooof_result.error
-        self._gaussian_params = fooof_result.gaussian_params
 
         self._check_loaded_results(fooof_result._asdict())
 
@@ -360,11 +364,11 @@ class FOOOF():
             self._spectrum_flat = self.power_spectrum - self._ap_fit
 
             # Find peaks, and fit them with gaussians
-            self._gaussian_params = self._fit_peaks(np.copy(self._spectrum_flat))
+            self.gaussian_params_ = self._fit_peaks(np.copy(self._spectrum_flat))
 
             # Calculate the peak fit
             #  Note: if no peaks are found, this creates a flat (all zero) peak fit.
-            self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
+            self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self.gaussian_params_))
 
             # Create peak-removed (but not flattened) power spectrum.
             self._spectrum_peak_rm = self.power_spectrum - self._peak_fit
@@ -378,7 +382,7 @@ class FOOOF():
             self.fooofed_spectrum_ = self._peak_fit + self._ap_fit
 
             # Convert gaussian definitions to peak parameters
-            self.peak_params_ = self._create_peak_params(self._gaussian_params)
+            self.peak_params_ = self._create_peak_params(self.gaussian_params_)
 
             # Calculate R^2 and error of the model fit.
             self._calc_r_squared()
@@ -1025,7 +1029,7 @@ class FOOOF():
         #  This fixes an issue where they end up the wrong shape if they are empty (no peaks)
         if set(get_obj_desc()['results']).issubset(set(data.keys())):
             self.peak_params_ = check_array_dim(self.peak_params_)
-            self._gaussian_params = check_array_dim(self._gaussian_params)
+            self.gaussian_params_ = check_array_dim(self.gaussian_params_)
 
 
     def _check_loaded_settings(self, data):
@@ -1064,5 +1068,5 @@ class FOOOF():
         """Regenerate model fit from parameters."""
 
         self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
-        self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
+        self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self.gaussian_params_))
         self.fooofed_spectrum_ = self._peak_fit + self._ap_fit

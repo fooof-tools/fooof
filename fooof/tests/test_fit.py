@@ -43,7 +43,7 @@ def test_fooof_fit_nk():
 
     # Check model results - gaussian parameters
     for ii, gauss in enumerate(group_three(gauss_params)):
-        assert np.all(np.isclose(gauss, tfm._gaussian_params[ii], [2.0, 0.5, 1.0]))
+        assert np.all(np.isclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0]))
 
 def test_fooof_fit_knee():
     """Test FOOOF fit, with a knee."""
@@ -154,9 +154,9 @@ def test_obj_gets(tfm):
     assert isinstance(results, FOOOFResults)
 
 def test_get_data(tfm):
-    """   """
+    """Test the get_data method."""
 
-    for dname in ['aperiodic_params', 'peak_params', 'error', 'r_squared']:#, 'gaussian_params']:
+    for dname in ['aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params']:
         assert np.any(tfm.get_data(dname))
 
         if dname == 'aperiodic_params':

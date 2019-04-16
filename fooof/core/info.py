@@ -9,16 +9,15 @@ def get_obj_desc():
         Mapping of FOOOF object attributes, and what kind of data they are.
     """
 
-    attributes = {'results' : ['aperiodic_params_', 'peak_params_',
-                               'r_squared_', 'error_',
-                               '_gaussian_params'],
+    attributes = {'results' : ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
+                               'r_squared_', 'error_'],
                   'settings' : ['peak_width_limits', 'max_n_peaks',
                                 'min_peak_height', 'peak_threshold',
                                 'aperiodic_mode'],
                   'data' : ['power_spectrum', 'freq_range', 'freq_res'],
                   'meta_data' : ['freq_range', 'freq_res'],
                   'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',
-                              'peak_params_', '_gaussian_params'],
+                              'peak_params_', 'gaussian_params_'],
                   'model_components' : ['_spectrum_flat', '_spectrum_peak_rm',
                                         '_ap_fit', '_peak_fit']}
 
