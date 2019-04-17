@@ -119,7 +119,7 @@ fg.fit(freqs, spectra)
 ###################################################################################################
 
 # Get all alpha oscillations from a FOOOFGroup object
-alphas = get_band_peak_group(fg.get_all_data('peak_params'), alpha_band, len(fg))
+alphas = get_band_peak_group(fg.get_params('peak_params'), alpha_band, len(fg))
 
 ###################################################################################################
 
@@ -170,7 +170,7 @@ print('Alpha BW : ', np.nanmean(alphas[:, bw_ind]))
 ###################################################################################################
 
 # Extract aperiodic exponent data from group results
-exps = fg.get_all_data('aperiodic_params', 'exponent')
+exps = fg.get_params('aperiodic_params', 'exponent')
 
 # Check out the aperiodic exponent results
 print(exps)

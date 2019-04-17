@@ -132,11 +132,11 @@ fg.save_report()
 print(fg.group_results[0:2])
 
 ###################################################################################################
-# get_all_data
-# ------------
+# get_params
+# ----------
 #
 # To collect data across all model fits, and to select specific data results from this data
-# you can use the :func:`get_all_data` method. This method lets you extract specific results
+# you can use the :func:`get_params` method. This method lets you extract specific results
 # by specifying a field, as a string, and (optionally) a specific column of that data, also
 # as a string (or, optionally, as an integer index).
 #
@@ -144,21 +144,21 @@ print(fg.group_results[0:2])
 ###################################################################################################
 
 # Extract aperiodic data
-aps = fg.get_all_data('aperiodic_params')
-exps = fg.get_all_data('aperiodic_params', 'exponent')
+aps = fg.get_params('aperiodic_params')
+exps = fg.get_params('aperiodic_params', 'exponent')
 
 # Extract peak data
-peaks = fg.get_all_data('peak_params')
-cfs = fg.get_all_data('peak_params', 'CF')
+peaks = fg.get_params('peak_params')
+cfs = fg.get_params('peak_params', 'CF')
 
 # Extract metadata about the model fit
-errors = fg.get_all_data('error')
-r2s = fg.get_all_data('r_squared')
+errors = fg.get_params('error')
+r2s = fg.get_params('r_squared')
 
 ###################################################################################################
 
-# The full list of data you can specify is available in the documentation of :func:`get_all_data`
-print(fg.get_all_data.__doc__)
+# The full list of data you can specify is available in the documentation of :func:`get_params`
+print(fg.get_params.__doc__)
 
 ###################################################################################################
 #

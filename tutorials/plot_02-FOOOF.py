@@ -140,14 +140,14 @@ print(' R^2   - ', fm.r_squared_)
 ###################################################################################################
 #
 # The underlying gaussian parameters are also availabe from the FOOOF object,
-# in the '_gaussian_params' attribute.
+# in the `gaussian_params_` attribute.
 #
 
 ###################################################################################################
 #
 # Compare the 'peak\_params_', as compared to the underlying gaussian parameters
 print('  Peak Parameters \t Gaussian Parameters')
-for peak, gau in zip(fm.peak_params_, fm._gaussian_params):
+for peak, gau in zip(fm.peak_params_, fm.gaussian_params_):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*peak, *gau))
 
 ####################################################################################################

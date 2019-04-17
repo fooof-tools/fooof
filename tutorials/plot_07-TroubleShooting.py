@@ -173,7 +173,7 @@ fm.report(freqs, spectrum)
 
 # Compare ground truth simulated parameters to model fit results
 print('Ground Truth \t\t FOOOF Reconstructions')
-for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
+for sy, fi in zip(np.array(group_three(gauss_params)), fm.gaussian_params_):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*sy, *fi))
 
 ###################################################################################################
@@ -226,7 +226,7 @@ fm.report(freqs, spectrum)
 
 # Check reconstructed parameters from simulated definition
 print('Ground Truth \t\t FOOOF Reconstructions')
-for sy, fi in zip(np.array(group_three(gauss_params)), fm._gaussian_params):
+for sy, fi in zip(np.array(group_three(gauss_params)), fm.gaussian_params_):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*sy, *fi))
 
 ###################################################################################################
@@ -253,7 +253,7 @@ fg.report(freqs, power_spectra)
 ###################################################################################################
 
 # Find the index of the worst FOOOF fit from the group
-worst_fit_ind = np.argmax(fg.get_all_data('error'))
+worst_fit_ind = np.argmax(fg.get_params('error'))
 
 # Extract this FOOOF fit from the group, into a FOOOF object
 fm = fg.get_fooof(worst_fit_ind, regenerate=True)
