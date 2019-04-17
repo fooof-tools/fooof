@@ -66,11 +66,11 @@ def plot_fg_ap(fg, ax=None):
     """
 
     if fg.aperiodic_mode == 'knee':
-        plot_scatter_2(fg.get_all_data('aperiodic_params', 1), 'Knee',
-                       fg.get_all_data('aperiodic_params', 2), 'Exponent',
+        plot_scatter_2(fg.get_params('aperiodic_params', 1), 'Knee',
+                       fg.get_params('aperiodic_params', 2), 'Exponent',
                        'Aperiodic Fit', ax=ax)
     else:
-        plot_scatter_1(fg.get_all_data('aperiodic_params', 1), 'Exponent',
+        plot_scatter_1(fg.get_params('aperiodic_params', 1), 'Exponent',
                        'Aperiodic Fit', ax=ax)
 
 
@@ -86,8 +86,8 @@ def plot_fg_gf(fg, ax=None):
         Figure axes upon which to plot.
     """
 
-    plot_scatter_2(fg.get_all_data('error'), 'Error',
-                   fg.get_all_data('r_squared'), 'R^2', 'Goodness of Fit', ax=ax)
+    plot_scatter_2(fg.get_params('error'), 'Error',
+                   fg.get_params('r_squared'), 'R^2', 'Goodness of Fit', ax=ax)
 
 
 @check_dependency(plt, 'matplotlib')
@@ -102,5 +102,5 @@ def plot_fg_peak_cens(fg, ax=None):
         Figure axes upon which to plot.
     """
 
-    plot_hist(fg.get_all_data('peak_params', 0)[:, 0], 'Center Frequency',
+    plot_hist(fg.get_params('peak_params', 0)[:, 0], 'Center Frequency',
               'Peaks - Center Frequencies', x_lims=fg.freq_range, ax=ax)

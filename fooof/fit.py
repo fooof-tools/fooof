@@ -464,8 +464,8 @@ class FOOOF():
         return FOOOFMetaData(**{key : getattr(self, key) for key in get_obj_desc()['meta_data']})
 
 
-    def get_data(self, name, col=None):
-        """Return data for a specified attribute.
+    def get_params(self, name, col=None):
+        """Return model fit parameters for specified feature(s).
 
         Parameters
         ----------

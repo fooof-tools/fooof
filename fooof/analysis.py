@@ -47,7 +47,7 @@ def get_band_peak_fg(fg, band, attribute='peak_params'):
         Peak data. Each row is a peak, as [CF, Amp, BW].
     """
 
-    return get_band_peak_group(fg.get_all_data(attribute), band, len(fg))
+    return get_band_peak_group(fg.get_params(attribute), band, len(fg))
 
 
 def get_band_peak_group(peak_params, band, n_fits):

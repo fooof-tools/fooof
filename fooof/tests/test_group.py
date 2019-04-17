@@ -80,19 +80,19 @@ def test_get_results(tfg):
 
     assert tfg.get_results()
 
-def test_get_all_data(tfg):
-    """Check get_all_data method."""
+def test_get_params(tfg):
+    """Check get_params method."""
 
     for dname in ['aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params']:
-        assert np.any(tfg.get_all_data(dname))
+        assert np.any(tfg.get_params(dname))
 
         if dname == 'aperiodic_params':
             for dtype in ['offset', 'exponent']:
-                assert np.any(tfg.get_all_data(dname, dtype))
+                assert np.any(tfg.get_params(dname, dtype))
 
         if dname == 'peak_params':
             for dtype in ['CF', 'PW', 'BW']:
-                assert np.any(tfg.get_all_data(dname, dtype))
+                assert np.any(tfg.get_params(dname, dtype))
 
 @plot_test
 def test_fg_plot(tfg, skip_if_no_mpl):

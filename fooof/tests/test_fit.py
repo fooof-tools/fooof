@@ -153,19 +153,19 @@ def test_obj_gets(tfm):
     results = tfm.get_results()
     assert isinstance(results, FOOOFResults)
 
-def test_get_data(tfm):
-    """Test the get_data method."""
+def test_get_params(tfm):
+    """Test the get_params method."""
 
     for dname in ['aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params']:
-        assert np.any(tfm.get_data(dname))
+        assert np.any(tfm.get_params(dname))
 
         if dname == 'aperiodic_params':
             for dtype in ['offset', 'exponent']:
-                assert np.any(tfm.get_data(dname, dtype))
+                assert np.any(tfm.get_params(dname, dtype))
 
         if dname == 'peak_params':
             for dtype in ['CF', 'PW', 'BW']:
-                assert np.any(tfm.get_data(dname, dtype))
+                assert np.any(tfm.get_params(dname, dtype))
 
 def test_copy():
     """Test copy FOOOF method."""

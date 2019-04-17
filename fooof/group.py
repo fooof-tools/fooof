@@ -195,8 +195,8 @@ class FOOOFGroup(FOOOF):
         return self.group_results
 
 
-    def get_all_data(self, name, col=None):
-        """Return data for a specified attribute.
+    def get_params(self, name, col=None):
+        """Return model fit parameters for specified feature(s).
 
         Parameters
         ----------

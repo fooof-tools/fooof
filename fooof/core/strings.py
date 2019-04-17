@@ -183,15 +183,15 @@ def gen_results_fg_str(fg, concise=False):
         raise ValueError('Model fit has not been run - can not proceed.')
 
     # Extract all the relevant data for printing
-    n_peaks = len(fg.get_all_data('peak_params'))
-    r2s = fg.get_all_data('r_squared')
-    errors = fg.get_all_data('error')
+    n_peaks = len(fg.get_params('peak_params'))
+    r2s = fg.get_params('r_squared')
+    errors = fg.get_params('error')
     if fg.aperiodic_mode == 'knee':
-        kns = fg.get_all_data('aperiodic_params', 1)
-        sls = fg.get_all_data('aperiodic_params', 2)
+        kns = fg.get_params('aperiodic_params', 1)
+        sls = fg.get_params('aperiodic_params', 2)
     else:
         kns = np.array([0])
-        sls = fg.get_all_data('aperiodic_params', 1)
+        sls = fg.get_params('aperiodic_params', 1)
 
     # Check if there are any power spectra that failed to fit
     n_failed = sum(np.isnan(sls))
