@@ -41,7 +41,8 @@ from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
 from fooof.core.utils import group_three, check_array_dim
 from fooof.core.info import get_obj_desc, get_data_indices
 from fooof.core.modutils import copy_doc_func_to_method
-from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_issue_str, gen_wid_warn_str
+from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
+                                gen_issue_str, gen_width_warning_str)
 
 from fooof.plts.fm import plot_fm
 from fooof.utils import trim_spectrum
@@ -423,7 +424,7 @@ class FOOOF():
             Whether to print the report in a concise mode, or not.
         """
 
-        print(gen_results_str_fm(self, concise))
+        print(gen_results_fm_str(self, concise))
 
 
     @staticmethod
@@ -583,7 +584,7 @@ class FOOOF():
 
         # Check peak width limits against frequency resolution; warn if too close.
         if 1.5 * self.freq_res >= self.peak_width_limits[0]:
-            print(gen_wid_warn_str(self.freq_res, self.peak_width_limits[0]))
+            print(gen_width_warning_str(self.freq_res, self.peak_width_limits[0]))
 
 
     def _simple_ap_fit(self, freqs, power_spectrum):

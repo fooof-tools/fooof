@@ -2,7 +2,7 @@
 
 from fooof.core.io import fname, fpath
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_results_str_fg
+from fooof.core.strings import gen_settings_str, gen_results_fm_str, gen_results_fg_str
 from fooof.plts.fg import plot_fg_ap, plot_fg_gf, plot_fg_peak_cens
 
 plt = safe_import('.pyplot', 'matplotlib')
@@ -35,7 +35,7 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
 
     # First - text results
     ax0 = plt.subplot(grid[0])
-    results_str = gen_results_str_fm(fm)
+    results_str = gen_results_fm_str(fm)
     ax0.text(0.5, 0.7, results_str, font, ha='center', va='center')
     ax0.set_frame_on(False)
     ax0.set_xticks([])
@@ -80,7 +80,7 @@ def save_report_fg(fg, file_name, file_path=None):
 
     # First / top: text results
     ax0 = plt.subplot(gs[0, :])
-    results_str = gen_results_str_fg(fg)
+    results_str = gen_results_fg_str(fg)
     ax0.text(0.5, 0.7, results_str, font, ha='center', va='center')
     ax0.set_frame_on(False)
     ax0.set_xticks([])

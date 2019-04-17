@@ -14,7 +14,7 @@ SCV = 70
 ###################################################################################################
 ###################################################################################################
 
-def gen_wid_warn_str(freq_res, bwl):
+def gen_width_warning_str(freq_res, bwl):
     """Generate a string representation of warning about peak width limits.
 
     Parameters
@@ -98,7 +98,7 @@ def gen_settings_str(f_obj, description=False, concise=False):
     return output
 
 
-def gen_results_str_fm(fm, concise=False):
+def gen_results_fm_str(fm, concise=False):
     """Generate a string representation of model fit results.
 
     Parameters
@@ -163,7 +163,7 @@ def gen_results_str_fm(fm, concise=False):
     return output
 
 
-def gen_results_str_fg(fg, concise=False):
+def gen_results_fg_str(fg, concise=False):
     """Generate a string representation of group fit results.
 
     Parameters
