@@ -39,7 +39,7 @@ from fooof.core.io import save_fm, load_json
 from fooof.core.reports import save_report_fm
 from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
 from fooof.core.utils import group_three, check_array_dim
-from fooof.core.info import get_obj_desc, get_data_indices
+from fooof.core.info import get_description, get_indices
 from fooof.core.modutils import copy_doc_func_to_method
 from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
                                 gen_issue_str, gen_width_warning_str)
@@ -256,7 +256,7 @@ class FOOOF():
             A FOOOF data object containing the settings for a FOOOF model.
         """
 
-        for setting in get_obj_desc()['settings']:
+        for setting in get_description()['settings']:
             setattr(self, setting, getattr(fooof_settings, setting))
 
         self._check_loaded_settings(fooof_settings._asdict())
@@ -271,7 +271,7 @@ class FOOOF():
             A FOOOF meta data object containing meta data information.
         """
 
-        for meta_dat in get_obj_desc()['meta_data']:
+        for meta_dat in get_description()['meta_data']:
             setattr(self, meta_dat, getattr(fooof_meta_data, meta_dat))
 
         self._regenerate_freqs()
@@ -449,7 +449,7 @@ class FOOOF():
             Object containing the settings from the current FOOOF object.
         """
 
-        return FOOOFSettings(**{key : getattr(self, key) for key in get_obj_desc()['settings']})
+        return FOOOFSettings(**{key : getattr(self, key) for key in get_description()['settings']})
 
 
     def get_meta_data(self):
@@ -461,7 +461,7 @@ class FOOOF():
             Object containing meta data from the current FOOOF object.
         """
 
-        return FOOOFMetaData(**{key : getattr(self, key) for key in get_obj_desc()['meta_data']})
+        return FOOOFMetaData(**{key : getattr(self, key) for key in get_description()['meta_data']})
 
 
     def get_params(self, name, col=None):
@@ -492,7 +492,7 @@ class FOOOF():
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
-            col = get_data_indices(self.aperiodic_mode)[col]
+            col = get_indices(self.aperiodic_mode)[col]
 
         # Extract the request data field from object
         out = getattr(self, name + '_')
@@ -521,7 +521,7 @@ class FOOOF():
         """
 
         return FOOOFResults(**{key.strip('_') : getattr(self, key) \
-            for key in get_obj_desc()['results']})
+            for key in get_description()['results']})
 
 
     @copy_doc_func_to_method(plot_fm)
@@ -1028,7 +1028,7 @@ class FOOOF():
 
         # If results loaded, check dimensions of peak parameters
         #  This fixes an issue where they end up the wrong shape if they are empty (no peaks)
-        if set(get_obj_desc()['results']).issubset(set(data.keys())):
+        if set(get_description()['results']).issubset(set(data.keys())):
             self.peak_params_ = check_array_dim(self.peak_params_)
             self.gaussian_params_ = check_array_dim(self.gaussian_params_)
 
@@ -1044,10 +1044,10 @@ class FOOOF():
 
         # If settings not loaded from file, clear from object, so that default
         #  settings, which are potentially wrong for loaded data, aren't kept
-        if not set(get_obj_desc()['settings']).issubset(set(data.keys())):
+        if not set(get_description()['settings']).issubset(set(data.keys())):
 
             # Reset all public settings to None
-            for setting in get_obj_desc()['settings']:
+            for setting in get_description()['settings']:
                 setattr(self, setting, None)
 
             # Infer whether knee fitting was used, if aperiodic params have been loaded

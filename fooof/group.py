@@ -16,7 +16,7 @@ from fooof.plts.fg import plot_fg
 from fooof.core.reports import save_report_fg
 from fooof.core.strings import gen_results_fg_str
 from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.info import get_data_indices
+from fooof.core.info import get_indices
 from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class, safe_import
 
 ###################################################################################################
@@ -221,7 +221,7 @@ class FOOOFGroup(FOOOF):
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
-            col = get_data_indices(self.aperiodic_mode)[col]
+            col = get_indices(self.aperiodic_mode)[col]
 
         # Pull out the requested data field from the group data
         # As a special case, peak_params are pulled out in a way that appends

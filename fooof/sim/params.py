@@ -4,7 +4,7 @@ import numpy as np
 
 from fooof.core.funcs import infer_ap_func
 from fooof.core.utils import check_flat
-from fooof.core.info import get_data_indices
+from fooof.core.info import get_indices
 from fooof.data import SimParams
 
 ###################################################################################################
@@ -45,7 +45,7 @@ def update_sim_ap_params(sim_params, delta, field=None):
         delta = list([delta]) if not isinstance(delta, list) else delta
 
         for cur_field, cur_delta in zip(field, delta):
-            dat_ind = get_data_indices(infer_ap_func(sim_params.aperiodic_params))[cur_field]
+            dat_ind = get_indices(infer_ap_func(sim_params.aperiodic_params))[cur_field]
             ap_params[dat_ind] = ap_params[dat_ind] + cur_delta
 
     new_sim_params = SimParams(ap_params, *sim_params[1:])

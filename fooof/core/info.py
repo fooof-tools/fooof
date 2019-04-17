@@ -1,7 +1,10 @@
 """Internal functions to manage info related to FOOOF objects."""
 
-def get_obj_desc():
-    """Get dictionary specifying FOOOF object names and kind of attributes.
+###################################################################################################
+###################################################################################################
+
+def get_description():
+    """Get dictionary specifying FOOOF attributes, and what kind of data they store.
 
     Returns
     -------
@@ -24,8 +27,8 @@ def get_obj_desc():
     return attributes
 
 
-def get_data_indices(aperiodic_mode):
-    """Get a dictionary mapping the column labels to indices in FOOOF data (FOOOFResults).
+def get_indices(aperiodic_mode):
+    """Get a dictionary mapping indices of FOOOF params to column labels.
 
     Parameters
     ----------
@@ -35,7 +38,7 @@ def get_data_indices(aperiodic_mode):
     Returns
     -------
     indices : dict
-        Mapping for data columns to the column indices in which they appear.
+        Mapping of the column indices for the FOOOF model fit params.
     """
 
     indices = {

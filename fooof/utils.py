@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from fooof.core.info import get_obj_desc
+from fooof.core.info import get_description
 
 ###################################################################################################
 ###################################################################################################
@@ -59,7 +59,7 @@ def get_info(f_obj, aspect):
         The set of specified info from the FOOOF derived object.
     """
 
-    return {key : getattr(f_obj, key) for key in get_obj_desc()[aspect]}
+    return {key : getattr(f_obj, key) for key in get_description()[aspect]}
 
 
 def compare_info(lst, aspect):

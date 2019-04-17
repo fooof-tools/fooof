@@ -1,6 +1,6 @@
 """Tests for the fooof.data."""
 
-from fooof.core.info import get_obj_desc
+from fooof.core.info import get_description
 
 from fooof.data import *
 
@@ -13,7 +13,7 @@ def test_fooof_settings():
     assert settings
 
     # Check that the object has the correct fields, given the object description
-    settings_fields = get_obj_desc()['settings']
+    settings_fields = get_description()['settings']
     for field in settings_fields:
         getattr(settings, field)
     assert True
@@ -24,7 +24,7 @@ def test_fooof_results():
     assert results
 
     # Check that the object has the correct fields, given the object description
-    results_fields = get_obj_desc()['results']
+    results_fields = get_description()['results']
     for field in results_fields:
         getattr(results, field.strip('_'))
     assert True

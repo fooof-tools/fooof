@@ -15,7 +15,7 @@ from fooof import FOOOF
 from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
 from fooof.sim import gen_power_spectrum
 from fooof.core.utils import group_three
-from fooof.core.info import get_obj_desc
+from fooof.core.info import get_description
 
 from fooof.tests.utils import get_tfm, plot_test
 
@@ -125,19 +125,19 @@ def test_adds():
     # Test adding settings
     fooof_settings = FOOOFSettings([1, 4], 6, 0, 2, 'fixed')
     tfm.add_settings(fooof_settings)
-    for setting in get_obj_desc()['settings']:
+    for setting in get_description()['settings']:
         assert getattr(tfm, setting) == getattr(fooof_settings, setting)
 
     # Test adding meta data
     fooof_meta_data = FOOOFMetaData([3, 40], 0.5)
     tfm.add_meta_data(fooof_meta_data)
-    for meta_dat in get_obj_desc()['meta_data']:
+    for meta_dat in get_description()['meta_data']:
         assert getattr(tfm, meta_dat) == getattr(fooof_meta_data, meta_dat)
 
     # Test adding results
     fooof_results = FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25])
     tfm.add_results(fooof_results)
-    for setting in get_obj_desc()['results']:
+    for setting in get_description()['results']:
         assert getattr(tfm, setting) == getattr(fooof_results, setting.strip('_'))
 
 def test_obj_gets(tfm):
@@ -200,7 +200,7 @@ def test_fooof_resets():
     tfm._reset_data_results()
     tfm._reset_internal_settings()
 
-    desc = get_obj_desc()
+    desc = get_description()
 
     for data in ['data', 'results', 'model_components']:
         for field in desc[data]:
@@ -230,6 +230,6 @@ def test_fooof_fit_failure():
     tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
     # Check after failing out of fit, all results are reset
-    for result in get_obj_desc()['results']:
+    for result in get_description()['results']:
         cur_res = getattr(tfm, result)
         assert cur_res is None or np.all(np.isnan(cur_res))

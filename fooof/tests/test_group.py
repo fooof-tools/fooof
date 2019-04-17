@@ -13,7 +13,7 @@ import numpy as np
 from fooof.group import *
 from fooof.fit import FOOOFResults
 from fooof.sim import gen_group_power_spectra
-from fooof.core.info import get_obj_desc
+from fooof.core.info import get_description
 
 from fooof.tests.utils import default_group_params, plot_test
 
@@ -129,7 +129,7 @@ def test_fg_report(skip_if_no_mpl):
 def test_fg_get_fooof(tfg):
     """Check return of an individual model fit to a FOOOF object from FOOOFGroup."""
 
-    desc = get_obj_desc()
+    desc = get_description()
 
     # Check without regenerating
     tfm0 = tfg.get_fooof(0, False)
