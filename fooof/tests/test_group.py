@@ -1,4 +1,4 @@
-"""Tests for the FOOOFGroup fit object and methods.
+"""Tests for the fooof.group, including the FOOOFGroup object and it's methods.
 
 NOTES
 -----
@@ -12,8 +12,8 @@ import numpy as np
 
 from fooof.group import *
 from fooof.fit import FOOOFResults
-from fooof.synth import gen_group_power_spectra
-from fooof.core.info import get_obj_desc
+from fooof.sim import gen_group_power_spectra
+from fooof.core.info import get_description
 
 from fooof.tests.utils import default_group_params, plot_test
 
@@ -25,8 +25,8 @@ def test_fg():
 
     # Note: doesn't assert fg itself, as it return false when group_results are empty
     #  This is due to the __len__ used in FOOOFGroup
-    fg = FOOOFGroup()
-    assert True
+    fg = FOOOFGroup(verbose=False)
+    assert isinstance(fg, FOOOFGroup)
 
 def test_fg_iter(tfg):
     """Check iterating through FOOOFGroup."""
@@ -45,7 +45,7 @@ def test_fg_fit():
     n_spectra = 2
     xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
 
-    tfg = FOOOFGroup()
+    tfg = FOOOFGroup(verbose=False)
     tfg.fit(xs, ys)
     out = tfg.get_results()
 
@@ -60,7 +60,7 @@ def test_fg_fit_par():
     n_spectra = 2
     xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
 
-    tfg = FOOOFGroup()
+    tfg = FOOOFGroup(verbose=False)
     tfg.fit(xs, ys, n_jobs=2)
     out = tfg.get_results()
 
@@ -80,19 +80,19 @@ def test_get_results(tfg):
 
     assert tfg.get_results()
 
-def test_get_all_data(tfg):
-    """Check get_all_data method."""
+def test_get_params(tfg):
+    """Check get_params method."""
 
     for dname in ['aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params']:
-        assert np.any(tfg.get_all_data(dname))
+        assert np.any(tfg.get_params(dname))
 
         if dname == 'aperiodic_params':
             for dtype in ['offset', 'exponent']:
-                assert np.any(tfg.get_all_data(dname, dtype))
+                assert np.any(tfg.get_params(dname, dtype))
 
         if dname == 'peak_params':
             for dtype in ['CF', 'PW', 'BW']:
-                assert np.any(tfg.get_all_data(dname, dtype))
+                assert np.any(tfg.get_params(dname, dtype))
 
 @plot_test
 def test_fg_plot(tfg, skip_if_no_mpl):
@@ -107,7 +107,7 @@ def test_fg_load():
     res_file_name = 'test_fooof_group_res'
     file_path = pkg.resource_filename(__name__, 'test_files')
 
-    tfg = FOOOFGroup()
+    tfg = FOOOFGroup(verbose=False)
 
     tfg.load(set_file_name, file_path)
     assert tfg
@@ -121,7 +121,7 @@ def test_fg_report(skip_if_no_mpl):
     n_spectra = 2
     xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
 
-    tfg = FOOOFGroup()
+    tfg = FOOOFGroup(verbose=False)
     tfg.report(xs, ys)
 
     assert tfg
@@ -129,7 +129,7 @@ def test_fg_report(skip_if_no_mpl):
 def test_fg_get_fooof(tfg):
     """Check return of an individual model fit to a FOOOF object from FOOOFGroup."""
 
-    desc = get_obj_desc()
+    desc = get_description()
 
     # Check without regenerating
     tfm0 = tfg.get_fooof(0, False)
@@ -151,5 +151,5 @@ def test_fg_get_fooof(tfg):
     tfm2 = new_tfg.get_fooof(0, True)
     assert tfm2
     # Check that data info is copied over properly
-    for data_info in desc['data_info']:
-        assert getattr(tfm2, data_info)
+    for meta_dat in desc['meta_data']:
+        assert getattr(tfm2, meta_dat)

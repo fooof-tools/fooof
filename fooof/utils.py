@@ -2,8 +2,7 @@
 
 import numpy as np
 
-from fooof.synth import gen_freqs
-from fooof.core.info import get_obj_desc
+from fooof.core.info import get_description
 
 ###################################################################################################
 ###################################################################################################
@@ -51,7 +50,7 @@ def get_info(f_obj, aspect):
     ----------
     f_obj : FOOOF or FOOOFGroup
         FOOOF derived object to get attributes from.
-    aspect : {'settings', 'data_info', 'results'}
+    aspect : {'settings', 'meta_data', 'results'}
         Which set of attributes to compare the objects across.
 
     Returns
@@ -60,7 +59,7 @@ def get_info(f_obj, aspect):
         The set of specified info from the FOOOF derived object.
     """
 
-    return {key : getattr(f_obj, key) for key in get_obj_desc()[aspect]}
+    return {key : getattr(f_obj, key) for key in get_description()[aspect]}
 
 
 def compare_info(lst, aspect):
@@ -70,7 +69,7 @@ def compare_info(lst, aspect):
     ----------
     lst : list of FOOOF or FOOOFGroup objects
         FOOOF related objects whose attibutes are to be compared.
-    aspect : {'setting', 'data_info'}
+    aspect : {'setting', 'meta_data'}
         Which set of attributes to compare the objects across.
 
     Returns

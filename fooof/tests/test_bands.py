@@ -1,4 +1,4 @@
-"""Test functions for FOOOF bands."""
+"""Test functions for fooof.bands."""
 
 from py.test import raises
 

@@ -31,14 +31,25 @@ FOOOFGroup Object
 
    FOOOFGroup
 
-FOOOF Object Functions
-----------------------
+Bands
+-----
+
+.. currentmodule:: fooof.bands
+
+.. autosummary::
+   :toctree: generated/
+
+   Bands
+
+FOOOF Functions
+---------------
 
 .. currentmodule:: fooof.funcs
 
 .. autosummary::
    :toctree: generated/
 
+   average_fg
    combine_fooofs
    fit_fooof_group_3d
 
@@ -51,16 +62,20 @@ Analysis Functions
     :toctree: generated/
 
     get_band_peak
+    get_band_peak_fm
+    get_band_peak_fg
     get_band_peak_group
     get_highest_peak
 
-Synth Code
-----------
+Sim Code
+--------
+
+Code & utilities for simulating power spectra.
 
 Generating Power Spectra
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. currentmodule:: fooof.synth.gen
+.. currentmodule:: fooof.sim.gen
 
 .. autosummary::
     :toctree: generated/
@@ -72,7 +87,7 @@ Generating Power Spectra
 Parameter Management
 ~~~~~~~~~~~~~~~~~~~~
 
-.. currentmodule:: fooof.synth.params
+.. currentmodule:: fooof.sim.params
 
 .. autosummary::
     :toctree: generated/
@@ -80,19 +95,20 @@ Parameter Management
     Stepper
     param_iter
     param_sampler
+    update_sim_ap_params
 
 Transforming Power Spectra
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. currentmodule:: fooof.synth.transform
+.. currentmodule:: fooof.sim.transform
 
 .. autosummary::
     :toctree: generated/
 
     translate_spectrum
-    translate_syn_spectrum
+    translate_sim_spectrum
     rotate_spectrum
-    rotate_syn_spectrum
+    rotate_sim_spectrum
     compute_rotation_offset
 
 Plotting Functions
@@ -117,7 +133,5 @@ Utility Functions
     :toctree: generated/
 
     trim_spectrum
-    get_settings
-    get_data_info
-    compare_settings
-    compare_data_info
+    get_info
+    compare_info

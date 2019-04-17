@@ -1,4 +1,4 @@
-"""Test functions for ..."""
+"""Test functions for fooof.funcs."""
 
 from py.test import raises
 
@@ -6,7 +6,7 @@ import numpy as np
 
 from fooof.utils import compare_info
 from fooof.group import FOOOFGroup
-from fooof.synth import gen_group_power_spectra
+from fooof.sim import gen_group_power_spectra
 
 from fooof.funcs import *
 from fooof.tests.utils import default_group_params
@@ -85,7 +85,7 @@ def test_combine_errors(tfm, tfg):
     # Incompatible data information
     for f_obj in [tfm, tfg]:
         f_obj2 = f_obj.copy()
-        f_obj2.freq_range= [5, 30]
+        f_obj2.freq_range = [5, 30]
 
         with raises(ValueError):
             combine_fooofs([f_obj, f_obj2])

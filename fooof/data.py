@@ -26,9 +26,9 @@ aperiodic_mode : {'fixed', 'knee'}
 """
 
 
-FOOOFDataInfo = namedtuple('FOOOFDataInfo', ['freq_range', 'freq_res'])
+FOOOFMetaData = namedtuple('FOOOFMetaData', ['freq_range', 'freq_res'])
 
-FOOOFDataInfo.__doc__ = """\
+FOOOFMetaData.__doc__ = """\
 Data related information for a FOOOF object.
 
 Attributes
@@ -62,10 +62,10 @@ gaussian_params : 2d array
 """
 
 
-SynParams = namedtuple('SynParams', ['aperiodic_params', 'gaussian_params', 'nlv'])
+SimParams = namedtuple('SimParams', ['aperiodic_params', 'gaussian_params', 'nlv'])
 
-SynParams.__doc__ = """\
-Stores parameters used to synthesize a single power spectra.
+SimParams.__doc__ = """\
+Stores parameters used to simulate a single power spectra.
 
 Attributes
 ----------

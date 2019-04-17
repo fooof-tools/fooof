@@ -26,10 +26,10 @@ Analyze results from fitting FOOOF models.
 # General imports
 import numpy as np
 
-# Import FOOOF objects & synth utilities
+# Import FOOOF objects & sim utilities
 from fooof import FOOOF, FOOOFGroup
-from fooof.synth.params import param_sampler
-from fooof.synth.gen import gen_group_power_spectra
+from fooof.sim.params import param_sampler
+from fooof.sim.gen import gen_group_power_spectra
 
 # FOOOF comes with some basic analysis function to work with FOOOF outputs
 from fooof.analysis import get_band_peak, get_band_peak_group
@@ -104,15 +104,15 @@ print(get_band_peak(fm.peak_params_, alpha_band))
 
 ###################################################################################################
 
-# Generate some synthetic power spectra and fit a FOOOFGroup to use
+# Generate some simulated power spectra and fit a FOOOFGroup to use
 freqs, spectra, _ = gen_group_power_spectra(n_spectra=10,
                                             freq_range=[3, 40],
                                             aperiodic_params=param_sampler([[20, 2], [35, 1.5]]),
-                                            gauss_params=param_sampler([[], [10, 0.5, 2]]))
+                                            gaussian_params=param_sampler([[], [10, 0.5, 2]]))
 
 ###################################################################################################
 
-# Fit FOOOF models across the group of synthesized power spectra
+# Fit FOOOF models across the group of simulated power spectra
 fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_height=0.05, max_n_peaks=6, verbose=False)
 fg.fit(freqs, spectra)
 

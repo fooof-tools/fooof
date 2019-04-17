@@ -29,7 +29,7 @@ def get_band_peak_fm(fm, band, ret_one=True, attribute='peak_params'):
     return get_band_peak(getattr(fm, attribute + '_'), band, ret_one)
 
 
-def get_band_peaks_fg(fg, band, attribute='peak_params'):
+def get_band_peak_fg(fg, band, attribute='peak_params'):
     """Extract peaks from a band of interest from a FOOOF object.
 
     Parameters
@@ -47,10 +47,10 @@ def get_band_peaks_fg(fg, band, attribute='peak_params'):
         Peak data. Each row is a peak, as [CF, Amp, BW].
     """
 
-    return get_band_peaks_group(fg.get_all_data(attribute), band, len(fg))
+    return get_band_peak_group(fg.get_params(attribute), band, len(fg))
 
 
-def get_band_peaks_group(peak_params, band, n_fits):
+def get_band_peak_group(peak_params, band, n_fits):
     """Extracts peaks within a given band of interest.
 
     Parameters

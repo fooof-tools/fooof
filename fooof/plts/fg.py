@@ -5,8 +5,6 @@ Notes
 This file contains plotting functions that take as input a FOOOFGroup() object.
 """
 
-import os
-
 from fooof.core.io import fname, fpath
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
@@ -41,7 +39,7 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
 
     # Aperiodic parameters plot
     ax0 = plt.subplot(gs[0, 0])
-    plot_fg_bg(fg, ax0)
+    plot_fg_ap(fg, ax0)
 
     # Goodness of fit plot
     ax1 = plt.subplot(gs[0, 1])
@@ -56,7 +54,7 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_fg_bg(fg, ax=None):
+def plot_fg_ap(fg, ax=None):
     """Plot aperiodic fit parameters, in a scatter plot.
 
     Parameters
@@ -68,11 +66,11 @@ def plot_fg_bg(fg, ax=None):
     """
 
     if fg.aperiodic_mode == 'knee':
-        plot_scatter_2(fg.get_all_data('aperiodic_params', 1), 'Knee',
-                       fg.get_all_data('aperiodic_params', 2), 'Exponent',
+        plot_scatter_2(fg.get_params('aperiodic_params', 1), 'Knee',
+                       fg.get_params('aperiodic_params', 2), 'Exponent',
                        'Aperiodic Fit', ax=ax)
     else:
-        plot_scatter_1(fg.get_all_data('aperiodic_params', 1), 'Exponent',
+        plot_scatter_1(fg.get_params('aperiodic_params', 1), 'Exponent',
                        'Aperiodic Fit', ax=ax)
 
 
@@ -88,8 +86,8 @@ def plot_fg_gf(fg, ax=None):
         Figure axes upon which to plot.
     """
 
-    plot_scatter_2(fg.get_all_data('error'), 'Error',
-                   fg.get_all_data('r_squared'), 'R^2', 'Goodness of Fit', ax=ax)
+    plot_scatter_2(fg.get_params('error'), 'Error',
+                   fg.get_params('r_squared'), 'R^2', 'Goodness of Fit', ax=ax)
 
 
 @check_dependency(plt, 'matplotlib')
@@ -104,5 +102,5 @@ def plot_fg_peak_cens(fg, ax=None):
         Figure axes upon which to plot.
     """
 
-    plot_hist(fg.get_all_data('peak_params', 0)[:, 0], 'Center Frequency',
+    plot_hist(fg.get_params('peak_params', 0)[:, 0], 'Center Frequency',
               'Peaks - Center Frequencies', x_lims=fg.freq_range, ax=ax)

@@ -1,55 +1,55 @@
 """
-Creating Synthetic Power Spectra
+Creating Simulated Power Spectra
 ================================
 
-Use FOOOF to create synthetic power spectra.
+Use FOOOF to create simulated power spectra.
 """
 
 ###################################################################################################
 
-# Import fooof functions for creating synthetic power spectra
-from fooof.synth.gen import gen_power_spectrum, gen_group_power_spectra
+# Import fooof functions for creating simulated power spectra
+from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
 
 # Import some fooof plotting functions
 from fooof.plts.spectra import plot_spectrum, plot_spectra
 
 ###################################################################################################
-# Creating Synthetic Power Spectra
+# Creating Simulated Power Spectra
 # --------------------------------
 #
-# FOOOF has utilities to create synthetic power spectra, whereby spectra
+# FOOOF has utilities to create simulated power spectra, whereby spectra
 # are simulated with an aperiodic component with overlying peaks,
 # using specified parameters.
 #
-# The :func:`gen_power_spectrum` function can be used to synthesize a power
+# The :func:`gen_power_spectrum` function can be used to simulate a power
 # spectrum with specified parameters.
 #
-# Note that all FOOOF functions that synthesize power spectra take in
+# Note that all FOOOF functions that simulate power spectra take in
 # gaussian parameters, not the modified peak parameters.
 #
 
 ###################################################################################################
 
-# Settings for creating a synthetic power spectrum
+# Settings for creating a simulated power spectrum
 freq_range = [3, 40]            # The frequency range to simulate
 aperiodic_params = [1, 1]       # Parameters defining the aperiodic component
 gaussian_params = [10, 0.3, 1]  # Parameters for any periodic components
 
 ###################################################################################################
 
-# Generate a synthetic power spectrum
+# Generate a simulated power spectrum
 fs, ps = gen_power_spectrum(freq_range, aperiodic_params, gaussian_params)
 
 ###################################################################################################
 
-# Plot the synthetic power spectrum
+# Plot the simulated power spectrum
 plot_spectrum(fs, ps, log_freqs=True, log_powers=False)
 
 ###################################################################################################
 # Simulating With Different Parameters
 # ------------------------------------
 #
-# Power spectra can be synthesized with any desired parameters for the FOOOF power spectra model.
+# Power spectra can be simulated with any desired parameters for the FOOOF power spectra model.
 #
 # The aperiodic mode for the simulated power spectrum is inferred from the parameters provided.
 # If two parameters are provided, this is interpreted as [offset, exponent] for simulating
@@ -67,19 +67,19 @@ plot_spectrum(fs, ps, log_freqs=True, log_powers=False)
 
 ###################################################################################################
 
-# Set up new settings for creating a different synthetic power spectrum
+# Set up new settings for creating a different simulated power spectrum
 freq_range = [1, 60]
 aperiodic_params = [1, 500, 2]            # Specify three values as [offset, knee, exponent]
 gaussian_params = [9, 0.4, 1, 24, 0.2, 3]  # Add peaks - can also be [[9, 0.4, 1], [24, 0.2, 3]]
 nlv = 0.01                                 # The amount of noise to add to the spectrum
 freq_res = 0.25                            # Specific the frequency resolution to simulate
 
-# Generate the new synthetic power spectrum
+# Generate the new simulated power spectrum
 fs, ps = gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv, freq_res)
 
 ###################################################################################################
 
-# Plot the new synthetic power spectrum
+# Plot the new simulated power spectrum
 plot_spectrum(fs, ps, log_powers=True)
 
 ###################################################################################################
@@ -100,7 +100,7 @@ plot_spectrum(fs, ps, log_powers=True)
 
 ###################################################################################################
 
-# Create some new settings for synthesizing a group of power spectra
+# Create some new settings for simulating a group of power spectra
 n_spectra = 2
 freq_range = [3, 40]
 ap_params = [[0.5, 1], [1, 1.5]]
@@ -109,8 +109,8 @@ nlv = 0.02
 
 ###################################################################################################
 
-# Synthesize a group of power spectra
-fs, ps, syn_params = gen_group_power_spectra(n_spectra, freq_range, ap_params, gauss_params, nlv)
+# Simulate a group of power spectra
+fs, ps, sim_params = gen_group_power_spectra(n_spectra, freq_range, ap_params, gauss_params, nlv)
 
 ###################################################################################################
 
@@ -119,8 +119,8 @@ plot_spectra(fs, ps, log_freqs=True, log_powers=True)
 
 ###################################################################################################
 #
-# Note that when you simulate a group of power spectra, FOOOF returns SynParam objects that
+# Note that when you simulate a group of power spectra, FOOOF returns SimParam objects that
 # keep track of the simulations. This, and other utilties to manage parameters and provide
-# parameter definitions for synthesizing groups of power spectra are covered in the
-# `Synthetic Parameters` example.
+# parameter definitions for simulating groups of power spectra are covered in the
+# `Simulated Parameters` example.
 #

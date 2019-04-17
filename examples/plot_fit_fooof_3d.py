@@ -12,12 +12,12 @@ import numpy as np
 # FOOOF imports
 from fooof import FOOOFGroup
 from fooof.funcs import fit_fooof_group_3d, combine_fooofs
-from fooof.synth.gen import gen_group_power_spectra
-from fooof.synth.params import param_sampler
+from fooof.sim.gen import gen_group_power_spectra
+from fooof.sim.params import param_sampler
 
 ###################################################################################################
 
-# Settings for creating synthetic data
+# Settings for creating simulated data
 n_spectra = 10
 freq_range = [3, 40]
 ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
@@ -25,7 +25,7 @@ gauss_opts = param_sampler([[], [10, 1, 1], [10, 1, 1, 20, 2, 1]])
 
 ###################################################################################################
 
-# Generate some synthetic power spectra, and organize into a 3D matrix
+# Generate some simulated power spectra, and organize into a 3D matrix
 spectra = []
 for ind in range(3):
     fs, ps, _ = gen_group_power_spectra(n_spectra, freq_range, ap_opts, gauss_opts)

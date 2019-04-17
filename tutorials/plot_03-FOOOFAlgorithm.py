@@ -31,8 +31,8 @@ import matplotlib.pyplot as plt
 # Import the FOOOF object
 from fooof import FOOOF
 
-# Import a function to generate synthetic power spectra
-from fooof.synth.gen import gen_aperiodic
+# Import a function to generate simulated power spectra
+from fooof.sim.gen import gen_aperiodic
 
 # Import some internal functions from FOOOF
 #  Note that these are used here for demonstration: - you do not need to import them to run FOOOF

@@ -14,9 +14,9 @@ import numpy as np
 from fooof import FOOOF
 from fooof.plts.fg import plot_fg
 from fooof.core.reports import save_report_fg
-from fooof.core.strings import gen_results_str_fg
+from fooof.core.strings import gen_results_fg_str
 from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.info import get_data_indices
+from fooof.core.info import get_indices
 from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class, safe_import
 
 ###################################################################################################
@@ -59,7 +59,8 @@ class FOOOFGroup(FOOOF):
         return self.group_results[index]
 
 
-    def _reset_data_results(self, clear_freqs=True, clear_spectrum=True, clear_results=True, clear_spectra=True):
+    def _reset_data_results(self, clear_freqs=True, clear_spectrum=True,
+                            clear_results=True, clear_spectra=True):
         """Set (or reset) data & results attributes to empty.
 
         Parameters
@@ -171,7 +172,8 @@ class FOOOFGroup(FOOOF):
         # Run linearly
         if n_jobs == 1:
             self._reset_group_results(len(self.power_spectra))
-            for ind, power_spectrum in _progress(enumerate(self.power_spectra), self.verbose, len(self)):
+            for ind, power_spectrum in \
+                _progress(enumerate(self.power_spectra), self.verbose, len(self)):
                 self._fit(power_spectrum=power_spectrum)
                 self.group_results[ind] = self._get_results()
 
@@ -193,12 +195,12 @@ class FOOOFGroup(FOOOF):
         return self.group_results
 
 
-    def get_all_data(self, name, col=None):
-        """Return all data for a specified attribute across the group.
+    def get_params(self, name, col=None):
+        """Return model fit parameters for specified feature(s).
 
         Parameters
         ----------
-        name : {'aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params'}
+        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
             Name of the data field to extract across the group.
         col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
             Column name / index to extract from selected data, if requested.
@@ -212,17 +214,19 @@ class FOOOFGroup(FOOOF):
         Notes
         -----
         For further description of the data you can extract, check the FOOOFResults documentation.
-        For example `print(fg[0].__doc__)`
         """
+
+        if not self.group_results:
+            raise RuntimeError('No model fit data is available to extract - can not proceed.')
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
-            col = get_data_indices(self.aperiodic_mode)[col]
+            col = get_indices(self.aperiodic_mode)[col]
 
         # Pull out the requested data field from the group data
         # As a special case, peak_params are pulled out in a way that appends
         #  an extra column, indicating from which FOOOF run each peak comes from
-        if name == 'peak_params' or name == 'gaussian_params':
+        if name in ('peak_params', 'gaussian_params'):
             out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
                             for index, data in enumerate(self.group_results)])
             # This updates index to grab selected column, and the last colum
@@ -272,7 +276,8 @@ class FOOOFGroup(FOOOF):
         file_name : str, optional
             File from which to load data.
         file_path : str, optional
-            Path to directory from which to load from. If not provided, loads from current directory.
+            Path to directory from which to load from.
+            If not provided, loads from current directory.
         """
 
         # Clear results so as not to have possible prior results interfere
@@ -318,7 +323,7 @@ class FOOOFGroup(FOOOF):
             fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
         # If no power spectrum data available, copy over data information & regenerate freqs
         else:
-            fm.add_data_info(self.get_data_info())
+            fm.add_meta_data(self.get_meta_data())
 
         # Add results for specified power spectrum, regenerating full fit if requested
         fm.add_results(self.group_results[ind])
@@ -337,7 +342,7 @@ class FOOOFGroup(FOOOF):
             Whether to print the report in a concise mode, or not.
         """
 
-        print(gen_results_str_fg(self, concise))
+        print(gen_results_fg_str(self, concise))
 
 
     def _fit(self, *args, **kwargs):

@@ -1,10 +1,10 @@
-"""Test functions for FOOOF synth.gen"""
+"""Test functions for fooof.sim.gen"""
 
 import numpy as np
 
 from fooof.tests.utils import default_group_params
 
-from fooof.synth.gen import *
+from fooof.sim.gen import *
 
 ###################################################################################################
 ###################################################################################################
@@ -23,10 +23,10 @@ def test_gen_freqs():
 def test_gen_power_spectrum():
 
     freq_range = [3, 50]
-    bgp = [50, 2]
+    ap_params = [50, 2]
     gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = gen_power_spectrum(freq_range, bgp, gaussian_params)
+    xs, ys = gen_power_spectrum(freq_range, ap_params, gaussian_params)
 
     assert np.all(xs)
     assert np.all(ys)
@@ -57,19 +57,19 @@ def test_gen_aperiodic():
 
     xs = gen_freqs([3, 50], 0.5)
 
-    bgp_nk = [50, 2]
-    bgv_nk = gen_aperiodic(xs, bgp_nk, 'fixed')
-    assert np.all(bgv_nk)
+    ap_nk = [50, 2]
+    apv_nk = gen_aperiodic(xs, ap_nk, 'fixed')
+    assert np.all(apv_nk)
 
-    bgp_kn = [50, 1, 1]
-    bgv_kn = gen_aperiodic(xs, bgp_kn, 'knee')
-    assert np.all(bgv_kn)
+    ap_kn = [50, 1, 1]
+    apv_kn = gen_aperiodic(xs, ap_kn, 'knee')
+    assert np.all(apv_kn)
 
     # Check without specifying aperiodic mode
-    bgv_nk_2 = gen_aperiodic(xs, bgp_nk)
-    assert np.array_equal(bgv_nk, bgv_nk_2)
-    bgv_kn_2 = gen_aperiodic(xs, bgp_kn)
-    assert np.array_equal(bgv_kn, bgv_kn_2)
+    apv_nk_2 = gen_aperiodic(xs, ap_nk)
+    assert np.array_equal(apv_nk, apv_nk_2)
+    apv_kn_2 = gen_aperiodic(xs, ap_kn)
+    assert np.array_equal(apv_kn, apv_kn_2)
 
 def test_gen_peaks():
 
@@ -84,10 +84,10 @@ def test_gen_power_values():
 
     xs = gen_freqs([3, 50], 0.5)
 
-    bg_params = [50, 2]
-    gaussian_params = [10, 2, 1]
+    ap_params = [50, 2]
+    gauss_params = [10, 2, 1]
     nlv = 0.1
 
-    ys = gen_power_vals(xs, bg_params, gaussian_params, nlv)
+    ys = gen_power_vals(xs, ap_params, gauss_params, nlv)
 
     assert np.all(ys)

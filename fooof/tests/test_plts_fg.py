@@ -22,9 +22,9 @@ def test_plot_fg_error(skip_if_no_mpl):
         tfg.plot()
 
 @plot_test
-def test_plot_fg_bg(tfg, skip_if_no_mpl):
+def test_plot_fg_ap(tfg, skip_if_no_mpl):
 
-    plot_fg_bg(tfg)
+    plot_fg_ap(tfg)
 
 @plot_test
 def test_plot_fg_gf(tfg, skip_if_no_mpl):

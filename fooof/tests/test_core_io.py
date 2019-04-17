@@ -4,7 +4,7 @@ import os
 import pkg_resources as pkg
 
 from fooof import FOOOF
-from fooof.core.info import get_obj_desc
+from fooof.core.info import get_description
 
 from fooof.core.io import *
 
@@ -142,7 +142,7 @@ def test_load_file_contents():
 
     loaded_data = load_json(file_name, file_path)
 
-    desc = get_obj_desc()
+    desc = get_description()
 
     # Check settings
     for setting in desc['settings']:

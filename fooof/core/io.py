@@ -5,7 +5,7 @@ import os
 import json
 from json import JSONDecodeError
 
-from fooof.core.info import get_obj_desc
+from fooof.core.info import get_description
 from fooof.core.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
 
 ###################################################################################################
@@ -89,8 +89,8 @@ def save_fm(fm, file_name, file_path=None, append=False,
 
     # Set and select which variables to keep. Use a set to drop any potential overlap
     #  Note that results also saves frequency information to be able to recreate freq vector
-    attributes = get_obj_desc()
-    keep = set((attributes['results'] + attributes['data_info'] if save_results else []) + \
+    attributes = get_description()
+    keep = set((attributes['results'] + attributes['meta_data'] if save_results else []) + \
                (attributes['settings'] if save_settings else []) + \
                (attributes['data'] if save_data else []))
     obj_dict = dict_select_keys(obj_dict, keep)
@@ -183,7 +183,7 @@ def load_json(file_name, file_path):
         dat = json.loads(file_name.readline())
 
     # Get dictionary of available attributes, and convert specified lists back into arrays
-    dat = dict_lst_to_array(dat, get_obj_desc()['arrays'])
+    dat = dict_lst_to_array(dat, get_description()['arrays'])
 
     return dat
 

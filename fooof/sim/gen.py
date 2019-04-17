@@ -1,10 +1,10 @@
-"""Synthesis functions for generating model components and synthetic power spectra."""
+"""Functions for generating model components and simulated power spectra."""
 
 import numpy as np
 
 from fooof.core.utils import group_three, check_iter, check_flat
 from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
-from fooof.synth.params import SynParams
+from fooof.sim.params import SimParams
 
 ###################################################################################################
 ###################################################################################################
@@ -34,7 +34,7 @@ def gen_freqs(freq_range, freq_res):
 
 
 def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005, freq_res=0.5):
-    """Generate a synthetic power spectrum.
+    """Generate a simualted power spectrum.
 
     Parameters
     ----------
@@ -47,7 +47,7 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
     nlv : float, optional, default: 0.005
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
-        Frequency resolution for the synthetic power spectra.
+        Frequency resolution for the simulated power spectrum.
 
     Returns
     -------
@@ -94,7 +94,7 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
 
 def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
                             gaussian_params, nlvs=0.005, freq_res=0.5):
-    """Generate a group of synthetic power spectra.
+    """Generate a group of simulated power spectra.
 
     Parameters
     ----------
@@ -110,7 +110,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
     nlvs : float or list of float or generator, optional, default: 0.005
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
-        Frequency resolution for the synthetic power spectra.
+        Frequency resolution for the simulated power spectra.
 
     Returns
     -------
@@ -118,7 +118,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
         Frequency values (linear).
     powers : 2d array
         Matrix of power values (linear), as [n_power_spectra, n_freqs].
-    syn_params : list of SynParams
+    sim_params : list of SimParams
         Definitions of parameters used for each spectrum. Has length of n_spectra.
 
     Notes
@@ -154,26 +154,26 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
 
     >>> ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
     >>> gauss_opts = param_sampler([[], [10, 1, 1], [10, 1, 1, 20, 2, 1]])
-    >>> freqs, psds, syn_params = gen_group_power_spectra(10, [1, 50], ap_opts, gauss_opts)
+    >>> freqs, psds, sim_params = gen_group_power_spectra(10, [1, 50], ap_opts, gauss_opts)
     """
 
     # Initialize things
     freqs = gen_freqs(freq_range, freq_res)
     powers = np.zeros([n_spectra, len(freqs)])
-    syn_params = [None] * n_spectra
+    sim_params = [None] * n_spectra
 
     # Check if inputs are generators, if not, make them into repeat generators
     aperiodic_params = check_iter(aperiodic_params, n_spectra)
     gaussian_params = check_iter(gaussian_params, n_spectra)
     nlvs = check_iter(nlvs, n_spectra)
 
-    # Synthesize power spectra
+    # Simulate power spectra
     for ind, bgp, gp, nlv in zip(range(n_spectra), aperiodic_params, gaussian_params, nlvs):
 
-        syn_params[ind] = SynParams(bgp.copy(), sorted(group_three(gp)), nlv)
+        sim_params[ind] = SimParams(bgp.copy(), sorted(group_three(gp)), nlv)
         powers[ind, :] = gen_power_vals(freqs, bgp, gp, nlv)
 
-    return freqs, powers, syn_params
+    return freqs, powers, sim_params
 
 
 def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):

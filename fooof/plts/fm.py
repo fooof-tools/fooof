@@ -5,7 +5,6 @@ Notes
 This file contains plotting functions that take as input a FOOOF() object.
 """
 
-import os
 import numpy as np
 
 from fooof.plts.utils import check_ax
@@ -75,7 +74,7 @@ def plot_peak_iter(fm):
     """
 
     flatspec = fm._spectrum_flat
-    n_gauss = fm._gaussian_params.shape[0]
+    n_gauss = fm.gaussian_params_.shape[0]
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
 
     for ind in range(n_gauss + 1):
@@ -97,7 +96,7 @@ def plot_peak_iter(fm):
 
         if ind < n_gauss:
 
-            gauss = gaussian_function(fm.freqs, *fm._gaussian_params[ind, :])
+            gauss = gaussian_function(fm.freqs, *fm.gaussian_params_[ind, :])
             plot_spectrum(fm.freqs, gauss, label='Gaussian Fit',
                           linestyle=':', linewidth=2.0, ax=ax)
 

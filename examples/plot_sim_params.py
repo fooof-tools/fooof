@@ -1,27 +1,27 @@
 """
-Synthetic Parameters
+Simulated Parameters
 ====================
 
-Manage parameters for creating synthetic power spectra.
+Manage parameters for creating simulated power spectra.
 """
 
 ###################################################################################################
 
 # Import fooof functions for creating spectra and managing parameters
-from fooof.synth.params import param_sampler, param_iter, Stepper
-from fooof.synth.gen import gen_power_spectrum, gen_group_power_spectra
+from fooof.sim.params import param_sampler, param_iter, Stepper
+from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
 
 # Import some fooof plotting functions
 from fooof.plts.spectra import plot_spectrum, plot_spectra
 
 ###################################################################################################
-# SynParams
+# SimParams
 # ~~~~~~~~~
 #
-# When you synthesize multiple power spectra, FOOOF uses `SynParams` objects to
+# When you simulate multiple power spectra, FOOOF uses `SimParams` objects to
 # keep track of the parameters used for each power spectrum.
 #
-# SynParams objects are named tuples with the following fields:
+# SimParams objects are named tuples with the following fields:
 # - `aperiodic_params`
 # - `gaussian_params`
 # - `nlv`
@@ -29,7 +29,7 @@ from fooof.plts.spectra import plot_spectrum, plot_spectra
 
 ###################################################################################################
 
-# Set up settings for synthesizing a group of power spectra
+# Set up settings for simulating a group of power spectra
 n_spectra = 2
 freq_range = [3, 40]
 ap_params = [[0.5, 1], [1, 1.5]]
@@ -38,19 +38,19 @@ nlv = 0.02
 
 ###################################################################################################
 
-# Synthesize a group of power spectra
-fs, ps, syn_params = gen_group_power_spectra(n_spectra, freq_range, ap_params, gauss_params, nlv)
+# Simulate a group of power spectra
+fs, ps, sim_params = gen_group_power_spectra(n_spectra, freq_range, ap_params, gauss_params, nlv)
 
 ###################################################################################################
 
-# Print out the SynParams objects that track the parameters used to create power spectra
-for syn_param in syn_params:
-    print(syn_param)
+# Print out the SimParams objects that track the parameters used to create power spectra
+for sim_param in sim_params:
+    print(sim_param)
 
 ###################################################################################################
 
-# You can also use a SynParams object to regenerate a particular power spectrum
-cur_params = syn_params[0]
+# You can also use a SimParams object to regenerate a particular power spectrum
+cur_params = sim_params[0]
 fs, ps = gen_power_spectrum(freq_range, *cur_params)
 
 ###################################################################################################
@@ -83,7 +83,7 @@ gauss_opts = param_sampler([[10, 0.5, 1], [[10, 0.5, 1], [20, 0.25, 2]]], [0.75,
 ###################################################################################################
 
 # Generate some power spectra, using the param samplers
-fs, ps, syn_params = gen_group_power_spectra(10, [3, 40], ap_opts, gauss_opts)
+fs, ps, sim_params = gen_group_power_spectra(10, [3, 40], ap_opts, gauss_opts)
 
 ###################################################################################################
 
@@ -113,7 +113,7 @@ gauss_params = param_iter([cf_steps, 0.4, 1])
 ###################################################################################################
 
 # Generate some power spectra, using param iter
-fs, ps, syn_params = gen_group_power_spectra(len(cf_steps), [3, 40], ap_params, gauss_params)
+fs, ps, sim_params = gen_group_power_spectra(len(cf_steps), [3, 40], ap_params, gauss_params)
 
 ###################################################################################################
 

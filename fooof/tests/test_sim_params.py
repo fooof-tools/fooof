@@ -1,37 +1,51 @@
-"""Test functions for FOOOF synth.params."""
+"""Test functions for fooof.sim.params."""
 
 from py.test import raises
 
-from fooof.synth.params import *
+from fooof.sim.params import *
 
 ###################################################################################################
 ###################################################################################################
 
-def test_update_syn_ap_params():
+def test_update_sim_ap_params():
 
-    syn_params = SynParams([1, 1], [10, 1, 1], 0.05)
+    sim_params = SimParams([1, 1], [10, 1, 1], 0.05)
 
     # Check updating of a single specified parameter
-    new_syn_params = update_syn_ap_params(syn_params, 1, 'exponent')
-    assert new_syn_params.aperiodic_params == [1, 2]
+    new_sim_params = update_sim_ap_params(sim_params, 1, 'exponent')
+    assert new_sim_params.aperiodic_params == [1, 2]
 
     # Check updating of multiple specified parameters
-    new_syn_params = update_syn_ap_params(syn_params, [1, 1], ['offset', 'exponent'])
-    assert new_syn_params.aperiodic_params == [2, 2]
+    new_sim_params = update_sim_ap_params(sim_params, [1, 1], ['offset', 'exponent'])
+    assert new_sim_params.aperiodic_params == [2, 2]
 
     # Check updating of all parameters
-    new_syn_params = update_syn_ap_params(syn_params, [1, 1])
-    assert new_syn_params.aperiodic_params == [2, 2]
+    new_sim_params = update_sim_ap_params(sim_params, [1, 1])
+    assert new_sim_params.aperiodic_params == [2, 2]
 
     # Check error with invalid overwrite
     with raises(ValueError):
-        new_syn_params = update_syn_ap_params(syn_params, [1, 1, 1])
+        new_sim_params = update_sim_ap_params(sim_params, [1, 1, 1])
 
 def test_stepper():
 
-    assert Stepper(8,12,.1)
+    stepper = Stepper(8, 12, 1)
+    assert stepper
+    assert len(stepper) == 4
+    for val in stepper:
+        assert True
 
-    # TODO: add more tests of Stepper
+def test_stepper_errors():
+    """Test the checks in Stepper._check_values()"""
+
+    with raises(ValueError):
+        Stepper(-1, 0, 0)
+
+    with raises(ValueError):
+        Stepper(10, 8, 1)
+
+    with raises(ValueError):
+        Stepper(8, 12, 5)
 
 def test_param_iter():
 
@@ -41,12 +55,12 @@ def test_param_iter():
     iter_1 = param_iter(osc)
 
     for ind, val in enumerate(iter_1):
-        assert val == [8 + (.1*ind), .5 , .5]
+        assert val == [8 + (.1*ind), .5, .5]
 
     # Test aperiodic
     step = Stepper(.25, 3, .25)
-    bg = [0, step]
-    iter_1 = param_iter(bg)
+    ap_params = [0, step]
+    iter_1 = param_iter(ap_params)
 
     for ind, val in enumerate(iter_1):
         assert val == [0, .25 + (.25*ind)]
@@ -57,7 +71,7 @@ def test_param_iter():
     iter_1 = param_iter(oscs)
 
     for ind, val in enumerate(iter_1):
-        assert val == [8 + (.1*ind), .5 , .5, 10, .25, 1]
+        assert val == [8 + (.1*ind), .5, .5, 10, .25, 1]
 
     # Test list of lists
     step = Stepper(8, 12, .1)
@@ -69,6 +83,11 @@ def test_param_iter():
 
     for ind, val in enumerate(iter_2):
         assert val == [1, 2, 3, 4, 5, 6, 7, 8, 8 + (.1*ind)]
+
+    # Test multiple stepper error
+    step = Stepper(8, 12, .1)
+    with raises(ValueError):
+        for params in param_iter([[step, step, step]]): pass
 
 def test_param_sampler():
 

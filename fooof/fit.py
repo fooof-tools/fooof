@@ -11,9 +11,6 @@ _spectrum_flat : 1d array
     Flattened power spectrum (aperiodic component removed).
 _spectrum_peak_rm : 1d array
     Power spectrum with peaks removed (not flattened).
-_gaussian_params : 2d array
-    Parameters that define the gaussian fit(s).
-    Each row is a gaussian, as [mean, height, standard deviation].
 _ap_fit : 1d array
     Values of the aperiodic fit.
 _peak_fit : 1d array
@@ -44,19 +41,20 @@ from fooof.core.io import save_fm, load_json
 from fooof.core.reports import save_report_fm
 from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
 from fooof.core.utils import group_three, check_array_dim
-from fooof.core.info import get_obj_desc
+from fooof.core.info import get_description, get_indices
 from fooof.core.modutils import copy_doc_func_to_method
-from fooof.core.strings import gen_settings_str, gen_results_str_fm, gen_issue_str, gen_wid_warn_str
+from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
+                                gen_issue_str, gen_width_warning_str)
 
 from fooof.plts.fm import plot_fm
 from fooof.utils import trim_spectrum
-from fooof.data import FOOOFResults, FOOOFSettings, FOOOFDataInfo
-from fooof.synth.gen import gen_freqs, gen_aperiodic, gen_peaks
+from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
+from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_peaks
 
 ###################################################################################################
 ###################################################################################################
 
-class FOOOF(object):
+class FOOOF():
     """Model the physiological power spectrum as a combination of aperiodic and periodic components.
 
     WARNING: FOOOF expects frequency and power values in linear space.
@@ -96,6 +94,9 @@ class FOOOF(object):
         The knee parameter is only included if aperiodic component is fit with a knee.
     peak_params_ : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
+    gaussian_params : 2d array
+        Parameters that define the gaussian fit(s).
+        Each row is a gaussian, as [mean, height, standard deviation].
     r_squared_ : float
         R-squared of the fit between the input power spectrum and the full model fit.
     error_ : float
@@ -112,6 +113,10 @@ class FOOOF(object):
       procedure, or a median filter smoothing on the FFT output before running FOOOF.
     - Where possible and appropriate, use longer time segments for power spectrum calculation to
       get smoother power spectra, as this will give better FOOOF fits.
+    - The gaussian params are those that define the gaussian of the fit, where as the peak
+      params are a modified version, in which the CF of the peak is the mean of the gaussian,
+      the PW of the peak is the height of the gaussian over and above the aperiodic component,
+      and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
     """
 
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
@@ -204,10 +209,10 @@ class FOOOF(object):
 
         if clear_results:
             self.aperiodic_params_ = None
+            self.gaussian_params_ = None
             self.peak_params_ = None
             self.r_squared_ = None
             self.error_ = None
-            self._gaussian_params = None
 
             self.fooofed_spectrum_ = None
 
@@ -253,23 +258,23 @@ class FOOOF(object):
             A FOOOF data object containing the settings for a FOOOF model.
         """
 
-        for setting in get_obj_desc()['settings']:
+        for setting in get_description()['settings']:
             setattr(self, setting, getattr(fooof_settings, setting))
 
         self._check_loaded_settings(fooof_settings._asdict())
 
 
-    def add_data_info(self, fooof_data_info):
-        """Add data information into object from a FOOOFDataInfo object.
+    def add_meta_data(self, fooof_meta_data):
+        """Add data information into object from a FOOOFMetaData object.
 
         Parameters
         ----------
-        fooof_data_info : FOOOFDataInfo
-            A FOOOF data object containing information about the data.
+        fooof_meta_data : FOOOFMetaData
+            A FOOOF meta data object containing meta data information.
         """
 
-        for data_info in get_obj_desc()['data_info']:
-            setattr(self, data_info, getattr(fooof_data_info, data_info))
+        for meta_dat in get_description()['meta_data']:
+            setattr(self, meta_dat, getattr(fooof_meta_data, meta_dat))
 
         self._regenerate_freqs()
 
@@ -284,10 +289,10 @@ class FOOOF(object):
         """
 
         self.aperiodic_params_ = fooof_result.aperiodic_params
+        self.gaussian_params_ = fooof_result.gaussian_params
         self.peak_params_ = fooof_result.peak_params
         self.r_squared_ = fooof_result.r_squared
         self.error_ = fooof_result.error
-        self._gaussian_params = fooof_result.gaussian_params
 
         self._check_loaded_results(fooof_result._asdict())
 
@@ -362,11 +367,11 @@ class FOOOF(object):
             self._spectrum_flat = self.power_spectrum - self._ap_fit
 
             # Find peaks, and fit them with gaussians
-            self._gaussian_params = self._fit_peaks(np.copy(self._spectrum_flat))
+            self.gaussian_params_ = self._fit_peaks(np.copy(self._spectrum_flat))
 
             # Calculate the peak fit
             #  Note: if no peaks are found, this creates a flat (all zero) peak fit.
-            self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
+            self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self.gaussian_params_))
 
             # Create peak-removed (but not flattened) power spectrum.
             self._spectrum_peak_rm = self.power_spectrum - self._peak_fit
@@ -380,7 +385,7 @@ class FOOOF(object):
             self.fooofed_spectrum_ = self._peak_fit + self._ap_fit
 
             # Convert gaussian definitions to peak parameters
-            self.peak_params_ = self._create_peak_params(self._gaussian_params)
+            self.peak_params_ = self._create_peak_params(self.gaussian_params_)
 
             # Calculate R^2 and error of the model fit.
             self._calc_r_squared()
@@ -421,7 +426,7 @@ class FOOOF(object):
             Whether to print the report in a concise mode, or not.
         """
 
-        print(gen_results_str_fm(self, concise))
+        print(gen_results_fm_str(self, concise))
 
 
     @staticmethod
@@ -446,23 +451,70 @@ class FOOOF(object):
             Object containing the settings from the current FOOOF object.
         """
 
-        return FOOOFSettings(**{key : getattr(self, key) for key in get_obj_desc()['settings']})
+        return FOOOFSettings(**{key : getattr(self, key) for key in get_description()['settings']})
 
 
-    def get_data_info(self):
+    def get_meta_data(self):
         """Return data information from the FOOOF object.
 
         Returns
         -------
-        FOOOFDataInfo
-            Object containing information about the data from the current FOOOF object.
+        FOOOFMetaData
+            Object containing meta data from the current FOOOF object.
         """
 
-        return FOOOFDataInfo(**{key : getattr(self, key) for key in get_obj_desc()['data_info']})
+        return FOOOFMetaData(**{key : getattr(self, key) for key in get_description()['meta_data']})
+
+
+    def get_params(self, name, col=None):
+        """Return model fit parameters for specified feature(s).
+
+        Parameters
+        ----------
+        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
+            Name of the data field to extract.
+        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+            Column name / index to extract from selected data, if requested.
+            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+
+        Returns
+        -------
+        out : float or 1d array
+            Requested data.
+
+        Notes
+        -----
+        For further description of the data you can extract, check the FOOOFResults documentation.
+
+        If there is no data on periodic features, this method will return NaN.
+        """
+
+        if self.aperiodic_params_ is None:
+            raise RuntimeError('No model fit data is available to extract - can not proceed.')
+
+        # If col specified as string, get mapping back to integer
+        if isinstance(col, str):
+            col = get_indices(self.aperiodic_mode)[col]
+
+        # Extract the request data field from object
+        out = getattr(self, name + '_')
+
+        # Periodic values can be empty arrays - if so replace with NaN array
+        if isinstance(out, np.ndarray) and out.size == 0:
+            out = np.array([np.nan, np.nan, np.nan])
+
+        # Select out a specific column, if requested
+        if col is not None:
+
+            # Extract column, & if result is a single value in an array, unpack from array
+            out = out[col] if out.ndim == 1 else out[:, col]
+            out = out[0] if isinstance(out, np.ndarray) and out.size == 1 else out
+
+        return out
 
 
     def get_results(self):
-        """Return model fit parameters and goodness of fit metrics.
+        """Return model fit parameters and goodness of fit metrics in a FOOOFResults object.
 
         Returns
         -------
@@ -470,7 +522,8 @@ class FOOOF(object):
             Object containing the FOOOF model fit results from the current FOOOF object.
         """
 
-        return FOOOFResults(**{key.strip('_') : getattr(self, key) for key in get_obj_desc()['results']})
+        return FOOOFResults(**{key.strip('_') : getattr(self, key) \
+            for key in get_description()['results']})
 
 
     @copy_doc_func_to_method(plot_fm)
@@ -533,7 +586,7 @@ class FOOOF(object):
 
         # Check peak width limits against frequency resolution; warn if too close.
         if 1.5 * self.freq_res >= self.peak_width_limits[0]:
-            print(gen_wid_warn_str(self.freq_res, self.peak_width_limits[0]))
+            print(gen_width_warning_str(self.freq_res, self.peak_width_limits[0]))
 
 
     def _simple_ap_fit(self, freqs, power_spectrum):
@@ -631,8 +684,9 @@ class FOOOF(object):
         # Initialize matrix of guess parameters for gaussian fitting.
         guess = np.empty([0, 3])
 
-        # Find peak: Loop through, finding a candidate peak, and fitting with a guass gaussian.
-        #  Stopping procedure based on either # of peaks, or the relative or absolute height thresholds.
+        # Find peak: Loop through, finding a candidate peak, and fitting with a guess gaussian.
+        #  Stopping procedure based on either the limit on # of peaks,
+        #    or the relative or absolute height thresholds.
         while len(guess) < self.max_n_peaks:
 
             # Find candidate peak - the maximum point of the flattened spectrum.
@@ -654,18 +708,19 @@ class FOOOF(object):
             # Data-driven first guess at standard deviation
             #  Find half height index on each side of the center frequency.
             half_height = 0.5 * max_height
-            le_ind = next((x for x in range(max_ind - 1, 0, -1) if flat_iter[x] <= half_height), None)
-            ri_ind = next((x for x in range(max_ind + 1, len(flat_iter), 1)
-                           if flat_iter[x] <= half_height), None)
+            le_ind = next((val for val in range(max_ind - 1, 0, -1)
+                           if flat_iter[val] <= half_height), None)
+            ri_ind = next((val for val in range(max_ind + 1, len(flat_iter), 1)
+                           if flat_iter[val] <= half_height), None)
 
             # Keep bandwidth estimation from the shortest side.
             #  We grab shortest to avoid estimating very large std from overalapping peaks.
             # Grab the shortest side, ignoring a side if the half max was not found.
             #  Note: will fail if both le & ri ind's end up as None (probably shouldn't happen).
-            shortest_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
+            short_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
 
             # Estimate std from FWHM. Calculate FWHM, converting to Hz, get guess std from FWHM
-            fwhm = shortest_side * 2 * self.freq_res
+            fwhm = short_side * 2 * self.freq_res
             guess_std = fwhm / (2 * np.sqrt(2 * np.log(2)))
 
             # Check that guess std isn't outside preset std limits; restrict if so.
@@ -711,21 +766,26 @@ class FOOOF(object):
             Parameters for gaussian fits to peaks, as gaussian parameters.
         """
 
-        # Set the bounds for center frequency, enforce positive height value, and set bandwidth limits.
-        #  Note that 'guess' is in terms of gaussian standard deviation, so +/- BW is 2 * the guess_gauss_std.
+        # Set the bounds for CF, enforce positive height value, and set bandwidth limits.
+        #  Note that 'guess' is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std.
         #  This set of list comprehensions is a way to end up with bounds in the form:
-        #   ((cf_low_bound_peak1, height_low_bound_peak1, bw_low_bound_peak1, *repeated for n_peak*),
-        #    (cf_high_bound_peak1, height_high_bound_peak1, bw_high_bound_peak, *repeated for n_peak*))
+        #   ((cf_low_peak1, height_low_peak1, bw_low_peak1, *repeated for n_peaks*),
+        #    (cf_high_peak1, height_high_peak1, bw_high_peak, *repeated for n_peaks*))
+        #   ^where each value sets the bound on the specified parameter.
         lo_bound = [[peak[0] - 2 * self._cf_bound * peak[2], 0, self._gauss_std_limits[0]]
                     for peak in guess]
         hi_bound = [[peak[0] + 2 * self._cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]
                     for peak in guess]
 
-        # Check that CF bounds are within frequency range, and, if not, updates them to be restricted to frequency range.
-        lo_bound = [bound if bound[0] > self.freq_range[0] else [self.freq_range[0], *bound[1:]] for bound in lo_bound]
-        hi_bound = [bound if bound[0] < self.freq_range[1] else [self.freq_range[1], *bound[1:]] for bound in hi_bound]
+        # Check that CF bounds are within frequency range
+        #   If they are  not, update them to be restricted to frequency range.
+        lo_bound = [bound if bound[0] > self.freq_range[0] else \
+            [self.freq_range[0], *bound[1:]] for bound in lo_bound]
+        hi_bound = [bound if bound[0] < self.freq_range[1] else \
+            [self.freq_range[1], *bound[1:]] for bound in hi_bound]
 
-        # Unpacks the embedded lists into flat tuples, which is what the fit function requires as input.
+        # Unpacks the embedded lists into flat tuples
+        #   This is what the fit function requires as input.
         gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]),
                              tuple([item for sublist in hi_bound for item in sublist]))
 
@@ -809,7 +869,7 @@ class FOOOF(object):
             (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)
 
         # Drop peaks that fail the center frequency edge criterion
-        guess = np.array([d for (d, keep) in zip(guess, keep_peak) if keep])
+        guess = np.array([gu for (gu, keep) in zip(guess, keep_peak) if keep])
 
         return guess
 
@@ -840,9 +900,8 @@ class FOOOF(object):
         bounds = [[peak[0] - peak[2] * self._gauss_overlap_thresh, peak[0],
                    peak[0] + peak[2] * self._gauss_overlap_thresh] for peak in guess]
 
-        drop_inds = []
-
         # Loop through peak bounds, comparing current bound to that of next peak
+        drop_inds = []
         for ind, b_0 in enumerate(bounds[:-1]):
             b_1 = bounds[ind + 1]
 
@@ -853,8 +912,8 @@ class FOOOF(object):
                 drop_inds.append([ind, ind + 1][np.argmin([guess[ind][1], guess[ind + 1][1]])])
 
         # Drop any peaks guesses that overlap too much, based on threshold.
-        keep_peak = [True if j not in drop_inds else False for j in range(len(guess))]
-        guess = np.array([d for (d, keep) in zip(guess, keep_peak) if keep])
+        keep_peak = [not ind in drop_inds for ind in range(len(guess))]
+        guess = np.array([gu for (gu, keep) in zip(guess, keep_peak) if keep])
 
         return guess
 
@@ -971,9 +1030,9 @@ class FOOOF(object):
 
         # If results loaded, check dimensions of peak parameters
         #  This fixes an issue where they end up the wrong shape if they are empty (no peaks)
-        if set(get_obj_desc()['results']).issubset(set(data.keys())):
+        if set(get_description()['results']).issubset(set(data.keys())):
             self.peak_params_ = check_array_dim(self.peak_params_)
-            self._gaussian_params = check_array_dim(self._gaussian_params)
+            self.gaussian_params_ = check_array_dim(self.gaussian_params_)
 
 
     def _check_loaded_settings(self, data):
@@ -987,10 +1046,10 @@ class FOOOF(object):
 
         # If settings not loaded from file, clear from object, so that default
         #  settings, which are potentially wrong for loaded data, aren't kept
-        if not set(get_obj_desc()['settings']).issubset(set(data.keys())):
+        if not set(get_description()['settings']).issubset(set(data.keys())):
 
             # Reset all public settings to None
-            for setting in get_obj_desc()['settings']:
+            for setting in get_description()['settings']:
                 setattr(self, setting, None)
 
             # Infer whether knee fitting was used, if aperiodic params have been loaded
@@ -1012,5 +1071,5 @@ class FOOOF(object):
         """Regenerate model fit from parameters."""
 
         self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
-        self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self._gaussian_params))
+        self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self.gaussian_params_))
         self.fooofed_spectrum_ = self._peak_fit + self._ap_fit

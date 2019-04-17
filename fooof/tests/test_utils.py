@@ -1,4 +1,4 @@
-"""Test functions for FOOOF utils."""
+"""Test functions for fooof.utils."""
 
 import numpy as np
 
@@ -21,7 +21,7 @@ def test_get_info(tfm, tfg):
 
     for f_obj in [tfm, tfg]:
         assert get_info(f_obj, 'settings')
-        assert get_info(f_obj, 'data_info')
+        assert get_info(f_obj, 'meta_data')
         assert get_info(f_obj, 'results')
 
 def test_compare_info(tfm, tfg):
@@ -35,6 +35,6 @@ def test_compare_info(tfm, tfg):
         f_obj2._reset_internal_settings()
         assert not compare_info([f_obj, f_obj2], 'settings')
 
-        assert compare_info([f_obj, f_obj2], 'data_info')
+        assert compare_info([f_obj, f_obj2], 'meta_data')
         f_obj2.freq_range = [5, 25]
-        assert not compare_info([f_obj, f_obj2], 'data_info')
+        assert not compare_info([f_obj, f_obj2], 'meta_data')

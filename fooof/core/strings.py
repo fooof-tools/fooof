@@ -14,7 +14,7 @@ SCV = 70
 ###################################################################################################
 ###################################################################################################
 
-def gen_wid_warn_str(freq_res, bwl):
+def gen_width_warning_str(freq_res, bwl):
     """Generate a string representation of warning about peak width limits.
 
     Parameters
@@ -29,7 +29,7 @@ def gen_wid_warn_str(freq_res, bwl):
         '',
         'FOOOF WARNING: Lower-bound peak width limit is < or ~= the frequency resolution: ' + \
             '{:1.2f} <= {:1.2f}'.format(freq_res, bwl),
-        '\tLower bounds below frequency-resolution have no effect (effective lower bound is freq-res)',
+        '\tLower bounds below frequency-resolution have no effect (effective lower bound is the frequency resolution).',
         '\tToo low a limit may lead to overfitting noise as small bandwidth peaks.',
         '\tWe recommend a lower bound of approximately 2x the frequency resolution.',
         ''
@@ -98,7 +98,7 @@ def gen_settings_str(f_obj, description=False, concise=False):
     return output
 
 
-def gen_results_str_fm(fm, concise=False):
+def gen_results_fm_str(fm, concise=False):
     """Generate a string representation of model fit results.
 
     Parameters
@@ -163,7 +163,7 @@ def gen_results_str_fm(fm, concise=False):
     return output
 
 
-def gen_results_str_fg(fg, concise=False):
+def gen_results_fg_str(fg, concise=False):
     """Generate a string representation of group fit results.
 
     Parameters
@@ -183,15 +183,15 @@ def gen_results_str_fg(fg, concise=False):
         raise ValueError('Model fit has not been run - can not proceed.')
 
     # Extract all the relevant data for printing
-    n_peaks = len(fg.get_all_data('peak_params'))
-    r2s = fg.get_all_data('r_squared')
-    errors = fg.get_all_data('error')
+    n_peaks = len(fg.get_params('peak_params'))
+    r2s = fg.get_params('r_squared')
+    errors = fg.get_params('error')
     if fg.aperiodic_mode == 'knee':
-        kns = fg.get_all_data('aperiodic_params', 1)
-        sls = fg.get_all_data('aperiodic_params', 2)
+        kns = fg.get_params('aperiodic_params', 1)
+        sls = fg.get_params('aperiodic_params', 2)
     else:
         kns = np.array([0])
-        sls = fg.get_all_data('aperiodic_params', 1)
+        sls = fg.get_params('aperiodic_params', 1)
 
     # Check if there are any power spectra that failed to fit
     n_failed = sum(np.isnan(sls))
