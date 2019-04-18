@@ -1,6 +1,6 @@
 """
 Using fooof with MNE
-=================
+=======================
 
 This examples illustrates how to use fooof with `MNE
 <https://mne-tools.github.io/>`_ and create topographical plots
@@ -134,7 +134,7 @@ slope_results = np.zeros(shape=[num_blocks, n_channels, 2])
 # Populating periodic and aperiodic values 
 for block in range(0, num_blocks):
     for ind, res in enumerate(fg):
-        slope_results[block, ind, :] = res.background_params
+        slope_results[block, ind, :] = res.aperiodic_params
         for band_label, band_range in bands.items():
             results[band_label][block, ind,  :] = get_band_peak(res.peak_params, band_range, True)
 
