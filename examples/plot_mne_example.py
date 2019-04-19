@@ -132,6 +132,17 @@ for band_name in bands.keys():
 # Creating dictionaries to store all the periodic properties across frequencies 
 exponent_results = np.zeros(shape=[num_blocks, n_channels, len(aperiodic_feats)])
 
+
+###################################################################################################
+
+# Populating periodic and aperiodic values 
+for block in range(0, num_blocks):
+    for ind, res in enumerate(fg):
+        exponent_results[block, ind, :] = res.aperiodic_params
+        for band_label, band_range in bands.items():
+            results[band_label][block, ind,  :] = get_band_peak(res.peak_params, band_range, True)
+
+
 ###################################################################################################
 # Plotting topographies 
 # ---------------------
@@ -189,7 +200,7 @@ cur_data = exponent_results
 
 topo_dat = np.mean(cur_data,0)
     
-print('CURRENT FEATURE:', exponent_feat[1])    
+print('CURRENT FEATURE:', aperiodic_feats[1])    
 disp_dat = topo_dat[:,1]
 
 inds = np.where(np.isnan(disp_dat))
