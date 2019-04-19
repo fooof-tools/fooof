@@ -2,8 +2,7 @@
 Using fooof with MNE
 ====================
 
-This examples illustrates how to use fooof with MNE
-and create topographical plots
+This examples illustrates how to use fooof with MNE and create topographical plots.
 
 This tutorial does require that you have `MNE
 <https://mne-tools.github.io/>`_ installed. If you don't already have
@@ -13,8 +12,7 @@ MNE, you can follow instructions to get it `here
 
 ###################################################################################################
 
-
-#General imports
+# General imports
 import numpy as np
 import pandas as pd
 from matplotlib import cm, colors, colorbar
@@ -29,7 +27,6 @@ from mne.viz import plot_topomap
 # FOOOF imports
 from fooof import FOOOF, FOOOFGroup
 from fooof.analysis import *
-
 
 ###################################################################################################
 # Load & Check MNE Data
@@ -74,64 +71,60 @@ raw.plot_sensors(show_names=True)
 reject = dict(eeg=180e-6)
 event_id = {'left/auditory': 1}
 events = mne.read_events(event_fname)
-epochs = mne.Epochs(raw, events=events, event_id=event_id,
-				    tmin=5, tmax=125, baseline=None, preload=True)
+epochs = mne.Epochs(raw, events=events, event_id=event_id, tmin=5, tmax=125,
+		    baseline=None, preload=True, verbose=False)
 
 ###################################################################################################
 
 # Creating Power Spectra Densities
-psd, freqs = mne.time_frequency.psd_welch(epochs, fmin=1., fmax=50., n_fft=2000, 
-                                          n_overlap=250, n_per_seg=500)
+spectra, freqs = mne.time_frequency.psd_welch(epochs, fmin=1., fmax=50., n_fft=2000, 
+                                              n_overlap=250, n_per_seg=500)
 
 ###################################################################################################
-# fooofgroup
+# FOOOFGroup
 # ----------
 #
-# The FOOOFGroup object is used to fit
-# FOOOF models across the power spectra. A list of FOOOFGroup objects is returned.
+# The FOOOFGroup object is used to fit FOOOF models across the power spectra.
 #
 
 ###################################################################################################
 
-# Initialize a FOOOF group object, with desired settings
+# Initialize a FOOOFGroup object, with desired settings
 fg = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.075,
                 max_n_peaks=6, peak_threshold=1, verbose=False)
 
 ###################################################################################################
 
-# Shaping the PSDs so that we can run fooofgroup
-fooof_psd = np.squeeze(psd[0,:,:]) 
-n_channels, n_freq = fooof_psd.shape
+# Selecting the first epoch of data to FOOOF 
+spectra = np.squeeze(spectra[0,:,:]) 
+n_channels, n_freq = spectra.shape
 num_blocks = len(mne.read_events(event_fname))
 
 # Setting frequency range
 freq_range = [3, 35]
 
-# This returns a list of FOOOFGRoup objects
-fg.fit(freqs, fooof_psd, freq_range)
+# Fit the FOOOF model across all channels
+fg.fit(freqs, spectra, freq_range)
 fg.plot()
 
 ###################################################################################################
 
-# Periodic features
+# Define labels for periodic & aperiodic features
 feats = ["CFS", "PWS", "BWS"]
-
-# Aperiodic features
 aperiodic_feats = ["Offset","Exponent"]
 
 # Define bands of interest
-bands = {'theta': [3,7], 
-         'alpha': [7,14], 
-         'beta': [15,30]}
+bands = {'theta': [3, 7],
+	 'alpha': [7, 14], 
+         'beta': [15, 30]}
 
-# Creating dictionaries to store all the aperiodic properties across frequencies 
+# Create dictionaries to store all the periodic properties across frequencies 
 results = {}
 for band_name in bands.keys():
-    results[band_name] = np.zeros(shape=[ num_blocks, n_channels, len(feats)])
+    results[band_name] = np.zeros(shape=[num_blocks, n_channels, len(feats)])
 
-# Creating dictionaries to store all the periodic properties across frequencies 
+# Creating dictionaries to store all the aperiodic properties across frequencies 
 exponent_results = np.zeros(shape=[num_blocks, n_channels, len(aperiodic_feats)])
-
 
 ###################################################################################################
 
@@ -142,23 +135,18 @@ for block in range(0, num_blocks):
         for band_label, band_range in bands.items():
             results[band_label][block, ind,  :] = get_band_peak(res.peak_params, band_range, True)
 
-
 ###################################################################################################
-# Plotting topographies 
+# Plotting Topographies 
 # ---------------------
 # 
-# The following will illustrate the process of exploring the previously generated 
-# oscillatory values 
+# Now we can plot the extracted FOOOF features across all channels.
+#
 
 ###################################################################################################
-# This is the function required to create color bars for topographies 
+
 def plot_topo_colorbar(vmin, vmax, label):
-    """
-    Create a colorbar for the topography plots
-    vmin: int
-    vmax: int
-    label: str
-    """
+    """Helper function to create colorbars for the topography plots."""
+
     fig = plt.figure(figsize=(2, 3))
     ax1 = fig.add_axes([0.9, 0.25, 0.15, 0.9])
 
@@ -169,9 +157,12 @@ def plot_topo_colorbar(vmin, vmax, label):
                                 norm=norm, orientation='vertical')
 
 ###################################################################################################
+#
+# In this example, we will be plotting the alpha center frequency and oscillatory exponent.
 
-# Settings: In this example, we will be plotting the Alpha Center Frequency
-# and oscillatory exponent 
+###################################################################################################
+
+# Settings to grab the alpha center frequency
 band = 'alpha'
 cur_data = results[band]
 
@@ -179,7 +170,7 @@ topo_dat = np.mean(cur_data,0)
 
 ###################################################################################################
  
-# Looking at the alpha Center Frequeuncy 
+# Looking at the alpha center frequeuncy 
 print('CURRENT FEATURE:', feats[0])    
 disp_dat = topo_dat[:,0]
 
@@ -195,7 +186,7 @@ mne.viz.plot_topomap(disp_dat, raw.info, vmin=vmin, vmax=vmax, cmap=cm.viridis, 
 
 ###################################################################################################
 
-# Looking at the Oscillatory
+# Looking at the aperiodic exponent
 cur_data = exponent_results
 
 topo_dat = np.mean(cur_data,0)
@@ -212,18 +203,3 @@ vmin, vmax,  = disp_dat.min() - vbuffer, disp_dat.max() + vbuffer
 fig, ax = plt.subplots()
 plot_topo_colorbar(vmin, vmax, exponent_results[1])
 mne.viz.plot_topomap(disp_dat, raw.info, vmin=vmin, vmax=vmax, cmap=cm.viridis, contours=0, axes=ax)
-
-
-###################################################################################################
-# Alternative epoching methods 
-# ----------------------------
-# 
-# Antother way to epoch your data based on time by avaeraging across events as suppose to
-# selecting specifc time sections
-
-###################################################################################################
-
-tmin, tmax = -0.2, 0.5
-epochs_params = dict(events=events, event_id=event_id, tmin=tmin, tmax=tmax,
-                     reject=reject)
-epochs = mne.Epochs(raw, **epochs_params).average()
