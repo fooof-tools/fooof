@@ -10,7 +10,7 @@ from fooof.analysis import get_band_peak_fg
 ###################################################################################################
 ###################################################################################################
 
-def average_fg(fg, bands, avg_method='mean'):
+def average_fg(fg, bands, avg_method='mean', generate_model=True):
     """Average across a FOOOFGroup object.
 
     Parameters
@@ -21,6 +21,8 @@ def average_fg(fg, bands, avg_method='mean'):
         Bands object that defines the frequency bands to collapse peaks across.
     avg : {'mean', 'median'}
         Averaging function to use.
+    generate_model : bool, optional, default: True
+        Whether to generate the model for the averaged parameters.
 
     Returns
     -------
@@ -55,6 +57,10 @@ def average_fg(fg, bands, avg_method='mean'):
     fm.add_settings(fg.get_settings())
     fm.add_meta_data(fg.get_meta_data())
     fm.add_results(results)
+
+    # Generate the model from the average parameters
+    if generate_model:
+        fm._regenerate_model()
 
     return fm
 
