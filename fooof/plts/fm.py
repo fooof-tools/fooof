@@ -1,8 +1,8 @@
-"""Plots for FOOOF object.
+"""Plots for the FOOOF object.
 
 Notes
 -----
-This file contains plotting functions that take as input a FOOOF() object.
+This file contains plotting functions that take as input a FOOOF object.
 """
 
 import numpy as np
@@ -24,7 +24,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
 
     Parameters
     ----------
-    fm : FOOOF() object
+    fm : FOOOF object
         FOOOF object, containing a power spectrum and (optionally) results from fitting.
     plt_log : boolean, optional, default: False
         Whether or not to plot the frequency axis in log space.
@@ -43,7 +43,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
 
     ax = check_ax(ax)
 
-    # Log Plot Settings - note that power values in FOOOF objects are already logged
+    # Log settings. Note that power values in FOOOF objects are already logged
     log_freqs = plt_log
     log_powers = False
 
@@ -69,7 +69,7 @@ def plot_peak_iter(fm):
 
     Parameters
     ----------
-    fm : FOOOF() object
+    fm : FOOOF object
         FOOOF object, with model fit, data and settings available.
     """
 
@@ -79,7 +79,7 @@ def plot_peak_iter(fm):
 
     for ind in range(n_gauss + 1):
 
-        # Note: this forces to create a new plotting axes per iteration
+        # This forces to create a new plotting axes per iteration
         ax = check_ax(None)
 
         plot_spectrum(fm.freqs, flatspec, linewidth=2.0, label='Flattened Spectrum', ax=ax)

@@ -1,8 +1,8 @@
-"""Plots for FOOOFGroup object.
+"""Plots for the FOOOFGroup object.
 
 Notes
 -----
-This file contains plotting functions that take as input a FOOOFGroup() object.
+This file contains plotting functions that take as input a FOOOFGroup object.
 """
 
 from fooof.core.io import fname, fpath
@@ -17,11 +17,11 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 
 @check_dependency(plt, 'matplotlib')
 def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
-    """Plots a figure with subplots covering the group results from a FOOOFGroup object.
+    """Plots a figure with subplots covering the results from a FOOOFGroup object.
 
     Parameters
     ----------
-    fg : FOOOFGroup() object
+    fg : FOOOFGroup object
         FOOOFGroup object, containing results from fitting a group of power spectra.
     save_fig : boolean, optional, default: False
         Whether to save out a copy of the plot.
@@ -59,7 +59,7 @@ def plot_fg_ap(fg, ax=None):
 
     Parameters
     ----------
-    fg : FOOOFGroup() object
+    fg : FOOOFGroup object
         Group object from which to plot data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -80,7 +80,7 @@ def plot_fg_gf(fg, ax=None):
 
     Parameters
     ----------
-    fg : FOOOFGroup() object
+    fg : FOOOFGroup object
         Group object from which to plot data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -96,7 +96,7 @@ def plot_fg_peak_cens(fg, ax=None):
 
     Parameters
     ----------
-    fg : FOOOFGroup() object
+    fg : FOOOFGroup object
         Group object from which to plot data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.

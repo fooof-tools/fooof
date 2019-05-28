@@ -1,8 +1,9 @@
 """Plot templates for the FOOOF module.
 
-Notes:
-- These are template plot structures used in reports and/or other plots.
-    - They are not expected to be used / imported separately.
+Notes
+-----
+These are template plot structures for FOOOF plots and/or reports.
+They are not expected to be used directly by the user.
 """
 
 import numpy as np
@@ -67,12 +68,12 @@ def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
     data_0 : 1d array
         Data to plot on the first axis.
     label_0 : str
-        Label for the data on the first axis, to be set as the y-axis label.
+        Label for the data on the first axis, to be set as the axis label.
     data_1 : 1d array
         Data to plot on the second axis.
     label_0 : str
-        Label for the data on the second axis, to be set as the y-axis label.
-    title : str
+        Label for the data on the second axis, to be set as the axis label.
+    title : str, optional
         Title for the plot.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.

@@ -3,7 +3,7 @@
 Notes
 -----
 These utility functions should be considered private.
-    They are not expected to be called directly by the user.
+They are not expected to be called directly by the user.
 """
 
 from numpy import log10
@@ -26,7 +26,7 @@ def set_alpha(n_pts):
 
     Returns
     -------
-    n_pts : float
+    alpha : float
         Value for alpha to use for plotting.
     """
 

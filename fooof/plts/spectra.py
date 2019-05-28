@@ -32,7 +32,7 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
     power_spectrum : 1d array
         Y-axis data, power values for spectrum to plot.
     log_freqs : boolean, optional, default: False
-        Whether or not to take the log of the power axis before plotting.
+        Whether or not to take the log of the frequency axis before plotting.
     log_powers : boolean, optional, default: False
         Whether or not to take the log of the power axis before plotting.
     ax : matplotlib.Axes, optional
@@ -72,10 +72,11 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels
     power_spectra : 2d array or list of 1d array
         Y-axis data, power values for spectra to plot.
     log_freqs : boolean, optional, default: False
-        Whether or not to take the log of the power axis before plotting.
+        Whether or not to take the log of the frequency axis before plotting.
     log_powers : boolean, optional, default: False
         Whether or not to take the log of the power axis before plotting.
-    labels " "
+    labels : list of str, optional
+        Legend labels, for each power spectrum.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     plot_style : callable, optional, default: style_spectrum_plot
