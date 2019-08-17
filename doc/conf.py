@@ -30,8 +30,7 @@ copyright = '2018 - VoytekLab'
 author = 'Thomas Donoghue'
 
 # Get the current version number from inside the module
-with open(os.path.join(up(up(__file__)), 'fooof', 'version.py')) as vf:
-    exec(vf.read())
+from fooof import __version__
 
 # The short X.Y version
 version = __version__
