@@ -321,7 +321,7 @@ class FOOOF():
         self.print_results(False)
 
 
-    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
+    def fit(self, freqs=None, power_spectrum=None, freq_range=None, ap_range=None):
         """Fit the full power spectrum as a combination of periodic and aperiodic components.
 
         Parameters
@@ -340,7 +340,7 @@ class FOOOF():
 
         # If freqs & power_spectrum provided together, add data to object.
         if freqs is not None and power_spectrum is not None:
-            self.add_data(freqs, power_spectrum, freq_range)
+            self.add_data(freqs, power_spectrum, freq_range if ap_range is None else None)
         # If power spectrum provided alone, add to object, and use existing frequency data
         #  Note: be careful passing in power_spectrum data like this:
         #    It assumes the power_spectrum is already logged, with correct freq_range.
@@ -359,15 +359,37 @@ class FOOOF():
         #  Cause of failure: RuntimeError, failure to find parameters in curve_fit
         try:
 
+            if ap_range:
+                ap_inds = (self.freqs >= ap_range[0]) & (self.freqs <= ap_range[1])
+                ap_freqs = self.freqs[ap_inds]
+                ap_spectrum = self.power_spectrum[ap_inds]
+            else:
+                ap_freqs = self.freqs
+                ap_spectrum = self.power_spectrum
+
             # Fit the aperiodic component
-            self.aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
+            self.aperiodic_params_ = self._robust_ap_fit(ap_freqs, ap_spectrum)
             self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
 
             # Flatten the power_spectrum using fit aperiodic fit
             self._spectrum_flat = self.power_spectrum - self._ap_fit
+            
+            if ap_range:
+                per_inds = (self.freqs >= ap_range[0]) & (self.freqs <= ap_range[1])
+                freqs_0 = self.freqs
+                self.freqs = self.freqs[per_inds]
+                per_spectrum_flat = self._spectrum_flat[per_inds]
+                if freq_range:
+                    self.freq_range = freq_range
+            else:
+                per_spectrum_flat = np.copy(self._spectrum_flat)
+
 
             # Find peaks, and fit them with gaussians
-            self.gaussian_params_ = self._fit_peaks(np.copy(self._spectrum_flat))
+            self.gaussian_params_ = self._fit_peaks(per_spectrum_flat)
+
+            if ap_range:
+                self.freqs=freqs_0
 
             # Calculate the peak fit
             #  Note: if no peaks are found, this creates a flat (all zero) peak fit.
