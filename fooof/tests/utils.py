@@ -30,7 +30,7 @@ def get_tfm():
 def get_tfg():
     """Get a FOOOFGroup object, with some fit power spectra, for testing."""
 
-    n_spectra = 2
+    n_spectra = 3
     xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = FOOOFGroup(verbose=False)

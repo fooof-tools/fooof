@@ -299,7 +299,7 @@ class FOOOFGroup(FOOOF):
 
 
     def get_fooof(self, ind, regenerate=False):
-        """Return a FOOOF object from specified model in a FOOOFGroup object.
+        """Get a FOOOF object from the specified model fit.
 
         Parameters
         ----------
@@ -310,7 +310,7 @@ class FOOOFGroup(FOOOF):
 
         Returns
         -------
-        inst : FOOOF() object
+        fm : FOOOF object
             The FOOOFResults data loaded into a FOOOF object.
         """
 
@@ -331,6 +331,37 @@ class FOOOFGroup(FOOOF):
             fm._regenerate_model()
 
         return fm
+
+
+    def get_group(self, inds):
+        """Get a FOOOFGroup object with the specified sub-selection.
+
+        Parameters
+        ----------
+        inds : list of int or range
+            Indices to extract from the object.
+
+        Returns
+        -------
+        fg : FOOOFGroup object
+            The requested selection of results data loaded into a new FOOOFGroup object.
+        """
+
+        # Initialize a new FOOOFGroup object, with same settings as current FOOOFGroup
+        fg = FOOOFGroup(*self.get_settings(), verbose=self.verbose)
+
+        # Add data for specified power spectra, if available
+        #  The power spectra are inverted back to linear, as they are re-logged when added to FOOOF
+        if np.any(self.power_spectra):
+            fg.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]))
+        # If no power spectrum data available, copy over data information & regenerate freqs
+        else:
+            fg.add_meta_data(self.get_meta_data())
+
+        # Add results for specified power spectra
+        fg.group_results = [self.group_results[ind] for ind in inds]
+
+        return fg
 
 
     def print_results(self, concise=False):

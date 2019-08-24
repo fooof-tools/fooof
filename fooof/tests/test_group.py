@@ -9,6 +9,7 @@ The tests here are not strong tests for accuracy.
 import pkg_resources as pkg
 
 import numpy as np
+from numpy.testing import assert_equal
 
 from fooof.group import *
 from fooof.fit import FOOOFResults
@@ -153,3 +154,36 @@ def test_fg_get_fooof(tfg):
     # Check that data info is copied over properly
     for meta_dat in desc['meta_data']:
         assert getattr(tfm2, meta_dat)
+
+def test_fg_get_group(tfg):
+    """Check the return of a sub-sampled FOOOFGroup."""
+
+    desc = get_description()
+
+    # Check with list index
+    inds1 = [1, 2]
+    nfg1 = tfg.get_group(inds1)
+    assert isinstance(nfg1, FOOOFGroup)
+
+    # Check with range index
+    inds2 = range(0, 2)
+    nfg2 = tfg.get_group(inds2)
+    assert isinstance(nfg2, FOOOFGroup)
+
+    # Check that settings are copied over properly
+    for setting in desc['settings']:
+        assert getattr(tfg, setting) == getattr(nfg1, setting)
+        assert getattr(tfg, setting) == getattr(nfg2, setting)
+
+    # Check that data info is copied over properly
+    for meta_dat in desc['meta_data']:
+        assert getattr(nfg1, meta_dat)
+        assert getattr(nfg2, meta_dat)
+
+    # Check that the correct data is extracted
+    assert_equal(tfg.power_spectra[inds1, :], nfg1.power_spectra)
+    assert_equal(tfg.power_spectra[inds2, :], nfg2.power_spectra)
+
+    # Check that the correct results are extracted
+    assert [tfg.group_results[ind] for ind in inds1] == nfg1.group_results
+    assert [tfg.group_results[ind] for ind in inds2] == nfg2.group_results
