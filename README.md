@@ -52,23 +52,25 @@ Pytest is only required to run the test suite.
 
 **Stable Version**
 
-To install the latest stable release of fooof, you can use pip:
+To install the latest stable release, use pip:
 
 `$ pip install fooof`
 
-Note that this will install only the core (non-optional) fooof requirements.
+Note that this will install only the core (non-optional) FOOOF requirements.
 
 **Development Version**
 
-To get the lastest, development version, you can get the code using git:
+To get the current development version, first clone this repository:
 
 `$ git clone https://github.com/fooof-tools/fooof`
 
-To then install the development version (without making changes to it), move into the directory you cloned and run:
+To install this cloned copy, move into the directory you just cloned, and run:
 
 `$ pip install .`
 
-Otherwise, if you want to install an editable, development version, move into the directory you cloned and install with:
+**Editable Version**
+
+To install an editable version, download the development version as above, and run:
 
 `$ pip install -e .`
 
@@ -77,6 +79,10 @@ Otherwise, if you want to install an editable, development version, move into th
 FOOOF is implemented in Python, but there is also Matlab wrapper with which you can use FOOOF from Matlab, which is available in the [fooof_mat](http://github.com/fooof-tools/fooof_mat) repository.
 
 If you would like to use FOOOF, from Python, within a pipeline that is mostly in Matlab, the [mat_py_mat](https://github.com/fooof-tools/mat_py_mat) repository also has some examples and utilities for doing so.
+
+## Bug Reports
+
+Please use the [Github issue tracker](https://github.com/fooof-tools/fooof/issues) to file bug reports and/or ask questions about this project.
 
 ## Reference
 
@@ -88,9 +94,18 @@ If you use this code in your project, please cite:
 
 Direct Link: https://doi.org/10.1101/299859
 
+## Contribute
+
+`FOOOF` welcomes and encourages contributions from the community!
+
+If you have an idea of something to add to FOOOF, please start by opening an [issue](https://github.com/fooof-tools/fooof/issues).
+
+When writing code to add to FOOOF, please follow the [Contribution Guidelines](https://github.com/fooof-tools/fooof/blob/master/CONTRIBUTING.md), and also make sure to follow our
+[Code of Conduct](https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md).
+
 ## Quickstart
 
-FOOOF is object oriented, and generally follows a similar approach as used in scikit-learn.
+FOOOF is object oriented, and uses a similar object organization as used in scikit-learn.
 
 The algorithm works on frequency representations, that is power spectra in linear space.
 
@@ -148,3 +163,5 @@ Example output for a FOOOF fit on an individual power spectrum:
 Example output from using FOOOFGroup across a group of power spectra:
 
 !["fooof_group_report"](img/FOOOFGroup_report.png)
+
+Further descriptions and examples are available through the [documentation](https://fooof-tools.github.io/fooof/index.html), including a set of [tutorials](https://fooof-tools.github.io/fooof/auto_tutorials/index.html).
