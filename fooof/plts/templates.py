@@ -18,7 +18,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 
 @check_dependency(plt, 'matplotlib')
 def plot_scatter_1(data, label, title=None, x_val=0, ax=None):
-    """Plot a scatter plot with the given data.
+    """Plot a scatter plot, with a single y-axis.
 
     Parameters
     ----------
@@ -61,7 +61,7 @@ def plot_scatter_1(data, label, title=None, x_val=0, ax=None):
 
 @check_dependency(plt, 'matplotlib')
 def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
-    """Plot a scatter plot with two y-axes, with the given data.
+    """Plot a scatter plot, with two y-axes.
 
     Parameters
     ----------
@@ -102,7 +102,7 @@ def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
 
 @check_dependency(plt, 'matplotlib')
 def plot_hist(data, label, title=None, n_bins=25, x_lims=None, ax=None):
-    """Plot a histogram with the given data.
+    """Plot a histogram.
 
     Parameters
     ----------

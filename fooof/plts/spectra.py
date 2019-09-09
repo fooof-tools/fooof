@@ -1,4 +1,4 @@
-"""Power spectrum plotting functions, for FOOOF.
+"""Power spectrum plotting functions.
 
 Notes
 -----
@@ -11,8 +11,8 @@ import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
 
-from fooof.plts.settings import DEFAULT_FIGSIZE
 from fooof.plts.utils import check_ax, add_shades
+from fooof.plts.settings import FIGSIZE_SPECTRAL
 from fooof.plts.style import check_n_style, style_spectrum_plot
 
 plt = safe_import('.pyplot', 'matplotlib')
@@ -28,24 +28,22 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
     Parameters
     ----------
     freqs : 1d array
-        X-axis data, frequency values.
+        Frequency values, to be plotted on the x-axis.
     power_spectrum : 1d array
-        Y-axis data, power values for spectrum to plot.
+        Power values, to be plotted on the y-axis.
     log_freqs : boolean, optional, default: False
-        Whether or not to take the log of the frequency axis before plotting.
+        Whether to plot the frequency values in log10 spacing.
     log_powers : boolean, optional, default: False
-        Whether or not to take the log of the power axis before plotting.
+        Whether to plot the power values in log10 spacing.
     ax : matplotlib.Axes, optional
-        Figure axes upon which to plot.
+        Figure axis upon which to plot.
     plot_style : callable, optional, default: style_spectrum_plot
         A function to call to apply styling & aesthetics to the plot.
     **kwargs
         Keyword arguments to be passed to the plot call.
     """
 
-    # Create plot axes, if not provided
-    if not ax:
-        _, ax = plt.subplots(figsize=DEFAULT_FIGSIZE)
+    ax = check_ax(ax, FIGSIZE_SPECTRAL)
 
     # Set plot data & labels, logging if requested
     plt_freqs = np.log10(freqs) if log_freqs else freqs
@@ -68,13 +66,13 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels
     Parameters
     ----------
     freqs : 2d array or 1d array or list of 1d array
-        X-axis data, frequency values.
+        Frequency values, to be plotted on the x-axis.
     power_spectra : 2d array or list of 1d array
-        Y-axis data, power values for spectra to plot.
+        Power values, to be plotted on the y-axis.
     log_freqs : boolean, optional, default: False
-        Whether or not to take the log of the frequency axis before plotting.
+        Whether to plot the frequency valus in log10 spacing.
     log_powers : boolean, optional, default: False
-        Whether or not to take the log of the power axis before plotting.
+        Whether to plot the power values in log10 spacing.
     labels : list of str, optional
         Legend labels, for each power spectrum.
     ax : matplotlib.Axes, optional
@@ -92,6 +90,7 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels
     for freq, power_spectrum, label in zip(freqs, power_spectra, labels):
         plot_spectrum(freq, power_spectrum, log_freqs, log_powers, label=label,
                       plot_style=None, ax=ax, **kwargs)
+
     check_n_style(plot_style, ax, log_freqs, log_powers)
 
 
@@ -103,9 +102,9 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, add_center=False,
     Parameters
     ----------
     freqs : 1d array
-        X-axis data, frequency values.
+        Frequency values, to be plotted on the x-axis.
     power_spectrum : 1d array
-        Y-axis data, power values for spectrum to plot.
+        Power values, to be plotted on the y-axis.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
     add_center : boolean, optional, default: False
@@ -118,9 +117,11 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, add_center=False,
         Keyword arguments to be passed to the plot call.
     """
 
-    ax = check_ax(ax)
+    ax = check_ax(ax, FIGSIZE_SPECTRAL)
     plot_spectrum(freqs, power_spectrum, plot_style=None, ax=ax, **kwargs)
+
     add_shades(ax, shades, add_center, kwargs.get('log_freqs', False))
+
     check_n_style(plot_style, ax, kwargs.get('log_freqs', False), kwargs.get('log_powers', False))
 
 
@@ -132,9 +133,9 @@ def plot_spectra_shading(freqs, power_spectra, shades, add_center=False,
     Parameters
     ----------
     freqs : 2d array or 1d array or list of 1d array
-        X-axis data, frequency values.
+        Frequency values, to be plotted on the x-axis.
     power_spectra : 2d array or list of 1d array
-        Y-axis data, power values for spectra to plot.
+        Power values, to be plotted on the y-axis.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
     add_center : boolean, optional, default: False
@@ -144,15 +145,18 @@ def plot_spectra_shading(freqs, power_spectra, shades, add_center=False,
     plot_style : callable, optional, default: style_spectrum_plot
         A function to call to apply styling & aesthetics to the plot.
     **kwargs
-        Keyword arguments to be passed to plot_spectra or the plot call.
+        Keyword arguments to be passed to `plot_spectra` or to the plot call.
 
     Notes
     -----
-    Parameters for `plot_spectra` can also be passed into this function as **kwargs.
-    This includes `log_freqs`, `log_powers` & `labels`. See `plot_spectra for usage details.
+    Parameters for `plot_spectra` can also be passed into this function as keyword arguments.
+
+    This includes `log_freqs`, `log_powers` & `labels`. See `plot_spectra` for usage details.
     """
 
-    ax = check_ax(ax)
+    ax = check_ax(ax, FIGSIZE_SPECTRAL)
     plot_spectra(freqs, power_spectra, ax=ax, plot_style=None, **kwargs)
+
     add_shades(ax, shades, add_center, kwargs.get('log_freqs', False))
+
     check_n_style(plot_style, ax, kwargs.get('log_freqs', False), kwargs.get('log_powers', False))

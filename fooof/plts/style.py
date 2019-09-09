@@ -1,10 +1,10 @@
-"""Helper functions that apply style and decoration to plots."""
+"""Style and aesthetics definitions for plots."""
 
 ###################################################################################################
 ###################################################################################################
 
 def check_n_style(style_func, *args):
-    """"Check is a style function has been passed, and apply if so.
+    """"Check if a style function has been passed, and apply it to a plot if so.
 
     Parameters
     ----------
@@ -19,12 +19,12 @@ def check_n_style(style_func, *args):
 
 
 def style_spectrum_plot(ax, log_freqs, log_powers):
-    """Define to styling for a power spectrum plot.
+    """Apply style and aesthetics for a power spectrum plot.
 
     Parameters
     ----------
     ax : matplotlib.Axes
-        Figure axes to apply styling to
+        Figure axes to apply styling to.
     log_freqs : boolean
         Whether the frequency axis is plotted in log space.
     log_powers : boolean
