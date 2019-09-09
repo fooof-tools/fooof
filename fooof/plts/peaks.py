@@ -56,6 +56,9 @@ def plot_peak_params(peaks, colors=None, labels=None, ax=None, plot_style=style_
         # Create the plot
         ax.scatter(xs, ys, cs, c=colors, alpha=0.7, label=labels)
 
+    # Set plot limits
+    ax.set_ylim([0, ax.get_ylim()[1]])
+
     check_n_style(plot_style, ax)
 
 
@@ -68,7 +71,7 @@ def plot_peak_fits(peaks, freq_range=None, ax=None, plot_style=style_peak_plot):
         Peak data. Each row is a peak, as [CF, PW, BW].
     freq_range : list of [float, float] , optional
         The frequency range to plot the peak fits across, as [f_min, f_max].
-        If not provided, defaults to +/- 3 around given peak center frequencies.
+        If not provided, defaults to +/- 4 around given peak center frequencies.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     plot_style : callable, optional, default: style_spectrum_plot
@@ -77,13 +80,18 @@ def plot_peak_fits(peaks, freq_range=None, ax=None, plot_style=style_peak_plot):
 
     ax = check_ax(ax, FIGSIZE_PEAKS)
 
-    # Get frequency axis, which will be the plot x-axis
     if not freq_range:
-        freq_range = [peaks[:, 0].min() - 3 , peaks[:, 0].max() + 3]
+
+        # Set the frequency range to +/- a buffer, but don't let it drop below 0
+        f_buffer = 4
+        freq_range = [peaks[:, 0].min() - f_buffer if peaks[:, 0].min() - f_buffer > 0 else 0,
+                      peaks[:, 0].max() + f_buffer]
+
+    # Create the frequency axis, which will be the plot x-axis
     freqs = np.arange(*freq_range, 0.1)
 
     avg_vals = np.zeros(shape=[len(freqs)])
-    for ind, peak_params in enumerate(peaks):
+    for peak_params in peaks:
 
         # Create & plot the oscillation model from parameters
         peak_vals = gaussian_function(freqs, *peak_params)
@@ -95,6 +103,10 @@ def plot_peak_fits(peaks, freq_range=None, ax=None, plot_style=style_peak_plot):
     # Plot the average across all subjects
     avg = avg_vals / peaks.shape[0]
     ax.plot(freqs, avg, 'k', linewidth=3)
+
+    # Set plot limits
+    ax.set_xlim(freq_range)
+    ax.set_ylim([0, ax.get_ylim()[1]])
 
     # Apply plot style
     check_n_style(plot_style, ax)
