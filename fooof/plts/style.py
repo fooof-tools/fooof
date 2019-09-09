@@ -44,3 +44,34 @@ def style_spectrum_plot(ax, log_freqs, log_powers):
     # If labels were provided, add a legend
     if ax.get_legend_handles_labels()[0]:
         ax.legend(prop={'size': 16})
+
+
+def style_peak_plot(ax):
+    """Apply style and aesthetics for a peaks plot.
+
+    Parameters
+    ----------
+    ax : matplotlib.Axes
+        Figure axes to apply styling to.
+    """
+
+    # Set the top and right side frame & ticks off
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.xaxis.set_ticks_position('bottom')
+    ax.yaxis.set_ticks_position('left')
+
+    # Set linewidth of remaining spines
+    ax.spines['left'].set_linewidth(1.5)
+    ax.spines['bottom'].set_linewidth(1.5)
+
+    # Aesthetics and axis labels
+    ax.set_xlabel('Center Frequency (Hz)', fontsize=20)
+    ax.set_ylabel('Power', fontsize=20)
+    ax.tick_params(axis='both', which='major', labelsize=16)
+
+    # If labels were provided, add a legend and standardize the dot size
+    if ax.get_legend_handles_labels()[0]:
+        legend = ax.legend(prop={'size': 16})
+        for handle in legend.legendHandles:
+            handle._sizes = [100]

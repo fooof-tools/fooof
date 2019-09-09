@@ -1,0 +1,26 @@
+"""Tests for fooof.plts.peaks."""
+
+import numpy as np
+
+from fooof.tests.utils import plot_test
+from fooof.plts.peaks import *
+
+###################################################################################################
+###################################################################################################
+
+@plot_test
+def test_plot_peak_params(skip_if_no_mpl):
+
+    peaks = np.array([[6, 1, 2], [10, 2, 1.5], [25, 1.5, 3]])
+
+    # Test with a single set of params
+    plot_peak_params(peaks)
+
+    # Test with multiple set of params
+    plot_peak_params([peaks, peaks])
+
+@plot_test
+def test_plot_peak_fits(skip_if_no_mpl):
+
+    peaks = np.array([[6, 1, 2], [10, 2, 1.5], [25, 1.5, 3]])
+    plot_peak_fits(peaks)

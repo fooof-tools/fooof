@@ -10,7 +10,6 @@ from itertools import repeat
 import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
-
 from fooof.plts.utils import check_ax, add_shades
 from fooof.plts.settings import FIGSIZE_SPECTRAL
 from fooof.plts.style import check_n_style, style_spectrum_plot
