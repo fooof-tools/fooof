@@ -1,0 +1,9 @@
+# Requirements for building the documentation
+sphinx
+sphinx_gallery
+sphinx_bootstrap_theme
+m2r
+numpydoc
+
+# Requirements for running the examples
+mne
