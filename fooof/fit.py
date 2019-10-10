@@ -149,12 +149,14 @@ class FOOOF():
         # By default, aperiodic fitting is unbound, but can be restricted here, if desired
         #   Even if fitting without knee, leave bounds for knee (they are dropped later)
         self._ap_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
-        # Threshold for how far (units of gaus std dev) a peak has to be from edge to keep.
+        # Threshold for how far (units of gaussian standard deviation) a peak has to be from edge to keep.
         self._bw_std_edge = 1.0
         # Degree of overlap  (units of gauss std dev) between gaussians for one to be dropped
         self._gauss_overlap_thresh = 1.5
         # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
         self._cf_bound = 1.5
+        # The maximum number of calls to the curve fitting function to use
+        self._maxfev = 5000
 
         # Set internal settings (based on inputs). Initialize data & results attributes.
         self._reset_internal_settings()
@@ -618,7 +620,7 @@ class FOOOF():
             warnings.simplefilter("ignore")
             aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                             freqs, power_spectrum, p0=guess,
-                                            maxfev=5000, bounds=self._ap_bounds)
+                                            maxfev=self._maxfev, bounds=self._ap_bounds)
 
         return aperiodic_params
 
@@ -661,7 +663,7 @@ class FOOOF():
             warnings.simplefilter("ignore")
             aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                             freqs_ignore, spectrum_ignore, p0=popt,
-                                            maxfev=5000, bounds=self._ap_bounds)
+                                            maxfev=self._maxfev, bounds=self._ap_bounds)
 
         return aperiodic_params
 
@@ -794,7 +796,7 @@ class FOOOF():
 
         # Fit the peaks.
         gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._spectrum_flat,
-                                       p0=guess, maxfev=5000, bounds=gaus_param_bounds)
+                                       p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds)
 
         # Re-organize params into 2d matrix.
         gaussian_params = np.array(group_three(gaussian_params))
