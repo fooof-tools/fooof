@@ -6,6 +6,7 @@
 [![codecov](https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg)](https://codecov.io/gh/fooof-tools/fooof)
 [![License](https://img.shields.io/pypi/l/fooof.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/fooof.svg)](https://pypi.python.org/pypi/fooof/)
+[![Preprint](https://img.shields.io/badge/preprint-10.1101/299859-informational.svg)](https://doi.org/10.1101/299859)
 
 FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
 
