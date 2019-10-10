@@ -123,12 +123,6 @@ class FOOOF():
                  peak_threshold=2.0, aperiodic_mode='fixed', verbose=True):
         """Initialize FOOOF object with run parameters."""
 
-        # Double check correct scipy version is being used
-        from scipy import __version__
-        major, minor, _ = __version__.split('.')
-        if int(major) < 1 and int(minor) < 19:
-            raise ImportError('Scipy version of >= 0.19.0 required.')
-
         # Set input parameters
         self.peak_width_limits = peak_width_limits
         self.max_n_peaks = max_n_peaks
