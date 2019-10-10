@@ -3,7 +3,7 @@
 Notes
 -----
 Methods without defined docstrings import docs at runtime, from aliased external functions.
-Private attributes of the FOOOF method, not publicly exposed, are documented below.
+Private attributes of the FOOOF object, not publicly exposed, are documented below.
 
 Private Attributes
 ------------------
@@ -29,6 +29,8 @@ _gauss_overlap_thresh : float
     Degree of overlap (in units of guassian std. deviation) between gaussian guesses to drop one.
 _gauss_std_limits : list of [float, float]
     Peak width limits, converted to use for gaussian standard deviation parameter.
+_maxfev : int
+    The maximum number of calls to the curve fitting function.
 """
 
 import warnings
@@ -121,9 +123,9 @@ class FOOOF():
 
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
                  peak_threshold=2.0, aperiodic_mode='fixed', verbose=True):
-        """Initialize FOOOF object with run parameters."""
+        """Initialize object with desired settings."""
 
-        # Set input parameters
+        # Set input settings
         self.peak_width_limits = peak_width_limits
         self.max_n_peaks = max_n_peaks
         self.min_peak_height = min_peak_height
@@ -131,28 +133,30 @@ class FOOOF():
         self.aperiodic_mode = aperiodic_mode
         self.verbose = verbose
 
-        ## SETTINGS - these are updateable by the user if required.
+        ## PRIVATE SETTINGS
         # Noise threshold, as a percentage of the lowest magnitude values in the total data to fit.
         #  Defines the minimum height, above residuals, to be considered a peak.
         self._ap_percentile_thresh = 0.025
         # Guess parameters for aperiodic fitting, [offset, knee, exponent]
         #  If offset guess is None, the first value of the power spectrum is used as offset guess
         self._ap_guess = (None, 0, 2)
-        # Bounds for aperiodic fitting, as: ((offset_low_bound, knee_low_bound, sl_low_bound),
-        #                                    (offset_high_bound, knee_high_bound, sl_high_bound))
+        # Bounds for aperiodic fitting, as: ((offset_low_bound, knee_low_bound, exp_low_bound),
+        #                                    (offset_high_bound, knee_high_bound, exp_high_bound))
         # By default, aperiodic fitting is unbound, but can be restricted here, if desired
         #   Even if fitting without knee, leave bounds for knee (they are dropped later)
         self._ap_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
-        # Threshold for how far (units of gaussian standard deviation) a peak has to be from edge to keep.
+        # Threshold for how far a peak has to be from edge to keep.
+        #   This is defined in units of gaussian standard deviation
         self._bw_std_edge = 1.0
-        # Degree of overlap  (units of gauss std dev) between gaussians for one to be dropped
+        # Degree of overlap between gaussians for one to be dropped
+        #   This is defined in units of gaussian standard deviation
         self._gauss_overlap_thresh = 1.5
-        # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
+        # Parameter bounds for center frequency when fitting gaussians, in terms of +/- std dev
         self._cf_bound = 1.5
-        # The maximum number of calls to the curve fitting function to use
+        # The maximum number of calls to the curve fitting function
         self._maxfev = 5000
 
-        # Set internal settings (based on inputs). Initialize data & results attributes.
+        # Set internal settings, based on inputs, & initialize data & results attributes.
         self._reset_internal_settings()
         self._reset_data_results()
 
@@ -183,7 +187,7 @@ class FOOOF():
 
 
     def _reset_data_results(self, clear_freqs=True, clear_spectrum=True, clear_results=True):
-        """Set (or reset) data & results attributes to empty.
+        """Set, or reset, data & results attributes to empty.
 
         Parameters
         ----------
@@ -219,7 +223,7 @@ class FOOOF():
 
 
     def add_data(self, freqs, power_spectrum, freq_range=None):
-        """Add data (frequencies and power spectrum values) to FOOOF object.
+        """Add data, frequencies and power spectrum values, to the current object.
 
         Parameters
         ----------
@@ -228,7 +232,8 @@ class FOOOF():
         power_spectrum : 1d array
             Power spectrum values, which must be input in linear space.
         freq_range : list of [float, float], optional
-            Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
+            Frequency range to restrict power spectrum to.
+            If not provided, keeps the entire range.
 
         Notes
         -----
@@ -251,7 +256,7 @@ class FOOOF():
         Parameters
         ----------
         fooof_settings : FOOOFSettings
-            A FOOOF data object containing the settings for a FOOOF model.
+            A data object containing the settings for a FOOOF model.
         """
 
         for setting in get_description()['settings']:
@@ -266,7 +271,7 @@ class FOOOF():
         Parameters
         ----------
         fooof_meta_data : FOOOFMetaData
-            A FOOOF meta data object containing meta data information.
+            A meta data object containing meta data information.
         """
 
         for meta_dat in get_description()['meta_data']:
@@ -281,7 +286,7 @@ class FOOOF():
         Parameters
         ----------
         fooof_result : FOOOFResults
-            A FOOOF data object containing the results from fitting a FOOOF model.
+            A data object containing the results from fitting a FOOOF model.
         """
 
         self.aperiodic_params_ = fooof_result.aperiodic_params
@@ -303,13 +308,14 @@ class FOOOF():
         power_spectrum : 1d array, optional
             Power values, which must be input in linear space.
         freq_range : list of [float, float], optional
-            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+            Desired frequency range to fit the model to.
+            If not provided, fits across the entire given range.
         plt_log : boolean, optional, default: False
             Whether or not to plot the frequency axis in log space.
 
         Notes
         -----
-        Data is optional if data has been already been added to FOOOF object.
+        Data is optional if data has been already been added to current object.
         """
 
         self.fit(freqs, power_spectrum, freq_range)
@@ -331,7 +337,7 @@ class FOOOF():
 
         Notes
         -----
-        Data is optional if data has been already been added to FOOOF object.
+        Data is optional if data has been already been added to current object.
         """
 
         # If freqs & power_spectrum provided together, add data to object.
@@ -400,7 +406,7 @@ class FOOOF():
 
 
     def print_settings(self, description=False, concise=False):
-        """Print out the current FOOOF settings.
+        """Print out the current settings.
 
         Parameters
         ----------
@@ -414,7 +420,7 @@ class FOOOF():
 
 
     def print_results(self, concise=False):
-        """Print out FOOOF results.
+        """Print out model fitting results.
 
         Parameters
         ----------
@@ -439,24 +445,24 @@ class FOOOF():
 
 
     def get_settings(self):
-        """Return user defined settings of the FOOOF object.
+        """Return user defined settings of the current object.
 
         Returns
         -------
         FOOOFSettings
-            Object containing the settings from the current FOOOF object.
+            Object containing the settings from the current object.
         """
 
         return FOOOFSettings(**{key : getattr(self, key) for key in get_description()['settings']})
 
 
     def get_meta_data(self):
-        """Return data information from the FOOOF object.
+        """Return data information from the current object.
 
         Returns
         -------
         FOOOFMetaData
-            Object containing meta data from the current FOOOF object.
+            Object containing meta data from the current object.
         """
 
         return FOOOFMetaData(**{key : getattr(self, key) for key in get_description()['meta_data']})
@@ -510,12 +516,12 @@ class FOOOF():
 
 
     def get_results(self):
-        """Return model fit parameters and goodness of fit metrics in a FOOOFResults object.
+        """Return model fit parameters and goodness of fit metrics.
 
         Returns
         -------
         FOOOFResults
-            Object containing the FOOOF model fit results from the current FOOOF object.
+            Object containing the model fit results from the current object.
         """
 
         return FOOOFResults(**{key.strip('_') : getattr(self, key) \
@@ -542,7 +548,7 @@ class FOOOF():
 
 
     def load(self, file_name='FOOOF_results', file_path=None, regenerate=True):
-        """Load in FOOOF file. Reads in a FOOOF formatted JSON file.
+        """Load in FOOOF formatted JSON file.
 
         Parameters
         ----------
@@ -572,7 +578,7 @@ class FOOOF():
 
 
     def copy(self):
-        """Return a copy of the FOOOF object."""
+        """Return a copy of the current object."""
 
         return deepcopy(self)
 
@@ -929,7 +935,7 @@ class FOOOF():
 
     @staticmethod
     def _prepare_data(freqs, power_spectrum, freq_range, spectra_dim=1, verbose=True):
-        """Prepare input data for adding to FOOOF or FOOOFGroup object.
+        """Prepare input data for adding to current object.
 
         Parameters
         ----------
@@ -1010,7 +1016,7 @@ class FOOOF():
             Dictionary of data to add to self.
         """
 
-        # Reconstruct FOOOF object from loaded data
+        # Reconstruct object from loaded data
         for key in data.keys():
             setattr(self, key, data[key])
 
