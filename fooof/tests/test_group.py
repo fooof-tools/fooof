@@ -55,6 +55,25 @@ def test_fg_fit():
     assert isinstance(out[0], FOOOFResults)
     assert np.all(out[1].aperiodic_params)
 
+def test_fg_drop(tfg):
+
+    n_spectra = 3
+    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
+
+    tfg = FOOOFGroup(verbose=False)
+    tfg.fit(xs, ys)
+
+    tfg.drop(0)
+    for res in tfg.group_results[0]:
+        assert res is None
+
+    tfg.drop([0, 1])
+    for res in tfg.group_results[1]:
+        assert res is None
+
+    for res in tfg.group_results[2]:
+        assert res is not None
+
 def test_fg_fit_par():
     """Test FOOOFGroup fit, running in parallel."""
 

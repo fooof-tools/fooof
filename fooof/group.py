@@ -13,6 +13,7 @@ import numpy as np
 
 from fooof import FOOOF
 from fooof.plts.fg import plot_fg
+from fooof.data import FOOOFResults
 from fooof.core.reports import save_report_fg
 from fooof.core.strings import gen_results_fg_str
 from fooof.core.io import save_fg, load_jsonlines
@@ -121,7 +122,7 @@ class FOOOFGroup(FOOOF):
 
 
     def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1):
-        """Run FOOOF across a group, and display a report, comprising a plot, and printed results.
+        """Fit a group of power spectra and display a report, with a plot and printed results.
 
         Parameters
         ----------
@@ -146,7 +147,7 @@ class FOOOFGroup(FOOOF):
 
 
     def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1):
-        """Run FOOOF across a group of power_spectra.
+        """Fit a group of power spectra.
 
         Parameters
         ----------
@@ -187,6 +188,24 @@ class FOOOFGroup(FOOOF):
                                                     self.verbose, len(self.power_spectra)))
 
         self._reset_data_results(clear_freqs=False, clear_spectra=False)
+
+
+    def drop(self, inds):
+        """Drop one or more model fit results from the object.
+
+        Parameters
+        ----------
+        inds : int or list of int or range
+            List of indices to drop model fit results for.
+
+        Notes
+        -----
+        This method sets the model fits as null, and preserves the shape of the model fits.
+        """
+
+        inds = [inds] if isinstance(inds, int) else inds
+        for ind in inds:
+            self.group_results[ind] = FOOOFResults(None, None, None, None, None)
 
 
     def get_results(self):
