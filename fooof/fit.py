@@ -651,7 +651,7 @@ class FOOOF():
         # Flatten outliers - any points that drop below 0
         flatspec[flatspec < 0] = 0
 
-        # Use percential threshold, in terms of # of points, to extract and re-fit
+        # Use percentile threshold, in terms of # of points, to extract and re-fit
         perc_thresh = np.percentile(flatspec, self._ap_percentile_thresh)
         perc_mask = flatspec <= perc_thresh
         freqs_ignore = freqs[perc_mask]
@@ -976,6 +976,11 @@ class FOOOF():
         if freqs.shape[-1] != power_spectrum.shape[-1]:
             raise ValueError('Inputs are not consistent size.')
 
+        # Check if power values are complex
+        if np.iscomplexobj(power_spectrum):
+            raise ValueError("Input power spectra are complex values."
+                             "FOOOF does not currently support complex inputs.")
+
         # Force data to be dtype of float64.
         #   If they end up as float32, or less, scipy curve_fit fails (sometimes implicitly)
         if freqs.dtype != 'float64':
@@ -1003,6 +1008,13 @@ class FOOOF():
 
         # Log power values
         power_spectrum = np.log10(power_spectrum)
+
+        # Check if there are any infs / nans, and raise an error if so
+        if np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):
+            raise ValueError("The input power spectra data, after logging, contain NaN or Inf values."
+                             "This will cause the fitting to fail."
+                             "This can happen if inputs are already logged."
+                             "Inputs data should be in linear spacing, not log.")
 
         return freqs, power_spectrum, freq_range, freq_res
 

@@ -61,11 +61,19 @@ def test_fooof_fit_knee():
 
 
 def test_fooof_checks():
-    """Test various checks, errors and edge cases in FOOOF."""
+    """Test various checks, errors and edge cases in FOOOF.
+    This tests all the input checking done in `_prepare_data`.
+    """
 
     xs, ys = gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2])
 
     tfm = FOOOF(verbose=False)
+
+    ## Check checks & errors done in `_prepare_data`
+
+    # Check wrong data type error
+    with raises(ValueError):
+        tfm.fit(list(xs), list(ys))
 
     # Check dimension error
     with raises(ValueError):
@@ -75,9 +83,9 @@ def test_fooof_checks():
     with raises(ValueError):
         tfm.fit(xs[:-1], ys)
 
-    # Check wrong data type error
+    # Check complex inputs error
     with raises(ValueError):
-        tfm.fit(list(xs), list(ys))
+        tfm.fit(xs, ys.astype('complex'))
 
     # Check trim_spectrum range
     tfm.fit(xs, ys, [3, 40])
@@ -86,6 +94,14 @@ def test_fooof_checks():
     xs, ys = gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2])
     tfm.fit(xs, ys)
     assert tfm.freqs[0] != 0
+
+    # Check error if there is a post-logging inf or nan
+    with raises(ValueError):  # Double log (1) -> -inf
+        tfm.fit(np.array([1, 2, 3]), np.log10(np.array([1, 2, 3])))
+    with raises(ValueError):  # Log (-1) -> NaN
+        tfm.fit(np.array([1, 2, 3]), np.array([-1, 2, 3]))
+
+    ## Check errors & errors done in `fit`
 
     # Check fit, and string report model error (no data / model fit)
     tfm = FOOOF(verbose=False)
