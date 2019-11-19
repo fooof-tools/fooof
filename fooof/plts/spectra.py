@@ -94,7 +94,7 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_spectrum_shading(freqs, power_spectrum, shades, add_center=False,
+def plot_spectrum_shading(freqs, power_spectrum, shades, shade_colors='r', add_center=False,
                           ax=None, plot_style=style_spectrum_plot, **kwargs):
     """Plot a power spectrum with a shaded frequency region (or regions).
 
@@ -106,6 +106,8 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, add_center=False,
         Power values, to be plotted on the y-axis.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
+    shade_colors : str or list of string
+        Color(s) to plot shades.
     add_center : boolean, optional, default: False
         Whether to add a line at the center point of the shaded regions.
     ax : matplotlib.Axes, optional
@@ -119,13 +121,13 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, add_center=False,
     ax = check_ax(ax, FIGSIZE_SPECTRAL)
     plot_spectrum(freqs, power_spectrum, plot_style=None, ax=ax, **kwargs)
 
-    add_shades(ax, shades, add_center, kwargs.get('log_freqs', False))
+    add_shades(ax, shades, shade_colors, add_center, kwargs.get('log_freqs', False))
 
     check_n_style(plot_style, ax, kwargs.get('log_freqs', False), kwargs.get('log_powers', False))
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_spectra_shading(freqs, power_spectra, shades, add_center=False,
+def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_center=False,
                          ax=None, plot_style=style_spectrum_plot, **kwargs):
     """Plot a group of power spectra with a shaded frequency region (or regions).
 
@@ -137,6 +139,8 @@ def plot_spectra_shading(freqs, power_spectra, shades, add_center=False,
         Power values, to be plotted on the y-axis.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
+    shade_colors : str or list of string
+        Color(s) to plot shades.
     add_center : boolean, optional, default: False
         Whether to add a line at the center point of the shaded regions.
     ax : matplotlib.Axes, optional
@@ -156,6 +160,6 @@ def plot_spectra_shading(freqs, power_spectra, shades, add_center=False,
     ax = check_ax(ax, FIGSIZE_SPECTRAL)
     plot_spectra(freqs, power_spectra, ax=ax, plot_style=None, **kwargs)
 
-    add_shades(ax, shades, add_center, kwargs.get('log_freqs', False))
+    add_shades(ax, shades, shade_colors, add_center, kwargs.get('log_freqs', False))
 
     check_n_style(plot_style, ax, kwargs.get('log_freqs', False), kwargs.get('log_powers', False))

@@ -6,6 +6,8 @@ These utility functions should be considered private.
 They are not expected to be called directly by the user.
 """
 
+from itertools import repeat
+
 from numpy import log10
 
 from fooof.plts.settings import ALPHA_LEVELS
@@ -59,7 +61,7 @@ def set_alpha(n_points):
     return alpha
 
 
-def add_shades(ax, shades, add_center, logged):
+def add_shades(ax, shades, colors='r', add_center=False, logged=False):
     """Add shaded regions to a plot.
 
     Parameters
@@ -68,9 +70,11 @@ def add_shades(ax, shades, add_center, logged):
         Figure axes upon which to plot.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
-    add_center : boolean
+    colors : str or list of string
+        Color(s) to plot shades.
+    add_center : boolean, default: False
         Whether to add a line at the center point of the shaded regions.
-    logged : boolean
+    logged : boolean, default: False
         Whether the shade values should be logged before applying to plot axes.
     """
 
@@ -78,12 +82,14 @@ def add_shades(ax, shades, add_center, logged):
     if not isinstance(shades[0], list):
         shades = [shades]
 
-    for shade in shades:
+    colors = repeat(colors) if not isinstance(colors, list) else colors
+
+    for shade, color in zip(shades, colors):
 
         shade = log10(shade) if logged else shade
 
-        ax.axvspan(shade[0], shade[1], color='r', alpha=0.2, lw=0)
+        ax.axvspan(shade[0], shade[1], color=color, alpha=0.2, lw=0)
 
         if add_center:
             center = sum(shade) / 2
-            ax.axvspan(center, center, color='g')
+            ax.axvspan(center, center, color='k', alpha=0.6)
