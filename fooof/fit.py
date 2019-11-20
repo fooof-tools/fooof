@@ -102,7 +102,7 @@ class FOOOF():
     r_squared_ : float
         R-squared of the fit between the input power spectrum and the full model fit.
     error_ : float
-        Root mean squared error of the full model fit.
+        Mean absolute error of the full model fit.
 
     Notes
     -----
@@ -391,7 +391,7 @@ class FOOOF():
 
             # Calculate R^2 and error of the model fit.
             self._calc_r_squared()
-            self._calc_rmse_error()
+            self._calc_mae_error()
 
         # Catch failure, stemming from curve_fit process
         except RuntimeError:
@@ -927,10 +927,11 @@ class FOOOF():
         self.r_squared_ = r_val[0][1] ** 2
 
 
-    def _calc_rmse_error(self):
-        """Calculate root mean squared error of the full model fit."""
+    def _calc_mae_error(self):
+        """Calculate mean absolute error of the full model fit."""
 
         self.error_ = np.sqrt((self.power_spectrum - self.fooofed_spectrum_) ** 2).mean()
+        self.error_ = np.abs(self.power_spectrum - self.fooofed_spectrum_).mean()
 
 
     @staticmethod
