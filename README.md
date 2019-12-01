@@ -32,22 +32,18 @@ The documentation also includes an [FAQ](https://fooof-tools.github.io/fooof/faq
 
 FOOOF is written in Python, and requires Python >= 3.5 to run.
 
-It has the following dependencies:
-- numpy
-- scipy >= 0.19
-- matplotlib (optional)
-- tqdm (optional)
-- pytest (optional)
+FOOOF has the following dependencies:
+- [numpy](https://github.com/numpy/numpy)
+- [scipy](https://github.com/scipy/scipy) >= 0.19
 
-That is, if you are using [Anaconda](https://www.anaconda.com/download/), then you are good to go.
+There are also optional dependencies, which are not required for model fitting itself, but offer extra functionality:
+- [matplotlib](https://github.com/matplotlib/matplotlib) is needed if you want to visualize model fits
+- [tqdm](https://github.com/tqdm/tqdm) is needed if you want to print progress bars when fitting many models
+- [pytest](https://github.com/pytest-dev/pytest) is needed if you want to run the test suite locally
+
+If you are using [Anaconda](https://www.anaconda.com/download/), then you are good to go.
 
 If you aren't already using Anaconda, it is a useful tool to get and manage these dependencies.
-
-Matplotlib is not required for running the model fitting, but is used if you want to visualize model fits.
-
-tqdm is also not required for running the model fitting, but can be used to print progress bars when fitting many models.
-
-Pytest is only required to run the test suite.
 
 ## Installation
 
@@ -97,16 +93,16 @@ Direct Link: https://doi.org/10.1101/299859
 
 ## Contribute
 
-`FOOOF` welcomes and encourages contributions from the community!
+This project welcomes and encourages contributions from the community!
 
-If you have an idea of something to add to FOOOF, please start by opening an [issue](https://github.com/fooof-tools/fooof/issues).
+If you have an idea of something to add, please start by opening an [issue](https://github.com/fooof-tools/fooof/issues).
 
-When writing code to add to FOOOF, please follow the [Contribution Guidelines](https://github.com/fooof-tools/fooof/blob/master/CONTRIBUTING.md), and also make sure to follow our
+When writing code for this project, please follow the [Contribution Guidelines](https://github.com/fooof-tools/fooof/blob/master/CONTRIBUTING.md), and also make sure to follow our
 [Code of Conduct](https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md).
 
 ## Quickstart
 
-FOOOF is object oriented, and uses a similar object organization as used in scikit-learn.
+FOOOF is object oriented, and uses a similar approach as used in scikit-learn.
 
 The algorithm works on frequency representations, that is power spectra in linear space.
 
