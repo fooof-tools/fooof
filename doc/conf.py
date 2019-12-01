@@ -112,7 +112,8 @@ html_theme_options = {
     'navbar_links': [
         ("API", "api"),
         ("FAQ", "faq"),
-        ('Glossary', "glossary"),
+        ("Glossary", "glossary"),
+        ("But Why Though.", "auto_motivations/index"),
         ("Tutorial", "auto_tutorials/index"),
         ("Examples", "auto_examples/index"),
         ("Index", "contents"),
@@ -208,8 +209,8 @@ texinfo_documents = [
 # -- Extension configuration -------------------------------------------------
 
 sphinx_gallery_conf = {
-    'examples_dirs': ['../examples', '../tutorials'],
-    'gallery_dirs': ['auto_examples', 'auto_tutorials'],
+    'examples_dirs': ['../examples', '../tutorials', '../motivations'],
+    'gallery_dirs': ['auto_examples', 'auto_tutorials', 'auto_motivations'],
     'within_subsection_order': FileNameSortKey,
     'default_thumb_file': 'img/spectrum.png',
     'backreferences_dir': 'generated',
