@@ -31,6 +31,8 @@ _gauss_std_limits : list of [float, float]
     Peak width limits, converted to use for gaussian standard deviation parameter.
 _maxfev : int
     The maximum number of calls to the curve fitting function.
+_error_metric : str
+    The error metric to use for post-hoc measures of model fit error.
 """
 
 import warnings
@@ -102,7 +104,7 @@ class FOOOF():
     r_squared_ : float
         R-squared of the fit between the input power spectrum and the full model fit.
     error_ : float
-        Mean absolute error of the full model fit.
+        Error of the full model fit.
 
     Notes
     -----
@@ -155,6 +157,9 @@ class FOOOF():
         self._cf_bound = 1.5
         # The maximum number of calls to the curve fitting function
         self._maxfev = 5000
+        # The error metric to calculate, post model fitting. See `_calc_error` for options.
+        # Note: this is post-hoc check error metric, not the one used to fit models.
+        self._error_metric = 'MAE'
 
         # Set internal settings, based on inputs, & initialize data & results attributes.
         self._reset_internal_settings()
@@ -391,7 +396,7 @@ class FOOOF():
 
             # Calculate R^2 and error of the model fit.
             self._calc_r_squared()
-            self._calc_mae_error()
+            self._calc_error()
 
         # Catch failure, stemming from curve_fit process
         except RuntimeError:
@@ -921,17 +926,40 @@ class FOOOF():
 
 
     def _calc_r_squared(self):
-        """Calculate R^2 of the full model fit."""
+        """Calculate the r-squared goodness of fit of the full model, compared to the original data."""
 
         r_val = np.corrcoef(self.power_spectrum, self.fooofed_spectrum_)
         self.r_squared_ = r_val[0][1] ** 2
 
 
-    def _calc_mae_error(self):
-        """Calculate mean absolute error of the full model fit."""
+    def _calc_error(self, metric=None):
+        """Calculate error of the model fit, compared to the original data.
 
-        self.error_ = np.sqrt((self.power_spectrum - self.fooofed_spectrum_) ** 2).mean()
-        self.error_ = np.abs(self.power_spectrum - self.fooofed_spectrum_).mean()
+        Parameters
+        ----------
+        metric : {'MAE', 'MSE', 'RMSE'}
+            Which error measure to calculate.
+
+        Notes
+        -----
+        Which measure is applied is by default controlled by the `_error_metric` attribute.
+        """
+
+        # If metric is not specified, use the default approach
+        metric = self._error_metric if not metric else metric
+
+        if metric == 'MAE':
+            self.error_ = np.abs(self.power_spectrum - self.fooofed_spectrum_).mean()
+
+        elif metric == 'MSE':
+            self.error_ = ((self.power_spectrum - self.fooofed_spectrum_) ** 2).mean()
+
+        elif metric == 'RMSE':
+            self.error_ = np.sqrt(((self.power_spectrum - self.fooofed_spectrum_) ** 2).mean())
+
+        else:
+            msg = "Error metric '{}' not understood or not implemented.".format(metric)
+            raise NotImplementedError(msg)
 
 
     @staticmethod

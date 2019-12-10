@@ -59,6 +59,29 @@ def test_fooof_fit_knee():
     # Note: currently, this test has no accuracy checking at all
     assert True
 
+def test_fooof_fit_measures():
+    """Test goodness of fit & error metrics, post model fitting."""
+
+    tfm = FOOOF(verbose=False)
+
+    # Hack fake data with known properties: total error magnitude 2
+    tfm.power_spectrum = np.array([1, 2, 3, 4, 5])
+    tfm.fooofed_spectrum_ = np.array([1, 2, 5, 4, 5])
+
+    # Check default goodness of fit and error measures
+    tfm._calc_r_squared()
+    assert np.isclose(tfm.r_squared_, 0.75757575)
+    tfm._calc_error()
+    assert np.isclose(tfm.error_, 0.4)
+
+    # Check with alternative error fit approach
+    tfm._calc_error(metric='MSE')
+    assert np.isclose(tfm.error_, 0.8)
+    tfm._calc_error(metric='RMSE')
+    assert np.isclose(tfm.error_, np.sqrt(0.8))
+    with raises(NotImplementedError):
+        tfm._calc_error(metric='BAD')
+
 
 def test_fooof_checks():
     """Test various checks, errors and edge cases in FOOOF.
