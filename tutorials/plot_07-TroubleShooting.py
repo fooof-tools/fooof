@@ -40,8 +40,8 @@ np.random.seed(321)
 #   of peaks you expect to extract
 # - Qualitative analysis, guided by examing the the plotted
 #   model fit results, as compared to input data
-# - Quantitative analysis, considering the model fit and error
-#   (however, see note at the bottom regarding interpreting model fit error)
+# - Quantitative analysis, considering the model goodness of fit and fit error
+#   (however, see note at the bottom regarding interpreting these metrics)
 #
 # Tuning FOOOF is an imperfect art, and should be done carefully, as assumptions
 # built into the settings chosen will impact the model results.
@@ -75,7 +75,7 @@ np.random.seed(321)
 #
 # FOOOF calculates and returns a couple metrics to assist with assessing the
 # quality of the model fits. It calculates both the model fit error, as the
-# root mean-squared error (RMSE) between the full model fit (`fooofed\_spectrum\_`)
+# mean absolute error (MAE) between the full model fit (`fooofed\_spectrum\_`)
 # and the original power spectrum, as well as the R-squared correspondance
 # between the original spectrum and the FOOOFed result.
 #

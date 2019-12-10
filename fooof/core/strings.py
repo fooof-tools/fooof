@@ -150,8 +150,7 @@ def gen_results_fm_str(fm, concise=False):
         # R^2 and error
         'Goodness of fit metrics:',
         'R^2 of model fit is {:5.4f}'.format(fm.r_squared_),
-        'Root mean squared error is {:5.4f}'.format(
-            fm.error_),
+        'Error of the fit is {:5.4f}'.format(fm.error_),
         '',
 
         # Footer

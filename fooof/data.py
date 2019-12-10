@@ -53,9 +53,9 @@ aperiodic_params : 1d array
 peak_params : 2d array
     Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
 r_squared : float
-    R-squared of the fit between the input power spectrum and the full model fit.
+    R-squared of the fit between the full model fit and the input data.
 error : float
-    Root mean squared error of the full model fit.
+    Error of the full model fit, compared to the input data.
 gaussian_params : 2d array
     Parameters that define the gaussian fit(s).
     Each row is a gaussian, as [mean, height, standard deviation].
