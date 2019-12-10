@@ -10,7 +10,7 @@ with open(os.path.join('fooof', 'version.py')) as vf:
 # Copy in long description.
 #  Note: this is a partial copy from the README
 #    Only update here in coordination with the README, to keep things consistent.
-long_description = \
+LONG_DESCRIPTION = \
 """
 ========================================
 FOOOF: Fitting Oscillations & One-Over F
@@ -46,10 +46,13 @@ Paper Link: https://www.biorxiv.org/content/early/2018/04/11/299859
 setup(
     name = 'fooof',
     version = __version__,
-    description = 'Fitting oscillations & one-over f',
-    long_description = long_description,
+    description = 'fitting oscillations & one-over f',
+    long_description = LONG_DESCRIPTION,
+    python_requires = '>=3.5',
     author = 'The Voytek Lab',
     author_email = 'voyteklab@gmail.com',
+    maintainer = 'Thomas Donoghue',
+    maintainer_email = 'tdonoghue.research@gmail.com',
     url = 'https://github.com/fooof-tools/fooof',
     packages = find_packages(),
     license = 'Apache License, 2.0',
@@ -58,15 +61,21 @@ setup(
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering',
         'License :: OSI Approved :: Apache Software License',
-        'Operating System :: MacOS :: MacOS X',
         'Operating System :: Microsoft :: Windows',
-        'Operating System :: POSIX :: Linux',
+        'Operating System :: MacOS',
+        'Operating System :: POSIX',
         'Operating System :: Unix',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7'
     ],
+    platforms = 'any',
+    project_urls = {
+        'Documentation' : 'https://fooof-tools.github.io/fooof/',
+        'Bug Reports' : 'https://github.com/fooof-tools/fooof/issues',
+        'Source' : 'https://github.com/fooof-tools/fooof'
+    },
     download_url = 'https://github.com/fooof-tools/fooof/releases',
     keywords = ['neuroscience', 'neural oscillations', 'power spectra', '1/f', 'electrophysiology'],
     install_requires = ['numpy', 'scipy>=0.19.0'],
