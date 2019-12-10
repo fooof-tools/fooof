@@ -141,7 +141,8 @@ class FOOOF():
         self._ap_percentile_thresh = 0.025
         # Guess parameters for aperiodic fitting, [offset, knee, exponent]
         #  If offset guess is None, the first value of the power spectrum is used as offset guess
-        self._ap_guess = (None, 0, 2)
+        #  If exponent guess is None, the abs(log-log slope) of first & last points is used
+        self._ap_guess = (None, 0, None)
         # Bounds for aperiodic fitting, as: ((offset_low_bound, knee_low_bound, exp_low_bound),
         #                                    (offset_high_bound, knee_high_bound, exp_high_bound))
         # By default, aperiodic fitting is unbound, but can be restricted here, if desired
@@ -612,10 +613,15 @@ class FOOOF():
             Parameter estimates for aperiodic fit.
         """
 
-        # Set guess params for lorentzian aperiodic fit, guess params set at init
-        guess = np.array(([power_spectrum[0]] if not self._ap_guess[0] else [self._ap_guess[0]]) +
-                         ([self._ap_guess[1]] if self.aperiodic_mode == 'knee' else []) +
-                         [self._ap_guess[2]])
+        # Get the guess parameters and/or calculate from the data, as needed
+        #   Note that these are collected as lists, to concatenate with or without knee later
+        off_guess = [power_spectrum[0] if not self._ap_guess[0] else self._ap_guess[0]]
+        kne_guess = [self._ap_guess[1]] if self.aperiodic_mode == 'knee' else []
+        exp_guess = [np.abs(self.power_spectrum[-1] - np.log10(self.freqs[-1]) /
+                            self.power_spectrum[0] - np.log10(self.freqs[0]))]
+
+        # Collect together guess parameters
+        guess = np.array([off_guess + kne_guess + exp_guess])
 
         # Ignore warnings that are raised in curve_fit
         #  A runtime warning can occur while exploring parameters in curve fitting
