@@ -46,7 +46,7 @@ def style_spectrum_plot(ax, log_freqs, log_powers):
         ax.legend(prop={'size': 16})
 
 
-def style_peak_plot(ax):
+def style_param_plot(ax):
     """Apply style and aesthetics for a peaks plot.
 
     Parameters
@@ -66,8 +66,8 @@ def style_peak_plot(ax):
     ax.spines['bottom'].set_linewidth(1.5)
 
     # Aesthetics and axis labels
-    ax.set_xlabel('Center Frequency (Hz)', fontsize=20)
-    ax.set_ylabel('Power', fontsize=20)
+    for item in ([ax.xaxis.label, ax.yaxis.label]):
+        item.set_fontsize(20)
     ax.tick_params(axis='both', which='major', labelsize=16)
 
     # If labels were provided, add a legend and standardize the dot size

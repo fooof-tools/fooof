@@ -7,7 +7,7 @@ from collections import OrderedDict
 
 # Default figure size
 FIGSIZE_SPECTRAL = (12, 10)
-FIGSIZE_PEAKS = (8, 7)
+FIGSIZE_PARAMS = (8, 7)
 
 # Levels for scaling alpha with the number of points in scatter plots
 ALPHA_LEVELS = OrderedDict({0 : 0.50, 100  : 0.40, 500  : 0.25, 1000 : 0.10})
