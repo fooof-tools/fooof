@@ -115,17 +115,14 @@ def recursive_plot(data, plot_function, ax, **kwargs):
     The `plot_function` argument must accept the `ax` parameter to specify a plot axis.
     """
 
-    # If there is a list, loop across arrays of data
-    if isinstance(data, list):
+    # Repeat is used call is to work with None inputs
+    # Otherwise, expect a list of values, for each element in data, and so make an iterator
+    kwargs = {key : repeat(val) if not isinstance(val, list)
+              else iter(val) for key, val in kwargs.items()}
 
-        # Repeat is used call is to work with None inputs
-        # Otherwise, expect a list of values, for each element in data, and so make an iterator
-        kwargs = {key : repeat(val) if not isinstance(val, list)
-                  else iter(val) for key, val in kwargs.items()}
+    # Pass each array of data recursively into plot function
+    # Each element of data is added to the same plot axis, with any
+    for cur_data in data:
 
-        # Pass each array of data recursively into plot function
-        # Each element of data is added to the same plot axis, with any
-        for cur_data in data:
-
-            cur_kwargs = {key: next(val) for key, val in kwargs.items()}
-            plot_function(cur_data, ax=ax, **cur_kwargs)
+        cur_kwargs = {key: next(val) for key, val in kwargs.items()}
+        plot_function(cur_data, ax=ax, **cur_kwargs)
