@@ -93,3 +93,39 @@ def add_shades(ax, shades, colors='r', add_center=False, logged=False):
         if add_center:
             center = sum(shade) / 2
             ax.axvspan(center, center, color='k', alpha=0.6)
+
+
+def recursive_plot(data, plot_function, ax, **kwargs):
+    """A utility to recursively plot sets of data onto a specified plot.
+
+    Parameters
+    ----------
+    data : list
+        List of datasets to iteratively add to the plot.
+    plot_function : callable
+        Plot function to call to plot the data.
+    ax : matplotlib.Axes
+        Figure axes upon which to plot.
+    **kwargs
+        Keyword arguments to pass into the plot function.
+        Should be either a list of values corresponding to length of data, or None.
+
+    Notes
+    -----
+    The `plot_function` argument must accept the `ax` parameter to specify a plot axis.
+    """
+
+    # If there is a list, loop across arrays of data
+    if isinstance(data, list):
+
+        # Repeat is used call is to work with None inputs
+        # Otherwise, expect a list of values, for each element in data, and so make an iterator
+        kwargs = {key : repeat(val) if not isinstance(val, list)
+                  else iter(val) for key, val in kwargs.items()}
+
+        # Pass each array of data recursively into plot function
+        # Each element of data is added to the same plot axis, with any
+        for cur_data in data:
+
+            cur_kwargs = {key: next(val) for key, val in kwargs.items()}
+            plot_function(cur_data, ax=ax, **cur_kwargs)
