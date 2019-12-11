@@ -145,7 +145,7 @@ class FOOOFGroup(FOOOF):
         self.print_results(False)
 
 
-    def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1):
+    def fit(self, freqs=None, power_spectra=None, freq_range=None, ap_range=None, n_jobs=1):
         """Run FOOOF across a group of power_spectra.
 
         Parameters
@@ -167,14 +167,14 @@ class FOOOFGroup(FOOOF):
 
         # If freqs & power spectra provided together, add data to object.
         if freqs is not None and power_spectra is not None:
-            self.add_data(freqs, power_spectra, freq_range)
+            self.add_data(freqs, power_spectra, freq_range if ap_range is None else None)
 
         # Run linearly
         if n_jobs == 1:
             self._reset_group_results(len(self.power_spectra))
             for ind, power_spectrum in \
                 _progress(enumerate(self.power_spectra), self.verbose, len(self)):
-                self._fit(power_spectrum=power_spectrum)
+                self._fit(power_spectrum=power_spectrum, freq_range=freq_range, ap_range=ap_range)
                 self.group_results[ind] = self._get_results()
 
         # Run in parallel
@@ -182,7 +182,7 @@ class FOOOFGroup(FOOOF):
             self._reset_group_results()
             n_jobs = cpu_count() if n_jobs == -1 else n_jobs
             with Pool(processes=n_jobs) as pool:
-                self.group_results = list(_progress(pool.imap(partial(_par_fit, fg=self),
+                self.group_results = list(_progress(pool.imap(partial(_par_fit, fg=self, freq_range=freq_range, ap_range=ap_range),
                                                               self.power_spectra),
                                                     self.verbose, len(self.power_spectra)))
 
@@ -397,10 +397,10 @@ class FOOOFGroup(FOOOF):
 ###################################################################################################
 ###################################################################################################
 
-def _par_fit(power_spectrum, fg):
+def _par_fit(power_spectrum, fg, freq_range, ap_range):
     """Helper function for running in parallel."""
 
-    fg._fit(power_spectrum=power_spectrum)
+    fg._fit(power_spectrum=power_spectrum, freq_range=freq_range, ap_range=ap_range)
 
     return fg._get_results()
 

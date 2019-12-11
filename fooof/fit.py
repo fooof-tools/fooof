@@ -321,7 +321,7 @@ class FOOOF():
         self.print_results(False)
 
 
-    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
+    def fit(self, freqs=None, power_spectrum=None, freq_range=None, ap_range=None):
         """Fit the full power spectrum as a combination of periodic and aperiodic components.
 
         Parameters
@@ -332,15 +332,17 @@ class FOOOF():
             Power values, which must be input in linear space.
         freq_range : list of [float, float], optional
             Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
+        ap_range : list of [float, float], or np.ndarray of booleans of the same length as freqs, optional.
+            Frequency range to restrict aperiodic fit to. If not provided, it will be fit on the range specified
+            by freq_range.
 
         Notes
         -----
         Data is optional if data has been already been added to FOOOF object.
         """
-
         # If freqs & power_spectrum provided together, add data to object.
         if freqs is not None and power_spectrum is not None:
-            self.add_data(freqs, power_spectrum, freq_range)
+            self.add_data(freqs, power_spectrum, freq_range if ap_range is None else None)
         # If power spectrum provided alone, add to object, and use existing frequency data
         #  Note: be careful passing in power_spectrum data like this:
         #    It assumes the power_spectrum is already logged, with correct freq_range.
@@ -358,16 +360,49 @@ class FOOOF():
         # In rare cases, the model fails to fit. Therefore it's in a try/except
         #  Cause of failure: RuntimeError, failure to find parameters in curve_fit
         try:
+            
+            if ap_range is not None:#isolate aperiodic frequencies/spectrum
+                if not isinstance(ap_range,np.ndarray) or ap_range.shape[-1]==2:
+                    ap_inds = (self.freqs >= ap_range[0]) & (self.freqs <= ap_range[1])
+                elif ap_range.shape[-1]==self.freqs.shape[-1]:
+                    ap_inds = ap_range
+                else:
+                    raise ValueError('ap_range must have the same length as freqs - can not proceed')
+
+                ap_freqs = self.freqs[ap_inds]
+                ap_spectrum = self.power_spectrum[ap_inds]
+            else:
+                ap_freqs = self.freqs
+                ap_spectrum = self.power_spectrum
 
             # Fit the aperiodic component
-            self.aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
+            self.aperiodic_params_ = self._robust_ap_fit(ap_freqs, ap_spectrum)
             self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
 
             # Flatten the power_spectrum using fit aperiodic fit
             self._spectrum_flat = self.power_spectrum - self._ap_fit
+            
+            
+            if ap_range is not None:#isolate periodic frequencies/spectrum
+                per_inds = (self.freqs >= freq_range[0]) & (self.freqs <= freq_range[1])
+                per_spectrum_flat = np.copy(self._spectrum_flat[per_inds])
+                self._spectrum_flat = per_spectrum_flat
+                #save/set some attributes so peak fitting works properly
+                freqs_0 = self.freqs
+                self.freqs = self.freqs[per_inds]
+                if freq_range:
+                    freq_range_0 = self.freq_range
+                    self.freq_range = freq_range
+
+
 
             # Find peaks, and fit them with gaussians
             self.gaussian_params_ = self._fit_peaks(np.copy(self._spectrum_flat))
+
+            if ap_range is not None:
+                #restore attributes to initial values
+                self.freqs = freqs_0
+                self.freq_range = freq_range_0
 
             # Calculate the peak fit
             #  Note: if no peaks are found, this creates a flat (all zero) peak fit.
@@ -376,9 +411,14 @@ class FOOOF():
             # Create peak-removed (but not flattened) power spectrum.
             self._spectrum_peak_rm = self.power_spectrum - self._peak_fit
 
+            if ap_range is not None:
+                ap_spectrum_peak_rm = self._spectrum_peak_rm[ap_inds]
+            else:
+                ap_spectrum_peak_rm = self._spectrum_peak_rm
+
             # Run final aperiodic fit on peak-removed power spectrum
             #   Note: This overwrites previous aperiodic fit
-            self.aperiodic_params_ = self._simple_ap_fit(self.freqs, self._spectrum_peak_rm)
+            self.aperiodic_params_ = self._simple_ap_fit(ap_freqs, ap_spectrum_peak_rm)
             self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
 
             # Create full power_spectrum model fit
