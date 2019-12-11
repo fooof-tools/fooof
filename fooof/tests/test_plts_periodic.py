@@ -23,4 +23,9 @@ def test_plot_peak_params(skip_if_no_mpl):
 def test_plot_peak_fits(skip_if_no_mpl):
 
     peaks = np.array([[6, 1, 2], [10, 2, 1.5], [25, 1.5, 3]])
+
+    # Test with a single set of params
     plot_peak_fits(peaks)
+
+    # Test with multiple set of params
+    plot_peak_fits([peaks, peaks])
