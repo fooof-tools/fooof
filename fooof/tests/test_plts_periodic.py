@@ -1,9 +1,9 @@
-"""Tests for fooof.plts.peaks."""
+"""Tests for fooof.plts.periodic."""
 
 import numpy as np
 
 from fooof.tests.utils import plot_test
-from fooof.plts.peaks import *
+from fooof.plts.periodic import *
 
 ###################################################################################################
 ###################################################################################################

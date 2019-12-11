@@ -1,14 +1,12 @@
-"""Plots for peak fits and parameters."""
-
-from itertools import repeat
+"""Plots for periodic fits and parameters."""
 
 import numpy as np
 
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.utils import check_ax
-from fooof.plts.settings import FIGSIZE_PEAKS
-from fooof.plts.style import check_n_style, style_peak_plot
+from fooof.plts.utils import check_ax, recursive_plot
+from fooof.plts.settings import FIGSIZE_PARAMS
+from fooof.plts.style import check_n_style, style_param_plot
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -16,13 +14,16 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_peak_params(peaks, colors=None, labels=None, ax=None, plot_style=style_peak_plot):
+def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
+                     ax=None, plot_style=style_param_plot):
     """Plot peaks as dots representing center frequency, power and bandwidth.
 
     Parameters
     ----------
     peaks : 2d array or list of 2d array
         Peak data. Each row is a peak, as [CF, PW, BW].
+    freq_range : list of [float, float] , optional
+        The frequency range to plot the peak parameters across, as [f_min, f_max].
     colors : list of str, optional
         Color(s) to plot data.
     labels : list of str, optional
@@ -33,18 +34,11 @@ def plot_peak_params(peaks, colors=None, labels=None, ax=None, plot_style=style_
         A function to call to apply styling & aesthetics to the plot.
     """
 
-    ax = check_ax(ax, FIGSIZE_PEAKS)
+    ax = check_ax(ax, FIGSIZE_PARAMS)
 
-    # If there is a list, loop across arrays of data
+    # If there is a list, use recurse function to loop across arrays of data and plot them
     if isinstance(peaks, list):
-
-        # Make repeat objcts, if are not iterable, to work with loop
-        colors = repeat(colors) if not isinstance(colors, list) else colors
-        labels = repeat(labels) if not isinstance(labels, list) else labels
-
-        # Pass each array of data recursively into plot function, adding to same axes
-        for cur_peaks, color, label in zip(peaks, colors, labels):
-            plot_peak_params(cur_peaks, colors=color, labels=label, ax=ax)
+        recursive_plot(peaks, plot_peak_params, ax, colors=colors, labels=labels)
 
     # Otherwise, plot the array of data
     else:
@@ -56,13 +50,18 @@ def plot_peak_params(peaks, colors=None, labels=None, ax=None, plot_style=style_
         # Create the plot
         ax.scatter(xs, ys, cs, c=colors, alpha=0.7, label=labels)
 
+    # Add axis labels
+    ax.set_xlabel('Center Frequency (Hz)')
+    ax.set_ylabel('Power')
+
     # Set plot limits
+    if freq_range: ax.set_xlim(freq_range)
     ax.set_ylim([0, ax.get_ylim()[1]])
 
     check_n_style(plot_style, ax)
 
 
-def plot_peak_fits(peaks, freq_range=None, ax=None, plot_style=style_peak_plot):
+def plot_peak_fits(peaks, freq_range=None, ax=None, plot_style=style_param_plot):
     """Plot reconstructions of peak model fits.
 
     Parameters
@@ -78,7 +77,7 @@ def plot_peak_fits(peaks, freq_range=None, ax=None, plot_style=style_peak_plot):
         A function to call to apply styling & aesthetics to the plot.
     """
 
-    ax = check_ax(ax, FIGSIZE_PEAKS)
+    ax = check_ax(ax, FIGSIZE_PARAMS)
 
     if not freq_range:
 
@@ -103,6 +102,10 @@ def plot_peak_fits(peaks, freq_range=None, ax=None, plot_style=style_peak_plot):
     # Plot the average across all subjects
     avg = avg_vals / peaks.shape[0]
     ax.plot(freqs, avg, 'k', linewidth=3)
+
+    # Add axis labels
+    ax.set_xlabel('Frequency (Hz)')
+    ax.set_ylabel('Power')
 
     # Set plot limits
     ax.set_xlim(freq_range)
