@@ -123,7 +123,7 @@ def plot_hist(data, label, title=None, n_bins=25, x_lims=None, ax=None):
     if not ax:
         _, ax = plt.subplots()
 
-    ax.hist(data[~np.isnan(data)], n_bins, alpha=0.8)
+    ax.hist(data[~np.isnan(data)], n_bins, range=x_lims, alpha=0.8)
 
     ax.set_xlabel(label, fontsize=16)
     ax.set_ylabel('Count', fontsize=16)
