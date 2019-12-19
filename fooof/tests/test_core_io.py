@@ -14,16 +14,16 @@ from fooof.core.io import *
 def test_fname():
     """Check that the file name checker helper function properly checks / adds file extensions."""
 
-    assert fname('dat', 'json') == 'dat.json'
-    assert fname('dat.json', 'json') == 'dat.json'
+    assert fname('data', 'json') == 'data.json'
+    assert fname('data.json', 'json') == 'data.json'
     assert fname('pic', 'png') == 'pic.png'
     assert fname('pic.png', 'png') == 'pic.png'
 
 def test_fpath():
     """Check that the file path checker helper function properly checks / combines file paths."""
 
-    assert fpath(None, 'dat.json') == 'dat.json'
-    assert fpath('/path/', 'dat.json') == '/path/dat.json'
+    assert fpath(None, 'data.json') == 'data.json'
+    assert fpath('/path/', 'data.json') == '/path/data.json'
 
 def test_save_fm_str(tfm):
     """Check saving fm data, with str file specifier."""
@@ -107,9 +107,9 @@ def test_load_json_str():
     file_name = 'test_fooof_str_all'
     file_path = pkg.resource_filename(__name__, 'test_files')
 
-    dat = load_json(file_name, file_path)
+    data = load_json(file_name, file_path)
 
-    assert dat
+    assert data
 
 def test_load_json_fobj():
     """Test loading JSON file, with file object file specifier. Loads files from test_save_fm_str."""
@@ -118,9 +118,9 @@ def test_load_json_fobj():
     file_path = pkg.resource_filename(__name__, 'test_files')
 
     with open(os.path.join(file_path, file_name + '.json'), 'r') as f_obj:
-        dat = load_json(f_obj, '')
+        data = load_json(f_obj, '')
 
-    assert dat
+    assert data
 
 def test_load_jsonlines():
     """Test loading JSONlines file. Loads files from test_save_fg."""
@@ -128,8 +128,8 @@ def test_load_jsonlines():
     res_file_name = 'test_fooof_group_res'
     file_path = pkg.resource_filename(__name__, 'test_files')
 
-    for dat in load_jsonlines(res_file_name, file_path):
-        assert dat
+    for data in load_jsonlines(res_file_name, file_path):
+        assert data
 
 def test_load_file_contents():
     """Check that loaded files contain the contents they should.

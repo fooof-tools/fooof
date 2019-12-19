@@ -183,7 +183,7 @@ def load_json(file_name, file_path):
         data = json.loads(file_name.readline())
 
     # Get dictionary of available attributes, and convert specified lists back into arrays
-    data = dict_lst_to_array(dat, get_description()['arrays'])
+    data = dict_lst_to_array(data, get_description()['arrays'])
 
     return data
 
