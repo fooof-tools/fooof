@@ -8,7 +8,7 @@ from fooof.sim.params import update_sim_ap_params
 ###################################################################################################
 
 def rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation):
-    """Rotate a power spectrum about a frequency point, changing the power law exponent.
+    """Rotate a power spectrum about a frequency point, changing the aperiodic exponent.
 
     Parameters
     ----------

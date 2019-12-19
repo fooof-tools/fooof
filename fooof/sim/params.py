@@ -1,4 +1,4 @@
-"""Classes & functions for managing parameter choices for simulating power spectra."""
+"""Classes & functions for managing parameters for simulating power spectra."""
 
 import numpy as np
 
@@ -63,7 +63,7 @@ class Stepper():
     stop : float
         End value to iterate to.
     step : float
-        Incremet of each iteration.
+        Increment of each iteration.
 
     Attributes
     ----------

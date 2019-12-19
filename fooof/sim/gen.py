@@ -34,12 +34,12 @@ def gen_freqs(freq_range, freq_res):
 
 
 def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005, freq_res=0.5):
-    """Generate a simualted power spectrum.
+    """Generate a simulated power spectrum.
 
     Parameters
     ----------
     freq_range : list of [float, float]
-        Minimum and maximum values of the desired frequency vector.
+        Frequency range of desired frequency vector, as [f_low, f_high], inclusive.
     aperiodic_params : list of float
         Parameters to create the aperiodic component of a power spectrum. Length of 2 or 3 (see note).
     gaussian_params : list of float or list of list of float
@@ -101,12 +101,11 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
     n_spectra : int
         The number of power spectra to generate in the matrix.
     freq_range : list of [float, float]
-        Minimum and maximum values of the desired frequency vector.
+        Frequency range of desired frequency vector, as [f_low, f_high], inclusive.
     aperiodic_params : list of float or generator
         Parameters for the aperiodic component of the power spectra.
     gaussian_params : list of float or generator
-        Parameters for the peaks of the power spectra.
-            Length of n_peaks * 3.
+        Parameters for the peaks of the power spectra. Length of n_peaks * 3.
     nlvs : float or list of float or generator, optional, default: 0.005
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
@@ -168,16 +167,16 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
     nlvs = check_iter(nlvs, n_spectra)
 
     # Simulate power spectra
-    for ind, bgp, gp, nlv in zip(range(n_spectra), aperiodic_params, gaussian_params, nlvs):
+    for ind, ap, gp, nlv in zip(range(n_spectra), aperiodic_params, gaussian_params, nlvs):
 
-        sim_params[ind] = SimParams(bgp.copy(), sorted(group_three(gp)), nlv)
-        powers[ind, :] = gen_power_vals(freqs, bgp, gp, nlv)
+        sim_params[ind] = SimParams(ap.copy(), sorted(group_three(gp)), nlv)
+        powers[ind, :] = gen_power_vals(freqs, ap, gp, nlv)
 
     return freqs, powers, sim_params
 
 
 def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):
-    """Generate aperiodic values, from parameter definition.
+    """Generate aperiodic values, from parameters.
 
     Parameters
     ----------
@@ -206,7 +205,7 @@ def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):
 
 
 def gen_peaks(freqs, gaussian_params):
-    """Generate peaks values, from parameter definition.
+    """Generate peaks values, from parameters.
 
     Parameters
     ----------
