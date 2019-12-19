@@ -31,9 +31,9 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
         X-axis data, frequency values.
     power_spectrum : 1d array
         Y-axis data, power values for spectrum to plot.
-    log_freqs : boolean, optional, default: False
+    log_freqs : bool, optional, default: False
         Whether or not to take the log of the frequency axis before plotting.
-    log_powers : boolean, optional, default: False
+    log_powers : bool, optional, default: False
         Whether or not to take the log of the power axis before plotting.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -71,9 +71,9 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels
         X-axis data, frequency values.
     power_spectra : 2d array or list of 1d array
         Y-axis data, power values for spectra to plot.
-    log_freqs : boolean, optional, default: False
+    log_freqs : bool, optional, default: False
         Whether or not to take the log of the frequency axis before plotting.
-    log_powers : boolean, optional, default: False
+    log_powers : bool, optional, default: False
         Whether or not to take the log of the power axis before plotting.
     labels : list of str, optional
         Legend labels, for each power spectrum.
@@ -108,7 +108,7 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, add_center=False,
         Y-axis data, power values for spectrum to plot.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
-    add_center : boolean, optional, default: False
+    add_center : bool, optional, default: False
         Whether to add a line at the center point of the shaded regions.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -137,7 +137,7 @@ def plot_spectra_shading(freqs, power_spectra, shades, add_center=False,
         Y-axis data, power values for spectra to plot.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
-    add_center : boolean, optional, default: False
+    add_center : bool, optional, default: False
         Whether to add a line at the center point of the shaded regions.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.

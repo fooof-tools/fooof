@@ -21,9 +21,9 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
 
     Parameters
     ----------
-    fg : FOOOFGroup object
+    fg : FOOOFGroup
         FOOOFGroup object, containing results from fitting a group of power spectra.
-    save_fig : boolean, optional, default: False
+    save_fig : bool, optional, default: False
         Whether to save out a copy of the plot.
     file_name : str, optional
         Name to give the saved out file.
@@ -59,8 +59,8 @@ def plot_fg_ap(fg, ax=None):
 
     Parameters
     ----------
-    fg : FOOOFGroup object
-        Group object from which to plot data.
+    fg : FOOOFGroup
+        FOOOFGroup object from which to plot data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     """
@@ -80,8 +80,8 @@ def plot_fg_gf(fg, ax=None):
 
     Parameters
     ----------
-    fg : FOOOFGroup object
-        Group object from which to plot data.
+    fg : FOOOFGroup
+        FOOOFGroup object from which to plot data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     """
@@ -96,8 +96,8 @@ def plot_fg_peak_cens(fg, ax=None):
 
     Parameters
     ----------
-    fg : FOOOFGroup object
-        Group object from which to plot data.
+    fg : FOOOFGroup
+        FOOOFGroup object from which to plot data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     """

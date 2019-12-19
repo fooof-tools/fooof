@@ -25,9 +25,9 @@ def style_spectrum_plot(ax, log_freqs, log_powers):
     ----------
     ax : matplotlib.Axes
         Figure axes to apply styling to
-    log_freqs : boolean
+    log_freqs : bool
         Whether the frequency axis is plotted in log space.
-    log_powers : boolean
+    log_powers : bool
         Whether the power axis is plotted in log space.
     """
 

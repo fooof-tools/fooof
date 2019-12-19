@@ -17,7 +17,7 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
 
     Parameters
     ----------
-    fm : FOOOF() object
+    fm : FOOOF
         FOOOF object, containing results from fitting a power spectrum.
     file_name : str
         Name to give the saved out file.
@@ -64,7 +64,7 @@ def save_report_fg(fg, file_name, file_path=None):
 
     Parameters
     ----------
-    fg : FOOOFGroup() object
+    fg : FOOOFGroup
         FOOOFGroup object, containing results from fitting a group of power spectra.
     file_name : str
         Name to give the saved out file.

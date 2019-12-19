@@ -46,9 +46,9 @@ def add_shades(ax, shades, add_center, logged):
         Figure axes upon which to plot.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
-    add_center : boolean
+    add_center : bool
         Whether to add a line at the center point of the shaded regions.
-    logged : boolean
+    logged : bool
         Whether the shade values should be logged before applying to plot axes.
     """
 

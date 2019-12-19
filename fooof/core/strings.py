@@ -43,7 +43,7 @@ def gen_settings_str(f_obj, description=False, concise=False):
 
     Parameters
     ----------
-    f_obj : FOOOF or FOOOFGroup object
+    f_obj : FOOOF or FOOOFGroup
         A FOOOF derived object, from which settings are to be used.
     description : bool, optional, default: True
         Whether to print out a description with current settings.
@@ -103,7 +103,7 @@ def gen_results_fm_str(fm, concise=False):
 
     Parameters
     ----------
-    fm : FOOOF object
+    fm : FOOOF
         Object for which results are to be printed.
     concise : bool, optional, default: False
         Whether to print the report in a concise mode, or not.
@@ -167,7 +167,7 @@ def gen_results_fg_str(fg, concise=False):
 
     Parameters
     ----------
-    fg : FOOOFGroup() object
+    fg : FOOOFGroup
         Group object for which results are to be printed.
     concise : bool, optional, default: False
         Whether to print the report in a concise mode, or not.

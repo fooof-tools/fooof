@@ -70,12 +70,12 @@ def combine_fooofs(fooofs):
 
     Parameters
     ----------
-    fooofs : list of FOOOF objects
+    fooofs : list of FOOOF
         FOOOF objects to be concatenated into a FOOOFGroup.
 
     Returns
     -------
-    fg : FOOOFGroup object
+    fg : FOOOFGroup
         Resultant FOOOFGroup object created from input FOOOFs.
     """
 

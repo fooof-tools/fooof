@@ -24,11 +24,11 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
 
     Parameters
     ----------
-    fm : FOOOF object
+    fm : FOOOF
         FOOOF object, containing a power spectrum and (optionally) results from fitting.
-    plt_log : boolean, optional, default: False
+    plt_log : bool, optional, default: False
         Whether or not to plot the frequency axis in log space.
-    save_fig : boolean, optional, default: False
+    save_fig : bool, optional, default: False
         Whether to save out a copy of the plot.
     file_name : str, optional
         Name to give the saved out file.
@@ -69,7 +69,7 @@ def plot_peak_iter(fm):
 
     Parameters
     ----------
-    fm : FOOOF object
+    fm : FOOOF
         FOOOF object, with model fit, data and settings available.
     """
 

@@ -67,7 +67,7 @@ def save_fm(fm, file_name, file_path=None, append=False,
 
     Parameters
     ----------
-    fm : FOOOF() object
+    fm : FOOOF
         FOOOF object from which to save data.
     file_name : str or FileObject
         File to which to save data.
@@ -121,7 +121,7 @@ def save_fg(fg, file_name, file_path=None, append=False,
 
     Parameters
     ----------
-    fg : FOOOFGroup() object
+    fg : FOOOFGroup
         FOOOFGroup object from which to save data.
     file_name : str or FileObject
         File to which to save data.
@@ -222,7 +222,7 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
 
     Parameters
     ----------
-    fg : FOOOFGroup() object
+    fg : FOOOFGroup
         FOOOFGroup object from which to save data.
     f_obj : FileObject
         File object for file to which to save data.

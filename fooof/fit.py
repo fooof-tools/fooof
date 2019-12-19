@@ -78,7 +78,7 @@ class FOOOF():
         Relative threshold for detecting peaks, in units of standard deviation of the input data.
     aperiodic_mode : {'fixed', 'knee'}
         Which approach to take for fitting the aperiodic component.
-    verbose : boolean, optional, default: True
+    verbose : bool, optional, default: True
         Whether to be verbose in printing out warnings.
 
     Attributes
@@ -316,7 +316,7 @@ class FOOOF():
         freq_range : list of [float, float], optional
             Desired frequency range to fit the model to.
             If not provided, fits across the entire given range.
-        plt_log : boolean, optional, default: False
+        plt_log : bool, optional, default: False
             Whether or not to plot the frequency axis in log space.
 
         Notes
@@ -560,8 +560,8 @@ class FOOOF():
         ----------
         file_name : str or FileObject, optional
             File from which to load data.
-        file_path : str, optional
-            Path to directory from which to load. If not provided, loads from current directory.
+        file_path : str or None, optional
+            Path to directory from which to load. If None, loads from current directory.
         regenerate : bool, optional, default: True
             Whether to regenerate the model fit from the loaded data, if data is available.
         """
@@ -981,7 +981,7 @@ class FOOOF():
             1d vector, or 2d as [n_power_spectra, n_freqs].
         freq_range : list of [float, float]
             Frequency range to restrict power spectrum to. If None, keeps the entire range.
-        spectra_dim : int, optional default: 1
+        spectra_dim : int, optional, default: 1
             Dimensionality that the power spectra should have.
         verbose : bool, optional
             Whether to be verbose in printing out warnings.

@@ -329,7 +329,7 @@ class FOOOFGroup(FOOOF):
 
         Returns
         -------
-        fm : FOOOF object
+        fm : FOOOF
             The FOOOFResults data loaded into a FOOOF object.
         """
 
@@ -362,7 +362,7 @@ class FOOOFGroup(FOOOF):
 
         Returns
         -------
-        fg : FOOOFGroup object
+        fg : FOOOFGroup
             The requested selection of results data loaded into a new FOOOFGroup object.
         """
 
