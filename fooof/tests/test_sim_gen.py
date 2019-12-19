@@ -2,6 +2,7 @@
 
 import numpy as np
 
+from fooof.data import FOOOFResults
 from fooof.tests.utils import default_group_params
 
 from fooof.sim.gen import *
@@ -89,5 +90,12 @@ def test_gen_power_values():
     nlv = 0.1
 
     ys = gen_power_vals(xs, ap_params, gauss_params, nlv)
+
+    assert np.all(ys)
+
+def test_gen_model():
+
+    xs = gen_freqs([3, 50], 0.5)
+    ys = gen_model(xs, np.array([1, 1]), np.array([10, 0.5, 1]))
 
     assert np.all(ys)

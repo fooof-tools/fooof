@@ -226,7 +226,7 @@ def gen_peaks(freqs, gaussian_params):
 
 
 def gen_power_vals(freqs, aperiodic_params, gaussian_params, nlv):
-    """Generate power values for a power spectrum.
+    """Generate power values for a simulated power spectrum.
 
     Parameters
     ----------
@@ -242,7 +242,14 @@ def gen_power_vals(freqs, aperiodic_params, gaussian_params, nlv):
     Returns
     -------
     powers : 1d vector
-        Power values (linear).
+        Power values, linear spacing.
+
+    Notes
+    -----
+    This function should be used when simulating power spectra, as it:
+
+    - Takes in input parameter definitions as lists, as used for simulating power spectra.
+    - Returns the power spectrum in linear spacing, as is used for simulating power spectra.
     """
 
     aperiodic = gen_aperiodic(freqs, aperiodic_params)
@@ -252,3 +259,47 @@ def gen_power_vals(freqs, aperiodic_params, gaussian_params, nlv):
     powers = np.power(10, aperiodic + peaks + noise)
 
     return powers
+
+
+def gen_model(freqs, aperiodic_params, gaussian_params, return_components=False):
+    """Generate a power spectrum model for a given parameter definition.
+
+    Parameters
+    ----------
+    freqs : 1d array
+        Frequency vector along which to reconstruct the model.
+    aperiodic_params : 1d array
+        Parameters to create the aperiodic component of the modeled power spectrum.
+    gaussian_params : 2d array
+        Parameters to create periodic component of the modeled power spectrum.
+        Should be shape of [n_peaks, 3].
+    return_components : bool, optional, default: False
+        Whether to also return the components of the model.
+
+    Returns
+    -------
+    full_model : 1d array
+        The full power spectrum model, in log10 spacing.
+    peak_fit : 1d array
+        The periodic component of the model, containing the peaks.
+        Only returned if `return_components` is True.
+    ap_fit : 1d array
+        The aperiodic component of the model.
+        Only returned if `return_components` is True.
+
+    Notes
+    -----
+    This function should be used when computing model reconstructions, as it:
+
+    - Takes in input parameter definitions as arrays, as used in FOOOF objects.
+    - Returns the power spectrum in log10 spacing, as is used in FOOOF models.
+    """
+
+    ap_fit = gen_aperiodic(freqs, aperiodic_params)
+    peak_fit = gen_peaks(freqs, np.ndarray.flatten(gaussian_params))
+    full_model = peak_fit + ap_fit
+
+    if return_components:
+        return full_model, peak_fit, ap_fit
+    else:
+        return full_model

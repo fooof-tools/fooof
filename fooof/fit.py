@@ -53,7 +53,7 @@ from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
 from fooof.plts.fm import plot_fm
 from fooof.utils import trim_spectrum
 from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
-from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_peaks
+from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_peaks, gen_model
 
 ###################################################################################################
 ###################################################################################################
@@ -939,7 +939,7 @@ class FOOOF():
 
 
     def _calc_error(self, metric=None):
-        """Calculate error of the model fit, compared to the original data.
+        """Calculate the overall error of the model fit, compared to the original data.
 
         Parameters
         ----------
@@ -1119,6 +1119,5 @@ class FOOOF():
     def _regenerate_model(self):
         """Regenerate model fit from parameters."""
 
-        self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
-        self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self.gaussian_params_))
-        self.fooofed_spectrum_ = self._peak_fit + self._ap_fit
+        self.fooofed_spectrum_, self._peak_fit, self._ap_fit = gen_model(
+            self.freqs, self.aperiodic_params_, self.gaussian_params_, return_components=True)
