@@ -186,7 +186,7 @@ def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):
         Parameters that define the aperiodic component.
     aperiodic_mode : {'fixed', 'knee'}, optional
         Which kind of aperiodic component to generate power spectra with.
-        If not provided, is infered from the parameters.
+        If not provided, is inferred from the parameters.
 
     Returns
     -------

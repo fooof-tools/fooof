@@ -38,7 +38,7 @@ np.random.seed(321)
 #
 # - A priori constraints, given your data, such as the number
 #   of peaks you expect to extract
-# - Qualitative analysis, guided by examing the the plotted
+# - Qualitative analysis, guided by examining the the plotted
 #   model fit results, as compared to input data
 # - Quantitative analysis, considering the model goodness of fit and fit error
 #   (however, see note at the bottom regarding interpreting these metrics)
@@ -66,7 +66,7 @@ np.random.seed(321)
 # and that your data meets the assumptions of the approach you choose.
 #
 # The remainder of this notebook goes through some examples of setting FOOOF
-# parameters to be most appropriate for various datasetes.
+# parameters to be most appropriate for various datasets.
 #
 
 ###################################################################################################
@@ -76,7 +76,7 @@ np.random.seed(321)
 # FOOOF calculates and returns a couple metrics to assist with assessing the
 # quality of the model fits. It calculates both the model fit error, as the
 # mean absolute error (MAE) between the full model fit (`fooofed\_spectrum\_`)
-# and the original power spectrum, as well as the R-squared correspondance
+# and the original power spectrum, as well as the R-squared correspondence
 # between the original spectrum and the FOOOFed result.
 #
 # These scores can be used to assess how the model is performing. However
@@ -96,7 +96,7 @@ np.random.seed(321)
 # Given this, while high error / low r-squared may indicate a poor model fit,
 # very low error / high r-squared may also indicate a power spectrum that is
 # overfit, in particular in which the peak parameters from the model may
-# reflect overfitting by modelling too many peaks, and thus not offer a
+# reflect overfitting by modeling too many peaks, and thus not offer a
 # good description of the underlying data.
 #
 # We therefore recommend that, for a given dataset, initial explorations

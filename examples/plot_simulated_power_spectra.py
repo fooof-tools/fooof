@@ -120,7 +120,7 @@ plot_spectra(fs, ps, log_freqs=True, log_powers=True)
 ###################################################################################################
 #
 # Note that when you simulate a group of power spectra, FOOOF returns SimParam objects that
-# keep track of the simulations. This, and other utilties to manage parameters and provide
+# keep track of the simulations. This, and other utilities to manage parameters and provide
 # parameter definitions for simulating groups of power spectra are covered in the
 # `Simulated Parameters` example.
 #

@@ -8,7 +8,7 @@ def get_description():
 
     Returns
     -------
-    attibutes : dict
+    attributes : dict
         Mapping of FOOOF object attributes, and what kind of data they are.
     """
 

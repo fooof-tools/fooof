@@ -61,7 +61,7 @@ def gen_settings_str(f_obj, description=False, concise=False):
             'max_n_peaks'           : 'The maximum number of peaks that can be extracted.',
             'min_peak_height'       : 'Minimum absolute height of a peak, above the aperiodic component.',
             'peak_threshold'        : 'Threshold at which to stop searching for peaks.',
-            'aperiodic_mode'        : 'The aproach taken to fitting the aperiodic component.'}
+            'aperiodic_mode'        : 'The approach taken to fitting the aperiodic component.'}
 
     # Clear description for printing if not requested
     if not description:

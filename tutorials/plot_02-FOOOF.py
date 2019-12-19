@@ -112,7 +112,7 @@ print(' R^2   - ', fm.r_squared_)
 # Notes on Interpreting Peak Parameters
 # -------------------------------------
 #
-# Peak parameters are labelled as:
+# Peak parameters are labeled as:
 #
 # - CF: center frequency of the extracted peak
 # - PW: power of the peak, over and above the aperiodic background
@@ -139,7 +139,7 @@ print(' R^2   - ', fm.r_squared_)
 
 ###################################################################################################
 #
-# The underlying gaussian parameters are also availabe from the FOOOF object,
+# The underlying gaussian parameters are also available from the FOOOF object,
 # in the `gaussian_params_` attribute.
 #
 

@@ -445,7 +445,7 @@ def _progress(iterable, verbose, n_to_run):
     -----
     The explicit n_to_run input is required as tqdm requires this in the parallel case.
     The `tqdm` object that is potentially returned acts the same as the underlying iterable,
-    with the addition of printing out progress everytime items are requested.
+    with the addition of printing out progress every time items are requested.
     """
 
     # Check verbose specifier is okay
@@ -460,7 +460,7 @@ def _progress(iterable, verbose, n_to_run):
         if verbose in tqdm_options:
 
             # Get tqdm, and set which approach to use from tqdm
-            #   Approch to use from tqdm should be what's specified in 'verbose'
+            #   Approach to use from tqdm should be what's specified in 'verbose'
             tqdm_mod = safe_import('tqdm')
             tqdm_type = verbose
 

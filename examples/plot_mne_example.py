@@ -77,7 +77,7 @@ epochs = mne.Epochs(raw, events=events, event_id=event_id, tmin=5, tmax=125,
 ###################################################################################################
 
 # Creating Power Spectra Densities
-spectra, freqs = mne.time_frequency.psd_welch(epochs, fmin=1., fmax=50., n_fft=2000, 
+spectra, freqs = mne.time_frequency.psd_welch(epochs, fmin=1., fmax=50., n_fft=2000,
                                               n_overlap=250, n_per_seg=500)
 
 ###################################################################################################
@@ -95,8 +95,8 @@ fg = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.075,
 
 ###################################################################################################
 
-# Selecting the first epoch of data to FOOOF 
-spectra = np.squeeze(spectra[0,:,:]) 
+# Selecting the first epoch of data to FOOOF
+spectra = np.squeeze(spectra[0,:,:])
 n_channels, n_freq = spectra.shape
 num_blocks = len(mne.read_events(event_fname))
 
@@ -115,20 +115,20 @@ aperiodic_feats = ["Offset","Exponent"]
 
 # Define bands of interest
 bands = {'theta': [3, 7],
-	 'alpha': [7, 14], 
+	 'alpha': [7, 14],
          'beta': [15, 30]}
 
-# Create dictionaries to store all the periodic properties across frequencies 
+# Create dictionaries to store all the periodic properties across frequencies
 results = {}
 for band_name in bands.keys():
     results[band_name] = np.zeros(shape=[num_blocks, n_channels, len(feats)])
 
-# Creating dictionaries to store all the aperiodic properties across frequencies 
+# Creating dictionaries to store all the aperiodic properties across frequencies
 exponent_results = np.zeros(shape=[num_blocks, n_channels, len(aperiodic_feats)])
 
 ###################################################################################################
 
-# Populating periodic and aperiodic values 
+# Populating periodic and aperiodic values
 for block in range(0, num_blocks):
     for ind, res in enumerate(fg):
         exponent_results[block, ind, :] = res.aperiodic_params
@@ -136,9 +136,9 @@ for block in range(0, num_blocks):
             results[band_label][block, ind,  :] = get_band_peak(res.peak_params, band_range, True)
 
 ###################################################################################################
-# Plotting Topographies 
+# Plotting Topographies
 # ---------------------
-# 
+#
 # Now we can plot the extracted FOOOF features across all channels.
 #
 
@@ -169,14 +169,14 @@ cur_data = results[band]
 topo_dat = np.mean(cur_data,0)
 
 ###################################################################################################
- 
-# Looking at the alpha center frequeuncy 
-print('CURRENT FEATURE:', feats[0])    
+
+# Looking at the alpha center frequency
+print('CURRENT FEATURE:', feats[0])
 disp_dat = topo_dat[:,0]
 
 inds = np.where(np.isnan(disp_dat))
 disp_dat[inds] = np.nanmean(disp_dat)
-    
+
 vbuffer = 0.1 * (disp_dat.max() - disp_dat.min())
 vmin, vmax,  = disp_dat.min() - vbuffer, disp_dat.max() + vbuffer
 
@@ -190,13 +190,13 @@ mne.viz.plot_topomap(disp_dat, raw.info, vmin=vmin, vmax=vmax, cmap=cm.viridis, 
 cur_data = exponent_results
 
 topo_dat = np.mean(cur_data,0)
-    
-print('CURRENT FEATURE:', aperiodic_feats[1])    
+
+print('CURRENT FEATURE:', aperiodic_feats[1])
 disp_dat = topo_dat[:,1]
 
 inds = np.where(np.isnan(disp_dat))
 disp_dat[inds] = np.nanmean(disp_dat)
-    
+
 vbuffer = 0.1 * (disp_dat.max() - disp_dat.min())
 vmin, vmax,  = disp_dat.min() - vbuffer, disp_dat.max() + vbuffer
 

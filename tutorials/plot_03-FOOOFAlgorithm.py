@@ -117,7 +117,7 @@ plot_spectrum(fm.freqs, fm._spectrum_flat, plt_log, label='Flattened Spectrum')
 #     the procedure halts.
 # - A Gaussian is fit around this maximum point
 # - This 'guess' Gaussian is then subtracted from the flatted spectrum
-# - The procedure continues to a new iteration with the new version of the flattend spectrum,
+# - The procedure continues to a new iteration with the new version of the flattened spectrum,
 #   unless `max_n_peaks` has been reached
 #
 

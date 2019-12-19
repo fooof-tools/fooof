@@ -1,4 +1,4 @@
-"""Function defintions for FOOOF.
+"""Function definitions for FOOOF.
 
 NOTES
 -----

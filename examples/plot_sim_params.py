@@ -97,7 +97,7 @@ plot_spectra(fs, ps[0:4, :], log_powers=True)
 # The :func:`param_iter` function can be used to create iterators that can 'step' across
 # a range of parameter values to be simulated.
 #
-# The :class:`Stepper` object needs to be used in conjuction with :func:`param_iter`,
+# The :class:`Stepper` object needs to be used in conjunction with :func:`param_iter`,
 # as it specifies the values to be iterated across.
 #
 

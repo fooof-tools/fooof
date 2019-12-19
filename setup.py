@@ -24,7 +24,7 @@ The model conceives of the neural power spectrum as consisting of two distinct f
 1) an aperiodic component, typically reflecting 1/f like characteristics, modeled with an exponential fit, with:
 2) band-limited peaks rising above this background, reflecting putative oscillations, and modeled as Gaussians.
 
-With regards to examing peaks in the frequency domain, as putative oscillations, the benefit
+With regards to examining peaks in the frequency domain, as putative oscillations, the benefit
 of the FOOOF approach is that these peaks are characterized in terms of their specific center
 frequency, amplitude and bandwidth without requiring predefining specific bands of interest.
 In particular, it separates these peaks from a dynamic, and independently interesting 1/f

@@ -231,7 +231,7 @@ def test_fooof_plot(tfm, skip_if_no_mpl):
     tfm.plot()
 
 def test_fooof_resets():
-    """Check that all relevant data is cleared in the resest method."""
+    """Check that all relevant data is cleared in the reset method."""
 
     # Note: uses it's own tfm, to not clear the global one
     tfm = get_tfm()
@@ -259,7 +259,7 @@ def test_fooof_fit_failure():
     """Test that fit handles a failure."""
 
     # Use a new FOOOF, that is monkey-patched to raise an error
-    #  This mimicks the main fit-failure, without requiring bad data / waiting for it to fail.
+    #  This mimics the main fit-failure, without requiring bad data / waiting for it to fail.
     tfm = FOOOF(verbose=False)
     def raise_runtime_error(*args, **kwargs):
         raise RuntimeError('Test-MonkeyPatch')

@@ -171,21 +171,21 @@ def load_json(file_name, file_path):
 
     Returns
     -------
-    dat : dict
+    data : dict
         Dictionary of data loaded from file.
     """
 
     # Load data from file
     if isinstance(file_name, str):
         with open(fpath(file_path, fname(file_name, 'json')), 'r') as infile:
-            dat = json.load(infile)
+            data = json.load(infile)
     elif isinstance(file_name, io.IOBase):
-        dat = json.loads(file_name.readline())
+        data = json.loads(file_name.readline())
 
     # Get dictionary of available attributes, and convert specified lists back into arrays
-    dat = dict_lst_to_array(dat, get_description()['arrays'])
+    data = dict_lst_to_array(dat, get_description()['arrays'])
 
-    return dat
+    return data
 
 
 def load_jsonlines(file_name, file_path):

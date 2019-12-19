@@ -31,7 +31,7 @@ def safe_import(*args):
     except ImportError:
         mod = False
 
-    # Prior to py 3.5.4, import module could throw a SystemError
+    # Prior to Python 3.5.4, import module could throw a SystemError
     #  Older approach requires the parent module be imported first
     #  If triggered, re-check for module after first importing the parent
     except SystemError:
@@ -81,7 +81,7 @@ def docs_append_to_section(docstring, section, add):
     ds : str
         Docstring to update.
     section : str
-        Name of the section within the dostring to add to.
+        Name of the section within the docstring to add to.
     add : str
         Text to append to specified section of the docstring.
 
@@ -92,7 +92,7 @@ def docs_append_to_section(docstring, section, add):
 
     Notes
     -----
-    - This function assumes numpy docs standards.
+    - This function assumes numpydoc documentation standard.
     """
 
     return '\n\n'.join([split + add if section in split else split \
@@ -130,7 +130,7 @@ def copy_doc_class(source, section='Attributes', add=''):
     source : cls
         Source class to copy docstring from.
     section : str, optional, default: 'Attributes'
-        Name of the section within the dostring to add to.
+        Name of the section within the docstring to add to.
      add : str, optional
         Text to append to specified section of the docstring.
 

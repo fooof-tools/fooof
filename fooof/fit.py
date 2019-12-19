@@ -727,7 +727,7 @@ class FOOOF():
                            if flat_iter[val] <= half_height), None)
 
             # Keep bandwidth estimation from the shortest side.
-            #  We grab shortest to avoid estimating very large std from overalapping peaks.
+            #  We grab shortest to avoid estimating very large std from overlapping peaks.
             # Grab the shortest side, ignoring a side if the half max was not found.
             #  Note: will fail if both le & ri ind's end up as None (probably shouldn't happen).
             short_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
