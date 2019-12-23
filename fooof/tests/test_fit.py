@@ -1,21 +1,22 @@
-"""Tests for fooof.fit, including the FOOOF object it's methods.
+"""Tests for fooof.fit, including the FOOOF object and it's methods.
 
 NOTES
 -----
 The tests here are not strong tests for accuracy.
-    They serve rather as 'smoke tests', for if anything fails completely.
+They serve rather as 'smoke tests', for if anything fails completely.
 """
 
-from py.test import raises
-
-import numpy as np
 import pkg_resources as pkg
 
+import numpy as np
+from py.test import raises
+
 from fooof import FOOOF
-from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
 from fooof.sim import gen_power_spectrum
 from fooof.core.utils import group_three
 from fooof.core.info import get_description
+from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
+from fooof.core.errors import DataError, NoDataError, InconsistentDataError
 
 from fooof.tests.utils import get_tfm, plot_test
 
@@ -79,7 +80,7 @@ def test_fooof_fit_measures():
     assert np.isclose(tfm.error_, 0.8)
     tfm._calc_error(metric='RMSE')
     assert np.isclose(tfm.error_, np.sqrt(0.8))
-    with raises(NotImplementedError):
+    with raises(ValueError):
         tfm._calc_error(metric='BAD')
 
 
@@ -95,19 +96,19 @@ def test_fooof_checks():
     ## Check checks & errors done in `_prepare_data`
 
     # Check wrong data type error
-    with raises(ValueError):
+    with raises(DataError):
         tfm.fit(list(xs), list(ys))
 
     # Check dimension error
-    with raises(ValueError):
+    with raises(DataError):
         tfm.fit(xs, np.reshape(ys, [1, len(ys)]))
 
     # Check shape mismatch error
-    with raises(ValueError):
+    with raises(InconsistentDataError):
         tfm.fit(xs[:-1], ys)
 
     # Check complex inputs error
-    with raises(ValueError):
+    with raises(DataError):
         tfm.fit(xs, ys.astype('complex'))
 
     # Check trim_spectrum range
@@ -119,16 +120,16 @@ def test_fooof_checks():
     assert tfm.freqs[0] != 0
 
     # Check error if there is a post-logging inf or nan
-    with raises(ValueError):  # Double log (1) -> -inf
+    with raises(DataError):  # Double log (1) -> -inf
         tfm.fit(np.array([1, 2, 3]), np.log10(np.array([1, 2, 3])))
-    with raises(ValueError):  # Log (-1) -> NaN
+    with raises(DataError):  # Log (-1) -> NaN
         tfm.fit(np.array([1, 2, 3]), np.array([-1, 2, 3]))
 
     ## Check errors & errors done in `fit`
 
     # Check fit, and string report model error (no data / model fit)
     tfm = FOOOF(verbose=False)
-    with raises(ValueError):
+    with raises(NoDataError):
         tfm.fit()
 
 def test_fooof_load():

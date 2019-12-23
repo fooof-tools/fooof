@@ -28,11 +28,11 @@ def test_bands_remove_band():
 def test_bands_errors():
 
     bands = Bands()
-    with raises(InconsistentDataError):
+    with raises(ValueError):
         bands.add_band(1, (1, 1))
-    with raises(InconsistentDataError):
+    with raises(ValueError):
         bands.add_band('test', (1, 1, 1))
-    with raises(InconsistentDataError):
+    with raises(ValueError):
         bands.add_band('test', (2, 1))
 
 def test_bands_dunders(tbands):

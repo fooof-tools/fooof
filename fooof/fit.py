@@ -43,10 +43,11 @@ from scipy.optimize import curve_fit
 
 from fooof.core.io import save_fm, load_json
 from fooof.core.reports import save_report_fm
-from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
-from fooof.core.utils import group_three, check_array_dim
-from fooof.core.info import get_description, get_indices
 from fooof.core.modutils import copy_doc_func_to_method
+from fooof.core.info import get_description, get_indices
+from fooof.core.utils import group_three, check_array_dim
+from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
+from fooof.core.errors import ModelNotFitError, DataError, NoDataError, InconsistentDataError
 from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
                                 gen_issue_str, gen_width_warning_str)
 
@@ -105,6 +106,8 @@ class FOOOF():
         R-squared of the fit between the input power spectrum and the full model fit.
     error_ : float
         Error of the full model fit.
+    n_peaks_ : int
+        The number of peaks fit in the model.
 
     Notes
     -----
@@ -341,6 +344,11 @@ class FOOOF():
         freq_range : list of [float, float], optional
             Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
 
+        Raises
+        ------
+        NoDataError
+            If no data is available to fit.
+
         Notes
         -----
         Data is optional if data has been already been added to current object.
@@ -357,7 +365,7 @@ class FOOOF():
 
         # Check that data is available
         if self.freqs is None or self.power_spectrum is None:
-            raise ValueError('No data available to fit - can not proceed.')
+            raise NoDataError("No data available to fit, can not proceed.")
 
         # Check and warn about width limits (if in verbose mode)
         if self.verbose:
@@ -408,7 +416,7 @@ class FOOOF():
 
             # Print out status
             if self.verbose:
-                print('Model fitting was unsuccessful.')
+                print("Model fitting was unsuccessful.")
 
 
     def print_settings(self, description=False, concise=False):
@@ -490,6 +498,11 @@ class FOOOF():
         out : float or 1d array
             Requested data.
 
+        Raises
+        ------
+        ModelNotFitError
+            If there are no model fit parameters available to return.
+
         Notes
         -----
         For further description of the data you can extract, check the FOOOFResults documentation.
@@ -498,7 +511,7 @@ class FOOOF():
         """
 
         if self.aperiodic_params_ is None:
-            raise RuntimeError('No model fit data is available to extract - can not proceed.')
+            raise ModelNotFitError("No model fit results are available to extract, can not proceed.")
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
@@ -946,6 +959,11 @@ class FOOOF():
         metric : {'MAE', 'MSE', 'RMSE'}
             Which error measure to calculate.
 
+        Raises
+        ------
+        ValueError
+            If the requested error metric is not understood.
+
         Notes
         -----
         Which measure is applied is by default controlled by the `_error_metric` attribute.
@@ -965,7 +983,7 @@ class FOOOF():
 
         else:
             msg = "Error metric '{}' not understood or not implemented.".format(metric)
-            raise NotImplementedError(msg)
+            raise ValueError(msg)
 
 
     @staticmethod
@@ -997,24 +1015,32 @@ class FOOOF():
             Minimum and maximum values of the frequency vector.
         freq_res : float
             Frequency resolution of the power spectrum.
+
+        Raises
+        ------
+        DataError
+            If there is an issue with the data.
+        InconsistentDataError
+            If the input data are inconsistent size.
         """
 
         # Check that data are the right types
         if not isinstance(freqs, np.ndarray) or not isinstance(power_spectrum, np.ndarray):
-            raise ValueError('Input data must be numpy arrays.')
+            raise DataError("Input data must be numpy arrays.")
 
         # Check that data have the right dimensionality
         if freqs.ndim != 1 or (power_spectrum.ndim != spectra_dim):
-            raise ValueError('Inputs are not the right dimensions.')
+            raise DataError("Inputs are not the right dimensions.")
 
         # Check that data sizes are compatible
         if freqs.shape[-1] != power_spectrum.shape[-1]:
-            raise ValueError('Inputs are not consistent size.')
+            raise InconsistentDataError("The input frequencies and power spectra"
+                                        " are not consistent size.")
 
         # Check if power values are complex
         if np.iscomplexobj(power_spectrum):
-            raise ValueError("Input power spectra are complex values."
-                             "FOOOF does not currently support complex inputs.")
+            raise DataError("Input power spectra are complex values."
+                            "FOOOF does not currently support complex inputs.")
 
         # Force data to be dtype of float64.
         #   If they end up as float32, or less, scipy curve_fit fails (sometimes implicitly)
@@ -1046,10 +1072,10 @@ class FOOOF():
 
         # Check if there are any infs / nans, and raise an error if so
         if np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):
-            raise ValueError("The input power spectra data, after logging, contain NaN or Inf values."
-                             "This will cause the fitting to fail."
-                             "This can happen if inputs are already logged."
-                             "Inputs data should be in linear spacing, not log.")
+            raise DataError("The input power spectra data, after logging, contains NaNs or Infs."
+                            "This will cause the fitting to fail."
+                            "This can happen if inputs are already logged."
+                            "Inputs data should be in linear spacing, not log.")
 
         return freqs, power_spectrum, freq_range, freq_res
 

@@ -81,14 +81,14 @@ def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, sim_p
         Negative is counterclockwise rotation (flatten).
     f_rotation : float
         Frequency value, in Hz, about which rotation is applied, at which power is unchanged.
-    sim_params : SimParams object
+    sim_params : SimParams
         Object storing the current parameter definitions.
 
     Returns
     -------
     rotated_spectrum : 1d array
         Rotated power spectrum.
-    new_sim_params : SimParams object
+    new_sim_params : SimParams
         Updated object storing the new parameter definitions.
 
     Notes
@@ -119,14 +119,14 @@ def translate_sim_spectrum(power_spectrum, delta_offset, sim_params):
         Amount to change the offset by.
         Positive is an upwards translation.
         Negative is a downwards translation.
-    sim_params : SimParams object
+    sim_params : SimParams
         Object storing the current parameter definitions.
 
     Returns
     -------
     translated_spectrum : 1d array
         Translated power spectrum.
-    new_sim_params : SimParams object
+    new_sim_params : SimParams
         Updated object storing the new parameter definitions.
     """
 

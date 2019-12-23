@@ -4,16 +4,18 @@ NOTES
 -----
 - FOOOF currently (only) uses the exponential and gaussian functions.
 - Linear & Quadratic functions are from previous versions of FOOOF.
-    - There are left available for easy swapping back in, if desired.
+    - They are left available for easy swapping back in, if desired.
 """
 
 import numpy as np
+
+from fooof.core.errors import InconsistentDataError
 
 ###################################################################################################
 ###################################################################################################
 
 def gaussian_function(xs, *params):
-    """Gaussian function to use for fitting.
+    """Gaussian fitting function.
 
     Parameters
     ----------
@@ -40,7 +42,7 @@ def gaussian_function(xs, *params):
 
 
 def expo_function(xs, *params):
-    """Exponential function to use for fitting 1/f, with a 'knee'.
+    """Exponential fitting function, for fitting aperiodic component with a 'knee'.
 
     NOTE: this function requires linear frequency (not log).
 
@@ -68,7 +70,7 @@ def expo_function(xs, *params):
 
 
 def expo_nk_function(xs, *params):
-    """Exponential function to use for fitting 1/f, with no 'knee'.
+    """Exponential fitting function, for fitting aperiodic component without a 'knee'.
 
     NOTE: this function requires linear frequency (not log).
 
@@ -84,7 +86,7 @@ def expo_nk_function(xs, *params):
     Returns
     -------
     ys : 1d array
-        Output values for exponential (no-knee) function.
+        Output values for exponential function, without a knee.
     """
 
     ys = np.zeros_like(xs)
@@ -97,7 +99,7 @@ def expo_nk_function(xs, *params):
 
 
 def linear_function(xs, *params):
-    """Linear function to use for quick fitting 1/f to estimate parameters.
+    """Linear fitting function.
 
     Parameters
     ----------
@@ -122,7 +124,7 @@ def linear_function(xs, *params):
 
 
 def quadratic_function(xs, *params):
-    """Quadratic function to use for better fitting 1/f.
+    """Quadratic fitting function.
 
     Parameters
     ----------
@@ -158,6 +160,11 @@ def get_ap_func(aperiodic_mode):
     -------
     ap_func : function
         Function for the aperiodic process.
+
+    Raises
+    ------
+    ValueError
+        If the specified aperiodic mode label is not understood.
     """
 
     if aperiodic_mode == 'fixed':
@@ -165,7 +172,7 @@ def get_ap_func(aperiodic_mode):
     elif aperiodic_mode == 'knee':
         ap_func = expo_function
     else:
-        raise ValueError('Aperiodic mode not understood.')
+        raise ValueError("Aperiodic mode not understood.")
 
     return ap_func
 
@@ -182,6 +189,11 @@ def infer_ap_func(aperiodic_params):
     -------
     aperiodic_mode : {'fixed', 'knee'}
         Which kind of aperiodic fitting function parameters are consistent with.
+
+    Raises
+    ------
+    InconsistentDataError
+        If the given parameters are inconsistent with any available aperiodic function.
     """
 
     if len(aperiodic_params) == 2:
@@ -189,6 +201,6 @@ def infer_ap_func(aperiodic_params):
     elif len(aperiodic_params) == 3:
         aperiodic_mode = 'knee'
     else:
-        raise ValueError('Aperiodic parameters not consistent with any available option.')
+        raise InconsistentDataError("Aperiodic parameters not consistent available options.")
 
     return aperiodic_mode

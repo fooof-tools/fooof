@@ -3,10 +3,11 @@
 from collections.abc import Iterable
 from itertools import repeat
 
-from fooof import FOOOF
-from fooof.core.utils import *
-
 from py.test import raises
+
+from fooof import FOOOF
+
+from fooof.core.utils import *
 
 ###################################################################################################
 ###################################################################################################

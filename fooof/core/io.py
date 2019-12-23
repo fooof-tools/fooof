@@ -82,6 +82,11 @@ def save_fm(fm, file_name, file_path=None, append=False,
         Whether to save out FOOOF settings.
     save_data : bool, optional
         Whether to save out input data.
+
+    Raises
+    ------
+    ValueError
+        If the save file is not understood.
     """
 
     # Convert object to dictionary & convert all arrays to lists - for JSON serializing
@@ -112,7 +117,7 @@ def save_fm(fm, file_name, file_path=None, append=False,
         file_name.write('\n')
 
     else:
-        raise ValueError('Save file not understood.')
+        raise ValueError("Save file not understood.")
 
 
 def save_fg(fg, file_name, file_path=None, append=False,
@@ -136,10 +141,15 @@ def save_fg(fg, file_name, file_path=None, append=False,
         Whether to save out FOOOF settings.
     save_data : bool, optional
         Whether to save out power spectra data.
+
+    Raises
+    ------
+    ValueError
+        If the data or save file specified are not understood.
     """
 
     if not save_results and not save_settings and not save_data:
-        raise ValueError('No data specified for saving.')
+        raise ValueError("No data specified for saving.")
 
     # Save to string specified file, do not append
     if isinstance(file_name, str) and not append:
@@ -156,7 +166,7 @@ def save_fg(fg, file_name, file_path=None, append=False,
         _save_fg(fg, file_name, save_results, save_settings, save_data)
 
     else:
-        raise ValueError('Save file not understood.')
+        raise ValueError("Save file not understood.")
 
 
 def load_json(file_name, file_path):

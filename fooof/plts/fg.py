@@ -6,6 +6,7 @@ This file contains plotting functions that take as input a FOOOFGroup object.
 """
 
 from fooof.core.io import fname, fpath
+from fooof.core.errors import ModelNotFitError
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
 
@@ -29,10 +30,15 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
         Name to give the saved out file.
     file_path : str, optional
         Path to directory in which to save. If not provided, saves to current directory.
+
+    Raises
+    ------
+    ModelNotFitError
+        If the FOOOF object does not have model fit data available to plot.
     """
 
     if not fg.group_results:
-        raise RuntimeError('No data available to plot - can not proceed.')
+        raise ModelNotFitError("No model fit results are available, can not proceed.")
 
     fig = plt.figure(figsize=(14, 10))
     gs = gridspec.GridSpec(2, 2, wspace=0.35, hspace=0.25, height_ratios=[1, 1.2])

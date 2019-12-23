@@ -14,10 +14,11 @@ import numpy as np
 from fooof import FOOOF
 from fooof.plts.fg import plot_fg
 from fooof.data import FOOOFResults
+from fooof.core.info import get_indices
 from fooof.core.reports import save_report_fg
+from fooof.core.errors import ModelNotFitError
 from fooof.core.strings import gen_results_fg_str
 from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.info import get_indices
 from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class, safe_import
 
 ###################################################################################################
@@ -230,13 +231,18 @@ class FOOOFGroup(FOOOF):
         out : ndarray
             Requested data.
 
+        Raises
+        ------
+        ModelNotFitError
+            If there are no model fit results available.
+
         Notes
         -----
         For further description of the data you can extract, check the FOOOFResults documentation.
         """
 
         if not self.group_results:
-            raise RuntimeError('No model fit data is available to extract - can not proceed.')
+            raise ModelNotFitError("No model fit results are available, can not proceed.")
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
@@ -441,6 +447,10 @@ def _progress(iterable, verbose, n_to_run):
     pbar : iterable or tqdm object
         Iterable object, with TQDM progress functionality, if requested.
 
+    Raises
+    ------
+
+
     Notes
     -----
     The explicit n_to_run input is required as tqdm requires this in the parallel case.
@@ -451,8 +461,7 @@ def _progress(iterable, verbose, n_to_run):
     # Check verbose specifier is okay
     tqdm_options = ['tqdm', 'tqdm_notebook']
     if not isinstance(verbose, bool) and not verbose in tqdm_options:
-        #print('Verbose option not understood. Proceeding without any.')
-        raise ValueError('Verbose option not understood.')
+        raise ValueError("Verbose option not understood.")
 
     if verbose:
 

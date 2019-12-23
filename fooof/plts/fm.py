@@ -11,6 +11,7 @@ from fooof.plts.utils import check_ax
 from fooof.plts.spectra import plot_spectrum
 from fooof.core.io import fname, fpath
 from fooof.core.funcs import gaussian_function
+from fooof.core.errors import ModelNotFitError
 from fooof.core.modutils import safe_import, check_dependency
 
 plt = safe_import('.pyplot', 'matplotlib')
@@ -36,10 +37,15 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
         Path to directory in which to save. If None, saves to current directory.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
+
+    Raises
+    ------
+    ModelNotFitError
+        If the FOOOF object does not have model fit data available to plot.
     """
 
     if not np.all(fm.freqs):
-        raise RuntimeError('No data available to plot - can not proceed.')
+        raise ModelNotFitError("No model fit results are available, can not proceed.")
 
     ax = check_ax(ax)
 

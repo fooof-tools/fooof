@@ -2,6 +2,8 @@
 
 from py.test import raises
 
+from fooof.core.errors import InconsistentDataError
+
 from fooof.sim.params import *
 
 ###################################################################################################
@@ -24,7 +26,7 @@ def test_update_sim_ap_params():
     assert new_sim_params.aperiodic_params == [2, 2]
 
     # Check error with invalid overwrite
-    with raises(ValueError):
+    with raises(InconsistentDataError):
         new_sim_params = update_sim_ap_params(sim_params, [1, 1, 1])
 
 def test_stepper():

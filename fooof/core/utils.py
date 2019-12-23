@@ -23,7 +23,7 @@ def group_three(vec):
     """
 
     if len(vec) % 3 != 0:
-        raise ValueError('Wrong size array to group by three.')
+        raise ValueError("Wrong size array to group by three.")
 
     return [list(vec[i:i+3]) for i in range(0, len(vec), 3)]
 

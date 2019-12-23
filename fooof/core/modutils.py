@@ -163,14 +163,19 @@ def check_dependency(dep, name):
     -------
     wrap : callable
         The decorated function.
+
+    Raises
+    ------
+    ImportError
+        If the requested dependency is not available.
     """
 
     def wrap(func):
         @wraps(func)
         def wrapped_func(*args, **kwargs):
             if not dep:
-                raise ImportError('Optional FOOOF dependency ' + name + \
-                                  ' is required for this functionality.')
+                raise ImportError("Optional FOOOF dependency " + name + \
+                                  " is required for this functionality.")
             func(*args, **kwargs)
         return wrapped_func
     return wrap

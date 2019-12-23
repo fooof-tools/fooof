@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from fooof.core.errors import ModelNotFitError
+
 ###################################################################################################
 ###################################################################################################
 
@@ -57,11 +59,11 @@ def gen_settings_str(f_obj, description=False, concise=False):
     """
 
     # Parameter descriptions to print out, if requested
-    desc = {'peak_width_limits'     : 'Enforced limits for peak widths, in Hz.',
-            'max_n_peaks'           : 'The maximum number of peaks that can be extracted.',
-            'min_peak_height'       : 'Minimum absolute height of a peak, above the aperiodic component.',
-            'peak_threshold'        : 'Threshold at which to stop searching for peaks.',
-            'aperiodic_mode'        : 'The approach taken to fitting the aperiodic component.'}
+    desc = {'peak_width_limits' : 'Enforced limits for peak widths, in Hz.',
+            'max_n_peaks'       : 'The maximum number of peaks that can be extracted.',
+            'min_peak_height'   : 'Minimum absolute height of a peak, above the aperiodic component.',
+            'peak_threshold'    : 'Threshold at which to stop searching for peaks.',
+            'aperiodic_mode'    : 'The approach taken to fitting the aperiodic component.'}
 
     # Clear description for printing if not requested
     if not description:
@@ -176,10 +178,15 @@ def gen_results_fg_str(fg, concise=False):
     -------
     output : str
         Formatted string of FOOOFGroup results.
+
+    Raises
+    ------
+    ModelNotFitError
+        If not model fit data is available to report.
     """
 
     if not fg.group_results:
-        raise ValueError('Model fit has not been run - can not proceed.')
+        raise ModelNotFitError("No model fit results are available, can not proceed.")
 
     # Extract all the relevant data for printing
     n_peaks = len(fg.get_params('peak_params'))
