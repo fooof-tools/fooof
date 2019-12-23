@@ -61,6 +61,13 @@ class FOOOFGroup(FOOOF):
         return self.group_results[index]
 
 
+    @property
+    def model_fit(self):
+        """Check if a model has been fit."""
+
+        return True if self.group_results else False
+
+
     def _reset_data_results(self, clear_freqs=True, clear_spectrum=True,
                             clear_results=True, clear_spectra=True):
         """Set (or reset) data & results attributes to empty.
@@ -241,7 +248,7 @@ class FOOOFGroup(FOOOF):
         For further description of the data you can extract, check the FOOOFResults documentation.
         """
 
-        if not self.group_results:
+        if not self.model_fit:
             raise ModelNotFitError("No model fit results are available, can not proceed.")
 
         # If col specified as string, get mapping back to integer

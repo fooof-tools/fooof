@@ -106,8 +106,8 @@ class FOOOF():
         R-squared of the fit between the input power spectrum and the full model fit.
     error_ : float
         Error of the full model fit.
-    n_peaks_ : int
-        The number of peaks fit in the model.
+    model_fit : bool
+        Whether model has been fit.
 
     Notes
     -----
@@ -168,6 +168,13 @@ class FOOOF():
         # Set internal settings, based on inputs, & initialize data & results attributes.
         self._reset_internal_settings()
         self._reset_data_results()
+
+
+    @property
+    def model_fit(self):
+        """Check if a model has been fit."""
+
+        return True if np.any(self.aperiodic_params_) else False
 
 
     def _reset_internal_settings(self):
@@ -510,7 +517,7 @@ class FOOOF():
         If there is no data on periodic features, this method will return NaN.
         """
 
-        if self.aperiodic_params_ is None:
+        if not self.model_fit:
             raise ModelNotFitError("No model fit results are available to extract, can not proceed.")
 
         # If col specified as string, get mapping back to integer

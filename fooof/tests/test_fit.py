@@ -28,6 +28,14 @@ def test_fooof():
 
     assert FOOOF(verbose=False)
 
+def test_fooof_model_fit(tfm):
+    """Test the model_fit property attribute, with and without model fits."""
+
+    assert tfm.model_fit
+
+    ntfm = FOOOF()
+    assert not ntfm.model_fit
+
 def test_fooof_fit_nk():
     """Test FOOOF fit, no knee."""
 

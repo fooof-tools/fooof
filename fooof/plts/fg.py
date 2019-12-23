@@ -37,7 +37,7 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
         If the FOOOF object does not have model fit data available to plot.
     """
 
-    if not fg.group_results:
+    if not fg.model_fit:
         raise ModelNotFitError("No model fit results are available, can not proceed.")
 
     fig = plt.figure(figsize=(14, 10))

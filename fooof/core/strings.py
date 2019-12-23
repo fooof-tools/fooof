@@ -182,10 +182,10 @@ def gen_results_fg_str(fg, concise=False):
     Raises
     ------
     ModelNotFitError
-        If not model fit data is available to report.
+        If no model fit data is available to report.
     """
 
-    if not fg.group_results:
+    if not fg.model_fit:
         raise ModelNotFitError("No model fit results are available, can not proceed.")
 
     # Extract all the relevant data for printing

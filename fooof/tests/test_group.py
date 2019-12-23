@@ -40,6 +40,14 @@ def test_fg_getitem(tfg):
 
     assert tfg[0]
 
+def test_fg_model_fit(tfg):
+    """Test the model_fit property attribute, with and without model fits."""
+
+    assert tfg.model_fit
+
+    ntfg = FOOOFGroup()
+    assert not ntfg.model_fit
+
 def test_fg_fit():
     """Test FOOOFGroup fit, no knee."""
 
@@ -56,6 +64,7 @@ def test_fg_fit():
     assert np.all(out[1].aperiodic_params)
 
 def test_fg_drop(tfg):
+    """Test function to drop from FOOOFGroup."""
 
     n_spectra = 3
     xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
