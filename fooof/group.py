@@ -68,6 +68,13 @@ class FOOOFGroup(FOOOF):
         return True if self.group_results else False
 
 
+    @property
+    def n_peaks_(self):
+        """How many peaks are fit in the model."""
+
+        return [f_res.peak_params.shape[0] for f_res in self] if self.model_fit else None
+
+
     def _reset_data_results(self, clear_freqs=True, clear_spectrum=True,
                             clear_results=True, clear_spectra=True):
         """Set (or reset) data & results attributes to empty.

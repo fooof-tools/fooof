@@ -36,6 +36,11 @@ def test_fooof_model_fit(tfm):
     ntfm = FOOOF()
     assert not ntfm.model_fit
 
+def test_fooof_n_peaks(tfm):
+    """Test the n_peaks property attribute."""
+
+    assert tfm.n_peaks_
+
 def test_fooof_fit_nk():
     """Test FOOOF fit, no knee."""
 

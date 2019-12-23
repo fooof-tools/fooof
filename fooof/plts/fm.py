@@ -80,10 +80,9 @@ def plot_peak_iter(fm):
     """
 
     flatspec = fm._spectrum_flat
-    n_gauss = fm.gaussian_params_.shape[0]
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
 
-    for ind in range(n_gauss + 1):
+    for ind in range(fm.n_peaks_ + 1):
 
         # This forces to create a new plotting axes per iteration
         ax = check_ax(None)
@@ -100,7 +99,7 @@ def plot_peak_iter(fm):
         ax.set_ylim(ylims)
         ax.set_title('Iteration #' + str(ind+1), fontsize=16)
 
-        if ind < n_gauss:
+        if ind < fm.n_peaks_:
 
             gauss = gaussian_function(fm.freqs, *fm.gaussian_params_[ind, :])
             plot_spectrum(fm.freqs, gauss, label='Gaussian Fit',

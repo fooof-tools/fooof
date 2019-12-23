@@ -106,13 +106,15 @@ class FOOOF():
         R-squared of the fit between the input power spectrum and the full model fit.
     error_ : float
         Error of the full model fit.
+    n_peaks_ : int
+        The number of peaks fit in the model.
     model_fit : bool
         Whether model has been fit.
 
     Notes
     -----
     - Commonly used abbreviations used in FOOOF include
-      CF: center frequency, PW: power, BW: Bandwidth, ap: aperiodic
+      CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic
     - Input power spectra must be provided in linear scale.
       Internally they are stored in log10 scale, as this is what the model operates upon.
     - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
@@ -175,6 +177,13 @@ class FOOOF():
         """Check if a model has been fit."""
 
         return True if np.any(self.aperiodic_params_) else False
+
+
+    @property
+    def n_peaks_(self):
+        """How many peaks fit in the model."""
+
+        return self.peak_params_.shape[0] if self.model_fit else None
 
 
     def _reset_internal_settings(self):
