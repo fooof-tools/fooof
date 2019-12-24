@@ -21,7 +21,7 @@ def get_description():
     - meta_data : meta data of the inputs
     - arrays : data stored in arrays
     - model_components : component pieces of the model
-    - model_descriptors : descriptors of the model
+    - descriptors : descriptors of the object status and model results
     """
 
     attributes = {'results' : ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
@@ -35,7 +35,7 @@ def get_description():
                               'peak_params_', 'gaussian_params_'],
                   'model_components' : ['fooofed_spectrum_', '_spectrum_flat',
                                         '_spectrum_peak_rm', '_ap_fit', '_peak_fit'],
-                  'model_descriptors' : ['model_fit', 'n_peaks_']
+                  'descriptors' : ['has_data', 'has_model', 'n_peaks_']
                   }
 
     return attributes

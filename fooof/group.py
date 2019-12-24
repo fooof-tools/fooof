@@ -62,8 +62,15 @@ class FOOOFGroup(FOOOF):
 
 
     @property
-    def model_fit(self):
-        """Check if a model has been fit."""
+    def has_data(self):
+        """Property attribute for if the object has data."""
+
+        return True if np.any(self.power_spectra) else False
+
+
+    @property
+    def has_model(self):
+        """Property attribute for if the object has a model fit."""
 
         return True if self.group_results else False
 
@@ -72,7 +79,7 @@ class FOOOFGroup(FOOOF):
     def n_peaks_(self):
         """How many peaks are fit in the model."""
 
-        return [f_res.peak_params.shape[0] for f_res in self] if self.model_fit else None
+        return [f_res.peak_params.shape[0] for f_res in self] if self.has_model else None
 
 
     def _reset_data_results(self, clear_freqs=True, clear_spectrum=True,
@@ -255,7 +262,7 @@ class FOOOFGroup(FOOOF):
         For further description of the data you can extract, check the FOOOFResults documentation.
         """
 
-        if not self.model_fit:
+        if not self.has_model:
             raise ModelNotFitError("No model fit results are available, can not proceed.")
 
         # If col specified as string, get mapping back to integer
@@ -358,7 +365,7 @@ class FOOOFGroup(FOOOF):
 
         # Add data for specified single power spectrum, if available
         #  The power spectrum is inverted back to linear, as it's re-logged when added to FOOOF
-        if np.any(self.power_spectra):
+        if self.has_data:
             fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
         # If no power spectrum data available, copy over data information & regenerate freqs
         else:
@@ -391,7 +398,7 @@ class FOOOFGroup(FOOOF):
 
         # Add data for specified power spectra, if available
         #  The power spectra are inverted back to linear, as they are re-logged when added to FOOOF
-        if np.any(self.power_spectra):
+        if self.has_data:
             fg.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]))
         # If no power spectrum data available, copy over data information & regenerate freqs
         else:

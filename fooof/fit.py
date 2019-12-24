@@ -108,8 +108,10 @@ class FOOOF():
         Error of the full model fit.
     n_peaks_ : int
         The number of peaks fit in the model.
-    model_fit : bool
-        Whether model has been fit.
+    has_data : bool
+        Whether data is loaded to the object.
+    has_model : bool
+        Whether model results are available in the object.
 
     Notes
     -----
@@ -173,8 +175,15 @@ class FOOOF():
 
 
     @property
-    def model_fit(self):
-        """Check if a model has been fit."""
+    def has_data(self):
+        """Property attribute for if the object has data."""
+
+        return True if np.any(self.power_spectrum) else False
+
+
+    @property
+    def has_model(self):
+        """Property attribute for if the object has a model fit."""
 
         return True if np.any(self.aperiodic_params_) else False
 
@@ -183,7 +192,7 @@ class FOOOF():
     def n_peaks_(self):
         """How many peaks fit in the model."""
 
-        return self.peak_params_.shape[0] if self.model_fit else None
+        return self.peak_params_.shape[0] if self.has_model else None
 
 
     def _reset_internal_settings(self):
@@ -380,7 +389,7 @@ class FOOOF():
             self.power_spectrum = power_spectrum
 
         # Check that data is available
-        if self.freqs is None or self.power_spectrum is None:
+        if not self.has_data:
             raise NoDataError("No data available to fit, can not proceed.")
 
         # Check and warn about width limits (if in verbose mode)
@@ -526,7 +535,7 @@ class FOOOF():
         If there is no data on periodic features, this method will return NaN.
         """
 
-        if not self.model_fit:
+        if not self.has_model:
             raise ModelNotFitError("No model fit results are available to extract, can not proceed.")
 
         # If col specified as string, get mapping back to integer

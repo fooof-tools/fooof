@@ -40,13 +40,21 @@ def test_fg_getitem(tfg):
 
     assert tfg[0]
 
-def test_fg_model_fit(tfg):
-    """Test the model_fit property attribute, with and without model fits."""
+def test_fg_has_data(tfg):
+    """Test the has_data property attribute, with and without data."""
 
-    assert tfg.model_fit
+    assert tfg.has_model
 
     ntfg = FOOOFGroup()
-    assert not ntfg.model_fit
+    assert not ntfg.has_data
+
+def test_fg_has_model(tfg):
+    """Test the has_model property attribute, with and without model fits."""
+
+    assert tfg.has_model
+
+    ntfg = FOOOFGroup()
+    assert not ntfg.has_model
 
 def test_fooof_n_peaks(tfg):
     """Test the n_peaks property attribute."""

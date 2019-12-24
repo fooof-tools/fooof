@@ -40,7 +40,7 @@ def average_fg(fg, bands, avg_method='mean', generate_model=True):
 
     if avg_method not in ['mean', 'median']:
         raise ValueError("Requested average method not understood.")
-    if not fg.model_fit:
+    if not fg.has_model:
         raise ModelNotFitError("No model fit results are available, can not proceed.")
 
     if avg_method == 'mean':

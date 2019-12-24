@@ -48,10 +48,10 @@ def compute_pointwise_error_fm(fm, plot_errors=True, return_errors=False, **plt_
         Calculated values of the difference between the data and the model.
     """
 
-    if not fm.model_fit:
-        raise ModelNotFitError("No model is available to use, can not proceed.")
-    if not np.any(fm.power_spectrum):
+    if not fm.has_data:
         raise NoDataError("Data must be available in the object to calculate errors.")
+    if not fm.has_model:
+        raise ModelNotFitError("No model is available to use, can not proceed.")
 
     errors = compute_pointwise_error(fm.fooofed_spectrum_, fm.power_spectrum)
 
@@ -82,7 +82,7 @@ def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_
         Calculated values of the difference between the data and the models.
     """
 
-    if not fg.model_fit:
+    if not fg.has_model:
         raise ModelNotFitError("No model is available to use, can not proceed.")
     if not np.any(fg.power_spectra):
         raise NoDataError("Data must be available in the object to calculate errors.")

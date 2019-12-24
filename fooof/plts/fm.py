@@ -44,7 +44,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
         If the FOOOF object does not have model fit data available to plot.
     """
 
-    if not fm.model_fit:
+    if not fm.has_model:
         raise ModelNotFitError("No model fit results are available, can not proceed.")
 
     ax = check_ax(ax)

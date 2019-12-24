@@ -28,13 +28,21 @@ def test_fooof():
 
     assert FOOOF(verbose=False)
 
-def test_fooof_model_fit(tfm):
-    """Test the model_fit property attribute, with and without model fits."""
+def test_fooof_has_data(tfm):
+    """Test the has_data property attribute, with and without model fits."""
 
-    assert tfm.model_fit
+    assert tfm.has_data
 
     ntfm = FOOOF()
-    assert not ntfm.model_fit
+    assert not ntfm.has_data
+
+def test_fooof_has_model(tfm):
+    """Test the has_model property attribute, with and without model fits."""
+
+    assert tfm.has_model
+
+    ntfm = FOOOF()
+    assert not ntfm.has_model
 
 def test_fooof_n_peaks(tfm):
     """Test the n_peaks property attribute."""
