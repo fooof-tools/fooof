@@ -10,6 +10,18 @@ def get_description():
     -------
     attributes : dict
         Mapping of FOOOF object attributes, and what kind of data they are.
+
+    Notes
+    -----
+    This function organizes public FOOOF object attributes into:
+
+    - results : parameters for and measures of the model
+    - settings : model settings
+    - data : input data
+    - meta_data : meta data of the inputs
+    - arrays : data stored in arrays
+    - model_components : component pieces of the model
+    - model_descriptors : descriptors of the model
     """
 
     attributes = {'results' : ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
@@ -21,8 +33,10 @@ def get_description():
                   'meta_data' : ['freq_range', 'freq_res'],
                   'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',
                               'peak_params_', 'gaussian_params_'],
-                  'model_components' : ['_spectrum_flat', '_spectrum_peak_rm',
-                                        '_ap_fit', '_peak_fit']}
+                  'model_components' : ['fooofed_spectrum_', '_spectrum_flat',
+                                        '_spectrum_peak_rm', '_ap_fit', '_peak_fit'],
+                  'model_descriptors' : ['model_fit', 'n_peaks_']
+                  }
 
     return attributes
 
