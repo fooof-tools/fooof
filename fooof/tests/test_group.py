@@ -49,6 +49,8 @@ def test_fg_model_fit(tfg):
     assert not ntfg.model_fit
 
 def test_fooof_n_peaks(tfg):
+    """Test the n_peaks property attribute."""
+
     assert tfg.n_peaks_
 
 def test_fg_fit():

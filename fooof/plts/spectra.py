@@ -156,3 +156,36 @@ def plot_spectra_shading(freqs, power_spectra, shades, add_center=False,
     plot_spectra(freqs, power_spectra, ax=ax, plot_style=None, **kwargs)
     add_shades(ax, shades, add_center, kwargs.get('log_freqs', False))
     check_n_style(plot_style, ax, kwargs.get('log_freqs', False), kwargs.get('log_powers', False))
+
+
+def plot_spectrum_error(freqs, error, shade=None, log_freqs=False,
+                        plot_style=style_spectrum_plot, ax=None):
+    """Plot the frequency by frequency error values
+
+    Parameters
+    ----------
+    freqs : 1d array
+        X-axis data, frequency values.
+    error : 1d array
+        Y-axis data, calculated error values or mean error values across frequencies.
+    shade : 1d array, optional
+        Values to shade in around the plotted error, such as the standard deviation around the mean error.
+    ax : matplotlib.Axes, optional
+        Figure axes upon which to plot.
+    """
+
+    ax = check_ax(ax)
+
+    plt_freqs = np.log10(fg.freqs) if log_freqs else freqs
+
+    plot_spectrum(plt_freqs, error, linewidth=3, plot_style=None, ax=ax)
+
+    if np.any(shade):
+        ax.fill_between(plt_freqs, error-shade, error+shade, alpha=0.25)
+
+    ymin, ymax = ax.get_ylim()
+    if ymin < 0: ax.set_ylim([0, ymax])
+    ax.set_xlim(plt_freqs.min(), plt_freqs.max())
+
+    check_n_style(plot_style, ax, log_freqs, True)
+    ax.set_ylabel('Absolute Error')
