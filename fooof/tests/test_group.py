@@ -76,6 +76,23 @@ def test_fg_fit():
     assert isinstance(out[0], FOOOFResults)
     assert np.all(out[1].aperiodic_params)
 
+def test_fg_fail():
+    """Test FOOOFGroup fit, in a way that some fits will fail."""
+
+    # Create some noisy spectra that will be hard to fit
+    fs, ps, _ = gen_group_power_spectra(10, [3, 6], [1, 1], [10, 1, 1], nlvs=10)
+
+    # Use a fg with the max iterations set so low that it will fail to converge
+    ntfg = FOOOFGroup()
+    ntfg._maxfev = 5
+
+    # Fit models, where some will fail, to see if it completes cleanly
+    ntfg.fit(fs, ps)
+
+    # Check that results are all
+    for res in ntfg.get_results():
+        assert res
+
 def test_fg_drop(tfg):
     """Test function to drop from FOOOFGroup."""
 

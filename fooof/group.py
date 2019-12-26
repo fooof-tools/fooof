@@ -82,19 +82,19 @@ class FOOOFGroup(FOOOF):
         return [f_res.peak_params.shape[0] for f_res in self] if self.has_model else None
 
 
-    def _reset_data_results(self, clear_freqs=True, clear_spectrum=True,
-                            clear_results=True, clear_spectra=True):
+    def _reset_data_results(self, clear_freqs=False, clear_spectrum=False,
+                            clear_results=False, clear_spectra=False):
         """Set (or reset) data & results attributes to empty.
 
         Parameters
         ----------
-        clear_freqs : bool, optional, default: True
+        clear_freqs : bool, optional, default: False
             Whether to clear frequency attributes.
-        clear_power_spectrum : bool, optional, default: True
+        clear_power_spectrum : bool, optional, default: False
             Whether to clear power spectrum attribute.
-        clear_results : bool, optional, default: True
+        clear_results : bool, optional, default: False
             Whether to clear model results attributes.
-        clear_spectra : bool, optional, default: True
+        clear_spectra : bool, optional, default: False
             Whether to clear power spectra attribute.
         """
 
@@ -136,7 +136,7 @@ class FOOOFGroup(FOOOF):
         # If any data is already present, then clear data & results
         #   This is to ensure object consistency of all data & results
         if np.any(self.freqs):
-            self._reset_data_results()
+            self._reset_data_results(True, True, True, True)
             self._reset_group_results()
 
         self.freqs, self.power_spectra, self.freq_range, self.freq_res = \
@@ -209,7 +209,8 @@ class FOOOFGroup(FOOOF):
                                                               self.power_spectra),
                                                     self.verbose, len(self.power_spectra)))
 
-        self._reset_data_results(clear_freqs=False, clear_spectra=False)
+        # Clear the individual power spectrum and fit results of the current fit
+        self._reset_data_results(clear_spectrum=True, clear_results=True)
 
 
     def drop(self, inds):
@@ -341,7 +342,7 @@ class FOOOFGroup(FOOOF):
             self.group_results.append(self._get_results())
 
         # Reset peripheral data from last loaded result, keeping freqs info
-        self._reset_data_results(False)
+        self._reset_data_results(clear_spectrum=True, clear_results=True)
 
 
     def get_fooof(self, ind, regenerate=False):

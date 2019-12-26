@@ -176,7 +176,7 @@ def plot_spectrum_error(freqs, error, shade=None, log_freqs=False,
 
     ax = check_ax(ax)
 
-    plt_freqs = np.log10(fg.freqs) if log_freqs else freqs
+    plt_freqs = np.log10(freqs) if log_freqs else freqs
 
     plot_spectrum(plt_freqs, error, linewidth=3, plot_style=None, ax=ax)
 

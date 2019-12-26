@@ -171,7 +171,7 @@ class FOOOF():
 
         # Set internal settings, based on inputs, & initialize data & results attributes.
         self._reset_internal_settings()
-        self._reset_data_results()
+        self._reset_data_results(True, True, True)
 
 
     @property
@@ -220,16 +220,16 @@ class FOOOF():
             self._ap_bounds = None
 
 
-    def _reset_data_results(self, clear_freqs=True, clear_spectrum=True, clear_results=True):
+    def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False):
         """Set, or reset, data & results attributes to empty.
 
         Parameters
         ----------
-        clear_freqs : bool, optional, default: True
+        clear_freqs : bool, optional, default: False
             Whether to clear frequency attributes.
-        clear_power_spectrum : bool, optional, default: True
+        clear_power_spectrum : bool, optional, default: False
             Whether to clear power spectrum attribute.
-        clear_results : bool, optional, default: True
+        clear_results : bool, optional, default: False
             Whether to clear model results attributes.
         """
 
@@ -278,7 +278,7 @@ class FOOOF():
         # If any data is already present, then clear data & results
         #   This is to ensure object consistency of all data & results
         if np.any(self.freqs):
-            self._reset_data_results()
+            self._reset_data_results(True, True, True)
 
         self.freqs, self.power_spectrum, self.freq_range, self.freq_res = \
             self._prepare_data(freqs, power_spectrum, freq_range, 1, self.verbose)
@@ -437,7 +437,7 @@ class FOOOF():
 
             # Clear any interim model results that may have run
             #  Partial model results shouldn't be interpreted in light of overall failure
-            self._reset_data_results(clear_freqs=False, clear_spectrum=False, clear_results=True)
+            self._reset_data_results(clear_results=True)
 
             # Print out status
             if self.verbose:
@@ -605,7 +605,7 @@ class FOOOF():
         """
 
         # Reset data in object, so old data can't interfere
-        self._reset_data_results()
+        self._reset_data_results(True, True, True)
 
         # Load JSON file, add to self and check loaded data
         data = load_json(file_name, file_path)

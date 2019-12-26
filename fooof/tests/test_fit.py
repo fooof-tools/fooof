@@ -258,7 +258,7 @@ def test_fooof_resets():
     # Note: uses it's own tfm, to not clear the global one
     tfm = get_tfm()
 
-    tfm._reset_data_results()
+    tfm._reset_data_results(True, True, True)
     tfm._reset_internal_settings()
 
     desc = get_description()
