@@ -93,6 +93,12 @@ def test_fg_fail():
     for res in ntfg.get_results():
         assert res
 
+    # # Test that get_params works with failed model fits
+    # outs1 = ntfg.get_params('aperiodic_params', 'exponent')
+    # outs2 = ntfg.get_params('aperiodic_params', 'exponent')
+    # outs3 = ntfg.get_params('peak_params')
+    # outs4 = ntfg.get_params('peak_params', 0)
+
 def test_fg_drop(tfg):
     """Test function to drop from FOOOFGroup."""
 
