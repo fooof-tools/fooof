@@ -16,11 +16,6 @@ def test_plot_fm(tfm, skip_if_no_mpl):
 
     plot_fm(tfm)
 
-    # Test error if no data available to plot
-    tfm = FOOOF()
-    with raises(ModelNotFitError):
-        tfm.plot()
-
 @plot_test
 def test_plot_peak_iter(tfm, skip_if_no_mpl):
 

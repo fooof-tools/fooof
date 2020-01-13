@@ -45,9 +45,6 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
         If the FOOOF object does not have model fit data available to plot.
     """
 
-    if not fm.has_model:
-        raise ModelNotFitError("No model fit results are available, can not proceed.")
-
     ax = check_ax(ax, FIGSIZE_SPECTRAL)
 
     # Log settings. Note that power values in FOOOF objects are already logged
@@ -55,10 +52,10 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
     log_powers = False
 
     # Create the plot, adding data as is available
-    if np.any(fm.power_spectrum):
+    if fm.has_data:
         plot_spectrum(fm.freqs, fm.power_spectrum, log_freqs, log_powers, ax,
                       color='k', linewidth=1.25, label='Original Spectrum')
-    if np.any(fm.fooofed_spectrum_):
+    if fm.has_model:
         plot_spectrum(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers, ax,
                       color='r', linewidth=3.0, alpha=0.5, label='Full Model Fit')
         plot_spectrum(fm.freqs, fm._ap_fit, log_freqs, log_powers, ax,

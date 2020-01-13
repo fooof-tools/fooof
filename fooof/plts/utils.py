@@ -75,7 +75,7 @@ def add_shades(ax, shades, colors='r', add_center=False, logged=False):
     add_center : boolean, default: False
         Whether to add a line at the center point of the shaded regions.
     logged : boolean, default: False
-        Whether the shade values should be logged before applying to plot axes.        
+        Whether the shade values should be logged before applying to plot axes.
     """
 
     # If only only one shade region is specified, this embeds in a list, so that the loop works
@@ -115,7 +115,7 @@ def recursive_plot(data, plot_function, ax, **kwargs):
     The `plot_function` argument must accept the `ax` parameter to specify a plot axis.
     """
 
-    # Repeat is used call is to work with None inputs
+    # Repeat is used to work with None inputs
     # Otherwise, expect a list of values, for each element in data, and so make an iterator
     kwargs = {key : repeat(val) if not isinstance(val, list)
               else iter(val) for key, val in kwargs.items()}

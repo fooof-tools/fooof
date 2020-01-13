@@ -172,9 +172,9 @@ def plot_spectrum_error(freqs, error, shade=None, log_freqs=False,
     Parameters
     ----------
     freqs : 1d array
-        X-axis data, frequency values.
+        Frequency values, to be plotted on the x-axis.
     error : 1d array
-        Y-axis data, calculated error values or mean error values across frequencies.
+        Calculated error values or mean error values across frequencies, to be plotted on the y-axis.
     shade : 1d array, optional
         Values to shade in around the plotted error, such as the standard deviation around the mean error.
     ax : matplotlib.Axes, optional
