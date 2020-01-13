@@ -61,11 +61,11 @@ def test_fooof_n_peaks(tfg):
 
     assert tfg.n_peaks_
 
-def test_fg_fit():
+def test_fg_fit_nk():
     """Test FOOOFGroup fit, no knee."""
 
     n_spectra = 2
-    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params(), nlvs=0)
 
     tfg = FOOOFGroup(verbose=False)
     tfg.fit(xs, ys)
@@ -75,6 +75,33 @@ def test_fg_fit():
     assert len(out) == n_spectra
     assert isinstance(out[0], FOOOFResults)
     assert np.all(out[1].aperiodic_params)
+
+def test_fg_fit_nk_noise():
+    """Test FOOOFGroup fit, no knee, on noisy data, to make sure nothing breaks."""
+
+    n_spectra = 5
+    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params(), nlvs=1.0)
+
+    tfg = FOOOFGroup(max_n_peaks=8, verbose=False)
+    tfg.fit(xs, ys)
+
+    # No accuracy checking here - just checking that it ran
+    assert tfg.has_model
+
+def test_fg_fit_knee():
+    """Test FOOOFGroup fit, with a knee."""
+
+    n_spectra = 2
+    ap_params = [50, 2, 1]
+    gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
+
+    xs, ys, _ = gen_group_power_spectra(n_spectra, [1, 150], ap_params, gaussian_params, nlvs=0)
+
+    tfg = FOOOFGroup(aperiodic_mode='knee', verbose=False)
+    tfg.fit(xs, ys)
+
+    # No accuracy checking here - just checking that it ran
+    assert tfg.has_model
 
 def test_fg_fail():
     """Test FOOOFGroup fit, in a way that some fits will fail."""

@@ -67,19 +67,37 @@ def test_fooof_fit_nk():
     for ii, gauss in enumerate(group_three(gauss_params)):
         assert np.all(np.isclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0]))
 
+def test_fooof_fit_nk_noise():
+    """Test FOOOF fit on noisy data, to make sure nothing breaks."""
+
+    ap_params = [50, 2]
+    gauss_params = [10, 0.5, 2, 20, 0.3, 4]
+
+    xs, ys = gen_power_spectrum([3, 50], ap_params, gauss_params, nlv=1.0)
+
+    tfm = FOOOF(max_n_peaks=8, verbose=False)
+    tfm.fit(xs, ys)
+
+    # No accuracy checking here - just checking that it ran
+    assert tfm.has_model
+
 def test_fooof_fit_knee():
     """Test FOOOF fit, with a knee."""
 
-    ap_params = [50, 2, 1]
-    gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
+    ap_params = [50, 10, 1]
+    gauss_params = [10, 0.3, 2, 20, 0.1, 4, 60, 0.3, 1]
 
-    xs, ys = gen_power_spectrum([3, 50], ap_params, gaussian_params)
+    xs, ys = gen_power_spectrum([1, 150], ap_params, gauss_params, nlv=0)
 
     tfm = FOOOF(aperiodic_mode='knee', verbose=False)
     tfm.fit(xs, ys)
 
-    # Note: currently, this test has no accuracy checking at all
-    assert True
+    # Check model results - aperiodic parameters
+    assert np.all(np.isclose(ap_params, tfm.aperiodic_params_, [1, 2, 0.2]))
+
+    # Check model results - gaussian parameters
+    for ii, gauss in enumerate(group_three(gauss_params)):
+        assert np.all(np.isclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0]))
 
 def test_fooof_fit_measures():
     """Test goodness of fit & error metrics, post model fitting."""
