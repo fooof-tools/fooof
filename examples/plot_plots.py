@@ -1,6 +1,6 @@
 """
-FOOOF Plots
-===========
+Plot Power Spectra
+==================
 
 Use the plots available with FOOOF.
 """

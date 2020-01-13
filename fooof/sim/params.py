@@ -129,7 +129,7 @@ class Stepper():
 
 
 def param_iter(params):
-    """Generates parameters to iterate over.
+    """Create a generator to iterate across parameter ranges.
 
     Parameters
     ----------
@@ -141,7 +141,7 @@ def param_iter(params):
     Yields
     ------
     list of floats
-        Next generated list of parameters.
+        Next generated list of parameters across the range.
 
     Raises
     ------
@@ -150,9 +150,13 @@ def param_iter(params):
 
     Examples
     --------
-    Iterates over center frequency values from 8 to 12 in increments of .25.
+    Iterates across exponent values from 1 to 2, in steps of 0.1.
 
-    >>> osc = param_iter([Stepper(8, 12, .25), 1, 1])
+    >>> ap = param_iter([Stepper(1, 2, 0.1), 1])
+
+    Iterates over center frequency values from 8 to 12 in increments of 0.25.
+
+    >>> peak = param_iter([Stepper(8, 12, .25), 1, 1])
     """
 
     # If input is a list of lists, check each element, and flatten if needed
@@ -182,7 +186,7 @@ def param_iter(params):
 
 
 def param_sampler(params, probs=None):
-    """Makes a generator to sample randomly from possible parameters.
+    """Create a generator to sample randomly from possible parameters.
 
     Parameters
     ----------
@@ -194,8 +198,18 @@ def param_sampler(params, probs=None):
 
     Yields
     ------
-    obj
-        A randomly sampled element from params.
+    list of float
+        A randomly sampled set of parameters.
+
+    Examples
+    --------
+    Samples from aperiodic definitions with high and low exponents, with 50% probability of each.
+
+    >>> aps = param_sampler([[1, 1], [2, 1]], probs=[0.5, 0.5])
+
+    Samples from peak defintions of alpha or alpha & beta, with 75% change of sampling just alpha.
+
+    >>> peaks = param_sampler([[10, 1, 1], [[10, 1, 1], [20, 0.5, 1]]], probs=[0.75, 0.25])
     """
 
     # If input is a list of lists, check each element, and flatten if needed
@@ -206,6 +220,59 @@ def param_sampler(params, probs=None):
     # This is because the params can be a messy-sized list, that numpy choice does not like
     inds = np.array(range(len(params)))
 
+    # Check that length of options is same as length of probs, if provided
+    if probs:
+        if len(inds) != len(probs):
+            raise ValueError('The number of options must match the number of probabilities.')
+
     # While loop allows the generator to be called an arbitrary number of times.
     while True:
         yield params[np.random.choice(inds, p=probs)]
+
+
+def param_jitter(params, jitters):
+    """Create a generator that adds jitter to parameter definitions.
+
+    Parameters
+    ----------
+    params : list of lists or list of float
+        Possible parameter values.
+    jitters : list of lists or list of float
+        The scale of the jitter for each parameter.
+        Must be the same shape and organization as params.
+
+    Yields
+    ------
+    list of float
+        A jittered set of parameters.
+
+    Notes
+    -----
+    - Jitter is added as random samples from a normal (gaussian) distribution.
+        - The jitter specified corresponds to the standard deviation of the normal disrtibution.
+    - For any parameter for which there should be no jitter, set the corresponding value to zero.
+
+    Examples
+    --------
+    Jitters aperiodic definitions, for offset and exponent, each with the same amount of jitter.
+
+    >>> aps = param_jitter([1, 1], [0.1, 0.1])
+
+    Jitters peak definitions, only jittering center frequency, by different amounts for alpha & beta.
+
+    >>> peaks = param_jitter([[10, 1, 1], [20, 1, 1]], [[0.1, 0, 0], [0.5, 0, 0]])
+    """
+
+    # Check if inputs are list of lists, and flatten if so
+    if isinstance(params[0], list):
+        params = check_flat(params)
+        jitters = check_flat(jitters)
+
+    # While loop allows the generator to be called an arbitrary number of times.
+    while True:
+
+        out_params = [None] * len(params)
+        for ind, (p1, j1) in enumerate(zip(params, jitters)):
+            out_params[ind] = p1 + np.random.normal(0, j1)
+
+        yield out_params

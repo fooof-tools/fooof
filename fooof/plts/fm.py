@@ -9,6 +9,7 @@ import numpy as np
 
 from fooof.plts.utils import check_ax
 from fooof.plts.spectra import plot_spectrum
+from fooof.plts.settings import FIGSIZE_SPECTRAL
 from fooof.core.io import fname, fpath
 from fooof.core.funcs import gaussian_function
 from fooof.core.errors import ModelNotFitError
@@ -27,8 +28,8 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
     ----------
     fm : FOOOF
         FOOOF object, containing a power spectrum and (optionally) results from fitting.
-    plt_log : bool, optional, default: False
-        Whether or not to plot the frequency axis in log space.
+    plt_log : boolean, optional, default: False
+        Whether to plot the frequency values in log10 spacing.
     save_fig : bool, optional, default: False
         Whether to save out a copy of the plot.
     file_name : str, optional
@@ -47,7 +48,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
     if not fm.has_model:
         raise ModelNotFitError("No model fit results are available, can not proceed.")
 
-    ax = check_ax(ax)
+    ax = check_ax(ax, FIGSIZE_SPECTRAL)
 
     # Log settings. Note that power values in FOOOF objects are already logged
     log_freqs = plt_log
@@ -84,8 +85,8 @@ def plot_peak_iter(fm):
 
     for ind in range(fm.n_peaks_ + 1):
 
-        # This forces to create a new plotting axes per iteration
-        ax = check_ax(None)
+        # This forces the creation of a new plotting axes per iteration
+        ax = check_ax(None, FIGSIZE_SPECTRAL)
 
         plot_spectrum(fm.freqs, flatspec, linewidth=2.0, label='Flattened Spectrum', ax=ax)
         plot_spectrum(fm.freqs, [fm.peak_threshold * np.std(flatspec)]*len(fm.freqs),
