@@ -30,10 +30,10 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
         Frequency values, to be plotted on the x-axis.
     power_spectrum : 1d array
         Power values, to be plotted on the y-axis.
-    log_freqs : boolean, optional, default: False
-        Whether to plot the frequency values in log10 spacing.
-    log_powers : boolean, optional, default: False
-        Whether to plot the power values in log10 spacing.
+    log_freqs : bool, optional, default: False
+        Whether to take the log of the frequency axis before plotting.
+    log_powers : bool, optional, default: False
+        Whether to take the log of the power axis before plotting.
     ax : matplotlib.Axes, optional
         Figure axis upon which to plot.
     plot_style : callable, optional, default: style_spectrum_plot
@@ -68,10 +68,10 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels
         Frequency values, to be plotted on the x-axis.
     power_spectra : 2d array or list of 1d array
         Power values, to be plotted on the y-axis.
-    log_freqs : boolean, optional, default: False
-        Whether to plot the frequency valus in log10 spacing.
-    log_powers : boolean, optional, default: False
-        Whether to plot the power values in log10 spacing.
+    log_freqs : bool, optional, default: False
+        Whether  to take the log of the frequency axis before plotting.
+    log_powers : bool, optional, default: False
+        Whether to take the log of the power axis before plotting.
     labels : list of str, optional
         Legend labels, for each power spectrum.
     ax : matplotlib.Axes, optional
@@ -108,7 +108,7 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, shade_colors='r', add_c
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
     shade_colors : str or list of string
         Color(s) to plot shades.
-    add_center : boolean, optional, default: False
+    add_center : bool, optional, default: False
         Whether to add a line at the center point of the shaded regions.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -141,7 +141,7 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_cen
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
     shade_colors : str or list of string
         Color(s) to plot shades.
-    add_center : boolean, optional, default: False
+    add_center : bool, optional, default: False
         Whether to add a line at the center point of the shaded regions.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -163,3 +163,36 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_cen
     add_shades(ax, shades, shade_colors, add_center, kwargs.get('log_freqs', False))
 
     check_n_style(plot_style, ax, kwargs.get('log_freqs', False), kwargs.get('log_powers', False))
+
+
+def plot_spectrum_error(freqs, error, shade=None, log_freqs=False,
+                        plot_style=style_spectrum_plot, ax=None):
+    """Plot the frequency by frequency error values
+
+    Parameters
+    ----------
+    freqs : 1d array
+        X-axis data, frequency values.
+    error : 1d array
+        Y-axis data, calculated error values or mean error values across frequencies.
+    shade : 1d array, optional
+        Values to shade in around the plotted error, such as the standard deviation around the mean error.
+    ax : matplotlib.Axes, optional
+        Figure axes upon which to plot.
+    """
+
+    ax = check_ax(ax)
+
+    plt_freqs = np.log10(freqs) if log_freqs else freqs
+
+    plot_spectrum(plt_freqs, error, linewidth=3, plot_style=None, ax=ax)
+
+    if np.any(shade):
+        ax.fill_between(plt_freqs, error-shade, error+shade, alpha=0.25)
+
+    ymin, ymax = ax.get_ylim()
+    if ymin < 0: ax.set_ylim([0, ymax])
+    ax.set_xlim(plt_freqs.min(), plt_freqs.max())
+
+    check_n_style(plot_style, ax, log_freqs, True)
+    ax.set_ylabel('Absolute Error')

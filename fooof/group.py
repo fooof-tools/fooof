@@ -13,10 +13,12 @@ import numpy as np
 
 from fooof import FOOOF
 from fooof.plts.fg import plot_fg
+from fooof.data import FOOOFResults
+from fooof.core.info import get_indices
 from fooof.core.reports import save_report_fg
+from fooof.core.errors import ModelNotFitError
 from fooof.core.strings import gen_results_fg_str
 from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.info import get_indices
 from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class, safe_import
 
 ###################################################################################################
@@ -59,19 +61,40 @@ class FOOOFGroup(FOOOF):
         return self.group_results[index]
 
 
-    def _reset_data_results(self, clear_freqs=True, clear_spectrum=True,
-                            clear_results=True, clear_spectra=True):
+    @property
+    def has_data(self):
+        """Property attribute for if the object has data."""
+
+        return True if np.any(self.power_spectra) else False
+
+
+    @property
+    def has_model(self):
+        """Property attribute for if the object has a model fit."""
+
+        return True if self.group_results else False
+
+
+    @property
+    def n_peaks_(self):
+        """How many peaks are fit in the model."""
+
+        return [f_res.peak_params.shape[0] for f_res in self] if self.has_model else None
+
+
+    def _reset_data_results(self, clear_freqs=False, clear_spectrum=False,
+                            clear_results=False, clear_spectra=False):
         """Set (or reset) data & results attributes to empty.
 
         Parameters
         ----------
-        clear_freqs : bool, optional, default: True
+        clear_freqs : bool, optional, default: False
             Whether to clear frequency attributes.
-        clear_power_spectrum : bool, optional, default: True
+        clear_power_spectrum : bool, optional, default: False
             Whether to clear power spectrum attribute.
-        clear_results : bool, optional, default: True
+        clear_results : bool, optional, default: False
             Whether to clear model results attributes.
-        clear_spectra : bool, optional, default: True
+        clear_spectra : bool, optional, default: False
             Whether to clear power spectra attribute.
         """
 
@@ -113,7 +136,7 @@ class FOOOFGroup(FOOOF):
         # If any data is already present, then clear data & results
         #   This is to ensure object consistency of all data & results
         if np.any(self.freqs):
-            self._reset_data_results()
+            self._reset_data_results(True, True, True, True)
             self._reset_group_results()
 
         self.freqs, self.power_spectra, self.freq_range, self.freq_res = \
@@ -121,7 +144,7 @@ class FOOOFGroup(FOOOF):
 
 
     def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1):
-        """Run FOOOF across a group, and display a report, comprising a plot, and printed results.
+        """Fit a group of power spectra and display a report, with a plot and printed results.
 
         Parameters
         ----------
@@ -146,7 +169,7 @@ class FOOOFGroup(FOOOF):
 
 
     def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1):
-        """Run FOOOF across a group of power_spectra.
+        """Fit a group of power spectra.
 
         Parameters
         ----------
@@ -186,7 +209,26 @@ class FOOOFGroup(FOOOF):
                                                               self.power_spectra),
                                                     self.verbose, len(self.power_spectra)))
 
-        self._reset_data_results(clear_freqs=False, clear_spectra=False)
+        # Clear the individual power spectrum and fit results of the current fit
+        self._reset_data_results(clear_spectrum=True, clear_results=True)
+
+
+    def drop(self, inds):
+        """Drop one or more model fit results from the object.
+
+        Parameters
+        ----------
+        inds : int or list of int or range
+            List of indices to drop model fit results for.
+
+        Notes
+        -----
+        This method sets the model fits as null, and preserves the shape of the model fits.
+        """
+
+        inds = [inds] if isinstance(inds, int) else inds
+        for ind in inds:
+            self.group_results[ind] = FOOOFResults(None, None, None, None, None)
 
 
     def get_results(self):
@@ -211,13 +253,18 @@ class FOOOFGroup(FOOOF):
         out : ndarray
             Requested data.
 
+        Raises
+        ------
+        ModelNotFitError
+            If there are no model fit results available.
+
         Notes
         -----
         For further description of the data you can extract, check the FOOOFResults documentation.
         """
 
-        if not self.group_results:
-            raise RuntimeError('No model fit data is available to extract - can not proceed.')
+        if not self.has_model:
+            raise ModelNotFitError("No model fit results are available, can not proceed.")
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
@@ -295,7 +342,7 @@ class FOOOFGroup(FOOOF):
             self.group_results.append(self._get_results())
 
         # Reset peripheral data from last loaded result, keeping freqs info
-        self._reset_data_results(False)
+        self._reset_data_results(clear_spectrum=True, clear_results=True)
 
 
     def get_fooof(self, ind, regenerate=False):
@@ -310,7 +357,7 @@ class FOOOFGroup(FOOOF):
 
         Returns
         -------
-        fm : FOOOF object
+        fm : FOOOF
             The FOOOFResults data loaded into a FOOOF object.
         """
 
@@ -319,7 +366,7 @@ class FOOOFGroup(FOOOF):
 
         # Add data for specified single power spectrum, if available
         #  The power spectrum is inverted back to linear, as it's re-logged when added to FOOOF
-        if np.any(self.power_spectra):
+        if self.has_data:
             fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
         # If no power spectrum data available, copy over data information & regenerate freqs
         else:
@@ -343,7 +390,7 @@ class FOOOFGroup(FOOOF):
 
         Returns
         -------
-        fg : FOOOFGroup object
+        fg : FOOOFGroup
             The requested selection of results data loaded into a new FOOOFGroup object.
         """
 
@@ -352,7 +399,7 @@ class FOOOFGroup(FOOOF):
 
         # Add data for specified power spectra, if available
         #  The power spectra are inverted back to linear, as they are re-logged when added to FOOOF
-        if np.any(self.power_spectra):
+        if self.has_data:
             fg.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]))
         # If no power spectrum data available, copy over data information & regenerate freqs
         else:
@@ -422,18 +469,21 @@ def _progress(iterable, verbose, n_to_run):
     pbar : iterable or tqdm object
         Iterable object, with TQDM progress functionality, if requested.
 
+    Raises
+    ------
+
+
     Notes
     -----
     The explicit n_to_run input is required as tqdm requires this in the parallel case.
     The `tqdm` object that is potentially returned acts the same as the underlying iterable,
-    with the addition of printing out progress everytime items are requested.
+    with the addition of printing out progress every time items are requested.
     """
 
     # Check verbose specifier is okay
     tqdm_options = ['tqdm', 'tqdm_notebook']
     if not isinstance(verbose, bool) and not verbose in tqdm_options:
-        #print('Verbose option not understood. Proceeding without any.')
-        raise ValueError('Verbose option not understood.')
+        raise ValueError("Verbose option not understood.")
 
     if verbose:
 
@@ -441,7 +491,7 @@ def _progress(iterable, verbose, n_to_run):
         if verbose in tqdm_options:
 
             # Get tqdm, and set which approach to use from tqdm
-            #   Approch to use from tqdm should be what's specified in 'verbose'
+            #   Approach to use from tqdm should be what's specified in 'verbose'
             tqdm_mod = safe_import('tqdm')
             tqdm_type = verbose
 

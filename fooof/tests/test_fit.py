@@ -1,21 +1,22 @@
-"""Tests for fooof.fit, including the FOOOF object it's methods.
+"""Tests for fooof.fit, including the FOOOF object and it's methods.
 
 NOTES
 -----
 The tests here are not strong tests for accuracy.
-    They serve rather as 'smoke tests', for if anything fails completely.
+They serve rather as 'smoke tests', for if anything fails completely.
 """
 
-from py.test import raises
-
-import numpy as np
 import pkg_resources as pkg
 
+import numpy as np
+from py.test import raises
+
 from fooof import FOOOF
-from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
 from fooof.sim import gen_power_spectrum
 from fooof.core.utils import group_three
 from fooof.core.info import get_description
+from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
+from fooof.core.errors import DataError, NoDataError, InconsistentDataError
 
 from fooof.tests.utils import get_tfm, plot_test
 
@@ -26,6 +27,27 @@ def test_fooof():
     """Check FOOOF object initializes properly."""
 
     assert FOOOF(verbose=False)
+
+def test_fooof_has_data(tfm):
+    """Test the has_data property attribute, with and without model fits."""
+
+    assert tfm.has_data
+
+    ntfm = FOOOF()
+    assert not ntfm.has_data
+
+def test_fooof_has_model(tfm):
+    """Test the has_model property attribute, with and without model fits."""
+
+    assert tfm.has_model
+
+    ntfm = FOOOF()
+    assert not ntfm.has_model
+
+def test_fooof_n_peaks(tfm):
+    """Test the n_peaks property attribute."""
+
+    assert tfm.n_peaks_
 
 def test_fooof_fit_nk():
     """Test FOOOF fit, no knee."""
@@ -59,25 +81,56 @@ def test_fooof_fit_knee():
     # Note: currently, this test has no accuracy checking at all
     assert True
 
+def test_fooof_fit_measures():
+    """Test goodness of fit & error metrics, post model fitting."""
+
+    tfm = FOOOF(verbose=False)
+
+    # Hack fake data with known properties: total error magnitude 2
+    tfm.power_spectrum = np.array([1, 2, 3, 4, 5])
+    tfm.fooofed_spectrum_ = np.array([1, 2, 5, 4, 5])
+
+    # Check default goodness of fit and error measures
+    tfm._calc_r_squared()
+    assert np.isclose(tfm.r_squared_, 0.75757575)
+    tfm._calc_error()
+    assert np.isclose(tfm.error_, 0.4)
+
+    # Check with alternative error fit approach
+    tfm._calc_error(metric='MSE')
+    assert np.isclose(tfm.error_, 0.8)
+    tfm._calc_error(metric='RMSE')
+    assert np.isclose(tfm.error_, np.sqrt(0.8))
+    with raises(ValueError):
+        tfm._calc_error(metric='BAD')
+
 
 def test_fooof_checks():
-    """Test various checks, errors and edge cases in FOOOF."""
+    """Test various checks, errors and edge cases in FOOOF.
+    This tests all the input checking done in `_prepare_data`.
+    """
 
     xs, ys = gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2])
 
     tfm = FOOOF(verbose=False)
 
+    ## Check checks & errors done in `_prepare_data`
+
+    # Check wrong data type error
+    with raises(DataError):
+        tfm.fit(list(xs), list(ys))
+
     # Check dimension error
-    with raises(ValueError):
+    with raises(DataError):
         tfm.fit(xs, np.reshape(ys, [1, len(ys)]))
 
     # Check shape mismatch error
-    with raises(ValueError):
+    with raises(InconsistentDataError):
         tfm.fit(xs[:-1], ys)
 
-    # Check wrong data type error
-    with raises(ValueError):
-        tfm.fit(list(xs), list(ys))
+    # Check complex inputs error
+    with raises(DataError):
+        tfm.fit(xs, ys.astype('complex'))
 
     # Check trim_spectrum range
     tfm.fit(xs, ys, [3, 40])
@@ -87,9 +140,17 @@ def test_fooof_checks():
     tfm.fit(xs, ys)
     assert tfm.freqs[0] != 0
 
+    # Check error if there is a post-logging inf or nan
+    with raises(DataError):  # Double log (1) -> -inf
+        tfm.fit(np.array([1, 2, 3]), np.log10(np.array([1, 2, 3])))
+    with raises(DataError):  # Log (-1) -> NaN
+        tfm.fit(np.array([1, 2, 3]), np.array([-1, 2, 3]))
+
+    ## Check errors & errors done in `fit`
+
     # Check fit, and string report model error (no data / model fit)
     tfm = FOOOF(verbose=False)
-    with raises(ValueError):
+    with raises(NoDataError):
         tfm.fit()
 
 def test_fooof_load():
@@ -192,12 +253,12 @@ def test_fooof_plot(tfm, skip_if_no_mpl):
     tfm.plot()
 
 def test_fooof_resets():
-    """Check that all relevant data is cleared in the resest method."""
+    """Check that all relevant data is cleared in the reset method."""
 
     # Note: uses it's own tfm, to not clear the global one
     tfm = get_tfm()
 
-    tfm._reset_data_results()
+    tfm._reset_data_results(True, True, True)
     tfm._reset_internal_settings()
 
     desc = get_description()
@@ -220,7 +281,7 @@ def test_fooof_fit_failure():
     """Test that fit handles a failure."""
 
     # Use a new FOOOF, that is monkey-patched to raise an error
-    #  This mimicks the main fit-failure, without requiring bad data / waiting for it to fail.
+    #  This mimics the main fit-failure, without requiring bad data / waiting for it to fail.
     tfm = FOOOF(verbose=False)
     def raise_runtime_error(*args, **kwargs):
         raise RuntimeError('Test-MonkeyPatch')

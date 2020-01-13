@@ -67,8 +67,8 @@ def compare_info(lst, aspect):
 
     Parameters
     ----------
-    lst : list of FOOOF or FOOOFGroup objects
-        FOOOF related objects whose attibutes are to be compared.
+    lst : list of FOOOF or list of FOOOFGroup
+        FOOOF related objects whose attributes are to be compared.
     aspect : {'setting', 'meta_data'}
         Which set of attributes to compare the objects across.
 

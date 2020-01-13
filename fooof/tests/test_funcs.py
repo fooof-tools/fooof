@@ -4,9 +4,11 @@ from py.test import raises
 
 import numpy as np
 
+from fooof import FOOOFGroup
 from fooof.utils import compare_info
 from fooof.group import FOOOFGroup
 from fooof.sim import gen_group_power_spectra
+from fooof.core.errors import ModelNotFitError, IncompatibleSettingsError
 
 from fooof.funcs import *
 from fooof.tests.utils import default_group_params
@@ -18,6 +20,15 @@ def test_average_fg(tfg, tbands):
 
     nfm = average_fg(tfg, tbands)
     assert nfm
+
+    # Test bad average method error
+    with raises(ValueError):
+        average_fg(tfg, tbands, avg_method='BAD')
+
+    # Test no data available error
+    ntfg = FOOOFGroup()
+    with raises(ModelNotFitError):
+        average_fg(ntfg, tbands)
 
 def test_combine_fooofs(tfm, tfg):
 
@@ -79,7 +90,7 @@ def test_combine_errors(tfm, tfg):
         f_obj2.peak_width_limits = [2, 4]
         f_obj2._reset_internal_settings()
 
-        with raises(ValueError):
+        with raises(IncompatibleSettingsError):
             combine_fooofs([f_obj, f_obj2])
 
     # Incompatible data information
@@ -87,7 +98,7 @@ def test_combine_errors(tfm, tfg):
         f_obj2 = f_obj.copy()
         f_obj2.freq_range = [5, 30]
 
-        with raises(ValueError):
+        with raises(IncompatibleSettingsError):
             combine_fooofs([f_obj, f_obj2])
 
 def test_fit_fooof_group_3d(tfg):

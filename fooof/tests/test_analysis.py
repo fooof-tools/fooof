@@ -37,7 +37,7 @@ def test_get_band_peak():
     # Test no results - returns nan
     assert np.all(np.isnan(get_band_peak(dat, [4, 8])))
 
-    # Test muliple results - return all
+    # Test multiple results - return all
     assert np.array_equal(get_band_peak(dat, [10, 15], ret_one=False), [[10, 1, 1.8], [14, 2, 4]])
 
     # Test multiple results - return one

@@ -75,7 +75,7 @@ def add_shades(ax, shades, colors='r', add_center=False, logged=False):
     add_center : boolean, default: False
         Whether to add a line at the center point of the shaded regions.
     logged : boolean, default: False
-        Whether the shade values should be logged before applying to plot axes.
+        Whether the shade values should be logged before applying to plot axes.        
     """
 
     # If only only one shade region is specified, this embeds in a list, so that the loop works

@@ -28,7 +28,7 @@ from fooof import FOOOF
 # signal, meaning it looks linear across all frequencies in log-log space.
 #
 # Though this assumption is true across *some* frequency ranges in neural data, it does
-# does not hold up across broad freequency ranges. If fitting is done in the 'fixed' mode,
+# does not hold up across broad frequency ranges. If fitting is done in the 'fixed' mode,
 # but the assumption of a single 1/f is violated, then fitting will go wrong.
 #
 # Broad frequency ranges (typically ranges greater than ~40 Hz range) don't meet this
@@ -81,7 +81,7 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 #
 # Interpreting the fit results when using knee fits is more complex, as the exponent result is
 # no longer a simple measure of the aperiodic component as a whole, but instead reflects the
-# aperiodic component past the 'knee' inflecting point. Becaues of this, when doing knee fits,
+# aperiodic component past the 'knee' inflecting point. Because of this, when doing knee fits,
 # knee & exponent values should be considered together.
 #
 
@@ -109,7 +109,7 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 # To compensate, the model adds extra peaks, but these are also not a good
 # characterization of the data.
 #
-# In this exampe, the data, over this frequency range, needs to be fit in
+# In this example, the data, over this frequency range, needs to be fit in
 # 'knee' mode to be able to appropriately characterize the data.
 #
 

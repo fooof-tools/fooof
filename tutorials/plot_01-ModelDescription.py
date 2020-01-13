@@ -57,7 +57,7 @@ A theoretical / mathematical description of the FOOOF model.
 # This fits the aperiodic signal equivalently to fitting a linear fit in log-log space.
 #
 # Broader frequency ranges typically do not display a single 1/f like characteristic,
-# and so for these cases fitting with the knee parameter allows for modelling bends
+# and so for these cases fitting with the knee parameter allows for modeling bends
 # in the aperiodic signal.
 #
 

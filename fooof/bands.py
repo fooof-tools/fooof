@@ -35,7 +35,7 @@ class Bands():
             return self.bands[label]
         except KeyError:
             message = "The label '{}' was not found in the defined bands.".format(label)
-            raise BandNotDefinedError(message) from None
+            raise ValueError(message) from None
 
     def __getattr__(self, label):
 
@@ -108,25 +108,18 @@ class Bands():
 
         Raises
         ------
-        InconsistentDataError
+        ValueError
             If band definition is not properly formatted.
         """
 
         # Check that band name is a string
         if not isinstance(label, str):
-            raise InconsistentDataError('Band name definition is not a string.')
+            raise ValueError("Band name definition is not a string.")
 
         # Check that band limits has the right size
         if not len(band_definition) == 2:
-            raise InconsistentDataError('Band limit definition is not the right size.')
+            raise ValueError("Band limit definition is not the right size.")
 
         # Safety check that limits are in correct order
         if not band_definition[0] < band_definition[1]:
-            raise InconsistentDataError('Band limit definitions are invalid.')
-
-
-class BandNotDefinedError(Exception):
-    pass
-
-class InconsistentDataError(Exception):
-    pass
+            raise ValueError("Band limit definitions are invalid.")

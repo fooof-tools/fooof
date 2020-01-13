@@ -67,7 +67,7 @@ def save_fm(fm, file_name, file_path=None, append=False,
 
     Parameters
     ----------
-    fm : FOOOF() object
+    fm : FOOOF
         FOOOF object from which to save data.
     file_name : str or FileObject
         File to which to save data.
@@ -82,6 +82,11 @@ def save_fm(fm, file_name, file_path=None, append=False,
         Whether to save out FOOOF settings.
     save_data : bool, optional
         Whether to save out input data.
+
+    Raises
+    ------
+    ValueError
+        If the save file is not understood.
     """
 
     # Convert object to dictionary & convert all arrays to lists - for JSON serializing
@@ -112,7 +117,7 @@ def save_fm(fm, file_name, file_path=None, append=False,
         file_name.write('\n')
 
     else:
-        raise ValueError('Save file not understood.')
+        raise ValueError("Save file not understood.")
 
 
 def save_fg(fg, file_name, file_path=None, append=False,
@@ -121,7 +126,7 @@ def save_fg(fg, file_name, file_path=None, append=False,
 
     Parameters
     ----------
-    fg : FOOOFGroup() object
+    fg : FOOOFGroup
         FOOOFGroup object from which to save data.
     file_name : str or FileObject
         File to which to save data.
@@ -136,10 +141,15 @@ def save_fg(fg, file_name, file_path=None, append=False,
         Whether to save out FOOOF settings.
     save_data : bool, optional
         Whether to save out power spectra data.
+
+    Raises
+    ------
+    ValueError
+        If the data or save file specified are not understood.
     """
 
     if not save_results and not save_settings and not save_data:
-        raise ValueError('No data specified for saving.')
+        raise ValueError("No data specified for saving.")
 
     # Save to string specified file, do not append
     if isinstance(file_name, str) and not append:
@@ -156,7 +166,7 @@ def save_fg(fg, file_name, file_path=None, append=False,
         _save_fg(fg, file_name, save_results, save_settings, save_data)
 
     else:
-        raise ValueError('Save file not understood.')
+        raise ValueError("Save file not understood.")
 
 
 def load_json(file_name, file_path):
@@ -171,21 +181,21 @@ def load_json(file_name, file_path):
 
     Returns
     -------
-    dat : dict
+    data : dict
         Dictionary of data loaded from file.
     """
 
     # Load data from file
     if isinstance(file_name, str):
         with open(fpath(file_path, fname(file_name, 'json')), 'r') as infile:
-            dat = json.load(infile)
+            data = json.load(infile)
     elif isinstance(file_name, io.IOBase):
-        dat = json.loads(file_name.readline())
+        data = json.loads(file_name.readline())
 
     # Get dictionary of available attributes, and convert specified lists back into arrays
-    dat = dict_lst_to_array(dat, get_description()['arrays'])
+    data = dict_lst_to_array(data, get_description()['arrays'])
 
-    return dat
+    return data
 
 
 def load_jsonlines(file_name, file_path):
@@ -222,7 +232,7 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
 
     Parameters
     ----------
-    fg : FOOOFGroup() object
+    fg : FOOOFGroup
         FOOOFGroup object from which to save data.
     f_obj : FileObject
         File object for file to which to save data.

@@ -3,7 +3,7 @@
 Notes
 -----
 Methods without defined docstrings import docs at runtime, from aliased external functions.
-Private attributes of the FOOOF method, not publicly exposed, are documented below.
+Private attributes of the FOOOF object, not publicly exposed, are documented below.
 
 Private Attributes
 ------------------
@@ -29,6 +29,10 @@ _gauss_overlap_thresh : float
     Degree of overlap (in units of guassian std. deviation) between gaussian guesses to drop one.
 _gauss_std_limits : list of [float, float]
     Peak width limits, converted to use for gaussian standard deviation parameter.
+_maxfev : int
+    The maximum number of calls to the curve fitting function.
+_error_metric : str
+    The error metric to use for post-hoc measures of model fit error.
 """
 
 import warnings
@@ -39,17 +43,18 @@ from scipy.optimize import curve_fit
 
 from fooof.core.io import save_fm, load_json
 from fooof.core.reports import save_report_fm
-from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
-from fooof.core.utils import group_three, check_array_dim
-from fooof.core.info import get_description, get_indices
 from fooof.core.modutils import copy_doc_func_to_method
+from fooof.core.info import get_description, get_indices
+from fooof.core.utils import group_three, check_array_dim
+from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
+from fooof.core.errors import ModelNotFitError, DataError, NoDataError, InconsistentDataError
 from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
                                 gen_issue_str, gen_width_warning_str)
 
 from fooof.plts.fm import plot_fm
 from fooof.utils import trim_spectrum
 from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
-from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_peaks
+from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_peaks, gen_model
 
 ###################################################################################################
 ###################################################################################################
@@ -74,7 +79,7 @@ class FOOOF():
         Relative threshold for detecting peaks, in units of standard deviation of the input data.
     aperiodic_mode : {'fixed', 'knee'}
         Which approach to take for fitting the aperiodic component.
-    verbose : boolean, optional, default: True
+    verbose : bool, optional, default: True
         Whether to be verbose in printing out warnings.
 
     Attributes
@@ -100,12 +105,18 @@ class FOOOF():
     r_squared_ : float
         R-squared of the fit between the input power spectrum and the full model fit.
     error_ : float
-        Root mean squared error of the full model fit.
+        Error of the full model fit.
+    n_peaks_ : int
+        The number of peaks fit in the model.
+    has_data : bool
+        Whether data is loaded to the object.
+    has_model : bool
+        Whether model results are available in the object.
 
     Notes
     -----
     - Commonly used abbreviations used in FOOOF include
-      CF: center frequency, PW: power, BW: Bandwidth, ap: aperiodic
+      CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic
     - Input power spectra must be provided in linear scale.
       Internally they are stored in log10 scale, as this is what the model operates upon.
     - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
@@ -121,15 +132,9 @@ class FOOOF():
 
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
                  peak_threshold=2.0, aperiodic_mode='fixed', verbose=True):
-        """Initialize FOOOF object with run parameters."""
+        """Initialize object with desired settings."""
 
-        # Double check correct scipy version is being used
-        from scipy import __version__
-        major, minor, _ = __version__.split('.')
-        if int(major) < 1 and int(minor) < 19:
-            raise ImportError('Scipy version of >= 0.19.0 required.')
-
-        # Set input parameters
+        # Set input settings
         self.peak_width_limits = peak_width_limits
         self.max_n_peaks = max_n_peaks
         self.min_peak_height = min_peak_height
@@ -137,28 +142,57 @@ class FOOOF():
         self.aperiodic_mode = aperiodic_mode
         self.verbose = verbose
 
-        ## SETTINGS - these are updateable by the user if required.
+        ## PRIVATE SETTINGS
         # Noise threshold, as a percentage of the lowest magnitude values in the total data to fit.
         #  Defines the minimum height, above residuals, to be considered a peak.
         self._ap_percentile_thresh = 0.025
         # Guess parameters for aperiodic fitting, [offset, knee, exponent]
         #  If offset guess is None, the first value of the power spectrum is used as offset guess
-        self._ap_guess = (None, 0, 2)
-        # Bounds for aperiodic fitting, as: ((offset_low_bound, knee_low_bound, sl_low_bound),
-        #                                    (offset_high_bound, knee_high_bound, sl_high_bound))
+        #  If exponent guess is None, the abs(log-log slope) of first & last points is used
+        self._ap_guess = (None, 0, None)
+        # Bounds for aperiodic fitting, as: ((offset_low_bound, knee_low_bound, exp_low_bound),
+        #                                    (offset_high_bound, knee_high_bound, exp_high_bound))
         # By default, aperiodic fitting is unbound, but can be restricted here, if desired
         #   Even if fitting without knee, leave bounds for knee (they are dropped later)
         self._ap_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
-        # Threshold for how far (units of gaus std dev) a peak has to be from edge to keep.
+        # Threshold for how far a peak has to be from edge to keep.
+        #   This is defined in units of gaussian standard deviation
         self._bw_std_edge = 1.0
-        # Degree of overlap  (units of gauss std dev) between gaussians for one to be dropped
+        # Degree of overlap between gaussians for one to be dropped
+        #   This is defined in units of gaussian standard deviation
         self._gauss_overlap_thresh = 1.5
-        # Parameter bounds for center frequency when fitting gaussians - in terms of +/- std dev
+        # Parameter bounds for center frequency when fitting gaussians, in terms of +/- std dev
         self._cf_bound = 1.5
+        # The maximum number of calls to the curve fitting function
+        self._maxfev = 5000
+        # The error metric to calculate, post model fitting. See `_calc_error` for options.
+        # Note: this is post-hoc check error metric, not the one used to fit models.
+        self._error_metric = 'MAE'
 
-        # Set internal settings (based on inputs). Initialize data & results attributes.
+        # Set internal settings, based on inputs, & initialize data & results attributes.
         self._reset_internal_settings()
-        self._reset_data_results()
+        self._reset_data_results(True, True, True)
+
+
+    @property
+    def has_data(self):
+        """Property attribute for if the object has data."""
+
+        return True if np.any(self.power_spectrum) else False
+
+
+    @property
+    def has_model(self):
+        """Property attribute for if the object has a model fit."""
+
+        return True if np.any(self.aperiodic_params_) else False
+
+
+    @property
+    def n_peaks_(self):
+        """How many peaks fit in the model."""
+
+        return self.peak_params_.shape[0] if self.has_model else None
 
 
     def _reset_internal_settings(self):
@@ -186,16 +220,16 @@ class FOOOF():
             self._ap_bounds = None
 
 
-    def _reset_data_results(self, clear_freqs=True, clear_spectrum=True, clear_results=True):
-        """Set (or reset) data & results attributes to empty.
+    def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False):
+        """Set, or reset, data & results attributes to empty.
 
         Parameters
         ----------
-        clear_freqs : bool, optional, default: True
+        clear_freqs : bool, optional, default: False
             Whether to clear frequency attributes.
-        clear_power_spectrum : bool, optional, default: True
+        clear_power_spectrum : bool, optional, default: False
             Whether to clear power spectrum attribute.
-        clear_results : bool, optional, default: True
+        clear_results : bool, optional, default: False
             Whether to clear model results attributes.
         """
 
@@ -223,7 +257,7 @@ class FOOOF():
 
 
     def add_data(self, freqs, power_spectrum, freq_range=None):
-        """Add data (frequencies and power spectrum values) to FOOOF object.
+        """Add data, frequencies and power spectrum values, to the current object.
 
         Parameters
         ----------
@@ -232,7 +266,8 @@ class FOOOF():
         power_spectrum : 1d array
             Power spectrum values, which must be input in linear space.
         freq_range : list of [float, float], optional
-            Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
+            Frequency range to restrict power spectrum to.
+            If not provided, keeps the entire range.
 
         Notes
         -----
@@ -243,7 +278,7 @@ class FOOOF():
         # If any data is already present, then clear data & results
         #   This is to ensure object consistency of all data & results
         if np.any(self.freqs):
-            self._reset_data_results()
+            self._reset_data_results(True, True, True)
 
         self.freqs, self.power_spectrum, self.freq_range, self.freq_res = \
             self._prepare_data(freqs, power_spectrum, freq_range, 1, self.verbose)
@@ -255,7 +290,7 @@ class FOOOF():
         Parameters
         ----------
         fooof_settings : FOOOFSettings
-            A FOOOF data object containing the settings for a FOOOF model.
+            A data object containing the settings for a FOOOF model.
         """
 
         for setting in get_description()['settings']:
@@ -270,7 +305,7 @@ class FOOOF():
         Parameters
         ----------
         fooof_meta_data : FOOOFMetaData
-            A FOOOF meta data object containing meta data information.
+            A meta data object containing meta data information.
         """
 
         for meta_dat in get_description()['meta_data']:
@@ -285,7 +320,7 @@ class FOOOF():
         Parameters
         ----------
         fooof_result : FOOOFResults
-            A FOOOF data object containing the results from fitting a FOOOF model.
+            A data object containing the results from fitting a FOOOF model.
         """
 
         self.aperiodic_params_ = fooof_result.aperiodic_params
@@ -307,13 +342,14 @@ class FOOOF():
         power_spectrum : 1d array, optional
             Power values, which must be input in linear space.
         freq_range : list of [float, float], optional
-            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
-        plt_log : boolean, optional, default: False
+            Desired frequency range to fit the model to.
+            If not provided, fits across the entire given range.
+        plt_log : bool, optional, default: False
             Whether or not to plot the frequency axis in log space.
 
         Notes
         -----
-        Data is optional if data has been already been added to FOOOF object.
+        Data is optional if data has been already been added to current object.
         """
 
         self.fit(freqs, power_spectrum, freq_range)
@@ -333,9 +369,14 @@ class FOOOF():
         freq_range : list of [float, float], optional
             Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
 
+        Raises
+        ------
+        NoDataError
+            If no data is available to fit.
+
         Notes
         -----
-        Data is optional if data has been already been added to FOOOF object.
+        Data is optional if data has been already been added to current object.
         """
 
         # If freqs & power_spectrum provided together, add data to object.
@@ -348,8 +389,8 @@ class FOOOF():
             self.power_spectrum = power_spectrum
 
         # Check that data is available
-        if self.freqs is None or self.power_spectrum is None:
-            raise ValueError('No data available to fit - can not proceed.')
+        if not self.has_data:
+            raise NoDataError("No data available to fit, can not proceed.")
 
         # Check and warn about width limits (if in verbose mode)
         if self.verbose:
@@ -389,22 +430,22 @@ class FOOOF():
 
             # Calculate R^2 and error of the model fit.
             self._calc_r_squared()
-            self._calc_rmse_error()
+            self._calc_error()
 
         # Catch failure, stemming from curve_fit process
         except RuntimeError:
 
             # Clear any interim model results that may have run
             #  Partial model results shouldn't be interpreted in light of overall failure
-            self._reset_data_results(clear_freqs=False, clear_spectrum=False, clear_results=True)
+            self._reset_data_results(clear_results=True)
 
             # Print out status
             if self.verbose:
-                print('Model fitting was unsuccessful.')
+                print("Model fitting was unsuccessful.")
 
 
     def print_settings(self, description=False, concise=False):
-        """Print out the current FOOOF settings.
+        """Print out the current settings.
 
         Parameters
         ----------
@@ -418,7 +459,7 @@ class FOOOF():
 
 
     def print_results(self, concise=False):
-        """Print out FOOOF results.
+        """Print out model fitting results.
 
         Parameters
         ----------
@@ -443,24 +484,24 @@ class FOOOF():
 
 
     def get_settings(self):
-        """Return user defined settings of the FOOOF object.
+        """Return user defined settings of the current object.
 
         Returns
         -------
         FOOOFSettings
-            Object containing the settings from the current FOOOF object.
+            Object containing the settings from the current object.
         """
 
         return FOOOFSettings(**{key : getattr(self, key) for key in get_description()['settings']})
 
 
     def get_meta_data(self):
-        """Return data information from the FOOOF object.
+        """Return data information from the current object.
 
         Returns
         -------
         FOOOFMetaData
-            Object containing meta data from the current FOOOF object.
+            Object containing meta data from the current object.
         """
 
         return FOOOFMetaData(**{key : getattr(self, key) for key in get_description()['meta_data']})
@@ -482,6 +523,11 @@ class FOOOF():
         out : float or 1d array
             Requested data.
 
+        Raises
+        ------
+        ModelNotFitError
+            If there are no model fit parameters available to return.
+
         Notes
         -----
         For further description of the data you can extract, check the FOOOFResults documentation.
@@ -489,8 +535,8 @@ class FOOOF():
         If there is no data on periodic features, this method will return NaN.
         """
 
-        if self.aperiodic_params_ is None:
-            raise RuntimeError('No model fit data is available to extract - can not proceed.')
+        if not self.has_model:
+            raise ModelNotFitError("No model fit results are available to extract, can not proceed.")
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
@@ -514,12 +560,12 @@ class FOOOF():
 
 
     def get_results(self):
-        """Return model fit parameters and goodness of fit metrics in a FOOOFResults object.
+        """Return model fit parameters and goodness of fit metrics.
 
         Returns
         -------
         FOOOFResults
-            Object containing the FOOOF model fit results from the current FOOOF object.
+            Object containing the model fit results from the current object.
         """
 
         return FOOOFResults(**{key.strip('_') : getattr(self, key) \
@@ -546,20 +592,20 @@ class FOOOF():
 
 
     def load(self, file_name='FOOOF_results', file_path=None, regenerate=True):
-        """Load in FOOOF file. Reads in a FOOOF formatted JSON file.
+        """Load in FOOOF formatted JSON file.
 
         Parameters
         ----------
         file_name : str or FileObject, optional
             File from which to load data.
-        file_path : str, optional
-            Path to directory from which to load. If not provided, loads from current directory.
+        file_path : str or None, optional
+            Path to directory from which to load. If None, loads from current directory.
         regenerate : bool, optional, default: True
             Whether to regenerate the model fit from the loaded data, if data is available.
         """
 
         # Reset data in object, so old data can't interfere
-        self._reset_data_results()
+        self._reset_data_results(True, True, True)
 
         # Load JSON file, add to self and check loaded data
         data = load_json(file_name, file_path)
@@ -576,7 +622,7 @@ class FOOOF():
 
 
     def copy(self):
-        """Return a copy of the FOOOF object."""
+        """Return a copy of the current object."""
 
         return deepcopy(self)
 
@@ -605,10 +651,15 @@ class FOOOF():
             Parameter estimates for aperiodic fit.
         """
 
-        # Set guess params for lorentzian aperiodic fit, guess params set at init
-        guess = np.array(([power_spectrum[0]] if not self._ap_guess[0] else [self._ap_guess[0]]) +
-                         ([self._ap_guess[1]] if self.aperiodic_mode == 'knee' else []) +
-                         [self._ap_guess[2]])
+        # Get the guess parameters and/or calculate from the data, as needed
+        #   Note that these are collected as lists, to concatenate with or without knee later
+        off_guess = [power_spectrum[0] if not self._ap_guess[0] else self._ap_guess[0]]
+        kne_guess = [self._ap_guess[1]] if self.aperiodic_mode == 'knee' else []
+        exp_guess = [np.abs(self.power_spectrum[-1] - np.log10(self.freqs[-1]) /
+                            self.power_spectrum[0] - np.log10(self.freqs[0]))]
+
+        # Collect together guess parameters
+        guess = np.array([off_guess + kne_guess + exp_guess])
 
         # Ignore warnings that are raised in curve_fit
         #  A runtime warning can occur while exploring parameters in curve fitting
@@ -618,7 +669,7 @@ class FOOOF():
             warnings.simplefilter("ignore")
             aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                             freqs, power_spectrum, p0=guess,
-                                            maxfev=5000, bounds=self._ap_bounds)
+                                            maxfev=self._maxfev, bounds=self._ap_bounds)
 
         return aperiodic_params
 
@@ -649,7 +700,7 @@ class FOOOF():
         # Flatten outliers - any points that drop below 0
         flatspec[flatspec < 0] = 0
 
-        # Use percential threshold, in terms of # of points, to extract and re-fit
+        # Use percentile threshold, in terms of # of points, to extract and re-fit
         perc_thresh = np.percentile(flatspec, self._ap_percentile_thresh)
         perc_mask = flatspec <= perc_thresh
         freqs_ignore = freqs[perc_mask]
@@ -661,7 +712,7 @@ class FOOOF():
             warnings.simplefilter("ignore")
             aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                             freqs_ignore, spectrum_ignore, p0=popt,
-                                            maxfev=5000, bounds=self._ap_bounds)
+                                            maxfev=self._maxfev, bounds=self._ap_bounds)
 
         return aperiodic_params
 
@@ -714,7 +765,7 @@ class FOOOF():
                            if flat_iter[val] <= half_height), None)
 
             # Keep bandwidth estimation from the shortest side.
-            #  We grab shortest to avoid estimating very large std from overalapping peaks.
+            #  We grab shortest to avoid estimating very large std from overlapping peaks.
             # Grab the shortest side, ignoring a side if the half max was not found.
             #  Note: will fail if both le & ri ind's end up as None (probably shouldn't happen).
             short_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
@@ -794,7 +845,7 @@ class FOOOF():
 
         # Fit the peaks.
         gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._spectrum_flat,
-                                       p0=guess, maxfev=5000, bounds=gaus_param_bounds)
+                                       p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds)
 
         # Re-organize params into 2d matrix.
         gaussian_params = np.array(group_three(gaussian_params))
@@ -919,21 +970,50 @@ class FOOOF():
 
 
     def _calc_r_squared(self):
-        """Calculate R^2 of the full model fit."""
+        """Calculate the r-squared goodness of fit of the full model, compared to the original data."""
 
         r_val = np.corrcoef(self.power_spectrum, self.fooofed_spectrum_)
         self.r_squared_ = r_val[0][1] ** 2
 
 
-    def _calc_rmse_error(self):
-        """Calculate root mean squared error of the full model fit."""
+    def _calc_error(self, metric=None):
+        """Calculate the overall error of the model fit, compared to the original data.
 
-        self.error_ = np.sqrt((self.power_spectrum - self.fooofed_spectrum_) ** 2).mean()
+        Parameters
+        ----------
+        metric : {'MAE', 'MSE', 'RMSE'}
+            Which error measure to calculate.
+
+        Raises
+        ------
+        ValueError
+            If the requested error metric is not understood.
+
+        Notes
+        -----
+        Which measure is applied is by default controlled by the `_error_metric` attribute.
+        """
+
+        # If metric is not specified, use the default approach
+        metric = self._error_metric if not metric else metric
+
+        if metric == 'MAE':
+            self.error_ = np.abs(self.power_spectrum - self.fooofed_spectrum_).mean()
+
+        elif metric == 'MSE':
+            self.error_ = ((self.power_spectrum - self.fooofed_spectrum_) ** 2).mean()
+
+        elif metric == 'RMSE':
+            self.error_ = np.sqrt(((self.power_spectrum - self.fooofed_spectrum_) ** 2).mean())
+
+        else:
+            msg = "Error metric '{}' not understood or not implemented.".format(metric)
+            raise ValueError(msg)
 
 
     @staticmethod
     def _prepare_data(freqs, power_spectrum, freq_range, spectra_dim=1, verbose=True):
-        """Prepare input data for adding to FOOOF or FOOOFGroup object.
+        """Prepare input data for adding to current object.
 
         Parameters
         ----------
@@ -944,7 +1024,7 @@ class FOOOF():
             1d vector, or 2d as [n_power_spectra, n_freqs].
         freq_range : list of [float, float]
             Frequency range to restrict power spectrum to. If None, keeps the entire range.
-        spectra_dim : int, optional default: 1
+        spectra_dim : int, optional, default: 1
             Dimensionality that the power spectra should have.
         verbose : bool, optional
             Whether to be verbose in printing out warnings.
@@ -960,19 +1040,32 @@ class FOOOF():
             Minimum and maximum values of the frequency vector.
         freq_res : float
             Frequency resolution of the power spectrum.
+
+        Raises
+        ------
+        DataError
+            If there is an issue with the data.
+        InconsistentDataError
+            If the input data are inconsistent size.
         """
 
         # Check that data are the right types
         if not isinstance(freqs, np.ndarray) or not isinstance(power_spectrum, np.ndarray):
-            raise ValueError('Input data must be numpy arrays.')
+            raise DataError("Input data must be numpy arrays.")
 
         # Check that data have the right dimensionality
         if freqs.ndim != 1 or (power_spectrum.ndim != spectra_dim):
-            raise ValueError('Inputs are not the right dimensions.')
+            raise DataError("Inputs are not the right dimensions.")
 
         # Check that data sizes are compatible
         if freqs.shape[-1] != power_spectrum.shape[-1]:
-            raise ValueError('Inputs are not consistent size.')
+            raise InconsistentDataError("The input frequencies and power spectra"
+                                        " are not consistent size.")
+
+        # Check if power values are complex
+        if np.iscomplexobj(power_spectrum):
+            raise DataError("Input power spectra are complex values."
+                            "FOOOF does not currently support complex inputs.")
 
         # Force data to be dtype of float64.
         #   If they end up as float32, or less, scipy curve_fit fails (sometimes implicitly)
@@ -1002,6 +1095,13 @@ class FOOOF():
         # Log power values
         power_spectrum = np.log10(power_spectrum)
 
+        # Check if there are any infs / nans, and raise an error if so
+        if np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):
+            raise DataError("The input power spectra data, after logging, contains NaNs or Infs."
+                            "This will cause the fitting to fail."
+                            "This can happen if inputs are already logged."
+                            "Inputs data should be in linear spacing, not log.")
+
         return freqs, power_spectrum, freq_range, freq_res
 
 
@@ -1014,7 +1114,7 @@ class FOOOF():
             Dictionary of data to add to self.
         """
 
-        # Reconstruct FOOOF object from loaded data
+        # Reconstruct object from loaded data
         for key in data.keys():
             setattr(self, key, data[key])
 
@@ -1070,6 +1170,5 @@ class FOOOF():
     def _regenerate_model(self):
         """Regenerate model fit from parameters."""
 
-        self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
-        self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self.gaussian_params_))
-        self.fooofed_spectrum_ = self._peak_fit + self._ap_fit
+        self.fooofed_spectrum_, self._peak_fit, self._ap_fit = gen_model(
+            self.freqs, self.aperiodic_params_, self.gaussian_params_, return_components=True)

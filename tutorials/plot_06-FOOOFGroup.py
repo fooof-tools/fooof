@@ -233,7 +233,7 @@ nfg.print_results()
 # launch 'n_jobs' number of jobs, in parallel. Setting n_jobs to -1 will launch in
 # parallel across all available cores.
 #
-# Note, however, that running FOOOF in parallel does not gaurantee a quicker runtime overall.
+# Note, however, that running FOOOF in parallel does not guarantee a quicker runtime overall.
 # The computation time per FOOOF-fit scales with the frequency range fit over, and the
 # 'complexity' of the power spectra, in terms of number of peaks. For relatively small
 # numbers of power spectra (less than ~100), across relatively small frequency ranges
@@ -246,8 +246,8 @@ nfg.print_results()
 fg.fit(freqs, spectra, n_jobs=-1)
 
 ###################################################################################################
-# Extacting Individual Fits
-# -------------------------
+# Extracting Individual Fits
+# --------------------------
 #
 # When running FOOOF across a group of power spectra, results are stored as the FOOOFResults,
 # which stores (only) the results of the model fit, not the full model fits themselves.

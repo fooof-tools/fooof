@@ -1,10 +1,12 @@
-"""Classes & functions for managing parameter choices for simulating power spectra."""
+"""Classes & functions for managing parameters for simulating power spectra."""
 
 import numpy as np
 
-from fooof.core.funcs import infer_ap_func
 from fooof.core.utils import check_flat
 from fooof.core.info import get_indices
+from fooof.core.funcs import infer_ap_func
+from fooof.core.errors import InconsistentDataError
+
 from fooof.data import SimParams
 
 ###################################################################################################
@@ -15,7 +17,7 @@ def update_sim_ap_params(sim_params, delta, field=None):
 
     Parameters
     ----------
-    sim_params : SimParams object
+    sim_params : SimParams
         Object storing the current parameter definitions.
     delta : float or list
         Value(s) by which to update the parameters.
@@ -24,8 +26,13 @@ def update_sim_ap_params(sim_params, delta, field=None):
 
     Returns
     -------
-    new_sim_params : SimParams object
+    new_sim_params : SimParams
         Updated object storing the new parameter definitions.
+
+    Raises
+    ------
+    InconsistentDataError
+        If the input parameters and update values are inconsistent.
 
     Notes
     -----
@@ -37,7 +44,8 @@ def update_sim_ap_params(sim_params, delta, field=None):
 
     if not field:
         if not len(ap_params) == len(delta):
-            raise ValueError('')
+            raise InconsistentDataError("The number of items to update and "
+                                        "number of new values is inconsistent.")
         ap_params = [ii + jj for ii, jj in zip(ap_params, delta)]
 
     else:
@@ -63,7 +71,7 @@ class Stepper():
     stop : float
         End value to iterate to.
     step : float
-        Incremet of each iteration.
+        Increment of each iteration.
 
     Attributes
     ----------
@@ -97,13 +105,24 @@ class Stepper():
 
     @staticmethod
     def _check_values(start, stop, step):
-        """Checks if provided values are valid for use."""
+        """Checks if provided values are valid for use.
 
-        if any(i < 0 for i in [start, stop, step]):
+        Parameters
+        ----------
+        start, stop, step : float
+            Definition of the parameter range to iterate over.
+
+        Raises
+        ------
+        ValueError
+            If the input values to define the iteration range are inconsistent.
+        """
+
+        if any(ii < 0 for ii in [start, stop, step]):
             raise ValueError("'start', 'stop', and 'step' should all be positive values")
 
         if not start < stop:
-            raise ValueError("'start' should be less than stop")
+            raise ValueError("'start' should be less than 'stop'")
 
         if not step < (stop - start):
             raise ValueError("'step' is too large given 'start' and 'stop' values")
@@ -123,6 +142,11 @@ def param_iter(params):
     ------
     list of floats
         Next generated list of parameters across the range.
+
+    Raises
+    ------
+    ValueError
+        If the number of iterations given is greater than one.
 
     Examples
     --------

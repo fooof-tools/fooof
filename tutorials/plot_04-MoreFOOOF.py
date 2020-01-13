@@ -172,7 +172,7 @@ print('Power Values: \t\t', fm.power_spectrum[0:5])
 # If you wish to change these settings, then you should re-initialize
 # the FOOOF object with new settings.
 #
-# Simply resetting the relevant attribute may not appropriately propragate the value,
+# Simply resetting the relevant attribute may not appropriately propagate the value,
 # and may fail, either by erroring out, or not applying the settings properly during
 # fit and returning erroneous results.
 #

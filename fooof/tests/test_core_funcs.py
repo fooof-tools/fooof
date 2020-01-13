@@ -5,6 +5,8 @@ from py.test import raises
 import numpy as np
 from scipy.stats import norm, linregress
 
+from fooof.core.errors import InconsistentDataError
+
 from fooof.core.funcs import *
 
 ###################################################################################################
@@ -106,5 +108,5 @@ def test_infer_ap_func():
     apf_kn = infer_ap_func(ap_kn)
     assert apf_kn == 'knee'
 
-    with raises(ValueError):
+    with raises(InconsistentDataError):
         infer_ap_func([1, 2, 3, 4])

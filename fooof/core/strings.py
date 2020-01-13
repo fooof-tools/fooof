@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from fooof.core.errors import ModelNotFitError
+
 ###################################################################################################
 ###################################################################################################
 
@@ -43,7 +45,7 @@ def gen_settings_str(f_obj, description=False, concise=False):
 
     Parameters
     ----------
-    f_obj : FOOOF or FOOOFGroup object
+    f_obj : FOOOF or FOOOFGroup
         A FOOOF derived object, from which settings are to be used.
     description : bool, optional, default: True
         Whether to print out a description with current settings.
@@ -57,11 +59,11 @@ def gen_settings_str(f_obj, description=False, concise=False):
     """
 
     # Parameter descriptions to print out, if requested
-    desc = {'peak_width_limits'     : 'Enforced limits for peak widths, in Hz.',
-            'max_n_peaks'           : 'The maximum number of peaks that can be extracted.',
-            'min_peak_height'       : 'Minimum absolute height of a peak, above the aperiodic component.',
-            'peak_threshold'        : 'Threshold at which to stop searching for peaks.',
-            'aperiodic_mode'        : 'The aproach taken to fitting the aperiodic component.'}
+    desc = {'peak_width_limits' : 'Enforced limits for peak widths, in Hz.',
+            'max_n_peaks'       : 'The maximum number of peaks that can be extracted.',
+            'min_peak_height'   : 'Minimum absolute height of a peak, above the aperiodic component.',
+            'peak_threshold'    : 'Threshold at which to stop searching for peaks.',
+            'aperiodic_mode'    : 'The approach taken to fitting the aperiodic component.'}
 
     # Clear description for printing if not requested
     if not description:
@@ -103,7 +105,7 @@ def gen_results_fm_str(fm, concise=False):
 
     Parameters
     ----------
-    fm : FOOOF object
+    fm : FOOOF
         Object for which results are to be printed.
     concise : bool, optional, default: False
         Whether to print the report in a concise mode, or not.
@@ -150,8 +152,7 @@ def gen_results_fm_str(fm, concise=False):
         # R^2 and error
         'Goodness of fit metrics:',
         'R^2 of model fit is {:5.4f}'.format(fm.r_squared_),
-        'Root mean squared error is {:5.4f}'.format(
-            fm.error_),
+        'Error of the fit is {:5.4f}'.format(fm.error_),
         '',
 
         # Footer
@@ -168,7 +169,7 @@ def gen_results_fg_str(fg, concise=False):
 
     Parameters
     ----------
-    fg : FOOOFGroup() object
+    fg : FOOOFGroup
         Group object for which results are to be printed.
     concise : bool, optional, default: False
         Whether to print the report in a concise mode, or not.
@@ -177,10 +178,15 @@ def gen_results_fg_str(fg, concise=False):
     -------
     output : str
         Formatted string of FOOOFGroup results.
+
+    Raises
+    ------
+    ModelNotFitError
+        If no model fit data is available to report.
     """
 
-    if not fg.group_results:
-        raise ValueError('Model fit has not been run - can not proceed.')
+    if not fg.has_model:
+        raise ModelNotFitError("No model fit results are available, can not proceed.")
 
     # Extract all the relevant data for printing
     n_peaks = len(fg.get_params('peak_params'))

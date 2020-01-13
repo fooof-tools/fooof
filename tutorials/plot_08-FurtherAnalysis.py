@@ -160,7 +160,7 @@ print('Alpha BW : ', np.nanmean(alphas[:, bw_ind]))
 # Since this frequency-range selection can be done after model fitting, we do recommend
 # checking the model results, for example by checking a histogram of the center frequencies
 # extracted across a group, in order to ensure the frequency ranges you choose reflect
-# the characteristics of the data under studty.
+# the characteristics of the data under study.
 #
 
 ###################################################################################################
@@ -197,7 +197,7 @@ print(exps)
 #   and analyzing spatial topographies, across demographics, modalities, and tasks
 # - Comparing oscillations within and between subjects across different tasks of interest
 # - Predicting disease state based on FOOOF derived oscillation & aperiodic features
-# - Using FOOOF on a trial by trial manner to decode task properties, and behavioural states
+# - Using FOOOF on a trial by trial manner to decode task properties, and behavioral states
 #
 
 ###################################################################################################

@@ -12,6 +12,7 @@ from fooof.plts.spectra import plot_spectrum
 from fooof.plts.settings import FIGSIZE_SPECTRAL
 from fooof.core.io import fname, fpath
 from fooof.core.funcs import gaussian_function
+from fooof.core.errors import ModelNotFitError
 from fooof.core.modutils import safe_import, check_dependency
 
 plt = safe_import('.pyplot', 'matplotlib')
@@ -25,11 +26,11 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
 
     Parameters
     ----------
-    fm : FOOOF object
+    fm : FOOOF
         FOOOF object, containing a power spectrum and (optionally) results from fitting.
     plt_log : boolean, optional, default: False
         Whether to plot the frequency values in log10 spacing.
-    save_fig : boolean, optional, default: False
+    save_fig : bool, optional, default: False
         Whether to save out a copy of the plot.
     file_name : str, optional
         Name to give the saved out file.
@@ -37,10 +38,15 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
         Path to directory in which to save. If None, saves to current directory.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
+
+    Raises
+    ------
+    ModelNotFitError
+        If the FOOOF object does not have model fit data available to plot.
     """
 
-    if not np.all(fm.freqs):
-        raise RuntimeError('No data available to plot - can not proceed.')
+    if not fm.has_model:
+        raise ModelNotFitError("No model fit results are available, can not proceed.")
 
     ax = check_ax(ax, FIGSIZE_SPECTRAL)
 
@@ -70,15 +76,14 @@ def plot_peak_iter(fm):
 
     Parameters
     ----------
-    fm : FOOOF object
+    fm : FOOOF
         FOOOF object, with model fit, data and settings available.
     """
 
     flatspec = fm._spectrum_flat
-    n_gauss = fm.gaussian_params_.shape[0]
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
 
-    for ind in range(n_gauss + 1):
+    for ind in range(fm.n_peaks_ + 1):
 
         # This forces the creation of a new plotting axes per iteration
         ax = check_ax(None, FIGSIZE_SPECTRAL)
@@ -95,7 +100,7 @@ def plot_peak_iter(fm):
         ax.set_ylim(ylims)
         ax.set_title('Iteration #' + str(ind+1), fontsize=16)
 
-        if ind < n_gauss:
+        if ind < fm.n_peaks_:
 
             gauss = gaussian_function(fm.freqs, *fm.gaussian_params_[ind, :])
             plot_spectrum(fm.freqs, gauss, label='Gaussian Fit',

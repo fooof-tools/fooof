@@ -40,6 +40,27 @@ def test_fg_getitem(tfg):
 
     assert tfg[0]
 
+def test_fg_has_data(tfg):
+    """Test the has_data property attribute, with and without data."""
+
+    assert tfg.has_model
+
+    ntfg = FOOOFGroup()
+    assert not ntfg.has_data
+
+def test_fg_has_model(tfg):
+    """Test the has_model property attribute, with and without model fits."""
+
+    assert tfg.has_model
+
+    ntfg = FOOOFGroup()
+    assert not ntfg.has_model
+
+def test_fooof_n_peaks(tfg):
+    """Test the n_peaks property attribute."""
+
+    assert tfg.n_peaks_
+
 def test_fg_fit():
     """Test FOOOFGroup fit, no knee."""
 
@@ -54,6 +75,49 @@ def test_fg_fit():
     assert len(out) == n_spectra
     assert isinstance(out[0], FOOOFResults)
     assert np.all(out[1].aperiodic_params)
+
+def test_fg_fail():
+    """Test FOOOFGroup fit, in a way that some fits will fail."""
+
+    # Create some noisy spectra that will be hard to fit
+    fs, ps, _ = gen_group_power_spectra(10, [3, 6], [1, 1], [10, 1, 1], nlvs=10)
+
+    # Use a fg with the max iterations set so low that it will fail to converge
+    ntfg = FOOOFGroup()
+    ntfg._maxfev = 5
+
+    # Fit models, where some will fail, to see if it completes cleanly
+    ntfg.fit(fs, ps)
+
+    # Check that results are all
+    for res in ntfg.get_results():
+        assert res
+
+    # # Test that get_params works with failed model fits
+    # outs1 = ntfg.get_params('aperiodic_params', 'exponent')
+    # outs2 = ntfg.get_params('aperiodic_params', 'exponent')
+    # outs3 = ntfg.get_params('peak_params')
+    # outs4 = ntfg.get_params('peak_params', 0)
+
+def test_fg_drop(tfg):
+    """Test function to drop from FOOOFGroup."""
+
+    n_spectra = 3
+    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
+
+    tfg = FOOOFGroup(verbose=False)
+    tfg.fit(xs, ys)
+
+    tfg.drop(0)
+    for res in tfg.group_results[0]:
+        assert res is None
+
+    tfg.drop([0, 1])
+    for res in tfg.group_results[1]:
+        assert res is None
+
+    for res in tfg.group_results[2]:
+        assert res is not None
 
 def test_fg_fit_par():
     """Test FOOOFGroup fit, running in parallel."""

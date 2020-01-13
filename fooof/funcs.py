@@ -6,6 +6,7 @@ from fooof import FOOOF, FOOOFGroup
 from fooof.data import FOOOFResults
 from fooof.utils import compare_info
 from fooof.analysis import get_band_peak_fg
+from fooof.core.errors import ModelNotFitError, IncompatibleSettingsError
 
 ###################################################################################################
 ###################################################################################################
@@ -28,12 +29,19 @@ def average_fg(fg, bands, avg_method='mean', generate_model=True):
     -------
     fm : FOOOF
         FOOOF object containing the average results from the FOOOFGroup input.
+
+    Raises
+    ------
+    ValueError
+        If the requested averaging method is not understood.
+    ModelNotFitError
+        If there are no model fit results available to average across.
     """
 
     if avg_method not in ['mean', 'median']:
-        raise ValueError('Requested average method not understood.')
-    if not len(fg):
-        raise ValueError('Input FOOOFGroup has no fit results - can not proceed.')
+        raise ValueError("Requested average method not understood.")
+    if not fg.has_model:
+        raise ModelNotFitError("No model fit results are available, can not proceed.")
 
     if avg_method == 'mean':
         avg_func = np.nanmean
@@ -70,19 +78,24 @@ def combine_fooofs(fooofs):
 
     Parameters
     ----------
-    fooofs : list of FOOOF objects
+    fooofs : list of FOOOF
         FOOOF objects to be concatenated into a FOOOFGroup.
 
     Returns
     -------
-    fg : FOOOFGroup object
+    fg : FOOOFGroup
         Resultant FOOOFGroup object created from input FOOOFs.
+
+    Raises
+    ------
+    IncompatibleSettingsError
+        If the input objects have incompatible settings for combining.
     """
 
     # Compare settings
     if not compare_info(fooofs, 'settings') or not compare_info(fooofs, 'meta_data'):
-        raise ValueError("These objects have incompatible settings or meta data," \
-                         "and so cannot be combined.")
+        raise IncompatibleSettingsError("These objects have incompatible settings"
+                                        "or meta data, and so cannot be combined.")
 
     # Initialize FOOOFGroup object, with settings derived from input objects
     fg = FOOOFGroup(*fooofs[0].get_settings(), verbose=fooofs[0].verbose)
