@@ -281,9 +281,11 @@ def test_fooof_resets():
 
     desc = get_description()
 
-    for data in ['data', 'results', 'model_components']:
+    for data in ['data', 'model_components']:
         for field in desc[data]:
             assert getattr(tfm, field) == None
+    for field in desc['results']:
+        assert np.all(np.isnan(getattr(tfm, field)))
     assert tfm.freqs == None and tfm.fooofed_spectrum_ == None
 
 def test_fooof_report(skip_if_no_mpl):

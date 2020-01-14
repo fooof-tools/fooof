@@ -269,6 +269,9 @@ class FOOOFGroup(FOOOF):
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
             col = get_indices(self.aperiodic_mode)[col]
+        elif isinstance(col, int):
+            if col not in [0, 1, 2]:
+                raise ValueError('Input value for `col` not valid.')
 
         # Pull out the requested data field from the group data
         # As a special case, peak_params are pulled out in a way that appends

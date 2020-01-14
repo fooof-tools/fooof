@@ -183,9 +183,17 @@ class FOOOF():
 
     @property
     def has_model(self):
-        """Property attribute for if the object has a model fit."""
+        """Property attribute for if the object has a model fit.
 
-        return True if np.any(self.aperiodic_params_) else False
+        Notes
+        -----
+        This check uses the aperiodic params, which are:
+
+        - nan if no model has been fit
+        - necessarily defined, as floats, if model has been fit
+        """
+
+        return True if not np.all(np.isnan(self.aperiodic_params_)) else False
 
 
     @property
@@ -242,11 +250,12 @@ class FOOOF():
             self.power_spectrum = None
 
         if clear_results:
-            self.aperiodic_params_ = None
-            self.gaussian_params_ = None
-            self.peak_params_ = None
-            self.r_squared_ = None
-            self.error_ = None
+
+            self.aperiodic_params_ = np.array([np.nan] * 2 if self.aperiodic_mode is 'fixed' else 3)
+            self.gaussian_params_ = np.empty([0, 3])
+            self.peak_params_ = np.empty([0, 3])
+            self.r_squared_ = np.nan
+            self.error_ = np.nan
 
             self.fooofed_spectrum_ = None
 

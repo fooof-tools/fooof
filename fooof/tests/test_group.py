@@ -104,7 +104,7 @@ def test_fg_fit_knee():
     assert tfg.has_model
 
 def test_fg_fail():
-    """Test FOOOFGroup fit, in a way that some fits will fail."""
+    """Test FOOOFGroup fit, in a way that some fits will fail. Check that model failures don't cause error."""
 
     # Create some noisy spectra that will be hard to fit
     fs, ps, _ = gen_group_power_spectra(10, [3, 6], [1, 1], [10, 1, 1], nlvs=10)
@@ -120,11 +120,12 @@ def test_fg_fail():
     for res in ntfg.get_results():
         assert res
 
-    # # Test that get_params works with failed model fits
-    # outs1 = ntfg.get_params('aperiodic_params', 'exponent')
-    # outs2 = ntfg.get_params('aperiodic_params', 'exponent')
-    # outs3 = ntfg.get_params('peak_params')
-    # outs4 = ntfg.get_params('peak_params', 0)
+    # Test that get_params works with failed model fits
+    outs1 = ntfg.get_params('aperiodic_params')
+    outs2 = ntfg.get_params('aperiodic_params', 'exponent')
+    outs3 = ntfg.get_params('peak_params')
+    outs4 = ntfg.get_params('peak_params', 0)
+    outs5 = ntfg.get_params('gaussian_params', 2)
 
 def test_fg_drop(tfg):
     """Test function to drop from FOOOFGroup."""
