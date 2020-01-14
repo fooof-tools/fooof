@@ -13,6 +13,7 @@ from py.test import raises
 
 from fooof import FOOOF
 from fooof.sim import gen_power_spectrum
+from fooof.core.errors import FitError
 from fooof.core.utils import group_three
 from fooof.core.info import get_description
 from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
@@ -298,13 +299,23 @@ def test_fooof_report(skip_if_no_mpl):
     assert tfm
 
 def test_fooof_fit_failure():
-    """Test that fit handles a failure."""
+    """Test FOOOF fit failures."""
 
-    # Use a new FOOOF, that is monkey-patched to raise an error
+    ## Induce a runtime error, and check it runs through
+    tfm = FOOOF(verbose=False)
+    tfm._maxfev = 5
+
+    tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+
+    # Check after failing out of fit, all results are reset
+    for result in get_description()['results']:
+        assert np.all(np.isnan(getattr(tfm, result)))
+
+    ## Monkey patch to check errors in general
     #  This mimics the main fit-failure, without requiring bad data / waiting for it to fail.
     tfm = FOOOF(verbose=False)
     def raise_runtime_error(*args, **kwargs):
-        raise RuntimeError('Test-MonkeyPatch')
+        raise FitError('Test-MonkeyPatch')
     tfm._fit_peaks = raise_runtime_error
 
     # Run a FOOOF fit - this should raise an error, but continue in try/except
@@ -312,5 +323,14 @@ def test_fooof_fit_failure():
 
     # Check after failing out of fit, all results are reset
     for result in get_description()['results']:
-        cur_res = getattr(tfm, result)
-        assert cur_res is None or np.all(np.isnan(cur_res))
+        assert np.all(np.isnan(getattr(tfm, result)))
+
+def test_fooof_debug():
+    """Test FOOOF fit failure in debug mode."""
+
+    tfm = FOOOF(verbose=False)
+    tfm._maxfev = 5
+    tfm._debug = True
+
+    with raises(FitError):
+        tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))

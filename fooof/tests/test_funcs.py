@@ -8,7 +8,7 @@ from fooof import FOOOFGroup
 from fooof.utils import compare_info
 from fooof.group import FOOOFGroup
 from fooof.sim import gen_group_power_spectra
-from fooof.core.errors import ModelNotFitError, IncompatibleSettingsError
+from fooof.core.errors import NoModelError, IncompatibleSettingsError
 
 from fooof.funcs import *
 from fooof.tests.utils import default_group_params
@@ -27,7 +27,7 @@ def test_average_fg(tfg, tbands):
 
     # Test no data available error
     ntfg = FOOOFGroup()
-    with raises(ModelNotFitError):
+    with raises(NoModelError):
         average_fg(ntfg, tbands)
 
 def test_combine_fooofs(tfm, tfg):

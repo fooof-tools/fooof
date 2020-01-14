@@ -4,6 +4,10 @@ class FOOOFError(Exception):
     """Base class for errors in the FOOOF module."""
     pass
 
+class FitError(FOOOFError):
+    """Error for a failure to fit."""
+    pass
+
 class NoDataError(FOOOFError):
     """Error for if data is missing."""
     pass
@@ -20,6 +24,6 @@ class IncompatibleSettingsError(FOOOFError):
     """Error for if settings are incompatible."""
     pass
 
-class ModelNotFitError(FOOOFError):
+class NoModelError(FOOOFError):
     """Error for if the model is not fit."""
     pass

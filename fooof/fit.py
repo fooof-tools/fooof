@@ -33,6 +33,8 @@ _maxfev : int
     The maximum number of calls to the curve fitting function.
 _error_metric : str
     The error metric to use for post-hoc measures of model fit error.
+_debug : bool
+    Toggles a debug mode in which an error is raised if fitting is unsuccessful.
 """
 
 import warnings
@@ -47,7 +49,8 @@ from fooof.core.modutils import copy_doc_func_to_method
 from fooof.core.info import get_description, get_indices
 from fooof.core.utils import group_three, check_array_dim
 from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
-from fooof.core.errors import ModelNotFitError, DataError, NoDataError, InconsistentDataError
+from fooof.core.errors import (FitError, NoModelError, DataError,
+                               NoDataError, InconsistentDataError)
 from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
                                 gen_issue_str, gen_width_warning_str)
 
@@ -168,6 +171,8 @@ class FOOOF():
         # The error metric to calculate, post model fitting. See `_calc_error` for options.
         # Note: this is post-hoc check error metric, not the one used to fit models.
         self._error_metric = 'MAE'
+        # Set a debug mode, that will fail upon a model fit failure
+        self._debug = False
 
         # Set internal settings, based on inputs, & initialize data & results attributes.
         self._reset_internal_settings()
@@ -405,8 +410,7 @@ class FOOOF():
         if self.verbose:
             self._check_width_limits()
 
-        # In rare cases, the model fails to fit. Therefore it's in a try/except
-        #  Cause of failure: RuntimeError, failure to find parameters in curve_fit
+        # In rare cases, the model fails to fit, and so uses try / except
         try:
 
             # Fit the aperiodic component
@@ -441,8 +445,11 @@ class FOOOF():
             self._calc_r_squared()
             self._calc_error()
 
-        # Catch failure, stemming from curve_fit process
-        except RuntimeError:
+        except FitError:
+
+            # In debug mode, re-raise the error
+            if self._debug:
+                raise
 
             # Clear any interim model results that may have run
             #  Partial model results shouldn't be interpreted in light of overall failure
@@ -534,7 +541,7 @@ class FOOOF():
 
         Raises
         ------
-        ModelNotFitError
+        NoModelError
             If there are no model fit parameters available to return.
 
         Notes
@@ -545,7 +552,7 @@ class FOOOF():
         """
 
         if not self.has_model:
-            raise ModelNotFitError("No model fit results are available to extract, can not proceed.")
+            raise NoModelError("No model fit results are available to extract, can not proceed.")
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
@@ -675,11 +682,15 @@ class FOOOF():
         #  A runtime warning can occur while exploring parameters in curve fitting
         #    This doesn't effect outcome - it won't settle on an answer that does this
         #  It happens if / when b < 0 & |b| > x**2, as it leads to log of a negative number
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
-                                            freqs, power_spectrum, p0=guess,
-                                            maxfev=self._maxfev, bounds=self._ap_bounds)
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
+                                                freqs, power_spectrum, p0=guess,
+                                                maxfev=self._maxfev, bounds=self._ap_bounds)
+        except RuntimeError:
+            raise FitError("Model fitting failed due to not finding parameters in "
+                           "the simple aperiodic component fit.")
 
         return aperiodic_params
 
@@ -718,11 +729,17 @@ class FOOOF():
 
         # Second aperiodic fit - using results of first fit as guess parameters
         #  See note in _simple_ap_fit about warnings
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
-                                            freqs_ignore, spectrum_ignore, p0=popt,
-                                            maxfev=self._maxfev, bounds=self._ap_bounds)
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
+                                                freqs_ignore, spectrum_ignore, p0=popt,
+                                                maxfev=self._maxfev, bounds=self._ap_bounds)
+        except RuntimeError:
+            raise FitError("Model fitting failed due to not finding "
+                           "parameters in the robust aperiodic fit.")
+        except TypeError:
+            raise FitError("Model fitting failed due to sub-sampling in the robust aperiodic fit.")
 
         return aperiodic_params
 
@@ -854,8 +871,12 @@ class FOOOF():
         guess = np.ndarray.flatten(guess)
 
         # Fit the peaks.
-        gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._spectrum_flat,
-                                       p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds)
+        try:
+            gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._spectrum_flat,
+                                           p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds)
+        except RuntimeError:
+            raise FitError("Model fitting failed due to not finding "
+                           "parameters in the peak component fit.")
 
         # Re-organize params into 2d matrix.
         gaussian_params = np.array(group_three(gaussian_params))

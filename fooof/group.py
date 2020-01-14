@@ -15,8 +15,8 @@ from fooof import FOOOF
 from fooof.plts.fg import plot_fg
 from fooof.data import FOOOFResults
 from fooof.core.info import get_indices
+from fooof.core.errors import NoModelError
 from fooof.core.reports import save_report_fg
-from fooof.core.errors import ModelNotFitError
 from fooof.core.strings import gen_results_fg_str
 from fooof.core.io import save_fg, load_jsonlines
 from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class, safe_import
@@ -255,7 +255,7 @@ class FOOOFGroup(FOOOF):
 
         Raises
         ------
-        ModelNotFitError
+        NoModelError
             If there are no model fit results available.
 
         Notes
@@ -264,7 +264,7 @@ class FOOOFGroup(FOOOF):
         """
 
         if not self.has_model:
-            raise ModelNotFitError("No model fit results are available, can not proceed.")
+            raise NoModelError("No model fit results are available, can not proceed.")
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):

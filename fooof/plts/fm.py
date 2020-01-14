@@ -12,7 +12,7 @@ from fooof.plts.spectra import plot_spectrum
 from fooof.plts.settings import FIGSIZE_SPECTRAL
 from fooof.core.io import fname, fpath
 from fooof.core.funcs import gaussian_function
-from fooof.core.errors import ModelNotFitError
+from fooof.core.errors import NoModelError
 from fooof.core.modutils import safe_import, check_dependency
 
 plt = safe_import('.pyplot', 'matplotlib')
@@ -41,7 +41,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
 
     Raises
     ------
-    ModelNotFitError
+    NoModelError
         If the FOOOF object does not have model fit data available to plot.
     """
 

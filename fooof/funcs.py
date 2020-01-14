@@ -6,7 +6,7 @@ from fooof import FOOOF, FOOOFGroup
 from fooof.data import FOOOFResults
 from fooof.utils import compare_info
 from fooof.analysis import get_band_peak_fg
-from fooof.core.errors import ModelNotFitError, IncompatibleSettingsError
+from fooof.core.errors import NoModelError, IncompatibleSettingsError
 
 ###################################################################################################
 ###################################################################################################
@@ -34,14 +34,14 @@ def average_fg(fg, bands, avg_method='mean', generate_model=True):
     ------
     ValueError
         If the requested averaging method is not understood.
-    ModelNotFitError
+    NoModelError
         If there are no model fit results available to average across.
     """
 
     if avg_method not in ['mean', 'median']:
         raise ValueError("Requested average method not understood.")
     if not fg.has_model:
-        raise ModelNotFitError("No model fit results are available, can not proceed.")
+        raise NoModelError("No model fit results are available, can not proceed.")
 
     if avg_method == 'mean':
         avg_func = np.nanmean

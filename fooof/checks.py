@@ -4,7 +4,7 @@ import numpy as np
 
 from fooof.sim.gen import gen_model
 from fooof.plts.spectra import plot_spectrum_error
-from fooof.core.errors import ModelNotFitError, NoDataError
+from fooof.core.errors import NoModelError, NoDataError
 
 ###################################################################################################
 ###################################################################################################
@@ -51,7 +51,7 @@ def compute_pointwise_error_fm(fm, plot_errors=True, return_errors=False, **plt_
     if not fm.has_data:
         raise NoDataError("Data must be available in the object to calculate errors.")
     if not fm.has_model:
-        raise ModelNotFitError("No model is available to use, can not proceed.")
+        raise NoModelError("No model is available to use, can not proceed.")
 
     errors = compute_pointwise_error(fm.fooofed_spectrum_, fm.power_spectrum)
 
@@ -83,7 +83,7 @@ def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_
     """
 
     if not fg.has_model:
-        raise ModelNotFitError("No model is available to use, can not proceed.")
+        raise NoModelError("No model is available to use, can not proceed.")
     if not np.any(fg.power_spectra):
         raise NoDataError("Data must be available in the object to calculate errors.")
 

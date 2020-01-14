@@ -3,7 +3,6 @@
 from py.test import raises
 
 from fooof import FOOOF
-from fooof.core.errors import ModelNotFitError
 
 from fooof.plts.fm import *
 from fooof.tests.utils import plot_test

@@ -3,7 +3,7 @@
 from py.test import raises
 
 from fooof import FOOOFGroup
-from fooof.core.errors import ModelNotFitError
+from fooof.core.errors import NoModelError
 
 from fooof.plts.fg import *
 from fooof.tests.utils import plot_test
@@ -18,7 +18,7 @@ def test_plot_fg(tfg, skip_if_no_mpl):
 
     # Test error if no data available to plot
     tfg = FOOOFGroup()
-    with raises(ModelNotFitError):
+    with raises(NoModelError):
         tfg.plot()
 
 @plot_test

@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from fooof.core.errors import ModelNotFitError
+from fooof.core.errors import NoModelError
 
 ###################################################################################################
 ###################################################################################################
@@ -181,12 +181,12 @@ def gen_results_fg_str(fg, concise=False):
 
     Raises
     ------
-    ModelNotFitError
+    NoModelError
         If no model fit data is available to report.
     """
 
     if not fg.has_model:
-        raise ModelNotFitError("No model fit results are available, can not proceed.")
+        raise NoModelError("No model fit results are available, can not proceed.")
 
     # Extract all the relevant data for printing
     n_peaks = len(fg.get_params('peak_params'))
