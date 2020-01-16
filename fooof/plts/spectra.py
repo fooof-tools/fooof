@@ -31,9 +31,9 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
     power_spectrum : 1d array
         Power values, to be plotted on the y-axis.
     log_freqs : bool, optional, default: False
-        Whether to take the log of the frequency axis before plotting.
+        Whether to plot the frequency axis in log spacing.
     log_powers : bool, optional, default: False
-        Whether to take the log of the power axis before plotting.
+        Whether to plot the power axis in log spacing.
     ax : matplotlib.Axes, optional
         Figure axis upon which to plot.
     plot_style : callable, optional, default: style_spectrum_plot
@@ -69,9 +69,9 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels
     power_spectra : 2d array or list of 1d array
         Power values, to be plotted on the y-axis.
     log_freqs : bool, optional, default: False
-        Whether  to take the log of the frequency axis before plotting.
+        Whether to plot the frequency axis in log spacing.
     log_powers : bool, optional, default: False
-        Whether to take the log of the power axis before plotting.
+        Whether to plot the power axis in log spacing.
     labels : list of str, optional
         Legend labels, for each power spectrum.
     ax : matplotlib.Axes, optional
@@ -166,7 +166,7 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_cen
 
 
 def plot_spectrum_error(freqs, error, shade=None, log_freqs=False,
-                        plot_style=style_spectrum_plot, ax=None):
+                        ax=None, plot_style=style_spectrum_plot):
     """Plot the frequency by frequency error values
 
     Parameters
@@ -177,8 +177,12 @@ def plot_spectrum_error(freqs, error, shade=None, log_freqs=False,
         Calculated error values or mean error values across frequencies, to be plotted on the y-axis.
     shade : 1d array, optional
         Values to shade in around the plotted error, such as the standard deviation around the mean error.
+    log_freqs : bool, optional, default: False
+        Whether to plot the frequency axis in log spacing.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
+    plot_style : callable, optional, default: style_spectrum_plot
+        A function to call to apply styling & aesthetics to the plot.
     """
 
     ax = check_ax(ax)

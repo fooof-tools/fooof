@@ -7,13 +7,14 @@ This file contains plotting functions that take as input a FOOOF object.
 
 import numpy as np
 
-from fooof.plts.utils import check_ax
-from fooof.plts.spectra import plot_spectrum
-from fooof.plts.settings import FIGSIZE_SPECTRAL
 from fooof.core.io import fname, fpath
 from fooof.core.funcs import gaussian_function
 from fooof.core.errors import NoModelError
 from fooof.core.modutils import safe_import, check_dependency
+from fooof.plts.utils import check_ax
+from fooof.plts.spectra import plot_spectrum
+from fooof.plts.settings import FIGSIZE_SPECTRAL
+from fooof.plts.style import check_n_style, style_spectrum_plot
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -21,7 +22,8 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=None, ax=None):
+def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=None,
+            ax=None, plot_style=style_spectrum_plot):
     """Plot the power spectrum and model fit results from a FOOOF object.
 
     Parameters
@@ -38,11 +40,13 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
         Path to directory in which to save. If None, saves to current directory.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
+    plot_style : callable, optional, default: style_spectrum_plot
+        A function to call to apply styling & aesthetics to the plot.
 
-    Raises
-    ------
-    NoModelError
-        If the FOOOF object does not have model fit data available to plot.
+    Notes
+    -----
+    Since FOOOF objects store power values in log spacing,
+    the y-axis (power) is plotted in log spacing, by default.
     """
 
     ax = check_ax(ax, FIGSIZE_SPECTRAL)
@@ -53,14 +57,19 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
 
     # Create the plot, adding data as is available
     if fm.has_data:
-        plot_spectrum(fm.freqs, fm.power_spectrum, log_freqs, log_powers, ax,
-                      color='k', linewidth=1.25, label='Original Spectrum')
+        plot_spectrum(fm.freqs, fm.power_spectrum, log_freqs, log_powers,
+                      ax=ax, plot_style=None, label='Original Spectrum',
+                      color='k', linewidth=2.0)
     if fm.has_model:
-        plot_spectrum(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers, ax,
-                      color='r', linewidth=3.0, alpha=0.5, label='Full Model Fit')
-        plot_spectrum(fm.freqs, fm._ap_fit, log_freqs, log_powers, ax,
-                      color='b', linestyle='dashed', linewidth=3.0,
-                      alpha=0.5, label='Aperiodic Fit')
+        plot_spectrum(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers,
+                      ax=ax, plot_style=None, label='Full Model Fit',
+                      color='r', linewidth=3.0, alpha=0.5)
+        plot_spectrum(fm.freqs, fm._ap_fit, log_freqs, log_powers,
+                      ax=ax, plot_style=None, label='Aperiodic Fit',
+                      color='b', linestyle='dashed', linewidth=3.0, alpha=0.5)
+
+    # Apply style to plot
+    check_n_style(plot_style, ax, log_freqs, True)
 
     # Save out figure, if requested
     if save_fig:
@@ -68,13 +77,15 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_peak_iter(fm):
+def plot_peak_iter(fm, plot_style=style_spectrum_plot):
     """Plots a series of plots illustrating the peak search from a flattened spectrum.
 
     Parameters
     ----------
     fm : FOOOF
         FOOOF object, with model fit, data and settings available.
+    plot_style : callable, optional, default: style_spectrum_plot
+        A function to call to apply styling & aesthetics to the plots.
     """
 
     flatspec = fm._spectrum_flat
@@ -85,11 +96,14 @@ def plot_peak_iter(fm):
         # This forces the creation of a new plotting axes per iteration
         ax = check_ax(None, FIGSIZE_SPECTRAL)
 
-        plot_spectrum(fm.freqs, flatspec, linewidth=2.0, label='Flattened Spectrum', ax=ax)
+        plot_spectrum(fm.freqs, flatspec, ax=ax, plot_style=None,
+                      label='Flattened Spectrum', linewidth=2.5)
         plot_spectrum(fm.freqs, [fm.peak_threshold * np.std(flatspec)]*len(fm.freqs),
-                      color='orange', linestyle='dashed', label='Relative Threshold', ax=ax)
+                      ax=ax, plot_style=None, label='Relative Threshold',
+                      color='orange', linewidth=2.5, linestyle='dashed')
         plot_spectrum(fm.freqs, [fm.min_peak_height]*len(fm.freqs),
-                      color='red', linestyle='dashed', label='Absolute Threshold', ax=ax)
+                      ax=ax, plot_style=None, label='Absolute Threshold',
+                      color='red', linewidth=2.5, linestyle='dashed')
 
         maxi = np.argmax(flatspec)
         ax.plot(fm.freqs[maxi], flatspec[maxi], '.', markersize=24)
@@ -100,7 +114,9 @@ def plot_peak_iter(fm):
         if ind < fm.n_peaks_:
 
             gauss = gaussian_function(fm.freqs, *fm.gaussian_params_[ind, :])
-            plot_spectrum(fm.freqs, gauss, label='Gaussian Fit',
-                          linestyle=':', linewidth=2.0, ax=ax)
+            plot_spectrum(fm.freqs, gauss, ax=ax, plot_style=None,
+                          label='Gaussian Fit', linestyle=':', linewidth=2.5)
 
             flatspec = flatspec - gauss
+
+        check_n_style(plot_style, ax, False, True)
