@@ -9,7 +9,6 @@ import numpy as np
 
 from fooof.core.io import fname, fpath
 from fooof.core.funcs import gaussian_function
-from fooof.core.errors import NoModelError
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.utils import check_ax
 from fooof.plts.spectra import plot_spectrum
@@ -24,7 +23,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 @check_dependency(plt, 'matplotlib')
 def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=None,
             ax=None, plot_style=style_spectrum_plot):
-    """Plot the power spectrum and model fit results from a FOOOF object.
+    """Plot the power spectrum and model fit from a FOOOF object.
 
     Parameters
     ----------

@@ -13,13 +13,13 @@ The user defined settings for a FOOOF object.
 
 Attributes
 ----------
-peak_width_limits : tuple of (float, float), optional, default: (0.5, 12.0)
+peak_width_limits : tuple of (float, float)
     Limits on possible peak width, as (lower_bound, upper_bound).
-max_n_peaks : int, optional, default: inf
-    Maximum number of gaussians to be fit in a single spectrum.
-min_peak_height : float, optional, default: 0
+max_n_peaks : int
+    Maximum number of peaks to be fit in a single spectrum.
+min_peak_height : float
     Absolute threshold for detecting peaks, in units of the input data.
-peak_threshold : float, optional, default: 2.0
+peak_threshold : float
     Relative threshold for detecting peaks, in units of standard deviation of the input data.
 aperiodic_mode : {'fixed', 'knee'}
     Which approach to take for fitting the aperiodic component.
@@ -69,7 +69,7 @@ Stores parameters used to simulate a single power spectra.
 
 Attributes
 ----------
-aperiodic_params : list, len 2 or 3
+aperiodic_params : list
     Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
     The knee parameter is only included if aperiodic is fit with knee. Otherwise, length is 2.
 gaussian_params : list or list of lists

@@ -28,7 +28,7 @@ def plot_aperiodic_params(aps, colors=None, labels=None,
         Label(s) for plotted data, to be added in a legend.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: XX
+    plot_style : callable, optional, default: style_param_plot
         A function to call to apply styling & aesthetics to the plot.
     **plot_kwargs
         Keyword arguments to pass into the plot call.
@@ -63,9 +63,8 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
     ----------
     aps : 2d array
         Aperiodic parameters. Each row is a parameter set, as [Off, Exp] or [Off, Knee, Exp].
-    freq_range : list of [float, float] , optional
+    freq_range : list of [float, float]
         The frequency range to plot the peak fits across, as [f_min, f_max].
-        If not provided, defaults to +/- 4 around given peak center frequencies.
     control_offset : boolean, optonal, default: False
         Whether to control for the offset, by setting it to zero.
     log_freqs : boolean, optonal, default: False
@@ -76,7 +75,7 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         Label(s) for plotted data, to be added in a legend.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_spectrum_plot
+    plot_style : callable, optional, default: style_param_plot
         A function to call to apply styling & aesthetics to the plot.
     **plot_kwargs
         Keyword arguments to pass into the plot call.
@@ -106,6 +105,8 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         for ap_params in aps:
 
             if control_offset:
+
+                # Copy the object to not overwrite any data
                 ap_params = ap_params.copy()
                 ap_params[0] = 0
 
@@ -122,8 +123,8 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         ax.plot(plt_freqs, avg, color=avg_color, linewidth=lw*3, label=labels)
 
     # Add axis labels
-    ax.set_xlabel('Frequency (Hz)')
-    ax.set_ylabel('Power')
+    ax.set_xlabel('log(Frequency)' if log_freqs else 'Frequency')
+    ax.set_ylabel('log(Power)')
 
     # Set plot limit
     plt_range = np.log10(freq_range) if log_freqs else freq_range

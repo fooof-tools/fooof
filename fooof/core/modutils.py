@@ -21,9 +21,10 @@ def safe_import(*args):
 
     Notes
     -----
-    *args accepts either 1 or 2 strings, as pass through inputs to import_module.
-        To import a whole module, pass a single string, ex: ('matplotlib').
-        To import a specific package, pass two strings, ex: ('.pyplot', 'matplotlib')
+    The input, `*args`, can be either 1 or 2 strings, as pass through inputs to import_module:
+
+    - To import a whole module, pass a single string, ex: ('matplotlib').
+    - To import a specific package, pass two strings, ex: ('.pyplot', 'matplotlib')
     """
 
     try:
@@ -59,8 +60,8 @@ def docs_drop_param(docstring):
 
     Notes
     -----
-    - This function assumes numpy docs standards.
-    - It also assumes the parameter description to be dropped is only 2 lines long.
+    This function assumes numpy docs standards.
+    It also assumes the parameter description to be dropped is only 2 lines long.
     """
 
     sep = '----------\n'
@@ -92,7 +93,7 @@ def docs_append_to_section(docstring, section, add):
 
     Notes
     -----
-    - This function assumes numpydoc documentation standard.
+    This function assumes numpydoc documentation standard.
     """
 
     return '\n\n'.join([split + add if section in split else split \

@@ -188,7 +188,7 @@ class FOOOFGroup(FOOOF):
         Data is optional if data has been already been added to FOOOF object.
         """
 
-        # If freqs & power spectra provided together, add data to object.
+        # If freqs & power spectra provided together, add data to object
         if freqs is not None and power_spectra is not None:
             self.add_data(freqs, power_spectra, freq_range)
 
@@ -257,6 +257,8 @@ class FOOOFGroup(FOOOF):
         ------
         NoModelError
             If there are no model fit results available.
+        ValueError
+            If the input for the `col` input is not understood.
 
         Notes
         -----
@@ -279,14 +281,14 @@ class FOOOFGroup(FOOOF):
         if name in ('peak_params', 'gaussian_params'):
             out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
                             for index, data in enumerate(self.group_results)])
-            # This updates index to grab selected column, and the last colum
+            # This updates index to grab selected column, and the last column
             #  This last column is the 'index' column (FOOOF object source)
             if col is not None:
                 col = [col, -1]
         else:
             out = np.array([getattr(data, name) for data in self.group_results])
 
-        # Some data can end up as a list of separate arrays.
+        # Some data can end up as a list of separate arrays
         #   If so, concatenate it all into one 2d array
         if isinstance(out[0], np.ndarray):
             out = np.concatenate([arr.reshape(1, len(arr)) \
@@ -326,7 +328,7 @@ class FOOOFGroup(FOOOF):
         file_name : str, optional
             File from which to load data.
         file_path : str, optional
-            Path to directory from which to load from.
+            Path to the directory to load from.
             If not provided, loads from current directory.
         """
 
@@ -470,15 +472,16 @@ def _progress(iterable, verbose, n_to_run):
     Returns
     -------
     pbar : iterable or tqdm object
-        Iterable object, with TQDM progress functionality, if requested.
+        Iterable object, with tqdm progress functionality, if requested.
 
     Raises
     ------
-
+    ValueError
+        If the input for `verbose` is not understood.
 
     Notes
     -----
-    The explicit n_to_run input is required as tqdm requires this in the parallel case.
+    The explicit `n_to_run` input is required as tqdm requires this in the parallel case.
     The `tqdm` object that is potentially returned acts the same as the underlying iterable,
     with the addition of printing out progress every time items are requested.
     """

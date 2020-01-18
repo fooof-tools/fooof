@@ -46,6 +46,7 @@ def compute_pointwise_error_fm(fm, plot_errors=True, return_errors=False, **plt_
     -------
     errors : 1d array
         Calculated values of the difference between the data and the model.
+        Only returned if `return_errors` is True.
     """
 
     if not fm.has_data:
@@ -69,9 +70,9 @@ def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_
     ----------
     fg : FOOOFGroup
         A FOOOFGroup object containing the data and model.
-    plot_errors : bool
+    plot_errors : bool, optional, default: True
         Whether to plot the errors across frequencies.
-    return_errors : bool
+    return_errors : bool, optional, default: False
         Whether to return the calculated errors.
     **plt_kwargs
         Keyword arguments to be passed to the plot function.
@@ -80,12 +81,20 @@ def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_
     -------
     errors : 2d array
         Calculated values of the difference between the data and the models.
+        Only returned if `return_errors` is True.
+
+    Raises
+    ------
+    NoDataError
+        If there is not data available to calculate model errors with.
+    NoModelError
+        If there are no model results available to calculate model errors with.
     """
 
-    if not fg.has_model:
-        raise NoModelError("No model is available to use, can not proceed.")
     if not np.any(fg.power_spectra):
         raise NoDataError("Data must be available in the object to calculate errors.")
+    if not fg.has_model:
+        raise NoModelError("No model is available to use, can not proceed.")
 
     errors = np.zeros_like(fg.power_spectra)
 
@@ -102,5 +111,3 @@ def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_
 
     if return_errors:
         return errors
-
-

@@ -31,7 +31,7 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
         Label(s) for plotted data, to be added in a legend.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_spectrum_plot
+    plot_style : callable, optional, default: style_param_plot
         A function to call to apply styling & aesthetics to the plot.
     **plot_kwargs
         Keyword arguments to pass into the plot call.
@@ -56,7 +56,7 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
                    alpha=plot_kwargs.pop('alpha', 0.7), **plot_kwargs)
 
     # Add axis labels
-    ax.set_xlabel('Center Frequency (Hz)')
+    ax.set_xlabel('Center Frequency')
     ax.set_ylabel('Power')
 
     # Set plot limits
@@ -83,7 +83,7 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
         Label(s) for plotted data, to be added in a legend.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_spectrum_plot
+    plot_style : callable, optional, default: style_param_plot
         A function to call to apply styling & aesthetics to the plot.
     **plot_kwargs
         Keyword arguments to pass into the plot call.
@@ -132,8 +132,8 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
         ax.plot(freqs, avg, color=avg_color, linewidth=lw*3, label=labels)
 
     # Add axis labels
-    ax.set_xlabel('Frequency (Hz)')
-    ax.set_ylabel('Power')
+    ax.set_xlabel('Frequency')
+    ax.set_ylabel('log(Power)')
 
     # Set plot limits
     ax.set_xlim(freq_range)

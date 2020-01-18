@@ -105,11 +105,13 @@ def combine_fooofs(fooofs):
 
     # Add FOOOF results from each FOOOF object to group
     for f_obj in fooofs:
+
         # Add FOOOFGroup object
         if isinstance(f_obj, FOOOFGroup):
             fg.group_results.extend(f_obj.group_results)
             if f_obj.power_spectra is not None:
                 temp_power_spectra = np.vstack([temp_power_spectra, f_obj.power_spectra])
+
         # Add FOOOF object
         else:
             fg.group_results.append(f_obj.get_results())
@@ -132,7 +134,7 @@ def fit_fooof_group_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
     Parameters
     ----------
     fg : FOOOFGroup
-        Fitting object, pre-initialized with desired settings, to fit with.
+        Fitting object, initialized with desired settings, to fit with.
     freqs : 1d array
         Frequency values for the power spectra, in linear space.
     power_spectra : 3d array

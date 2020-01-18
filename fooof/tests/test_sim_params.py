@@ -110,13 +110,13 @@ def test_param_jitter():
 
     params = [1, 1]
 
-    # Check that jitter does get applid when it should
+    # Check that jitter does get applied when it should
     jitterer = param_jitter(params, [0.5, 0.5])
     for ind, jits in zip(range(3), jitterer):
         for p1, j1 in zip(jits, params):
             assert p1 != j1
 
-    # Check that jitter does not get applid when it should not
+    # Check that jitter does not get applied when it should not
     jitterer = param_jitter(params, [0, 0.5])
     for ind, jits in zip(range(3), jitterer):
         assert jits[0] == params[1]

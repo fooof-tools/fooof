@@ -18,7 +18,7 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 
 @check_dependency(plt, 'matplotlib')
 def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
-    """Plots a figure with subplots covering the results from a FOOOFGroup object.
+    """Plots a figure with subplots visualizing the parameters from a FOOOFGroup object.
 
     Parameters
     ----------
@@ -41,7 +41,7 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
         raise NoModelError("No model fit results are available, can not proceed.")
 
     fig = plt.figure(figsize=(14, 10))
-    gs = gridspec.GridSpec(2, 2, wspace=0.35, hspace=0.25, height_ratios=[1, 1.2])
+    gs = gridspec.GridSpec(2, 2, wspace=0.4, hspace=0.25, height_ratios=[1, 1.2])
 
     # Aperiodic parameters plot
     ax0 = plt.subplot(gs[0, 0])
@@ -72,11 +72,11 @@ def plot_fg_ap(fg, ax=None):
     """
 
     if fg.aperiodic_mode == 'knee':
-        plot_scatter_2(fg.get_params('aperiodic_params', 1), 'Knee',
-                       fg.get_params('aperiodic_params', 2), 'Exponent',
+        plot_scatter_2(fg.get_params('aperiodic_params', 'exponent'), 'Knee',
+                       fg.get_params('aperiodic_params', 'knee'), 'Exponent',
                        'Aperiodic Fit', ax=ax)
     else:
-        plot_scatter_1(fg.get_params('aperiodic_params', 1), 'Exponent',
+        plot_scatter_1(fg.get_params('aperiodic_params', 'exponent'), 'Exponent',
                        'Aperiodic Fit', ax=ax)
 
 

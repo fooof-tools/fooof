@@ -207,7 +207,7 @@ def param_sampler(params, probs=None):
 
     >>> aps = param_sampler([[1, 1], [2, 1]], probs=[0.5, 0.5])
 
-    Samples from peak defintions of alpha or alpha & beta, with 75% change of sampling just alpha.
+    Samples from peak definitions of alpha or alpha & beta, with 75% change of sampling just alpha.
 
     >>> peaks = param_sampler([[10, 1, 1], [[10, 1, 1], [20, 0.5, 1]]], probs=[0.75, 0.25])
     """
@@ -249,7 +249,7 @@ def param_jitter(params, jitters):
     Notes
     -----
     - Jitter is added as random samples from a normal (gaussian) distribution.
-        - The jitter specified corresponds to the standard deviation of the normal disrtibution.
+        - The jitter specified corresponds to the standard deviation of the normal distribution.
     - For any parameter for which there should be no jitter, set the corresponding value to zero.
 
     Examples
@@ -268,7 +268,7 @@ def param_jitter(params, jitters):
         params = check_flat(params)
         jitters = check_flat(jitters)
 
-    # While loop allows the generator to be called an arbitrary number of times.
+    # While loop allows the generator to be called an arbitrary number of times
     while True:
 
         out_params = [None] * len(params)

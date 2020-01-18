@@ -1,4 +1,4 @@
-"""Formatted strings for printing out FOOOF related information and data."""
+"""Formatted strings for printing out FOOOF related information."""
 
 import numpy as np
 
@@ -17,7 +17,7 @@ SCV = 70
 ###################################################################################################
 
 def gen_width_warning_str(freq_res, bwl):
-    """Generate a string representation of warning about peak width limits.
+    """Generate a string representation of the warning about peak width limits.
 
     Parameters
     ----------
@@ -31,7 +31,8 @@ def gen_width_warning_str(freq_res, bwl):
         '',
         'FOOOF WARNING: Lower-bound peak width limit is < or ~= the frequency resolution: ' + \
             '{:1.2f} <= {:1.2f}'.format(freq_res, bwl),
-        '\tLower bounds below frequency-resolution have no effect (effective lower bound is the frequency resolution).',
+        '\tLower bounds below frequency-resolution have no effect ' + \
+        '(effective lower bound is the frequency resolution).',
         '\tToo low a limit may lead to overfitting noise as small bandwidth peaks.',
         '\tWe recommend a lower bound of approximately 2x the frequency resolution.',
         ''
@@ -46,11 +47,11 @@ def gen_settings_str(f_obj, description=False, concise=False):
     Parameters
     ----------
     f_obj : FOOOF or FOOOFGroup
-        A FOOOF derived object, from which settings are to be used.
+        An object from which settings can be accessed.
     description : bool, optional, default: True
-        Whether to print out a description with current settings.
+        Whether to also print out a description of the settings.
     concise : bool, optional, default: False
-        Whether to print the report in a concise mode, or not.
+        Whether to print the report in concise mode.
 
     Returns
     -------
@@ -59,11 +60,13 @@ def gen_settings_str(f_obj, description=False, concise=False):
     """
 
     # Parameter descriptions to print out, if requested
-    desc = {'peak_width_limits' : 'Enforced limits for peak widths, in Hz.',
-            'max_n_peaks'       : 'The maximum number of peaks that can be extracted.',
-            'min_peak_height'   : 'Minimum absolute height of a peak, above the aperiodic component.',
-            'peak_threshold'    : 'Threshold at which to stop searching for peaks.',
-            'aperiodic_mode'    : 'The approach taken to fitting the aperiodic component.'}
+    desc = {
+        'peak_width_limits' : 'Enforced limits on peak widths, in Hz.',
+        'max_n_peaks'       : 'The maximum number of peaks that can be extracted.',
+        'min_peak_height'   : 'Minimum absolute height of a peak, above the aperiodic component.',
+        'peak_threshold'    : 'Relative threshold for detecting peaks.',
+        'aperiodic_mode'    : 'The approach taken for fitting the aperiodic component.'
+        }
 
     # Clear description for printing if not requested
     if not description:
@@ -106,14 +109,14 @@ def gen_results_fm_str(fm, concise=False):
     Parameters
     ----------
     fm : FOOOF
-        Object for which results are to be printed.
+        An object from which results can be accessed to be printed.
     concise : bool, optional, default: False
-        Whether to print the report in a concise mode, or not.
+        Whether to print the report in concise mode.
 
     Returns
     -------
     output : str
-        Formatted string of FOOOF model results.
+        Formatted string of model results.
     """
 
     # Returns a null report if no results are available
@@ -137,9 +140,8 @@ def gen_results_fm_str(fm, concise=False):
 
         # Aperiodic parameters
         ('Aperiodic Parameters (offset, ' + ('knee, ' if fm.aperiodic_mode == 'knee' else '') + \
-           'exponent): '),
-        ', '.join(['{:2.4f}'] * len(fm.aperiodic_params_)).format(
-            *fm.aperiodic_params_),
+         'exponent): '),
+        ', '.join(['{:2.4f}'] * len(fm.aperiodic_params_)).format(*fm.aperiodic_params_),
         '',
 
         # Peak parameters
@@ -170,14 +172,14 @@ def gen_results_fg_str(fg, concise=False):
     Parameters
     ----------
     fg : FOOOFGroup
-        Group object for which results are to be printed.
+        An object from which results can be accessed to be printed.
     concise : bool, optional, default: False
-        Whether to print the report in a concise mode, or not.
+        Whether to print the report in concise mode.
 
     Returns
     -------
     output : str
-        Formatted string of FOOOFGroup results.
+        Formatted string of results.
 
     Raises
     ------
@@ -192,15 +194,12 @@ def gen_results_fg_str(fg, concise=False):
     n_peaks = len(fg.get_params('peak_params'))
     r2s = fg.get_params('r_squared')
     errors = fg.get_params('error')
-    if fg.aperiodic_mode == 'knee':
-        kns = fg.get_params('aperiodic_params', 1)
-        sls = fg.get_params('aperiodic_params', 2)
-    else:
-        kns = np.array([0])
-        sls = fg.get_params('aperiodic_params', 1)
+    exps = fg.get_params('aperiodic_params', 'exponent')
+    kns = fg.get_params('aperiodic_params', 'knee') \
+        if fg.aperiodic_mode == 'knee' else np.array([0])
 
     # Check if there are any power spectra that failed to fit
-    n_failed = sum(np.isnan(sls))
+    n_failed = sum(np.isnan(exps))
 
     str_lst = [
 
@@ -222,15 +221,15 @@ def gen_results_fg_str(fg, concise=False):
         '',
 
         # Aperiodic parameters - knee fit status, and quick exponent description
-        'Power spectra were fit {} a knee.'.format('with' if fg.aperiodic_mode == 'knee' else 'without'),
+        'Power spectra were fit {} a knee.'.format(\
+            'with' if fg.aperiodic_mode == 'knee' else 'without'),
         '',
-        *[el for el in ['Aperiodic Knee Values',
-                        'Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
+        'Aperiodic Fit Values:',
+        *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
                         .format(np.nanmin(kns), np.nanmax(kns), np.nanmean(kns)),
                        ] if fg.aperiodic_mode == 'knee'],
-        'Aperiodic Exponent Values',
-        'Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
-        .format(np.nanmin(sls), np.nanmax(sls), np.nanmean(sls)),
+        'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(np.nanmin(exps), np.nanmax(exps), np.nanmean(exps)),
         '',
 
         # Peak Parameters
@@ -240,9 +239,9 @@ def gen_results_fg_str(fg, concise=False):
 
         # Fitting stats - error and r^2
         'Goodness of fit metrics:',
-        '   R2s -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
+        '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(np.nanmin(r2s), np.nanmax(r2s), np.nanmean(r2s)),
-        'Errors -  Min: {:6.4f}, Max: {:6.4f}, Mean: {:5.4f}'
+        'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(np.nanmin(errors), np.nanmax(errors), np.nanmean(errors)),
         '',
 

@@ -188,7 +188,7 @@ def infer_ap_func(aperiodic_params):
     Returns
     -------
     aperiodic_mode : {'fixed', 'knee'}
-        Which kind of aperiodic fitting function parameters are consistent with.
+        Which kind of aperiodic fitting function the given parameters are consistent with.
 
     Raises
     ------

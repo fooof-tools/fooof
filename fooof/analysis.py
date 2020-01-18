@@ -85,7 +85,7 @@ def get_band_peak_group(peak_params, band, n_fits):
 
     band_peaks = np.zeros(shape=[n_fits, 3])
 
-    # Extacts an array per FOOOF fit, and extracts band peaks from it
+    # Extracts an array per FOOOF fit, and extracts band peaks from it
     for ind in range(n_fits):
         band_peaks[ind, :] = get_band_peak(peak_params[tuple([peak_params[:, -1] == ind])][:, 0:3],
                                            band=band, ret_one=True)

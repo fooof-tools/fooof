@@ -52,4 +52,4 @@ def tbands():
 @pytest.fixture(scope='session')
 def skip_if_no_mpl():
     if not safe_import('matplotlib'):
-        pytest.skip('Matplotlib not availabe: skipping test.')
+        pytest.skip('Matplotlib not available: skipping test.')

@@ -21,7 +21,7 @@ class Bands():
         Parameters
         ----------
         input_bands : dict, optional
-            A dictionary of oscillation bands to use.
+            A dictionary of oscillation bands.
         """
 
         self.bands = OrderedDict()

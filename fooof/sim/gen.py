@@ -41,7 +41,8 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
     freq_range : list of [float, float]
         Frequency range of desired frequency vector, as [f_low, f_high], inclusive.
     aperiodic_params : list of float
-        Parameters to create the aperiodic component of a power spectrum. Length of 2 or 3 (see note).
+        Parameters to create the aperiodic component of a power spectrum.
+        Length should be 2 or 3 (see note).
     gaussian_params : list of float or list of list of float
         Parameters to create peaks. Total length of n_peaks * 3 (see note).
     nlv : float, optional, default: 0.005

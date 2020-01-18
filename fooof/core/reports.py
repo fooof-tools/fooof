@@ -1,4 +1,4 @@
-"""Generate reports from FOOOF and FOOOF derivative objects."""
+"""Generate reports from FOOOF objects."""
 
 from fooof.core.io import fname, fpath
 from fooof.core.modutils import safe_import, check_dependency
@@ -76,7 +76,7 @@ def save_report_fg(fg, file_name, file_path=None):
 
     # Initialize figure
     fig = plt.figure(figsize=(16, 20))
-    gs = gridspec.GridSpec(3, 2, wspace=0.35, hspace=0.25, height_ratios=[0.8, 1.0, 1.0])
+    gs = gridspec.GridSpec(3, 2, wspace=0.4, hspace=0.25, height_ratios=[0.8, 1.0, 1.0])
 
     # First / top: text results
     ax0 = plt.subplot(gs[0, :])

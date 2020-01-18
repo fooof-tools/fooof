@@ -51,7 +51,7 @@ def test_expo_nk_function():
 
     assert np.all(ys)
 
-    # By design, this expo function assumes log-space ys, linear xs
+    # By design, this expo function assumes linear xs and log-space ys
     #   Where the log-log should be a straight line. Use that to test.
     sl_meas, off_meas, _, _, _ = linregress(np.log10(xs), ys)
 

@@ -117,8 +117,8 @@ def recursive_plot(data, plot_function, ax, **kwargs):
 
     # Repeat is used to work with None inputs
     # Otherwise, expect a list of values, for each element in data, and so make an iterator
-    kwargs = {key : repeat(val) if not isinstance(val, list)
-              else iter(val) for key, val in kwargs.items()}
+    kwargs = {key : repeat(val) if not isinstance(val, list) else iter(val) \
+                    for key, val in kwargs.items()}
 
     # Pass each array of data recursively into plot function
     # Each element of data is added to the same plot axis, with any
