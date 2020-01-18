@@ -256,7 +256,8 @@ class FOOOF():
 
         if clear_results:
 
-            self.aperiodic_params_ = np.array([np.nan] * 2 if self.aperiodic_mode is 'fixed' else 3)
+            self.aperiodic_params_ = np.array([np.nan] * \
+                (2 if self.aperiodic_mode is 'fixed' else 3))
             self.gaussian_params_ = np.empty([0, 3])
             self.peak_params_ = np.empty([0, 3])
             self.r_squared_ = np.nan

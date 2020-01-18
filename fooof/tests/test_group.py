@@ -127,25 +127,37 @@ def test_fg_fail():
     outs4 = ntfg.get_params('peak_params', 0)
     outs5 = ntfg.get_params('gaussian_params', 2)
 
-def test_fg_drop(tfg):
-    """Test function to drop from FOOOFGroup."""
+def test_fg_drop():
+    """Test function to drop results from FOOOFGroup."""
 
     n_spectra = 3
     xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = FOOOFGroup(verbose=False)
+
+    # Test dropping one ind
     tfg.fit(xs, ys)
-
     tfg.drop(0)
-    for res in tfg.group_results[0]:
-        assert res is None
 
-    tfg.drop([0, 1])
-    for res in tfg.group_results[1]:
-        assert res is None
+    dropped_fres = tfg.group_results[0]
+    for field in dropped_fres._fields:
+        assert np.all(np.isnan(getattr(dropped_fres, field)))
 
-    for res in tfg.group_results[2]:
-        assert res is not None
+    # Test dropping multiple inds
+    tfg.fit(xs, ys)
+    drop_inds = [0, 2]
+    tfg.drop(drop_inds)
+
+    for drop_ind in drop_inds:
+        dropped_fres = tfg.group_results[drop_ind]
+        for field in dropped_fres._fields:
+            assert np.all(np.isnan(getattr(dropped_fres, field)))
+
+    # Test that a FOOOFGroup that has had inds dropped still works with `get_params`
+    cfs = tfg.get_params('peak_params', 1)
+    exps = tfg.get_params('aperiodic_params', 'exponent')
+    assert np.all(np.isnan(exps[drop_inds]))
+    assert np.all(np.invert(np.isnan(np.delete(exps, drop_inds))))
 
 def test_fg_fit_par():
     """Test FOOOFGroup fit, running in parallel."""

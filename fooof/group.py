@@ -13,7 +13,6 @@ import numpy as np
 
 from fooof import FOOOF
 from fooof.plts.fg import plot_fg
-from fooof.data import FOOOFResults
 from fooof.core.info import get_indices
 from fooof.core.errors import NoModelError
 from fooof.core.reports import save_report_fg
@@ -226,9 +225,10 @@ class FOOOFGroup(FOOOF):
         This method sets the model fits as null, and preserves the shape of the model fits.
         """
 
-        inds = [inds] if isinstance(inds, int) else inds
-        for ind in inds:
-            self.group_results[ind] = FOOOFResults(None, None, None, None, None)
+        for ind in [inds] if isinstance(inds, int) else inds:
+            fm = self.get_fooof(ind)
+            fm._reset_data_results(clear_results=True)
+            self.group_results[ind] = fm.get_results()
 
 
     def get_results(self):
