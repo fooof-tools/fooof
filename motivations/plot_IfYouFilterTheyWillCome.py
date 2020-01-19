@@ -19,9 +19,9 @@ Filtering aperiodic signals.
 ###################################################################################################
 
 import numpy as np
-from neurodsp import sim, filt
 
 # Imports from NeuroDSP to simulate time series
+from neurodsp import sim, filt
 from neurodsp.utils import create_times
 from neurodsp.plts import plot_time_series
 

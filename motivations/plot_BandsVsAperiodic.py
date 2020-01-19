@@ -123,7 +123,7 @@ plt.title('Hypothesis - Flattened Bands Model', {'fontsize' : 24, 'fontweight' :
 # Periodic & Aperiodic Model
 # --------------------------
 #
-# An alternative posibility is that what is different between age groups is predominantly the 1/f.
+# An alternative possibility is that what is different between age groups is predominantly the 1/f.
 #
 # In this simulation, we simulate child and adult power spectra as having different 1/f properties.
 #

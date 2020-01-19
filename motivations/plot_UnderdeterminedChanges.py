@@ -1,5 +1,5 @@
 """
-Underdetermined measures
+Underdetermined Measures
 ========================
 
 Figure 1 from the FOOOF paper, in quantitatively exact code.
@@ -65,7 +65,8 @@ fig, ax = plt.subplots(2, 2, figsize=(16, 12))
 for cur_ax, (title, cur_dat) in zip(ax.reshape(-1), ps_comps.items()):
 
     # Create COMMENT
-    plot_spectra_shading(fs, [ps_base, cur_dat], [8, 12], log_freqs=True, log_powers=True, ax=cur_ax)
+    plot_spectra_shading(fs, [ps_base, cur_dat], [8, 12],
+        log_freqs=True, log_powers=True, ax=cur_ax)
 
     # Add the title, and do some plot styling
     cur_ax.set_title(title, {'fontsize' : 20})

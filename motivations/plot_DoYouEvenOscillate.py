@@ -180,7 +180,7 @@ plot_power_spectra(fs, ps)
 # --------------------------------------------------
 #
 # In principle, signals that display power across all frequencies need not arise from, or be
-# best descriped as, signals with rhythmic components.
+# best described as, signals with rhythmic components.
 #
 # Of course, it could be the case that such a signal does indeed arise from the summation across
 # many oscillations. Here we will explore that.
@@ -284,7 +284,7 @@ plot_power_spectra(fs, ps)
 # rhythmic components, the question becomes what is the best / most likely description for
 # neural signals.
 #
-# Neural signals clearly containt 1/f activity, as seen in their frequency representations.
+# Neural signals clearly contain 1/f activity, as seen in their frequency representations.
 #
 # They also sometimes do contain clear rhythmic components, visible as clear and relatively
 # consistent rhythms in the time series, and regions of extra power, or peaks, in the power
@@ -313,7 +313,7 @@ plt.plot(kernel)
 # 3.2: Local Field Potentials
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Simulate a local field potential as aggregrate activity of post-synaptic potentials.
+# Simulate a local field potential as aggregate activity of post-synaptic potentials.
 #
 
 ###################################################################################################
