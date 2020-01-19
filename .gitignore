@@ -44,4 +44,5 @@ _lint.txt
 doc/_build/*
 doc/auto_examples/*
 doc/auto_tutorials/*
+doc/auto_motivations/*
 doc/generated/*
