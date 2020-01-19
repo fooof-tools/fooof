@@ -45,7 +45,7 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
     Notes
     -----
     Since FOOOF objects store power values in log spacing,
-    the y-axis (power) is plotted in log spacing, by default.
+    the y-axis (power) is plotted in log spacing by default.
     """
 
     ax = check_ax(ax, FIGSIZE_SPECTRAL)
@@ -76,8 +76,8 @@ def plot_fm(fm, plt_log=False, save_fig=False, file_name='FOOOF_fit', file_path=
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_peak_iter(fm, plot_style=style_spectrum_plot):
-    """Plots a series of plots illustrating the peak search from a flattened spectrum.
+def plot_fm_peak_iter(fm, plot_style=style_spectrum_plot):
+    """Plot a series of plots illustrating the peak search from a flattened spectrum.
 
     Parameters
     ----------

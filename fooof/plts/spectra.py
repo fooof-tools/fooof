@@ -165,9 +165,10 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_cen
     check_n_style(plot_style, ax, kwargs.get('log_freqs', False), kwargs.get('log_powers', False))
 
 
+@check_dependency(plt, 'matplotlib')
 def plot_spectrum_error(freqs, error, shade=None, log_freqs=False,
                         ax=None, plot_style=style_spectrum_plot):
-    """Plot the frequency by frequency error values
+    """Plot the frequency by frequency error values.
 
     Parameters
     ----------

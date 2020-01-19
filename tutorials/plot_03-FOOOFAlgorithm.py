@@ -38,7 +38,7 @@ from fooof.sim.gen import gen_aperiodic
 #  Note that these are used here for demonstration: - you do not need to import them to run FOOOF
 from fooof.core.funcs import gaussian_function
 from fooof.plts.spectra import plot_spectrum
-from fooof.plts.fm import plot_peak_iter
+from fooof.plts.fm import plot_fm_peak_iter
 
 ###################################################################################################
 
@@ -124,7 +124,7 @@ plot_spectrum(fm.freqs, fm._spectrum_flat, plt_log, label='Flattened Spectrum')
 ###################################################################################################
 
 # Plot the iterative approach to finding peaks from the flattened spectrum
-plot_peak_iter(fm)
+plot_fm_peak_iter(fm)
 
 ###################################################################################################
 #

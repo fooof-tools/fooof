@@ -2,7 +2,6 @@
 
 import numpy as np
 
-from fooof.data import FOOOFResults
 from fooof.tests.utils import default_group_params
 
 from fooof.sim.gen import *

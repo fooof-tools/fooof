@@ -82,6 +82,7 @@ class Stepper():
     """
 
     def __init__(self, start, stop, step):
+        """Initialize a Stepper object."""
 
         self._check_values(start, stop, step)
 
@@ -146,15 +147,15 @@ def param_iter(params):
     Raises
     ------
     ValueError
-        If the number of iterations given is greater than one.
+        If the number of Stepper objects given is greater than one.
 
     Examples
     --------
-    Iterates across exponent values from 1 to 2, in steps of 0.1.
+    Iterate across exponent values from 1 to 2, in steps of 0.1:
 
     >>> ap = param_iter([Stepper(1, 2, 0.1), 1])
 
-    Iterates over center frequency values from 8 to 12 in increments of 0.25.
+    Iterate over center frequency values from 8 to 12 in increments of 0.25:
 
     >>> peak = param_iter([Stepper(8, 12, .25), 1, 1])
     """
@@ -203,11 +204,11 @@ def param_sampler(params, probs=None):
 
     Examples
     --------
-    Samples from aperiodic definitions with high and low exponents, with 50% probability of each.
+    Sample from aperiodic definitions with high and low exponents, with 50% probability of each:
 
     >>> aps = param_sampler([[1, 1], [2, 1]], probs=[0.5, 0.5])
 
-    Samples from peak definitions of alpha or alpha & beta, with 75% change of sampling just alpha.
+    Sample from peak definitions of alpha or alpha & beta, with 75% change of sampling just alpha:
 
     >>> peaks = param_sampler([[10, 1, 1], [[10, 1, 1], [20, 0.5, 1]]], probs=[0.75, 0.25])
     """
@@ -239,7 +240,7 @@ def param_jitter(params, jitters):
         Possible parameter values.
     jitters : list of lists or list of float
         The scale of the jitter for each parameter.
-        Must be the same shape and organization as params.
+        Must be the same shape and organization as `params`.
 
     Yields
     ------
@@ -249,16 +250,17 @@ def param_jitter(params, jitters):
     Notes
     -----
     - Jitter is added as random samples from a normal (gaussian) distribution.
+
         - The jitter specified corresponds to the standard deviation of the normal distribution.
     - For any parameter for which there should be no jitter, set the corresponding value to zero.
 
     Examples
     --------
-    Jitters aperiodic definitions, for offset and exponent, each with the same amount of jitter.
+    Jitter aperiodic definitions, for offset and exponent, each with the same amount of jitter:
 
     >>> aps = param_jitter([1, 1], [0.1, 0.1])
 
-    Jitters peak definitions, only jittering center frequency, by different amounts for alpha & beta.
+    Jitter center frequency of peak definitions, by different amounts for alpha & beta:
 
     >>> peaks = param_jitter([[10, 1, 1], [20, 1, 1]], [[0.1, 0, 0], [0.5, 0, 0]])
     """

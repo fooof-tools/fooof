@@ -62,21 +62,21 @@ class FOOOFGroup(FOOOF):
 
     @property
     def has_data(self):
-        """Property attribute for if the object has data."""
+        """Indicator for if the object contains data."""
 
         return True if np.any(self.power_spectra) else False
 
 
     @property
     def has_model(self):
-        """Property attribute for if the object has a model fit."""
+        """Indicator for if the object contains model fits."""
 
         return True if self.group_results else False
 
 
     @property
     def n_peaks_(self):
-        """How many peaks are fit in the model."""
+        """How many peaks were fit for each model."""
 
         return [f_res.peak_params.shape[0] for f_res in self] if self.has_model else None
 
@@ -321,7 +321,7 @@ class FOOOFGroup(FOOOF):
 
 
     def load(self, file_name='FOOOFGroup_results', file_path=None):
-        """Load FOOOFGroup data from file, reconstructing the group_results.
+        """Load FOOOFGroup data from file.
 
         Parameters
         ----------
@@ -351,7 +351,7 @@ class FOOOFGroup(FOOOF):
 
 
     def get_fooof(self, ind, regenerate=False):
-        """Get a FOOOF object from the specified model fit.
+        """Get a FOOOF object for a specified model fit.
 
         Parameters
         ----------

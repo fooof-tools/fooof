@@ -68,8 +68,8 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
 
     - Each gaussian description is a set of three values:
 
-      * mean (Center Frequency), height (Power), and standard deviation (Bandwidth).
-      * Make sure any center frequencies you request are within the simulated frequency range
+      * Mean (Center Frequency), height (Power), and standard deviation (Bandwidth).
+      * Make sure any center frequencies you request are within the simulated frequency range.
 
     - The total number of parameters that need to be specified is number of peaks * 3
 
@@ -100,7 +100,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
     Parameters
     ----------
     n_spectra : int
-        The number of power spectra to generate in the matrix.
+        The number of power spectra to generate.
     freq_range : list of [float, float]
         Frequency range of desired frequency vector, as [f_low, f_high], inclusive.
     aperiodic_params : list of float or generator
@@ -141,7 +141,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
 
     - Each gaussian description is a set of three values:
 
-      * mean (Center Frequency), height (Power), and standard deviation (Bandwidth).
+      * Mean (Center Frequency), height (Power), and standard deviation (Bandwidth).
       * Make sure any center frequencies you request are within the simulated frequency range.
 
     Examples

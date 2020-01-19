@@ -13,7 +13,7 @@ class NoDataError(FOOOFError):
     pass
 
 class DataError(FOOOFError):
-    """Error if there is a problem with the data."""
+    """Error for if there is a problem with the data."""
     pass
 
 class InconsistentDataError(FOOOFError):

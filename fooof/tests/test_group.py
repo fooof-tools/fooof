@@ -104,7 +104,9 @@ def test_fg_fit_knee():
     assert tfg.has_model
 
 def test_fg_fail():
-    """Test FOOOFGroup fit, in a way that some fits will fail. Check that model failures don't cause error."""
+    """Test FOOOFGroup fit, in a way that some fits will fail.
+    Also checks that model failures don't cause errors.
+    """
 
     # Create some noisy spectra that will be hard to fit
     fs, ps, _ = gen_group_power_spectra(10, [3, 6], [1, 1], [10, 1, 1], nlvs=10)

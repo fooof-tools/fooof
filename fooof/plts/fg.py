@@ -18,7 +18,7 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 
 @check_dependency(plt, 'matplotlib')
 def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
-    """Plots a figure with subplots visualizing the parameters from a FOOOFGroup object.
+    """Plot a figure with subplots visualizing the parameters from a FOOOFGroup object.
 
     Parameters
     ----------

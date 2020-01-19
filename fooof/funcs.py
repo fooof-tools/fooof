@@ -4,7 +4,7 @@ import numpy as np
 
 from fooof import FOOOF, FOOOFGroup
 from fooof.data import FOOOFResults
-from fooof.utils import compare_info
+from fooof.checks import compare_info
 from fooof.analysis import get_band_peak_fg
 from fooof.core.errors import NoModelError, IncompatibleSettingsError
 
@@ -12,7 +12,7 @@ from fooof.core.errors import NoModelError, IncompatibleSettingsError
 ###################################################################################################
 
 def average_fg(fg, bands, avg_method='mean', generate_model=True):
-    """Average across a FOOOFGroup object.
+    """Average across model fits in a FOOOFGroup object.
 
     Parameters
     ----------
@@ -138,7 +138,7 @@ def fit_fooof_group_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
     freqs : 1d array
         Frequency values for the power spectra, in linear space.
     power_spectra : 3d array
-        Power values, in linear space, as [n_conditions, n_power_spectra, n_freqs].
+        Power values, in linear space, with shape as: [n_conditions, n_power_spectra, n_freqs].
     freq_range : list of [float, float], optional
         Desired frequency range to fit. If not provided, fits the entire given range.
     n_jobs : int, optional, default: 1

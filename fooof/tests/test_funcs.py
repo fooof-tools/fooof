@@ -5,8 +5,7 @@ from py.test import raises
 import numpy as np
 
 from fooof import FOOOFGroup
-from fooof.utils import compare_info
-from fooof.group import FOOOFGroup
+from fooof.checks import compare_info
 from fooof.sim import gen_group_power_spectra
 from fooof.core.errors import NoModelError, IncompatibleSettingsError
 
@@ -32,8 +31,10 @@ def test_average_fg(tfg, tbands):
 
 def test_combine_fooofs(tfm, tfg):
 
-    tfm2 = tfm.copy(); tfm3 = tfm.copy()
-    tfg2 = tfg.copy(); tfg3 = tfg.copy()
+    tfm2 = tfm.copy()
+    tfm3 = tfm.copy()
+    tfg2 = tfg.copy()
+    tfg3 = tfg.copy()
 
     # Check combining 2 FOOOFs
     nfg1 = combine_fooofs([tfm, tfm2])
@@ -80,7 +81,7 @@ def test_combine_fooofs(tfm, tfg):
     tfg2._reset_data_results(False, True, True, True)
     nfg6 = combine_fooofs([tfm2, tfg2])
     assert len(nfg6) == 1 + len(tfg2)
-    assert nfg6.power_spectra == None
+    assert nfg6.power_spectra is None
 
 def test_combine_errors(tfm, tfg):
 

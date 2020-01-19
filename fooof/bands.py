@@ -11,8 +11,7 @@ class Bands():
     Attributes
     ----------
     bands : dict
-        Dictionary of band definitions.
-        Each entry should be as {'label' : (f_low, f_high)}.
+        Band definitions. Each entry should be {'label' : (f_low, f_high)}.
     """
 
     def __init__(self, input_bands={}):
@@ -57,13 +56,13 @@ class Bands():
 
     @property
     def labels(self):
-        """Get the labels for all bands defined in the object."""
+        """Labels for all the bands defined in the object."""
 
         return list(self.bands.keys())
 
     @property
     def n_bands(self):
-        """Get the number of bands defined in the object."""
+        """The number of bands defined in the object."""
 
         return len(self.bands)
 

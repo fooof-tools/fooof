@@ -96,7 +96,7 @@ class FOOOF():
     freq_res : float
         Frequency resolution of the power spectrum.
     fooofed_spectrum_ : 1d array
-        The full model fit of the power spectrum, in log10 scale
+        The full model fit of the power spectrum, in log10 scale.
     aperiodic_params_ : 1d array
         Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
         The knee parameter is only included if aperiodic component is fit with a knee.
@@ -123,8 +123,7 @@ class FOOOF():
     - Input power spectra must be provided in linear scale.
       Internally they are stored in log10 scale, as this is what the model operates upon.
     - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
-      In particular, raw FFT inputs are not appropriate, we recommend using either Welch's
-      procedure, or a median filter smoothing on the FFT output before running FOOOF.
+      For example, raw FFT inputs are not appropriate.
     - Where possible and appropriate, use longer time segments for power spectrum calculation to
       get smoother power spectra, as this will give better FOOOF fits.
     - The gaussian params are those that define the gaussian of the fit, where as the peak
@@ -181,14 +180,14 @@ class FOOOF():
 
     @property
     def has_data(self):
-        """Property attribute for if the object has data."""
+        """Indicator for if the object contains data."""
 
         return True if np.any(self.power_spectrum) else False
 
 
     @property
     def has_model(self):
-        """Property attribute for if the object has a model fit.
+        """Indicator for if the object contains a model fit.
 
         Notes
         -----
@@ -203,7 +202,7 @@ class FOOOF():
 
     @property
     def n_peaks_(self):
-        """How many peaks fit in the model."""
+        """How many peaks were fit in the model."""
 
         return self.peak_params_.shape[0] if self.has_model else None
 
@@ -1011,7 +1010,7 @@ class FOOOF():
 
 
     def _calc_r_squared(self):
-        """Calculate the r-squared goodness of fit of the full model, compared to the original data."""
+        """Calculate the r-squared goodness of fit of the model, compared to the original data."""
 
         r_val = np.corrcoef(self.power_spectrum, self.fooofed_spectrum_)
         self.r_squared_ = r_val[0][1] ** 2

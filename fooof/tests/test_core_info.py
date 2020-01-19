@@ -7,7 +7,7 @@ from fooof.core.info import *
 
 def test_get_description(tfm):
 
-    desc =  get_description()
+    desc = get_description()
     objs = dir(tfm)
 
     # Test that everything in dict is a valid component of the fooof object

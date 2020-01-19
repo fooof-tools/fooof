@@ -89,7 +89,8 @@ def test_param_iter():
     # Test multiple stepper error
     step = Stepper(8, 12, .1)
     with raises(ValueError):
-        for params in param_iter([[step, step, step]]): pass
+        for params in param_iter([[step, step, step]]):
+            continue
 
 def test_param_sampler():
 
@@ -100,7 +101,8 @@ def test_param_sampler():
 
     # Test can take prob inputs, and size mismatch error
     gen = param_sampler(pos, probs=[0.85, 0.05, 0.05, 0.05])
-    for ind, el in zip(range(3), gen): assert el in pos
+    for ind, el in zip(range(3), gen):
+        assert el in pos
 
     gen = param_sampler(pos, probs=[0.5])
     with raises(ValueError):
@@ -111,6 +113,7 @@ def test_param_jitter():
     params = [1, 1]
 
     # Check that jitter does get applied when it should
+    #   Note: the zip range is used because otherwise this is an infinite loop
     jitterer = param_jitter(params, [0.5, 0.5])
     for ind, jits in zip(range(3), jitterer):
         for p1, j1 in zip(jits, params):
@@ -119,4 +122,4 @@ def test_param_jitter():
     # Check that jitter does not get applied when it should not
     jitterer = param_jitter(params, [0, 0.5])
     for ind, jits in zip(range(3), jitterer):
-        assert jits[0] == params[1]
+       assert jits[0] == params[1]

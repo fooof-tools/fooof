@@ -3,7 +3,6 @@
 import os
 import pkg_resources as pkg
 
-from fooof import FOOOF
 from fooof.core.info import get_description
 
 from fooof.core.io import *
@@ -102,7 +101,9 @@ def test_save_fg_fobj(tfg):
     assert os.path.exists(os.path.join(file_path, file_name + '.json'))
 
 def test_load_json_str():
-    """Test loading JSON file, with str file specifier. Loads files from test_save_fm_str."""
+    """Test loading JSON file, with str file specifier.
+    Loads files from test_save_fm_str.
+    """
 
     file_name = 'test_fooof_str_all'
     file_path = pkg.resource_filename(__name__, 'test_files')
@@ -112,7 +113,9 @@ def test_load_json_str():
     assert data
 
 def test_load_json_fobj():
-    """Test loading JSON file, with file object file specifier. Loads files from test_save_fm_str."""
+    """Test loading JSON file, with file object file specifier.
+    Loads files from test_save_fm_str.
+    """
 
     file_name = 'test_fooof_str_all'
     file_path = pkg.resource_filename(__name__, 'test_files')
@@ -123,7 +126,9 @@ def test_load_json_fobj():
     assert data
 
 def test_load_jsonlines():
-    """Test loading JSONlines file. Loads files from test_save_fg."""
+    """Test loading JSONlines file.
+    Loads files from test_save_fg.
+    """
 
     res_file_name = 'test_fooof_group_res'
     file_path = pkg.resource_filename(__name__, 'test_files')

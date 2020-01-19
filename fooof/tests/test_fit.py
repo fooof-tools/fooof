@@ -284,10 +284,10 @@ def test_fooof_resets():
 
     for data in ['data', 'model_components']:
         for field in desc[data]:
-            assert getattr(tfm, field) == None
+            assert getattr(tfm, field) is None
     for field in desc['results']:
         assert np.all(np.isnan(getattr(tfm, field)))
-    assert tfm.freqs == None and tfm.fooofed_spectrum_ == None
+    assert tfm.freqs is None and tfm.fooofed_spectrum_ is None
 
 def test_fooof_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""

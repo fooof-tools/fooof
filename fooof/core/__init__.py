@@ -1,0 +1,1 @@
+"""Private sub-module for core functions for FOOOF."""

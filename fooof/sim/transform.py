@@ -32,7 +32,7 @@ def rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation):
     -----
     Warning: This function should only be applied to spectra without a knee.
     If using simulated data, this is spectra created in 'fixed' mode.
-    This is because the rotation applied will is inconsistent with
+    This is because the rotation applied is inconsistent with
     the formulation of knee spectra, and will change them in an
     unspecified way, not just limited to doing the rotation.
     """
@@ -95,7 +95,7 @@ def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, sim_p
     -----
     Warning: This function should only be applied to spectra without a knee.
     If using simulated data, this is spectra created in 'fixed' mode.
-    This is because the rotation applied will is inconsistent with
+    This is because the rotation applied is inconsistent with
     the formulation of knee spectra, and will change them in an
     unspecified way, not just limited to doing the rotation.
     """

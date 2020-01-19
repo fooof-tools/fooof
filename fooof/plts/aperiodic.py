@@ -16,7 +16,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 @check_dependency(plt, 'matplotlib')
 def plot_aperiodic_params(aps, colors=None, labels=None,
                           ax=None, plot_style=style_param_plot, **plot_kwargs):
-    """Plot peaks as dots representing center frequency, power and bandwidth.
+    """Plot aperiodic parameters as dots.
 
     Parameters
     ----------
@@ -57,7 +57,7 @@ def plot_aperiodic_params(aps, colors=None, labels=None,
 def plot_aperiodic_fits(aps, freq_range, control_offset=False,
                         log_freqs=False, colors=None, labels=None,
                         ax=None, plot_style=style_param_plot, **plot_kwargs):
-    """Plot aperiodic components, comparing between groups.
+    """Plot reconstructions of model aperiodic fits.
 
     Parameters
     ----------

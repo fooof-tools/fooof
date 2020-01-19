@@ -1,23 +1,21 @@
-"""Public utility & helper functions for FOOOF."""
+"""Public utility functions."""
 
 import numpy as np
-
-from fooof.core.info import get_description
 
 ###################################################################################################
 ###################################################################################################
 
 def trim_spectrum(freqs, power_spectra, f_range):
-    """Extract frequency range of interest from power spectra.
+    """Extract a frequency range from power spectra.
 
     Parameters
     ----------
     freqs : 1d array
-        Frequency values for the PSD.
+        Frequency values for the power spectrum.
     power_spectra : 1d or 2d array
         Power spectral density values.
     f_range: list of [float, float]
-        Frequency range to restrict to.
+        Frequency range to restrict to, as [lowest_freq, highest_freq].
 
     Returns
     -------
@@ -43,47 +41,20 @@ def trim_spectrum(freqs, power_spectra, f_range):
     return freqs_ext, power_spectra_ext
 
 
-def get_info(f_obj, aspect):
-    """Get a specified selection of information from a FOOOF derived object.
+def compute_pointwise_error(model, data):
+    """Calculate pointwise error between original data and a model fit of that data.
 
     Parameters
     ----------
-    f_obj : FOOOF or FOOOFGroup
-        FOOOF derived object to get attributes from.
-    aspect : {'settings', 'meta_data', 'results'}
-        Which set of attributes to compare the objects across.
+    model : 1d array
+        The model.
+    data : 1d array
+        The original data that is being modeled.
 
     Returns
     -------
-    dict
-        The set of specified info from the FOOOF derived object.
+    1d array
+        Calculated values of the difference between the data and the model.
     """
 
-    return {key : getattr(f_obj, key) for key in get_description()[aspect]}
-
-
-def compare_info(lst, aspect):
-    """Compare a specified aspect of FOOOF objects across instances.
-
-    Parameters
-    ----------
-    lst : list of FOOOF or list of FOOOFGroup
-        FOOOF related objects whose attributes are to be compared.
-    aspect : {'setting', 'meta_data'}
-        Which set of attributes to compare the objects across.
-
-    Returns
-    -------
-    consistent : bool
-        Whether the settings are consistent across the input list of objects.
-    """
-
-    # Check specified aspect of the objects are the same across instances
-    for f_obj_1, f_obj_2 in zip(lst[:-1], lst[1:]):
-        if getattr(f_obj_1, 'get_' + aspect)() != getattr(f_obj_2, 'get_' + aspect)():
-            consistent = False
-            break
-    else:
-        consistent = True
-
-    return consistent
+    return np.abs(model - data)

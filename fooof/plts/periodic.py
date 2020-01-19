@@ -17,7 +17,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 @check_dependency(plt, 'matplotlib')
 def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
                      ax=None, plot_style=style_param_plot, **plot_kwargs):
-    """Plot peaks as dots representing center frequency, power and bandwidth.
+    """Plot peak parameters as dots representing center frequency, power and bandwidth.
 
     Parameters
     ----------
@@ -60,7 +60,8 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
     ax.set_ylabel('Power')
 
     # Set plot limits
-    if freq_range: ax.set_xlim(freq_range)
+    if freq_range:
+        ax.set_xlim(freq_range)
     ax.set_ylim([0, ax.get_ylim()[1]])
 
     check_n_style(plot_style, ax)
@@ -68,7 +69,7 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
 
 def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
                    ax=None, plot_style=style_param_plot, **plot_kwargs):
-    """Plot reconstructions of peak model fits.
+    """Plot reconstructions of model peak fits.
 
     Parameters
     ----------

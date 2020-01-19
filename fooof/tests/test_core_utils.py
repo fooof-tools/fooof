@@ -5,8 +5,6 @@ from itertools import repeat
 
 from py.test import raises
 
-from fooof import FOOOF
-
 from fooof.core.utils import *
 
 ###################################################################################################
