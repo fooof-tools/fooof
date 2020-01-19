@@ -4,7 +4,7 @@
 API Documentation
 =================
 
-This is the API reference for classes & functions in the FOOOF module.
+This is the API reference for the FOOOF module.
 
 Table of Contents
 =================
@@ -15,8 +15,13 @@ Table of Contents
 
 .. currentmodule:: fooof
 
-FOOOF Object
-------------
+FOOOF Objects
+-------------
+
+FOOOF objects that handle data and fit models to parameterize neural power spectra.
+
+Base FOOOF Object
+~~~~~~~~~~~~~~~~~
 
 .. autosummary::
    :toctree: generated/
@@ -24,25 +29,22 @@ FOOOF Object
    FOOOF
 
 FOOOFGroup Object
------------------
+~~~~~~~~~~~~~~~~~
 
 .. autosummary::
    :toctree: generated/
 
    FOOOFGroup
 
-Bands
------
-
-.. currentmodule:: fooof.bands
-
-.. autosummary::
-   :toctree: generated/
-
-   Bands
-
 FOOOF Functions
 ---------------
+
+Functions to manipulate, examine and analyze FOOOF objects, and related utilities.
+
+Manage FOOOF Objects
+~~~~~~~~~~~~~~~~~~~~
+
+Functions to manage and manipulate FOOOF objects.
 
 .. currentmodule:: fooof.funcs
 
@@ -53,8 +55,25 @@ FOOOF Functions
    combine_fooofs
    fit_fooof_group_3d
 
-Analysis Functions
-------------------
+Check FOOOF Objects
+~~~~~~~~~~~~~~~~~~~
+
+Functions to help examine and audit FOOOF objects.
+
+.. currentmodule:: fooof.checks
+
+.. autosummary::
+    :toctree: generated/
+
+    get_info
+    compare_info
+    compute_pointwise_error_fm
+    compute_pointwise_error_fg
+
+Analyze FOOOF Object Results
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Functions to help analyze FOOOF results.
 
 .. currentmodule:: fooof.analysis
 
@@ -62,18 +81,18 @@ Analysis Functions
     :toctree: generated/
 
     get_band_peak
+    get_band_peak_group
     get_band_peak_fm
     get_band_peak_fg
-    get_band_peak_group
     get_highest_peak
 
-Sim Code
---------
+Simulation Code
+---------------
 
 Code & utilities for simulating power spectra.
 
-Generating Power Spectra
-~~~~~~~~~~~~~~~~~~~~~~~~
+Generate Power Spectra
+~~~~~~~~~~~~~~~~~~~~~~
 
 .. currentmodule:: fooof.sim.gen
 
@@ -84,8 +103,8 @@ Generating Power Spectra
     gen_power_spectrum
     gen_group_power_spectra
 
-Parameter Management
-~~~~~~~~~~~~~~~~~~~~
+Manage Parameters
+~~~~~~~~~~~~~~~~~
 
 .. currentmodule:: fooof.sim.params
 
@@ -95,10 +114,11 @@ Parameter Management
     Stepper
     param_iter
     param_sampler
+    param_jitter
     update_sim_ap_params
 
-Transforming Power Spectra
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Transform Power Spectra
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. currentmodule:: fooof.sim.transform
 
@@ -114,6 +134,13 @@ Transforming Power Spectra
 Plotting Functions
 ------------------
 
+Visualizations.
+
+Plot Power Spectra
+~~~~~~~~~~~~~~~~~~
+
+Plots for visualizing power spectra.
+
 .. currentmodule:: fooof.plts.spectra
 
 .. autosummary::
@@ -123,9 +150,70 @@ Plotting Functions
     plot_spectra
     plot_spectrum_shading
     plot_spectra_shading
+    plot_spectrum_error
 
-Utility Functions
------------------
+Plot Parameters
+~~~~~~~~~~~~~~~
+
+Plots for visualizing model parameters and components.
+
+.. currentmodule:: fooof.plts.aperiodic
+
+.. autosummary::
+    :toctree: generated/
+
+    plot_aperiodic_fits
+    plot_aperiodic_params
+
+.. currentmodule:: fooof.plts.periodic
+
+.. autosummary::
+    :toctree: generated/
+
+    plot_peak_fits
+    plot_peak_params
+
+Plot from FOOOF Object
+~~~~~~~~~~~~~~~~~~~~~~
+
+Plots for visualizing from FOOOF objects.
+
+.. currentmodule:: fooof.plts.fm
+
+.. autosummary::
+    :toctree: generated/
+
+    plot_fm
+    plot_fm_peak_iter
+
+.. currentmodule:: fooof.plts.fg
+
+.. autosummary::
+    :toctree: generated/
+
+    plot_fg
+
+Utilities
+---------
+
+Utility functions and objects.
+
+Manage Oscillation Bands
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Object to handle oscillation band definitions.
+
+.. currentmodule:: fooof.bands
+
+.. autosummary::
+   :toctree: generated/
+
+   Bands
+
+General Utilities
+~~~~~~~~~~~~~~~~~
+
+General utility functions.
 
 .. currentmodule:: fooof.utils
 
@@ -133,5 +221,4 @@ Utility Functions
     :toctree: generated/
 
     trim_spectrum
-    get_info
-    compare_info
+    compute_pointwise_error
