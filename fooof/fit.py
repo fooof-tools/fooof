@@ -367,8 +367,8 @@ class FOOOF():
         """
 
         self.fit(freqs, power_spectrum, freq_range)
-        self.plot(plt_log)
-        self.print_results(False)
+        self.plot(plt_log=plt_log)
+        self.print_results(concise=False)
 
 
     def fit(self, freqs=None, power_spectrum=None, freq_range=None):
@@ -593,9 +593,12 @@ class FOOOF():
 
 
     @copy_doc_func_to_method(plot_fm)
-    def plot(self, plt_log=False, save_fig=False, file_name='FOOOF_plot', file_path=None, ax=None):
+    def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,
+             add_legend=True, save_fig=False, file_name='FOOOF_plot', file_path=None,
+             ax=None, plot_style=style_spectrum_plot):
 
-        plot_fm(self, plt_log, save_fig, file_name, file_path, ax)
+        plot_fm(self, plot_peaks, plot_aperiodic, plt_log, add_legend,
+                save_fig, file_name, file_path, ax, plot_style)
 
 
     @copy_doc_func_to_method(save_report_fm)
