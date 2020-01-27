@@ -804,27 +804,33 @@ class FOOOF():
             ri_ind = next((val for val in range(max_ind + 1, len(flat_iter), 1)
                            if flat_iter[val] <= half_height), None)
 
-            # Keep bandwidth estimation from the shortest side
-            #   We grab shortest to avoid estimating very large std from overlapping peaks
-            # Grab the shortest side, ignoring a side if the half max was not found
-            #   Note: will fail if both le & ri ind's end up as None (probably shouldn't happen)
-            short_side = min([abs(ind - max_ind) for ind in [le_ind, ri_ind] if ind is not None])
+            # Guess bandwidth
+            try:
+                # Keep bandwidth estimation from the shortest side
+                #   We grab shortest to avoid estimating very large values from overlapping peaks
+                # Grab the shortest side, ignoring a side if the half max was not found
+                short_side = min([abs(ind - max_ind) \
+                    for ind in [le_ind, ri_ind] if ind is not None])
 
-            # Estimate std from FWHM. Calculate FWHM, converting to Hz, get guess std from FWHM
-            fwhm = short_side * 2 * self.freq_res
-            guess_std = fwhm / (2 * np.sqrt(2 * np.log(2)))
+                # Estimate standard deviation from full-width half max (FWHM)
+                #   Calculate FWHM, converting to Hz, get guess standard deviation from FWHM
+                fwhm = short_side * 2 * self.freq_res
+                guess_std = fwhm / (2 * np.sqrt(2 * np.log(2)))
 
-            # Check that guess std isn't outside preset std limits; restrict if so
+            except ValueError:
+                # This procedure can fail (extremely rarely), if both le & ri ind's end up as None
+                #   In this case, default the guess to the average of the peak width limits
+                guess_std = np.mean(self.peak_width_limits)
+
+            # Check that guess value isn't outside preset limits - restrict if so
             #   Note: without this, curve_fitting fails if given guess > or < bounds
             if guess_std < self._gauss_std_limits[0]:
                 guess_std = self._gauss_std_limits[0]
             if guess_std > self._gauss_std_limits[1]:
                 guess_std = self._gauss_std_limits[1]
 
-            # Collect guess parameters.
+            # Collect guess parameters and subtract this guess gaussian from the data
             guess = np.vstack((guess, (guess_freq, guess_height, guess_std)))
-
-            # Subtract best-guess gaussian.
             peak_gauss = gaussian_function(self.freqs, guess_freq, guess_height, guess_std)
             flat_iter = flat_iter - peak_gauss
 
