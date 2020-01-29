@@ -23,7 +23,7 @@ FOOOF is an open-source Python toolbox to parameterize neural power spectra.
 In particular, FOOOF is a model driven approach that assumes that neurophysiological time
 series are comprised of two separable components, reflecting periodic and aperiodic activity.
 FOOOF does therefore rely on the assumption that these two components are indeed separable
-components of the underyling data, though it is agnostic to their physiological origin and
+components of the underlying data, though it is agnostic to their physiological origin and
 putative functional roles.
 
 FOOOF operates on frequency representation of neurophysiological times series (power spectra).
@@ -44,7 +44,7 @@ oscillations, reflecting periodic activity, are operationally defined and detect
 if they exhibit as band-limited power over and above the aperiodic component of the signal
 in the power spectrum.
 
-By 'aperiodic' activity we mean the arhythmic component of the signal, that typically follow
+By 'aperiodic' activity we mean the arrhythmic component of the signal, that typically follow
 a 1/f like function, whereby the power systematically decreases with increasing frequencies.
 
 Why should I use FOOOF?
@@ -58,11 +58,11 @@ Both of these components of the signal, periodic and aperiodic activity, are kno
 and can vary both within and between subjects. These two components of the signal have very
 different properties and interpretations, however many commonly applied analyses often
 conflate changes between them, as they do not systematically separate these two aspects of
-the data, potentially leading to misinterpration of the results.
+the data, potentially leading to misinterpretation of the results.
 
 It is therefore of the utmost importance to explicitly measure both components of the signal
 to be sure what is actually changing in the data. This is what FOOOF is designed to do.
-By explicitly modelling and measuring both aperiodic and periodic components of the signal,
+By explicitly modeling and measuring both aperiodic and periodic components of the signal,
 FOOOF allows for separating out and quantifying which features of the data are changing,
 and in what ways.
 
@@ -100,7 +100,7 @@ frequency ranges, it is not truly '1/f' across all frequencies.
 
 From the physics perspective, '1/f' activity is sometimes referred to as 'noise',
 as shorthand for 'statistical noise' or `coloured noise <https://en.wikipedia.org/wiki/Colors_of_noise>`_.
-As well as not necessarily meeting technical definitions, referring to apeiorid neural activity
+As well as not necessarily meeting technical definitions, referring to aperiodic neural activity
 as noise in this way is also different however to how the terms 'signal' & 'noise' are typically
 used in neuroscience, in terms of referring to a signal of interest and unwanted or artifactual
 activity. We consider that the aperiodic could be the signal of interest for some investigations.
@@ -109,7 +109,7 @@ noise, nor is it merely unwanted 'noise' in the recording.
 
 For similar reasons, we have moved away from calling it 'background' activity, as this implies
 a signal of interest in the foreground, and we consider that aperiodic activity is of
-theoretical interest themself, and not merely the 'background' to periodic activity.
+theoretical interest itself, and not merely the 'background' to periodic activity.
 
 For these reasons, we prefer and use the term 'aperiodic' as a neutral description
 of this component of the signal.
@@ -154,7 +154,7 @@ peaks, as detected by the FOOOF algorithm, and oscillations in the data.
 One reason for this is that peaks are fit as gaussians, and multiple overlapping
 gaussians can, in some cases, be fit to what one might otherwise consider to likely
 comprise a single oscillatory component in the data. This is a consequence of fitting a
-symmetric function (gaussians) to what can be an asymetric peak power spectrum.
+symmetric function (gaussians) to what can be an asymmetric peak power spectrum.
 
 Because of this, it is often useful to focus on the dominant (highest power) peak within a
 given frequency band from a FOOOF analysis, as this peak will offer the best estimate of
@@ -249,7 +249,7 @@ What data can I use with FOOOF?
 FOOOF operates on power spectra derived from electrophysiological or magnetophysiological
 time series, that measure local field potential (LFP) data - in the broad sense, covering
 intracranial LFP data, electroencephalography (EEG), magnetoencephalography (MEG), and
-electrocorticograpgy (ECoG) / intracranial EEG (iEEG).
+electrocorticography (ECoG) / intracranial EEG (iEEG).
 
 FOOOF should work across all of these modalities, and is broadly agnostic to the details
 of the data. However, data from different modalities may require different settings.
@@ -280,7 +280,7 @@ There are broadly two approaches you can take:
     short time segments in a task design
 
 - Calculate power spectra per trial, and fit FOOOF models per trial,
-  analyzing the ditribution of FOOOF outputs per condition
+  analyzing the distribution of FOOOF outputs per condition
 
   - This approach can be used when you have relatively long time segments to fit.
     We currently recommend at least about 500 ms for using this approach, though
@@ -295,7 +295,7 @@ Is there a time resolved version?
 
 Since it operates on frequency representations (power spectra) FOOOF is not, by construction,
 a time resolved method. However, similar to other frequency estimation approaches that are
-used in a time-resovled manner, it can be applied in a sliding window fashion, which could
+used in a time-resolved manner, it can be applied in a sliding window fashion, which could
 be used to estimate results analogous to a spectrogram. This functionality is not currently
 directly included in FOOOF, but is a topic of ongoing work, and will hopefully be available soon.
 

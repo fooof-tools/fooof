@@ -18,18 +18,18 @@ Table of Contents
 FOOOF Objects
 -------------
 
-FOOOF objects that handle data and fit models to parameterize neural power spectra.
+Objects that manage data and fit models to parameterize neural power spectra.
 
-Base FOOOF Object
-~~~~~~~~~~~~~~~~~
+FOOOF
+~~~~~
 
 .. autosummary::
    :toctree: generated/
 
    FOOOF
 
-FOOOFGroup Object
-~~~~~~~~~~~~~~~~~
+FOOOFGroup
+~~~~~~~~~~
 
 .. autosummary::
    :toctree: generated/
@@ -173,10 +173,10 @@ Plots for visualizing model parameters and components.
     plot_peak_fits
     plot_peak_params
 
-Plot from FOOOF Object
-~~~~~~~~~~~~~~~~~~~~~~
+Plot FOOOF Objects
+~~~~~~~~~~~~~~~~~~
 
-Plots for visualizing from FOOOF objects.
+Plots for visualizing model from FOOOF objects.
 
 .. currentmodule:: fooof.plts.fm
 

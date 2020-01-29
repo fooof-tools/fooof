@@ -116,7 +116,6 @@ html_theme_options = {
         ("But Why Though.", "auto_motivations/index"),
         ("Tutorial", "auto_tutorials/index"),
         ("Examples", "auto_examples/index"),
-        ("Index", "contents"),
         ("GitHub", "https://github.com/fooof-tools/fooof", True)
     ],
     'bootswatch_theme': "flatly",
