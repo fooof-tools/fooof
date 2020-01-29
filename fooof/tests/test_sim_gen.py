@@ -79,6 +79,21 @@ def test_gen_peaks():
     peaks = gen_peaks(xs, gaussian_params)
 
     assert np.all(np.invert(np.isnan(peaks)))
+    assert xs[np.argmax(peaks)] == 10
+
+def test_gen_noise():
+
+    xs = gen_freqs([3, 50], 0.5)
+
+    nlv = 0.1
+    noise = gen_noise(xs, nlv)
+    assert np.all(np.invert(np.isnan(noise)))
+    assert np.isclose(np.std(noise), nlv, 0.15)
+
+    nlv = 0.5
+    noise = gen_noise(xs, nlv)
+    assert np.all(np.invert(np.isnan(noise)))
+    assert np.isclose(np.std(noise), nlv, 0.15)
 
 def test_gen_power_values():
 

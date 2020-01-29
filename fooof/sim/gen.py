@@ -226,6 +226,32 @@ def gen_peaks(freqs, gaussian_params):
     return peak_vals
 
 
+def gen_noise(freqs, nlv):
+    """Generate noise values for a simulated power spectrum.
+
+    Parameters
+    ----------
+    freqs : 1d array
+        Frequency vector to create noise values from.
+    nlv : float
+        Noise level to generate.
+
+    Returns
+    -------
+    noise_vals : 1d vector
+        Noise values.
+
+    Notes
+    -----
+    This approach generates noise as randomly distributed white noise.
+    The 'level' of noise is controlled as the scale of the normal distribution.
+    """
+
+    noise_vals = np.random.normal(0, nlv, len(freqs))
+
+    return noise_vals
+
+
 def gen_power_vals(freqs, aperiodic_params, gaussian_params, nlv):
     """Generate power values for a simulated power spectrum.
 
@@ -260,32 +286,6 @@ def gen_power_vals(freqs, aperiodic_params, gaussian_params, nlv):
     powers = np.power(10, aperiodic + peaks + noise)
 
     return powers
-
-
-def gen_noise(freqs, nlv):
-    """Generate noise values for a simulated power spectrum.
-
-    Parameters
-    ----------
-    freqs : 1d array
-        Frequency vector to create noise values from.
-    nlv : float
-        Noise level to generate.
-
-    Returns
-    -------
-    noise_vals : 1d vector
-        Noise values.
-
-    Notes
-    -----
-    This approach generates noise as randomly distributed white noise.
-    The 'level' of noise is controlled as the scale of the normal distribution.
-    """
-
-    noise_vals = np.random.normal(0, nlv, len(freqs))
-
-    return noise_vals
 
 
 def gen_model(freqs, aperiodic_params, gaussian_params, return_components=False):
