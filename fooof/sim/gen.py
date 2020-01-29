@@ -22,7 +22,7 @@ def gen_freqs(freq_range, freq_res):
     Returns
     -------
     freqs : 1d array
-        Frequency values, in linear space.
+        Frequency values, in linear spacing.
     """
 
     # The end value has something added to it, to make sure the last value is included
@@ -53,9 +53,9 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
     Returns
     -------
     freqs : 1d array
-        Frequency values, in linear space.
+        Frequency values, in linear spacing.
     powers : 1d array
-        Power values, in linear space.
+        Power values, in linear spacing.
 
     Notes
     -----
@@ -115,9 +115,9 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
     Returns
     -------
     freqs : 1d array
-        Frequency values (linear).
+        Frequency values, in linear spacing.
     powers : 2d array
-        Matrix of power values (linear), as [n_power_spectra, n_freqs].
+        Matrix of power values, in linear spacing, as [n_power_spectra, n_freqs].
     sim_params : list of SimParams
         Definitions of parameters used for each spectrum. Has length of n_spectra.
 
@@ -192,7 +192,7 @@ def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):
     Returns
     -------
     ap_vals : 1d array
-        Generated aperiodic values.
+        Aperiodic values, in log10 spacing.
     """
 
     if not aperiodic_mode:
@@ -218,7 +218,7 @@ def gen_peaks(freqs, gaussian_params):
     Returns
     -------
     peak_vals : 1d array
-        Generated aperiodic values.
+        Peak values, in log10 spacing.
     """
 
     peak_vals = gaussian_function(freqs, *gaussian_params)
@@ -243,7 +243,7 @@ def gen_power_vals(freqs, aperiodic_params, gaussian_params, nlv):
     Returns
     -------
     powers : 1d vector
-        Power values, linear spacing.
+        Power values, in linear spacing.
 
     Notes
     -----
@@ -255,11 +255,37 @@ def gen_power_vals(freqs, aperiodic_params, gaussian_params, nlv):
 
     aperiodic = gen_aperiodic(freqs, aperiodic_params)
     peaks = gen_peaks(freqs, gaussian_params)
-    noise = np.random.normal(0, nlv, len(freqs))
+    noise = gen_noise(freqs, nlv)
 
     powers = np.power(10, aperiodic + peaks + noise)
 
     return powers
+
+
+def gen_noise(freqs, nlv):
+    """Generate noise values for a simulated power spectrum.
+
+    Parameters
+    ----------
+    freqs : 1d array
+        Frequency vector to create noise values from.
+    nlv : float
+        Noise level to generate.
+
+    Returns
+    -------
+    noise_vals : 1d vector
+        Noise values.
+
+    Notes
+    -----
+    This approach generates noise as randomly distributed white noise.
+    The 'level' of noise is controlled as the scale of the normal distribution.
+    """
+
+    noise_vals = np.random.normal(0, nlv, len(freqs))
+
+    return noise_vals
 
 
 def gen_model(freqs, aperiodic_params, gaussian_params, return_components=False):

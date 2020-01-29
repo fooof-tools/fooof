@@ -172,7 +172,7 @@ def get_ap_func(aperiodic_mode):
     elif aperiodic_mode == 'knee':
         ap_func = expo_function
     else:
-        raise ValueError("Aperiodic mode not understood.")
+        raise ValueError("Requested aperiodic mode not understood.")
 
     return ap_func
 
@@ -201,6 +201,7 @@ def infer_ap_func(aperiodic_params):
     elif len(aperiodic_params) == 3:
         aperiodic_mode = 'knee'
     else:
-        raise InconsistentDataError("Aperiodic parameters not consistent available options.")
+        raise InconsistentDataError("The given aperiodic parameters are "
+                                    "inconsistent with available options.")
 
     return aperiodic_mode

@@ -222,7 +222,8 @@ def param_sampler(params, probs=None):
     inds = np.array(range(len(params)))
 
     # Check that length of options is same as length of probs, if provided
-    if probs:
+    #   Typecast to list so that it plays nice if passed in as a numpy array
+    if list(probs):
         if len(inds) != len(probs):
             raise ValueError('The number of options must match the number of probabilities.')
 
