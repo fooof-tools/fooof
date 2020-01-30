@@ -226,7 +226,7 @@ def param_sampler(params, probs=None):
         if len(inds) != len(probs):
             raise ValueError('The number of options must match the number of probabilities.')
 
-    # While loop allows the generator to be called an arbitrary number of times.
+    # While loop allows the generator to be called an arbitrary number of times
     while True:
         yield params[np.random.choice(inds, p=probs)]
 

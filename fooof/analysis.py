@@ -120,7 +120,7 @@ def get_band_peak(peak_params, band, ret_one=True):
     n_peaks = sum(peak_inds)
 
     # If there are no peaks within the specified range
-    #  Note: this also catches and returns if the original input was empty
+    #   Note: this also catches and returns if the original input was empty
     if n_peaks == 0:
         return np.array([np.nan, np.nan, np.nan])
 

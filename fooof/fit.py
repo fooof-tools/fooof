@@ -119,14 +119,14 @@ class FOOOF():
 
     Notes
     -----
-    - Commonly used abbreviations used in FOOOF include:
+    - Commonly used abbreviations used in this module include:
       CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic
     - Input power spectra must be provided in linear scale.
       Internally they are stored in log10 scale, as this is what the model operates upon.
     - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
       For example, raw FFT inputs are not appropriate.
     - Where possible and appropriate, use longer time segments for power spectrum calculation to
-      get smoother power spectra, as this will give better FOOOF fits.
+      get smoother power spectra, as this will give better model fits.
     - The gaussian params are those that define the gaussian of the fit, where as the peak
       params are a modified version, in which the CF of the peak is the mean of the gaussian,
       the PW of the peak is the height of the gaussian over and above the aperiodic component,
@@ -450,7 +450,7 @@ class FOOOF():
 
         except FitError:
 
-            # In debug mode, re-raise the error
+            # If in debug mode, re-raise the error
             if self._debug:
                 raise
 
@@ -637,7 +637,7 @@ class FOOOF():
         self._check_loaded_settings(data)
         self._check_loaded_results(data)
 
-        # Regenerate model components, based on what's available
+        # Regenerate model components, based on what is available
         if regenerate:
             if self.freq_res:
                 self._regenerate_freqs()
@@ -731,7 +731,7 @@ class FOOOF():
         # Flatten power_spectrum based on initial aperiodic fit
         flatspec = power_spectrum - initial_fit
 
-        # Flatten outliers - any points that drop below 0
+        # Flatten outliers, defined as any points that drop below 0
         flatspec[flatspec < 0] = 0
 
         # Use percentile threshold, in terms of # of points, to extract and re-fit
@@ -788,7 +788,7 @@ class FOOOF():
             if max_height <= self.peak_threshold * np.std(flat_iter):
                 break
 
-            # Set the guess parameters for gaussian fitting - mean and height
+            # Set the guess parameters for gaussian fitting, specifying the mean and height
             guess_freq = self.freqs[max_ind]
             guess_height = max_height
 
@@ -928,7 +928,7 @@ class FOOOF():
         'bandwidth' of the peak, as opposed to the gaussian parameter, which is 1-sided.
 
         Performing this conversion requires that the model has been run,
-        with `freqs`, `fooofed_spectrum_` and `ap_fit` all required to be available.
+        with `freqs`, `fooofed_spectrum_` and `_ap_fit` all required to be available.
         """
 
         peak_params = np.empty([0, 3])
@@ -964,7 +964,7 @@ class FOOOF():
         cf_params = [item[0] for item in guess]
         bw_params = [item[2] * self._bw_std_edge for item in guess]
 
-        # Check if peaks within drop threshold from the edge of the frequency range.
+        # Check if peaks within drop threshold from the edge of the frequency range
         keep_peak = \
             (np.abs(np.subtract(cf_params, self.freq_range[0])) > bw_params) & \
             (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)

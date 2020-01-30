@@ -9,7 +9,7 @@ from fooof.core.errors import NoModelError
 
 ## Settings & Globals
 # Centering Value - Long & Short options
-#  Note: Long CV of 98 is so that the max line length plays nice with notebook rendering on Github
+#   Note: Long CV of 98 is so that the max line length plays nice with notebook rendering
 LCV = 98
 SCV = 70
 
@@ -68,7 +68,7 @@ def gen_settings_str(f_obj, description=False, concise=False):
         'aperiodic_mode'    : 'The approach taken for fitting the aperiodic component.'
         }
 
-    # Clear description for printing if not requested
+    # Clear description for printing, if not requested
     if not description:
         desc = {k : '' for k, v in desc.items()}
 
@@ -151,7 +151,7 @@ def gen_results_fm_str(fm, concise=False):
           for op in fm.peak_params_],
         '',
 
-        # R^2 and error
+        # Goodness if fit
         'Goodness of fit metrics:',
         'R^2 of model fit is {:5.4f}'.format(fm.r_squared_),
         'Error of the fit is {:5.4f}'.format(fm.error_),
@@ -237,7 +237,7 @@ def gen_results_fg_str(fg, concise=False):
         .format(n_peaks),
         '',
 
-        # Fitting stats - error and r^2
+        # Goodness if fit
         'Goodness of fit metrics:',
         '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(np.nanmin(r2s), np.nanmax(r2s), np.nanmean(r2s)),

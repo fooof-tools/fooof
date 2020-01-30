@@ -89,11 +89,11 @@ def save_fm(fm, file_name, file_path=None, append=False,
         If the save file is not understood.
     """
 
-    # Convert object to dictionary & convert all arrays to lists - for JSON serializing
+    # Convert object to dictionary & convert all arrays to lists, for JSON serializing
     obj_dict = dict_array_to_lst(fm.__dict__)
 
     # Set and select which variables to keep. Use a set to drop any potential overlap
-    #  Note that results also saves frequency information to be able to recreate freq vector
+    #   Note that results also saves frequency information to be able to recreate freq vector
     attributes = get_description()
     keep = set((attributes['results'] + attributes['meta_data'] if save_results else []) + \
                (attributes['settings'] if save_settings else []) + \

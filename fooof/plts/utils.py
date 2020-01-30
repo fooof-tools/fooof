@@ -121,7 +121,7 @@ def recursive_plot(data, plot_function, ax, **kwargs):
                     for key, val in kwargs.items()}
 
     # Pass each array of data recursively into plot function
-    # Each element of data is added to the same plot axis, with any
+    #   Each element of data is added to the same plot axis
     for cur_data in data:
 
         cur_kwargs = {key: next(val) for key, val in kwargs.items()}

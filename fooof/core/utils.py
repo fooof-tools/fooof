@@ -20,6 +20,11 @@ def group_three(vec):
     -------
     list of list
         List of lists, each with three items.
+
+    Raises
+    ------
+    ValueError
+        If input data cannot be evenly grouped into threes.
     """
 
     if len(vec) % 3 != 0:

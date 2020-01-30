@@ -30,10 +30,10 @@ ATT_ADD = """
         Input matrix of power spectra values, in linear space, as [n_power_spectra, n_freqs].
     group_results : list of FOOOFResults
         Results of FOOOF model fit for each power spectrum.
-    n_failed_fits_ : None or int
-        The number of models that failed to fit, or None if no models have been fit.
-    failed_fit_inds_ : None or list of int
-        The indices of any models that failed to fit, or None if no models have been fit."""
+    n_failed_fits_ : int
+        The number of models that failed to fit.
+    failed_fit_inds_ : list of int
+        The indices of any models that failed to fit."""
 
 
 @copy_doc_class(FOOOF, 'Attributes', ATT_ADD)
@@ -360,7 +360,8 @@ class FOOOFGroup(FOOOF):
 
             self._add_from_dict(data)
 
-            # Only load settings from first line (rest will be duplicates, if there)
+            # Only load settings from first line
+            #   All other lines, if there, will be duplicates
             if ind == 0:
                 self._check_loaded_settings(data)
 
@@ -391,7 +392,7 @@ class FOOOFGroup(FOOOF):
         fm = FOOOF(*self.get_settings(), verbose=self.verbose)
 
         # Add data for specified single power spectrum, if available
-        #  The power spectrum is inverted back to linear, as it's re-logged when added to FOOOF
+        #   The power spectrum is inverted back to linear, as it is re-logged when added to FOOOF
         if self.has_data:
             fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
         # If no power spectrum data available, copy over data information & regenerate freqs
@@ -424,7 +425,7 @@ class FOOOFGroup(FOOOF):
         fg = FOOOFGroup(*self.get_settings(), verbose=self.verbose)
 
         # Add data for specified power spectra, if available
-        #  The power spectra are inverted back to linear, as they are re-logged when added to FOOOF
+        #   The power spectra are inverted back to linear, as they are re-logged when added to FOOOF
         if self.has_data:
             fg.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]))
         # If no power spectrum data available, copy over data information & regenerate freqs
@@ -463,7 +464,8 @@ class FOOOFGroup(FOOOF):
     def _check_width_limits(self):
         """Check and warn about bandwidth limits / frequency resolution interaction."""
 
-        # Only check & warn on first power spectrum (to avoid spamming stdout for each spectrum).
+        # Only check & warn on first power spectrum
+        #   This is to avoid spamming stdout for every spectrum in the group
         if self.power_spectra[0, 0] == self.power_spectrum[0]:
             super()._check_width_limits()
 
