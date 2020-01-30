@@ -29,7 +29,11 @@ ATT_ADD = """
     power_spectra : 2d array
         Input matrix of power spectra values, in linear space, as [n_power_spectra, n_freqs].
     group_results : list of FOOOFResults
-        Results of FOOOF model fit for each power spectrum."""
+        Results of FOOOF model fit for each power spectrum.
+    n_failed_fits_ : None or int
+        The number of models that failed to fit, or None if no models have been fit.
+    failed_fit_inds_ : None or list of int
+        The indices of any models that failed to fit, or None if no models have been fit."""
 
 
 @copy_doc_class(FOOOF, 'Attributes', ATT_ADD)
@@ -79,6 +83,23 @@ class FOOOFGroup(FOOOF):
         """How many peaks were fit for each model."""
 
         return [f_res.peak_params.shape[0] for f_res in self] if self.has_model else None
+
+
+    @property
+    def n_failed_fits_(self):
+        """How many model fits failed."""
+
+        return sum([1 for f_res in self.group_results if np.isnan(f_res.aperiodic_params[0])]) \
+            if self.has_model else None
+
+
+    @property
+    def failed_fit_inds_(self):
+        """The indices of model fits that failed to fit."""
+
+        return [ind for ind, f_res in enumerate(self.group_results) \
+            if np.isnan(f_res.aperiodic_params[0])] \
+            if self.has_model else None
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False,

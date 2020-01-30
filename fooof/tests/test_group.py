@@ -61,6 +61,18 @@ def test_fooof_n_peaks(tfg):
 
     assert tfg.n_peaks_
 
+def test_n_failed_fits(tfg):
+    """Test the n_failed_fits_ property attribute."""
+
+    # Since there should be no failed fits, this should return 0
+    assert tfg.n_failed_fits_ == 0
+
+def test_failed_fit_inds(tfg):
+    """Test the failed_fit_inds_ property attribute."""
+
+    # Since there should be no failed fits, this should return an empty list
+    assert tfg.failed_fit_inds_ == []
+
 def test_fg_fit_nk():
     """Test FOOOFGroup fit, no knee."""
 
@@ -128,6 +140,11 @@ def test_fg_fail():
     outs3 = ntfg.get_params('peak_params')
     outs4 = ntfg.get_params('peak_params', 0)
     outs5 = ntfg.get_params('gaussian_params', 2)
+
+    # Test the property attributes related to failed model fits
+    #   This checks that they do the right thing when there are failed fits
+    assert ntfg.n_failed_fits_ > 0
+    assert ntfg.failed_fit_inds_
 
 def test_fg_drop():
     """Test function to drop results from FOOOFGroup."""
