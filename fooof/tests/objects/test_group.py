@@ -6,8 +6,6 @@ The tests here are not strong tests for accuracy.
 They serve rather as 'smoke tests', for if anything fails completely.
 """
 
-import pkg_resources as pkg
-
 import numpy as np
 from numpy.testing import assert_equal
 
@@ -16,6 +14,7 @@ from fooof.fit import FOOOFResults
 from fooof.sim import gen_group_power_spectra
 from fooof.core.info import get_description
 
+from fooof.tests.settings import TEST_FILE_PATH
 from fooof.tests.utils import default_group_params, plot_test
 
 ###################################################################################################
@@ -229,14 +228,13 @@ def test_fg_load():
 
     set_file_name = 'test_fooof_group_set'
     res_file_name = 'test_fooof_group_res'
-    file_path = pkg.resource_filename(__name__, 'test_files')
 
     tfg = FOOOFGroup(verbose=False)
 
-    tfg.load(set_file_name, file_path)
+    tfg.load(set_file_name, TEST_FILE_PATH)
     assert tfg
 
-    tfg.load(res_file_name, file_path)
+    tfg.load(res_file_name, TEST_FILE_PATH)
     assert tfg
 
 def test_fg_report(skip_if_no_mpl):

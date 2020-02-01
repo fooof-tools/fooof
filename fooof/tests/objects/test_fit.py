@@ -6,8 +6,6 @@ The tests here are not strong tests for accuracy.
 They serve rather as 'smoke tests', for if anything fails completely.
 """
 
-import pkg_resources as pkg
-
 import numpy as np
 from py.test import raises
 
@@ -19,6 +17,7 @@ from fooof.core.info import get_description
 from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
 from fooof.core.errors import DataError, NoDataError, InconsistentDataError
 
+from fooof.tests.settings import TEST_FILE_PATH
 from fooof.tests.utils import get_tfm, plot_test
 
 ###################################################################################################
@@ -177,14 +176,13 @@ def test_fooof_load():
 
     file_name_all = 'test_fooof_str_all'
     file_name_res = 'test_fooof_str_res'
-    file_path = pkg.resource_filename(__name__, 'test_files')
 
     tfm = FOOOF(verbose=False)
 
-    tfm.load(file_name_all, file_path)
+    tfm.load(file_name_all, TEST_FILE_PATH)
     assert tfm
 
-    tfm.load(file_name_res, file_path)
+    tfm.load(file_name_res, TEST_FILE_PATH)
     assert tfm
 
 def test_adds():
