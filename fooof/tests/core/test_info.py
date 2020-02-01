@@ -29,3 +29,10 @@ def test_get_indices():
     assert indices_knee
     for ke, va in indices_knee.items():
         assert isinstance(va, int)
+
+def test_get_info(tfm, tfg):
+
+    for f_obj in [tfm, tfg]:
+        assert get_info(f_obj, 'settings')
+        assert get_info(f_obj, 'meta_data')
+        assert get_info(f_obj, 'results')

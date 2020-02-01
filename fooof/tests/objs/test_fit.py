@@ -1,4 +1,4 @@
-"""Tests for fooof.fit, including the FOOOF object and it's methods.
+"""Tests for fooof.objects.fit, including the FOOOF object and it's methods.
 
 NOTES
 -----
@@ -9,7 +9,6 @@ They serve rather as 'smoke tests', for if anything fails completely.
 import numpy as np
 from py.test import raises
 
-from fooof import FOOOF
 from fooof.sim import gen_power_spectrum
 from fooof.core.errors import FitError
 from fooof.core.utils import group_three
@@ -17,8 +16,10 @@ from fooof.core.info import get_description
 from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
 from fooof.core.errors import DataError, NoDataError, InconsistentDataError
 
-from fooof.tests.settings import TEST_FILE_PATH
-from fooof.tests.utils import get_tfm, plot_test
+from fooof.objs.fit import *
+
+from fooof.tests.test_settings import TEST_FILE_PATH
+from fooof.tests.test_utils import get_tfm, plot_test
 
 ###################################################################################################
 ###################################################################################################

@@ -6,7 +6,7 @@ from fooof.core.info import get_description
 
 from fooof.core.io import *
 
-from fooof.tests.settings import TEST_FILE_PATH
+from fooof.tests.test_settings import TEST_FILE_PATH
 
 ###################################################################################################
 ###################################################################################################

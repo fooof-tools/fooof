@@ -1,15 +1,41 @@
-"""Helper functions for running and working with FOOOF & FOOOFGroup objects."""
+"""Utility functions for managing and manipulating FOOOF objects."""
 
 import numpy as np
 
-from fooof import FOOOF, FOOOFGroup
 from fooof.data import FOOOFResults
-from fooof.checks import compare_info
-from fooof.analysis import get_band_peak_fg
+from fooof.objs import FOOOF, FOOOFGroup
+from fooof.analysis.periodic import get_band_peak_fg
 from fooof.core.errors import NoModelError, IncompatibleSettingsError
 
 ###################################################################################################
 ###################################################################################################
+
+def compare_info(fooof_lst, aspect):
+    """Compare a specified aspect of FOOOF objects across instances.
+
+    Parameters
+    ----------
+    fooof_lst : list of FOOOF or list of FOOOFGroup
+        Objects whose attributes are to be compared.
+    aspect : {'setting', 'meta_data'}
+        Which set of attributes to compare the objects across.
+
+    Returns
+    -------
+    consistent : bool
+        Whether the settings are consistent across the input list of objects.
+    """
+
+    # Check specified aspect of the objects are the same across instances
+    for f_obj_1, f_obj_2 in zip(fooof_lst[:-1], fooof_lst[1:]):
+        if getattr(f_obj_1, 'get_' + aspect)() != getattr(f_obj_2, 'get_' + aspect)():
+            consistent = False
+            break
+    else:
+        consistent = True
+
+    return consistent
+
 
 def average_fg(fg, bands, avg_method='mean', generate_model=True):
     """Average across model fits in a FOOOFGroup object.

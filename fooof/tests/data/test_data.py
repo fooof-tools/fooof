@@ -1,8 +1,8 @@
-"""Tests for the fooof.data."""
+"""Tests for the fooof.data.data."""
 
 from fooof.core.info import get_description
 
-from fooof.data import *
+from fooof.data.data import *
 
 ###################################################################################################
 ###################################################################################################

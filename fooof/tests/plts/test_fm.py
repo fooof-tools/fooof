@@ -1,7 +1,8 @@
 """Tests for fooof.plts.fm."""
 
 from fooof.plts.fm import *
-from fooof.tests.utils import plot_test
+
+from fooof.tests.test_utils import plot_test
 
 ###################################################################################################
 ###################################################################################################

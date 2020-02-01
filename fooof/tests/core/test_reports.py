@@ -4,7 +4,7 @@ import os
 
 from fooof.core.reports import *
 
-from fooof.tests.settings import TEST_REPORTS_PATH
+from fooof.tests.test_settings import TEST_REPORTS_PATH
 
 ###################################################################################################
 ###################################################################################################

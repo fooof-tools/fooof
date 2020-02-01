@@ -4,7 +4,8 @@ import numpy as np
 
 from fooof.core.utils import group_three, check_iter, check_flat
 from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
-from fooof.sim.params import SimParams
+
+from fooof.data import SimParams
 
 ###################################################################################################
 ###################################################################################################

@@ -11,7 +11,7 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
-from fooof import FOOOF
+from fooof.objs import FOOOF
 from fooof.plts.fg import plot_fg
 from fooof.core.info import get_indices
 from fooof.core.errors import NoModelError

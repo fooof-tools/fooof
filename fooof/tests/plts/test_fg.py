@@ -1,4 +1,4 @@
-"""Tests for fooof.plts.fm."""
+"""Tests for fooof.plts.fg."""
 
 from py.test import raises
 
@@ -6,7 +6,7 @@ from fooof import FOOOFGroup
 from fooof.core.errors import NoModelError
 
 from fooof.plts.fg import *
-from fooof.tests.utils import plot_test
+from fooof.tests.test_utils import plot_test
 
 ###################################################################################################
 ###################################################################################################

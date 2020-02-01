@@ -1,4 +1,4 @@
-"""Tests for the fooof.group, including the FOOOFGroup object and it's methods.
+"""Tests for the fooof.objects.group, including the FOOOFGroup object and it's methods.
 
 NOTES
 -----
@@ -9,13 +9,14 @@ They serve rather as 'smoke tests', for if anything fails completely.
 import numpy as np
 from numpy.testing import assert_equal
 
-from fooof.group import *
-from fooof.fit import FOOOFResults
+from fooof.data import FOOOFResults
 from fooof.sim import gen_group_power_spectra
 from fooof.core.info import get_description
 
-from fooof.tests.settings import TEST_FILE_PATH
-from fooof.tests.utils import default_group_params, plot_test
+from fooof.objs.group import *
+
+from fooof.tests.test_settings import TEST_FILE_PATH
+from fooof.tests.test_utils import default_group_params, plot_test
 
 ###################################################################################################
 ###################################################################################################

@@ -1,4 +1,4 @@
-"""Function definitions for FOOOF.
+"""Functions that can be used for model fitting.
 
 NOTES
 -----

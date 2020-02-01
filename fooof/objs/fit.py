@@ -56,7 +56,7 @@ from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
 
 from fooof.plts.fm import plot_fm
 from fooof.plts.style import style_spectrum_plot
-from fooof.utils import trim_spectrum
+from fooof.utils.data import trim_spectrum
 from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
 from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_peaks, gen_model
 

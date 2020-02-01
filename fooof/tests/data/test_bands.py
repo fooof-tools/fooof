@@ -1,8 +1,8 @@
-"""Test functions for fooof.bands."""
+"""Test functions for fooof.data.bands."""
 
 from py.test import raises
 
-from fooof.bands import *
+from fooof.data.bands import *
 
 ###################################################################################################
 ###################################################################################################

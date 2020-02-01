@@ -1,4 +1,4 @@
-"""Public utility functions."""
+"""Utilities for working with data and models."""
 
 import numpy as np
 

@@ -3,7 +3,7 @@
 import numpy as np
 
 from fooof.plts.templates import *
-from fooof.tests.utils import plot_test
+from fooof.tests.test_utils import plot_test
 
 ###################################################################################################
 ###################################################################################################

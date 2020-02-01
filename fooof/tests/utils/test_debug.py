@@ -1,6 +1,6 @@
-"""Test functions for fooof.debug"""
+"""Test functions for fooof.utils.debug"""
 
-from fooof.debug import *
+from fooof.utils.debug import *
 
 ###################################################################################################
 ###################################################################################################

@@ -1,4 +1,4 @@
-"""Analysis functions for FOOOF results."""
+"""Functions to analyze and investigate FOOOF results - periodic components."""
 
 import numpy as np
 

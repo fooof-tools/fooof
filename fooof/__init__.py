@@ -2,6 +2,6 @@
 
 from .version import __version__
 
-from .fit import FOOOF
-from .group import FOOOFGroup
-from .funcs import fit_fooof_group_3d
+from .data import Bands
+from .objs import FOOOF, FOOOFGroup
+from .objs.utils import fit_fooof_group_3d

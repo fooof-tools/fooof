@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from fooof.tests.utils import plot_test
+from fooof.tests.test_utils import plot_test
 from fooof.plts.aperiodic import *
 
 ###################################################################################################

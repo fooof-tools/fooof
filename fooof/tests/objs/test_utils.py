@@ -1,19 +1,35 @@
-"""Test functions for fooof.funcs."""
+"""Test functions for fooof.objects.obj_funcs."""
 
 from py.test import raises
 
 import numpy as np
 
 from fooof import FOOOFGroup
-from fooof.checks import compare_info
+from fooof.objs.utils import compare_info
 from fooof.sim import gen_group_power_spectra
 from fooof.core.errors import NoModelError, IncompatibleSettingsError
 
-from fooof.funcs import *
-from fooof.tests.utils import default_group_params
+from fooof.objs.utils import *
+
+from fooof.tests.test_utils import default_group_params
 
 ###################################################################################################
 ###################################################################################################
+
+def test_compare_info(tfm, tfg):
+
+    for f_obj in [tfm, tfg]:
+
+        f_obj2 = f_obj.copy()
+
+        assert compare_info([f_obj, f_obj2], 'settings')
+        f_obj2.peak_width_limits = [2, 4]
+        f_obj2._reset_internal_settings()
+        assert not compare_info([f_obj, f_obj2], 'settings')
+
+        assert compare_info([f_obj, f_obj2], 'meta_data')
+        f_obj2.freq_range = [5, 25]
+        assert not compare_info([f_obj, f_obj2], 'meta_data')
 
 def test_average_fg(tfg, tbands):
 
