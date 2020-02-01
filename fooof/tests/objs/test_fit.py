@@ -18,7 +18,7 @@ from fooof.core.errors import DataError, NoDataError, InconsistentDataError
 
 from fooof.objs.fit import *
 
-from fooof.tests.test_settings import TEST_FILE_PATH
+from fooof.tests.test_settings import TEST_DATA_PATH
 from fooof.tests.test_utils import get_tfm, plot_test
 
 ###################################################################################################
@@ -180,10 +180,10 @@ def test_fooof_load():
 
     tfm = FOOOF(verbose=False)
 
-    tfm.load(file_name_all, TEST_FILE_PATH)
+    tfm.load(file_name_all, TEST_DATA_PATH)
     assert tfm
 
-    tfm.load(file_name_res, TEST_FILE_PATH)
+    tfm.load(file_name_res, TEST_DATA_PATH)
     assert tfm
 
 def test_adds():

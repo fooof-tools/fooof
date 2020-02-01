@@ -6,7 +6,7 @@ from fooof.core.info import get_description
 
 from fooof.core.io import *
 
-from fooof.tests.test_settings import TEST_FILE_PATH
+from fooof.tests.test_settings import TEST_DATA_PATH
 
 ###################################################################################################
 ###################################################################################################
@@ -31,21 +31,21 @@ def test_save_fm_str(tfm):
     file_name_all = 'test_fooof_str_all'
     file_name_res = 'test_fooof_str_res'
 
-    save_fm(tfm, file_name_all, TEST_FILE_PATH, False, True, True, True)
-    save_fm(tfm, file_name_res, TEST_FILE_PATH, False, True, False, False)
+    save_fm(tfm, file_name_all, TEST_DATA_PATH, False, True, True, True)
+    save_fm(tfm, file_name_res, TEST_DATA_PATH, False, True, False, False)
 
-    assert os.path.exists(os.path.join(TEST_FILE_PATH, file_name_all + '.json'))
-    assert os.path.exists(os.path.join(TEST_FILE_PATH, file_name_res + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name_all + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name_res + '.json'))
 
 def test_save_fm_str_app(tfm):
     """Check saving fm data, with str file specifier, with appending."""
 
     file_name = 'test_fooof_str_app'
 
-    save_fm(tfm, file_name, TEST_FILE_PATH, True, True, True, True)
-    save_fm(tfm, file_name, TEST_FILE_PATH, True, True, True, True)
+    save_fm(tfm, file_name, TEST_DATA_PATH, True, True, True, True)
+    save_fm(tfm, file_name, TEST_DATA_PATH, True, True, True, True)
 
-    assert os.path.exists(os.path.join(TEST_FILE_PATH, file_name + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name + '.json'))
 
 def test_save_fm_fobj(tfm):
     """Check saving fm data, with file object file specifier."""
@@ -53,12 +53,12 @@ def test_save_fm_fobj(tfm):
     file_name = 'test_fooof_fobj'
 
     # Save, using file-object: three successive lines with three possible save settings
-    with open(os.path.join(TEST_FILE_PATH, file_name + '.json'), 'w') as f_obj:
-        save_fm(tfm, f_obj, TEST_FILE_PATH, False, True, False, False)
-        save_fm(tfm, f_obj, TEST_FILE_PATH, False, False, True, False)
-        save_fm(tfm, f_obj, TEST_FILE_PATH, False, False, False, True)
+    with open(os.path.join(TEST_DATA_PATH, file_name + '.json'), 'w') as f_obj:
+        save_fm(tfm, f_obj, TEST_DATA_PATH, False, True, False, False)
+        save_fm(tfm, f_obj, TEST_DATA_PATH, False, False, True, False)
+        save_fm(tfm, f_obj, TEST_DATA_PATH, False, False, False, True)
 
-    assert os.path.exists(os.path.join(TEST_FILE_PATH, file_name + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name + '.json'))
 
 def test_save_fg(tfg):
     """Check saving fg data."""
@@ -67,33 +67,33 @@ def test_save_fg(tfg):
     res_file_name = 'test_fooof_group_res'
     dat_file_name = 'test_fooof_group_dat'
 
-    save_fg(tfg, file_name=set_file_name, file_path=TEST_FILE_PATH, save_settings=True)
-    save_fg(tfg, file_name=res_file_name, file_path=TEST_FILE_PATH, save_results=True)
-    save_fg(tfg, file_name=dat_file_name, file_path=TEST_FILE_PATH, save_data=True)
+    save_fg(tfg, file_name=set_file_name, file_path=TEST_DATA_PATH, save_settings=True)
+    save_fg(tfg, file_name=res_file_name, file_path=TEST_DATA_PATH, save_results=True)
+    save_fg(tfg, file_name=dat_file_name, file_path=TEST_DATA_PATH, save_data=True)
 
-    assert os.path.exists(os.path.join(TEST_FILE_PATH, set_file_name + '.json'))
-    assert os.path.exists(os.path.join(TEST_FILE_PATH, res_file_name + '.json'))
-    assert os.path.exists(os.path.join(TEST_FILE_PATH, dat_file_name + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, set_file_name + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, res_file_name + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, dat_file_name + '.json'))
 
 def test_save_fg_app(tfg):
     """Check saving fg data, appending to file."""
 
     file_name = 'test_fooof_group_str_app'
 
-    save_fg(tfg, file_name, TEST_FILE_PATH, True, save_results=True)
-    save_fg(tfg, file_name, TEST_FILE_PATH, True, save_results=True)
+    save_fg(tfg, file_name, TEST_DATA_PATH, True, save_results=True)
+    save_fg(tfg, file_name, TEST_DATA_PATH, True, save_results=True)
 
-    assert os.path.exists(os.path.join(TEST_FILE_PATH, file_name + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name + '.json'))
 
 def test_save_fg_fobj(tfg):
     """Check saving fg data, with file object file specifier."""
 
     file_name = 'test_fooof_fobj'
 
-    with open(os.path.join(TEST_FILE_PATH, file_name + '.json'), 'w') as f_obj:
-        save_fg(tfg, f_obj, TEST_FILE_PATH, False, True, False, False)
+    with open(os.path.join(TEST_DATA_PATH, file_name + '.json'), 'w') as f_obj:
+        save_fg(tfg, f_obj, TEST_DATA_PATH, False, True, False, False)
 
-    assert os.path.exists(os.path.join(TEST_FILE_PATH, file_name + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name + '.json'))
 
 def test_load_json_str():
     """Test loading JSON file, with str file specifier.
@@ -102,7 +102,7 @@ def test_load_json_str():
 
     file_name = 'test_fooof_str_all'
 
-    data = load_json(file_name, TEST_FILE_PATH)
+    data = load_json(file_name, TEST_DATA_PATH)
 
     assert data
 
@@ -113,7 +113,7 @@ def test_load_json_fobj():
 
     file_name = 'test_fooof_str_all'
 
-    with open(os.path.join(TEST_FILE_PATH, file_name + '.json'), 'r') as f_obj:
+    with open(os.path.join(TEST_DATA_PATH, file_name + '.json'), 'r') as f_obj:
         data = load_json(f_obj, '')
 
     assert data
@@ -125,7 +125,7 @@ def test_load_jsonlines():
 
     res_file_name = 'test_fooof_group_res'
 
-    for data in load_jsonlines(res_file_name, TEST_FILE_PATH):
+    for data in load_jsonlines(res_file_name, TEST_DATA_PATH):
         assert data
 
 def test_load_file_contents():
@@ -136,7 +136,7 @@ def test_load_file_contents():
 
     file_name = 'test_fooof_str_all'
 
-    loaded_data = load_json(file_name, TEST_FILE_PATH)
+    loaded_data = load_json(file_name, TEST_DATA_PATH)
 
     desc = get_description()
 

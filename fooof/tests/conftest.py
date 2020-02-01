@@ -9,7 +9,7 @@ import numpy as np
 from fooof.core.modutils import safe_import
 
 from fooof.tests.test_utils import get_tfm, get_tfg, get_tbands
-from fooof.tests.test_settings import TEST_FILE_PATH, TEST_REPORTS_PATH
+from fooof.tests.test_settings import BASE_TEST_FILE_PATH, TEST_DATA_PATH, TEST_REPORTS_PATH
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -26,13 +26,12 @@ def check_dir():
     """Once, prior to session, this will clear and re-initialize the test file directories."""
 
     # If the directories already exist, clear them
-    if os.path.exists(TEST_FILE_PATH):
-        shutil.rmtree(TEST_FILE_PATH)
-    if os.path.exists(TEST_REPORTS_PATH):
-        shutil.rmtree(TEST_REPORTS_PATH)
+    if os.path.exists(BASE_TEST_FILE_PATH):
+        shutil.rmtree(BASE_TEST_FILE_PATH)
 
     # Remake (empty) directories
-    os.mkdir(TEST_FILE_PATH)
+    os.mkdir(BASE_TEST_FILE_PATH)
+    os.mkdir(TEST_DATA_PATH)
     os.mkdir(TEST_REPORTS_PATH)
 
 @pytest.fixture(scope='session')

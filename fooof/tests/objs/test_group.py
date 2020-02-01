@@ -15,7 +15,7 @@ from fooof.core.info import get_description
 
 from fooof.objs.group import *
 
-from fooof.tests.test_settings import TEST_FILE_PATH
+from fooof.tests.test_settings import TEST_DATA_PATH
 from fooof.tests.test_utils import default_group_params, plot_test
 
 ###################################################################################################
@@ -232,10 +232,10 @@ def test_fg_load():
 
     tfg = FOOOFGroup(verbose=False)
 
-    tfg.load(set_file_name, TEST_FILE_PATH)
+    tfg.load(set_file_name, TEST_DATA_PATH)
     assert tfg
 
-    tfg.load(res_file_name, TEST_FILE_PATH)
+    tfg.load(res_file_name, TEST_DATA_PATH)
     assert tfg
 
 def test_fg_report(skip_if_no_mpl):
