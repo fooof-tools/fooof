@@ -234,7 +234,7 @@ def gen_methods_text_str(fooof_obj=None):
     """
 
     template = (
-        "We used the FOOOF algorithm (version {}) to parameterize "
+        "The FOOOF algorithm (version {}) was used to parameterize "
         "neural power spectra. Settings for the algorithm were set as: "
         "peak width limits : {}; "
         "max number of peaks : {}; "
