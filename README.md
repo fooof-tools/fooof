@@ -16,9 +16,14 @@ FOOOF conceives of a model of the power spectrum as a combination of two distinc
 - An aperiodic component, reflecting 1/f like characteristics, with
 - A variable number of periodic components (putative oscillations), as peaks rising above the aperiodic component
 
-This model driven approach can be used to measure periodic and aperiodic properties of electrophysiological data, including EEG, MEG, ECoG and LFP data.
+This model driven approach can be used to measure periodic and aperiodic properties of electrophysiological data,
+including EEG, MEG, ECoG and LFP data.
 
-The benefit of using FOOOF for measuring putative oscillations, is that peaks in the power spectrum are characterized in terms of their specific center frequency, power and bandwidth without requiring predefining specific bands of interest and controlling for the aperiodic component. FOOOF also gives you a measure of this aperiodic components of the signal, allowing for measuring and comparison of 1/f-like components of the signal within and between subjects.
+The benefit of using FOOOF for measuring putative oscillations, is that peaks in the power spectrum are
+characterized in terms of their specific center frequency, power and bandwidth without requiring predefining
+specific bands of interest and controlling for the aperiodic component.
+FOOOF also gives you a measure of this aperiodic components of the signal, allowing for measuring and
+comparison of 1/f-like components of the signal within and between subjects.
 
 ## Documentation
 
@@ -45,12 +50,12 @@ It has the following required dependencies:
 - [numpy](https://github.com/numpy/numpy)
 - [scipy](https://github.com/scipy/scipy) >= 0.19
 
-Optional dependencies, not required for model fitting are:
-- [matplotlib](https://github.com/matplotlib/matplotlib), for visualizing data and model fits
-- [tqdm](https://github.com/tqdm/tqdm), for printing progress bars when fitting many models
-- [pytest](https://github.com/pytest-dev/pytest), for running the tests locally
+There are also optional dependencies, which are not required for model fitting itself, but offer extra functionality:
+- [matplotlib](https://github.com/matplotlib/matplotlib) is needed to visualize data and model fits
+- [tqdm](https://github.com/tqdm/tqdm) is needed to print progress bars when fitting many models
+- [pytest](https://github.com/pytest-dev/pytest) is needed to run the test suite locally
 
-That is, if you are using [Anaconda](https://www.anaconda.com/download/), then you are good to go.
+If you are using [Anaconda](https://www.anaconda.com/download/), then you are good to go.
 
 If you aren't already using Anaconda, it is a useful tool to get and manage these dependencies.
 
@@ -111,7 +116,7 @@ Code and analyses from the paper are also available
 
 ## Contribute
 
-`FOOOF` welcomes and encourages contributions from the community!
+This project welcomes and encourages contributions from the community!
 
 If you have an idea of something to add to FOOOF, please start by opening an
 [issue](https://github.com/fooof-tools/fooof/issues).
@@ -126,13 +131,14 @@ When writing code to add to FOOOF, please follow the
 
 ## Quickstart
 
-FOOOF is object oriented, and uses a similar object organization as used in scikit-learn.
+FOOOF is object oriented, and uses a similar approach as used in scikit-learn.
 
 The algorithm works on frequency representations, that is power spectra in linear space.
 
 **Fitting a Single Power Spectrum**
 
-With a power spectrum loaded (with 'freqs' storing frequency values, and 'spectrum' storing the power spectrum, both as 1D arrays in linear space) FOOOF can be used as follows:
+With a power spectrum loaded (with 'freqs' storing frequency values, and 'spectrum' storing
+the power spectrum, both as 1D arrays in linear space) FOOOF can be used as follows:
 
 ```python
 from fooof import FOOOF
@@ -147,7 +153,9 @@ freq_range = [3, 40]
 fm.report(freqs, spectrum, freq_range)
 ```
 
-FOOOF.report() fits the model, plots the original power spectrum with the associated FOOOF model fit, and prints out the parameters of the model fit for both the aperiodic component, and parameters for any identified peaks, reflecting periodic components.
+FOOOF.report() fits the model, plots the original power spectrum with the associated FOOOF model fit,
+and prints out the parameters of the model fit for both the aperiodic component, and parameters for
+any identified peaks, reflecting periodic components.
 
 Example output for the report of a FOOOF fit on an individual power spectrum:
 
@@ -197,5 +205,7 @@ Example output from using FOOOFGroup across a group of power spectra:
 
 **Other Functionality**
 
-FOOOF also has functionality for running the FOOOF model across matrices of multiple power spectra, saving and loading results, creating reports from FOOOF outputs, analyzing model outputs, plotting models and parameters, and simulating power spectra, all of which is described in the
+FOOOF also has functionality for running the FOOOF model across matrices of multiple power spectra,
+saving and loading results, creating reports from FOOOF outputs, analyzing model outputs,
+plotting models and parameters, and simulating power spectra, all of which is described in the
 [documentation](https://fooof-tools.github.io/fooof/).
