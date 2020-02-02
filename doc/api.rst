@@ -4,7 +4,7 @@
 API Documentation
 =================
 
-This is the API reference for the FOOOF module.
+API reference for the FOOOF module.
 
 Table of Contents
 =================
@@ -20,62 +20,106 @@ FOOOF Objects
 
 Objects that manage data and fit models to parameterize neural power spectra.
 
-FOOOF
-~~~~~
+FOOOF Object
+~~~~~~~~~~~~
+
+The FOOOF object is the base object for the model, and can be used to fit individual power spectra.
 
 .. autosummary::
    :toctree: generated/
 
    FOOOF
 
-FOOOFGroup
-~~~~~~~~~~
+FOOOFGroup Object
+~~~~~~~~~~~~~~~~~
+
+The FOOOFGroup object allows for parameterizing groups of power spectra.
 
 .. autosummary::
    :toctree: generated/
 
    FOOOFGroup
 
-FOOOF Functions
----------------
+Object Utilities
+~~~~~~~~~~~~~~~~
 
 Functions to manipulate, examine and analyze FOOOF objects, and related utilities.
 
-Manage FOOOF Objects
-~~~~~~~~~~~~~~~~~~~~
-
-Functions to manage and manipulate FOOOF objects.
-
-.. currentmodule:: fooof.funcs
+.. currentmodule:: fooof.objs.utils
 
 .. autosummary::
    :toctree: generated/
 
+   compare_info
    average_fg
    combine_fooofs
    fit_fooof_group_3d
 
-Check FOOOF Objects
-~~~~~~~~~~~~~~~~~~~
+Data Objects
+------------
 
-Functions to help examine and audit FOOOF objects.
+Objects to manage and store data.
 
-.. currentmodule:: fooof.checks
+Oscillation Bands
+~~~~~~~~~~~~~~~~~
+
+Object to handle oscillation band definitions.
+
+.. currentmodule:: fooof.data.bands
+
+.. autosummary::
+   :toctree: generated/
+
+   Bands
+
+Model Data
+~~~~~~~~~~
+
+Objects to store settings, metadata and results for FOOOF models.
+
+.. currentmodule:: fooof.data.data
+
+.. autosummary::
+   :toctree: generated/
+
+   FOOOFSettings
+   FOOOFMetaData
+   FOOOFResults
+
+Simulated Data
+~~~~~~~~~~~~~~
+
+Object to store information about simulated data.
+
+.. autosummary::
+   :toctree: generated/
+
+   SimParams
+
+Analyze Model Results
+---------------------
+
+Functions to analyze FOOOF results.
+
+Analyze Model Errors
+~~~~~~~~~~~~~~~~~~~~
+
+Functions for analyzing the error of model fits.
+
+.. currentmodule:: fooof.analysis.error
 
 .. autosummary::
     :toctree: generated/
 
-    get_info
-    compare_info
     compute_pointwise_error_fm
     compute_pointwise_error_fg
 
-Analyze FOOOF Object Results
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Analyze Periodic Components
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Functions to help analyze FOOOF results.
+Functions for analyzing the periodic components of model fits.
 
-.. currentmodule:: fooof.analysis
+.. currentmodule:: fooof.analysis.periodic
 
 .. autosummary::
     :toctree: generated/
@@ -94,6 +138,8 @@ Code & utilities for simulating power spectra.
 Generate Power Spectra
 ~~~~~~~~~~~~~~~~~~~~~~
 
+Functions for simulating neural power spectra.
+
 .. currentmodule:: fooof.sim.gen
 
 .. autosummary::
@@ -105,6 +151,8 @@ Generate Power Spectra
 
 Manage Parameters
 ~~~~~~~~~~~~~~~~~
+
+Functions and objects for managing parameters for simulated power spectra.
 
 .. currentmodule:: fooof.sim.params
 
@@ -119,6 +167,8 @@ Manage Parameters
 
 Transform Power Spectra
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+Functions for transforming power spectra.
 
 .. currentmodule:: fooof.sim.transform
 
@@ -198,27 +248,28 @@ Utilities
 
 Utility functions and objects.
 
-Manage Oscillation Bands
-~~~~~~~~~~~~~~~~~~~~~~~~
+Data Utilities
+~~~~~~~~~~~~~~
 
-Object to handle oscillation band definitions.
+Utilities for working with data.
 
-.. currentmodule:: fooof.bands
-
-.. autosummary::
-   :toctree: generated/
-
-   Bands
-
-General Utilities
-~~~~~~~~~~~~~~~~~
-
-General utility functions.
-
-.. currentmodule:: fooof.utils
+.. currentmodule:: fooof.utils.data
 
 .. autosummary::
     :toctree: generated/
 
     trim_spectrum
     compute_pointwise_error
+
+Reports
+~~~~~~~
+
+Utilities to create reports.
+
+.. currentmodule:: fooof.utils.reports
+
+.. autosummary::
+    :toctree: generated/
+
+    methods_report_info
+    methods_report_text
