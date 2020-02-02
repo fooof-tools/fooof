@@ -1,4 +1,4 @@
-"""Tests for fooof.objects.fit, including the FOOOF object and it's methods.
+"""Tests for fooof.objs.fit, including the FOOOF object and it's methods.
 
 NOTES
 -----
@@ -16,10 +16,10 @@ from fooof.core.info import get_description
 from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
 from fooof.core.errors import DataError, NoDataError, InconsistentDataError
 
-from fooof.objs.fit import *
-
 from fooof.tests.test_settings import TEST_DATA_PATH
 from fooof.tests.test_utils import get_tfm, plot_test
+
+from fooof.objs.fit import *
 
 ###################################################################################################
 ###################################################################################################

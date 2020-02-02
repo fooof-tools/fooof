@@ -1,4 +1,4 @@
-"""Tests for the fooof.objects.group, including the FOOOFGroup object and it's methods.
+"""Tests for the fooof.objs.group, including the FOOOFGroup object and it's methods.
 
 NOTES
 -----
@@ -13,10 +13,10 @@ from fooof.data import FOOOFResults
 from fooof.sim import gen_group_power_spectra
 from fooof.core.info import get_description
 
-from fooof.objs.group import *
-
 from fooof.tests.test_settings import TEST_DATA_PATH
 from fooof.tests.test_utils import default_group_params, plot_test
+
+from fooof.objs.group import *
 
 ###################################################################################################
 ###################################################################################################

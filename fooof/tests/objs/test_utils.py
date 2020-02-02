@@ -1,4 +1,4 @@
-"""Test functions for fooof.objects.obj_funcs."""
+"""Test functions for fooof.objs.utils."""
 
 from py.test import raises
 
@@ -9,9 +9,9 @@ from fooof.objs.utils import compare_info
 from fooof.sim import gen_group_power_spectra
 from fooof.core.errors import NoModelError, IncompatibleSettingsError
 
-from fooof.objs.utils import *
-
 from fooof.tests.test_utils import default_group_params
+
+from fooof.objs.utils import *
 
 ###################################################################################################
 ###################################################################################################

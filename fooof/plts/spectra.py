@@ -197,7 +197,8 @@ def plot_spectrum_error(freqs, error, shade=None, log_freqs=False,
         ax.fill_between(plt_freqs, error-shade, error+shade, alpha=0.25)
 
     ymin, ymax = ax.get_ylim()
-    if ymin < 0: ax.set_ylim([0, ymax])
+    if ymin < 0:
+        ax.set_ylim([0, ymax])
     ax.set_xlim(plt_freqs.min(), plt_freqs.max())
 
     check_n_style(plot_style, ax, log_freqs, True)

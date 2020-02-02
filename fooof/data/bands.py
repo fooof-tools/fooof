@@ -1,4 +1,4 @@
-"""A class for managing band definitions."""
+"""A data oject for managing band definitions."""
 
 from collections import OrderedDict
 
@@ -6,7 +6,7 @@ from collections import OrderedDict
 ###################################################################################################
 
 class Bands():
-    """Class to hold bands definitions.
+    """Oscillation bands definitions.
 
     Attributes
     ----------

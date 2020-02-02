@@ -4,9 +4,9 @@ from functools import wraps
 
 from fooof.data.bands import Bands
 from fooof.objs import FOOOF, FOOOFGroup
+from fooof.core.modutils import safe_import
 from fooof.sim.params import param_sampler
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
-from fooof.core.modutils import safe_import
 
 plt = safe_import('.pyplot', 'matplotlib')
 

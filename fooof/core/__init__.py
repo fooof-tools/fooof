@@ -1,1 +1,1 @@
-"""Private sub-module for core functions for FOOOF."""
+"""Sub-module for core functions for FOOOF."""

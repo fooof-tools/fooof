@@ -4,6 +4,7 @@ import numpy as np
 
 from fooof.sim.gen import gen_power_spectrum
 from fooof.sim.params import SimParams
+
 from fooof.sim.transform import *
 
 ###################################################################################################

@@ -1,4 +1,4 @@
-"""Settings for FOOOF tests."""
+"""Settings for testing fooof."""
 
 import os
 import pkg_resources as pkg

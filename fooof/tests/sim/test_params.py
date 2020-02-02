@@ -122,4 +122,4 @@ def test_param_jitter():
     # Check that jitter does not get applied when it should not
     jitterer = param_jitter(params, [0, 0.5])
     for ind, jits in zip(range(3), jitterer):
-       assert jits[0] == params[1]
+        assert jits[0] == params[1]
