@@ -29,7 +29,7 @@ aperiodic_mode : {'fixed', 'knee'}
 FOOOFMetaData = namedtuple('FOOOFMetaData', ['freq_range', 'freq_res'])
 
 FOOOFMetaData.__doc__ = """\
-Data related information for a FOOOF object.
+The meta-data for a FOOOF object.
 
 Attributes
 ----------
@@ -43,7 +43,7 @@ freq_res : float
 FOOOFResults = namedtuple('FOOOFResults', ['aperiodic_params', 'peak_params',
                                            'r_squared', 'error', 'gaussian_params'])
 FOOOFResults.__doc__ = """\
-The resulting parameters and associated data of a FOOOF model fit.
+The results from a FOOOF model fit.
 
 Attributes
 ----------
