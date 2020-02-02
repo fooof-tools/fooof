@@ -20,7 +20,7 @@ def test_compute_pointwise_error_fg(tfg):
     errs = compute_pointwise_error_fg(tfg, False, True)
     assert np.all(errs)
 
-def test_compute_pointwise_error_fg_plt(tfm, skip_if_no_mpl):
+def test_compute_pointwise_error_fg_plt(tfg, skip_if_no_mpl):
     """Run a seperate test to run with plot pass-through."""
 
-    compute_pointwise_error_fg(tfm, True, False)
+    compute_pointwise_error_fg(tfg, True, False)
