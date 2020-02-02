@@ -11,7 +11,8 @@ install:
   - pip install pytest-cov
   - pip install codecov
   # Run tests with optional dependencies
-  - pip install matplotlib, tqdm
+  - pip install matplotlib
+  - pip install tqdm
 
 script:
   - py.test --cov=./
