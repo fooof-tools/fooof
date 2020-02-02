@@ -13,41 +13,46 @@ FOOOF is a fast, efficient, and physiologically-informed tool to parameterize ne
 ## Overview
 
 FOOOF conceives of a model of the power spectrum as a combination of two distinct functional processes:
-- An aperiodic component, reflecting 1/f like characteristics, modeled with an exponential fit, with
-- A variable number of periodic components, that exhibit as band-limited peaks rising above the aperiodic component, reflecting putative oscillations, modeled as Gaussians
+- An aperiodic component, reflecting 1/f like characteristics, with
+- A variable number of periodic components (putative oscillations), as peaks rising above the aperiodic component
 
 This model driven approach can be used to measure periodic and aperiodic properties of electrophysiological data, including EEG, MEG, ECoG and LFP data.
 
-The benefit of using FOOOF for measuring putative oscillations, is that peaks in the power spectrum are characterized in terms of their specific center frequency, power and bandwidth without requiring predefining specific bands of interest and controlling for the aperiodic component. FOOOF also gives you a measure of this aperiodic components of the signal, allowing for measuring and comparison of 1/f like components of the signal within and between subjects.
+The benefit of using FOOOF for measuring putative oscillations, is that peaks in the power spectrum are characterized in terms of their specific center frequency, power and bandwidth without requiring predefining specific bands of interest and controlling for the aperiodic component. FOOOF also gives you a measure of this aperiodic components of the signal, allowing for measuring and comparison of 1/f-like components of the signal within and between subjects.
 
 ## Documentation
 
-Documentation for FOOOF is available [here](https://fooof-tools.github.io/fooof/index.html).
+Documentation for FOOOF is available on the
+[documentation site](https://fooof-tools.github.io/fooof/index.html).
 
-The [tutorials](https://fooof-tools.github.io/fooof/auto_tutorials/index.html) describe the FOOOF algorithm and it's usage, as well as additional examples on the [Examples](https://fooof-tools.github.io/fooof/auto_examples/index.html) page.
-
-The documentation also includes an [FAQ](https://fooof-tools.github.io/fooof/faq.html).
+This documentation includes:
+- [tutorials](https://fooof-tools.github.io/fooof/auto_tutorials/index.html),
+with a step-by-step guide through the model and how to apply it
+- [examples](https://fooof-tools.github.io/fooof/auto_examples/index.html),
+demonstrating example analyses and use cases, and other functionality
+- [motivations](https://fooof-tools.github.io/fooof/auto_motivations/index.html),
+which demonstrate motivating examples of why we recommend parameterizing neural power spectra
+- [API listing](https://fooof-tools.github.io/fooof/api.html),
+which lists all the code and functionality available in the module
+- [FAQ](https://fooof-tools.github.io/fooof/faq.html),
+answering frequency asked questions
 
 ## Dependencies
 
 FOOOF is written in Python, and requires Python >= 3.5 to run.
 
-It has the following dependencies:
-- numpy
-- scipy >= 0.19
-- matplotlib (optional)
-- tqdm (optional)
-- pytest (optional)
+It has the following required dependencies:
+- [numpy](https://github.com/numpy/numpy)
+- [scipy](https://github.com/scipy/scipy) >= 0.19
+
+Optional dependencies, not required for model fitting are:
+- [matplotlib](https://github.com/matplotlib/matplotlib), for visualizing data and model fits
+- [tqdm](https://github.com/tqdm/tqdm), for printing progress bars when fitting many models
+- [pytest](https://github.com/pytest-dev/pytest), for running the tests locally
 
 That is, if you are using [Anaconda](https://www.anaconda.com/download/), then you are good to go.
 
 If you aren't already using Anaconda, it is a useful tool to get and manage these dependencies.
-
-Matplotlib is not required for running the model fitting, but is used if you want to visualize model fits.
-
-tqdm is also not required for running the model fitting, but can be used to print progress bars when fitting many models.
-
-Pytest is only required to run the test suite.
 
 ## Installation
 
@@ -77,13 +82,19 @@ To install an editable version, download the development version as above, and r
 
 ## Matlab Support
 
-FOOOF is implemented in Python, but there is also Matlab wrapper with which you can use FOOOF from Matlab, which is available in the [fooof_mat](http://github.com/fooof-tools/fooof_mat) repository.
+FOOOF is implemented in Python, but there is also Matlab wrapper that allows you to use FOOOF from Matlab.
+The wrapper is available in the
+[fooof_mat](http://github.com/fooof-tools/fooof_mat) repository.
 
-If you would like to use FOOOF, from Python, within a pipeline that is mostly in Matlab, the [mat_py_mat](https://github.com/fooof-tools/mat_py_mat) repository also has some examples and utilities for doing so.
+If you would like to use FOOOF, from Python, within a pipeline that is mostly in Matlab, the
+[mat_py_mat](https://github.com/fooof-tools/mat_py_mat)
+repository also has some examples and utilities for doing so.
 
 ## Bug Reports
 
-Please use the [Github issue tracker](https://github.com/fooof-tools/fooof/issues) to file bug reports and/or ask questions about this project.
+Please use the
+[Github issue tracker](https://github.com/fooof-tools/fooof/issues)
+to file bug reports and/or ask questions about this project.
 
 ## Reference
 
@@ -95,13 +106,22 @@ If you use this code in your project, please cite:
 
 Direct Link: https://doi.org/10.1101/299859
 
+Code and analyses from the paper are also available
+[here](https://github.com/fooof-tools/Paper).
+
 ## Contribute
 
 `FOOOF` welcomes and encourages contributions from the community!
 
-If you have an idea of something to add to FOOOF, please start by opening an [issue](https://github.com/fooof-tools/fooof/issues).
+If you have an idea of something to add to FOOOF, please start by opening an
+[issue](https://github.com/fooof-tools/fooof/issues).
+Note that this issue tracker is used for code specific questions and suggestions.
+If you have a question or suggestion related to the model or conceptual ideas, check out the
+[development](https://github.com/fooof-tools/Development) page.
 
-When writing code to add to FOOOF, please follow the [Contribution Guidelines](https://github.com/fooof-tools/fooof/blob/master/CONTRIBUTING.md), and also make sure to follow our
+When writing code to add to FOOOF, please follow the
+[Contribution Guidelines](https://github.com/fooof-tools/fooof/blob/master/CONTRIBUTING.md)
+, and also make sure to follow our
 [Code of Conduct](https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md).
 
 ## Quickstart
@@ -109,6 +129,8 @@ When writing code to add to FOOOF, please follow the [Contribution Guidelines](h
 FOOOF is object oriented, and uses a similar object organization as used in scikit-learn.
 
 The algorithm works on frequency representations, that is power spectra in linear space.
+
+**Fitting a Single Power Spectrum**
 
 With a power spectrum loaded (with 'freqs' storing frequency values, and 'spectrum' storing the power spectrum, both as 1D arrays in linear space) FOOOF can be used as follows:
 
@@ -127,20 +149,32 @@ fm.report(freqs, spectrum, freq_range)
 
 FOOOF.report() fits the model, plots the original power spectrum with the associated FOOOF model fit, and prints out the parameters of the model fit for both the aperiodic component, and parameters for any identified peaks, reflecting periodic components.
 
-FOOOF also accepts parameters for fine-tuning the fit. For example:
+Example output for the report of a FOOOF fit on an individual power spectrum:
 
-```python
-fm = FOOOF(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_height=0.1, peak_threshold=2.0)
-```
+!["fooof_report"](https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOF_report.png)
 
+**Defining the model Settings**
+
+FOOOF also has some settings for the algorithm.
+
+These settings are:
 * `peak_width_limits` sets the possible lower- and upper-bounds for the fitted peak widths.
 * `max_n_peaks` sets the maximum number of peaks to fit.
 * `min_peak_height` sets an absolute limit on the minimum height (above aperiodic) for any extracted peak.
-* `peak_threshold`, also sets a threshold above which a peak height must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.
+* `peak_threshold` sets a relative threshold above which a peak height must cross to be included in the model.
+* `aperiodic_mode` defines the approach to use to parameterize the aperiodic component.
 
-FOOOF also has convenience methods for running the FOOOF model across matrices of multiple power spectra, as well as functionality for saving and loading results, creating reports from FOOOF outputs, and utilities to further analize FOOOF results.
+These settings can be defined when initializing the model, for example:
+```python
+fm = FOOOF(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_height=0.1,
+           peak_threshold=2.0, aperiodic_mode='fixed')
+```
 
-An example workflow for fitting a group of neural power spectra with 'freqs' as 1D array of frequency values, and 'spectra' as a 2D array of power spectra:
+**Fitting a Group of Power Spectra**
+
+Next is an example workflow for fitting a group of neural power spectra.
+In this case, 'freqs' is again a 1D array of frequency values, and 'spectra' as a 2D array of power spectra.
+We can fit this  which can be fit as:
 
 ```python
 
@@ -157,12 +191,11 @@ fg.save_report()
 fg.save(file_name='fooof_group_results', save_results=True)
 ```
 
-Example output for a FOOOF fit on an individual power spectrum:
-
-!["fooof_report"](img/FOOOF_report.png)
-
 Example output from using FOOOFGroup across a group of power spectra:
 
-!["fooof_group_report"](img/FOOOFGroup_report.png)
+!["fooof_group_report"](https://github.com/fooof-tools/fooof/blob/master/doc/img/FOOOFGroup_report.png)
 
-Further descriptions and examples are available through the [documentation](https://fooof-tools.github.io/fooof/index.html), including a set of [tutorials](https://fooof-tools.github.io/fooof/auto_tutorials/index.html).
+**Other Functionality**
+
+FOOOF also has functionality for running the FOOOF model across matrices of multiple power spectra, saving and loading results, creating reports from FOOOF outputs, analyzing model outputs, plotting models and parameters, and simulating power spectra, all of which is described in the
+[documentation](https://fooof-tools.github.io/fooof/).
