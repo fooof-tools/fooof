@@ -10,9 +10,27 @@ def test_gen_width_warning_str():
 
     assert gen_width_warning_str(0.5, 0.5)
 
+def test_gen_version_str():
+
+    assert gen_version_str()
+
 def test_gen_settings_str(tfm):
 
     assert gen_settings_str(tfm)
+
+def test_gen_freq_range_str(tfm):
+
+    assert gen_freq_range_str(tfm)
+
+def test_gen_methods_report_str():
+
+    assert gen_methods_report_str()
+
+def test_gen_methods_text_str(tfm):
+
+    # Test with and without passing in a FOOOF object
+    assert gen_methods_text_str()
+    assert gen_methods_text_str(tfm)
 
 def test_gen_results_fm_str(tfm):
 

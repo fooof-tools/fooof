@@ -3,6 +3,7 @@
 import numpy as np
 
 from fooof.core.errors import NoModelError
+from fooof.version import __version__ as FOOOF_VERSION
 
 ###################################################################################################
 ###################################################################################################
@@ -25,6 +26,11 @@ def gen_width_warning_str(freq_res, bwl):
         Frequency resolution.
     bwl : float
         Lower bound peak width limit.
+
+    Returns
+    -------
+    output : str
+        Formatted string of a warning about the peak width limits setting.
     """
 
     output = '\n'.join([
@@ -41,12 +47,48 @@ def gen_width_warning_str(freq_res, bwl):
     return output
 
 
-def gen_settings_str(f_obj, description=False, concise=False):
+def gen_version_str(concise=False):
+    """Generate a string representation of the current version of FOOOF.
+
+    Parameters
+    ----------
+    concise : bool, optional, default: False
+        Whether to print the report in concise mode.
+
+    Returns
+    -------
+    output : str
+        Formatted string of current version.
+    """
+
+    str_lst = [
+
+        # Header
+        '=',
+        '',
+        'FOOOF - VERSION',
+        '',
+
+        # Version information
+        '{}'.format(FOOOF_VERSION),
+
+        # Footer
+        '',
+        '='
+
+    ]
+
+    output = _format(str_lst, concise)
+
+    return output
+
+
+def gen_settings_str(fooof_obj, description=False, concise=False):
     """Generate a string representation of current FOOOF settings.
 
     Parameters
     ----------
-    f_obj : FOOOF or FOOOFGroup
+    fooof_obj : FOOOF or FOOOFGroup or FOOOFSettings
         An object from which settings can be accessed.
     description : bool, optional, default: True
         Whether to also print out a description of the settings.
@@ -82,15 +124,15 @@ def gen_settings_str(f_obj, description=False, concise=False):
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Peak Width Limits : {}'.format(f_obj.peak_width_limits),
+        *[el for el in ['Peak Width Limits : {}'.format(fooof_obj.peak_width_limits),
                         '{}'.format(desc['peak_width_limits']),
-                        'Max Number of Peaks : {}'.format(f_obj.max_n_peaks),
+                        'Max Number of Peaks : {}'.format(fooof_obj.max_n_peaks),
                         '{}'.format(desc['max_n_peaks']),
-                        'Minimum Peak Height : {}'.format(f_obj.min_peak_height),
+                        'Minimum Peak Height : {}'.format(fooof_obj.min_peak_height),
                         '{}'.format(desc['min_peak_height']),
-                        'Peak Threshold: {}'.format(f_obj.peak_threshold),
+                        'Peak Threshold: {}'.format(fooof_obj.peak_threshold),
                         '{}'.format(desc['peak_threshold']),
-                        'Aperiodic Mode : {}'.format(f_obj.aperiodic_mode),
+                        'Aperiodic Mode : {}'.format(fooof_obj.aperiodic_mode),
                         '{}'.format(desc['aperiodic_mode'])] if el != ''],
 
         # Footer
@@ -101,6 +143,122 @@ def gen_settings_str(f_obj, description=False, concise=False):
     output = _format(str_lst, concise)
 
     return output
+
+
+def gen_freq_range_str(fooof_obj, concise=False):
+    """Generate a string representation of fit range used for the model.
+
+    Parameters
+    ----------
+    fooof_obj : FOOOF or FOOOFGroup
+        An object from which settings can be accessed.
+    concise : bool, optional, default: False
+        Whether to print the report in concise mode.
+
+    Notes
+    -----
+    If fit range is not available, will print out 'XX' for missing values.
+    """
+
+    freq_range = fooof_obj.freq_range if fooof_obj.has_data else ('XX', 'XX')
+
+    str_lst = [
+
+        # Header
+        '=',
+        '',
+        'FOOOF - FIT RANGE',
+        '',
+
+        # Frequency range information information
+        'The model was fit from {} to {} Hz.'.format(*freq_range),
+
+        # Footer
+        '',
+        '='
+
+    ]
+
+    output = _format(str_lst, concise)
+
+    return output
+
+
+def gen_methods_report_str(concise=False):
+    """Generate a string representation of instructions for reporting about using FOOOF.
+
+    Parameters
+    ----------
+    concise : bool, optional, default: False
+        Whether to print the report in concise mode.
+
+    Returns
+    -------
+    output : str
+        Formatted string of instructions for methods reporting.
+    """
+
+    str_lst = [
+
+        # Header
+        '=',
+        '',
+        'FOOOF - REPORTING',
+        '',
+
+        # Methods report information
+        'To report on using FOOOF, you should report (at minimum):',
+        '',
+        '- the code version that was used used',
+        '- the algorithm settings that were used',
+        '- the frequency range that was fit',
+
+        # Footer
+        '',
+        '='
+    ]
+
+    output = _format(str_lst, concise)
+
+    return output
+
+
+def gen_methods_text_str(fooof_obj=None):
+    """Generate a string representation of a template methods report.
+
+    Parameters
+    ----------
+    fooof_obj : FOOOF or FOOOFGroup, optional
+        A FOOOF object with settings information available.
+        If None, the text is returned as a template, without values.
+    """
+
+    template = (
+        "We used the FOOOF algorithm (version {}) to parameterize "
+        "neural power spectra. Settings for the algorithm were set as: "
+        "peak width limits : {}; "
+        "max number of peaks : {}; "
+        "minimum peak height : {}; "
+        "peak threshold : {}; "
+        "and aperiodic mode : '{}'. "
+        "Power spectra were parameterized across the frequency range "
+        "{} to {} Hz."
+    )
+
+    if fooof_obj:
+        freq_range = fooof_obj.freq_range if fooof_obj.has_data else ('XX', 'XX')
+    else:
+        freq_range = ('XX', 'XX')
+
+    methods_str = template.format(FOOOF_VERSION,
+                                  fooof_obj.peak_width_limits if fooof_obj else 'XX',
+                                  fooof_obj.max_n_peaks if fooof_obj else 'XX',
+                                  fooof_obj.min_peak_height if fooof_obj else 'XX',
+                                  fooof_obj.peak_threshold if fooof_obj else 'XX',
+                                  fooof_obj.aperiodic_mode if fooof_obj else 'XX',
+                                  *freq_range)
+
+    return methods_str
 
 
 def gen_results_fm_str(fm, concise=False):
@@ -273,7 +431,7 @@ def gen_issue_str(concise=False):
         # Header
         '=',
         '',
-        'CONTACT / REPORTING ISSUES WITH FOOOF',
+        'FOOOF - ISSUE REPORTING',
         '',
 
         # Reporting bugs
