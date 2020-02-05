@@ -15,20 +15,38 @@ def test_get_description(tfm):
         for it in va:
             assert it in objs
 
-def test_get_indices():
+
+def test_get_peak_indices():
+
+    indices = get_peak_indices()
+
+    # Check it returns a valid object & that values are correct
+    assert indices
+    for ind, val in enumerate(['CF', 'PW', 'BW']):
+        assert indices[val] == ind
+
+def test_get_ap_indices():
 
     indices_fixed = get_indices('fixed')
+
     assert indices_fixed
-    for ke, va in indices_fixed.items():
-        if ke == 'knee':
-            assert not va
-        else:
-            assert isinstance(va, int)
+    for ind, val in enumerate(['offset', 'exponent']):
+        assert indices_fixed[val] == ind
+
 
     indices_knee = get_indices('knee')
+
     assert indices_knee
-    for ke, va in indices_knee.items():
-        assert isinstance(va, int)
+    for ind, val in enumerate(['offset', 'knee', 'exponent']):
+        assert indices_knee[val] == ind
+
+def test_get_indices():
+
+    all_indices_fixed = get_indices('fixed')
+    assert len(all_indices_fixed) == 5
+
+    all_indices_knee = get_indices('knee')
+    assert len(all_indices_knee) == 6
 
 def test_get_info(tfm, tfg):
 

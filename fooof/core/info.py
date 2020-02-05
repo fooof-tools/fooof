@@ -41,28 +41,67 @@ def get_description():
     return attributes
 
 
-def get_indices(aperiodic_mode):
-    """Get a dictionary mapping indices of FOOOF params to column labels.
-
-    Parameters
-    ----------
-    aperiodic_mode : {'fixed', 'knee'}
-        Which approach taken to fit the aperiodic component.
+def get_peak_indices():
+    """Get a mapping from column labels to indices for peak parameters.
 
     Returns
     -------
     indices : dict
-        Mapping of the column indices for the FOOOF model fit params.
+        Mapping of the column labels and indices for the peak parameters.
     """
 
     indices = {
         'CF' : 0,
         'PW' : 1,
         'BW' : 2,
-        'offset' : 0,
-        'knee' : 1 if aperiodic_mode == 'knee' else None,
-        'exponent' : 1 if aperiodic_mode == 'fixed' else 2
     }
+
+    return indices
+
+
+def get_ap_indices(aperiodic_mode):
+    """Get a mapping from column labels to indices for aperiodic parameters.
+
+    Parameters
+    ----------
+    aperiodic_mode : {'fixed', 'knee'}
+        Which mode was used for the aperiodic component.
+
+    Returns
+    -------
+    indices : dict
+        Mapping of the column labels and indices for the aperiodc parameters.
+    """
+
+    if aperiodic_mode  == 'fixed':
+        labels = ('offset', 'exponent')
+    elif aperiodic_mode  == 'knee':
+        labels = ('offset', 'knee', 'exponent')
+    else:
+        raise ValueError('Aperiodic mode not understood.')
+
+    indices = {label : index for index, label in enumerate(labels)}
+
+    return indices
+
+
+def get_indices(aperiodic_mode):
+    """Get a mapping from column labels to indices for all parameters.
+
+    Parameters
+    ----------
+    aperiodic_mode : {'fixed', 'knee'}
+        Which mode was used for the aperiodic component.
+
+    Returns
+    -------
+    indices : dict
+        Mapping of the column labels and indices for all parameters.
+    """
+
+    # Get the periodic indices, and then update dictionary with aperiodic ones
+    indices = get_peak_indices()
+    indices.update(get_ap_indices(aperiodic_mode))
 
     return indices
 
