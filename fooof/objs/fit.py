@@ -103,7 +103,7 @@ class FOOOF():
         The knee parameter is only included if aperiodic component is fit with a knee.
     peak_params_ : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
-    gaussian_params : 2d array
+    gaussian_params_ : 2d array
         Parameters that define the gaussian fit(s).
         Each row is a gaussian, as [mean, height, standard deviation].
     r_squared_ : float
@@ -124,9 +124,9 @@ class FOOOF():
     - Input power spectra must be provided in linear scale.
       Internally they are stored in log10 scale, as this is what the model operates upon.
     - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
-      For example, raw FFT inputs are not appropriate.
-    - Where possible and appropriate, use longer time segments for power spectrum calculation to
-      get smoother power spectra, as this will give better model fits.
+      For example, raw FFT inputs are not appropriate. Where possible and appropriate, use
+      longer time segments for power spectrum calculation to get smoother power spectra,
+      as this will give better model fits.
     - The gaussian params are those that define the gaussian of the fit, where as the peak
       params are a modified version, in which the CF of the peak is the mean of the gaussian,
       the PW of the peak is the height of the gaussian over and above the aperiodic component,

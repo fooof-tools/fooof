@@ -18,28 +18,84 @@ from fooof.core.errors import NoModelError
 from fooof.core.reports import save_report_fg
 from fooof.core.strings import gen_results_fg_str
 from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.modutils import copy_doc_func_to_method, copy_doc_class, safe_import
+from fooof.core.modutils import copy_doc_func_to_method, safe_import
 
 ###################################################################################################
 ###################################################################################################
 
-# Set docstring attribute section to add when copying FOOOF docs -> FOOOFGroup
-#  This section will be appended to the FOOOF Attributes section when copying over
-ATT_ADD = """
+class FOOOFGroup(FOOOF):
+    """Model a group of power spectra as a combination of aperiodic and periodic components.
+
+    WARNING: FOOOF expects frequency and power values in linear space.
+
+    Passing in logged frequencies and/or power spectra is not detected,
+    and will silently produce incorrect results.
+
+    Parameters
+    ----------
+    peak_width_limits : tuple of (float, float), optional, default: (0.5, 12.0)
+        Limits on possible peak width, as (lower_bound, upper_bound).
+    max_n_peaks : int, optional, default: inf
+        Maximum number of gaussians to be fit in a single spectrum.
+    min_peak_height : float, optional, default: 0
+        Absolute threshold for detecting peaks, in units of the input data.
+    peak_threshold : float, optional, default: 2.0
+        Relative threshold for detecting peaks, in units of standard deviation of the input data.
+    aperiodic_mode : {'fixed', 'knee'}
+        Which approach to take for fitting the aperiodic component.
+    verbose : bool, optional, default: True
+        Whether to be verbose in printing out warnings.
+
+    Attributes
+    ----------
+    freqs : 1d array
+        Frequency values for the power spectra.
     power_spectra : 2d array
-        Input matrix of power spectra values, in linear space, as [n_power_spectra, n_freqs].
+        Power values for the group of power spectra, as [n_power_spectra, n_freqs].
+        Power values are stored internally in log10 scale.
+    freq_range : list of [float, float]
+        Frequency range of the power spectra, as [lowest_freq, highest_freq].
+    freq_res : float
+        Frequency resolution of the power spectra.
     group_results : list of FOOOFResults
         Results of FOOOF model fit for each power spectrum.
+    has_data : bool
+        Whether data is loaded to the object.
+    has_model : bool
+        Whether model results are available in the object.
+    n_peaks_ : int
+        The number of peaks fit in the model.
     n_failed_fits_ : int
         The number of models that failed to fit.
     failed_fit_inds_ : list of int
-        The indices of any models that failed to fit."""
+        The indices of any models that failed to fit.
 
-
-@copy_doc_class(FOOOF, 'Attributes', ATT_ADD)
-class FOOOFGroup(FOOOF):
+    Notes
+    -----
+    - Commonly used abbreviations used in this module include:
+      CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic
+    - Input power spectra must be provided in linear scale.
+      Internally they are stored in log10 scale, as this is what the model operates upon.
+    - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
+      For example, raw FFT inputs are not appropriate. Where possible and appropriate, use
+      longer time segments for power spectrum calculation to get smoother power spectra,
+      as this will give better model fits.
+    - The gaussian params are those that define the gaussian of the fit, where as the peak
+      params are a modified version, in which the CF of the peak is the mean of the gaussian,
+      the PW of the peak is the height of the gaussian over and above the aperiodic component,
+      and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
+    - The FOOOFGroup object inherits from the FOOOF object. As such it also has data
+      attributes (power_spectrum & fooofed_spectrum_), and parameter attributes
+      (aperiodic_params_, peak_params_, gaussian_params_, r_squared_, error_)
+      which are defined in the context of individual model fits. These attributes are
+      used during the fitting process, but in the group context do not store results
+      post-fitting. Rather, all model fit results are collected and stored into the
+      `group_results` attribute. To access individual components of the fit, use
+      the `get_results` method.
+    """
 
     def __init__(self, *args, **kwargs):
+        """Initialize object with desired settings."""
 
         FOOOF.__init__(self, *args, **kwargs)
 
@@ -48,18 +104,21 @@ class FOOOFGroup(FOOOF):
         self._reset_group_results()
 
 
+    def __len__(self):
+        """Define the length of the object as the number of model fit results available."""
+
+        return len(self.group_results)
+
+
     def __iter__(self):
+        """Allow for iterating across the object by stepping across model fit results."""
 
         for result in self.group_results:
             yield result
 
 
-    def __len__(self):
-
-        return len(self.group_results)
-
-
     def __getitem__(self, index):
+        """Allow for indexing into the object to select model fit results."""
 
         return self.group_results[index]
 
