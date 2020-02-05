@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from fooof.core.info import get_peak_indices
+
 ###################################################################################################
 ###################################################################################################
 
@@ -135,12 +137,12 @@ def get_band_peak(peak_params, band, ret_one=True):
     return np.squeeze(band_peaks)
 
 
-def get_highest_peak(band_peaks):
+def get_highest_peak(peak_params):
     """Extract the highest peak.
 
     Parameters
     ----------
-    band_peaks : 2d array
+    peak_params : 2d array
         Peak parameters, with shape of [n_peaks, 3].
 
     Returns
@@ -150,9 +152,37 @@ def get_highest_peak(band_peaks):
     """
 
     # Catch & return NaN if empty
-    if len(band_peaks) == 0:
+    if len(peak_params) == 0:
         return np.array([np.nan, np.nan, np.nan])
 
-    high_ind = np.argmax(band_peaks[:, 1])
+    high_ind = np.argmax(peak_params[:, 1])
 
-    return band_peaks[high_ind, :]
+    return peak_params[high_ind, :]
+
+
+def threshold_peaks(peak_params, threshold, param='PW'):
+    """Extract peaks that are above a given threshold value.
+
+    Parameters
+    ----------
+    peak_params : 2d array
+        Peak parameters, with shape of [n_peaks, 3].
+    threshold : float
+        The threshold to apply
+    param : {'PW', 'BW'}
+        Which parameter to threshold peaks on.
+
+    Returns
+    -------
+    thresholded_peaks : 2d array
+        Peak parameters, with shape of [n_peaks, 3].
+    """
+
+    # Catch & return NaN if empty
+    if len(peak_params) == 0:
+        return np.array([np.nan, np.nan, np.nan])
+
+    thresh_mask = peak_params[:, get_peak_indices()[param]] > threshold
+    thresholded_peaks = peak_params[thresh_mask]
+
+    return thresholded_peaks
