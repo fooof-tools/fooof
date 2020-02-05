@@ -43,6 +43,9 @@ def test_get_band_peak():
     # Test multiple results - return one
     assert np.array_equal(get_band_peak(data, [10, 15], ret_one=True), [14, 2, 4])
 
+    # Test applying a threshold
+    assert np.array_equal(get_band_peak(data, [10, 15], threshold=1.5, ret_one=False), [14, 2, 4])
+
 def test_get_highest_peak():
 
     data = np.array([[10, 1, 1.8], [14, 2, 4], [12, 3, 2]])
@@ -69,6 +72,7 @@ def test_empty_inputs():
 
     assert np.all(get_band_peak(data, [8, 12]))
     assert np.all(get_highest_peak(data))
+    assert np.all(threshold_peaks(data, 1))
 
     data = np.empty(shape=[0, 4])
 

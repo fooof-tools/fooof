@@ -129,6 +129,7 @@ Functions for analyzing the periodic components of model fits.
     get_band_peak_fm
     get_band_peak_fg
     get_highest_peak
+    threshold_peaks
 
 Simulation Code
 ---------------

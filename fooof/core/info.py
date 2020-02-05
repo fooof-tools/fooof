@@ -73,9 +73,9 @@ def get_ap_indices(aperiodic_mode):
         Mapping of the column labels and indices for the aperiodc parameters.
     """
 
-    if aperiodic_mode  == 'fixed':
+    if aperiodic_mode == 'fixed':
         labels = ('offset', 'exponent')
-    elif aperiodic_mode  == 'knee':
+    elif aperiodic_mode == 'knee':
         labels = ('offset', 'knee', 'exponent')
     else:
         raise ValueError('Aperiodic mode not understood.')

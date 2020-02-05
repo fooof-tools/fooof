@@ -76,15 +76,15 @@ def average_fg(fg, bands, avg_method='mean', generate_model=True):
 
     ap_params = avg_func(fg.get_params('aperiodic_params'), 0)
 
-    peak_params = np.array([avg_func(get_band_peak_fg(fg, band, 'peak_params'), 0) \
+    peak_params = np.array([avg_func(get_band_peak_fg(fg, band, attribute='peak_params'), 0) \
                             for label, band in bands])
-    gaussian_params = np.array([avg_func(get_band_peak_fg(fg, band, 'gaussian_params'), 0) \
-                                for label, band in bands])
+    gauss_params = np.array([avg_func(get_band_peak_fg(fg, band, attribute='gaussian_params'), 0) \
+                             for label, band in bands])
 
     r2 = avg_func(fg.get_params('r_squared'))
     error = avg_func(fg.get_params('error'))
 
-    results = FOOOFResults(ap_params, peak_params, r2, error, gaussian_params)
+    results = FOOOFResults(ap_params, peak_params, r2, error, gauss_params)
 
     # Create the new FOOOF object, with settings, data info & results
     fm = FOOOF()

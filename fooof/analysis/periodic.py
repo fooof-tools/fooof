@@ -7,7 +7,8 @@ from fooof.core.info import get_peak_indices
 ###################################################################################################
 ###################################################################################################
 
-def get_band_peak_fm(fm, band, ret_one=True, attribute='peak_params'):
+def get_band_peak_fm(fm, band, ret_one=True, threshold=None, thresh_param='PW',
+                     attribute='peak_params',):
     """Extract peaks from a band of interest from a FOOOF object.
 
     Parameters
@@ -19,6 +20,10 @@ def get_band_peak_fm(fm, band, ret_one=True, attribute='peak_params'):
     ret_one : bool, optional, default: True
         Whether to return single peak (if True) or all peaks within the range found (if False).
         If True, returns the highest power peak within the search range.
+    threshold : float
+        A minimum threshold value to apply.
+    thresh_param : {'PW', 'BW'}
+        Which parameter to threshold on, where 'PW' is power and 'BW' is bandwidth.
     attribute : {'peak_params', 'gaussian_params'}
         Which attribute of peak data to extract data from.
 
@@ -28,10 +33,10 @@ def get_band_peak_fm(fm, band, ret_one=True, attribute='peak_params'):
         Peak data. Each row is a peak, as [CF, PW, BW]
     """
 
-    return get_band_peak(getattr(fm, attribute + '_'), band, ret_one)
+    return get_band_peak(getattr(fm, attribute + '_'), band, ret_one, threshold, thresh_param)
 
 
-def get_band_peak_fg(fg, band, attribute='peak_params'):
+def get_band_peak_fg(fg, band, threshold=None, thresh_param='PW', attribute='peak_params'):
     """Extract peaks from a band of interest from a FOOOFGroup object.
 
     Parameters
@@ -40,6 +45,10 @@ def get_band_peak_fg(fg, band, attribute='peak_params'):
         FOOOFGroup object to extract peak data from.
     band : tuple of (float, float)
         Defines the band of interest, as (lower_frequency_bound, upper_frequency_bound).
+    threshold : float
+        A minimum threshold value to apply.
+    thresh_param : {'PW', 'BW'}
+        Which parameter to threshold on, where 'PW' is power and 'BW' is bandwidth.
     attribute : {'peak_params', 'gaussian_params'}
         Which attribute of peak data to extract data from.
 
@@ -49,10 +58,11 @@ def get_band_peak_fg(fg, band, attribute='peak_params'):
         Peak data. Each row is a peak, as [CF, PW, BW].
     """
 
-    return get_band_peak_group(fg.get_params(attribute), band, len(fg))
+    return get_band_peak_group(fg.get_params(attribute), band, len(fg),
+                               threshold, thresh_param)
 
 
-def get_band_peak_group(peak_params, band, n_fits):
+def get_band_peak_group(peak_params, band, n_fits, threshold=None, thresh_param='PW'):
     """Extract peaks within a given band of interest, from peaks from a group fit.
 
     Parameters
@@ -63,6 +73,10 @@ def get_band_peak_group(peak_params, band, n_fits):
         Defines the band of interest, as (lower_frequency_bound, upper_frequency_bound).
     n_fits : int
         The number of model fits in the FOOOFGroup data.
+    threshold : float
+        A minimum threshold value to apply.
+    thresh_param : {'PW', 'BW'}
+        Which parameter to threshold on, where 'PW' is power and 'BW' is bandwidth.
 
     Returns
     -------
@@ -89,12 +103,14 @@ def get_band_peak_group(peak_params, band, n_fits):
     # Extracts an array per FOOOF fit, and extracts band peaks from it
     for ind in range(n_fits):
         band_peaks[ind, :] = get_band_peak(peak_params[tuple([peak_params[:, -1] == ind])][:, 0:3],
-                                           band=band, ret_one=True)
+                                           band=band, ret_one=True,
+                                           threshold=threshold,
+                                           thresh_param=thresh_param)
 
     return band_peaks
 
 
-def get_band_peak(peak_params, band, ret_one=True):
+def get_band_peak(peak_params, band, ret_one=True, threshold=None, thresh_param='PW'):
     """Extract peaks within a given band of interest.
 
     Parameters
@@ -106,6 +122,10 @@ def get_band_peak(peak_params, band, ret_one=True):
     ret_one : bool, optional, default: True
         Whether to return single peak (if True) or all peaks within the range found (if False).
         If True, returns the highest peak within the search range.
+    threshold : float
+        A minimum threshold value to apply.
+    param : {'PW', 'BW'}
+        Which parameter to threshold on, where 'PW' is power and 'BW' is bandwidth.
 
     Returns
     -------
@@ -128,6 +148,10 @@ def get_band_peak(peak_params, band, ret_one=True):
 
     band_peaks = peak_params[peak_inds, :]
 
+    # Apply a minimum threshold, if one was provided
+    if threshold:
+        band_peaks = threshold_peaks(band_peaks, threshold, thresh_param)
+
     # If results > 1 and ret_one, then we return the highest peak
     #    Call a sub-function to select highest power peak in band
     if n_peaks > 1 and ret_one:
@@ -143,7 +167,7 @@ def get_highest_peak(peak_params):
     Parameters
     ----------
     peak_params : 2d array
-        Peak parameters, with shape of [n_peaks, 3].
+        Peak parameters, with shape of [n_peaks, 3] or [n_peaks, 4].
 
     Returns
     -------
@@ -166,16 +190,16 @@ def threshold_peaks(peak_params, threshold, param='PW'):
     Parameters
     ----------
     peak_params : 2d array
-        Peak parameters, with shape of [n_peaks, 3].
+        Peak parameters, with shape of [n_peaks, 3] or [n_peaks, 4].
     threshold : float
-        The threshold to apply
+        A minimum threshold value to apply.
     param : {'PW', 'BW'}
-        Which parameter to threshold peaks on.
+        Which parameter to threshold on, where 'PW' is power and 'BW' is bandwidth.
 
     Returns
     -------
     thresholded_peaks : 2d array
-        Peak parameters, with shape of [n_peaks, 3].
+        Peak parameters, with shape of [n_peaks, 3] or [n_peaks, 4].
     """
 
     # Catch & return NaN if empty
