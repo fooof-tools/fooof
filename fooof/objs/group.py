@@ -90,8 +90,8 @@ class FOOOFGroup(FOOOF):
       which are defined in the context of individual model fits. These attributes are
       used during the fitting process, but in the group context do not store results
       post-fitting. Rather, all model fit results are collected and stored into the
-      `group_results` attribute. To access individual components of the fit, use
-      the `get_results` method.
+      `group_results` attribute. To access individual parameters of the fit, use
+      the `get_params` method.
     """
 
     def __init__(self, *args, **kwargs):
