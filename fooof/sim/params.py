@@ -120,13 +120,13 @@ class Stepper():
         """
 
         if any(ii < 0 for ii in [start, stop, step]):
-            raise ValueError("'start', 'stop', and 'step' should all be positive values")
+            raise ValueError("Inputs 'start', 'stop', and 'step' should all be positive values.")
 
         if not start < stop:
-            raise ValueError("'start' should be less than 'stop'")
+            raise ValueError("Input 'start' should be less than input 'stop'.")
 
         if not step < (stop - start):
-            raise ValueError("'step' is too large given 'start' and 'stop' values")
+            raise ValueError("Input 'step' is too large given values for inputs 'start' and 'stop'.")
 
 
 def param_iter(params):
@@ -224,7 +224,7 @@ def param_sampler(params, probs=None):
     # Check that length of options is same as length of probs, if provided
     if np.any(probs):
         if len(inds) != len(probs):
-            raise ValueError('The number of options must match the number of probabilities.')
+            raise ValueError("The number of options must match the number of probabilities.")
 
     # While loop allows the generator to be called an arbitrary number of times
     while True:

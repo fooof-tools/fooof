@@ -1109,12 +1109,12 @@ class FOOOF():
 
         # Check that data sizes are compatible
         if freqs.shape[-1] != power_spectrum.shape[-1]:
-            raise InconsistentDataError("The input frequencies and power spectra"
-                                        " are not consistent size.")
+            raise InconsistentDataError("The input frequencies and power spectra "
+                                        "are not consistent size.")
 
         # Check if power values are complex
         if np.iscomplexobj(power_spectrum):
-            raise DataError("Input power spectra are complex values."
+            raise DataError("Input power spectra are complex values. "
                             "FOOOF does not currently support complex inputs.")
 
         # Force data to be dtype of float64
@@ -1135,8 +1135,8 @@ class FOOOF():
         if freqs[0] == 0.0:
             freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, [freqs[1], freqs.max()])
             if verbose:
-                print("\nFOOOF WARNING: Skipping frequency == 0,"
-                      " as this causes a problem with fitting.")
+                print("\nFOOOF WARNING: Skipping frequency == 0, "
+                      "as this causes a problem with fitting.")
 
         # Calculate frequency resolution, and actual frequency range of the data
         freq_range = [freqs.min(), freqs.max()]
@@ -1147,9 +1147,9 @@ class FOOOF():
 
         # Check if there are any infs / nans, and raise an error if so
         if np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):
-            raise DataError("The input power spectra data, after logging, contains NaNs or Infs."
-                            "This will cause the fitting to fail."
-                            "This can happen if inputs are already logged."
+            raise DataError("The input power spectra data, after logging, contains NaNs or Infs. "
+                            "This will cause the fitting to fail. "
+                            "One reason this can happen is if inputs are already logged. "
                             "Inputs data should be in linear spacing, not log.")
 
         return freqs, power_spectrum, freq_range, freq_res

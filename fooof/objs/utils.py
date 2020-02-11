@@ -120,7 +120,7 @@ def combine_fooofs(fooofs):
 
     # Compare settings
     if not compare_info(fooofs, 'settings') or not compare_info(fooofs, 'meta_data'):
-        raise IncompatibleSettingsError("These objects have incompatible settings"
+        raise IncompatibleSettingsError("These objects have incompatible settings "
                                         "or meta data, and so cannot be combined.")
 
     # Initialize FOOOFGroup object, with settings derived from input objects

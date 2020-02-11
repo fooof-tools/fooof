@@ -78,7 +78,7 @@ def get_ap_indices(aperiodic_mode):
     elif aperiodic_mode == 'knee':
         labels = ('offset', 'knee', 'exponent')
     else:
-        raise ValueError('Aperiodic mode not understood.')
+        raise ValueError("Aperiodic mode not understood.")
 
     indices = {label : index for index, label in enumerate(labels)}
 
