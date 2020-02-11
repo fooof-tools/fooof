@@ -3,24 +3,29 @@
 ===================
 
 A step by step overview of the FOOOF algorithm.
-
-Note that this notebook is for demonstrative purposes, and does not
-represent recommended usage of the FOOOF module.
 """
 
 ###################################################################################################
 # Algorithmic Description
 # -----------------------
 #
-# Briefly, the algorithm proceeds as such:
+# In this tutorial we will step through how the FOOOF model is fit.
 #
-# - An initial fit of the aperiodic signal is taken across the power spectrum
-# - This aperiodic fit is subtracted from the power spectrum, creating a flattened spectrum
-# - Peaks are iteratively found in this flattened spectrum
-# - A full peak fit is created of all peak candidates found
-# - The peak fit is subtracted from the original power spectrum,
-#   creating a peak-removed power spectrum
-# - A final fit of the aperiodic signal is taken of the peak-removed power spectrum
+# Note that this notebook is for demonstrative purposes, and does not
+# represent recommended usage of FOOOF.
+#
+# Broadly, the steps in the algorithm are:
+#
+# - 1) An initial fit of the aperiodic component is taken of the power spectrum
+# - 2) This aperiodic fit is subtracted from the power spectrum, creating a flattened spectrum
+# - 3) An iterative process identifies peaks in this flattened spectrum
+# - 4) A full peak fit is created of all peak candidates found
+# - 5) The peak fit is subtracted from the original power spectrum,
+#      creating a peak-removed power spectrum
+# - 6) A final fit of the aperiodic component is taken of the peak-removed power spectrum
+# - 7) The full model is reconstructed from the combination of the aperiodic and peak fits,
+#      and goodness of fit metrics are calculated.
+#
 
 ###################################################################################################
 
@@ -31,35 +36,36 @@ import matplotlib.pyplot as plt
 # Import the FOOOF object
 from fooof import FOOOF
 
-# Import a function to generate simulated power spectra
-from fooof.sim.gen import gen_aperiodic
-
 # Import some internal functions from FOOOF
-#  Note that these are used here for demonstration: - you do not need to import them to run FOOOF
+#   These are used here to demonstrate the algorithm.
+#   You do not need to import these functions to be able to run FOOOF
+from fooof.sim.gen import gen_aperiodic
 from fooof.core.funcs import gaussian_function
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.fm import plot_fm_peak_iter
 
 ###################################################################################################
 
-# Set whether to plot in log-log space (used across the whole notebook)
+# Set whether to plot in log-log space
 plt_log = False
 
 ###################################################################################################
 
 # Load example data
-freqs = np.load('./dat/freqs_2.npy')
-spectrum = np.load('./dat/spectrum_2.npy')
+freqs = np.load('data/freqs_2.npy')
+spectrum = np.load('data/spectrum_2.npy')
 
 ###################################################################################################
 
 # Initialize a FOOOF object, with some settings
+#   These settings will be more fully described later in the tutorials
 fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6 , min_peak_height=0.15)
 
 ###################################################################################################
 #
-# Note that data can be added to FOOOF independent of fitting the model.
-# You can then plot input data.
+# Note that data can be added to FOOOF independent of fitting the model,
+# using the `add_data` method. FOOOF objects can also be used to plot
+# input data, without having fit any models.
 #
 
 ###################################################################################################
@@ -69,7 +75,7 @@ fm.add_data(freqs, spectrum, [3, 40])
 
 ###################################################################################################
 
-# Plot the power spectrum that we just created
+# Plot the power spectrum
 fm.plot(plt_log)
 
 ###################################################################################################
@@ -77,16 +83,27 @@ fm.plot(plt_log)
 # The FOOOF object stores most of the intermediate steps internally.
 #
 # For this notebook, we will first fit the full model, as normal, but then step through,
-# and visualize each step the algorithm takes to come to that final fit.
+# and visualize each step the algorithm took to come to that final fit.
 #
+
+###################################################################################################
 
 # Fit the FOOOF model
 fm.fit(freqs, spectrum, [3, 40])
 
 ###################################################################################################
+# Step 1: Initial Aperiodic Fit
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#
+# We start by taking an initial aperiodic fit. The goal of this fit is to be
+# able to use this fit to remove our estimate of the aperiodic component from the data.
+#
+#
 
-# Do an initial aperiodic signal fit - a robust fit, that excludes outliers
-#  This recreates an initial fit that isn't ultimately stored in the FOOOF object)
+###################################################################################################
+
+# Do an initial aperiodic fit - a robust fit, that excludes outliers
+#   This recreates an initial fit that isn't ultimately stored in the FOOOF object
 init_ap_fit = gen_aperiodic(fm.freqs, fm._robust_ap_fit(fm.freqs, fm.power_spectrum))
 
 # Plot the initial aperiodic fit
@@ -95,19 +112,27 @@ plot_spectrum(fm.freqs, fm.power_spectrum, plt_log, label='Original Power Spectr
 plot_spectrum(fm.freqs, init_ap_fit, plt_log, label='Initial Aperiodic Fit', ax=ax)
 
 ###################################################################################################
+# Step 2: Flatten the Spectrum
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# The initial fit, as above, is used to create a flattened spectrum,
-# from which peaks can be extracted.
+# The initial fit is then used to create a flattened spectrum. The initial aperiodic
+# fit is subtracted out from the original data, leaving a flattened version of the data
+# which no longer contains the aperiodic component.
 #
 
 ###################################################################################################
 
-# Flatten the power spectrum, by subtracting out the initial aperiodic fit
+# Plot the flattened the power spectrum, created by subtracting out the initial aperiodic fit
 plot_spectrum(fm.freqs, fm._spectrum_flat, plt_log, label='Flattened Spectrum')
 
 ###################################################################################################
+# Step 3: Detect Peaks
+# ^^^^^^^^^^^^^^^^^^^^
 #
-# With the flattened spectrum, FOOOF then initiates an iterative procedure to find peaks.
+# The flattened spectrum is then used to detect peaks. We can better isolate
+# peaks in the data, as the aperiodic activity has been removed.
+#
+# FOOOF uses an iterative procedure to find peaks in the flattened spectrum.
 #
 # For each iteration:
 #
@@ -127,20 +152,25 @@ plot_spectrum(fm.freqs, fm._spectrum_flat, plt_log, label='Flattened Spectrum')
 plot_fm_peak_iter(fm)
 
 ###################################################################################################
+# Step 4: Create Full Peak Fit
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# Once the iterative procedure has halted, the extracted 'guess' peaks,
-# are then re-fit, all together, to the flattened spectrum, creating a peak fit.
+# Once the iterative procedure has halted and the peaks have been identified in the
+# flattened spectrum, the set of identified 'guess' peaks, are then re-fit, all together.
+# This creates the full peak fit of the data.
 #
 
 ###################################################################################################
 
-# Fit gaussians to all candidate peaks together, and create peak fit
+# Plot the peak fit: created by re-fitting all of the candidate peaks together
 plot_spectrum(fm.freqs, fm._peak_fit, plt_log)
 
 ###################################################################################################
+# Step 5: Create a Peak-Removed Spectrum
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# This is now the peak component of the fit completed. This fit is then used to go
-# back and try and get a better aperiodic fit.
+# Now that the peak component of the fit is completed and available, this fit is then
+# used in order to try and isolate a better aperiodic fit.
 #
 # To do so, the peak fit is removed from the original power spectrum,
 # leaving an 'aperiodic-only' spectrum for re-fitting.
@@ -148,29 +178,48 @@ plot_spectrum(fm.freqs, fm._peak_fit, plt_log)
 
 ###################################################################################################
 
-# Create peak removed power spectrum (by removing peak fit from original spectrum)
+# Plot the peak removed power spectrum, created by removing peak fit from original spectrum
 plot_spectrum(fm.freqs, fm._spectrum_peak_rm, plt_log, label='Peak Removed Spectrum')
 
 ###################################################################################################
+# Step 6: Re-fit the Aperiodic Component
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#
+# The initial aperiodic component fit we made was a robust fit approach that was
+# used to get the fitting process started.
+#
+# With the peak-removed spectrum, we can now re-fit the aperiodic component, to
+# re-estimate a better fit, without the peaks getting in the way.
+#
 
-# Fit the final aperiodic fit on the peak removed power spectrum
+###################################################################################################
+
+# Plot the final aperiodic fit, calculated on the peak removed power spectrum
 _, ax = plt.subplots(figsize=(12, 10))
 plot_spectrum(fm.freqs, fm._spectrum_peak_rm, plt_log, label='Peak Removed Spectrum', ax=ax)
 plot_spectrum(fm.freqs, fm._ap_fit, plt_log, label='Final Aperiodic Fit', ax=ax)
 
 ###################################################################################################
-# The aperiodic fit component of the model is now also complete.
-# The two components can now be combined.
+# Step 7: Combine the Full Model Fit
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#
+# Now that we have the final aperiodic fit, we can combine the aperiodic components
+# to create the full model fit.
+#
+# With this full model fit, we can also calculate the goodness of fit metrics,
+# including the error of the fit and the R-squared of the fit, by comparing the
+# full model fit to the original data.
 #
 
 ###################################################################################################
 
-# Recreate the full FOOOF model, by combining the peak and aperiodic fits
+# Plot full FOOOF model, created by combining the peak and aperiodic fits
 plot_spectrum(fm.freqs, fm.fooofed_spectrum_, plt_log, label='Full Model')
 
 ###################################################################################################
 
-# The last stage is to calculate the fit error, R^2, and update gaussian parameters -> peak parameters
+# The last stage is to calculate the goodness of fit metrics (fit error & R^2)
+#   and organize parameters, such as updating gaussian parameters -> peak parameters
 #  These results are part of what are stored, and printed, as the model results
 fm.print_results()
 
@@ -179,3 +228,12 @@ fm.print_results()
 # Plot the full model fit of the power spectrum
 #  The final fit (red), and aperiodic fit (blue), are the same as we plotted above
 fm.plot(plt_log)
+
+###################################################################################################
+# Conclusion
+# ----------
+#
+# In this tutorial we have stepped through the algorithm for how FOOOF fits the
+# power spectrum model. Next, we will continue to explore the FOOOF object,
+# properly introducing the settings and further exploring the parameters.
+#

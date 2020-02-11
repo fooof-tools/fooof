@@ -7,7 +7,9 @@ Using FOOOFGroup to run FOOOF across multiple power spectra.
 
 ###################################################################################################
 
-# FOOOF imports: import FOOOFGroup object
+import numpy as np
+
+# Import the FOOOF object
 from fooof import FOOOFGroup
 
 # Import some utilities for simulating some test data
@@ -15,20 +17,40 @@ from fooof.sim.params import param_sampler
 from fooof.sim.gen import gen_group_power_spectra
 
 ###################################################################################################
+# Fitting Multiple Spectra
+# ------------------------
+#
+# So far, we have explored using the FOOOF object to fit individual power spectra.
+#
+# However, many potential use cases will have many power spectra to fit.
+#
+# To support this, here we will introduce the FOOOFGroup object, which applies
+# the model fitting procedure across multiple power spectra.
+#
+
+###################################################################################################
 # Simulated Power Spectra
 # --------------------------
 #
-# FOOOF includes some support for creating simulated power-spectra, that mimic real data.
+# Before we start FOOOFGroup, we need some data. For this example, we will simulate some
+# test data. FOOOF includes utilities for creating simulated power-spectra, that mimic real data.
 #
-# Here we will use that functionality to create a matrix of power spectra to test with.
-#
-# Here we will use a helper function called :func:`param_sampler` that takes a
+# To do so, we will use a function called :func:`param_sampler` that takes a
 # list of possible parameters, and creates an object that randomly samples from
 # them to generate power spectra.
 #
-# If you would like to generate single power spectra, you can use :func:`gen_power_spectrum`,
-# also in `fooof.sim.gen`.
+# Note that if you would like to generate single power spectra, you can use
+# :func:`gen_power_spectrum`, also in `fooof.sim.gen`.
 #
+# There are more examples and descriptions of using FOOOF to simualate data in the
+# `examples <https://fooof-tools.github.io/fooof/auto_examples/index.html>`_
+# section.
+#
+
+###################################################################################################
+
+# Set random seed, for consistency generating simulated data
+np.random.seed(321)
 
 ###################################################################################################
 
@@ -36,8 +58,9 @@ from fooof.sim.gen import gen_group_power_spectra
 n_spectra = 10
 f_range = [3, 40]
 
-# Set some options for background parameters
-#  Generated spectra will have an offset of either [20, 50, 35], and exponent of [2., 2.5, 1.5]
+# Set some options for aperiodic parameters
+#  These settings, as [offset, exponent] pairs are possible values for our simulated spectra
+#  Simulated spectra will have aperiodic parameters of [20, 2], [50, 2.5] or [35, 1.5]
 ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
 
 # Set some options for peak parameters
@@ -56,7 +79,7 @@ gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 ###################################################################################################
 
 # Simulate the group of simulated spectra
-#  Note that this function also returns a list of the parameters for each func
+#  Note that this function also returns a list of the parameters for each simulation
 freqs, spectra, sim_params = gen_group_power_spectra(n_spectra, f_range, ap_opts, gauss_opts)
 
 ###################################################################################################
@@ -70,11 +93,12 @@ freqs, spectra, sim_params = gen_group_power_spectra(n_spectra, f_range, ap_opts
 # operates across 2D matrices containing multiple power spectra.
 #
 # Note that by 'group' we mean merely to refer to a group of power-spectra,
-# not necessarily to a group in terms of multiple subjects or similar.
-# Most likely, a FOOOFGroup will be run across a collection of spectra from across
-# channels, and/or across trials, within or across subjects.
+# are not using the term 'group' in terms of necessarily referring to multiple subjects
+# or any particular idea of what a 'group' may be. A group of power spectra could
+# be spectra from across channels, or across trials, or across subjects, or
+# whatever organization makes sense for the analysis at hand.
 #
-# The main difference with the FOOOFGroup object, is that it also contains a
+# The main differences with the FOOOFGroup object, are that it uses a
 # `power_spectra` attribute, which stores the matrix of power-spectra to be fit,
 # and collects fit results into a `group_results` attribute.
 #
@@ -86,7 +110,7 @@ freqs, spectra, sim_params = gen_group_power_spectra(n_spectra, f_range, ap_opts
 
 ###################################################################################################
 
-# Initialize a FOOOFGroup object - it accepts all the same settings as FOOOF
+# Initialize a FOOOFGroup object, which accepts all the same settings as FOOOF
 fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_height=0.05, max_n_peaks=6)
 
 ###################################################################################################
@@ -104,7 +128,7 @@ fg.print_results()
 ###################################################################################################
 
 # Plot a summary of the results across the group
-#  Note: given the simulations, we expect exponents at {1.5, 2.0. 2.5} and peaks around {10, 20}
+#   Note: given the simulations, we expect exponents at {1.5, 2.0. 2.5} and peaks around {10, 20}
 fg.plot()
 
 ###################################################################################################
@@ -119,26 +143,31 @@ fg.plot()
 fg.save_report()
 
 ###################################################################################################
-# FOOOFGroup Data
-# ---------------
+# FOOOFGroup Results
+# ------------------
 #
 # FOOOFGroup collects fits across power spectra into a list of FOOOFResults objects.
 #
 
 ###################################################################################################
 
-# As it runs, FOOOFGroup collects each fit results in 'group_results'
-#  `group_results` is a list of FOOOFResult objects
+# FOOOFGroup collects fit results into 'group_results': a list of FOOOFResult objects
 print(fg.group_results[0:2])
 
 ###################################################################################################
 # get_params
-# ----------
+# ~~~~~~~~~~
 #
 # To collect data across all model fits, and to select specific data results from this data
-# you can use the :func:`get_params` method. This method lets you extract specific results
-# by specifying a field, as a string, and (optionally) a specific column of that data, also
-# as a string (or, optionally, as an integer index).
+# you can should the :func:`get_params` method.
+#
+# This method works the same as in the FOOOF object, and lets you extract specific results
+# by specifying a field, as a string, and (optionally) a specific column of that data.
+#
+# Since the FOOOFGroup object collects results from across multiple model fits,
+# you should always use :func:`get_params` to access parameter fits. The result attributes
+# introduced with the FOOOF object do not store results across the group, as they are
+# defined for individual model fits (and used internally as such by the FOOOFGroup object).
 #
 
 ###################################################################################################
@@ -190,7 +219,7 @@ print(cfs)
 
 ###################################################################################################
 # Saving & Loading with FOOOFGroup
-# --------------------------------
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # FOOOFGroup also support saving and loading, with same options as saving from FOOOF.
 #
@@ -223,7 +252,7 @@ nfg.print_results()
 
 ###################################################################################################
 # Parallel Support
-# ----------------
+# ~~~~~~~~~~~~~~~~
 #
 # FOOOFGroup also has support for running in parallel, which can speed things up as
 # each power spectrum is fit independently.
@@ -247,7 +276,7 @@ fg.fit(freqs, spectra, n_jobs=-1)
 
 ###################################################################################################
 # Extracting Individual Fits
-# --------------------------
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # When running FOOOF across a group of power spectra, results are stored as the FOOOFResults,
 # which stores (only) the results of the model fit, not the full model fits themselves.
@@ -267,3 +296,12 @@ fm = fg.get_fooof(ind=2, regenerate=True)
 # Print results and plot extracted FOOOF model fit
 fm.print_results()
 fm.plot()
+
+###################################################################################################
+# Conclusion
+# ----------
+#
+# Now we have explored fitting FOOOF models and running these fits across multiple
+# power spectra. Next we dig deeper into how to choose and tune the algorithm settings,
+# and how to troubleshoot if any of the fitting goes wrong.
+#

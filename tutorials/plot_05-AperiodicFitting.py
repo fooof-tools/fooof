@@ -2,13 +2,15 @@
 05: Aperiodic Component Fitting
 ===============================
 
-Choosing and using different approaches for fitting the aperiodic signal.
+Choosing and using different approaches for fitting the aperiodic component.
 """
 
 ###################################################################################################
 
-# Import numpy for loading data, and FOOOF object
+# Import numpy, used for loading data
 import numpy as np
+
+# Import the FOOOF object
 from fooof import FOOOF
 
 ###################################################################################################
@@ -25,14 +27,14 @@ from fooof import FOOOF
 #   - `aperiodic_mode` = 'knee'
 #
 # Fitting in the 'fixed' mode assumes a single 1/f like characteristic to the aperiodic
-# signal, meaning it looks linear across all frequencies in log-log space.
+# component, meaning it looks linear across all frequencies in log-log space.
 #
 # Though this assumption is true across *some* frequency ranges in neural data, it does
 # does not hold up across broad frequency ranges. If fitting is done in the 'fixed' mode,
 # but the assumption of a single 1/f is violated, then fitting will go wrong.
 #
 # Broad frequency ranges (typically ranges greater than ~40 Hz range) don't meet this
-# criterion, as they typically exhibit a 'bend' in the aperiodic signal, whereby there is
+# criterion, as they typically exhibit a 'bend' in the aperiodic component, whereby there is
 # not a single 1/f property across all frequencies, but rather a 'bend' in the aperiodic
 # component. For these cases, fitting should be done using an extra parameter to capture
 # this, in 'knee' mode.
@@ -42,16 +44,19 @@ from fooof import FOOOF
 # Fitting FOOOF with Aperiodic 'Knee'
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
+# Let's explore fitting FOOOF across a broader frequency range,
+# using some local field potential data.
+#
 
 ###################################################################################################
 
-# Load example data (LFP)
-freqs = np.load('dat/freqs_lfp.npy')
-spectrum = np.load('dat/spectrum_lfp.npy')
+# Load example data
+freqs = np.load('data/freqs_lfp.npy')
+spectrum = np.load('data/spectrum_lfp.npy')
 
 ###################################################################################################
 
-# Initialize FOOOF - setting to aperiodic mode to use a knee fit
+# Initialize FOOOF, setting the aperiodic mode to use a knee fit
 fm = FOOOF(peak_width_limits=[2, 8], aperiodic_mode='knee')
 
 ###################################################################################################
@@ -91,8 +96,8 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 #
 # In the example above, we jumped directly to fitting with a knee.
 #
-# Here we will explore what it looks like if we don't use the appropriate
-# background fitting - fitting a 'fixed' background when we should use 'knee'
+# Here we will explore what it looks like if we don't use the appropriate mode for fitting
+# the aperiodic component - fitting in 'fixed' mode when we should use 'knee'
 #
 
 ###################################################################################################
@@ -126,7 +131,7 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 # Given this, we recommend:
 #
 # - Check your data, across the frequency range of interest,
-#   for what the aperiodic signal looks like.
+#   for what the aperiodic component looks like.
 #
 #   - If it looks roughly linear (in log-log space), fit without a knee.
 #
@@ -137,10 +142,19 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 #     - This is likely across larger fitting ranges such as 1-150 Hz.
 # - Be wary of ambiguous ranges, where there may or may not be a knee.
 #
-#   - Trying to fit without a knee, when there is not a single consistent aperiodic signal,
+#   - Trying to fit without a knee, when there is not a single consistent aperiodic component,
 #     can lead to very bad fits. But it is also a known issue that trying to fit with a knee
 #     can lead to suboptimal fits when no knee is present.
 #
 #     - We therefore currently recommend picking frequency ranges in which the expected
-#       aperiodic signal process is relatively clear.
+#       aperiodic component process is relatively clear.
+#
+
+###################################################################################################
+# Conclusion
+# ----------
+#
+# Now that we have explored the FOOOF object, and different fitting approaches
+# for fitting the aperiodic component. Next up, we will continue be introducing
+# how to scale the fitting to apply across multiple power spectra.
 #

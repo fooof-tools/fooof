@@ -9,27 +9,91 @@ A theoretical / mathematical description of the FOOOF model.
 # Introduction
 # ------------
 #
-# A neural power spectrum is fit as a combination of an aperiodic signal and periodic oscillations.
+# Here we will first introduce a conceptual overview and mathematical description of
+# the approach employed here to parameterize neural power spectra.
 #
-# The aperiodic component of the signal displays 1/f like properties.
+# If you wish to start with a more hands-on introduction of what the model looks like,
+# you can skip ahead to the next tutorial, and come back here after.
 #
-# Putative oscillations (hereafter referred to as 'peaks'), are frequency regions
-# in which there are 'bumps' of power over and above the aperiodic signal.
-#
-# This formulation roughly translates to fitting the power spectrum as:
-#
-# .. math::
-#    P = L + \sum_{n=0}^{N} G_n
-#
-# Where `P` is the power spectrum, `L` is the aperiodic signal, and each :math:`G_n`
-# is a Gaussian fit to a peak, for `N` total peaks extracted from the power spectrum.
+# If you want more information that motivates and justifies our
+# modeling approach, you can also check out the
+# `associated paper <https://www.biorxiv.org/content/early/2018/04/11/299859>`_,
+# and/or the
+# `motivations section <https://fooof-tools.github.io/fooof/auto_tutorials/index.html>`_
+# of the documentation site.
 #
 
 ###################################################################################################
-# Aperiodic Fit
-# -------------
+# Conceptual Overview
+# -------------------
 #
-# The aperiodic fit uses an exponential function, fit on the semilog power spectrum
+# The conceptual idea motivating the desire to parameterize neural power spectra is the
+# idea that there are multiple distinct 'components' within neural field data,
+# and we would like a way to explicitly and specifically model these different
+# aspects of the data.
+#
+# More specifically, the FOOOF model conceptualizes the neural data as a combination
+# of aperiodic and periodic (oscillatory) activity.
+#
+# The goal of the model is to measure these component, separately and explicitly,
+# from frequency representations of neural field data (neural power spectra).
+#
+
+###################################################################################################
+# Aperiodic Activity
+# ~~~~~~~~~~~~~~~~~~
+#
+# By 'aperiodic' activity, we mean activity that is not rhythmic, or activity that has
+# no characteristic frequency.
+#
+# In the power spectrum, we typically see this as 1/f-like activity, in which the power
+# across frequencies decreases with a :math:`\frac{1}{F^\chi}` relationship.
+#
+# To measure the aperiodic activity, we would like to describe this activity,
+# without our measure being influenced by any co-occurring periodic activity.
+#
+
+###################################################################################################
+# Periodic Activity
+# ~~~~~~~~~~~~~~~~~
+#
+# By periodic activity, we mean activity that does have a characteristic frequency.
+# This includes what are typically referred to as neural oscillations, often described
+# in particular frequency bands such as delta, theta, alpha, beta, gamma, etc.
+#
+# In the frequency domain, putative oscillations are frequency regions in which
+# there are 'bumps' of power over and above the aperiodic component.
+# We will generally refer to the these as 'peaks' in the neural power spectrum.
+#
+# To measure the periodic activity, we would like to describe these peaks, without our
+# measures of these peaks being influenced by co-occurring aperiodic activity.
+#
+
+###################################################################################################
+# Mathematical Overview
+# ---------------------
+#
+# This formulation, of a combination of aperiodic and periodic activity,
+# translates to conceptualizing the power spectrum as:
+#
+# .. math::
+#    NPS = AP + \sum_{n=0}^{N} P_n
+#
+# Where :math:`NPS` is a neural power spectrum, :math:`AP` is the aperiodic component,
+# and each :math:`P_n` describes a peak, for :math:`N` peaks extracted from the power spectrum,
+# which makes up the periodic component.
+#
+# To enact this model, we need to describe how to measure :math:`AP` and :math:`P_n`,
+# which we do next, by describing the specific functions we use to measure these components.
+#
+
+###################################################################################################
+# Aperiodic Component
+# ~~~~~~~~~~~~~~~~~~~
+#
+# To fit the aperiodic component, we use an exponential function,
+# which we will refer to as :math:`L`.
+# Note that this function is fit on the semi-log power spectrum
 # (linear frequencies and :math:`log_{10}` power values).
 #
 # The exponential is of the form:
@@ -42,53 +106,56 @@ A theoretical / mathematical description of the FOOOF model.
 # .. math::
 #    L = b - \log(k + F^\chi)
 #
-# In this formulation, the parameters `b`, `k`, and :math:`\chi`
-# define the aperiodic signal, as:
+# In this formulation, the parameters :math:`b`, :math:`k`, and :math:`\chi`
+# define the aperiodic component, as:
 #
-# - `b` is the broadband 'offset'
-# - `k` relates to the 'knee'
+# - :math:`b` is the broadband 'offset'
+# - :math:`k` relates to the 'knee'
 # - :math:`\chi` is the 'exponent' of the aperiodic fit
-# - `F` is the vector of input frequencies
+# - :math:`F` is the vector of input frequencies
 #
-# Note that fitting the knee parameter is optional. If used, the knee defines a bend in the
-# aperiodic `1/f` like component of the signal.
+# Note that fitting the knee parameter is optional. If used, the knee parameter defines a
+# 'bend' in the aperiodic `1/f` like component of the data. If not used, the 'knee'
+# parameter is set to zero. Without a 'knee' parameter, this is equivalent to fitting
+# a linear fit in log-log space to measure the 'slope' of the power spectrum (where the
+# exponent = -slope).
 #
-# By default the aperiodic signal is fit with the 'knee' parameter set to zero.
-# This fits the aperiodic signal equivalently to fitting a linear fit in log-log space.
-#
-# Broader frequency ranges typically do not display a single 1/f like characteristic,
-# and so for these cases fitting with the knee parameter allows for modeling bends
-# in the aperiodic signal.
+# We use this form since though neural data is often discussed in terms of having
+# `1/f` activity, across broader frequency ranges, there is typically not a single
+# `1/f` characteristic. Using this form allows for modeling bends in the power spectrum
+# of the aperiodic component, if and when they occur.
 #
 
 ###################################################################################################
-# Peaks
-# -----
+# Periodic Component(s)
+# ~~~~~~~~~~~~~~~~~~~~~
 #
-# Regions of power over above this aperiodic signal, as defined above, are considered
-# to be putative oscillations and are fit in the model by a Gaussian.
+# Regions of power over above the aperiodic component, or 'peaks', are considered to be
+# putative oscillations, and form the periodic component(s) of the data. To fit these
+# periodic components, we use Gaussians.
 #
-# For each Gaussian, :math:`G_n`, with the form:
+# Each Gaussian, referred to as :math:`G_n`, is of the form:
 #
 # .. math::
 #    G_n = a * exp (\frac{- (F - c)^2}{2 * w^2})
 #
-# Each peak is defined in terms of parameters `a`, `c` and `w`, where:
+# This describes each peak in terms of parameters `a`, `c` and `w`, where:
 #
-# - `a` is the height of the peak, over and above the aperiodic signal
-# - `c` is the center frequency of the peak
-# - `w` is the width of the peak
-# - `F` is the vector of input frequencies
-#
-# The full power spectrum fit is therefore the combination of the aperiodic fit,
-# `L` defined by the exponential fit, and `N` peaks, where each :math:`G_n` is
-# formalized as a Gaussian process.
-#
-# Full method details are available in the paper:
-# https://www.biorxiv.org/content/early/2018/04/11/299859
+# - :math:`a` is the height of the peak, over and above the aperiodic component
+# - :math:`c` is the center frequency of the peak
+# - :math:`w` is the width of the peak
+# - :math:`F` is the vector of input frequencies
 #
 
 ###################################################################################################
-# This procedure is able to create a model of the neural power spectrum,
-# that is fully described mathematical by the mathematical model from above.
+# Conclusion
+# ----------
+#
+# The full power spectrum model is therefore the combination of the aperiodic fit,
+# :math:`L` defined by the exponential fit, and `N` peaks, where each :math:`G_n`
+# is fit with a Gaussian.
+#
+# The next tutorial, will start to use this model.
+# For more technical details on the model formulation and fitting process, check out the
+# `paper <https://www.biorxiv.org/content/early/2018/04/11/299859>`_,
 #
