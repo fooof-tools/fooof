@@ -146,16 +146,16 @@ class FOOOFGroup(FOOOF):
 
 
     @property
-    def n_failed_fits_(self):
-        """How many model fits failed."""
+    def n_null_(self):
+        """How many model fits are null."""
 
         return sum([1 for f_res in self.group_results if np.isnan(f_res.aperiodic_params[0])]) \
             if self.has_model else None
 
 
     @property
-    def failed_fit_inds_(self):
-        """The indices of model fits that failed to fit."""
+    def null_inds_(self):
+        """The indices of model fits that are null."""
 
         return [ind for ind, f_res in enumerate(self.group_results) \
             if np.isnan(f_res.aperiodic_params[0])] \
