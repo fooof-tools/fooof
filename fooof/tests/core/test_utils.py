@@ -3,6 +3,8 @@
 from collections.abc import Iterable
 from itertools import repeat
 
+from numpy import array_equal
+
 from py.test import raises
 
 from fooof.core.utils import *
@@ -94,3 +96,20 @@ def test_check_flat():
     for el in flat_lst:
         assert isinstance(el, int)
     assert len(flat_lst) == 4
+
+def test_check_inds():
+
+    # Test single integer input
+    assert check_inds(1) == np.array([1])
+
+    # Test list of integer input
+    assert array_equal(check_inds([0, 2]), np.array([0, 2]))
+
+    # Test range input
+    assert array_equal(check_inds(range(0, 2)), np.array([0, 1]))
+
+    # Test int array input
+    assert array_equal(check_inds(np.array([1, 2, 3])), np.array([1, 2, 3]))
+
+    # Test boolean array input
+    assert array_equal(check_inds(np.array([True, False, True])), np.array([0, 2]))

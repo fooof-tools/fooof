@@ -169,3 +169,37 @@ def check_flat(lst):
         lst = list(chain(*lst))
 
     return lst
+
+
+def check_inds(inds):
+    """Check various ways to indicate indices and convert to a consistent format.
+
+    Parameters
+    ----------
+    inds : int or array_like of int or array_like of bool
+        Indices, indicated in multiple possible ways.
+
+    Returns
+    -------
+    array of int
+        Indices, indicated
+
+    Notes
+    -----
+    The goal of this function is to convert multiple possible
+    ways of indicating a set of indices into one consistent format.
+    This function works only on indices defined for 1 dimension.
+    """
+
+    # Typcasting: if a single int, convert to an array
+    if isinstance(inds, int):
+        inds = np.array([inds])
+    # Typecasting: if a list or range, convert to an array
+    elif isinstance(inds, (list, range)):
+        inds = np.array(inds)
+
+    # Conversion: if array is boolean, get integer indices of True
+    if inds.dtype == bool:
+        inds = np.where(inds)[0]
+
+    return inds

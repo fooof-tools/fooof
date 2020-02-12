@@ -14,6 +14,7 @@ import numpy as np
 from fooof.objs import FOOOF
 from fooof.plts.fg import plot_fg
 from fooof.core.info import get_indices
+from fooof.core.utils import check_inds
 from fooof.core.errors import NoModelError
 from fooof.core.reports import save_report_fg
 from fooof.core.strings import gen_results_fg_str
@@ -297,15 +298,16 @@ class FOOOFGroup(FOOOF):
 
         Parameters
         ----------
-        inds : int or list of int or range
-            List of indices to drop model fit results for.
+        inds : int or array_like of int or array_like of bool
+            Indices to drop model fit results for.
+            If a boolean mask, True indicates indices to drop.
 
         Notes
         -----
         This method sets the model fits as null, and preserves the shape of the model fits.
         """
 
-        for ind in [inds] if isinstance(inds, int) else inds:
+        for ind in check_inds(inds):
             fm = self.get_fooof(ind)
             fm._reset_data_results(clear_results=True)
             self.group_results[ind] = fm.get_results()
@@ -471,14 +473,18 @@ class FOOOFGroup(FOOOF):
 
         Parameters
         ----------
-        inds : list of int or range
+        inds : array_like of int or array_like of bool
             Indices to extract from the object.
+            If a boolean mask, True indicates indices to select.
 
         Returns
         -------
         fg : FOOOFGroup
             The requested selection of results data loaded into a new FOOOFGroup object.
         """
+
+        # Check and convert indices encoding to list of int
+        inds = check_inds(inds)
 
         # Initialize a new FOOOFGroup object, with same settings as current FOOOFGroup
         fg = FOOOFGroup(*self.get_settings(), verbose=self.verbose)
