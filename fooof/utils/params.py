@@ -21,4 +21,21 @@ def compute_knee_frequency(knee, exponent):
         Frequency value, in Hz, at which the knee occurs.
     """
 
-    return np.power(knee, 1/exponent)
+    return knee ** (1./exponent)
+
+
+def compute_time_constant(knee):
+    """Compute the characteristc time constant based on the knee value.
+
+    Parameters
+    ----------
+    knee : float
+        Knee parameter value.
+
+    Returns
+    -------
+    float
+        Calculated time constant value, tau, given the knee parameter.
+    """
+
+    return 1. / (2*np.pi*knee)
