@@ -329,7 +329,9 @@ def test_fooof_debug():
 
     tfm = FOOOF(verbose=False)
     tfm._maxfev = 5
-    tfm._debug = True
+
+    tfm.set_debug_mode(True)
+    assert tfm._debug is True
 
     with raises(FitError):
         tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))

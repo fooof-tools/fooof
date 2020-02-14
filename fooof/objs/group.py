@@ -433,7 +433,7 @@ class FOOOFGroup(FOOOF):
         self._reset_data_results(clear_spectrum=True, clear_results=True)
 
 
-    def get_fooof(self, ind, regenerate=False):
+    def get_fooof(self, ind, regenerate=True):
         """Get a FOOOF object for a specified model fit.
 
         Parameters

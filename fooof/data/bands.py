@@ -60,6 +60,14 @@ class Bands():
 
         return list(self.bands.keys())
 
+
+    @property
+    def definitions(self):
+        """Frequency definitions for all the bands defined in the object."""
+
+        return list(self.bands.values())
+
+
     @property
     def n_bands(self):
         """The number of bands defined in the object."""

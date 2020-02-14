@@ -34,13 +34,14 @@ _maxfev : int
 _error_metric : str
     The error metric to use for post-hoc measures of model fit error.
 _debug : bool
-    Toggles a debug mode in which an error is raised if fitting is unsuccessful.
+    Whether the object is set in debug mode.
 """
 
 import warnings
 from copy import deepcopy
 
 import numpy as np
+from numpy.linalg import LinAlgError
 from scipy.optimize import curve_fit
 
 from fooof.core.io import save_fm, load_json
@@ -651,6 +652,18 @@ class FOOOF():
         return deepcopy(self)
 
 
+    def set_debug_mode(self, debug):
+        """Set whether debug mode, wherein an error is raised if fitting is unsuccessful.
+
+        Parameters
+        ----------
+        debug : bool
+            Whether to run in debug mode.
+        """
+
+        self._debug = debug
+
+
     def _check_width_limits(self):
         """Check and warn about peak width limits / frequency resolution interaction."""
 
@@ -896,6 +909,10 @@ class FOOOF():
         except RuntimeError:
             raise FitError("Model fitting failed due to not finding "
                            "parameters in the peak component fit.")
+        except LinAlgError:
+            raise FitError("Model fitting failed due to a LinAlgError during peak fitting. "
+                           "This can happen with settings that are too liberal, leading, "
+                           "to a large number of guess peaks that cannot be fit together.")
 
         # Re-organize params into 2d matrix
         gaussian_params = np.array(group_three(gaussian_params))

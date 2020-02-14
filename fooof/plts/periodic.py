@@ -102,10 +102,14 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
 
         if not freq_range:
 
-            # Set the frequency range to +/- a buffer, but don't let it drop below 0
+            # Extract all the CF values, excluding any NaNs
+            cfs = peaks[~np.isnan(peaks[:, 0]), 0]
+
+            # Define the frequency range as +/- buffer around the data range
+            #   This also doesn't let the plot range drop below 0
             f_buffer = 4
-            freq_range = [peaks[:, 0].min() - f_buffer if peaks[:, 0].min() - f_buffer > 0 else 0,
-                          peaks[:, 0].max() + f_buffer]
+            freq_range = [cfs.min() - f_buffer if cfs.min() - f_buffer > 0 else 0,
+                          cfs.max() + f_buffer]
 
         # Create the frequency axis, which will be the plot x-axis
         freqs = gen_freqs(freq_range, 0.1)

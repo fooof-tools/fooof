@@ -52,8 +52,8 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
     if 'linewidth' not in kwargs:
         kwargs['linewidth'] = 2.0
 
-    # Create the plot & style
     ax.plot(plt_freqs, plt_powers, **kwargs)
+
     check_n_style(plot_style, ax, log_freqs, log_powers)
 
 
@@ -82,10 +82,12 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels
         Keyword arguments to be passed to the plot call.
     """
 
+    ax = check_ax(ax, FIGSIZE_SPECTRAL)
+
+    # Make inputs iterable if need to be passed multiple times to plot each spectrum
     freqs = repeat(freqs) if isinstance(freqs, np.ndarray) and freqs.ndim == 1 else freqs
     labels = repeat(labels) if not isinstance(labels, list) else labels
 
-    ax = check_ax(ax)
     for freq, power_spectrum, label in zip(freqs, power_spectra, labels):
         plot_spectrum(freq, power_spectrum, log_freqs, log_powers, label=label,
                       plot_style=None, ax=ax, **kwargs)
@@ -119,6 +121,7 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, shade_colors='r', add_c
     """
 
     ax = check_ax(ax, FIGSIZE_SPECTRAL)
+
     plot_spectrum(freqs, power_spectrum, plot_style=None, ax=ax, **kwargs)
 
     add_shades(ax, shades, shade_colors, add_center, kwargs.get('log_freqs', False))
@@ -158,6 +161,7 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_cen
     """
 
     ax = check_ax(ax, FIGSIZE_SPECTRAL)
+
     plot_spectra(freqs, power_spectra, ax=ax, plot_style=None, **kwargs)
 
     add_shades(ax, shades, shade_colors, add_center, kwargs.get('log_freqs', False))
@@ -187,7 +191,7 @@ def plot_spectrum_error(freqs, error, shade=None, log_freqs=False,
         A function to call to apply styling & aesthetics to the plot.
     """
 
-    ax = check_ax(ax)
+    ax = check_ax(ax, FIGSIZE_SPECTRAL)
 
     plt_freqs = np.log10(freqs) if log_freqs else freqs
 

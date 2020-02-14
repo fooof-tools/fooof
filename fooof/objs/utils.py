@@ -17,7 +17,7 @@ def compare_info(fooof_lst, aspect):
     ----------
     fooof_lst : list of FOOOF and / or FOOOFGroup
         Objects whose attributes are to be compared.
-    aspect : {'setting', 'meta_data'}
+    aspect : {'settings', 'meta_data'}
         Which set of attributes to compare the objects across.
 
     Returns
@@ -37,7 +37,7 @@ def compare_info(fooof_lst, aspect):
     return consistent
 
 
-def average_fg(fg, bands, avg_method='mean', generate_model=True):
+def average_fg(fg, bands, avg_method='mean', regenerate=True):
     """Average across model fits in a FOOOFGroup object.
 
     Parameters
@@ -48,8 +48,8 @@ def average_fg(fg, bands, avg_method='mean', generate_model=True):
         Bands object that defines the frequency bands to collapse peaks across.
     avg : {'mean', 'median'}
         Averaging function to use.
-    generate_model : bool, optional, default: True
-        Whether to generate the model for the averaged parameters.
+    regenerate : bool, optional, default: True
+        Whether to regenerate the model for the averaged parameters.
 
     Returns
     -------
@@ -74,16 +74,32 @@ def average_fg(fg, bands, avg_method='mean', generate_model=True):
     elif avg_method == 'median':
         avg_func = np.nanmedian
 
+    # Aperiodic parameters: extract & average
     ap_params = avg_func(fg.get_params('aperiodic_params'), 0)
 
-    peak_params = np.array([avg_func(get_band_peak_fg(fg, band, attribute='peak_params'), 0) \
-                            for label, band in bands])
-    gauss_params = np.array([avg_func(get_band_peak_fg(fg, band, attribute='gaussian_params'), 0) \
-                             for label, band in bands])
+    # Periodic parameters: extract & average
+    peak_params = []
+    gauss_params = []
 
+    for band_def in bands.definitions:
+
+        peaks = get_band_peak_fg(fg, band_def, attribute='peak_params')
+        gauss = get_band_peak_fg(fg, band_def, attribute='gaussian_params')
+
+        # Check if there are any extracted peaks - if not, don't add
+        #   Note that we only check peaks, but gauss should be the same
+        if not np.all(np.isnan(peaks)):
+            peak_params.append(avg_func(peaks, 0))
+            gauss_params.append(avg_func(gauss, 0))
+
+    peak_params = np.array(peak_params)
+    gauss_params = np.array(gauss_params)
+
+    # Goodness of fit measures: extract & average
     r2 = avg_func(fg.get_params('r_squared'))
     error = avg_func(fg.get_params('error'))
 
+    # Collect all results together, to be added to FOOOF object
     results = FOOOFResults(ap_params, peak_params, r2, error, gauss_params)
 
     # Create the new FOOOF object, with settings, data info & results
@@ -92,8 +108,8 @@ def average_fg(fg, bands, avg_method='mean', generate_model=True):
     fm.add_meta_data(fg.get_meta_data())
     fm.add_results(results)
 
-    # Generate the model from the average parameters
-    if generate_model:
+    # Generate the average model from the parameters
+    if regenerate:
         fm._regenerate_model()
 
     return fm
