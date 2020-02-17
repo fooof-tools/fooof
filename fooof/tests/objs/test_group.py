@@ -13,8 +13,8 @@ from fooof.data import FOOOFResults
 from fooof.sim import gen_group_power_spectra
 from fooof.core.info import get_description
 
-from fooof.tests.test_settings import TEST_DATA_PATH
-from fooof.tests.test_utils import default_group_params, plot_test
+from fooof.tests.settings import TEST_DATA_PATH
+from fooof.tests.tutils import default_group_params, plot_test
 
 from fooof.objs.group import *
 
@@ -77,7 +77,7 @@ def test_fg_fit_nk():
     """Test FOOOFGroup fit, no knee."""
 
     n_spectra = 2
-    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params(), nlvs=0)
+    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params(), nlvs=0)
 
     tfg = FOOOFGroup(verbose=False)
     tfg.fit(xs, ys)
@@ -92,7 +92,7 @@ def test_fg_fit_nk_noise():
     """Test FOOOFGroup fit, no knee, on noisy data, to make sure nothing breaks."""
 
     n_spectra = 5
-    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params(), nlvs=1.0)
+    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params(), nlvs=1.0)
 
     tfg = FOOOFGroup(max_n_peaks=8, verbose=False)
     tfg.fit(xs, ys)
@@ -107,7 +107,7 @@ def test_fg_fit_knee():
     ap_params = [50, 2, 1]
     gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys, _ = gen_group_power_spectra(n_spectra, [1, 150], ap_params, gaussian_params, nlvs=0)
+    xs, ys = gen_group_power_spectra(n_spectra, [1, 150], ap_params, gaussian_params, nlvs=0)
 
     tfg = FOOOFGroup(aperiodic_mode='knee', verbose=False)
     tfg.fit(xs, ys)
@@ -121,7 +121,7 @@ def test_fg_fail():
     """
 
     # Create some noisy spectra that will be hard to fit
-    fs, ps, _ = gen_group_power_spectra(10, [3, 6], [1, 1], [10, 1, 1], nlvs=10)
+    fs, ps = gen_group_power_spectra(10, [3, 6], [1, 1], [10, 1, 1], nlvs=10)
 
     # Use a fg with the max iterations set so low that it will fail to converge
     ntfg = FOOOFGroup()
@@ -150,7 +150,7 @@ def test_fg_drop():
     """Test function to drop results from FOOOFGroup."""
 
     n_spectra = 3
-    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = FOOOFGroup(verbose=False)
 
@@ -182,7 +182,7 @@ def test_fg_fit_par():
     """Test FOOOFGroup fit, running in parallel."""
 
     n_spectra = 2
-    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = FOOOFGroup(verbose=False)
     tfg.fit(xs, ys, n_jobs=2)
@@ -242,7 +242,7 @@ def test_fg_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
 
     n_spectra = 2
-    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = FOOOFGroup(verbose=False)
     tfg.report(xs, ys)

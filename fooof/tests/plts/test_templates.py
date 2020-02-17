@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from fooof.tests.test_utils import plot_test
+from fooof.tests.tutils import plot_test
 
 from fooof.plts.templates import *
 

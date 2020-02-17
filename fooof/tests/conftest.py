@@ -8,8 +8,8 @@ import numpy as np
 
 from fooof.core.modutils import safe_import
 
-from fooof.tests.test_utils import get_tfm, get_tfg, get_tbands
-from fooof.tests.test_settings import BASE_TEST_FILE_PATH, TEST_DATA_PATH, TEST_REPORTS_PATH
+from fooof.tests.tutils import get_tfm, get_tfg, get_tbands
+from fooof.tests.settings import BASE_TEST_FILE_PATH, TEST_DATA_PATH, TEST_REPORTS_PATH
 
 plt = safe_import('.pyplot', 'matplotlib')
 

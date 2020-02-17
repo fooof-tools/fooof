@@ -2,7 +2,7 @@
 
 import os
 
-from fooof.tests.test_settings import TEST_REPORTS_PATH
+from fooof.tests.settings import TEST_REPORTS_PATH
 
 from fooof.core.reports import *
 

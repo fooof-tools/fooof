@@ -4,7 +4,7 @@ import os
 
 from fooof.core.info import get_description
 
-from fooof.tests.test_settings import TEST_DATA_PATH
+from fooof.tests.settings import TEST_DATA_PATH
 
 from fooof.core.io import *
 

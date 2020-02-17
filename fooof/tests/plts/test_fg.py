@@ -5,7 +5,7 @@ from py.test import raises
 from fooof import FOOOFGroup
 from fooof.core.errors import NoModelError
 
-from fooof.tests.test_utils import plot_test
+from fooof.tests.tutils import plot_test
 
 from fooof.plts.fg import *
 

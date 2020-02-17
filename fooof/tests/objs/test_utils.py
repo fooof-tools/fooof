@@ -9,7 +9,7 @@ from fooof.objs.utils import compare_info
 from fooof.sim import gen_group_power_spectra
 from fooof.core.errors import NoModelError, IncompatibleSettingsError
 
-from fooof.tests.test_utils import default_group_params
+from fooof.tests.tutils import default_group_params
 
 from fooof.objs.utils import *
 
@@ -121,7 +121,7 @@ def test_combine_errors(tfm, tfg):
 def test_fit_fooof_group_3d(tfg):
 
     n_spectra = 2
-    xs, ys, _ = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
     ys = np.stack([ys, ys], axis=0)
 
     tfg = FOOOFGroup()

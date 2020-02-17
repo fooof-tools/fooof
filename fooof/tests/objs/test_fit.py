@@ -16,8 +16,8 @@ from fooof.core.info import get_description
 from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
 from fooof.core.errors import DataError, NoDataError, InconsistentDataError
 
-from fooof.tests.test_settings import TEST_DATA_PATH
-from fooof.tests.test_utils import get_tfm, plot_test
+from fooof.tests.settings import TEST_DATA_PATH
+from fooof.tests.tutils import get_tfm, plot_test
 
 from fooof.objs.fit import *
 
