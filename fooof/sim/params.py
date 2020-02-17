@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from fooof.core.utils import check_flat
+from fooof.core.utils import group_three, check_flat
 from fooof.core.info import get_indices
 from fooof.core.funcs import infer_ap_func
 from fooof.core.errors import InconsistentDataError
@@ -11,6 +11,29 @@ from fooof.data import SimParams
 
 ###################################################################################################
 ###################################################################################################
+
+def collect_sim_params(aperiodic_params, gaussian_params, nlv):
+    """Collect sim parameters together into a SimParams object.
+
+    Parameters
+    ----------
+    aperiodic_params : list of float
+        Parameters of the aperiodic component of the power spectrum.
+    gaussian_params : list of float or list of list of float
+        Parameters of the periodic component of the power spectrum.
+    nlv : float, optional, default: 0.005
+        Noise level of the power spectrum.
+
+    Returns
+    -------
+    SimParams
+        Object containing the simulation parameters.
+    """
+
+    return SimParams(aperiodic_params.copy(),
+                     sorted(group_three(check_flat(gaussian_params))),
+                     nlv)
+
 
 def update_sim_ap_params(sim_params, delta, field=None):
     """Update the aperiodic parameter definition in a SimParams object.
@@ -123,10 +146,10 @@ class Stepper():
             raise ValueError("Inputs 'start', 'stop', and 'step' should all be positive values.")
 
         if not start < stop:
-            raise ValueError("Input 'start' should be less than input 'stop'.")
+            raise ValueError("Input 'start' should be less than 'stop'.")
 
         if not step < (stop - start):
-            raise ValueError("Input 'step' is too large given values for inputs 'start' and 'stop'.")
+            raise ValueError("Input 'step' is too large given values for 'start' and 'stop'.")
 
 
 def param_iter(params):

@@ -28,14 +28,39 @@ def rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation):
     rotated_spectrum : 1d array
         Rotated power spectrum.
 
+    Raises
+    ------
+    ValueError
+        If the rotation frequency is invalid.
+
     Notes
     -----
-    Warning: This function should only be applied to spectra without a knee.
-    If using simulated data, this is spectra created in 'fixed' mode.
-    This is because the rotation applied is inconsistent with
-    the formulation of knee spectra, and will change them in an
-    unspecified way, not just limited to doing the rotation.
+    Rotating in log-log spacing is equivalent to multiplying with a 1/f shaped mask that is:
+
+    - unity at the rotation frequency
+    - has an exponent of the desired delta exponent
+
+    This mask, when applied to a spectrum, as 'spectrum * mask should result in:
+
+    - rotated_spectrum = 1/f^(original_exponent + delta_exponent), where
+    - spectrum[rotation_frequency] == rotated spectrum[rotation_frequency]
+
+    This mask is defined as:
+
+    - mask = (freqs / rotation_frequency) ** -delta_exponent
+
+    Note that this approach / function should only be applied to spectra without a knee:
+
+    - If using simulated data, this is spectra created in 'fixed' mode.
+    - This is because the rotation applied is inconsistent with the formulation of spectra
+      with a knee. This transformation will change them in an unspecified way, not just
+      limited to doing the rotation.
     """
+
+    # Rotations are undefined for frequency value of exactly zero
+    #   We also do not support (in this implementation) negative frequencies
+    if f_rotation <= 0.:
+        raise ValueError("The rotation frequency cannot be less than or equal to zero.")
 
     mask = (np.abs(freqs) / f_rotation)**-delta_exponent
     rotated_spectrum = mask * power_spectrum
