@@ -86,8 +86,8 @@ class FOOOFGroup(FOOOF):
       the PW of the peak is the height of the gaussian over and above the aperiodic component,
       and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
     - The FOOOFGroup object inherits from the FOOOF object. As such it also has data
-      attributes (power_spectrum & fooofed_spectrum_), and parameter attributes
-      (aperiodic_params_, peak_params_, gaussian_params_, r_squared_, error_)
+      attributes (`power_spectrum` & `fooofed_spectrum_`), and parameter attributes
+      (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)
       which are defined in the context of individual model fits. These attributes are
       used during the fitting process, but in the group context do not store results
       post-fitting. Rather, all model fit results are collected and stored into the
