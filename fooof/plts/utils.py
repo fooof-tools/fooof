@@ -7,6 +7,7 @@ They are not expected to be called directly by the user.
 """
 
 from itertools import repeat
+from collections.abc import Iterator
 
 from numpy import log10
 
@@ -108,17 +109,31 @@ def recursive_plot(data, plot_function, ax, **kwargs):
         Figure axes upon which to plot.
     **kwargs
         Keyword arguments to pass into the plot function.
-        Should be either a list of values corresponding to length of data, or None.
+        Inputs can be organized as:
+
+        - a list of values corresponding to length of data, one for each plot call
+        - a single value, such as an int, str or None, to be applied to all plot calls
 
     Notes
     -----
     The `plot_function` argument must accept the `ax` parameter to specify a plot axis.
     """
 
-    # Repeat is used to work with None inputs
-    # Otherwise, expect a list of values, for each element in data, and so make an iterator
-    kwargs = {key : repeat(val) if not isinstance(val, list) else iter(val) \
-                    for key, val in kwargs.items()}
+    # Check and update all inputs to be iterators
+    for key, val in kwargs.items():
+
+        # If an input is already an iterator, we can leave as is
+        if isinstance(val, Iterator):
+            kwargs[key] = val
+
+        # If an input is a list, assume one element per call, and make iterator to do so
+        elif isinstance(val, list):
+            kwargs[key] = iter(val)
+
+        # Otherwise, assume is a single value to pass to all plot calls, and make repeat to do so
+        else:
+            kwargs[key] = repeat(val)
+
 
     # Pass each array of data recursively into plot function
     #   Each element of data is added to the same plot axis
@@ -126,3 +141,26 @@ def recursive_plot(data, plot_function, ax, **kwargs):
 
         cur_kwargs = {key: next(val) for key, val in kwargs.items()}
         plot_function(cur_data, ax=ax, **cur_kwargs)
+
+
+def check_plot_kwargs(plot_kwargs, defaults):
+    """Check plot keyword arguments, using default values for any missing parameters.
+
+    Parameters
+    ----------
+    plot_kwargs : dict
+        Keyword arguments for a plot call.
+    defaults : dict
+        Any arguments, and their default values, to check and update in 'plot_kwargs'.
+
+    Returns
+    -------
+    plot_kwargs : dict
+        Keyword arguments for a plot call.
+    """
+
+    for key, value in defaults.items():
+        if key not in plot_kwargs:
+            plot_kwargs[key] = value
+
+    return plot_kwargs

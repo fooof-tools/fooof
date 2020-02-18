@@ -1,13 +1,15 @@
 """Plots for periodic fits and parameters."""
 
+from itertools import cycle
+
 import numpy as np
 
 from fooof.sim import gen_freqs
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.utils import check_ax, recursive_plot
 from fooof.plts.settings import FIGSIZE_PARAMS
 from fooof.plts.style import check_n_style, style_param_plot
+from fooof.plts.utils import check_ax, recursive_plot, check_plot_kwargs
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -25,7 +27,7 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
         Peak data. Each row is a peak, as [CF, PW, BW].
     freq_range : list of [float, float] , optional
         The frequency range to plot the peak parameters across, as [f_min, f_max].
-    colors : list of str, optional
+    colors : str or list of str, optional
         Color(s) to plot data.
     labels : list of str, optional
         Label(s) for plotted data, to be added in a legend.
@@ -47,13 +49,13 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
     # Otherwise, plot the array of data
     else:
 
-        # Unpack data
+        # Unpack data: CF as x; PW as y; BW as size
         xs, ys = peaks[:, 0], peaks[:, 1]
-        cs = peaks[:, 2] * 150
+        sizes = peaks[:, 2] * plot_kwargs.pop('s', 150)
 
         # Create the plot
-        ax.scatter(xs, ys, cs, c=colors, label=labels,
-                   alpha=plot_kwargs.pop('alpha', 0.7), **plot_kwargs)
+        plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 0.7})
+        ax.scatter(xs, ys, sizes, c=colors, label=labels, **plot_kwargs)
 
     # Add axis labels
     ax.set_xlabel('Center Frequency')
@@ -78,7 +80,7 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
     freq_range : list of [float, float] , optional
         The frequency range to plot the peak fits across, as [f_min, f_max].
         If not provided, defaults to +/- 4 around given peak center frequencies.
-    colors : list of str, optional
+    colors : str or list of str, optional
         Color(s) to plot data.
     labels : list of str, optional
         Label(s) for plotted data, to be added in a legend.
@@ -93,6 +95,10 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
     ax = check_ax(ax, FIGSIZE_PARAMS)
 
     if isinstance(peaks, list):
+
+        if not colors:
+            colors = cycle(plt.rcParams['axes.prop_cycle'].by_key()['color'])
+
         recursive_plot(peaks, plot_function=plot_peak_fits, ax=ax,
                        freq_range=tuple(freq_range) if freq_range else freq_range,
                        colors=colors, labels=labels,
@@ -114,11 +120,7 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
         # Create the frequency axis, which will be the plot x-axis
         freqs = gen_freqs(freq_range, 0.1)
 
-        # Set default alpha & lw, tuned to whether it's one or two groups of data
-        alpha = plot_kwargs.get('alpha', 0.2) if colors is not None \
-            else plot_kwargs.get('alpha', 0.35)
-        lw = plot_kwargs.get('lw', 1.2) if colors is not None \
-            else plot_kwargs.get('lw', 1.5)
+        colors = colors[0] if isinstance(colors, list) else colors
 
         avg_vals = np.zeros(shape=[len(freqs)])
 
@@ -126,7 +128,8 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
 
             # Create & plot the peak model from parameters
             peak_vals = gaussian_function(freqs, *peak_params)
-            ax.plot(freqs, peak_vals, alpha=alpha, linewidth=lw, color=colors)
+            plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 0.35, 'lw' : 1.25})
+            ax.plot(freqs, peak_vals, color=colors, **plot_kwargs)
 
             # Collect a running average average peaks
             avg_vals = np.nansum(np.vstack([avg_vals, peak_vals]), axis=0)
@@ -134,7 +137,7 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
         # Plot the average across all components
         avg = avg_vals / peaks.shape[0]
         avg_color = 'black' if not colors else colors
-        ax.plot(freqs, avg, color=avg_color, linewidth=lw*3, label=labels)
+        ax.plot(freqs, avg, color=avg_color, linewidth=plot_kwargs.get('lw')*3, label=labels)
 
     # Add axis labels
     ax.set_xlabel('Frequency')

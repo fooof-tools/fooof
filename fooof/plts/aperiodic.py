@@ -1,12 +1,14 @@
 """Plots for aperiodic fits and parameters."""
 
+from itertools import cycle
+
 import numpy as np
 
 from fooof.sim.gen import gen_freqs, gen_aperiodic
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.utils import check_ax, recursive_plot
 from fooof.plts.settings import FIGSIZE_PARAMS
 from fooof.plts.style import check_n_style, style_param_plot
+from fooof.plts.utils import check_ax, recursive_plot, check_plot_kwargs
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -22,7 +24,7 @@ def plot_aperiodic_params(aps, colors=None, labels=None,
     ----------
     aps : 2d array or list of 2d array
         Aperiodic parameters. Each row is a parameter set, as [Off, Exp] or [Off, Knee, Exp].
-    colors : list of str, optional
+    colors : str or list of str, optional
         Color(s) to plot data.
     labels : list of str, optional
         Label(s) for plotted data, to be added in a legend.
@@ -42,9 +44,12 @@ def plot_aperiodic_params(aps, colors=None, labels=None,
 
     else:
 
+        # Unpack data: offset as x; exponent as y
         xs, ys = aps[:, 0], aps[:, -1]
-        ax.scatter(xs, ys, 150, c=colors, label=labels,
-                   alpha=plot_kwargs.pop('alpha', 0.7), **plot_kwargs)
+        sizes = plot_kwargs.pop('s', 150)
+
+        plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 0.7})
+        ax.scatter(xs, ys, sizes, c=colors, label=labels, **plot_kwargs)
 
     # Add axis labels
     ax.set_xlabel('Offset')
@@ -69,7 +74,7 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         Whether to control for the offset, by setting it to zero.
     log_freqs : boolean, optonal, default: False
         Whether to plot the x-axis in log space.
-    colors : list of str, optional
+    colors : str or list of str, optional
         Color(s) to plot data.
     labels : list of str, optional
         Label(s) for plotted data, to be added in a legend.
@@ -84,6 +89,10 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
     ax = check_ax(ax, FIGSIZE_PARAMS)
 
     if isinstance(aps, list):
+
+        if not colors:
+            colors = cycle(plt.rcParams['axes.prop_cycle'].by_key()['color'])
+
         recursive_plot(aps, plot_function=plot_aperiodic_fits, ax=ax,
                        freq_range=tuple(freq_range),
                        control_offset=control_offset,
@@ -94,11 +103,7 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         freqs = gen_freqs(freq_range, 0.1)
         plt_freqs = np.log10(freqs) if log_freqs else freqs
 
-        # Set default alpha & lw, tuned to whether it's one or two groups of data
-        alpha = plot_kwargs.get('alpha', 0.2) if colors is not None \
-            else plot_kwargs.get('alpha', 0.35)
-        lw = plot_kwargs.get('lw', 1.2) if colors is not None \
-            else plot_kwargs.get('lw', 1.5)
+        colors = colors[0] if isinstance(colors, list) else colors
 
         avg_vals = np.zeros(shape=[len(freqs)])
 
@@ -112,7 +117,9 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
 
             # Recreate & plot the aperiodic component from parameters
             ap_vals = gen_aperiodic(freqs, ap_params)
-            ax.plot(plt_freqs, ap_vals, alpha=alpha, linewidth=lw, color=colors)
+
+            plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 0.35, 'lw' : 1.25})
+            ax.plot(plt_freqs, ap_vals, color=colors, **plot_kwargs)
 
             # Collect a running average across components
             avg_vals = np.nansum(np.vstack([avg_vals, ap_vals]), axis=0)
@@ -120,15 +127,14 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         # Plot the average component
         avg = avg_vals / aps.shape[0]
         avg_color = 'black' if not colors else colors
-        ax.plot(plt_freqs, avg, color=avg_color, linewidth=lw*3, label=labels)
+        ax.plot(plt_freqs, avg, color=avg_color, linewidth=plot_kwargs.get('lw')*3, label=labels)
 
     # Add axis labels
     ax.set_xlabel('log(Frequency)' if log_freqs else 'Frequency')
     ax.set_ylabel('log(Power)')
 
     # Set plot limit
-    plt_range = np.log10(freq_range) if log_freqs else freq_range
-    ax.set_xlim(plt_range)
+    ax.set_xlim(np.log10(freq_range) if log_freqs else freq_range)
 
     # Apply plot style
     check_n_style(plot_style, ax)

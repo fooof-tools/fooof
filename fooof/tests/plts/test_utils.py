@@ -33,5 +33,30 @@ def test_add_shades(skip_if_no_mpl):
 @plot_test
 def test_recursive_plot(skip_if_no_mpl):
 
-    def test_plot(data, ax=None): ax.plot(data)
+    def test_plot(data, ax=None, c=None): ax.plot(data, c=c)
+
+    # Test with no extra inputs
     recursive_plot([[1, 2], [3, 4]], test_plot, check_ax(None))
+
+    # Test with single value input
+    recursive_plot([[1, 2], [3, 4]], test_plot, check_ax(None), c='red')
+
+    # Test with list of inputs
+    recursive_plot([[1, 2], [3, 4]], test_plot, check_ax(None), c=['red', 'blue'])
+
+    # Test with iterator input
+    recursive_plot([[1, 2], [3, 4]], test_plot, check_ax(None), c=iter(['red', 'blue']))
+
+def test_check_plot_kwargs(skip_if_no_mpl):
+
+    # Check empty input
+    empty = check_plot_kwargs({}, {})
+    assert empty == {}
+
+    # Check it keeps orignal values, and updates to defaults parameters when missing
+    plot_kwargs = {'alpha' : 0.5}
+    plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 1, 'lw' : 2})
+
+    assert len(plot_kwargs) == 2
+    assert plot_kwargs['alpha'] == 0.5
+    assert plot_kwargs['lw'] == 2
