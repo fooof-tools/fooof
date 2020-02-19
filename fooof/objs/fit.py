@@ -596,7 +596,7 @@ class FOOOF():
 
     @copy_doc_func_to_method(plot_fm)
     def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,
-             add_legend=True, save_fig=False, file_name='FOOOF_plot', file_path=None,
+             add_legend=True, save_fig=False, file_name=None, file_path=None,
              ax=None, plot_style=style_spectrum_plot):
 
         plot_fm(self, plot_peaks, plot_aperiodic, plt_log, add_legend,
@@ -604,27 +604,27 @@ class FOOOF():
 
 
     @copy_doc_func_to_method(save_report_fm)
-    def save_report(self, file_name='FOOOF_report', file_path=None, plt_log=False):
+    def save_report(self, file_name, file_path=None, plt_log=False):
 
         save_report_fm(self, file_name, file_path, plt_log)
 
 
     @copy_doc_func_to_method(save_fm)
-    def save(self, file_name='FOOOF_results', file_path=None, append=False,
+    def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 
         save_fm(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
-    def load(self, file_name='FOOOF_results', file_path=None, regenerate=True):
+    def load(self, file_name, file_path=None, regenerate=True):
         """Load in FOOOF formatted JSON file.
 
         Parameters
         ----------
-        file_name : str or FileObject, optional
-            File from which to load data.
+        file_name : str or FileObject
+            File to load data from.
         file_path : str or None, optional
-            Path to directory from which to load. If None, loads from current directory.
+            Path to directory to load from. If None, loads from current directory.
         regenerate : bool, optional, default: True
             Whether to regenerate the model fit from the loaded data, if data is available.
         """

@@ -22,7 +22,7 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
     file_name : str
         Name to give the saved out file.
     file_path : str, optional
-        Path to directory in which to save. If not provided, saves to current directory.
+        Path to directory to save to. If None, saves to current directory.
     plt_log : bool, optional, default: False
         Whether or not to plot the frequency axis in log space.
     """
@@ -69,7 +69,7 @@ def save_report_fg(fg, file_name, file_path=None):
     file_name : str
         Name to give the saved out file.
     file_path : str, optional
-        Path to directory in which to save. If not provided, saves to current directory.
+        Path to directory to save to. If None, saves to current directory.
     """
 
     font = _report_settings()

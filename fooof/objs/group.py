@@ -359,7 +359,7 @@ class FOOOFGroup(FOOOF):
 
         # Pull out the requested data field from the group data
         # As a special case, peak_params are pulled out in a way that appends
-        #  an extra column, indicating from which FOOOF run each peak comes from
+        #  an extra column, indicating which FOOOF run each peak comes from
         if name in ('peak_params', 'gaussian_params'):
             out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
                             for index, data in enumerate(self.group_results)])
@@ -384,34 +384,33 @@ class FOOOFGroup(FOOOF):
 
 
     @copy_doc_func_to_method(plot_fg)
-    def plot(self, save_fig=False, file_name='FOOOFGroup_plot', file_path=None):
+    def plot(self, save_fig=False, file_name=None, file_path=None):
 
         plot_fg(self, save_fig, file_name, file_path)
 
 
     @copy_doc_func_to_method(save_report_fg)
-    def save_report(self, file_name='FOOOFGroup_report', file_path=None):
+    def save_report(self, file_name, file_path=None):
 
         save_report_fg(self, file_name, file_path)
 
 
     @copy_doc_func_to_method(save_fg)
-    def save(self, file_name='FOOOFGroup_results', file_path=None, append=False,
+    def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 
         save_fg(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
-    def load(self, file_name='FOOOFGroup_results', file_path=None):
+    def load(self, file_name, file_path=None):
         """Load FOOOFGroup data from file.
 
         Parameters
         ----------
-        file_name : str, optional
-            File from which to load data.
+        file_name : str
+            File to load data from.
         file_path : str, optional
-            Path to the directory to load from.
-            If not provided, loads from current directory.
+            Path to directory to load from. If None, loads from current directory.
         """
 
         # Clear results so as not to have possible prior results interfere

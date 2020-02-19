@@ -17,7 +17,7 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
+def plot_fg(fg, save_fig=False, file_name=None, file_path=None):
     """Plot a figure with subplots visualizing the parameters from a FOOOFGroup object.
 
     Parameters
@@ -29,7 +29,7 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
     file_name : str, optional
         Name to give the saved out file.
     file_path : str, optional
-        Path to directory in which to save. If not provided, saves to current directory.
+        Path to directory to save to. If None, saves to current directory.
 
     Raises
     ------
@@ -56,6 +56,8 @@ def plot_fg(fg, save_fig=False, file_name='FOOOF_group_fit', file_path=None):
     plot_fg_peak_cens(fg, ax2)
 
     if save_fig:
+        if not fil_name:
+            raise ValueError("Input 'file_name' is required to save out the plot.")
         plt.savefig(fpath(file_path, fname(file_name, 'png')))
 
 
@@ -66,7 +68,7 @@ def plot_fg_ap(fg, ax=None):
     Parameters
     ----------
     fg : FOOOFGroup
-        FOOOFGroup object from which to plot data.
+        Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     """
@@ -87,7 +89,7 @@ def plot_fg_gf(fg, ax=None):
     Parameters
     ----------
     fg : FOOOFGroup
-        FOOOFGroup object from which to plot data.
+        Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     """
@@ -103,7 +105,7 @@ def plot_fg_peak_cens(fg, ax=None):
     Parameters
     ----------
     fg : FOOOFGroup
-        FOOOFGroup object from which to plot data.
+        Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     """

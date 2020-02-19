@@ -68,14 +68,14 @@ def save_fm(fm, file_name, file_path=None, append=False,
     Parameters
     ----------
     fm : FOOOF
-        FOOOF object from which to save data.
+        Object from to save data from.
     file_name : str or FileObject
-        File to which to save data.
+        File to save data to.
     file_path : str, optional
-        Path to directory in which to save. If not provided, saves to current directory.
+        Path to directory to save to. If None, saves to current directory.
     append : bool, optional, default: False
         Whether to append to an existing file, if available.
-        This option is only valid (and only used) if file_name is a str.
+        This option is only valid (and only used) if 'file_name' is a str.
     save_results : bool, optional
         Whether to save out FOOOF model fit results.
     save_settings : bool, optional
@@ -127,14 +127,14 @@ def save_fg(fg, file_name, file_path=None, append=False,
     Parameters
     ----------
     fg : FOOOFGroup
-        FOOOFGroup object from which to save data.
+        Object from to save data from.
     file_name : str or FileObject
-        File to which to save data.
+        File to to save data to.
     file_path : str, optional
-        Path to directory in which to save. If not provided, saves to current directory.
+        Path to directory to load from. If None, loads from current directory.
     append : bool, optional, default: False
         Whether to append to an existing file, if available.
-        This option is only valid (and only used) if file_name is a str.
+        This option is only valid (and only used) if 'file_name' is a str.
     save_results : bool, optional
         Whether to save out FOOOF model fit results.
     save_settings : bool, optional
@@ -174,10 +174,10 @@ def load_json(file_name, file_path):
 
     Parameters
     ----------
-    file_name : str or FileObject, optional
-            File from which to load data.
+    file_name : str or FileObject
+        File to load data from.
     file_path : str
-        Path to directory from which to load.
+        Path to directory to load from.
 
     Returns
     -------
@@ -204,9 +204,9 @@ def load_jsonlines(file_name, file_path):
     Parameters
     ----------
     file_name : str
-            File from which to load data.
+        File to load data from.
     file_path : str
-        Path to directory from which to load.
+        Path to directory from load from.
 
     Yields
     ------
@@ -233,9 +233,9 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
     Parameters
     ----------
     fg : FOOOFGroup
-        FOOOFGroup object from which to save data.
+        Object to save data from.
     f_obj : FileObject
-        File object for file to which to save data.
+        File object to save data to.
     save_results : bool, optional
         Whether to save out FOOOF model fit results.
     save_settings : bool, optional

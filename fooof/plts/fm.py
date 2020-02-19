@@ -24,7 +24,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 
 @check_dependency(plt, 'matplotlib')
 def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=True,
-            save_fig=False, file_name='FOOOF_fit', file_path=None,
+            save_fig=False, file_name=None, file_path=None,
             ax=None, plot_style=style_spectrum_plot):
     """Plot the power spectrum and model fit results from a FOOOF object.
 
@@ -46,7 +46,7 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
     file_name : str, optional
         Name to give the saved out file.
     file_path : str, optional
-        Path to directory in which to save. If None, saves to current directory.
+        Path to directory to save to. If None, saves to current directory.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     plot_style : callable, optional, default: style_spectrum_plot
@@ -92,6 +92,8 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
 
     # Save out figure, if requested
     if save_fig:
+        if not file_name:
+            raise ValueError("Input 'file_name' is required to save out the plot.")
         plt.savefig(fpath(file_path, fname(file_name, 'png')))
 
 

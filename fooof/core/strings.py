@@ -89,7 +89,7 @@ def gen_settings_str(fooof_obj, description=False, concise=False):
     Parameters
     ----------
     fooof_obj : FOOOF or FOOOFGroup or FOOOFSettings
-        An object from which settings can be accessed.
+        Object to access settings from.
     description : bool, optional, default: True
         Whether to also print out a description of the settings.
     concise : bool, optional, default: False
@@ -151,7 +151,7 @@ def gen_freq_range_str(fooof_obj, concise=False):
     Parameters
     ----------
     fooof_obj : FOOOF or FOOOFGroup
-        An object from which settings can be accessed.
+        Object to access settings from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
 
@@ -267,7 +267,7 @@ def gen_results_fm_str(fm, concise=False):
     Parameters
     ----------
     fm : FOOOF
-        An object from which results can be accessed to be printed.
+        Object to access results from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
 
@@ -330,7 +330,7 @@ def gen_results_fg_str(fg, concise=False):
     Parameters
     ----------
     fg : FOOOFGroup
-        An object from which results can be accessed to be printed.
+        Object to access results from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
 
