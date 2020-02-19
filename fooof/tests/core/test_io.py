@@ -2,8 +2,6 @@
 
 import os
 
-from fooof.core.info import get_description
-
 from fooof.tests.settings import TEST_DATA_PATH
 
 from fooof.core.io import *
@@ -26,21 +24,31 @@ def test_fpath():
     assert fpath('/path/', 'data.json') == '/path/data.json'
 
 def test_save_fm_str(tfm):
-    """Check saving fm data, with str file specifier."""
+    """Check saving fm data, with file specifiers as strings."""
 
-    file_name_all = 'test_fooof_str_all'
-    file_name_res = 'test_fooof_str_res'
+    # Test saving out each set of save elements
+    file_name_res = 'test_fooof_res'
+    file_name_set = 'test_fooof_set'
+    file_name_dat = 'test_fooof_dat'
 
-    save_fm(tfm, file_name_all, TEST_DATA_PATH, False, True, True, True)
     save_fm(tfm, file_name_res, TEST_DATA_PATH, False, True, False, False)
+    save_fm(tfm, file_name_set, TEST_DATA_PATH, False, False, True, False)
+    save_fm(tfm, file_name_dat, TEST_DATA_PATH, False, False, False, True)
 
-    assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name_all + '.json'))
     assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name_res + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name_set + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name_dat + '.json'))
 
-def test_save_fm_str_app(tfm):
-    """Check saving fm data, with str file specifier, with appending."""
+    # Test saving out all save elements
+    file_name_all = 'test_fooof_all'
+    save_fm(tfm, file_name_all, TEST_DATA_PATH, False, True, True, True)
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name_all + '.json'))
 
-    file_name = 'test_fooof_str_app'
+
+def test_save_fm_append(tfm):
+    """Check saving fm data, appending to a file."""
+
+    file_name = 'test_fooof_append'
 
     save_fm(tfm, file_name, TEST_DATA_PATH, True, True, True, True)
     save_fm(tfm, file_name, TEST_DATA_PATH, True, True, True, True)
@@ -50,7 +58,7 @@ def test_save_fm_str_app(tfm):
 def test_save_fm_fobj(tfm):
     """Check saving fm data, with file object file specifier."""
 
-    file_name = 'test_fooof_fobj'
+    file_name = 'test_fooof_fileobj'
 
     # Save, using file-object: three successive lines with three possible save settings
     with open(os.path.join(TEST_DATA_PATH, file_name + '.json'), 'w') as f_obj:
@@ -63,22 +71,27 @@ def test_save_fm_fobj(tfm):
 def test_save_fg(tfg):
     """Check saving fg data."""
 
-    set_file_name = 'test_fooof_group_set'
-    res_file_name = 'test_fooof_group_res'
-    dat_file_name = 'test_fooof_group_dat'
+    res_file_name = 'test_fooofgroup_res'
+    set_file_name = 'test_fooofgroup_set'
+    dat_file_name = 'test_fooofgroup_dat'
 
-    save_fg(tfg, file_name=set_file_name, file_path=TEST_DATA_PATH, save_settings=True)
     save_fg(tfg, file_name=res_file_name, file_path=TEST_DATA_PATH, save_results=True)
+    save_fg(tfg, file_name=set_file_name, file_path=TEST_DATA_PATH, save_settings=True)
     save_fg(tfg, file_name=dat_file_name, file_path=TEST_DATA_PATH, save_data=True)
 
-    assert os.path.exists(os.path.join(TEST_DATA_PATH, set_file_name + '.json'))
     assert os.path.exists(os.path.join(TEST_DATA_PATH, res_file_name + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, set_file_name + '.json'))
     assert os.path.exists(os.path.join(TEST_DATA_PATH, dat_file_name + '.json'))
 
-def test_save_fg_app(tfg):
+    # Test saving out all save elements
+    file_name_all = 'test_fooofgroup_all'
+    save_fg(tfg, file_name_all, TEST_DATA_PATH, False, True, True, True)
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name_all + '.json'))
+
+def test_save_fg_append(tfg):
     """Check saving fg data, appending to file."""
 
-    file_name = 'test_fooof_group_str_app'
+    file_name = 'test_fooofgroup_append'
 
     save_fg(tfg, file_name, TEST_DATA_PATH, True, save_results=True)
     save_fg(tfg, file_name, TEST_DATA_PATH, True, save_results=True)
@@ -88,7 +101,7 @@ def test_save_fg_app(tfg):
 def test_save_fg_fobj(tfg):
     """Check saving fg data, with file object file specifier."""
 
-    file_name = 'test_fooof_fobj'
+    file_name = 'test_fooof_fileobj'
 
     with open(os.path.join(TEST_DATA_PATH, file_name + '.json'), 'w') as f_obj:
         save_fg(tfg, f_obj, TEST_DATA_PATH, False, True, False, False)
@@ -100,7 +113,7 @@ def test_load_json_str():
     Loads files from test_save_fm_str.
     """
 
-    file_name = 'test_fooof_str_all'
+    file_name = 'test_fooof_all'
 
     data = load_json(file_name, TEST_DATA_PATH)
 
@@ -111,7 +124,7 @@ def test_load_json_fobj():
     Loads files from test_save_fm_str.
     """
 
-    file_name = 'test_fooof_str_all'
+    file_name = 'test_fooof_all'
 
     with open(os.path.join(TEST_DATA_PATH, file_name + '.json'), 'r') as f_obj:
         data = load_json(f_obj, '')
@@ -123,31 +136,27 @@ def test_load_jsonlines():
     Loads files from test_save_fg.
     """
 
-    res_file_name = 'test_fooof_group_res'
+    res_file_name = 'test_fooofgroup_res'
 
     for data in load_jsonlines(res_file_name, TEST_DATA_PATH):
         assert data
 
-def test_load_file_contents():
+def test_load_file_contents(tobj_desc):
     """Check that loaded files contain the contents they should.
-
     Note that is this test fails, it likely stems from an issue from saving.
     """
 
-    file_name = 'test_fooof_str_all'
-
+    file_name = 'test_fooof_all'
     loaded_data = load_json(file_name, TEST_DATA_PATH)
 
-    desc = get_description()
-
     # Check settings
-    for setting in desc['settings']:
+    for setting in tobj_desc['settings']:
         assert setting in loaded_data.keys()
 
     # Check results
-    for result in desc['results']:
+    for result in tobj_desc['results']:
         assert result in loaded_data.keys()
 
     # Check results
-    for datum in desc['data']:
+    for datum in tobj_desc['data']:
         assert datum in loaded_data.keys()

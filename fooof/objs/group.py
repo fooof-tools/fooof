@@ -416,9 +416,14 @@ class FOOOFGroup(FOOOF):
         # Clear results so as not to have possible prior results interfere
         self._reset_group_results()
 
+        power_spectra = []
         for ind, data in enumerate(load_jsonlines(file_name, file_path)):
 
             self._add_from_dict(data)
+
+            # Collect power spectra, if present
+            if 'power_spectrum' in data.keys():
+                power_spectra.append(data['power_spectrum'])
 
             # Only load settings from first line
             #   All other lines, if there, will be duplicates
@@ -427,6 +432,10 @@ class FOOOFGroup(FOOOF):
 
             self._check_loaded_results(data)
             self.group_results.append(self._get_results())
+
+        # Add data, if they were loaded
+        if power_spectra:
+            self.power_spectra = np.array(power_spectra)
 
         # Reset peripheral data from last loaded result, keeping freqs info
         self._reset_data_results(clear_spectrum=True, clear_results=True)

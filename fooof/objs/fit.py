@@ -1219,8 +1219,8 @@ class FOOOF():
             for setting in get_description()['settings']:
                 setattr(self, setting, None)
 
-            # Infer whether knee fitting was used, if aperiodic params have been loaded
-            if np.all(self.aperiodic_params_):
+            # If aperiodic params available, infer whether knee fitting was used,
+            if not np.all(np.isnan(self.aperiodic_params_)):
                 self.aperiodic_mode = infer_ap_func(self.aperiodic_params_)
 
         # Reset internal settings so that they are consistent with what was loaded

@@ -63,7 +63,7 @@ def fpath(file_path, file_name):
 
 def save_fm(fm, file_name, file_path=None, append=False,
             save_results=False, save_settings=False, save_data=False):
-    """Save out data, results and/or settings from FOOOF object. Saves out to a JSON file.
+    """Save out data, results and/or settings from a FOOOF object into a JSON file.
 
     Parameters
     ----------

@@ -12,7 +12,6 @@ from py.test import raises
 from fooof.sim import gen_power_spectrum
 from fooof.core.errors import FitError
 from fooof.core.utils import group_three
-from fooof.core.info import get_description
 from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
 from fooof.core.errors import DataError, NoDataError, InconsistentDataError
 
@@ -172,21 +171,57 @@ def test_fooof_checks():
     with raises(NoDataError):
         tfm.fit()
 
-def test_fooof_load():
+def test_fooof_load(tobj_desc):
     """Test load into FOOOF. Note: loads files from test_core_io."""
 
-    file_name_all = 'test_fooof_str_all'
-    file_name_res = 'test_fooof_str_res'
-
+    # Test loading just results
     tfm = FOOOF(verbose=False)
-
-    tfm.load(file_name_all, TEST_DATA_PATH)
-    assert tfm
-
+    file_name_res = 'test_fooof_res'
     tfm.load(file_name_res, TEST_DATA_PATH)
-    assert tfm
+    # Check that result attributes get filled
+    for result in tobj_desc['results']:
+        assert not np.all(np.isnan(getattr(tfm, result)))
+    # Test that settings and data are None
+    #   Except for aperiodic mode, which can be inferred from the data
+    for setting in tobj_desc['settings']:
+        if setting is not 'aperiodic_mode':
+            assert getattr(tfm, setting) is None
+    assert getattr(tfm, 'power_spectrum') is None
 
-def test_adds():
+    # Test loading just settings
+    tfm = FOOOF(verbose=False)
+    file_name_set = 'test_fooof_set'
+    tfm.load(file_name_set, TEST_DATA_PATH)
+    for setting in tobj_desc['settings']:
+        assert getattr(tfm, setting) is not None
+    # Test that results and data are None
+    for result in tobj_desc['results']:
+        assert np.all(np.isnan(getattr(tfm, result)))
+    assert tfm.power_spectrum is None
+
+    # Test loading just data
+    tfm = FOOOF(verbose=False)
+    file_name_dat = 'test_fooof_dat'
+    tfm.load(file_name_dat, TEST_DATA_PATH)
+    assert tfm.power_spectrum is not None
+    # Test that settings and results are None
+    for setting in tobj_desc['settings']:
+        assert getattr(tfm, setting) is None
+    for result in tobj_desc['results']:
+        assert np.all(np.isnan(getattr(tfm, result)))
+
+    # Test loading all elements
+    tfm = FOOOF(verbose=False)
+    file_name_all = 'test_fooof_all'
+    tfm.load(file_name_all, TEST_DATA_PATH)
+    for result in tobj_desc['results']:
+        assert not np.all(np.isnan(getattr(tfm, result)))
+    for setting in tobj_desc['settings']:
+        assert getattr(tfm, setting) is not None
+    for data in tobj_desc['data']:
+        assert getattr(tfm, data) is not None
+
+def test_adds(tobj_desc):
     """Tests methods that add data to FOOOF objects.
 
     Checks: add_data, add_settings, add_results.
@@ -204,19 +239,19 @@ def test_adds():
     # Test adding settings
     fooof_settings = FOOOFSettings([1, 4], 6, 0, 2, 'fixed')
     tfm.add_settings(fooof_settings)
-    for setting in get_description()['settings']:
+    for setting in tobj_desc['settings']:
         assert getattr(tfm, setting) == getattr(fooof_settings, setting)
 
     # Test adding meta data
     fooof_meta_data = FOOOFMetaData([3, 40], 0.5)
     tfm.add_meta_data(fooof_meta_data)
-    for meta_dat in get_description()['meta_data']:
+    for meta_dat in tobj_desc['meta_data']:
         assert getattr(tfm, meta_dat) == getattr(fooof_meta_data, meta_dat)
 
     # Test adding results
     fooof_results = FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25])
     tfm.add_results(fooof_results)
-    for setting in get_description()['results']:
+    for setting in tobj_desc['results']:
         assert getattr(tfm, setting) == getattr(fooof_results, setting.strip('_'))
 
 def test_obj_gets(tfm):
@@ -270,7 +305,7 @@ def test_fooof_plot(tfm, skip_if_no_mpl):
 
     tfm.plot()
 
-def test_fooof_resets():
+def test_fooof_resets(tobj_desc):
     """Check that all relevant data is cleared in the reset method."""
 
     # Note: uses it's own tfm, to not clear the global one
@@ -279,12 +314,10 @@ def test_fooof_resets():
     tfm._reset_data_results(True, True, True)
     tfm._reset_internal_settings()
 
-    desc = get_description()
-
     for data in ['data', 'model_components']:
-        for field in desc[data]:
+        for field in tobj_desc[data]:
             assert getattr(tfm, field) is None
-    for field in desc['results']:
+    for field in tobj_desc['results']:
         assert np.all(np.isnan(getattr(tfm, field)))
     assert tfm.freqs is None and tfm.fooofed_spectrum_ is None
 
@@ -297,7 +330,7 @@ def test_fooof_report(skip_if_no_mpl):
 
     assert tfm
 
-def test_fooof_fit_failure():
+def test_fooof_fit_failure(tobj_desc):
     """Test FOOOF fit failures."""
 
     ## Induce a runtime error, and check it runs through
@@ -307,7 +340,7 @@ def test_fooof_fit_failure():
     tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
     # Check after failing out of fit, all results are reset
-    for result in get_description()['results']:
+    for result in tobj_desc['results']:
         assert np.all(np.isnan(getattr(tfm, result)))
 
     ## Monkey patch to check errors in general
@@ -321,7 +354,7 @@ def test_fooof_fit_failure():
     tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
     # Check after failing out of fit, all results are reset
-    for result in get_description()['results']:
+    for result in tobj_desc['results']:
         assert np.all(np.isnan(getattr(tfm, result)))
 
 def test_fooof_debug():
