@@ -122,7 +122,6 @@ def test_fooof_fit_measures():
     with raises(ValueError):
         tfm._calc_error(metric='BAD')
 
-
 def test_fooof_checks():
     """Test various checks, errors and edge cases in FOOOF.
     This tests all the input checking done in `_prepare_data`.
@@ -220,6 +219,8 @@ def test_fooof_load(tobj_desc):
         assert getattr(tfm, setting) is not None
     for data in tobj_desc['data']:
         assert getattr(tfm, data) is not None
+    for meta_dat in tobj_desc['meta_data']:
+        assert getattr(tfm, meta_dat) is not None
 
 def test_adds(tobj_desc):
     """Tests methods that add data to FOOOF objects.

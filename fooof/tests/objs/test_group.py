@@ -269,6 +269,8 @@ def test_fg_load(tobj_desc):
     for setting in tobj_desc['settings']:
         assert getattr(tfg, setting) is not None
     assert tfg.power_spectra is not None
+    for meta_dat in tobj_desc['meta_data']:
+        assert getattr(tfg, meta_dat) is not None
 
 def test_fg_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
