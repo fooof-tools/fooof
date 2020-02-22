@@ -11,8 +11,9 @@ from collections.abc import Iterator
 
 import numpy as np
 
-from fooof.plts.settings import ALPHA_LEVELS
 from fooof.core.modutils import safe_import
+from fooof.core.utils import resolve_aliases
+from fooof.plts.settings import ALPHA_LEVELS, PLT_ALIASES
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -158,8 +159,8 @@ def check_plot_kwargs(plot_kwargs, defaults):
         Keyword arguments for a plot call.
     """
 
-    for key, value in defaults.items():
-        if key not in plot_kwargs:
+    for key, value in resolve_aliases(defaults, PLT_ALIASES).items():
+        if key not in resolve_aliases(plot_kwargs, PLT_ALIASES):
             plot_kwargs[key] = value
 
     return plot_kwargs

@@ -113,3 +113,20 @@ def test_check_inds():
 
     # Test boolean array input
     assert array_equal(check_inds(np.array([True, False, True])), np.array([0, 2]))
+
+def test_resolve_aliases():
+
+    # Define a test set of aliases
+    aliases = {'linewidth' : ['lw', 'linewidth']}
+
+    # Test resolving aliases with aliased value present, that should change
+    kwargs1 = {'alpha' : 0.7, 'lw' : 2}
+    assert resolve_aliases(kwargs1, aliases) == {'alpha' : 0.7, 'linewidth' : 2}
+
+    # Test resolving aliases with aliased value present, that should stay the same
+    kwargs2 = {'alpha' : 0.7, 'linewidth' : 2}
+    assert resolve_aliases(kwargs2, aliases) == {'alpha' : 0.7, 'linewidth' : 2}
+
+    # Test resolving aliases with no aliased values present
+    kwargs3 = {'alpha' : 10, 'beta' : 20}
+    assert resolve_aliases(kwargs3, aliases) == {'alpha' : 10, 'beta' : 20}

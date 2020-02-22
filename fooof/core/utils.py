@@ -203,3 +203,36 @@ def check_inds(inds):
         inds = np.where(inds)[0]
 
     return inds
+
+
+def resolve_aliases(kwargs, aliases):
+    """Check and resolve to a standard label for any potential aliases.
+
+    Parameters
+    ----------
+    kwargs : dict
+        Dictionary of labels and their values.
+    aliases : dict
+        Dictionary of labels, with values as their list of aliases.
+
+    Returns
+    -------
+    kwargs : dict
+        Dictionary of labels and their values.
+
+    Notes
+    -----
+    This function checks all labels in `kwargs` for if they are listed within
+    the the `aliases` dictionary. If so, it standardizes this label in `kwargs`
+    to the standard label, as defined by the keys of `aliases`.
+    """
+
+    for alias, labels in aliases.items():
+        for key, val in kwargs.items():
+
+            if key in labels:
+
+                kwargs.pop(key)
+                kwargs[alias] = val
+
+    return kwargs
