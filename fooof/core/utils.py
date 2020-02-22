@@ -213,11 +213,11 @@ def resolve_aliases(kwargs, aliases):
     kwargs : dict
         Dictionary of labels and their values.
     aliases : dict
-        Dictionary of labels, with values as their list of aliases.
+        Dictionary of label names and their list of aliases.
 
     Returns
     -------
-    kwargs : dict
+    out_kwargs : dict
         Dictionary of labels and their values.
 
     Notes
@@ -227,12 +227,15 @@ def resolve_aliases(kwargs, aliases):
     to the standard label, as defined by the keys of `aliases`.
     """
 
-    for alias, labels in aliases.items():
+    out_kwargs = {}
+
+    for name, alia in aliases.items():
+
         for key, val in kwargs.items():
 
-            if key in labels:
+            if key in alia:
+                out_kwargs[name] = val
+            else:
+                out_kwargs[key] = val
 
-                kwargs.pop(key)
-                kwargs[alias] = val
-
-    return kwargs
+    return out_kwargs
