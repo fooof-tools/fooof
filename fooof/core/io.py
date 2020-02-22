@@ -129,7 +129,7 @@ def save_fg(fg, file_name, file_path=None, append=False,
     fg : FOOOFGroup
         Object to save data from.
     file_name : str or FileObject
-        File to to save data to.
+        File to save data to.
     file_path : str, optional
         Path to directory to load from. If None, loads from current directory.
     append : bool, optional, default: False
@@ -236,22 +236,21 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
         Object to save data from.
     f_obj : FileObject
         File object to save data to.
-    save_results : bool, optional
+    save_results : bool
         Whether to save out FOOOF model fit results.
-    save_settings : bool, optional
+    save_settings : bool
         Whether to save out FOOOF settings.
-    save_data : bool, optional
+    save_data : bool
         Whether to save out power spectra data.
     """
 
-    # Save out single line, if just settings to be saved
-    if save_settings and not save_results and not save_data:
-        save_fm(fg, file_name=f_obj, file_path=None, append=False,
-                save_results=save_results, save_settings=save_settings, save_data=save_data)
+    # Since there is a single set of object settings, save them out once, at the top
+    if save_settings:
+        save_fm(fg, file_name=f_obj, file_path=None, append=False, save_settings=True)
 
-    # Loops through group object, creating a FOOOF object per power spectrum, and saves from there
-    else:
+    # For results & data, loop across all data and/or models, and save each out to a new line
+    if save_results or save_data:
         for ind in range(len(fg.group_results)):
             fm = fg.get_fooof(ind, regenerate=False)
             save_fm(fm, file_name=f_obj, file_path=None, append=False,
-                    save_results=save_results, save_settings=save_settings, save_data=save_data)
+                    save_results=save_results, save_data=save_data)

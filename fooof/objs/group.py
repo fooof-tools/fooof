@@ -13,7 +13,7 @@ import numpy as np
 
 from fooof.objs import FOOOF
 from fooof.plts.fg import plot_fg
-from fooof.core.info import get_indices
+from fooof.core.info import get_indices, get_description
 from fooof.core.utils import check_inds
 from fooof.core.errors import NoModelError
 from fooof.core.reports import save_report_fg
@@ -421,19 +421,20 @@ class FOOOFGroup(FOOOF):
 
             self._add_from_dict(data)
 
-            # Collect power spectra, if present
-            if 'power_spectrum' in data.keys():
-                power_spectra.append(data['power_spectrum'])
-
-            # Only load settings from first line
-            #   All other lines, if there, will be duplicates
+            # If settings are loaded, check and update based on the first line
             if ind == 0:
                 self._check_loaded_settings(data)
 
-            self._check_loaded_results(data)
-            self.group_results.append(self._get_results())
+            # If power spectra data is part of loaded data, collect to add to object
+            if 'power_spectrum' in data.keys():
+                power_spectra.append(data['power_spectrum'])
 
-        # Add data, if they were loaded
+            # If results part of current data added, check and update object results
+            if set(get_description()['results']).issubset(set(data.keys())):
+                self._check_loaded_results(data)
+                self.group_results.append(self._get_results())
+
+        # Add power spectra data, if they were loaded
         if power_spectra:
             self.power_spectra = np.array(power_spectra)
 
