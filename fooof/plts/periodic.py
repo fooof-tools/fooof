@@ -128,7 +128,7 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
 
             # Create & plot the peak model from parameters
             peak_vals = gaussian_function(freqs, *peak_params)
-            plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 0.35, 'lw' : 1.25})
+            plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 0.35, 'linewidth' : 1.25})
             ax.plot(freqs, peak_vals, color=colors, **plot_kwargs)
 
             # Collect a running average average peaks
@@ -137,7 +137,7 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
         # Plot the average across all components
         avg = avg_vals / peaks.shape[0]
         avg_color = 'black' if not colors else colors
-        ax.plot(freqs, avg, color=avg_color, linewidth=plot_kwargs.get('lw')*3, label=labels)
+        ax.plot(freqs, avg, color=avg_color, linewidth=plot_kwargs.get('linewidth')*3, label=labels)
 
     # Add axis labels
     ax.set_xlabel('Frequency')

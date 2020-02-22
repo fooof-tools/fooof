@@ -23,7 +23,7 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None):
     Parameters
     ----------
     fg : FOOOFGroup
-        FOOOFGroup object, containing results from fitting a group of power spectra.
+        Object containing results from fitting a group of power spectra.
     save_fig : bool, optional, default: False
         Whether to save out a copy of the plot.
     file_name : str, optional
@@ -56,7 +56,7 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None):
     plot_fg_peak_cens(fg, ax2)
 
     if save_fig:
-        if not fil_name:
+        if not file_name:
             raise ValueError("Input 'file_name' is required to save out the plot.")
         plt.savefig(fpath(file_path, fname(file_name, 'png')))
 

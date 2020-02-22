@@ -107,7 +107,7 @@ def get_indices(aperiodic_mode):
 
 
 def get_info(fooof_obj, aspect):
-    """Get a specified selection of information from a FOOOF derived object.
+    """Get a selection of information from a FOOOF derived object.
 
     Parameters
     ----------

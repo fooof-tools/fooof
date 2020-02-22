@@ -9,12 +9,12 @@ import numpy as np
 ###################################################################################################
 
 def group_three(vec):
-    """Takes array of inputs, groups by three.
+    """Group an array of values into threes.
 
     Parameters
     ----------
     vec : 1d array
-        Array of items to sort by 3 - must be divisible by three.
+        Array of items to group by 3. Length of array must be divisible by three.
 
     Returns
     -------
@@ -89,16 +89,16 @@ def dict_select_keys(in_dict, keep):
 
 
 def check_array_dim(arr):
-    """Check that parameter array has 2D shape, and reshape if not.
+    """Check if an array has 2D shape, and replace with an empty 2d array if not.
 
     Parameters
     ----------
-    arr : np.array
+    arr : ndarray
         Array to check.
 
     Returns
     -------
-    np.array
+    2d array
         Original array, if 2D, or 2D empty array.
     """
 
@@ -164,7 +164,7 @@ def check_flat(lst):
     This function only deals with one level of nesting.
     """
 
-    # Note: flatten if list contains list(s), but skip if list is empty (which is valid)
+    # Flatten if list contains list(s) - but skip if list is empty (which is valid)
     if len(lst) != 0 and isinstance(lst[0], list):
         lst = list(chain(*lst))
 

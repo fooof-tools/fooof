@@ -79,9 +79,8 @@ def expo_nk_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (a, c) that define Lorentzian function:
+        Parameters (offset, exp) that define Lorentzian function:
         y = 10^off * (1/(x^exp))
-        a: constant; c: slope past knee
 
     Returns
     -------

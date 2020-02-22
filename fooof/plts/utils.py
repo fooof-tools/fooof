@@ -9,7 +9,7 @@ They are not expected to be called directly by the user.
 from itertools import repeat
 from collections.abc import Iterator
 
-from numpy import log10
+import numpy as np
 
 from fooof.plts.settings import ALPHA_LEVELS
 from fooof.core.modutils import safe_import
@@ -25,9 +25,9 @@ def check_ax(ax, figsize=None):
     Parameters
     ----------
     ax : matplotlib.Axes or None
-        Axes object to check if is defined.
+        Object to check if is already an axes object.
     figsize : tuple of float, optional
-        Size to create the figure.
+        Size to create the figure, if not already created.
 
     Returns
     -------
@@ -87,7 +87,7 @@ def add_shades(ax, shades, colors='r', add_center=False, logged=False):
 
     for shade, color in zip(shades, colors):
 
-        shade = log10(shade) if logged else shade
+        shade = np.log10(shade) if logged else shade
 
         ax.axvspan(shade[0], shade[1], color=color, alpha=0.2, lw=0)
 
@@ -97,7 +97,7 @@ def add_shades(ax, shades, colors='r', add_center=False, logged=False):
 
 
 def recursive_plot(data, plot_function, ax, **kwargs):
-    """A utility to recursively plot sets of data onto a specified plot.
+    """A utility to recursively plot sets of data.
 
     Parameters
     ----------
@@ -133,7 +133,6 @@ def recursive_plot(data, plot_function, ax, **kwargs):
         # Otherwise, assume is a single value to pass to all plot calls, and make repeat to do so
         else:
             kwargs[key] = repeat(val)
-
 
     # Pass each array of data recursively into plot function
     #   Each element of data is added to the same plot axis

@@ -103,10 +103,10 @@ def gen_settings_str(fooof_obj, description=False, concise=False):
 
     # Parameter descriptions to print out, if requested
     desc = {
-        'peak_width_limits' : 'Enforced limits on peak widths, in Hz.',
-        'max_n_peaks'       : 'The maximum number of peaks that can be extracted.',
+        'peak_width_limits' : 'Limits for minimum and maximum peak widths, in Hz.',
+        'max_n_peaks'       : 'Maximum number of peaks that can be extracted.',
         'min_peak_height'   : 'Minimum absolute height of a peak, above the aperiodic component.',
-        'peak_threshold'    : 'Relative threshold for detecting peaks.',
+        'peak_threshold'    : 'Relative threshold for minimum height required for detecting peaks.',
         'aperiodic_mode'    : 'The approach taken for fitting the aperiodic component.'
         }
 
@@ -146,7 +146,7 @@ def gen_settings_str(fooof_obj, description=False, concise=False):
 
 
 def gen_freq_range_str(fooof_obj, concise=False):
-    """Generate a string representation of fit range used for the model.
+    """Generate a string representation of the fit range that was used for the model.
 
     Parameters
     ----------

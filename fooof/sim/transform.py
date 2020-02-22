@@ -15,11 +15,12 @@ def rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation):
     freqs : 1d array
         Frequency axis of input power spectrum, in Hz.
     power_spectrum : 1d array
-        Power values of the spectrum that is to be rotated.
+        Power values of the spectrum.
     delta_exponent : float
-        Change in aperiodic exponent to be applied.
-        Positive is clockwise rotation (steepen).
-        Negative is counterclockwise rotation (flatten).
+        Change in aperiodic exponent to be applied, where:
+
+        - positive is clockwise rotation (steepen)
+        - negative is counterclockwise rotation (flatten)
     f_rotation : float
         Frequency value, in Hz, about which rotation is applied, at which power is unchanged.
 
@@ -74,11 +75,12 @@ def translate_spectrum(power_spectrum, delta_offset):
     Parameters
     ----------
     power_spectrum : 1d array
-        Power values of the spectrum that is to be translated.
+        Power values of the spectrum.
     delta_offset : float
-        Amount to change the offset by.
-        Positive is an upwards translation.
-        Negative is a downwards translation.
+        Amount to change the offset by, where:
+
+        - positive values are an upwards translation
+        - negative are are a downwards translation
 
     Returns
     -------
@@ -92,18 +94,19 @@ def translate_spectrum(power_spectrum, delta_offset):
 
 
 def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, sim_params):
-    """Rotate a simulated power spectrum, updating that SimParams object.
+    """Rotate a simulated power spectrum, updating a SimParams object.
 
     Parameters
     ----------
     freqs : 1d array
         Frequency axis of input power spectrum, in Hz.
     power_spectrum : 1d array
-        Power values of the spectrum that is to be rotated.
+        Power values of the spectrum.
     delta_exponent : float
-        Change in aperiodic exponent to be applied.
-        Positive is clockwise rotation (steepen).
-        Negative is counterclockwise rotation (flatten).
+        Change in aperiodic exponent to be applied, where:
+
+        - positive is clockwise rotation (steepen)
+        - negative is counterclockwise rotation (flatten)
     f_rotation : float
         Frequency value, in Hz, about which rotation is applied, at which power is unchanged.
     sim_params : SimParams
@@ -114,7 +117,7 @@ def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, sim_p
     rotated_spectrum : 1d array
         Rotated power spectrum.
     new_sim_params : SimParams
-        Updated object storing the new parameter definitions.
+        New parameter definitions.
 
     Notes
     -----
@@ -134,16 +137,17 @@ def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, sim_p
 
 
 def translate_sim_spectrum(power_spectrum, delta_offset, sim_params):
-    """Translate a simulated spectrum, updating that SimParams object.
+    """Translate a simulated spectrum, updating a SimParams object.
 
     Parameters
     ----------
     power_spectrum : 1d array
-        Power values of the spectrum that is to be translated.
+        Power values of the spectrum.
     delta_offset : float
-        Amount to change the offset by.
-        Positive is an upwards translation.
-        Negative is a downwards translation.
+        Amount to change the offset by, where:
+
+        - positive values are an upwards translation
+        - negative are are a downwards translation
     sim_params : SimParams
         Object storing the current parameter definitions.
 
@@ -152,7 +156,7 @@ def translate_sim_spectrum(power_spectrum, delta_offset, sim_params):
     translated_spectrum : 1d array
         Translated power spectrum.
     new_sim_params : SimParams
-        Updated object storing the new parameter definitions.
+        New parameter definitions.
     """
 
     translated_spectrum = translate_spectrum(power_spectrum, delta_offset)
@@ -167,9 +171,9 @@ def compute_rotation_offset(delta_exponent, f_rotation):
     Parameters
     ----------
     delta_exponent : float
-        Change in aperiodic exponent to be applied.
+        The change in aperiodic exponent value.
     f_rotation : float
-        Frequency value, in Hz, about which rotation is applied, at which power is unchanged.
+        The frequency value, in Hz, where rotation is applied.
 
     Returns
     -------

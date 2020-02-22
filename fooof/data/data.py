@@ -14,9 +14,9 @@ The user defined settings for a FOOOF object.
 Attributes
 ----------
 peak_width_limits : tuple of (float, float)
-    Limits on possible peak width, as (lower_bound, upper_bound).
+    Limits on possible peak width, in Hz, as (lower_bound, upper_bound).
 max_n_peaks : int
-    Maximum number of peaks to be fit in a single spectrum.
+    Maximum number of peaks to fit.
 min_peak_height : float
     Absolute threshold for detecting peaks, in units of the input data.
 peak_threshold : float
@@ -55,7 +55,7 @@ peak_params : 2d array
 r_squared : float
     R-squared of the fit between the full model fit and the input data.
 error : float
-    Error of the full model fit, compared to the input data.
+    Total error of the full model fit, compared to the input data.
 gaussian_params : 2d array
     Parameters that define the gaussian fit(s).
     Each row is a gaussian, as [mean, height, standard deviation].
@@ -71,9 +71,9 @@ Attributes
 ----------
 aperiodic_params : list
     Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
-    The knee parameter is only included if aperiodic is fit with knee. Otherwise, length is 2.
+    The knee parameter is only included if aperiodic is fit with knee.
 gaussian_params : list or list of lists
-    Fitted parameter values for the peaks.
+    Parameter values for the peaks.
     Each list is a peak, with a gaussian definition of [mean, height, standard deviation].
 nlv : float
     Noise level added to the generated power spectrum.

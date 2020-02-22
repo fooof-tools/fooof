@@ -1,5 +1,9 @@
 """Test functions for fooof.utils.io."""
 
+import numpy as np
+
+from fooof.objs import FOOOF, FOOOFGroup
+
 from fooof.tests.settings import TEST_DATA_PATH
 
 from fooof.utils.io import *

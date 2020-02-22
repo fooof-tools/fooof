@@ -14,16 +14,17 @@ def get_band_peak_fm(fm, band, ret_one=True, threshold=None, thresh_param='PW',
     Parameters
     ----------
     fm : FOOOF
-        FOOOF object to extract peak data from.
+        Object to extract peak data from.
     band : tuple of (float, float)
-        Defines the band of interest, as (lower_frequency_bound, upper_frequency_bound).
+        Frequency range for the band of interest.
+        Defind as: (lower_frequency_bound, upper_frequency_bound).
     ret_one : bool, optional, default: True
         Whether to return single peak (if True) or all peaks within the range found (if False).
         If True, returns the highest power peak within the search range.
     threshold : float
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
-        Which parameter to threshold on, where 'PW' is power and 'BW' is bandwidth.
+        Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
     attribute : {'peak_params', 'gaussian_params'}
         Which attribute of peak data to extract data from.
 
@@ -42,13 +43,14 @@ def get_band_peak_fg(fg, band, threshold=None, thresh_param='PW', attribute='pea
     Parameters
     ----------
     fg : FOOOFGroup
-        FOOOFGroup object to extract peak data from.
+        Object to extract peak data from.
     band : tuple of (float, float)
-        Defines the band of interest, as (lower_frequency_bound, upper_frequency_bound).
+        Frequency range for the band of interest.
+        Defind as: (lower_frequency_bound, upper_frequency_bound).
     threshold : float
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
-        Which parameter to threshold on, where 'PW' is power and 'BW' is bandwidth.
+        Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
     attribute : {'peak_params', 'gaussian_params'}
         Which attribute of peak data to extract data from.
 
@@ -70,13 +72,14 @@ def get_band_peak_group(peak_params, band, n_fits, threshold=None, thresh_param=
     peak_params : 2d array
         Peak parameters, for a group fit, with shape of [n_peaks, 4].
     band : tuple of (float, float)
-        Defines the band of interest, as (lower_frequency_bound, upper_frequency_bound).
+        Frequency range for the band of interest.
+        Defind as: (lower_frequency_bound, upper_frequency_bound).e
     n_fits : int
         The number of model fits in the FOOOFGroup data.
     threshold : float
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
-        Which parameter to threshold on, where 'PW' is power and 'BW' is bandwidth.
+        Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
 
     Returns
     -------
@@ -118,14 +121,15 @@ def get_band_peak(peak_params, band, ret_one=True, threshold=None, thresh_param=
     peak_params : 2d array
         Peak parameters, with shape of [n_peaks, 3].
     band : tuple of (float, float)
-        Defines the band of interest, as (lower_frequency_bound, upper_frequency_bound).
+        Frequency range for the band of interest.
+        Defind as: (lower_frequency_bound, upper_frequency_bound).
     ret_one : bool, optional, default: True
         Whether to return single peak (if True) or all peaks within the range found (if False).
         If True, returns the highest peak within the search range.
     threshold : float
         A minimum threshold value to apply.
-    param : {'PW', 'BW'}
-        Which parameter to threshold on, where 'PW' is power and 'BW' is bandwidth.
+    thresh_param : {'PW', 'BW'}
+        Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
 
     Returns
     -------
@@ -194,12 +198,12 @@ def threshold_peaks(peak_params, threshold, param='PW'):
     threshold : float
         A minimum threshold value to apply.
     param : {'PW', 'BW'}
-        Which parameter to threshold on, where 'PW' is power and 'BW' is bandwidth.
+        Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
 
     Returns
     -------
     thresholded_peaks : 2d array
-        Peak parameters, with shape of [n_peaks, 3] or [n_peaks, 4].
+        Peak parameters, with shape of [n_peaks, :].
     """
 
     # Catch & return NaN if empty

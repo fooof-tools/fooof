@@ -155,7 +155,7 @@ class FOOOFGroup(FOOOF):
 
     @property
     def null_inds_(self):
-        """The indices of model fits that are null."""
+        """The indices for model fits that are null."""
 
         return [ind for ind, f_res in enumerate(self.group_results) \
             if np.isnan(f_res.aperiodic_params[0])] \
@@ -164,13 +164,13 @@ class FOOOFGroup(FOOOF):
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False,
                             clear_results=False, clear_spectra=False):
-        """Set (or reset) data & results attributes to empty.
+        """Set, or reset, data & results attributes to empty.
 
         Parameters
         ----------
         clear_freqs : bool, optional, default: False
             Whether to clear frequency attributes.
-        clear_power_spectrum : bool, optional, default: False
+        clear_spectrum : bool, optional, default: False
             Whether to clear power spectrum attribute.
         clear_results : bool, optional, default: False
             Whether to clear model results attributes.
@@ -184,7 +184,7 @@ class FOOOFGroup(FOOOF):
 
 
     def _reset_group_results(self, length=0):
-        """Set (or reset) results to be empty.
+        """Set, or reset, results to be empty.
 
         Parameters
         ----------
@@ -196,7 +196,7 @@ class FOOOFGroup(FOOOF):
 
 
     def add_data(self, freqs, power_spectra, freq_range=None):
-        """Add data (frequencies and power spectrum values) to FOOOFGroup object.
+        """Add data (frequencies and power spectrum values) to the current object.
 
         Parameters
         ----------
@@ -210,7 +210,7 @@ class FOOOFGroup(FOOOF):
         Notes
         -----
         If called on an object with existing data and/or results
-        they will be cleared by this method call.
+        these will be cleared by this method call.
         """
 
         # If any data is already present, then clear data & results
@@ -240,7 +240,7 @@ class FOOOFGroup(FOOOF):
 
         Notes
         -----
-        Data is optional if data has been already been added to FOOOF object.
+        Data is optional, if data has already been added to the object.
         """
 
         self.fit(freqs, power_spectra, freq_range, n_jobs=n_jobs)
@@ -265,7 +265,7 @@ class FOOOFGroup(FOOOF):
 
         Notes
         -----
-        Data is optional if data has been already been added to FOOOF object.
+        Data is optional, if data has already been added to the object.
         """
 
         # If freqs & power spectra provided together, add data to object
@@ -477,7 +477,7 @@ class FOOOFGroup(FOOOF):
 
 
     def get_group(self, inds):
-        """Get a FOOOFGroup object with the specified sub-selection.
+        """Get a FOOOFGroup object with the specified sub-selection of model fits.
 
         Parameters
         ----------

@@ -43,7 +43,7 @@ def average_fg(fg, bands, avg_method='mean', regenerate=True):
     Parameters
     ----------
     fg : FOOOFGroup
-        A FOOOFGroup object with data to average across.
+        Object with model fit results to average across.
     bands : Bands
         Bands object that defines the frequency bands to collapse peaks across.
     avg : {'mean', 'median'}
@@ -54,7 +54,7 @@ def average_fg(fg, bands, avg_method='mean', regenerate=True):
     Returns
     -------
     fm : FOOOF
-        FOOOF object containing the average results from the FOOOFGroup input.
+        Object containing the average model results.
 
     Raises
     ------
@@ -120,13 +120,13 @@ def combine_fooofs(fooofs):
 
     Parameters
     ----------
-    fooofs : list of FOOOF
-        FOOOF objects to be concatenated into a FOOOFGroup.
+    fooofs : list of FOOOF or FOOOFGroup
+        Objects to be concatenated into a FOOOFGroup.
 
     Returns
     -------
     fg : FOOOFGroup
-        Resultant FOOOFGroup object created from input FOOOFs.
+        Resultant object from combining inputs.
 
     Raises
     ------
@@ -176,7 +176,7 @@ def fit_fooof_group_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
     Parameters
     ----------
     fg : FOOOFGroup
-        Fitting object, initialized with desired settings, to fit with.
+        Object to fit with, initialized with desired settings.
     freqs : 1d array
         Frequency values for the power spectra, in linear space.
     power_spectra : 3d array

@@ -17,7 +17,7 @@ def gen_freqs(freq_range, freq_res):
     Parameters
     ----------
     freq_range : list of [float, float]
-        Frequency range of desired frequency vector, as [f_low, f_high], inclusive.
+        Frequency range to create frequencies across, as [f_low, f_high], inclusive.
     freq_res : float
         Frequency resolution of desired frequency vector.
 
@@ -42,7 +42,7 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
     Parameters
     ----------
     freq_range : list of [float, float]
-        Frequency range of desired frequency vector, as [f_low, f_high], inclusive.
+        Frequency range to simulate power spectrum across, as [f_low, f_high], inclusive.
     aperiodic_params : list of float
         Parameters to create the aperiodic component of a power spectrum.
         Length should be 2 or 3 (see note).
@@ -52,8 +52,9 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
         Frequency resolution for the simulated power spectrum.
-    f_rotation : float
-        Frequency value, in Hz, about which rotation is applied, at which power is unchanged.
+    f_rotation : float, optional
+        Frequency value, in Hz, to rotate around.
+        Should only be set if spectrum is to be rotated.
     return_params : bool, optional, default: False
         Whether to return the parameters for the simulated spectrum.
 
@@ -153,7 +154,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, gaussian_pa
     n_spectra : int
         The number of power spectra to generate.
     freq_range : list of [float, float]
-        Frequency range of desired frequency vector, as [f_low, f_high], inclusive.
+        Frequency range to simulate power spectra across, as [f_low, f_high], inclusive.
     aperiodic_params : list of float or generator
         Parameters for the aperiodic component of the power spectra.
     gaussian_params : list of float or generator
@@ -162,6 +163,9 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, gaussian_pa
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
         Frequency resolution for the simulated power spectra.
+    f_rotation : float, optional
+        Frequency value, in Hz, to rotate around.
+        Should only be set if spectra are to be rotated.
     return_params : bool, optional, default: False
         Whether to return the parameters for the simulated spectra.
 
@@ -279,7 +283,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, gaussian_pa
 
 
 def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):
-    """Generate aperiodic values, from parameters.
+    """Generate aperiodic values.
 
     Parameters
     ----------
@@ -313,7 +317,7 @@ def gen_peaks(freqs, gaussian_params):
     Parameters
     ----------
     freqs : 1d array
-        Frequency vector to create peak values from.
+        Frequency vector to create peak values for.
     gaussian_params : list of float
         Parameters to create peaks. Length of n_peaks * 3.
 
@@ -334,7 +338,7 @@ def gen_noise(freqs, nlv):
     Parameters
     ----------
     freqs : 1d array
-        Frequency vector to create noise values from.
+        Frequency vector to create noise values for.
     nlv : float
         Noise level to generate.
 
@@ -360,7 +364,7 @@ def gen_power_vals(freqs, aperiodic_params, gaussian_params, nlv):
     Parameters
     ----------
     freqs : 1d array
-        Frequency vector to create power values from.
+        Frequency vector to create power values for.
     aperiodic_params : list of float
         Parameters to create the aperiodic component of the power spectrum.
     gaussian_params : list of float
@@ -396,7 +400,7 @@ def gen_rotated_power_vals(freqs, aperiodic_params, gaussian_params, nlv, f_rota
     Parameters
     ----------
     freqs : 1d array
-        Frequency vector to create power values from.
+        Frequency vector to create power values for.
     aperiodic_params : list of float
         Parameters to create the aperiodic component of the power spectrum.
     gaussian_params : list of float
@@ -432,7 +436,7 @@ def gen_model(freqs, aperiodic_params, gaussian_params, return_components=False)
     Parameters
     ----------
     freqs : 1d array
-        Frequency vector along which to reconstruct the model.
+        Frequency vector to create the model for.
     aperiodic_params : 1d array
         Parameters to create the aperiodic component of the modeled power spectrum.
     gaussian_params : 2d array

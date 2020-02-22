@@ -19,7 +19,7 @@ def check_n_style(style_func, *args):
 
 
 def style_spectrum_plot(ax, log_freqs, log_powers):
-    """Apply style and aesthetics for a power spectrum plot.
+    """Apply style and aesthetics to a power spectrum plot.
 
     Parameters
     ----------
@@ -47,7 +47,7 @@ def style_spectrum_plot(ax, log_freqs, log_powers):
 
 
 def style_param_plot(ax):
-    """Apply style and aesthetics for a peaks plot.
+    """Apply style and aesthetics to a peaks plot.
 
     Parameters
     ----------

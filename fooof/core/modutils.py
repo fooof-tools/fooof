@@ -7,7 +7,7 @@ from functools import wraps
 ###################################################################################################
 
 def safe_import(*args):
-    """Import a module, with a safety net for if the module is not available.
+    """Try to import a module, with a safety net for if the module is not available.
 
     Parameters
     ----------
@@ -101,7 +101,7 @@ def docs_append_to_section(docstring, section, add):
 
 
 def copy_doc_func_to_method(source):
-    """Copy method docstring from function, dropping first parameter (decorator).
+    """Decorator that copies method docstring from function, dropping first parameter.
 
     Parameters
     ----------
@@ -124,7 +124,7 @@ def copy_doc_func_to_method(source):
 
 
 def copy_doc_class(source, section='Attributes', add=''):
-    """Copy method docstring from class, to another class, adding extra info (decorator).
+    """Decorator that copies method docstring from class, to another class, adding extra info.
 
     Parameters
     ----------
@@ -151,7 +151,7 @@ def copy_doc_class(source, section='Attributes', add=''):
 
 
 def check_dependency(dep, name):
-    """Check if an optional dependency is available (decorator).
+    """Decorator that checks if an optional dependency is available.
 
     Parameters
     ----------

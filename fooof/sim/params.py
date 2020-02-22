@@ -69,7 +69,7 @@ def update_sim_ap_params(sim_params, delta, field=None):
         if not len(ap_params) == len(delta):
             raise InconsistentDataError("The number of items to update and "
                                         "number of new values is inconsistent.")
-        ap_params = [ii + jj for ii, jj in zip(ap_params, delta)]
+        ap_params = [param + update for param, update in zip(ap_params, delta)]
 
     else:
         field = list([field]) if not isinstance(field, list) else field
@@ -129,7 +129,7 @@ class Stepper():
 
     @staticmethod
     def _check_values(start, stop, step):
-        """Checks if provided values are valid for use.
+        """Checks if provided values are valid.
 
         Parameters
         ----------
@@ -176,11 +176,11 @@ def param_iter(params):
     --------
     Iterate across exponent values from 1 to 2, in steps of 0.1:
 
-    >>> ap = param_iter([Stepper(1, 2, 0.1), 1])
+    >>> aps = param_iter([Stepper(1, 2, 0.1), 1])
 
     Iterate over center frequency values from 8 to 12 in increments of 0.25:
 
-    >>> peak = param_iter([Stepper(8, 12, .25), 1, 1])
+    >>> peaks = param_iter([Stepper(8, 12, .25), 0.5, 1])
     """
 
     # If input is a list of lists, check each element, and flatten if needed

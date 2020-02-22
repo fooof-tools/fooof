@@ -18,7 +18,7 @@ def compute_knee_frequency(knee, exponent):
     Returns
     -------
     float
-        Frequency value, in Hz, at which the knee occurs.
+        Frequency value, in Hz, of the knee occurs.
     """
 
     return knee ** (1./exponent)

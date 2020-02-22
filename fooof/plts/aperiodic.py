@@ -18,7 +18,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 @check_dependency(plt, 'matplotlib')
 def plot_aperiodic_params(aps, colors=None, labels=None,
                           ax=None, plot_style=style_param_plot, **plot_kwargs):
-    """Plot aperiodic parameters as dots.
+    """Plot aperiodic parameters as dots representing offset and exponent value.
 
     Parameters
     ----------
@@ -118,7 +118,7 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
             # Recreate & plot the aperiodic component from parameters
             ap_vals = gen_aperiodic(freqs, ap_params)
 
-            plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 0.35, 'lw' : 1.25})
+            plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 0.35, 'linewidth' : 1.25})
             ax.plot(plt_freqs, ap_vals, color=colors, **plot_kwargs)
 
             # Collect a running average across components
@@ -127,7 +127,7 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         # Plot the average component
         avg = avg_vals / aps.shape[0]
         avg_color = 'black' if not colors else colors
-        ax.plot(plt_freqs, avg, color=avg_color, linewidth=plot_kwargs.get('lw')*3, label=labels)
+        ax.plot(plt_freqs, avg, color=avg_color, linewidth=plot_kwargs.get('linewidth')*3, label=labels)
 
     # Add axis labels
     ax.set_xlabel('log(Frequency)' if log_freqs else 'Frequency')

@@ -16,7 +16,7 @@ def compute_pointwise_error_fm(fm, plot_errors=True, return_errors=False, **plt_
     Parameters
     ----------
     fm : FOOOF
-        A FOOOF object containing the data and model.
+        Object containing the data and model.
     plot_errors : bool, optional, default: True
         Whether to plot the errors across frequencies.
     return_errors : bool, optional, default: False
@@ -58,7 +58,7 @@ def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_
     Parameters
     ----------
     fg : FOOOFGroup
-        A FOOOFGroup object containing the data and model.
+        Object containing the data and models.
     plot_errors : bool, optional, default: True
         Whether to plot the errors across frequencies.
     return_errors : bool, optional, default: False

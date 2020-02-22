@@ -13,12 +13,12 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 
 @check_dependency(plt, 'matplotlib')
 def save_report_fm(fm, file_name, file_path=None, plt_log=False):
-    """Generate and save out a report for a FOOOF object, as a PDF.
+    """Generate and save out a PDF report for a FOOOF object.
 
     Parameters
     ----------
     fm : FOOOF
-        FOOOF object, containing results from fitting a power spectrum.
+        Object with results from fitting a power spectrum.
     file_name : str
         Name to give the saved out file.
     file_path : str, optional
@@ -60,12 +60,12 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
 
 @check_dependency(plt, 'matplotlib')
 def save_report_fg(fg, file_name, file_path=None):
-    """Generate and save out a report for a FOOOFGroup object, as a PDF.
+    """Generate and save out a PDF report for a FOOOFGroup object.
 
     Parameters
     ----------
     fg : FOOOFGroup
-        FOOOFGroup object, containing results from fitting a group of power spectra.
+        Object with results from fitting a group of power spectra.
     file_name : str
         Name to give the saved out file.
     file_path : str, optional
