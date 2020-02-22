@@ -55,10 +55,11 @@ import numpy as np
 from numpy.linalg import LinAlgError
 from scipy.optimize import curve_fit
 
+from fooof.core.items import OBJ_DESC
+from fooof.core.info import get_indices
 from fooof.core.io import save_fm, load_json
 from fooof.core.reports import save_report_fm
 from fooof.core.modutils import copy_doc_func_to_method
-from fooof.core.info import get_description, get_indices
 from fooof.core.utils import group_three, check_array_dim
 from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
 from fooof.core.errors import (FitError, NoModelError, DataError,
@@ -320,7 +321,7 @@ class FOOOF():
             A data object containing the settings for a FOOOF model.
         """
 
-        for setting in get_description()['settings']:
+        for setting in OBJ_DESC['settings']:
             setattr(self, setting, getattr(fooof_settings, setting))
 
         self._check_loaded_settings(fooof_settings._asdict())
@@ -335,7 +336,7 @@ class FOOOF():
             A meta data object containing meta data information.
         """
 
-        for meta_dat in get_description()['meta_data']:
+        for meta_dat in OBJ_DESC['meta_data']:
             setattr(self, meta_dat, getattr(fooof_meta_data, meta_dat))
 
         self._regenerate_freqs()
@@ -525,7 +526,7 @@ class FOOOF():
         """
 
         return FOOOFSettings(**{key : getattr(self, key) \
-                             for key in get_description()['settings']})
+                             for key in OBJ_DESC['settings']})
 
 
     def get_meta_data(self):
@@ -538,7 +539,7 @@ class FOOOF():
         """
 
         return FOOOFMetaData(**{key : getattr(self, key) \
-                             for key in get_description()['meta_data']})
+                             for key in OBJ_DESC['meta_data']})
 
 
     def get_params(self, name, col=None):
@@ -603,7 +604,7 @@ class FOOOF():
         """
 
         return FOOOFResults(**{key.strip('_') : getattr(self, key) \
-            for key in get_description()['results']})
+            for key in OBJ_DESC['results']})
 
 
     @copy_doc_func_to_method(plot_fm)
@@ -1207,7 +1208,7 @@ class FOOOF():
 
         # If results loaded, check dimensions of peak parameters
         #   This fixes an issue where they end up the wrong shape if they are empty (no peaks)
-        if set(get_description()['results']).issubset(set(data.keys())):
+        if set(OBJ_DESC['results']).issubset(set(data.keys())):
             self.peak_params_ = check_array_dim(self.peak_params_)
             self.gaussian_params_ = check_array_dim(self.gaussian_params_)
 
@@ -1223,10 +1224,10 @@ class FOOOF():
 
         # If settings not loaded from file, clear from object, so that default
         # settings, which are potentially wrong for loaded data, aren't kept
-        if not set(get_description()['settings']).issubset(set(data.keys())):
+        if not set(OBJ_DESC['settings']).issubset(set(data.keys())):
 
             # Reset all public settings to None
-            for setting in get_description()['settings']:
+            for setting in OBJ_DESC['settings']:
                 setattr(self, setting, None)
 
             # If aperiodic params available, infer whether knee fitting was used,

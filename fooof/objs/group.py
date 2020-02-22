@@ -13,7 +13,8 @@ import numpy as np
 
 from fooof.objs import FOOOF
 from fooof.plts.fg import plot_fg
-from fooof.core.info import get_indices, get_description
+from fooof.core.items import OBJ_DESC
+from fooof.core.info import get_indices
 from fooof.core.utils import check_inds
 from fooof.core.errors import NoModelError
 from fooof.core.reports import save_report_fg
@@ -430,7 +431,7 @@ class FOOOFGroup(FOOOF):
                 power_spectra.append(data['power_spectrum'])
 
             # If results part of current data added, check and update object results
-            if set(get_description()['results']).issubset(set(data.keys())):
+            if set(OBJ_DESC['results']).issubset(set(data.keys())):
                 self._check_loaded_results(data)
                 self.group_results.append(self._get_results())
 

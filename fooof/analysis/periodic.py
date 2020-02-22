@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from fooof.core.info import get_peak_indices
+from fooof.core.items import PEAK_INDS
 
 ###################################################################################################
 ###################################################################################################
@@ -210,7 +210,7 @@ def threshold_peaks(peak_params, threshold, param='PW'):
     if len(peak_params) == 0:
         return np.array([np.nan, np.nan, np.nan])
 
-    thresh_mask = peak_params[:, get_peak_indices()[param]] > threshold
+    thresh_mask = peak_params[:, PEAK_INDS[param]] > threshold
     thresholded_peaks = peak_params[thresh_mask]
 
     return thresholded_peaks

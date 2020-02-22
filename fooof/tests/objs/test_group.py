@@ -10,6 +10,7 @@ import numpy as np
 from numpy.testing import assert_equal
 
 from fooof.data import FOOOFResults
+from fooof.core.items import OBJ_DESC
 from fooof.sim import gen_group_power_spectra
 
 from fooof.tests.settings import TEST_DATA_PATH
@@ -223,7 +224,7 @@ def test_fg_plot(tfg, skip_if_no_mpl):
 
     tfg.plot()
 
-def test_fg_load(tobj_desc):
+def test_fg_load():
     """Test load into FOOOFGroup. Note: loads files from test_core_io."""
 
     file_name_res = 'test_fooofgroup_res'
@@ -236,7 +237,7 @@ def test_fg_load(tobj_desc):
     assert len(tfg.group_results) > 0
     # Test that settings and data are None
     #   Except for aperiodic mode, which can be inferred from the data
-    for setting in tobj_desc['settings']:
+    for setting in OBJ_DESC['settings']:
         if setting is not 'aperiodic_mode':
             assert getattr(tfg, setting) is None
     assert tfg.power_spectra is None
@@ -244,10 +245,10 @@ def test_fg_load(tobj_desc):
     # Test loading just settings
     tfg = FOOOFGroup(verbose=False)
     tfg.load(file_name_set, TEST_DATA_PATH)
-    for setting in tobj_desc['settings']:
+    for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is not None
     # Test that results and data are None
-    for result in tobj_desc['results']:
+    for result in OBJ_DESC['results']:
         assert np.all(np.isnan(getattr(tfg, result)))
     assert tfg.power_spectra is None
 
@@ -256,9 +257,9 @@ def test_fg_load(tobj_desc):
     tfg.load(file_name_dat, TEST_DATA_PATH)
     assert tfg.power_spectra is not None
     # Test that settings and results are None
-    for setting in tobj_desc['settings']:
+    for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is None
-    for result in tobj_desc['results']:
+    for result in OBJ_DESC['results']:
         assert np.all(np.isnan(getattr(tfg, result)))
 
     # Test loading all elements
@@ -266,10 +267,10 @@ def test_fg_load(tobj_desc):
     file_name_all = 'test_fooofgroup_all'
     tfg.load(file_name_all, TEST_DATA_PATH)
     assert len(tfg.group_results) > 0
-    for setting in tobj_desc['settings']:
+    for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is not None
     assert tfg.power_spectra is not None
-    for meta_dat in tobj_desc['meta_data']:
+    for meta_dat in OBJ_DESC['meta_data']:
         assert getattr(tfg, meta_dat) is not None
 
 def test_fg_report(skip_if_no_mpl):
@@ -283,21 +284,21 @@ def test_fg_report(skip_if_no_mpl):
 
     assert tfg
 
-def test_fg_get_fooof(tfg, tobj_desc):
+def test_fg_get_fooof(tfg):
     """Check return of an individual model fit to a FOOOF object from FOOOFGroup."""
 
     # Check without regenerating
     tfm0 = tfg.get_fooof(0, False)
     assert tfm0
     # Check that settings are copied over properly
-    for setting in tobj_desc['settings']:
+    for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) == getattr(tfm0, setting)
 
     # Check with regenerating
     tfm1 = tfg.get_fooof(1, True)
     assert tfm1
     # Check that regenerated model is created
-    for result in tobj_desc['results']:
+    for result in OBJ_DESC['results']:
         assert np.all(getattr(tfm1, result))
 
     # Test when object has no data (clear a copy of tfg)
@@ -306,10 +307,10 @@ def test_fg_get_fooof(tfg, tobj_desc):
     tfm2 = new_tfg.get_fooof(0, True)
     assert tfm2
     # Check that data info is copied over properly
-    for meta_dat in tobj_desc['meta_data']:
+    for meta_dat in OBJ_DESC['meta_data']:
         assert getattr(tfm2, meta_dat)
 
-def test_fg_get_group(tfg, tobj_desc):
+def test_fg_get_group(tfg):
     """Check the return of a sub-sampled FOOOFGroup."""
 
     # Check with list index
@@ -323,12 +324,12 @@ def test_fg_get_group(tfg, tobj_desc):
     assert isinstance(nfg2, FOOOFGroup)
 
     # Check that settings are copied over properly
-    for setting in tobj_desc['settings']:
+    for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) == getattr(nfg1, setting)
         assert getattr(tfg, setting) == getattr(nfg2, setting)
 
     # Check that data info is copied over properly
-    for meta_dat in tobj_desc['meta_data']:
+    for meta_dat in OBJ_DESC['meta_data']:
         assert getattr(nfg1, meta_dat)
         assert getattr(nfg2, meta_dat)
 

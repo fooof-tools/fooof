@@ -2,6 +2,8 @@
 
 import os
 
+from fooof.core.items import OBJ_DESC
+
 from fooof.tests.settings import TEST_DATA_PATH
 
 from fooof.core.io import *
@@ -141,7 +143,7 @@ def test_load_jsonlines():
     for data in load_jsonlines(res_file_name, TEST_DATA_PATH):
         assert data
 
-def test_load_file_contents(tobj_desc):
+def test_load_file_contents():
     """Check that loaded files contain the contents they should.
     Note that is this test fails, it likely stems from an issue from saving.
     """
@@ -150,13 +152,13 @@ def test_load_file_contents(tobj_desc):
     loaded_data = load_json(file_name, TEST_DATA_PATH)
 
     # Check settings
-    for setting in tobj_desc['settings']:
+    for setting in OBJ_DESC['settings']:
         assert setting in loaded_data.keys()
 
     # Check results
-    for result in tobj_desc['results']:
+    for result in OBJ_DESC['results']:
         assert result in loaded_data.keys()
 
     # Check results
-    for datum in tobj_desc['data']:
+    for datum in OBJ_DESC['data']:
         assert datum in loaded_data.keys()

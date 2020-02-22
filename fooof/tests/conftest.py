@@ -7,7 +7,6 @@ import pytest
 import numpy as np
 
 from fooof.core.modutils import safe_import
-from fooof.core.info import get_description
 
 from fooof.tests.tutils import get_tfm, get_tfg, get_tbands
 from fooof.tests.settings import BASE_TEST_FILE_PATH, TEST_DATA_PATH, TEST_REPORTS_PATH
@@ -34,10 +33,6 @@ def check_dir():
     os.mkdir(BASE_TEST_FILE_PATH)
     os.mkdir(TEST_DATA_PATH)
     os.mkdir(TEST_REPORTS_PATH)
-
-@pytest.fixture(scope='session')
-def tobj_desc():
-    yield get_description()
 
 @pytest.fixture(scope='session')
 def tfm():
