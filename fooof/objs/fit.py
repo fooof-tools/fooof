@@ -97,7 +97,7 @@ class FOOOF():
     aperiodic_mode : {'fixed', 'knee'}
         Which approach to take for fitting the aperiodic component.
     verbose : bool, optional, default: True
-        Whether to be verbose in printing out warnings.
+        Verbosity mode. If True, prints out warnings and general status updates.
 
     Attributes
     ----------

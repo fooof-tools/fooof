@@ -46,7 +46,7 @@ class FOOOFGroup(FOOOF):
     aperiodic_mode : {'fixed', 'knee'}
         Which approach to take for fitting the aperiodic component.
     verbose : bool, optional, default: True
-        Whether to be verbose in printing out warnings.
+        Verbosity mode. If True, prints out warnings and general status updates.
 
     Attributes
     ----------
@@ -224,7 +224,7 @@ class FOOOFGroup(FOOOF):
             self._prepare_data(freqs, power_spectra, freq_range, 2, self.verbose)
 
 
-    def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1):
+    def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
         """Fit a group of power spectra and display a report, with a plot and printed results.
 
         Parameters
@@ -238,18 +238,20 @@ class FOOOFGroup(FOOOF):
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
+        progress : {None, 'tqdm', 'tqdm.notebook'}, optional
+            Which kind of progress bar to use. If None, no progress bar is used.
 
         Notes
         -----
         Data is optional, if data has already been added to the object.
         """
 
-        self.fit(freqs, power_spectra, freq_range, n_jobs=n_jobs)
+        self.fit(freqs, power_spectra, freq_range, n_jobs=n_jobs, progress=progress)
         self.plot()
         self.print_results(False)
 
 
-    def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1):
+    def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
         """Fit a group of power spectra.
 
         Parameters
@@ -263,6 +265,8 @@ class FOOOFGroup(FOOOF):
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
+        progress : {None, 'tqdm', 'tqdm.notebook'}, optional
+            Which kind of progress bar to use. If None, no progress bar is used.
 
         Notes
         -----
@@ -273,11 +277,15 @@ class FOOOFGroup(FOOOF):
         if freqs is not None and power_spectra is not None:
             self.add_data(freqs, power_spectra, freq_range)
 
+        # If 'verbose', print out a marker of what is being run
+        if self.verbose and not progress:
+            print('Running FOOOFGroup across {} power spectra.'.format(len(self.power_spectra)))
+
         # Run linearly
         if n_jobs == 1:
             self._reset_group_results(len(self.power_spectra))
             for ind, power_spectrum in \
-                _progress(enumerate(self.power_spectra), self.verbose, len(self)):
+                _progress(enumerate(self.power_spectra), progress, len(self)):
                 self._fit(power_spectrum=power_spectrum)
                 self.group_results[ind] = self._get_results()
 
@@ -288,7 +296,7 @@ class FOOOFGroup(FOOOF):
             with Pool(processes=n_jobs) as pool:
                 self.group_results = list(_progress(pool.imap(partial(_par_fit, fg=self),
                                                               self.power_spectra),
-                                                    self.verbose, len(self.power_spectra)))
+                                                    progress, len(self.power_spectra)))
 
         # Clear the individual power spectrum and fit results of the current fit
         self._reset_data_results(clear_spectrum=True, clear_results=True)
@@ -555,15 +563,15 @@ def _par_fit(power_spectrum, fg):
     return fg._get_results()
 
 
-def _progress(iterable, verbose, n_to_run):
+def _progress(iterable, progress, n_to_run):
     """Add a progress bar to an iterable to be processed.
 
     Parameters
     ----------
     iterable : list or iterable
         Iterable object to potentially apply progress tracking to.
-    verbose : 'tqdm', 'tqdm_notebook' or boolean
-        Which type of verbosity to do.
+    progress : {None, 'tqdm', 'tqdm.notebook'}
+        Which kind of progress bar to use. If None, no progress bar is used.
     n_to_run : int
         Number of jobs to complete.
 
@@ -575,7 +583,7 @@ def _progress(iterable, verbose, n_to_run):
     Raises
     ------
     ValueError
-        If the input for `verbose` is not understood.
+        If the input for `progress` is not understood.
 
     Notes
     -----
@@ -584,36 +592,33 @@ def _progress(iterable, verbose, n_to_run):
     with the addition of printing out progress every time items are requested.
     """
 
-    # Check verbose specifier is okay
-    tqdm_options = ['tqdm', 'tqdm_notebook']
-    if not isinstance(verbose, bool) and not verbose in tqdm_options:
-        raise ValueError("Verbose option not understood.")
+    # Check progress specifier is okay
+    tqdm_options = ['tqdm', 'tqdm.notebook']
+    if progress is not None and progress not in tqdm_options:
+        raise ValueError("Progress bar option not understood.")
 
-    if verbose:
+    # Set the display text for the progress bar
+    pbar_desc = 'Running FOOOFGroup'
 
-        # Progress bar options, using tqdm
-        if verbose in tqdm_options:
+    # Use a tqdm, progress bar, if requested
+    if progress:
 
-            # Get tqdm, and set which approach to use from tqdm
-            #   Approach to use from tqdm should be what's specified in 'verbose'
-            tqdm_mod = safe_import('tqdm')
-            tqdm_type = verbose
+        # Try loading the tqdm module
+        tqdm = safe_import(progress)
 
-            # Pulls out the specific tqdm approach to be used from the tqdm module, if available
-            tqdm = getattr(tqdm_mod, tqdm_type) if tqdm_mod else None
+        if not tqdm:
 
-            if not tqdm:
-                print('tqdm requested but is not installed. Proceeding without progress bar.')
-                pbar = iterable
-            else:
-                pbar = tqdm(iterable, desc='Running FOOOFGroup:', total=n_to_run,
-                            dynamic_ncols=True)
-
-        # If 'verbose' was just 'True', print out a marker of what is being run (no progress bar)
-        else:
-            print('Running FOOOFGroup across {} power spectra.'.format(n_to_run))
+            # If tqdm isn't available, proceed without a progress bar
+            print(("A progress bar requiring the 'tqdm' module was requested, "
+                   "but 'tqdm' is not installed. \nProceeding without using a progress bar."))
             pbar = iterable
 
+        else:
+
+            # If tqdm loaded, apply the progress bar to the iterable
+            pbar = tqdm.tqdm(iterable, desc=pbar_desc, total=n_to_run, dynamic_ncols=True)
+
+    # If progress is None, return the original iterable without a progress bar applied
     else:
         pbar = iterable
 

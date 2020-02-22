@@ -115,6 +115,13 @@ def test_fg_fit_knee():
     # No accuracy checking here - just checking that it ran
     assert tfg.has_model
 
+def test_fg_fit_progress(tfg):
+    """Test running FOOOFGroup fitting, with a progress bar."""
+
+    prog_bars = ['tqdm', 'tqdm.notebook']
+    for prog_bar in prog_bars:
+        tfg.fit(progress=prog_bar)
+
 def test_fg_fail():
     """Test FOOOFGroup fit, in a way that some fits will fail.
     Also checks that model failures don't cause errors.
