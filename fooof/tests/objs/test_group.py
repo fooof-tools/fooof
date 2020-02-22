@@ -118,9 +118,7 @@ def test_fg_fit_knee():
 def test_fg_fit_progress(tfg):
     """Test running FOOOFGroup fitting, with a progress bar."""
 
-    prog_bars = ['tqdm', 'tqdm.notebook']
-    for prog_bar in prog_bars:
-        tfg.fit(progress=prog_bar)
+    tfg.fit(progress='tqdm')
 
 def test_fg_fail():
     """Test FOOOFGroup fit, in a way that some fits will fail.
