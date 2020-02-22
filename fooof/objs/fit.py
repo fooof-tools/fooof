@@ -1,20 +1,25 @@
 """FOOOF Object - base object which defines the model.
 
-Notes
------
-Methods without defined docstrings import docs at runtime, from aliased external functions.
-Private attributes of the FOOOF object, not publicly exposed, are documented below.
-
 Private Attributes
-------------------
+==================
+Private attributes of the FOOOF object are documented here.
+
+Data Attributes
+---------------
 _spectrum_flat : 1d array
     Flattened power spectrum, with the aperiodic component removed.
 _spectrum_peak_rm : 1d array
-    Power spectrum with peaks removed.
+    Power spectrum, with peaks removed.
+
+Model Component Attributes
+--------------------------
 _ap_fit : 1d array
-    Values of the aperiodic fit.
+    Values of the isolated aperiodic fit.
 _peak_fit : 1d array
-    Values of the peak fit (flattened).
+    Values of the isolated peak fit.
+
+Internal Settings Attributes
+----------------------------
 _ap_percentile_thresh : float
     Percentile threshold for finding peaks above the aperiodic component.
 _ap_guess : list of [float, float, float]
@@ -29,12 +34,18 @@ _gauss_overlap_thresh : float
     Degree of overlap (in units of standard deviation) between gaussian guesses to drop one.
 _gauss_std_limits : list of [float, float]
     Peak width limits, converted to use for gaussian standard deviation parameter.
+    This attribute is computed based on `peak_width_limits` and should not be updated directly.
 _maxfev : int
     The maximum number of calls to the curve fitting function.
 _error_metric : str
     The error metric to use for post-hoc measures of model fit error.
 _debug : bool
     Whether the object is set in debug mode.
+    This should be controlled by using the `set_debug_mode` method.
+
+Code Notes
+----------
+Methods without defined docstrings import docs at runtime, from aliased external functions.
 """
 
 import warnings
@@ -147,8 +158,8 @@ class FOOOF():
         self.verbose = verbose
 
         ## PRIVATE SETTINGS
-        # Noise threshold, as a percentage of the lowest magnitude values in the total data to fit
-        #   Defines the minimum height, above residuals, to be considered a peak
+        # Percentile threshold, to select points from a flat spectrum for an initial aperiodic fit
+        #   Points are selected at a low percentile value to restrict to non-peak points
         self._ap_percentile_thresh = 0.025
         # Guess parameters for aperiodic fitting, [offset, knee, exponent]
         #   If offset guess is None, the first value of the power spectrum is used as offset guess
@@ -170,7 +181,7 @@ class FOOOF():
         # The maximum number of calls to the curve fitting function
         self._maxfev = 5000
         # The error metric to calculate, post model fitting. See `_calc_error` for options
-        #   Note: this is post-hoc check error metric, not the one used to fit models
+        #   Note: this is used to check error post-hoc, not an objective function for fitting models
         self._error_metric = 'MAE'
         # Set whether in debug mode, in which an error is raised if a model fit fails
         self._debug = False
@@ -210,7 +221,7 @@ class FOOOF():
 
 
     def _reset_internal_settings(self):
-        """Set (or reset) internal settings, based on what is provided in init.
+        """Set, or reset, internal settings, based on what is provided in init.
 
         Notes
         -----
@@ -241,7 +252,7 @@ class FOOOF():
         ----------
         clear_freqs : bool, optional, default: False
             Whether to clear frequency attributes.
-        clear_power_spectrum : bool, optional, default: False
+        clear_spectrum : bool, optional, default: False
             Whether to clear power spectrum attribute.
         clear_results : bool, optional, default: False
             Whether to clear model results attributes.
@@ -273,7 +284,7 @@ class FOOOF():
 
 
     def add_data(self, freqs, power_spectrum, freq_range=None):
-        """Add data, frequencies and power spectrum values, to the current object.
+        """Add data (frequencies, and power spectrum values) to the current object.
 
         Parameters
         ----------
@@ -365,7 +376,7 @@ class FOOOF():
 
         Notes
         -----
-        Data is optional if data has been already been added to current object.
+        Data is optional, if data has already been added to the object.
         """
 
         self.fit(freqs, power_spectrum, freq_range)
@@ -394,7 +405,7 @@ class FOOOF():
 
         Notes
         -----
-        Data is optional if data has been already been added to current object.
+        Data is optional, if data has already been added to the object.
         """
 
         # If freqs & power_spectrum provided together, add data to object.
@@ -421,7 +432,7 @@ class FOOOF():
             self.aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
             self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
 
-            # Flatten the power_spectrum using fit aperiodic fit
+            # Flatten the power spectrum using fit aperiodic fit
             self._spectrum_flat = self.power_spectrum - self._ap_fit
 
             # Find peaks, and fit them with gaussians
@@ -435,9 +446,10 @@ class FOOOF():
             self._spectrum_peak_rm = self.power_spectrum - self._peak_fit
 
             # Run final aperiodic fit on peak-removed power spectrum
-            #   Note: This overwrites previous aperiodic fit
+            #   This overwrites previous aperiodic fit, and recomputes the flattened spectrum
             self.aperiodic_params_ = self._simple_ap_fit(self.freqs, self._spectrum_peak_rm)
             self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
+            self._spectrum_flat = self.power_spectrum - self._ap_fit
 
             # Create full power_spectrum model fit
             self.fooofed_spectrum_ = self._peak_fit + self._ap_fit
@@ -617,7 +629,7 @@ class FOOOF():
 
 
     def load(self, file_name, file_path=None, regenerate=True):
-        """Load in FOOOF formatted JSON file.
+        """Load in a FOOOF formatted JSON file to the current object.
 
         Parameters
         ----------
@@ -969,13 +981,13 @@ class FOOOF():
 
         Parameters
         ----------
-        guess : 2d array, shape=[n_peaks, 3]
-            Guess parameters for gaussian fits to peaks, as gaussian parameters.
+        guess : 2d array
+            Guess parameters for gaussian peak fits. Shape: [n_peaks, 3].
 
         Returns
         -------
-        guess : 2d array, shape=[n_peaks, 3]
-            Guess parameters for gaussian fits to peaks, as gaussian parameters.
+        guess : 2d array
+            Guess parameters for gaussian peak fits. Shape: [n_peaks, 3].
         """
 
         cf_params = [item[0] for item in guess]
@@ -997,13 +1009,13 @@ class FOOOF():
 
         Parameters
         ----------
-        guess : 2d array, shape=[n_peaks, 3]
-            Guess parameters for gaussian fits to peaks, as gaussian parameters.
+        guess : 2d array
+            Guess parameters for gaussian peak fits. Shape: [n_peaks, 3].
 
         Returns
         -------
-        guess : 2d array, shape=[n_peaks, 3]
-            Guess parameters for gaussian fits to peaks, as gaussian parameters.
+        guess : 2d array
+            Guess parameters for gaussian peak fits. Shape: [n_peaks, 3].
 
         Notes
         -----
@@ -1048,7 +1060,7 @@ class FOOOF():
 
         Parameters
         ----------
-        metric : {'MAE', 'MSE', 'RMSE'}
+        metric : {'MAE', 'MSE', 'RMSE'}, optional
             Which error measure to calculate.
 
         Raises
@@ -1144,8 +1156,6 @@ class FOOOF():
         # Check frequency range, trim the power_spectrum range if requested
         if freq_range:
             freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, freq_range)
-        else:
-            freqs, power_spectrum = freqs, power_spectrum
 
         # Check if freqs start at 0 and move up one value if so
         #   Aperiodic fit gets an inf is freq of 0 is included, which leads to an error

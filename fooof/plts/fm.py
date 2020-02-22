@@ -9,6 +9,7 @@ import numpy as np
 
 from fooof.sim.gen import gen_peaks
 from fooof.utils import trim_spectrum
+from fooof.sim.gen import gen_aperiodic
 from fooof.core.io import fname, fpath
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
@@ -31,10 +32,10 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
     Parameters
     ----------
     fm : FOOOF
-        FOOOF object, containing a power spectrum and (optionally) results from fitting.
+        Object containing a power spectrum and (optionally) results from fitting.
     plot_peaks : None or {'shade', 'dot', 'outline', 'line'}, optional
         What kind of approach to take to plot peaks. If None, peaks are not specifically plotted.
-        Can also be a combination of approaches, separated by '-' (for example 'shade-line').
+        Can also be a combination of approaches, separated by '-', for example: 'shade-line'.
     plot_aperiodic : boolean, optional, default: True
         Whether to plot the aperiodic component of the model fit.
     plt_log : boolean, optional, default: False
@@ -109,9 +110,15 @@ def plot_fm_peak_iter(fm, plot_style=style_spectrum_plot):
         A function to call to apply styling & aesthetics to the plots.
     """
 
-    flatspec = fm._spectrum_flat
+    # Recalculate the initial aperiodic fit and flattened spectrum that
+    #   is the same as the one that is used in the peak fitting procedure
+    flatspec = fm.power_spectrum - \
+        gen_aperiodic(fm.freqs,fm._robust_ap_fit(fm.freqs, fm.power_spectrum))
+
+    # Calculate ylims of the plot that are scaled to the range of the data
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
 
+    # Loop through the iterative search for each peak
     for ind in range(fm.n_peaks_ + 1):
 
         # This forces the creation of a new plotting axes per iteration
