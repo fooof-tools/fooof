@@ -6,7 +6,7 @@ from collections import OrderedDict
 ###################################################################################################
 
 class Bands():
-    """Oscillation bands definitions.
+    """Frequency band definitions.
 
     Attributes
     ----------

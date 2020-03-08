@@ -2,7 +2,7 @@
 
 from functools import wraps
 
-from fooof.data.bands import Bands
+from fooof.bands import Bands
 from fooof.objs import FOOOF, FOOOFGroup
 from fooof.core.modutils import safe_import
 from fooof.sim.params import param_sampler
