@@ -1,8 +1,8 @@
 """
-Creating Simulated Power Spectra
-================================
+Simulating Neural Power Spectra
+===============================
 
-Use FOOOF to create simulated power spectra.
+Creating simulated power spectra.
 """
 
 ###################################################################################################
@@ -17,33 +17,43 @@ from fooof.plts.spectra import plot_spectrum, plot_spectra
 # Creating Simulated Power Spectra
 # --------------------------------
 #
-# FOOOF has utilities to create simulated power spectra, whereby spectra
-# are simulated with an aperiodic component with overlying peaks,
-# using specified parameters.
+# FOOOF has utilities to create simulated power spectra. Power spectra are simulated
+# using the same model and conception that the model employs, namely that neural
+# power spectra can be conceptualized as an aperiodic component, with overlying
+# periodic peaks.
 #
-# The :func:`gen_power_spectrum` function can be used to simulate a power
-# spectrum with specified parameters.
+# To simulate power spectra, required parameters are:
 #
-# Note that all FOOOF functions that simulate power spectra take in
-# gaussian parameters, not the modified peak parameters.
+# - `freq_range`: the frequency range to simulate across
+# - `aperiodic_params`: parameters that define the aperiodic component
+#
+#   - this component is defined with 2 or 3 parameters, as [offset, (knee), exponent]
+# - `gaussian_params`: parameters that define the periodic component
+#
+#   - each peak is defined with three parameters, as [center frequency, height, width]
+#
+# The :func:`gen_power_spectrum` function takes these parameters as input to create
+# and return a simulated power spectrum. Note that the parameters that define the peaks
+# are labeled as gaussian parameters, as these parameters define the simulated gaussians
+# directly, and are not the modified peak parameters that the model outputs.
 #
 
 ###################################################################################################
 
 # Settings for creating a simulated power spectrum
-freq_range = [3, 40]            # The frequency range to simulate
-aperiodic_params = [1, 1]       # Parameters defining the aperiodic component
-gaussian_params = [10, 0.3, 1]  # Parameters for any periodic components
+freq_range = [3, 40]              # The frequency range to simulate
+aperiodic_params = [1, 1]         # Parameters defining the aperiodic component
+periodic_params = [10, 0.3, 1]    # Parameters for any periodic components
 
 ###################################################################################################
 
 # Generate a simulated power spectrum
-fs, ps = gen_power_spectrum(freq_range, aperiodic_params, gaussian_params)
+freqs, powers = gen_power_spectrum(freq_range, aperiodic_params, periodic_params)
 
 ###################################################################################################
 
 # Plot the simulated power spectrum
-plot_spectrum(fs, ps, log_freqs=True, log_powers=False)
+plot_spectrum(freqs, powers, log_freqs=True, log_powers=False)
 
 ###################################################################################################
 # Simulating With Different Parameters
@@ -67,35 +77,46 @@ plot_spectrum(fs, ps, log_freqs=True, log_powers=False)
 
 ###################################################################################################
 
-# Set up new settings for creating a different simulated power spectrum
+# Define the frequency range to simulate across
 freq_range = [1, 60]
-aperiodic_params = [1, 500, 2]            # Specify three values as [offset, knee, exponent]
-gaussian_params = [9, 0.4, 1, 24, 0.2, 3]  # Add peaks - can also be [[9, 0.4, 1], [24, 0.2, 3]]
-nlv = 0.01                                 # The amount of noise to add to the spectrum
-freq_res = 0.25                            # Specific the frequency resolution to simulate
+# Define the frequency resolution to simulate with
+freq_res = 0.25
+# Define the amount of noise to add to the spectrum
+nlv = 0.01
+
+# Define aperiodic params, as [offset, knee, exponent]
+aperiodic_params = [1, 500, 2]
+
+# Define periodic params, as a flat list of [CF, PW, BW] for each peak
+#   This could also be written as [[9, 0.4, 1], [24, 0.2, 3]]
+periodic_params = [9, 0.4, 1, 24, 0.2, 3]
+
+###################################################################################################
 
 # Generate the new simulated power spectrum
-fs, ps = gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv, freq_res)
+freqs, powers = gen_power_spectrum(freq_range, aperiodic_params,
+                                   periodic_params, nlv, freq_res)
 
 ###################################################################################################
 
 # Plot the new simulated power spectrum
-plot_spectrum(fs, ps, log_powers=True)
+plot_spectrum(freqs, powers, log_powers=True)
 
 ###################################################################################################
 # Simulating a Group of Power Spectra
 # -----------------------------------
 #
-# For simulating multiple power spectra, the :func:`gen_group_power_spectrum` can be used.
+# For simulating multiple power spectra, the :func:`gen_group_power_spectra` can be used.
 #
 # This function takes the same kind of parameter definitions as :func:`gen_power_spectrum`,
 # and in addition takes a number specifying how many power spectra to simulate, returning
 # a 2D matrix containing the desired number of spectra.
 #
-# For each parameter that is specified, it can be a single definition, in which case
-# this value is used to generate each spectrum, a list of parameters, in which case
-# each successive entry is used to generate each successive power spectrum, or
-# a function or generator that can be called to return parameters for each spectrum.
+# Parameters that are passed into :func:`gen_group_power_spectra` can be:
+#
+# - a single definition, whereby the same value is used for all generated spectra
+# - a list of parameters, whereby each successive entry is used for each successive spectrum
+# - a function or generator that can be called to return parameters for each spectrum
 #
 
 ###################################################################################################
@@ -103,24 +124,59 @@ plot_spectrum(fs, ps, log_powers=True)
 # Create some new settings for simulating a group of power spectra
 n_spectra = 2
 freq_range = [3, 40]
-ap_params = [[0.5, 1], [1, 1.5]]
-gauss_params = [10, 0.4, 1]
 nlv = 0.02
+
+# Aperiodic params: define values for each spectrum, with length equal to n_spectra
+aperiodic_params = [[0.5, 1], [1, 1.5]]
+
+# Periodic parameters: define a single definition, to be applied to all spectra
+periodic_params = [10, 0.4, 1]
+
 
 ###################################################################################################
 
 # Simulate a group of power spectra
-fs, ps, sim_params = gen_group_power_spectra(n_spectra, freq_range, ap_params, gauss_params, nlv)
+freqs, powers = gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
+                                        periodic_params, nlv)
 
 ###################################################################################################
 
 # Plot the power spectra that were just generated
-plot_spectra(fs, ps, log_freqs=True, log_powers=True)
+plot_spectra(freqs, powers, log_freqs=True, log_powers=True)
+
+###################################################################################################
+# Tracking Simulation Parameters
+# ------------------------------
+#
+# When you start simulating multiple power spectra across different parameters,
+# you may want to keep track of these parameters, so that you can compare any measure
+# taken on these power spectra to ground truth values.
+#
+# When simulate power spectra, FOOOF gives you the option of returning SimParams objects that
+# keep track of the simulations.
+#
+
+###################################################################################################
+
+# Simulate a power spectrum, returning the simulation parameter information
+freqs, powers, sp = gen_power_spectrum([1, 50], [1, 1], [10, 0.25, 1.5],
+                                       0.01, return_params=True)
+
+# Check the information stored in the simulation params object
+print(sp)
+
+###################################################################################################
+
+# Simulate a group of power spectrum, returning the simulation parameter information
+freqs, powers, sps = gen_group_power_spectra(3, [1, 150], [1, 100, 150],
+                                             [4, 0.2, 2, 22, 0.15, 3],
+                                             0.01, return_params=True)
+
+# Check the information stored in the simulation params object
+print(sps)
 
 ###################################################################################################
 #
-# Note that when you simulate a group of power spectra, FOOOF returns SimParam objects that
-# keep track of the simulations. This, and other utilities to manage parameters and provide
-# parameter definitions for simulating groups of power spectra are covered in the
-# `Simulated Parameters` example.
+# More description of the SimParams object, and other utilities to manage parameters
+# for simulating groups of power spectra can be found in the `Simulation Parameters` example.
 #

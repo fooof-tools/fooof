@@ -2,19 +2,23 @@
 Plot Model Components
 =====================
 
-Explore the plots available to visualize FOOOF outputs.
+Plotting FOOOF paramaters and model components.
 """
 
 ###################################################################################################
 
+# Import the FOOOFGroup object
 from fooof import FOOOFGroup
 
+# Import utilities to manage frequency band definitions
 from fooof.bands import Bands
 from fooof.analysis import get_band_peak_fg
 
-from fooof.sim import gen_group_power_spectra
+# Import simulation utilties for making example data
+from fooof.sim.gen import gen_group_power_spectra
 from fooof.sim.params import param_jitter
 
+# Import plotting function for model parameters and components
 from fooof.plts.periodic import plot_peak_fits, plot_peak_params
 from fooof.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 
@@ -22,17 +26,18 @@ from fooof.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 # Experiment Set Up & Simulate Data
 # ---------------------------------
 #
-# For this example, we will simulate a potential experiment in which we compare
-# FOOOF model components and parameters. For this experiment,  we will imagine
-# we have one 'grand average' power spectrum per subject, and compare between two groups.
+# In this example, we will explore the plotting functions available to visualize
+# model parameters and components from FOOOF analyses.
 #
-# Then, we will use the plots available through FOOOF to compare model components
-# and parameters between these two groups.
+# To do so, we will consider a hypothetical experiment in which we are compare FOOOF
+# models between two groups of participants, and so want to visualize differences
+# between the groups. For simplicity, we will consider that we have one 'grand average'
+# power spectrum per subject, which we can compare and visualize.
 #
 
 ###################################################################################################
 
-# Set up labels and colors
+# Set up labels and colors for plotting
 colors = ['#2400a8', '#00700b']
 labels = ['Group-1', 'Group-2']
 
@@ -45,8 +50,8 @@ n_subjs = 20
 freq_range = [1, 50]
 
 # Define aperiodic parameters for each group, with some variation
-g1_aps = param_jitter([1, 1.25], [0.5, 0.3])
-g2_aps = param_jitter([1, 1.00], [0.5, 0.3])
+g1_aps = param_jitter([1, 1.25], [0.5, 0.2])
+g2_aps = param_jitter([1, 1.00], [0.5, 0.2])
 
 # Define periodic parameters for each group, with some variation
 g1_peaks = param_jitter([11, 1, 0.5], [0.5, 0.2, 0.2])
@@ -54,9 +59,9 @@ g2_peaks = param_jitter([9, 1, 0.5], [0.25, 0.1, 0.3])
 
 ###################################################################################################
 
-# Simulate some test data
-fs, ps1, _ = gen_group_power_spectra(n_subjs, freq_range, g1_aps, g1_peaks)
-fs, ps2, _ = gen_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
+# Simulate some test data, as two groups of power spectra
+freqs, powers1 = gen_group_power_spectra(n_subjs, freq_range, g1_aps, g1_peaks)
+freqs, powers2 = gen_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
 
 ###################################################################################################
 # Run FOOOF Analyses
@@ -67,15 +72,35 @@ fs, ps2, _ = gen_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
 
 ###################################################################################################
 
-# Initialize FOOOFGroup for spectral parameterization
+# Initialize a FOOOFGroup object for each group
 fg1 = FOOOFGroup(verbose=False)
 fg2 = FOOOFGroup(verbose=False)
 
 ###################################################################################################
 
 # Parameterize neural power spectra
-fg1.fit(fs, ps1)
-fg2.fit(fs, ps2)
+fg1.fit(freqs, powers1)
+fg2.fit(freqs, powers2)
+
+###################################################################################################
+# Plotting Parameters & Components
+# --------------------------------
+#
+# In the following, we will explore two visualization options:
+#
+# - plotting parameter values
+# - plotting component reconstructions
+#
+# Each of these approaches can be done for either aperiodic or periodic parameters.
+#
+# All of the plots that we will use in this example can be used to visualize either
+# one or multiple groups of data. As we will see, you can pass in a single group of
+# parameters or components to visualize them, or pass in a list of group results to
+# visualize and compare between groups.
+#
+# You can also pass in optional parameters `labels` and `colors` to all the following
+# functions to add plot labels, and to set the colors used for each group.
+#
 
 ###################################################################################################
 # Periodic Components
@@ -83,7 +108,7 @@ fg2.fit(fs, ps2)
 #
 # First, let's have a look at the periodic components.
 #
-# To do so, we will use the `Bands` object to store our frequency band definitions,
+# To do so, we will use the :obj:`Bands` object to store our frequency band definitions,
 # which we can then use to sub-select peaks within bands of interest.
 #
 # We can then plot visualizations of the peak parameters, and the reconstructed fits.
@@ -91,8 +116,10 @@ fg2.fit(fs, ps2)
 
 ###################################################################################################
 
-# Define our bands of interest
-bands = Bands({'theta' : [4, 8], 'alpha' :  [8, 13], 'beta' : [13, 30]})
+# Define frequency bands of interest
+bands = Bands({'theta' : [4, 8],
+               'alpha' : [8, 13],
+               'beta' : [13, 30]})
 
 ###################################################################################################
 
@@ -101,10 +128,10 @@ g1_alphas = get_band_peak_fg(fg1, bands.alpha)
 g2_alphas = get_band_peak_fg(fg2, bands.alpha)
 
 ###################################################################################################
-# `plot_peak_params`
-# ~~~~~~~~~~~~~~~~~~
+# Plotting Peak Parameters
+# ~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The `plot_peak_params` function takes in peak parameters, and visualizes them, as:
+# The :func:`plot_peak_params` function takes in peak parameters, and visualizes them, as:
 #
 # - Center Frequency on the x-axis
 # - Power on the y-axis
@@ -123,10 +150,10 @@ plot_peak_params([g1_alphas, g2_alphas], freq_range=bands.alpha,
                  labels=labels, colors=colors)
 
 ###################################################################################################
-# `plot_peak_fits`
-# ~~~~~~~~~~~~~~~~
+# Plotting Peak Fits
+# ~~~~~~~~~~~~~~~~~~
 #
-# The `plot_peak_fits` function takes in peak parameters, and reconstructs peak fits.
+# The :func:`plot_peak_fits` function takes in peak parameters, and reconstructs peak fits.
 #
 
 ###################################################################################################
@@ -141,7 +168,7 @@ plot_peak_fits([g1_alphas, g2_alphas],
                labels=labels, colors=colors)
 
 ###################################################################################################
-# Aperiodic Parameters
+# Aperiodic Components
 # --------------------
 #
 # Next, let's have a look at the aperiodic components.
@@ -154,10 +181,10 @@ aps1 = fg1.get_params('aperiodic_params')
 aps2 = fg2.get_params('aperiodic_params')
 
 ###################################################################################################
-# `plot_peak_params`
-# ~~~~~~~~~~~~~~~~~~
+# Plotting Aperiodic Parameters
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The `plot_aperiodic_params` function takes in aperiodic parameters, and visualizes them, as:
+# The :func:`plot_aperiodic_params` function takes in aperiodic parameters, and visualizes them, as:
 #
 # - Offset on the x-axis
 # - Exponent on the y-axis
@@ -174,10 +201,10 @@ plot_aperiodic_params(aps1)
 plot_aperiodic_params([aps1, aps2], labels=labels, colors=colors)
 
 ###################################################################################################
-# `plot_aperiodic_fits`
-# ~~~~~~~~~~~~~~~~~~~~~
+# Plotting Aperiodic Fits
+# ~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The `plot_aperiodic_fits` function takes in aperiodic parameters,
+# The :func:`plot_aperiodic_fits` function takes in aperiodic parameters,
 # and reconstructs aperiodic fits.
 #
 # Here again we can plot visualizations of the peak parameters, and the reconstructed fits.
@@ -189,8 +216,19 @@ plot_aperiodic_params([aps1, aps2], labels=labels, colors=colors)
 plot_aperiodic_fits(aps1, freq_range, control_offset=True)
 
 ###################################################################################################
+#
+# The :func:`plot_aperiodic_fits` also has some additional options that can help to tune
+# the visualization, including:
+#
+# - `control_offset` : whether the control for offset differences, by setting to zero
+#
+#   - This can be useful to visualize if it's the exponent specifically that is changing
+# - `log_freqs` : whether to log the frequency values, on the x-axis
+#
 
-# Plot the aperiodic fits for both groups Group 1
+###################################################################################################
+
+# Plot the aperiodic fits for both groups
 plot_aperiodic_fits([aps1, aps2], freq_range,
                     control_offset=True, log_freqs=True,
                     labels=labels, colors=colors)
@@ -199,5 +237,13 @@ plot_aperiodic_fits([aps1, aps2], freq_range,
 # Conclusions
 # -----------
 #
-# And there you have the plots available for visualizing and comparing model parameters and fits.
+# In this example, we explored plotting model parameters and components within and between
+# groups of parameterized neural power spectra.
+#
+# If you check the simulation parameters used for the two groups, you can see that
+# we set these groups to vary in their alpha center frequency and in the exponent value.
+# Qualitatively, we can see those differences in the plots above, and this (in real data)
+# would suggest there may be interesting differences between these groups. Follow up
+# analyses in such a case could investigate whether there are statistically significant
+# differences between these groups.
 #

@@ -2,7 +2,7 @@
 Topographical Analyses with MNE
 ===============================
 
-This examples illustrates how to use FOOOF with MNE, doing a topographical analysis.
+How to use FOOOF with MNE, doing a topographical analysis.
 
 This tutorial requires that you have `MNE <https://mne-tools.github.io/>`_
 installed.
@@ -11,7 +11,7 @@ If you don't already have MNE, you can follow instructions to get it
 `here <https://mne-tools.github.io/stable/getting_started.html>`_.
 
 For this example, we will explore how to apply FOOOF to data loaded and managed with MNE,
-and how to plot topographies of FOOOF outputs.
+and how to plot topographies of FOOOF outputs. To do so, here we will use continuous data.
 """
 
 ###################################################################################################
@@ -29,7 +29,8 @@ from mne.viz import plot_topomap
 from mne.time_frequency import psd_welch
 
 # FOOOF imports
-from fooof import FOOOF, FOOOFGroup, Bands
+from fooof import FOOOFGroup
+from fooof.bands import Bands
 from fooof.analysis import get_band_peak_fg
 from fooof.plts.spectra import plot_spectrum
 
@@ -41,8 +42,8 @@ from fooof.plts.spectra import plot_spectrum
 # `MNE sample dataset <https://mne.tools/stable/overview/datasets_index.html?#sample>`_
 # which is a combined MEG/EEG recording with an audiovisual task.
 #
-# First we will load the dataset from MNE, and have a quick look at the data,
-# and extract the EEG data that we will use for the current example.
+# First we will load the dataset from MNE, have a quick look at the data,
+# and extract the EEG data that we will use for this example.
 #
 # Note that if you are running this locally, the following cell will download
 # the example dataset, if you do not already have it.
@@ -54,7 +55,7 @@ from fooof.plts.spectra import plot_spectrum
 raw_fname = sample.data_path() + '/MEG/sample/sample_audvis_filt-0-40_raw.fif'
 event_fname = sample.data_path() + '/MEG/sample/sample_audvis_filt-0-40_raw-eve.fif'
 
-# Load the file of example MNE data
+# Load the example MNE data
 raw = mne.io.read_raw_fif(raw_fname, preload=True, verbose=False)
 
 ###################################################################################################
@@ -74,15 +75,13 @@ raw = raw.set_eeg_reference()
 # One thing to keep in mind when running FOOOF, and extracting bands of interest,
 # is that there is no guarantee that FOOOF will detect peaks in any given range.
 #
-# This means that sometimes results for a given band can be NaN, which doesn't
-# always work very well with further analyses that we may want to do.
-#
-# Keep in mind a that getting a NaN value for power in a particular band is different
-# from canonical approaches, in which the power of a given frequency range is calculated,
-# regardless if there is evidence of periodic power.
+# We consider this a pro, since FOOOF is able to adjudicate whether there is evidence
+# of oscillatory power within a given band, but it does also mean that sometimes results
+# for a given band can be NaN, which doesn't always work very well with further
+# analyses that we may want to do.
 #
 # To be able to deal with nan-values, we will define a helper function to
-# check for nan values and apply policies to how to deal with them.
+# check for NaN values and apply a specified policy for how to deal with them.
 #
 
 ###################################################################################################
@@ -112,12 +111,12 @@ def check_nans(data, nan_policy='zero'):
 #
 # To do so, we will leverage the time frequency tools available with MNE,
 # in the `time_frequency` module. In particular, we can use the :func:`psd_welch` function,
-# that takes in MNE data objects and returns power spectra.
+# that takes in MNE data objects and calculates and returns power spectra.
 #
 
 ###################################################################################################
 
-# Calculate power spectra across the whole data
+# Calculate power spectra across the the continuous data
 spectra, freqs = psd_welch(raw, fmin=1, fmax=40, tmin=0, tmax=250,
                            n_overlap=150, n_fft=300)
 
@@ -158,7 +157,7 @@ fg.plot()
 #
 # To do so, we can leverage the fact that both MNE and FOOOF preserve data order.
 # So, when we calculated power spectra, our output spectra kept the channel order
-# that is described in the MNE data object, and so did our FOOOFGroup object.
+# that is described in the MNE data object, and so did our :obj:`FOOOFGroup` object.
 #
 # That means that to plot our topography, we can use the MNE :func:`plot_topomap`
 # function, passing in extracted data for FOOOF features per channel, and
@@ -197,9 +196,9 @@ plot_topomap(alpha_pw, raw.info, cmap=cm.viridis, contours=0);
 
 ###################################################################################################
 #
-# And there we have it, our FOOOFed alpha topography!
+# And there we have it, our first topography from FOOOF, showing alpha power!
 #
-# The topography makes sense - we see a centro-posterior distribution of alpha power.
+# The topography makes sense, as we can see a centro-posterior distribution.
 #
 # Now we can extend this to plot the power of each of our other defined frequency bands.
 #
@@ -222,16 +221,15 @@ for ind, (label, band_def) in enumerate(bands):
 
 ###################################################################################################
 #
-# You might notice that the topographies of oscillations bands other than alpha
-# look a little 'patchy'. This is because we are setting any channels for which we
-# did not find a peak as zero with our `check_nan` approach. Keep in mind also
-# that this is a single subject analysis.
+# You might notice that the topographies of some of the bands look a little 'patchy'.
+# This is because we are setting any channels for which we did not find a peak as zero
+# with our `check_nan` approach. Note that is also a single subject analysis.
 #
 
 ###################################################################################################
 #
 # Since we have the FOOOF models for each of our channels, we can also explore what
-# these peaks look like in the underlying power spectrum models.
+# these peaks look like in the underlying power spectra.
 #
 # Next, lets check the power spectra for the largest detected peaks within each band.
 #
@@ -263,21 +261,22 @@ for ind, (label, band_def) in enumerate(bands):
 
 ###################################################################################################
 
-# Extract aperiodic exponent values from
+# Extract aperiodic exponent values from the FOOOFGroup
 exps = fg.get_params('aperiodic_params', 'exponent')
 
 ###################################################################################################
 
-# The the topography of aperiodic exponents
+# Plot the topography of aperiodic exponents
 plot_topomap(exps, raw.info, cmap=cm.viridis, contours=0)
 
 ###################################################################################################
 #
 # In the topography above, we can see that there is a fair amount of variation
-# across the scalp in terms of aperiodic exponent value.
+# across the scalp in terms of aperiodic exponent value, and there seems to be some
+# spatial structure to it.
 #
-# To visualize how much the exponent values vary, we can plot channel power spectra,
-# in this case extracting the highest and lower exponent values.
+# To visualize how much the exponent values vary, we can again plot some example power
+# spectra, in this case extracting those with the highest and lower exponent values.
 #
 
 ###################################################################################################

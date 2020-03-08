@@ -2,18 +2,32 @@
 Manipulating FOOOF Objects
 ==========================
 
-Examples with combining, sub-selecting, and dropping FOOOF model fits.
+Examples with combining, sub-selecting, dropping, and averaging FOOOF model fits.
 """
 
 ###################################################################################################
 #
-# For this example, we will again use simulated data, and explore manipulating FOOOF objects.
+# As you run FOOOF analyses, you may end up with multiple FOOOF objects, as you fit
+# models within and across subjects, conditions, trials, etc. To help manage and organize
+# the potentially multiple FOOOF objects that can arise in these cases, here we will
+# explore the utilities offered for managing and organizing within and between FOOOF
+# objects.
+#
+# Using simulated data, in this example we will cover:
+#
+# - combining results across FOOOF objects
+# - sub-selecting fits from FOOOFGroup objects
+# - dropping specified model fits from FOOOFGroup objects
+# - average across groups of FOOOF fits
 #
 
 ###################################################################################################
 
-# Import FOOOF and FOOOFGroup objects and Bands object
-from fooof import FOOOF, FOOOFGroup, Bands
+# Import FOOOF & FOOOFGroup objects
+from fooof import FOOOF, FOOOFGroup
+
+# Import Bands object, to manage frequency band definitions
+from fooof.bands import Bands
 
 # Import utility functions that manage & manipulate FOOOF objects
 from fooof.objs.utils import average_fg, combine_fooofs, compare_info
@@ -55,10 +69,10 @@ fm3.fit(freqs, powers_3)
 # Combining FOOOF Objects
 # -----------------------
 #
-# Sometimes, when working with models in FOOOF or FOOOFGroup objects, you
-# may want to combine them together, to check some group properties.
+# Sometimes, when working with models in :obj:`FOOOF` or :obj:`FOOOFGroup` objects,
+# you may want to combine them together, to check some group properties.
 #
-# The :func:`combine_fooofs` takes a list of FOOOF or FOOOFGroup objects,
+# The :func:`combine_fooofs` function takes a list of FOOOF and/or FOOOFGroup objects,
 # and combines all available fits together into a FOOOFGroup object.
 #
 # Let's now combine our individual model fits into a FOOOFGroup object.
@@ -106,29 +120,28 @@ compare_info([fm1, fg], 'settings')
 # - you want to examine a subset of model reflect, for example, particular channels or trials
 #
 # To do so, we can use the :func:`get_group` method of the FOOOFGroup object.
-# This method takes in the desired inputs, and returns a new FOOOFGroup object,
-# containing only the requested model fits.
+# This method takes in an input specifying which indices to sub-select, and returns a
+# new FOOOFGroup object, containing only the requested model fits.
 #
 # Note that if you want to sub-select a single FOOOF model you can
-# use the :func:`get_fooof`.
+# use the :func:`get_fooof` method.
 #
 
 ###################################################################################################
 
-# Define indices of desired sub-selecting
-#   This could be a 'region of interest', for example
+# Define indices of desired sub-selection of model fits
+#   This could be a the indices for a 'region of interest', for example
 inds = [0, 1]
 
 # Sub-select our selection of models from the FOOOFGroup object
 nfg = fg.get_group(inds)
 
-# `nfg` is a new FOOOFGroup object
-#   We can check how many models it contains
+# Check how many models our new FOOOFGroup object contains
 print('Number of model fits: ', len(nfg))
 
 ###################################################################################################
 #
-# From here, we could continue to do any analysis of interest on our new
+# From here, we could continue to do any analyses of interest on our new
 # FOOOFGroup object, which contains only our models of interest.
 #
 
@@ -136,7 +149,8 @@ print('Number of model fits: ', len(nfg))
 # Dropping Fits from FOOOFGroup
 # -----------------------------
 #
-# Another option is to 'drop' model fits from a FOOOFGroup object.
+# Another option is to 'drop' model fits from a FOOOFGroup object. You can do this with
+# the :func:`drop` method from a :obj:`FOOOFGroup` object.
 #
 # This can be used, for example, for a quality control step. If you have checked through
 # the object, and noticed some outlier model fits, you may want to exclude them from
@@ -155,7 +169,7 @@ fg.drop(fg.get_params('error') > 0.01)
 # Note on Dropped or Failed Fits
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# When models are dropped from FOOOFGroup objects, they are set as null models.
+# When models are dropped from :obj:`FOOOFGroup` objects, they are set as null models.
 # They are therefore cleared of results, but not literally dropped, which
 # is done to preserve the ordering of the FOOOFGroup, so that the `n-th` model
 # doesn't change if some models are dropped.
@@ -184,10 +198,11 @@ for ind in fg.null_inds_:
 # Note on Selecting From FOOOF Objects
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# For both `get_group` and `drop` that we have used above, these methods take
-# an input of the indices of FOOOF model to select or drop. In both cases,
-# the input can be defined in multiple ways, including directly indicating
-# the indices as a list of integers, or boolean masks, as we used above.
+# Both the :func:`get_group` and :func:`drop` methods take an input of the indices
+# of FOOOF model to select or drop.
+#
+# In both cases, the input can be defined in multiple ways, including directly indicating
+# the indices as a list of integers, or boolean masks.
 #
 
 ###################################################################################################

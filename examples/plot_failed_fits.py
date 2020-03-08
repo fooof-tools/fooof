@@ -22,11 +22,11 @@ from fooof.core.errors import FitError
 #
 # The FOOOF model is not guaranteed to fit - sometimes the fit procedure can fail.
 #
-# Model fit failures are rare, and if they occur typically relate to spectra that
+# Model fit failures are rare, and they typically only happen on spectra that are
 # particular noisy, and/or are some kind of outlier for which the fitting procedure
 # fails to find a good model solution.
 #
-# In general, model fit failures should should lead to a clean exit, meaning that
+# In general, model fit failures should lead to a clean exit, meaning that
 # a failed model fit does not lead to a code error. The failed fit will be encoded in
 # the results as a null model, and the code can continue onwards.
 #
@@ -36,8 +36,8 @@ from fooof.core.errors import FitError
 ###################################################################################################
 
 # Simulate some example power spectra to use for the example
-freqs, powers, _ = gen_group_power_spectra(25, [1, 50], [1, 1], [10, 0.25, 3],
-                                           nlvs=0.1, freq_res=0.25)
+freqs, powers = gen_group_power_spectra(25, [1, 50], [1, 1], [10, 0.25, 3],
+                                        nlvs=0.1, freq_res=0.25)
 
 ###################################################################################################
 
@@ -54,7 +54,13 @@ fg.fit(freqs, powers)
 # If there are failed fits, these are stored as null models.
 #
 # Let's check if there were any null models, from model failures, in the models
-# that we have fit so far.
+# that we have fit so far. To do so, the :obj:`FOOOFGroup` object has some attributes
+# that provide information on any null model fits.
+#
+# These attributes are:
+#
+# - `n_null_` : the number of model results that are null
+# - `null_inds_` : the indices of any null model results
 #
 
 ###################################################################################################
@@ -106,14 +112,15 @@ print('Indices of Null models : \t', fg.null_inds_)
 # There are multiple possible reasons why a model fit failure can occur, or at least
 # multiple possible steps in the algorithm at which the fit failure can occur.
 #
-# If you have a small number of fit failures, you can likely just exclude them
+# If you have a small number of fit failures, you can likely just exclude them.
 #
 # However, if you have multiple fit failures, and/or you want to investigate why the
-# model is failing, you can use a debugging mode to get a bit more information about
+# model is failing, you can use the debug mode to get a bit more information about
 # where the model is failing.
 #
 # The debug mode will stop the FOOOF object catching and continuing any model
-# fit errors, allowing you to get more information about where it is failing.
+# fit errors, allowing you to see where the error is happening, and get more
+# information about where it is failing.
 #
 # Note that here we will run the fitting in a try / except to catch the error and
 # print it out, without the error actually being raised (for website purposes).
