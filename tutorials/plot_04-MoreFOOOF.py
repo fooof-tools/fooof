@@ -274,13 +274,13 @@ print('fooofed spectrum: \t',fm.fooofed_spectrum_[0:5])
 ###################################################################################################
 
 # Saving FOOOF results, settings, and data
-fm.save(save_results=True, save_settings=True, save_data=True)
+fm.save('FOOOF_results', save_results=True, save_settings=True, save_data=True)
 
 ###################################################################################################
 
 # Loading FOOOF results
 nfm = FOOOF()
-nfm.load()
+nfm.load('FOOOF_results')
 
 ###################################################################################################
 
@@ -302,13 +302,13 @@ nfm.plot()
 # Save out a report of the current FOOOF model fit & results
 #  By default (with no inputs) this saves a PDF to current directory, with the name 'FOOOF_Report'
 #    Add inputs to the method call to specify a file-name, and save-location
-fm.save_report()
+fm.save_report('FOOOF_report')
 
 ###################################################################################################
 
 # If you're in a notebook, you can use this code to check what the generated report looks like
 from IPython.display import IFrame
-IFrame("FOOOF_Report.pdf", width=950, height=1200)
+IFrame("FOOOF_report.pdf", width=950, height=1200)
 
 ###################################################################################################
 # Conclusion

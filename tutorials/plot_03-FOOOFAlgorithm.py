@@ -63,9 +63,9 @@ fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6 , min_peak_height=0.15)
 
 ###################################################################################################
 #
-# Note that data can be added to FOOOF independent of fitting the model,
-# using the `add_data` method. FOOOF objects can also be used to plot
-# input data, without having fit any models.
+# Note that data can be added to FOOOF independent of fitting the model, using the
+# `add_data` method. FOOOF objects can also be used to plot input data,
+# without having fit any models.
 #
 
 ###################################################################################################
@@ -98,7 +98,6 @@ fm.fit(freqs, spectrum, [3, 40])
 # We start by taking an initial aperiodic fit. The goal of this fit is to be
 # able to use this fit to remove our estimate of the aperiodic component from the data.
 #
-#
 
 ###################################################################################################
 
@@ -122,8 +121,11 @@ plot_spectrum(fm.freqs, init_ap_fit, plt_log, label='Initial Aperiodic Fit', ax=
 
 ###################################################################################################
 
-# Plot the flattened the power spectrum, created by subtracting out the initial aperiodic fit
-plot_spectrum(fm.freqs, fm._spectrum_flat, plt_log, label='Flattened Spectrum')
+# Recompute the flattened spectrum using the initial aperiodic fit
+init_flat_spec = fm.power_spectrum - init_ap_fit
+
+# Plot the flattened the power spectrum
+plot_spectrum(fm.freqs, init_flat_spec, plt_log, label='Flattened Spectrum')
 
 ###################################################################################################
 # Step 3: Detect Peaks
@@ -228,6 +230,44 @@ fm.print_results()
 # Plot the full model fit of the power spectrum
 #  The final fit (red), and aperiodic fit (blue), are the same as we plotted above
 fm.plot(plt_log)
+
+###################################################################################################
+# Addendum: Data & Model Component Attributes
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#
+# As you may have noticed through this tutorial, the FOOOF object keeps track of some
+# versions of the original data as well as individual model components fits, as well as
+# the final model fit that ultimate outcome of the fitting procedure.
+#
+# These attributes in the FOOOF object are kept at the end of the fitting procedure.
+# Though they are primarily computed for internal use (hence being considered 'private'
+# attributes, with the leading underscore), they are accessible and potentially
+# useful for some analyses, and so are briefly described here.
+#
+# Stored model components:
+#
+# - Aperiodic Component: `_ap_fit`
+#
+#   - This is the aperiodic-only model fit of the data.
+#   - It is computed by generating a reconstruction of the measured aperiodic parameters
+#
+# - Periodic Component: `_peak_fit`
+#
+#   - This is the periodic-only (or peak) model fit of the data.
+#   - It is computed by generating a reconstruction of the measured periodic (peak) parameters
+#
+# Stored data attributes:
+#
+# - Flattened Spectrum: `_spectrum_flat`
+#
+#   - The original data, with the aperiodic component removed
+#   - This is computed as `power_spectrum - _ap_fit`
+#
+# - Peak Removed Spectrum: `_spectrum_peak_rm`
+#
+#   - The original data, with the periodic component (peaks) removed
+#   - This is computed as `power_spectrum - _peak_fit`
+#
 
 ###################################################################################################
 # Conclusion

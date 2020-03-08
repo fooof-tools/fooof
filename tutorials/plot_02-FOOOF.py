@@ -23,15 +23,32 @@ spectrum = np.load('data/spectrum.npy')
 # FOOOF Object
 # ------------
 #
-# At the core of the module, which is object oriented, is the FOOOF object,
-# which holds relevant data and settings as attributes,
-# and procedures to run the FOOOF algorithm as methods.
+# At the core of the module, which is object oriented, is the FOOOF object, which holds relevant
+# data and settings as attributes, and procedures to run the FOOOF algorithm as methods.
 #
 # The organization is similar to sklearn:
 #
 # - A model object is initialized, with relevant settings
 # - The model is used to fit the data
 # - Results can be extracted from the object
+#
+
+###################################################################################################
+# Calculating Power Spectra
+# ~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# The FOOOF model operates on power spectra. FOOOF itself does not compute power spectra,
+# and so computing power spectra needs to be done prior to using the FOOOF module.
+#
+# The model is broadly agnostic to exactly how power spectra are computed. Common
+# methods, such as using Welch's method to compute the spectrogram
+#
+# If you need a module in Python that has functionality for computing power spectra, try
+# `NeuroDSP <https://neurodsp-tools.github.io/neurodsp/>`_
+#
+# Note that FOOOF objects require frequency and power values passed in as inputs to
+# be in linear spacing. Passing in non-linear spaced data (such logged values) may
+# produce erroneous results.
 #
 
 ###################################################################################################

@@ -125,6 +125,26 @@ A theoretical / mathematical description of the FOOOF model.
 # `1/f` characteristic. Using this form allows for modeling bends in the power spectrum
 # of the aperiodic component, if and when they occur.
 #
+# Relating Exponents to Power Spectrum Slope
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#
+# Another common way to measure 1/f properties in neural power spectra is to measure
+# the slope of the spectrum in log-log spacing, measuring the 1/f as:
+#
+# ..math::
+#   NPS = ax + b
+#
+# Where:
+#
+# - :math:`a` is the power spectrum slope
+# - :math: `b` is the offset.
+#
+# Note that, when fitting without a knee, this can be considered equivalent to the
+# exponential fits that we perform, where the slope relates to the exponent value as:
+#
+# ..math::
+#    \chi = -a
+#
 
 ###################################################################################################
 # Periodic Component(s)
