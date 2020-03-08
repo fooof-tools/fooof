@@ -2,6 +2,7 @@
 
 import numpy as np
 
+from fooof.sim import gen_freqs
 from fooof.data import FOOOFResults
 from fooof.objs import FOOOF, FOOOFGroup
 from fooof.analysis.periodic import get_band_peak_fg
@@ -142,8 +143,11 @@ def combine_fooofs(fooofs):
     # Initialize FOOOFGroup object, with settings derived from input objects
     fg = FOOOFGroup(*fooofs[0].get_settings(), verbose=fooofs[0].verbose)
 
-    # Use a temporary store to collect spectra, because we only add them if consistently present
-    temp_power_spectra = np.empty([0, len(fooofs[0].freqs)])
+    # Use a temporary store to collect spectra, as we'll only add it if it is consistently present
+    #   We check how many frequencies by accessing meta data, in case of no frequency vector
+    meta_data = fooofs[0].get_meta_data()
+    n_freqs = len(gen_freqs(meta_data.freq_range, meta_data.freq_res))
+    temp_power_spectra = np.empty([0, n_freqs])
 
     # Add FOOOF results from each FOOOF object to group
     for f_obj in fooofs:

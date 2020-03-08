@@ -443,6 +443,10 @@ class FOOOFGroup(FOOOF):
                 self._check_loaded_results(data)
                 self.group_results.append(self._get_results())
 
+        # Reconstruct frequency vector, if information is available to do so
+        if self.freq_range:
+            self._regenerate_freqs()
+
         # Add power spectra data, if they were loaded
         if power_spectra:
             self.power_spectra = np.array(power_spectra)
