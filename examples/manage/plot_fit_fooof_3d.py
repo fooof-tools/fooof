@@ -56,7 +56,7 @@ import numpy as np
 from fooof import FOOOFGroup
 
 # Import utilities for working with FOOOF objects
-from fooof.objs import fit_fooof_group_3d, combine_fooofs
+from fooof.objs import fit_fooof_3d, combine_fooofs
 
 # Import simulation & IO utilities to help with the example
 from fooof.sim.gen import gen_freqs, gen_group_power_spectra
@@ -127,16 +127,16 @@ print('Number of conditions, channels & frequencies: \t{}, {}, {}'.format(\
 # The strategy we will take to do so is by systematically applying FOOOF objects across
 # the data.
 #
-# For working with 3D arrays of power spectra, we have the :func:`fit_fooof_group_3d`
+# For working with 3D arrays of power spectra, we have the :func:`fit_fooof_3d`
 # function which takes in data and a pre-initialized model object, and applies the
 # FOOOF object across all the data, while maintaining the organization of the output data.
 #
 
 ###################################################################################################
-# fit_fooof_group_3d
+# fit_fooof_3d
 # ~~~~~~~~~~~~~~~~~~
 #
-# More specifically, :func:`fit_fooof_group_3d` takes in:
+# More specifically, :func:`fit_fooof_3d` takes in:
 #
 # - a FOOOFGroup object, pre-initialized with the desired settings
 # - a frequency vector and a 3D array of power spectra
@@ -156,7 +156,7 @@ fg = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
 ###################################################################################################
 
 # Fit the 3D array of power spectra
-fgs = fit_fooof_group_3d(fg, freqs, spectra)
+fgs = fit_fooof_3d(fg, freqs, spectra)
 
 ###################################################################################################
 
@@ -187,7 +187,7 @@ print('Number of conditions: \t{}'.format(n_conditions))
 # and tutorials for more information on how to do this.
 #
 # A general strategy for analyzing FOOOF results as they get returned from
-# :func:`fit_fooof_group_3d` is to loop across all the objects in the returned list,
+# :func:`fit_fooof_3d` is to loop across all the objects in the returned list,
 # and then within the loop you can collect and/or analyze and/or plot any
 # data of interest.
 #

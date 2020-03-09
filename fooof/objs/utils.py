@@ -174,8 +174,8 @@ def combine_fooofs(fooofs):
     return fg
 
 
-def fit_fooof_group_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
-    """Run FOOOFGroup across a 3D collection of power spectra.
+def fit_fooof_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
+    """Fit FOOOF models across a 3D array of power spectra.
 
     Parameters
     ----------

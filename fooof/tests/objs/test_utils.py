@@ -118,14 +118,14 @@ def test_combine_errors(tfm, tfg):
         with raises(IncompatibleSettingsError):
             combine_fooofs([f_obj, f_obj2])
 
-def test_fit_fooof_group_3d(tfg):
+def test_fit_fooof_3d(tfg):
 
     n_spectra = 2
     xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
     ys = np.stack([ys, ys], axis=0)
 
     tfg = FOOOFGroup()
-    fgs = fit_fooof_group_3d(tfg, xs, ys)
+    fgs = fit_fooof_3d(tfg, xs, ys)
 
     assert len(fgs) == 2
     for fg in fgs:
