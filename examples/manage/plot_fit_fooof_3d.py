@@ -219,6 +219,10 @@ for ind, fg in enumerate(fgs):
 
 ###################################################################################################
 
+# Check for and create a 'results' directory, to save out data to
+if not os.path.isdir('results'):
+    os.mkdir('results')
+
 # Save out FOOOF results, storing each as with a file name based on the condition
 for ind, fg in enumerate(fgs):
     fg.save('subj_01_cond_0' + str(ind), file_path='results', save_results=True)
