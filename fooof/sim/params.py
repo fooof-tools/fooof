@@ -12,14 +12,14 @@ from fooof.data import SimParams
 ###################################################################################################
 ###################################################################################################
 
-def collect_sim_params(aperiodic_params, gaussian_params, nlv):
+def collect_sim_params(aperiodic_params, periodic_params, nlv):
     """Collect sim parameters together into a SimParams object.
 
     Parameters
     ----------
     aperiodic_params : list of float
         Parameters of the aperiodic component of the power spectrum.
-    gaussian_params : list of float or list of list of float
+    periodic_params : list of float or list of list of float
         Parameters of the periodic component of the power spectrum.
     nlv : float, optional, default: 0.005
         Noise level of the power spectrum.
@@ -31,7 +31,7 @@ def collect_sim_params(aperiodic_params, gaussian_params, nlv):
     """
 
     return SimParams(aperiodic_params.copy(),
-                     sorted(group_three(check_flat(gaussian_params))),
+                     sorted(group_three(check_flat(periodic_params))),
                      nlv)
 
 

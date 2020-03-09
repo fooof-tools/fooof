@@ -147,8 +147,36 @@ def quadratic_function(xs, *params):
     return ys
 
 
+def get_pe_func(periodic_mode):
+    """Select and return specified function for periodic component.
+
+    Parameters
+    ----------
+    periodic_mode : {'gaussian'}
+        Which periodic fitting function to return.
+
+    Returns
+    -------
+    pe_func : function
+        Function for the periodic component.
+
+    Raises
+    ------
+    ValueError
+        If the specified periodic mode label is not understood.
+
+    """
+
+    if periodic_mode == 'gaussian':
+        pe_func = gaussian_function
+    else:
+        raise ValueError("Requested periodic mode not understood.")
+
+    return pe_func
+
+
 def get_ap_func(aperiodic_mode):
-    """Select and return specified function for fitting aperiodic component.
+    """Select and return specified function for aperiodic component.
 
     Parameters
     ----------
@@ -158,7 +186,7 @@ def get_ap_func(aperiodic_mode):
     Returns
     -------
     ap_func : function
-        Function for the aperiodic process.
+        Function for the aperiodic component.
 
     Raises
     ------

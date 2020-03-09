@@ -35,6 +35,6 @@ def test_sim_params():
     assert sim_params
 
     # Check that the object has the correct fields
-    for field in ['aperiodic_params', 'gaussian_params', 'nlv']:
+    for field in ['aperiodic_params', 'periodic_params', 'nlv']:
         getattr(sim_params, field)
     assert True

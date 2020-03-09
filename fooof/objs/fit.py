@@ -71,7 +71,7 @@ from fooof.plts.fm import plot_fm
 from fooof.plts.style import style_spectrum_plot
 from fooof.utils.data import trim_spectrum
 from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
-from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_peaks, gen_model
+from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 
 ###################################################################################################
 ###################################################################################################
@@ -441,7 +441,7 @@ class FOOOF():
 
             # Calculate the peak fit
             #   Note: if no peaks are found, this creates a flat (all zero) peak fit
-            self._peak_fit = gen_peaks(self.freqs, np.ndarray.flatten(self.gaussian_params_))
+            self._peak_fit = gen_periodic(self.freqs, np.ndarray.flatten(self.gaussian_params_))
 
             # Create peak-removed (but not flattened) power spectrum
             self._spectrum_peak_rm = self.power_spectrum - self._peak_fit

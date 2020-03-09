@@ -7,12 +7,11 @@ This file contains plotting functions that take as input a FOOOF object.
 
 import numpy as np
 
-from fooof.sim.gen import gen_peaks
 from fooof.utils import trim_spectrum
-from fooof.sim.gen import gen_aperiodic
 from fooof.core.io import fname, fpath
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
+from fooof.sim.gen import gen_aperiodic, gen_periodic
 from fooof.plts.utils import check_ax
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.settings import FIGSIZE_SPECTRAL
@@ -196,7 +195,7 @@ def _add_peaks_shade(fm, plt_log, ax):
     for peak in fm.get_params('gaussian_params'):
 
         peak_freqs = np.log10(fm.freqs) if plt_log else fm.freqs
-        peak_line = fm._ap_fit + gen_peaks(fm.freqs, peak)
+        peak_line = fm._ap_fit + gen_periodic(fm.freqs, peak)
 
         ax.fill_between(peak_freqs, peak_line, fm._ap_fit, alpha=0.25, color='grey')
 
@@ -246,7 +245,7 @@ def _add_peaks_outline(fm, plt_log, ax):
         peak_range = [peak[0] - peak[2]*3, peak[0] + peak[2]*3]
 
         # Generate a peak reconstruction for each peak, and trim to desired range
-        peak_line = fm._ap_fit + gen_peaks(fm.freqs, peak)
+        peak_line = fm._ap_fit + gen_periodic(fm.freqs, peak)
         peak_freqs, peak_line = trim_spectrum(fm.freqs, peak_line, peak_range)
 
         # Plot the peak outline

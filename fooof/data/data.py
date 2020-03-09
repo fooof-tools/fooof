@@ -62,7 +62,7 @@ gaussian_params : 2d array
 """
 
 
-SimParams = namedtuple('SimParams', ['aperiodic_params', 'gaussian_params', 'nlv'])
+SimParams = namedtuple('SimParams', ['aperiodic_params', 'periodic_params', 'nlv'])
 
 SimParams.__doc__ = """\
 Stores parameters used to simulate a single power spectra.
@@ -70,11 +70,9 @@ Stores parameters used to simulate a single power spectra.
 Attributes
 ----------
 aperiodic_params : list
-    Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
-    The knee parameter is only included if aperiodic is fit with knee.
-gaussian_params : list or list of lists
-    Parameter values for the peaks.
-    Each list is a peak, with a gaussian definition of [mean, height, standard deviation].
+    Parameters that define the aperiodic component.
+periodic_params : list or list of lists
+    Parameters that define the periodic component.
 nlv : float
-    Noise level added to the generated power spectrum.
+    Noise level added to simulated spectrum.
 """

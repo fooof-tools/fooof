@@ -25,9 +25,9 @@ def test_gen_power_spectrum():
 
     freq_range = [3, 50]
     ap_params = [50, 2]
-    gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
+    pe_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = gen_power_spectrum(freq_range, ap_params, gaussian_params)
+    xs, ys = gen_power_spectrum(freq_range, ap_params, pe_params)
 
     assert np.all(xs)
     assert np.all(ys)
@@ -35,7 +35,7 @@ def test_gen_power_spectrum():
 
     # Test with a rotation applied returned
     f_rotation = 20
-    xs, ys = gen_power_spectrum(freq_range, ap_params, gaussian_params, f_rotation=f_rotation)
+    xs, ys = gen_power_spectrum(freq_range, ap_params, pe_params, f_rotation=f_rotation)
 
     assert np.all(xs)
     assert np.all(ys)
@@ -45,16 +45,16 @@ def test_gen_power_spectrum_return_params():
 
     freq_range = [3, 50]
     ap_params = [50, 2]
-    gaussian_params = [[10, 0.5, 2], [20, 0.3, 4]]
+    pe_params = [[10, 0.5, 2], [20, 0.3, 4]]
     nlv = 0.01
 
-    xs, ys, sps = gen_power_spectrum(freq_range, ap_params, gaussian_params,
-                                     nlv, return_params=True)
+    xs, ys, sp = gen_power_spectrum(freq_range, ap_params, pe_params,
+                                    nlv, return_params=True)
 
     # Test returning parameters
-    assert array_equal(sps.aperiodic_params, ap_params)
-    assert array_equal(sps.gaussian_params, gaussian_params)
-    assert sps.nlv == nlv
+    assert array_equal(sp.aperiodic_params, ap_params)
+    assert array_equal(sp.periodic_params, pe_params)
+    assert sp.nlv == nlv
 
 def test_gen_group_power_spectra():
 
@@ -67,7 +67,7 @@ def test_gen_group_power_spectra():
     assert ys.ndim == 2
     assert ys.shape[0] == n_spectra
 
-    # Test the case in which gaussian params are an empty list
+    # Test the case in which periodic params are an empty list
     xs, ys = gen_group_power_spectra(2, [3, 50], [1, 1], [])
 
     assert np.all(xs)
@@ -85,16 +85,16 @@ def test_gen_group_power_spectra_return_params():
     n_spectra = 3
 
     aps = [1, 1]
-    gauss = [10, 0.5, 1]
+    pes = [10, 0.5, 1]
     nlv = 0.01
 
-    xs, ys, sim_params = gen_group_power_spectra(n_spectra, [1, 50], aps, gauss, nlv,
+    xs, ys, sim_params = gen_group_power_spectra(n_spectra, [1, 50], aps, pes, nlv,
                                                  return_params=True)
 
     assert n_spectra == ys.shape[0] == len(sim_params)
     sp = sim_params[0]
     assert array_equal(sp.aperiodic_params, aps)
-    assert array_equal(sp.gaussian_params, [gauss])
+    assert array_equal(sp.periodic_params, [pes])
     assert sp.nlv == nlv
 
 def test_gen_aperiodic():
@@ -115,15 +115,15 @@ def test_gen_aperiodic():
     apv_kn_2 = gen_aperiodic(xs, ap_kn)
     assert np.array_equal(apv_kn, apv_kn_2)
 
-def test_gen_peaks():
+def test_gen_periodic():
 
     xs = gen_freqs([3, 50], 0.5)
-    gaussian_params = [10, 2, 1]
+    pe_params = [10, 2, 1]
 
-    peaks = gen_peaks(xs, gaussian_params)
+    pe_vals = gen_periodic(xs, pe_params)
 
-    assert np.all(np.invert(np.isnan(peaks)))
-    assert xs[np.argmax(peaks)] == 10
+    assert np.all(np.invert(np.isnan(pe_vals)))
+    assert xs[np.argmax(pe_vals)] == 10
 
 def test_gen_noise():
 
@@ -144,10 +144,10 @@ def test_gen_power_values():
     xs = gen_freqs([3, 50], 0.5)
 
     ap_params = [50, 2]
-    gauss_params = [10, 2, 1]
+    pe_params = [10, 2, 1]
     nlv = 0.1
 
-    ys = gen_power_vals(xs, ap_params, gauss_params, nlv)
+    ys = gen_power_vals(xs, ap_params, pe_params, nlv)
 
     assert np.all(ys)
 
@@ -156,14 +156,13 @@ def test_gen_rotated_power_vals():
     xs = gen_freqs([3, 50], 0.5)
 
     ap_params = [50, 2]
-    gauss_params = [10, 2, 1]
+    pe_params = [10, 2, 1]
     nlv = 0.1
     f_rotation = 12
 
-    ys = gen_rotated_power_vals(xs, ap_params, gauss_params, nlv, f_rotation)
+    ys = gen_rotated_power_vals(xs, ap_params, pe_params, nlv, f_rotation)
 
     assert np.all(ys)
-
 
 def test_gen_model():
 

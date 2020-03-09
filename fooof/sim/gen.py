@@ -3,7 +3,8 @@
 import numpy as np
 
 from fooof.core.utils import check_iter, check_flat
-from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
+from fooof.core.funcs import gaussian_function
+from fooof.core.funcs import get_ap_func, get_pe_func, infer_ap_func
 
 from fooof.sim.params import collect_sim_params
 from fooof.sim.transform import rotate_spectrum, compute_rotation_offset
@@ -35,7 +36,7 @@ def gen_freqs(freq_range, freq_res):
     return freqs
 
 
-def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
+def gen_power_spectrum(freq_range, aperiodic_params, periodic_params, nlv=0.005,
                        freq_res=0.5, f_rotation=None, return_params=False):
     """Generate a simulated power spectrum.
 
@@ -46,8 +47,9 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
     aperiodic_params : list of float
         Parameters to create the aperiodic component of a power spectrum.
         Length should be 2 or 3 (see note).
-    gaussian_params : list of float or list of list of float
-        Parameters to create peaks. Total length of n_peaks * 3 (see note).
+    periodic_params : list of float or list of list of float
+        Parameters to create the periodic component of a power spectrum.
+        Total length of n_peaks * 3 (see note).
     nlv : float, optional, default: 0.005
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
@@ -75,9 +77,9 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
     - The function for the aperiodic process to use is inferred from the provided parameters.
     - If length of 2, the 'fixed' aperiodic mode is used, if length of 3, 'knee' is used.
 
-    Gaussian Parameters:
+    Periodic Parameters:
 
-    - Each gaussian description is a set of three values:
+    - The periodic component is comprised of a set of 'peaks', each of which is described as:
 
       * Mean (Center Frequency), height (Power), and standard deviation (Bandwidth).
       * Make sure any center frequencies you request are within the simulated frequency range.
@@ -128,7 +130,7 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
 
     if f_rotation:
 
-        powers = gen_rotated_power_vals(freqs, aperiodic_params, gaussian_params, nlv, f_rotation)
+        powers = gen_rotated_power_vals(freqs, aperiodic_params, periodic_params, nlv, f_rotation)
 
         # The rotation changes the offset, so recalculate it's value & update params
         new_offset = compute_rotation_offset(aperiodic_params[1], f_rotation)
@@ -136,16 +138,16 @@ def gen_power_spectrum(freq_range, aperiodic_params, gaussian_params, nlv=0.005,
 
     else:
 
-        powers = gen_power_vals(freqs, aperiodic_params, check_flat(gaussian_params), nlv)
+        powers = gen_power_vals(freqs, aperiodic_params, check_flat(periodic_params), nlv)
 
     if return_params:
-        sim_params = collect_sim_params(aperiodic_params, gaussian_params, nlv)
+        sim_params = collect_sim_params(aperiodic_params, periodic_params, nlv)
         return freqs, powers, sim_params
     else:
         return freqs, powers
 
 
-def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, gaussian_params, nlvs=0.005,
+def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_params, nlvs=0.005,
                             freq_res=0.5, f_rotation=None, return_params=False):
     """Generate a group of simulated power spectra.
 
@@ -157,8 +159,9 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, gaussian_pa
         Frequency range to simulate power spectra across, as [f_low, f_high], inclusive.
     aperiodic_params : list of float or generator
         Parameters for the aperiodic component of the power spectra.
-    gaussian_params : list of float or generator
-        Parameters for the peaks of the power spectra. Length of n_peaks * 3.
+    periodic_params : list of float or generator
+        Parameters for the periodic component of the power spectra.
+        Length of n_peaks * 3.
     nlvs : float or list of float or generator, optional, default: 0.005
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
@@ -195,9 +198,9 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, gaussian_pa
     - The function for the aperiodic process to use is inferred from the provided parameters.
     - If length of 2, the 'fixed' aperiodic mode is used, if length of 3, 'knee' is used.
 
-    Gaussian Parameters:
+    Periodic Parameters:
 
-    - Each gaussian description is a set of three values:
+    - The periodic component is comprised of a set of 'peaks', each of which is described as:
 
       * Mean (Center Frequency), height (Power), and standard deviation (Bandwidth).
       * Make sure any center frequencies you request are within the simulated frequency range.
@@ -234,8 +237,8 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, gaussian_pa
 
     >>> from fooof.sim.params import param_sampler
     >>> ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
-    >>> gauss_opts = param_sampler([[], [10, 0.5, 1], [10, 0.5, 1, 20, 0.25, 1]])
-    >>> freqs, psds = gen_group_power_spectra(10, [1, 50], ap_opts, gauss_opts)
+    >>> pe_opts = param_sampler([[], [10, 0.5, 1], [10, 0.5, 1, 20, 0.25, 1]])
+    >>> freqs, psds = gen_group_power_spectra(10, [1, 50], ap_opts, pe_opts)
 
     Generate 5 power spectra, rotated around 20 Hz:
 
@@ -258,23 +261,22 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, gaussian_pa
     sim_params = [None] * n_spectra
 
     # Check if inputs are generators, if not, make them into repeat generators
-    aperiodic_params = check_iter(aperiodic_params, n_spectra)
-    gaussian_params = check_iter(gaussian_params, n_spectra)
+    ap_params = check_iter(aperiodic_params, n_spectra)
+    pe_params = check_iter(periodic_params, n_spectra)
     nlvs = check_iter(nlvs, n_spectra)
-    f_rotations = check_iter(f_rotation, n_spectra)
+    f_rots = check_iter(f_rotation, n_spectra)
 
     # Simulate power spectra
-    for ind, ap, gp, nlv, f_rot in zip(range(n_spectra), aperiodic_params,
-                                       gaussian_params, nlvs, f_rotations):
+    for ind, ap, pe, nlv, f_rot in zip(range(n_spectra), ap_params, pe_params, nlvs, f_rots):
 
         if f_rotation:
-            powers = gen_rotated_power_vals(freqs, ap, gp, nlv, f_rot)
+            powers = gen_rotated_power_vals(freqs, ap, pe, nlv, f_rot)
             aperiodic_params = [compute_rotation_offset(ap[1], f_rot), ap[1]]
 
         else:
-            powers[ind, :] = gen_power_vals(freqs, ap, gp, nlv)
+            powers[ind, :] = gen_power_vals(freqs, ap, pe, nlv)
 
-        sim_params[ind] = collect_sim_params(ap, gp, nlv)
+        sim_params[ind] = collect_sim_params(ap, pe, nlv)
 
     if return_params:
         return freqs, powers, sim_params
@@ -292,7 +294,7 @@ def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):
     aperiodic_params : list of float
         Parameters that define the aperiodic component.
     aperiodic_mode : {'fixed', 'knee'}, optional
-        Which kind of aperiodic component to generate power spectra with.
+        Which kind of aperiodic component to generate.
         If not provided, is inferred from the parameters.
 
     Returns
@@ -311,15 +313,17 @@ def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):
     return ap_vals
 
 
-def gen_peaks(freqs, gaussian_params):
-    """Generate peaks values, from parameters.
+def gen_periodic(freqs, periodic_params, periodic_mode='gaussian'):
+    """Generate periodic values.
 
     Parameters
     ----------
     freqs : 1d array
         Frequency vector to create peak values for.
-    gaussian_params : list of float
-        Parameters to create peaks. Length of n_peaks * 3.
+    periodic_params : list of float
+        Parameters to create the periodic component.
+    periodic_mode : {'gaussian'}, optional
+        Which kind of periodic component to generate.
 
     Returns
     -------
@@ -327,9 +331,11 @@ def gen_peaks(freqs, gaussian_params):
         Peak values, in log10 spacing.
     """
 
-    peak_vals = gaussian_function(freqs, *gaussian_params)
+    pe_func = get_pe_func(periodic_mode)
 
-    return peak_vals
+    pe_vals = pe_func(freqs, *periodic_params)
+
+    return pe_vals
 
 
 def gen_noise(freqs, nlv):
@@ -358,7 +364,7 @@ def gen_noise(freqs, nlv):
     return noise_vals
 
 
-def gen_power_vals(freqs, aperiodic_params, gaussian_params, nlv):
+def gen_power_vals(freqs, aperiodic_params, periodic_params, nlv):
     """Generate power values for a simulated power spectrum.
 
     Parameters
@@ -367,8 +373,8 @@ def gen_power_vals(freqs, aperiodic_params, gaussian_params, nlv):
         Frequency vector to create power values for.
     aperiodic_params : list of float
         Parameters to create the aperiodic component of the power spectrum.
-    gaussian_params : list of float
-        Parameters to create peaks. Length of n_peaks * 3.
+    periodic_params : list of float
+        Parameters to create the periodic component of the power spectrum.
     nlv : float
         Noise level to add to generated power spectrum.
 
@@ -385,16 +391,16 @@ def gen_power_vals(freqs, aperiodic_params, gaussian_params, nlv):
     - Returns the power spectrum in linear spacing, as is used for simulating power spectra.
     """
 
-    aperiodic = gen_aperiodic(freqs, aperiodic_params)
-    peaks = gen_peaks(freqs, gaussian_params)
+    ap_vals = gen_aperiodic(freqs, aperiodic_params)
+    pe_vals = gen_periodic(freqs, periodic_params)
     noise = gen_noise(freqs, nlv)
 
-    powers = np.power(10, aperiodic + peaks + noise)
+    powers = np.power(10, ap_vals + pe_vals + noise)
 
     return powers
 
 
-def gen_rotated_power_vals(freqs, aperiodic_params, gaussian_params, nlv, f_rotation):
+def gen_rotated_power_vals(freqs, aperiodic_params, periodic_params, nlv, f_rotation):
     """Generate power values for a simulated power spectrum, rotated around a given frequency.
 
     Parameters
@@ -403,8 +409,8 @@ def gen_rotated_power_vals(freqs, aperiodic_params, gaussian_params, nlv, f_rota
         Frequency vector to create power values for.
     aperiodic_params : list of float
         Parameters to create the aperiodic component of the power spectrum.
-    gaussian_params : list of float
-        Parameters to create peaks. Length of n_peaks * 3.
+    periodic_params : list of float
+        Parameters to create the periodic component of the power spectrum.
     nlv : float
         Noise level to add to generated power spectrum.
     f_rotation : float
@@ -424,13 +430,13 @@ def gen_rotated_power_vals(freqs, aperiodic_params, gaussian_params, nlv, f_rota
     if len(aperiodic_params) == 3:
         raise ValueError('Cannot rotate power spectra generated with a knee.')
 
-    powers = gen_power_vals(freqs, [0, 0], check_flat(gaussian_params), nlv)
+    powers = gen_power_vals(freqs, [0, 0], check_flat(periodic_params), nlv)
     powers = rotate_spectrum(freqs, powers, aperiodic_params[1], f_rotation)
 
     return powers
 
 
-def gen_model(freqs, aperiodic_params, gaussian_params, return_components=False):
+def gen_model(freqs, aperiodic_params, periodic_params, return_components=False):
     """Generate a power spectrum model for a given parameter definition.
 
     Parameters
@@ -439,9 +445,8 @@ def gen_model(freqs, aperiodic_params, gaussian_params, return_components=False)
         Frequency vector to create the model for.
     aperiodic_params : 1d array
         Parameters to create the aperiodic component of the modeled power spectrum.
-    gaussian_params : 2d array
-        Parameters to create periodic component of the modeled power spectrum.
-        Should be shape of [n_peaks, 3].
+    periodic_params : 2d array
+        Parameters to create the periodic component of the modeled power spectrum.
     return_components : bool, optional, default: False
         Whether to also return the components of the model.
 
@@ -449,7 +454,7 @@ def gen_model(freqs, aperiodic_params, gaussian_params, return_components=False)
     -------
     full_model : 1d array
         The full power spectrum model, in log10 spacing.
-    peak_fit : 1d array
+    pe_fit : 1d array
         The periodic component of the model, containing the peaks.
         Only returned if `return_components` is True.
     ap_fit : 1d array
@@ -465,10 +470,10 @@ def gen_model(freqs, aperiodic_params, gaussian_params, return_components=False)
     """
 
     ap_fit = gen_aperiodic(freqs, aperiodic_params)
-    peak_fit = gen_peaks(freqs, np.ndarray.flatten(gaussian_params))
-    full_model = peak_fit + ap_fit
+    pe_fit = gen_periodic(freqs, np.ndarray.flatten(periodic_params))
+    full_model = pe_fit + ap_fit
 
     if return_components:
-        return full_model, peak_fit, ap_fit
+        return full_model, pe_fit, ap_fit
     else:
         return full_model

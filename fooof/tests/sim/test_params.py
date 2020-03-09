@@ -14,19 +14,19 @@ from fooof.sim.params import *
 def test_collect_sim_params():
 
     ap = [1, 1]
-    gp = [10, 1, 1]
+    pe = [10, 1, 1]
     nlv = 0.05
 
-    sps = collect_sim_params(ap, gp, nlv)
+    sp = collect_sim_params(ap, pe, nlv)
 
-    assert array_equal(sps.aperiodic_params, ap)
-    assert array_equal(sps.gaussian_params, [gp])
-    assert sps.nlv == nlv
+    assert array_equal(sp.aperiodic_params, ap)
+    assert array_equal(sp.periodic_params, [pe])
+    assert sp.nlv == nlv
 
     # Check it organizes peaks into embedded lists (or equivalent)
-    gp = [10, 1, 1, 20, 1, 1]
-    sps = collect_sim_params(ap, gp, nlv)
-    assert array_equal(sps.gaussian_params, [[10, 1, 1], [20, 1, 1]])
+    pe = [10, 1, 1, 20, 1, 1]
+    sp = collect_sim_params(ap, pe, nlv)
+    assert array_equal(sp.periodic_params, [[10, 1, 1], [20, 1, 1]])
 
 def test_update_sim_ap_params():
 
