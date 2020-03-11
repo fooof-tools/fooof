@@ -577,6 +577,10 @@ class FOOOF():
         if isinstance(col, str):
             col = get_indices(self.aperiodic_mode)[col]
 
+        # Allow for shortcut alias, without adding `_params`
+        if name in ['aperiodic', 'peak', 'gaussian']:
+            name = name + '_params'
+
         # Extract the request data field from object
         out = getattr(self, name + '_')
 

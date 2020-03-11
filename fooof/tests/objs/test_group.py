@@ -146,6 +146,10 @@ def test_fg_fail():
     outs4 = ntfg.get_params('peak_params', 0)
     outs5 = ntfg.get_params('gaussian_params', 2)
 
+    # Test shortcut labels
+    outs6 = ntfg.get_params('aperiodic')
+    outs6 = ntfg.get_params('peak', 'CF')
+
     # Test the property attributes related to null model fits
     #   This checks that they do the right thing when there are null fits (failed fits)
     assert ntfg.n_null_ > 0

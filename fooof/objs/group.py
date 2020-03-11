@@ -359,6 +359,10 @@ class FOOOFGroup(FOOOF):
         if not self.has_model:
             raise NoModelError("No model fit results are available, can not proceed.")
 
+        # Allow for shortcut alias, without adding `_params`
+        if name in ['aperiodic', 'peak', 'gaussian']:
+            name = name + '_params'
+
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
             col = get_indices(self.aperiodic_mode)[col]

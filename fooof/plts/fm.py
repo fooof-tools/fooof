@@ -112,7 +112,7 @@ def plot_fm_peak_iter(fm, plot_style=style_spectrum_plot):
     # Recalculate the initial aperiodic fit and flattened spectrum that
     #   is the same as the one that is used in the peak fitting procedure
     flatspec = fm.power_spectrum - \
-        gen_aperiodic(fm.freqs,fm._robust_ap_fit(fm.freqs, fm.power_spectrum))
+        gen_aperiodic(fm.freqs, fm._robust_ap_fit(fm.freqs, fm.power_spectrum))
 
     # Calculate ylims of the plot that are scaled to the range of the data
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
