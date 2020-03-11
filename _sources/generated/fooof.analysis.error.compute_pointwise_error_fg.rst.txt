@@ -1,0 +1,6 @@
+fooof.analysis.error.compute\_pointwise\_error\_fg
+==================================================
+
+.. currentmodule:: fooof.analysis.error
+
+.. autofunction:: compute_pointwise_error_fg

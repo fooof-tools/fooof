@@ -1,0 +1,6 @@
+fooof.sim.gen.gen\_freqs
+========================
+
+.. currentmodule:: fooof.sim.gen
+
+.. autofunction:: gen_freqs

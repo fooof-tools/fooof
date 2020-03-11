@@ -1,6 +1,0 @@
-fooof.synth.gen.gen\_group\_power\_spectra
-==========================================
-
-.. currentmodule:: fooof.synth.gen
-
-.. autofunction:: gen_group_power_spectra

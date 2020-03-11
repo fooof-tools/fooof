@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Manipulating FOOOF Objects &#8212; fooof 1.0.0rc2 documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../faq.html">FAQ</a></li>
+                <li><a href="../../glossary.html">Glossary</a></li>
+                <li><a href="../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-manage-plot-manipulating-fooofs-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="manipulating-fooof-objects">
+<span id="sphx-glr-auto-examples-manage-plot-manipulating-fooofs-py"></span><h1>Manipulating FOOOF Objects<a class="headerlink" href="#manipulating-fooof-objects" title="Permalink to this headline">¶</a></h1>
+<p>Examples with combining, sub-selecting, dropping, and averaging FOOOF model fits.</p>
+<p>As you run FOOOF analyses, you may end up with multiple FOOOF objects, as you fit
+models within and across subjects, conditions, trials, etc. To help manage and organize
+the potentially multiple FOOOF objects that can arise in these cases, here we will
+explore the utilities offered for managing and organizing within and between FOOOF
+objects.</p>
+<p>Using simulated data, in this example we will cover:</p>
+<ul class="simple">
+<li><p>combining results across FOOOF objects</p></li>
+<li><p>sub-selecting fits from FOOOFGroup objects</p></li>
+<li><p>dropping specified model fits from FOOOFGroup objects</p></li>
+<li><p>average across groups of FOOOF fits</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import FOOOF &amp; FOOOFGroup objects</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">,</span> <span class="n">FOOOFGroup</span>
+
+<span class="c1"># Import Bands object, to manage frequency band definitions</span>
+<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <span class="n">Bands</span>
+
+<span class="c1"># Import utility functions that manage &amp; manipulate FOOOF objects</span>
+<span class="kn">from</span> <span class="nn">fooof.objs.utils</span> <span class="k">import</span> <span class="n">average_fg</span><span class="p">,</span> <span class="n">combine_fooofs</span><span class="p">,</span> <span class="n">compare_info</span>
+
+<span class="c1"># Import simulation functions to create our example data</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_power_spectrum</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="k">import</span> <span class="n">param_sampler</span>
+</pre></div>
+</div>
+<p>First, we will simulate some example data, and fit some individual fits with FOOOF objects.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Settings for simulations</span>
+<span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+<span class="n">freq_res</span> <span class="o">=</span> <span class="mf">0.25</span>
+
+<span class="c1"># Create some example power spectra</span>
+<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers_1</span></a> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                                     <span class="n">nlv</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">freq_res</span><span class="o">=</span><span class="n">freq_res</span><span class="p">)</span>
+<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers_2</span></a> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">],</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span>
+                                     <span class="n">nlv</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">freq_res</span><span class="o">=</span><span class="n">freq_res</span><span class="p">)</span>
+<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers_3</span></a> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span>
+                                     <span class="n">nlv</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">freq_res</span><span class="o">=</span><span class="n">freq_res</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a set of FOOOF objects</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm2</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm3</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># Fit FOOOF models</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm1</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers_1</span></a><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm2</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers_2</span></a><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm3</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers_3</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="combining-fooof-objects">
+<h2>Combining FOOOF Objects<a class="headerlink" href="#combining-fooof-objects" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes, when working with models in <code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOF</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOFGroup</span></code> objects,
+you may want to combine them together, to check some group properties.</p>
+<p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">combine_fooofs()</span></code> function takes a list of FOOOF and/or FOOOFGroup objects,
+and combines all available fits together into a FOOOFGroup object.</p>
+<p>Let’s now combine our individual model fits into a FOOOFGroup object.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine FOOOF a list of FOOOF objects into a FOOOFGroup object</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a> <span class="o">=</span> <span class="n">combine_fooofs</span><span class="p">([</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm2</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm3</span></a><span class="p">])</span>
+
+<span class="c1"># Check the number of models in the object</span>
+<span class="c1">#   Note that the length of a FOOOFGroup object is defined as the number of model fits</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of model fits: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of model fits:  3
+</pre></div>
+</div>
+<div class="section" id="note-on-manipulating-fooof-objects">
+<h3>Note on Manipulating FOOOF Objects<a class="headerlink" href="#note-on-manipulating-fooof-objects" title="Permalink to this headline">¶</a></h3>
+<p>Note that these functions that manipulate FOOOF object typically do more than just
+copying result data - they also check and manage settings and meta-data of objects.</p>
+<p>For example, combining FOOOF objects returns a new FOOOF object with the same settings.</p>
+<p>We can see this by using the <code class="xref py py-func docutils literal notranslate"><span class="pre">compare_info()</span></code> function to compare the settings
+between FOOOF objects.</p>
+<p>You can also use this function if you wish to compare FOOOF objects to
+ensure that you are comparing model results that were fit with equivalent settings.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare FOOOF objects for if they have the same settings</span>
+<span class="n">compare_info</span><span class="p">([</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">],</span> <span class="s1">&#39;settings&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="sub-select-from-fooofgroup">
+<h2>Sub-Select from FOOOFGroup<a class="headerlink" href="#sub-select-from-fooofgroup" title="Permalink to this headline">¶</a></h2>
+<p>When you have a FOOOFGroup object, you may also want to sub-select a group of models.</p>
+<p>Example use cases for this could be:</p>
+<ul class="simple">
+<li><p>you want to sub-select models that meet some kind of goodness-of-fit criterion</p></li>
+<li><p>you want to examine a subset of model reflect, for example, particular channels or trials</p></li>
+</ul>
+<p>To do so, we can use the <code class="xref py py-func docutils literal notranslate"><span class="pre">get_group()</span></code> method of the FOOOFGroup object.
+This method takes in an input specifying which indices to sub-select, and returns a
+new FOOOFGroup object, containing only the requested model fits.</p>
+<p>Note that if you want to sub-select a single FOOOF model you can
+use the <code class="xref py py-func docutils literal notranslate"><span class="pre">get_fooof()</span></code> method.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define indices of desired sub-selection of model fits</span>
+<span class="c1">#   This could be a the indices for a &#39;region of interest&#39;, for example</span>
+<span class="n">inds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Sub-select our selection of models from the FOOOFGroup object</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">nfg</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">inds</span><span class="p">)</span>
+
+<span class="c1"># Check how many models our new FOOOFGroup object contains</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of model fits: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">nfg</span></a><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of model fits:  2
+</pre></div>
+</div>
+<p>From here, we could continue to do any analyses of interest on our new
+FOOOFGroup object, which contains only our models of interest.</p>
+</div>
+<div class="section" id="dropping-fits-from-fooofgroup">
+<h2>Dropping Fits from FOOOFGroup<a class="headerlink" href="#dropping-fits-from-fooofgroup" title="Permalink to this headline">¶</a></h2>
+<p>Another option is to ‘drop’ model fits from a FOOOFGroup object. You can do this with
+the <code class="xref py py-func docutils literal notranslate"><span class="pre">drop()</span></code> method from a <code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOFGroup</span></code> object.</p>
+<p>This can be used, for example, for a quality control step. If you have checked through
+the object, and noticed some outlier model fits, you may want to exclude them from
+future analyses.</p>
+<p>In this case, we’ll use an example in which we drop any model fits that
+have particularly high error.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Drop all model fits above an error threshold</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">drop</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="note-on-dropped-or-failed-fits">
+<h3>Note on Dropped or Failed Fits<a class="headerlink" href="#note-on-dropped-or-failed-fits" title="Permalink to this headline">¶</a></h3>
+<p>When models are dropped from <code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOFGroup</span></code> objects, they are set as null models.
+They are therefore cleared of results, but not literally dropped, which
+is done to preserve the ordering of the FOOOFGroup, so that the <cite>n-th</cite> model
+doesn’t change if some models are dropped.</p>
+<p>Note that there may in some cases be Null models in a FOOOFGroup without
+explicitly dropping them, if any models failed during the fitting process.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check information on null models (dropped models)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Null models  : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">n_null_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Indices of Null models : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">null_inds_</span><span class="p">)</span>
+
+<span class="c1"># Despite the dropped model, the total number of models in the object is the same</span>
+<span class="c1">#   This means that the indices are still the same as before dropping models</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of model fits: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of Null models  :         1
+Indices of Null models :         [2]
+Number of model fits:  3
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Null models are defined as all NaN (not a number)</span>
+<span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">null_inds_</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>FOOOFResults(aperiodic_params=array([nan, nan]), peak_params=array([], shape=(0, 3), dtype=float64), r_squared=nan, error=nan, gaussian_params=array([], shape=(0, 3), dtype=float64))
+</pre></div>
+</div>
+</div>
+<div class="section" id="note-on-selecting-from-fooof-objects">
+<h3>Note on Selecting From FOOOF Objects<a class="headerlink" href="#note-on-selecting-from-fooof-objects" title="Permalink to this headline">¶</a></h3>
+<p>Both the <code class="xref py py-func docutils literal notranslate"><span class="pre">get_group()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">drop()</span></code> methods take an input of the indices
+of FOOOF model to select or drop.</p>
+<p>In both cases, the input can be defined in multiple ways, including directly indicating
+the indices as a list of integers, or boolean masks.</p>
+</div>
+</div>
+<div class="section" id="averaging-fooofgroup">
+<h2>Averaging FOOOFGroup<a class="headerlink" href="#averaging-fooofgroup" title="Permalink to this headline">¶</a></h2>
+<p>Finally, let’s average across the models in our FOOOFGroup object, to examine
+the average model of the data.</p>
+<p>Note that in order to be able to average across individual models, we need to define
+a set of frequency bands to average peaks across. Otherwise, there is no clear way
+to average across all the peaks across all models.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the periodic band regions to use to average across</span>
+<span class="c1">#   Since our simulated data only had alpha peaks, we will only define alpha here</span>
+<span class="n">bands</span> <span class="o">=</span> <span class="n">Bands</span><span class="p">({</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]})</span>
+
+<span class="c1"># Average across individual models fits, specifying bands and an averaging function</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">afm</span></a> <span class="o">=</span> <span class="n">average_fg</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">bands</span><span class="p">,</span> <span class="n">avg_method</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot our average model of the data</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">afm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_manipulating_fooofs_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_manipulating_fooofs_001.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.145 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manage-plot-manipulating-fooofs-py">
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/df69e7186299ce3b317510052e083eba/plot_manipulating_fooofs.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_manipulating_fooofs.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/ffd69fba210c78a742499c454560f80f/plot_manipulating_fooofs.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_manipulating_fooofs.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018 - VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

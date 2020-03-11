@@ -1,6 +1,0 @@
-fooof.funcs.combine\_fooofs
-===========================
-
-.. currentmodule:: fooof.funcs
-
-.. autofunction:: combine_fooofs

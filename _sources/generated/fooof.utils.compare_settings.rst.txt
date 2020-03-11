@@ -1,6 +1,0 @@
-fooof.utils.compare\_settings
-=============================
-
-.. currentmodule:: fooof.utils
-
-.. autofunction:: compare_settings

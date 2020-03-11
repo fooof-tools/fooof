@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Motivations &#8212; fooof 1.0.0rc2 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="../glossary.html">Glossary</a></li>
+                <li><a href="#">Motivations</a></li>
+                <li><a href="../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="motivations">
+<span id="sphx-glr-auto-motivations"></span><span id="id1"></span><h1>Motivations<a class="headerlink" href="#motivations" title="Permalink to this headline">¶</a></h1>
+<p>In this section, we explore the ideas and findings that motivate parameterizing neural power spectra. Using code examples, we explore some of the concepts underlying how we approach analyzing neural data and with digital signal processing; cover measurement issues whereby many current approaches may conflate different aspects of the data; and overall try to motivate why we consider parameterizing neural power spectra, or similar approaches, to be important, both conceptually and in practice.</p>
+<div class="contents local topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#concepts" id="id7">Concepts</a></p></li>
+<li><p><a class="reference internal" href="#measurements" id="id8">Measurements</a></p></li>
+</ul>
+</div>
+<div class="sphx-glr-clear"></div><div class="section" id="concepts">
+<span id="sphx-glr-auto-motivations-concepts"></span><h2><a class="toc-backref" href="#id7">Concepts</a><a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h2>
+<p>Conceptually, we consider neural time series, and thus neural power spectra, to contain multiple ‘components’, specifically, periodic and aperiodic components, that can each vary independently.</p>
+<p>In these examples, we motivate that even though time series <em>can</em> be perfectly represented by a sum of sine waves, this does not imply that that power at a particular frequency in a power spectrum necessarily reflects rhythmic activity, and why it is important and interesting to also investigate aperiodic activity.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="Exploring the rhythmicity of time series and their frequency representations."><div class="figure align-default" id="id2">
+<img alt="../_images/sphx_glr_plot_DoYouEvenOscillate_thumb.png" src="../_images/sphx_glr_plot_DoYouEvenOscillate_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="concepts/plot_DoYouEvenOscillate.html#sphx-glr-auto-motivations-concepts-plot-doyouevenoscillate-py"><span class="std std-ref">Rhythmicity of Time Series</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Examining the results of filtering aperiodic signals."><div class="figure align-default" id="id3">
+<img alt="../_images/sphx_glr_plot_IfYouFilterTheyWillCome_thumb.png" src="../_images/sphx_glr_plot_IfYouFilterTheyWillCome_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="concepts/plot_IfYouFilterTheyWillCome.html#sphx-glr-auto-motivations-concepts-plot-ifyoufiltertheywillcome-py"><span class="std std-ref">Finding ‘Oscillations’ With Filters</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div></div>
+<div class="section" id="measurements">
+<span id="sphx-glr-auto-motivations-measurements"></span><h2><a class="toc-backref" href="#id8">Measurements</a><a class="headerlink" href="#measurements" title="Permalink to this headline">¶</a></h2>
+<p>Using the conceptual framework whereby we consider neural data to comprise by periodic and activity activity, here we examine how this conception relates to many common analysis approaches employed with neural data.</p>
+<p>Broadly, these examples compare an existing approach to parameterizing neural power spectra, and seek to surface if and how different methods may have trouble adjudicating between different features of the data changing.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="Comparing how &#x27;Band-by-Band&#x27; approaches relate to periodic &amp; aperiodic components."><div class="figure align-default" id="id4">
+<img alt="../_images/sphx_glr_plot_BandByBand_thumb.png" src="../_images/sphx_glr_plot_BandByBand_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="measurements/plot_BandByBand.html#sphx-glr-auto-motivations-measurements-plot-bandbyband-py"><span class="std std-ref">Band-by-Band</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Exploring how band ratio measures relate to periodic &amp; aperiodic activity."><div class="figure align-default" id="id5">
+<img alt="../_images/sphx_glr_plot_BandRatios_thumb.png" src="../_images/sphx_glr_plot_BandRatios_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="measurements/plot_BandRatios.html#sphx-glr-auto-motivations-measurements-plot-bandratios-py"><span class="std std-ref">Band Ratio Measures</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Demonstrating how changes in periodic &amp; aperiodic features can be conflated."><div class="figure align-default" id="id6">
+<img alt="../_images/sphx_glr_plot_PeriodicAperiodicFeatures_thumb.png" src="../_images/sphx_glr_plot_PeriodicAperiodicFeatures_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="measurements/plot_PeriodicAperiodicFeatures.html#sphx-glr-auto-motivations-measurements-plot-periodicaperiodicfeatures-py"><span class="std std-ref">Conflating Periodic &amp; Aperiodic Changes</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/1c7a5199aa5fce23c8c375af1613dd5e/auto_motivations_python.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_motivations_python.zip</span></code></a></p>
+</div>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/d4f1dd0c132699c591628448f30198eb/auto_motivations_jupyter.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_motivations_jupyter.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018 - VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

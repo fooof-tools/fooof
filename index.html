@@ -2,9 +2,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>FOOOF - fitting oscillations &amp; one over f &#8212; fooof 1.0.0-dev documentation</title>
+    <meta charset="utf-8" />
+    <title>FOOOF - fitting oscillations &amp; one over f &#8212; fooof 1.0.0rc2 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
@@ -12,17 +11,18 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
 
   </head><body>
 
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="#">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0-dev</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -46,10 +46,11 @@
                 <li><a href="api.html">API</a></li>
                 <li><a href="faq.html">FAQ</a></li>
                 <li><a href="glossary.html">Glossary</a></li>
-                <li><a href="auto_tutorials/index.html">Tutorial</a></li>
+                <li><a href="auto_motivations/index.html">Motivations</a></li>
+                <li><a href="auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="auto_examples/index.html">Examples</a></li>
-                <li><a href="contents.html">Index</a></li>
-                <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
+                <li><a href="reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -86,7 +87,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
   <div class="section" id="fooof-fitting-oscillations-one-over-f">
 <h1>FOOOF - fitting oscillations &amp; one over f<a class="headerlink" href="#fooof-fitting-oscillations-one-over-f" title="Permalink to this headline">¶</a></h1>
@@ -96,74 +97,133 @@
 <a class="reference external image-reference" href="https://codecov.io/gh/fooof-tools/fooof"><img alt="codecov" src="https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg" /></a>
 <a class="reference external image-reference" href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/pypi/l/fooof.svg" /></a>
 <a class="reference external image-reference" href="https://pypi.python.org/pypi/fooof/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/fooof.svg" /></a>
+<a class="reference external image-reference" href="https://doi.org/10.1101/299859"><img alt="Preprint" src="https://img.shields.io/badge/preprint-10.1101/299859-informational.svg" /></a>
 <p>FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.</p>
+<p>Note: FOOOF is currently on a pre-release. Please check the install instructions for
+updating to the pre-release version, and check the
+<a class="reference external" href="https://fooof-tools.github.io/fooof/changelog.html">changelog</a>
+for how to get started with the new version.</p>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>FOOOF conceives of a model of the power spectrum as a combination of two distinct functional processes:</p>
 <ul class="simple">
-<li>An aperiodic component, reflecting 1/f like characteristics, modeled with an exponential fit, with</li>
-<li>A variable number of periodic components, that exhibit as band-limited peaks rising above the aperiodic component, reflecting putative oscillations, modeled as Gaussians</li>
+<li><p>An aperiodic component, reflecting 1/f like characteristics, with</p></li>
+<li><p>A variable number of periodic components (putative oscillations), as peaks rising above the aperiodic component</p></li>
 </ul>
-<p>This model driven approach can be used to measure periodic and aperiodic properties of electrophysiological data, including EEG, MEG, ECoG and LFP data.</p>
-<p>The benefit of using FOOOF for measuring putative oscillations, is that peaks in the power spectrum are characterized in terms of their specific center frequency, amplitude and bandwidth without requiring predefining specific bands of interest and controlling for the aperiodic component. FOOOF also gives you a measure of this aperiodic components of the signal, allowing for measuring and comparison of 1/f like components of the signal within and between subjects.</p>
+<p>This model driven approach can be used to measure periodic and aperiodic properties of electrophysiological data,
+including EEG, MEG, ECoG and LFP data.</p>
+<p>The benefit of using FOOOF for measuring putative oscillations, is that peaks in the power spectrum are
+characterized in terms of their specific center frequency, power and bandwidth without requiring predefining
+specific bands of interest and controlling for the aperiodic component.
+FOOOF also gives you a measure of this aperiodic components of the signal, allowing for measuring and
+comparison of 1/f-like components of the signal within and between subjects.</p>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<p>Documentation for FOOOF is available <a class="reference external" href="https://fooof-tools.github.io/fooof/index.html">here</a>.</p>
-<p>The <a class="reference external" href="https://fooof-tools.github.io/fooof/auto_tutorials/index.html">tutorials</a> describe the FOOOF algorithm and it’s usage, as well as additional examples on the <a class="reference external" href="https://fooof-tools.github.io/fooof/auto_examples/index.html">Examples</a> page.</p>
-<p>The documentation also includes an <a class="reference external" href="https://fooof-tools.github.io/fooof/faq.html">FAQ</a>.</p>
+<p>Documentation for FOOOF is available on the
+<a class="reference external" href="https://fooof-tools.github.io/fooof/index.html">documentation site</a>.</p>
+<p>This documentation includes:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://fooof-tools.github.io/fooof/auto_motivations/index.html">Motivations</a>:
+with motivating examples of why we recommend parameterizing neural power spectra</p></li>
+<li><p><a class="reference external" href="https://fooof-tools.github.io/fooof/auto_tutorials/index.html">Tutorials</a>:
+with a step-by-step guide through the model and how to apply it</p></li>
+<li><p><a class="reference external" href="https://fooof-tools.github.io/fooof/auto_examples/index.html">Examples</a>:
+demonstrating example analyses and use cases, and other functionality</p></li>
+<li><p><a class="reference external" href="https://fooof-tools.github.io/fooof/api.html">API listing</a>:
+which lists all the code and functionality available in the module</p></li>
+<li><p><a class="reference external" href="https://fooof-tools.github.io/fooof/faq.html">FAQ</a>:
+answering frequency asked questions</p></li>
+<li><p><a class="reference external" href="https://fooof-tools.github.io/fooof/reference.html">Reference</a>:
+with information for reporting on using and reference the module</p></li>
+</ul>
 </div>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <p>FOOOF is written in Python, and requires Python &gt;= 3.5 to run.</p>
-<p>It has the following dependencies:</p>
+<p>It has the following required dependencies:</p>
 <ul class="simple">
-<li>numpy</li>
-<li>scipy &gt;= 0.19</li>
-<li>matplotlib (optional)</li>
-<li>tqdm (optional)</li>
-<li>pytest (optional)</li>
+<li><p><a class="reference external" href="https://github.com/numpy/numpy">numpy</a></p></li>
+<li><p><a class="reference external" href="https://github.com/scipy/scipy">scipy</a> &gt;= 0.19</p></li>
 </ul>
-<p>That is, if you are using <a class="reference external" href="https://www.anaconda.com/download/">Anaconda</a>, then you are good to go.</p>
+<p>There are also optional dependencies, which are not required for model fitting itself, but offer extra functionality:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/matplotlib/matplotlib">matplotlib</a> is needed to visualize data and model fits</p></li>
+<li><p><a class="reference external" href="https://github.com/tqdm/tqdm">tqdm</a> is needed to print progress bars when fitting many models</p></li>
+<li><p><a class="reference external" href="https://github.com/pytest-dev/pytest">pytest</a> is needed to run the test suite locally</p></li>
+</ul>
+<p>If you are using <a class="reference external" href="https://www.anaconda.com/download/">Anaconda</a>, then you are good to go.</p>
 <p>If you aren’t already using Anaconda, it is a useful tool to get and manage these dependencies.</p>
-<p>Matplotlib is not required for running the model fitting, but is used if you want to visualize model fits.</p>
-<p>tqdm is also not required for running the model fitting, but can be used to print progress bars when fitting many models.</p>
-<p>Pytest is only required to run the test suite.</p>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><strong>Pre-Release Version</strong></p>
+<p>To install the current pre-release version, use pip:</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fooof</span> <span class="pre">--pre</span></code></p>
+<p>If you already have a version of FOOOF installed, you will need to remove it first:</p>
+<p><code class="docutils literal notranslate"><span class="pre">$pip</span> <span class="pre">uninstall</span> <span class="pre">fooof</span></code></p>
 <p><strong>Stable Version</strong></p>
-<p>To install the latest stable release of fooof, you can use pip:</p>
+<p>To install the latest stable release, use pip:</p>
 <p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fooof</span></code></p>
-<p>Note that this will install only the core (non-optional) fooof requirements.</p>
+<p>Note that this will install only the core (non-optional) FOOOF requirements.</p>
 <p><strong>Development Version</strong></p>
-<p>To get the lastest, development version, you can get the code using git:</p>
+<p>To get the current development version, first clone this repository:</p>
 <p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/fooof-tools/fooof</span></code></p>
-<p>To then install the development version (without making changes to it), move into the directory you cloned and run:</p>
+<p>To install this cloned copy, move into the directory you just cloned, and run:</p>
 <p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">.</span></code></p>
-<p>Otherwise, if you want to install an editable, development version, move into the directory you cloned and install with:</p>
+<p><strong>Editable Version</strong></p>
+<p>To install an editable version, download the development version as above, and run:</p>
 <p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code></p>
 </div>
 <div class="section" id="matlab-support">
 <h2>Matlab Support<a class="headerlink" href="#matlab-support" title="Permalink to this headline">¶</a></h2>
-<p>FOOOF is implemented in Python, but there is also Matlab wrapper with which you can use FOOOF from Matlab, which is available in the <a class="reference external" href="http://github.com/fooof-tools/fooof_mat">fooof_mat</a> repository.</p>
-<p>If you would like to use FOOOF, from Python, within a pipeline that is mostly in Matlab, the <a class="reference external" href="https://github.com/fooof-tools/mat_py_mat">mat_py_mat</a> repository also has some examples and utilities for doing so.</p>
+<p>FOOOF is implemented in Python, but there is also Matlab wrapper that allows you to use FOOOF from Matlab.
+The wrapper is available in the
+<a class="reference external" href="http://github.com/fooof-tools/fooof_mat">fooof_mat</a> repository.</p>
+<p>If you would like to use FOOOF, from Python, within a pipeline that is mostly in Matlab, the
+<a class="reference external" href="https://github.com/fooof-tools/mat_py_mat">mat_py_mat</a>
+repository also has some examples and utilities for doing so.</p>
 </div>
-<div class="section" id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bug-reports">
+<h2>Bug Reports<a class="headerlink" href="#bug-reports" title="Permalink to this headline">¶</a></h2>
+<p>Please use the
+<a class="reference external" href="https://github.com/fooof-tools/fooof/issues">Github issue tracker</a>
+to file bug reports and/or ask questions about this project.</p>
+</div>
+<div class="section" id="id1">
+<h2>Reference<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>If you use this code in your project, please cite:</p>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>Haller M, Donoghue T, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Knight RT, Shestyuk A,
-Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859.
-doi: https://doi.org/10.1101/299859
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="n">Haller</span> <span class="n">M</span><span class="p">,</span> <span class="n">Donoghue</span> <span class="n">T</span><span class="p">,</span> <span class="n">Peterson</span> <span class="n">E</span><span class="p">,</span> <span class="n">Varma</span> <span class="n">P</span><span class="p">,</span> <span class="n">Sebastian</span> <span class="n">P</span><span class="p">,</span> <span class="n">Gao</span> <span class="n">R</span><span class="p">,</span> <span class="n">Noto</span> <span class="n">T</span><span class="p">,</span> <span class="n">Knight</span> <span class="n">RT</span><span class="p">,</span> <span class="n">Shestyuk</span> <span class="n">A</span><span class="p">,</span>
+<span class="n">Voytek</span> <span class="n">B</span> <span class="p">(</span><span class="mi">2018</span><span class="p">)</span> <span class="n">Parameterizing</span> <span class="n">Neural</span> <span class="n">Power</span> <span class="n">Spectra</span><span class="p">.</span> <span class="n">bioRxiv</span><span class="p">,</span> <span class="mi">299859</span><span class="p">.</span>
+<span class="n">doi</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="mi">10</span><span class="p">.</span><span class="mi">1101</span><span class="o">/</span><span class="mi">299859</span>
 </pre></div>
 </div>
+<p>More information for how to cite this method can be found on the
+<a class="reference external" href="https://fooof-tools.github.io/fooof/reference.html">reference page</a>.</p>
 <p>Direct Link: <a class="reference external" href="https://doi.org/10.1101/299859">https://doi.org/10.1101/299859</a></p>
+<p>Code and analyses from the paper are also available in the
+<a class="reference external" href="https://github.com/fooof-tools/Paper">paper repository</a>.</p>
+</div>
+<div class="section" id="contribute">
+<h2>Contribute<a class="headerlink" href="#contribute" title="Permalink to this headline">¶</a></h2>
+<p>This project welcomes and encourages contributions from the community!</p>
+<p>If you have an idea of something to add to FOOOF, please start by opening an
+<a class="reference external" href="https://github.com/fooof-tools/fooof/issues">issue</a>.
+Note that this issue tracker is used for code specific questions and suggestions.
+If you have a question or suggestion related to the model or conceptual ideas, check out the
+<a class="reference external" href="https://github.com/fooof-tools/Development">development</a> page.</p>
+<p>When writing code to add to FOOOF, please follow the
+<a class="reference external" href="https://github.com/fooof-tools/fooof/blob/master/CONTRIBUTING.md">Contribution Guidelines</a>
+, and also make sure to follow our
+<a class="reference external" href="https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a>.</p>
 </div>
 <div class="section" id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
-<p>FOOOF is object oriented, and generally follows a similar approach as used in scikit-learn.</p>
+<p>FOOOF is object oriented, and uses a similar approach as used in scikit-learn.</p>
 <p>The algorithm works on frequency representations, that is power spectra in linear space.</p>
-<p>With a power spectrum loaded (with ‘freqs’ storing frequency values, and ‘spectrum’ storing the power spectrum, both as 1D arrays in linear space) FOOOF can be used as follows:</p>
+<p><strong>Fitting a Single Power Spectrum</strong></p>
+<p>With a power spectrum loaded (with ‘freqs’ storing frequency values, and ‘spectrum’ storing
+the power spectrum, both as 1D arrays in linear space) FOOOF can be used as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <span class="n">FOOOF</span>
 
 <span class="c1"># Initialize FOOOF object</span>
@@ -176,19 +236,30 @@ doi: https://doi.org/10.1101/299859
 <span class="n">fm</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>FOOOF.report() fits the model, plots the original power spectrum with the associated FOOOF model fit, and prints out the parameters of the model fit for both the aperiodic component, and parameters for any identified peaks, reflecting periodic components.</p>
-<p>FOOOF also accepts parameters for fine-tuning the fit. For example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fm</span> <span class="o">=</span> <span class="n">FOOOF</span><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_amplitude</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">peak_threshold</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<p>FOOOF.report() fits the model, plots the original power spectrum with the associated FOOOF model fit,
+and prints out the parameters of the model fit for both the aperiodic component, and parameters for
+any identified peaks, reflecting periodic components.</p>
+<p>Example output for the report of a FOOOF fit on an individual power spectrum:</p>
+<a class="reference external image-reference" href="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOF_report.png"><img alt="&quot;fooof_report&quot;" src="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOF_report.png" /></a>
+<p><strong>Defining the model Settings</strong></p>
+<p>FOOOF also has some settings for the algorithm.</p>
+<p>These settings are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">peak_width_limits</span></code> sets the possible lower- and upper-bounds for the fitted peak widths.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_n_peaks</span></code> sets the maximum number of peaks to fit.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_peak_height</span></code> sets an absolute limit on the minimum height (above aperiodic) for any extracted peak.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">peak_threshold</span></code> sets a relative threshold above which a peak height must cross to be included in the model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aperiodic_mode</span></code> defines the approach to use to parameterize the aperiodic component.</p></li>
+</ul>
+<p>These settings can be defined when initializing the model, for example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fm</span> <span class="o">=</span> <span class="n">FOOOF</span><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+           <span class="n">peak_threshold</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;fixed&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">peak_width_limits</span></code> sets the possible lower- and upper-bounds for the fitted peak widths.</li>
-<li><code class="docutils literal notranslate"><span class="pre">max_n_peaks</span></code> sets the maximum number of peaks to fit.</li>
-<li><code class="docutils literal notranslate"><span class="pre">min_peak_amp</span></code> sets an absolute limit on the minimum amplitude (above aperiodic) for any extracted peak.</li>
-<li><code class="docutils literal notranslate"><span class="pre">peak_threshold</span></code>, also sets a threshold above which a peak amplitude must cross to be included in the model. This parameter is in terms of standard deviation above the noise of the flattened spectrum.</li>
-</ul>
-<p>FOOOF also has convenience methods for running the FOOOF model across matrices of multiple power spectra, as well as functionality for saving and loading results, creating reports from FOOOF outputs, and utilities to further analize FOOOF results.</p>
-<p>An example workflow for fitting a group of neural power spectra with ‘freqs’ as 1D array of frequency values, and ‘spectra’ as a 2D array of power spectra:</p>
+<p><strong>Fitting a Group of Power Spectra</strong></p>
+<p>Next is an example workflow for fitting a group of neural power spectra.
+In this case, ‘freqs’ is again a 1D array of frequency values, and ‘spectra’ as a 2D array of power spectra.
+We can fit this  which can be fit as:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object, specifying some parameters</span>
 <span class="n">fg</span> <span class="o">=</span> <span class="n">FOOOFGroup</span><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 
@@ -202,10 +273,13 @@ doi: https://doi.org/10.1101/299859
 <span class="n">fg</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;fooof_group_results&#39;</span><span class="p">,</span> <span class="n">save_results</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Example output for a FOOOF fit on an individual power spectrum:</p>
-<a class="reference external image-reference" href="img/FOOOF_report.png"><img alt="&quot;fooof_report&quot;" src="_images/FOOOF_report.png" /></a>
 <p>Example output from using FOOOFGroup across a group of power spectra:</p>
-<a class="reference external image-reference" href="img/FOOOFGroup_report.png"><img alt="&quot;fooof_group_report&quot;" src="_images/FOOOFGroup_report.png" /></a>
+<a class="reference external image-reference" href="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOFGroup_report.png"><img alt="&quot;fooof_group_report&quot;" src="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOFGroup_report.png" /></a>
+<p><strong>Other Functionality</strong></p>
+<p>FOOOF also has functionality for running the FOOOF model across matrices of multiple power spectra,
+saving and loading results, creating reports from FOOOF outputs, analyzing model outputs,
+plotting models and parameters, and simulating power spectra, all of which is described in the
+<a class="reference external" href="https://fooof-tools.github.io/fooof/">documentation</a>.</p>
 </div>
 </div>
 
@@ -222,7 +296,7 @@ doi: https://doi.org/10.1101/299859
     </p>
     <p>
         &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
     </p>
   </div>
 </footer>

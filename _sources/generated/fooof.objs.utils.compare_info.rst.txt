@@ -1,0 +1,6 @@
+fooof.objs.utils.compare\_info
+==============================
+
+.. currentmodule:: fooof.objs.utils
+
+.. autofunction:: compare_info

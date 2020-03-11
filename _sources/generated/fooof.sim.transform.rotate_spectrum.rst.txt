@@ -1,0 +1,6 @@
+fooof.sim.transform.rotate\_spectrum
+====================================
+
+.. currentmodule:: fooof.sim.transform
+
+.. autofunction:: rotate_spectrum

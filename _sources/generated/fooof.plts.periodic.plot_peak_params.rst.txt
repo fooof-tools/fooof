@@ -1,0 +1,6 @@
+fooof.plts.periodic.plot\_peak\_params
+======================================
+
+.. currentmodule:: fooof.plts.periodic
+
+.. autofunction:: plot_peak_params

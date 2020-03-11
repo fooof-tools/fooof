@@ -13,16 +13,17 @@
 Using FOOOFGroup to run FOOOF across multiple power spectra.
 
 
+.. code-block:: default
 
-.. code-block:: python
 
+    import numpy as np
 
-    # FOOOF imports: import FOOOFGroup object
+    # Import the FOOOF object
     from fooof import FOOOFGroup
 
-    # Import some utilities for synthesizing some test data
-    from fooof.synth.params import param_sampler
-    from fooof.synth.gen import gen_group_power_spectra
+    # Import some utilities for simulating some test data
+    from fooof.sim.params import param_sampler
+    from fooof.sim.gen import gen_group_power_spectra
 
 
 
@@ -30,37 +31,67 @@ Using FOOOFGroup to run FOOOF across multiple power spectra.
 
 
 
-Synthesizing Power Spectra
+
+Fitting Multiple Spectra
+------------------------
+
+So far, we have explored using the FOOOF object to fit individual power spectra.
+
+However, many potential use cases will have many power spectra to fit.
+
+To support this, here we will introduce the FOOOFGroup object, which applies
+the model fitting procedure across multiple power spectra.
+
+
+Simulated Power Spectra
 --------------------------
 
-FOOOF includes some support for creating synthetic power-spectra, that mimic real data.
+Before we start FOOOFGroup, we need some data. For this example, we will simulate some
+test data. FOOOF includes utilities for creating simulated power-spectra, that mimic real data.
 
-Here we will use that functionality to create a matrix of power spectra to test with.
-
-Here we will use a helper function called :func:`param_sampler` that takes a
+To do so, we will use a function called :func:`param_sampler` that takes a
 list of possible parameters, and creates an object that randomly samples from
 them to generate power spectra.
 
-If you would like to generate single power spectra, you can use :func:`gen_power_spectrum`,
-also in `fooof.synth.gen`.
+Note that if you would like to generate single power spectra, you can use
+:func:`gen_power_spectrum`, also in `fooof.sim.gen`.
+
+There are more examples and descriptions of using FOOOF to simualate data in the
+`examples <https://fooof-tools.github.io/fooof/auto_examples/index.html>`_
+section.
+
+
+
+.. code-block:: default
+
+
+    # Set random seed, for consistency generating simulated data
+    np.random.seed(321)
 
 
 
 
-.. code-block:: python
 
 
-    # Settings for synthesizing power spectra
+
+
+
+.. code-block:: default
+
+
+    # Settings for simulating power spectra
     n_spectra = 10
     f_range = [3, 40]
 
-    # Set some options for background parameters
-    #  Generated spectra will have an offset of either [20, 50, 35], and exponent of [2., 2.5, 1.5]
+    # Set some options for aperiodic parameters
+    #  These settings, as [offset, exponent] pairs are possible values for our simulated spectra
+    #  Simulated spectra will have aperiodic parameters of [20, 2], [50, 2.5] or [35, 1.5]
     ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
 
     # Set some options for peak parameters
     #  Generated power spectra will have either no peaks, a 10 Hz peak, or a 10 Hz & 20 Hz peak
     gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
+
 
 
 
@@ -76,13 +107,13 @@ used to generate each power spectrum.
 
 
 
+.. code-block:: default
 
-.. code-block:: python
 
+    # Simulate the group of simulated spectra
+    #  Note that this function also returns a list of the parameters for each simulation
+    freqs, spectra = gen_group_power_spectra(n_spectra, f_range, ap_opts, gauss_opts)
 
-    # Generate the group of synthetic spectra
-    #  Note that this function also returns a list of the parameters for each func
-    freqs, spectra, syn_params = gen_group_power_spectra(n_spectra, f_range, ap_opts, gauss_opts)
 
 
 
@@ -100,11 +131,12 @@ The main difference is that instead of running across a single power spectrum, i
 operates across 2D matrices containing multiple power spectra.
 
 Note that by 'group' we mean merely to refer to a group of power-spectra,
-not necessarily to a group in terms of multiple subjects or similar.
-Most likely, a FOOOFGroup will be run across a collection of spectra from across
-channels, and/or across trials, within or across subjects.
+are not using the term 'group' in terms of necessarily referring to multiple subjects
+or any particular idea of what a 'group' may be. A group of power spectra could
+be spectra from across channels, or across trials, or across subjects, or
+whatever organization makes sense for the analysis at hand.
 
-The main difference with the FOOOFGroup object, is that it also contains a
+The main differences with the FOOOFGroup object, are that it uses a
 `power_spectra` attribute, which stores the matrix of power-spectra to be fit,
 and collects fit results into a `group_results` attribute.
 
@@ -115,13 +147,11 @@ Internally, it runs the exact same fitting procedure, per spectrum, as the FOOOF
 
 
 
+.. code-block:: default
 
-.. code-block:: python
 
-
-    # Initialize a FOOOFGroup object - it accepts all the same settings as FOOOF
-    fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_amplitude=0.05, max_n_peaks=6)
-
+    # Initialize a FOOOFGroup object, which accepts all the same settings as FOOOF
+    fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_height=0.05, max_n_peaks=6)
 
 
 
@@ -129,7 +159,9 @@ Internally, it runs the exact same fitting procedure, per spectrum, as the FOOOF
 
 
 
-.. code-block:: python
+
+
+.. code-block:: default
 
 
     # Fit a group of power spectra with the .fit() method
@@ -151,7 +183,9 @@ Internally, it runs the exact same fitting procedure, per spectrum, as the FOOOF
 
 
 
-.. code-block:: python
+
+
+.. code-block:: default
 
 
     # Print out results
@@ -178,24 +212,26 @@ Internally, it runs the exact same fitting procedure, per spectrum, as the FOOOF
                                                                                                   
                                   Power spectra were fit without a knee.                              
                                                                                                   
-                                        Aperiodic Exponent Values                                     
-                                  Min: 1.5012, Max: 2.5335, Mean: 2.0174                              
+                                          Aperiodic Fit Values:                                       
+                            Exponents - Min:  1.496, Max:  2.522, Mean: 1.966                         
                                                                                                   
-                             In total 11 peaks were extracted from the group                          
+                             In total 10 peaks were extracted from the group                          
                                                                                                   
                                          Goodness of fit metrics:                                     
-                                R2s -  Min: 0.9987, Max: 1.0000, Mean: 0.9996                         
-                             Errors -  Min: 0.0033, Max: 0.0155, Mean: 0.0086                         
+                                R2s -  Min:  0.999, Max:  1.000, Mean: 1.000                          
+                             Errors -  Min:  0.004, Max:  0.016, Mean: 0.008                          
                                                                                                   
     ==================================================================================================
 
 
 
-.. code-block:: python
+
+
+.. code-block:: default
 
 
     # Plot a summary of the results across the group
-    #  Note: given the simulations, we expect exponents at {1.5, 2.0. 2.5} and peaks around {10, 20}
+    #   Note: given the simulations, we expect exponents at {1.5, 2.0. 2.5} and peaks around {10, 20}
     fg.plot()
 
 
@@ -207,17 +243,17 @@ Internally, it runs the exact same fitting procedure, per spectrum, as the FOOOF
 
 
 
+
 Just as with the FOOOF object, you can call the convenience method `report` to run
 the fitting, and print results & plots, printing out the same as above.
 
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # You can also save out PDFs reports for FOOOFGroup fits, same as with FOOOF
-    fg.save_report()
+    fg.save_report('FOOOFGroup_report')
 
 
 
@@ -225,19 +261,18 @@ the fitting, and print results & plots, printing out the same as above.
 
 
 
-FOOOFGroup Data
----------------
+
+FOOOFGroup Results
+------------------
 
 FOOOFGroup collects fits across power spectra into a list of FOOOFResults objects.
 
 
 
+.. code-block:: default
 
-.. code-block:: python
 
-
-    # As it runs, FOOOFGroup collects each fit results in 'group_results'
-    #  `group_results` is a list of FOOOFResult objects
+    # FOOOFGroup collects fit results into 'group_results': a list of FOOOFResult objects
     print(fg.group_results[0:2])
 
 
@@ -250,36 +285,45 @@ FOOOFGroup collects fits across power spectra into a list of FOOOFResults object
 
  .. code-block:: none
 
-    [FOOOFResult(aperiodic_params=array([50.06682451,  2.53351173]), peak_params=array([[10.12258062,  0.47277249,  3.64755884],
-           [19.98378567,  0.27272959,  7.21046594]]), r_squared=0.9995288053014144, error=0.014152029032539796, gaussian_params=array([[10.12258062,  0.46793314,  1.82377942],
-           [19.98378567,  0.27273215,  3.60523297]])), FOOOFResult(aperiodic_params=array([35.02710587,  1.51822746]), peak_params=array([[10.02198395,  0.49554139,  3.77896634]]), r_squared=0.9997831617209116, error=0.005429181854189267, gaussian_params=array([[10.02198395,  0.49557493,  1.88948317]]))]
+    [FOOOFResults(aperiodic_params=array([20.05737379,  2.02671608]), peak_params=array([[10.10285524,  0.47346991,  3.66557806],
+           [19.97816177,  0.26777867,  7.33136552]]), r_squared=0.9993217230200833, error=0.014240187840994357, gaussian_params=array([[10.10285524,  0.46761665,  1.83278903],
+           [19.97816177,  0.2677832 ,  3.66568276]])), FOOOFResults(aperiodic_params=array([50.04940782,  2.52221223]), peak_params=array([[10.09935621,  0.48035288,  3.69606933],
+           [19.9544837 ,  0.27214066,  7.27267224]]), r_squared=0.9995216114072675, error=0.01468198947924037, gaussian_params=array([[10.09935621,  0.47461823,  1.84803467],
+           [19.9544837 ,  0.2721617 ,  3.63633612]]))]
 
 
-get_all_data
-------------
+
+
+get_params
+~~~~~~~~~~
 
 To collect data across all model fits, and to select specific data results from this data
-you can use the :func:`get_all_data` method. This method lets you extract specific results
-by specifying a field, as a string, and (optionally) a specific column of that data, also
-as a string (or, optionally, as an integer index).
+you can should the :func:`get_params` method.
+
+This method works the same as in the FOOOF object, and lets you extract specific results
+by specifying a field, as a string, and (optionally) a specific column of that data.
+
+Since the FOOOFGroup object collects results from across multiple model fits,
+you should always use :func:`get_params` to access parameter fits. The result attributes
+introduced with the FOOOF object do not store results across the group, as they are
+defined for individual model fits (and used internally as such by the FOOOFGroup object).
 
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # Extract aperiodic data
-    aps = fg.get_all_data('aperiodic_params')
-    exps = fg.get_all_data('aperiodic_params', 'exponent')
+    aps = fg.get_params('aperiodic_params')
+    exps = fg.get_params('aperiodic_params', 'exponent')
 
     # Extract peak data
-    peaks = fg.get_all_data('peak_params')
-    cfs = fg.get_all_data('peak_params', 'CF')
+    peaks = fg.get_params('peak_params')
+    cfs = fg.get_params('peak_params', 'CF')
 
     # Extract metadata about the model fit
-    errors = fg.get_all_data('error')
-    r2s = fg.get_all_data('r_squared')
+    errors = fg.get_params('error')
+    r2s = fg.get_params('r_squared')
 
 
 
@@ -288,11 +332,12 @@ as a string (or, optionally, as an integer index).
 
 
 
-.. code-block:: python
+
+.. code-block:: default
 
 
-    # The full list of data you can specify is available in the documentation of :func:`get_all_data`
-    print(fg.get_all_data.__doc__)
+    # The full list of data you can specify is available in the documentation of :func:`get_params`
+    print(fg.get_params.__doc__)
 
 
 
@@ -304,13 +349,13 @@ as a string (or, optionally, as an integer index).
 
  .. code-block:: none
 
-    Return all data for a specified attribute across the group.
+    Return model fit parameters for specified feature(s).
 
             Parameters
             ----------
-            name : {'aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params'}
+            name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
                 Name of the data field to extract across the group.
-            col : {'CF', 'Amp', 'BW', 'intercept', 'knee', 'exponent'} or int, optional
+            col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
                 Column name / index to extract from selected data, if requested.
                 Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
 
@@ -319,18 +364,26 @@ as a string (or, optionally, as an integer index).
             out : ndarray
                 Requested data.
 
+            Raises
+            ------
+            NoModelError
+                If there are no model fit results available.
+            ValueError
+                If the input for the `col` input is not understood.
+
             Notes
             -----
             For further description of the data you can extract, check the FOOOFResults documentation.
-            For example `print(fg[0].__doc__)`
-
-
-More information about the data you can extract is also documented in the FOOOFResults object
+        
 
 
 
 
-.. code-block:: python
+More information about the data you can extract is also documented in the FOOOFResults object.
+
+
+
+.. code-block:: default
 
 
     # Grab a particular FOOOFResults item
@@ -350,25 +403,29 @@ More information about the data you can extract is also documented in the FOOOFR
 
  .. code-block:: none
 
-    The resulting parameters and associated data of a FOOOF model fit.
+    The results from a FOOOF model fit.
 
     Attributes
     ----------
-    aperiodic_params : 1d array, len 2 or 3
-        Parameters that define the aperiodic fit. As [Intercept, (Knee), Exponent].
-            The knee parameter is only included if aperiodic is fit with knee. Otherwise, length is 2.
-    peak_params : 2d array, shape=[n_peaks, 3]
-        Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].
+    aperiodic_params : 1d array
+        Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
+        The knee parameter is only included if aperiodic is fit with knee.
+    peak_params : 2d array
+        Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
     r_squared : float
-        R-squared of the fit between the input power spectrum and the full model fit.
+        R-squared of the fit between the full model fit and the input data.
     error : float
-        Root mean squared error of the full model fit.
-    gaussian_params : 2d array, shape=[n_peaks, 3]
-        Parameters that define the gaussian fit(s). Each row is a gaussian, as [mean, amp, std].
+        Total error of the full model fit, compared to the input data.
+    gaussian_params : 2d array
+        Parameters that define the gaussian fit(s).
+        Each row is a gaussian, as [mean, height, standard deviation].
 
 
 
-.. code-block:: python
+
+
+
+.. code-block:: default
 
 
     # Check out the extracted exponent values
@@ -386,12 +443,14 @@ More information about the data you can extract is also documented in the FOOOFR
 
  .. code-block:: none
 
-    [2.53351173 1.51822746 2.51243364 2.52869687 2.01854891 1.50122177
-     1.5314155  1.52937623 1.9978638  2.50269364]
+    [2.02671608 2.52221223 1.51593833 2.52050335 1.5004326  2.50198643
+     1.49646478 1.51752162 2.02096872 2.03444814]
 
 
 
-.. code-block:: python
+
+
+.. code-block:: default
 
 
     # Check the fit center-frequencies
@@ -409,21 +468,22 @@ More information about the data you can extract is also documented in the FOOOFR
 
  .. code-block:: none
 
-    [[10.12258062  0.        ]
-     [19.98378567  0.        ]
-     [10.02198395  1.        ]
-     [10.04628299  2.        ]
-     [10.12366618  3.        ]
-     [20.00307782  3.        ]
-     [10.0370482   4.        ]
-     [10.10615049  6.        ]
-     [20.03523326  6.        ]
-     [10.09476321  7.        ]
-     [20.00729107  7.        ]]
+    [[10.10285524  0.        ]
+     [19.97816177  0.        ]
+     [10.09935621  1.        ]
+     [19.9544837   1.        ]
+     [10.03380324  2.        ]
+     [10.03905049  3.        ]
+     [10.05192554  7.        ]
+     [10.02715701  8.        ]
+     [10.11744727  9.        ]
+     [20.01696537  9.        ]]
+
+
 
 
 Saving & Loading with FOOOFGroup
---------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 FOOOFGroup also support saving and loading, with same options as saving from FOOOF.
 
@@ -438,8 +498,7 @@ and a separate file that includes the results.
 
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # Save out FOOOFGroup settings & results (separately)
@@ -453,7 +512,8 @@ and a separate file that includes the results.
 
 
 
-.. code-block:: python
+
+.. code-block:: default
 
 
     # You can then reload this group data
@@ -467,7 +527,8 @@ and a separate file that includes the results.
 
 
 
-.. code-block:: python
+
+.. code-block:: default
 
 
     # Print results to check that the loaded group
@@ -494,20 +555,22 @@ and a separate file that includes the results.
                                                                                                   
                                   Power spectra were fit without a knee.                              
                                                                                                   
-                                        Aperiodic Exponent Values                                     
-                                  Min: 1.5012, Max: 2.5335, Mean: 2.0174                              
+                                          Aperiodic Fit Values:                                       
+                            Exponents - Min:  1.496, Max:  2.522, Mean: 1.966                         
                                                                                                   
-                             In total 11 peaks were extracted from the group                          
+                             In total 10 peaks were extracted from the group                          
                                                                                                   
                                          Goodness of fit metrics:                                     
-                                R2s -  Min: 0.9987, Max: 1.0000, Mean: 0.9996                         
-                             Errors -  Min: 0.0033, Max: 0.0155, Mean: 0.0086                         
+                                R2s -  Min:  0.999, Max:  1.000, Mean: 1.000                          
+                             Errors -  Min:  0.004, Max:  0.016, Mean: 0.008                          
                                                                                                   
     ==================================================================================================
 
 
+
+
 Parallel Support
-----------------
+~~~~~~~~~~~~~~~~
 
 FOOOFGroup also has support for running in parallel, which can speed things up as
 each power spectrum is fit independently.
@@ -517,7 +580,7 @@ will run FOOOF linearly. If you set this parameter to some other integer, fittin
 launch 'n_jobs' number of jobs, in parallel. Setting n_jobs to -1 will launch in
 parallel across all available cores.
 
-Note, however, that running FOOOF in parallel does not gaurantee a quicker runtime overall.
+Note, however, that running FOOOF in parallel does not guarantee a quicker runtime overall.
 The computation time per FOOOF-fit scales with the frequency range fit over, and the
 'complexity' of the power spectra, in terms of number of peaks. For relatively small
 numbers of power spectra (less than ~100), across relatively small frequency ranges
@@ -525,11 +588,10 @@ numbers of power spectra (less than ~100), across relatively small frequency ran
 
 
 
+.. code-block:: default
 
-.. code-block:: python
 
-
-    # Run FOOOF fit across a group of power spectra in parallel, using all cores
+    # Run FOOOF across a group of power spectra in parallel, using all cores
     fg.fit(freqs, spectra, n_jobs=-1)
 
 
@@ -545,8 +607,44 @@ numbers of power spectra (less than ~100), across relatively small frequency ran
     Running FOOOFGroup across 10 power spectra.
 
 
-Extacting Individual Fits
--------------------------
+
+
+Progress Bar
+~~~~~~~~~~~~
+
+If you have a large number of spectra to fit with a FOOOFGroup, and you want to
+monitor it's progress, you can also use a progress bar to print out fitting progress.
+
+Progress bar options are:
+
+- `tqdm` : a progress bar for running in terminals
+- `tqdm.notebook` : a progress bar for running in Jupyter notebooks
+
+
+
+.. code-block:: default
+
+
+    # Run FOOOF across a group of power spectra, printing a progress bar
+    fg.fit(freqs, spectra, progress='tqdm')
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Running FOOOFGroup:   0%|          | 0/10 [00:00<?, ?it/s]    Running FOOOFGroup: 100%|##########| 10/10 [00:00<00:00, 229.30it/s]
+
+
+
+
+Extracting Individual Fits
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When running FOOOF across a group of power spectra, results are stored as the FOOOFResults,
 which stores (only) the results of the model fit, not the full model fits themselves.
@@ -556,8 +654,7 @@ power spectra, with the full model available for visualization.
 
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # Extract a particular spectrum, specified by index to a FOOOF object
@@ -571,12 +668,14 @@ power spectra, with the full model available for visualization.
 
 
 
-.. code-block:: python
+
+.. code-block:: default
 
 
     # Print results and plot extracted FOOOF model fit
     fm.print_results()
     fm.plot()
+
 
 
 
@@ -598,19 +697,32 @@ power spectra, with the full model available for visualization.
                                      Frequency Resolution is 0.50 Hz                                  
                                                                                                   
                                 Aperiodic Parameters (offset, exponent):                              
-                                             50.0199, 2.5124                                          
+                                             35.0247, 1.5159                                          
                                                                                                   
                                            1 peaks were found:                                        
-                                    CF:  10.05, Amp:  0.486, BW:  3.82                                
+                                    CF:  10.03, PW:  0.490, BW:  3.81                                 
                                                                                                   
                                          Goodness of fit metrics:                                     
-                                        R^2 of model fit is 0.9999                                    
-                                    Root mean squared error is 0.0063                                 
+                                        R^2 of model fit is 0.9997                                    
+                                        Error of the fit is 0.0069                                    
                                                                                                   
     ==================================================================================================
 
 
-**Total running time of the script:** ( 0 minutes  0.715 seconds)
+
+
+Conclusion
+----------
+
+Now we have explored fitting FOOOF models and running these fits across multiple
+power spectra. Next we dig deeper into how to choose and tune the algorithm settings,
+and how to troubleshoot if any of the fitting goes wrong.
+
+
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  0.832 seconds)
 
 
 .. _sphx_glr_download_auto_tutorials_plot_06-FOOOFGroup.py:
@@ -638,4 +750,4 @@ power spectra, with the full model available for visualization.
 
  .. rst-class:: sphx-glr-signature
 
-    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

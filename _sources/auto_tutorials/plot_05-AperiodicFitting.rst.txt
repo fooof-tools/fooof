@@ -10,16 +10,18 @@
 05: Aperiodic Component Fitting
 ===============================
 
-Choosing and using different approaches for fitting the aperiodic signal.
+Choosing and using different approaches for fitting the aperiodic component.
 
 
+.. code-block:: default
 
-.. code-block:: python
 
-
-    # Import numpy for loading data, and FOOOF object
+    # Import numpy, used for loading data
     import numpy as np
+
+    # Import the FOOOF object
     from fooof import FOOOF
+
 
 
 
@@ -40,44 +42,46 @@ FOOOF currently offers two approaches for fitting the aperiodic component:
   - `aperiodic_mode` = 'knee'
 
 Fitting in the 'fixed' mode assumes a single 1/f like characteristic to the aperiodic
-signal, meaning it looks linear across all frequencies in log-log space.
+component, meaning it looks linear across all frequencies in log-log space.
 
 Though this assumption is true across *some* frequency ranges in neural data, it does
-does not hold up across broad freequency ranges. If fitting is done in the 'fixed' mode,
+does not hold up across broad frequency ranges. If fitting is done in the 'fixed' mode,
 but the assumption of a single 1/f is violated, then fitting will go wrong.
 
 Broad frequency ranges (typically ranges greater than ~40 Hz range) don't meet this
-criterion, as they typically exhibit a 'bend' in the aperiodic signal, whereby there is
+criterion, as they typically exhibit a 'bend' in the aperiodic component, whereby there is
 not a single 1/f property across all frequencies, but rather a 'bend' in the aperiodic
 component. For these cases, fitting should be done using an extra parameter to capture
 this, in 'knee' mode.
 
 
-
 Fitting FOOOF with Aperiodic 'Knee'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Let's explore fitting FOOOF across a broader frequency range,
+using some local field potential data.
 
 
 
-.. code-block:: python
+.. code-block:: default
 
 
-    # Load example data (LFP)
-    freqs = np.load('dat/freqs_lfp.npy')
-    spectrum = np.load('dat/spectrum_lfp.npy')
-
-
-
+    # Load example data
+    freqs = np.load('data/freqs_lfp.npy')
+    spectrum = np.load('data/spectrum_lfp.npy')
 
 
 
 
 
-.. code-block:: python
 
 
-    # Initialize FOOOF - setting to aperiodic mode to use a knee fit
+
+
+.. code-block:: default
+
+
+    # Initialize FOOOF, setting the aperiodic mode to use a knee fit
     fm = FOOOF(peak_width_limits=[2, 8], aperiodic_mode='knee')
 
 
@@ -87,7 +91,8 @@ Fitting FOOOF with Aperiodic 'Knee'
 
 
 
-.. code-block:: python
+
+.. code-block:: default
 
 
     # Fit FOOOF model
@@ -115,17 +120,19 @@ Fitting FOOOF with Aperiodic 'Knee'
                                      Frequency Resolution is 1.00 Hz                                  
                                                                                                   
                              Aperiodic Parameters (offset, knee, exponent):                           
-                                         6.5759, 87.2217, 2.0354                                      
+                                         6.5759, 87.2219, 2.0354                                      
                                                                                                   
                                            2 peaks were found:                                        
-                                    CF:   7.98, Amp:  0.806, BW:  2.03                                
-                                    CF:  16.32, Amp:  0.233, BW:  2.29                                
+                                    CF:   7.98, PW:  0.806, BW:  2.03                                 
+                                    CF:  16.32, PW:  0.233, BW:  2.29                                 
                                                                                                   
                                          Goodness of fit metrics:                                     
                                         R^2 of model fit is 0.9925                                    
-                                    Root mean squared error is 0.0405                                 
+                                        Error of the fit is 0.0405                                    
                                                                                                   
     ==================================================================================================
+
+
 
 
 A note on interpreting the "knee" parameter
@@ -148,9 +155,8 @@ To interpret this parameter as a frequency, take the :math:`\chi`-th root of `k`
 
 Interpreting the fit results when using knee fits is more complex, as the exponent result is
 no longer a simple measure of the aperiodic component as a whole, but instead reflects the
-aperiodic component past the 'knee' inflecting point. Becaues of this, when doing knee fits,
+aperiodic component past the 'knee' inflecting point. Because of this, when doing knee fits,
 knee & exponent values should be considered together.
-
 
 
 Example: Aperiodic Fitting Gone Wrong
@@ -158,13 +164,12 @@ Example: Aperiodic Fitting Gone Wrong
 
 In the example above, we jumped directly to fitting with a knee.
 
-Here we will explore what it looks like if we don't use the appropriate
-background fitting - fitting a 'fixed' background when we should use 'knee'
+Here we will explore what it looks like if we don't use the appropriate mode for fitting
+the aperiodic component - fitting in 'fixed' mode when we should use 'knee'
 
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # Create and fit a FOOOF model in fixed mode to the same data as above
@@ -195,15 +200,17 @@ background fitting - fitting a 'fixed' background when we should use 'knee'
                                               5.3476, 1.3360                                          
                                                                                                   
                                            3 peaks were found:                                        
-                                    CF:   8.01, Amp:  1.020, BW:  2.41                                
-                                    CF:  17.02, Amp:  0.369, BW:  8.00                                
-                                    CF:  31.05, Amp:  0.273, BW:  8.00                                
+                                    CF:   8.01, PW:  1.020, BW:  2.41                                 
+                                    CF:  17.02, PW:  0.369, BW:  8.00                                 
+                                    CF:  31.05, PW:  0.273, BW:  8.00                                 
                                                                                                   
                                          Goodness of fit metrics:                                     
                                         R^2 of model fit is 0.9847                                    
-                                    Root mean squared error is 0.0607                                 
+                                        Error of the fit is 0.0607                                    
                                                                                                   
     ==================================================================================================
+
+
 
 
 In this case, we see that the 'fixed' aperiodic component (equivalent to a line
@@ -212,9 +219,8 @@ in log-log space) is not able to capture the data, which has a curve.
 To compensate, the model adds extra peaks, but these are also not a good
 characterization of the data.
 
-In this exampe, the data, over this frequency range, needs to be fit in
+In this example, the data, over this frequency range, needs to be fit in
 'knee' mode to be able to appropriately characterize the data.
-
 
 
 Choosing an Aperiodic Fitting Procedure
@@ -229,7 +235,7 @@ in ambiguous cases (where the data may or may not have a knee), or if no knee is
 Given this, we recommend:
 
 - Check your data, across the frequency range of interest,
-  for what the aperiodic signal looks like.
+  for what the aperiodic component looks like.
 
   - If it looks roughly linear (in log-log space), fit without a knee.
 
@@ -240,16 +246,26 @@ Given this, we recommend:
     - This is likely across larger fitting ranges such as 1-150 Hz.
 - Be wary of ambiguous ranges, where there may or may not be a knee.
 
-  - Trying to fit without a knee, when there is not a single consistent aperiodic signal,
+  - Trying to fit without a knee, when there is not a single consistent aperiodic component,
     can lead to very bad fits. But it is also a known issue that trying to fit with a knee
     can lead to suboptimal fits when no knee is present.
 
     - We therefore currently recommend picking frequency ranges in which the expected
-      aperiodic signal process is relatively clear.
+      aperiodic component process is relatively clear.
+
+
+Conclusion
+----------
+
+Now that we have explored the FOOOF object, and different fitting approaches
+for fitting the aperiodic component. Next up, we will continue be introducing
+how to scale the fitting to apply across multiple power spectra.
 
 
 
-**Total running time of the script:** ( 0 minutes  0.105 seconds)
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  0.290 seconds)
 
 
 .. _sphx_glr_download_auto_tutorials_plot_05-AperiodicFitting.py:
@@ -277,4 +293,4 @@ Given this, we recommend:
 
  .. rst-class:: sphx-glr-signature
 
-    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

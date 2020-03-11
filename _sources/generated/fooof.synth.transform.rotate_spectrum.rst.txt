@@ -1,6 +1,0 @@
-fooof.synth.transform.rotate\_spectrum
-======================================
-
-.. currentmodule:: fooof.synth.transform
-
-.. autofunction:: rotate_spectrum

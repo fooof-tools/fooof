@@ -2,9 +2,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>fooof.FOOOFGroup &#8212; fooof 1.0.0-dev documentation</title>
+    <meta charset="utf-8" />
+    <title>fooof.FOOOFGroup &#8212; fooof 1.0.0rc2 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
@@ -12,17 +11,18 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
 
   </head><body>
 
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0-dev</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -46,10 +46,11 @@
                 <li><a href="../api.html">API</a></li>
                 <li><a href="../faq.html">FAQ</a></li>
                 <li><a href="../glossary.html">Glossary</a></li>
-                <li><a href="../auto_tutorials/index.html">Tutorial</a></li>
+                <li><a href="../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
-                <li><a href="../contents.html">Index</a></li>
-                <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
+                <li><a href="../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -86,443 +87,492 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
   <div class="section" id="fooof-fooofgroup">
 <h1>fooof.FOOOFGroup<a class="headerlink" href="#fooof-fooofgroup" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="fooof.FOOOFGroup">
-<em class="property">class </em><code class="descclassname">fooof.</code><code class="descname">FOOOFGroup</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Model the physiological power spectrum as a combination of aperiodic and periodic components.</p>
+<em class="property">class </em><code class="sig-prename descclassname">fooof.</code><code class="sig-name descname">FOOOFGroup</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model a group of power spectra as a combination of aperiodic and periodic components.</p>
 <p>WARNING: FOOOF expects frequency and power values in linear space.</p>
 <p>Passing in logged frequencies and/or power spectra is not detected,
 and will silently produce incorrect results.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>peak_width_limits</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of (float, float), optional, default: [0.5, 12.0]</span></dt>
-<dd><p class="first last">Limits on possible peak width, as [lower_bound, upper_bound].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>peak_width_limits</strong><span class="classifier">tuple of (float, float), optional, default: (0.5, 12.0)</span></dt><dd><p>Limits on possible peak width, as (lower_bound, upper_bound).</p>
 </dd>
-<dt><strong>max_n_peaks</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional, default: inf</span></dt>
-<dd><p class="first last">Maximum number of gaussians to be fit in a single spectrum.</p>
+<dt><strong>max_n_peaks</strong><span class="classifier">int, optional, default: inf</span></dt><dd><p>Maximum number of gaussians to be fit in a single spectrum.</p>
 </dd>
-<dt><strong>min_peak_amplitude</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional, default: 0</span></dt>
-<dd><p class="first last">Minimum amplitude threshold for a peak to be modeled.</p>
+<dt><strong>min_peak_height</strong><span class="classifier">float, optional, default: 0</span></dt><dd><p>Absolute threshold for detecting peaks, in units of the input data.</p>
 </dd>
-<dt><strong>peak_threshold</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional, default: 2.0</span></dt>
-<dd><p class="first last">Threshold for detecting peaks, units of standard deviation.</p>
+<dt><strong>peak_threshold</strong><span class="classifier">float, optional, default: 2.0</span></dt><dd><p>Relative threshold for detecting peaks, in units of standard deviation of the input data.</p>
 </dd>
-<dt><strong>aperiodic_mode</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘fixed’, ‘knee’}</span></dt>
-<dd><p class="first last">Which approach to take to fitting the aperiodic component.</p>
+<dt><strong>aperiodic_mode</strong><span class="classifier">{‘fixed’, ‘knee’}</span></dt><dd><p>Which approach to take for fitting the aperiodic component.</p>
 </dd>
-<dt><strong>verbose</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional, default: True</span></dt>
-<dd><p class="first last">Whether to be verbose in printing out warnings.</p>
+<dt><strong>verbose</strong><span class="classifier">bool, optional, default: True</span></dt><dd><p>Verbosity mode. If True, prints out warnings and general status updates.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <ul class="simple">
-<li>Commonly used abbreviations used in FOOOF include
-CF: center frequency, Amp: amplitude, BW: Bandwidth, ap: aperiodic</li>
-<li>Input power spectra must be provided in linear scale.
-Internally they are stored in log10 scale, as this is what the model operates upon.</li>
-<li>Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
-In particular, raw FFT inputs are not appropriate, we recommend using either Welch’s
-procedure, or a median filter smoothing on the FFT output before running FOOOF.</li>
-<li>Where possible and appropriate, use longer time segments for power spectrum calculation to
-get smoother power spectra, as this will give better FOOOF fits.</li>
+<li><p>Commonly used abbreviations used in this module include:
+CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic</p></li>
+<li><p>Input power spectra must be provided in linear scale.
+Internally they are stored in log10 scale, as this is what the model operates upon.</p></li>
+<li><p>Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
+For example, raw FFT inputs are not appropriate. Where possible and appropriate, use
+longer time segments for power spectrum calculation to get smoother power spectra,
+as this will give better model fits.</p></li>
+<li><p>The gaussian params are those that define the gaussian of the fit, where as the peak
+params are a modified version, in which the CF of the peak is the mean of the gaussian,
+the PW of the peak is the height of the gaussian over and above the aperiodic component,
+and the BW of the peak, is 2*std of the gaussian (as ‘two sided’ bandwidth).</p></li>
+<li><p>The FOOOFGroup object inherits from the FOOOF object. As such it also has data
+attributes (<cite>power_spectrum</cite> &amp; <cite>fooofed_spectrum_</cite>), and parameter attributes
+(<cite>aperiodic_params_</cite>, <cite>peak_params_</cite>, <cite>gaussian_params_</cite>, <cite>r_squared_</cite>, <cite>error_</cite>)
+which are defined in the context of individual model fits. These attributes are
+used during the fitting process, but in the group context do not store results
+post-fitting. Rather, all model fit results are collected and stored into the
+<cite>group_results</cite> attribute. To access individual parameters of the fit, use
+the <cite>get_params</cite> method.</p></li>
 </ul>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>freqs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array</span></dt>
-<dd><p class="first last">Frequency values for the power spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>freqs</strong><span class="classifier">1d array</span></dt><dd><p>Frequency values for the power spectra.</p>
 </dd>
-<dt><strong>power_spectrum</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array</span></dt>
-<dd><p class="first last">Power values, stored internally in log10 scale.</p>
+<dt><strong>power_spectra</strong><span class="classifier">2d array</span></dt><dd><p>Power values for the group of power spectra, as [n_power_spectra, n_freqs].
+Power values are stored internally in log10 scale.</p>
 </dd>
-<dt><strong>freq_range</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of [float, float]</span></dt>
-<dd><p class="first last">Frequency range of the power spectrum, as [lowest_freq, highest_freq].</p>
+<dt><strong>freq_range</strong><span class="classifier">list of [float, float]</span></dt><dd><p>Frequency range of the power spectra, as [lowest_freq, highest_freq].</p>
 </dd>
-<dt><strong>freq_res</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">Frequency resolution of the power spectrum.</p>
+<dt><strong>freq_res</strong><span class="classifier">float</span></dt><dd><p>Frequency resolution of the power spectra.</p>
 </dd>
-<dt><strong>fooofed_spectrum_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array</span></dt>
-<dd><p class="first last">The full model fit of the power spectrum, in log10 scale</p>
+<dt><strong>group_results</strong><span class="classifier">list of FOOOFResults</span></dt><dd><p>Results of FOOOF model fit for each power spectrum.</p>
 </dd>
-<dt><strong>aperiodic_params_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array</span></dt>
-<dd><p class="first last">Parameters that define the aperiodic fit. As [Intercept, (Knee), Exponent].
-The knee parameter is only included if aperiodic component is fit with a knee.</p>
+<dt><a class="reference internal" href="#fooof.FOOOFGroup.has_data" title="fooof.FOOOFGroup.has_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_data</span></code></a><span class="classifier">bool</span></dt><dd><p>Indicator for if the object contains data.</p>
 </dd>
-<dt><strong>peak_params_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">2d array</span></dt>
-<dd><p class="first last">Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].</p>
+<dt><a class="reference internal" href="#fooof.FOOOFGroup.has_model" title="fooof.FOOOFGroup.has_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_model</span></code></a><span class="classifier">bool</span></dt><dd><p>Indicator for if the object contains model fits.</p>
 </dd>
-<dt><strong>r_squared_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">R-squared of the fit between the input power spectrum and the full model fit.</p>
+<dt><a class="reference internal" href="#fooof.FOOOFGroup.n_peaks_" title="fooof.FOOOFGroup.n_peaks_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_peaks_</span></code></a><span class="classifier">int</span></dt><dd><p>How many peaks were fit for each model.</p>
 </dd>
-<dt><strong>error_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">Root mean squared error of the full model fit.</p>
+<dt><strong>n_failed_fits_</strong><span class="classifier">int</span></dt><dd><p>The number of models that failed to fit.</p>
 </dd>
-<dt><strong>power_spectra</strong> <span class="classifier-delimiter">:</span> <span class="classifier">2d array</span></dt>
-<dd><p class="first last">Input matrix of power spectra values, in linear space, as [n_power_spectra, n_freqs].</p>
-</dd>
-<dt><strong>group_results</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of FOOOFResults</span></dt>
-<dd><p class="first last">Results of FOOOF model fit for each power spectrum.</p>
+<dt><strong>failed_fit_inds_</strong><span class="classifier">list of int</span></dt><dd><p>The indices of any models that failed to fit.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="fooof.FOOOFGroup.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize FOOOF object with run parameters.</p>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize object with desired settings.</p>
 </dd></dl>
 
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#fooof.FOOOFGroup.__init__" title="fooof.FOOOFGroup.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args,&nbsp;**kwargs)</td>
-<td>Initialize FOOOF object with run parameters.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.__init__" title="fooof.FOOOFGroup.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(self, \*args, \*\*kwargs)</p></td>
+<td><p>Initialize object with desired settings.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOFGroup.add_data" title="fooof.FOOOFGroup.add_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data</span></code></a>(freqs,&nbsp;power_spectra[,&nbsp;freq_range])</td>
-<td>Add data (frequencies and power spectrum values) to FOOOFGroup object.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.add_data" title="fooof.FOOOFGroup.add_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data</span></code></a>(self, freqs, power_spectra[, …])</p></td>
+<td><p>Add data (frequencies and power spectrum values) to the current object.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_results</span></code>(fooof_result[,&nbsp;regenerate])</td>
-<td>Add results data back into object from a FOOOFResult object.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_meta_data</span></code>(self, fooof_meta_data)</p></td>
+<td><p>Add data information into object from a FOOOFMetaData object.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>()</td>
-<td>Return a copy of the FOOOF object.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_results</span></code>(self, fooof_result)</p></td>
+<td><p>Add results data into object from a FOOOFResults object.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>([freqs,&nbsp;power_spectra,&nbsp;freq_range,&nbsp;n_jobs])</td>
-<td>Run FOOOF across a group of power_spectra.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_settings</span></code>(self, fooof_settings)</p></td>
+<td><p>Add settings into object from a FOOOFSettings object.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOFGroup.get_all_data" title="fooof.FOOOFGroup.get_all_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_data</span></code></a>(name[,&nbsp;col])</td>
-<td>Return all data for a specified attribute across the group.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>(self)</p></td>
+<td><p>Return a copy of the current object.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fooof</span></code></a>(ind[,&nbsp;regenerate])</td>
-<td>Return a FOOOF object from specified model in a FOOOFGroup object.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.drop" title="fooof.FOOOFGroup.drop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drop</span></code></a>(self, inds)</p></td>
+<td><p>Drop one or more model fit results from the object.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOFGroup.get_results" title="fooof.FOOOFGroup.get_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_results</span></code></a>()</td>
-<td>Return the results run across a group of power spectra.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(self[, freqs, power_spectra, …])</p></td>
+<td><p>Fit a group of power spectra.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#fooof.FOOOFGroup.load" title="fooof.FOOOFGroup.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>([file_name,&nbsp;file_path])</td>
-<td>Load FOOOFGroup data from file, reconstructing the group_results.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fooof</span></code></a>(self, ind[, regenerate])</p></td>
+<td><p>Get a FOOOF object for a specified model fit.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>([save_fig,&nbsp;file_name,&nbsp;file_path])</td>
-<td>Plots a figure with subplots covering the group results from a FOOOFGroup object.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_group" title="fooof.FOOOFGroup.get_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_group</span></code></a>(self, inds)</p></td>
+<td><p>Get a FOOOFGroup object with the specified sub-selection of model fits.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_report_issue</span></code>([concise])</td>
-<td>Prints instructions on how to report bugs and/or problematic fits.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_meta_data</span></code>(self)</p></td>
+<td><p>Return data information from the current object.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOFGroup.print_results" title="fooof.FOOOFGroup.print_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_results</span></code></a>([concise])</td>
-<td>Print out FOOOFGroup results.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>(self, name[, col])</p></td>
+<td><p>Return model fit parameters for specified feature(s).</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_settings</span></code>([description,&nbsp;concise])</td>
-<td>Print out the current FOOOF settings.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_results" title="fooof.FOOOFGroup.get_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_results</span></code></a>(self)</p></td>
+<td><p>Return the results run across a group of power spectra.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOFGroup.report" title="fooof.FOOOFGroup.report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report</span></code></a>([freqs,&nbsp;power_spectra,&nbsp;freq_range,&nbsp;…])</td>
-<td>Run FOOOF across a group, and display a report, comprising a plot, and printed results.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_settings</span></code>(self)</p></td>
+<td><p>Return user defined settings of the current object.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#fooof.FOOOFGroup.save" title="fooof.FOOOFGroup.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>([file_name,&nbsp;file_path,&nbsp;append,&nbsp;…])</td>
-<td>Save out results and/or settings from FOOOFGroup object.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.load" title="fooof.FOOOFGroup.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(self, file_name[, file_path])</p></td>
+<td><p>Load FOOOFGroup data from file.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOFGroup.save_report" title="fooof.FOOOFGroup.save_report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_report</span></code></a>([file_name,&nbsp;file_path])</td>
-<td>Generate and save out as a PDF a report for a FOOOFGroup object.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(self[, save_fig, file_name, file_path])</p></td>
+<td><p>Plot a figure with subplots visualizing the parameters from a FOOOFGroup object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_report_issue</span></code>([concise])</p></td>
+<td><p>Prints instructions on how to report bugs and/or problematic fits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.print_results" title="fooof.FOOOFGroup.print_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_results</span></code></a>(self[, concise])</p></td>
+<td><p>Print out FOOOFGroup results.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_settings</span></code>(self[, description, concise])</p></td>
+<td><p>Print out the current settings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.report" title="fooof.FOOOFGroup.report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report</span></code></a>(self[, freqs, power_spectra, …])</p></td>
+<td><p>Fit a group of power spectra and display a report, with a plot and printed results.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.save" title="fooof.FOOOFGroup.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(self, file_name[, file_path, append, …])</p></td>
+<td><p>Save out results and/or settings from FOOOFGroup object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.save_report" title="fooof.FOOOFGroup.save_report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_report</span></code></a>(self, file_name[, file_path])</p></td>
+<td><p>Generate and save out a PDF report for a FOOOFGroup object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_debug_mode</span></code>(self, debug)</p></td>
+<td><p>Set whether debug mode, wherein an error is raised if fitting is unsuccessful.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.has_data" title="fooof.FOOOFGroup.has_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_data</span></code></a></p></td>
+<td><p>Indicator for if the object contains data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.has_model" title="fooof.FOOOFGroup.has_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_model</span></code></a></p></td>
+<td><p>Indicator for if the object contains model fits.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.n_null_" title="fooof.FOOOFGroup.n_null_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_null_</span></code></a></p></td>
+<td><p>How many model fits are null.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.n_peaks_" title="fooof.FOOOFGroup.n_peaks_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_peaks_</span></code></a></p></td>
+<td><p>How many peaks were fit for each model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.null_inds_" title="fooof.FOOOFGroup.null_inds_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">null_inds_</span></code></a></p></td>
+<td><p>The indices for model fits that are null.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="fooof.FOOOFGroup.add_data">
-<code class="descname">add_data</code><span class="sig-paren">(</span><em>freqs</em>, <em>power_spectra</em>, <em>freq_range=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.add_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add data (frequencies and power spectrum values) to FOOOFGroup object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>freqs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array</span></dt>
-<dd><p class="first last">Frequency values for the power spectra, in linear space.</p>
+<code class="sig-name descname">add_data</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">freqs</em>, <em class="sig-param">power_spectra</em>, <em class="sig-param">freq_range=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.add_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add data (frequencies and power spectrum values) to the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>freqs</strong><span class="classifier">1d array</span></dt><dd><p>Frequency values for the power spectra, in linear space.</p>
 </dd>
-<dt><strong>power_spectra</strong> <span class="classifier-delimiter">:</span> <span class="classifier">2d array, shape=[n_power_spectra, n_freqs]</span></dt>
-<dd><p class="first last">Matrix of power values, in linear space.</p>
+<dt><strong>power_spectra</strong><span class="classifier">2d array, shape=[n_power_spectra, n_freqs]</span></dt><dd><p>Matrix of power values, in linear space.</p>
 </dd>
-<dt><strong>freq_range</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of [float, float], optional</span></dt>
-<dd><p class="first last">Frequency range to restrict power spectra to. If not provided, keeps the entire range.</p>
+<dt><strong>freq_range</strong><span class="classifier">list of [float, float], optional</span></dt><dd><p>Frequency range to restrict power spectra to. If not provided, keeps the entire range.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>If called on an object with existing data and/or results
-they will be cleared by this method call.</p>
+these will be cleared by this method call.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOFGroup.drop">
+<code class="sig-name descname">drop</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inds</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.drop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drop one or more model fit results from the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>inds</strong><span class="classifier">int or array_like of int or array_like of bool</span></dt><dd><p>Indices to drop model fit results for.
+If a boolean mask, True indicates indices to drop.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method sets the model fits as null, and preserves the shape of the model fits.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOFGroup.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>freqs=None</em>, <em>power_spectra=None</em>, <em>freq_range=None</em>, <em>n_jobs=1</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run FOOOF across a group of power_spectra.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>freqs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array, optional</span></dt>
-<dd><p class="first last">Frequency values for the power_spectra, in linear space.</p>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">freqs=None</em>, <em class="sig-param">power_spectra=None</em>, <em class="sig-param">freq_range=None</em>, <em class="sig-param">n_jobs=1</em>, <em class="sig-param">progress=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit a group of power spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>freqs</strong><span class="classifier">1d array, optional</span></dt><dd><p>Frequency values for the power_spectra, in linear space.</p>
 </dd>
-<dt><strong>power_spectra</strong> <span class="classifier-delimiter">:</span> <span class="classifier">2d array, shape: [n_power_spectra, n_freqs], optional</span></dt>
-<dd><p class="first last">Matrix of power spectrum values, in linear space.</p>
+<dt><strong>power_spectra</strong><span class="classifier">2d array, shape: [n_power_spectra, n_freqs], optional</span></dt><dd><p>Matrix of power spectrum values, in linear space.</p>
 </dd>
-<dt><strong>freq_range</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of [float, float], optional</span></dt>
-<dd><p class="first last">Desired frequency range to run FOOOF on. If not provided, fits the entire given range.</p>
+<dt><strong>freq_range</strong><span class="classifier">list of [float, float], optional</span></dt><dd><p>Desired frequency range to run FOOOF on. If not provided, fits the entire given range.</p>
 </dd>
-<dt><strong>n_jobs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional, default: 1</span></dt>
-<dd><p class="first last">Number of jobs to run in parallel.
+<dt><strong>n_jobs</strong><span class="classifier">int, optional, default: 1</span></dt><dd><p>Number of jobs to run in parallel.
 1 is no parallelization. -1 uses all available cores.</p>
 </dd>
+<dt><strong>progress</strong><span class="classifier">{None, ‘tqdm’, ‘tqdm.notebook’}, optional</span></dt><dd><p>Which kind of progress bar to use. If None, no progress bar is used.</p>
+</dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
-<p>Data is optional if data has been already been added to FOOOF object.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="fooof.FOOOFGroup.get_all_data">
-<code class="descname">get_all_data</code><span class="sig-paren">(</span><em>name</em>, <em>col=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_all_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return all data for a specified attribute across the group.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘aperiodic_params’, ‘peak_params’, ‘error’, ‘r_squared’, ‘gaussian_params’}</span></dt>
-<dd><p class="first last">Name of the data field to extract across the group.</p>
-</dd>
-<dt><strong>col</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘CF’, ‘Amp’, ‘BW’, ‘intercept’, ‘knee’, ‘exponent’} or int, optional</span></dt>
-<dd><p class="first last">Column name / index to extract from selected data, if requested.
-Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_params’}.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>out</strong> <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
-<dd><p class="first last">Requested data.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Notes</p>
-<p>For further description of the data you can extract, check the FOOOFResults documentation.
-For example <cite>print(fg[0].__doc__)</cite></p>
+<p>Data is optional, if data has already been added to the object.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOFGroup.get_fooof">
-<code class="descname">get_fooof</code><span class="sig-paren">(</span><em>ind</em>, <em>regenerate=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_fooof" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a FOOOF object from specified model in a FOOOFGroup object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>ind</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">The index of the FOOOFResult in FOOOFGroup.group_results to load.</p>
+<code class="sig-name descname">get_fooof</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">ind</em>, <em class="sig-param">regenerate=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_fooof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a FOOOF object for a specified model fit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ind</strong><span class="classifier">int</span></dt><dd><p>The index of the FOOOFResults in FOOOFGroup.group_results to load.</p>
 </dd>
-<dt><strong>regenerate</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional, default: False</span></dt>
-<dd><p class="first last">Whether to regenerate the model fits from the given fit parameters.</p>
+<dt><strong>regenerate</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to regenerate the model fits from the given fit parameters.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>inst</strong> <span class="classifier-delimiter">:</span> <span class="classifier">FOOOF() object</span></dt>
-<dd><p class="first last">The FOOOFResult data loaded into a FOOOF object.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fm</strong><span class="classifier">FOOOF</span></dt><dd><p>The FOOOFResults data loaded into a FOOOF object.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOFGroup.get_group">
+<code class="sig-name descname">get_group</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inds</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a FOOOFGroup object with the specified sub-selection of model fits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>inds</strong><span class="classifier">array_like of int or array_like of bool</span></dt><dd><p>Indices to extract from the object.
+If a boolean mask, True indicates indices to select.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fg</strong><span class="classifier">FOOOFGroup</span></dt><dd><p>The requested selection of results data loaded into a new FOOOFGroup object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOFGroup.get_params">
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">name</em>, <em class="sig-param">col=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return model fit parameters for specified feature(s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name</strong><span class="classifier">{‘aperiodic_params’, ‘peak_params’, ‘gaussian_params’, ‘error’, ‘r_squared’}</span></dt><dd><p>Name of the data field to extract across the group.</p>
+</dd>
+<dt><strong>col</strong><span class="classifier">{‘CF’, ‘PW’, ‘BW’, ‘offset’, ‘knee’, ‘exponent’} or int, optional</span></dt><dd><p>Column name / index to extract from selected data, if requested.
+Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_params’}.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>out</strong><span class="classifier">ndarray</span></dt><dd><p>Requested data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NoModelError</dt><dd><p>If there are no model fit results available.</p>
+</dd>
+<dt>ValueError</dt><dd><p>If the input for the <cite>col</cite> input is not understood.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>For further description of the data you can extract, check the FOOOFResults documentation.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOFGroup.get_results">
-<code class="descname">get_results</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_results</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the results run across a group of power spectra.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="fooof.FOOOFGroup.has_data">
+<em class="property">property </em><code class="sig-name descname">has_data</code><a class="headerlink" href="#fooof.FOOOFGroup.has_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicator for if the object contains data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOFGroup.has_model">
+<em class="property">property </em><code class="sig-name descname">has_model</code><a class="headerlink" href="#fooof.FOOOFGroup.has_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicator for if the object contains model fits.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="fooof.FOOOFGroup.load">
-<code class="descname">load</code><span class="sig-paren">(</span><em>file_name='FOOOFGroup_results'</em>, <em>file_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load FOOOFGroup data from file, reconstructing the group_results.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>file_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">File from which to load data.</p>
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_name</em>, <em class="sig-param">file_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load FOOOFGroup data from file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_name</strong><span class="classifier">str</span></dt><dd><p>File to load data from.</p>
 </dd>
-<dt><strong>file_path</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Path to directory from which to load from. If not provided, loads from current directory.</p>
+<dt><strong>file_path</strong><span class="classifier">str, optional</span></dt><dd><p>Path to directory to load from. If None, loads from current directory.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOFGroup.n_null_">
+<em class="property">property </em><code class="sig-name descname">n_null_</code><a class="headerlink" href="#fooof.FOOOFGroup.n_null_" title="Permalink to this definition">¶</a></dt>
+<dd><p>How many model fits are null.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOFGroup.n_peaks_">
+<em class="property">property </em><code class="sig-name descname">n_peaks_</code><a class="headerlink" href="#fooof.FOOOFGroup.n_peaks_" title="Permalink to this definition">¶</a></dt>
+<dd><p>How many peaks were fit for each model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOFGroup.null_inds_">
+<em class="property">property </em><code class="sig-name descname">null_inds_</code><a class="headerlink" href="#fooof.FOOOFGroup.null_inds_" title="Permalink to this definition">¶</a></dt>
+<dd><p>The indices for model fits that are null.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOFGroup.plot">
-<code class="descname">plot</code><span class="sig-paren">(</span><em>save_fig=False</em>, <em>file_name='FOOOFGroup_plot'</em>, <em>file_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots a figure with subplots covering the group results from a FOOOFGroup object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>save_fig</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional, default: False</span></dt>
-<dd><p class="first last">Whether to save out a copy of the plot.</p>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">save_fig=False</em>, <em class="sig-param">file_name=None</em>, <em class="sig-param">file_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a figure with subplots visualizing the parameters from a FOOOFGroup object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>save_fig</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to save out a copy of the plot.</p>
 </dd>
-<dt><strong>file_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Name to give the saved out file.</p>
+<dt><strong>file_name</strong><span class="classifier">str, optional</span></dt><dd><p>Name to give the saved out file.</p>
 </dd>
-<dt><strong>file_path</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Path to directory in which to save. If not provided, saves to current directory.</p>
+<dt><strong>file_path</strong><span class="classifier">str, optional</span></dt><dd><p>Path to directory to save to. If None, saves to current directory.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>NoModelError</dt><dd><p>If the FOOOF object does not have model fit data available to plot.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOFGroup.print_results">
-<code class="descname">print_results</code><span class="sig-paren">(</span><em>concise=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.print_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">print_results</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">concise=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.print_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print out FOOOFGroup results.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>concise</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional, default: False</span></dt>
-<dd><p class="first last">Whether to print the report in a concise mode, or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>concise</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to print the report in a concise mode, or not.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOFGroup.report">
-<code class="descname">report</code><span class="sig-paren">(</span><em>freqs=None</em>, <em>power_spectra=None</em>, <em>freq_range=None</em>, <em>n_jobs=1</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.report" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run FOOOF across a group, and display a report, comprising a plot, and printed results.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>freqs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array, optional</span></dt>
-<dd><p class="first last">Frequency values for the power_spectra, in linear space.</p>
+<code class="sig-name descname">report</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">freqs=None</em>, <em class="sig-param">power_spectra=None</em>, <em class="sig-param">freq_range=None</em>, <em class="sig-param">n_jobs=1</em>, <em class="sig-param">progress=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit a group of power spectra and display a report, with a plot and printed results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>freqs</strong><span class="classifier">1d array, optional</span></dt><dd><p>Frequency values for the power_spectra, in linear space.</p>
 </dd>
-<dt><strong>power_spectra</strong> <span class="classifier-delimiter">:</span> <span class="classifier">2d array, shape: [n_power_spectra, n_freqs], optional</span></dt>
-<dd><p class="first last">Matrix of power spectrum values, in linear space.</p>
+<dt><strong>power_spectra</strong><span class="classifier">2d array, shape: [n_power_spectra, n_freqs], optional</span></dt><dd><p>Matrix of power spectrum values, in linear space.</p>
 </dd>
-<dt><strong>freq_range</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of [float, float], optional</span></dt>
-<dd><p class="first last">Desired frequency range to run FOOOF on. If not provided, fits the entire given range.</p>
+<dt><strong>freq_range</strong><span class="classifier">list of [float, float], optional</span></dt><dd><p>Desired frequency range to run FOOOF on. If not provided, fits the entire given range.</p>
 </dd>
-<dt><strong>n_jobs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional, default: 1</span></dt>
-<dd><p class="first last">Number of jobs to run in parallel.
+<dt><strong>n_jobs</strong><span class="classifier">int, optional, default: 1</span></dt><dd><p>Number of jobs to run in parallel.
 1 is no parallelization. -1 uses all available cores.</p>
 </dd>
+<dt><strong>progress</strong><span class="classifier">{None, ‘tqdm’, ‘tqdm.notebook’}, optional</span></dt><dd><p>Which kind of progress bar to use. If None, no progress bar is used.</p>
+</dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
-<p>Data is optional if data has been already been added to FOOOF object.</p>
+<p>Data is optional, if data has already been added to the object.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOFGroup.save">
-<code class="descname">save</code><span class="sig-paren">(</span><em>file_name='FOOOFGroup_results'</em>, <em>file_path=None</em>, <em>append=False</em>, <em>save_results=False</em>, <em>save_settings=False</em>, <em>save_data=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.save" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_name</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">append=False</em>, <em class="sig-param">save_results=False</em>, <em class="sig-param">save_settings=False</em>, <em class="sig-param">save_data=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>file_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or FileObject</span></dt>
-<dd><p class="first last">File to which to save data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_name</strong><span class="classifier">str or FileObject</span></dt><dd><p>File to save data to.</p>
 </dd>
-<dt><strong>file_path</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Path to directory in which to save. If not provided, saves to current directory.</p>
+<dt><strong>file_path</strong><span class="classifier">str, optional</span></dt><dd><p>Path to directory to load from. If None, loads from current directory.</p>
 </dd>
-<dt><strong>append</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional, default: False</span></dt>
-<dd><p class="first last">Whether to append to an existing file, if available.
-This option is only valid (and only used) if file_name is a str.</p>
+<dt><strong>append</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to append to an existing file, if available.
+This option is only valid (and only used) if ‘file_name’ is a str.</p>
 </dd>
-<dt><strong>save_results</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
-<dd><p class="first last">Whether to save out FOOOF model fit results.</p>
+<dt><strong>save_results</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to save out FOOOF model fit results.</p>
 </dd>
-<dt><strong>save_settings</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
-<dd><p class="first last">Whether to save out FOOOF settings.</p>
+<dt><strong>save_settings</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to save out FOOOF settings.</p>
 </dd>
-<dt><strong>save_data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
-<dd><p class="first last">Whether to save out power spectra data.</p>
+<dt><strong>save_data</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to save out power spectra data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>ValueError</dt><dd><p>If the data or save file specified are not understood.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOFGroup.save_report">
-<code class="descname">save_report</code><span class="sig-paren">(</span><em>file_name='FOOOFGroup_report'</em>, <em>file_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.save_report" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate and save out as a PDF a report for a FOOOFGroup object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>file_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name to give the saved out file.</p>
+<code class="sig-name descname">save_report</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_name</em>, <em class="sig-param">file_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.save_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate and save out a PDF report for a FOOOFGroup object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_name</strong><span class="classifier">str</span></dt><dd><p>Name to give the saved out file.</p>
 </dd>
-<dt><strong>file_path</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Path to directory in which to save. If not provided, saves to current directory.</p>
+<dt><strong>file_path</strong><span class="classifier">str, optional</span></dt><dd><p>Path to directory to save to. If None, saves to current directory.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -542,7 +592,7 @@ This option is only valid (and only used) if file_name is a str.</p>
     </p>
     <p>
         &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
     </p>
   </div>
 </footer>

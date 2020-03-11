@@ -2,9 +2,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Table of Contents &#8212; fooof 1.0.0-dev documentation</title>
+    <meta charset="utf-8" />
+    <title>Table of Contents &#8212; fooof 1.0.0rc2 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
@@ -12,17 +11,18 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
 
   </head><body>
 
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0-dev</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -46,10 +46,11 @@
                 <li><a href="api.html">API</a></li>
                 <li><a href="faq.html">FAQ</a></li>
                 <li><a href="glossary.html">Glossary</a></li>
-                <li><a href="auto_tutorials/index.html">Tutorial</a></li>
+                <li><a href="auto_motivations/index.html">Motivations</a></li>
+                <li><a href="auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="auto_examples/index.html">Examples</a></li>
-                <li><a href="#">Index</a></li>
-                <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
+                <li><a href="reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -86,7 +87,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
   <div class="section" id="table-of-contents">
 <h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h1>
@@ -99,7 +100,9 @@
 <li class="toctree-l3"><a class="reference internal" href="readme_link.html#dependencies">Dependencies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="readme_link.html#installation">Installation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="readme_link.html#matlab-support">Matlab Support</a></li>
-<li class="toctree-l3"><a class="reference internal" href="readme_link.html#reference">Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme_link.html#bug-reports">Bug Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme_link.html#id1">Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme_link.html#contribute">Contribute</a></li>
 <li class="toctree-l3"><a class="reference internal" href="readme_link.html#quickstart">Quickstart</a></li>
 </ul>
 </li>
@@ -107,32 +110,26 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api.html#table-of-contents">Table of Contents</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api.html#fooof-object">FOOOF Object</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#fooofgroup-object">FOOOFGroup Object</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#fooof-object-functions">FOOOF Object Functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#analysis-functions">Analysis Functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#synth-code">Synth Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#fooof-objects">FOOOF Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#bands-object">Bands Object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#data-objects">Data Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#analyze-model-results">Analyze Model Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#simulation-code">Simulation Code</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api.html#plotting-functions">Plotting Functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#utility-functions">Utility Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#utilities">Utilities</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auto_tutorials/index.html">Tutorial</a><ul>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a><ul>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#table-of-contents">Table of Contents</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#what-is-fooof">What is FOOOF?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#why-is-it-called-fooof">Why is it called FOOOF?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#what-do-you-mean-by-periodic-and-aperiodic-activity">What do you mean by ‘periodic’ and ‘aperiodic’ activity?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#why-should-i-use-fooof">Why should I use FOOOF?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#why-is-it-important-to-measure-aperiodic-activity">Why is it important to measure aperiodic activity?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#what-do-you-mean-by-periodic-and-aperiodic-activity">What do you mean by ‘periodic’ and ‘aperiodic’ activity?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#why-call-it-aperiodic-why-not-call-it-1-f-or-noise">Why call it ‘aperiodic’? Why not call it ‘1/f’ or ‘noise’?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#why-should-i-look-for-a-peak-to-consider-periodic-activity">Why should I look for a peak to consider periodic activity?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#what-if-i-don-t-identify-a-peak-is-there-no-periodic-activity">What if I don’t identify a peak? Is there no periodic activity?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#how-should-i-interpret-peaks-are-they-equivalent-to-oscillations">How should I interpret peaks? Are they equivalent to oscillations?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#why-is-this-different-from-other-methods-what-makes-it-work">Why is this different from other methods / what makes it work?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#are-there-settings-for-the-fooof-algorithm">Are there settings for the FOOOF algorithm?</a></li>
@@ -143,8 +140,46 @@
 <li class="toctree-l3"><a class="reference internal" href="faq.html#does-it-matter-how-i-calculate-the-power-spectra">Does it matter how I calculate the power spectra?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#does-this-work-on-epoched-data-can-i-fit-single-trials">Does this work on epoched data? Can I fit single trials?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#is-there-a-time-resolved-version">Is there a time resolved version?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#why-is-it-called-fooof">Why is it called FOOOF?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#how-do-i-cite-fooof">How do I cite FOOOF?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="faq.html#what-colour-is-fooof">What colour is FOOOF?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference and Reporting Information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#table-of-contents">Table of Contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference.html#reference">Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference.html#example-applications">Example Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference.html#methods-reporting">Methods Reporting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference.html#reporting-template-example">Reporting Template &amp; Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="auto_tutorials/index.html">Tutorial</a><ul>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/index.html#managing-objects">Managing Objects</a><ul>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/index.html#plotting">Plotting</a><ul>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/index.html#simulations">Simulations</a><ul>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/index.html#analyses">Analyses</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="auto_motivations/index.html">Motivations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="auto_motivations/index.html#concepts">Concepts</a><ul>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="auto_motivations/index.html#measurements">Measurements</a><ul>
 </ul>
 </li>
 </ul>
@@ -166,7 +201,7 @@
     </p>
     <p>
         &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
     </p>
   </div>
 </footer>

@@ -1,0 +1,6 @@
+fooof.sim.params.param\_sampler
+===============================
+
+.. currentmodule:: fooof.sim.params
+
+.. autofunction:: param_sampler

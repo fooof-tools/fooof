@@ -1,0 +1,32 @@
+fooof.data.data.SimParams
+=========================
+
+.. currentmodule:: fooof.data.data
+
+.. autoclass:: SimParams
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SimParams.__init__
+      ~SimParams.count
+      ~SimParams.index
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SimParams.aperiodic_params
+      ~SimParams.nlv
+      ~SimParams.periodic_params
+   
+   

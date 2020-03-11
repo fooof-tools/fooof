@@ -15,10 +15,15 @@ fooof.FOOOF
    
       ~FOOOF.__init__
       ~FOOOF.add_data
+      ~FOOOF.add_meta_data
       ~FOOOF.add_results
+      ~FOOOF.add_settings
       ~FOOOF.copy
       ~FOOOF.fit
+      ~FOOOF.get_meta_data
+      ~FOOOF.get_params
       ~FOOOF.get_results
+      ~FOOOF.get_settings
       ~FOOOF.load
       ~FOOOF.plot
       ~FOOOF.print_report_issue
@@ -27,9 +32,18 @@ fooof.FOOOF
       ~FOOOF.report
       ~FOOOF.save
       ~FOOOF.save_report
+      ~FOOOF.set_debug_mode
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FOOOF.has_data
+      ~FOOOF.has_model
+      ~FOOOF.n_peaks_
    
    

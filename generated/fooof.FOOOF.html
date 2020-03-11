@@ -2,9 +2,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>fooof.FOOOF &#8212; fooof 1.0.0-dev documentation</title>
+    <meta charset="utf-8" />
+    <title>fooof.FOOOF &#8212; fooof 1.0.0rc2 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
@@ -12,17 +11,18 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
 
   </head><body>
 
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0-dev</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -46,10 +46,11 @@
                 <li><a href="../api.html">API</a></li>
                 <li><a href="../faq.html">FAQ</a></li>
                 <li><a href="../glossary.html">Glossary</a></li>
-                <li><a href="../auto_tutorials/index.html">Tutorial</a></li>
+                <li><a href="../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
-                <li><a href="../contents.html">Index</a></li>
-                <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
+                <li><a href="../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -86,442 +87,553 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
   <div class="section" id="fooof-fooof">
 <h1>fooof.FOOOF<a class="headerlink" href="#fooof-fooof" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="fooof.FOOOF">
-<em class="property">class </em><code class="descclassname">fooof.</code><code class="descname">FOOOF</code><span class="sig-paren">(</span><em>peak_width_limits=[0.5, 12.0], max_n_peaks=inf, min_peak_amplitude=0.0, peak_threshold=2.0, aperiodic_mode='fixed', verbose=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF" title="Permalink to this definition">¶</a></dt>
-<dd><p>Model the physiological power spectrum as a combination of aperiodic and periodic components.</p>
+<em class="property">class </em><code class="sig-prename descclassname">fooof.</code><code class="sig-name descname">FOOOF</code><span class="sig-paren">(</span><em class="sig-param">peak_width_limits=(0.5</em>, <em class="sig-param">12.0)</em>, <em class="sig-param">max_n_peaks=inf</em>, <em class="sig-param">min_peak_height=0.0</em>, <em class="sig-param">peak_threshold=2.0</em>, <em class="sig-param">aperiodic_mode='fixed'</em>, <em class="sig-param">verbose=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model a physiological power spectrum as a combination of aperiodic and periodic components.</p>
 <p>WARNING: FOOOF expects frequency and power values in linear space.</p>
 <p>Passing in logged frequencies and/or power spectra is not detected,
 and will silently produce incorrect results.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>peak_width_limits</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of (float, float), optional, default: [0.5, 12.0]</span></dt>
-<dd><p class="first last">Limits on possible peak width, as [lower_bound, upper_bound].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>peak_width_limits</strong><span class="classifier">tuple of (float, float), optional, default: (0.5, 12.0)</span></dt><dd><p>Limits on possible peak width, as (lower_bound, upper_bound).</p>
 </dd>
-<dt><strong>max_n_peaks</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional, default: inf</span></dt>
-<dd><p class="first last">Maximum number of gaussians to be fit in a single spectrum.</p>
+<dt><strong>max_n_peaks</strong><span class="classifier">int, optional, default: inf</span></dt><dd><p>Maximum number of gaussians to be fit in a single spectrum.</p>
 </dd>
-<dt><strong>min_peak_amplitude</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional, default: 0</span></dt>
-<dd><p class="first last">Minimum amplitude threshold for a peak to be modeled.</p>
+<dt><strong>min_peak_height</strong><span class="classifier">float, optional, default: 0</span></dt><dd><p>Absolute threshold for detecting peaks, in units of the input data.</p>
 </dd>
-<dt><strong>peak_threshold</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional, default: 2.0</span></dt>
-<dd><p class="first last">Threshold for detecting peaks, units of standard deviation.</p>
+<dt><strong>peak_threshold</strong><span class="classifier">float, optional, default: 2.0</span></dt><dd><p>Relative threshold for detecting peaks, in units of standard deviation of the input data.</p>
 </dd>
-<dt><strong>aperiodic_mode</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘fixed’, ‘knee’}</span></dt>
-<dd><p class="first last">Which approach to take to fitting the aperiodic component.</p>
+<dt><strong>aperiodic_mode</strong><span class="classifier">{‘fixed’, ‘knee’}</span></dt><dd><p>Which approach to take for fitting the aperiodic component.</p>
 </dd>
-<dt><strong>verbose</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional, default: True</span></dt>
-<dd><p class="first last">Whether to be verbose in printing out warnings.</p>
+<dt><strong>verbose</strong><span class="classifier">bool, optional, default: True</span></dt><dd><p>Verbosity mode. If True, prints out warnings and general status updates.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <ul class="simple">
-<li>Commonly used abbreviations used in FOOOF include
-CF: center frequency, Amp: amplitude, BW: Bandwidth, ap: aperiodic</li>
-<li>Input power spectra must be provided in linear scale.
-Internally they are stored in log10 scale, as this is what the model operates upon.</li>
-<li>Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
-In particular, raw FFT inputs are not appropriate, we recommend using either Welch’s
-procedure, or a median filter smoothing on the FFT output before running FOOOF.</li>
-<li>Where possible and appropriate, use longer time segments for power spectrum calculation to
-get smoother power spectra, as this will give better FOOOF fits.</li>
+<li><p>Commonly used abbreviations used in this module include:
+CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic</p></li>
+<li><p>Input power spectra must be provided in linear scale.
+Internally they are stored in log10 scale, as this is what the model operates upon.</p></li>
+<li><p>Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
+For example, raw FFT inputs are not appropriate. Where possible and appropriate, use
+longer time segments for power spectrum calculation to get smoother power spectra,
+as this will give better model fits.</p></li>
+<li><p>The gaussian params are those that define the gaussian of the fit, where as the peak
+params are a modified version, in which the CF of the peak is the mean of the gaussian,
+the PW of the peak is the height of the gaussian over and above the aperiodic component,
+and the BW of the peak, is 2*std of the gaussian (as ‘two sided’ bandwidth).</p></li>
 </ul>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>freqs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array</span></dt>
-<dd><p class="first last">Frequency values for the power spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>freqs</strong><span class="classifier">1d array</span></dt><dd><p>Frequency values for the power spectrum.</p>
 </dd>
-<dt><strong>power_spectrum</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array</span></dt>
-<dd><p class="first last">Power values, stored internally in log10 scale.</p>
+<dt><strong>power_spectrum</strong><span class="classifier">1d array</span></dt><dd><p>Power values, stored internally in log10 scale.</p>
 </dd>
-<dt><strong>freq_range</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of [float, float]</span></dt>
-<dd><p class="first last">Frequency range of the power spectrum, as [lowest_freq, highest_freq].</p>
+<dt><strong>freq_range</strong><span class="classifier">list of [float, float]</span></dt><dd><p>Frequency range of the power spectrum, as [lowest_freq, highest_freq].</p>
 </dd>
-<dt><strong>freq_res</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">Frequency resolution of the power spectrum.</p>
+<dt><strong>freq_res</strong><span class="classifier">float</span></dt><dd><p>Frequency resolution of the power spectrum.</p>
 </dd>
-<dt><strong>fooofed_spectrum_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array</span></dt>
-<dd><p class="first last">The full model fit of the power spectrum, in log10 scale</p>
+<dt><strong>fooofed_spectrum_</strong><span class="classifier">1d array</span></dt><dd><p>The full model fit of the power spectrum, in log10 scale.</p>
 </dd>
-<dt><strong>aperiodic_params_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array</span></dt>
-<dd><p class="first last">Parameters that define the aperiodic fit. As [Intercept, (Knee), Exponent].
+<dt><strong>aperiodic_params_</strong><span class="classifier">1d array</span></dt><dd><p>Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
 The knee parameter is only included if aperiodic component is fit with a knee.</p>
 </dd>
-<dt><strong>peak_params_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">2d array</span></dt>
-<dd><p class="first last">Fitted parameter values for the peaks. Each row is a peak, as [CF, Amp, BW].</p>
+<dt><strong>peak_params_</strong><span class="classifier">2d array</span></dt><dd><p>Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].</p>
 </dd>
-<dt><strong>r_squared_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">R-squared of the fit between the input power spectrum and the full model fit.</p>
+<dt><strong>gaussian_params_</strong><span class="classifier">2d array</span></dt><dd><p>Parameters that define the gaussian fit(s).
+Each row is a gaussian, as [mean, height, standard deviation].</p>
 </dd>
-<dt><strong>error_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">Root mean squared error of the full model fit.</p>
+<dt><strong>r_squared_</strong><span class="classifier">float</span></dt><dd><p>R-squared of the fit between the input power spectrum and the full model fit.</p>
+</dd>
+<dt><strong>error_</strong><span class="classifier">float</span></dt><dd><p>Error of the full model fit.</p>
+</dd>
+<dt><a class="reference internal" href="#fooof.FOOOF.n_peaks_" title="fooof.FOOOF.n_peaks_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_peaks_</span></code></a><span class="classifier">int</span></dt><dd><p>How many peaks were fit in the model.</p>
+</dd>
+<dt><a class="reference internal" href="#fooof.FOOOF.has_data" title="fooof.FOOOF.has_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_data</span></code></a><span class="classifier">bool</span></dt><dd><p>Indicator for if the object contains data.</p>
+</dd>
+<dt><a class="reference internal" href="#fooof.FOOOF.has_model" title="fooof.FOOOF.has_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_model</span></code></a><span class="classifier">bool</span></dt><dd><p>Indicator for if the object contains a model fit.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="fooof.FOOOF.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>peak_width_limits=[0.5, 12.0], max_n_peaks=inf, min_peak_amplitude=0.0, peak_threshold=2.0, aperiodic_mode='fixed', verbose=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize FOOOF object with run parameters.</p>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">peak_width_limits=(0.5</em>, <em class="sig-param">12.0)</em>, <em class="sig-param">max_n_peaks=inf</em>, <em class="sig-param">min_peak_height=0.0</em>, <em class="sig-param">peak_threshold=2.0</em>, <em class="sig-param">aperiodic_mode='fixed'</em>, <em class="sig-param">verbose=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize object with desired settings.</p>
 </dd></dl>
 
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#fooof.FOOOF.__init__" title="fooof.FOOOF.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([peak_width_limits,&nbsp;max_n_peaks,&nbsp;…])</td>
-<td>Initialize FOOOF object with run parameters.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.__init__" title="fooof.FOOOF.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(self[, peak_width_limits, …])</p></td>
+<td><p>Initialize object with desired settings.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOF.add_data" title="fooof.FOOOF.add_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data</span></code></a>(freqs,&nbsp;power_spectrum[,&nbsp;freq_range])</td>
-<td>Add data (frequencies and power spectrum values) to FOOOF object.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOF.add_data" title="fooof.FOOOF.add_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data</span></code></a>(self, freqs, power_spectrum[, …])</p></td>
+<td><p>Add data (frequencies, and power spectrum values) to the current object.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#fooof.FOOOF.add_results" title="fooof.FOOOF.add_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_results</span></code></a>(fooof_result[,&nbsp;regenerate])</td>
-<td>Add results data back into object from a FOOOFResult object.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.add_meta_data" title="fooof.FOOOF.add_meta_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_meta_data</span></code></a>(self, fooof_meta_data)</p></td>
+<td><p>Add data information into object from a FOOOFMetaData object.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOF.copy" title="fooof.FOOOF.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</td>
-<td>Return a copy of the FOOOF object.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOF.add_results" title="fooof.FOOOF.add_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_results</span></code></a>(self, fooof_result)</p></td>
+<td><p>Add results data into object from a FOOOFResults object.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#fooof.FOOOF.fit" title="fooof.FOOOF.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>([freqs,&nbsp;power_spectrum,&nbsp;freq_range])</td>
-<td>Fit the full power spectrum as a combination of periodic and aperiodic components.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.add_settings" title="fooof.FOOOF.add_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_settings</span></code></a>(self, fooof_settings)</p></td>
+<td><p>Add settings into object from a FOOOFSettings object.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOF.get_results" title="fooof.FOOOF.get_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_results</span></code></a>()</td>
-<td>Return model fit parameters and goodness of fit metrics.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOF.copy" title="fooof.FOOOF.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(self)</p></td>
+<td><p>Return a copy of the current object.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#fooof.FOOOF.load" title="fooof.FOOOF.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>([file_name,&nbsp;file_path])</td>
-<td>Load in FOOOF file.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.fit" title="fooof.FOOOF.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(self[, freqs, power_spectrum, freq_range])</p></td>
+<td><p>Fit the full power spectrum as a combination of periodic and aperiodic components.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>([plt_log,&nbsp;save_fig,&nbsp;file_name,&nbsp;…])</td>
-<td>Plot the power spectrum and model fit results from a FOOOF object.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOF.get_meta_data" title="fooof.FOOOF.get_meta_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_meta_data</span></code></a>(self)</p></td>
+<td><p>Return data information from the current object.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#fooof.FOOOF.print_report_issue" title="fooof.FOOOF.print_report_issue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_report_issue</span></code></a>([concise])</td>
-<td>Prints instructions on how to report bugs and/or problematic fits.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>(self, name[, col])</p></td>
+<td><p>Return model fit parameters for specified feature(s).</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOF.print_results" title="fooof.FOOOF.print_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_results</span></code></a>([concise])</td>
-<td>Print out FOOOF results.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOF.get_results" title="fooof.FOOOF.get_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_results</span></code></a>(self)</p></td>
+<td><p>Return model fit parameters and goodness of fit metrics.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#fooof.FOOOF.print_settings" title="fooof.FOOOF.print_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_settings</span></code></a>([description,&nbsp;concise])</td>
-<td>Print out the current FOOOF settings.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.get_settings" title="fooof.FOOOF.get_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_settings</span></code></a>(self)</p></td>
+<td><p>Return user defined settings of the current object.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOF.report" title="fooof.FOOOF.report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report</span></code></a>([freqs,&nbsp;power_spectrum,&nbsp;freq_range,&nbsp;…])</td>
-<td>Run model fit, and display a report, which includes a plot, and printed results.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOF.load" title="fooof.FOOOF.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(self, file_name[, file_path, regenerate])</p></td>
+<td><p>Load in a FOOOF formatted JSON file to the current object.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#fooof.FOOOF.save" title="fooof.FOOOF.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>([file_name,&nbsp;file_path,&nbsp;append,&nbsp;…])</td>
-<td>Save out data, results and/or settings from FOOOF object.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(self[, plot_peaks, plot_aperiodic, …])</p></td>
+<td><p>Plot the power spectrum and model fit results from a FOOOF object.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#fooof.FOOOF.save_report" title="fooof.FOOOF.save_report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_report</span></code></a>([file_name,&nbsp;file_path,&nbsp;plt_log])</td>
-<td>Generate and save out a as PDF a report for a FOOOF object.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOF.print_report_issue" title="fooof.FOOOF.print_report_issue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_report_issue</span></code></a>([concise])</p></td>
+<td><p>Prints instructions on how to report bugs and/or problematic fits.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.print_results" title="fooof.FOOOF.print_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_results</span></code></a>(self[, concise])</p></td>
+<td><p>Print out model fitting results.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOF.print_settings" title="fooof.FOOOF.print_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_settings</span></code></a>(self[, description, concise])</p></td>
+<td><p>Print out the current settings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.report" title="fooof.FOOOF.report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report</span></code></a>(self[, freqs, power_spectrum, …])</p></td>
+<td><p>Run model fit, and display a report, which includes a plot, and printed results.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOF.save" title="fooof.FOOOF.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(self, file_name[, file_path, append, …])</p></td>
+<td><p>Save out data, results and/or settings from a FOOOF object into a JSON file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.save_report" title="fooof.FOOOF.save_report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_report</span></code></a>(self, file_name[, file_path, …])</p></td>
+<td><p>Generate and save out a PDF report for a FOOOF object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOF.set_debug_mode" title="fooof.FOOOF.set_debug_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_debug_mode</span></code></a>(self, debug)</p></td>
+<td><p>Set whether debug mode, wherein an error is raised if fitting is unsuccessful.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.has_data" title="fooof.FOOOF.has_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_data</span></code></a></p></td>
+<td><p>Indicator for if the object contains data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOF.has_model" title="fooof.FOOOF.has_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_model</span></code></a></p></td>
+<td><p>Indicator for if the object contains a model fit.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.n_peaks_" title="fooof.FOOOF.n_peaks_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_peaks_</span></code></a></p></td>
+<td><p>How many peaks were fit in the model.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="fooof.FOOOF.add_data">
-<code class="descname">add_data</code><span class="sig-paren">(</span><em>freqs</em>, <em>power_spectrum</em>, <em>freq_range=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.add_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add data (frequencies and power spectrum values) to FOOOF object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>freqs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array</span></dt>
-<dd><p class="first last">Frequency values for the power spectrum, in linear space.</p>
+<code class="sig-name descname">add_data</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">freqs</em>, <em class="sig-param">power_spectrum</em>, <em class="sig-param">freq_range=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.add_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add data (frequencies, and power spectrum values) to the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>freqs</strong><span class="classifier">1d array</span></dt><dd><p>Frequency values for the power spectrum, in linear space.</p>
 </dd>
-<dt><strong>power_spectrum</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array</span></dt>
-<dd><p class="first last">Power spectrum values, which must be input in linear space.</p>
+<dt><strong>power_spectrum</strong><span class="classifier">1d array</span></dt><dd><p>Power spectrum values, which must be input in linear space.</p>
 </dd>
-<dt><strong>freq_range</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of [float, float], optional</span></dt>
-<dd><p class="first last">Frequency range to restrict power spectrum to. If not provided, keeps the entire range.</p>
+<dt><strong>freq_range</strong><span class="classifier">list of [float, float], optional</span></dt><dd><p>Frequency range to restrict power spectrum to.
+If not provided, keeps the entire range.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>If called on an object with existing data and/or results
 they will be cleared by this method call.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="fooof.FOOOF.add_results">
-<code class="descname">add_results</code><span class="sig-paren">(</span><em>fooof_result</em>, <em>regenerate=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.add_results" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add results data back into object from a FOOOFResult object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>fooof_result</strong> <span class="classifier-delimiter">:</span> <span class="classifier">FOOOFResult</span></dt>
-<dd><p class="first last">An object containing the results from fitting a FOOOF model.</p>
-</dd>
-<dt><strong>regenerate</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional, default: False</span></dt>
-<dd><p class="first last">Whether to regenerate the model fits from the given fit parameters.</p>
+<dt id="fooof.FOOOF.add_meta_data">
+<code class="sig-name descname">add_meta_data</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fooof_meta_data</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.add_meta_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add data information into object from a FOOOFMetaData object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fooof_meta_data</strong><span class="classifier">FOOOFMetaData</span></dt><dd><p>A meta data object containing meta data information.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOF.add_results">
+<code class="sig-name descname">add_results</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fooof_result</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.add_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add results data into object from a FOOOFResults object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fooof_result</strong><span class="classifier">FOOOFResults</span></dt><dd><p>A data object containing the results from fitting a FOOOF model.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOF.add_settings">
+<code class="sig-name descname">add_settings</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fooof_settings</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.add_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add settings into object from a FOOOFSettings object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fooof_settings</strong><span class="classifier">FOOOFSettings</span></dt><dd><p>A data object containing the settings for a FOOOF model.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOF.copy">
-<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.copy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a copy of the FOOOF object.</p>
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the current object.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOF.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>freqs=None</em>, <em>power_spectrum=None</em>, <em>freq_range=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">freqs=None</em>, <em class="sig-param">power_spectrum=None</em>, <em class="sig-param">freq_range=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the full power spectrum as a combination of periodic and aperiodic components.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>freqs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array, optional</span></dt>
-<dd><p class="first last">Frequency values for the power spectrum, in linear space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>freqs</strong><span class="classifier">1d array, optional</span></dt><dd><p>Frequency values for the power spectrum, in linear space.</p>
 </dd>
-<dt><strong>power_spectrum</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array, optional</span></dt>
-<dd><p class="first last">Power values, which must be input in linear space.</p>
+<dt><strong>power_spectrum</strong><span class="classifier">1d array, optional</span></dt><dd><p>Power values, which must be input in linear space.</p>
 </dd>
-<dt><strong>freq_range</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of [float, float], optional</span></dt>
-<dd><p class="first last">Frequency range to restrict power spectrum to. If not provided, keeps the entire range.</p>
+<dt><strong>freq_range</strong><span class="classifier">list of [float, float], optional</span></dt><dd><p>Frequency range to restrict power spectrum to. If not provided, keeps the entire range.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>NoDataError</dt><dd><p>If no data is available to fit.</p>
+</dd>
+<dt>FitError</dt><dd><p>If model fitting fails to fit. Only raised in debug mode.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
-<p>Data is optional if data has been already been added to FOOOF object.</p>
+<p>Data is optional, if data has already been added to the object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOF.get_meta_data">
+<code class="sig-name descname">get_meta_data</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.get_meta_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data information from the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>FOOOFMetaData</dt><dd><p>Object containing meta data from the current object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOF.get_params">
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">name</em>, <em class="sig-param">col=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return model fit parameters for specified feature(s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name</strong><span class="classifier">{‘aperiodic_params’, ‘peak_params’, ‘gaussian_params’, ‘error’, ‘r_squared’}</span></dt><dd><p>Name of the data field to extract.</p>
+</dd>
+<dt><strong>col</strong><span class="classifier">{‘CF’, ‘PW’, ‘BW’, ‘offset’, ‘knee’, ‘exponent’} or int, optional</span></dt><dd><p>Column name / index to extract from selected data, if requested.
+Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_params’}.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>out</strong><span class="classifier">float or 1d array</span></dt><dd><p>Requested data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NoModelError</dt><dd><p>If there are no model fit parameters available to return.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>For further description of the data you can extract, check the FOOOFResults documentation.</p>
+<p>If there is no data on periodic features, this method will return NaN.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOF.get_results">
-<code class="descname">get_results</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.get_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_results</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.get_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return model fit parameters and goodness of fit metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>FOOOFResults</dt><dd><p>Object containing the model fit results from the current object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOF.get_settings">
+<code class="sig-name descname">get_settings</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.get_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return user defined settings of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>FOOOFSettings</dt><dd><p>Object containing the settings from the current object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOF.has_data">
+<em class="property">property </em><code class="sig-name descname">has_data</code><a class="headerlink" href="#fooof.FOOOF.has_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicator for if the object contains data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOF.has_model">
+<em class="property">property </em><code class="sig-name descname">has_model</code><a class="headerlink" href="#fooof.FOOOF.has_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicator for if the object contains a model fit.</p>
+<p class="rubric">Notes</p>
+<p>This check uses the aperiodic params, which are:</p>
+<ul class="simple">
+<li><p>nan if no model has been fit</p></li>
+<li><p>necessarily defined, as floats, if model has been fit</p></li>
+</ul>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOF.load">
-<code class="descname">load</code><span class="sig-paren">(</span><em>file_name='FOOOF_results'</em>, <em>file_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load in FOOOF file. Reads in a JSON file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>file_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or FileObject, optional</span></dt>
-<dd><p class="first last">File from which to load data.</p>
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_name</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">regenerate=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load in a FOOOF formatted JSON file to the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_name</strong><span class="classifier">str or FileObject</span></dt><dd><p>File to load data from.</p>
 </dd>
-<dt><strong>file_path</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Path to directory from which to load. If not provided, loads from current directory.</p>
+<dt><strong>file_path</strong><span class="classifier">str or None, optional</span></dt><dd><p>Path to directory to load from. If None, loads from current directory.</p>
+</dd>
+<dt><strong>regenerate</strong><span class="classifier">bool, optional, default: True</span></dt><dd><p>Whether to regenerate the model fit from the loaded data, if data is available.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOF.n_peaks_">
+<em class="property">property </em><code class="sig-name descname">n_peaks_</code><a class="headerlink" href="#fooof.FOOOF.n_peaks_" title="Permalink to this definition">¶</a></dt>
+<dd><p>How many peaks were fit in the model.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOF.plot">
-<code class="descname">plot</code><span class="sig-paren">(</span><em>plt_log=False</em>, <em>save_fig=False</em>, <em>file_name='FOOOF_plot'</em>, <em>file_path=None</em>, <em>ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">plot_peaks=None</em>, <em class="sig-param">plot_aperiodic=True</em>, <em class="sig-param">plt_log=False</em>, <em class="sig-param">add_legend=True</em>, <em class="sig-param">save_fig=False</em>, <em class="sig-param">file_name=None</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">plot_style=&lt;function style_spectrum_plot at 0x1015f053b0&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the power spectrum and model fit results from a FOOOF object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>plt_log</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional, default: False</span></dt>
-<dd><p class="first last">Whether or not to plot the frequency axis in log space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>plot_peaks</strong><span class="classifier">None or {‘shade’, ‘dot’, ‘outline’, ‘line’}, optional</span></dt><dd><p>What kind of approach to take to plot peaks. If None, peaks are not specifically plotted.
+Can also be a combination of approaches, separated by ‘-‘, for example: ‘shade-line’.</p>
 </dd>
-<dt><strong>save_fig</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional, default: False</span></dt>
-<dd><p class="first last">Whether to save out a copy of the plot.</p>
+<dt><strong>plot_aperiodic</strong><span class="classifier">boolean, optional, default: True</span></dt><dd><p>Whether to plot the aperiodic component of the model fit.</p>
 </dd>
-<dt><strong>file_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Name to give the saved out file.</p>
+<dt><strong>plt_log</strong><span class="classifier">boolean, optional, default: False</span></dt><dd><p>Whether to plot the frequency values in log10 spacing.</p>
 </dd>
-<dt><strong>file_path</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Path to directory in which to save. If None, saves to current directory.</p>
+<dt><strong>add_legend</strong><span class="classifier">boolean, optional, default: False</span></dt><dd><p>Whether to add a legend describing the plot components.</p>
 </dd>
-<dt><strong>ax</strong> <span class="classifier-delimiter">:</span> <span class="classifier">matplotlib.Axes, optional</span></dt>
-<dd><p class="first last">Figure axes upon which to plot.</p>
+<dt><strong>save_fig</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to save out a copy of the plot.</p>
+</dd>
+<dt><strong>file_name</strong><span class="classifier">str, optional</span></dt><dd><p>Name to give the saved out file.</p>
+</dd>
+<dt><strong>file_path</strong><span class="classifier">str, optional</span></dt><dd><p>Path to directory to save to. If None, saves to current directory.</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">matplotlib.Axes, optional</span></dt><dd><p>Figure axes upon which to plot.</p>
+</dd>
+<dt><strong>plot_style</strong><span class="classifier">callable, optional, default: style_spectrum_plot</span></dt><dd><p>A function to call to apply styling &amp; aesthetics to the plot.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Since FOOOF objects store power values in log spacing,
+the y-axis (power) is plotted in log spacing by default.</p>
 </dd></dl>
 
-<dl class="staticmethod">
+<dl class="method">
 <dt id="fooof.FOOOF.print_report_issue">
-<em class="property">static </em><code class="descname">print_report_issue</code><span class="sig-paren">(</span><em>concise=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.print_report_issue" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">print_report_issue</code><span class="sig-paren">(</span><em class="sig-param">concise=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.print_report_issue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints instructions on how to report bugs and/or problematic fits.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>concise</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional, default: False</span></dt>
-<dd><p class="first last">Whether to print the report in a concise mode, or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>concise</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to print the report in a concise mode, or not.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOF.print_results">
-<code class="descname">print_results</code><span class="sig-paren">(</span><em>concise=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.print_results" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print out FOOOF results.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>concise</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional, default: False</span></dt>
-<dd><p class="first last">Whether to print the report in a concise mode, or not.</p>
+<code class="sig-name descname">print_results</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">concise=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.print_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out model fitting results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>concise</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to print the report in a concise mode, or not.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOF.print_settings">
-<code class="descname">print_settings</code><span class="sig-paren">(</span><em>description=False</em>, <em>concise=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.print_settings" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print out the current FOOOF settings.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>description</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional, default: False</span></dt>
-<dd><p class="first last">Whether to print out a description with current settings.</p>
+<code class="sig-name descname">print_settings</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">description=False</em>, <em class="sig-param">concise=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.print_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out the current settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>description</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to print out a description with current settings.</p>
 </dd>
-<dt><strong>concise</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional, default: False</span></dt>
-<dd><p class="first last">Whether to print the report in a concise mode, or not.</p>
+<dt><strong>concise</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to print the report in a concise mode, or not.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOF.report">
-<code class="descname">report</code><span class="sig-paren">(</span><em>freqs=None</em>, <em>power_spectrum=None</em>, <em>freq_range=None</em>, <em>plt_log=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.report" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">report</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">freqs=None</em>, <em class="sig-param">power_spectrum=None</em>, <em class="sig-param">freq_range=None</em>, <em class="sig-param">plt_log=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run model fit, and display a report, which includes a plot, and printed results.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>freqs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array, optional</span></dt>
-<dd><p class="first last">Frequency values for the power spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>freqs</strong><span class="classifier">1d array, optional</span></dt><dd><p>Frequency values for the power spectrum.</p>
 </dd>
-<dt><strong>power_spectrum</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d array, optional</span></dt>
-<dd><p class="first last">Power values, which must be input in linear space.</p>
+<dt><strong>power_spectrum</strong><span class="classifier">1d array, optional</span></dt><dd><p>Power values, which must be input in linear space.</p>
 </dd>
-<dt><strong>freq_range</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of [float, float], optional</span></dt>
-<dd><p class="first last">Desired frequency range to run FOOOF on. If not provided, fits the entire given range.</p>
+<dt><strong>freq_range</strong><span class="classifier">list of [float, float], optional</span></dt><dd><p>Desired frequency range to fit the model to.
+If not provided, fits across the entire given range.</p>
 </dd>
-<dt><strong>plt_log</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional, default: False</span></dt>
-<dd><p class="first last">Whether or not to plot the frequency axis in log space.</p>
+<dt><strong>plt_log</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether or not to plot the frequency axis in log space.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
-<p>Data is optional if data has been already been added to FOOOF object.</p>
+<p>Data is optional, if data has already been added to the object.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOF.save">
-<code class="descname">save</code><span class="sig-paren">(</span><em>file_name='FOOOF_results'</em>, <em>file_path=None</em>, <em>append=False</em>, <em>save_results=False</em>, <em>save_settings=False</em>, <em>save_data=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save out data, results and/or settings from FOOOF object. Saves out to a JSON file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>file_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or FileObject</span></dt>
-<dd><p class="first last">File to which to save data.</p>
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_name</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">append=False</em>, <em class="sig-param">save_results=False</em>, <em class="sig-param">save_settings=False</em>, <em class="sig-param">save_data=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save out data, results and/or settings from a FOOOF object into a JSON file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_name</strong><span class="classifier">str or FileObject</span></dt><dd><p>File to save data to.</p>
 </dd>
-<dt><strong>file_path</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Path to directory in which to save. If not provided, saves to current directory.</p>
+<dt><strong>file_path</strong><span class="classifier">str, optional</span></dt><dd><p>Path to directory to save to. If None, saves to current directory.</p>
 </dd>
-<dt><strong>append</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional, default: False</span></dt>
-<dd><p class="first last">Whether to append to an existing file, if available.
-This option is only valid (and only used) if file_name is a str.</p>
+<dt><strong>append</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to append to an existing file, if available.
+This option is only valid (and only used) if ‘file_name’ is a str.</p>
 </dd>
-<dt><strong>save_results</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
-<dd><p class="first last">Whether to save out FOOOF model fit results.</p>
+<dt><strong>save_results</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to save out FOOOF model fit results.</p>
 </dd>
-<dt><strong>save_settings</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
-<dd><p class="first last">Whether to save out FOOOF settings.</p>
+<dt><strong>save_settings</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to save out FOOOF settings.</p>
 </dd>
-<dt><strong>save_data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
-<dd><p class="first last">Whether to save out input data.</p>
+<dt><strong>save_data</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to save out input data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>ValueError</dt><dd><p>If the save file is not understood.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="fooof.FOOOF.save_report">
-<code class="descname">save_report</code><span class="sig-paren">(</span><em>file_name='FOOOF_report'</em>, <em>file_path=None</em>, <em>plt_log=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.save_report" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate and save out a as PDF a report for a FOOOF object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>file_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name to give the saved out file.</p>
+<code class="sig-name descname">save_report</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_name</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">plt_log=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.save_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate and save out a PDF report for a FOOOF object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_name</strong><span class="classifier">str</span></dt><dd><p>Name to give the saved out file.</p>
 </dd>
-<dt><strong>file_path</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Path to directory in which to save. If not provided, saves to current directory.</p>
+<dt><strong>file_path</strong><span class="classifier">str, optional</span></dt><dd><p>Path to directory to save to. If None, saves to current directory.</p>
 </dd>
-<dt><strong>plt_log</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional, default: False</span></dt>
-<dd><p class="first last">Whether or not to plot the frequency axis in log space.</p>
+<dt><strong>plt_log</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether or not to plot the frequency axis in log space.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.FOOOF.set_debug_mode">
+<code class="sig-name descname">set_debug_mode</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">debug</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOF.set_debug_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set whether debug mode, wherein an error is raised if fitting is unsuccessful.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>debug</strong><span class="classifier">bool</span></dt><dd><p>Whether to run in debug mode.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -541,7 +653,7 @@ This option is only valid (and only used) if file_name is a str.</p>
     </p>
     <p>
         &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
     </p>
   </div>
 </footer>

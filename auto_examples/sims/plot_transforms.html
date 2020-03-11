@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Transforming Power Spectra &#8212; fooof 1.0.0rc2 documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../faq.html">FAQ</a></li>
+                <li><a href="../../glossary.html">Glossary</a></li>
+                <li><a href="../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-sims-plot-transforms-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="transforming-power-spectra">
+<span id="sphx-glr-auto-examples-sims-plot-transforms-py"></span><h1>Transforming Power Spectra<a class="headerlink" href="#transforming-power-spectra" title="Permalink to this headline">¶</a></h1>
+<p>Apply transformations to power spectra.</p>
+<p>One of the goals of parameterizing neural power spectra is to be able to understand
+if and how power spectra may be different and/or be changing across time or context.</p>
+<p>In order to explore how power spectra can change, the simulation framework also
+provides functions and utilities for transforming power spectra. These approaches
+can be useful to specifically define changes and how spectra relate to each other,
+and track how outcome measures relate to changes in the power spectra.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a>
+
+<span class="c1"># Import simulation utilities to create example data</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_power_spectrum</span>
+
+<span class="c1"># Import functions that can transform power spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.transform</span> <span class="k">import</span> <span class="p">(</span><span class="n">rotate_spectrum</span><span class="p">,</span> <span class="n">translate_spectrum</span><span class="p">,</span>
+                                 <span class="n">rotate_sim_spectrum</span><span class="p">,</span> <span class="n">translate_sim_spectrum</span><span class="p">,</span>
+                                 <a href="../../generated/fooof.sim.transform.compute_rotation_offset.html#fooof.sim.transform.compute_rotation_offset" title="View documentation for fooof.sim.transform.compute_rotation_offset"><span class="n">compute_rotation_offset</span></a><span class="p">)</span>
+
+<span class="c1"># Import plot function to visualize power spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <span class="n">plot_spectra</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a simulated power spectrum</span>
+<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers</span></a><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                                           <span class="n">return_params</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="rotating-power-spectra">
+<h2>Rotating Power Spectra<a class="headerlink" href="#rotating-power-spectra" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">rotate_spectrum()</span></code> function takes in a power spectrum, and rotates the
+power spectrum a specified amount, around a specified frequency point, changing
+the aperiodic exponent of the spectrum.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rotation settings</span>
+<span class="n">delta_exp</span> <span class="o">=</span> <span class="mf">0.25</span>        <span class="c1"># How much to change the exponent by</span>
+<span class="n">f_rotation</span> <span class="o">=</span> <span class="mi">20</span>         <span class="c1"># The frequency at which to rotate the spectrum</span>
+
+<span class="c1"># Rotate the power spectrum</span>
+<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">r_powers</span></a> <span class="o">=</span> <span class="n">rotate_spectrum</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers</span></a><span class="p">,</span> <span class="n">delta_exp</span><span class="p">,</span> <span class="n">f_rotation</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the two power spectra, with the rotation applied</span>
+<span class="n">plot_spectra</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <span class="p">[</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">r_powers</span></a><span class="p">],</span> <span class="n">log_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_transforms_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_transforms_001.png" />
+<p>Next, we can use FOOOF to check if our change in exponent went as expected.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize FOOOF models</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm2</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Fit FOOOF models to the original, and rotated, spectrum</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm1</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers</span></a><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm2</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">r_powers</span></a><span class="p">)</span>
+
+<span class="c1"># Check the measured exponent values</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original exponent value:</span><span class="se">\t</span><span class="s2"> </span><span class="si">{:1.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>\
+    <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm1</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Rotated exponent value:</span><span class="se">\t</span><span class="si">{:1.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>\
+    <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm2</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Original exponent value:         1.00
+Rotated exponent value: 1.25
+</pre></div>
+</div>
+<div class="section" id="rotation-related-offset-changes">
+<h3>Rotation Related Offset Changes<a class="headerlink" href="#rotation-related-offset-changes" title="Permalink to this headline">¶</a></h3>
+<p>Note that when you rotate a power spectrum, the offset also necessarily changes.</p>
+<p>If you wish to compute the change in offset that occurs due to a change in exponent,
+you can use the <code class="xref py py-func docutils literal notranslate"><span class="pre">compute_rotation_offset()</span></code> function.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the change in offset from an exponent change</span>
+<span class="n">off_change</span> <span class="o">=</span> <a href="../../generated/fooof.sim.transform.compute_rotation_offset.html#fooof.sim.transform.compute_rotation_offset" title="View documentation for fooof.sim.transform.compute_rotation_offset"><span class="n">compute_rotation_offset</span></a><span class="p">(</span><span class="n">delta_exp</span><span class="p">,</span> <span class="n">f_rotation</span><span class="p">)</span>
+
+<span class="c1"># Check the change in offset</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The induced change in offset is: </span><span class="se">\t</span><span class="s2"> </span><span class="si">{:1.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">off_change</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The induced change in offset is:         0.33
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="translating-power-spectra">
+<h2>Translating Power Spectra<a class="headerlink" href="#translating-power-spectra" title="Permalink to this headline">¶</a></h2>
+<p>Another transformation you can apply to power spectra is a translation, which changes
+the offset, effectively moving the whole spectrum up or down.</p>
+<p>Note that changing the offset does not change the exponent.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Translation settings</span>
+<span class="n">delta_offset</span> <span class="o">=</span> <span class="mf">0.5</span>        <span class="c1"># How much to change the offset by</span>
+
+<span class="c1"># Translate the power spectrum</span>
+<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">t_powers</span></a> <span class="o">=</span> <span class="n">translate_spectrum</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers</span></a><span class="p">,</span> <span class="n">delta_offset</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the two power spectra, with the translation applied</span>
+<span class="n">plot_spectra</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <span class="p">[</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">t_powers</span></a><span class="p">],</span> <span class="n">log_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_transforms_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_transforms_002.png" />
+</div>
+<div class="section" id="transforming-while-tracking-simulation-parameters">
+<h2>Transforming while Tracking Simulation Parameters<a class="headerlink" href="#transforming-while-tracking-simulation-parameters" title="Permalink to this headline">¶</a></h2>
+<p>As we’ve seen, transforming power spectra changes their definitions, and sometimes
+more than just the parameter we are manipulating directly.</p>
+<p>If you are transforming simulated spectra, it can be useful to keep track of these changes.</p>
+<p>To do so, there are also the function <code class="xref py py-func docutils literal notranslate"><span class="pre">rotate_sim_spectrum()</span></code> and
+<code class="xref py py-func docutils literal notranslate"><span class="pre">translate_sim_spectrum()</span></code>, which work the same as what we’ve seen so far, with
+the addition that they take in a <code class="xref py py-obj docutils literal notranslate"><span class="pre">SimParams</span></code> object, and update and return a
+new <code class="xref py py-obj docutils literal notranslate"><span class="pre">SimParams</span></code> object that tracks the updated simulation parameters.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rotate a power spectrum, tracking and updating simulation parameters</span>
+<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">r_s_powers</span></a><span class="p">,</span> <span class="n">r_params</span> <span class="o">=</span> <span class="n">rotate_sim_spectrum</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers</span></a><span class="p">,</span> <span class="n">delta_exp</span><span class="p">,</span> <span class="n">f_rotation</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+<span class="c1"># Check the updated sim params from after the rotation</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r_params</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SimParams(aperiodic_params=[1.3252574989159953, 1.25], periodic_params=[[10, 0.5, 1]], nlv=0.005)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Translate a power spectrum, tracking and updating simulation parameters</span>
+<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">t_s_powers</span></a><span class="p">,</span> <span class="n">t_params</span> <span class="o">=</span> <span class="n">translate_sim_spectrum</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers</span></a><span class="p">,</span> <span class="n">delta_offset</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+<span class="c1"># Check the updated sim params from after the translation</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t_params</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SimParams(aperiodic_params=[1.5, 1], periodic_params=[[10, 0.5, 1]], nlv=0.005)
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.197 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-sims-plot-transforms-py">
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/251590012ec0eb2c00e17dd6ab357fc9/plot_transforms.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_transforms.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/eff087d272789ceeccb8067625fef590/plot_transforms.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_transforms.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018 - VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

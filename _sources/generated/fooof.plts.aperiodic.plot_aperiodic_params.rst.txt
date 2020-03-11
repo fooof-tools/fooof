@@ -1,0 +1,6 @@
+fooof.plts.aperiodic.plot\_aperiodic\_params
+============================================
+
+.. currentmodule:: fooof.plts.aperiodic
+
+.. autofunction:: plot_aperiodic_params

@@ -1,6 +1,0 @@
-fooof.utils.get\_data\_info
-===========================
-
-.. currentmodule:: fooof.utils
-
-.. autofunction:: get_data_info

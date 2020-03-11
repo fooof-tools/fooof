@@ -1,6 +1,0 @@
-fooof.synth.gen.gen\_freqs
-==========================
-
-.. currentmodule:: fooof.synth.gen
-
-.. autofunction:: gen_freqs

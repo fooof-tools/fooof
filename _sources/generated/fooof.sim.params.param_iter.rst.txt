@@ -1,0 +1,6 @@
+fooof.sim.params.param\_iter
+============================
+
+.. currentmodule:: fooof.sim.params
+
+.. autofunction:: param_iter

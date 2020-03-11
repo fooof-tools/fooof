@@ -1,6 +1,0 @@
-fooof.utils.compare\_data\_info
-===============================
-
-.. currentmodule:: fooof.utils
-
-.. autofunction:: compare_data_info

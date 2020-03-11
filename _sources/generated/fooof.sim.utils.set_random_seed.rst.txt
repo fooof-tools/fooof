@@ -1,0 +1,6 @@
+fooof.sim.utils.set\_random\_seed
+=================================
+
+.. currentmodule:: fooof.sim.utils
+
+.. autofunction:: set_random_seed

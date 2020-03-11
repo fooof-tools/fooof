@@ -15,12 +15,18 @@ fooof.FOOOFGroup
    
       ~FOOOFGroup.__init__
       ~FOOOFGroup.add_data
+      ~FOOOFGroup.add_meta_data
       ~FOOOFGroup.add_results
+      ~FOOOFGroup.add_settings
       ~FOOOFGroup.copy
+      ~FOOOFGroup.drop
       ~FOOOFGroup.fit
-      ~FOOOFGroup.get_all_data
       ~FOOOFGroup.get_fooof
+      ~FOOOFGroup.get_group
+      ~FOOOFGroup.get_meta_data
+      ~FOOOFGroup.get_params
       ~FOOOFGroup.get_results
+      ~FOOOFGroup.get_settings
       ~FOOOFGroup.load
       ~FOOOFGroup.plot
       ~FOOOFGroup.print_report_issue
@@ -29,9 +35,20 @@ fooof.FOOOFGroup
       ~FOOOFGroup.report
       ~FOOOFGroup.save
       ~FOOOFGroup.save_report
+      ~FOOOFGroup.set_debug_mode
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FOOOFGroup.has_data
+      ~FOOOFGroup.has_model
+      ~FOOOFGroup.n_null_
+      ~FOOOFGroup.n_peaks_
+      ~FOOOFGroup.null_inds_
    
    

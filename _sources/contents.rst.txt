@@ -6,7 +6,9 @@ Table of Contents
 
    readme_link.rst
    api.rst
+   faq.rst
    glossary.rst
+   reference.rst
    auto_tutorials/index.rst
    auto_examples/index.rst
-   faq.rst
+   auto_motivations/index.rst

@@ -1,11 +1,13 @@
 Frequently Asked Questions
 ==========================
 
-The following are a collection of frequently asked questions
-the ideas and design of FOOOF.
+The following are a collection of frequently asked questions about FOOOF.
 
-These answers do not cover code specific things, as the hands-on
-aspects of using FOOOF are covered in the Tutorials & Examples.
+These answers focus on the ideas and concepts relating to parameterizing neural power spectra.
+
+Code specific and hands-on aspects of using FOOOF are covered in the
+`tutorials <https://fooof-tools.github.io/fooof/auto_tutorials/index.html>`_ and
+`examples <https://fooof-tools.github.io/fooof/auto_examples/index.html>`_.
 
 Table of Contents
 -----------------
@@ -18,67 +20,19 @@ What is FOOOF?
 
 FOOOF is an open-source Python toolbox to parameterize neural power spectra.
 
-In particular, FOOOF is a model driven approach that assumes that neurophysiological times
+In particular, FOOOF is a model driven approach that assumes that neurophysiological time
 series are comprised of two separable components, reflecting periodic and aperiodic activity.
 FOOOF does therefore rely on the assumption that these two components are indeed separable
-components of the underyling data, though it is agnostic to their physiological origin and
+components of the underlying data, though it is agnostic to their physiological origin and
 putative functional roles.
 
 FOOOF operates on frequency representation of neurophysiological times series (power spectra).
-At it's core, FOOOF is a fitting procedure to measure these two components, periodic and
-aperiodic, in the power spectrum. The full model fit consists of a parameterizing of these
+At it's core, FOOOF is a fitting procedure to measure these two components - the periodic and
+aperiodic components - in power spectra. The full model fit consists of a parameterizing of these
 aperiodic and periodic components, as well as a full (combined) model fit of the whole
 power spectrum.
 
 The full mathematical description of the model is described in the tutorials.
-
-Why is it called FOOOF?
-~~~~~~~~~~~~~~~~~~~~~~~
-
-FOOOF stands for "fitting oscillations and one-over f".
-
-This was a working title for the project that stuck as the name of the tool. The way we think
-of it now is in terms of being a tool for parameterizing neural power spectra and,
-in particular, as tool for measuring both periodic and aperiodic activity in neural time series.
-
-Why should I use FOOOF?
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Though we often focus on the rhythmic (periodic) components, neurophysiological recordings
-of electromagnetic activity in the brain are fundamentally composed of aperiodic activity
-upon which there is (sometimes) also rhythmic components.
-
-Both of these components of the signal, periodic and aperiodic activity, are known to be dynamic
-and can vary both within and between subjects. These two components of the signal have very
-different properties and interpretations, however many commonly applied analysis can often
-conflate changes between them, as they do not systematically separate these two aspects of
-the data, potentially leading to misinterpration of the results.
-
-It is therefore of the utmost importance to explicitly measure both components of the signal
-to be sure what is actually changing in the data. This is what FOOOF is designed to do,
-by explicitly modelling and measuring both aperiodic and periodic components of the signal.
-
-Why is it important to measure aperiodic activity?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Historically, much more work has focused on periodic components of neural signals,
-with a focus on measuring oscillatory activity and investigating their properties
-and potential functional roles.
-
-Though the aperiodic, or 1/f, component of the signal has long known to be present
-in the data, more recent work has demonstrated that this aperiodic activity is dynamic,
-and systematically varies both
-`within <http://www.weizmann.ac.il/neurobiology/labs/malach/sites/neurobiology.labs.malach/files/Podvalny%20et%20al_2015_JNeurophysiol.pdf>`_ and
-`between <http://voyteklab.com/wp-content/uploads/Voytek-JNeurosci2015.pdf>`_ subjects.
-
-The dynamics properties of the aperiodic activity means that even if periodic activity
-is still the focus of the analysis, quantification of such data must explicitly account
-for aperiodic activity to appropriately measure what components of the data are actually
-changing. In addition, this suggests that aperiodic components of neural signals may be
-important in their own right as an interesting signal to investigate as potential biomarker,
-with ongoing work also investigating it's potential
-`physiological interpretations <http://voyteklab.com/wp-content/uploads/Gao-NeuroImage2017.pdf>`_
-(see also below for more on this).
 
 What do you mean by 'periodic' and 'aperiodic' activity?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -90,8 +44,48 @@ oscillations, reflecting periodic activity, are operationally defined and detect
 if they exhibit as band-limited power over and above the aperiodic component of the signal
 in the power spectrum.
 
-By 'aperiodic' activity we mean the arhythmic component of the signal, that typically follow
+By 'aperiodic' activity we mean the arrhythmic component of the signal, that typically follow
 a 1/f like function, whereby the power systematically decreases with increasing frequencies.
+
+Why should I use FOOOF?
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Though we often focus on the periodic (rhythmic or oscillatory) components, neurophysiological
+recordings of electromagnetic activity in the brain are composed of not only this periodic
+activity, which is only sometimes present, but also includes aperiodic activity.
+
+Both of these components of the signal, periodic and aperiodic activity, are known to be dynamic
+and can vary both within and between subjects. These two components of the signal have very
+different properties and interpretations, however many commonly applied analyses often
+conflate changes between them, as they do not systematically separate these two aspects of
+the data, potentially leading to misinterpretation of the results.
+
+It is therefore of the utmost importance to explicitly measure both components of the signal
+to be sure what is actually changing in the data. This is what FOOOF is designed to do.
+By explicitly modeling and measuring both aperiodic and periodic components of the signal,
+FOOOF allows for separating out and quantifying which features of the data are changing,
+and in what ways.
+
+Why is it important to measure aperiodic activity?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Historically, much more work has focused on periodic components of neural signals,
+with a focus on measuring putative oscillatory activity and investigating their
+properties and potential functional roles.
+
+Though the aperiodic, or 1/f, component of the signal has long known to be present
+in the data, more recent work has demonstrated that this aperiodic activity is dynamic,
+and systematically varies both within [1_] and between [2_] subjects.
+
+The dynamic properties of the aperiodic activity means that even if periodic activity
+is still the focus of the analysis, quantification of such data must explicitly account
+for aperiodic activity to appropriately measure what components of the data are actually
+changing.
+
+In addition, aperiodic components of neural signals may be important and interesting
+in their own right as an interesting signal to investigate as potential biomarker.
+For example, recent work has been investigating potential physiological interpretations
+of aperiodic activity [3_] (see also below for more on this).
 
 Why call it 'aperiodic'? Why not call it '1/f' or 'noise'?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,42 +98,78 @@ We have moved away from these terms, as they are imprecise, and/or theoretically
 terms of calling it the '1/f', though the signal often approximates '1/f' over at least some
 frequency ranges, it is not truly '1/f' across all frequencies.
 
-Also, from the physics perspective, '1/f' like activity is sometimes referred to as 'noise',
-as shorthand for 'statistical noise'. This is different however to how the terms 'signal' &
-'noise' are typically used in neuroscience, and so we have moved away from this term so as
-not to imply it is merely 'noise'. For similar reasons, we have moved away from calling it
-'background' activity, as the aperiodic properties are of theoretical interest themself, and
-not merely the 'background' to periodic activity.
+From the physics perspective, '1/f' activity is sometimes referred to as 'noise',
+as shorthand for 'statistical noise' or `coloured noise <https://en.wikipedia.org/wiki/Colors_of_noise>`_.
+As well as not necessarily meeting technical definitions, referring to aperiodic neural activity
+as noise in this way is also different however to how the terms 'signal' & 'noise' are typically
+used in neuroscience, in terms of referring to a signal of interest and unwanted or artifactual
+activity. We consider that the aperiodic could be the signal of interest for some investigations.
+Therefore, we have moved away from this term so as not to imply it is either strictly statistical
+noise, nor is it merely unwanted 'noise' in the recording.
+
+For similar reasons, we have moved away from calling it 'background' activity, as this implies
+a signal of interest in the foreground, and we consider that aperiodic activity is of
+theoretical interest itself, and not merely the 'background' to periodic activity.
 
 For these reasons, we prefer and use the term 'aperiodic' as a neutral description
 of this component of the signal.
 
+Why should I look for a peak to consider periodic activity?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Due to neural signals containing aperiodic neural activity, there will always be power
+within any given frequency range. If the aperiodic activity changes, this measured power
+could also change. All this can happen without any truly periodic activity being present
+in the data. Even if there is periodic activity, quantifications of it can be confounded
+by aperiodic activity.
+
+To be able to argue that there is periodic activity, and measure whether it changes, one
+should be able to observe a peak in the power spectrum, reflecting band specific power, over
+and above the aperiodic activity in the data. Using peaks in the power spectrum as evidence for
+periodic activity is an established idea (see, for example [4_]), which we here formalize into
+a model quantification.
+
+What if I don't identify a peak? Is there no periodic activity?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If a peak is not detected, in the power spectrum, within a given frequency band, this is
+consistent with there being no periodic activity at that frequency. Without a detected peak,
+we argue that there is no evidence of periodic activity, at that frequency, over and
+above the power as expected by the aperiodic activity. In this situation, one should be very
+wary of interpreting activity at this frequency, as it is most likely to reflect aperiodic
+activity.
+
+However, we can, of course not prove a negative, and the absence of a detected peak does
+therefore imply that there must be no periodic activity at that frequency band. There could
+be very low power periodic activity, and/or periodic activity that is variable through time
+(bursty) such as to not display a prominent peak across the analyzed time sample.
+
 How should I interpret peaks? Are they equivalent to oscillations?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Peaks, defined as regions of power over and above the aperiodic background
-are considered as putative oscillations. However, there is not necessarily a
-one-to-one mapping of peaks, as detected by the FOOOF algorithm, and oscillations
-in the data.
+Peaks, defined as regions of power over and above the aperiodic background are considered
+to be putative periodic activity. However, there is not necessarily a one-to-one mapping of
+peaks, as detected by the FOOOF algorithm, and oscillations in the data.
 
 One reason for this is that peaks are fit as gaussians, and multiple overlapping
 gaussians can, in some cases, be fit to what one might otherwise consider to likely
 comprise a single oscillatory component in the data. This is a consequence of fitting a
-symmetric function (gaussians) to what can be an asymetric peak power spectrum.
+symmetric function (gaussians) to what can be an asymmetric peak power spectrum.
 
 Because of this, it is often useful to focus on the dominant (highest power) peak within a
 given frequency band from a FOOOF analysis, as this peak will offer the best estimate of
-the putative oscillations center frequency and amplitude. If analyzing bandwidth of extracted peaks,
+the putative oscillations center frequency and power. If analyzing bandwidth of extracted peaks,
 than overlapping peaks should always be considered. FOOOF is not currently optimized for inferring
 whether multiple peaks within a frequency band likely reflect distinct oscillations or not.
 
 It can also be the case that peaks in the power spectrum may reflect harmonic power from an
-asymmetric oscillation in the time domain, and so a peak in a particular frequency range does not
-necessarily imply that there is a true oscillation at that particular frequency in the data. For example,
-an asymmetric wave at 10 Hz can exhibit power at a 20 Hz harmonic, but this does not necessarily imply
-there are any 20 Hz rhythmic components in the signal. For more information on asymmetric oscillations,
-harmonics and how to analyze them, see the Cycle-By-Cycle
-`module <https://bycycle-tools.github.io/bycycle/>`_ and associated `paper <https://doi.org/10.1101/302000>`_.
+asymmetric oscillation in the time domain [5_], and so a peak in a particular frequency range
+does not necessarily imply that there is a true oscillation at that particular frequency in the data.
+For example, an asymmetric wave at 10 Hz can exhibit power at a 20 Hz harmonic, but this does not
+necessarily imply there are any 20 Hz rhythmic components in the signal. To investigate
+potential harmonics arising from asymmetric periodic activity, one can use
+`ByCycle <https://bycycle-tools.github.io/bycycle/>`_
+a Python tool for analyzing neural oscillations and their properties cycle-by-cycle [5_].
 
 Why is this different from other methods / what makes it work?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -197,17 +227,21 @@ from particular bands, and examples of this on the examples page.
 What does the 'aperiodic' component of the signal mean / reflect?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Exactly what the 'aperiodic' component of the signal is / reflects is an open research question.
-We just know it is there, and is a prominent component of the signal. There are a series of
-hypotheses / ideas from us and others about '1/f' like and aperiodic properties of neural
-time series, including functional models from the context of dynamical systems, as well as
-physiological models of where these signals might come from.
+We don't know. Exactly what the 'aperiodic' component of the signal is, in terms of where
+it comes from, and what reflects is an open research question.
 
-One such physiological model, from the VoytekLab, explores the hypothesis that the
+Descriptively, we know that aperiodic activity is always there, and is a prominent
+component of the signal. This has been known for a long time, and there are many
+hypotheses and ideas around about '1/f'-like and aperiodic properties of neural time series,
+and what they might mean. Many of the ideas regarding the potential functional properties
+of 1/f or 'scale-free' systems comes from work in physics and from the context of
+dynamical systems [6_].
+
+We, and others, also work on physiological models of where aperiodic activity might come
+from. One such model, from the VoytekLab, explores the hypothesis that the
 aperiodic properties of the local field potential arise from balanced activity in
 excitatory and inhibitory activity (EI balance), and shows how changes in the aperiodic
-properties of a signal can be predicted from changes in EI balance, which you can
-read about `here <https://doi.org/10.1016/j.neuroimage.2017.06.078>`_
+properties of a signal can be predicted from changes in EI balance [3_].
 
 What data can I use with FOOOF?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -215,11 +249,10 @@ What data can I use with FOOOF?
 FOOOF operates on power spectra derived from electrophysiological or magnetophysiological
 time series, that measure local field potential (LFP) data - in the broad sense, covering
 intracranial LFP data, electroencephalography (EEG), magnetoencephalography (MEG), and
-electrocorticograpgy (ECoG) / intracranial EEG (iEEG).
+electrocorticography (ECoG) / intracranial EEG (iEEG).
 
-Within these modalities, FOOOF is broadly agnostic to the details of the data, and
-can be applied pretty generally, though data from different modalities may require
-somewhat different settings in the FOOOF algorithm.
+FOOOF should work across all of these modalities, and is broadly agnostic to the details
+of the data. However, data from different modalities may require different settings.
 
 Does it matter how I calculate the power spectra?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -247,7 +280,7 @@ There are broadly two approaches you can take:
     short time segments in a task design
 
 - Calculate power spectra per trial, and fit FOOOF models per trial,
-  analyzing the ditribution of FOOOF outputs per condition
+  analyzing the distribution of FOOOF outputs per condition
 
   - This approach can be used when you have relatively long time segments to fit.
     We currently recommend at least about 500 ms for using this approach, though
@@ -262,17 +295,57 @@ Is there a time resolved version?
 
 Since it operates on frequency representations (power spectra) FOOOF is not, by construction,
 a time resolved method. However, similar to other frequency estimation approaches that are
-used in a time-resovled manner, it can be applied in a sliding window fashion, which could
+used in a time-resolved manner, it can be applied in a sliding window fashion, which could
 be used to estimate results analogous to a spectrogram. This functionality is not currently
-directly included in FOOOF, but hopefully will be soon.
+directly included in FOOOF, but is a topic of ongoing work, and will hopefully be available soon.
+
+Why is it called FOOOF?
+~~~~~~~~~~~~~~~~~~~~~~~
+
+FOOOF stands for "fitting oscillations & one-over f".
+
+This was a working title for the project that stuck as the name of the code and the tool.
+We have somewhat moved away from referring to the components that FOOOF fits in this way,
+now preferring to talk about periodic and aperiodic activity. FOOOF therefore is something
+of a legacy name, for a tool for parameterizing neural power spectra.
 
 How do I cite FOOOF?
 ~~~~~~~~~~~~~~~~~~~~
 
-If you use FOOOF for analyses, or reference it's approach, please cite the
-bioarxiv `preprint <https://doi.org/10.1101/299859>`_
+If you use FOOOF for analyses, or reference it's approach, please cite the bioRxiv
+`preprint <https://doi.org/10.1101/299859>`_.
 
 What colour is FOOOF?
 ~~~~~~~~~~~~~~~~~~~~~
 
 FOOOF is orange.
+
+References
+----------
+- [1_] Podvalny et al (2017). A Unifying Principle Underlying the Extracellular Field Potential
+  Spectral Responses in the Human Cortex. DOI: 10.1152/jn.00943.2014
+
+.. _1 : https://doi.org/10.1152/jn.00943.2014
+
+- [2_] Voytek et al (2015). Age-Related Changes in 1/f Neural Electrophysiological Noise.
+  DOI: 10.1523/JNEUROSCI.2332-14.2015
+
+.. _2 : https://doi.org/10.1523/JNEUROSCI.2332-14.2015
+
+- [3_] Gao, Peterson & Voytek (2017). Inferring synaptic excitation/inhibition balance from field potentials.
+  DOI: 10.1016/j.neuroimage.2017.06.078
+
+.. _3 : https://doi.org/10.1016/j.neuroimage.2017.06.078
+
+- [4_] Buzsaki, Logothetis & Singer (2013). Scaling Brain Size, Keeping Timing: Evolutionary Preservation
+  of Brain Rhythms. DOI: 10.1016/j.neuron.2013.10.002
+
+.. _4 : https://doi.org/10.1016/j.neuron.2013.10.002
+
+- [5_] Cole & Voytek (2019). Cycle-by-cycle analysis of neural oscillations. DOI: 10.1152/jn.00273.2019
+
+.. _5: https://doi.org/10.1152/jn.00273.2019
+
+- [6_] He (2014). Scale-free Brain Activity: Past, Present and Future. DOI: 10.1016/j.tics.2014.04.003
+
+.. _6 : https://doi.org/10.1016/j.tics.2014.04.003

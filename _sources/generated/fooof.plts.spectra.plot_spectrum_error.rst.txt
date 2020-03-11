@@ -1,0 +1,6 @@
+fooof.plts.spectra.plot\_spectrum\_error
+========================================
+
+.. currentmodule:: fooof.plts.spectra
+
+.. autofunction:: plot_spectrum_error

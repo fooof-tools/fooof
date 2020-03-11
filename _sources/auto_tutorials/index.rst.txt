@@ -1,5 +1,9 @@
 :orphan:
 
+
+
+.. _sphx_glr_auto_tutorials:
+
 .. _tutorials:
 
 Tutorial
@@ -12,13 +16,13 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="A theoretical / mathematical description of the FOOOF model. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="A theoretical / mathematical description of the FOOOF model.">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_01-ModelDescription_thumb.png
+ .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_01-ModelDescription_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_plot_01-ModelDescription.py`
+     :ref:`sphx_glr_auto_tutorials_plot_01-ModelDescription.py`
 
 .. raw:: html
 
@@ -32,13 +36,13 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Basic usage of the FOOOF object. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Introduction to the module, beginning with the FOOOF object.">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_02-FOOOF_thumb.png
+ .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_02-FOOOF_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_plot_02-FOOOF.py`
+     :ref:`sphx_glr_auto_tutorials_plot_02-FOOOF.py`
 
 .. raw:: html
 
@@ -56,9 +60,9 @@ Tutorial
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_03-FOOOFAlgorithm_thumb.png
+ .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_03-FOOOFAlgorithm_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_plot_03-FOOOFAlgorithm.py`
+     :ref:`sphx_glr_auto_tutorials_plot_03-FOOOFAlgorithm.py`
 
 .. raw:: html
 
@@ -72,13 +76,13 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="More exploration and use of the FOOOF object. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Further exploring the FOOOF object, including algorithm settings and available methods.">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_04-MoreFOOOF_thumb.png
+ .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_04-MoreFOOOF_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_plot_04-MoreFOOOF.py`
+     :ref:`sphx_glr_auto_tutorials_plot_04-MoreFOOOF.py`
 
 .. raw:: html
 
@@ -92,13 +96,13 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Choosing and using different approaches for fitting the aperiodic signal. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Choosing and using different approaches for fitting the aperiodic component.">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_05-AperiodicFitting_thumb.png
+ .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_05-AperiodicFitting_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_plot_05-AperiodicFitting.py`
+     :ref:`sphx_glr_auto_tutorials_plot_05-AperiodicFitting.py`
 
 .. raw:: html
 
@@ -112,13 +116,13 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Using FOOOFGroup to run FOOOF across multiple power spectra. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Using FOOOFGroup to run FOOOF across multiple power spectra.">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_06-FOOOFGroup_thumb.png
+ .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_06-FOOOFGroup_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_plot_06-FOOOFGroup.py`
+     :ref:`sphx_glr_auto_tutorials_plot_06-FOOOFGroup.py`
 
 .. raw:: html
 
@@ -132,13 +136,13 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tips &amp; tricks for choosing FOOOF parameters, tuning fits, and troubleshooting. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Tips &amp; tricks for choosing FOOOF settings, tuning fits, and troubleshooting.">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_07-TroubleShooting_thumb.png
+ .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_07-TroubleShooting_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_plot_07-TroubleShooting.py`
+     :ref:`sphx_glr_auto_tutorials_plot_07-TroubleShooting.py`
 
 .. raw:: html
 
@@ -152,13 +156,13 @@ Tutorial
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting FOOOF models. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting FOOOF models.">
 
 .. only:: html
 
-    .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_08-FurtherAnalysis_thumb.png
+ .. figure:: /auto_tutorials/images/thumb/sphx_glr_plot_08-FurtherAnalysis_thumb.png
 
-        :ref:`sphx_glr_auto_tutorials_plot_08-FurtherAnalysis.py`
+     :ref:`sphx_glr_auto_tutorials_plot_08-FurtherAnalysis.py`
 
 .. raw:: html
 
@@ -171,7 +175,7 @@ Tutorial
    /auto_tutorials/plot_08-FurtherAnalysis
 .. raw:: html
 
-    <div style='clear:both'></div>
+    <div class="sphx-glr-clear"></div>
 
 
 
@@ -196,4 +200,4 @@ Tutorial
 
  .. rst-class:: sphx-glr-signature
 
-    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

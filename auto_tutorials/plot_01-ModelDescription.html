@@ -2,9 +2,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>01: Model Description &#8212; fooof 1.0.0-dev documentation</title>
+    <meta charset="utf-8" />
+    <title>01: Model Description &#8212; fooof 1.0.0rc2 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
@@ -12,17 +11,18 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
 
   </head><body>
 
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0-dev</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -46,10 +46,11 @@
                 <li><a href="../api.html">API</a></li>
                 <li><a href="../faq.html">FAQ</a></li>
                 <li><a href="../glossary.html">Glossary</a></li>
-                <li><a href="index.html">Tutorial</a></li>
+                <li><a href="../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
-                <li><a href="../contents.html">Index</a></li>
-                <li><a href="https://github.com/voytekresearch/fooof">GitHub</a></li>
+                <li><a href="../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -86,30 +87,75 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-01-modeldescription-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-01-modeldescription-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="model-description">
 <span id="sphx-glr-auto-tutorials-plot-01-modeldescription-py"></span><h1>01: Model Description<a class="headerlink" href="#model-description" title="Permalink to this headline">¶</a></h1>
 <p>A theoretical / mathematical description of the FOOOF model.</p>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>A neural power spectrum is fit as a combination of an aperiodic signal and periodic oscillations.</p>
-<p>The aperiodic component of the signal displays 1/f like properties.</p>
-<p>Putative oscillations (hereafter referred to as ‘peaks’), are frequency regions
-in which there are ‘bumps’ of power over and above the aperiodic signal.</p>
-<p>This formulation roughly translates to fitting the power spectrum as:</p>
-<div class="math notranslate nohighlight">
-\[P = L + \sum_{n=0}^{N} G_n\]</div>
-<p>Where <cite>P</cite> is the power spectrum, <cite>L</cite> is the aperiodic signal, and each <span class="math notranslate nohighlight">\(G_n\)</span>
-is a Gaussian fit to a peak, for <cite>N</cite> total peaks extracted from the power spectrum.</p>
+<p>Here we will first introduce a conceptual overview and mathematical description of
+the approach employed here to parameterize neural power spectra.</p>
+<p>If you wish to start with a more hands-on introduction of what the model looks like,
+you can skip ahead to the next tutorial, and come back here after.</p>
+<p>If you want more information that motivates and justifies our
+modeling approach, you can also check out the
+<a class="reference external" href="https://www.biorxiv.org/content/early/2018/04/11/299859">associated paper</a>,
+and/or the
+<a class="reference external" href="https://fooof-tools.github.io/fooof/auto_tutorials/index.html">motivations section</a>
+of the documentation site.</p>
 </div>
-<div class="section" id="aperiodic-fit">
-<h2>Aperiodic Fit<a class="headerlink" href="#aperiodic-fit" title="Permalink to this headline">¶</a></h2>
-<p>The aperiodic fit uses an exponential function, fit on the semilog power spectrum
+<div class="section" id="conceptual-overview">
+<h2>Conceptual Overview<a class="headerlink" href="#conceptual-overview" title="Permalink to this headline">¶</a></h2>
+<p>The conceptual idea motivating the desire to parameterize neural power spectra is the
+idea that there are multiple distinct ‘components’ within neural field data,
+and we would like a way to explicitly and specifically model these different
+aspects of the data.</p>
+<p>More specifically, the FOOOF model conceptualizes the neural data as a combination
+of aperiodic and periodic (oscillatory) activity.</p>
+<p>The goal of the model is to measure these component, separately and explicitly,
+from frequency representations of neural field data (neural power spectra).</p>
+<div class="section" id="aperiodic-activity">
+<h3>Aperiodic Activity<a class="headerlink" href="#aperiodic-activity" title="Permalink to this headline">¶</a></h3>
+<p>By ‘aperiodic’ activity, we mean activity that is not rhythmic, or activity that has
+no characteristic frequency.</p>
+<p>In the power spectrum, we typically see this as 1/f-like activity, in which the power
+across frequencies decreases with a <span class="math notranslate nohighlight">\(\frac{1}{F^\chi}\)</span> relationship.</p>
+<p>To measure the aperiodic activity, we would like to describe this activity,
+without our measure being influenced by any co-occurring periodic activity.</p>
+</div>
+<div class="section" id="periodic-activity">
+<h3>Periodic Activity<a class="headerlink" href="#periodic-activity" title="Permalink to this headline">¶</a></h3>
+<p>By periodic activity, we mean activity that does have a characteristic frequency.
+This includes what are typically referred to as neural oscillations, often described
+in particular frequency bands such as delta, theta, alpha, beta, gamma, etc.</p>
+<p>In the frequency domain, putative oscillations are frequency regions in which
+there are ‘bumps’ of power over and above the aperiodic component.
+We will generally refer to the these as ‘peaks’ in the neural power spectrum.</p>
+<p>To measure the periodic activity, we would like to describe these peaks, without our
+measures of these peaks being influenced by co-occurring aperiodic activity.</p>
+</div>
+</div>
+<div class="section" id="mathematical-overview">
+<h2>Mathematical Overview<a class="headerlink" href="#mathematical-overview" title="Permalink to this headline">¶</a></h2>
+<p>This formulation, of a combination of aperiodic and periodic activity,
+translates to conceptualizing the power spectrum as:</p>
+<div class="math notranslate nohighlight">
+\[NPS = AP + \sum_{n=0}^{N} P_n\]</div>
+<p>Where <span class="math notranslate nohighlight">\(NPS\)</span> is a neural power spectrum, <span class="math notranslate nohighlight">\(AP\)</span> is the aperiodic component,
+and each <span class="math notranslate nohighlight">\(P_n\)</span> describes a peak, for <span class="math notranslate nohighlight">\(N\)</span> peaks extracted from the power spectrum,
+which makes up the periodic component.</p>
+<p>To enact this model, we need to describe how to measure <span class="math notranslate nohighlight">\(AP\)</span> and <span class="math notranslate nohighlight">\(P_n\)</span>,
+which we do next, by describing the specific functions we use to measure these components.</p>
+<div class="section" id="aperiodic-component">
+<h3>Aperiodic Component<a class="headerlink" href="#aperiodic-component" title="Permalink to this headline">¶</a></h3>
+<p>To fit the aperiodic component, we use an exponential function,
+which we will refer to as <span class="math notranslate nohighlight">\(L\)</span>.
+Note that this function is fit on the semi-log power spectrum
 (linear frequencies and <span class="math notranslate nohighlight">\(log_{10}\)</span> power values).</p>
 <p>The exponential is of the form:</p>
 <div class="math notranslate nohighlight">
@@ -117,51 +163,84 @@ is a Gaussian fit to a peak, for <cite>N</cite> total peaks extracted from the p
 <p>Or, equivalently:</p>
 <div class="math notranslate nohighlight">
 \[L = b - \log(k + F^\chi)\]</div>
-<p>In this formulation, the parameters <cite>b</cite>, <cite>k</cite>, and <span class="math notranslate nohighlight">\(\chi\)</span>
-define the aperiodic signal, as:</p>
+<p>In this formulation, the parameters <span class="math notranslate nohighlight">\(b\)</span>, <span class="math notranslate nohighlight">\(k\)</span>, and <span class="math notranslate nohighlight">\(\chi\)</span>
+define the aperiodic component, as:</p>
 <ul class="simple">
-<li><cite>b</cite> is the broadband ‘offset’</li>
-<li><cite>k</cite> relates to the ‘knee’</li>
-<li><span class="math notranslate nohighlight">\(\chi\)</span> is the ‘exponent’ of the aperiodic fit</li>
-<li><cite>F</cite> is the vector of input frequencies</li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span> is the broadband ‘offset’</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span> relates to the ‘knee’</p></li>
+<li><p><span class="math notranslate nohighlight">\(\chi\)</span> is the ‘exponent’ of the aperiodic fit</p></li>
+<li><p><span class="math notranslate nohighlight">\(F\)</span> is the vector of input frequencies</p></li>
 </ul>
-<p>Note that fitting the knee parameter is optional. If used, the knee defines a bend in the
-aperiodic <cite>1/f</cite> like component of the signal.</p>
-<p>By default the aperiodic signal is fit with the ‘knee’ parameter set to zero.
-This fits the aperiodic signal equivalently to fitting a linear fit in log-log space.</p>
-<p>Broader frequency ranges typically do not display a single 1/f like characteristic,
-and so for these cases fitting with the knee parameter allows for modelling bends
-in the aperiodic signal.</p>
+<p>Note that fitting the knee parameter is optional. If used, the knee parameter defines a
+‘bend’ in the aperiodic <cite>1/f</cite> like component of the data. If not used, the ‘knee’
+parameter is set to zero. Without a ‘knee’ parameter, this is equivalent to fitting
+a linear fit in log-log space to measure the ‘slope’ of the power spectrum (where the
+exponent = -slope).</p>
+<p>We use this form since though neural data is often discussed in terms of having
+<cite>1/f</cite> activity, across broader frequency ranges, there is typically not a single
+<cite>1/f</cite> characteristic. Using this form allows for modeling bends in the power spectrum
+of the aperiodic component, if and when they occur.</p>
+<div class="section" id="relating-exponents-to-power-spectrum-slope">
+<h4>Relating Exponents to Power Spectrum Slope<a class="headerlink" href="#relating-exponents-to-power-spectrum-slope" title="Permalink to this headline">¶</a></h4>
+<p>Another common way to measure 1/f properties in neural power spectra is to measure
+the slope of the spectrum in log-log spacing, measuring the 1/f as:</p>
+<dl class="simple">
+<dt>..math::</dt><dd><p>NPS = ax + b</p>
+</dd>
+</dl>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(a\)</span> is the power spectrum slope</p></li>
+<li><dl class="field-list simple">
+<dt class="field-odd">math</dt>
+<dd class="field-odd"><p><cite>b</cite> is the offset.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Note that, when fitting without a knee, this can be considered equivalent to the
+exponential fits that we perform, where the slope relates to the exponent value as:</p>
+<dl class="simple">
+<dt>..math::</dt><dd><p>chi = -a</p>
+</dd>
+</dl>
 </div>
-<div class="section" id="peaks">
-<h2>Peaks<a class="headerlink" href="#peaks" title="Permalink to this headline">¶</a></h2>
-<p>Regions of power over above this aperiodic signal, as defined above, are considered
-to be putative oscillations and are fit in the model by a Gaussian.</p>
-<p>For each Gaussian, <span class="math notranslate nohighlight">\(G_n\)</span>, with the form:</p>
+</div>
+<div class="section" id="periodic-component-s">
+<h3>Periodic Component(s)<a class="headerlink" href="#periodic-component-s" title="Permalink to this headline">¶</a></h3>
+<p>Regions of power over above the aperiodic component, or ‘peaks’, are considered to be
+putative oscillations, and form the periodic component(s) of the data. To fit these
+periodic components, we use Gaussians.</p>
+<p>Each Gaussian, referred to as <span class="math notranslate nohighlight">\(G_n\)</span>, is of the form:</p>
 <div class="math notranslate nohighlight">
 \[G_n = a * exp (\frac{- (F - c)^2}{2 * w^2})\]</div>
-<p>Each peak is defined in terms of parameters <cite>a</cite>, <cite>c</cite> and <cite>w</cite>, where:</p>
+<p>This describes each peak in terms of parameters <cite>a</cite>, <cite>c</cite> and <cite>w</cite>, where:</p>
 <ul class="simple">
-<li><cite>a</cite> is the amplitude of the peak, over and above the aperiodic signal</li>
-<li><cite>c</cite> is the center frequency of the peak</li>
-<li><cite>w</cite> is the width of the peak</li>
-<li><cite>F</cite> is the vector of input frequencies</li>
+<li><p><span class="math notranslate nohighlight">\(a\)</span> is the height of the peak, over and above the aperiodic component</p></li>
+<li><p><span class="math notranslate nohighlight">\(c\)</span> is the center frequency of the peak</p></li>
+<li><p><span class="math notranslate nohighlight">\(w\)</span> is the width of the peak</p></li>
+<li><p><span class="math notranslate nohighlight">\(F\)</span> is the vector of input frequencies</p></li>
 </ul>
-<p>The full power spectrum fit is therefore the combination of the aperiodic fit,
-<cite>L</cite> defined by the exponential fit, and <cite>N</cite> peaks, where each <span class="math notranslate nohighlight">\(G_n\)</span> is
-formalized as a Gaussian process.</p>
-<p>Full method details are available in the paper:
-<a class="reference external" href="https://www.biorxiv.org/content/early/2018/04/11/299859">https://www.biorxiv.org/content/early/2018/04/11/299859</a></p>
-<p>This procedure is able to create a model of the neural power spectrum,
-that is fully described mathematical by the mathematical model from above.</p>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>The full power spectrum model is therefore the combination of the aperiodic fit,
+<span class="math notranslate nohighlight">\(L\)</span> defined by the exponential fit, and <cite>N</cite> peaks, where each <span class="math notranslate nohighlight">\(G_n\)</span>
+is fit with a Gaussian.</p>
+<p>The next tutorial, will start to use this model.
+For more technical details on the model formulation and fitting process, check out the
+<a class="reference external" href="https://www.biorxiv.org/content/early/2018/04/11/299859">paper</a>,</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-01-modeldescription-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/9ee21f53672caca7fb7f84775c8266f3/plot_01-ModelDescription.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_01-ModelDescription.py</span></code></a></div>
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/7d5660cf0942487f88d5f7122e932b99/plot_01-ModelDescription.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_01-ModelDescription.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/cc804a6d6a719c9e628feb4f056bbd74/plot_01-ModelDescription.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_01-ModelDescription.py</span></code></a></p>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/8bfec2e3f0f74ee4d9194f322c31b51e/plot_01-ModelDescription.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_01-ModelDescription.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 </div>
 
@@ -178,7 +257,7 @@ that is fully described mathematical by the mathematical model from above.</p>
     </p>
     <p>
         &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
     </p>
   </div>
 </footer>
