@@ -64,7 +64,7 @@ shade_color = '#0365C0'
 # Simulating Data
 # ~~~~~~~~~~~~~~~
 #
-# For this example, we will use simulated data - so let's start by simulating a
+# For this example, we will use simulated data. Let's start by simulating a
 # a baseline power spectrum.
 #
 
@@ -78,7 +78,7 @@ f_range = [1, 35]
 # Define default aperiodic values
 ap = [0, 1]
 
-# Define default periodic values
+# Define default periodic values for band specific peaks
 theta = [6, 0.4, 1]
 alpha = [10, 0.5, 0.75]
 beta  = [25, 0.3, 1.5]
@@ -94,13 +94,15 @@ freqs, powers = gen_power_spectrum(f_range, ap, [theta, alpha, beta], nlv, f_res
 #
 # Band ratio measures are a ratio of power between defined frequency bands.
 #
-# Next, let's define a function we can use to calculate band ratio measures, and
+# We can now define a function we can use to calculate band ratio measures, and
 # apply it to our baseline power spectrum.
 #
-# For this example, we will be using the theta / beta ratio, which is probably the
-# most commonly applied band ratio measure. Note that it doesn't matter too much
-# exactly which ratio measure or which frequency band definitions we use, as the
-# general properties demonstrated here do generalize do different bands and ranges.
+# For this example, we will be using the theta / beta ratio, which is the
+# most commonly applied band ratio measure.
+#
+# Note that it doesn't matter exactly which ratio measure or which frequency band
+# definitions we use, as the general properties demonstrated here generalize
+# to different bands and ranges.
 #
 
 ###################################################################################################
@@ -211,7 +213,8 @@ _ = [ax.axis('off') for ax in [axes[0, 0], axes[1, 1]]]
 # three different band peaks present in our data. For 7 of the 9 possible changes, we can
 # do so in a way that creates an identical change in the measured band ratio measure.
 #
-# Band ratio measures are therefore not specific to band power differences.
+# Band ratio measures are therefore not specific to band power differences, but rather
+# can reflect multiple different changes across multiple different periodic features.
 #
 
 ###################################################################################################
@@ -256,6 +259,16 @@ for ax, (label, (comparison, spectrum)) in zip(axes, exp_spectra.items()):
     ax.set_xlim([0, 35]); ax.set_ylim([-1.75, 0])
 
 ###################################################################################################
+#
+# In these simulations, we again see that we can obtain the same measured difference in
+# band ratio measures from differences in the aperiodic properties of the data. This is
+# true even if there are no periodic peaks present at all.
+#
+# This shows that band ratio measures are not even specific to periodic activity,
+# and can be driven by changes in aperiodic activity.
+#
+
+###################################################################################################
 # Conclusion
 # ----------
 #
@@ -270,7 +283,7 @@ for ax, (label, (comparison, spectrum)) in zip(axes, exp_spectra.items()):
 # parameterizing power spectra are more specific for adjudicating what is changing
 # in neural data.
 #
-# For more investigation into band ratios, their methodological issues, and a comparison
-# to parameterizing power spectra, see the full project
+# For more investigation into band ratios, their methodological issues, applications to real
+# data, and a comparison to parameterizing power spectra, see the full project
 # `here <https://github.com/voytekresearch/BandRatios>`_,
 #

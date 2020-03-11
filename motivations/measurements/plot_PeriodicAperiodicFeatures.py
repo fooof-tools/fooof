@@ -2,24 +2,25 @@
 Conflating Periodic & Aperiodic Changes
 =======================================
 
-Demonstrating how changes in periodic & aperiodic activity can be conflated.
+Demonstrating how changes in periodic & aperiodic features can be conflated.
 
-This example is a code implementation and quantitatively exact version
-of Figure 1 from the 'Parameterizing Neural Power Spectra' paper.
+This example is a code implementation and quantitatively exact version of Figure 1 from the
+`Parameterizing Neural Power Spectra` <https://www.biorxiv.org/content/10.1101/2020.01.11.900977v1>`_,
+ paper.
 """
 
 ###################################################################################################
 # Measuring Neural Activity
 # -------------------------
 #
-# Commonly in electrophysiological data analysis, we wish to measure and interpret changes
-# in particular features of our data, for example, measuring changes in power of a frequency
-# band of interest.
+# In electrophysiological data analysis, we often wish to measure and interpret changes
+# in particular features of our data, for example, measuring changes in the power of
+# a frequency band of interest.
 #
 # In this example, we will examine how using predefined frequency ranges to measure
-# and then interpret differences in power, can lead to misinterpretations in the face
-# of complex data in which multiple different features of the data can change or vary
-# within and between recordings.
+# and then interpret differences from power spectra can lead to misinterpretations
+# in the face of complex data in which multiple different features of the data can
+# change or vary within and between recordings.
 #
 # We conceptualize neural data as complex data that contains multiple 'components', which
 # we categorize as periodic and aperiodic, and note that each of these components can also
@@ -52,7 +53,7 @@ from fooof.plts.spectra import plot_spectra_shading
 
 ###################################################################################################
 
-# Notebook Settings
+# Settings
 log_freqs = True
 log_powers = True
 shade_color = '#0365C0'
@@ -116,7 +117,7 @@ all_powers = {
 # Plotting Power Spectra
 # ~~~~~~~~~~~~~~~~~~~~~~
 #
-# Now we have our power spectra simulated, let's plot them all together.
+# Now that we have our power spectra simulated, let's plot them all together.
 #
 # In the visualization below, we can see that we have created four sets of comparisons,
 # where each has a change in one feature of the data.
@@ -154,9 +155,9 @@ for ax, (title, powers) in zip(axes.reshape(-1), all_powers.items()):
 # To do so, we will first define a helper function that calculates the average power in
 # a band.
 #
-# Then, for each pair, consisting the baseline power spectrum and an adapted version
-# in which one features has been changed, we can measure the apparent change in band
-# specific activity relating to this change.
+# Then, for each pair, consisting of the baseline power spectrum and an adapted version
+# in which one features has been changed, we can measure the change in band specific
+# activity relating to this change.
 #
 
 ###################################################################################################
@@ -183,7 +184,7 @@ for title, powers in all_powers.items():
 
 ###################################################################################################
 #
-# We can see that all of these cases have the exact measured change in alpha power.
+# We can see that all of these cases have the exact measured change in alpha power!
 #
 # However, given that we know exactly what was changed in the simulated data, we know
 # that a change in alpha power is only the correct interpretation in one of the cases
@@ -202,10 +203,10 @@ for title, powers in all_powers.items():
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # So far we have considered the case in which the goal is to analyze and measure
-# alpha power activity, in the case in which there is alpha activity.
+# alpha power activity, in a scenario in which there actually is alpha activity.
 #
-# Next, let's explore what it looks like to analyze for alpha power, in the scenario
-# in which there is no alpha activity present.
+# However, we can also consider the possible scenario of analyzing alpha power (or, by
+# analogy, any other band), in cases in which there is no band-specific power.
 #
 # To do so, we will simulate, plot and measure a new set of data, with the same set up
 # as above, but without adding any alpha peaks to the spectra.
