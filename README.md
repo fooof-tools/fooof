@@ -10,6 +10,11 @@
 
 FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
 
+Note: FOOOF is currently on a pre-release. Please check the install instructions for
+updating to the pre-release version, and check the
+[changelog](https://fooof-tools.github.io/fooof/changelog.html)
+for how to get started with the new version.
+
 ## Overview
 
 FOOOF conceives of a model of the power spectrum as a combination of two distinct functional processes:
@@ -41,6 +46,8 @@ demonstrating example analyses and use cases, and other functionality
 which lists all the code and functionality available in the module
 - [FAQ](https://fooof-tools.github.io/fooof/faq.html):
 answering frequency asked questions
+- [Reference](https://fooof-tools.github.io/fooof/reference.html):
+with information for reporting on using and reference the module
 
 ## Dependencies
 
@@ -60,6 +67,16 @@ If you are using [Anaconda](https://www.anaconda.com/download/), then you are go
 If you aren't already using Anaconda, it is a useful tool to get and manage these dependencies.
 
 ## Installation
+
+**Pre-Release Version**
+
+To install the current pre-release version, use pip:
+
+`$ pip install fooof --pre`
+
+If you already have a version of FOOOF installed, you will need to remove it first:
+
+`$pip uninstall fooof`
 
 **Stable Version**
 
@@ -110,7 +127,7 @@ If you use this code in your project, please cite:
     doi: https://doi.org/10.1101/299859
 
 More information for how to cite this method can be found
-[here]https://fooof-tools.github.io/fooof/reference.html
+[here](https://fooof-tools.github.io/fooof/reference.html)
 
 Direct Link: https://doi.org/10.1101/299859
 
@@ -204,7 +221,7 @@ fg.save(file_name='fooof_group_results', save_results=True)
 
 Example output from using FOOOFGroup across a group of power spectra:
 
-!["fooof_group_report"](https://github.com/fooof-tools/fooof/blob/master/doc/img/FOOOFGroup_report.png)
+!["fooof_group_report"](https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOFGroup_report.png)
 
 **Other Functionality**
 

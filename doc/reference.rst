@@ -49,8 +49,8 @@ In addition, we recommend that reports should include information on:
 - How power spectrum were generated, including the length of segments used to calculate spectra
 - If and how model goodness-of-fit measures were assessed
 
-Methods Report Template & Example
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Reporting Template & Example
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 An example methods report might look like:
 
