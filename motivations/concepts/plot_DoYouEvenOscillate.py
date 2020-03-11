@@ -54,8 +54,9 @@ from neurodsp.plts import plot_time_series, plot_power_spectra
 n_seconds = 2
 s_rate = 1000
 
-# Compute a times vector, for plotting
+# Compute a times vector, for plotting, and check length of data
 times = create_times(n_seconds, s_rate)
+n_points = len(times)
 
 ###################################################################################################
 # Frequency Representations of Aperiodic Signals

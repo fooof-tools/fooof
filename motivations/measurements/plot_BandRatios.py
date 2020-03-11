@@ -30,7 +30,7 @@ Exploring how band ratio measures relate to periodic & aperiodic activity.
 #
 # We have completed a full project investigating methodological properties of band
 # ratio measures, which is available
-# `here <https://github.com/voytekresearch/BandRatios>`_,
+# `here <https://github.com/voytekresearch/BandRatios>`_.
 #
 
 ###################################################################################################

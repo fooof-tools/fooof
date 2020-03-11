@@ -5,7 +5,7 @@ This page contains the changelog and updating instructions for the current pre-r
 version of FOOOF 1.0.0rcX.
 
 Changelogs for prior released versions of FOOOF are available at the
-`release page <https://github.com/fooof-tools/fooof/releases>`_
+`release page <https://github.com/fooof-tools/fooof/releases>`_.
 
 1.0.0 (Pre-Release)
 -------------------
@@ -27,14 +27,14 @@ The following is a list of the key naming updates, of public facing code.
 - the `synth` module is now called them `sim` module
 - references to `background` are now called `aperiodic`
 
-    - setting `background_mode` -> `aperiodic_mode`
-    - attribute `background_params_` -> `aperiodic_params_`
-    - short name `bg` is now replaced with `ap`
+  - setting `background_mode` -> `aperiodic_mode`
+  - attribute `background_params_` -> `aperiodic_params_`
+  - short name `bg` is now replaced with `ap`
 - `slope` is now called `exponent`
 - `amplitude`, in reference to peaks, is now called `height`
 
-    - setting `min_peak_amplitude` -> `min_peak_height`
-    - References to `AMP` are now labelled and accessed as `PW` (for 'power')
+  - setting `min_peak_amplitude` -> `min_peak_height`
+  - References to `AMP` are now labelled and accessed as `PW` (for 'power')
 
 Code Organization
 ~~~~~~~~~~~~~~~~~

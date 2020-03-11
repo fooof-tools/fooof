@@ -20,17 +20,17 @@ This link currently leads to a preprint, on biorxiv. The paper is currently unde
 and this link will be updated to the accepted journal version when available.
 
 The paper reports on the method, and include simulation work and example analyses and applications.
-The code for the simulations and applications is all indexed and available
-`here <https://github.com/fooof-tools/Paper>`_.
+The code for the simulations and applications is all indexed and available in the
+`Paper repository <https://github.com/fooof-tools/Paper>`_.
 
 Please cite this paper if you use this method, and/or if you wish to refer to the our approach for parameterizing neural power spectra, and/or to refer to any ideas and examples from this website.
 
 Example Applications
 ~~~~~~~~~~~~~~~~~~~~
 
-You can find the full list of articles that cite the `Parameterizing Neural Power Spectra` paper
-`here <https://scholar.google.com/scholar?oi=bibs&hl=en&cites=1591416229268020768,15214833138798132105,12543969463602123647>`_
-(this links to Google scholar).
+You can find the full list of articles that cite the `Parameterizing Neural Power Spectra` paper at this
+`Google scholar link <https://scholar.google.com/scholar?oi=bibs&hl=en&cites=1591416229268020768,15214833138798132105,12543969463602123647>`_
+.
 
 Methods Reporting
 ~~~~~~~~~~~~~~~~~

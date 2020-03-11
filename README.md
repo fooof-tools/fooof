@@ -126,13 +126,13 @@ If you use this code in your project, please cite:
     Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859.
     doi: https://doi.org/10.1101/299859
 
-More information for how to cite this method can be found
-[here](https://fooof-tools.github.io/fooof/reference.html)
+More information for how to cite this method can be found on the
+[reference page](https://fooof-tools.github.io/fooof/reference.html).
 
 Direct Link: https://doi.org/10.1101/299859
 
-Code and analyses from the paper are also available
-[here](https://github.com/fooof-tools/Paper).
+Code and analyses from the paper are also available in the
+[paper repository](https://github.com/fooof-tools/Paper).
 
 ## Contribute
 
