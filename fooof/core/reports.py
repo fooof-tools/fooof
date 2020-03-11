@@ -1,4 +1,4 @@
-"""Generate reports from FOOOF and FOOOF derivative objects."""
+"""Generate reports from FOOOF objects."""
 
 from fooof.core.io import fname, fpath
 from fooof.core.modutils import safe_import, check_dependency
@@ -13,16 +13,16 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 
 @check_dependency(plt, 'matplotlib')
 def save_report_fm(fm, file_name, file_path=None, plt_log=False):
-    """Generate and save out a as PDF a report for a FOOOF object.
+    """Generate and save out a PDF report for a FOOOF object.
 
     Parameters
     ----------
-    fm : FOOOF() object
-        FOOOF object, containing results from fitting a power spectrum.
+    fm : FOOOF
+        Object with results from fitting a power spectrum.
     file_name : str
         Name to give the saved out file.
     file_path : str, optional
-        Path to directory in which to save. If not provided, saves to current directory.
+        Path to directory to save to. If None, saves to current directory.
     plt_log : bool, optional, default: False
         Whether or not to plot the frequency axis in log space.
     """
@@ -60,23 +60,23 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
 
 @check_dependency(plt, 'matplotlib')
 def save_report_fg(fg, file_name, file_path=None):
-    """Generate and save out as a PDF a report for a FOOOFGroup object.
+    """Generate and save out a PDF report for a FOOOFGroup object.
 
     Parameters
     ----------
-    fg : FOOOFGroup() object
-        FOOOFGroup object, containing results from fitting a group of power spectra.
+    fg : FOOOFGroup
+        Object with results from fitting a group of power spectra.
     file_name : str
         Name to give the saved out file.
     file_path : str, optional
-        Path to directory in which to save. If not provided, saves to current directory.
+        Path to directory to save to. If None, saves to current directory.
     """
 
     font = _report_settings()
 
     # Initialize figure
     fig = plt.figure(figsize=(16, 20))
-    gs = gridspec.GridSpec(3, 2, wspace=0.35, hspace=0.25, height_ratios=[0.8, 1.0, 1.0])
+    gs = gridspec.GridSpec(3, 2, wspace=0.4, hspace=0.25, height_ratios=[0.8, 1.0, 1.0])
 
     # First / top: text results
     ax0 = plt.subplot(gs[0, :])

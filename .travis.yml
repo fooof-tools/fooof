@@ -4,12 +4,15 @@ python:
   - "3.5"
   - "3.6"
   - "3.7"
-#  - "3.8"
+  - "3.8"
 
 install:
   - pip install -r requirements.txt
   - pip install pytest-cov
   - pip install codecov
+  # Run tests with optional dependencies
+  - pip install matplotlib
+  - pip install tqdm
 
 script:
   - py.test --cov=./

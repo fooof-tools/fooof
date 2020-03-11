@@ -2,24 +2,23 @@
 07: Tuning & Troubleshooting
 ============================
 
-Tips & tricks for choosing FOOOF parameters, tuning fits, and troubleshooting.
+Tips & tricks for choosing FOOOF settings, tuning fits, and troubleshooting.
 """
 
 ###################################################################################################
 
 import numpy as np
 
-# FOOOF imports
+# Import the FOOOF and FOOOFGroup objects
 from fooof import FOOOF, FOOOFGroup
 
 # Import some utilities, and tools for creating simulated power-spectra
 from fooof.sim.params import param_sampler
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
-from fooof.core.utils import group_three
 
 ###################################################################################################
 
-# Set random state, for consistency for generating simulated data
+# Set random seed, for consistency generating simulated data
 np.random.seed(321)
 
 ####################################################################################################
@@ -27,7 +26,7 @@ np.random.seed(321)
 # --------------
 #
 # With default settings, FOOOF is minimally constrained. It defaults as such
-# since there are not universal settings that work across all different dataset
+# since there are not universal settings that work across all different recording
 # modalities. Appropriate settings also vary with power spectrum quality (noise,
 # or effectively, the smoothness of the power spectrum), and frequency ranges.
 #
@@ -38,13 +37,13 @@ np.random.seed(321)
 #
 # - A priori constraints, given your data, such as the number
 #   of peaks you expect to extract
-# - Qualitative analysis, guided by examing the the plotted
+# - Qualitative analysis, guided by examining the the plotted
 #   model fit results, as compared to input data
-# - Quantitative analysis, considering the model fit and error
-#   (however, see note at the bottom regarding interpreting model fit error)
+# - Quantitative analysis, considering the model goodness of fit and fit error
+#   (however, see note at the bottom regarding interpreting these metrics)
 #
-# Tuning FOOOF is an imperfect art, and should be done carefully, as assumptions
-# built into the settings chosen will impact the model results.
+# Tuning the model fits is an imperfect art, and should be done carefully, as
+# assumptions built into the settings chosen will impact the model results.
 #
 # We also recommend that FOOOF settings should not be changed between power
 # spectra (across channels, trials, or subjects), if they are to be meaningfully
@@ -57,16 +56,17 @@ np.random.seed(321)
 # Tuning FOOOF
 # ------------
 #
-# With the defaults, FOOOF is relatively unconstrained, and therefore, most
-# commonly FOOOF will overfit, being overzealous at fitting small noisy bumps
-# as peaks. If you move to a new dataset, you may also find you need to relax
-# some settings, for better fits.
+# With default settings, the model fit is fairly liberal at fitting peaks, and so
+# most commonly this will lead to overfitting, being overzealous at fitting small
+# noisy bumps as peaks.
+#
+# In some cases, you may also find you need to relax some settings, to get better fits.
 #
 # You also need to make sure you pick an appropriate aperiodic fitting procedure,
-# and that your data meets the assumptions of the approach you choose.
+# and that your data meets the assumptions of the approach you choose (see previous tutorial).
 #
 # The remainder of this notebook goes through some examples of setting FOOOF
-# parameters to be most appropriate for various datasetes.
+# parameters to be most appropriate for various datasets.
 #
 
 ###################################################################################################
@@ -75,29 +75,24 @@ np.random.seed(321)
 #
 # FOOOF calculates and returns a couple metrics to assist with assessing the
 # quality of the model fits. It calculates both the model fit error, as the
-# root mean-squared error (RMSE) between the full model fit (`fooofed\_spectrum\_`)
-# and the original power spectrum, as well as the R-squared correspondance
-# between the original spectrum and the FOOOFed result.
+# mean absolute error (MAE) between the full model fit (`fooofed\_spectrum\_`)
+# and the original power spectrum, as well as the R-squared correspondence
+# between the original spectrum and the full model.
 #
 # These scores can be used to assess how the model is performing. However
 # interpreting these measures requires a bit of nuance. FOOOF is NOT optimized
 # to minimize fit error / maximize r-squared at all costs. To do so typically
-# results in fitting a large number of gaussian processes, in a way that overfits noise.
+# results in fitting a large number of peaks, in a way that overfits noise,
+# and only artificially reduces error / maximizes r-squared.
 #
-# FOOOF is therefore tuned to try and measure the aperiodic signal and peaks
-# in a parsimonious manner, such as to not overfit noise, and following a
-# fuzzy definition of only fitting peaks where there are actually significant
-# peaks over and above the aperiodic signal, and the noise.
-#
-# One way we tested this is by assessing the model as compared to how expert
-# human raters labeled putative oscillatory 'peaks'. As such, overall the
-# model is not directly designed to optimize model fit error / r-squared.
+# FOOOF is therefore tuned to try and measure the aperiodic component and peaks
+# in a parsimonious manner, and, fit the `right` model (meaning the right aperiodic
+# component and the right number of peaks) rather than the model with the lowest error.
 #
 # Given this, while high error / low r-squared may indicate a poor model fit,
 # very low error / high r-squared may also indicate a power spectrum that is
 # overfit, in particular in which the peak parameters from the model may
-# reflect overfitting by modelling too many peaks, and thus not offer a
-# good description of the underlying data.
+# reflect overfitting by fitting too many peaks.
 #
 # We therefore recommend that, for a given dataset, initial explorations
 # should involve checking both cases in which model fit error is particularly
@@ -112,7 +107,7 @@ np.random.seed(321)
 # Reducing Overfitting
 # --------------------
 #
-# If FOOOF appears to be overfitting (for example, fitting too many Gaussians to small bumps), try:
+# If FOOOF appears to be overfitting (for example, fitting too many peaks to small bumps), try:
 #
 # - Setting a lower-bound bandwidth-limit, to exclude fitting very narrow peaks, that may be noise
 # - Setting a maximum number of peaks that the algorithm may fit: `max_n_peaks`
@@ -127,10 +122,10 @@ np.random.seed(321)
 
 # Set the frequency range to generate the power spectrum
 f_range = [1, 50]
-# Set aperiodic background signal parameters, as [offset, exponent]
+# Set aperiodic component parameters, as [offset, exponent]
 ap_params = [20, 2]
 # Gaussian peak parameters
-gauss_params = [10, 1.0, 2.5, 20, 0.8, 2, 32, 0.6, 1]
+gauss_params = [[10, 1.0, 2.5], [20, 0.8, 2], [32, 0.6, 1]]
 # Set the level of noise to generate the power spectrum with
 nlv = 0.1
 
@@ -149,7 +144,7 @@ fm.report(freqs, spectrum)
 # been overzealous in fitting peaks, and is therefore overfitting.
 #
 # This is also suggested by the model r-squared, which is suspiciously
-# high, given the amount of noise we expect.
+# high, given the amount of noise we in the simulated power spectrum.
 #
 # To reduce this kind of overfitting, we can update the FOOOF parameters.
 #
@@ -162,32 +157,34 @@ fm.report(freqs, spectrum)
 
 ###################################################################################################
 #
-# The simulated definition is defined in terms of Gaussian parameters (these are
-# slightly different from the peak parameters - see the note in tutorial 02).
-#
 # We can compare how FOOOF, with our updated settings, compares to the
 # ground truth of the simulated spectrum.
+#
+# Note that the simulation parameters are defined in terms of Gaussian parameters,
+# which are slightly different from the peak parameters (see the note in tutorial 02),
+# which is why we compare to the model gaussian parameters here.
 #
 
 ###################################################################################################
 
 # Compare ground truth simulated parameters to model fit results
 print('Ground Truth \t\t FOOOF Reconstructions')
-for sy, fi in zip(np.array(group_three(gauss_params)), fm.gaussian_params_):
+for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*sy, *fi))
 
 ###################################################################################################
 # Power Spectra with No Peaks
-# ---------------------------
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # A known case in which FOOOF can overfit is in power spectra in which no peaks
 # are present. In this case, the standard deviation can be very low, and so the
 # relative peak height check (`min_peak_threshold`) is very liberal at keeping gaussian fits.
 #
 # If you expect, or know, you have power spectra without peaks in your data,
-# we therefore recommend making sure you set some value for `min_peak_height`,
-# as otherwise FOOOF is unlikely to appropriately fit power spectra as having
-# no peaks. Setting this value requires checking the scale of your power spectra,
+# we recommend using the `min_peak_height` setting. Otherwise, FOOOF is unlikely to
+# appropriately fit power spectra as having no peaks, since it uses only a relative
+# threshold if `min_peak_height` is set to zero (which is the default value).
+# Setting `min_peak_height` requires checking the scale of your power spectra,
 # allowing you to define an absolute threshold for extracting peaks.
 #
 
@@ -199,24 +196,31 @@ for sy, fi in zip(np.array(group_three(gauss_params)), fm.gaussian_params_):
 #
 # - First check and perhaps loosen any restrictions from `max_n_peaks` and `min_peak_height`
 # - Try updating `peak_threshold` to a lower value
-# - Bad fits may come from issues with aperiodic signal fitting
+# - Bad fits may stem from issues with aperiodic component fitting
+#
+#   - Double check that you are using the appropriate aperiodic mode
 #
 
 ###################################################################################################
-# Create a cleaner simulated power spectrum
-# -----------------------------------------
+#
+# Next we will simulate a much smoother power spectrum, and update settings accordingly.
+#
+
+###################################################################################################
 
 # Set the frequency range to generate the power spectrum
 f_range = [1, 50]
-# Aperiodic parameters, as [offset, exponent]
+# Define aperiodic parameters, as [offset, exponent]
 ap_params = [20, 2]
-# Gaussian peak parameters
-gauss_params = [10, 1.0, 1.0, 20, 0.3, 1.5, 32, 0.25, 1]
+# Define peak parameters, each peak defined as [CF, PW, BW]
+gauss_params = [[10, 1.0, 1.0], [20, 0.3, 1.5], [32, 0.25, 1]]
 # Set the level of noise to generate the power spectrum with
 nlv = 0.025
 
 # Create a simulated power spectrum
 freqs, spectrum = gen_power_spectrum([1, 50], ap_params, gauss_params, nlv=nlv)
+
+###################################################################################################
 
 # Update settings to make sure they are sensitive to smaller peaks in smoother power spectra
 fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.2)
@@ -226,29 +230,60 @@ fm.report(freqs, spectrum)
 
 # Check reconstructed parameters from simulated definition
 print('Ground Truth \t\t FOOOF Reconstructions')
-for sy, fi in zip(np.array(group_three(gauss_params)), fm.gaussian_params_):
+for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*sy, *fi))
 
 ###################################################################################################
 # Checking Fits Across a Group
 # ----------------------------
+#
+# So far we have explored troubleshooting individual model fits. When starting
+# a new analysis, or working with a new dataset, we do recommend starting by
+# trying some individual fits like this.
+#
+# If and when you move to using FOOOFGroup to fit groups of power spectra,
+# there are some slightly different ways to investigate groups of fits,
+# which we'll step through now, using some simulated data.
+#
 
-# Set the parameters options for aperiodic signal and Gaussian peaks
+###################################################################################################
+
+# Simulation settings
+n_spectra = 10
+sim_freq_range = [3, 50]
+nlv = 0.010
+
+# Set the parameter options for aperiodic component and peaks
 ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
 gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
 # Simulate a group of power spectra
-freqs, power_spectra, sim_params = gen_group_power_spectra(10, [3, 50], ap_opts, gauss_opts)
+freqs, power_spectra = gen_group_power_spectra(n_spectra, sim_freq_range,
+                                               ap_opts, gauss_opts, nlv)
 
 ###################################################################################################
 
-# Initialize a FOOOFGroup
+# Initialize a FOOOFGroup object
 fg = FOOOFGroup(peak_width_limits=[1, 6])
 
 ###################################################################################################
 
-# Fit FOOOF and report on the group
+# Fit FOOOF models and report on the group
 fg.report(freqs, power_spectra)
+
+###################################################################################################
+#
+# In the FOOOFGroup report we can get a sense of the overall performance by looking
+# at the information about the goodness of fit metrics, and also things like the
+# distribution of peaks.
+#
+# However, while these metrics can help identify if fits are, on average, going well (or not)
+# they don't necessarily indicate the source of any problems.
+#
+# To do so, we will typically still want to visualize some example fits, to see
+# what is happening. To do so, next we will find which fits have the most error,
+# and select these fits from the FOOOFGroup object to visualize.
+#
 
 ###################################################################################################
 
@@ -259,33 +294,34 @@ worst_fit_ind = np.argmax(fg.get_params('error'))
 fm = fg.get_fooof(worst_fit_ind, regenerate=True)
 
 ###################################################################################################
-#
+
 # Check out the model fit of the extracted FOOOF model
 fm.print_results()
 fm.plot()
 
-
 ###################################################################################################
 #
-# You can also loop through all the results in a test group, extracting all fits
+# You can also loop through all the results in a FOOOFGroup, extracting all fits
 # that meet some criterion that makes them worth checking.
 #
 # This might be checking for fits above some error threshold, as below, but note
 # that you may also want to do a similar procedure to examine fits with the lowest
 # error, to check if FOOOF may be overfitting, or perhaps fits with a particularly
 # large number of gaussians.
+#
 
 ###################################################################################################
 
 # Extract all fits that are above some error threshold, for further examination.
 #  You could also do a similar analysis for particularly low errors
+error_threshold = 0.010
 to_check = []
 for ind, res in enumerate(fg):
-    if res.error > 0.010:
+    if res.error > error_threshold:
         to_check.append(fg.get_fooof(ind, regenerate=True))
 
 # A more condensed version of the procedure above can also be used, like this:
-#to_check = [fg.get_fooof(ind, True) for ind, res in enumerate(fg) if res.error > 0.010]
+#to_check = [fg.get_fooof(ind, True) for ind, res in enumerate(fg) if res.error > error_threshold]
 
 ###################################################################################################
 
@@ -293,6 +329,17 @@ for ind, res in enumerate(fg):
 for ind, fm in enumerate(to_check):
     fm.plot()
     fm.save_report('Report_ToCheck_#' + str(ind))
+
+###################################################################################################
+#
+# Another thing that can be worth keeping an eye on is the average number of fit
+# peaks per model. A particularly high value can indicate overfitting.
+#
+
+###################################################################################################
+
+# Check the average number of fit peaks, per model
+print('Average number of fit peaks: ', np.mean(fg.n_peaks_))
 
 ###################################################################################################
 # Reporting Bad Fits
@@ -313,5 +360,14 @@ for ind, fm in enumerate(to_check):
 ###################################################################################################
 
 # Print out instructions to report bad fits
-#  Note you can also call this from FOOOFGroup, and from instances (ex: fm.print_report_issue())
+#  Note you can also call this from FOOOFGroup, and from instances (ex: `fm.print_report_issue()`)
 FOOOF.print_report_issue()
+
+###################################################################################################
+# Conclusion
+# ----------
+#
+# We have now stepped through the full workflow of fitting FOOOF models, using
+# FOOOF objects, picking settings, and troubleshooting model fits. In the next
+# and final tutorial, we will introduce how to start analyzing FOOOF results.
+#

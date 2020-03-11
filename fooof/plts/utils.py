@@ -1,4 +1,4 @@
-"""Utility functions for plotting in FOOOF.
+"""Utility functions for plotting.
 
 Notes
 -----
@@ -6,22 +6,48 @@ These utility functions should be considered private.
 They are not expected to be called directly by the user.
 """
 
-from numpy import log10
+from itertools import repeat
+from collections.abc import Iterator
 
-from fooof.plts.settings import DEFAULT_FIGSIZE, ALPHA_LEVELS
+import numpy as np
+
 from fooof.core.modutils import safe_import
+from fooof.core.utils import resolve_aliases
+from fooof.plts.settings import ALPHA_LEVELS, PLT_ALIASES
 
 plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
 
-def set_alpha(n_pts):
-    """Set an alpha value for plot that is scaled by the number of points to be plotted.
+def check_ax(ax, figsize=None):
+    """Check whether a figure axes object is defined, and define if not.
 
     Parameters
     ----------
-    n_pts : int
+    ax : matplotlib.Axes or None
+        Object to check if is already an axes object.
+    figsize : tuple of float, optional
+        Size to create the figure, if not already created.
+
+    Returns
+    -------
+    ax : matplotlib.Axes
+        Figure axes object to use.
+    """
+
+    if not ax:
+        _, ax = plt.subplots(figsize=figsize)
+
+    return ax
+
+
+def set_alpha(n_points):
+    """Set an alpha value for plotting that is scaled by the number of points.
+
+    Parameters
+    ----------
+    n_points : int
         Number of points that will be in the plot.
 
     Returns
@@ -31,14 +57,14 @@ def set_alpha(n_pts):
     """
 
     for ke, va in ALPHA_LEVELS.items():
-        if n_pts > ke:
+        if n_points > ke:
             alpha = va
 
     return alpha
 
 
-def add_shades(ax, shades, add_center, logged):
-    """Add shaded regions to a specified graph.
+def add_shades(ax, shades, colors='r', add_center=False, logged=False):
+    """Add shaded regions to a plot.
 
     Parameters
     ----------
@@ -46,9 +72,11 @@ def add_shades(ax, shades, add_center, logged):
         Figure axes upon which to plot.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
-    add_center : boolean
+    colors : str or list of string
+        Color(s) to plot shades.
+    add_center : boolean, default: False
         Whether to add a line at the center point of the shaded regions.
-    logged : boolean
+    logged : boolean, default: False
         Whether the shade values should be logged before applying to plot axes.
     """
 
@@ -56,32 +84,83 @@ def add_shades(ax, shades, add_center, logged):
     if not isinstance(shades[0], list):
         shades = [shades]
 
-    for shade in shades:
+    colors = repeat(colors) if not isinstance(colors, list) else colors
 
-        shade = log10(shade) if logged else shade
+    for shade, color in zip(shades, colors):
 
-        ax.axvspan(shade[0], shade[1], color='r', alpha=0.2, lw=0)
+        shade = np.log10(shade) if logged else shade
+
+        ax.axvspan(shade[0], shade[1], color=color, alpha=0.2, lw=0)
 
         if add_center:
             center = sum(shade) / 2
-            ax.axvspan(center, center, color='g')
+            ax.axvspan(center, center, color='k', alpha=0.6)
 
 
-def check_ax(ax):
-    """Check whether a figure axes object is defined, define if not.
+def recursive_plot(data, plot_function, ax, **kwargs):
+    """A utility to recursively plot sets of data.
 
     Parameters
     ----------
-    ax : matplotlib.Axes or None
-        Axes object to check if is defined.
+    data : list
+        List of datasets to iteratively add to the plot.
+    plot_function : callable
+        Plot function to call to plot the data.
+    ax : matplotlib.Axes
+        Figure axes upon which to plot.
+    **kwargs
+        Keyword arguments to pass into the plot function.
+        Inputs can be organized as:
+
+        - a list of values corresponding to length of data, one for each plot call
+        - a single value, such as an int, str or None, to be applied to all plot calls
+
+    Notes
+    -----
+    The `plot_function` argument must accept the `ax` parameter to specify a plot axis.
+    """
+
+    # Check and update all inputs to be iterators
+    for key, val in kwargs.items():
+
+        # If an input is already an iterator, we can leave as is
+        if isinstance(val, Iterator):
+            kwargs[key] = val
+
+        # If an input is a list, assume one element per call, and make iterator to do so
+        elif isinstance(val, list):
+            kwargs[key] = iter(val)
+
+        # Otherwise, assume is a single value to pass to all plot calls, and make repeat to do so
+        else:
+            kwargs[key] = repeat(val)
+
+    # Pass each array of data recursively into plot function
+    #   Each element of data is added to the same plot axis
+    for cur_data in data:
+
+        cur_kwargs = {key: next(val) for key, val in kwargs.items()}
+        plot_function(cur_data, ax=ax, **cur_kwargs)
+
+
+def check_plot_kwargs(plot_kwargs, defaults):
+    """Check plot keyword arguments, using default values for any missing parameters.
+
+    Parameters
+    ----------
+    plot_kwargs : dict
+        Keyword arguments for a plot call.
+    defaults : dict
+        Any arguments, and their default values, to check and update in 'plot_kwargs'.
 
     Returns
     -------
-    ax : matplotlib.Axes
-        Figure axes object to use.
+    plot_kwargs : dict
+        Keyword arguments for a plot call.
     """
 
-    if not ax:
-        _, ax = plt.subplots(figsize=DEFAULT_FIGSIZE)
+    for key, value in resolve_aliases(defaults, PLT_ALIASES).items():
+        if key not in resolve_aliases(plot_kwargs, PLT_ALIASES):
+            plot_kwargs[key] = value
 
-    return ax
+    return plot_kwargs

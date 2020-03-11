@@ -9,7 +9,7 @@ They are not expected to be used directly by the user.
 import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.utils import set_alpha
+from fooof.plts.utils import check_ax, set_alpha
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -17,14 +17,14 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_scatter_1(data, label, title=None, x_val=0, ax=None):
-    """Plot a scatter plot with the given data.
+def plot_scatter_1(data, label=None, title=None, x_val=0, ax=None):
+    """Plot a scatter plot, with a single y-axis.
 
     Parameters
     ----------
     data : 1d array
         Data to plot.
-    label : str
+    label : str, optional
         Label for the data, to be set as the y-axis label.
     title : str, optional
         Title for the plot.
@@ -38,8 +38,7 @@ def plot_scatter_1(data, label, title=None, x_val=0, ax=None):
     Data is jittered slightly, for visualization purposes (deviations on x-axis are meaningless).
     """
 
-    if not ax:
-        _, ax = plt.subplots()
+    ax = check_ax(ax)
 
     # Create x-axis data, with small jitter for visualization purposes
     x_data = np.ones_like(data) * x_val + np.random.normal(0, 0.025, data.shape)
@@ -48,20 +47,20 @@ def plot_scatter_1(data, label, title=None, x_val=0, ax=None):
 
     if label:
         ax.set_ylabel(label, fontsize=16)
+        plt.xticks([x_val], [label])
 
     if title:
         ax.set_title(title, fontsize=20)
 
-    plt.xticks([x_val], [label])
     ax.tick_params(axis='x', labelsize=16)
-    ax.tick_params(axis='y', labelsize=10)
+    ax.tick_params(axis='y', labelsize=12)
 
     ax.set_xlim([-0.5, 0.5])
 
 
 @check_dependency(plt, 'matplotlib')
 def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
-    """Plot a scatter plot with two y-axes, with the given data.
+    """Plot a scatter plot, with two y-axes.
 
     Parameters
     ----------
@@ -83,9 +82,7 @@ def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
     Data is jittered slightly, for visualization purposes (deviations on x-axis are meaningless).
     """
 
-    if not ax:
-        _, ax = plt.subplots()
-
+    ax = check_ax(ax)
     ax1 = ax.twinx()
 
     plot_scatter_1(data_0, label_0, ax=ax)
@@ -102,28 +99,27 @@ def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
 
 @check_dependency(plt, 'matplotlib')
 def plot_hist(data, label, title=None, n_bins=25, x_lims=None, ax=None):
-    """Plot a histogram with the given data.
+    """Plot a histogram.
 
     Parameters
     ----------
     data : 1d array
         Data to plot.
     label : str
-        Label for the data, to be set as the y-axis label.
+        Label for the data, to be set as the x-axis label.
     title : str, optional
         Title for the plot.
     n_bins : int, optional, default: 25
         Number of bins to use for the histogram.
     x_lims : list of float, optional
-        X-axis limits for the plot.
+        Limits for the x-axis of the plot.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     """
 
-    if not ax:
-        _, ax = plt.subplots()
+    ax = check_ax(ax)
 
-    ax.hist(data[~np.isnan(data)], n_bins, alpha=0.8)
+    ax.hist(data[~np.isnan(data)], n_bins, range=x_lims, alpha=0.8)
 
     ax.set_xlabel(label, fontsize=16)
     ax.set_ylabel('Count', fontsize=16)

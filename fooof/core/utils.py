@@ -9,21 +9,26 @@ import numpy as np
 ###################################################################################################
 
 def group_three(vec):
-    """Takes array of inputs, groups by three.
+    """Group an array of values into threes.
 
     Parameters
     ----------
     vec : 1d array
-        Array of items to sort by 3 - must be divisible by three.
+        Array of items to group by 3. Length of array must be divisible by three.
 
     Returns
     -------
     list of list
         List of lists, each with three items.
+
+    Raises
+    ------
+    ValueError
+        If input data cannot be evenly grouped into threes.
     """
 
     if len(vec) % 3 != 0:
-        raise ValueError('Wrong size array to group by three.')
+        raise ValueError("Wrong size array to group by three.")
 
     return [list(vec[i:i+3]) for i in range(0, len(vec), 3)]
 
@@ -84,16 +89,16 @@ def dict_select_keys(in_dict, keep):
 
 
 def check_array_dim(arr):
-    """Check that parameter array has 2D shape, and reshape if not.
+    """Check if an array has 2D shape, and replace with an empty 2d array if not.
 
     Parameters
     ----------
-    arr : np.array
+    arr : ndarray
         Array to check.
 
     Returns
     -------
-    np.array
+    2d array
         Original array, if 2D, or 2D empty array.
     """
 
@@ -159,8 +164,78 @@ def check_flat(lst):
     This function only deals with one level of nesting.
     """
 
-    # Note: flatten if list contains list(s), but skip if list is empty (which is valid)
+    # Flatten if list contains list(s) - but skip if list is empty (which is valid)
     if len(lst) != 0 and isinstance(lst[0], list):
         lst = list(chain(*lst))
 
     return lst
+
+
+def check_inds(inds):
+    """Check various ways to indicate indices and convert to a consistent format.
+
+    Parameters
+    ----------
+    inds : int or array_like of int or array_like of bool
+        Indices, indicated in multiple possible ways.
+
+    Returns
+    -------
+    array of int
+        Indices, indicated
+
+    Notes
+    -----
+    The goal of this function is to convert multiple possible
+    ways of indicating a set of indices into one consistent format.
+    This function works only on indices defined for 1 dimension.
+    """
+
+    # Typcasting: if a single int, convert to an array
+    if isinstance(inds, int):
+        inds = np.array([inds])
+    # Typecasting: if a list or range, convert to an array
+    elif isinstance(inds, (list, range)):
+        inds = np.array(inds)
+
+    # Conversion: if array is boolean, get integer indices of True
+    if inds.dtype == bool:
+        inds = np.where(inds)[0]
+
+    return inds
+
+
+def resolve_aliases(kwargs, aliases):
+    """Check and resolve to a standard label for any potential aliases.
+
+    Parameters
+    ----------
+    kwargs : dict
+        Dictionary of labels and their values.
+    aliases : dict
+        Dictionary of label names and their list of aliases.
+
+    Returns
+    -------
+    out_kwargs : dict
+        Dictionary of labels and their values.
+
+    Notes
+    -----
+    This function checks all labels in `kwargs` for if they are listed within
+    the the `aliases` dictionary. If so, it standardizes this label in `kwargs`
+    to the standard label, as defined by the keys of `aliases`.
+    """
+
+    out_kwargs = {}
+
+    for name, alia in aliases.items():
+
+        for key, val in kwargs.items():
+
+            if key in alia:
+                out_kwargs[name] = val
+            else:
+                out_kwargs[key] = val
+
+    return out_kwargs

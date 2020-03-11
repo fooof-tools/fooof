@@ -1,9 +1,16 @@
-# Requirements for building the documentation
+# Requirements for building the documentation site
 sphinx
 sphinx_gallery
 sphinx_bootstrap_theme
 m2r
 numpydoc
 
+# Optional fooof dependencies that are required for documentation
+matplotlib
+tqdm
+
 # Requirements for running the examples
 mne
+
+# Requirements for running the motivations
+neurodsp >= 2.0.0

@@ -26,22 +26,20 @@
 # Ignore temp file for linter output
 _lint.txt
 
-# Ignore reports generated during testing
-*/tests/test_reports/*
+# Ignore all files generated during testing
 */tests/test_files/*
 
-# Ignore data files generated in the tutorial
-/tutorial/*.pdf
-/tutorial/*.json
-/tutorials/*.pdf
-/tutorials/*.json
-/examples/*.pdf
-/exmaples/*.json
-#^Note: 'tutorial' is old Jupyter notebook folder
-#  'tutorials' & 'examples' are sphinx folders
+# Ignore any files generated in the documentation
+/tutorials/**/*.pdf
+/tutorials/**/*.json
+/examples/**/*.pdf
+/examples/**/*.json
+/motivations/**/*.pdf
+/motivations/**/*.json
 
 # Ignore documentation files
 doc/_build/*
 doc/auto_examples/*
 doc/auto_tutorials/*
+doc/auto_motivations/*
 doc/generated/*

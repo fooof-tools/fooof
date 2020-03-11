@@ -11,7 +11,7 @@ from os.path import dirname as up
 
 import sphinx_gallery
 import sphinx_bootstrap_theme
-from sphinx_gallery.sorting import FileNameSortKey
+from sphinx_gallery.sorting import FileNameSortKey, ExplicitOrder
 
 # -- Path setup --------------------------------------------------------------
 
@@ -112,10 +112,11 @@ html_theme_options = {
     'navbar_links': [
         ("API", "api"),
         ("FAQ", "faq"),
-        ('Glossary', "glossary"),
-        ("Tutorial", "auto_tutorials/index"),
+        ("Glossary", "glossary"),
+        ("Motivations", "auto_motivations/index"),
+        ("Tutorials", "auto_tutorials/index"),
         ("Examples", "auto_examples/index"),
-        ("Index", "contents"),
+        ("Reference", "reference"),
         ("GitHub", "https://github.com/fooof-tools/fooof", True)
     ],
     'bootswatch_theme': "flatly",
@@ -139,7 +140,6 @@ html_theme_options = {
 # 'searchbox.html']``.
 #
 # html_sidebars = {}
-
 
 ####
 
@@ -178,7 +178,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'fooof.tex', 'fooof Documentation',
+    (master_doc, 'fooof.tex', 'FOOOF Documentation',
      'Thomas Donoghue', 'manual'),
 ]
 
@@ -188,7 +188,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'fooof', 'fooof Documentation',
+    (master_doc, 'fooof', 'FOOOF Documentation',
      [author], 1)
 ]
 
@@ -199,8 +199,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'fooof', 'fooof Documentation',
-     author, 'fooof', 'One line description of project.',
+    (master_doc, 'fooof', 'FOOOF Documentation',
+     author, 'fooof', 'Parameterizing neural power spectra.',
      'Miscellaneous'),
 ]
 
@@ -208,8 +208,14 @@ texinfo_documents = [
 # -- Extension configuration -------------------------------------------------
 
 sphinx_gallery_conf = {
-    'examples_dirs': ['../examples', '../tutorials'],
-    'gallery_dirs': ['auto_examples', 'auto_tutorials'],
+    'examples_dirs': ['../examples', '../tutorials', '../motivations'],
+    'gallery_dirs': ['auto_examples', 'auto_tutorials', 'auto_motivations'],
+    'subsection_order' : ExplicitOrder(['../examples/manage',
+                                        '../examples/plots',
+                                        '../examples/sims',
+                                        '../examples/analyses',
+                                        '../motivations/concepts',
+                                        '../motivations/measurements']),
     'within_subsection_order': FileNameSortKey,
     'default_thumb_file': 'img/spectrum.png',
     'backreferences_dir': 'generated',
