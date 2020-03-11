@@ -53,27 +53,27 @@ Functions to manipulate, examine and analyze FOOOF objects, and related utilitie
    compare_info
    average_fg
    combine_fooofs
-   fit_fooof_group_3d
+   fit_fooof_3d
 
-Data Objects
+Bands Object
 ------------
 
-Objects to manage and store data.
+An object to handle oscillation band definitions.
 
-Oscillation Bands
-~~~~~~~~~~~~~~~~~
-
-Object to handle oscillation band definitions.
-
-.. currentmodule:: fooof.data.bands
+.. currentmodule:: fooof.bands.bands
 
 .. autosummary::
    :toctree: generated/
 
    Bands
 
-Model Data
-~~~~~~~~~~
+Data Objects
+------------
+
+Objects to manage and store data.
+
+Model Information
+~~~~~~~~~~~~~~~~~
 
 Objects to store settings, metadata and results for FOOOF models.
 
@@ -86,8 +86,8 @@ Objects to store settings, metadata and results for FOOOF models.
    FOOOFMetaData
    FOOOFResults
 
-Simulated Data
-~~~~~~~~~~~~~~
+Simulation Parameters
+~~~~~~~~~~~~~~~~~~~~~
 
 Object to store information about simulated data.
 
@@ -182,6 +182,18 @@ Functions for transforming power spectra.
     rotate_sim_spectrum
     compute_rotation_offset
 
+Utitilies
+~~~~~~~~~
+
+Utilities for simulating power spectra.
+
+.. currentmodule:: fooof.sim.utils
+
+.. autosummary::
+    :toctree: generated/
+
+    set_random_seed
+
 Plotting Functions
 ------------------
 
@@ -248,6 +260,29 @@ Utilities
 ---------
 
 Utility functions and objects.
+
+Input / Output (IO)
+~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: fooof.utils.io
+
+.. autosummary::
+    :toctree: generated/
+
+    load_fooof
+    load_fooofgroup
+
+Parameter Utilities
+~~~~~~~~~~~~~~~~~~~
+
+Utilities for working with parameters
+
+.. currentmodule:: fooof.utils.params
+
+.. autosummary::
+    :toctree: generated/
+
+    compute_knee_frequency
 
 Data Utilities
 ~~~~~~~~~~~~~~

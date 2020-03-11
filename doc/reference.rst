@@ -1,6 +1,9 @@
 Reference and Reporting Information
 ===================================
 
+This page covers information for how to reference and report on using FOOOF, as well as some collected
+informaiton and examples of projects, tools, and analyses that have and can be done using FOOOF.
+
 Table of Contents
 -----------------
 .. contents::
@@ -14,7 +17,7 @@ The reference for this method is
 `Parameterizing Neural Power Spectra <https://doi.org/10.1101/299859>`_.
 
 This link currently leads to a preprint, on biorxiv. The paper is currently under review,
-and this link will be updated to the accepted journal version when available/
+and this link will be updated to the accepted journal version when available.
 
 The paper reports on the method, and include simulation work and example analyses and applications.
 The code for the simulations and applications is all indexed and available
@@ -49,16 +52,19 @@ In addition, we recommend that reports should include information on:
 Methods Report Template & Example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-An example methods report might look like this:
+An example methods report might look like:
 
-| >> The FOOOF algorithm (version *X.X.X*) was used to parameterize neural power spectra. Settings for the
-| >> algorithm were set as: peak width limits : *XX*; max number of peaks : *XX*; minimum peak height : *XX*;
-| >> peak threshold : *XX*; and aperiodic mode : *XX*. Power spectra were parameterized across
-| >> the frequency range *XX* to *XX* Hz.
+    The FOOOF algorithm (version *X.X.X*) was used to parameterize neural power spectra. Settings for the
+    algorithm were set as: peak width limits : *XX*; max number of peaks : *XX*; minimum peak height : *XX*;
+    peak threshold : *XX*; and aperiodic mode : *XX*. Power spectra were parameterized across
+    the frequency range *XX* to *XX* Hz.
 
 Where all of the *X*'s should be filled in with the relevant information.
 
-Note that as of FOOOF version 1.0.0 there is code utility that will generate this information for you:
+Note that as of FOOOF version 1.0.0 there is code utility that will generate this information for you.
+If you have a FOOOF object defined (such as `FOOOF` or `FOOOFGroup`), as 'fooof_obj', you
+can run the following code to print out the information you need and/or a template of the
+methods report:
 
 .. code-block:: python
 

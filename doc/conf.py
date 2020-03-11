@@ -113,9 +113,10 @@ html_theme_options = {
         ("API", "api"),
         ("FAQ", "faq"),
         ("Glossary", "glossary"),
-        ("But Why Though.", "auto_motivations/index"),
-        ("Tutorial", "auto_tutorials/index"),
+        ("Motivations", "auto_motivations/index"),
+        ("Tutorials", "auto_tutorials/index"),
         ("Examples", "auto_examples/index"),
+        ("Reference", "reference"),
         ("GitHub", "https://github.com/fooof-tools/fooof", True)
     ],
     'bootswatch_theme': "flatly",
@@ -139,7 +140,6 @@ html_theme_options = {
 # 'searchbox.html']``.
 #
 # html_sidebars = {}
-
 
 ####
 
@@ -213,7 +213,9 @@ sphinx_gallery_conf = {
     'subsection_order' : ExplicitOrder(['../examples/manage',
                                         '../examples/plots',
                                         '../examples/sims',
-                                        '../examples/analyses']),
+                                        '../examples/analyses',
+                                        '../motivations/concepts',
+                                        '../motivations/measurements']),
     'within_subsection_order': FileNameSortKey,
     'default_thumb_file': 'img/spectrum.png',
     'backreferences_dir': 'generated',
