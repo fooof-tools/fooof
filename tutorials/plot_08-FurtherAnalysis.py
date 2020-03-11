@@ -71,7 +71,7 @@ fm.fit(freqs, spectrum, [3, 30])
 freqs, spectra = gen_group_power_spectra(n_spectra=10,
                                          freq_range=[3, 40],
                                          aperiodic_params=param_sampler([[20, 2], [35, 1.5]]),
-                                         gaussian_params=param_sampler([[], [10, 0.5, 2]]))
+                                         periodic_params=param_sampler([[], [10, 0.5, 2]]))
 
 ###################################################################################################
 

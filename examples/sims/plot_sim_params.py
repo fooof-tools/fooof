@@ -32,7 +32,7 @@ from fooof.plts.spectra import plot_spectrum, plot_spectra
 #
 # SimParams objects are named tuples with the following fields:
 # - `aperiodic_params`
-# - `gaussian_params`
+# - `periodic_params`
 # - `nlv`
 #
 

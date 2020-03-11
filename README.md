@@ -31,15 +31,15 @@ Documentation for FOOOF is available on the
 [documentation site](https://fooof-tools.github.io/fooof/index.html).
 
 This documentation includes:
-- [tutorials](https://fooof-tools.github.io/fooof/auto_tutorials/index.html),
+- [Motivations](https://fooof-tools.github.io/fooof/auto_motivations/index.html):
+with motivating examples of why we recommend parameterizing neural power spectra
+- [Tutorials](https://fooof-tools.github.io/fooof/auto_tutorials/index.html):
 with a step-by-step guide through the model and how to apply it
-- [examples](https://fooof-tools.github.io/fooof/auto_examples/index.html),
+- [Examples](https://fooof-tools.github.io/fooof/auto_examples/index.html):
 demonstrating example analyses and use cases, and other functionality
-- [motivations](https://fooof-tools.github.io/fooof/auto_motivations/index.html),
-which demonstrate motivating examples of why we recommend parameterizing neural power spectra
-- [API listing](https://fooof-tools.github.io/fooof/api.html),
+- [API listing](https://fooof-tools.github.io/fooof/api.html):
 which lists all the code and functionality available in the module
-- [FAQ](https://fooof-tools.github.io/fooof/faq.html),
+- [FAQ](https://fooof-tools.github.io/fooof/faq.html):
 answering frequency asked questions
 
 ## Dependencies
@@ -108,6 +108,9 @@ If you use this code in your project, please cite:
     Haller M, Donoghue T, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Knight RT, Shestyuk A,
     Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859.
     doi: https://doi.org/10.1101/299859
+
+More information for how to cite this method can be found
+[here]https://fooof-tools.github.io/fooof/reference.html
 
 Direct Link: https://doi.org/10.1101/299859
 

@@ -94,7 +94,7 @@ n_freqs = len(gen_freqs(freq_range, freq_res))
 
 # Settings for simulated parameters
 ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
-gauss_opts = param_sampler([[], [10, 0.25, 1], [10, 0.25, 1, 20, 0.15, 1]])
+pe_opts = param_sampler([[], [10, 0.25, 1], [10, 0.25, 1, 20, 0.15, 1]])
 
 ###################################################################################################
 
@@ -102,7 +102,7 @@ gauss_opts = param_sampler([[], [10, 0.25, 1], [10, 0.25, 1, 20, 0.15, 1]])
 spectra = []
 for ind in range(n_conditions):
     freqs, powers = gen_group_power_spectra(n_channels, freq_range, ap_opts,
-                                            gauss_opts, freq_res=freq_res)
+                                            pe_opts, freq_res=freq_res)
     spectra.append(powers)
 
 # Convert collected spectra into a numpy array
