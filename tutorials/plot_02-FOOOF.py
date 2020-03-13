@@ -13,7 +13,14 @@ import numpy as np
 # Import the FOOOF object
 from fooof import FOOOF
 
+# Import utility to download example data
+from fooof.utils.download import fetch_fooof_data
+
 ###################################################################################################
+
+# Download examples data files needed for this example
+fetch_fooof_data('freqs.npy', folder='data')
+fetch_fooof_data('spectrum.npy', folder='data')
 
 # Load example data to use for this tutorial (a single example power spectrum)
 freqs = np.load('data/freqs.npy')

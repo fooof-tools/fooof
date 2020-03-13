@@ -44,12 +44,19 @@ from fooof.core.funcs import gaussian_function
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.fm import plot_fm_peak_iter
 
+# Import utility to download example data
+from fooof.utils.download import fetch_fooof_data
+
 ###################################################################################################
 
 # Set whether to plot in log-log space
 plt_log = False
 
 ###################################################################################################
+
+# Download examples data files needed for this example
+fetch_fooof_data('freqs_2.npy', folder='data')
+fetch_fooof_data('spectrum_2.npy', folder='data')
 
 # Load example data
 freqs = np.load('data/freqs_2.npy')

@@ -13,6 +13,9 @@ import numpy as np
 # Import the FOOOF object
 from fooof import FOOOF
 
+# Import utility to download example data
+from fooof.utils.download import fetch_fooof_data
+
 ###################################################################################################
 
 # Initialize a FOOOF object, to use to explore
@@ -162,6 +165,10 @@ fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 #
 
 ###################################################################################################
+
+# Download examples data files needed for this example
+fetch_fooof_data('freqs_2.npy', folder='data')
+fetch_fooof_data('spectrum_2.npy', folder='data')
 
 # Load a piece of example data
 freqs = np.load('data/freqs_2.npy')

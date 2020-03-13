@@ -13,6 +13,9 @@ import numpy as np
 # Import the FOOOF object
 from fooof import FOOOF
 
+# Import utility to download example data
+from fooof.utils.download import fetch_fooof_data
+
 ###################################################################################################
 # Aperiodic Fitting Approaches
 # ----------------------------
@@ -49,6 +52,10 @@ from fooof import FOOOF
 #
 
 ###################################################################################################
+
+# Download examples data files needed for this example
+fetch_fooof_data('freqs_lfp.npy', folder='data')
+fetch_fooof_data('spectrum_lfp.npy', folder='data')
 
 # Load example data
 freqs = np.load('data/freqs_lfp.npy')
