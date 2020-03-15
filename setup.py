@@ -12,7 +12,7 @@ with open(os.path.join('fooof', 'version.py')) as vf:
 #    Only update here in coordination with the README, to keep things consistent.
 LONG_DESCRIPTION = \
 """
-Fitting Oscillations & One-Over F (FOOOF)
+FOOOF: Fitting Oscillations & One-Over F
 
 FOOOF is a fast, efficient, physiologically-informed model to parameterize neural
 power spectra, characterizing both the aperiodic & periodic components.
@@ -69,7 +69,8 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7'
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8'
     ],
     platforms = 'any',
     project_urls = {
