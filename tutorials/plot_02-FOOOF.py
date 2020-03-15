@@ -30,8 +30,9 @@ spectrum = np.load('data/spectrum.npy')
 # FOOOF Object
 # ------------
 #
-# At the core of the module, which is object oriented, is the FOOOF object, which holds relevant
-# data and settings as attributes, and procedures to run the FOOOF algorithm as methods.
+# At the core of the module, which is object oriented, is the :class:`~fooof.FOOOF` object,
+# which holds relevant data and settings as attributes, and contains methods to run the
+# algorithm to parameterize neural power spectra.
 #
 # The organization is similar to sklearn:
 #
@@ -44,7 +45,7 @@ spectrum = np.load('data/spectrum.npy')
 # Calculating Power Spectra
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The FOOOF model operates on power spectra. FOOOF itself does not compute power spectra,
+# The FOOOF model operates on power spectra. The module itself does not compute power spectra,
 # and so computing power spectra needs to be done prior to using the FOOOF module.
 #
 # The model is broadly agnostic to exactly how power spectra are computed. Common
@@ -62,12 +63,12 @@ spectrum = np.load('data/spectrum.npy')
 # FOOOF Example
 # -------------
 #
-# The following example demonstrates fitting a FOOOF model on a single power spectrum.
+# The following example demonstrates fitting a power spectrum model to a single power spectrum.
 #
 
 ###################################################################################################
 
-# Initialize FOOOF model
+# Initialize FOOOF object
 fm = FOOOF()
 
 # Set the frequency range upon which to fit FOOOF
@@ -82,9 +83,9 @@ fm.report(freqs, spectrum, freq_range)
 #
 # The above method 'report', is a convenience method that calls a series of FOOOF methods:
 #
-# - :func:`fit`:  fits the FOOOF model
-# - :func:`print_results`: prints out the results
-# - :func:`plot`: plots to data and model fit
+# - :meth:`~fooof.FOOOF.fit`:  fits the FOOOF model
+# - :meth:`~fooof.FOOOF.print_results`: prints out the results
+# - :meth:`~fooof.FOOOF.plot`: plots to data and model fit
 #
 # Each of these methods can also be called individually.
 #
@@ -102,17 +103,17 @@ fm.fit(freqs, spectrum, freq_range)
 # Model Parameters
 # ~~~~~~~~~~~~~~~~
 #
-# When the FOOOF model is calculated, the model fit parameters are stored as object
-# attributes that can be accessed after fitting.
+# Once the power spectrum model has been calculated, the model fit parameters are stored
+# as object attributes that can be accessed after fitting.
 #
 # Following the sklearn convention, attributes that are fit as a result of
 # the model have a trailing underscore, for example:
 #
-# - aperiodic\_params_
-# - peak\_params_
-# - error\_
-# - r2\_
-# - n\_peaks\_
+# - ``aperiodic_params_``
+# - ``peak_params_``
+# - ``error_``
+# - ``r2_``
+# - ``n_peaks_``
 #
 
 ###################################################################################################
@@ -139,8 +140,8 @@ print('Number of fit peaks: \n', fm.n_peaks_)
 # Selecting Parameters
 # ~~~~~~~~~~~~~~~~~~~~
 #
-# You can also select parameters using the `get_params` method, which can be used to
-# specify which parameters you want to extract.
+# You can also select parameters using the :meth:`~fooof.FOOOF.get_params`
+# method, which can be used to specify which parameters you want to extract.
 #
 
 ###################################################################################################
@@ -160,8 +161,8 @@ print(template.format(error=err, exponent=exp,
 
 ###################################################################################################
 #
-# For a full description of how you can access data with `get_params`, check
-# the method's documentation.
+# For a full description of how you can access data with :meth:`~fooof.FOOOF.get_params`,
+# check the method's documentation.
 #
 # As a reminder, you can access the documentation for a function using '?' in a
 # Jupyter notebook (ex: `fm.get_params?`), or more generally with the `help` function
@@ -200,12 +201,12 @@ print(template.format(error=err, exponent=exp,
 ###################################################################################################
 #
 # The underlying gaussian parameters are also available from the FOOOF object,
-# in the `gaussian_params_` attribute.
+# in the ``gaussian_params_`` attribute.
 #
 
 ###################################################################################################
 
-# Compare the 'peak\_params_' to the underlying gaussian parameters
+# Compare the 'peak_params_' to the underlying gaussian parameters
 print('  Peak Parameters \t Gaussian Parameters')
 for peak, gauss in zip(fm.peak_params_, fm.gaussian_params_):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*peak, *gauss))
@@ -214,10 +215,11 @@ for peak, gauss in zip(fm.peak_params_, fm.gaussian_params_):
 # FOOOFResults
 # ~~~~~~~~~~~~
 #
-# FOOOF also has a convenience method to return all model fit results: :func:`get_results`.
+# FOOOF also has a convenience method to return all model fit results:
+# :func:`~fooof.FOOOF.get_results`.
 #
-# This method returns all the model fit parameters, including the underlying Gaussian parameters,
-# collected together into a FOOOFResults object.
+# This method returns all the model fit parameters, including the underlying Gaussian
+# parameters, collected together into a FOOOFResults object.
 #
 # The FOOOFResults object, which in Python terms is a named tuple, is a standard data
 # object used with FOOOF to organize and collect parameter data.

@@ -104,9 +104,10 @@ fg.fit(freqs, spectra)
 #
 # We will start by analyzing the periodic components.
 # In particular, these utilities mostly serve to help organize and extract periodic
-# components, for example extracing peak that fall with oscillation band defintions.
+# components, for example extracting peak that fall with oscillation band definitions.
 #
-# This also includes using the `Bands` object, that is provided to store band defintions.
+# This also includes using the :class:`~fooof.bands.bands.Bands` object, that is provided
+# to store band definitions.
 #
 
 ###################################################################################################
@@ -120,7 +121,8 @@ bands = Bands({'theta' : [4, 8],
 # get_band_peak
 # ~~~~~~~~~~~~~~~~
 #
-# The :func:`get_band_peak` function is used to select peaks within specific frequency ranges.
+# The :func:`~fooof.analysis.periodic.get_band_peak` function is used to select peaks
+# within specific frequency ranges.
 #
 # You can optionally specify whether to return all oscillations within that band,
 # or a singular result, which returns the highest power peak (if there are multiple),
@@ -132,9 +134,10 @@ bands = Bands({'theta' : [4, 8],
 # get_band_peak_fm
 # ~~~~~~~~~~~~~~~~
 #
-# You can use the :func:`get_band_peak` function directly if you have already
-# extracted the peak parameters from a FOOOF object. You can also use the
-# :func:`get_band_peak_fm` function and pass in a FOOOF object.
+# You can use the :func:`~fooof.analysis.periodic.get_band_peak` function directly if
+# you have already extracted the peak parameters from a FOOOF object.
+# You can also use the :func:`~fooof.analysis.periodic.get_band_peak_fm`
+# function and pass in a FOOOF object.
 #
 
 ###################################################################################################
@@ -146,8 +149,8 @@ print(get_band_peak_fm(fm, bands.alpha))
 # get_band_peak_fg
 # ~~~~~~~~~~~~~~~~
 #
-# Similary, the :func:`get_band_peak_group` function can be used to select peaks within
-# specific frequency ranges, from FOOOFGroup object.
+# Similarly, the :func:`~fooof.analysis.periodic.get_band_peak_group` function can be used
+# to select peaks within specific frequency ranges, from :class:`~fooof.FOOOFGroup` objects.
 #
 
 ###################################################################################################
@@ -231,7 +234,7 @@ print(exps)
 # - Using FOOOF on a trial by trial manner to decode task properties, and behavioral states
 #
 # So far we have only introduced the basic utilities to help with
-# selecting and examing FOOOF parameters.
+# selecting and examining FOOOF parameters.
 #
 # To further explore some of these specific analyses, and explore other
 # utilities that may be useful, check out the

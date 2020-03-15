@@ -42,7 +42,8 @@ from fooof.analysis.error import compute_pointwise_error_fm, compute_pointwise_e
 # First we will start by examining frequency-by-frequency error of an individual model fit,
 # using simulated data.
 #
-# The function for analyzing error from a FOOOF object is :func:`compute_pointwise_error_fm`.
+# The function for analyzing error from a FOOOF object is
+# :func:`~fooof.analysis.error.compute_pointwise_error_fm`.
 # To start with, we will indicate to this function to plot the frequency-by-frequency
 # error of our model fit.
 #
@@ -91,7 +92,8 @@ print('FOOOF model fit error: \t\t {:1.3f}'.format(fm.error_))
 # Next, lets move on to calculating frequency-by-frequency error across groups of fits,
 # again using some simulated data.
 #
-# The function for analyzing error from a FOOOFGroup object is :func:`compute_pointwise_error_fg`.
+# The function for analyzing error from a FOOOFGroup object is
+# :func:`~fooof.analysis.error.compute_pointwise_error_fg`.
 #
 
 ###################################################################################################
@@ -176,9 +178,9 @@ compute_pointwise_error_fg(fg, plot_errors=True)
 ###################################################################################################
 #
 # In the plot above, we can see that there is more error in the model, but also that
-# this error is not evenly distributed. The error is uneven across frequencies, and particularly
-# high around the low frequencies. In this case, this is due to a mismatch between the
-# data properties we simulated and the aperiodic mode used to fit the data.
+# this error is not evenly distributed. The error is uneven across frequencies, and
+# particularly high around the low frequencies. In this case, this is due to a mismatch
+# between the data properties we simulated and the aperiodic mode used to fit the data.
 #
 # If you see high errors, especially bunched up around particular frequencies,
 # this is a sign that something might be going wrong, and it might be worth

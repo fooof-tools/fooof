@@ -29,8 +29,8 @@ from fooof.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 # In this example, we will explore the plotting functions available to visualize
 # model parameters and components from FOOOF analyses.
 #
-# To do so, we will consider a hypothetical experiment in which we are compare FOOOF
-# models between two groups of participants, and so want to visualize differences
+# To do so, we will consider a hypothetical experiment in which we are compare power
+# spectrum models between two groups of participants, and so want to visualize differences
 # between the groups. For simplicity, we will consider that we have one 'grand average'
 # power spectrum per subject, which we can compare and visualize.
 #
@@ -67,7 +67,7 @@ freqs, powers2 = gen_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
 # Run FOOOF Analyses
 # ~~~~~~~~~~~~~~~~~~
 #
-# Now that we have our simulated data, we can fit our data with FOOOF, using FOOOFGroup.
+# Now that we have our simulated data, we can fit our power spectrum models, using FOOOFGroup.
 #
 
 ###################################################################################################
@@ -108,8 +108,8 @@ fg2.fit(freqs, powers2)
 #
 # First, let's have a look at the periodic components.
 #
-# To do so, we will use the :obj:`Bands` object to store our frequency band definitions,
-# which we can then use to sub-select peaks within bands of interest.
+# To do so, we will use the :obj:`~fooof.bands.bands.Bands` object to store our frequency
+# band definitions, which we can then use to sub-select peaks within bands of interest.
 #
 # We can then plot visualizations of the peak parameters, and the reconstructed fits.
 #
@@ -131,7 +131,8 @@ g2_alphas = get_band_peak_fg(fg2, bands.alpha)
 # Plotting Peak Parameters
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The :func:`plot_peak_params` function takes in peak parameters, and visualizes them, as:
+# The :func:`~fooof.plts.periodic.plot_peak_params` function takes in peak parameters,
+# and visualizes them, as:
 #
 # - Center Frequency on the x-axis
 # - Power on the y-axis
@@ -153,7 +154,8 @@ plot_peak_params([g1_alphas, g2_alphas], freq_range=bands.alpha,
 # Plotting Peak Fits
 # ~~~~~~~~~~~~~~~~~~
 #
-# The :func:`plot_peak_fits` function takes in peak parameters, and reconstructs peak fits.
+# The :func:`~fooof.plts.periodic.plot_peak_fits` function takes in peak parameters,
+# and reconstructs peak fits.
 #
 
 ###################################################################################################
@@ -184,7 +186,8 @@ aps2 = fg2.get_params('aperiodic_params')
 # Plotting Aperiodic Parameters
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The :func:`plot_aperiodic_params` function takes in aperiodic parameters, and visualizes them, as:
+# The :func:`~fooof.plts.aperiodic.plot_aperiodic_params` function takes in
+# aperiodic parameters, and visualizes them, as:
 #
 # - Offset on the x-axis
 # - Exponent on the y-axis
@@ -204,8 +207,8 @@ plot_aperiodic_params([aps1, aps2], labels=labels, colors=colors)
 # Plotting Aperiodic Fits
 # ~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The :func:`plot_aperiodic_fits` function takes in aperiodic parameters,
-# and reconstructs aperiodic fits.
+# The :func:`~fooof.plts.aperiodic.plot_aperiodic_fits` function takes in
+# aperiodic parameters, and reconstructs aperiodic fits.
 #
 # Here again we can plot visualizations of the peak parameters, and the reconstructed fits.
 #
@@ -217,8 +220,8 @@ plot_aperiodic_fits(aps1, freq_range, control_offset=True)
 
 ###################################################################################################
 #
-# The :func:`plot_aperiodic_fits` also has some additional options that can help to tune
-# the visualization, including:
+# The :func:`~fooof.plts.aperiodic.plot_aperiodic_fits` also has some additional options
+# that can help to tune the visualization, including:
 #
 # - `control_offset` : whether the control for offset differences, by setting to zero
 #

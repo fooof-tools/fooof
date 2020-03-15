@@ -26,12 +26,12 @@ from fooof.sim.params import param_iter, Stepper
 # visualizing power spectra.
 #
 # These plot functions overlap with what is accessible directly through the FOOOF objects,
-# as the :func:`plot` method. There are extra functions in the module, and extra functionality
-# available in the plotting module.
+# as the :meth:`~fooof.FOOOF.plot` method. There are extra functions in the module, and
+# extra functionality available in the plotting module.
 #
-# Note that the plots in FOOOF are all built using matplotlib. They all allow for passing
-# in extra matplotlib parameters for tuning the plot aesthetics, and can also be customized
-# using matplotlib code and approaches.
+# Note that the plots in the FOOOF module are all built using matplotlib. They all allow for
+# passing in extra matplotlib parameters for tuning the plot aesthetics, and can also be
+# customized using matplotlib code and approaches.
 #
 
 ###################################################################################################
@@ -59,8 +59,8 @@ freqs, powers2 = gen_power_spectrum(freq_range, ap_2, peaks)
 #
 # First we will start with the core plotting function that plots an individual power spectrum.
 #
-# The :func:`plot_spectrum` function takes in a frequency vector and a single vector
-# of power values, and plots the corresponding power spectrum.
+# The :func:`~fooof.plts.spectra.plot_spectrum` function takes in a frequency vector and a
+# single vector of power values, and plots the corresponding power spectrum.
 #
 # This function, as all the functions in the plotting module, takes in optional parameters
 # `log_freqs` and `log_powers` that control whether the frequency and power axes
@@ -76,11 +76,11 @@ plot_spectrum(freqs, powers1, log_powers=True)
 # Plotting Multiple Power Spectra
 # -------------------------------
 #
-# The :func:`plot_spectra` function takes in one or more frequency vectors and one or more
-# sets of power values and plots multiple power spectra. Note that the inputs for either can be
-# either 2d arrays, or lists of 1d arrays. You can also pass in additional optional parameters
-# including `labels`, to specify labels to use in a plot legend, and `colors` to specify
-# which colors to plot each spectrum in.
+# The :func:`~fooof.plts.spectra.plot_spectra` function takes in one or more frequency
+# vectors and one or more sets of power values and plots multiple power spectra. Note that
+# the inputs for either can be either 2d arrays, or lists of 1d arrays. You can also pass
+# in additional optional parameters including `labels`, to specify labels to use in a plot
+# legend, and `colors` to specify which colors to plot each spectrum in.
 #
 
 ###################################################################################################
@@ -96,10 +96,11 @@ plot_spectra(freqs, [powers1, powers2], log_freqs=True, log_powers=True, labels=
 # In some cases it may be useful to highlight or shade in particular frequency regions,
 # for example, when examining power in particular frequency regions.
 #
-# The :func:`plot_spectrum_shading` function takes in a power spectrum and one or more shade
-# regions, and plot the power spectrum with the indicated region shaded.
+# The :func:`~fooof.plts.spectra.plot_spectrum_shading` function takes in a power spectrum
+# and one or more shade regions, and plot the power spectrum with the indicated region shaded.
 #
-# The same can be done for multiple power spectra with :func:`plot_spectra_shading`.
+# The same can be done for multiple power spectra with
+# :func:`~fooof.plts.spectra.plot_spectra_shading`.
 #
 # These functions take in an input designating one or more shade regions, each specified
 # as [freq_low, freq_high] of the region to shade. They also take in an optional argument

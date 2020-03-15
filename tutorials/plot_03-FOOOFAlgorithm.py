@@ -71,7 +71,7 @@ fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6 , min_peak_height=0.15)
 ###################################################################################################
 #
 # Note that data can be added to FOOOF independent of fitting the model, using the
-# `add_data` method. FOOOF objects can also be used to plot input data,
+# :meth:`~fooof.FOOOF.add_data` method. FOOOF objects can also be used to plot input data,
 # without having fit any models.
 #
 
@@ -228,7 +228,7 @@ plot_spectrum(fm.freqs, fm.fooofed_spectrum_, plt_log, label='Full Model')
 ###################################################################################################
 
 # The last stage is to calculate the goodness of fit metrics (fit error & R^2)
-#   and organize parameters, such as updating gaussian parameters -> peak parameters
+#  and organize parameters, such as updating gaussian parameters -> peak parameters
 #  These results are part of what are stored, and printed, as the model results
 fm.print_results()
 

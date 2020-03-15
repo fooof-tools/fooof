@@ -110,8 +110,8 @@ def check_nans(data, nan_policy='zero'):
 # frequency representations - meaning we have to calculate power spectra.
 #
 # To do so, we will leverage the time frequency tools available with MNE,
-# in the `time_frequency` module. In particular, we can use the :func:`psd_welch` function,
-# that takes in MNE data objects and calculates and returns power spectra.
+# in the `time_frequency` module. In particular, we can use the ``psd_welch``
+# function, that takes in MNE data objects and calculates and returns power spectra.
 #
 
 ###################################################################################################
@@ -126,7 +126,7 @@ spectra, freqs = psd_welch(raw, fmin=1, fmax=40, tmin=0, tmax=250,
 #
 # Now that we have power spectra, we can fit some FOOOF models.
 #
-# Since we have multiple power spectra, we will use the :obj:`FOOOFGroup` object.
+# Since we have multiple power spectra, we will use the :class:`~fooof.FOOOFGroup` object.
 #
 
 ###################################################################################################
@@ -157,9 +157,10 @@ fg.plot()
 #
 # To do so, we can leverage the fact that both MNE and FOOOF preserve data order.
 # So, when we calculated power spectra, our output spectra kept the channel order
-# that is described in the MNE data object, and so did our :obj:`FOOOFGroup` object.
+# that is described in the MNE data object, and so did our :class:`~fooof.FOOOFGroup`
+# object.
 #
-# That means that to plot our topography, we can use the MNE :func:`plot_topomap`
+# That means that to plot our topography, we can use the MNE ``plot_topomap``
 # function, passing in extracted data for FOOOF features per channel, and
 # using the MNE object to define the corresponding channel locations.
 #
@@ -170,8 +171,8 @@ fg.plot()
 #
 # Lets start start by plotting some periodic FOOOF features.
 #
-# To do so, we will use to :obj:`Bands` object to manage some band definitions,
-# and some FOOOF analysis utilities to extracts peaks from bands of interest.
+# To do so, we will use to :obj:`~fooof.bands.bands.Bands` object to manage some band
+# definitions, and some FOOOF analysis utilities to extracts peaks from bands of interest.
 #
 
 ###################################################################################################
