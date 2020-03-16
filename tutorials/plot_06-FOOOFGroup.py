@@ -7,14 +7,13 @@ Using FOOOFGroup to run FOOOF across multiple power spectra.
 
 ###################################################################################################
 
-import numpy as np
-
 # Import the FOOOF object
 from fooof import FOOOFGroup
 
 # Import some utilities for simulating some test data
 from fooof.sim.params import param_sampler
 from fooof.sim.gen import gen_group_power_spectra
+from fooof.sim.utils import set_random_seed
 
 ###################################################################################################
 # Fitting Multiple Spectra
@@ -51,7 +50,7 @@ from fooof.sim.gen import gen_group_power_spectra
 ###################################################################################################
 
 # Set random seed, for consistency generating simulated data
-np.random.seed(321)
+set_random_seed(321)
 
 ###################################################################################################
 

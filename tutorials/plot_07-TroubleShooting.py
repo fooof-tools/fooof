@@ -15,11 +15,12 @@ from fooof import FOOOF, FOOOFGroup
 # Import some utilities, and tools for creating simulated power-spectra
 from fooof.sim.params import param_sampler
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
+from fooof.sim.utils import set_random_seed
 
 ###################################################################################################
 
 # Set random seed, for consistency generating simulated data
-np.random.seed(321)
+set_random_seed(321)
 
 ####################################################################################################
 # FOOOF Settings
