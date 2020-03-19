@@ -3,10 +3,12 @@
 import os
 from urllib.request import urlretrieve
 
+import numpy as np
+
 ###################################################################################################
 ###################################################################################################
 
-DATA_URL = 'https://raw.githubusercontent.com/fooof-tools/fooof/master/tutorials/data/'
+DATA_URL = 'https://raw.githubusercontent.com/fooof-tools/fooof/master/data/'
 
 def check_data_folder(folder):
     """Check if a data folder exists, and create if not.
@@ -58,3 +60,31 @@ def fetch_fooof_data(filename, folder='data', url=DATA_URL):
 
     check_data_folder(folder)
     check_data_file(filename, folder, url)
+
+
+def load_fooof_data(filename, folder='data', url=DATA_URL):
+    """Download, if not already available, and load an example data file for fooof.
+
+    Parameters
+    ----------
+    filename : str
+        Name of the data file to download.
+    folder : str, optional
+        Name of the folder to save the datafile to.
+    url : str, optional
+        The URL to download the data file from.
+
+    Returns
+    -------
+    data : ndarray
+        Loaded data file.
+
+    Notes
+    -----
+    This function assumes that data files are numpy (npy) files.
+    """
+
+    fetch_fooof_data(filename, folder, url)
+    data = np.load(os.path.join(folder, filename))
+
+    return data

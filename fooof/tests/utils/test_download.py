@@ -3,6 +3,8 @@
 import os
 import shutil
 
+import numpy as np
+
 from fooof.utils.download import *
 
 ###################################################################################################
@@ -35,5 +37,14 @@ def test_fetch_fooof_data():
 
     fetch_fooof_data(filename, folder=TEST_FOLDER)
     assert os.path.isfile(os.path.join(TEST_FOLDER, filename))
+
+    clean_up_downloads()
+
+def test_load_fooof_data():
+
+    filename = 'freqs.npy'
+
+    data = load_fooof_data(filename, folder=TEST_FOLDER)
+    assert isinstance(data, np.ndarray)
 
     clean_up_downloads()
