@@ -43,8 +43,8 @@ from fooof.sim.gen import gen_group_power_spectra
 # Import some of the analysis functions that come with FOOOF
 from fooof.analysis import get_band_peak, get_band_peak_fm, get_band_peak_fg
 
-# Import utility to download example data
-from fooof.utils.download import fetch_fooof_data
+# Import utility to download and load example data
+from fooof.utils.download import load_fooof_data
 
 ###################################################################################################
 # Load and Fit Example Data
@@ -53,13 +53,9 @@ from fooof.utils.download import fetch_fooof_data
 
 ###################################################################################################
 
-# Download examples data files needed for this example
-fetch_fooof_data('freqs.npy', folder='data')
-fetch_fooof_data('spectrum.npy', folder='data')
-
-# Load some example data
-freqs = np.load('data/freqs.npy')
-spectrum = np.load('data/spectrum.npy')
+# Load examples data files needed for this example
+freqs = load_fooof_data('freqs.npy', folder='data')
+spectrum = load_fooof_data('spectrum.npy', folder='data')
 
 ###################################################################################################
 

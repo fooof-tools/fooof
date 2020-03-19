@@ -7,14 +7,11 @@ Further exploring the FOOOF object, including algorithm settings and available m
 
 ###################################################################################################
 
-# Import numpy for loading data
-import numpy as np
-
 # Import the FOOOF object
 from fooof import FOOOF
 
-# Import utility to download example data
-from fooof.utils.download import fetch_fooof_data
+# Import utility to download and load example data
+from fooof.utils.download import load_fooof_data
 
 ###################################################################################################
 
@@ -166,13 +163,9 @@ fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 
 ###################################################################################################
 
-# Download examples data files needed for this example
-fetch_fooof_data('freqs_2.npy', folder='data')
-fetch_fooof_data('spectrum_2.npy', folder='data')
-
-# Load a piece of example data
-freqs = np.load('data/freqs_2.npy')
-spectrum = np.load('data/spectrum_2.npy')
+# Load example data files needed for this example
+freqs = load_fooof_data('freqs_2.npy', folder='data')
+spectrum = load_fooof_data('spectrum_2.npy', folder='data')
 
 ###################################################################################################
 

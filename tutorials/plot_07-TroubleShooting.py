@@ -7,6 +7,7 @@ Tips & tricks for choosing FOOOF settings, tuning fits, and troubleshooting.
 
 ###################################################################################################
 
+# General imports
 import numpy as np
 
 # Import the FOOOF and FOOOFGroup objects

@@ -7,24 +7,17 @@ Introduction to the module, beginning with the FOOOF object.
 
 ###################################################################################################
 
-# Import numpy for loading data
-import numpy as np
-
 # Import the FOOOF object
 from fooof import FOOOF
 
-# Import utility to download example data
-from fooof.utils.download import fetch_fooof_data
+# Import utility to download and load example data
+from fooof.utils.download import load_fooof_data
 
 ###################################################################################################
 
 # Download examples data files needed for this example
-fetch_fooof_data('freqs.npy', folder='data')
-fetch_fooof_data('spectrum.npy', folder='data')
-
-# Load example data to use for this tutorial (a single example power spectrum)
-freqs = np.load('data/freqs.npy')
-spectrum = np.load('data/spectrum.npy')
+freqs = load_fooof_data('freqs.npy', folder='data')
+spectrum = load_fooof_data('spectrum.npy', folder='data')
 
 ###################################################################################################
 # FOOOF Object
