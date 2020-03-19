@@ -87,6 +87,11 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.
 html_theme = 'bootstrap'
 
+# Set the theme path explicitly
+#   This isn't always needed, but is useful so bulding docs doesn't fail on
+#   operating systems which don't have bootstrap on theme path
+html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
+
 # Theme options to customize the look and feel, which are theme-specific.
 html_theme_options = {
     'navbar_sidebarrel': False,

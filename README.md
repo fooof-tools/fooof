@@ -42,10 +42,12 @@ with motivating examples of why we recommend parameterizing neural power spectra
 with a step-by-step guide through the model and how to apply it
 - [Examples](https://fooof-tools.github.io/fooof/auto_examples/index.html):
 demonstrating example analyses and use cases, and other functionality
-- [API listing](https://fooof-tools.github.io/fooof/api.html):
-which lists all the code and functionality available in the module
+- [API list](https://fooof-tools.github.io/fooof/api.html):
+which lists and describes all the code and functionality available in the module
 - [FAQ](https://fooof-tools.github.io/fooof/faq.html):
 answering frequency asked questions
+- [Glossary](https://fooof-tools.github.io/fooof/glossary.html):
+which defines all the key terms used in the module
 - [Reference](https://fooof-tools.github.io/fooof/reference.html):
 with information for reporting on using and reference the module
 
@@ -62,9 +64,7 @@ There are also optional dependencies, which are not required for model fitting i
 - [tqdm](https://github.com/tqdm/tqdm) is needed to print progress bars when fitting many models
 - [pytest](https://github.com/pytest-dev/pytest) is needed to run the test suite locally
 
-If you are using [Anaconda](https://www.anaconda.com/download/), then you are good to go.
-
-If you aren't already using Anaconda, it is a useful tool to get and manage these dependencies.
+We recommend using the [Anaconda](https://www.continuum.io/downloads) distribution to manage these requirements.
 
 ## Installation
 
