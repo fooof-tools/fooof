@@ -9,8 +9,8 @@ Run FOOOF across 3D arrays of power spectra.
 # Running Across 3D
 # -----------------
 #
-# Most of the materials so far have explored using the :obj:`FOOOF` object to fit individual
-# power spectra, and the :obj:`FOOOFGroup` object for fitting groups of power spectra,
+# Most of the materials so far have explored using the :class:`~fooof.FOOOF` object to fit individual
+# power spectra, and the :class:`~fooof.FOOOFGroup` object for fitting groups of power spectra,
 # where a group of spectra is organized as a 2D array of power spectra.
 #
 # In this example, we'll go one step further, and step through how to analyze data
@@ -127,25 +127,26 @@ print('Number of conditions, channels & frequencies: \t{}, {}, {}'.format(\
 # The strategy we will take to do so is by systematically applying FOOOF objects across
 # the data.
 #
-# For working with 3D arrays of power spectra, we have the :func:`fit_fooof_3d`
-# function which takes in data and a pre-initialized model object, and applies the
-# FOOOF object across all the data, while maintaining the organization of the output data.
+# For working with 3D arrays of power spectra, we have the
+# :func:`~fooof.objs.utils.fit_fooof_3d` function which takes in data and a
+# pre-initialized model object, and applies the FOOOF object across all the data,
+# while maintaining the organization of the output data.
 #
 
 ###################################################################################################
 # fit_fooof_3d
 # ~~~~~~~~~~~~~~~~~~
 #
-# More specifically, :func:`fit_fooof_3d` takes in:
+# More specifically, :func:`~fooof.objs.utils.fit_fooof_3d` takes in:
 #
 # - a FOOOFGroup object, pre-initialized with the desired settings
 # - a frequency vector and a 3D array of power spectra
 #
-# Internally, this function uses the :obj:`FOOOFGroup` object to
+# Internally, this function uses the :class:`~fooof.FOOOFGroup` object to
 # fit models across the power spectra.
 #
-# This function then returns a list of :obj:`FOOOFGroup` objects, which collectively
-# store all the model fit results.
+# This function then returns a list of :class:`~fooof.FOOOFGroup` objects, which
+# collectively store all the model fit results.
 #
 
 ###################################################################################################
@@ -168,7 +169,7 @@ print(fgs)
 # Note that the length of the returned list of objects should be equivalent to
 # the outermost dimensionality of the input data.
 #
-# In our example setup, this corresponds to `n_conditions` :obj:`FOOOFGroup` objects.
+# In our example setup, this corresponds to `n_conditions` :class:`~fooof.FOOOFGroup` objects.
 #
 
 ###################################################################################################
@@ -182,14 +183,14 @@ print('Number of conditions: \t{}'.format(n_conditions))
 #
 # Once you have run your FOOOF models, you want to analyze the results in some way!
 #
-# Since you have a collection of :obj:`FOOOF` objects, you can analyze these the same way
+# Since you have a collection of :class:`~fooof.FOOOF` objects, you can analyze these the same way
 # as you would look into any other FOOOF objects. You can check out the other examples
 # and tutorials for more information on how to do this.
 #
 # A general strategy for analyzing FOOOF results as they get returned from
-# :func:`fit_fooof_3d` is to loop across all the objects in the returned list,
-# and then within the loop you can collect and/or analyze and/or plot any
-# data of interest.
+# :func:`~fooof.objs.utils.fit_fooof_3d` is to loop across all the objects in the
+# returned list, and then within the loop you can collect and/or analyze and/or plot
+# any data of interest.
 #
 # For a simple example analysis here, we can investigate if there appears to be a
 # difference in aperiodic exponent between different conditions.
@@ -206,11 +207,12 @@ for ind, fg in enumerate(fgs):
 # Managing FOOOF Objects
 # ~~~~~~~~~~~~~~~~~~~~~~
 #
-# When running analyses like this, you may start to have many :obj:`FOOOF` objects.
+# When running analyses like this, you may start to have many :class:`~fooof.FOOOF` objects.
 #
-# For example, you may want to save them out, reload them as needed, analyze results
-# from each :obj:`FOOOF` or :obj:`FOOOFGroup` object, and also manipulate the objects by,
-# for example, combining model results across objects to check overall model fit properties.
+# For example, you may want to save them out, reload them as needed, analyze
+# results from each :class:`~fooof.FOOOF` or :class:`~fooof.FOOOFGroup` object,
+# and also manipulate the objects by, for example, combining model results across
+# objects to check overall model fit properties.
 #
 # Here, we will continue with a quick example of saving, loading and then combining
 # FOOOF objects. Note that a broader exploration of managing different FOOOF objects

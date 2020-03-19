@@ -39,9 +39,9 @@ freqs, powers, params = gen_power_spectrum([3, 40], [1, 1], [10, 0.5, 1],
 # Rotating Power Spectra
 # ----------------------
 #
-# The :func:`rotate_spectrum` function takes in a power spectrum, and rotates the
-# power spectrum a specified amount, around a specified frequency point, changing
-# the aperiodic exponent of the spectrum.
+# The :func:`~fooof.sim.transform.rotate_spectrum` function takes in a power spectrum, and
+# rotates the power spectrum a specified amount, around a specified frequency point,
+# changing the aperiodic exponent of the spectrum.
 #
 
 ###################################################################################################
@@ -85,7 +85,7 @@ print("Rotated exponent value:\t{:1.2f}".format(\
 # Note that when you rotate a power spectrum, the offset also necessarily changes.
 #
 # If you wish to compute the change in offset that occurs due to a change in exponent,
-# you can use the :func:`compute_rotation_offset` function.
+# you can use the :func:`~fooof.sim.transform.compute_rotation_offset` function.
 #
 
 ###################################################################################################
@@ -128,10 +128,11 @@ plot_spectra(freqs, [powers, t_powers], log_freqs=True, log_powers=True)
 #
 # If you are transforming simulated spectra, it can be useful to keep track of these changes.
 #
-# To do so, there are also the function :func:`rotate_sim_spectrum` and
-# :func:`translate_sim_spectrum`, which work the same as what we've seen so far, with
-# the addition that they take in a :obj:`SimParams` object, and update and return a
-# new :obj:`SimParams` object that tracks the updated simulation parameters.
+# To do so, there are also the function :func:`~fooof.sim.transform.rotate_sim_spectrum`
+# and :func:`~fooof.sim.transform.translate_sim_spectrum`, which work the same as what
+# we've seen so far, with the addition that they take in a :obj:`~fooof.data.data.SimParams`
+# object, and update and return a new :obj:`~fooof.data.data.SimParams` object that tracks
+# the updated simulation parameters.
 #
 
 ###################################################################################################

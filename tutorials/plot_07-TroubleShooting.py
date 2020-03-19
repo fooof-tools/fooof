@@ -7,6 +7,7 @@ Tips & tricks for choosing FOOOF settings, tuning fits, and troubleshooting.
 
 ###################################################################################################
 
+# General imports
 import numpy as np
 
 # Import the FOOOF and FOOOFGroup objects
@@ -15,22 +16,23 @@ from fooof import FOOOF, FOOOFGroup
 # Import some utilities, and tools for creating simulated power-spectra
 from fooof.sim.params import param_sampler
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
+from fooof.sim.utils import set_random_seed
 
 ###################################################################################################
 
 # Set random seed, for consistency generating simulated data
-np.random.seed(321)
+set_random_seed(321)
 
 ####################################################################################################
 # FOOOF Settings
 # --------------
 #
-# With default settings, FOOOF is minimally constrained. It defaults as such
-# since there are not universal settings that work across all different recording
+# With default settings, the power spectrum model is minimally constrained. It defaults
+# as such since there are not universal settings that work across all different recording
 # modalities. Appropriate settings also vary with power spectrum quality (noise,
 # or effectively, the smoothness of the power spectrum), and frequency ranges.
 #
-# For any given dataset, FOOOF will likely need some tuning of parameters
+# For any given dataset, the model will likely need some tuning of parameters
 # for optimal performance.
 #
 # To do so, we suggest using a combination of the following considerations:
@@ -45,7 +47,7 @@ np.random.seed(321)
 # Tuning the model fits is an imperfect art, and should be done carefully, as
 # assumptions built into the settings chosen will impact the model results.
 #
-# We also recommend that FOOOF settings should not be changed between power
+# We also recommend that model settings should not be changed between power
 # spectra (across channels, trials, or subjects), if they are to be meaningfully
 # compared. We therefore recommend first testing out FOOOF across some
 # representative spectra, in order to select FOOOF settings, which you then keep
@@ -75,7 +77,7 @@ np.random.seed(321)
 #
 # FOOOF calculates and returns a couple metrics to assist with assessing the
 # quality of the model fits. It calculates both the model fit error, as the
-# mean absolute error (MAE) between the full model fit (`fooofed\_spectrum\_`)
+# mean absolute error (MAE) between the full model fit (``fooofed_spectrum_``)
 # and the original power spectrum, as well as the R-squared correspondence
 # between the original spectrum and the full model.
 #
@@ -176,15 +178,15 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 # Power Spectra with No Peaks
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# A known case in which FOOOF can overfit is in power spectra in which no peaks
-# are present. In this case, the standard deviation can be very low, and so the
-# relative peak height check (`min_peak_threshold`) is very liberal at keeping gaussian fits.
+# A known case in which FOOOF can overfit is in power spectra in which no peaks are
+# present. In this case, the standard deviation can be very low, and so the relative
+# peak height check (``min_peak_threshold``) is very liberal at keeping gaussian fits.
 #
 # If you expect, or know, you have power spectra without peaks in your data,
-# we recommend using the `min_peak_height` setting. Otherwise, FOOOF is unlikely to
+# we recommend using the ``min_peak_height`` setting. Otherwise, FOOOF is unlikely to
 # appropriately fit power spectra as having no peaks, since it uses only a relative
-# threshold if `min_peak_height` is set to zero (which is the default value).
-# Setting `min_peak_height` requires checking the scale of your power spectra,
+# threshold if ``min_peak_height`` is set to zero (which is the default value).
+# Setting ``min_peak_height`` requires checking the scale of your power spectra,
 # allowing you to define an absolute threshold for extracting peaks.
 #
 
@@ -194,8 +196,8 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 #
 # If you are finding that FOOOF is underfitting:
 #
-# - First check and perhaps loosen any restrictions from `max_n_peaks` and `min_peak_height`
-# - Try updating `peak_threshold` to a lower value
+# - First check and perhaps loosen any restrictions from ``max_n_peaks`` and ``min_peak_height``
+# - Try updating ``peak_threshold`` to a lower value
 # - Bad fits may stem from issues with aperiodic component fitting
 #
 #   - Double check that you are using the appropriate aperiodic mode

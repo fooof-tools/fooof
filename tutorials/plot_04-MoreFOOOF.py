@@ -7,11 +7,11 @@ Further exploring the FOOOF object, including algorithm settings and available m
 
 ###################################################################################################
 
-# Import numpy for loading data
-import numpy as np
-
 # Import the FOOOF object
 from fooof import FOOOF
+
+# Import utility to download and load example data
+from fooof.utils.download import load_fooof_data
 
 ###################################################################################################
 
@@ -150,22 +150,22 @@ fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 #
 # FOOOF stores the following data attributes:
 #
-# - `freqs`: the frequency values corresponding to the data
-# - `power_spectrum`: the power spectrum
-# - `freq_range`: the frequency range of the data
-# - `freq_res`: the frequency resolution of the data
+# - ``freqs``: the frequency values corresponding to the data
+# - ``power_spectrum``: the power spectrum
+# - ``freq_range``: the frequency range of the data
+# - ``freq_res``: the frequency resolution of the data
 #
 # During the fit procedure, interim (hidden) data variables are also created and used.
 #
-# The FOOOF object also has an indicator attribute, `has_data` which indicates
+# The FOOOF object also has an indicator attribute, ``has_data`` which indicates
 # if the current object has data loaded.
 #
 
 ###################################################################################################
 
-# Load a piece of example data
-freqs = np.load('data/freqs_2.npy')
-spectrum = np.load('data/spectrum_2.npy')
+# Load example data files needed for this example
+freqs = load_fooof_data('freqs_2.npy', folder='data')
+spectrum = load_fooof_data('spectrum_2.npy', folder='data')
 
 ###################################################################################################
 
@@ -207,17 +207,17 @@ fm.fit()
 #
 # The model results stored by the object are:
 #
-# - `aperiodic\_params_`: a list of aperiodic parameters, stored as [Offset, (Knee), Exponent]
-# - `peak\_params\_`: all periodic parameters, where each row is a peak, as [CF, PW, BW]
-# - `r\_squared\_`: the r-squared of the model, as compared to the original data
-# - `error\_`: the error of the model, as compared to the original data
+# - ``aperiodic_params_``: a list of aperiodic parameters, stored as [Offset, (Knee), Exponent]
+# - ``peak_params_``: all periodic parameters, where each row is a peak, as [CF, PW, BW]
+# - ``r_squared_``: the r-squared of the model, as compared to the original data
+# - ``error_``: the error of the model, as compared to the original data
 #
 # Other attributes which store outputs from the model are:
 #
-# - `fooofed\_spectrum\_`: the full model reconstruction
-# - `n\_peaks\_`: a helper attribute which indicates how many peaks were fit in the model
+# - ``fooofed_spectrum_``: the full model reconstruction
+# - ``n_peaks_``: a helper attribute which indicates how many peaks were fit in the model
 #
-# The FOOOF object also has an indicator attribute, `has_model` which indicates
+# The FOOOF object also has an indicator attribute, ``has_model`` which indicates
 # if the current object has model results available.
 #
 
@@ -263,9 +263,9 @@ print('fooofed spectrum: \t',fm.fooofed_spectrum_[0:5])
 #
 # You have the option to specify which data to save.
 #
-# - results: model fit results (same as is returned in FOOOFResult)
-# - settings: all public settings (everything available at initialization)
-# - data: freqs & power spectrum
+# - `results`: model fit results (same as is returned in FOOOFResult)
+# - `settings`: all public settings (everything available at initialization)
+# - `data`: freqs & power spectrum
 #
 # FOOOF saves data out to JSON files. You can specify a file name to save
 # or append to, or pass in a JSON file object.
@@ -294,14 +294,14 @@ nfm.plot()
 # FOOOF also has functionality to save out a 'report' of a particular model fit.
 #
 # This generates and saves a PDF which contains the same output as
-# 'print_results', 'plot', and 'print_settings'.
+# :meth:`~fooof.FOOOF.print_results`,
+# :meth:`~fooof.FOOOF.plot`, and
+# :meth:`~fooof.FOOOF.print_settings`.
 #
 
 ###################################################################################################
 
 # Save out a report of the current FOOOF model fit & results
-#  By default (with no inputs) this saves a PDF to current directory, with the name 'FOOOF_Report'
-#    Add inputs to the method call to specify a file-name, and save-location
 fm.save_report('FOOOF_report')
 
 ###################################################################################################

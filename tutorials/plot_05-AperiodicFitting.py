@@ -7,11 +7,11 @@ Choosing and using different approaches for fitting the aperiodic component.
 
 ###################################################################################################
 
-# Import numpy, used for loading data
-import numpy as np
-
 # Import the FOOOF object
 from fooof import FOOOF
+
+# Import utility to download and load example data
+from fooof.utils.download import load_fooof_data
 
 ###################################################################################################
 # Aperiodic Fitting Approaches
@@ -50,9 +50,9 @@ from fooof import FOOOF
 
 ###################################################################################################
 
-# Load example data
-freqs = np.load('data/freqs_lfp.npy')
-spectrum = np.load('data/spectrum_lfp.npy')
+# Load example data files needed for this example
+freqs = load_fooof_data('freqs_lfp.npy', folder='data')
+spectrum = load_fooof_data('spectrum_lfp.npy', folder='data')
 
 ###################################################################################################
 

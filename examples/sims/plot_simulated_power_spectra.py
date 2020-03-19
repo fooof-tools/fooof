@@ -24,16 +24,16 @@ from fooof.plts.spectra import plot_spectrum, plot_spectra
 #
 # To simulate power spectra, required parameters are:
 #
-# - `freq_range`: the frequency range to simulate across
-# - `aperiodic_params`: parameters that define the aperiodic component
+# - ``freq_range``: the frequency range to simulate across
+# - ``aperiodic_params``: parameters that define the aperiodic component
 #
 #   - this component is defined with 2 or 3 parameters, as [offset, (knee), exponent]
-# - `gaussian_params`: parameters that define the periodic component
+# - ``gaussian_params``: parameters that define the periodic component
 #
 #   - each peak is defined with three parameters, as [center frequency, height, width]
 #
-# The :func:`gen_power_spectrum` function takes these parameters as input to create
-# and return a simulated power spectrum. Note that the parameters that define the peaks
+# The :func:`~fooof.sim.gen.gen_power_spectrum` function takes these parameters as input to
+# create and return a simulated power spectrum. Note that the parameters that define the peaks
 # are labeled as gaussian parameters, as these parameters define the simulated gaussians
 # directly, and are not the modified peak parameters that the model outputs.
 #
@@ -106,13 +106,15 @@ plot_spectrum(freqs, powers, log_powers=True)
 # Simulating a Group of Power Spectra
 # -----------------------------------
 #
-# For simulating multiple power spectra, the :func:`gen_group_power_spectra` can be used.
+# For simulating multiple power spectra, the :func:`~fooof.sim.gen.gen_group_power_spectra`
+# can be used.
 #
-# This function takes the same kind of parameter definitions as :func:`gen_power_spectrum`,
-# and in addition takes a number specifying how many power spectra to simulate, returning
-# a 2D matrix containing the desired number of spectra.
+# This function takes the same kind of parameter definitions as
+# :func:`~fooof.sim.gen.gen_power_spectrum`, and in addition takes a number specifying
+# how many power spectra to simulate, returning a 2D matrix containing the
+# desired number of spectra.
 #
-# Parameters that are passed into :func:`gen_group_power_spectra` can be:
+# Parameters that are passed into :func:`~fooof.sim.gen.gen_group_power_spectra` can be:
 #
 # - a single definition, whereby the same value is used for all generated spectra
 # - a list of parameters, whereby each successive entry is used for each successive spectrum
@@ -131,7 +133,6 @@ aperiodic_params = [[0.5, 1], [1, 1.5]]
 
 # Periodic parameters: define a single definition, to be applied to all spectra
 periodic_params = [10, 0.4, 1]
-
 
 ###################################################################################################
 

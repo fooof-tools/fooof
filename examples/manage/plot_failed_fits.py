@@ -54,13 +54,13 @@ fg.fit(freqs, powers)
 # If there are failed fits, these are stored as null models.
 #
 # Let's check if there were any null models, from model failures, in the models
-# that we have fit so far. To do so, the :obj:`FOOOFGroup` object has some attributes
-# that provide information on any null model fits.
+# that we have fit so far. To do so, the :class:`~fooof.FOOOFGroup` object has some
+# attributes that provide information on any null model fits.
 #
 # These attributes are:
 #
-# - `n_null_` : the number of model results that are null
-# - `null_inds_` : the indices of any null model results
+# - ``n_null_`` : the number of model results that are null
+# - ``null_inds_`` : the indices of any null model results
 #
 
 ###################################################################################################

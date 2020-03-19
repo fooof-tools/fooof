@@ -30,7 +30,6 @@ A step by step overview of the FOOOF algorithm.
 ###################################################################################################
 
 # General imports
-import numpy as np
 import matplotlib.pyplot as plt
 
 # Import the FOOOF object
@@ -44,6 +43,9 @@ from fooof.core.funcs import gaussian_function
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.fm import plot_fm_peak_iter
 
+# Import utility to download and load example data
+from fooof.utils.download import load_fooof_data
+
 ###################################################################################################
 
 # Set whether to plot in log-log space
@@ -51,9 +53,9 @@ plt_log = False
 
 ###################################################################################################
 
-# Load example data
-freqs = np.load('data/freqs_2.npy')
-spectrum = np.load('data/spectrum_2.npy')
+# Load example data files needed for this example
+freqs = load_fooof_data('freqs_2.npy', folder='data')
+spectrum = load_fooof_data('spectrum_2.npy', folder='data')
 
 ###################################################################################################
 
@@ -64,7 +66,7 @@ fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6 , min_peak_height=0.15)
 ###################################################################################################
 #
 # Note that data can be added to FOOOF independent of fitting the model, using the
-# `add_data` method. FOOOF objects can also be used to plot input data,
+# :meth:`~fooof.FOOOF.add_data` method. FOOOF objects can also be used to plot input data,
 # without having fit any models.
 #
 
@@ -221,7 +223,7 @@ plot_spectrum(fm.freqs, fm.fooofed_spectrum_, plt_log, label='Full Model')
 ###################################################################################################
 
 # The last stage is to calculate the goodness of fit metrics (fit error & R^2)
-#   and organize parameters, such as updating gaussian parameters -> peak parameters
+#  and organize parameters, such as updating gaussian parameters -> peak parameters
 #  These results are part of what are stored, and printed, as the model results
 fm.print_results()
 
