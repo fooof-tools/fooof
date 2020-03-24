@@ -8,6 +8,7 @@ This file contains plotting functions that take as input a FOOOFGroup object.
 from fooof.core.io import fname, fpath
 from fooof.core.errors import NoModelError
 from fooof.core.modutils import safe_import, check_dependency
+from fooof.plts.settings import FIGSIZE_GROUP
 from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
 
 plt = safe_import('.pyplot', 'matplotlib')
@@ -40,7 +41,7 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None):
     if not fg.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
-    fig = plt.figure(figsize=(14, 10))
+    fig = plt.figure(figsize=FIGSIZE_GROUP)
     gs = gridspec.GridSpec(2, 2, wspace=0.4, hspace=0.25, height_ratios=[1, 1.2])
 
     # Aperiodic parameters plot

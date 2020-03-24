@@ -36,7 +36,7 @@ def plot_aperiodic_params(aps, colors=None, labels=None,
         Keyword arguments to pass into the plot call.
     """
 
-    ax = check_ax(ax, FIGSIZE_PARAMS)
+    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_PARAMS))
 
     if isinstance(aps, list):
         recursive_plot(aps, plot_aperiodic_params, ax, colors=colors, labels=labels,
@@ -86,7 +86,7 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         Keyword arguments to pass into the plot call.
     """
 
-    ax = check_ax(ax, FIGSIZE_PARAMS)
+    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_PARAMS))
 
     if isinstance(aps, list):
 

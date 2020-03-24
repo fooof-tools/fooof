@@ -47,7 +47,7 @@ def plot_scatter_1(data, label=None, title=None, x_val=0, ax=None):
 
     if label:
         ax.set_ylabel(label, fontsize=16)
-        plt.xticks([x_val], [label])
+        ax.set(xticks=[x_val], xticklabels=[label])
 
     if title:
         ax.set_title(title, fontsize=20)
@@ -91,9 +91,9 @@ def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
     if title:
         ax.set_title(title, fontsize=20)
 
-    ax.set_xlim([-0.5, 1.5])
-
-    plt.xticks([0, 1], [label_0, label_1])
+    ax.set(xlim=[-0.5, 1.5],
+           xticks=[0, 1],
+           xticklabels=[label_0, label_1])
     ax.tick_params(axis='x', labelsize=16)
 
 

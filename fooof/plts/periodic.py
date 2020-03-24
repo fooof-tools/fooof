@@ -39,7 +39,7 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
         Keyword arguments to pass into the plot call.
     """
 
-    ax = check_ax(ax, FIGSIZE_PARAMS)
+    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_PARAMS))
 
     # If there is a list, use recurse function to loop across arrays of data and plot them
     if isinstance(peaks, list):
@@ -92,7 +92,7 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
         Keyword arguments to pass into the plot call.
     """
 
-    ax = check_ax(ax, FIGSIZE_PARAMS)
+    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_PARAMS))
 
     if isinstance(peaks, list):
 
