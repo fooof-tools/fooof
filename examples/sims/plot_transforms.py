@@ -15,6 +15,9 @@ and track how outcome measures relate to changes in the power spectra.
 
 ###################################################################################################
 
+import numpy as np
+import matplotlib.pyplot as plt
+
 # Import the FOOOF object
 from fooof import FOOOF
 
@@ -24,7 +27,7 @@ from fooof.sim.gen import gen_power_spectrum
 # Import functions that can transform power spectra
 from fooof.sim.transform import (rotate_spectrum, translate_spectrum,
                                  rotate_sim_spectrum, translate_sim_spectrum,
-                                 compute_rotation_offset)
+                                 compute_rotation_offset, compute_rotation_frequency)
 
 # Import plot function to visualize power spectra
 from fooof.plts.spectra import plot_spectra
@@ -150,3 +153,170 @@ t_s_powers, t_params = translate_sim_spectrum(powers, delta_offset, params)
 
 # Check the updated sim params from after the translation
 print(t_params)
+
+###################################################################################################
+# Relations Between Power Spectra
+# -------------------------------
+#
+# In some cases, what we care about when transforming power spectra, is the relation
+# between multiple transformed power spectra.
+#
+# For example, if we start with a power spectrum 'A', and compute two transformations
+# on it, call them 'B' and 'C' at the same or different changes in exponent and/or
+# rotation frequencies, what is the relation between 'B' and 'C'?
+#
+# In the following examples, we will explore the relations between transformed
+# power spectra.
+#
+
+###################################################################################################
+
+# Create a baseline power spectrum
+freqs, powers = gen_power_spectrum([3, 50], [0, 1.5], [10, 0.3, 0.5], nlv=0)
+
+###################################################################################################
+
+# Initialize some power spectrum models for checking our transformations
+fm1 = FOOOF(verbose=False)
+fm2 = FOOOF(verbose=False)
+
+###################################################################################################
+# Rotate at the Same Rotation Frequencies
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# First, let's consider the case in which we rotate a spectrum by the different delta
+# exponents, at the same rotation frequency.
+#
+# In this case, each rotation creates the same change in offset between 'B' & 'C', and
+# so B & C end up with the same offset. The difference in exponent between 'B' and 'C'
+# is computable as the different of delta exponents applied to each spectrum.
+#
+
+###################################################################################################
+
+# Settings for rotating power spectra
+delta_exp_1 = 0.25
+delta_exp_2 = 0.5
+f_rotation = 20
+
+# Rotate a spectrum, different amounts, at the same rotation frequency
+powers_1 = rotate_spectrum(freqs, powers, delta_exp_1, f_rotation)
+powers_2 = rotate_spectrum(freqs, powers, delta_exp_2, f_rotation)
+
+###################################################################################################
+
+# Calculate the expected difference in exponent
+exp_diff = delta_exp_1 - delta_exp_2
+
+# Calculate the measured difference in exponent
+fm1.fit(freqs, powers_1); fm2.fit(freqs, powers_2)
+exp_diff_meas = fm1.get_params('aperiodic', 'exponent') - \
+    fm2.get_params('aperiodic', 'exponent')
+
+###################################################################################################
+
+# Print out the expected and measured changes in exponent
+template = "Exponent Difference: \n  expected: \t{:1.4f} \n  actual: \t{:1.4f}"
+print(template.format(exp_diff, exp_diff_meas))
+
+###################################################################################################
+
+# Visualize the transformed power spectra
+plot_spectra(freqs, [powers_1, powers_2],
+             log_freqs=True, log_powers=True)
+
+###################################################################################################
+# Rotate at Different Rotation Frequencies
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Next, let's consider the case in which we rotate a spectrum by the same delta exponent,
+# but do so at different rotation frequencies.
+#
+# The resulting power spectra will have the same final exponent value, but there will
+# be a difference in offset between them, as each rotation, at different rotation points,
+# creates a different change in offset. The difference in offset between 'B' & 'C' is
+# computed as the difference of rotation offset changes between them.
+#
+
+###################################################################################################
+
+# Settings for rotating power spectra
+delta_exp = 0.25
+f_rotation_1 = 5
+f_rotation_2 = 25
+
+# Rotate a spectrum, the same amount, at two different rotation frequencies
+powers_1 = rotate_spectrum(freqs, powers, delta_exp, f_rotation_1)
+powers_2 = rotate_spectrum(freqs, powers, delta_exp, f_rotation_2)
+
+###################################################################################################
+
+# Calculate the expected difference in offset
+off_diff = compute_rotation_offset(delta_exp, f_rotation_1) - \
+    compute_rotation_offset(delta_exp, f_rotation_2)
+
+# Calculate the measured difference in offset
+fm1.fit(freqs, powers_1)
+fm2.fit(freqs, powers_2)
+off_diff_2 = fm1.get_params('aperiodic', 'offset') - \
+    fm2.get_params('aperiodic', 'offset')
+
+###################################################################################################
+
+# Print out the expected and measured changes in offset
+template = "Offset Difference: \n  expected: \t{:1.4f} \n  actual: \t{:1.4f}"
+print(template.format(off_diff, off_diff_2))
+
+###################################################################################################
+
+# Visualize the transformed power spectra
+plot_spectra(freqs, [powers_1, powers_2],
+             log_freqs=True, log_powers=True)
+
+###################################################################################################
+# Rotate Different Amounts at Different Frequencies
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Finally, let's consider the case in which we rotate a spectrum by different delta exponents,
+# and do so at different rotation frequencies.
+#
+# As before, the changes in offset cancel out, and the total change in exponent is
+# the difference of the two delta values.
+#
+# However, in this case, the frequency of rotation between 'B' and 'C' is neither of the
+# original rotation frequencies. To calculate the rotation frequency between 'B' and 'C',
+# we can use the :func:`~fooof.sim.transform.compute_rotation_frequency` function,
+# which calculates the new relationship between 'B' and 'C', using the formula for
+# how spectra are rotated.
+#
+
+###################################################################################################
+
+# Settings for rotating power spectra
+delta_exp_1 = 0.5
+delta_exp_2 = 0.75
+f_rotation_1 = 2
+f_rotation_2 = 5
+
+# Rotate a spectrum, different amounts, at different rotation frequencies
+powers_1 = rotate_spectrum(freqs, powers, delta_exp_1, f_rotation_1)
+powers_2 = rotate_spectrum(freqs, powers, delta_exp_2, f_rotation_2)
+
+###################################################################################################
+
+# Calculate the rotation frequency between the two spectra
+f_rotation = compute_rotation_frequency(delta_exp_1, f_rotation_1,
+                                        delta_exp_2, f_rotation_2)
+
+###################################################################################################
+
+# Print out the measured rotation frequency
+template = "Rotation frequency: \t{:1.4f}"
+print(template.format(f_rotation))
+
+###################################################################################################
+
+# Visualize the transformed power spectra, marking the rotation frequency
+plot_spectra(freqs, [powers_1, powers_2],
+             log_freqs=True, log_powers=True)
+plt.axvline(np.log10(f_rotation))
