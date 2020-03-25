@@ -181,8 +181,9 @@ Functions for transforming power spectra.
     rotate_spectrum
     rotate_sim_spectrum
     compute_rotation_offset
+    compute_rotation_frequency
 
-Utitilies
+Utilities
 ~~~~~~~~~
 
 Utilities for simulating power spectra.

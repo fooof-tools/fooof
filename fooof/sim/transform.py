@@ -182,3 +182,47 @@ def compute_rotation_offset(delta_exponent, f_rotation):
     """
 
     return -np.log10(f_rotation) * -delta_exponent
+
+
+def compute_rotation_frequency(delta_exponent_b, f_rotation_b, delta_exponent_c, f_rotation_c):
+    """Calculate the rotation frequency between two rotated power spectra.
+
+    Parameters
+    ----------
+    delta_exponent_b : float
+        The applied change in exponent value for power spectrum 'B'.
+    f_rotation_b : float
+        The rotation frequency applied to power spectrum 'B'.
+    delta_exponent_c : float
+        The applied change in exponent value for power spectrum 'C'.
+    f_rotation_c : float
+        The rotation frequency applied to power spectrum 'C'.
+
+    Returns
+    -------
+    float
+        The frequency rotation point between spectra 'B' & 'C'.
+
+    Notes
+    -----
+    **Code Notes**
+
+    This computes the rotation frequency for two power spectra 'B' & 'C',
+    under the assumption that they are both rotated versions of a the
+    same original power spectrum 'A'.
+
+    **Derivation**
+
+    Given an original power spectrum A, then:
+
+    - B = A*(f_rotation_b/freqs)^delta_exponent_b
+    - C = A*(f_rotation_c/freqs)^delta_exponent_c
+
+    Therefore, what you want is f_rotation_bc, which is the frequency where B==C.
+
+    To find this, we can plug everything back into the equation, to find where
+    B[freqs] == C[freqs], which is how we arrive at the solution below.
+    """
+
+    return (((f_rotation_c**delta_exponent_c) / (f_rotation_b**delta_exponent_b))) ** \
+         (1/(delta_exponent_c-delta_exponent_b))

@@ -58,3 +58,13 @@ def test_translate_sim_spectrum():
 def test_compute_rotation_offset():
 
     assert compute_rotation_offset(20, 0.5)
+
+def test_compute_rotation_frequency():
+
+    delta_exp_b, delta_exp_c = 0.5, 0.75
+    f_rot_b, f_rot_c = 5, 10
+
+    f_rot_bc = compute_rotation_frequency(delta_exp_b, f_rot_b, delta_exp_c, f_rot_c)
+
+    assert isinstance(f_rot_bc, float)
+    assert np.isclose(f_rot_bc, 40.)
