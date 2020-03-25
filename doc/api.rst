@@ -295,6 +295,7 @@ Utilities for working with data.
     :toctree: generated/
 
     trim_spectrum
+    interpolate_spectrum
     compute_pointwise_error
 
 Reports

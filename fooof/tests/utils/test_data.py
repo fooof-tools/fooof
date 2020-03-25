@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from fooof.sim.gen import gen_power_spectrum
+
 from fooof.utils.data import *
 
 ###################################################################################################
@@ -24,3 +26,14 @@ def test_compute_pointwise_error():
 
     errs = compute_pointwise_error(d1, d2)
     assert np.array_equal(errs, np.array([1, 1, 1, 1, 1]))
+
+def test_interpolate_spectrum():
+
+    freqs, powers = gen_power_spectrum(\
+        [1, 75], [1, 1], [[10, 0.5, 1.0], [60, 2, 0.1]])
+
+    freqs_out, powers_out = interpolate_spectrum(freqs, powers, [58, 62])
+
+    assert np.array_equal(freqs, freqs_out)
+    assert np.all(powers)
+    assert powers.shape == powers_out.shape
