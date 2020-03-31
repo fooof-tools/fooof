@@ -1,18 +1,18 @@
 """
-03: FOOOF Algorithm
-===================
+03: Fitting Algorithm
+=====================
 
-A step by step overview of the FOOOF algorithm.
+A step by step overview of the algorithm for parameterizing neural power spectra.
 """
 
 ###################################################################################################
 # Algorithmic Description
 # -----------------------
 #
-# In this tutorial we will step through how the FOOOF model is fit.
+# In this tutorial we will step through how the power spectrum model is fit.
 #
-# Note that this notebook is for demonstrative purposes, and does not
-# represent recommended usage of FOOOF.
+# Note that this notebook is for demonstrative purposes, and does not represent
+# recommended usage of how to fit power spectrum models.
 #
 # Broadly, the steps in the algorithm are:
 #
@@ -35,9 +35,9 @@ import matplotlib.pyplot as plt
 # Import the FOOOF object
 from fooof import FOOOF
 
-# Import some internal functions from FOOOF
+# Import some internal functions
 #   These are used here to demonstrate the algorithm.
-#   You do not need to import these functions to be able to run FOOOF
+#   You do not need to import these functions for standard use of the algorithm
 from fooof.sim.gen import gen_aperiodic
 from fooof.core.funcs import gaussian_function
 from fooof.plts.spectra import plot_spectrum
@@ -65,14 +65,14 @@ fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6 , min_peak_height=0.15)
 
 ###################################################################################################
 #
-# Note that data can be added to FOOOF independent of fitting the model, using the
+# Note that data can be added to a FOOOF object independent of fitting the model, using the
 # :meth:`~fooof.FOOOF.add_data` method. FOOOF objects can also be used to plot input data,
 # without having fit any models.
 #
 
 ###################################################################################################
 
-# Add data to FOOOF object
+# Add data to the object
 fm.add_data(freqs, spectrum, [3, 40])
 
 ###################################################################################################
@@ -90,7 +90,7 @@ fm.plot(plt_log)
 
 ###################################################################################################
 
-# Fit the FOOOF model
+# Fit the power spectrum model
 fm.fit(freqs, spectrum, [3, 40])
 
 ###################################################################################################
@@ -136,7 +136,7 @@ plot_spectrum(fm.freqs, init_flat_spec, plt_log, label='Flattened Spectrum')
 # The flattened spectrum is then used to detect peaks. We can better isolate
 # peaks in the data, as the aperiodic activity has been removed.
 #
-# FOOOF uses an iterative procedure to find peaks in the flattened spectrum.
+# The fitting algorithm uses an iterative procedure to find peaks in the flattened spectrum.
 #
 # For each iteration:
 #
@@ -217,7 +217,7 @@ plot_spectrum(fm.freqs, fm._ap_fit, plt_log, label='Final Aperiodic Fit', ax=ax)
 
 ###################################################################################################
 
-# Plot full FOOOF model, created by combining the peak and aperiodic fits
+# Plot full model, created by combining the peak and aperiodic fits
 plot_spectrum(fm.freqs, fm.fooofed_spectrum_, plt_log, label='Full Model')
 
 ###################################################################################################
@@ -237,9 +237,9 @@ fm.plot(plt_log)
 # Addendum: Data & Model Component Attributes
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# As you may have noticed through this tutorial, the FOOOF object keeps track of some
-# versions of the original data as well as individual model components fits, as well as
-# the final model fit that ultimate outcome of the fitting procedure.
+# As you may have noticed through this tutorial, the :class:`~fooof.FOOOF` object keeps
+# track of some versions of the original data as well as individual model components fits,
+# as well as the final model fit that ultimate outcome of the fitting procedure.
 #
 # These attributes in the FOOOF object are kept at the end of the fitting procedure.
 # Though they are primarily computed for internal use (hence being considered 'private'
@@ -250,12 +250,12 @@ fm.plot(plt_log)
 #
 # - Aperiodic Component: `_ap_fit`
 #
-#   - This is the aperiodic-only model fit of the data.
+#   - This is the aperiodic-only fit of the data.
 #   - It is computed by generating a reconstruction of the measured aperiodic parameters
 #
 # - Periodic Component: `_peak_fit`
 #
-#   - This is the periodic-only (or peak) model fit of the data.
+#   - This is the periodic-only (or peak) fit of the data.
 #   - It is computed by generating a reconstruction of the measured periodic (peak) parameters
 #
 # Stored data attributes:
@@ -275,7 +275,7 @@ fm.plot(plt_log)
 # Conclusion
 # ----------
 #
-# In this tutorial we have stepped through the algorithm for how FOOOF fits the
-# power spectrum model. Next, we will continue to explore the FOOOF object,
+# In this tutorial we have stepped through the parameterization algorithm fitting
+# power spectrum models. Next, we will continue to explore the FOOOF object,
 # properly introducing the settings and further exploring the parameters.
 #

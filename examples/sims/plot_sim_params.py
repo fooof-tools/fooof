@@ -24,11 +24,11 @@ from fooof.plts.spectra import plot_spectrum, plot_spectra
 # to ground truth values - but in order to do that, one needs to keep track of the
 # simulation parameters themselves.
 #
-# To do so, FOOOF defines and uses a :obj:`~fooof.data.data.SimParams` object to manage
+# To do so, there is the :obj:`~fooof.data.data.SimParams` object to manage
 # and keep track of simulation parameters.
 #
-# For example, when you simulate power spectra, FOOOF stores the parameters for each spectrum
-# in a :obj:`~fooof.data.data.SimParams` object, and collects and returns these to you.
+# For example, when you simulate power spectra, the parameters for each spectrum are stored
+# in a :obj:`~fooof.data.data.SimParams` object, and then these objects are collected and returned.
 #
 # SimParams objects are named tuples with the following fields:
 #
@@ -68,7 +68,7 @@ freqs, powers = gen_power_spectrum(freq_range, *cur_params)
 # Managing Parameters
 # -------------------
 #
-# FOOOF provides some helper functions for managing and selecting parameters for
+# There are also helper functions for managing and selecting parameters for
 # simulating groups of power spectra.
 #
 # These functions include:

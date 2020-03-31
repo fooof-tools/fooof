@@ -122,16 +122,16 @@ plot_power_spectra(freqs, powers)
 #
 
 ###################################################################################################
-# Coloured Noise Signals
-# ~~~~~~~~~~~~~~~~~~~~~~
+# Colored Noise Signals
+# ~~~~~~~~~~~~~~~~~~~~~
 #
 # Let's now look at 'noise' signals.
 #
-# In the signals below, we will simulate coloured noise signals, in which samples are
+# In the signals below, we will simulate colored noise signals, in which samples are
 # drawn randomly from noise distributions, with no rhythmic properties.
 #
 # As we will see, in the power spectrum, these signals exhibit power at all frequencies,
-# with specific patterns of powers across frequencies, which is dependent on the 'colour'
+# with specific patterns of powers across frequencies, which is dependent on the 'color'
 # of the noise.
 #
 
@@ -213,7 +213,7 @@ plot_power_spectra(freqs, powers)
 # Section Conclusion
 # ^^^^^^^^^^^^^^^^^^
 #
-# The 'coloured noise' signals above are simulated signals with no rhythmic properties,
+# The 'colored noise' signals above are simulated signals with no rhythmic properties,
 # in the sense that there are no characteristic frequencies or visible rhythms in the data.
 #
 # Nevertheless, and by definition, in the power spectra of such signals, there is power across

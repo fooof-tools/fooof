@@ -2,12 +2,12 @@
 Manipulating FOOOF Objects
 ==========================
 
-Examples with combining, sub-selecting, dropping, and averaging FOOOF model fits.
+Examples with combining, sub-selecting, dropping, and averaging power spectrum models.
 """
 
 ###################################################################################################
 #
-# As you run FOOOF analyses, you may end up with multiple FOOOF objects, as you fit
+# As you fit power spectrum models, you may end up with multiple FOOOF objects, as you fit
 # models within and across subjects, conditions, trials, etc. To help manage and organize
 # the potentially multiple FOOOF objects that can arise in these cases, here we will
 # explore the utilities offered for managing and organizing within and between FOOOF
@@ -38,7 +38,7 @@ from fooof.sim.params import param_sampler
 
 ###################################################################################################
 #
-# First, we will simulate some example data, and fit some individual fits with FOOOF objects.
+# First, we will simulate some example data, and fit some individual power spectrum models.
 #
 
 ###################################################################################################
@@ -60,7 +60,7 @@ freqs, powers_3 = gen_power_spectrum(freq_range, [0, 1.5], [11, 0.3, 2.5],
 # Initialize a set of FOOOF objects
 fm1, fm2, fm3 = FOOOF(max_n_peaks=4), FOOOF(max_n_peaks=4), FOOOF(max_n_peaks=4)
 
-# Fit FOOOF models
+# Fit power spectrum models
 fm1.fit(freqs, powers_1)
 fm2.fit(freqs, powers_2)
 fm3.fit(freqs, powers_3)
@@ -80,7 +80,7 @@ fm3.fit(freqs, powers_3)
 
 ###################################################################################################
 
-# Combine FOOOF a list of FOOOF objects into a FOOOFGroup object
+# Combine a list of FOOOF objects into a FOOOFGroup object
 fg = combine_fooofs([fm1, fm2, fm3])
 
 # Check the number of models in the object
@@ -91,21 +91,21 @@ print('Number of model fits: ', len(fg))
 # Note on Manipulating FOOOF Objects
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Note that these functions that manipulate FOOOF object typically do more than just
+# Note that these functions that manipulate FOOOF objects typically do more than just
 # copying result data - they also check and manage settings and meta-data of objects.
 #
-# For example, combining FOOOF objects returns a new FOOOF object with the same settings.
+# For example, combining FOOOF objects returns a new FOOOFGroup object with the same settings.
 #
 # We can see this by using the :func:`~fooof.objs.utils.compare_info` function to compare
 # the settings between FOOOF objects.
 #
-# You can also use this function if you wish to compare FOOOF objects to
-# ensure that you are comparing model results that were fit with equivalent settings.
+# You can also use this function if you wish to compare FOOOF objects to ensure that
+# you are comparing model results that were fit with equivalent settings.
 #
 
 ###################################################################################################
 
-# Compare FOOOF objects for if they have the same settings
+# Compare defined settings across FOOOF objects
 compare_info([fm1, fg], 'settings')
 
 ###################################################################################################
@@ -207,8 +207,8 @@ for ind in fg.null_inds_:
 #
 
 ###################################################################################################
-# Averaging FOOOFGroup
-# --------------------
+# Averaging Across Model Fits
+# ---------------------------
 #
 # Finally, let's average across the models in our FOOOFGroup object, to examine
 # the average model of the data.

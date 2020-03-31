@@ -2,7 +2,7 @@
 01: Model Description
 =====================
 
-A theoretical / mathematical description of the FOOOF model.
+A theoretical / mathematical description of the power spectrum model.
 """
 
 ###################################################################################################
@@ -32,8 +32,8 @@ A theoretical / mathematical description of the FOOOF model.
 # and we would like a way to explicitly and specifically model these different
 # aspects of the data.
 #
-# More specifically, the FOOOF model conceptualizes the neural data as a combination
-# of aperiodic and periodic (oscillatory) activity.
+# More specifically, the power spectrum model conceptualizes the neural data as a
+# combination of aperiodic and periodic (oscillatory) activity.
 #
 # The goal of the model is to measure these component, separately and explicitly,
 # from frequency representations of neural field data (neural power spectra).
@@ -131,18 +131,18 @@ A theoretical / mathematical description of the FOOOF model.
 # Another common way to measure 1/f properties in neural power spectra is to measure
 # the slope of the spectrum in log-log spacing, measuring the 1/f as:
 #
-# ..math::
-#   NPS = ax + b
+# .. math::
+#    NPS = ax + b
 #
 # Where:
 #
 # - :math:`a` is the power spectrum slope
-# - :math: `b` is the offset.
+# - :math:`b` is the offset
 #
 # Note that, when fitting without a knee, this can be considered equivalent to the
 # exponential fits that we perform, where the slope relates to the exponent value as:
 #
-# ..math::
+# .. math::
 #    \chi = -a
 #
 

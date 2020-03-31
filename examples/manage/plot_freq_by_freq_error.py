@@ -1,8 +1,8 @@
 """
-Frequency-by-Frequency Model Errors
-===================================
+Frequency-by-Frequency Errors
+=============================
 
-Check the error of FOOOF models across frequencies.
+Check the error of power spectrum models across frequencies.
 """
 
 ###################################################################################################
@@ -16,15 +16,15 @@ from fooof import FOOOF, FOOOFGroup
 # Import simulation utilities to create some test data
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
 
-# Import functions that examining frequency-by-frequency error of FOOOF models
+# Import functions to examine frequency-by-frequency error of model fits
 from fooof.analysis.error import compute_pointwise_error_fm, compute_pointwise_error_fg
 
 ###################################################################################################
 # Frequency-by-Frequency Error
 # ----------------------------
 #
-# When fitting FOOOF models, one of the goodness-of-fit measures computed and returned
-# is the total error of th full model fit, compared to the original data.
+# When fitting power spectrum models, one of the goodness-of-fit measures computed and
+# returned is the total error of th full model fit, compared to the original data.
 #
 # Though potentially useful for evaluating overall performance, this total error
 # measure doesn't necessarily help to indicate where, in frequency space, or in what
@@ -55,7 +55,7 @@ freqs, powers = gen_power_spectrum([3, 50], [1, 1], [10, 0.25, 0.5])
 
 ###################################################################################################
 
-# Initialize a FOOOF model to fit with
+# Initialize a FOOOF object to fit with
 fm = FOOOF(verbose=False)
 
 # Parameterize our power spectrum

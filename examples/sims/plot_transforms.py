@@ -63,15 +63,16 @@ plot_spectra(freqs, [powers, r_powers], log_freqs=True, log_powers=True)
 
 ###################################################################################################
 #
-# Next, we can use FOOOF to check if our change in exponent went as expected.
+# Next, we can fit power spectrum models to check if our change in exponent worked as expected.
 #
 
 ###################################################################################################
 
-# Initialize FOOOF models
-fm1, fm2 = FOOOF(verbose=False), FOOOF(verbose=False)
+# Initialize FOOOF objects
+fm1 = FOOOF(verbose=False)
+fm2 = FOOOF(verbose=False)
 
-# Fit FOOOF models to the original, and rotated, spectrum
+# Fit power spectrum models to the original, and rotated, spectrum
 fm1.fit(freqs, powers)
 fm2.fit(freqs, r_powers)
 

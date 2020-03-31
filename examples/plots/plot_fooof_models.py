@@ -1,21 +1,16 @@
 """
-Plot FOOOF Models
-=================
+Plot Power Spectrum Models
+==========================
 
-Plotting FOOOF models, directly from FOOOF objects.
+Plotting power spectrum models, directly from FOOOF objects.
+
+In order to the get a qualitative sense of if the model is fitting well, and what
+the results look like, it can be useful to visualize power spectrum model reconstructions.
+
+This example dives deeper into plotting model reconstructions, using the
+:meth:`~fooof.FOOOF.plot` method from a :class:`~fooof.FOOOF` object, and explores
+options for tuning these these visualizations.
 """
-
-###################################################################################################
-# Plotting FOOOF Models
-# ---------------------
-#
-# In order to the get a qualitative sense of if the model is fitting well, and what
-# the results look like, it can be useful to visualize power spectrum model reconstructions.
-#
-# This example dives deeper into plotting model reconstructions, using the
-# :meth:`~fooof.FOOOF.plot` method from a :class:`~fooof.FOOOF` object, and explores
-# options for tuning these these visualizations.
-#
 
 ###################################################################################################
 
@@ -35,8 +30,8 @@ freqs, powers = gen_power_spectrum([3, 50], [1, 1],
                                    [[9, 0.25, 0.5], [22, 0.1, 1.5], [25, 0.2, 1.]])
 
 ###################################################################################################
-# Plotting From FOOOF Models
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Plotting From FOOOF Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # The FOOOF object has a :meth:`~fooof.FOOOF.plot` method that can be used to visualize
 # data and models available in the :class:`~fooof.FOOOF` object.
@@ -44,13 +39,13 @@ freqs, powers = gen_power_spectrum([3, 50], [1, 1],
 
 ###################################################################################################
 
-# Initialize a FOOOF model, and add some data to it
+# Initialize a FOOOF object, and add some data to it
 fm = FOOOF(verbose=False)
 fm.add_data(freqs, powers)
 
 ###################################################################################################
 #
-# Once you have added data to a FOOOF model, you can visualize the data using
+# Once you have added data to a FOOOF object, you can visualize the data using
 # :func:`~fooof.FOOOF.plot`.
 #
 
@@ -147,7 +142,7 @@ freqs, powers = gen_power_spectrum([1, 150], [0, 10, 1.5],
 
 ###################################################################################################
 
-# Create a new FOOOF object, in 'knee' mode
+# Initialize a new FOOOF object, in 'knee' mode
 fm = FOOOF(aperiodic_mode='knee', verbose=False)
 
 # Fit the model and visualize the fit, highlighting peaks

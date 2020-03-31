@@ -2,7 +2,7 @@
 Plot Model Components
 =====================
 
-Plotting FOOOF paramaters and model components.
+Plotting power spectrum model parameters and components.
 """
 
 ###################################################################################################
@@ -14,7 +14,7 @@ from fooof import FOOOFGroup
 from fooof.bands import Bands
 from fooof.analysis import get_band_peak_fg
 
-# Import simulation utilties for making example data
+# Import simulation utilities for making example data
 from fooof.sim.gen import gen_group_power_spectra
 from fooof.sim.params import param_jitter
 
@@ -27,7 +27,7 @@ from fooof.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 # ---------------------------------
 #
 # In this example, we will explore the plotting functions available to visualize
-# model parameters and components from FOOOF analyses.
+# model parameters and components from fitting power spectrum models.
 #
 # To do so, we will consider a hypothetical experiment in which we are compare power
 # spectrum models between two groups of participants, and so want to visualize differences
@@ -64,8 +64,8 @@ freqs, powers1 = gen_group_power_spectra(n_subjs, freq_range, g1_aps, g1_peaks)
 freqs, powers2 = gen_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
 
 ###################################################################################################
-# Run FOOOF Analyses
-# ~~~~~~~~~~~~~~~~~~
+# Fit Power Spectrum Models
+# ~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Now that we have our simulated data, we can fit our power spectrum models, using FOOOFGroup.
 #
@@ -98,7 +98,7 @@ fg2.fit(freqs, powers2)
 # parameters or components to visualize them, or pass in a list of group results to
 # visualize and compare between groups.
 #
-# You can also pass in optional parameters `labels` and `colors` to all the following
+# You can also pass in optional inputs `labels` and `colors` to all the following
 # functions to add plot labels, and to set the colors used for each group.
 #
 

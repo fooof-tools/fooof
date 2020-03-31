@@ -17,7 +17,7 @@ from fooof.utils.download import load_fooof_data
 # Aperiodic Fitting Approaches
 # ----------------------------
 #
-# FOOOF currently offers two approaches for fitting the aperiodic component:
+# There are currently two approaches for fitting the aperiodic component:
 #
 # - Fitting with just an offset and a exponent, equivalent to a linear fit in log-log space
 #
@@ -41,10 +41,10 @@ from fooof.utils.download import load_fooof_data
 #
 
 ###################################################################################################
-# Fitting FOOOF with Aperiodic 'Knee'
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Fitting with an Aperiodic 'Knee'
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Let's explore fitting FOOOF across a broader frequency range,
+# Let's explore fitting power spectrum models across a broader frequency range,
 # using some local field potential data.
 #
 
@@ -56,17 +56,17 @@ spectrum = load_fooof_data('spectrum_lfp.npy', folder='data')
 
 ###################################################################################################
 
-# Initialize FOOOF, setting the aperiodic mode to use a knee fit
+# Initialize a FOOOF object, setting the aperiodic mode to use a 'knee' fit
 fm = FOOOF(peak_width_limits=[2, 8], aperiodic_mode='knee')
 
 ###################################################################################################
 
-# Fit FOOOF model
+# Fit a power spectrum model
 #  Note that this time we're specifying an optional parameter to plot in log-log
 fm.report(freqs, spectrum, [2, 70], plt_log=True)
 
 ###################################################################################################
-# A note on interpreting the "knee" parameter
+# A note on interpreting the 'knee' parameter
 # -------------------------------------------
 #
 # The aperiodic fit has the form:
@@ -102,7 +102,7 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 
 ###################################################################################################
 
-# Create and fit a FOOOF model in fixed mode to the same data as above
+# Create and fit a power spectrum model in fixed mode to the same data as above
 fm = FOOOF(peak_width_limits=[2, 8], aperiodic_mode='fixed')
 fm.report(freqs, spectrum, [2, 70], plt_log=True)
 
@@ -124,9 +124,9 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 #
 # It is important to choose the appropriate aperiodic fitting approach for your data.
 #
-# If there is a clear knee in the power spectrum, fitting in 'fixed' mode
-# will not work well. However fitting FOOOF with knee fits may perform sub-optimally
-# in ambiguous cases (where the data may or may not have a knee), or if no knee is present.
+# If there is a clear knee in the power spectrum, fitting in 'fixed' mode will not
+# work well. However fitting with a knee may perform sub-optimally in ambiguous cases
+# (where the data may or may not have a knee), or if no knee is present.
 #
 # Given this, we recommend:
 #
@@ -154,7 +154,7 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 # Conclusion
 # ----------
 #
-# Now that we have explored the FOOOF object, and different fitting approaches
-# for fitting the aperiodic component. Next up, we will continue be introducing
-# how to scale the fitting to apply across multiple power spectra.
+# Now that we have explored the :class:`~fooof.FOOOF` object, and different fitting
+# approaches for fitting the aperiodic component. Next up, we will continue be
+# introducing how to scale the fitting to apply across multiple power spectra.
 #

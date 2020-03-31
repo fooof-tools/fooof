@@ -1,4 +1,4 @@
 Analyses
 --------
 
-Example analyses with FOOOF.
+Example analyses involving parameterizing neural power spectra.

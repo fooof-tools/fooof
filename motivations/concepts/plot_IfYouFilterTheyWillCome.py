@@ -205,6 +205,6 @@ plt.xlim(0, n_seconds); plt.ylim(-1, 1);
 # that reflect aperiodic activity and dynamics. We therefore suggest that
 # narrow band filtered signals should not be presumed to necessarily reflect periodic
 # activity. In order to ascertain whether narrow band frequency regions reflect
-# periodic and/or aperiodic activity and what features are changing in the data,
+# periodic and/or aperiodic activity and which aspects are changing in the data,
 # additional analyses, such as parameterizing neural power spectra, are recommended.
 #

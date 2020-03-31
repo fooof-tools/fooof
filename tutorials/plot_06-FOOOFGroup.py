@@ -2,12 +2,12 @@
 06: FOOOFGroup
 ==============
 
-Using FOOOFGroup to run FOOOF across multiple power spectra.
+Using FOOOFGroup to run fit models across multiple power spectra.
 """
 
 ###################################################################################################
 
-# Import the FOOOF object
+# Import the FOOOFGroup object
 from fooof import FOOOFGroup
 
 # Import some utilities for simulating some test data
@@ -32,17 +32,17 @@ from fooof.sim.utils import set_random_seed
 # --------------------------
 #
 # Before we start using :class:`~fooof.FOOOFGroup`, we need some data. For this example,
-# we will simulate some test data. FOOOF includes utilities for creating simulated power-spectra,
-# that mimic real data.
+# we will simulate some test data. The FOOOF module includes utilities for creating
+# simulated power-spectra, that mimic real data.
 #
-# To do so, we will use a function called :func:`~fooof.sim.params.param_sampler` that takes a
-# list of possible parameters, and creates an object that randomly samples from
+# To do so, we will use a function called :func:`~fooof.sim.params.param_sampler` that
+# takes a list of possible parameters, and creates an object that randomly samples from
 # them to generate power spectra.
 #
 # Note that if you would like to generate single power spectra, you can use
 # :func:`~fooof.sim.gen.gen_power_spectrum`, also in `fooof.sim.gen`.
 #
-# There are more examples and descriptions of using FOOOF to simualate data in the
+# There are more examples and descriptions of using FOOOF to simulate data in the
 # `examples <https://fooof-tools.github.io/fooof/auto_examples/index.html>`_
 # section.
 #
@@ -59,7 +59,7 @@ n_spectra = 10
 f_range = [3, 40]
 
 # Set some options for aperiodic parameters
-#  These settings, as [offset, exponent] pairs are possible values for our simulated spectra
+#  These pairs, as [offset, exponent], are possible values for our simulated spectra
 #  Simulated spectra will have aperiodic parameters of [20, 2], [50, 2.5] or [35, 1.5]
 ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
 
@@ -163,8 +163,9 @@ print(fg.group_results[0:2])
 # To collect data across all model fits, and to select specific data results from this data
 # you can should the :func:`~fooof.FOOOFGroup.get_params` method.
 #
-# This method works the same as in the FOOOF object, and lets you extract specific results
-# by specifying a field, as a string, and (optionally) a specific column of that data.
+# This method works the same as in the :class:`~fooof.FOOOF` object, and lets you extract
+# specific results by specifying a field, as a string, and (optionally) a specific column
+# of that data.
 #
 # Since the :class:`~fooof.FOOOFGroup` object collects results from across multiple model fits,
 # you should always use :func:`~fooof.FOOOFGroup.get_params` to access parameter fits.
@@ -203,7 +204,7 @@ print(fg.get_params.__doc__)
 #  Note that as a shortcut, you can index the FOOOFGroup object directly to access 'group_results'
 f_res = fg[0]
 
-# Check the documentation for the FOOOFResults - with full descriptions of the resulting data.
+# Check the documentation for the FOOOFResults - with full descriptions of the resulting data
 print(f_res.__doc__)
 
 ###################################################################################################
@@ -224,23 +225,17 @@ print(cfs)
 # Saving & Loading with FOOOFGroup
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# FOOOFGroup also support saving and loading, with same options as saving from FOOOF.
+# FOOOFGroup also support saving and loading, with same options as saving from the FOOOF object.
 #
 # The only difference in saving FOOOFGroup, is that it saves out a 'jsonlines' file,
 # in which each line is a JSON object, saving the specified data and results for
 # a single power spectrum.
 #
-# Note that saving settings together with results will save out duplicated settings
-# to each line in the output file, corresponding to each individual spectrum in the group,
-# and so is somewhat inefficient. It is more parsimonious to save out a single settings file,
-# and a separate file that includes the results.
-#
 
 ###################################################################################################
 
-# Save out FOOOFGroup settings & results (separately)
-fg.save('FG_settings', save_settings=True)
-fg.save('FG_results', save_results=True)
+# Save out FOOOFGroup settings & results
+fg.save('FG_results', save_settings=True, save_results=True)
 
 ###################################################################################################
 
@@ -261,20 +256,20 @@ nfg.print_results()
 # each power spectrum is fit independently.
 #
 # The fit method includes an optional parameter ``n_jobs``, which if set at 1 (as default),
-# will run FOOOF linearly. If you set this parameter to some other integer, fitting will
-# launch 'n_jobs' number of jobs, in parallel. Setting n_jobs to -1 will launch in
-# parallel across all available cores.
+# will fit models linearly (one at a time, in order). If you set this parameter to some other
+# integer, fitting will launch 'n_jobs' number of jobs, in parallel. Setting n_jobs to -1 will
+# launch model fitting in parallel across all available cores.
 #
-# Note, however, that running FOOOF in parallel does not guarantee a quicker runtime overall.
-# The computation time per FOOOF-fit scales with the frequency range fit over, and the
-# 'complexity' of the power spectra, in terms of number of peaks. For relatively small
+# Note, however, that fitting power spectrum models in parallel does not guarantee a quicker
+# runtime overall. The computation time per model fit scales with the frequency range fit over,
+# and the 'complexity' of the power spectra, in terms of number of peaks. For relatively small
 # numbers of power spectra (less than ~100), across relatively small frequency ranges
 # (say ~3-40Hz), running in parallel may offer no appreciable speed up.
 #
 
 ###################################################################################################
 
-# Run FOOOF across a group of power spectra in parallel, using all cores
+# Fit power spectrum models across a group of power spectra in parallel, using all cores
 fg.fit(freqs, spectra, n_jobs=-1)
 
 ###################################################################################################
@@ -292,7 +287,7 @@ fg.fit(freqs, spectra, n_jobs=-1)
 
 ###################################################################################################
 
-# Run FOOOF across a group of power spectra, printing a progress bar
+# Fit power spectrum models across a group of power spectra, printing a progress bar
 fg.fit(freqs, spectra, progress='tqdm')
 
 ###################################################################################################
@@ -300,23 +295,23 @@ fg.fit(freqs, spectra, progress='tqdm')
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # When fitting power spectrum models for a group of power spectra, results are stored
-# as the FOOOFResults, which stores (only) the results of the model fit,
+# in FOOOFResults objects, which store (only) the results of the model fit,
 # not the full model fits themselves.
 #
-# To examine individual model fits, FOOOFGroup can regenerate FOOOF objects for individual
-# power spectra, with the full model available for visualization. To do so, you can use
-# the :meth:`~fooof.FOOOFGroup.get_fooof` method.
+# To examine individual model fits, :class:`~fooof.FOOOFGroup` can regenerate
+# :class:`~fooof.FOOOF` objects for individual power spectra, with the full model available
+# for visualization. To do so, you can use the :meth:`~fooof.FOOOFGroup.get_fooof` method.
 #
 
 ###################################################################################################
 
-# Extract a particular spectrum, specified by index to a FOOOF object
+# Extract a particular spectrum, specified by index
 #  Here we also specify to regenerate the the full model fit, from the results
 fm = fg.get_fooof(ind=2, regenerate=True)
 
 ###################################################################################################
 
-# Print results and plot extracted FOOOF model fit
+# Print results and plot extracted model fit
 fm.print_results()
 fm.plot()
 
@@ -324,7 +319,7 @@ fm.plot()
 # Conclusion
 # ----------
 #
-# Now we have explored fitting FOOOF models and running these fits across multiple
+# Now we have explored fitting power spectrum models and running these fits across multiple
 # power spectra. Next we dig deeper into how to choose and tune the algorithm settings,
 # and how to troubleshoot if any of the fitting goes wrong.
 #

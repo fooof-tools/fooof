@@ -7,19 +7,19 @@ Creating simulated power spectra.
 
 ###################################################################################################
 
-# Import fooof functions for creating simulated power spectra
+# Import functions for creating simulated power spectra
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
 
-# Import some fooof plotting functions
+# Import plotting functions
 from fooof.plts.spectra import plot_spectrum, plot_spectra
 
 ###################################################################################################
 # Creating Simulated Power Spectra
 # --------------------------------
 #
-# FOOOF has utilities to create simulated power spectra. Power spectra are simulated
-# using the same model and conception that the model employs, namely that neural
-# power spectra can be conceptualized as an aperiodic component, with overlying
+# The module also contains utilities to create simulated power spectra. Power spectra
+# are simulated using the same model and conception that the model employs, namely that
+# neural power spectra can be conceptualized as an aperiodic component, with overlying
 # periodic peaks.
 #
 # To simulate power spectra, required parameters are:
@@ -40,7 +40,7 @@ from fooof.plts.spectra import plot_spectrum, plot_spectra
 
 ###################################################################################################
 
-# Settings for creating a simulated power spectrum
+# Settings & parameters for creating a simulated power spectrum
 freq_range = [3, 40]              # The frequency range to simulate
 aperiodic_params = [1, 1]         # Parameters defining the aperiodic component
 periodic_params = [10, 0.3, 1]    # Parameters for any periodic components
@@ -59,7 +59,7 @@ plot_spectrum(freqs, powers, log_freqs=True, log_powers=False)
 # Simulating With Different Parameters
 # ------------------------------------
 #
-# Power spectra can be simulated with any desired parameters for the FOOOF power spectra model.
+# Power spectra can be simulated with any desired parameters in the power spectrum model.
 #
 # The aperiodic mode for the simulated power spectrum is inferred from the parameters provided.
 # If two parameters are provided, this is interpreted as [offset, exponent] for simulating
@@ -71,7 +71,7 @@ plot_spectrum(freqs, powers, log_freqs=True, log_powers=False)
 # like to add, or as a list of lists containing the same information.
 #
 # The following example shows simulating a different power spectrum with some different
-# parameter settings, also changing the noise level added to the spectrum, and the frequency
+# setttings, also changing the noise level added to the spectrum, and the frequency
 # resolution of the simulated spectrum.
 #
 
@@ -153,8 +153,8 @@ plot_spectra(freqs, powers, log_freqs=True, log_powers=True)
 # you may want to keep track of these parameters, so that you can compare any measure
 # taken on these power spectra to ground truth values.
 #
-# When simulate power spectra, FOOOF gives you the option of returning SimParams objects that
-# keep track of the simulations.
+# When simulating power spectra, you also have the option of returning SimParams objects
+# that keep track of the simulation parameters.
 #
 
 ###################################################################################################

@@ -1,6 +1,6 @@
 """
-02: Fitting FOOOF Models
-========================
+02: Fitting Power Spectrum Models
+=================================
 
 Introduction to the module, beginning with the FOOOF object.
 """
@@ -38,8 +38,9 @@ spectrum = load_fooof_data('spectrum.npy', folder='data')
 # Calculating Power Spectra
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The FOOOF model operates on power spectra. The module itself does not compute power spectra,
-# and so computing power spectra needs to be done prior to using the FOOOF module.
+# The :class:`~fooof.FOOOF` object fits models to power spectra. The module itself does not
+# compute power spectra, and so computing power spectra needs to be done prior to using
+# the FOOOF module.
 #
 # The model is broadly agnostic to exactly how power spectra are computed. Common
 # methods, such as using Welch's method to compute the spectrogram
@@ -53,30 +54,30 @@ spectrum = load_fooof_data('spectrum.npy', folder='data')
 #
 
 ###################################################################################################
-# FOOOF Example
-# -------------
+# Fitting an Example Power Spectrum
+# ---------------------------------
 #
 # The following example demonstrates fitting a power spectrum model to a single power spectrum.
 #
 
 ###################################################################################################
 
-# Initialize FOOOF object
+# Initialize a FOOOF object
 fm = FOOOF()
 
-# Set the frequency range upon which to fit FOOOF
+# Set the frequency range to fit the model
 freq_range = [2, 40]
 
-# Run FOOOF: fit the model, print the resulting parameters, and plot the reconstruction
+# Report: fit the model, print the resulting parameters, and plot the reconstruction
 fm.report(freqs, spectrum, freq_range)
 
 ###################################################################################################
-# FOOOF Report
-# ~~~~~~~~~~~~
+# Fitting Models with 'Report'
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The above method 'report', is a convenience method that calls a series of FOOOF methods:
+# The above method 'report', is a convenience method that calls a series of methods:
 #
-# - :meth:`~fooof.FOOOF.fit`:  fits the FOOOF model
+# - :meth:`~fooof.FOOOF.fit`: fits the power spectrum model
 # - :meth:`~fooof.FOOOF.print_results`: prints out the results
 # - :meth:`~fooof.FOOOF.plot`: plots to data and model fit
 #
@@ -110,6 +111,7 @@ fm.fit(freqs, spectrum, freq_range)
 #
 
 ###################################################################################################
+#
 # Access model fit parameters from FOOOF object, after fitting:
 #
 
@@ -139,7 +141,7 @@ print('Number of fit peaks: \n', fm.n_peaks_)
 
 ###################################################################################################
 
-# Extract a FOOOF parameter with `get_params`
+# Extract a model parameter with `get_params`
 err = fm.get_params('error')
 
 # Extract parameters, indicating sub-selections of parameter
@@ -208,7 +210,7 @@ for peak, gauss in zip(fm.peak_params_, fm.gaussian_params_):
 # FOOOFResults
 # ~~~~~~~~~~~~
 #
-# FOOOF also has a convenience method to return all model fit results:
+# There is also a convenience method to return all model fit results:
 # :func:`~fooof.FOOOF.get_results`.
 #
 # This method returns all the model fit parameters, including the underlying Gaussian
@@ -243,8 +245,8 @@ print('Fit error: \n {:5.4f}'.format(fm.error_))
 # Conclusion
 # ----------
 #
-# In this tutorial, we have explored the basics of the FOOOF object,
-# fitting models, and extracting parameters.
+# In this tutorial, we have explored the basics of the :class:`~fooof.FOOOF` object,
+# fitting power spectrum models, and extracting parameters.
 #
 # Before we move on to controlling the fit procedure, and interpreting the results,
 # in the next tutorial, we will first explore how this model is actually fit.
