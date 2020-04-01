@@ -148,7 +148,7 @@ def check_plot_kwargs(plot_kwargs, defaults):
 
     Parameters
     ----------
-    plot_kwargs : dict
+    plot_kwargs : dict or None
         Keyword arguments for a plot call.
     defaults : dict
         Any arguments, and their default values, to check and update in 'plot_kwargs'.
@@ -157,7 +157,14 @@ def check_plot_kwargs(plot_kwargs, defaults):
     -------
     plot_kwargs : dict
         Keyword arguments for a plot call.
+
+    Notes
+    -----
+    If the input for `plot_kwargs` is None, then `defaults` is returned as `plot_kwargs`.
     """
+
+    if not plot_kwargs:
+        return defaults
 
     for key, value in resolve_aliases(defaults, PLT_ALIASES).items():
         if key not in resolve_aliases(plot_kwargs, PLT_ALIASES):

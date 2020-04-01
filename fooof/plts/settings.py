@@ -15,4 +15,5 @@ ALPHA_LEVELS = OrderedDict({0 : 0.50, 100  : 0.40, 500  : 0.25, 1000 : 0.10})
 
 # Define a list of aliases for plot call inputs
 PLT_ALIASES = {'linewidth' : ['lw', 'linewidth'],
-               'markersize' : ['ms', 'markersize']}
+               'markersize' : ['ms', 'markersize'],
+               'linestyle' : ['ls', 'linestyle']}

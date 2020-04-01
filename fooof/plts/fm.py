@@ -12,9 +12,9 @@ from fooof.core.io import fname, fpath
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.sim.gen import gen_aperiodic, gen_periodic
-from fooof.plts.utils import check_ax
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.settings import FIGSIZE_SPECTRAL
+from fooof.plts.utils import check_ax, check_plot_kwargs
 from fooof.plts.style import check_n_style, style_spectrum_plot
 
 plt = safe_import('.pyplot', 'matplotlib')
@@ -25,7 +25,8 @@ plt = safe_import('.pyplot', 'matplotlib')
 @check_dependency(plt, 'matplotlib')
 def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=True,
             save_fig=False, file_name=None, file_path=None,
-            ax=None, plot_style=style_spectrum_plot):
+            ax=None, plot_style=style_spectrum_plot,
+            data_kwargs=None, model_kwargs=None, ap_kwargs=None, peak_kwargs=None):
     """Plot the power spectrum and model fit results from a FOOOF object.
 
     Parameters
@@ -51,6 +52,8 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         Figure axes upon which to plot.
     plot_style : callable, optional, default: style_spectrum_plot
         A function to call to apply styling & aesthetics to the plot.
+    data_kwargs, model_kwargs, ap_kwargs, peak_kwargs : None or dict, optional
+        Keyword arguments to pass into the plot call for each plot element.
 
     Notes
     -----
@@ -60,32 +63,37 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
 
     ax = check_ax(ax, FIGSIZE_SPECTRAL)
 
-    # Log settings. Note that power values in FOOOF objects are already logged
+    # Log settings - note that power values in FOOOF objects are already logged
     log_freqs = plt_log
     log_powers = False
 
     # Plot the data, if available
     if fm.has_data:
+        data_kwargs = check_plot_kwargs(data_kwargs, \
+            {'color' : 'black', 'linewidth' : 2.0,
+             'label' : 'Original Spectrum' if add_legend else None})
         plot_spectrum(fm.freqs, fm.power_spectrum, log_freqs, log_powers,
-                      ax=ax, plot_style=None, color='k', linewidth=2.0,
-                      label='Original Spectrum' if add_legend else None)
+                      ax=ax, plot_style=None, **data_kwargs)
 
     # Add the full model fit, and components (if requested)
     if fm.has_model:
+        model_kwargs = check_plot_kwargs(model_kwargs, \
+            {'color' : 'red', 'linewidth' : 3.0, 'alpha' : 0.5,
+             'label' : 'Full Model Fit' if add_legend else None})
         plot_spectrum(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers,
-                      ax=ax, plot_style=None, color='r', linewidth=3.0, alpha=0.5,
-                      label='Full Model Fit' if add_legend else None)
+                      ax=ax, plot_style=None, **model_kwargs)
 
         # Plot the aperiodic component of the model fit
         if plot_aperiodic:
+            ap_kwargs = check_plot_kwargs(ap_kwargs, \
+                {'color' : 'blue', 'linewidth' : 3.0, 'alpha' : 0.5, 'linestyle' : 'dashed',
+                 'label' : 'Aperiodic Fit' if add_legend else None})
             plot_spectrum(fm.freqs, fm._ap_fit, log_freqs, log_powers,
-                          ax=ax, plot_style=None, color='b', linestyle='dashed',
-                          linewidth=3.0, alpha=0.5,
-                          label='Aperiodic Fit' if add_legend else None)
+                          ax=ax, plot_style=None, **ap_kwargs)
 
         # Plot the periodic components of the model fit
         if plot_peaks:
-            _add_peaks(fm, plot_peaks, plt_log, ax=ax)
+            _add_peaks(fm, plot_peaks, plt_log, ax=ax, peak_kwargs=peak_kwargs)
 
     # Apply style to plot
     check_n_style(plot_style, ax, log_freqs, True)
@@ -149,7 +157,7 @@ def plot_fm_peak_iter(fm, plot_style=style_spectrum_plot):
         check_n_style(plot_style, ax, False, True)
 
 
-def _add_peaks(fm, approach, plt_log, ax):
+def _add_peaks(fm, approach, plt_log, ax, peak_kwargs):
     """Add peaks to a model plot.
 
     Parameters
@@ -163,6 +171,11 @@ def _add_peaks(fm, approach, plt_log, ax):
         Whether to plot the frequency values in log10 spacing.
     ax : matplotlib.Axes
         Figure axes upon which to plot.
+    peak_kwargs : None or dict
+        Keyword arguments to pass into the plot call.
+        This can be a flat dictionary, with plot keyword arguments,
+        or a dictionary of dictionaries, with keys as labels indicating an `approach`,
+        and values which contain a dictionary of plot keywords for that approach.
 
     Notes
     -----
@@ -170,17 +183,26 @@ def _add_peaks(fm, approach, plt_log, ax):
     or multiple add peak approaches to use, and calls the relevant function(s).
     """
 
+    # Input for kwargs could be None, so check if dict and typecast if not
+    peak_kwargs = peak_kwargs if isinstance(peak_kwargs, dict) else {}
+
     # Split up approaches, in case multiple are specified, and apply each
     for cur_approach in approach.split('-'):
+
         try:
-            ADD_PEAK_FUNCS[cur_approach](fm, plt_log, ax)
+
+            # This unpacks kwargs, if it's embedded dictionaries for each approach
+            plot_kwargs = peak_kwargs.get(cur_approach, peak_kwargs)
+
+            # Pass through to the peak plotting function
+            ADD_PEAK_FUNCS[cur_approach](fm, plt_log, ax, **plot_kwargs)
+
         except KeyError:
             raise ValueError("Plot peak type not understood.")
 
 
-def _add_peaks_shade(fm, plt_log, ax):
-    """Add a grey shading in of all peaks.
-
+def _add_peaks_shade(fm, plt_log, ax, **plot_kwargs):
+    """Add a shading in of all peaks.
 
     Parameters
     ----------
@@ -190,17 +212,21 @@ def _add_peaks_shade(fm, plt_log, ax):
         Whether to plot the frequency values in log10 spacing.
     ax : matplotlib.Axes
         Figure axes upon which to plot.
+    **plot_kwargs
+        Keyword arguments to pass into the plot call.
     """
+
+    kwargs = check_plot_kwargs(plot_kwargs, {'color' : 'grey', 'alpha' : 0.25})
 
     for peak in fm.get_params('gaussian_params'):
 
         peak_freqs = np.log10(fm.freqs) if plt_log else fm.freqs
         peak_line = fm._ap_fit + gen_periodic(fm.freqs, peak)
 
-        ax.fill_between(peak_freqs, peak_line, fm._ap_fit, alpha=0.25, color='grey')
+        ax.fill_between(peak_freqs, peak_line, fm._ap_fit, **kwargs)
 
 
-def _add_peaks_dot(fm, plt_log, ax):
+def _add_peaks_dot(fm, plt_log, ax, **plot_kwargs):
     """Add a short line, from aperiodic to peak, with a dot at the top.
 
     Parameters
@@ -211,7 +237,12 @@ def _add_peaks_dot(fm, plt_log, ax):
         Whether to plot the frequency values in log10 spacing.
     ax : matplotlib.Axes
         Figure axes upon which to plot.
+    **plot_kwargs
+        Keyword arguments to pass into the plot call.
     """
+
+    kwargs = check_plot_kwargs(plot_kwargs,
+                               {'color' : 'grey', 'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6})
 
     for peak in fm.get_params('peak_params'):
 
@@ -219,15 +250,14 @@ def _add_peaks_dot(fm, plt_log, ax):
         freq_point = np.log10(peak[0]) if plt_log else peak[0]
 
         # Add the line from the aperiodic fit up the tip of the peak
-        ax.plot([freq_point, freq_point], [ap_point, ap_point + peak[1]],
-                color='grey', linewidth=2.5, alpha=0.6)
+        ax.plot([freq_point, freq_point], [ap_point, ap_point + peak[1]], **kwargs)
 
         # Add an extra dot at the tip of the peak
-        ax.plot(freq_point, ap_point + peak[1],
-                color='grey', marker='o', markersize=6, alpha=0.6)
+        ax.plot(freq_point, ap_point + peak[1], marker='o', **kwargs)
 
-def _add_peaks_outline(fm, plt_log, ax):
-    """Add an outline of each peak, in green.
+
+def _add_peaks_outline(fm, plt_log, ax, **plot_kwargs):
+    """Add an outline of each peak.
 
     Parameters
     ----------
@@ -237,7 +267,12 @@ def _add_peaks_outline(fm, plt_log, ax):
         Whether to plot the frequency values in log10 spacing.
     ax : matplotlib.Axes
         Figure axes upon which to plot.
+    **plot_kwargs
+        Keyword arguments to pass into the plot call.
     """
+
+    kwargs = check_plot_kwargs(plot_kwargs,
+                               {'color' : 'green', 'alpha' : 0.7, 'lw' : 1.5})
 
     for peak in fm.get_params('gaussian_params'):
 
@@ -250,10 +285,10 @@ def _add_peaks_outline(fm, plt_log, ax):
 
         # Plot the peak outline
         peak_freqs = np.log10(peak_freqs) if plt_log else peak_freqs
-        ax.plot(peak_freqs, peak_line, linewidth=1.5, color='green', alpha=0.7)
+        ax.plot(peak_freqs, peak_line, **kwargs)
 
 
-def _add_peaks_line(fm, plt_log, ax):
+def _add_peaks_line(fm, plt_log, ax, **plot_kwargs):
     """Add a long line, from the top of the plot, down through the peak, with an arrow at the top.
 
     Parameters
@@ -264,14 +299,19 @@ def _add_peaks_line(fm, plt_log, ax):
         Whether to plot the frequency values in log10 spacing.
     ax : matplotlib.Axes
         Figure axes upon which to plot.
+    **plot_kwargs
+        Keyword arguments to pass into the plot call.
     """
+
+    kwargs = check_plot_kwargs(plot_kwargs,
+                               {'color' : 'green', 'alpha' : 0.7, 'lw' : 1.4, 'ms' : 10})
 
     ylims = ax.get_ylim()
     for peak in fm.get_params('peak_params'):
 
         freq_point = np.log10(peak[0]) if plt_log else peak[0]
-        ax.plot([freq_point, freq_point], ylims, '-', color='green', alpha=0.6, lw=1.4)
-        ax.plot(freq_point, ylims[1], 'v', color='green', alpha=0.75, ms=10)
+        ax.plot([freq_point, freq_point], ylims, '-', **kwargs)
+        ax.plot(freq_point, ylims[1], 'v', **kwargs)
 
 
 # Collect all the possible `add_peak_*` functions together

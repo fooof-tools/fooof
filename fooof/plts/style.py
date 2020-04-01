@@ -43,7 +43,7 @@ def style_spectrum_plot(ax, log_freqs, log_powers):
 
     # If labels were provided, add a legend
     if ax.get_legend_handles_labels()[0]:
-        ax.legend(prop={'size': 16})
+        ax.legend(prop={'size': 16}, loc='upper right')
 
 
 def style_param_plot(ax):

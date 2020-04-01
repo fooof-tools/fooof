@@ -50,12 +50,21 @@ def test_recursive_plot(skip_if_no_mpl):
 def test_check_plot_kwargs(skip_if_no_mpl):
 
     # Check empty input
-    empty = check_plot_kwargs({}, {})
-    assert empty == {}
+    plot_kwargs = {}
+    defaults = {}
+    plot_kwargs_out = check_plot_kwargs(plot_kwargs, defaults)
+    assert plot_kwargs_out == {}
+
+    # Check None input
+    plot_kwargs = None
+    defaults = {'alpha' : 0.5}
+    plot_kwargs_out = check_plot_kwargs(plot_kwargs, defaults)
+    assert plot_kwargs_out == defaults
 
     # Check it keeps orignal values, and updates to defaults parameters when missing
     plot_kwargs = {'alpha' : 0.5}
-    plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 1, 'linewidth' : 2})
+    defaults = {'alpha' : 1, 'linewidth' : 2}
+    plot_kwargs = check_plot_kwargs(plot_kwargs, defaults)
 
     assert len(plot_kwargs) == 2
     assert plot_kwargs['alpha'] == 0.5
