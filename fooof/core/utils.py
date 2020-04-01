@@ -229,13 +229,13 @@ def resolve_aliases(kwargs, aliases):
 
     out_kwargs = {}
 
-    for name, alia in aliases.items():
+    for key, val in kwargs.items():
 
-        for key, val in kwargs.items():
-
-            if key in alia:
+        for name, alias in aliases.items():
+            if key in alias:
                 out_kwargs[name] = val
-            else:
-                out_kwargs[key] = val
+                break
+        else:
+            out_kwargs[key] = val
 
     return out_kwargs
