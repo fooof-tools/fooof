@@ -29,13 +29,16 @@ _lint.txt
 # Ignore all files generated during testing
 */tests/test_files/*
 
-# Ignore any files generated in the documentation
+# Ignore any data files or files generated in the documentation
 /tutorials/**/*.pdf
 /tutorials/**/*.json
+/tutorials/**/data/*
 /examples/**/*.pdf
 /examples/**/*.json
+/examples/**/data/*
 /motivations/**/*.pdf
 /motivations/**/*.json
+/motivations/**/data/*
 
 # Ignore documentation files
 doc/_build/*
