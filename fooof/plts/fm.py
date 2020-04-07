@@ -7,11 +7,12 @@ This file contains plotting functions that take as input a FOOOF object.
 
 import numpy as np
 
-from fooof.utils import trim_spectrum
 from fooof.core.io import fname, fpath
-from fooof.core.funcs import gaussian_function
+from fooof.core.utils import nearest_ind
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.sim.gen import gen_aperiodic, gen_periodic
+from fooof.sim.gen import gen_periodic
+from fooof.utils.data import trim_spectrum
+from fooof.utils.params import compute_fwhm
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.settings import FIGSIZE_SPECTRAL
 from fooof.plts.utils import check_ax, check_plot_kwargs
@@ -103,58 +104,6 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         if not file_name:
             raise ValueError("Input 'file_name' is required to save out the plot.")
         plt.savefig(fpath(file_path, fname(file_name, 'png')))
-
-
-@check_dependency(plt, 'matplotlib')
-def plot_fm_peak_iter(fm, plot_style=style_spectrum_plot):
-    """Plot a series of plots illustrating the peak search from a flattened spectrum.
-
-    Parameters
-    ----------
-    fm : FOOOF
-        FOOOF object, with model fit, data and settings available.
-    plot_style : callable, optional, default: style_spectrum_plot
-        A function to call to apply styling & aesthetics to the plots.
-    """
-
-    # Recalculate the initial aperiodic fit and flattened spectrum that
-    #   is the same as the one that is used in the peak fitting procedure
-    flatspec = fm.power_spectrum - \
-        gen_aperiodic(fm.freqs, fm._robust_ap_fit(fm.freqs, fm.power_spectrum))
-
-    # Calculate ylims of the plot that are scaled to the range of the data
-    ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
-
-    # Loop through the iterative search for each peak
-    for ind in range(fm.n_peaks_ + 1):
-
-        # This forces the creation of a new plotting axes per iteration
-        ax = check_ax(None, FIGSIZE_SPECTRAL)
-
-        plot_spectrum(fm.freqs, flatspec, ax=ax, plot_style=None,
-                      label='Flattened Spectrum', linewidth=2.5)
-        plot_spectrum(fm.freqs, [fm.peak_threshold * np.std(flatspec)]*len(fm.freqs),
-                      ax=ax, plot_style=None, label='Relative Threshold',
-                      color='orange', linewidth=2.5, linestyle='dashed')
-        plot_spectrum(fm.freqs, [fm.min_peak_height]*len(fm.freqs),
-                      ax=ax, plot_style=None, label='Absolute Threshold',
-                      color='red', linewidth=2.5, linestyle='dashed')
-
-        maxi = np.argmax(flatspec)
-        ax.plot(fm.freqs[maxi], flatspec[maxi], '.', markersize=24)
-
-        ax.set_ylim(ylims)
-        ax.set_title('Iteration #' + str(ind+1), fontsize=16)
-
-        if ind < fm.n_peaks_:
-
-            gauss = gaussian_function(fm.freqs, *fm.gaussian_params_[ind, :])
-            plot_spectrum(fm.freqs, gauss, ax=ax, plot_style=None,
-                          label='Gaussian Fit', linestyle=':', linewidth=2.5)
-
-            flatspec = flatspec - gauss
-
-        check_n_style(plot_style, ax, False, True)
 
 
 def _add_peaks(fm, approach, plt_log, ax, peak_kwargs):
@@ -314,10 +263,46 @@ def _add_peaks_line(fm, plt_log, ax, **plot_kwargs):
         ax.plot(freq_point, ylims[1], 'v', **kwargs)
 
 
+def _add_peaks_width(fm, plt_log, ax, **plot_kwargs):
+    """Add a line across the width of peaks.
+
+    Parameters
+    ----------
+    fm : FOOOF
+        FOOOF object containing results from fitting.
+    plt_log : boolean
+        Whether to plot the frequency values in log10 spacing.
+    ax : matplotlib.Axes
+        Figure axes upon which to plot.
+    **plot_kwargs
+        Keyword arguments to pass into the plot call.
+
+    Notes
+    -----
+    This line representents the bandwidth (width or gaussian standard deviation) of
+    the peak, though what is literally plotted is the full-width half-max.
+    """
+
+    kwargs = check_plot_kwargs(plot_kwargs,
+                               {'color' : 'grey', 'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6})
+
+    for peak in fm.gaussian_params_:
+
+        peak_top = fm.power_spectrum[nearest_ind(fm.freqs, peak[0])]
+        bw_freqs = [peak[0] - 0.5 * compute_fwhm(peak[2]),
+                    peak[0] + 0.5 * compute_fwhm(peak[2])]
+
+        if plt_log:
+            bw_freqs = np.log10(bw_freqs)
+
+        ax.plot(bw_freqs, [peak_top-(0.5*peak[1]), peak_top-(0.5*peak[1])], **kwargs)
+
+
 # Collect all the possible `add_peak_*` functions together
 ADD_PEAK_FUNCS = {
     'shade' : _add_peaks_shade,
     'dot' : _add_peaks_dot,
     'outline' : _add_peaks_outline,
-    'line' : _add_peaks_line
+    'line' : _add_peaks_line,
+    'width' : _add_peaks_width
 }

@@ -28,8 +28,3 @@ def test_plot_fm_add_peaks(tfm, skip_if_no_mpl):
     # Test run some combinations
     for add_peak in ['shade-dot', 'outline-line']:
         plot_fm(tfm, plot_peaks=add_peak)
-
-@plot_test
-def test_plot_fm_peak_iter(tfm, skip_if_no_mpl):
-
-    plot_fm_peak_iter(tfm)

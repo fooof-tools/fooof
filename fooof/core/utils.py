@@ -30,7 +30,26 @@ def group_three(vec):
     if len(vec) % 3 != 0:
         raise ValueError("Wrong size array to group by three.")
 
-    return [list(vec[i:i+3]) for i in range(0, len(vec), 3)]
+    return [list(vec[ii:ii+3]) for ii in range(0, len(vec), 3)]
+
+
+def nearest_ind(array, value):
+    """Find the nearest index, in an array, to a given value.
+
+    Parameters
+    ----------
+    array : 1d array
+        An array of values to search within.
+    value : float
+        The value to find the closest element to.
+
+    Returns
+    -------
+    int
+        Index that is closest to value, for the given array.
+    """
+
+    return np.argmin(np.abs(array-value))
 
 
 def dict_array_to_lst(in_dict):
