@@ -25,7 +25,7 @@ def compute_knee_frequency(knee, exponent):
 
 
 def compute_time_constant(knee):
-    """Compute the characteristc time constant based on the knee value.
+    """Compute the characteristic time constant based on the knee value.
 
     Parameters
     ----------
@@ -39,3 +39,37 @@ def compute_time_constant(knee):
     """
 
     return 1. / (2*np.pi*knee)
+
+
+def compute_fwhm(std):
+    """Compute the full-width half-max, given the gaussian standard deviation.
+
+    Parameters
+    ----------
+    std : float
+        Gaussian standard deviation.
+
+    Returns
+    -------
+    float
+        Calculated full-width half-max.
+    """
+
+    return 2 * np.sqrt(2 * np.log(2)) * std
+
+
+def compute_gauss_std(fwhm):
+    """Compute the gaussian standard deviation, given the full-width half-max.
+
+    Parameters
+    ----------
+    fwhm : float
+        Full-width half-max.
+
+    Returns
+    -------
+    float
+        Calculated standard deviation of a gaussian.
+    """
+
+    return fwhm / (2 * np.sqrt(2 * np.log(2)))

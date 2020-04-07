@@ -70,6 +70,7 @@ from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
 from fooof.plts.fm import plot_fm
 from fooof.plts.style import style_spectrum_plot
 from fooof.utils.data import trim_spectrum
+from fooof.utils.params import compute_gauss_std
 from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
 from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 
@@ -615,11 +616,11 @@ class FOOOF():
     def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,
              add_legend=True, save_fig=False, file_name=None, file_path=None,
              ax=None, plot_style=style_spectrum_plot,
-             data_kwargs=None, model_kwargs=None, ap_kwargs=None, peak_kwargs=None):
+             data_kwargs=None, model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None):
 
         plot_fm(self, plot_peaks, plot_aperiodic, plt_log, add_legend,
                 save_fig, file_name, file_path, ax, plot_style,
-                data_kwargs, model_kwargs, ap_kwargs, peak_kwargs)
+                data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs)
 
 
     @copy_doc_func_to_method(save_report_fm)
@@ -808,8 +809,7 @@ class FOOOF():
         guess = np.empty([0, 3])
 
         # Find peak: Loop through, finding a candidate peak, and fitting with a guess gaussian
-        #   Stopping procedure based on either the limit on # of peaks,
-        #     or the relative or absolute height thresholds
+        #   Stopping procedures: limit on # of peaks, or relative or absolute height thresholds
         while len(guess) < self.max_n_peaks:
 
             # Find candidate peak - the maximum point of the flattened spectrum
@@ -836,18 +836,18 @@ class FOOOF():
             ri_ind = next((val for val in range(max_ind + 1, len(flat_iter), 1)
                            if flat_iter[val] <= half_height), None)
 
-            # Guess bandwidth
+            # Guess bandwidth procedure: estimate the width of the peak
             try:
-                # Keep bandwidth estimation from the shortest side
+                # Get an estimated width from the shortest side of the peak
                 #   We grab shortest to avoid estimating very large values from overlapping peaks
                 # Grab the shortest side, ignoring a side if the half max was not found
                 short_side = min([abs(ind - max_ind) \
                     for ind in [le_ind, ri_ind] if ind is not None])
 
-                # Estimate standard deviation from full-width half max (FWHM)
-                #   Calculate FWHM, converting to Hz, get guess standard deviation from FWHM
+                # Use the shortest side to estimate full-width, half max (converted to Hz)
+                #   and use this to estimate that guess for gaussian standard deviation
                 fwhm = short_side * 2 * self.freq_res
-                guess_std = fwhm / (2 * np.sqrt(2 * np.log(2)))
+                guess_std = compute_gauss_std(fwhm)
 
             except ValueError:
                 # This procedure can fail (extremely rarely), if both le & ri ind's end up as None
@@ -866,8 +866,7 @@ class FOOOF():
             peak_gauss = gaussian_function(self.freqs, guess_freq, guess_height, guess_std)
             flat_iter = flat_iter - peak_gauss
 
-        # Check peaks based on edges, and on overlap
-        #   Drop any that violate requirements
+        # Check peaks based on edges, and on overlap, dropping any that violate requirements
         guess = self._drop_peak_cf(guess)
         guess = self._drop_peak_overlap(guess)
 
