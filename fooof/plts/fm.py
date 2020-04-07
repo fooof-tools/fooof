@@ -26,7 +26,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=True,
             save_fig=False, file_name=None, file_path=None,
             ax=None, plot_style=style_spectrum_plot,
-            data_kwargs=None, model_kwargs=None, ap_kwargs=None, peak_kwargs=None):
+            data_kwargs=None, model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None):
     """Plot the power spectrum and model fit results from a FOOOF object.
 
     Parameters
@@ -52,7 +52,7 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         Figure axes upon which to plot.
     plot_style : callable, optional, default: style_spectrum_plot
         A function to call to apply styling & aesthetics to the plot.
-    data_kwargs, model_kwargs, ap_kwargs, peak_kwargs : None or dict, optional
+    data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs : None or dict, optional
         Keyword arguments to pass into the plot call for each plot element.
 
     Notes
@@ -85,11 +85,11 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
 
         # Plot the aperiodic component of the model fit
         if plot_aperiodic:
-            ap_kwargs = check_plot_kwargs(ap_kwargs, \
+            aperiodic_kwargs = check_plot_kwargs(aperiodic_kwargs, \
                 {'color' : 'blue', 'linewidth' : 3.0, 'alpha' : 0.5, 'linestyle' : 'dashed',
                  'label' : 'Aperiodic Fit' if add_legend else None})
             plot_spectrum(fm.freqs, fm._ap_fit, log_freqs, log_powers,
-                          ax=ax, plot_style=None, **ap_kwargs)
+                          ax=ax, plot_style=None, **aperiodic_kwargs)
 
         # Plot the periodic components of the model fit
         if plot_peaks:
