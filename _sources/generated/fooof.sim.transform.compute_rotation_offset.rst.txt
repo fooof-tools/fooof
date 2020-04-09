@@ -1,6 +1,0 @@
-fooof.sim.transform.compute\_rotation\_offset
-=============================================
-
-.. currentmodule:: fooof.sim.transform
-
-.. autofunction:: compute_rotation_offset

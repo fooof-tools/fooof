@@ -3,16 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.plts.fm.plot_fm &#8212; fooof 1.0.0rc2 documentation</title>
+    <title>fooof.plts.fm.plot_fm &#8212; fooof 1.0.0rc3 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -69,6 +69,8 @@
             
             
             
+              <li class="hidden-sm"></li>
+            
           </ul>
 
           
@@ -93,7 +95,7 @@
 <h1>fooof.plts.fm.plot_fm<a class="headerlink" href="#fooof-plts-fm-plot-fm" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="fooof.plts.fm.plot_fm">
-<code class="sig-prename descclassname">fooof.plts.fm.</code><code class="sig-name descname">plot_fm</code><span class="sig-paren">(</span><em class="sig-param">fm</em>, <em class="sig-param">plot_peaks=None</em>, <em class="sig-param">plot_aperiodic=True</em>, <em class="sig-param">plt_log=False</em>, <em class="sig-param">add_legend=True</em>, <em class="sig-param">save_fig=False</em>, <em class="sig-param">file_name=None</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">plot_style=&lt;function style_spectrum_plot at 0x1015f053b0&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.plts.fm.plot_fm" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fooof.plts.fm.</code><code class="sig-name descname">plot_fm</code><span class="sig-paren">(</span><em class="sig-param">fm</em>, <em class="sig-param">plot_peaks=None</em>, <em class="sig-param">plot_aperiodic=True</em>, <em class="sig-param">plt_log=False</em>, <em class="sig-param">add_legend=True</em>, <em class="sig-param">save_fig=False</em>, <em class="sig-param">file_name=None</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">plot_style=&lt;function style_spectrum_plot at 0x10168344d0&gt;</em>, <em class="sig-param">data_kwargs=None</em>, <em class="sig-param">model_kwargs=None</em>, <em class="sig-param">aperiodic_kwargs=None</em>, <em class="sig-param">peak_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/plts/fm.html#plot_fm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.plts.fm.plot_fm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the power spectrum and model fit results from a FOOOF object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -119,6 +121,8 @@ Can also be a combination of approaches, separated by ‘-‘, for example: ‘s
 </dd>
 <dt><strong>plot_style</strong><span class="classifier">callable, optional, default: style_spectrum_plot</span></dt><dd><p>A function to call to apply styling &amp; aesthetics to the plot.</p>
 </dd>
+<dt><strong>data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs</strong><span class="classifier">None or dict, optional</span></dt><dd><p>Keyword arguments to pass into the plot call for each plot element.</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -141,8 +145,8 @@ the y-axis (power) is plotted in log spacing by default.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
     </p>
   </div>
 </footer>

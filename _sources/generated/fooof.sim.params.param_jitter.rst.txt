@@ -1,6 +1,0 @@
-fooof.sim.params.param\_jitter
-==============================
-
-.. currentmodule:: fooof.sim.params
-
-.. autofunction:: param_jitter

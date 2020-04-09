@@ -11,14 +11,14 @@ often done in the context of development. The paper for that project is availabl
 
 ###################################################################################################
 
-# Import numpy & matplotlib
+# General imports
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Import the FOOOF model object
+# Import the FOOOF object
 from fooof import FOOOF
 
-# Import utility, simulation, and plotting code from FOOOF
+# Import simulation, utility, and plotting tools
 from fooof.bands import Bands
 from fooof.utils import trim_spectrum
 from fooof.sim import gen_power_spectrum
@@ -46,8 +46,8 @@ from fooof.analysis import get_band_peak_fm
 # - decreased power in lower frequency bands (delta, theta)
 # - increased power in higher frequency bands (beta, gamma)
 #
-# Under this framework, each defined band reflects a different entity, or 'feature' of the
-# data, and the interpretation is typically that there are multiple things changing, with
+# Under this framework, each defined band reflects a different entity in the data,
+# and the interpretation is typically that there are multiple things changing, with
 # correlated changes in power across multiple distinct bands.
 #
 # An alternative hypothesis for what is changing is that this pattern of results could
@@ -112,7 +112,7 @@ def compare_exp(fm1, fm2):
     return exp1 - exp2
 
 def compare_peak_pw(fm1, fm2, band_def):
-    """Compare the power of FOOOF peaks."""
+    """Compare the power of detected peaks."""
 
     pw1 = get_band_peak_fm(fm1, band_def)[1]
     pw2 = get_band_peak_fm(fm2, band_def)[1]
@@ -177,17 +177,17 @@ plt.title('Band-by-Band', t_settings);
 #
 # It should also find no systematic difference in the aperiodic activity between groups.
 #
-# To check this, we can fit power spectrum models, and examine which features are
+# To check this, we can fit power spectrum models, and examine which parameters are
 # changing in the data.
 #
 
 ###################################################################################################
 
-# Initialize FOOOF models
+# Initialize FOOOF objects
 fm_bands_g1 = FOOOF(verbose=False)
 fm_bands_g2 = FOOOF(verbose=False)
 
-# Fit FOOOF models to parameterize neural power spectra
+# Fit power spectrum models
 fm_bands_g1.fit(freqs, g1_spectrum_bands)
 fm_bands_g2.fit(freqs, g2_spectrum_bands)
 
@@ -202,10 +202,10 @@ plt.xlim(f_range);
 plt.title('Band-by-Band - Flattened', t_settings);
 
 ###################################################################################################
-# Compare Spectral Features
-# ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compare Spectral Parameters
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Next, let's compare the measured features of the data.
+# Next, let's compare the measured parameters of the data.
 #
 
 ###################################################################################################
@@ -271,11 +271,11 @@ plt.title('Periodic & Aperiodic', t_settings);
 
 ###################################################################################################
 
-# Initialize FOOOF models
+# Initialize FOOOF objects
 fm_pa_g1 = FOOOF(verbose=False)
 fm_pa_g2 = FOOOF(verbose=False)
 
-# Fit FOOOF models and parameterize neural power spectra
+# Fit power spectrum models
 fm_pa_g1.fit(freqs, g1_spectrum_pa)
 fm_pa_g2.fit(freqs, g2_spectrum_pa)
 
@@ -290,10 +290,10 @@ plt.xlim(f_range);
 plt.title('Periodic & Aperiodic - Flattened',  t_settings);
 
 ###################################################################################################
-# Compare Spectral Features
-# ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compare Spectral Parameters
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Let's again compare the measured features of the data.
+# Let's again compare the measured parameters of the data.
 #
 
 ###################################################################################################
@@ -348,7 +348,7 @@ for label, definition in bands:
 # or aperiodic changes, as this analysis approach does not differentiate the two.
 #
 # We conclude here that band-by-band analysis, without measuring or controlling for
-# aperiodic activity, are ill posed to adjudicate what features of the data are changing.
+# aperiodic activity, are ill posed to adjudicate which aspects of the data are changing.
 # Parameterizing neural power spectra allows for disentangling changes in
 # periodic and aperiodic components of the data.
 #

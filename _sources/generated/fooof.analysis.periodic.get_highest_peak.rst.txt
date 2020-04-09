@@ -1,6 +1,0 @@
-fooof.analysis.periodic.get\_highest\_peak
-==========================================
-
-.. currentmodule:: fooof.analysis.periodic
-
-.. autofunction:: get_highest_peak

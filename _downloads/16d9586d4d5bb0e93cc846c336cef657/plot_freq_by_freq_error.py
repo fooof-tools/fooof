@@ -1,8 +1,8 @@
 """
-Frequency-by-Frequency Model Errors
-===================================
+Frequency-by-Frequency Errors
+=============================
 
-Check the error of FOOOF models across frequencies.
+Check the error of power spectrum models across frequencies.
 """
 
 ###################################################################################################
@@ -16,15 +16,15 @@ from fooof import FOOOF, FOOOFGroup
 # Import simulation utilities to create some test data
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
 
-# Import functions that examining frequency-by-frequency error of FOOOF models
+# Import functions to examine frequency-by-frequency error of model fits
 from fooof.analysis.error import compute_pointwise_error_fm, compute_pointwise_error_fg
 
 ###################################################################################################
 # Frequency-by-Frequency Error
 # ----------------------------
 #
-# When fitting FOOOF models, one of the goodness-of-fit measures computed and returned
-# is the total error of th full model fit, compared to the original data.
+# When fitting power spectrum models, one of the goodness-of-fit measures computed and
+# returned is the total error of th full model fit, compared to the original data.
 #
 # Though potentially useful for evaluating overall performance, this total error
 # measure doesn't necessarily help to indicate where, in frequency space, or in what
@@ -42,7 +42,8 @@ from fooof.analysis.error import compute_pointwise_error_fm, compute_pointwise_e
 # First we will start by examining frequency-by-frequency error of an individual model fit,
 # using simulated data.
 #
-# The function for analyzing error from a FOOOF object is :func:`compute_pointwise_error_fm`.
+# The function for analyzing error from a FOOOF object is
+# :func:`~fooof.analysis.error.compute_pointwise_error_fm`.
 # To start with, we will indicate to this function to plot the frequency-by-frequency
 # error of our model fit.
 #
@@ -54,7 +55,7 @@ freqs, powers = gen_power_spectrum([3, 50], [1, 1], [10, 0.25, 0.5])
 
 ###################################################################################################
 
-# Initialize a FOOOF model to fit with
+# Initialize a FOOOF object to fit with
 fm = FOOOF(verbose=False)
 
 # Parameterize our power spectrum
@@ -91,7 +92,8 @@ print('FOOOF model fit error: \t\t {:1.3f}'.format(fm.error_))
 # Next, lets move on to calculating frequency-by-frequency error across groups of fits,
 # again using some simulated data.
 #
-# The function for analyzing error from a FOOOFGroup object is :func:`compute_pointwise_error_fg`.
+# The function for analyzing error from a FOOOFGroup object is
+# :func:`~fooof.analysis.error.compute_pointwise_error_fg`.
 #
 
 ###################################################################################################
@@ -176,9 +178,9 @@ compute_pointwise_error_fg(fg, plot_errors=True)
 ###################################################################################################
 #
 # In the plot above, we can see that there is more error in the model, but also that
-# this error is not evenly distributed. The error is uneven across frequencies, and particularly
-# high around the low frequencies. In this case, this is due to a mismatch between the
-# data properties we simulated and the aperiodic mode used to fit the data.
+# this error is not evenly distributed. The error is uneven across frequencies, and
+# particularly high around the low frequencies. In this case, this is due to a mismatch
+# between the data properties we simulated and the aperiodic mode used to fit the data.
 #
 # If you see high errors, especially bunched up around particular frequencies,
 # this is a sign that something might be going wrong, and it might be worth

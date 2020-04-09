@@ -3,16 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>02: Fitting FOOOF Models &#8212; fooof 1.0.0rc2 documentation</title>
+    <title>02: Fitting Power Spectrum Models &#8212; fooof 1.0.0rc3 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -69,6 +69,8 @@
             
             
             
+              <li class="hidden-sm"></li>
+            
           </ul>
 
           
@@ -93,25 +95,26 @@
 <p class="admonition-title">Note</p>
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-02-fooof-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="fitting-fooof-models">
-<span id="sphx-glr-auto-tutorials-plot-02-fooof-py"></span><h1>02: Fitting FOOOF Models<a class="headerlink" href="#fitting-fooof-models" title="Permalink to this headline">¶</a></h1>
+<div class="sphx-glr-example-title section" id="fitting-power-spectrum-models">
+<span id="sphx-glr-auto-tutorials-plot-02-fooof-py"></span><h1>02: Fitting Power Spectrum Models<a class="headerlink" href="#fitting-power-spectrum-models" title="Permalink to this headline">¶</a></h1>
 <p>Introduction to the module, beginning with the FOOOF object.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import numpy for loading data</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="c1"># Import the FOOOF object</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a>
+
+<span class="c1"># Import utility to download and load example data</span>
+<span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="k">import</span> <span class="n">load_fooof_data</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load example data to use for this tutorial (a single example power spectrum)</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.load" title="View documentation for numpy.load"><span class="n">np</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;data/freqs.npy&#39;</span><span class="p">)</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">spectrum</span></a> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.load" title="View documentation for numpy.load"><span class="n">np</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;data/spectrum.npy&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download examples data files needed for this example</span>
+<span class="n">freqs</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;freqs.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<span class="n">spectrum</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;spectrum.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="section" id="fooof-object">
 <h2>FOOOF Object<a class="headerlink" href="#fooof-object" title="Permalink to this headline">¶</a></h2>
-<p>At the core of the module, which is object oriented, is the FOOOF object, which holds relevant
-data and settings as attributes, and procedures to run the FOOOF algorithm as methods.</p>
+<p>At the core of the module, which is object oriented, is the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object,
+which holds relevant data and settings as attributes, and contains methods to run the
+algorithm to parameterize neural power spectra.</p>
 <p>The organization is similar to sklearn:</p>
 <ul class="simple">
 <li><p>A model object is initialized, with relevant settings</p></li>
@@ -120,8 +123,9 @@ data and settings as attributes, and procedures to run the FOOOF algorithm as me
 </ul>
 <div class="section" id="calculating-power-spectra">
 <h3>Calculating Power Spectra<a class="headerlink" href="#calculating-power-spectra" title="Permalink to this headline">¶</a></h3>
-<p>The FOOOF model operates on power spectra. FOOOF itself does not compute power spectra,
-and so computing power spectra needs to be done prior to using the FOOOF module.</p>
+<p>The <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object fits models to power spectra. The module itself does not
+compute power spectra, and so computing power spectra needs to be done prior to using
+the FOOOF module.</p>
 <p>The model is broadly agnostic to exactly how power spectra are computed. Common
 methods, such as using Welch’s method to compute the spectrogram</p>
 <p>If you need a module in Python that has functionality for computing power spectra, try
@@ -131,17 +135,17 @@ be in linear spacing. Passing in non-linear spaced data (such logged values) may
 produce erroneous results.</p>
 </div>
 </div>
-<div class="section" id="fooof-example">
-<h2>FOOOF Example<a class="headerlink" href="#fooof-example" title="Permalink to this headline">¶</a></h2>
-<p>The following example demonstrates fitting a FOOOF model on a single power spectrum.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize FOOOF model</span>
+<div class="section" id="fitting-an-example-power-spectrum">
+<h2>Fitting an Example Power Spectrum<a class="headerlink" href="#fitting-an-example-power-spectrum" title="Permalink to this headline">¶</a></h2>
+<p>The following example demonstrates fitting a power spectrum model to a single power spectrum.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">()</span>
 
-<span class="c1"># Set the frequency range upon which to fit FOOOF</span>
+<span class="c1"># Set the frequency range to fit the model</span>
 <span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
 
-<span class="c1"># Run FOOOF: fit the model, print the resulting parameters, and plot the reconstruction</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">report</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">spectrum</span></a><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
+<span class="c1"># Report: fit the model, print the resulting parameters, and plot the reconstruction</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_02-FOOOF_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_02-FOOOF_001.png" />
@@ -174,17 +178,17 @@ produce erroneous results.</p>
 ==================================================================================================
 </pre></div>
 </div>
-<div class="section" id="fooof-report">
-<h3>FOOOF Report<a class="headerlink" href="#fooof-report" title="Permalink to this headline">¶</a></h3>
-<p>The above method ‘report’, is a convenience method that calls a series of FOOOF methods:</p>
+<div class="section" id="fitting-models-with-report">
+<h3>Fitting Models with ‘Report’<a class="headerlink" href="#fitting-models-with-report" title="Permalink to this headline">¶</a></h3>
+<p>The above method ‘report’, is a convenience method that calls a series of methods:</p>
 <ul class="simple">
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">fit()</span></code>:  fits the FOOOF model</p></li>
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">print_results()</span></code>: prints out the results</p></li>
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">plot()</span></code>: plots to data and model fit</p></li>
+<li><p><a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>: fits the power spectrum model</p></li>
+<li><p><a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_results" title="fooof.FOOOF.print_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print_results()</span></code></a>: prints out the results</p></li>
+<li><p><a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>: plots to data and model fit</p></li>
 </ul>
 <p>Each of these methods can also be called individually.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Alternatively, just fit the model with FOOOF.fit() (without printing anything)</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">spectrum</span></a><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
 
 <span class="c1"># After fitting, plotting and parameter fitting can be called independently:</span>
 <span class="c1"># fm.print_results()</span>
@@ -201,16 +205,16 @@ produce erroneous results.</p>
 </div>
 <div class="section" id="model-parameters">
 <h3>Model Parameters<a class="headerlink" href="#model-parameters" title="Permalink to this headline">¶</a></h3>
-<p>When the FOOOF model is calculated, the model fit parameters are stored as object
-attributes that can be accessed after fitting.</p>
+<p>Once the power spectrum model has been calculated, the model fit parameters are stored
+as object attributes that can be accessed after fitting.</p>
 <p>Following the sklearn convention, attributes that are fit as a result of
 the model have a trailing underscore, for example:</p>
 <ul class="simple">
-<li><p>aperiodic_params_</p></li>
-<li><p>peak_params_</p></li>
-<li><p>error_</p></li>
-<li><p>r2_</p></li>
-<li><p>n_peaks_</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aperiodic_params_</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">peak_params_</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">error_</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">r2_</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_peaks_</span></code></p></li>
 </ul>
 <p>Access model fit parameters from FOOOF object, after fitting:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aperiodic parameters</span>
@@ -249,28 +253,28 @@ Number of fit peaks:
 </div>
 <div class="section" id="selecting-parameters">
 <h3>Selecting Parameters<a class="headerlink" href="#selecting-parameters" title="Permalink to this headline">¶</a></h3>
-<p>You can also select parameters using the <cite>get_params</cite> method, which can be used to
-specify which parameters you want to extract.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract a FOOOF parameter with `get_params`</span>
+<p>You can also select parameters using the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_params()</span></code></a>
+method, which can be used to specify which parameters you want to extract.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract a model parameter with `get_params`</span>
 <span class="n">err</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
 
 <span class="c1"># Extract parameters, indicating sub-selections of parameter</span>
 <span class="n">exp</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">cfs</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">,</span> <span class="s1">&#39;CF&#39;</span><span class="p">)</span>
+<span class="n">cfs</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">,</span> <span class="s1">&#39;CF&#39;</span><span class="p">)</span>
 
 <span class="c1"># Print out a custom parameter report</span>
 <span class="n">template</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;With an error level of </span><span class="si">{error:1.2f}</span><span class="s2">, FOOOF fit an exponent &quot;</span>
             <span class="s2">&quot;of </span><span class="si">{exponent:1.2f}</span><span class="s2"> and peaks of </span><span class="si">{cfs:s}</span><span class="s2"> Hz.&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">err</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="n">exp</span><span class="p">,</span>
-                      <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">cfs</span></a><span class="o">=</span><span class="s1">&#39; &amp; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">cf</span> <span class="ow">in</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">cfs</span></a><span class="p">]))))</span>
+                      <span class="n">cfs</span><span class="o">=</span><span class="s1">&#39; &amp; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">cf</span> <span class="ow">in</span> <span class="n">cfs</span><span class="p">]))))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>With an error level of 0.05, FOOOF fit an exponent of 0.76 and peaks of 9.75 &amp; 13.46 &amp; 15.81 &amp; 19.49 Hz.
 </pre></div>
 </div>
-<p>For a full description of how you can access data with <cite>get_params</cite>, check
-the method’s documentation.</p>
+<p>For a full description of how you can access data with <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_params()</span></code></a>,
+check the method’s documentation.</p>
 <p>As a reminder, you can access the documentation for a function using ‘?’ in a
 Jupyter notebook (ex: <cite>fm.get_params?</cite>), or more generally with the <cite>help</cite> function
 in general Python (ex: <cite>help(get_params)</cite>).</p>
@@ -300,11 +304,11 @@ for single peak fits, we re-define the peak height as above, and label it
 as ‘power’, as the units of the input data are expected to be units of power.</p>
 <p>[2] Gaussian standard deviation is ‘1 sided’, where as the returned BW is ‘2 sided’.</p>
 <p>The underlying gaussian parameters are also available from the FOOOF object,
-in the <cite>gaussian_params_</cite> attribute.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the &#39;peak\_params_&#39; to the underlying gaussian parameters</span>
+in the <code class="docutils literal notranslate"><span class="pre">gaussian_params_</span></code> attribute.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the &#39;peak_params_&#39; to the underlying gaussian parameters</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Peak Parameters </span><span class="se">\t</span><span class="s1"> Gaussian Parameters&#39;</span><span class="p">)</span>
-<span class="k">for</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">peak</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">gauss</span></a> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">peak_params_</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">gaussian_params_</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="se">\t</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">peak</span></a><span class="p">,</span> <span class="o">*</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">gauss</span></a><span class="p">))</span>
+<span class="k">for</span> <span class="n">peak</span><span class="p">,</span> <span class="n">gauss</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">peak_params_</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">gaussian_params_</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="se">\t</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">peak</span><span class="p">,</span> <span class="o">*</span><span class="n">gauss</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -317,9 +321,10 @@ in the <cite>gaussian_params_</cite> attribute.</p>
 </div>
 <div class="section" id="fooofresults">
 <h3>FOOOFResults<a class="headerlink" href="#fooofresults" title="Permalink to this headline">¶</a></h3>
-<p>FOOOF also has a convenience method to return all model fit results: <code class="xref py py-func docutils literal notranslate"><span class="pre">get_results()</span></code>.</p>
-<p>This method returns all the model fit parameters, including the underlying Gaussian parameters,
-collected together into a FOOOFResults object.</p>
+<p>There is also a convenience method to return all model fit results:
+<a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.get_results" title="fooof.FOOOF.get_results"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_results()</span></code></a>.</p>
+<p>This method returns all the model fit parameters, including the underlying Gaussian
+parameters, collected together into a FOOOFResults object.</p>
 <p>The FOOOFResults object, which in Python terms is a named tuple, is a standard data
 object used with FOOOF to organize and collect parameter data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grab each model fit result with `get_results` to gather all results together</span>
@@ -327,7 +332,7 @@ object used with FOOOF to organize and collect parameter data.</p>
 <span class="n">fres</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">get_results</span><span class="p">()</span>
 
 <span class="c1"># You can also unpack all fit parameters when using `get_results`</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">ap_params</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">peak_params</span></a><span class="p">,</span> <span class="n">r_squared</span><span class="p">,</span> <span class="n">fit_error</span><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">gauss_params</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">get_results</span><span class="p">()</span>
+<span class="n">ap_params</span><span class="p">,</span> <span class="n">peak_params</span><span class="p">,</span> <span class="n">r_squared</span><span class="p">,</span> <span class="n">fit_error</span><span class="p">,</span> <span class="n">gauss_params</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">get_results</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out the FOOOFResults</span>
@@ -362,11 +367,11 @@ Fit error:
 </div>
 <div class="section" id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
-<p>In this tutorial, we have explored the basics of the FOOOF object,
-fitting models, and extracting parameters.</p>
+<p>In this tutorial, we have explored the basics of the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object,
+fitting power spectrum models, and extracting parameters.</p>
 <p>Before we move on to controlling the fit procedure, and interpreting the results,
 in the next tutorial, we will first explore how this model is actually fit.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.162 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.174 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-02-fooof-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/c5eab696503901303f8a324c41d3284e/plot_02-FOOOF.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_02-FOOOF.py</span></code></a></p>
@@ -391,8 +396,8 @@ in the next tutorial, we will first explore how this model is actually fit.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
     </p>
   </div>
 </footer>

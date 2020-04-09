@@ -2,7 +2,7 @@
 Conflating Periodic & Aperiodic Changes
 =======================================
 
-Demonstrating how changes in periodic & aperiodic features can be conflated.
+Demonstrating how changes in periodic & aperiodic parameters can be conflated.
 
 This example is a code implementation and quantitatively exact version of Figure 1 from the
 `Parameterizing Neural Power Spectra <https://www.biorxiv.org/content/10.1101/2020.01.11.900977v1>`_
@@ -14,19 +14,19 @@ paper.
 # -------------------------
 #
 # In electrophysiological data analysis, we often wish to measure and interpret changes
-# in particular features of our data, for example, measuring changes in the power of
+# in particular aspects of our data, for example, measuring changes in the power of
 # a frequency band of interest.
 #
 # In this example, we will examine how using predefined frequency ranges to measure
 # and then interpret differences from power spectra can lead to misinterpretations
-# in the face of complex data in which multiple different features of the data can
+# in the face of complex data in which multiple different aspects of the data can
 # change or vary within and between recordings.
 #
 # We conceptualize neural data as complex data that contains multiple 'components', which
 # we categorize as periodic and aperiodic, and note that each of these components can also
-# have multiple features, each of which could vary.
+# have multiple parameters, each of which could vary.
 #
-# To briefly recap, these components and features include:
+# To briefly recap, these components and parameters include:
 #
 # - aperiodic activity, the 1/f-like aspect of the data, described, at minimum with:
 #
@@ -67,7 +67,7 @@ shade_color = '#0365C0'
 #
 # We will start by simulating a baseline power spectrum, with an alpha peak, and
 # concurrent aperiodic activity. We will also simulate several altered versions of
-# this spectrum, each which a change in a specific feature of the power spectrum.
+# this spectrum, each which a change in a specific parameter of the power spectrum.
 #
 
 ###################################################################################################
@@ -84,7 +84,7 @@ f_range = [3, 35]
 ap_base = [0, 1.5]
 pe_base = [[10, 0.5, 1], [22, 0.2, 2]]
 
-# Parameters reflecting changes in different features
+# Define parameters sets with changes in each parameter
 pw_diff = [[10, 0.311, 1], [22, 0.2, 2]]
 cf_diff = [[11.75, 0.5, 1], [22, 0.2, 2]]
 off_diff = [-0.126, 1.5]
@@ -97,7 +97,7 @@ freqs, powers_base = gen_power_spectrum(f_range, ap_base, pe_base, nlv, f_res)
 
 ###################################################################################################
 
-# Create comparison power spectra, with differences in different features of the data
+# Create comparison power spectra, with differences in different parameters of the data
 _, powers_pw = gen_power_spectrum(f_range, ap_base, pw_diff, nlv, f_res)
 _, powers_cf = gen_power_spectrum(f_range, ap_base, cf_diff, nlv, f_res)
 _, powers_off = gen_power_spectrum(f_range, off_diff, pe_base, nlv, f_res)
@@ -120,7 +120,7 @@ all_powers = {
 # Now that we have our power spectra simulated, let's plot them all together.
 #
 # In the visualization below, we can see that we have created four sets of comparisons,
-# where each has a change in one feature of the data.
+# where each has a change in one parameter of the data.
 #
 # Specifically, these changes are:
 #
@@ -156,7 +156,7 @@ for ax, (title, powers) in zip(axes.reshape(-1), all_powers.items()):
 # a band.
 #
 # Then, for each pair, consisting of the baseline power spectrum and an adapted version
-# in which one features has been changed, we can measure the change in band specific
+# in which one parameter has been changed, we can measure the change in band specific
 # activity relating to this change.
 #
 
@@ -267,13 +267,13 @@ for title, powers in all_powers_na.items():
 # Conclusion
 # ~~~~~~~~~~
 #
-# In the simulations above, we have shown that changes in multiple different features can
+# In the simulations above, we have shown that changes in multiple different parameters can
 # lead to the same measured difference in band-specific power.
 #
 # In any given case in which narrow-band ranges are used, any of these changes, or
 # a combination of them, could be contributing to the measured changes.
 #
 # As an alternative to analyzing narrow-band power, parameterizing power spectra offers
-# an approach that can measure which feature(s) of the data are changing, and in what
+# an approach that can measure which parameters of the data are changing, and in what
 # ways.
 #

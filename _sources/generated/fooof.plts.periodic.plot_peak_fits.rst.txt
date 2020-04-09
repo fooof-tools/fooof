@@ -1,6 +1,0 @@
-fooof.plts.periodic.plot\_peak\_fits
-====================================
-
-.. currentmodule:: fooof.plts.periodic
-
-.. autofunction:: plot_peak_fits

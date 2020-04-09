@@ -1,6 +1,0 @@
-fooof.sim.params.update\_sim\_ap\_params
-========================================
-
-.. currentmodule:: fooof.sim.params
-
-.. autofunction:: update_sim_ap_params

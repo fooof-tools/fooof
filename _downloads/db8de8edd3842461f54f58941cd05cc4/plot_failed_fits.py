@@ -13,14 +13,14 @@ from fooof import FOOOFGroup
 # Import simulation code to create test power spectra
 from fooof.sim.gen import gen_group_power_spectra
 
-# Import the FOOOF FitError, which we will use to help debug model fit errors
+# Import FitError, which we will use to help debug model fit errors
 from fooof.core.errors import FitError
 
 ###################################################################################################
 # Model Fit Failures
 # ------------------
 #
-# The FOOOF model is not guaranteed to fit - sometimes the fit procedure can fail.
+# The power spectrum model is not guaranteed to fit - sometimes the fit procedure can fail.
 #
 # Model fit failures are rare, and they typically only happen on spectra that are
 # particular noisy, and/or are some kind of outlier for which the fitting procedure
@@ -54,13 +54,13 @@ fg.fit(freqs, powers)
 # If there are failed fits, these are stored as null models.
 #
 # Let's check if there were any null models, from model failures, in the models
-# that we have fit so far. To do so, the :obj:`FOOOFGroup` object has some attributes
-# that provide information on any null model fits.
+# that we have fit so far. To do so, the :class:`~fooof.FOOOFGroup` object has some
+# attributes that provide information on any null model fits.
 #
 # These attributes are:
 #
-# - `n_null_` : the number of model results that are null
-# - `null_inds_` : the indices of any null model results
+# - ``n_null_`` : the number of model results that are null
+# - ``null_inds_`` : the indices of any null model results
 #
 
 ###################################################################################################
@@ -85,7 +85,7 @@ print('Indices of Null models : \t', fg.null_inds_)
 
 ###################################################################################################
 
-# Hack the FOOOf object to induce model failures
+# Hack the object to induce model failures
 fg._maxfev = 50
 
 ###################################################################################################
@@ -95,8 +95,8 @@ fg.fit(freqs, powers)
 
 ###################################################################################################
 #
-# As we can see, there are now some model fit failures! Note that, as above, FOOOF
-# will print out if there is as model fit failure when in verbose mode.
+# As we can see, there are now some model fit failures! Note that, as above, it will
+# be printed out if there is as model fit failure when in verbose mode.
 #
 
 ###################################################################################################
@@ -145,7 +145,7 @@ except FitError as fooof_error:
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # This debug mode should indicate in which step the model is failing, which might indicate
-# what features of the data to look into, and/or which settings to try and tweak.
+# what aspects of the data to look into, and/or which settings to try and tweak.
 #
 # Also, all known model fit failures should be caught by the object, and not raise an
 # error (when not in debug mode). If you are finding examples in which the model is failing

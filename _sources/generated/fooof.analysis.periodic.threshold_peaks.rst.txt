@@ -1,6 +1,0 @@
-fooof.analysis.periodic.threshold\_peaks
-========================================
-
-.. currentmodule:: fooof.analysis.periodic
-
-.. autofunction:: threshold_peaks

@@ -1,16 +1,16 @@
 """
-Fitting FOOOF Across 3D Arrays
-==============================
+Fitting Power Spectrum Models Across 3D Arrays
+==============================================
 
-Run FOOOF across 3D arrays of power spectra.
+Fitting power spectrum models across 3D arrays of power spectra.
 """
 
 ###################################################################################################
 # Running Across 3D
 # -----------------
 #
-# Most of the materials so far have explored using the :obj:`FOOOF` object to fit individual
-# power spectra, and the :obj:`FOOOFGroup` object for fitting groups of power spectra,
+# Most of the materials so far have explored using the :class:`~fooof.FOOOF` object to fit individual
+# power spectra, and the :class:`~fooof.FOOOFGroup` object for fitting groups of power spectra,
 # where a group of spectra is organized as a 2D array of power spectra.
 #
 # In this example, we'll go one step further, and step through how to analyze data
@@ -48,7 +48,7 @@ Run FOOOF across 3D arrays of power spectra.
 
 ###################################################################################################
 
-# Import os & numpy, for helping with managing our simulated data and results
+# Imports for helping with managing our simulated data and results
 import os
 import numpy as np
 
@@ -78,7 +78,7 @@ from fooof.utils import load_fooofgroup
 #
 # For this example, we will use simulated data to explore this example case.
 #
-# First, we set up the settings for the simulations, and create some data.
+# First, we'll set up the simulations to create some data.
 #
 
 ###################################################################################################
@@ -92,7 +92,7 @@ n_conditions = 3
 n_channels = 10
 n_freqs = len(gen_freqs(freq_range, freq_res))
 
-# Settings for simulated parameters
+# Define parameters for the simulated power spectra
 ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
 pe_opts = param_sampler([[], [10, 0.25, 1], [10, 0.25, 1, 20, 0.15, 1]])
 
@@ -120,37 +120,38 @@ print('Number of conditions, channels & frequencies: \t{}, {}, {}'.format(\
 # Fitting Multiple Power Spectra
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The goal, for fitting all these power spectra is to apply our power spectrum model
+# The goal, for fitting all these power spectra, is to apply our power spectrum model
 # efficiently across all power spectra, while keeping our data and results organized
 # in a way that we keep track of which model results reflect which data.
 #
 # The strategy we will take to do so is by systematically applying FOOOF objects across
 # the data.
 #
-# For working with 3D arrays of power spectra, we have the :func:`fit_fooof_3d`
-# function which takes in data and a pre-initialized model object, and applies the
-# FOOOF object across all the data, while maintaining the organization of the output data.
+# For working with 3D arrays of power spectra, we have the :func:`~fooof.objs.utils.fit_fooof_3d`
+# function which takes in data and a pre-initialized model object, and uses it to fit
+# power spectrum models across all the data, while maintaining the organization of
+# the input data.
 #
 
 ###################################################################################################
 # fit_fooof_3d
-# ~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~
 #
-# More specifically, :func:`fit_fooof_3d` takes in:
+# More specifically, :func:`~fooof.objs.utils.fit_fooof_3d` takes in:
 #
 # - a FOOOFGroup object, pre-initialized with the desired settings
 # - a frequency vector and a 3D array of power spectra
 #
-# Internally, this function uses the :obj:`FOOOFGroup` object to
+# Internally, this function uses the :class:`~fooof.FOOOFGroup` object to
 # fit models across the power spectra.
 #
-# This function then returns a list of :obj:`FOOOFGroup` objects, which collectively
-# store all the model fit results.
+# This function then returns a list of :class:`~fooof.FOOOFGroup` objects, which
+# collectively store all the model fit results.
 #
 
 ###################################################################################################
 
-# Initialize a FOOOF group object, with desired settings
+# Initialize a FOOOFGroup object, with desired settings
 fg = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
 
 ###################################################################################################
@@ -168,7 +169,7 @@ print(fgs)
 # Note that the length of the returned list of objects should be equivalent to
 # the outermost dimensionality of the input data.
 #
-# In our example setup, this corresponds to `n_conditions` :obj:`FOOOFGroup` objects.
+# In our example setup, this corresponds to `n_conditions` :class:`~fooof.FOOOFGroup` objects.
 #
 
 ###################################################################################################
@@ -180,16 +181,16 @@ print('Number of conditions: \t{}'.format(n_conditions))
 # Analyzing FOOOF Objects
 # ~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Once you have run your FOOOF models, you want to analyze the results in some way!
+# Once you have fit the power spectrum models, you want to analyze the results in some way!
 #
-# Since you have a collection of :obj:`FOOOF` objects, you can analyze these the same way
-# as you would look into any other FOOOF objects. You can check out the other examples
+# Since you have a collection of :class:`~fooof.FOOOF` objects, you can analyze these the same
+# way as you would look into any other FOOOF objects. You can check out the other examples
 # and tutorials for more information on how to do this.
 #
-# A general strategy for analyzing FOOOF results as they get returned from
-# :func:`fit_fooof_3d` is to loop across all the objects in the returned list,
-# and then within the loop you can collect and/or analyze and/or plot any
-# data of interest.
+# A general strategy for analyzing model fit results as they get returned from
+# :func:`~fooof.objs.utils.fit_fooof_3d` is to loop across all the objects in the
+# returned list, and then within the loop you can collect and/or analyze and/or plot
+# any data of interest.
 #
 # For a simple example analysis here, we can investigate if there appears to be a
 # difference in aperiodic exponent between different conditions.
@@ -206,11 +207,12 @@ for ind, fg in enumerate(fgs):
 # Managing FOOOF Objects
 # ~~~~~~~~~~~~~~~~~~~~~~
 #
-# When running analyses like this, you may start to have many :obj:`FOOOF` objects.
+# When running analyses like this, you may start to have many :class:`~fooof.FOOOF` objects.
 #
-# For example, you may want to save them out, reload them as needed, analyze results
-# from each :obj:`FOOOF` or :obj:`FOOOFGroup` object, and also manipulate the objects by,
-# for example, combining model results across objects to check overall model fit properties.
+# For example, you may want to save them out, reload them as needed, analyze
+# results from each :class:`~fooof.FOOOF` or :class:`~fooof.FOOOFGroup` object,
+# and also manipulate the objects by, for example, combining model results across
+# objects to check overall model fit properties.
 #
 # Here, we will continue with a quick example of saving, loading and then combining
 # FOOOF objects. Note that a broader exploration of managing different FOOOF objects
@@ -223,7 +225,7 @@ for ind, fg in enumerate(fgs):
 if not os.path.isdir('results'):
     os.mkdir('results')
 
-# Save out FOOOF results, storing each as with a file name based on the condition
+# Save out results, storing each as with a file name based on the condition
 for ind, fg in enumerate(fgs):
     fg.save('subj_01_cond_0' + str(ind), file_path='results', save_results=True)
 
@@ -238,6 +240,6 @@ fgs = [load_fooofgroup(file_name, file_path='results') \
 # Combine a list of FOOOF objects into a single FOOOFGroup object
 all_fg = combine_fooofs(fgs)
 
-# Explore the results from across all FOOOF fits
+# Explore the results from across all model fits
 all_fg.print_results()
 all_fg.plot()

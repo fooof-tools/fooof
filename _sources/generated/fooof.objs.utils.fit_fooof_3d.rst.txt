@@ -1,6 +1,0 @@
-fooof.objs.utils.fit\_fooof\_3d
-===============================
-
-.. currentmodule:: fooof.objs.utils
-
-.. autofunction:: fit_fooof_3d

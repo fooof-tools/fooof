@@ -41,7 +41,7 @@ from copy import deepcopy
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Import simulation, plotting and utility code from FOOOF
+# Import simulation, utility, and plotting tools
 from fooof.bands import Bands
 from fooof.utils import trim_spectrum
 from fooof.sim import gen_power_spectrum
@@ -140,7 +140,7 @@ print('Calculate theta / beta ratio is :\t {:1.2f}'.format(tbr))
 # within and between subjects. The typical interpretation of band ratio measures is that
 # they relate to the relative power between two bands.
 #
-# Next, lets simulate data that varies across different periodic features of the data, and
+# Next, lets simulate data that varies across different periodic parameters of the data, and
 # see how this changes our measured theta / beta ratio, as compared to our baseline
 # power spectrum.
 #
@@ -209,12 +209,12 @@ _ = [ax.axis('off') for ax in [axes[0, 0], axes[1, 1]]]
 
 ###################################################################################################
 #
-# In the simulations above, we systematically manipulated each feature of each of the
+# In the simulations above, we systematically manipulated each parameter of each of the
 # three different band peaks present in our data. For 7 of the 9 possible changes, we can
 # do so in a way that creates an identical change in the measured band ratio measure.
 #
 # Band ratio measures are therefore not specific to band power differences, but rather
-# can reflect multiple different changes across multiple different periodic features.
+# can reflect multiple different changes across multiple different periodic parameters.
 #
 
 ###################################################################################################
@@ -275,7 +275,7 @@ for ax, (label, (comparison, spectrum)) in zip(axes, exp_spectra.items()):
 # Band ratio measures are supposed to reflect the relative power of rhythmic neural activity.
 #
 # However, here we can see that band ratio measures are actually under-determined
-# in that many different changes of both periodic and aperiodic features can affect
+# in that many different changes of both periodic and aperiodic parameters can affect
 # band ratio measurements - including aperiodic changes when there is no periodic activity.
 #
 # For this reason, we conclude that band-ratio measures, by themselves, are

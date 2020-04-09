@@ -3,16 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>03: FOOOF Algorithm &#8212; fooof 1.0.0rc2 documentation</title>
+    <title>03: Fitting Algorithm &#8212; fooof 1.0.0rc3 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -69,6 +69,8 @@
             
             
             
+              <li class="hidden-sm"></li>
+            
           </ul>
 
           
@@ -93,14 +95,14 @@
 <p class="admonition-title">Note</p>
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-03-fooofalgorithm-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="fooof-algorithm">
-<span id="sphx-glr-auto-tutorials-plot-03-fooofalgorithm-py"></span><h1>03: FOOOF Algorithm<a class="headerlink" href="#fooof-algorithm" title="Permalink to this headline">¶</a></h1>
-<p>A step by step overview of the FOOOF algorithm.</p>
+<div class="sphx-glr-example-title section" id="fitting-algorithm">
+<span id="sphx-glr-auto-tutorials-plot-03-fooofalgorithm-py"></span><h1>03: Fitting Algorithm<a class="headerlink" href="#fitting-algorithm" title="Permalink to this headline">¶</a></h1>
+<p>A step by step overview of the algorithm for parameterizing neural power spectra.</p>
 <div class="section" id="algorithmic-description">
 <h2>Algorithmic Description<a class="headerlink" href="#algorithmic-description" title="Permalink to this headline">¶</a></h2>
-<p>In this tutorial we will step through how the FOOOF model is fit.</p>
-<p>Note that this notebook is for demonstrative purposes, and does not
-represent recommended usage of FOOOF.</p>
+<p>In this tutorial we will step through how the power spectrum model is fit.</p>
+<p>Note that this notebook is for demonstrative purposes, and does not represent
+recommended usage of how to fit power spectrum models.</p>
 <p>Broadly, the steps in the algorithm are:</p>
 <ul class="simple">
 <li><ol class="arabic simple">
@@ -135,28 +137,30 @@ and goodness of fit metrics are calculated.</p></li>
 </li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="c1"># Import the FOOOF object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a>
 
-<span class="c1"># Import some internal functions from FOOOF</span>
+<span class="c1"># Import some internal functions</span>
 <span class="c1">#   These are used here to demonstrate the algorithm.</span>
-<span class="c1">#   You do not need to import these functions to be able to run FOOOF</span>
+<span class="c1">#   You do not need to import these functions for standard use of the algorithm</span>
 <span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_aperiodic</span>
 <span class="kn">from</span> <span class="nn">fooof.core.funcs</span> <span class="k">import</span> <span class="n">gaussian_function</span>
 <span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <span class="n">plot_spectrum</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.fm</span> <span class="k">import</span> <a href="../generated/fooof.plts.fm.plot_fm_peak_iter.html#fooof.plts.fm.plot_fm_peak_iter" title="View documentation for fooof.plts.fm.plot_fm_peak_iter"><span class="n">plot_fm_peak_iter</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.annotate</span> <span class="k">import</span> <a href="../generated/fooof.plts.annotate.plot_annotated_peak_search.html#fooof.plts.annotate.plot_annotated_peak_search" title="View documentation for fooof.plts.annotate.plot_annotated_peak_search"><span class="n">plot_annotated_peak_search</span></a>
+
+<span class="c1"># Import utility to download and load example data</span>
+<span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="k">import</span> <span class="n">load_fooof_data</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set whether to plot in log-log space</span>
 <span class="n">plt_log</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load example data</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.load" title="View documentation for numpy.load"><span class="n">np</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;data/freqs_2.npy&#39;</span><span class="p">)</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">spectrum</span></a> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.load" title="View documentation for numpy.load"><span class="n">np</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;data/spectrum_2.npy&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load example data files needed for this example</span>
+<span class="n">freqs</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;freqs_2.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<span class="n">spectrum</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;spectrum_2.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object, with some settings</span>
@@ -164,11 +168,11 @@ and goodness of fit metrics are calculated.</p></li>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span> <span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Note that data can be added to FOOOF independent of fitting the model, using the
-<cite>add_data</cite> method. FOOOF objects can also be used to plot input data,
+<p>Note that data can be added to a FOOOF object independent of fitting the model, using the
+<a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.add_data" title="fooof.FOOOF.add_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_data()</span></code></a> method. FOOOF objects can also be used to plot input data,
 without having fit any models.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add data to FOOOF object</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">spectrum</span></a><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add data to the object</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectrum</span>
@@ -179,8 +183,8 @@ without having fit any models.</p>
 <p>The FOOOF object stores most of the intermediate steps internally.</p>
 <p>For this notebook, we will first fit the full model, as normal, but then step through,
 and visualize each step the algorithm took to come to that final fit.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the FOOOF model</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">spectrum</span></a><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the power spectrum model</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="section" id="step-1-initial-aperiodic-fit">
@@ -189,12 +193,12 @@ and visualize each step the algorithm took to come to that final fit.</p>
 able to use this fit to remove our estimate of the aperiodic component from the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Do an initial aperiodic fit - a robust fit, that excludes outliers</span>
 <span class="c1">#   This recreates an initial fit that isn&#39;t ultimately stored in the FOOOF object</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">init_ap_fit</span></a> <span class="o">=</span> <span class="n">gen_aperiodic</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_robust_ap_fit</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">))</span>
+<span class="n">init_ap_fit</span> <span class="o">=</span> <span class="n">gen_aperiodic</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_robust_ap_fit</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">))</span>
 
 <span class="c1"># Plot the initial aperiodic fit</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Power Spectrum&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">init_ap_fit</span></a><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Initial Aperiodic Fit&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Power Spectrum&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">init_ap_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Initial Aperiodic Fit&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_002.png" />
@@ -205,10 +209,10 @@ able to use this fit to remove our estimate of the aperiodic component from the 
 fit is subtracted out from the original data, leaving a flattened version of the data
 which no longer contains the aperiodic component.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Recompute the flattened spectrum using the initial aperiodic fit</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">init_flat_spec</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span> <span class="o">-</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">init_ap_fit</span></a>
+<span class="n">init_flat_spec</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span> <span class="o">-</span> <span class="n">init_ap_fit</span>
 
 <span class="c1"># Plot the flattened the power spectrum</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">init_flat_spec</span></a><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Flattened Spectrum&#39;</span><span class="p">)</span>
+<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">init_flat_spec</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Flattened Spectrum&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_003.png" />
@@ -217,7 +221,7 @@ which no longer contains the aperiodic component.</p>
 <h3>Step 3: Detect Peaks<a class="headerlink" href="#step-3-detect-peaks" title="Permalink to this headline">¶</a></h3>
 <p>The flattened spectrum is then used to detect peaks. We can better isolate
 peaks in the data, as the aperiodic activity has been removed.</p>
-<p>FOOOF uses an iterative procedure to find peaks in the flattened spectrum.</p>
+<p>The fitting algorithm uses an iterative procedure to find peaks in the flattened spectrum.</p>
 <p>For each iteration:</p>
 <ul class="simple">
 <li><p>The maximum point of the flattened spectrum is found.</p>
@@ -232,7 +236,7 @@ the procedure halts.</p></li>
 unless <cite>max_n_peaks</cite> has been reached</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the iterative approach to finding peaks from the flattened spectrum</span>
-<a href="../generated/fooof.plts.fm.plot_fm_peak_iter.html#fooof.plts.fm.plot_fm_peak_iter" title="View documentation for fooof.plts.fm.plot_fm_peak_iter"><span class="n">plot_fm_peak_iter</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="p">)</span>
+<a href="../generated/fooof.plts.annotate.plot_annotated_peak_search.html#fooof.plts.annotate.plot_annotated_peak_search" title="View documentation for fooof.plts.annotate.plot_annotated_peak_search"><span class="n">plot_annotated_peak_search</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <ul class="sphx-glr-horizontal">
@@ -250,7 +254,7 @@ unless <cite>max_n_peaks</cite> has been reached</p></li>
 flattened spectrum, the set of identified ‘guess’ peaks, are then re-fit, all together.
 This creates the full peak fit of the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the peak fit: created by re-fitting all of the candidate peaks together</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_peak_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">)</span>
+<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_peak_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_007.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_007.png" />
@@ -262,7 +266,7 @@ used in order to try and isolate a better aperiodic fit.</p>
 <p>To do so, the peak fit is removed from the original power spectrum,
 leaving an ‘aperiodic-only’ spectrum for re-fitting.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the peak removed power spectrum, created by removing peak fit from original spectrum</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_spectrum_peak_rm</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Peak Removed Spectrum&#39;</span><span class="p">)</span>
+<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_spectrum_peak_rm</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Peak Removed Spectrum&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_008.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_008.png" />
@@ -275,8 +279,8 @@ used to get the fitting process started.</p>
 re-estimate a better fit, without the peaks getting in the way.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the final aperiodic fit, calculated on the peak removed power spectrum</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_spectrum_peak_rm</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Peak Removed Spectrum&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_ap_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Final Aperiodic Fit&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_spectrum_peak_rm</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Peak Removed Spectrum&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_ap_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Final Aperiodic Fit&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_009.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_009.png" />
@@ -288,13 +292,13 @@ to create the full model fit.</p>
 <p>With this full model fit, we can also calculate the goodness of fit metrics,
 including the error of the fit and the R-squared of the fit, by comparing the
 full model fit to the original data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot full FOOOF model, created by combining the peak and aperiodic fits</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Full Model&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot full model, created by combining the peak and aperiodic fits</span>
+<span class="n">plot_spectrum</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Full Model&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_010.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_010.png" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The last stage is to calculate the goodness of fit metrics (fit error &amp; R^2)</span>
-<span class="c1">#   and organize parameters, such as updating gaussian parameters -&gt; peak parameters</span>
+<span class="c1">#  and organize parameters, such as updating gaussian parameters -&gt; peak parameters</span>
 <span class="c1">#  These results are part of what are stored, and printed, as the model results</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
 </pre></div>
@@ -330,9 +334,9 @@ full model fit to the original data.</p>
 </div>
 <div class="section" id="addendum-data-model-component-attributes">
 <h3>Addendum: Data &amp; Model Component Attributes<a class="headerlink" href="#addendum-data-model-component-attributes" title="Permalink to this headline">¶</a></h3>
-<p>As you may have noticed through this tutorial, the FOOOF object keeps track of some
-versions of the original data as well as individual model components fits, as well as
-the final model fit that ultimate outcome of the fitting procedure.</p>
+<p>As you may have noticed through this tutorial, the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object keeps
+track of some versions of the original data as well as individual model components fits,
+as well as the final model fit that ultimate outcome of the fitting procedure.</p>
 <p>These attributes in the FOOOF object are kept at the end of the fitting procedure.
 Though they are primarily computed for internal use (hence being considered ‘private’
 attributes, with the leading underscore), they are accessible and potentially
@@ -341,13 +345,13 @@ useful for some analyses, and so are briefly described here.</p>
 <ul class="simple">
 <li><p>Aperiodic Component: <cite>_ap_fit</cite></p>
 <ul>
-<li><p>This is the aperiodic-only model fit of the data.</p></li>
+<li><p>This is the aperiodic-only fit of the data.</p></li>
 <li><p>It is computed by generating a reconstruction of the measured aperiodic parameters</p></li>
 </ul>
 </li>
 <li><p>Periodic Component: <cite>_peak_fit</cite></p>
 <ul>
-<li><p>This is the periodic-only (or peak) model fit of the data.</p></li>
+<li><p>This is the periodic-only (or peak) fit of the data.</p></li>
 <li><p>It is computed by generating a reconstruction of the measured periodic (peak) parameters</p></li>
 </ul>
 </li>
@@ -371,10 +375,10 @@ useful for some analyses, and so are briefly described here.</p>
 </div>
 <div class="section" id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
-<p>In this tutorial we have stepped through the algorithm for how FOOOF fits the
-power spectrum model. Next, we will continue to explore the FOOOF object,
+<p>In this tutorial we have stepped through the parameterization algorithm fitting
+power spectrum models. Next, we will continue to explore the FOOOF object,
 properly introducing the settings and further exploring the parameters.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.109 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.205 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-03-fooofalgorithm-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cd28e8b309d37589cba9b514ff578f2c/plot_03-FOOOFAlgorithm.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_03-FOOOFAlgorithm.py</span></code></a></p>
@@ -399,8 +403,8 @@ properly introducing the settings and further exploring the parameters.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
     </p>
   </div>
 </footer>

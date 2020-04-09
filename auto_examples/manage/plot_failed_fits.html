@@ -3,16 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Failed Model Fits &#8212; fooof 1.0.0rc2 documentation</title>
+    <title>Failed Model Fits &#8212; fooof 1.0.0rc3 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta charset='utf-8'>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +68,8 @@
             
             
             
+            
+              <li class="hidden-sm"></li>
             
           </ul>
 
@@ -102,13 +104,13 @@
 <span class="c1"># Import simulation code to create test power spectra</span>
 <span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_group_power_spectra</span>
 
-<span class="c1"># Import the FOOOF FitError, which we will use to help debug model fit errors</span>
+<span class="c1"># Import FitError, which we will use to help debug model fit errors</span>
 <span class="kn">from</span> <span class="nn">fooof.core.errors</span> <span class="k">import</span> <span class="n">FitError</span>
 </pre></div>
 </div>
 <div class="section" id="model-fit-failures">
 <h2>Model Fit Failures<a class="headerlink" href="#model-fit-failures" title="Permalink to this headline">¶</a></h2>
-<p>The FOOOF model is not guaranteed to fit - sometimes the fit procedure can fail.</p>
+<p>The power spectrum model is not guaranteed to fit - sometimes the fit procedure can fail.</p>
 <p>Model fit failures are rare, and they typically only happen on spectra that are
 particular noisy, and/or are some kind of outlier for which the fitting procedure
 fails to find a good model solution.</p>
@@ -117,7 +119,7 @@ a failed model fit does not lead to a code error. The failed fit will be encoded
 the results as a null model, and the code can continue onwards.</p>
 <p>In this example, we will look through what it looks like when model fits fail.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate some example power spectra to use for the example</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers</span></a> <span class="o">=</span> <span class="n">gen_group_power_spectra</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">gen_group_power_spectra</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
                                         <span class="n">nlvs</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">freq_res</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -126,7 +128,7 @@ the results as a null model, and the code can continue onwards.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit power spectra</span>
-<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers</span></a><span class="p">)</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -135,12 +137,12 @@ the results as a null model, and the code can continue onwards.</p>
 </div>
 <p>If there are failed fits, these are stored as null models.</p>
 <p>Let’s check if there were any null models, from model failures, in the models
-that we have fit so far. To do so, the <code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOFGroup</span></code> object has some attributes
-that provide information on any null model fits.</p>
+that we have fit so far. To do so, the <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object has some
+attributes that provide information on any null model fits.</p>
 <p>These attributes are:</p>
 <ul class="simple">
-<li><p><cite>n_null_</cite> : the number of model results that are null</p></li>
-<li><p><cite>null_inds_</cite> : the indices of any null model results</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_null_</span></code> : the number of model results that are null</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">null_inds_</span></code> : the indices of any null model results</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check for failed model fits</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Null models  : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">n_null_</span><span class="p">)</span>
@@ -160,12 +162,12 @@ iterations the model uses to fit parameters (<cite>_maxfev</cite>), making it mu
 <p>Note that in normal usage, you would likely never want to change the value of <cite>_maxfev</cite>,
 and this here is a ‘hack’ of the code in order to induce reproducible failure modes
 in simulated data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hack the FOOOf object to induce model failures</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hack the object to induce model failures</span>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">_maxfev</span> <span class="o">=</span> <span class="mi">50</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Try fitting again</span>
-<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers</span></a><span class="p">)</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -174,20 +176,18 @@ Model fitting was unsuccessful.
 Model fitting was unsuccessful.
 Model fitting was unsuccessful.
 Model fitting was unsuccessful.
-Model fitting was unsuccessful.
-Model fitting was unsuccessful.
 </pre></div>
 </div>
-<p>As we can see, there are now some model fit failures! Note that, as above, FOOOF
-will print out if there is as model fit failure when in verbose mode.</p>
+<p>As we can see, there are now some model fit failures! Note that, as above, it will
+be printed out if there is as model fit failure when in verbose mode.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check how many model fit failures we have failed model fits</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Null models  : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">n_null_</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Indices of Null models : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">null_inds_</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of Null models  :         6
-Indices of Null models :         [8, 13, 19, 20, 23, 24]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of Null models  :         4
+Indices of Null models :         [5, 10, 18, 22]
 </pre></div>
 </div>
 </div>
@@ -212,7 +212,7 @@ If you just want to see the error, you can run the fit call without the try/exce
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Refit in debug mode, in which failed fits will raise an error</span>
 <span class="k">try</span><span class="p">:</span>
-    <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">powers</span></a><span class="p">)</span>
+    <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 <span class="k">except</span> <span class="n">FitError</span> <span class="k">as</span> <span class="n">fooof_error</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">fooof_error</span><span class="p">)</span>
 </pre></div>
@@ -225,7 +225,7 @@ Model fitting failed due to not finding parameters in the peak component fit.
 <div class="section" id="debugging-model-fit-errors">
 <h3>Debugging Model Fit Errors<a class="headerlink" href="#debugging-model-fit-errors" title="Permalink to this headline">¶</a></h3>
 <p>This debug mode should indicate in which step the model is failing, which might indicate
-what features of the data to look into, and/or which settings to try and tweak.</p>
+what aspects of the data to look into, and/or which settings to try and tweak.</p>
 <p>Also, all known model fit failures should be caught by the object, and not raise an
 error (when not in debug mode). If you are finding examples in which the model is failing
 to fit, and raising an error (outside of debug mode), then this might be an unanticipated
@@ -233,7 +233,7 @@ issue with the model fit.</p>
 <p>If you are unsure about why or how the model is failing to fit, consider
 opening an <a class="reference external" href="https://github.com/fooof-tools/fooof/issues">issue</a> on the project
 repository, and we will try to look into what seems to be happening.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.599 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.139 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manage-plot-failed-fits-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/db8de8edd3842461f54f58941cd05cc4/plot_failed_fits.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_failed_fits.py</span></code></a></p>
@@ -259,8 +259,8 @@ repository, and we will try to look into what seems to be happening.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
     </p>
   </div>
 </footer>

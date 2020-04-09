@@ -1,6 +1,0 @@
-fooof.utils.reports.methods\_report\_text
-=========================================
-
-.. currentmodule:: fooof.utils.reports
-
-.. autofunction:: methods_report_text

@@ -3,16 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Band-by-Band &#8212; fooof 1.0.0rc2 documentation</title>
+    <title>Band-by-Band &#8212; fooof 1.0.0rc3 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta charset='utf-8'>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -69,6 +69,8 @@
             
             
             
+              <li class="hidden-sm"></li>
+            
           </ul>
 
           
@@ -99,14 +101,14 @@
 <p>This example is based on a recent project investigating band-by-band analyses as
 often done in the context of development. The paper for that project is available
 <a class="reference external" href="https://doi.org/10.1101/839258">here</a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import numpy &amp; matplotlib</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<span class="c1"># Import the FOOOF model object</span>
+<span class="c1"># Import the FOOOF object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a>
 
-<span class="c1"># Import utility, simulation, and plotting code from FOOOF</span>
+<span class="c1"># Import simulation, utility, and plotting tools</span>
 <span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <span class="n">Bands</span>
 <span class="kn">from</span> <span class="nn">fooof.utils</span> <span class="k">import</span> <span class="n">trim_spectrum</span>
 <span class="kn">from</span> <span class="nn">fooof.sim</span> <span class="k">import</span> <span class="n">gen_power_spectrum</span>
@@ -132,8 +134,8 @@ report a pattern of changes or differences across bands, for example:</p>
 <li><p>decreased power in lower frequency bands (delta, theta)</p></li>
 <li><p>increased power in higher frequency bands (beta, gamma)</p></li>
 </ul>
-<p>Under this framework, each defined band reflects a different entity, or ‘feature’ of the
-data, and the interpretation is typically that there are multiple things changing, with
+<p>Under this framework, each defined band reflects a different entity in the data,
+and the interpretation is typically that there are multiple things changing, with
 correlated changes in power across multiple distinct bands.</p>
 <p>An alternative hypothesis for what is changing is that this pattern of results could
 be driven by changes or differences in the aperiodic component of the data. changes
@@ -184,7 +186,7 @@ power spectra. Here, we will define some helper functions to do so.</p>
     <span class="k">return</span> <span class="n">exp1</span> <span class="o">-</span> <span class="n">exp2</span>
 
 <span class="k">def</span> <span class="nf">compare_peak_pw</span><span class="p">(</span><span class="n">fm1</span><span class="p">,</span> <span class="n">fm2</span><span class="p">,</span> <span class="n">band_def</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compare the power of FOOOF peaks.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Compare the power of detected peaks.&quot;&quot;&quot;</span>
 
     <span class="n">pw1</span> <span class="o">=</span> <span class="n">get_band_peak_fm</span><span class="p">(</span><span class="n">fm1</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">pw2</span> <span class="o">=</span> <span class="n">get_band_peak_fm</span><span class="p">(</span><span class="n">fm2</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
@@ -194,8 +196,8 @@ power spectra. Here, we will define some helper functions to do so.</p>
 <span class="k">def</span> <span class="nf">compare_band_pw</span><span class="p">(</span><span class="n">fm1</span><span class="p">,</span> <span class="n">fm2</span><span class="p">,</span> <span class="n">band_def</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compare the power of frequency band ranges.&quot;&quot;&quot;</span>
 
-    <span class="n">pw1</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.mean" title="View documentation for numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><span class="n">trim_spectrum</span><span class="p">(</span><span class="n">fm1</span><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <span class="n">fm1</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">pw2</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.mean" title="View documentation for numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><span class="n">trim_spectrum</span><span class="p">(</span><span class="n">fm1</span><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <span class="n">fm2</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">pw1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">trim_spectrum</span><span class="p">(</span><span class="n">fm1</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm1</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">pw2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">trim_spectrum</span><span class="p">(</span><span class="n">fm1</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm2</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="n">pw1</span> <span class="o">-</span> <span class="n">pw2</span>
 </pre></div>
@@ -221,12 +223,12 @@ simulated as being the same between groups, though in real data these could also
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate example power spectra for each group</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">g1_spectrum_bands</span></a> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">pe_g1</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">g2_spectrum_bands</span></a> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">pe_g2</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">g1_spectrum_bands</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">pe_g1</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">g2_spectrum_bands</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">pe_g2</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra differences, representing the &#39;band-by-band&#39; idea</span>
-<span class="n">plot_spectra_shading</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <span class="p">[</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">g1_spectrum_bands</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">g2_spectrum_bands</span></a><span class="p">],</span>
+<span class="n">plot_spectra_shading</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">g1_spectrum_bands</span><span class="p">,</span> <span class="n">g2_spectrum_bands</span><span class="p">],</span>
                      <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                      <span class="n">shades</span><span class="o">=</span><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
                      <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
@@ -244,19 +246,19 @@ simulated as being the same between groups, though in real data these could also
 <p>Under the band-by-band idea, controlling for aperiodic activity and flattening
 the spectra should show specific differences in each band.</p>
 <p>It should also find no systematic difference in the aperiodic activity between groups.</p>
-<p>To check this, we can fit power spectrum models, and examine which features are
+<p>To check this, we can fit power spectrum models, and examine which parameters are
 changing in the data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize FOOOF models</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize FOOOF objects</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g1</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g2</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="c1"># Fit FOOOF models to parameterize neural power spectra</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g1</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">g1_spectrum_bands</span></a><span class="p">)</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g2</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">g2_spectrum_bands</span></a><span class="p">)</span>
+<span class="c1"># Fit power spectrum models</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g1</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">g1_spectrum_bands</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g2</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">g2_spectrum_bands</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra differences</span>
-<span class="n">plot_spectra_shading</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g1</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g2</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">],</span>
+<span class="n">plot_spectra_shading</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g1</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g2</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">],</span>
                      <span class="n">log_powers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                      <span class="n">shades</span><span class="o">=</span><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
                      <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
@@ -270,9 +272,9 @@ changing in the data.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="compare-spectral-features">
-<h3>Compare Spectral Features<a class="headerlink" href="#compare-spectral-features" title="Permalink to this headline">¶</a></h3>
-<p>Next, let’s compare the measured features of the data.</p>
+<div class="section" id="compare-spectral-parameters">
+<h3>Compare Spectral Parameters<a class="headerlink" href="#compare-spectral-parameters" title="Permalink to this headline">¶</a></h3>
+<p>Next, let’s compare the measured parameters of the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the difference of aperiodic activity between age groups</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">exp_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">compare_exp</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g2</span></a><span class="p">)))</span>
 </pre></div>
@@ -311,12 +313,12 @@ power spectra give the same, and correct result for this case.</p>
 <p>In the next simulation, we will simulate each group as having same periodic activity,
 in this case, just an alpha peak, with a difference in the aperiodic activity.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate spectra for each group, with aperiodic differences</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">g1_spectrum_pa</span></a> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="n">nlv</span><span class="p">)</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">g2_spectrum_pa</span></a> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="n">nlv</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">g1_spectrum_pa</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="n">nlv</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">g2_spectrum_pa</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="n">nlv</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra differences</span>
-<span class="n">plot_spectra_shading</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <span class="p">[</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">g1_spectrum_pa</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">g2_spectrum_pa</span></a><span class="p">],</span>
+<span class="n">plot_spectra_shading</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">g1_spectrum_pa</span><span class="p">,</span> <span class="n">g2_spectrum_pa</span><span class="p">],</span>
                      <span class="n">log_freqs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                      <span class="n">shades</span><span class="o">=</span><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
                      <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
@@ -334,17 +336,17 @@ in this case, just an alpha peak, with a difference in the aperiodic activity.</
 <p>In the scenario in which there are differences in aperiodic activity, flattening
 the spectra should show no differences in periodic peaks.</p>
 <p>We can again parameterize the spectra to investigate this.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize FOOOF models</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize FOOOF objects</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g1</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g2</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="c1"># Fit FOOOF models and parameterize neural power spectra</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g1</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">g1_spectrum_pa</span></a><span class="p">)</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g2</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">g2_spectrum_pa</span></a><span class="p">)</span>
+<span class="c1"># Fit power spectrum models</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g1</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">g1_spectrum_pa</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g2</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">g2_spectrum_pa</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra differences</span>
-<span class="n">plot_spectra_shading</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g1</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g2</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">],</span>
+<span class="n">plot_spectra_shading</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g1</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g2</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">],</span>
                      <span class="n">log_powers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                      <span class="n">shades</span><span class="o">=</span><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
                      <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
@@ -359,8 +361,8 @@ the spectra should show no differences in periodic peaks.</p>
 </div>
 </div>
 <div class="section" id="id3">
-<h3>Compare Spectral Features<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<p>Let’s again compare the measured features of the data.</p>
+<h3>Compare Spectral Parameters<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Let’s again compare the measured parameters of the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the difference of aperiodic activity between age groups</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">exp_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">compare_exp</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g2</span></a><span class="p">)))</span>
 </pre></div>
@@ -413,7 +415,7 @@ that affects all frequencies. This also means that if a band-by-band analysis fi
 differences across bands, this is not enough to know if there are band-specific changes,
 or aperiodic changes, as this analysis approach does not differentiate the two.</p>
 <p>We conclude here that band-by-band analysis, without measuring or controlling for
-aperiodic activity, are ill posed to adjudicate what features of the data are changing.
+aperiodic activity, are ill posed to adjudicate which aspects of the data are changing.
 Parameterizing neural power spectra allows for disentangling changes in
 periodic and aperiodic components of the data.</p>
 <p>In this example, with simulated data, we cannot conclude which changes are more likely
@@ -424,7 +426,7 @@ came from using the parameterization approach, but was not evidence in prior
 work using only a band-by-band approach.
 You can find more on that project
 <a class="reference external" href="https://doi.org/10.1101/839258">here</a>.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.521 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.534 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-measurements-plot-bandbyband-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/25a20a64f0f68c43d76a91f17876de66/plot_BandByBand.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_BandByBand.py</span></code></a></p>
@@ -449,8 +451,8 @@ You can find more on that project
       
     </p>
     <p>
-        &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
     </p>
   </div>
 </footer>

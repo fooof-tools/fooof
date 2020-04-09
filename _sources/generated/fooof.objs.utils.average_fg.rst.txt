@@ -1,6 +1,0 @@
-fooof.objs.utils.average\_fg
-============================
-
-.. currentmodule:: fooof.objs.utils
-
-.. autofunction:: average_fg

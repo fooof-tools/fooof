@@ -1,6 +1,0 @@
-fooof.utils.io.load\_fooof
-==========================
-
-.. currentmodule:: fooof.utils.io
-
-.. autofunction:: load_fooof

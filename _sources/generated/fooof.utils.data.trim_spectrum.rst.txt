@@ -1,6 +1,0 @@
-fooof.utils.data.trim\_spectrum
-===============================
-
-.. currentmodule:: fooof.utils.data
-
-.. autofunction:: trim_spectrum

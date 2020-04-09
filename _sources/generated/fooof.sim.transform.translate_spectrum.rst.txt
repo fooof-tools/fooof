@@ -1,6 +1,0 @@
-fooof.sim.transform.translate\_spectrum
-=======================================
-
-.. currentmodule:: fooof.sim.transform
-
-.. autofunction:: translate_spectrum

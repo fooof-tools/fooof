@@ -24,16 +24,17 @@ from fooof.plts.spectra import plot_spectrum, plot_spectra
 # to ground truth values - but in order to do that, one needs to keep track of the
 # simulation parameters themselves.
 #
-# To do so, FOOOF defines and uses a `SimParams` object to manage and keep
-# track of simulation parameters.
+# To do so, there is the :obj:`~fooof.data.data.SimParams` object to manage
+# and keep track of simulation parameters.
 #
-# For example, when you simulate power spectra, FOOOF stores the parameters
-# for each spectrum in a `SimParams` object, and collects and returns these to you.
+# For example, when you simulate power spectra, the parameters for each spectrum are stored
+# in a :obj:`~fooof.data.data.SimParams` object, and then these objects are collected and returned.
 #
 # SimParams objects are named tuples with the following fields:
-# - `aperiodic_params`
-# - `periodic_params`
-# - `nlv`
+#
+# - ``aperiodic_params``
+# - ``periodic_params``
+# - ``nlv``
 #
 
 ###################################################################################################
@@ -67,23 +68,26 @@ freqs, powers = gen_power_spectrum(freq_range, *cur_params)
 # Managing Parameters
 # -------------------
 #
-# FOOOF provides some helper functions for managing and selecting parameters for
+# There are also helper functions for managing and selecting parameters for
 # simulating groups of power spectra.
 #
 # These functions include:
 #
-# - :func:`param_sampler` which can be used to sample parameters from a possible options
-# - :func:`param_iter` which can be used to iterate across parameter ranges
-# - :func:`param_jitter` which can be used to add some 'jitter' to simulation parameters
+# - :func:`~fooof.sim.params.param_sampler` which can be used to sample
+#   parameters from a possible options
+# - :func:`~fooof.sim.params.param_iter` which can be used to iterate across
+#   parameter ranges
+# - :func:`~fooof.sim.params.param_jitter` which can be used to add some 'jitter'
+#   to simulation parameters
 #
 
 ###################################################################################################
 # param_sampler
 # ~~~~~~~~~~~~~
 #
-# The :func:`param_sampler` function takes a list of parameter options and randomly selects
-# from the parameters to create each power spectrum. You can also optionally specify the
-# probabilities with which to sample from the options.
+# The :func:`~fooof.sim.params.param_sampler` function takes a list of parameter options and
+# randomly selects from the parameters to create each power spectrum. You can also optionally
+# specify the probabilities with which to sample from the options.
 #
 
 ###################################################################################################
@@ -109,11 +113,11 @@ plot_spectra(freqs, powers[0:4, :], log_powers=True)
 # param_iter
 # ~~~~~~~~~~
 #
-# The :func:`param_iter` function can be used to create iterators that can 'step' across
-# a range of parameter values to be simulated.
+# The :func:`~fooof.sim.params.param_iter` function can be used to create iterators that
+# can 'step' across a range of parameter values to be simulated.
 #
-# The :class:`Stepper` object needs to be used in conjunction with :func:`param_iter`,
-# as it specifies the values to be iterated across.
+# The :class:`~fooof.sim.params.Stepper` object needs to be used in conjunction with
+# :func:`~fooof.sim.params.param_iter`, as it specifies the values to be iterated across.
 #
 
 ###################################################################################################
@@ -144,8 +148,8 @@ plot_spectra(freqs, powers, log_freqs=True, log_powers=True)
 # param_jitter
 # ~~~~~~~~~~~~
 #
-# The :func:`param_jitter` function can be used to create iterators that apply some 'jitter'
-# to the defined parameter values.
+# The :func:`~fooof.sim.params.param_jitter` function can be used to create iterators that
+# apply some 'jitter' to the defined parameter values.
 #
 
 ###################################################################################################

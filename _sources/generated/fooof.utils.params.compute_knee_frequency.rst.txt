@@ -1,6 +1,0 @@
-fooof.utils.params.compute\_knee\_frequency
-===========================================
-
-.. currentmodule:: fooof.utils.params
-
-.. autofunction:: compute_knee_frequency

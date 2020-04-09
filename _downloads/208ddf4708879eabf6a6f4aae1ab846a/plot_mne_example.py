@@ -2,7 +2,7 @@
 Topographical Analyses with MNE
 ===============================
 
-How to use FOOOF with MNE, doing a topographical analysis.
+Parameterizing neural power spectra with MNE, doing a topographical analysis.
 
 This tutorial requires that you have `MNE <https://mne-tools.github.io/>`_
 installed.
@@ -10,8 +10,8 @@ installed.
 If you don't already have MNE, you can follow instructions to get it
 `here <https://mne-tools.github.io/stable/getting_started.html>`_.
 
-For this example, we will explore how to apply FOOOF to data loaded and managed with MNE,
-and how to plot topographies of FOOOF outputs. To do so, here we will use continuous data.
+For this example, we will explore how to parameterize power spectra using data loaded
+and managed with MNE, and how to plot topographies of resulting model parameters.
 """
 
 ###################################################################################################
@@ -72,12 +72,12 @@ raw = raw.set_eeg_reference()
 # Dealing with NaN Values
 # -----------------------
 #
-# One thing to keep in mind when running FOOOF, and extracting bands of interest,
-# is that there is no guarantee that FOOOF will detect peaks in any given range.
+# One thing to keep in mind when parameterizing power spectra, and extracting bands of
+# interest, is that there is no guarantee that the model will detect peaks in any given range.
 #
-# We consider this a pro, since FOOOF is able to adjudicate whether there is evidence
-# of oscillatory power within a given band, but it does also mean that sometimes results
-# for a given band can be NaN, which doesn't always work very well with further
+# We consider this a pro, since power spectrum model is able to adjudicate whether there is
+# evidence of oscillatory power within a given band, but it does also mean that sometimes
+# results for a given band can be NaN, which doesn't always work very well with further
 # analyses that we may want to do.
 #
 # To be able to deal with nan-values, we will define a helper function to
@@ -106,12 +106,12 @@ def check_nans(data, nan_policy='zero'):
 # Calculating Power Spectra
 # -------------------------
 #
-# To fit FOOOF models, we need to convert the time-series data we have loaded in
+# To fit power spectrum models, we need to convert the time-series data we have loaded in
 # frequency representations - meaning we have to calculate power spectra.
 #
 # To do so, we will leverage the time frequency tools available with MNE,
-# in the `time_frequency` module. In particular, we can use the :func:`psd_welch` function,
-# that takes in MNE data objects and calculates and returns power spectra.
+# in the `time_frequency` module. In particular, we can use the ``psd_welch``
+# function, that takes in MNE data objects and calculates and returns power spectra.
 #
 
 ###################################################################################################
@@ -121,12 +121,12 @@ spectra, freqs = psd_welch(raw, fmin=1, fmax=40, tmin=0, tmax=250,
                            n_overlap=150, n_fft=300)
 
 ###################################################################################################
-# Calculating FOOOF Models
-# ------------------------
+# Fitting Power Spectrum Models
+# -----------------------------
 #
-# Now that we have power spectra, we can fit some FOOOF models.
+# Now that we have power spectra, we can fit some power spectrum models.
 #
-# Since we have multiple power spectra, we will use the :obj:`FOOOFGroup` object.
+# Since we have multiple power spectra, we will use the :class:`~fooof.FOOOFGroup` object.
 #
 
 ###################################################################################################
@@ -140,7 +140,7 @@ freq_range = [1, 30]
 
 ###################################################################################################
 
-# Fit the FOOOF model across all channels
+# Fit the power spectrum model across all channels
 fg.fit(freqs, spectra, freq_range)
 
 ###################################################################################################
@@ -153,14 +153,15 @@ fg.plot()
 # ---------------------
 #
 # Now that we have our power spectrum models calculated across all channels,
-# let's start by plotting topographies of some FOOOF features.
+# let's start by plotting topographies of some of the resulting model parameters.
 #
-# To do so, we can leverage the fact that both MNE and FOOOF preserve data order.
+# To do so, we can leverage the fact that both MNE and FOOOF objects preserve data order.
 # So, when we calculated power spectra, our output spectra kept the channel order
-# that is described in the MNE data object, and so did our :obj:`FOOOFGroup` object.
+# that is described in the MNE data object, and so did our :class:`~fooof.FOOOFGroup`
+# object.
 #
-# That means that to plot our topography, we can use the MNE :func:`plot_topomap`
-# function, passing in extracted data for FOOOF features per channel, and
+# That means that to plot our topography, we can use the MNE ``plot_topomap``
+# function, passing in extracted data for power spectrum parameters per channel, and
 # using the MNE object to define the corresponding channel locations.
 #
 
@@ -168,10 +169,10 @@ fg.plot()
 # Plotting Periodic Topographies
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Lets start start by plotting some periodic FOOOF features.
+# Lets start start by plotting some periodic model parameters.
 #
-# To do so, we will use to :obj:`Bands` object to manage some band definitions,
-# and some FOOOF analysis utilities to extracts peaks from bands of interest.
+# To do so, we will use to :obj:`~fooof.bands.bands.Bands` object to manage some band
+# definitions, and some analysis utilities to extracts peaks from bands of interest.
 #
 
 ###################################################################################################
@@ -183,10 +184,10 @@ bands = Bands({'theta': [3, 7],
 
 ###################################################################################################
 
-# Extract alpha peaks from the FOOOFGroup results
+# Extract alpha peaks
 alphas = get_band_peak_fg(fg, bands.alpha)
 
-# Extract the power values from the FOOOF peaks
+# Extract the power values from the detected peaks
 alpha_pw = alphas[:, 1]
 
 ###################################################################################################
@@ -196,7 +197,7 @@ plot_topomap(alpha_pw, raw.info, cmap=cm.viridis, contours=0);
 
 ###################################################################################################
 #
-# And there we have it, our first topography from FOOOF, showing alpha power!
+# And there we have it, our first topography of parameterized spectra, showing alpha power!
 #
 # The topography makes sense, as we can see a centro-posterior distribution.
 #
@@ -228,8 +229,8 @@ for ind, (label, band_def) in enumerate(bands):
 
 ###################################################################################################
 #
-# Since we have the FOOOF models for each of our channels, we can also explore what
-# these peaks look like in the underlying power spectra.
+# Since we have the power spectrum models for each of our channels, we can also explore
+# what these peaks look like in the underlying power spectra.
 #
 # Next, lets check the power spectra for the largest detected peaks within each band.
 #
@@ -242,7 +243,7 @@ for ind, (label, band_def) in enumerate(bands):
     # Get the power values across channels for the current band
     band_power = check_nans(get_band_peak_fg(fg, band_def)[:, 1])
 
-    # Plot the extracted FOOOF model for the model with the most band power
+    # Extracted and plot the power spectrum model with the most band power
     fg.get_fooof(np.argmax(band_power)).plot(ax=axes[ind], add_legend=False)
 
     # Set some plot aesthetics & plot title
@@ -255,13 +256,13 @@ for ind, (label, band_def) in enumerate(bands):
 #
 # Next up, let's plot the topography of the aperiodic exponent.
 #
-# To do so, we can simply extract the aperiodic features from our FOOOF object,
+# To do so, we can simply extract the aperiodic parameters from our power spectrum models,
 # and plot them.
 #
 
 ###################################################################################################
 
-# Extract aperiodic exponent values from the FOOOFGroup
+# Extract aperiodic exponent values
 exps = fg.get_params('aperiodic_params', 'exponent')
 
 ###################################################################################################
@@ -292,8 +293,8 @@ plot_spectrum(fg.freqs, fg.get_fooof(np.argmax(exps)).power_spectrum,
 # Conclusion
 # ----------
 #
-# In this example, we have seen how to apply FOOOF models to data that is managed
-# and processed with MNE.
+# In this example, we have seen how to apply power spectrum models to data that is
+# managed and processed with MNE.
 #
 
 ###################################################################################################

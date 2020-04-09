@@ -1,20 +1,16 @@
 """
-Plot FOOOF Models
-=================
+Plot Power Spectrum Models
+==========================
 
-Plotting FOOOF models, directly from FOOOF objects.
+Plotting power spectrum models, directly from FOOOF objects.
+
+In order to the get a qualitative sense of if the model is fitting well, and what
+the results look like, it can be useful to visualize power spectrum model reconstructions.
+
+This example dives deeper into plotting model reconstructions, using the
+:meth:`~fooof.FOOOF.plot` method from a :class:`~fooof.FOOOF` object, and explores
+options for tuning these these visualizations.
 """
-
-###################################################################################################
-# Plotting FOOOF Models
-# ---------------------
-#
-# In order to the get a qualitative sense of if the model is fitting well, and what
-# the results look like, it can be useful to visualize the FOOOF model reconstructions.
-#
-# This example dives deeper into plotting model reconstructions, using the :func:`plot`
-# method from a :obj:`FOOOF` object, and explores options for tuning these these visualizations.
-#
 
 ###################################################################################################
 
@@ -34,22 +30,23 @@ freqs, powers = gen_power_spectrum([3, 50], [1, 1],
                                    [[9, 0.25, 0.5], [22, 0.1, 1.5], [25, 0.2, 1.]])
 
 ###################################################################################################
-# Plotting From FOOOF Models
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Plotting From FOOOF Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The FOOOF object has a :func:`plot` method that can be used to visualize data and
-# models available in the :obj:`FOOOF` object.
+# The FOOOF object has a :meth:`~fooof.FOOOF.plot` method that can be used to visualize
+# data and models available in the :class:`~fooof.FOOOF` object.
 #
 
 ###################################################################################################
 
-# Initialize a FOOOF model, and add some data to it
+# Initialize a FOOOF object, and add some data to it
 fm = FOOOF(verbose=False)
 fm.add_data(freqs, powers)
 
 ###################################################################################################
 #
-# Once you have added data to a FOOOF model, you can visualize the data using :func:`plot`.
+# Once you have added data to a FOOOF object, you can visualize the data using
+# :func:`~fooof.FOOOF.plot`.
 #
 
 ###################################################################################################
@@ -59,8 +56,8 @@ fm.plot()
 
 ###################################################################################################
 #
-# When the model is available, the :func:`plot` call also displays the full model
-# reconstruction, in red.
+# When the model is available, the :meth:`~fooof.FOOOF.plot` call also displays the
+# full model reconstruction, in red.
 #
 
 ###################################################################################################
@@ -73,10 +70,11 @@ fm.plot()
 # Plotting Aperiodic Components
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# As you can see above, the :func:`plot` call by default also plots the aperiodic component,
-# in a dashed blue line.
+# As you can see above, the :meth:`~fooof.FOOOF.plot` call by default also plots the
+# aperiodic component, in a dashed blue line.
 #
-# You can toggle whether to display the aperiodic component with the `plot_aperiodic` parameter.
+# You can toggle whether to display the aperiodic component with the
+# ``plot_aperiodic`` parameter.
 #
 
 ###################################################################################################
@@ -93,7 +91,7 @@ fm.plot(plot_aperiodic=False)
 # However, in some cases it can be useful to more explicitly visualize individual peaks,
 # including where they are and if and how they overlap.
 #
-# To do so, you can use the `plot_peaks` parameter, passing in a string specifier
+# To do so, you can use the ``plot_peaks`` parameter, passing in a string specifier
 # of which approach you wish to use to visualize the peaks.
 #
 # There are four options for visualizing peaks:
@@ -144,7 +142,7 @@ freqs, powers = gen_power_spectrum([1, 150], [0, 10, 1.5],
 
 ###################################################################################################
 
-# Create a new FOOOF object, in 'knee' mode
+# Initialize a new FOOOF object, in 'knee' mode
 fm = FOOOF(aperiodic_mode='knee', verbose=False)
 
 # Fit the model and visualize the fit, highlighting peaks
@@ -155,7 +153,7 @@ fm.plot(plot_peaks='shade-line')
 # Other Plotting Options
 # ~~~~~~~~~~~~~~~~~~~~~~
 #
-# There are also some other optional inputs to the :func:`plot` call, including:
+# There are also some other optional inputs to the :meth:`~fooof.FOOOF.plot` call, including:
 #
 # - `plt_log` : Optional input for plotting the frequency axis in log10 spacing
 # - `add_legend` : Optional input to toggle whether to add a legend

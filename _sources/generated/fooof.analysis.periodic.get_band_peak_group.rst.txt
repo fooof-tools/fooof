@@ -1,6 +1,0 @@
-fooof.analysis.periodic.get\_band\_peak\_group
-==============================================
-
-.. currentmodule:: fooof.analysis.periodic
-
-.. autofunction:: get_band_peak_group

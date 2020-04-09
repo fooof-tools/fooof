@@ -1,6 +1,0 @@
-fooof.plts.aperiodic.plot\_aperiodic\_fits
-==========================================
-
-.. currentmodule:: fooof.plts.aperiodic
-
-.. autofunction:: plot_aperiodic_fits

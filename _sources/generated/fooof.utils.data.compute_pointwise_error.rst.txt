@@ -1,6 +1,0 @@
-fooof.utils.data.compute\_pointwise\_error
-==========================================
-
-.. currentmodule:: fooof.utils.data
-
-.. autofunction:: compute_pointwise_error

@@ -1,6 +1,0 @@
-fooof.objs.utils.combine\_fooofs
-================================
-
-.. currentmodule:: fooof.objs.utils
-
-.. autofunction:: combine_fooofs

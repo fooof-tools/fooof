@@ -3,16 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>04: Exploring the FOOOF Object &#8212; fooof 1.0.0rc2 documentation</title>
+    <title>04: Exploring the FOOOF Object &#8212; fooof 1.0.0rc3 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -69,6 +69,8 @@
             
             
             
+              <li class="hidden-sm"></li>
+            
           </ul>
 
           
@@ -96,20 +98,20 @@
 <div class="sphx-glr-example-title section" id="exploring-the-fooof-object">
 <span id="sphx-glr-auto-tutorials-plot-04-morefooof-py"></span><h1>04: Exploring the FOOOF Object<a class="headerlink" href="#exploring-the-fooof-object" title="Permalink to this headline">¶</a></h1>
 <p>Further exploring the FOOOF object, including algorithm settings and available methods.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import numpy for loading data</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="c1"># Import the FOOOF object</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a>
+
+<span class="c1"># Import utility to download and load example data</span>
+<span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="k">import</span> <span class="n">load_fooof_data</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object, to use to explore</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<div class="section" id="description-of-fooof-methods-and-parameters">
-<h2>Description of FOOOF methods and parameters<a class="headerlink" href="#description-of-fooof-methods-and-parameters" title="Permalink to this headline">¶</a></h2>
-<p>The FOOOF object contents consist of 4 main components (groups of data / code):</p>
+<div class="section" id="description-of-methods-and-attributes">
+<h2>Description of methods and attributes<a class="headerlink" href="#description-of-methods-and-attributes" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object contents consist of 4 main components (groups of data / code):</p>
 <ul class="simple">
 <li><ol class="arabic simple">
 <li><p>settings attributes, that control the algorithm fitting</p></li>
@@ -129,7 +131,7 @@
 </li>
 </ul>
 <p>Each these which are described in more detail below.</p>
-<p>FOOOF follows the following Python conventions:</p>
+<p>The FOOOF module follows the following Python conventions:</p>
 <ul class="simple">
 <li><p>all user exposed settings, data, and methods are directly accessible through the object</p></li>
 <li><p>‘hidden’ (internal) settings and methods have a leading underscore</p>
@@ -140,8 +142,8 @@
 </ul>
 <div class="section" id="settings-attributes">
 <h3>1) Settings (attributes)<a class="headerlink" href="#settings-attributes" title="Permalink to this headline">¶</a></h3>
-<p>There are a number of parameters that control the FOOOF fitting algorithm, that
-can be set by the user when initializing the FOOOF model.</p>
+<p>There are a number of settings that control the fitting algorithm, that
+can be set by the user when initializing the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object.</p>
 <p>There are some internal settings that are not exposed at initialization.
 These settings are unlikely to need to be accessed by the user, but can be if desired -
 they are all defined and documented in __init__ (there should be no other settings, or
@@ -157,10 +159,10 @@ the frequency resolution of the power spectrum.</p>
 <h4>Peak Search Stopping Criteria<a class="headerlink" href="#peak-search-stopping-criteria" title="Permalink to this headline">¶</a></h4>
 <p>An iterative procedure searches for candidate peaks in the flattened spectrum. Candidate
 peaks are extracted in order of decreasing height, until some stopping criterion is met,
-which is controlled by the following parameters:</p>
+which is controlled by the following settings:</p>
 <p><strong>max_n_peaks (int)</strong> default: infinite</p>
-<p>The maximum number of peaks that can be extracted from a given power spectrum. FOOOF will
-halt searching for new peaks when this number is reached. Note that FOOOF extracts peaks
+<p>The maximum number of peaks that can be extracted from a given power spectrum. The algorithm
+will halt searching for new peaks when this number is reached. Note that peaks are extracted
 iteratively by height (over and above the aperiodic component), and so this approach will
 extract (up to) the <em>n</em> largest peaks.</p>
 <p><strong>peak_threshold (in units of standard deviation)</strong> default: 2.0</p>
@@ -197,7 +199,7 @@ or relative threshold.</p>
 <h4>Verbosity<a class="headerlink" href="#verbosity" title="Permalink to this headline">¶</a></h4>
 <p><strong>verbose (boolean)</strong> default=’True’</p>
 <p>Whether to print out status updates and warnings.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can check all the user defined FOOOF settings with check_settings</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can check all the user defined settings with check_settings</span>
 <span class="c1">#  The description parameter here is set to print out quick descriptions of the settings</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">print_settings</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
@@ -222,15 +224,15 @@ or relative threshold.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="changing-fooof-settings">
-<h4>Changing FOOOF Settings<a class="headerlink" href="#changing-fooof-settings" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="changing-settings">
+<h4>Changing Settings<a class="headerlink" href="#changing-settings" title="Permalink to this headline">¶</a></h4>
 <p>Note that if you wish to change settings, then you should re-initialize
-the FOOOF object with new settings.</p>
+a new <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object with new settings.</p>
 <p>Simply changing the value of the relevant attribute may not appropriately propagate
 the value, and thus may lead to a failure, either creating an error, or not applying
 the settings properly during fit and returning erroneous results.</p>
 <p>Here we will re-initialize a new FOOOF object, with some new settings.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Re-initialize a new FOOOF model, with some specified settings</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Re-initialize a new FOOOF object, with some specified settings</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -238,38 +240,38 @@ the settings properly during fit and returning erroneous results.</p>
 </div>
 <div class="section" id="data-attributes">
 <h3>2) Data (attributes)<a class="headerlink" href="#data-attributes" title="Permalink to this headline">¶</a></h3>
-<p>FOOOF stores the following data attributes:</p>
+<p>The <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object stores the following data attributes:</p>
 <ul class="simple">
-<li><p><cite>freqs</cite>: the frequency values corresponding to the data</p></li>
-<li><p><cite>power_spectrum</cite>: the power spectrum</p></li>
-<li><p><cite>freq_range</cite>: the frequency range of the data</p></li>
-<li><p><cite>freq_res</cite>: the frequency resolution of the data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">freqs</span></code>: the frequency values corresponding to the data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">power_spectrum</span></code>: the power spectrum</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">freq_range</span></code>: the frequency range of the data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">freq_res</span></code>: the frequency resolution of the data</p></li>
 </ul>
 <p>During the fit procedure, interim (hidden) data variables are also created and used.</p>
-<p>The FOOOF object also has an indicator attribute, <cite>has_data</cite> which indicates
+<p>There is also an indicator attribute, <code class="docutils literal notranslate"><span class="pre">has_data</span></code> which indicates
 if the current object has data loaded.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load a piece of example data</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.load" title="View documentation for numpy.load"><span class="n">np</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;data/freqs_2.npy&#39;</span><span class="p">)</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">spectrum</span></a> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.load" title="View documentation for numpy.load"><span class="n">np</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;data/spectrum_2.npy&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load example data files needed for this example</span>
+<span class="n">freqs</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;freqs_2.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<span class="n">spectrum</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;spectrum_2.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set a frequency range and add the data to the FOOOF object</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set a frequency range and add the data to the object</span>
 <span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">spectrum</span></a><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if the FOOOF object has data loaded</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Has model results: &#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">has_data</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if the object has data loaded</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Has data loaded: &#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">has_data</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Has model results:  True
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Has data loaded:  True
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out the data attributes in the FOOOF object</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out the data attributes in the object</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency Range: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freq_range</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency Resolution: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freq_res</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency Values: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency Values: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Power Values: </span><span class="se">\t\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -280,8 +282,8 @@ Frequency Values:        [2.44140625 2.9296875  3.41796875 3.90625    4.39453125
 Power Values:            [-21.99921865 -21.99669556 -22.02605736 -21.96875308 -22.15436702]
 </pre></div>
 </div>
-<p>Now that we have picked our settings, and added the data, let’s fit our FOOOF model.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit FOOOF model to the loaded data</span>
+<p>Now that we have picked our settings, and added the data, let’s fit a power spectrum model.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit a power spectrum model to the loaded data</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -289,23 +291,23 @@ Power Values:            [-21.99921865 -21.99669556 -22.02605736 -21.96875308 -2
 <div class="section" id="results-attributes">
 <h3>3) Results (attributes)<a class="headerlink" href="#results-attributes" title="Permalink to this headline">¶</a></h3>
 <p>With our model fit, the results attributes should now hold values.</p>
-<p>Recall that FOOOF follows the scipy convention in that any attributes that contain
+<p>Recall that here we follow the scipy convention in that any attributes that contain
 model results are indicated by a trailing underscore.</p>
 <p>The model results stored by the object are:</p>
 <ul class="simple">
-<li><p><cite>aperiodic_params_</cite>: a list of aperiodic parameters, stored as [Offset, (Knee), Exponent]</p></li>
-<li><p><cite>peak_params_</cite>: all periodic parameters, where each row is a peak, as [CF, PW, BW]</p></li>
-<li><p><cite>r_squared_</cite>: the r-squared of the model, as compared to the original data</p></li>
-<li><p><cite>error_</cite>: the error of the model, as compared to the original data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aperiodic_params_</span></code>: a list of aperiodic parameters, stored as [Offset, (Knee), Exponent]</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">peak_params_</span></code>: all periodic parameters, where each row is a peak, as [CF, PW, BW]</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">r_squared_</span></code>: the r-squared of the model, as compared to the original data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">error_</span></code>: the error of the model, as compared to the original data</p></li>
 </ul>
 <p>Other attributes which store outputs from the model are:</p>
 <ul class="simple">
-<li><p><cite>fooofed_spectrum_</cite>: the full model reconstruction</p></li>
-<li><p><cite>n_peaks_</cite>: a helper attribute which indicates how many peaks were fit in the model</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fooofed_spectrum_</span></code>: the full model reconstruction</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_peaks_</span></code>: a helper attribute which indicates how many peaks were fit in the model</p></li>
 </ul>
-<p>The FOOOF object also has an indicator attribute, <cite>has_model</cite> which indicates
-if the current object has model results available.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if the FOOOF object has model results</span>
+<p>The <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object also has an indicator attribute, <code class="docutils literal notranslate"><span class="pre">has_model</span></code>
+which indicates if the current object has model results available.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if the object has model results</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Has model results: &#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">has_model</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -334,8 +336,8 @@ fooofed spectrum:        [-21.86047574 -21.9455885  -22.01750003 -22.07961578 -2
 </div>
 <div class="section" id="methods">
 <h3>4) Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
-<p>The FOOOF object contains a number of methods that are either used to fit
-models and access data, and/or offer extra functionality.</p>
+<p>The <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object contains a number of methods that are either used
+to fit models and access data, and/or offer extra functionality.</p>
 <p>In addition to the exposed methods, there are some internal private methods,
 with a leading underscore in their name, that are called in the
 fitting procedure. These methods should not be called directly by the user
@@ -391,20 +393,20 @@ set_debug_mode
 </div>
 <div class="section" id="saving-data-results">
 <h4>Saving Data &amp; Results<a class="headerlink" href="#saving-data-results" title="Permalink to this headline">¶</a></h4>
-<p>FOOOF also has support for saving out, and loading back in, data and results.</p>
+<p>There is also functionality for saving out, and loading back in, data and results.</p>
 <p>You have the option to specify which data to save.</p>
 <ul class="simple">
-<li><p>results: model fit results (same as is returned in FOOOFResult)</p></li>
-<li><p>settings: all public settings (everything available at initialization)</p></li>
-<li><p>data: freqs &amp; power spectrum</p></li>
+<li><p><cite>results</cite>: model fit results (same as is returned in FOOOFResult)</p></li>
+<li><p><cite>settings</cite>: all public settings (everything available at initialization)</p></li>
+<li><p><cite>data</cite>: freqs &amp; power spectrum</p></li>
 </ul>
-<p>FOOOF saves data out to JSON files. You can specify a file name to save
+<p>Selected items are saved out to JSON files. You can specify a file name to save
 or append to, or pass in a JSON file object.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Saving FOOOF results, settings, and data</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save out results, settings, and data</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;FOOOF_results&#39;</span><span class="p">,</span> <span class="n">save_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_settings</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Loading FOOOF results</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load back in the saved out information</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">nfm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">()</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">nfm</span></a><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;FOOOF_results&#39;</span><span class="p">)</span>
 </pre></div>
@@ -417,12 +419,12 @@ or append to, or pass in a JSON file object.</p>
 </div>
 <div class="section" id="creating-reports">
 <h4>Creating Reports<a class="headerlink" href="#creating-reports" title="Permalink to this headline">¶</a></h4>
-<p>FOOOF also has functionality to save out a ‘report’ of a particular model fit.</p>
+<p>There is also functionality to save out a ‘report’ of a particular model fit.</p>
 <p>This generates and saves a PDF which contains the same output as
-‘print_results’, ‘plot’, and ‘print_settings’.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save out a report of the current FOOOF model fit &amp; results</span>
-<span class="c1">#  By default (with no inputs) this saves a PDF to current directory, with the name &#39;FOOOF_Report&#39;</span>
-<span class="c1">#    Add inputs to the method call to specify a file-name, and save-location</span>
+<a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_results" title="fooof.FOOOF.print_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print_results()</span></code></a>,
+<a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>, and
+<a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_settings" title="fooof.FOOOF.print_settings"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print_settings()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save out a report of the current model fit &amp; results</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">save_report</span><span class="p">(</span><span class="s1">&#39;FOOOF_report&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -445,10 +447,10 @@ or append to, or pass in a JSON file object.</p>
 </div>
 <div class="section" id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
-<p>We have now fully explored the FOOOF model object, and all it contains. Next,
-we will take a deeper dive into how to choose different modes for fitting
+<p>We have now fully explored the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object, and all it contains.
+Next, we will take a deeper dive into how to choose different modes for fitting
 the aperiodic component of power spectra.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.507 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.647 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-04-morefooof-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/91057e4aeee06f0a0baa05c9f8714658/plot_04-MoreFOOOF.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_04-MoreFOOOF.py</span></code></a></p>
@@ -473,8 +475,8 @@ the aperiodic component of power spectra.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
     </p>
   </div>
 </footer>

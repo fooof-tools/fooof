@@ -1,6 +1,0 @@
-fooof.sim.gen.gen\_group\_power\_spectra
-========================================
-
-.. currentmodule:: fooof.sim.gen
-
-.. autofunction:: gen_group_power_spectra

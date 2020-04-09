@@ -3,16 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Glossary &#8212; fooof 1.0.0rc2 documentation</title>
+    <title>Glossary &#8212; fooof 1.0.0rc3 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 <meta charset='utf-8'>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -69,6 +69,8 @@
             
             
             
+              <li class="hidden-sm"></li>
+            
           </ul>
 
           
@@ -91,27 +93,56 @@
       
   <div class="section" id="glossary">
 <h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h1>
-<p>A glossary of terms used in the FOOOF module, as well as common abbreviations.</p>
+<p>A glossary of terms used in the module, with a description of how they are used, as well as common abbreviations.</p>
 <dl class="glossary simple">
-<dt id="term-fooof">FOOOF</dt><dd><p>FOOOF stands for ‘fitting oscillations &amp; one-over f’.</p>
+<dt id="term-fooof">FOOOF</dt><dd><p>FOOOF stands for ‘fitting oscillations &amp; one-over f’.
+We use <cite>FOOOF</cite> to refer to either the current module, or to <cite>FOOOF</cite> objects.</p>
 </dd>
-<dt id="term-periodic">Periodic</dt><dd><p>Rhythmic component(s) of the signal, that reflect putative oscillations.</p>
+<dt id="term-field-data">Field Data</dt><dd><p>‘Field data’ is used as a catch-all for the relevant types of data that the power spectrum model can be applied to. This includes recordings of electrophysiological or magnetophysiological ‘fields’, meaning recordings modalities such as electroencephalography (EEG), magnetoencephalography (MEG), electrocorticography (ECoG), and local field potential (LFP) data.</p>
 </dd>
-<dt id="term-aperiodic">Aperiodic</dt><dd><p>Arrhythmic components of the signal, reflecting 1/f like activity.</p>
+<dt id="term-power-spectrum">Power Spectrum</dt><dd><p>A power spectrum (short for power spectral density) describes the distribution of power across frequencies.</p>
 </dd>
-<dt id="term-peaks">Peaks</dt><dd><p>Locations in the power spectrum that are identified to have power over and above the aperiodic component, and are thus modeled as ‘peaks’, reflecting putative oscillations.</p>
+<dt id="term-power-spectrum-model">Power Spectrum Model</dt><dd><p>A power spectrum is a model that describes neural power spectra.
+This module implements a particular power spectrum model, whereby we conceptualize and describe mathematically a model that considers power spectra as a combination of periodic and aperiodic components, each of which can be described by a set of model parameters.</p>
 </dd>
-<dt id="term-center-frequency-cf">Center Frequency (CF)</dt><dd><p>The peak frequency of identified peaks.</p>
+<dt id="term-fooof-objects">FOOOF Objects</dt><dd><p>This module is object is object-oriented, whereby the algorithm to parameterize neural power spectra is implemented in Python objects. We refer to those objects as ‘FOOOF objects’.</p>
 </dd>
-<dt id="term-power-pw">Power (PW)</dt><dd><p>The power, over and above the aperiodic component, of identified peaks.</p>
+<dt id="term-component">Component</dt><dd><p>By ‘component’ we mean a part, or aspect, of the data.
+Different components of the data are consired to be separate aspects of, or entities in, the data, (though they need not be be completely independent).</p>
 </dd>
-<dt id="term-bandwidth-bw">Bandwidth (BW)</dt><dd><p>The bandwidth of identified peaks.</p>
+<dt id="term-parameters">Parameters</dt><dd><p>We use the term ‘parameters’ to describe the parameters of the model, meaning the values in the model that are fit to the data. These model parameters are the results of the model fitting.</p>
 </dd>
-<dt id="term-offset-off">Offset (OFF)</dt><dd><p>The y-intercept of the model fit.</p>
+<dt id="term-settings">Settings</dt><dd><p>We use ‘settings’ to refer to things that control the algorithm, or any the settings for the algorithm that can be used to adjust the fitting procedure.</p>
 </dd>
-<dt id="term-knee-kne">Knee (KNE)</dt><dd><p>An optional parameter of the aperiodic fit that relates to frequency locations at where there is a ‘bend’ or a ‘knee’, when plotted in log-log space, in the 1/f-like aperiodic activity.</p>
+<dt id="term-periodic">Periodic</dt><dd><p>Periodic (or ‘rhythmic’) component(s) of the data, that reflect putative oscillations.</p>
 </dd>
-<dt id="term-exponent-exp">Exponent (EXP)</dt><dd><p>The exponent of the aperiodic fit, which is <span class="math notranslate nohighlight">\(\chi\)</span> in the <span class="math notranslate nohighlight">\(1/f^\chi\)</span> formulation. FOOOF uses and fits exponential functions for the aperiodic fit, whereby <span class="math notranslate nohighlight">\(\chi\)</span> is equivalent to the slope of a linear fit in log-log space (with a sign flip).</p>
+<dt id="term-peaks">Peaks</dt><dd><p>Parts of the power spectrum that are identified to have power over and above the aperiodic component, and are thus modeled as ‘peaks’, reflecting putative oscillations. The set of identified peaks are the periodic component(s) of the data. The peaks are described by the peak parameter: center frequency (CF), power (PW), and bandwidth (bw).</p>
+</dd>
+<dt id="term-aperiodic">Aperiodic</dt><dd><p>Aperiodic (or ‘arrhythmic’) components of the data.
+In neural power spectra, by aperiodic activity, we typically mean the 1/f-like activity.</p>
+</dd>
+<dt id="term-one-over-f-1-f">One-Over F (1/f)</dt><dd><p>‘One over f’ or ‘1/f’ activity describes activity whereby the power spectrum has a <span class="math notranslate nohighlight">\(1/f^\chi\)</span> property.
+1/f activity is a type of aperiodic activity.</p>
+</dd>
+<dt id="term-1-f-like">1/f-like</dt><dd><p>Refers to cases in which the activity, or power spectrum, approximates or is similar to a 1/f distribution. In neural data, we often see data which has some aspects of 1/f, but is not formally 1/f, and so we describe this as ‘1/f-like’.</p>
+</dd>
+<dt id="term-center-frequency-cf">Center Frequency (CF)</dt><dd><p>The peak frequency of identified peaks.
+The CF is a peak parameter, as part of the periodic component of the data.</p>
+</dd>
+<dt id="term-power-pw">Power (PW)</dt><dd><p>The power, over and above the aperiodic component, of identified peaks.
+The PW is a peak parameter, as part of the periodic component of the data.</p>
+</dd>
+<dt id="term-bandwidth-bw">Bandwidth (BW)</dt><dd><p>The bandwidth of identified peaks.
+The BW is a peak parameter, as part of the periodic component of the data.</p>
+</dd>
+<dt id="term-offset-off">Offset (OFF)</dt><dd><p>The y-intercept of the model fit.
+The OFF is an aperiodic parameter, as part of the aperiodic component of the data.</p>
+</dd>
+<dt id="term-knee-kne">Knee (KNE)</dt><dd><p>An optional parameter of the aperiodic fit that relates to frequency locations at where there is a ‘bend’ or a ‘knee’, when plotted in log-log space, in the 1/f-like aperiodic activity.
+The KNE is an aperiodic parameter, as part of the aperiodic component of the data.</p>
+</dd>
+<dt id="term-exponent-exp">Exponent (EXP)</dt><dd><p>The exponent of the aperiodic fit, which is <span class="math notranslate nohighlight">\(\chi\)</span> in the <span class="math notranslate nohighlight">\(1/f^\chi\)</span> formulation. FOOOF uses and fits exponential functions for the aperiodic fit, whereby <span class="math notranslate nohighlight">\(\chi\)</span> is equivalent to the slope of a linear fit in log-log space (with a sign flip).
+The EXP is an aperiodic parameter, as part of the aperiodic component of the data.</p>
 </dd>
 </dl>
 </div>
@@ -128,8 +159,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
     </p>
   </div>
 </footer>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>fooof.plts.annotate &#8212; fooof 1.0.0rc3 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../../api.html">API</a></li>
+                <li><a href="../../../faq.html">FAQ</a></li>
+                <li><a href="../../../glossary.html">Glossary</a></li>
+                <li><a href="../../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for fooof.plts.annotate</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Plots for annotating power spectrum fittings and models.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">fooof.core.utils</span> <span class="k">import</span> <span class="n">nearest_ind</span>
+<span class="kn">from</span> <span class="nn">fooof.core.errors</span> <span class="k">import</span> <span class="n">NoModelError</span>
+<span class="kn">from</span> <span class="nn">fooof.core.funcs</span> <span class="k">import</span> <span class="n">gaussian_function</span>
+<span class="kn">from</span> <span class="nn">fooof.core.modutils</span> <span class="k">import</span> <span class="n">safe_import</span><span class="p">,</span> <span class="n">check_dependency</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_aperiodic</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.utils</span> <span class="k">import</span> <span class="n">check_ax</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <span class="n">plot_spectrum</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.settings</span> <span class="k">import</span> <span class="n">FIGSIZE_SPECTRAL</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.style</span> <span class="k">import</span> <span class="n">check_n_style</span><span class="p">,</span> <span class="n">style_spectrum_plot</span>
+<span class="kn">from</span> <span class="nn">fooof.analysis.periodic</span> <span class="k">import</span> <span class="n">get_band_peak_fm</span>
+<span class="kn">from</span> <span class="nn">fooof.utils.params</span> <span class="k">import</span> <span class="n">compute_knee_frequency</span><span class="p">,</span> <span class="n">compute_fwhm</span>
+
+<span class="n">plt</span> <span class="o">=</span> <span class="n">safe_import</span><span class="p">(</span><span class="s1">&#39;.pyplot&#39;</span><span class="p">,</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">)</span>
+<span class="n">mpatches</span> <span class="o">=</span> <span class="n">safe_import</span><span class="p">(</span><span class="s1">&#39;.patches&#39;</span><span class="p">,</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">)</span>
+
+<span class="c1">###################################################################################################</span>
+<span class="c1">###################################################################################################</span>
+
+<div class="viewcode-block" id="plot_annotated_peak_search"><a class="viewcode-back" href="../../../generated/fooof.plts.annotate.plot_annotated_peak_search.html#fooof.plts.annotate.plot_annotated_peak_search">[docs]</a><span class="nd">@check_dependency</span><span class="p">(</span><span class="n">plt</span><span class="p">,</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">plot_annotated_peak_search</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="n">style_spectrum_plot</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot a series of plots illustrating the peak search from a flattened spectrum.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fm : FOOOF</span>
+<span class="sd">        FOOOF object, with model fit, data and settings available.</span>
+<span class="sd">    plot_style : callable, optional, default: style_spectrum_plot</span>
+<span class="sd">        A function to call to apply styling &amp; aesthetics to the plots.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Recalculate the initial aperiodic fit and flattened spectrum that</span>
+    <span class="c1">#   is the same as the one that is used in the peak fitting procedure</span>
+    <span class="n">flatspec</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span> <span class="o">-</span> \
+        <span class="n">gen_aperiodic</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">_robust_ap_fit</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">))</span>
+
+    <span class="c1"># Calculate ylims of the plot that are scaled to the range of the data</span>
+    <span class="n">ylims</span> <span class="o">=</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">flatspec</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">flatspec</span><span class="p">)),</span> <span class="nb">max</span><span class="p">(</span><span class="n">flatspec</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">flatspec</span><span class="p">)]</span>
+
+    <span class="c1"># Loop through the iterative search for each peak</span>
+    <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">n_peaks_</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+
+        <span class="c1"># This forces the creation of a new plotting axes per iteration</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">check_ax</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">FIGSIZE_SPECTRAL</span><span class="p">)</span>
+
+        <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">flatspec</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Flattened Spectrum&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+        <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">fm</span><span class="o">.</span><span class="n">peak_threshold</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">flatspec</span><span class="p">)]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">),</span>
+                      <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Relative Threshold&#39;</span><span class="p">,</span>
+                      <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+        <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">fm</span><span class="o">.</span><span class="n">min_peak_height</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">),</span>
+                      <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Absolute Threshold&#39;</span><span class="p">,</span>
+                      <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+
+        <span class="n">maxi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">flatspec</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="n">maxi</span><span class="p">],</span> <span class="n">flatspec</span><span class="p">[</span><span class="n">maxi</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylims</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Iteration #&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ind</span> <span class="o">&lt;</span> <span class="n">fm</span><span class="o">.</span><span class="n">n_peaks_</span><span class="p">:</span>
+
+            <span class="n">gauss</span> <span class="o">=</span> <span class="n">gaussian_function</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="o">*</span><span class="n">fm</span><span class="o">.</span><span class="n">gaussian_params_</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="p">:])</span>
+            <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">gauss</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Gaussian Fit&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+
+            <span class="n">flatspec</span> <span class="o">=</span> <span class="n">flatspec</span> <span class="o">-</span> <span class="n">gauss</span>
+
+        <span class="n">check_n_style</span><span class="p">(</span><span class="n">plot_style</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="plot_annotated_model"><a class="viewcode-back" href="../../../generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model">[docs]</a><span class="nd">@check_dependency</span><span class="p">(</span><span class="n">plt</span><span class="p">,</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">plot_annotated_model</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">annotate_peaks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">annotate_aperiodic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                         <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="n">style_spectrum_plot</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot a an annotated power spectrum and model, from a FOOOF object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fm : FOOOF</span>
+<span class="sd">        FOOOF object, with model fit, data and settings available.</span>
+<span class="sd">    plt_log : boolean, optional, default: False</span>
+<span class="sd">        Whether to plot the frequency values in log10 spacing.</span>
+<span class="sd">    ax : matplotlib.Axes, optional</span>
+<span class="sd">        Figure axes upon which to plot.</span>
+<span class="sd">    plot_style : callable, optional, default: style_spectrum_plot</span>
+<span class="sd">        A function to call to apply styling &amp; aesthetics to the plots.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NoModelError</span>
+<span class="sd">        If there are no model results available to plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Check that model is available</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fm</span><span class="o">.</span><span class="n">has_model</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">NoModelError</span><span class="p">(</span><span class="s2">&quot;No model is available to plot, can not proceed.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Settings</span>
+    <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span>
+    <span class="n">lw1</span> <span class="o">=</span> <span class="mf">4.0</span>
+    <span class="n">lw2</span> <span class="o">=</span> <span class="mf">3.0</span>
+    <span class="n">ms</span> <span class="o">=</span> <span class="mi">12</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;data&#39;</span> <span class="p">:</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;periodic&#39;</span> <span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;aperiodic&#39;</span> <span class="p">:</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span> <span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">}</span>
+
+    <span class="c1"># Create the baseline figure</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">check_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">FIGSIZE_SPECTRAL</span><span class="p">)</span>
+    <span class="n">fm</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plot_peaks</span><span class="o">=</span><span class="s1">&#39;dot-shade-width&#39;</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="n">plt_log</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">data_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="n">lw1</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+            <span class="n">aperiodic_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="n">lw1</span><span class="p">,</span> <span class="s1">&#39;zorder&#39;</span> <span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+            <span class="n">model_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="n">lw1</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="n">peak_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;dot&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span> <span class="s1">&#39;ms&#39;</span> <span class="p">:</span> <span class="n">ms</span><span class="p">,</span> <span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="n">lw2</span><span class="p">},</span>
+                         <span class="s1">&#39;shade&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">]},</span>
+                         <span class="s1">&#39;width&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span> <span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="n">lw2</span><span class="p">}})</span>
+
+    <span class="c1"># Get freqs for plotting, and convert to log if needed</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">freqs</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">plt_log</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">)</span>
+
+    <span class="c1">## Buffers: for spacing things out on the plot (scaled by plot values)</span>
+    <span class="n">x_buff1</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
+    <span class="n">x_buff2</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.25</span>
+    <span class="n">y_buff1</span> <span class="o">=</span> <span class="mf">0.15</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ptp</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span>
+    <span class="n">shrink</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+    <span class="c1"># There is a bug in annotations for some perpendicular lines, so add small offset</span>
+    <span class="c1">#   See: https://github.com/matplotlib/matplotlib/issues/12820. Fixed in 3.2.1.</span>
+    <span class="n">bug_buff</span> <span class="o">=</span> <span class="mf">0.000001</span>
+
+    <span class="k">if</span> <span class="n">annotate_peaks</span><span class="p">:</span>
+
+        <span class="c1"># Extract largest peak, to annotate, grabbing gaussian params</span>
+        <span class="n">gauss</span> <span class="o">=</span> <span class="n">get_band_peak_fm</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="s1">&#39;gaussian_params&#39;</span><span class="p">)</span>
+
+        <span class="n">peak_ctr</span><span class="p">,</span> <span class="n">peak_hgt</span><span class="p">,</span> <span class="n">peak_wid</span> <span class="o">=</span> <span class="n">gauss</span>
+        <span class="n">bw_freqs</span> <span class="o">=</span> <span class="p">[</span><span class="n">peak_ctr</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">compute_fwhm</span><span class="p">(</span><span class="n">peak_wid</span><span class="p">),</span>
+                    <span class="n">peak_ctr</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">compute_fwhm</span><span class="p">(</span><span class="n">peak_wid</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="n">plt_log</span><span class="p">:</span>
+            <span class="n">peak_ctr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">peak_ctr</span><span class="p">)</span>
+            <span class="n">bw_freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">bw_freqs</span><span class="p">)</span>
+
+        <span class="n">peak_top</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="n">nearest_ind</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">peak_ctr</span><span class="p">)]</span>
+
+        <span class="c1"># Annotate Peak CF</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;Center Frequency&#39;</span><span class="p">,</span>
+                    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">peak_ctr</span><span class="p">,</span> <span class="n">peak_top</span><span class="p">),</span>
+                    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">peak_ctr</span><span class="p">,</span> <span class="n">peak_top</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="mf">0.6</span><span class="o">*</span><span class="n">peak_hgt</span><span class="p">)),</span>
+                    <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span> <span class="n">shrink</span><span class="o">=</span><span class="n">shrink</span><span class="p">),</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+
+        <span class="c1"># Annotate Peak PW</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;Power&#39;</span><span class="p">,</span>
+                    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">peak_ctr</span><span class="p">,</span> <span class="n">peak_top</span><span class="o">-</span><span class="mf">0.3</span><span class="o">*</span><span class="n">peak_hgt</span><span class="p">),</span>
+                    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">peak_ctr</span><span class="o">+</span><span class="n">x_buff1</span><span class="p">,</span> <span class="n">peak_top</span><span class="o">-</span><span class="mf">0.3</span><span class="o">*</span><span class="n">peak_hgt</span><span class="p">),</span>
+                    <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span> <span class="n">shrink</span><span class="o">=</span><span class="n">shrink</span><span class="p">),</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+
+        <span class="c1"># Annotate Peak BW</span>
+        <span class="n">bw_buff</span> <span class="o">=</span> <span class="p">(</span><span class="n">peak_ctr</span> <span class="o">-</span> <span class="n">bw_freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;Bandwidth&#39;</span><span class="p">,</span>
+                    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">peak_ctr</span><span class="o">-</span><span class="n">bw_buff</span><span class="o">+</span><span class="n">bug_buff</span><span class="p">,</span> <span class="n">peak_top</span><span class="o">-</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">peak_hgt</span><span class="p">)),</span>
+                    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">peak_ctr</span><span class="o">-</span><span class="n">bw_buff</span><span class="p">,</span> <span class="n">peak_top</span><span class="o">-</span><span class="p">(</span><span class="mf">1.5</span><span class="o">*</span><span class="n">peak_hgt</span><span class="p">)),</span>
+                    <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
+                    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span> <span class="n">shrink</span><span class="o">=</span><span class="n">shrink</span><span class="p">),</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">annotate_aperiodic</span><span class="p">:</span>
+
+        <span class="c1"># Annotate Aperiodic Offset</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_autoscaley_on</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">fm</span><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                 <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;Offset&#39;</span><span class="p">,</span>
+                    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">bug_buff</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">y_buff1</span><span class="p">),</span>
+                    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">x_buff1</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">y_buff1</span><span class="p">),</span>
+                    <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">],</span> <span class="n">shrink</span><span class="o">=</span><span class="n">shrink</span><span class="p">),</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+
+        <span class="c1"># Annotate Aperiodic Knee</span>
+        <span class="k">if</span> <span class="n">fm</span><span class="o">.</span><span class="n">aperiodic_mode</span> <span class="o">==</span> <span class="s1">&#39;knee&#39;</span><span class="p">:</span>
+
+            <span class="c1"># Find the knee frequency point to annotate</span>
+            <span class="n">knee_freq</span> <span class="o">=</span> <span class="n">compute_knee_frequency</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">,</span> <span class="s1">&#39;knee&#39;</span><span class="p">),</span>
+                                               <span class="n">fm</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">))</span>
+            <span class="n">knee_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">knee_freq</span><span class="p">)</span> <span class="k">if</span> <span class="n">plt_log</span> <span class="k">else</span> <span class="n">knee_freq</span>
+            <span class="n">knee_pow</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="n">nearest_ind</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">knee_freq</span><span class="p">)]</span>
+
+            <span class="c1"># Add a dot to the plot indicating the knee frequency</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">knee_freq</span><span class="p">,</span> <span class="n">knee_pow</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">],</span> <span class="n">ms</span><span class="o">=</span><span class="n">ms</span><span class="o">*</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;Knee&#39;</span><span class="p">,</span>
+                        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">knee_freq</span><span class="p">,</span> <span class="n">knee_pow</span><span class="p">),</span>
+                        <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">knee_freq</span><span class="o">-</span><span class="n">x_buff2</span><span class="p">,</span> <span class="n">knee_pow</span><span class="o">-</span><span class="n">y_buff1</span><span class="p">),</span>
+                        <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                        <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">],</span> <span class="n">shrink</span><span class="o">=</span><span class="n">shrink</span><span class="p">),</span>
+                        <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+
+        <span class="c1"># Annotate Aperiodic Exponent</span>
+        <span class="n">mid_ind</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;Exponent&#39;</span><span class="p">,</span>
+                    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="n">mid_ind</span><span class="p">],</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="n">mid_ind</span><span class="p">]),</span>
+                    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="n">mid_ind</span><span class="p">]</span><span class="o">-</span><span class="n">x_buff2</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="n">mid_ind</span><span class="p">]</span><span class="o">-</span><span class="n">y_buff1</span><span class="p">),</span>
+                    <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">],</span> <span class="n">shrink</span><span class="o">=</span><span class="n">shrink</span><span class="p">),</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+
+    <span class="c1"># Apply style to plot &amp; tune grid styling</span>
+    <span class="n">check_n_style</span><span class="p">(</span><span class="n">plot_style</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="c1"># Add labels to plot in the legend</span>
+    <span class="n">da_patch</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Data&#39;</span><span class="p">)</span>
+    <span class="n">ap_patch</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Aperiodic Parameters&#39;</span><span class="p">)</span>
+    <span class="n">pe_patch</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Peak Parameters&#39;</span><span class="p">)</span>
+    <span class="n">mo_patch</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Full Model&#39;</span><span class="p">)</span>
+
+    <span class="n">handles</span> <span class="o">=</span> <span class="p">[</span><span class="n">da_patch</span><span class="p">,</span> <span class="n">ap_patch</span> <span class="k">if</span> <span class="n">annotate_aperiodic</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+               <span class="n">pe_patch</span> <span class="k">if</span> <span class="n">annotate_peaks</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="n">mo_patch</span><span class="p">]</span>
+    <span class="n">handles</span> <span class="o">=</span> <span class="p">[</span><span class="n">el</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">handles</span> <span class="k">if</span> <span class="n">el</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">handles</span><span class="p">,</span> <span class="n">handlelength</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;xx-large&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

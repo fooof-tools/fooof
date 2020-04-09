@@ -1,6 +1,0 @@
-fooof.plts.fm.plot\_fm
-======================
-
-.. currentmodule:: fooof.plts.fm
-
-.. autofunction:: plot_fm

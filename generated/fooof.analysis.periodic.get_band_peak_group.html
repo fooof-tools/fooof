@@ -3,16 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.analysis.periodic.get_band_peak_group &#8212; fooof 1.0.0rc2 documentation</title>
+    <title>fooof.analysis.periodic.get_band_peak_group &#8212; fooof 1.0.0rc3 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -69,6 +69,8 @@
             
             
             
+              <li class="hidden-sm"></li>
+            
           </ul>
 
           
@@ -93,7 +95,7 @@
 <h1>fooof.analysis.periodic.get_band_peak_group<a class="headerlink" href="#fooof-analysis-periodic-get-band-peak-group" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="fooof.analysis.periodic.get_band_peak_group">
-<code class="sig-prename descclassname">fooof.analysis.periodic.</code><code class="sig-name descname">get_band_peak_group</code><span class="sig-paren">(</span><em class="sig-param">peak_params</em>, <em class="sig-param">band</em>, <em class="sig-param">n_fits</em>, <em class="sig-param">threshold=None</em>, <em class="sig-param">thresh_param='PW'</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.analysis.periodic.get_band_peak_group" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fooof.analysis.periodic.</code><code class="sig-name descname">get_band_peak_group</code><span class="sig-paren">(</span><em class="sig-param">peak_params</em>, <em class="sig-param">band</em>, <em class="sig-param">n_fits</em>, <em class="sig-param">threshold=None</em>, <em class="sig-param">thresh_param='PW'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/analysis/periodic.html#get_band_peak_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.analysis.periodic.get_band_peak_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract peaks within a given band of interest, from peaks from a group fit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -125,7 +127,7 @@ Defind as: (lower_frequency_bound, upper_frequency_bound).e</p>
 <li><p>To do so, this function necessarily extracts and returns one peak per model fit.</p></li>
 </ul>
 <p>If, instead, you with to extract all peaks within a band, per model fit, you can do:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">peaks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">peaks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">f_res</span> <span class="ow">in</span> <span class="n">fg</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">peaks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">peaks</span><span class="p">,</span> <span class="n">get_band_peak</span><span class="p">(</span><span class="n">f_res</span><span class="o">.</span><span class="n">peak_params</span><span class="p">,</span> <span class="n">band</span><span class="p">,</span> <span class="n">ret_one</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
 </pre></div>
@@ -146,8 +148,8 @@ Defind as: (lower_frequency_bound, upper_frequency_bound).e</p>
       
     </p>
     <p>
-        &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
     </p>
   </div>
 </footer>

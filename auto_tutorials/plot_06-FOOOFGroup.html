@@ -3,16 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>06: FOOOFGroup &#8212; fooof 1.0.0rc2 documentation</title>
+    <title>06: FOOOFGroup &#8212; fooof 1.0.0rc3 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -69,6 +69,8 @@
             
             
             
+              <li class="hidden-sm"></li>
+            
           </ul>
 
           
@@ -95,38 +97,38 @@
 </div>
 <div class="sphx-glr-example-title section" id="fooofgroup">
 <span id="sphx-glr-auto-tutorials-plot-06-fooofgroup-py"></span><h1>06: FOOOFGroup<a class="headerlink" href="#fooofgroup" title="Permalink to this headline">¶</a></h1>
-<p>Using FOOOFGroup to run FOOOF across multiple power spectra.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="c1"># Import the FOOOF object</span>
+<p>Using FOOOFGroup to run fit models across multiple power spectra.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOFGroup object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">FOOOFGroup</span></a>
 
 <span class="c1"># Import some utilities for simulating some test data</span>
 <span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="k">import</span> <span class="n">param_sampler</span>
 <span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_group_power_spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="k">import</span> <a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="View documentation for fooof.sim.utils.set_random_seed"><span class="n">set_random_seed</span></a>
 </pre></div>
 </div>
 <div class="section" id="fitting-multiple-spectra">
 <h2>Fitting Multiple Spectra<a class="headerlink" href="#fitting-multiple-spectra" title="Permalink to this headline">¶</a></h2>
-<p>So far, we have explored using the FOOOF object to fit individual power spectra.</p>
+<p>So far, we have explored using the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object to fit individual power spectra.</p>
 <p>However, many potential use cases will have many power spectra to fit.</p>
-<p>To support this, here we will introduce the FOOOFGroup object, which applies
-the model fitting procedure across multiple power spectra.</p>
+<p>To support this, here we will introduce the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object, which
+applies the model fitting procedure across multiple power spectra.</p>
 </div>
 <div class="section" id="simulated-power-spectra">
 <h2>Simulated Power Spectra<a class="headerlink" href="#simulated-power-spectra" title="Permalink to this headline">¶</a></h2>
-<p>Before we start FOOOFGroup, we need some data. For this example, we will simulate some
-test data. FOOOF includes utilities for creating simulated power-spectra, that mimic real data.</p>
-<p>To do so, we will use a function called <code class="xref py py-func docutils literal notranslate"><span class="pre">param_sampler()</span></code> that takes a
-list of possible parameters, and creates an object that randomly samples from
+<p>Before we start using <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a>, we need some data. For this example,
+we will simulate some test data. The FOOOF module includes utilities for creating
+simulated power-spectra, that mimic real data.</p>
+<p>To do so, we will use a function called <a class="reference internal" href="../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler"><code class="xref py py-func docutils literal notranslate"><span class="pre">param_sampler()</span></code></a> that
+takes a list of possible parameters, and creates an object that randomly samples from
 them to generate power spectra.</p>
 <p>Note that if you would like to generate single power spectra, you can use
-<code class="xref py py-func docutils literal notranslate"><span class="pre">gen_power_spectrum()</span></code>, also in <cite>fooof.sim.gen</cite>.</p>
-<p>There are more examples and descriptions of using FOOOF to simualate data in the
+<a class="reference internal" href="../generated/fooof.sim.gen.gen_power_spectrum.html#fooof.sim.gen.gen_power_spectrum" title="fooof.sim.gen.gen_power_spectrum"><code class="xref py py-func docutils literal notranslate"><span class="pre">gen_power_spectrum()</span></code></a>, also in <cite>fooof.sim.gen</cite>.</p>
+<p>There are more examples and descriptions of using FOOOF to simulate data in the
 <a class="reference external" href="https://fooof-tools.github.io/fooof/auto_examples/index.html">examples</a>
 section.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set random seed, for consistency generating simulated data</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.random.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">321</span><span class="p">)</span>
+<a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="View documentation for fooof.sim.utils.set_random_seed"><span class="n">set_random_seed</span></a><span class="p">(</span><span class="mi">321</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Settings for simulating power spectra</span>
@@ -134,7 +136,7 @@ section.</p>
 <span class="n">f_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
 
 <span class="c1"># Set some options for aperiodic parameters</span>
-<span class="c1">#  These settings, as [offset, exponent] pairs are possible values for our simulated spectra</span>
+<span class="c1">#  These pairs, as [offset, exponent], are possible values for our simulated spectra</span>
 <span class="c1">#  Simulated spectra will have aperiodic parameters of [20, 2], [50, 2.5] or [35, 1.5]</span>
 <span class="n">ap_opts</span> <span class="o">=</span> <span class="n">param_sampler</span><span class="p">([[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]])</span>
 
@@ -143,20 +145,20 @@ section.</p>
 <span class="n">gauss_opts</span> <span class="o">=</span> <span class="n">param_sampler</span><span class="p">([[],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
 </pre></div>
 </div>
-<p>We can now feed these settings into <code class="xref py py-func docutils literal notranslate"><span class="pre">gen_group_power_spectra()</span></code>,
+<p>We can now feed these settings into <a class="reference internal" href="../generated/fooof.sim.gen.gen_group_power_spectra.html#fooof.sim.gen.gen_group_power_spectra" title="fooof.sim.gen.gen_group_power_spectra"><code class="xref py py-func docutils literal notranslate"><span class="pre">gen_group_power_spectra()</span></code></a>,
 that will generate a group of power spectra for us.</p>
 <p>Note that this function also returns a list of the parameters
 used to generate each power spectrum.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate the group of simulated spectra</span>
 <span class="c1">#  Note that this function also returns a list of the parameters for each simulation</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">spectra</span></a> <span class="o">=</span> <span class="n">gen_group_power_spectra</span><span class="p">(</span><span class="n">n_spectra</span><span class="p">,</span> <span class="n">f_range</span><span class="p">,</span> <span class="n">ap_opts</span><span class="p">,</span> <span class="n">gauss_opts</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span> <span class="o">=</span> <span class="n">gen_group_power_spectra</span><span class="p">(</span><span class="n">n_spectra</span><span class="p">,</span> <span class="n">f_range</span><span class="p">,</span> <span class="n">ap_opts</span><span class="p">,</span> <span class="n">gauss_opts</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="id1">
 <h2>FOOOFGroup<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>The FOOOFGroup object is very similar to the FOOOF object (programmatically, it inherits
-from the FOOOF object), and can be used in the same way.</p>
+<p>The <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object is very similar to the FOOOF object (programmatically,
+it inherits from the FOOOF object), and can be used in the same way.</p>
 <p>The main difference is that instead of running across a single power spectrum, it
 operates across 2D matrices containing multiple power spectra.</p>
 <p>Note that by ‘group’ we mean merely to refer to a group of power-spectra,
@@ -164,7 +166,7 @@ are not using the term ‘group’ in terms of necessarily referring to multiple
 or any particular idea of what a ‘group’ may be. A group of power spectra could
 be spectra from across channels, or across trials, or across subjects, or
 whatever organization makes sense for the analysis at hand.</p>
-<p>The main differences with the FOOOFGroup object, are that it uses a
+<p>The main differences with the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object, are that it uses a
 <cite>power_spectra</cite> attribute, which stores the matrix of power-spectra to be fit,
 and collects fit results into a <cite>group_results</cite> attribute.</p>
 <p>Otherwise, FOOOFGroup supports all the same functionality,
@@ -177,7 +179,7 @@ accessed in the same way as the FOOOF object.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit a group of power spectra with the .fit() method</span>
 <span class="c1">#  The key difference (compared to FOOOF) is that it takes a 2D array of spectra</span>
 <span class="c1">#     This matrix should have the shape of [n_spectra, n_freqs]</span>
-<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">spectra</span></a><span class="p">)</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -218,8 +220,9 @@ accessed in the same way as the FOOOF object.</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_06-FOOOFGroup_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_06-FOOOFGroup_001.png" />
-<p>Just as with the FOOOF object, you can call the convenience method <cite>report</cite> to run
-the fitting, and print results &amp; plots, printing out the same as above.</p>
+<p>Just as with the FOOOF object, you can call the convenience method
+<a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.report" title="fooof.FOOOFGroup.report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fooof.FOOOFGroup.report()</span></code></a> to run the fitting, and print results &amp; plots,
+printing out the same as above.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can also save out PDFs reports for FOOOFGroup fits, same as with FOOOF</span>
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">save_report</span><span class="p">(</span><span class="s1">&#39;FOOOFGroup_report&#39;</span><span class="p">)</span>
 </pre></div>
@@ -227,8 +230,9 @@ the fitting, and print results &amp; plots, printing out the same as above.</p>
 </div>
 <div class="section" id="fooofgroup-results">
 <h2>FOOOFGroup Results<a class="headerlink" href="#fooofgroup-results" title="Permalink to this headline">¶</a></h2>
-<p>FOOOFGroup collects fits across power spectra into a list of FOOOFResults objects.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># FOOOFGroup collects fit results into &#39;group_results&#39;: a list of FOOOFResult objects</span>
+<p>FOOOFGroup collects fits across power spectra, and stores them in an attribute
+called <code class="docutils literal notranslate"><span class="pre">group_results</span></code>, which is a list of FOOOFResults objects.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out some of the results stored in &#39;group_results&#39;</span>
 <span class="nb">print</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">group_results</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -243,27 +247,29 @@ the fitting, and print results &amp; plots, printing out the same as above.</p>
 <div class="section" id="get-params">
 <h3>get_params<a class="headerlink" href="#get-params" title="Permalink to this headline">¶</a></h3>
 <p>To collect data across all model fits, and to select specific data results from this data
-you can should the <code class="xref py py-func docutils literal notranslate"><span class="pre">get_params()</span></code> method.</p>
-<p>This method works the same as in the FOOOF object, and lets you extract specific results
-by specifying a field, as a string, and (optionally) a specific column of that data.</p>
-<p>Since the FOOOFGroup object collects results from across multiple model fits,
-you should always use <code class="xref py py-func docutils literal notranslate"><span class="pre">get_params()</span></code> to access parameter fits. The result attributes
-introduced with the FOOOF object do not store results across the group, as they are
-defined for individual model fits (and used internally as such by the FOOOFGroup object).</p>
+you can should the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_params()</span></code></a> method.</p>
+<p>This method works the same as in the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object, and lets you extract
+specific results by specifying a field, as a string, and (optionally) a specific column
+of that data.</p>
+<p>Since the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object collects results from across multiple model fits,
+you should always use <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_params()</span></code></a> to access parameter fits.
+The result attributes introduced with the FOOOF object do not store results across the group,
+as they are defined for individual model fits (and used internally as such by the
+FOOOFGroup object).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract aperiodic data</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">aps</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">)</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">exps</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)</span>
+<span class="n">aps</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">)</span>
+<span class="n">exps</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)</span>
 
 <span class="c1"># Extract peak data</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">peaks</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">)</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">cfs</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">,</span> <span class="s1">&#39;CF&#39;</span><span class="p">)</span>
+<span class="n">peaks</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">)</span>
+<span class="n">cfs</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">,</span> <span class="s1">&#39;CF&#39;</span><span class="p">)</span>
 
 <span class="c1"># Extract metadata about the model fit</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">errors</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
-<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">r2s</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;r_squared&#39;</span><span class="p">)</span>
+<span class="n">errors</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
+<span class="n">r2s</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;r_squared&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The full list of data you can specify is available in the documentation of :func:`get_params`</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The full list of data you can specify is available in the documentation of `get_params`</span>
 <span class="nb">print</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -300,7 +306,7 @@ defined for individual model fits (and used internally as such by the FOOOFGroup
 <span class="c1">#  Note that as a shortcut, you can index the FOOOFGroup object directly to access &#39;group_results&#39;</span>
 <span class="n">f_res</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="c1"># Check the documentation for the FOOOFResults - with full descriptions of the resulting data.</span>
+<span class="c1"># Check the documentation for the FOOOFResults - with full descriptions of the resulting data</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">f_res</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -326,7 +332,7 @@ gaussian_params : 2d array
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out the extracted exponent values</span>
 <span class="c1">#  Note that this extraction will return an array of length equal to the number of model fits</span>
 <span class="c1">#    The model fit from which each data element originated is the index of this vector</span>
-<span class="nb">print</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">exps</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">exps</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -337,7 +343,7 @@ gaussian_params : 2d array
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the fit center-frequencies</span>
 <span class="c1">#  Note when you extract peak data, an extra column is returned,</span>
 <span class="c1">#  specifying which model fit it came from</span>
-<span class="nb">print</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">cfs</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cfs</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -356,17 +362,12 @@ gaussian_params : 2d array
 </div>
 <div class="section" id="saving-loading-with-fooofgroup">
 <h3>Saving &amp; Loading with FOOOFGroup<a class="headerlink" href="#saving-loading-with-fooofgroup" title="Permalink to this headline">¶</a></h3>
-<p>FOOOFGroup also support saving and loading, with same options as saving from FOOOF.</p>
+<p>FOOOFGroup also support saving and loading, with same options as saving from the FOOOF object.</p>
 <p>The only difference in saving FOOOFGroup, is that it saves out a ‘jsonlines’ file,
 in which each line is a JSON object, saving the specified data and results for
 a single power spectrum.</p>
-<p>Note that saving settings together with results will save out duplicated settings
-to each line in the output file, corresponding to each individual spectrum in the group,
-and so is somewhat inefficient. It is more parsimonious to save out a single settings file,
-and a separate file that includes the results.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save out FOOOFGroup settings &amp; results (separately)</span>
-<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;FG_settings&#39;</span><span class="p">,</span> <span class="n">save_settings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;FG_results&#39;</span><span class="p">,</span> <span class="n">save_results</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save out FOOOFGroup settings &amp; results</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;FG_results&#39;</span><span class="p">,</span> <span class="n">save_settings</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_results</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can then reload this group data</span>
@@ -407,17 +408,17 @@ and a separate file that includes the results.</p>
 <h3>Parallel Support<a class="headerlink" href="#parallel-support" title="Permalink to this headline">¶</a></h3>
 <p>FOOOFGroup also has support for running in parallel, which can speed things up as
 each power spectrum is fit independently.</p>
-<p>The fit method includes an optional parameter ‘n_jobs’, which if set at 1 (as default),
-will run FOOOF linearly. If you set this parameter to some other integer, fitting will
-launch ‘n_jobs’ number of jobs, in parallel. Setting n_jobs to -1 will launch in
-parallel across all available cores.</p>
-<p>Note, however, that running FOOOF in parallel does not guarantee a quicker runtime overall.
-The computation time per FOOOF-fit scales with the frequency range fit over, and the
-‘complexity’ of the power spectra, in terms of number of peaks. For relatively small
+<p>The fit method includes an optional parameter <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>, which if set at 1 (as default),
+will fit models linearly (one at a time, in order). If you set this parameter to some other
+integer, fitting will launch ‘n_jobs’ number of jobs, in parallel. Setting n_jobs to -1 will
+launch model fitting in parallel across all available cores.</p>
+<p>Note, however, that fitting power spectrum models in parallel does not guarantee a quicker
+runtime overall. The computation time per model fit scales with the frequency range fit over,
+and the ‘complexity’ of the power spectra, in terms of number of peaks. For relatively small
 numbers of power spectra (less than ~100), across relatively small frequency ranges
 (say ~3-40Hz), running in parallel may offer no appreciable speed up.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run FOOOF across a group of power spectra in parallel, using all cores</span>
-<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">spectra</span></a><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit power spectrum models across a group of power spectra in parallel, using all cores</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -427,35 +428,37 @@ numbers of power spectra (less than ~100), across relatively small frequency ran
 </div>
 <div class="section" id="progress-bar">
 <h3>Progress Bar<a class="headerlink" href="#progress-bar" title="Permalink to this headline">¶</a></h3>
-<p>If you have a large number of spectra to fit with a FOOOFGroup, and you want to
-monitor it’s progress, you can also use a progress bar to print out fitting progress.</p>
+<p>If you have a large number of spectra to fit with a <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a>, and you
+want to monitor it’s progress, you can also use a progress bar to print out fitting progress.</p>
 <p>Progress bar options are:</p>
 <ul class="simple">
-<li><p><cite>tqdm</cite> : a progress bar for running in terminals</p></li>
-<li><p><cite>tqdm.notebook</cite> : a progress bar for running in Jupyter notebooks</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tqdm</span></code> : a progress bar for running in terminals</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tqdm.notebook</span></code> : a progress bar for running in Jupyter notebooks</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run FOOOF across a group of power spectra, printing a progress bar</span>
-<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">freqs</span></a><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">spectra</span></a><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="s1">&#39;tqdm&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit power spectrum models across a group of power spectra, printing a progress bar</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="s1">&#39;tqdm&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup:   0%|          | 0/10 [00:00&lt;?, ?it/s]
-Running FOOOFGroup: 100%|##########| 10/10 [00:00&lt;00:00, 229.30it/s]
+Running FOOOFGroup: 100%|##########| 10/10 [00:00&lt;00:00, 209.14it/s]
 </pre></div>
 </div>
 </div>
 <div class="section" id="extracting-individual-fits">
 <h3>Extracting Individual Fits<a class="headerlink" href="#extracting-individual-fits" title="Permalink to this headline">¶</a></h3>
-<p>When running FOOOF across a group of power spectra, results are stored as the FOOOFResults,
-which stores (only) the results of the model fit, not the full model fits themselves.</p>
-<p>To examine individual model fits, FOOOFGroup can regenerate FOOOF objects for individual
-power spectra, with the full model available for visualization.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract a particular spectrum, specified by index to a FOOOF object</span>
+<p>When fitting power spectrum models for a group of power spectra, results are stored
+in FOOOFResults objects, which store (only) the results of the model fit,
+not the full model fits themselves.</p>
+<p>To examine individual model fits, <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> can regenerate
+<a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> objects for individual power spectra, with the full model available
+for visualization. To do so, you can use the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_fooof()</span></code></a> method.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract a particular spectrum, specified by index</span>
 <span class="c1">#  Here we also specify to regenerate the the full model fit, from the results</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_fooof</span><span class="p">(</span><span class="n">ind</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print results and plot extracted FOOOF model fit</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print results and plot extracted model fit</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
@@ -486,10 +489,10 @@ power spectra, with the full model available for visualization.</p>
 </div>
 <div class="section" id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
-<p>Now we have explored fitting FOOOF models and running these fits across multiple
+<p>Now we have explored fitting power spectrum models and running these fits across multiple
 power spectra. Next we dig deeper into how to choose and tune the algorithm settings,
 and how to troubleshoot if any of the fitting goes wrong.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.832 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.923 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-06-fooofgroup-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/551841fea6afd1b2a365663bec9e7ef8/plot_06-FOOOFGroup.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_06-FOOOFGroup.py</span></code></a></p>
@@ -514,8 +517,8 @@ and how to troubleshoot if any of the fitting goes wrong.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018 - VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
     </p>
   </div>
 </footer>
