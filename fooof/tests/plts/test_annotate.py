@@ -10,9 +10,9 @@ from fooof.plts.annotate import *
 ###################################################################################################
 
 @plot_test
-def test_plot_fm_peak_iter(tfm, skip_if_no_mpl):
+def test_plot_annotated_peak_search(tfm, skip_if_no_mpl):
 
-    plot_fm_peak_iter(tfm)
+    plot_annotated_peak_search(tfm)
 
 @plot_test
 def test_plot_annotated_model(tfm, skip_if_no_mpl):

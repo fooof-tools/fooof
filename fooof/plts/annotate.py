@@ -21,7 +21,7 @@ mpatches = safe_import('.patches', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_fm_peak_iter(fm, plot_style=style_spectrum_plot):
+def plot_annotated_peak_search(fm, plot_style=style_spectrum_plot):
     """Plot a series of plots illustrating the peak search from a flattened spectrum.
 
     Parameters
@@ -73,7 +73,8 @@ def plot_fm_peak_iter(fm, plot_style=style_spectrum_plot):
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_annotated_model(fm, plt_log=False, ax=None, plot_style=style_spectrum_plot):
+def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperiodic=True,
+                         ax=None, plot_style=style_spectrum_plot):
     """Plot a an annotated power spectrum and model, from a FOOOF object.
 
     Parameters
@@ -128,94 +129,103 @@ def plot_annotated_model(fm, plt_log=False, ax=None, plot_style=style_spectrum_p
     #   See: https://github.com/matplotlib/matplotlib/issues/12820. Fixed in 3.2.1.
     bug_buff = 0.000001
 
+    if annotate_peaks:
 
+        # Extract largest peak, to annotate, grabbing gaussian params
+        gauss = get_band_peak_fm(fm, fm.freq_range, attribute='gaussian_params')
 
-    # Extract largest peak, to annotate, grabbing gaussian params
-    gauss = get_band_peak_fm(fm, fm.freq_range, attribute='gaussian_params')
+        peak_ctr, peak_hgt, peak_wid = gauss
+        bw_freqs = [peak_ctr - 0.5 * compute_fwhm(peak_wid),
+                    peak_ctr + 0.5 * compute_fwhm(peak_wid)]
 
-    peak_ctr, peak_hgt, peak_wid = gauss
-    bw_freqs = [peak_ctr - 0.5 * compute_fwhm(peak_wid),
-                peak_ctr + 0.5 * compute_fwhm(peak_wid)]
+        if plt_log:
+            peak_ctr = np.log10(peak_ctr)
+            bw_freqs = np.log10(bw_freqs)
 
-    if plt_log:
-        peak_ctr = np.log10(peak_ctr)
-        bw_freqs = np.log10(bw_freqs)
+        peak_top = fm.power_spectrum[nearest_ind(freqs, peak_ctr)]
 
-    peak_top = fm.power_spectrum[nearest_ind(freqs, peak_ctr)]
+        # Annotate Peak CF
+        ax.annotate('Center Frequency',
+                    xy=(peak_ctr, peak_top),
+                    xytext=(peak_ctr, peak_top+np.abs(0.6*peak_hgt)),
+                    verticalalignment='center',
+                    horizontalalignment='center',
+                    arrowprops=dict(facecolor=colors['periodic'], shrink=shrink),
+                    color=colors['periodic'], fontsize=fontsize)
 
-    # Annotate Peak CF
-    ax.annotate('Center Frequency',
-                xy=(peak_ctr, peak_top),
-                xytext=(peak_ctr, peak_top+np.abs(0.6*peak_hgt)),
-                verticalalignment='center',
-                horizontalalignment='center',
-                arrowprops=dict(facecolor=colors['periodic'], shrink=shrink),
-                color=colors['periodic'], fontsize=fontsize)
+        # Annotate Peak PW
+        ax.annotate('Power',
+                    xy=(peak_ctr, peak_top-0.3*peak_hgt),
+                    xytext=(peak_ctr+x_buff1, peak_top-0.3*peak_hgt),
+                    verticalalignment='center',
+                    arrowprops=dict(facecolor=colors['periodic'], shrink=shrink),
+                    color=colors['periodic'], fontsize=fontsize)
 
-    # Annotate Peak PW
-    ax.annotate('Power',
-                xy=(peak_ctr, peak_top-0.3*peak_hgt),
-                xytext=(peak_ctr+x_buff1, peak_top-0.3*peak_hgt),
-                verticalalignment='center',
-                arrowprops=dict(facecolor=colors['periodic'], shrink=shrink),
-                color=colors['periodic'], fontsize=fontsize)
+        # Annotate Peak BW
+        bw_buff = (peak_ctr - bw_freqs[0])/2
+        ax.annotate('Bandwidth',
+                    xy=(peak_ctr-bw_buff+bug_buff, peak_top-(0.5*peak_hgt)),
+                    xytext=(peak_ctr-bw_buff, peak_top-(1.5*peak_hgt)),
+                    verticalalignment='center',
+                    horizontalalignment='right',
+                    arrowprops=dict(facecolor=colors['periodic'], shrink=shrink),
+                    color=colors['periodic'], fontsize=fontsize, zorder=20)
 
-    # Annotate Peak BW
-    bw_buff = (peak_ctr - bw_freqs[0])/2
-    ax.annotate('Bandwidth',
-                xy=(peak_ctr-bw_buff+bug_buff, peak_top-(0.5*peak_hgt)),
-                xytext=(peak_ctr-bw_buff, peak_top-(1.5*peak_hgt)),
-                verticalalignment='center',
-                horizontalalignment='right',
-                arrowprops=dict(facecolor=colors['periodic'], shrink=shrink),
-                color=colors['periodic'], fontsize=fontsize, zorder=20)
+    if annotate_aperiodic:
 
-    # Annotate Aperiodic Offset
-    ax.axvline(x=freqs[0], color=colors['aperiodic'], lw=lw2, alpha=0.5)
-    ax.annotate('Offset',
-                xy=(freqs[0]+bug_buff, fm.power_spectrum[0]-y_buff1),
-                xytext=(freqs[0]-x_buff1, fm.power_spectrum[0]-y_buff1),
-                verticalalignment='center',
-                horizontalalignment='center',
-                arrowprops=dict(facecolor=colors['aperiodic'], shrink=shrink),
-                color=colors['aperiodic'], fontsize=fontsize)
+        # Annotate Aperiodic Offset
+        #   Add a line to indicate offset, without adjusting plot limits below it
+        ax.set_autoscaley_on(False)
+        ax.plot([freqs[0], freqs[0]], [ax.get_ylim()[0], fm.fooofed_spectrum_[0]],
+                 color=colors['aperiodic'], lw=lw2, alpha=0.5)
+        ax.annotate('Offset',
+                    xy=(freqs[0]+bug_buff, fm.power_spectrum[0]-y_buff1),
+                    xytext=(freqs[0]-x_buff1, fm.power_spectrum[0]-y_buff1),
+                    verticalalignment='center',
+                    horizontalalignment='center',
+                    arrowprops=dict(facecolor=colors['aperiodic'], shrink=shrink),
+                    color=colors['aperiodic'], fontsize=fontsize)
 
-    # Annotate Aperiodic Knee
-    if fm.aperiodic_mode == 'knee':
+        # Annotate Aperiodic Knee
+        if fm.aperiodic_mode == 'knee':
 
-        # Find the knee frequency point to annotate
-        knee_freq = compute_knee_frequency(fm.get_params('aperiodic', 'knee'),
-                                           fm.get_params('aperiodic', 'exponent'))
-        knee_freq = np.log10(knee_freq) if plt_log else knee_freq
-        knee_pow = fm.power_spectrum[nearest_ind(freqs, knee_freq)]
+            # Find the knee frequency point to annotate
+            knee_freq = compute_knee_frequency(fm.get_params('aperiodic', 'knee'),
+                                               fm.get_params('aperiodic', 'exponent'))
+            knee_freq = np.log10(knee_freq) if plt_log else knee_freq
+            knee_pow = fm.power_spectrum[nearest_ind(freqs, knee_freq)]
 
-        # Add a dot to the plot indicating the knee frequency
-        ax.plot(knee_freq, knee_pow, 'o', color=colors['aperiodic'], ms=ms*1.5, alpha=0.7)
+            # Add a dot to the plot indicating the knee frequency
+            ax.plot(knee_freq, knee_pow, 'o', color=colors['aperiodic'], ms=ms*1.5, alpha=0.7)
 
-        ax.annotate('Knee',
-                    xy=(knee_freq, knee_pow),
-                    xytext=(knee_freq-x_buff2, knee_pow-y_buff1),
+            ax.annotate('Knee',
+                        xy=(knee_freq, knee_pow),
+                        xytext=(knee_freq-x_buff2, knee_pow-y_buff1),
+                        verticalalignment='center',
+                        arrowprops=dict(facecolor=colors['aperiodic'], shrink=shrink),
+                        color=colors['aperiodic'], fontsize=fontsize)
+
+        # Annotate Aperiodic Exponent
+        mid_ind = int(len(freqs)/2)
+        ax.annotate('Exponent',
+                    xy=(freqs[mid_ind], fm.power_spectrum[mid_ind]),
+                    xytext=(freqs[mid_ind]-x_buff2, fm.power_spectrum[mid_ind]-y_buff1),
                     verticalalignment='center',
                     arrowprops=dict(facecolor=colors['aperiodic'], shrink=shrink),
                     color=colors['aperiodic'], fontsize=fontsize)
 
-    # Annotate Aperiodic Exponent
-    mid_ind = int(len(freqs)/2)
-    ax.annotate('Exponent',
-                xy=(freqs[mid_ind], fm.power_spectrum[mid_ind]),
-                xytext=(freqs[mid_ind]-x_buff2, fm.power_spectrum[mid_ind]-y_buff1),
-                verticalalignment='center',
-                arrowprops=dict(facecolor=colors['aperiodic'], shrink=shrink),
-                color=colors['aperiodic'], fontsize=fontsize)
+    # Apply style to plot & tune grid styling
+    check_n_style(plot_style, ax, plt_log, True)
+    ax.grid(True, alpha=0.5)
 
     # Add labels to plot in the legend
     da_patch = mpatches.Patch(color=colors['data'], label='Original Data')
     ap_patch = mpatches.Patch(color=colors['aperiodic'], label='Aperiodic Parameters')
     pe_patch = mpatches.Patch(color=colors['periodic'], label='Peak Parameters')
-    fu_patch = mpatches.Patch(color=colors['model'], label='Full Model')
-    ax.legend(handles=[da_patch, ap_patch, pe_patch, fu_patch],
-              handlelength=1, fontsize='xx-large')
+    mo_patch = mpatches.Patch(color=colors['model'], label='Full Model')
 
-    # Apply style to plot & tune grid styling
-    check_n_style(plot_style, ax, plt_log, True)
-    ax.grid(True, alpha=0.5)
+    handles = [da_patch, ap_patch if annotate_aperiodic else None,
+               pe_patch if annotate_peaks else None, mo_patch]
+    handles = [el for el in handles if el is not None]
+
+    ax.legend(handles=handles, handlelength=1, fontsize='xx-large')
