@@ -41,7 +41,7 @@ from fooof import FOOOF
 from fooof.sim.gen import gen_aperiodic
 from fooof.core.funcs import gaussian_function
 from fooof.plts.spectra import plot_spectrum
-from fooof.plts.fm import plot_fm_peak_iter
+from fooof.plts.annotate import plot_annotated_peak_search
 
 # Import utility to download and load example data
 from fooof.utils.download import load_fooof_data
@@ -153,7 +153,7 @@ plot_spectrum(fm.freqs, init_flat_spec, plt_log, label='Flattened Spectrum')
 ###################################################################################################
 
 # Plot the iterative approach to finding peaks from the flattened spectrum
-plot_fm_peak_iter(fm)
+plot_annotated_peak_search(fm)
 
 ###################################################################################################
 # Step 4: Create Full Peak Fit
