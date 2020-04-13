@@ -51,7 +51,7 @@ from fooof.analysis import get_band_peak_fm
 # correlated changes in power across multiple distinct bands.
 #
 # An alternative hypothesis for what is changing is that this pattern of results could
-# be driven by changes or differences in the aperiodic component of the data. changes
+# be driven by changes or differences in the aperiodic component of the data. Changes
 # in aperiodic activity, when analyzed in a band-by-band manner, can look like correlated
 # changes across multiple bands.
 #
@@ -319,7 +319,7 @@ for label, definition in bands:
 # the frequency bands. However, the parameterized analysis reports no differences in
 # identified peaks.
 #
-# Note that when comparing peaks, 'nan' reflect thats there were no identified peaks to
+# Note that when comparing peaks, 'nan' reflects that there were no identified peaks to
 # compare, where are a zero value reflects that peaks were detected, but they did not differ.
 #
 # In this case, we know that the parameterization approach results in the correct
