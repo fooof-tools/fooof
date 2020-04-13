@@ -74,7 +74,7 @@ freqs, powers = gen_power_spectrum(freq_range, *cur_params)
 # These functions include:
 #
 # - :func:`~fooof.sim.params.param_sampler` which can be used to sample
-#   parameters from a possible options
+#   parameters from possible options
 # - :func:`~fooof.sim.params.param_iter` which can be used to iterate across
 #   parameter ranges
 # - :func:`~fooof.sim.params.param_jitter` which can be used to add some 'jitter'

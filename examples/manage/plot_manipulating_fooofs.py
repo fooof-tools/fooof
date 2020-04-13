@@ -92,7 +92,7 @@ print('Number of model fits: ', len(fg))
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Note that these functions that manipulate FOOOF objects typically do more than just
-# copying result data - they also check and manage settings and meta-data of objects.
+# copy results data - they also check and manage settings and meta-data of objects.
 #
 # For example, combining FOOOF objects returns a new FOOOFGroup object with the same settings.
 #
