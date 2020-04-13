@@ -92,7 +92,7 @@ freqs, spectra = gen_group_power_spectra(n_spectra, f_range, ap_opts, gauss_opts
 # The main difference is that instead of running across a single power spectrum, it
 # operates across 2D matrices containing multiple power spectra.
 #
-# Note that by 'group' we mean merely to refer to a group of power-spectra,
+# Note that by 'group' we mean merely to refer to a group of power-spectra. We
 # are not using the term 'group' in terms of necessarily referring to multiple subjects
 # or any particular idea of what a 'group' may be. A group of power spectra could
 # be spectra from across channels, or across trials, or across subjects, or

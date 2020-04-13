@@ -61,7 +61,7 @@ fm2.fit(freqs2, powers2)
 # The goal of this module is to fit models to parameterize neural power spectra.
 #
 # One reason to do so is the idea that there are multiple distinct 'components' within
-# neural field data. The goal of the model is therefore to measure these different#
+# neural field data. The goal of the model is therefore to measure these different
 # 'components' of the data.
 #
 # By components, we mean that we are going to conceptualize neural field data as consisting
@@ -357,7 +357,4 @@ plot_annotated_model(fm2, plt_log=True)
 #
 
 ###################################################################################################
-#
-# Sphinx settings:
-# sphinx_gallery_thumbnail_number = 5
 #

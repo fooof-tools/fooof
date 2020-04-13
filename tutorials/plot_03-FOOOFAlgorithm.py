@@ -239,7 +239,7 @@ fm.plot(plt_log)
 #
 # As you may have noticed through this tutorial, the :class:`~fooof.FOOOF` object keeps
 # track of some versions of the original data as well as individual model components fits,
-# as well as the final model fit that ultimate outcome of the fitting procedure.
+# as well as the final model fit, the ultimate outcome of the fitting procedure.
 #
 # These attributes in the FOOOF object are kept at the end of the fitting procedure.
 # Though they are primarily computed for internal use (hence being considered 'private'
