@@ -38,7 +38,7 @@ Fitting power spectrum models across 3D arrays of power spectra.
 # explore how to fit, manage, and organize this data.
 #
 # A reminder that no matter how the data is organized, it's always the exact same model
-# that is fit, that is the on defined in the FOOOF object. All other objects or organizations
+# that is fit, that is the one defined in the FOOOF object. All other objects or organizations
 # use this same code to do the fitting. For example, the FOOOFGroup object inherits from the
 # FOOOF, and calls the same underlying fit function.
 #
@@ -209,10 +209,10 @@ for ind, fg in enumerate(fgs):
 #
 # When running analyses like this, you may start to have many :class:`~fooof.FOOOF` objects.
 #
-# For example, you may want to save them out, reload them as needed, analyze
-# results from each :class:`~fooof.FOOOF` or :class:`~fooof.FOOOFGroup` object,
-# and also manipulate the objects by, for example, combining model results across
-# objects to check overall model fit properties.
+# For example, you may want to save them out, reload them as needed, and analyze
+# results from each :class:`~fooof.FOOOF` or :class:`~fooof.FOOOFGroup` object.
+# You may also manipulate the objects by, for example, combining model results
+# across objects to check overall model fit properties.
 #
 # Here, we will continue with a quick example of saving, loading and then combining
 # FOOOF objects. Note that a broader exploration of managing different FOOOF objects

@@ -28,7 +28,7 @@ putative functional roles.
 
 FOOOF operates on frequency representation of neurophysiological times series (power spectra).
 At it's core, FOOOF is a fitting procedure to measure these two components - the periodic and
-aperiodic components - in power spectra. The full model fit consists of a parameterizing of these
+aperiodic components - in power spectra. The full model fit consists of parameterizing these
 aperiodic and periodic components, as well as a full (combined) model fit of the whole
 power spectrum.
 
@@ -79,7 +79,7 @@ and systematically varies both within [1_] and between [2_] subjects.
 
 The dynamic properties of the aperiodic activity means that even if periodic activity
 is still the focus of the analysis, quantification of such data must explicitly account
-for aperiodic activity to appropriately measure what components of the data are actually
+for aperiodic activity to appropriately measure which components of the data are actually
 changing.
 
 In addition, aperiodic components of neural signals may be important and interesting
@@ -101,9 +101,10 @@ frequency ranges, it is not truly '1/f' across all frequencies.
 From the physics perspective, '1/f' activity is sometimes referred to as 'noise',
 as shorthand for 'statistical noise' or `coloured noise <https://en.wikipedia.org/wiki/Colors_of_noise>`_.
 As well as not necessarily meeting technical definitions, referring to aperiodic neural activity
-as noise in this way is also different however to how the terms 'signal' & 'noise' are typically
-used in neuroscience, in terms of referring to a signal of interest and unwanted or artifactual
-activity. We consider that the aperiodic could be the signal of interest for some investigations.
+as noise in this way is also different to how the terms 'signal' & 'noise' are typically
+used in neuroscience. In neuroscience, the terms 'signal' & 'noise' are typically used
+to refer to data of interest, and unwanted or artefactual data, respectively.
+We consider that the aperiodic could be the signal of interest for some investigations.
 Therefore, we have moved away from this term so as not to imply it is either strictly statistical
 noise, nor is it merely unwanted 'noise' in the recording.
 
@@ -136,11 +137,11 @@ If a peak is not detected, in the power spectrum, within a given frequency band,
 consistent with there being no periodic activity at that frequency. Without a detected peak,
 we argue that there is no evidence of periodic activity, at that frequency, over and
 above the power as expected by the aperiodic activity. In this situation, one should be very
-wary of interpreting activity at this frequency, as it is most likely to reflect aperiodic
+wary of interpreting activity at this frequency, as it is most likely reflects aperiodic
 activity.
 
-However, we can, of course not prove a negative, and the absence of a detected peak does
-therefore imply that there must be no periodic activity at that frequency band. There could
+However, we cannot prove a negative, and so the absence of a detected peak does not
+imply that there is definitively no periodic activity at that particular frequency. There could
 be very low power periodic activity, and/or periodic activity that is variable through time
 (bursty) such as to not display a prominent peak across the analyzed time sample.
 
@@ -215,12 +216,12 @@ I'm interested in a particular oscillation band, should I fit a small range?
 Generally, no, it is better to always try and fit a broad range, rather than to fit a small
 frequency range, even if one is interested in a specific oscillation band in particular.
 
-This is because the if a small frequency range is used, it becomes much more difficult to
+This is because if a small frequency range is used, it becomes much more difficult to
 estimate the aperiodic component of the data, and without a good estimate of the aperiodic
 component, it can also be more difficult to effectively estimate the periodic components.
 
 Therefore, if one is interested in, for example, alpha oscillations (approximately 7-14 Hz),
-the we still recommend fitting a broad range (for example, 3-40 Hz), and then extracting the
+then we still recommend fitting a broad range (for example, 3-40 Hz), and then extracting the
 alpha oscillations post-hoc. There are utilities in fooof.analysis to extract oscillations
 from particular bands, and examples of this on the examples page.
 

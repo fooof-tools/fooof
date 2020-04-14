@@ -79,7 +79,7 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
 
     To be more robust to noise, this approach takes a number of samples on either
     side of the interpolation range (the number of which is controlled by `buffer`)
-    and averages these points to us to linearly interpolate between them.
+    and averages these points to linearly interpolate between them.
     Setting `buffer=1` is equivalent to a linear interpolation between
     the points adjacent to the interpolation range.
 

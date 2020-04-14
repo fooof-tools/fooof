@@ -132,7 +132,7 @@ plot_spectra(freqs, [powers, t_powers], log_freqs=True, log_powers=True)
 #
 # If you are transforming simulated spectra, it can be useful to keep track of these changes.
 #
-# To do so, there are also the function :func:`~fooof.sim.transform.rotate_sim_spectrum`
+# To do so, there are also the functions :func:`~fooof.sim.transform.rotate_sim_spectrum`
 # and :func:`~fooof.sim.transform.translate_sim_spectrum`, which work the same as what
 # we've seen so far, with the addition that they take in a :obj:`~fooof.data.data.SimParams`
 # object, and update and return a new :obj:`~fooof.data.data.SimParams` object that tracks

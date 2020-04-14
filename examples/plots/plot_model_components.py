@@ -30,7 +30,7 @@ from fooof.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 # model parameters and components from fitting power spectrum models.
 #
 # To do so, we will consider a hypothetical experiment in which we are compare power
-# spectrum models between two groups of participants, and so want to visualize differences
+# spectrum models between two groups of participants, and so we want to visualize differences
 # between the groups. For simplicity, we will consider that we have one 'grand average'
 # power spectrum per subject, which we can compare and visualize.
 #

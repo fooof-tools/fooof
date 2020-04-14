@@ -46,7 +46,7 @@ def get_band_peak_fg(fg, band, threshold=None, thresh_param='PW', attribute='pea
         Object to extract peak data from.
     band : tuple of (float, float)
         Frequency range for the band of interest.
-        Defind as: (lower_frequency_bound, upper_frequency_bound).
+        Defined as: (lower_frequency_bound, upper_frequency_bound).
     threshold : float
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
@@ -94,7 +94,7 @@ def get_band_peak_group(peak_params, band, n_fits, threshold=None, thresh_param=
 
     * To do so, this function necessarily extracts and returns one peak per model fit.
 
-    If, instead, you with to extract all peaks within a band, per model fit, you can do:
+    If, instead, you wish to extract all peaks within a band, per model fit, you can do:
 
     >>> peaks = np.empty((0, 3))
     >>> for f_res in fg:

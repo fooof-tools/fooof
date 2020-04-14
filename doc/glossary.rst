@@ -10,7 +10,7 @@ A glossary of terms used in the module, with a description of how they are used,
         We use `FOOOF` to refer to either the current module, or to `FOOOF` objects.
 
     Field Data
-        'Field data' is used as a catch-all for the relevant types of data that the power spectrum model can be applied to. This includes recordings of electrophysiological or magnetophysiological 'fields', meaning recordings modalities such as electroencephalography (EEG), magnetoencephalography (MEG), electrocorticography (ECoG), and local field potential (LFP) data.
+        'Field data' is used as a catch-all for the relevant types of data that the power spectrum model can be applied to. This includes recordings of electrophysiological or magnetophysiological 'fields', meaning recording modalities such as electroencephalography (EEG), magnetoencephalography (MEG), electrocorticography (ECoG), and local field potential (LFP) data.
 
     Power Spectrum
         A power spectrum (short for power spectral density) describes the distribution of power across frequencies.
@@ -20,11 +20,11 @@ A glossary of terms used in the module, with a description of how they are used,
         This module implements a particular power spectrum model, whereby we conceptualize and describe mathematically a model that considers power spectra as a combination of periodic and aperiodic components, each of which can be described by a set of model parameters.
 
     FOOOF Objects
-        This module is object is object-oriented, whereby the algorithm to parameterize neural power spectra is implemented in Python objects. We refer to those objects as 'FOOOF objects'.
+        This module is object-oriented, whereby the algorithm to parameterize neural power spectra is implemented in Python objects. We refer to those objects as 'FOOOF objects'.
 
     Component
         By 'component' we mean a part, or aspect, of the data.
-        Different components of the data are consired to be separate aspects of, or entities in, the data, (though they need not be be completely independent).
+        Different components of the data are considered to be separate aspects of, or entities in, the data, (though they need not be be completely independent).
 
     Parameters
         We use the term 'parameters' to describe the parameters of the model, meaning the values in the model that are fit to the data. These model parameters are the results of the model fitting.
@@ -36,7 +36,7 @@ A glossary of terms used in the module, with a description of how they are used,
         Periodic (or 'rhythmic') component(s) of the data, that reflect putative oscillations.
 
     Peaks
-        Parts of the power spectrum that are identified to have power over and above the aperiodic component, and are thus modeled as 'peaks', reflecting putative oscillations. The set of identified peaks are the periodic component(s) of the data. The peaks are described by the peak parameter: center frequency (CF), power (PW), and bandwidth (bw).
+        Parts of the power spectrum that are identified to have power over and above the aperiodic component, and are thus modeled as 'peaks', reflecting putative oscillations. The set of identified peaks are the periodic component(s) of the data. The peaks are described by the peak parameters: center frequency (CF), power (PW), and bandwidth (bw).
 
     Aperiodic
         Aperiodic (or 'arrhythmic') components of the data.
@@ -66,7 +66,7 @@ A glossary of terms used in the module, with a description of how they are used,
         The OFF is an aperiodic parameter, as part of the aperiodic component of the data.
 
     Knee (KNE)
-        An optional parameter of the aperiodic fit that relates to frequency locations at where there is a 'bend' or a 'knee', when plotted in log-log space, in the 1/f-like aperiodic activity.
+        An optional parameter of the aperiodic fit that relates to frequency locations where there is a 'bend' or a 'knee', when plotted in log-log space, in the 1/f-like aperiodic activity.
         The KNE is an aperiodic parameter, as part of the aperiodic component of the data.
 
     Exponent (EXP)
