@@ -41,7 +41,7 @@ def rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation):
     - unity at the rotation frequency
     - has an exponent of the desired delta exponent
 
-    This mask, when applied to a spectrum, as 'spectrum * mask should result in:
+    This mask, when applied to a spectrum as 'spectrum * mask', should result in:
 
     - rotated_spectrum = 1/f^(original_exponent + delta_exponent), where
     - spectrum[rotation_frequency] == rotated spectrum[rotation_frequency]
