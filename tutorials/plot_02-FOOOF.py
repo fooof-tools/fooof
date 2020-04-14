@@ -43,7 +43,7 @@ spectrum = load_fooof_data('spectrum.npy', folder='data')
 # the FOOOF module.
 #
 # The model is broadly agnostic to exactly how power spectra are computed. Common
-# methods, such as Welch's method, can be used to compute the spectrogram.
+# methods, such as Welch's method, can be used to compute the spectrum.
 #
 # If you need a module in Python that has functionality for computing power spectra, try
 # `NeuroDSP <https://neurodsp-tools.github.io/neurodsp/>`_

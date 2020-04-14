@@ -102,8 +102,9 @@ From the physics perspective, '1/f' activity is sometimes referred to as 'noise'
 as shorthand for 'statistical noise' or `coloured noise <https://en.wikipedia.org/wiki/Colors_of_noise>`_.
 As well as not necessarily meeting technical definitions, referring to aperiodic neural activity
 as noise in this way is also different to how the terms 'signal' & 'noise' are typically
-used in neuroscience, in terms of referring to a signal of interest as unwanted or artifactual
-activity. We consider that the aperiodic could be the signal of interest for some investigations.
+used in neuroscience. In neuroscience, the terms 'signal' & 'noise' are typically used
+to refer to data of interest, and unwanted or artefactual data, respectively.
+We consider that the aperiodic could be the signal of interest for some investigations.
 Therefore, we have moved away from this term so as not to imply it is either strictly statistical
 noise, nor is it merely unwanted 'noise' in the recording.
 
@@ -139,8 +140,8 @@ above the power as expected by the aperiodic activity. In this situation, one sh
 wary of interpreting activity at this frequency, as it is most likely reflects aperiodic
 activity.
 
-However, we cannot prove a negative, and the absence of a detected peak does
-therefore imply that there must be no periodic activity at that frequency band. There could
+However, we cannot prove a negative, and so the absence of a detected peak does not
+imply that there is definitively no periodic activity at that particular frequency. There could
 be very low power periodic activity, and/or periodic activity that is variable through time
 (bursty) such as to not display a prominent peak across the analyzed time sample.
 
