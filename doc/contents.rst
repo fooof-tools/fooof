@@ -9,6 +9,7 @@ Table of Contents
    faq.rst
    glossary.rst
    reference.rst
+   changelog.rst
    auto_tutorials/index.rst
    auto_examples/index.rst
    auto_motivations/index.rst

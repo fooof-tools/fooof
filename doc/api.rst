@@ -248,7 +248,6 @@ Plots for visualizing model from FOOOF objects.
     :toctree: generated/
 
     plot_fm
-    plot_fm_peak_iter
 
 .. currentmodule:: fooof.plts.fg
 
@@ -256,6 +255,19 @@ Plots for visualizing model from FOOOF objects.
     :toctree: generated/
 
     plot_fg
+
+Annotated Plots
+~~~~~~~~~~~~~~~
+
+Annotated plots that describe the model and fitting process.
+
+.. currentmodule:: fooof.plts.annotate
+
+.. autosummary::
+    :toctree: generated/
+
+    plot_annotated_model
+    plot_annotated_peak_search
 
 Utilities
 ---------
