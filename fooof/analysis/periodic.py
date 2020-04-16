@@ -96,9 +96,10 @@ def get_band_peak_group(peak_params, band, n_fits, threshold=None, thresh_param=
 
     If, instead, you wish to extract all peaks within a band, per model fit, you can do:
 
-    >>> peaks = np.empty((0, 3))
-    >>> for f_res in fg:
-    >>>     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band, ret_one=False)))
+    # TO FIX:
+    >> peaks = np.empty((0, 3))
+    >> for f_res in fg:
+    ...     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band, ret_one=False)))
     """
 
     band_peaks = np.zeros(shape=[n_fits, 3])
@@ -135,6 +136,14 @@ def get_band_peak(peak_params, band, ret_one=True, threshold=None, thresh_param=
     -------
     band_peaks : 1d or 2d array
         Peak data. Each row is a peak, as [CF, PW, BW]
+
+    Examples
+    --------
+
+    >>> peak_params = np.array([[10., 0.5, 1.], [23., 0.25, 1.5]])
+    >>> alpha = get_band_peak(peak_params, [7, 14])
+    >>> alpha
+    array([10. , 0.5, 1. ])
     """
 
     # Return nan array if empty input

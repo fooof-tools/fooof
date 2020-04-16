@@ -50,9 +50,9 @@ def test_plot_spectra_shading(tfg, skip_if_no_mpl):
                          labels=['A', 'B'])
 
 @plot_test
-def test_plot_spectrum_error(skip_if_no_mpl):
+def test_plot_spectral_error(skip_if_no_mpl):
 
     fs = np.arange(3, 41, 1)
     errs = np.ones(len(fs))
 
-    plot_spectrum_error(fs, errs)
+    plot_spectral_error(fs, errs)
