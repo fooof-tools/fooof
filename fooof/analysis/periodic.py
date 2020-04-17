@@ -7,7 +7,7 @@ from fooof.core.items import PEAK_INDS
 ###################################################################################################
 ###################################################################################################
 
-def get_band_peak_fm(fm, band, ret_one=True, threshold=None, thresh_param='PW',
+def get_band_peak_fm(fm, band, select_highest=True, threshold=None, thresh_param='PW',
                      attribute='peak_params',):
     """Extract peaks from a band of interest from a FOOOF object.
 
@@ -17,8 +17,8 @@ def get_band_peak_fm(fm, band, ret_one=True, threshold=None, thresh_param='PW',
         Object to extract peak data from.
     band : tuple of (float, float)
         Frequency range for the band of interest.
-        Defind as: (lower_frequency_bound, upper_frequency_bound).
-    ret_one : bool, optional, default: True
+        Defined as: (lower_frequency_bound, upper_frequency_bound).
+    select_highest : bool, optional, default: True
         Whether to return single peak (if True) or all peaks within the range found (if False).
         If True, returns the highest power peak within the search range.
     threshold : float
@@ -31,10 +31,21 @@ def get_band_peak_fm(fm, band, ret_one=True, threshold=None, thresh_param='PW',
     Returns
     -------
     1d or 2d array
-        Peak data. Each row is a peak, as [CF, PW, BW]
+        Peak data. Each row is a peak, as [CF, PW, BW].
+
+    Examples
+    --------
+    Select an alpha peak from an already fit FOOOF object 'fm', selecting the highest power alpha:
+
+    >>> alpha = get_band_peak_fm(fm, [7, 14], select_highest=True)  # doctest:+SKIP
+
+    Select beta peaks from a FOOOF object 'fm', extracting all peaks in the range:
+
+    >>> betas = get_band_peak_fm(fm, [13, 30], select_highest=False)  # doctest:+SKIP
     """
 
-    return get_band_peak(getattr(fm, attribute + '_'), band, ret_one, threshold, thresh_param)
+    return get_band_peak(getattr(fm, attribute + '_'), band,
+                         select_highest, threshold, thresh_param)
 
 
 def get_band_peak_fg(fg, band, threshold=None, thresh_param='PW', attribute='peak_params'):
@@ -58,6 +69,32 @@ def get_band_peak_fg(fg, band, threshold=None, thresh_param='PW', attribute='pea
     -------
     2d array
         Peak data. Each row is a peak, as [CF, PW, BW].
+        Each row represents an individual model from the input object.
+
+    Notes
+    -----
+    The returned array keeps track of which model each extracted peak comes from,
+    returning a [n_models, 3] array, with one peak returned per model.
+
+    - To do so, this function necessarily extracts and returns one peak per model fit.
+    - Each row reflects an individual model fit, in order, filled with nan if no peak was present.
+
+    If, instead, you wish to extract all peaks within a band, per model fit,
+    you can do something like:
+
+    >>> peaks = np.empty((0, 3))
+    >>> for f_res in fg:  # doctest:+SKIP
+    ...     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band, select_highest=False)))
+
+    Examples
+    --------
+    Extract alpha peaks from a FOOOFGroup object 'fg' that already has model results:
+
+    >>> alphas = get_band_peak_fg(fg, [7, 14])  # doctest:+SKIP
+
+    Extract peaks from a FOOOFGroup object 'fg', selecting those above a power threshold:
+
+    >>> betas = get_band_peak_fg(fg, [13, 30], threshold=0.1)  # doctest:+SKIP
     """
 
     return get_band_peak_group(fg.get_params(attribute), band, len(fg),
@@ -73,7 +110,7 @@ def get_band_peak_group(peak_params, band, n_fits, threshold=None, thresh_param=
         Peak parameters, for a group fit, with shape of [n_peaks, 4].
     band : tuple of (float, float)
         Frequency range for the band of interest.
-        Defind as: (lower_frequency_bound, upper_frequency_bound).e
+        Defined as: (lower_frequency_bound, upper_frequency_bound).e
     n_fits : int
         The number of model fits in the FOOOFGroup data.
     threshold : float
@@ -85,36 +122,29 @@ def get_band_peak_group(peak_params, band, n_fits, threshold=None, thresh_param=
     -------
     band_peaks : 2d array
         Peak data. Each row is a peak, as [CF, PW, BW].
+        Each row represents an individual model from the input array of all peaks.
 
     Notes
     -----
-    This function conserves the shape of the array, returning a [n_fits, 3] array.
+    The returned array keeps track of which model each extracted peak comes from,
+    returning a [n_models, 3] array, with one peak returned per model.
 
-    * Each row reflects a FOOOF model fit, in order, filled with NaN if no peak was present.
-
-    * To do so, this function necessarily extracts and returns one peak per model fit.
-
-    If, instead, you wish to extract all peaks within a band, per model fit, you can do:
-
-    # TO FIX:
-    >> peaks = np.empty((0, 3))
-    >> for f_res in fg:
-    ...     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band, ret_one=False)))
+    - To do so, this function necessarily extracts and returns one peak per model fit.
+    - Each row reflects an individual model fit, in order, filled with nan if no peak was present.
     """
 
-    band_peaks = np.zeros(shape=[n_fits, 3])
-
     # Extracts an array per FOOOF fit, and extracts band peaks from it
+    band_peaks = np.zeros(shape=[n_fits, 3])
     for ind in range(n_fits):
         band_peaks[ind, :] = get_band_peak(peak_params[tuple([peak_params[:, -1] == ind])][:, 0:3],
-                                           band=band, ret_one=True,
+                                           band=band, select_highest=True,
                                            threshold=threshold,
                                            thresh_param=thresh_param)
 
     return band_peaks
 
 
-def get_band_peak(peak_params, band, ret_one=True, threshold=None, thresh_param='PW'):
+def get_band_peak(peak_params, band, select_highest=True, threshold=None, thresh_param='PW'):
     """Extract peaks within a given band of interest.
 
     Parameters
@@ -123,8 +153,8 @@ def get_band_peak(peak_params, band, ret_one=True, threshold=None, thresh_param=
         Peak parameters, with shape of [n_peaks, 3].
     band : tuple of (float, float)
         Frequency range for the band of interest.
-        Defind as: (lower_frequency_bound, upper_frequency_bound).
-    ret_one : bool, optional, default: True
+        Defined as: (lower_frequency_bound, upper_frequency_bound).
+    select_highest : bool, optional, default: True
         Whether to return single peak (if True) or all peaks within the range found (if False).
         If True, returns the highest peak within the search range.
     threshold : float
@@ -135,15 +165,7 @@ def get_band_peak(peak_params, band, ret_one=True, threshold=None, thresh_param=
     Returns
     -------
     band_peaks : 1d or 2d array
-        Peak data. Each row is a peak, as [CF, PW, BW]
-
-    Examples
-    --------
-
-    >>> peak_params = np.array([[10., 0.5, 1.], [23., 0.25, 1.5]])
-    >>> alpha = get_band_peak(peak_params, [7, 14])
-    >>> alpha
-    array([10. , 0.5, 1. ])
+        Peak data. Each row is a peak, as [CF, PW, BW].
     """
 
     # Return nan array if empty input
@@ -154,7 +176,7 @@ def get_band_peak(peak_params, band, ret_one=True, threshold=None, thresh_param=
     peak_inds = (peak_params[:, 0] >= band[0]) & (peak_params[:, 0] <= band[1])
     n_peaks = sum(peak_inds)
 
-    # If there are no peaks within the specified range
+    # If there are no peaks within the specified range, return nan
     #   Note: this also catches and returns if the original input was empty
     if n_peaks == 0:
         return np.array([np.nan, np.nan, np.nan])
@@ -165,9 +187,9 @@ def get_band_peak(peak_params, band, ret_one=True, threshold=None, thresh_param=
     if threshold:
         band_peaks = threshold_peaks(band_peaks, threshold, thresh_param)
 
-    # If results > 1 and ret_one, then we return the highest peak
+    # If results > 1 and select_highest, then we return the highest peak
     #    Call a sub-function to select highest power peak in band
-    if n_peaks > 1 and ret_one:
+    if n_peaks > 1 and select_highest:
         band_peaks = get_highest_peak(band_peaks)
 
     # Squeeze so that if there is only 1 result, return single peak in flat array
@@ -175,17 +197,22 @@ def get_band_peak(peak_params, band, ret_one=True, threshold=None, thresh_param=
 
 
 def get_highest_peak(peak_params):
-    """Extract the highest peak.
+    """Extract the highest power peak.
 
     Parameters
     ----------
     peak_params : 2d array
-        Peak parameters, with shape of [n_peaks, 3] or [n_peaks, 4].
+        Peak parameters, with shape of [n_peaks, 3].
 
     Returns
     -------
     1d array
-        Peak data. Each row is a peak, as [CF, PW, BW].
+        Peak data. The row is a peak, as [CF, PW, BW].
+
+    Notes
+    -----
+    This function returns the singular highest power peak from the input set, and as
+    such is defined to work on periodic parameters from a single model fit.
     """
 
     # Catch & return NaN if empty
@@ -213,12 +240,18 @@ def threshold_peaks(peak_params, threshold, param='PW'):
     -------
     thresholded_peaks : 2d array
         Peak parameters, with shape of [n_peaks, :].
+
+    Notes
+    -----
+    This function can be applied to periodic parameters from an individual model,
+    or a set or parameters from a group.
     """
 
-    # Catch & return NaN if empty
+    # Catch if input is empty & return nan if so
     if len(peak_params) == 0:
         return np.array([np.nan, np.nan, np.nan])
 
+    # Otherwise, apply a mask to apply the requested threshold
     thresh_mask = peak_params[:, PEAK_INDS[param]] > threshold
     thresholded_peaks = peak_params[thresh_mask]
 

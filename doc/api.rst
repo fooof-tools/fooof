@@ -121,13 +121,21 @@ Functions for analyzing the periodic components of model fits.
 
 .. currentmodule:: fooof.analysis.periodic
 
+The following functions take in FOOOF objects directly, which is the typical use case:
+
+.. autosummary::
+    :toctree: generated/
+
+    get_band_peak_fm
+    get_band_peak_fg
+
+The following functions operate on arrays of peak parameters, which may be useful for more custom workflows:
+
 .. autosummary::
     :toctree: generated/
 
     get_band_peak
     get_band_peak_group
-    get_band_peak_fm
-    get_band_peak_fg
     get_highest_peak
     threshold_peaks
 
@@ -214,7 +222,7 @@ Plots for visualizing power spectra.
     plot_spectra
     plot_spectrum_shading
     plot_spectra_shading
-    plot_spectrum_error
+    plot_spectral_error
 
 Plot Parameters
 ~~~~~~~~~~~~~~~

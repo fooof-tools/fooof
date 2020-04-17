@@ -38,13 +38,16 @@ def test_get_band_peak():
     assert np.all(np.isnan(get_band_peak(data, [4, 8])))
 
     # Test multiple results - return all
-    assert np.array_equal(get_band_peak(data, [10, 15], ret_one=False), [[10, 1, 1.8], [14, 2, 4]])
+    assert np.array_equal(get_band_peak(data, [10, 15], select_highest=False),
+                          np.array([[10, 1, 1.8], [14, 2, 4]]))
 
     # Test multiple results - return one
-    assert np.array_equal(get_band_peak(data, [10, 15], ret_one=True), [14, 2, 4])
+    assert np.array_equal(get_band_peak(data, [10, 15], select_highest=True),
+                          np.array([14, 2, 4]))
 
     # Test applying a threshold
-    assert np.array_equal(get_band_peak(data, [10, 15], threshold=1.5, ret_one=False), [14, 2, 4])
+    assert np.array_equal(get_band_peak(data, [10, 15], threshold=1.5, select_highest=False),
+                          np.array([14, 2, 4]))
 
 def test_get_highest_peak():
 
@@ -60,7 +63,8 @@ def test_threshold_peaks():
 
     # Check it works using a bandwidth threshold
     data = np.array([[10, 1, 1.8], [14, 2, 4], [12, 3, 2.5]])
-    assert np.array_equal(threshold_peaks(data, 2, param='BW'), np.array([[14, 2, 4], [12, 3, 2.5]]))
+    assert np.array_equal(threshold_peaks(data, 2, param='BW'),
+                          np.array([[14, 2, 4], [12, 3, 2.5]]))
 
     # Check it works with an [n_peaks, 4] array, as from FOOOFGroup
     data = np.array([[10, 1, 1.8, 0], [13, 1, 2, 2], [14, 2, 4, 2]])
