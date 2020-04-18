@@ -95,6 +95,7 @@ class FOOOFGroup(FOOOF):
       `group_results` attribute. To access individual parameters of the fit, use
       the `get_params` method.
     """
+    # pylint: disable=attribute-defined-outside-init, arguments-differ
 
     def __init__(self, *args, **kwargs):
         """Initialize object with desired settings."""

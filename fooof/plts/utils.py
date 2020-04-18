@@ -56,9 +56,9 @@ def set_alpha(n_points):
         Value for alpha to use for plotting.
     """
 
-    for ke, va in ALPHA_LEVELS.items():
-        if n_points > ke:
-            alpha = va
+    for key, val in ALPHA_LEVELS.items():
+        if n_points > key:
+            alpha = val
 
     return alpha
 

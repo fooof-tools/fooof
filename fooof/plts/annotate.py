@@ -102,7 +102,7 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperio
     fontsize = 15
     lw1 = 4.0
     lw2 = 3.0
-    ms = 12
+    ms1 = 12
     colors = {'data' : 'black', 'periodic' : 'green',
               'aperiodic' : 'blue', 'model' : 'red'}
 
@@ -112,7 +112,7 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperio
             data_kwargs={'lw' : lw1, 'alpha' : 0.6},
             aperiodic_kwargs={'lw' : lw1, 'zorder' : 10},
             model_kwargs={'lw' : lw1, 'alpha' : 0.5},
-            peak_kwargs={'dot' : {'color' : colors['periodic'], 'ms' : ms, 'lw' : lw2},
+            peak_kwargs={'dot' : {'color' : colors['periodic'], 'ms' : ms1, 'lw' : lw2},
                          'shade' : {'color' : colors['periodic']},
                          'width' : {'color' : colors['periodic'], 'alpha' : 0.75, 'lw' : lw2}})
 
@@ -177,7 +177,7 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperio
         #   Add a line to indicate offset, without adjusting plot limits below it
         ax.set_autoscaley_on(False)
         ax.plot([freqs[0], freqs[0]], [ax.get_ylim()[0], fm.fooofed_spectrum_[0]],
-                 color=colors['aperiodic'], lw=lw2, alpha=0.5)
+                color=colors['aperiodic'], linewidth=lw2, alpha=0.5)
         ax.annotate('Offset',
                     xy=(freqs[0]+bug_buff, fm.power_spectrum[0]-y_buff1),
                     xytext=(freqs[0]-x_buff1, fm.power_spectrum[0]-y_buff1),
@@ -196,7 +196,7 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperio
             knee_pow = fm.power_spectrum[nearest_ind(freqs, knee_freq)]
 
             # Add a dot to the plot indicating the knee frequency
-            ax.plot(knee_freq, knee_pow, 'o', color=colors['aperiodic'], ms=ms*1.5, alpha=0.7)
+            ax.plot(knee_freq, knee_pow, 'o', color=colors['aperiodic'], ms=ms1*1.5, alpha=0.7)
 
             ax.annotate('Knee',
                         xy=(knee_freq, knee_pow),

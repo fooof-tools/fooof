@@ -3,7 +3,6 @@
 import numpy as np
 
 from fooof.core.utils import check_iter, check_flat
-from fooof.core.funcs import gaussian_function
 from fooof.core.funcs import get_ap_func, get_pe_func, infer_ap_func
 
 from fooof.sim.params import collect_sim_params

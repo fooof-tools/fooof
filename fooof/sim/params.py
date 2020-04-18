@@ -297,7 +297,7 @@ def param_jitter(params, jitters):
     while True:
 
         out_params = [None] * len(params)
-        for ind, (p1, j1) in enumerate(zip(params, jitters)):
-            out_params[ind] = p1 + np.random.normal(0, j1)
+        for ind, (param, jitter) in enumerate(zip(params, jitters)):
+            out_params[ind] = param + np.random.normal(0, jitter)
 
         yield out_params

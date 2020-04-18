@@ -97,13 +97,13 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
     interp_freqs = freqs[interp_mask]
 
     # Get the indices of the interpolation range
-    i1, i2 = np.flatnonzero(interp_mask)[[0, -1]]
+    ii1, ii2 = np.flatnonzero(interp_mask)[[0, -1]]
 
     # Extract & log the requested range of data to use around interpolated range
-    xs1 = np.log10(freqs[i1-buffer:i1])
-    xs2 = np.log10(freqs[i2:i2+buffer])
-    ys1 = np.log10(powers[i1-buffer:i1])
-    ys2 = np.log10(powers[i2:i2+buffer])
+    xs1 = np.log10(freqs[ii1-buffer:ii1])
+    xs2 = np.log10(freqs[ii2:ii2+buffer])
+    ys1 = np.log10(powers[ii1-buffer:ii1])
+    ys2 = np.log10(powers[ii2:ii2+buffer])
 
     # Linearly interpolate, in log-log space, between averages of the extracted points
     vals = np.interp(np.log10(interp_freqs),

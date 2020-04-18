@@ -127,7 +127,8 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         # Plot the average component
         avg = avg_vals / aps.shape[0]
         avg_color = 'black' if not colors else colors
-        ax.plot(plt_freqs, avg, color=avg_color, linewidth=plot_kwargs.get('linewidth')*3, label=labels)
+        ax.plot(plt_freqs, avg, linewidth=plot_kwargs.get('linewidth')*3,
+                color=avg_color, label=labels)
 
     # Add axis labels
     ax.set_xlabel('log(Frequency)' if log_freqs else 'Frequency')

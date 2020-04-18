@@ -480,18 +480,18 @@ def _format(str_lst, concise):
         Formatted string, ready for printing.
     """
 
-    # Use a smaller centering value if in concise mode
-    cv = SCV if concise else LCV
+    # Set centering value - use a smaller value if in concise mode
+    center_val = SCV if concise else LCV
 
     # Expand the section markers to full width
-    str_lst[0] = str_lst[0] * cv
-    str_lst[-1] = str_lst[-1] * cv
+    str_lst[0] = str_lst[0] * center_val
+    str_lst[-1] = str_lst[-1] * center_val
 
     # Drop blank lines, if concise
     str_lst = list(filter(lambda x: x != '', str_lst)) if concise else str_lst
 
     # Convert list to a single string representation, centering each line
-    output = '\n'.join([string.center(cv) for string in str_lst])
+    output = '\n'.join([string.center(center_val) for string in str_lst])
 
     return output
 
