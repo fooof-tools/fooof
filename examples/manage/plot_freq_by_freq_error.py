@@ -43,7 +43,7 @@ from fooof.analysis.error import compute_pointwise_error_fm, compute_pointwise_e
 # using simulated data.
 #
 # The function for analyzing error from a FOOOF object is
-# :func:`~fooof.analysis.error.compute_pointwise_error_fm`.
+# :func:`~.compute_pointwise_error_fm`.
 # To start with, we will indicate to this function to plot the frequency-by-frequency
 # error of our model fit.
 #
@@ -92,8 +92,7 @@ print('FOOOF model fit error: \t\t {:1.3f}'.format(fm.error_))
 # Next, lets move on to calculating frequency-by-frequency error across groups of fits,
 # again using some simulated data.
 #
-# The function for analyzing error from a FOOOFGroup object is
-# :func:`~fooof.analysis.error.compute_pointwise_error_fg`.
+# To analyze error from a FOOOFGroup object, use :func:`~.compute_pointwise_error_fg`.
 #
 
 ###################################################################################################

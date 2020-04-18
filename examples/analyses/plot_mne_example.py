@@ -171,7 +171,7 @@ fg.plot()
 #
 # Lets start start by plotting some periodic model parameters.
 #
-# To do so, we will use to :obj:`~fooof.bands.bands.Bands` object to manage some band
+# To do so, we will use to :obj:`~.Bands` object to manage some band
 # definitions, and some analysis utilities to extracts peaks from bands of interest.
 #
 

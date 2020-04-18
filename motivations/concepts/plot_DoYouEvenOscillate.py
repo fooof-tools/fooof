@@ -40,7 +40,6 @@ Exploring the rhythmicity of time series and their frequency representations.
 ###################################################################################################
 
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Use NeuroDSP for time series simulations & analyses
 from neurodsp import sim
@@ -54,7 +53,7 @@ from neurodsp.plts import plot_time_series, plot_power_spectra
 n_seconds = 2
 s_rate = 1000
 
-# Compute a times vector, for plotting, and check length of data
+# Compute an array of time values, for plotting, and check length of data
 times = create_times(n_seconds, s_rate)
 n_points = len(times)
 

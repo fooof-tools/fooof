@@ -64,7 +64,7 @@ There are also optional dependencies, which are not required for model fitting i
 - [tqdm](https://github.com/tqdm/tqdm) is needed to print progress bars when fitting many models
 - [pytest](https://github.com/pytest-dev/pytest) is needed to run the test suite locally
 
-We recommend using the [Anaconda](https://www.continuum.io/downloads) distribution to manage these requirements.
+We recommend using the [Anaconda](https://www.anaconda.com/distribution/) distribution to manage these requirements.
 
 ## Installation
 

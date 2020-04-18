@@ -107,7 +107,7 @@ fg.fit(freqs, spectra)
 # In particular, these utilities mostly serve to help organize and extract periodic
 # components, for example extracting peaks that fall within defined frequency bands.
 #
-# This also includes using the :class:`~fooof.bands.bands.Bands` object, that is provided
+# This also includes using the :class:`~.Bands` object, that is provided
 # to store band definitions.
 #
 
@@ -122,8 +122,8 @@ bands = Bands({'theta' : [4, 8],
 # Extracting peaks from FOOOF Objects
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The :func:`~fooof.analysis.periodic.get_band_peak_fm` function takes in a
-# :class:`~fooof.FOOOF` object and extracts peak(s) from a requested frequency range.
+# The :func:`~.get_band_peak_fm` function takes in a
+# :class:`~.FOOOF` object and extracts peak(s) from a requested frequency range.
 #
 # You can optionally specify:
 #
@@ -143,7 +143,7 @@ print(alpha)
 # Extracting peaks from FOOOFGroup Objects
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Similarly, the :func:`~fooof.analysis.periodic.get_band_peak_fg` function can be used
+# Similarly, the :func:`~.get_band_peak_fg` function can be used
 # to select peaks within specific frequency ranges, from :class:`~fooof.FOOOFGroup` objects.
 #
 # Note that you can also apply a threshold to extract group peaks but, as discussed below,
@@ -163,7 +163,7 @@ print(alphas[0:5, :])
 # When selecting peaks from a group of model fits, we want to retain information about
 # which model each peak comes from.
 #
-# To do so, the output of :func:`~fooof.analysis.periodic.get_band_peak_fg` is organized
+# To do so, the output of :func:`~.get_band_peak_fg` is organized
 # such that each row corresponds to a specific model fit. This means that returned array
 # has the shape [n_models, 3], and so the index of each row corresponds to the index of the
 # model from the FOOOFGroup object.

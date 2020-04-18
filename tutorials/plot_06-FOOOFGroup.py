@@ -35,12 +35,12 @@ from fooof.sim.utils import set_random_seed
 # we will simulate some test data. The FOOOF module includes utilities for creating
 # simulated power-spectra, that mimic real data.
 #
-# To do so, we will use a function called :func:`~fooof.sim.params.param_sampler` that
+# To do so, we will use a function called :func:`~.param_sampler` that
 # takes a list of possible parameters, and creates an object that randomly samples from
 # them to generate power spectra.
 #
 # Note that if you would like to generate single power spectra, you can use
-# :func:`~fooof.sim.gen.gen_power_spectrum`, also in `fooof.sim.gen`.
+# :func:`~.gen_power_spectrum`, also in `fooof.sim.gen`.
 #
 # There are more examples and descriptions of using FOOOF to simulate data in the
 # `examples <https://fooof-tools.github.io/fooof/auto_examples/index.html>`_
@@ -69,7 +69,7 @@ gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
 ###################################################################################################
 #
-# We can now feed these settings into :func:`~fooof.sim.gen.gen_group_power_spectra`,
+# We can now feed these settings into :func:`~.gen_group_power_spectra`,
 # that will generate a group of power spectra for us.
 #
 # Note that this function also returns a list of the parameters
@@ -211,7 +211,7 @@ print(f_res.__doc__)
 
 # Check out the extracted exponent values
 #  Note that this extraction will return an array of length equal to the number of model fits
-#    The model fit from which each data element originated is the index of this vector
+#    The model fit from which each data element originated is the index of this array
 print(exps)
 
 ###################################################################################################

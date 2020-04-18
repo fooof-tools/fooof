@@ -39,7 +39,6 @@ from fooof import FOOOF
 #   These are used here to demonstrate the algorithm.
 #   You do not need to import these functions for standard use of the algorithm
 from fooof.sim.gen import gen_aperiodic
-from fooof.core.funcs import gaussian_function
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.annotate import plot_annotated_peak_search
 
@@ -61,7 +60,7 @@ spectrum = load_fooof_data('spectrum_2.npy', folder='data')
 
 # Initialize a FOOOF object, with some settings
 #   These settings will be more fully described later in the tutorials
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6 , min_peak_height=0.15)
+fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 
 ###################################################################################################
 #

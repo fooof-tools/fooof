@@ -25,7 +25,11 @@ clean:
 	rm -rf auto_tutorials
 	rm -rf auto_motivations
 	rm -rf generated
-	rm -rf backrefs
+
+# Check that builds site with nitpicky checking, and also does post-hoc link check
+check:
+	make SPHINXOPTS="-n" html
+	make linkcheck
 
 ## make install:
 # Build the html site, and push it to gh-pages branch of repo to deploy
@@ -46,3 +50,4 @@ install:
 	git add .nojekyll && \
 	git commit -a -m 'Make install' && \
 	git push
+

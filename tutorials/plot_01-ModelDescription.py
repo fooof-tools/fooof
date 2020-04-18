@@ -199,7 +199,7 @@ plot_annotated_model(fm1, annotate_aperiodic=False)
 # - :math:`a` is the height of the peak, over and above the aperiodic component
 # - :math:`c` is the center frequency of the peak
 # - :math:`w` is the width of the peak
-# - :math:`F` is the vector of input frequencies
+# - :math:`F` is the array of frequency values
 #
 
 ###################################################################################################
@@ -258,7 +258,7 @@ plot_annotated_model(fm1, annotate_peaks=False)
 # - :math:`b` is the broadband 'offset'
 # - :math:`k` relates to the 'knee'
 # - :math:`\chi` is the 'exponent' of the aperiodic fit
-# - :math:`F` is the vector of input frequencies
+# - :math:`F` is the array of frequency values
 #
 # Note that fitting the knee parameter is optional. If used, the knee parameter defines a
 # 'bend' in the aperiodic `1/f` like component of the data. If not used, the 'knee'
