@@ -77,10 +77,11 @@ Model Information
 
 Objects to store settings, metadata and results for FOOOF models.
 
-.. currentmodule:: fooof.data.data
+.. currentmodule:: fooof.data
 
 .. autosummary::
    :toctree: generated/
+   :template: data_object.rst
 
    FOOOFSettings
    FOOOFMetaData
@@ -93,6 +94,7 @@ Object to store information about simulated data.
 
 .. autosummary::
    :toctree: generated/
+   :template: data_object.rst
 
    SimParams
 
