@@ -16,7 +16,7 @@ from collections import namedtuple
 class FOOOFSettings(namedtuple('FOOOFSettings', ['peak_width_limits', 'max_n_peaks',
                                                  'min_peak_height', 'peak_threshold',
                                                  'aperiodic_mode'])):
-    """User defined settings for a FOOOF object.
+    """User defined settings for the fitting algorithm.
 
     Parameters
     ----------
@@ -30,12 +30,16 @@ class FOOOFSettings(namedtuple('FOOOFSettings', ['peak_width_limits', 'max_n_pea
         Relative threshold for detecting peaks, in units of standard deviation of the input data.
     aperiodic_mode : {'fixed', 'knee'}
         Which approach to take for fitting the aperiodic component.
+
+    Notes
+    -----
+    This object is a data object, based on a NamedTuple, with immutable data attributes.
     """
     __slots__ = ()
 
 
 class FOOOFMetaData(namedtuple('FOOOFMetaData', ['freq_range', 'freq_res'])):
-    """Meta-data for a FOOOF object.
+    """Metadata information about a power spectrum.
 
     Parameters
     ----------
@@ -43,6 +47,10 @@ class FOOOFMetaData(namedtuple('FOOOFMetaData', ['freq_range', 'freq_res'])):
         Frequency range of the power spectrum, as [lowest_freq, highest_freq].
     freq_res : float
         Frequency resolution of the power spectrum.
+
+    Notes
+    -----
+    This object is a data object, based on a NamedTuple, with immutable data attributes.
     """
     __slots__ = ()
 
@@ -51,7 +59,7 @@ class FOOOFResults(namedtuple('FOOOFResults', ['aperiodic_params', 'peak_params'
                                                'r_squared', 'error', 'gaussian_params'])):
     """Model results from parameterizing a power spectrum.
 
-    Attributes
+    Parameters
     ----------
     aperiodic_params : 1d array
         Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
@@ -65,14 +73,18 @@ class FOOOFResults(namedtuple('FOOOFResults', ['aperiodic_params', 'peak_params'
     gaussian_params : 2d array
         Parameters that define the gaussian fit(s).
         Each row is a gaussian, as [mean, height, standard deviation].
+
+    Notes
+    -----
+    This object is a data object, based on a NamedTuple, with immutable data attributes.
     """
     __slots__ = ()
 
 
 class SimParams(namedtuple('SimParams', ['aperiodic_params', 'periodic_params', 'nlv'])):
-    """Stores parameters that define a simulated power spectrum.
+    """Parameters that define a simulated power spectrum.
 
-    Attributes
+    Parameters
     ----------
     aperiodic_params : list
         Parameters that define the aperiodic component.
@@ -80,5 +92,9 @@ class SimParams(namedtuple('SimParams', ['aperiodic_params', 'periodic_params', 
         Parameters that define the periodic component.
     nlv : float
         Noise level added to simulated spectrum.
+
+    Notes
+    -----
+    This object is a data object, based on a NamedTuple, with immutable data attributes.
     """
     __slots__ = ()

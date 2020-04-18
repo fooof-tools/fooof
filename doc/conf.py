@@ -103,8 +103,11 @@ html_theme_options = {
         ("Tutorials", "auto_tutorials/index"),
         ("Examples", "auto_examples/index"),
         ("Reference", "reference"),
-        ("GitHub", "https://github.com/fooof-tools/fooof", True)
+        ("GitHub", "https://github.com/fooof-tools/fooof", True),
     ],
+
+    # Set the page width to not be restricted to hardset value
+    'body_max_width': None,
 
     # Bootswatch (http://bootswatch.com/) theme to apply.
     'bootswatch_theme': "flatly",
@@ -133,7 +136,8 @@ sphinx_gallery_conf = {
     'within_subsection_order': FileNameSortKey,
     'default_thumb_file': 'img/spectrum.png',
     # Settings for linking between examples & API examples
-    'backreferences_dir': 'backrefs',
+    #'backreferences_dir': 'backrefs',
+    'backreferences_dir': 'generated',
     'doc_module': ('fooof',),
     'reference_url': {'fooof': None}
 }
