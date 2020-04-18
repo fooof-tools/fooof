@@ -15,10 +15,10 @@ Table of Contents
 
 .. currentmodule:: fooof
 
-FOOOF Objects
+Model Objects
 -------------
 
-Objects that manage data and fit models to parameterize neural power spectra.
+Objects that manage data and fit the model to parameterize neural power spectra.
 
 FOOOF Object
 ~~~~~~~~~~~~
@@ -45,7 +45,7 @@ Object Utilities
 
 Functions to manipulate, examine and analyze FOOOF objects, and related utilities.
 
-.. currentmodule:: fooof.objs.utils
+.. currentmodule:: fooof.objs
 
 .. autosummary::
    :toctree: generated/
@@ -53,29 +53,35 @@ Functions to manipulate, examine and analyze FOOOF objects, and related utilitie
    compare_info
    average_fg
    combine_fooofs
+
+.. currentmodule:: fooof
+
+.. autosummary::
+   :toctree: generated/
+
    fit_fooof_3d
 
-Bands Object
+Data Objects
 ------------
 
-An object to handle oscillation band definitions.
+Objects to manage frequency bands, model information, and simulation parameters.
 
-.. currentmodule:: fooof.bands.bands
+Bands Object
+~~~~~~~~~~~~
+
+An object to handle frequency band definitions.
+
+.. currentmodule:: fooof
 
 .. autosummary::
    :toctree: generated/
 
    Bands
 
-Data Objects
-------------
-
-Objects to manage and store data.
-
 Model Information
 ~~~~~~~~~~~~~~~~~
 
-Objects to store settings, metadata and results for FOOOF models.
+Objects to store settings, metadata and results for power spectrum models.
 
 .. currentmodule:: fooof.data
 
@@ -101,14 +107,18 @@ Object to store information about simulated data.
 Analyze Model Results
 ---------------------
 
-Functions to analyze FOOOF results.
+Functions to analyze power spectrum models and the results parameters / components.
 
 Analyze Model Errors
 ~~~~~~~~~~~~~~~~~~~~
 
 Functions for analyzing the error of model fits.
 
-.. currentmodule:: fooof.analysis.error
+**Object Inputs**
+
+The following functions take in FOOOF objects directly, which is the recommended approach.
+
+.. currentmodule:: fooof.analysis
 
 .. autosummary::
     :toctree: generated/
@@ -116,14 +126,27 @@ Functions for analyzing the error of model fits.
     compute_pointwise_error_fm
     compute_pointwise_error_fg
 
+**Array Inputs**
+
+The following functions operate on arrays of models and data, which may be useful for more custom work-flows.
+
+.. currentmodule:: fooof.analysis.error
+
+.. autosummary::
+    :toctree: generated/
+
+    compute_pointwise_error
+
 Analyze Periodic Components
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Functions for analyzing the periodic components of model fits.
 
-.. currentmodule:: fooof.analysis.periodic
+**Object Inputs**
 
-The following functions take in FOOOF objects directly, which is the typical use case:
+The following functions take in FOOOF objects directly, which is the typical use case.
+
+.. currentmodule:: fooof.analysis
 
 .. autosummary::
     :toctree: generated/
@@ -131,7 +154,11 @@ The following functions take in FOOOF objects directly, which is the typical use
     get_band_peak_fm
     get_band_peak_fg
 
-The following functions operate on arrays of peak parameters, which may be useful for more custom workflows:
+**Array Inputs**
+
+The following functions operate on arrays of peak parameters, which may be useful for more custom work-flows.
+
+.. currentmodule:: fooof.analysis.periodic
 
 .. autosummary::
     :toctree: generated/
@@ -151,7 +178,7 @@ Generate Power Spectra
 
 Functions for simulating neural power spectra.
 
-.. currentmodule:: fooof.sim.gen
+.. currentmodule:: fooof.sim
 
 .. autosummary::
     :toctree: generated/
@@ -193,8 +220,8 @@ Functions for transforming power spectra.
     compute_rotation_offset
     compute_rotation_frequency
 
-Utilities
-~~~~~~~~~
+Simulation Utilities
+~~~~~~~~~~~~~~~~~~~~
 
 Utilities for simulating power spectra.
 
@@ -215,29 +242,28 @@ Plot Power Spectra
 
 Plots for visualizing power spectra.
 
-.. currentmodule:: fooof.plts.spectra
+.. currentmodule:: fooof.plts
 
 .. autosummary::
     :toctree: generated/
 
     plot_spectrum
     plot_spectra
-    plot_spectrum_shading
-    plot_spectra_shading
-    plot_spectral_error
 
-Plot Parameters
-~~~~~~~~~~~~~~~
+Plots for plotting power spectra with shaded regions.
 
-Plots for visualizing model parameters and components.
-
-.. currentmodule:: fooof.plts.aperiodic
+.. currentmodule:: fooof.plts.spectra
 
 .. autosummary::
     :toctree: generated/
 
-    plot_aperiodic_fits
-    plot_aperiodic_params
+    plot_spectrum_shading
+    plot_spectra_shading
+
+Plot Model Properties & Parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Plots for visualizing **periodic** parameters and model components.
 
 .. currentmodule:: fooof.plts.periodic
 
@@ -247,10 +273,30 @@ Plots for visualizing model parameters and components.
     plot_peak_fits
     plot_peak_params
 
+Plots for visualizing **aperiodic** parameters and model components.
+
+.. currentmodule:: fooof.plts.aperiodic
+
+.. autosummary::
+    :toctree: generated/
+
+    plot_aperiodic_fits
+    plot_aperiodic_params
+
+Plots for visualizing model error.
+
+.. currentmodule:: fooof.plts.error
+
+.. autosummary::
+    :toctree: generated/
+
+    plot_spectral_error
+
 Plot FOOOF Objects
 ~~~~~~~~~~~~~~~~~~
 
-Plots for visualizing model from FOOOF objects.
+Plots for visualizing models from FOOOF objects.
+Note that these are the same plotting functions that can be called from FOOOF objects directly.
 
 .. currentmodule:: fooof.plts.fm
 
@@ -284,16 +330,18 @@ Utilities
 
 Utility functions and objects.
 
-Input / Output (IO)
-~~~~~~~~~~~~~~~~~~~
+Data Utilities
+~~~~~~~~~~~~~~
 
-.. currentmodule:: fooof.utils.io
+Utilities for working with data.
+
+.. currentmodule:: fooof.utils
 
 .. autosummary::
     :toctree: generated/
 
-    load_fooof
-    load_fooofgroup
+    trim_spectrum
+    interpolate_spectrum
 
 Parameter Utilities
 ~~~~~~~~~~~~~~~~~~~
@@ -307,24 +355,21 @@ Utilities for working with parameters
 
     compute_knee_frequency
 
-Data Utilities
-~~~~~~~~~~~~~~
+Input / Output (IO)
+~~~~~~~~~~~~~~~~~~~
 
-Utilities for working with data.
-
-.. currentmodule:: fooof.utils.data
+.. currentmodule:: fooof.utils.io
 
 .. autosummary::
     :toctree: generated/
 
-    trim_spectrum
-    interpolate_spectrum
-    compute_pointwise_error
+    load_fooof
+    load_fooofgroup
 
-Reports
-~~~~~~~
+Methods Reports
+~~~~~~~~~~~~~~~
 
-Utilities to create reports.
+Utilities to creating methods reports.
 
 .. currentmodule:: fooof.utils.reports
 

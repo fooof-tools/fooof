@@ -3,7 +3,7 @@
 import numpy as np
 
 from fooof.sim.gen import gen_model
-from fooof.plts.spectra import plot_spectral_error
+from fooof.plts.error import plot_spectral_error
 from fooof.core.errors import NoModelError, NoDataError
 
 ###################################################################################################

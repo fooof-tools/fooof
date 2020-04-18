@@ -33,10 +33,6 @@ release = version
 
 # -- General configuration ---------------------------------------------------
 
-# If your documentation needs a minimal Sphinx version, state it here.
-#
-# needs_sphinx = '1.0'
-
 # Add any Sphinx extension module names here, as strings.
 extensions = [
     'sphinx.ext.autodoc',
@@ -135,9 +131,7 @@ sphinx_gallery_conf = {
                                         '../motivations/measurements']),
     'within_subsection_order': FileNameSortKey,
     'default_thumb_file': 'img/spectrum.png',
-    # Settings for linking between examples & API examples
-    #'backreferences_dir': 'backrefs',
-    'backreferences_dir': 'generated',
+    'backreferences_dir': 'generated',   # Where to drop linking files between examples & API
     'doc_module': ('fooof',),
     'reference_url': {'fooof': None}
 }
