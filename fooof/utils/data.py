@@ -112,22 +112,3 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
     powers[interp_mask] = np.power(10, vals)
 
     return freqs, powers
-
-
-def compute_pointwise_error(model, data):
-    """Calculate pointwise error between original data and a model fit of that data.
-
-    Parameters
-    ----------
-    model : 1d array
-        The model.
-    data : 1d array
-        The original data that is being modeled.
-
-    Returns
-    -------
-    1d array
-        Calculated values of the difference between the data and the model.
-    """
-
-    return np.abs(model - data)

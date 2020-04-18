@@ -3,7 +3,6 @@
 import numpy as np
 
 from fooof.sim.gen import gen_model
-from fooof.utils import compute_pointwise_error
 from fooof.plts.spectra import plot_spectral_error
 from fooof.core.errors import NoModelError, NoDataError
 
@@ -100,3 +99,22 @@ def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_
 
     if return_errors:
         return errors
+
+
+def compute_pointwise_error(model, data):
+    """Calculate pointwise error between original data and a model fit of that data.
+
+    Parameters
+    ----------
+    model : 1d array
+        The model.
+    data : 1d array
+        The original data that is being modeled.
+
+    Returns
+    -------
+    1d array
+        Calculated values of the difference between the data and the model.
+    """
+
+    return np.abs(model - data)
