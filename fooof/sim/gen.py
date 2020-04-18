@@ -108,8 +108,8 @@ def gen_power_spectrum(freq_range, aperiodic_params, periodic_params, nlv=0.005,
         spectrum will NOT have the requested offset. It instead will have the offset
         value required to create the requested aperiodic exponent with the requested
         rotation point.
-      * If you return SimParams, the recorded offset will be actual calculated offset
-        of the data, and not the value entered.
+      * If you return SimParams, the recorded offset will be the calculated offset
+        of the data post rotation, and not the entered value.
 
     - You cannot rotate power spectra simulated with a knee.
 
@@ -225,8 +225,8 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
         spectrum will NOT have the requested offset. It instead will have the offset
         value required to create the requested aperiodic exponent with the requested
         rotation point.
-      * If you return SimParams, the recorded offset will be actual calculated offset
-        of the data, and not the value entered.
+      * If you return SimParams, the recorded offset will be the calculated offset
+        of the data post rotation, and not the entered value.
 
     - You cannot rotate power spectra simulated with a knee.
 

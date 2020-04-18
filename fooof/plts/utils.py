@@ -80,7 +80,7 @@ def add_shades(ax, shades, colors='r', add_center=False, logged=False):
         Whether the shade values should be logged before applying to plot axes.
     """
 
-    # If only only one shade region is specified, this embeds in a list, so that the loop works
+    # If only one shade region is specified, this embeds in a list, so that the loop works
     if not isinstance(shades[0], list):
         shades = [shades]
 
