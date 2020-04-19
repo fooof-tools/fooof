@@ -18,8 +18,8 @@ def fname(file_name, extension):
     ----------
     file_name : str
         String that specifies a file name.
-    extensions : str
-        String that specifies the extension to be added, not including a period.
+    extension : str
+        String of the extension (without a period) to be added if one isn't already present.
 
     Outputs
     -------
@@ -27,7 +27,7 @@ def fname(file_name, extension):
         String that specifies a file name.
     """
 
-    if file_name.split('.')[-1] != extension:
+    if len(file_name.split('.')) == 1:
         file_name = file_name + '.' + extension
 
     return file_name

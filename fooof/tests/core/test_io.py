@@ -18,6 +18,8 @@ def test_fname():
     assert fname('data.json', 'json') == 'data.json'
     assert fname('pic', 'png') == 'pic.png'
     assert fname('pic.png', 'png') == 'pic.png'
+    assert fname('report.pdf', 'pdf') == 'report.pdf'
+    assert fname('report.png', 'pdf') == 'report.png'
 
 def test_fpath():
     """Check that the file path checker helper function properly checks / combines file paths."""
