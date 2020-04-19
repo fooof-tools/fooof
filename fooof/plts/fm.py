@@ -14,7 +14,7 @@ from fooof.sim.gen import gen_periodic
 from fooof.utils.data import trim_spectrum
 from fooof.utils.params import compute_fwhm
 from fooof.plts.spectra import plot_spectrum
-from fooof.plts.settings import FIGSIZE_SPECTRAL
+from fooof.plts.settings import FIGSIZE_SPECTRAL, PLT_COLORS
 from fooof.plts.utils import check_ax, check_plot_kwargs
 from fooof.plts.style import check_n_style, style_spectrum_plot
 
@@ -71,7 +71,7 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
     # Plot the data, if available
     if fm.has_data:
         data_kwargs = check_plot_kwargs(data_kwargs, \
-            {'color' : 'black', 'linewidth' : 2.0,
+            {'color' : PLT_COLORS['data'], 'linewidth' : 2.0,
              'label' : 'Original Spectrum' if add_legend else None})
         plot_spectrum(fm.freqs, fm.power_spectrum, log_freqs, log_powers,
                       ax=ax, plot_style=None, **data_kwargs)
@@ -79,7 +79,7 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
     # Add the full model fit, and components (if requested)
     if fm.has_model:
         model_kwargs = check_plot_kwargs(model_kwargs, \
-            {'color' : 'red', 'linewidth' : 3.0, 'alpha' : 0.5,
+            {'color' : PLT_COLORS['model'], 'linewidth' : 3.0, 'alpha' : 0.5,
              'label' : 'Full Model Fit' if add_legend else None})
         plot_spectrum(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers,
                       ax=ax, plot_style=None, **model_kwargs)
@@ -87,8 +87,8 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         # Plot the aperiodic component of the model fit
         if plot_aperiodic:
             aperiodic_kwargs = check_plot_kwargs(aperiodic_kwargs, \
-                {'color' : 'blue', 'linewidth' : 3.0, 'alpha' : 0.5, 'linestyle' : 'dashed',
-                 'label' : 'Aperiodic Fit' if add_legend else None})
+                {'color' : PLT_COLORS['aperiodic'], 'linewidth' : 3.0, 'alpha' : 0.5,
+                 'linestyle' : 'dashed', 'label' : 'Aperiodic Fit' if add_legend else None})
             plot_spectrum(fm.freqs, fm._ap_fit, log_freqs, log_powers,
                           ax=ax, plot_style=None, **aperiodic_kwargs)
 
@@ -165,7 +165,8 @@ def _add_peaks_shade(fm, plt_log, ax, **plot_kwargs):
         Keyword arguments to pass into the plot call.
     """
 
-    kwargs = check_plot_kwargs(plot_kwargs, {'color' : 'grey', 'alpha' : 0.25})
+    kwargs = check_plot_kwargs(plot_kwargs,
+                               {'color' : PLT_COLORS['periodic'], 'alpha' : 0.25})
 
     for peak in fm.get_params('gaussian_params'):
 
@@ -191,7 +192,8 @@ def _add_peaks_dot(fm, plt_log, ax, **plot_kwargs):
     """
 
     kwargs = check_plot_kwargs(plot_kwargs,
-                               {'color' : 'grey', 'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6})
+                               {'color' : PLT_COLORS['periodic'],
+                                'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6})
 
     for peak in fm.get_params('peak_params'):
 
@@ -221,7 +223,8 @@ def _add_peaks_outline(fm, plt_log, ax, **plot_kwargs):
     """
 
     kwargs = check_plot_kwargs(plot_kwargs,
-                               {'color' : 'green', 'alpha' : 0.7, 'lw' : 1.5})
+                               {'color' : PLT_COLORS['periodic'],
+                                'alpha' : 0.7, 'lw' : 1.5})
 
     for peak in fm.get_params('gaussian_params'):
 
@@ -253,7 +256,8 @@ def _add_peaks_line(fm, plt_log, ax, **plot_kwargs):
     """
 
     kwargs = check_plot_kwargs(plot_kwargs,
-                               {'color' : 'green', 'alpha' : 0.7, 'lw' : 1.4, 'ms' : 10})
+                               {'color' : PLT_COLORS['periodic'],
+                                'alpha' : 0.7, 'lw' : 1.4, 'ms' : 10})
 
     ylims = ax.get_ylim()
     for peak in fm.get_params('peak_params'):
@@ -284,7 +288,8 @@ def _add_peaks_width(fm, plt_log, ax, **plot_kwargs):
     """
 
     kwargs = check_plot_kwargs(plot_kwargs,
-                               {'color' : 'grey', 'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6})
+                               {'color' : PLT_COLORS['periodic'],
+                                'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6})
 
     for peak in fm.gaussian_params_:
 
