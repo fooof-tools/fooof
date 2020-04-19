@@ -43,6 +43,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx_gallery.gen_gallery',
+    'sphinx_copybutton',
     'numpydoc',
 ]
 
@@ -76,6 +77,8 @@ master_doc = 'index'
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+# Settings for sphinx_copybutton
+copybutton_prompt_text = "$ "
 
 # -- Options for HTML output -------------------------------------------------
 
