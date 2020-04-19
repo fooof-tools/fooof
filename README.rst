@@ -98,17 +98,15 @@ Installation
 
 To install the current pre-release version, use pip:
 
-``$ pip install fooof --pre``
-
 .. code-block:: shell
 
-    pip install fooof --pre
+    $ pip install fooof --pre
 
 If you already have a version of FOOOF installed, you will need to remove it first:
 
 .. code-block:: shell
 
-    pip uninstall fooof
+    $ pip uninstall fooof
 
 **Stable Version**
 
@@ -116,7 +114,7 @@ To install the latest stable release, use pip:
 
 .. code-block:: shell
 
-    pip install fooof
+    $ pip install fooof
 
 Note that this will install only the core (non-optional) FOOOF requirements.
 
@@ -126,13 +124,13 @@ To get the current development version, first clone this repository:
 
 .. code-block:: shell
 
-    git clone https://github.com/fooof-tools/fooof
+    $ git clone https://github.com/fooof-tools/fooof
 
 To install this cloned copy, move into the directory you just cloned, and run:
 
 .. code-block:: shell
 
-    pip install .
+    $ pip install .
 
 **Editable Version**
 
@@ -140,7 +138,7 @@ To install an editable version, download the development version as above, and r
 
 .. code-block:: shell
 
-    pip install -e .
+    $ pip install -e .
 
 Matlab Support
 --------------
@@ -164,13 +162,12 @@ Reference
 If you use this code in your project, please cite:
 ::
     Haller M, Donoghue T, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Knight RT, Shestyuk A,
-    Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859.
-    doi: https://doi.org/10.1101/299859
+    Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859. doi: 10.1101/299859
+
+Direct Link: https://doi.org/10.1101/299859
 
 More information for how to cite this method can be found on the
 `reference page <https://fooof-tools.github.io/fooof/reference.html>`_.
-
-Direct Link: https://doi.org/10.1101/299859
 
 Code and analyses from the paper are also available in the
 `paper repository <https://github.com/fooof-tools/Paper>`_.

@@ -44,7 +44,6 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx_gallery.gen_gallery',
     'numpydoc',
-    'm2r'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -63,7 +62,6 @@ numpydoc_show_class_members = False
 autodoc_default_options = {
     'members': None,
     'inherited-members': None,
-    #'no-inherited-members': None,
 }
 
 # generate autosummary even if no references
