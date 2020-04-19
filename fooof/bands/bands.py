@@ -12,6 +12,12 @@ class Bands():
     ----------
     bands : dict
         Band definitions. Each entry should be {'label' : (f_low, f_high)}.
+
+    Examples
+    --------
+    Define a bands object object storing canonical frequency bands:
+
+    >>> bands = Bands({'theta' : [4, 8], 'alpha' : [8, 12], 'beta' : [15, 30]})
     """
 
     def __init__(self, input_bands={}):

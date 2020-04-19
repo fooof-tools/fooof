@@ -100,6 +100,12 @@ class Stepper():
         Length of generator range.
     data : iterator
         Set of specified parameters to iterate across.
+
+    Examples
+    --------
+    Define a stepper object for center frequency values for an alpha peak:
+
+    >>> alpha_cf_steps = Stepper(8, 12.5, 0.5)
     """
 
     def __init__(self, start, stop, step):

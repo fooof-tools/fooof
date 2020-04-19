@@ -28,6 +28,15 @@ def trim_spectrum(freqs, power_spectra, f_range):
     -----
     This function extracts frequency ranges >= f_low and <= f_high.
     It does not round to below or above f_low and f_high, respectively.
+
+
+    Examples
+    --------
+    Using a simulated spectrum, extract a frequency range:
+
+    >>> from fooof.sim import gen_power_spectrum
+    >>> freqs, powers = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1.0])
+    >>> freqs, powers = trim_spectrum(freqs, powers, [3, 30])
     """
 
     # Create mask to index only requested frequencies
