@@ -305,12 +305,6 @@ nfm.plot()
 fm.save_report('FOOOF_report')
 
 ###################################################################################################
-
-# If you're in a notebook, you can use this code to check what the generated report looks like
-from IPython.display import IFrame
-IFrame("FOOOF_report.pdf", width=950, height=1200)
-
-###################################################################################################
 # Conclusion
 # ----------
 #
