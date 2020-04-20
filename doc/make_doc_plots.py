@@ -27,7 +27,7 @@ def main():
     fm.fit(freqs, spectrum, [3, 40])
 
     # Save out the report
-    fm.save_report('FOOOF_report.pdf', 'img')
+    fm.save_report('FOOOF_report.png', 'img')
 
     ## Group Plot
 
@@ -40,7 +40,7 @@ def main():
     fg.fit(freqs, spectra, [3, 30])
 
     # Save out the report
-    fg.save_report('FOOOFGroup_report.pdf', 'img')
+    fg.save_report('FOOOFGroup_report.png', 'img')
 
     ## Make the icon plot
 
@@ -64,7 +64,7 @@ def main():
     plot_spectrum(fs, ps, log_freqs=False, log_powers=True, lw=12, alpha=0.8,
                   color='grey', plot_style=custom_style, ax=check_ax(None, [6, 6]))
     plt.tight_layout()
-    plt.savefig('img/spectrum.pdf')
+    plt.savefig('img/spectrum.png')
 
     ## Clean Up
 
