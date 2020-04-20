@@ -113,8 +113,17 @@ set_random_seed(321)
 #
 
 ###################################################################################################
+# Simulating Power Spectra
+# ------------------------
+#
+# For this example, we will use simulated data. The FOOOF module includes utilities
+# for creating simulated power-spectra. To do so, we can use the :func:`~.gen_power_spectrum`
+# function to simulate individual power spectra, following the power spectrum model.
+#
+# First, we will start by generating a noisy simulated power spectrum
+#
 
-# Generate a noisy simulated power spectrum
+###################################################################################################
 
 # Set the frequency range to generate the power spectrum
 f_range = [1, 50]
@@ -196,9 +205,6 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 #
 #   - Double check that you are using the appropriate aperiodic mode
 #
-
-###################################################################################################
-#
 # Next we will simulate a much smoother power spectrum, and update settings accordingly.
 #
 
@@ -243,8 +249,21 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 #
 
 ###################################################################################################
+# Simulating a Group of Power Spectra
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# We will continue using simulated data, this time simulating a group of power spectra.
+#
+# To simulate a group of power spectra, we will use the :func:`~.gen_group_power_spectra`
+# in combination with called :func:`~.param_sampler` that is used to sample across
+# possible parameters.
+#
+# For more and descriptions and example of how the simulations work, check out the
+# `examples <https://fooof-tools.github.io/fooof/auto_examples/index.html>`_ section.
 
-# Simulation settings
+###################################################################################################
+
+# Simulation settings for a group of power spectra
 n_spectra = 10
 sim_freq_range = [3, 50]
 nlv = 0.010
