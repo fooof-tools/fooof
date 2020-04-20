@@ -31,7 +31,10 @@ check:
 	make SPHINXOPTS="-n" html
 	make linkcheck
 
-## make install:
+# Create the plots used in the FOOOF documentation
+plots:
+	python make_doc_plots.py
+
 # Build the html site, and push it to gh-pages branch of repo to deploy
 install:
 	rm -rf _build/doctrees _build/tmp_html

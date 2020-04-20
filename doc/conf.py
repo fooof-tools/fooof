@@ -132,7 +132,7 @@ sphinx_gallery_conf = {
                                         '../motivations/concepts',
                                         '../motivations/measurements']),
     'within_subsection_order': FileNameSortKey,
-    'default_thumb_file': 'img/spectrum.png',
+    'default_thumb_file': 'img/spectrum.pdf',
     'backreferences_dir': 'generated',   # Where to drop linking files between examples & API
     'doc_module': ('fooof',),
     'reference_url': {'fooof': None}

@@ -220,7 +220,7 @@ any identified peaks, reflecting periodic components.
 
 Example output for the report of a FOOOF fit on an individual power spectrum:
 
-.. image:: https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOF_report.png
+.. image:: https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOF_report.pdf
 
 **Defining the model Settings**
 
@@ -264,7 +264,7 @@ We can fit this  which can be fit as:
 
 Example output from using FOOOFGroup across a group of power spectra:
 
-.. image:: https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOFGroup_report.png
+.. image:: https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOFGroup_report.pdf
 
 **Other Functionality**
 
