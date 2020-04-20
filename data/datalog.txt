@@ -1,0 +1,9 @@
+A log of the data included in this data folder:
+
+- 'freqs' & 'spectrum' are a power spectrum from MEG data
+	- HCP dataset, subject #102816, spectrum from vertex #2350
+- 'freqs_2' & 'spectrum_2' are a power spectrum from MEG data
+	- HCP dataset
+- 'freqs_lfp' & 'spectrum_lfp' are a power spectrum from LFP data 
+- 'group_freqs' & 'group_powers' are spectra from MEG data
+	- HCP dataset, 25 randomly selected spectra from subject #102816
