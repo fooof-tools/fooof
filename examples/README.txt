@@ -3,7 +3,9 @@
 Examples
 ========
 
-This section has examples of different functionality available in the module. Examples are organized into topics, and there is no ordering for these examples.
+This section has examples of different functionality available in the module. 
+
+Examples are organized by topic, and can be explored in any order.
 
 .. contents:: Contents
    :local:

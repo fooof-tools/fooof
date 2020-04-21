@@ -17,7 +17,9 @@ only update if and when you are ready to update your code to reflect the new cha
 
 Note that the main changes are in code organization, some names, and the addition of
 many new features. The fitting algorithm itself has not changed, and model results fit
-with the new version should be equivalent to those with older versions.
+with the new version should be roughly equivalent to those with older versions. However,
+there are bug fixes and tweaks such that new model fits are not guaranteed to be the
+identical to prior fits.
 
 Naming Updates
 ~~~~~~~~~~~~~~
@@ -35,6 +37,18 @@ The following is a list of the key naming updates, of public facing code.
 
   - setting `min_peak_amplitude` -> `min_peak_height`
   - References to `AMP` are now labelled and accessed as `PW` (for 'power')
+
+Previously Saved Data
+~~~~~~~~~~~~~~~~~~~~~
+
+Note that if you have data saved out from the 0.X.X release series of the module, then the
+code update to the 1.X.X series won't be able to properly load this data out of the box.
+
+This is due to the naming changes, and in particular the change from 'background' to
+'aperiodic'. Note that saved FOOOF files are plain-text JSON files, and so if you find & replace
+the word 'background' to 'aperiodic', this should update the files so that they can be loaded by
+the 1.X.X version. Note that if you also saved out the algorithm settings, you may need to update
+the name of `min_peak_amplitude` to `min_peak_height` as well.
 
 Code Organization
 ~~~~~~~~~~~~~~~~~

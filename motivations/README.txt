@@ -3,7 +3,14 @@
 Motivations
 ===========
 
-In this section, we explore the ideas and findings that motivate parameterizing neural power spectra. Using code examples, we explore some of the concepts underlying how we approach analyzing neural data and with digital signal processing; cover measurement issues whereby many current approaches may conflate different aspects of the data; and overall try to motivate why we consider parameterizing neural power spectra, or similar approaches, to be important, both conceptually and in practice. 
+This section explores conceptual and methodological ideas that motivate the need for parameterizing neural power spectra. 
+
+Using code examples, this section is organized into sections covering:
+
+- conceptual points about approaches for analyzing neural data and related topics in digital signal processing
+- methodological points investigating if and how current approaches may conflate different aspects of the data
+
+These examples can be explored in any order.
 
 .. contents:: Contents
    :local:
