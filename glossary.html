@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>Glossary &#8212; fooof 1.0.0rc4 documentation</title>
@@ -98,53 +98,53 @@
 <h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h1>
 <p>A glossary of terms used in the module, with a description of how they are used, as well as common abbreviations.</p>
 <dl class="glossary simple">
-<dt id="term-fooof">FOOOF</dt><dd><p>FOOOF stands for ‘fitting oscillations &amp; one-over f’.
+<dt id="term-FOOOF">FOOOF</dt><dd><p>FOOOF stands for ‘fitting oscillations &amp; one-over f’.
 We use <cite>FOOOF</cite> to refer to either the current module, or to <cite>FOOOF</cite> objects.</p>
 </dd>
-<dt id="term-field-data">Field Data</dt><dd><p>‘Field data’ is used as a catch-all for the relevant types of data that the power spectrum model can be applied to. This includes recordings of electrophysiological or magnetophysiological ‘fields’, meaning recording modalities such as electroencephalography (EEG), magnetoencephalography (MEG), electrocorticography (ECoG), and local field potential (LFP) data.</p>
+<dt id="term-Field-Data">Field Data</dt><dd><p>‘Field data’ is used as a catch-all for the relevant types of data that the power spectrum model can be applied to. This includes recordings of electrophysiological or magnetophysiological ‘fields’, meaning recording modalities such as electroencephalography (EEG), magnetoencephalography (MEG), electrocorticography (ECoG), and local field potential (LFP) data.</p>
 </dd>
-<dt id="term-power-spectrum">Power Spectrum</dt><dd><p>A power spectrum (short for power spectral density) describes the distribution of power across frequencies.</p>
+<dt id="term-Power-Spectrum">Power Spectrum</dt><dd><p>A power spectrum (short for power spectral density) describes the distribution of power across frequencies.</p>
 </dd>
-<dt id="term-power-spectrum-model">Power Spectrum Model</dt><dd><p>A power spectrum is a model that describes neural power spectra.
+<dt id="term-Power-Spectrum-Model">Power Spectrum Model</dt><dd><p>A power spectrum is a model that describes neural power spectra.
 This module implements a particular power spectrum model, whereby we conceptualize and describe mathematically a model that considers power spectra as a combination of periodic and aperiodic components, each of which can be described by a set of model parameters.</p>
 </dd>
-<dt id="term-fooof-objects">FOOOF Objects</dt><dd><p>This module is object-oriented, whereby the algorithm to parameterize neural power spectra is implemented in Python objects. We refer to those objects as ‘FOOOF objects’.</p>
+<dt id="term-FOOOF-Objects">FOOOF Objects</dt><dd><p>This module is object-oriented, whereby the algorithm to parameterize neural power spectra is implemented in Python objects. We refer to those objects as ‘FOOOF objects’.</p>
 </dd>
-<dt id="term-component">Component</dt><dd><p>By ‘component’ we mean a part, or aspect, of the data.
+<dt id="term-Component">Component</dt><dd><p>By ‘component’ we mean a part, or aspect, of the data.
 Different components of the data are considered to be separate aspects of, or entities in, the data, (though they need not be be completely independent).</p>
 </dd>
-<dt id="term-parameters">Parameters</dt><dd><p>We use the term ‘parameters’ to describe the parameters of the model, meaning the values in the model that are fit to the data. These model parameters are the results of the model fitting.</p>
+<dt id="term-Parameters">Parameters</dt><dd><p>We use the term ‘parameters’ to describe the parameters of the model, meaning the values in the model that are fit to the data. These model parameters are the results of the model fitting.</p>
 </dd>
-<dt id="term-settings">Settings</dt><dd><p>We use ‘settings’ to refer to things that control the algorithm, or any the settings for the algorithm that can be used to adjust the fitting procedure.</p>
+<dt id="term-Settings">Settings</dt><dd><p>We use ‘settings’ to refer to things that control the algorithm, or any the settings for the algorithm that can be used to adjust the fitting procedure.</p>
 </dd>
-<dt id="term-periodic">Periodic</dt><dd><p>Periodic (or ‘rhythmic’) component(s) of the data, that reflect putative oscillations.</p>
+<dt id="term-Periodic">Periodic</dt><dd><p>Periodic (or ‘rhythmic’) component(s) of the data, that reflect putative oscillations.</p>
 </dd>
-<dt id="term-peaks">Peaks</dt><dd><p>Parts of the power spectrum that are identified to have power over and above the aperiodic component, and are thus modeled as ‘peaks’, reflecting putative oscillations. The set of identified peaks are the periodic component(s) of the data. The peaks are described by the peak parameters: center frequency (CF), power (PW), and bandwidth (bw).</p>
+<dt id="term-Peaks">Peaks</dt><dd><p>Parts of the power spectrum that are identified to have power over and above the aperiodic component, and are thus modeled as ‘peaks’, reflecting putative oscillations. The set of identified peaks are the periodic component(s) of the data. The peaks are described by the peak parameters: center frequency (CF), power (PW), and bandwidth (bw).</p>
 </dd>
-<dt id="term-aperiodic">Aperiodic</dt><dd><p>Aperiodic (or ‘arrhythmic’) components of the data.
+<dt id="term-Aperiodic">Aperiodic</dt><dd><p>Aperiodic (or ‘arrhythmic’) components of the data.
 In neural power spectra, by aperiodic activity, we typically mean the 1/f-like activity.</p>
 </dd>
-<dt id="term-one-over-f-1-f">One-Over F (1/f)</dt><dd><p>‘One over f’ or ‘1/f’ activity describes activity whereby the power spectrum has a <span class="math notranslate nohighlight">\(1/f^\chi\)</span> property.
+<dt id="term-One-Over-F-1-f">One-Over F (1/f)</dt><dd><p>‘One over f’ or ‘1/f’ activity describes activity whereby the power spectrum has a <span class="math notranslate nohighlight">\(1/f^\chi\)</span> property.
 1/f activity is a type of aperiodic activity.</p>
 </dd>
 <dt id="term-1-f-like">1/f-like</dt><dd><p>Refers to cases in which the activity, or power spectrum, approximates or is similar to a 1/f distribution. In neural data, we often see data which has some aspects of 1/f, but is not formally 1/f, and so we describe this as ‘1/f-like’.</p>
 </dd>
-<dt id="term-center-frequency-cf">Center Frequency (CF)</dt><dd><p>The peak frequency of identified peaks.
+<dt id="term-Center-Frequency-CF">Center Frequency (CF)</dt><dd><p>The peak frequency of identified peaks.
 The CF is a peak parameter, as part of the periodic component of the data.</p>
 </dd>
-<dt id="term-power-pw">Power (PW)</dt><dd><p>The power, over and above the aperiodic component, of identified peaks.
+<dt id="term-Power-PW">Power (PW)</dt><dd><p>The power, over and above the aperiodic component, of identified peaks.
 The PW is a peak parameter, as part of the periodic component of the data.</p>
 </dd>
-<dt id="term-bandwidth-bw">Bandwidth (BW)</dt><dd><p>The bandwidth of identified peaks.
+<dt id="term-Bandwidth-BW">Bandwidth (BW)</dt><dd><p>The bandwidth of identified peaks.
 The BW is a peak parameter, as part of the periodic component of the data.</p>
 </dd>
-<dt id="term-offset-off">Offset (OFF)</dt><dd><p>The y-intercept of the model fit.
+<dt id="term-Offset-OFF">Offset (OFF)</dt><dd><p>The y-intercept of the model fit.
 The OFF is an aperiodic parameter, as part of the aperiodic component of the data.</p>
 </dd>
-<dt id="term-knee-kne">Knee (KNE)</dt><dd><p>An optional parameter of the aperiodic fit that relates to frequency locations where there is a ‘bend’ or a ‘knee’, when plotted in log-log space, in the 1/f-like aperiodic activity.
+<dt id="term-Knee-KNE">Knee (KNE)</dt><dd><p>An optional parameter of the aperiodic fit that relates to frequency locations where there is a ‘bend’ or a ‘knee’, when plotted in log-log space, in the 1/f-like aperiodic activity.
 The KNE is an aperiodic parameter, as part of the aperiodic component of the data.</p>
 </dd>
-<dt id="term-exponent-exp">Exponent (EXP)</dt><dd><p>The exponent of the aperiodic fit, which is <span class="math notranslate nohighlight">\(\chi\)</span> in the <span class="math notranslate nohighlight">\(1/f^\chi\)</span> formulation. FOOOF uses and fits exponential functions for the aperiodic fit, whereby <span class="math notranslate nohighlight">\(\chi\)</span> is equivalent to the slope of a linear fit in log-log space (with a sign flip).
+<dt id="term-Exponent-EXP">Exponent (EXP)</dt><dd><p>The exponent of the aperiodic fit, which is <span class="math notranslate nohighlight">\(\chi\)</span> in the <span class="math notranslate nohighlight">\(1/f^\chi\)</span> formulation. FOOOF uses and fits exponential functions for the aperiodic fit, whereby <span class="math notranslate nohighlight">\(\chi\)</span> is equivalent to the slope of a linear fit in log-log space (with a sign flip).
 The EXP is an aperiodic parameter, as part of the aperiodic component of the data.</p>
 </dd>
 </dl>
@@ -163,7 +163,7 @@ The EXP is an aperiodic parameter, as part of the aperiodic component of the dat
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.<br/>
     </p>
   </div>
 </footer>

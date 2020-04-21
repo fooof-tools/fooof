@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>fooof.FOOOF &#8212; fooof 1.0.0rc4 documentation</title>
@@ -96,9 +96,9 @@
       
   <div class="section" id="fooof-fooof">
 <h1>fooof.FOOOF<a class="headerlink" href="#fooof-fooof" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="fooof.FOOOF">
-<em class="property">class </em><code class="sig-prename descclassname">fooof.</code><code class="sig-name descname">FOOOF</code><span class="sig-paren">(</span><em class="sig-param">peak_width_limits=(0.5</em>, <em class="sig-param">12.0)</em>, <em class="sig-param">max_n_peaks=inf</em>, <em class="sig-param">min_peak_height=0.0</em>, <em class="sig-param">peak_threshold=2.0</em>, <em class="sig-param">aperiodic_mode='fixed'</em>, <em class="sig-param">verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">fooof.</code><code class="sig-name descname">FOOOF</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">peak_width_limits</span><span class="o">=</span><span class="default_value">0.5, 12.0</span></em>, <em class="sig-param"><span class="n">max_n_peaks</span><span class="o">=</span><span class="default_value">inf</span></em>, <em class="sig-param"><span class="n">min_peak_height</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">peak_threshold</span><span class="o">=</span><span class="default_value">2.0</span></em>, <em class="sig-param"><span class="n">aperiodic_mode</span><span class="o">=</span><span class="default_value">'fixed'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Model a physiological power spectrum as a combination of aperiodic and periodic components.</p>
 <p>WARNING: FOOOF expects frequency and power values in linear space.</p>
 <p>Passing in logged frequencies and/or power spectra is not detected,
@@ -170,9 +170,9 @@ Each row is a gaussian, as [mean, height, standard deviation].</p>
 </dl>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">peak_width_limits=(0.5</em>, <em class="sig-param">12.0)</em>, <em class="sig-param">max_n_peaks=inf</em>, <em class="sig-param">min_peak_height=0.0</em>, <em class="sig-param">peak_threshold=2.0</em>, <em class="sig-param">aperiodic_mode='fixed'</em>, <em class="sig-param">verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">peak_width_limits</span><span class="o">=</span><span class="default_value">0.5, 12.0</span></em>, <em class="sig-param"><span class="n">max_n_peaks</span><span class="o">=</span><span class="default_value">inf</span></em>, <em class="sig-param"><span class="n">min_peak_height</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">peak_threshold</span><span class="o">=</span><span class="default_value">2.0</span></em>, <em class="sig-param"><span class="n">aperiodic_mode</span><span class="o">=</span><span class="default_value">'fixed'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize object with desired settings.</p>
 </dd></dl>
 
@@ -263,9 +263,9 @@ Each row is a gaussian, as [mean, height, standard deviation].</p>
 </tr>
 </tbody>
 </table>
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.add_data">
-<code class="sig-name descname">add_data</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">freqs</em>, <em class="sig-param">power_spectrum</em>, <em class="sig-param">freq_range=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.add_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.add_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">freqs</span></em>, <em class="sig-param"><span class="n">power_spectrum</span></em>, <em class="sig-param"><span class="n">freq_range</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.add_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add data (frequencies, and power spectrum values) to the current object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -285,9 +285,9 @@ If not provided, keeps the entire range.</p>
 they will be cleared by this method call.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.add_meta_data">
-<code class="sig-name descname">add_meta_data</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fooof_meta_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.add_meta_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.add_meta_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_meta_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">fooof_meta_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.add_meta_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.add_meta_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add data information into object from a FOOOFMetaData object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -299,9 +299,9 @@ they will be cleared by this method call.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.add_results">
-<code class="sig-name descname">add_results</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fooof_result</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.add_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.add_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">fooof_result</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.add_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.add_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add results data into object from a FOOOFResults object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -313,9 +313,9 @@ they will be cleared by this method call.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.add_settings">
-<code class="sig-name descname">add_settings</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fooof_settings</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.add_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.add_settings" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_settings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">fooof_settings</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.add_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.add_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add settings into object from a FOOOFSettings object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -327,15 +327,15 @@ they will be cleared by this method call.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.copy">
-<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.copy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of the current object.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">freqs=None</em>, <em class="sig-param">power_spectrum=None</em>, <em class="sig-param">freq_range=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">freqs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">power_spectrum</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq_range</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the full power spectrum as a combination of periodic and aperiodic components.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -361,9 +361,9 @@ they will be cleared by this method call.</p>
 <p>Data is optional, if data has already been added to the object.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.get_meta_data">
-<code class="sig-name descname">get_meta_data</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_meta_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.get_meta_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_meta_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_meta_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.get_meta_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return data information from the current object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -375,9 +375,9 @@ they will be cleared by this method call.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">name</em>, <em class="sig-param">col=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">col</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return model fit parameters for specified feature(s).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -407,9 +407,9 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 <p>If there is no data on periodic features, this method will return NaN.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.get_results">
-<code class="sig-name descname">get_results</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.get_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.get_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return model fit parameters and goodness of fit metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -421,9 +421,9 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.get_settings">
-<code class="sig-name descname">get_settings</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.get_settings" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_settings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.get_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return user defined settings of the current object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -435,13 +435,13 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.has_data">
 <em class="property">property </em><code class="sig-name descname">has_data</code><a class="headerlink" href="#fooof.FOOOF.has_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicator for if the object contains data.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.has_model">
 <em class="property">property </em><code class="sig-name descname">has_model</code><a class="headerlink" href="#fooof.FOOOF.has_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicator for if the object contains a model fit.</p>
@@ -453,9 +453,9 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </ul>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.load">
-<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_name</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">regenerate=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.load" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">file_name</span></em>, <em class="sig-param"><span class="n">file_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">regenerate</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load in a FOOOF formatted JSON file to the current object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -471,15 +471,15 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.n_peaks_">
 <em class="property">property </em><code class="sig-name descname">n_peaks_</code><a class="headerlink" href="#fooof.FOOOF.n_peaks_" title="Permalink to this definition">¶</a></dt>
 <dd><p>How many peaks were fit in the model.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">plot_peaks=None</em>, <em class="sig-param">plot_aperiodic=True</em>, <em class="sig-param">plt_log=False</em>, <em class="sig-param">add_legend=True</em>, <em class="sig-param">save_fig=False</em>, <em class="sig-param">file_name=None</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">plot_style=&lt;function style_spectrum_plot at 0x1018e8a560&gt;</em>, <em class="sig-param">data_kwargs=None</em>, <em class="sig-param">model_kwargs=None</em>, <em class="sig-param">aperiodic_kwargs=None</em>, <em class="sig-param">peak_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">plot_peaks=None</em>, <em class="sig-param">plot_aperiodic=True</em>, <em class="sig-param">plt_log=False</em>, <em class="sig-param">add_legend=True</em>, <em class="sig-param">save_fig=False</em>, <em class="sig-param">file_name=None</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">plot_style=&lt;function style_spectrum_plot at 0x101fc968c0&gt;</em>, <em class="sig-param">data_kwargs=None</em>, <em class="sig-param">model_kwargs=None</em>, <em class="sig-param">aperiodic_kwargs=None</em>, <em class="sig-param">peak_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the power spectrum and model fit results from a FOOOF object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -513,9 +513,9 @@ Can also be a combination of approaches, separated by ‘-‘, for example: ‘s
 the y-axis (power) is plotted in log spacing by default.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.print_report_issue">
-<em class="property">static </em><code class="sig-name descname">print_report_issue</code><span class="sig-paren">(</span><em class="sig-param">concise=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.print_report_issue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.print_report_issue" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">print_report_issue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">concise</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.print_report_issue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.print_report_issue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints instructions on how to report bugs and/or problematic fits.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -527,9 +527,9 @@ the y-axis (power) is plotted in log spacing by default.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.print_results">
-<code class="sig-name descname">print_results</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">concise=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.print_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.print_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">print_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">concise</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.print_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.print_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print out model fitting results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -541,9 +541,9 @@ the y-axis (power) is plotted in log spacing by default.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.print_settings">
-<code class="sig-name descname">print_settings</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">description=False</em>, <em class="sig-param">concise=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.print_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.print_settings" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">print_settings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">concise</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.print_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.print_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print out the current settings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -557,9 +557,9 @@ the y-axis (power) is plotted in log spacing by default.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.report">
-<code class="sig-name descname">report</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">freqs=None</em>, <em class="sig-param">power_spectrum=None</em>, <em class="sig-param">freq_range=None</em>, <em class="sig-param">plt_log=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.report" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">report</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">freqs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">power_spectrum</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq_range</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plt_log</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run model fit, and display a report, which includes a plot, and printed results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -580,9 +580,9 @@ If not provided, fits across the entire given range.</p>
 <p>Data is optional, if data has already been added to the object.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.save">
-<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_name</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">append=False</em>, <em class="sig-param">save_results=False</em>, <em class="sig-param">save_settings=False</em>, <em class="sig-param">save_data=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.save" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">file_name</span></em>, <em class="sig-param"><span class="n">file_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">append</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_results</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_settings</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_data</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save out data, results and/or settings from a FOOOF object into a JSON file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -611,9 +611,9 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.save_report">
-<code class="sig-name descname">save_report</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_name</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">plt_log=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.save_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.save_report" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_report</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">file_name</span></em>, <em class="sig-param"><span class="n">file_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plt_log</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.save_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.save_report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate and save out a PDF report for a power spectrum model fit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -629,9 +629,9 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.FOOOF.set_debug_mode">
-<code class="sig-name descname">set_debug_mode</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">debug</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.set_debug_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.set_debug_mode" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_debug_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">debug</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.set_debug_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.set_debug_mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set whether debug mode, wherein an error is raised if fitting is unsuccessful.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -647,9 +647,57 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 
 <div class="section" id="examples-using-fooof-fooof">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.FOOOF</span></code><a class="headerlink" href="#examples-using-fooof-fooof" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="A description and introduction to the power spectrum model."><div class="figure align-default" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Check the error of power spectrum models across frequencies."><div class="figure align-default" id="id1">
+<img alt="../_images/sphx_glr_plot_freq_by_freq_error_thumb.png" src="../_images/sphx_glr_plot_freq_by_freq_error_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_freq_by_freq_error.html#sphx-glr-auto-examples-manage-plot-freq-by-freq-error-py"><span class="std std-ref">Frequency-by-Frequency Errors</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Examples with combining, sub-selecting, dropping, and averaging power spectrum models."><div class="figure align-default" id="id2">
+<img alt="../_images/sphx_glr_plot_manipulating_fooofs_thumb.png" src="../_images/sphx_glr_plot_manipulating_fooofs_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_manipulating_fooofs.html#sphx-glr-auto-examples-manage-plot-manipulating-fooofs-py"><span class="std std-ref">Manipulating FOOOF Objects</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Plotting power spectrum models, directly from FOOOF objects."><div class="figure align-default" id="id3">
+<img alt="../_images/sphx_glr_plot_fooof_models_thumb.png" src="../_images/sphx_glr_plot_fooof_models_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plots/plot_fooof_models.html#sphx-glr-auto-examples-plots-plot-fooof-models-py"><span class="std std-ref">Plot Power Spectrum Models</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Apply transformations to power spectra."><div class="figure align-default" id="id4">
+<img alt="../_images/sphx_glr_plot_transforms_thumb.png" src="../_images/sphx_glr_plot_transforms_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/sims/plot_transforms.html#sphx-glr-auto-examples-sims-plot-transforms-py"><span class="std std-ref">Transforming Power Spectra</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A description and introduction to the power spectrum model."><div class="figure align-default" id="id5">
 <img alt="../_images/sphx_glr_plot_01-ModelDescription_thumb.png" src="../_images/sphx_glr_plot_01-ModelDescription_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_01-ModelDescription.html#sphx-glr-auto-tutorials-plot-01-modeldescription-py"><span class="std std-ref">01: Model Description</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_01-ModelDescription.html#sphx-glr-auto-tutorials-plot-01-modeldescription-py"><span class="std std-ref">01: Model Description</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Introduction to the module, beginning with the FOOOF object."><div class="figure align-default" id="id6">
+<img alt="../_images/sphx_glr_plot_02-FOOOF_thumb.png" src="../_images/sphx_glr_plot_02-FOOOF_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_02-FOOOF.html#sphx-glr-auto-tutorials-plot-02-fooof-py"><span class="std std-ref">02: Fitting Power Spectrum Models</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A step by step overview of the algorithm for parameterizing neural power spectra."><div class="figure align-default" id="id7">
+<img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_thumb.png" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_03-FOOOFAlgorithm.html#sphx-glr-auto-tutorials-plot-03-fooofalgorithm-py"><span class="std std-ref">03: Fitting Algorithm</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Further exploring the FOOOF object, including algorithm settings and available methods."><div class="figure align-default" id="id8">
+<img alt="../_images/sphx_glr_plot_04-MoreFOOOF_thumb.png" src="../_images/sphx_glr_plot_04-MoreFOOOF_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_04-MoreFOOOF.html#sphx-glr-auto-tutorials-plot-04-morefooof-py"><span class="std std-ref">04: Exploring the FOOOF Object</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Choosing and using different approaches for fitting the aperiodic component."><div class="figure align-default" id="id9">
+<img alt="../_images/sphx_glr_plot_05-AperiodicFitting_thumb.png" src="../_images/sphx_glr_plot_05-AperiodicFitting_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_05-AperiodicFitting.html#sphx-glr-auto-tutorials-plot-05-aperiodicfitting-py"><span class="std std-ref">05: Aperiodic Component Fitting</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Using FOOOFGroup to run fit models across multiple power spectra."><div class="figure align-default" id="id10">
+<img alt="../_images/sphx_glr_plot_06-FOOOFGroup_thumb.png" src="../_images/sphx_glr_plot_06-FOOOFGroup_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_06-FOOOFGroup.html#sphx-glr-auto-tutorials-plot-06-fooofgroup-py"><span class="std std-ref">06: FOOOFGroup</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Tips &amp; tricks for choosing algorithm settings, tuning fits, and troubleshooting."><div class="figure align-default" id="id11">
+<img alt="../_images/sphx_glr_plot_07-TroubleShooting_thumb.png" src="../_images/sphx_glr_plot_07-TroubleShooting_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_07-TroubleShooting.html#sphx-glr-auto-tutorials-plot-07-troubleshooting-py"><span class="std std-ref">07: Tuning &amp; Troubleshooting</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting power spectrum models."><div class="figure align-default" id="id12">
+<img alt="../_images/sphx_glr_plot_08-FurtherAnalysis_thumb.png" src="../_images/sphx_glr_plot_08-FurtherAnalysis_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_08-FurtherAnalysis.html#sphx-glr-auto-tutorials-plot-08-furtheranalysis-py"><span class="std std-ref">08: Further Analysis</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Comparing how &#x27;Band-by-Band&#x27; approaches relate to periodic &amp; aperiodic components."><div class="figure align-default" id="id13">
+<img alt="../_images/sphx_glr_plot_BandByBand_thumb.png" src="../_images/sphx_glr_plot_BandByBand_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_motivations/measurements/plot_BandByBand.html#sphx-glr-auto-motivations-measurements-plot-bandbyband-py"><span class="std std-ref">Band-by-Band</span></a></span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </div>
 </div></div>
 </div>
@@ -667,7 +715,7 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.<br/>
     </p>
   </div>
 </footer>

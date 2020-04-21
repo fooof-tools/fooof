@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
     <title>fooof.Bands &#8212; fooof 1.0.0rc4 documentation</title>
@@ -96,9 +96,9 @@
       
   <div class="section" id="fooof-bands">
 <h1>fooof.Bands<a class="headerlink" href="#fooof-bands" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="fooof.Bands">
-<em class="property">class </em><code class="sig-prename descclassname">fooof.</code><code class="sig-name descname">Bands</code><span class="sig-paren">(</span><em class="sig-param">input_bands={}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.Bands" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">fooof.</code><code class="sig-name descname">Bands</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_bands</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.Bands" title="Permalink to this definition">¶</a></dt>
 <dd><p>Frequency band definitions.</p>
 <p class="rubric">Examples</p>
 <p>Define a bands object object storing canonical frequency bands:</p>
@@ -113,9 +113,9 @@
 </dl>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.Bands.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">input_bands={}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.Bands.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">input_bands</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.Bands.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize the Bands object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -163,9 +163,9 @@
 </tr>
 </tbody>
 </table>
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.Bands.add_band">
-<code class="sig-name descname">add_band</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">label</em>, <em class="sig-param">band_definition</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands.add_band"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.Bands.add_band" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_band</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">band_definition</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands.add_band"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.Bands.add_band" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new oscillation band definition.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -179,27 +179,27 @@
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.Bands.definitions">
 <em class="property">property </em><code class="sig-name descname">definitions</code><a class="headerlink" href="#fooof.Bands.definitions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Frequency definitions for all the bands defined in the object.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.Bands.labels">
 <em class="property">property </em><code class="sig-name descname">labels</code><a class="headerlink" href="#fooof.Bands.labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Labels for all the bands defined in the object.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.Bands.n_bands">
 <em class="property">property </em><code class="sig-name descname">n_bands</code><a class="headerlink" href="#fooof.Bands.n_bands" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of bands defined in the object.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="fooof.Bands.remove_band">
-<code class="sig-name descname">remove_band</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands.remove_band"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.Bands.remove_band" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">remove_band</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands.remove_band"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.Bands.remove_band" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a previously defined oscillation band.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -263,7 +263,7 @@
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.<br/>
     </p>
   </div>
 </footer>
