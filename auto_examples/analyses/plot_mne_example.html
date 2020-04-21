@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Topographical Analyses with MNE &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>Topographical Analyses with MNE &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -118,9 +121,9 @@ and managed with MNE, and how to plot topographies of resulting model parameters
 
 <span class="c1"># FOOOF imports</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">FOOOFGroup</span></a>
-<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <span class="n">Bands</span>
-<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="k">import</span> <span class="n">get_band_peak_fg</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <span class="n">plot_spectrum</span>
+<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">Bands</span></a>
+<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="k">import</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="View documentation for fooof.analysis.get_band_peak_fg"><span class="n">get_band_peak_fg</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a>
 </pre></div>
 </div>
 <div class="section" id="load-check-mne-data">
@@ -230,16 +233,16 @@ using the MNE object to define the corresponding channel locations.</p>
 <div class="section" id="plotting-periodic-topographies">
 <h3>Plotting Periodic Topographies<a class="headerlink" href="#plotting-periodic-topographies" title="Permalink to this headline">¶</a></h3>
 <p>Lets start start by plotting some periodic model parameters.</p>
-<p>To do so, we will use to <a class="reference internal" href="../../generated/fooof.bands.bands.Bands.html#fooof.bands.bands.Bands" title="fooof.bands.bands.Bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bands</span></code></a> object to manage some band
+<p>To do so, we will use to <a class="reference internal" href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bands</span></code></a> object to manage some band
 definitions, and some analysis utilities to extracts peaks from bands of interest.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define frequency bands of interest</span>
-<span class="n">bands</span> <span class="o">=</span> <span class="n">Bands</span><span class="p">({</span><span class="s1">&#39;theta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+<a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;theta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
                <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
                <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">]})</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract alpha peaks</span>
-<span class="n">alphas</span> <span class="o">=</span> <span class="n">get_band_peak_fg</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">bands</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">alphas</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="View documentation for fooof.analysis.get_band_peak_fg"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 
 <span class="c1"># Extract the power values from the detected peaks</span>
 <span class="n">alpha_pw</span> <span class="o">=</span> <span class="n">alphas</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
@@ -251,7 +254,7 @@ definitions, and some analysis utilities to extracts peaks from bands of interes
 </div>
 <img alt="../../_images/sphx_glr_plot_mne_example_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_002.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x1017f1b650&gt;, &lt;matplotlib.contour.QuadContourSet object at 0x101802e090&gt;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x101a6ab210&gt;, &lt;matplotlib.contour.QuadContourSet object at 0x101a7ba910&gt;)
 </pre></div>
 </div>
 <p>And there we have it, our first topography of parameterized spectra, showing alpha power!</p>
@@ -259,10 +262,10 @@ definitions, and some analysis utilities to extracts peaks from bands of interes
 <p>Now we can extend this to plot the power of each of our other defined frequency bands.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the topographies across different frequency bands</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bands</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="p">):</span>
 
     <span class="c1"># Get the power values across channels for the current band</span>
-    <span class="n">band_power</span> <span class="o">=</span> <span class="n">check_nans</span><span class="p">(</span><span class="n">get_band_peak_fg</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">band_def</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">band_power</span> <span class="o">=</span> <span class="n">check_nans</span><span class="p">(</span><a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="View documentation for fooof.analysis.get_band_peak_fg"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">band_def</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
 
     <span class="c1"># Create a topomap for the current oscillation band</span>
     <span class="n">mne</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">plot_topomap</span><span class="p">(</span><span class="n">band_power</span><span class="p">,</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -275,15 +278,15 @@ definitions, and some analysis utilities to extracts peaks from bands of interes
 <img alt="../../_images/sphx_glr_plot_mne_example_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_003.png" />
 <p>You might notice that the topographies of some of the bands look a little ‘patchy’.
 This is because we are setting any channels for which we did not find a peak as zero
-with our <cite>check_nan</cite> approach. Note that is also a single subject analysis.</p>
+with our <cite>check_nan</cite> approach. Note this is also a single subject analysis.</p>
 <p>Since we have the power spectrum models for each of our channels, we can also explore
 what these peaks look like in the underlying power spectra.</p>
 <p>Next, lets check the power spectra for the largest detected peaks within each band.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bands</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="p">):</span>
 
     <span class="c1"># Get the power values across channels for the current band</span>
-    <span class="n">band_power</span> <span class="o">=</span> <span class="n">check_nans</span><span class="p">(</span><span class="n">get_band_peak_fg</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">band_def</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">band_power</span> <span class="o">=</span> <span class="n">check_nans</span><span class="p">(</span><a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="View documentation for fooof.analysis.get_band_peak_fg"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">band_def</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
 
     <span class="c1"># Extracted and plot the power spectrum model with the most band power</span>
     <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_fooof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">band_power</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="n">add_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -310,7 +313,7 @@ and plot them.</p>
 </div>
 <img alt="../../_images/sphx_glr_plot_mne_example_005.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_005.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x101a46c110&gt;, &lt;matplotlib.contour.QuadContourSet object at 0x101a2e0410&gt;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x101cc432d0&gt;, &lt;matplotlib.contour.QuadContourSet object at 0x101cacfad0&gt;)
 </pre></div>
 </div>
 <p>In the topography above, we can see that there is a fair amount of variation
@@ -320,9 +323,9 @@ spatial structure to it.</p>
 spectra, in this case extracting those with the highest and lower exponent values.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the power spectra between low and high exponent channels</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_fooof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span>
+<a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_fooof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span>
               <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Low Exponent&#39;</span><span class="p">)</span>
-<span class="n">plot_spectrum</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_fooof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span>
+<a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_fooof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span>
               <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;High Exponent&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -333,9 +336,7 @@ spectra, in this case extracting those with the highest and lower exponent value
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
 <p>In this example, we have seen how to apply power spectrum models to data that is
 managed and processed with MNE.</p>
-<p>Sphinx settings:
-sphinx_gallery_thumbnail_number = 2</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.918 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.705 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-analyses-plot-mne-example-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/208ddf4708879eabf6a6f4aae1ab846a/plot_mne_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_mne_example.py</span></code></a></p>

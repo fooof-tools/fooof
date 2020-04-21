@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.sim.params.Stepper &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.sim.params.Stepper &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -108,8 +111,15 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Attributes</dt>
-<dd class="field-even"><dl class="simple">
+</dl>
+<p class="rubric">Examples</p>
+<p>Define a stepper object for center frequency values for an alpha peak:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alpha_cf_steps</span> <span class="o">=</span> <span class="n">Stepper</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">12.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
 <dt><strong>len</strong><span class="classifier">int</span></dt><dd><p>Length of generator range.</p>
 </dd>
 <dt><strong>data</strong><span class="classifier">iterator</span></dt><dd><p>Set of specified parameters to iterate across.</p>
@@ -137,6 +147,17 @@
 </table>
 </dd></dl>
 
+<div class="section" id="examples-using-fooof-sim-params-stepper">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.sim.params.Stepper</span></code><a class="headerlink" href="#examples-using-fooof-sim-params-stepper" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Visualizing power spectra."><div class="figure align-default" id="id1">
+<img alt="../_images/sphx_glr_plot_power_spectra_thumb.png" src="../_images/sphx_glr_plot_power_spectra_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plots/plot_power_spectra.html#sphx-glr-auto-examples-plots-plot-power-spectra-py"><span class="std std-ref">Plot Power Spectra</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Manage parameters for creating simulated power spectra."><div class="figure align-default" id="id2">
+<img alt="../_images/sphx_glr_plot_sim_params_thumb.png" src="../_images/sphx_glr_plot_sim_params_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/sims/plot_sim_params.html#sphx-glr-auto-examples-sims-plot-sim-params-py"><span class="std std-ref">Simulation Parameters</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div></div>
 </div>
 
 

@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.sim.transform &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.sim.transform &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -135,7 +138,7 @@
 <span class="sd">    - unity at the rotation frequency</span>
 <span class="sd">    - has an exponent of the desired delta exponent</span>
 
-<span class="sd">    This mask, when applied to a spectrum, as &#39;spectrum * mask should result in:</span>
+<span class="sd">    This mask, when applied to a spectrum as &#39;spectrum * mask&#39;, should result in:</span>
 
 <span class="sd">    - rotated_spectrum = 1/f^(original_exponent + delta_exponent), where</span>
 <span class="sd">    - spectrum[rotation_frequency] == rotated spectrum[rotation_frequency]</span>
@@ -150,6 +153,14 @@
 <span class="sd">    - This is because the rotation applied is inconsistent with the formulation of spectra</span>
 <span class="sd">      with a knee. This transformation will change them in an unspecified way, not just</span>
 <span class="sd">      limited to doing the rotation.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Rotate a simulated spectrum, changing the exponent around a rotation point of 25 Hz:</span>
+
+<span class="sd">    &gt;&gt;&gt; from fooof.sim.gen import gen_power_spectrum</span>
+<span class="sd">    &gt;&gt;&gt; freqs, powers = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1])</span>
+<span class="sd">    &gt;&gt;&gt; rotated_powers = rotate_spectrum(freqs, powers, 0.5, 25)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Rotations are undefined for frequency value of exactly zero</span>
@@ -180,6 +191,14 @@
 <span class="sd">    -------</span>
 <span class="sd">    translated_spectrum : 1d array</span>
 <span class="sd">        Translated power spectrum.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Translate a simulated spectrum, moving the offset up:</span>
+
+<span class="sd">    &gt;&gt;&gt; from fooof.sim.gen import gen_power_spectrum</span>
+<span class="sd">    &gt;&gt;&gt; freqs, powers = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1])</span>
+<span class="sd">    &gt;&gt;&gt; translated_powers = translate_spectrum(powers, 0.5)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">translated_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">delta_offset</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">power_spectrum</span>
@@ -220,6 +239,14 @@
 <span class="sd">    This is because the rotation applied is inconsistent with</span>
 <span class="sd">    the formulation of knee spectra, and will change them in an</span>
 <span class="sd">    unspecified way, not just limited to doing the rotation.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Rotate a simulated spectrum, changing the exponent around a rotation point of 25 Hz:</span>
+
+<span class="sd">    &gt;&gt;&gt; from fooof.sim.gen import gen_power_spectrum</span>
+<span class="sd">    &gt;&gt;&gt; freqs, powers, sp = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1], return_params=True)</span>
+<span class="sd">    &gt;&gt;&gt; rotated_powers, new_sp = rotate_sim_spectrum(freqs, powers, 0.5, 25, sp)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">rotated_spectrum</span> <span class="o">=</span> <span class="n">rotate_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">delta_exponent</span><span class="p">,</span> <span class="n">f_rotation</span><span class="p">)</span>
@@ -251,6 +278,14 @@
 <span class="sd">        Translated power spectrum.</span>
 <span class="sd">    new_sim_params : SimParams</span>
 <span class="sd">        New parameter definitions.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Translate a simulated spectrum, moving the offset up:</span>
+
+<span class="sd">    &gt;&gt;&gt; from fooof.sim.gen import gen_power_spectrum</span>
+<span class="sd">    &gt;&gt;&gt; freqs, powers, sp = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1], return_params=True)</span>
+<span class="sd">    &gt;&gt;&gt; translated_powers, new_sp = translate_sim_spectrum(powers, 0.5, sp)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">translated_spectrum</span> <span class="o">=</span> <span class="n">translate_spectrum</span><span class="p">(</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">delta_offset</span><span class="p">)</span>
@@ -273,6 +308,12 @@
 <span class="sd">    -------</span>
 <span class="sd">    float</span>
 <span class="sd">        The amount the offset will change for the specified exponent change.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Calculate the induced change in offset of a change in exponent of 0.5 at 25 Hz:</span>
+
+<span class="sd">    &gt;&gt;&gt; delta_offset = compute_rotation_offset(0.5, 25)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">f_rotation</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="n">delta_exponent</span></div>
@@ -316,10 +357,16 @@
 
 <span class="sd">    To find this, we can plug everything back into the equation, to find where</span>
 <span class="sd">    B[freqs] == C[freqs], which is how we arrive at the solution below.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Calculate the rotation frequency between two transformed power spectra:</span>
+
+<span class="sd">    &gt;&gt;&gt; f_rotation = compute_rotation_frequency(0.5, 25, -0.25, 10)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="p">(((</span><span class="n">f_rotation_c</span><span class="o">**</span><span class="n">delta_exponent_c</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">f_rotation_b</span><span class="o">**</span><span class="n">delta_exponent_b</span><span class="p">)))</span> <span class="o">**</span> \
-         <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">delta_exponent_c</span><span class="o">-</span><span class="n">delta_exponent_b</span><span class="p">))</span></div>
+        <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">delta_exponent_c</span><span class="o">-</span><span class="n">delta_exponent_b</span><span class="p">))</span></div>
 </pre></div>
 
     </div>

@@ -29,7 +29,7 @@ Exploring the rhythmicity of time series and their frequency representations.
 # Fourier transform and other similar measures, to compute frequency representations
 # of any time series data.
 #
-# However, just because a signal _can_ be represented by sinusoids does not mean that any
+# However, just because a signal can be represented by sinusoids does not mean that any
 # given signal, or any given aspect of a signal, for which a power spectrum can be computed
 # should be conceptualized as being comprised of rhythmic components.
 #
@@ -40,7 +40,6 @@ Exploring the rhythmicity of time series and their frequency representations.
 ###################################################################################################
 
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Use NeuroDSP for time series simulations & analyses
 from neurodsp import sim
@@ -54,7 +53,7 @@ from neurodsp.plts import plot_time_series, plot_power_spectra
 n_seconds = 2
 s_rate = 1000
 
-# Compute a times vector, for plotting, and check length of data
+# Compute an array of time values, for plotting, and check length of data
 times = create_times(n_seconds, s_rate)
 n_points = len(times)
 
@@ -116,7 +115,7 @@ plot_power_spectra(freqs, powers)
 #
 # In this case, and many like it, power across all frequencies is a representation of
 # transient (or aperiodic) activity in the time series. Broadly, when there are transients,
-# or aperiodic components, lots of sinusoids have to added together in order to represent
+# or aperiodic components, lots of sinusoids have to be added together in order to represent
 # aperiodic activity out of a basis set of periodic sine waves, and this is why such
 # signals typically look very broadband in the frequency domain.
 #

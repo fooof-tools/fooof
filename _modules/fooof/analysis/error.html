@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.analysis.error &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.analysis.error &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -97,14 +100,13 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_model</span>
-<span class="kn">from</span> <span class="nn">fooof.utils</span> <span class="k">import</span> <span class="n">compute_pointwise_error</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <span class="n">plot_spectrum_error</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.error</span> <span class="k">import</span> <span class="n">plot_spectral_error</span>
 <span class="kn">from</span> <span class="nn">fooof.core.errors</span> <span class="k">import</span> <span class="n">NoModelError</span><span class="p">,</span> <span class="n">NoDataError</span>
 
 <span class="c1">###################################################################################################</span>
 <span class="c1">###################################################################################################</span>
 
-<div class="viewcode-block" id="compute_pointwise_error_fm"><a class="viewcode-back" href="../../../generated/fooof.analysis.error.compute_pointwise_error_fm.html#fooof.analysis.error.compute_pointwise_error_fm">[docs]</a><span class="k">def</span> <span class="nf">compute_pointwise_error_fm</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">plt_kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="compute_pointwise_error_fm"><a class="viewcode-back" href="../../../generated/fooof.analysis.compute_pointwise_error_fm.html#fooof.analysis.compute_pointwise_error_fm">[docs]</a><span class="k">def</span> <span class="nf">compute_pointwise_error_fm</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">plt_kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the frequency by frequency error of a model fit from a FOOOF object.</span>
 
 <span class="sd">    Parameters</span>
@@ -140,13 +142,13 @@
     <span class="n">errors</span> <span class="o">=</span> <span class="n">compute_pointwise_error</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">plot_errors</span><span class="p">:</span>
-        <span class="n">plot_spectrum_error</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="o">**</span><span class="n">plt_kwargs</span><span class="p">)</span>
+        <span class="n">plot_spectral_error</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="o">**</span><span class="n">plt_kwargs</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">return_errors</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">errors</span></div>
 
 
-<div class="viewcode-block" id="compute_pointwise_error_fg"><a class="viewcode-back" href="../../../generated/fooof.analysis.error.compute_pointwise_error_fg.html#fooof.analysis.error.compute_pointwise_error_fg">[docs]</a><span class="k">def</span> <span class="nf">compute_pointwise_error_fg</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">plt_kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="compute_pointwise_error_fg"><a class="viewcode-back" href="../../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg">[docs]</a><span class="k">def</span> <span class="nf">compute_pointwise_error_fg</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">plt_kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the frequency by frequency error of model fits from a FOOOFGroup object.</span>
 
 <span class="sd">    Parameters</span>
@@ -190,10 +192,29 @@
     <span class="n">standard_dev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">plot_errors</span><span class="p">:</span>
-        <span class="n">plot_spectrum_error</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">standard_dev</span><span class="p">,</span> <span class="o">**</span><span class="n">plt_kwargs</span><span class="p">)</span>
+        <span class="n">plot_spectral_error</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">standard_dev</span><span class="p">,</span> <span class="o">**</span><span class="n">plt_kwargs</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">return_errors</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">errors</span></div>
+
+
+<div class="viewcode-block" id="compute_pointwise_error"><a class="viewcode-back" href="../../../generated/fooof.analysis.error.compute_pointwise_error.html#fooof.analysis.compute_pointwise_error">[docs]</a><span class="k">def</span> <span class="nf">compute_pointwise_error</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate pointwise error between original data and a model fit of that data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : 1d array</span>
+<span class="sd">        The model.</span>
+<span class="sd">    data : 1d array</span>
+<span class="sd">        The original data that is being modeled.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    1d array</span>
+<span class="sd">        Calculated values of the difference between the data and the model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">model</span> <span class="o">-</span> <span class="n">data</span><span class="p">)</span></div>
 </pre></div>
 
     </div>

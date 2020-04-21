@@ -154,7 +154,7 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 # Conclusion
 # ----------
 #
-# Now that we have explored the :class:`~fooof.FOOOF` object, and different fitting
-# approaches for fitting the aperiodic component. Next up, we will continue be
-# introducing how to scale the fitting to apply across multiple power spectra.
+# We have now explored the :class:`~fooof.FOOOF` object, and different fitting
+# approaches for the aperiodic component. Next up, we will be introducing how
+# to scale the fitting to apply across multiple power spectra.
 #

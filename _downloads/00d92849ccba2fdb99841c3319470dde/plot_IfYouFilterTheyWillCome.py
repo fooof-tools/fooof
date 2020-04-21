@@ -19,7 +19,7 @@ Examining the results of filtering aperiodic signals.
 # entail any periodic activity, but it can look like periodic activity when applying
 # transforms such as narrow-band filters.
 #
-# In this notebook we will simulate purely aperiodic filters, and apply filters to
+# In this notebook we will simulate purely aperiodic signals, and apply filters to
 # them, to explore these ideas.
 #
 
@@ -104,7 +104,7 @@ for ax, (label, f_range) in zip(axes, bands):
 ###################################################################################################
 #
 # As we can see, filtering a signal with aperiodic activity into arbitrary
-# frequency ranges returns filtered signals that _look_ like rhythmic activity.
+# frequency ranges returns filtered signals that look like rhythmic activity.
 #
 # Also, because our simulated signal has some random variation, the filtered components
 # also exhibit some fluctuations.
@@ -202,7 +202,7 @@ plt.xlim(0, n_seconds); plt.ylim(-1, 1);
 # -----------
 #
 # Here we have seen that filtering signals to narrow band signals can return results
-# that reflect aperiodic activity and dynamics. We therefore suggest that
+# that reflect periodic activity and dynamics. We therefore suggest that
 # narrow band filtered signals should not be presumed to necessarily reflect periodic
 # activity. In order to ascertain whether narrow band frequency regions reflect
 # periodic and/or aperiodic activity and which aspects are changing in the data,

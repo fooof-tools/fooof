@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.analysis.periodic &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.analysis.periodic &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -101,7 +104,7 @@
 <span class="c1">###################################################################################################</span>
 <span class="c1">###################################################################################################</span>
 
-<div class="viewcode-block" id="get_band_peak_fm"><a class="viewcode-back" href="../../../generated/fooof.analysis.periodic.get_band_peak_fm.html#fooof.analysis.periodic.get_band_peak_fm">[docs]</a><span class="k">def</span> <span class="nf">get_band_peak_fm</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">band</span><span class="p">,</span> <span class="n">ret_one</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thresh_param</span><span class="o">=</span><span class="s1">&#39;PW&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="get_band_peak_fm"><a class="viewcode-back" href="../../../generated/fooof.analysis.get_band_peak_fm.html#fooof.analysis.get_band_peak_fm">[docs]</a><span class="k">def</span> <span class="nf">get_band_peak_fm</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">band</span><span class="p">,</span> <span class="n">select_highest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thresh_param</span><span class="o">=</span><span class="s1">&#39;PW&#39;</span><span class="p">,</span>
                      <span class="n">attribute</span><span class="o">=</span><span class="s1">&#39;peak_params&#39;</span><span class="p">,):</span>
     <span class="sd">&quot;&quot;&quot;Extract peaks from a band of interest from a FOOOF object.</span>
 
@@ -111,8 +114,8 @@
 <span class="sd">        Object to extract peak data from.</span>
 <span class="sd">    band : tuple of (float, float)</span>
 <span class="sd">        Frequency range for the band of interest.</span>
-<span class="sd">        Defind as: (lower_frequency_bound, upper_frequency_bound).</span>
-<span class="sd">    ret_one : bool, optional, default: True</span>
+<span class="sd">        Defined as: (lower_frequency_bound, upper_frequency_bound).</span>
+<span class="sd">    select_highest : bool, optional, default: True</span>
 <span class="sd">        Whether to return single peak (if True) or all peaks within the range found (if False).</span>
 <span class="sd">        If True, returns the highest power peak within the search range.</span>
 <span class="sd">    threshold : float</span>
@@ -125,13 +128,24 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    1d or 2d array</span>
-<span class="sd">        Peak data. Each row is a peak, as [CF, PW, BW]</span>
+<span class="sd">        Peak data. Each row is a peak, as [CF, PW, BW].</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Select an alpha peak from an already fit FOOOF object &#39;fm&#39;, selecting the highest power alpha:</span>
+
+<span class="sd">    &gt;&gt;&gt; alpha = get_band_peak_fm(fm, [7, 14], select_highest=True)  # doctest:+SKIP</span>
+
+<span class="sd">    Select beta peaks from a FOOOF object &#39;fm&#39;, extracting all peaks in the range:</span>
+
+<span class="sd">    &gt;&gt;&gt; betas = get_band_peak_fm(fm, [13, 30], select_highest=False)  # doctest:+SKIP</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">get_band_peak</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">attribute</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span><span class="p">),</span> <span class="n">band</span><span class="p">,</span> <span class="n">ret_one</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">thresh_param</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">get_band_peak</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">attribute</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span><span class="p">),</span> <span class="n">band</span><span class="p">,</span>
+                         <span class="n">select_highest</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">thresh_param</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_band_peak_fg"><a class="viewcode-back" href="../../../generated/fooof.analysis.periodic.get_band_peak_fg.html#fooof.analysis.periodic.get_band_peak_fg">[docs]</a><span class="k">def</span> <span class="nf">get_band_peak_fg</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="n">band</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thresh_param</span><span class="o">=</span><span class="s1">&#39;PW&#39;</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="s1">&#39;peak_params&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="get_band_peak_fg"><a class="viewcode-back" href="../../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg">[docs]</a><span class="k">def</span> <span class="nf">get_band_peak_fg</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="n">band</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thresh_param</span><span class="o">=</span><span class="s1">&#39;PW&#39;</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="s1">&#39;peak_params&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extract peaks from a band of interest from a FOOOFGroup object.</span>
 
 <span class="sd">    Parameters</span>
@@ -140,7 +154,7 @@
 <span class="sd">        Object to extract peak data from.</span>
 <span class="sd">    band : tuple of (float, float)</span>
 <span class="sd">        Frequency range for the band of interest.</span>
-<span class="sd">        Defind as: (lower_frequency_bound, upper_frequency_bound).</span>
+<span class="sd">        Defined as: (lower_frequency_bound, upper_frequency_bound).</span>
 <span class="sd">    threshold : float</span>
 <span class="sd">        A minimum threshold value to apply.</span>
 <span class="sd">    thresh_param : {&#39;PW&#39;, &#39;BW&#39;}</span>
@@ -152,13 +166,39 @@
 <span class="sd">    -------</span>
 <span class="sd">    2d array</span>
 <span class="sd">        Peak data. Each row is a peak, as [CF, PW, BW].</span>
+<span class="sd">        Each row represents an individual model from the input object.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The returned array keeps track of which model each extracted peak comes from,</span>
+<span class="sd">    returning a [n_models, 3] array, with one peak returned per model.</span>
+
+<span class="sd">    - To do so, this function necessarily extracts and returns one peak per model fit.</span>
+<span class="sd">    - Each row reflects an individual model fit, in order, filled with nan if no peak was present.</span>
+
+<span class="sd">    If, instead, you wish to extract all peaks within a band, per model fit,</span>
+<span class="sd">    you can do something like:</span>
+
+<span class="sd">    &gt;&gt;&gt; peaks = np.empty((0, 3))</span>
+<span class="sd">    &gt;&gt;&gt; for f_res in fg:  # doctest:+SKIP</span>
+<span class="sd">    ...     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band, select_highest=False)))</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Extract alpha peaks from a FOOOFGroup object &#39;fg&#39; that already has model results:</span>
+
+<span class="sd">    &gt;&gt;&gt; alphas = get_band_peak_fg(fg, [7, 14])  # doctest:+SKIP</span>
+
+<span class="sd">    Extract peaks from a FOOOFGroup object &#39;fg&#39;, selecting those above a power threshold:</span>
+
+<span class="sd">    &gt;&gt;&gt; betas = get_band_peak_fg(fg, [13, 30], threshold=0.1)  # doctest:+SKIP</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="n">get_band_peak_group</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="n">attribute</span><span class="p">),</span> <span class="n">band</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">fg</span><span class="p">),</span>
                                <span class="n">threshold</span><span class="p">,</span> <span class="n">thresh_param</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_band_peak_group"><a class="viewcode-back" href="../../../generated/fooof.analysis.periodic.get_band_peak_group.html#fooof.analysis.periodic.get_band_peak_group">[docs]</a><span class="k">def</span> <span class="nf">get_band_peak_group</span><span class="p">(</span><span class="n">peak_params</span><span class="p">,</span> <span class="n">band</span><span class="p">,</span> <span class="n">n_fits</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thresh_param</span><span class="o">=</span><span class="s1">&#39;PW&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="get_band_peak_group"><a class="viewcode-back" href="../../../generated/fooof.analysis.periodic.get_band_peak_group.html#fooof.analysis.get_band_peak_group">[docs]</a><span class="k">def</span> <span class="nf">get_band_peak_group</span><span class="p">(</span><span class="n">peak_params</span><span class="p">,</span> <span class="n">band</span><span class="p">,</span> <span class="n">n_fits</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thresh_param</span><span class="o">=</span><span class="s1">&#39;PW&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extract peaks within a given band of interest, from peaks from a group fit.</span>
 
 <span class="sd">    Parameters</span>
@@ -167,7 +207,7 @@
 <span class="sd">        Peak parameters, for a group fit, with shape of [n_peaks, 4].</span>
 <span class="sd">    band : tuple of (float, float)</span>
 <span class="sd">        Frequency range for the band of interest.</span>
-<span class="sd">        Defind as: (lower_frequency_bound, upper_frequency_bound).e</span>
+<span class="sd">        Defined as: (lower_frequency_bound, upper_frequency_bound).e</span>
 <span class="sd">    n_fits : int</span>
 <span class="sd">        The number of model fits in the FOOOFGroup data.</span>
 <span class="sd">    threshold : float</span>
@@ -179,35 +219,29 @@
 <span class="sd">    -------</span>
 <span class="sd">    band_peaks : 2d array</span>
 <span class="sd">        Peak data. Each row is a peak, as [CF, PW, BW].</span>
+<span class="sd">        Each row represents an individual model from the input array of all peaks.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This function conserves the shape of the array, returning a [n_fits, 3] array.</span>
+<span class="sd">    The returned array keeps track of which model each extracted peak comes from,</span>
+<span class="sd">    returning a [n_models, 3] array, with one peak returned per model.</span>
 
-<span class="sd">    * Each row reflects a FOOOF model fit, in order, filled with NaN if no peak was present.</span>
-
-<span class="sd">    * To do so, this function necessarily extracts and returns one peak per model fit.</span>
-
-<span class="sd">    If, instead, you with to extract all peaks within a band, per model fit, you can do:</span>
-
-<span class="sd">    &gt;&gt;&gt; peaks = np.empty((0, 3))</span>
-<span class="sd">    &gt;&gt;&gt; for f_res in fg:</span>
-<span class="sd">    &gt;&gt;&gt;     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band, ret_one=False)))</span>
+<span class="sd">    - To do so, this function necessarily extracts and returns one peak per model fit.</span>
+<span class="sd">    - Each row reflects an individual model fit, in order, filled with nan if no peak was present.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">band_peaks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">n_fits</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-
     <span class="c1"># Extracts an array per FOOOF fit, and extracts band peaks from it</span>
+    <span class="n">band_peaks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">n_fits</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_fits</span><span class="p">):</span>
         <span class="n">band_peaks</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">get_band_peak</span><span class="p">(</span><span class="n">peak_params</span><span class="p">[</span><span class="nb">tuple</span><span class="p">([</span><span class="n">peak_params</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">ind</span><span class="p">])][:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span>
-                                           <span class="n">band</span><span class="o">=</span><span class="n">band</span><span class="p">,</span> <span class="n">ret_one</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                           <span class="n">band</span><span class="o">=</span><span class="n">band</span><span class="p">,</span> <span class="n">select_highest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                            <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span>
                                            <span class="n">thresh_param</span><span class="o">=</span><span class="n">thresh_param</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">band_peaks</span></div>
 
 
-<div class="viewcode-block" id="get_band_peak"><a class="viewcode-back" href="../../../generated/fooof.analysis.periodic.get_band_peak.html#fooof.analysis.periodic.get_band_peak">[docs]</a><span class="k">def</span> <span class="nf">get_band_peak</span><span class="p">(</span><span class="n">peak_params</span><span class="p">,</span> <span class="n">band</span><span class="p">,</span> <span class="n">ret_one</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thresh_param</span><span class="o">=</span><span class="s1">&#39;PW&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="get_band_peak"><a class="viewcode-back" href="../../../generated/fooof.analysis.periodic.get_band_peak.html#fooof.analysis.get_band_peak">[docs]</a><span class="k">def</span> <span class="nf">get_band_peak</span><span class="p">(</span><span class="n">peak_params</span><span class="p">,</span> <span class="n">band</span><span class="p">,</span> <span class="n">select_highest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thresh_param</span><span class="o">=</span><span class="s1">&#39;PW&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extract peaks within a given band of interest.</span>
 
 <span class="sd">    Parameters</span>
@@ -216,8 +250,8 @@
 <span class="sd">        Peak parameters, with shape of [n_peaks, 3].</span>
 <span class="sd">    band : tuple of (float, float)</span>
 <span class="sd">        Frequency range for the band of interest.</span>
-<span class="sd">        Defind as: (lower_frequency_bound, upper_frequency_bound).</span>
-<span class="sd">    ret_one : bool, optional, default: True</span>
+<span class="sd">        Defined as: (lower_frequency_bound, upper_frequency_bound).</span>
+<span class="sd">    select_highest : bool, optional, default: True</span>
 <span class="sd">        Whether to return single peak (if True) or all peaks within the range found (if False).</span>
 <span class="sd">        If True, returns the highest peak within the search range.</span>
 <span class="sd">    threshold : float</span>
@@ -228,7 +262,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    band_peaks : 1d or 2d array</span>
-<span class="sd">        Peak data. Each row is a peak, as [CF, PW, BW]</span>
+<span class="sd">        Peak data. Each row is a peak, as [CF, PW, BW].</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Return nan array if empty input</span>
@@ -239,7 +273,7 @@
     <span class="n">peak_inds</span> <span class="o">=</span> <span class="p">(</span><span class="n">peak_params</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">band</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">peak_params</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">band</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">n_peaks</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">peak_inds</span><span class="p">)</span>
 
-    <span class="c1"># If there are no peaks within the specified range</span>
+    <span class="c1"># If there are no peaks within the specified range, return nan</span>
     <span class="c1">#   Note: this also catches and returns if the original input was empty</span>
     <span class="k">if</span> <span class="n">n_peaks</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
@@ -250,27 +284,32 @@
     <span class="k">if</span> <span class="n">threshold</span><span class="p">:</span>
         <span class="n">band_peaks</span> <span class="o">=</span> <span class="n">threshold_peaks</span><span class="p">(</span><span class="n">band_peaks</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">thresh_param</span><span class="p">)</span>
 
-    <span class="c1"># If results &gt; 1 and ret_one, then we return the highest peak</span>
+    <span class="c1"># If results &gt; 1 and select_highest, then we return the highest peak</span>
     <span class="c1">#    Call a sub-function to select highest power peak in band</span>
-    <span class="k">if</span> <span class="n">n_peaks</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">ret_one</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n_peaks</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">select_highest</span><span class="p">:</span>
         <span class="n">band_peaks</span> <span class="o">=</span> <span class="n">get_highest_peak</span><span class="p">(</span><span class="n">band_peaks</span><span class="p">)</span>
 
     <span class="c1"># Squeeze so that if there is only 1 result, return single peak in flat array</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">band_peaks</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_highest_peak"><a class="viewcode-back" href="../../../generated/fooof.analysis.periodic.get_highest_peak.html#fooof.analysis.periodic.get_highest_peak">[docs]</a><span class="k">def</span> <span class="nf">get_highest_peak</span><span class="p">(</span><span class="n">peak_params</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Extract the highest peak.</span>
+<div class="viewcode-block" id="get_highest_peak"><a class="viewcode-back" href="../../../generated/fooof.analysis.periodic.get_highest_peak.html#fooof.analysis.get_highest_peak">[docs]</a><span class="k">def</span> <span class="nf">get_highest_peak</span><span class="p">(</span><span class="n">peak_params</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract the highest power peak.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    peak_params : 2d array</span>
-<span class="sd">        Peak parameters, with shape of [n_peaks, 3] or [n_peaks, 4].</span>
+<span class="sd">        Peak parameters, with shape of [n_peaks, 3].</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    1d array</span>
-<span class="sd">        Peak data. Each row is a peak, as [CF, PW, BW].</span>
+<span class="sd">        Peak data. The row is a peak, as [CF, PW, BW].</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function returns the singular highest power peak from the input set, and as</span>
+<span class="sd">    such is defined to work on periodic parameters from a single model fit.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Catch &amp; return NaN if empty</span>
@@ -282,7 +321,7 @@
     <span class="k">return</span> <span class="n">peak_params</span><span class="p">[</span><span class="n">high_ind</span><span class="p">,</span> <span class="p">:]</span></div>
 
 
-<div class="viewcode-block" id="threshold_peaks"><a class="viewcode-back" href="../../../generated/fooof.analysis.periodic.threshold_peaks.html#fooof.analysis.periodic.threshold_peaks">[docs]</a><span class="k">def</span> <span class="nf">threshold_peaks</span><span class="p">(</span><span class="n">peak_params</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="s1">&#39;PW&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="threshold_peaks"><a class="viewcode-back" href="../../../generated/fooof.analysis.periodic.threshold_peaks.html#fooof.analysis.threshold_peaks">[docs]</a><span class="k">def</span> <span class="nf">threshold_peaks</span><span class="p">(</span><span class="n">peak_params</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="s1">&#39;PW&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extract peaks that are above a given threshold value.</span>
 
 <span class="sd">    Parameters</span>
@@ -298,12 +337,18 @@
 <span class="sd">    -------</span>
 <span class="sd">    thresholded_peaks : 2d array</span>
 <span class="sd">        Peak parameters, with shape of [n_peaks, :].</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function can be applied to periodic parameters from an individual model,</span>
+<span class="sd">    or a set or parameters from a group.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Catch &amp; return NaN if empty</span>
+    <span class="c1"># Catch if input is empty &amp; return nan if so</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">peak_params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
 
+    <span class="c1"># Otherwise, apply a mask to apply the requested threshold</span>
     <span class="n">thresh_mask</span> <span class="o">=</span> <span class="n">peak_params</span><span class="p">[:,</span> <span class="n">PEAK_INDS</span><span class="p">[</span><span class="n">param</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="n">threshold</span>
     <span class="n">thresholded_peaks</span> <span class="o">=</span> <span class="n">peak_params</span><span class="p">[</span><span class="n">thresh_mask</span><span class="p">]</span>
 

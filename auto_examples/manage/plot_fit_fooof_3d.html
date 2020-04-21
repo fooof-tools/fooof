@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Fitting Power Spectrum Models Across 3D Arrays &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>Fitting Power Spectrum Models Across 3D Arrays &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -100,9 +103,9 @@
 <p>Fitting power spectrum models across 3D arrays of power spectra.</p>
 <div class="section" id="running-across-3d">
 <h2>Running Across 3D<a class="headerlink" href="#running-across-3d" title="Permalink to this headline">¶</a></h2>
-<p>Most of the materials so far have explored using the <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object to fit individual
-power spectra, and the <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object for fitting groups of power spectra,
-where a group of spectra is organized as a 2D array of power spectra.</p>
+<p>Most of the materials so far have explored using the <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object to fit
+individual power spectra, and the <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object for fitting groups of
+power spectra, where a group of spectra is organized as a 2D array of power spectra.</p>
 <p>In this example, we’ll go one step further, and step through how to analyze data
 organized into 3D arrays.</p>
 <div class="section" id="organizing-data-into-3d-objects">
@@ -121,7 +124,7 @@ of conditions, and/or the number of trials.</p>
 <p>If you do have data that is or can be organized into 3D arrays, here we will
 explore how to fit, manage, and organize this data.</p>
 <p>A reminder that no matter how the data is organized, it’s always the exact same model
-that is fit, that is the on defined in the FOOOF object. All other objects or organizations
+that is fit, that is the one defined in the FOOOF object. All other objects or organizations
 use this same code to do the fitting. For example, the FOOOFGroup object inherits from the
 FOOOF, and calls the same underlying fit function.</p>
 <p>As we’ll see, we can fit 3D arrays of spectra by distributing FOOOFGroup objects
@@ -134,12 +137,12 @@ across the data, which also uses the same underlying code.</p>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">FOOOFGroup</span></a>
 
 <span class="c1"># Import utilities for working with FOOOF objects</span>
-<span class="kn">from</span> <span class="nn">fooof.objs</span> <span class="k">import</span> <span class="n">fit_fooof_3d</span><span class="p">,</span> <span class="n">combine_fooofs</span>
+<span class="kn">from</span> <span class="nn">fooof.objs</span> <span class="k">import</span> <a href="../../generated/fooof.fit_fooof_3d.html#fooof.fit_fooof_3d" title="View documentation for fooof.fit_fooof_3d"><span class="n">fit_fooof_3d</span></a><span class="p">,</span> <a href="../../generated/fooof.objs.combine_fooofs.html#fooof.objs.combine_fooofs" title="View documentation for fooof.objs.combine_fooofs"><span class="n">combine_fooofs</span></a>
 
 <span class="c1"># Import simulation &amp; IO utilities to help with the example</span>
-<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_freqs</span><span class="p">,</span> <span class="n">gen_group_power_spectra</span>
-<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="k">import</span> <span class="n">param_sampler</span>
-<span class="kn">from</span> <span class="nn">fooof.utils</span> <span class="k">import</span> <span class="n">load_fooofgroup</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../../generated/fooof.sim.gen_freqs.html#fooof.sim.gen_freqs" title="View documentation for fooof.sim.gen_freqs"><span class="n">gen_freqs</span></a><span class="p">,</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="View documentation for fooof.sim.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="k">import</span> <a href="../../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="View documentation for fooof.sim.params.param_sampler"><span class="n">param_sampler</span></a>
+<span class="kn">from</span> <span class="nn">fooof.utils.io</span> <span class="k">import</span> <a href="../../generated/fooof.utils.io.load_fooofgroup.html#fooof.utils.io.load_fooofgroup" title="View documentation for fooof.utils.io.load_fooofgroup"><span class="n">load_fooofgroup</span></a>
 </pre></div>
 </div>
 </div>
@@ -161,17 +164,17 @@ data across several different ‘conditions’, from multiple ‘channels’.</p
 <span class="c1"># Set up the shape of the data</span>
 <span class="n">n_conditions</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">n_channels</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">n_freqs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gen_freqs</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">freq_res</span><span class="p">))</span>
+<span class="n">n_freqs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><a href="../../generated/fooof.sim.gen_freqs.html#fooof.sim.gen_freqs" title="View documentation for fooof.sim.gen_freqs"><span class="n">gen_freqs</span></a><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">freq_res</span><span class="p">))</span>
 
 <span class="c1"># Define parameters for the simulated power spectra</span>
-<span class="n">ap_opts</span> <span class="o">=</span> <span class="n">param_sampler</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
-<span class="n">pe_opts</span> <span class="o">=</span> <span class="n">param_sampler</span><span class="p">([[],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="n">ap_opts</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="View documentation for fooof.sim.params.param_sampler"><span class="n">param_sampler</span></a><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+<span class="n">pe_opts</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="View documentation for fooof.sim.params.param_sampler"><span class="n">param_sampler</span></a><span class="p">([[],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate some simulated power spectra, and organize into a 3D array</span>
 <span class="n">spectra</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_conditions</span><span class="p">):</span>
-    <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">gen_group_power_spectra</span><span class="p">(</span><span class="n">n_channels</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">ap_opts</span><span class="p">,</span>
+    <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="View documentation for fooof.sim.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="n">n_channels</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">ap_opts</span><span class="p">,</span>
                                             <span class="n">pe_opts</span><span class="p">,</span> <span class="n">freq_res</span><span class="o">=</span><span class="n">freq_res</span><span class="p">)</span>
     <span class="n">spectra</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">powers</span><span class="p">)</span>
 
@@ -198,17 +201,17 @@ efficiently across all power spectra, while keeping our data and results organiz
 in a way that we keep track of which model results reflect which data.</p>
 <p>The strategy we will take to do so is by systematically applying FOOOF objects across
 the data.</p>
-<p>For working with 3D arrays of power spectra, we have the <a class="reference internal" href="../../generated/fooof.objs.utils.fit_fooof_3d.html#fooof.objs.utils.fit_fooof_3d" title="fooof.objs.utils.fit_fooof_3d"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit_fooof_3d()</span></code></a>
+<p>For working with 3D arrays of power spectra, we have the <a class="reference internal" href="../../generated/fooof.fit_fooof_3d.html#fooof.fit_fooof_3d" title="fooof.fit_fooof_3d"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit_fooof_3d()</span></code></a>
 function which takes in data and a pre-initialized model object, and uses it to fit
 power spectrum models across all the data, while maintaining the organization of
 the input data.</p>
 </div>
 <div class="section" id="fit-fooof-3d">
 <h3>fit_fooof_3d<a class="headerlink" href="#fit-fooof-3d" title="Permalink to this headline">¶</a></h3>
-<p>More specifically, <a class="reference internal" href="../../generated/fooof.objs.utils.fit_fooof_3d.html#fooof.objs.utils.fit_fooof_3d" title="fooof.objs.utils.fit_fooof_3d"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit_fooof_3d()</span></code></a> takes in:</p>
+<p>More specifically, <a class="reference internal" href="../../generated/fooof.fit_fooof_3d.html#fooof.fit_fooof_3d" title="fooof.fit_fooof_3d"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit_fooof_3d()</span></code></a> takes in:</p>
 <ul class="simple">
 <li><p>a FOOOFGroup object, pre-initialized with the desired settings</p></li>
-<li><p>a frequency vector and a 3D array of power spectra</p></li>
+<li><p>an array of frequency values and a 3D array of power spectra</p></li>
 </ul>
 <p>Internally, this function uses the <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object to
 fit models across the power spectra.</p>
@@ -219,7 +222,7 @@ collectively store all the model fit results.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the 3D array of power spectra</span>
-<span class="n">fgs</span> <span class="o">=</span> <span class="n">fit_fooof_3d</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">)</span>
+<span class="n">fgs</span> <span class="o">=</span> <a href="../../generated/fooof.fit_fooof_3d.html#fooof.fit_fooof_3d" title="View documentation for fooof.fit_fooof_3d"><span class="n">fit_fooof_3d</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -233,7 +236,7 @@ Running FOOOFGroup across 10 power spectra.
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;fooof.objs.group.FOOOFGroup object at 0x101864d9d0&gt;, &lt;fooof.objs.group.FOOOFGroup object at 0x1018646e10&gt;, &lt;fooof.objs.group.FOOOFGroup object at 0x10176c5190&gt;]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;fooof.objs.group.FOOOFGroup object at 0x10182800d0&gt;, &lt;fooof.objs.group.FOOOFGroup object at 0x10191e3a50&gt;, &lt;fooof.objs.group.FOOOFGroup object at 0x10191e31d0&gt;]
 </pre></div>
 </div>
 <p>Note that the length of the returned list of objects should be equivalent to
@@ -256,7 +259,7 @@ Number of conditions:   3
 way as you would look into any other FOOOF objects. You can check out the other examples
 and tutorials for more information on how to do this.</p>
 <p>A general strategy for analyzing model fit results as they get returned from
-<a class="reference internal" href="../../generated/fooof.objs.utils.fit_fooof_3d.html#fooof.objs.utils.fit_fooof_3d" title="fooof.objs.utils.fit_fooof_3d"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit_fooof_3d()</span></code></a> is to loop across all the objects in the
+<a class="reference internal" href="../../generated/fooof.fit_fooof_3d.html#fooof.fit_fooof_3d" title="fooof.fit_fooof_3d"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit_fooof_3d()</span></code></a> is to loop across all the objects in the
 returned list, and then within the loop you can collect and/or analyze and/or plot
 any data of interest.</p>
 <p>For a simple example analysis here, we can investigate if there appears to be a
@@ -268,19 +271,19 @@ difference in aperiodic exponent between different conditions.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Aperiodic exponent for condition 0 is 1.5509
-Aperiodic exponent for condition 1 is 1.3507
-Aperiodic exponent for condition 2 is 1.3497
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Aperiodic exponent for condition 0 is 1.6508
+Aperiodic exponent for condition 1 is 1.5499
+Aperiodic exponent for condition 2 is 1.5000
 </pre></div>
 </div>
 </div>
 <div class="section" id="managing-fooof-objects">
 <h3>Managing FOOOF Objects<a class="headerlink" href="#managing-fooof-objects" title="Permalink to this headline">¶</a></h3>
 <p>When running analyses like this, you may start to have many <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> objects.</p>
-<p>For example, you may want to save them out, reload them as needed, analyze
-results from each <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> or <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object,
-and also manipulate the objects by, for example, combining model results across
-objects to check overall model fit properties.</p>
+<p>For example, you may want to save them out, reload them as needed, and analyze
+results from each <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> or <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object.
+You may also manipulate the objects by, for example, combining model results
+across objects to check overall model fit properties.</p>
 <p>Here, we will continue with a quick example of saving, loading and then combining
 FOOOF objects. Note that a broader exploration of managing different FOOOF objects
 and these object utility functions is available in other examples.</p>
@@ -294,12 +297,12 @@ and these object utility functions is available in other examples.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reload our list of FOOOFGroups</span>
-<span class="n">fgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">load_fooofgroup</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">)</span> \
+<span class="n">fgs</span> <span class="o">=</span> <span class="p">[</span><a href="../../generated/fooof.utils.io.load_fooofgroup.html#fooof.utils.io.load_fooofgroup" title="View documentation for fooof.utils.io.load_fooofgroup"><span class="n">load_fooofgroup</span></a><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">)</span> \
     <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">)]</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine a list of FOOOF objects into a single FOOOFGroup object</span>
-<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">all_fg</span></a> <span class="o">=</span> <span class="n">combine_fooofs</span><span class="p">(</span><span class="n">fgs</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">all_fg</span></a> <span class="o">=</span> <a href="../../generated/fooof.objs.combine_fooofs.html#fooof.objs.combine_fooofs" title="View documentation for fooof.objs.combine_fooofs"><span class="n">combine_fooofs</span></a><span class="p">(</span><span class="n">fgs</span><span class="p">)</span>
 
 <span class="c1"># Explore the results from across all model fits</span>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">all_fg</span></a><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
@@ -320,18 +323,18 @@ and these object utility functions is available in other examples.</p>
                               Power spectra were fit without a knee.
 
                                       Aperiodic Fit Values:
-                        Exponents - Min:  0.999, Max:  2.002, Mean: 1.417
+                        Exponents - Min:  1.000, Max:  2.004, Mean: 1.567
 
-                         In total 24 peaks were extracted from the group
+                         In total 31 peaks were extracted from the group
 
                                      Goodness of fit metrics:
                             R2s -  Min:  1.000, Max:  1.000, Mean: 1.000
-                         Errors -  Min:  0.004, Max:  0.005, Mean: 0.004
+                         Errors -  Min:  0.004, Max:  0.004, Mean: 0.004
 
 ==================================================================================================
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.357 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.338 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manage-plot-fit-fooof-3d-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/ce373e0838d5783353a4548ff47106a9/plot_fit_fooof_3d.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_fit_fooof_3d.py</span></code></a></p>

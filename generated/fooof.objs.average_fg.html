@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.plts.spectra.plot_spectra &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.objs.average_fg &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -91,36 +94,49 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-plts-spectra-plot-spectra">
-<h1>fooof.plts.spectra.plot_spectra<a class="headerlink" href="#fooof-plts-spectra-plot-spectra" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="fooof-objs-average-fg">
+<h1>fooof.objs.average_fg<a class="headerlink" href="#fooof-objs-average-fg" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="fooof.plts.spectra.plot_spectra">
-<code class="sig-prename descclassname">fooof.plts.spectra.</code><code class="sig-name descname">plot_spectra</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">power_spectra</em>, <em class="sig-param">log_freqs=False</em>, <em class="sig-param">log_powers=False</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">plot_style=&lt;function style_spectrum_plot at 0x10168344d0&gt;</em>, <em class="sig-param">**plot_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/plts/spectra.html#plot_spectra"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.plts.spectra.plot_spectra" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot multiple power spectra on the same plot.</p>
+<dt id="fooof.objs.average_fg">
+<code class="sig-prename descclassname">fooof.objs.</code><code class="sig-name descname">average_fg</code><span class="sig-paren">(</span><em class="sig-param">fg</em>, <em class="sig-param">bands</em>, <em class="sig-param">avg_method='mean'</em>, <em class="sig-param">regenerate=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/utils.html#average_fg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.objs.average_fg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Average across model fits in a FOOOFGroup object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>freqs</strong><span class="classifier">2d array or 1d array or list of 1d array</span></dt><dd><p>Frequency values, to be plotted on the x-axis.</p>
+<dt><strong>fg</strong><span class="classifier">FOOOFGroup</span></dt><dd><p>Object with model fit results to average across.</p>
 </dd>
-<dt><strong>power_spectra</strong><span class="classifier">2d array or list of 1d array</span></dt><dd><p>Power values, to be plotted on the y-axis.</p>
+<dt><strong>bands</strong><span class="classifier">Bands</span></dt><dd><p>Bands object that defines the frequency bands to collapse peaks across.</p>
 </dd>
-<dt><strong>log_freqs</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to plot the frequency axis in log spacing.</p>
+<dt><strong>avg</strong><span class="classifier">{‘mean’, ‘median’}</span></dt><dd><p>Averaging function to use.</p>
 </dd>
-<dt><strong>log_powers</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to plot the power axis in log spacing.</p>
+<dt><strong>regenerate</strong><span class="classifier">bool, optional, default: True</span></dt><dd><p>Whether to regenerate the model for the averaged parameters.</p>
 </dd>
-<dt><strong>labels</strong><span class="classifier">list of str, optional</span></dt><dd><p>Legend labels, for each power spectrum.</p>
+</dl>
 </dd>
-<dt><strong>ax</strong><span class="classifier">matplotlib.Axes, optional</span></dt><dd><p>Figure axes upon which to plot.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fm</strong><span class="classifier">FOOOF</span></dt><dd><p>Object containing the average model results.</p>
 </dd>
-<dt><strong>plot_style</strong><span class="classifier">callable, optional, default: style_spectrum_plot</span></dt><dd><p>A function to call to apply styling &amp; aesthetics to the plot.</p>
+</dl>
 </dd>
-<dt><strong>**plot_kwargs</strong></dt><dd><p>Keyword arguments to be passed to the plot call.</p>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If the requested averaging method is not understood.</p>
+</dd>
+<dt>NoModelError</dt><dd><p>If there are no model fit results available to average across.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </dd></dl>
 
+<div class="section" id="examples-using-fooof-objs-average-fg">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.objs.average_fg</span></code><a class="headerlink" href="#examples-using-fooof-objs-average-fg" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Examples with combining, sub-selecting, dropping, and averaging power spectrum models."><div class="figure align-default" id="id1">
+<img alt="../_images/sphx_glr_plot_manipulating_fooofs_thumb.png" src="../_images/sphx_glr_plot_manipulating_fooofs_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_manipulating_fooofs.html#sphx-glr-auto-examples-manage-plot-manipulating-fooofs-py"><span class="std std-ref">Manipulating FOOOF Objects</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
 </div>
 
 

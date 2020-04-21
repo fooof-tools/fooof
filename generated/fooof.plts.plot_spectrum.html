@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.utils.data.compute_pointwise_error &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.plts.plot_spectrum &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -91,30 +94,41 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-utils-data-compute-pointwise-error">
-<h1>fooof.utils.data.compute_pointwise_error<a class="headerlink" href="#fooof-utils-data-compute-pointwise-error" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="fooof-plts-plot-spectrum">
+<h1>fooof.plts.plot_spectrum<a class="headerlink" href="#fooof-plts-plot-spectrum" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="fooof.utils.data.compute_pointwise_error">
-<code class="sig-prename descclassname">fooof.utils.data.</code><code class="sig-name descname">compute_pointwise_error</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/utils/data.html#compute_pointwise_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.utils.data.compute_pointwise_error" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate pointwise error between original data and a model fit of that data.</p>
+<dt id="fooof.plts.plot_spectrum">
+<code class="sig-prename descclassname">fooof.plts.</code><code class="sig-name descname">plot_spectrum</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">power_spectrum</em>, <em class="sig-param">log_freqs=False</em>, <em class="sig-param">log_powers=False</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">plot_style=&lt;function style_spectrum_plot at 0x1018e8a560&gt;</em>, <em class="sig-param">**plot_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/plts/spectra.html#plot_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.plts.plot_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a power spectrum.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>model</strong><span class="classifier">1d array</span></dt><dd><p>The model.</p>
+<dt><strong>freqs</strong><span class="classifier">1d array</span></dt><dd><p>Frequency values, to be plotted on the x-axis.</p>
 </dd>
-<dt><strong>data</strong><span class="classifier">1d array</span></dt><dd><p>The original data that is being modeled.</p>
+<dt><strong>power_spectrum</strong><span class="classifier">1d array</span></dt><dd><p>Power values, to be plotted on the y-axis.</p>
 </dd>
-</dl>
+<dt><strong>log_freqs</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to plot the frequency axis in log spacing.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>1d array</dt><dd><p>Calculated values of the difference between the data and the model.</p>
+<dt><strong>log_powers</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to plot the power axis in log spacing.</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">matplotlib.Axes, optional</span></dt><dd><p>Figure axis upon which to plot.</p>
+</dd>
+<dt><strong>plot_style</strong><span class="classifier">callable, optional, default: style_spectrum_plot</span></dt><dd><p>A function to call to apply styling &amp; aesthetics to the plot.</p>
+</dd>
+<dt><strong>**plot_kwargs</strong></dt><dd><p>Keyword arguments to be passed to the plot call.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </dd></dl>
 
+<div class="section" id="examples-using-fooof-plts-plot-spectrum">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.plts.plot_spectrum</span></code><a class="headerlink" href="#examples-using-fooof-plts-plot-spectrum" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="A description and introduction to the power spectrum model."><div class="figure align-default" id="id1">
+<img alt="../_images/sphx_glr_plot_01-ModelDescription_thumb.png" src="../_images/sphx_glr_plot_01-ModelDescription_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_01-ModelDescription.html#sphx-glr-auto-tutorials-plot-01-modeldescription-py"><span class="std std-ref">01: Model Description</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
 </div>
 
 

@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>FOOOF - fitting oscillations &amp; one over f &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>FOOOF - fitting oscillations &amp; one over f &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="#">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -93,13 +96,7 @@
       
   <div class="section" id="fooof-fitting-oscillations-one-over-f">
 <h1>FOOOF - fitting oscillations &amp; one over f<a class="headerlink" href="#fooof-fitting-oscillations-one-over-f" title="Permalink to this headline">¶</a></h1>
-<a class="reference external image-reference" href="http://www.repostatus.org/#active"><img alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed." src="http://www.repostatus.org/badges/latest/active.svg" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/fooof/"><img alt="Latest Version" src="https://img.shields.io/pypi/v/fooof.svg" /></a>
-<a class="reference external image-reference" href="https://travis-ci.org/fooof-tools/fooof"><img alt="Build Status" src="https://travis-ci.org/fooof-tools/fooof.svg" /></a>
-<a class="reference external image-reference" href="https://codecov.io/gh/fooof-tools/fooof"><img alt="codecov" src="https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg" /></a>
-<a class="reference external image-reference" href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/pypi/l/fooof.svg" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/fooof/"><img alt="Supported Python Versions" src="https://img.shields.io/pypi/pyversions/fooof.svg" /></a>
-<a class="reference external image-reference" href="https://doi.org/10.1101/299859"><img alt="Preprint" src="https://img.shields.io/badge/preprint-10.1101/299859-informational.svg" /></a>
+<p><a class="reference external" href="https://www.repostatus.org/#active"><img alt="ProjectStatus" src="http://www.repostatus.org/badges/latest/active.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/fooof/"><img alt="Version" src="https://img.shields.io/pypi/v/fooof.svg" /></a> <a class="reference external" href="https://travis-ci.org/fooof-tools/fooof"><img alt="BuildStatus" src="https://travis-ci.org/fooof-tools/fooof.svg" /></a> <a class="reference external" href="https://travis-ci.org/fooof-tools/fooof"><img alt="BuildStatus" src="https://travis-ci.org/fooof-tools/fooof.svg" /></a> <a class="reference external" href="https://codecov.io/gh/fooof-tools/fooof)"><img alt="codecov" src="https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/pypi/l/fooof.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/fooof/"><img alt="PythonVersions" src="https://img.shields.io/pypi/pyversions/fooof.svg" /></a> <a class="reference external" href="https://doi.org/10.1101/299859"><img alt="Preprint" src="https://img.shields.io/badge/preprint-10.1101/299859-informational.svg" /></a></p>
 <p>FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.</p>
 <p>Note: FOOOF is currently on a pre-release. Please check the install instructions for
 updating to the pre-release version, and check the
@@ -156,54 +153,63 @@ with information for reporting on using and reference the module</p></li>
 <li><p><a class="reference external" href="https://github.com/tqdm/tqdm">tqdm</a> is needed to print progress bars when fitting many models</p></li>
 <li><p><a class="reference external" href="https://github.com/pytest-dev/pytest">pytest</a> is needed to run the test suite locally</p></li>
 </ul>
-<p>We recommend using the <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> distribution to manage these requirements.</p>
+<p>We recommend using the <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a> distribution to manage these requirements.</p>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p><strong>Pre-Release Version</strong></p>
 <p>To install the current pre-release version, use pip:</p>
-<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fooof</span> <span class="pre">--pre</span></code></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install fooof --pre
+</pre></div>
+</div>
 <p>If you already have a version of FOOOF installed, you will need to remove it first:</p>
-<p><code class="docutils literal notranslate"><span class="pre">$pip</span> <span class="pre">uninstall</span> <span class="pre">fooof</span></code></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip uninstall fooof
+</pre></div>
+</div>
 <p><strong>Stable Version</strong></p>
 <p>To install the latest stable release, use pip:</p>
-<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fooof</span></code></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install fooof
+</pre></div>
+</div>
 <p>Note that this will install only the core (non-optional) FOOOF requirements.</p>
 <p><strong>Development Version</strong></p>
 <p>To get the current development version, first clone this repository:</p>
-<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/fooof-tools/fooof</span></code></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/fooof-tools/fooof
+</pre></div>
+</div>
 <p>To install this cloned copy, move into the directory you just cloned, and run:</p>
-<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">.</span></code></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install .
+</pre></div>
+</div>
 <p><strong>Editable Version</strong></p>
 <p>To install an editable version, download the development version as above, and run:</p>
-<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install -e .
+</pre></div>
+</div>
 </div>
 <div class="section" id="matlab-support">
 <h2>Matlab Support<a class="headerlink" href="#matlab-support" title="Permalink to this headline">¶</a></h2>
 <p>FOOOF is implemented in Python, but there is also Matlab wrapper that allows you to use FOOOF from Matlab.
-The wrapper is available in the
-<a class="reference external" href="http://github.com/fooof-tools/fooof_mat">fooof_mat</a> repository.</p>
+The wrapper is available in the <a class="reference external" href="http://github.com/fooof-tools/fooof_mat">fooof_mat</a> repository.</p>
 <p>If you would like to use FOOOF, from Python, within a pipeline that is mostly in Matlab, the
 <a class="reference external" href="https://github.com/fooof-tools/mat_py_mat">mat_py_mat</a>
 repository also has some examples and utilities for doing so.</p>
 </div>
 <div class="section" id="bug-reports">
 <h2>Bug Reports<a class="headerlink" href="#bug-reports" title="Permalink to this headline">¶</a></h2>
-<p>Please use the
-<a class="reference external" href="https://github.com/fooof-tools/fooof/issues">Github issue tracker</a>
+<p>Please use the <a class="reference external" href="https://github.com/fooof-tools/fooof/issues">Github issue tracker</a>
 to file bug reports and/or ask questions about this project.</p>
 </div>
 <div class="section" id="id1">
 <h2>Reference<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>If you use this code in your project, please cite:</p>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="n">Haller</span> <span class="n">M</span><span class="p">,</span> <span class="n">Donoghue</span> <span class="n">T</span><span class="p">,</span> <span class="n">Peterson</span> <span class="n">E</span><span class="p">,</span> <span class="n">Varma</span> <span class="n">P</span><span class="p">,</span> <span class="n">Sebastian</span> <span class="n">P</span><span class="p">,</span> <span class="n">Gao</span> <span class="n">R</span><span class="p">,</span> <span class="n">Noto</span> <span class="n">T</span><span class="p">,</span> <span class="n">Knight</span> <span class="n">RT</span><span class="p">,</span> <span class="n">Shestyuk</span> <span class="n">A</span><span class="p">,</span>
-<span class="n">Voytek</span> <span class="n">B</span> <span class="p">(</span><span class="mi">2018</span><span class="p">)</span> <span class="n">Parameterizing</span> <span class="n">Neural</span> <span class="n">Power</span> <span class="n">Spectra</span><span class="p">.</span> <span class="n">bioRxiv</span><span class="p">,</span> <span class="mi">299859</span><span class="p">.</span>
-<span class="n">doi</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="mi">10</span><span class="p">.</span><span class="mi">1101</span><span class="o">/</span><span class="mi">299859</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Haller</span> <span class="n">M</span><span class="p">,</span> <span class="n">Donoghue</span> <span class="n">T</span><span class="p">,</span> <span class="n">Peterson</span> <span class="n">E</span><span class="p">,</span> <span class="n">Varma</span> <span class="n">P</span><span class="p">,</span> <span class="n">Sebastian</span> <span class="n">P</span><span class="p">,</span> <span class="n">Gao</span> <span class="n">R</span><span class="p">,</span> <span class="n">Noto</span> <span class="n">T</span><span class="p">,</span> <span class="n">Knight</span> <span class="n">RT</span><span class="p">,</span> <span class="n">Shestyuk</span> <span class="n">A</span><span class="p">,</span>
+<span class="n">Voytek</span> <span class="n">B</span> <span class="p">(</span><span class="mi">2018</span><span class="p">)</span> <span class="n">Parameterizing</span> <span class="n">Neural</span> <span class="n">Power</span> <span class="n">Spectra</span><span class="o">.</span> <span class="n">bioRxiv</span><span class="p">,</span> <span class="mf">299859.</span> <span class="n">doi</span><span class="p">:</span> <span class="mf">10.1101</span><span class="o">/</span><span class="mi">299859</span>
 </pre></div>
 </div>
+<p>Direct Link: <a class="reference external" href="https://doi.org/10.1101/299859">https://doi.org/10.1101/299859</a></p>
 <p>More information for how to cite this method can be found on the
 <a class="reference external" href="https://fooof-tools.github.io/fooof/reference.html">reference page</a>.</p>
-<p>Direct Link: <a class="reference external" href="https://doi.org/10.1101/299859">https://doi.org/10.1101/299859</a></p>
 <p>Code and analyses from the paper are also available in the
 <a class="reference external" href="https://github.com/fooof-tools/Paper">paper repository</a>.</p>
 </div>
@@ -227,7 +233,8 @@ If you have a question or suggestion related to the model or conceptual ideas, c
 <p><strong>Fitting a Single Power Spectrum</strong></p>
 <p>With a power spectrum loaded (with ‘freqs’ storing frequency values, and ‘spectrum’ storing
 the power spectrum, both as 1D arrays in linear space) FOOOF can be used as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <span class="n">FOOOF</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <span class="n">FOOOF</span>
 
 <span class="c1"># Initialize FOOOF object</span>
 <span class="n">fm</span> <span class="o">=</span> <span class="n">FOOOF</span><span class="p">()</span>
@@ -243,7 +250,7 @@ the power spectrum, both as 1D arrays in linear space) FOOOF can be used as foll
 and prints out the parameters of the model fit for both the aperiodic component, and parameters for
 any identified peaks, reflecting periodic components.</p>
 <p>Example output for the report of a FOOOF fit on an individual power spectrum:</p>
-<a class="reference external image-reference" href="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOF_report.png"><img alt="&quot;fooof_report&quot;" src="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOF_report.png" /></a>
+<img alt="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOF_report.png" src="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOF_report.png" />
 <p><strong>Defining the model Settings</strong></p>
 <p>FOOOF also has some settings for the algorithm.</p>
 <p>These settings are:</p>
@@ -255,7 +262,8 @@ any identified peaks, reflecting periodic components.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">aperiodic_mode</span></code> defines the approach to use to parameterize the aperiodic component.</p></li>
 </ul>
 <p>These settings can be defined when initializing the model, for example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fm</span> <span class="o">=</span> <span class="n">FOOOF</span><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF model object with defined settings</span>
+<span class="n">fm</span> <span class="o">=</span> <span class="n">FOOOF</span><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
            <span class="n">peak_threshold</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;fixed&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -277,7 +285,7 @@ We can fit this  which can be fit as:</p>
 </pre></div>
 </div>
 <p>Example output from using FOOOFGroup across a group of power spectra:</p>
-<a class="reference external image-reference" href="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOFGroup_report.png"><img alt="&quot;fooof_group_report&quot;" src="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOFGroup_report.png" /></a>
+<img alt="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOFGroup_report.png" src="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOFGroup_report.png" />
 <p><strong>Other Functionality</strong></p>
 <p>FOOOF also has functionality for running the FOOOF model across matrices of multiple power spectra,
 saving and loading results, creating reports from FOOOF outputs, analyzing model outputs,

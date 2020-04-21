@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Code Changelog &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>Code Changelog &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -104,7 +107,9 @@ version of FOOOF 1.0.0rcX.</p>
 only update if and when you are ready to update your code to reflect the new changes.</p>
 <p>Note that the main changes are in code organization, some names, and the addition of
 many new features. The fitting algorithm itself has not changed, and model results fit
-with the new version should be equivalent to those with older versions.</p>
+with the new version should be roughly equivalent to those with older versions. However,
+there are bug fixes and tweaks such that new model fits are not guaranteed to be the
+identical to prior fits.</p>
 <div class="section" id="naming-updates">
 <h3>Naming Updates<a class="headerlink" href="#naming-updates" title="Permalink to this headline">¶</a></h3>
 <p>The following is a list of the key naming updates, of public facing code.</p>
@@ -125,6 +130,16 @@ with the new version should be equivalent to those with older versions.</p>
 </ul>
 </li>
 </ul>
+</div>
+<div class="section" id="previously-saved-data">
+<h3>Previously Saved Data<a class="headerlink" href="#previously-saved-data" title="Permalink to this headline">¶</a></h3>
+<p>Note that if you have data saved out from the 0.X.X release series of the module, then the
+code update to the 1.X.X series won’t be able to properly load this data out of the box.</p>
+<p>This is due to the naming changes, and in particular the change from ‘background’ to
+‘aperiodic’. Note that saved FOOOF files are plain-text JSON files, and so if you find &amp; replace
+the word ‘background’ to ‘aperiodic’, this should update the files so that they can be loaded by
+the 1.X.X version. Note that if you also saved out the algorithm settings, you may need to update
+the name of <cite>min_peak_amplitude</cite> to <cite>min_peak_height</cite> as well.</p>
 </div>
 <div class="section" id="code-organization">
 <h3>Code Organization<a class="headerlink" href="#code-organization" title="Permalink to this headline">¶</a></h3>

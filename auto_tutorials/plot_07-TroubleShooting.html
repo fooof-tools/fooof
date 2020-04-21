@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>07: Tuning &amp; Troubleshooting &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>07: Tuning &amp; Troubleshooting &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -105,8 +108,8 @@
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">FOOOFGroup</span></a>
 
 <span class="c1"># Import some utilities, and tools for creating simulated power-spectra</span>
-<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="k">import</span> <span class="n">param_sampler</span>
-<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_power_spectrum</span><span class="p">,</span> <span class="n">gen_group_power_spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="k">import</span> <a href="../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="View documentation for fooof.sim.params.param_sampler"><span class="n">param_sampler</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">,</span> <a href="../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="View documentation for fooof.sim.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a>
 <span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="k">import</span> <a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="View documentation for fooof.sim.utils.set_random_seed"><span class="n">set_random_seed</span></a>
 </pre></div>
 </div>
@@ -183,9 +186,14 @@ for a given modality / dataset / application.</p>
 </li>
 <li><p>Setting a minimum absolute peak height: <cite>min_peak_height</cite></p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a noisy simulated power spectrum</span>
-
-<span class="c1"># Set the frequency range to generate the power spectrum</span>
+</div>
+<div class="section" id="simulating-power-spectra">
+<h2>Simulating Power Spectra<a class="headerlink" href="#simulating-power-spectra" title="Permalink to this headline">¶</a></h2>
+<p>For this example, we will use simulated data. The FOOOF module includes utilities
+for creating simulated power-spectra. To do so, we can use the <a class="reference internal" href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum"><code class="xref py py-func docutils literal notranslate"><span class="pre">gen_power_spectrum()</span></code></a>
+function to simulate individual power spectra, following the power spectrum model.</p>
+<p>First, we will start by generating a noisy simulated power spectrum</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the frequency range to generate the power spectrum</span>
 <span class="n">f_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
 <span class="c1"># Set aperiodic component parameters, as [offset, exponent]</span>
 <span class="n">ap_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
@@ -195,7 +203,7 @@ for a given modality / dataset / application.</p>
 <span class="n">nlv</span> <span class="o">=</span> <span class="mf">0.1</span>
 
 <span class="c1"># Create a simulated power spectrum</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">gauss_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span> <span class="o">=</span> <a href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">gauss_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit an (unconstrained) model, liable to overfit</span>
@@ -323,7 +331,7 @@ allowing you to define an absolute threshold for extracting peaks.</p>
 <span class="n">nlv</span> <span class="o">=</span> <span class="mf">0.025</span>
 
 <span class="c1"># Create a simulated power spectrum</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">gauss_params</span><span class="p">,</span> <span class="n">nlv</span><span class="o">=</span><span class="n">nlv</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span> <span class="o">=</span> <a href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">gauss_params</span><span class="p">,</span> <span class="n">nlv</span><span class="o">=</span><span class="n">nlv</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update settings to make sure they are sensitive to smaller peaks in smoother power spectra</span>
@@ -377,17 +385,25 @@ trying some individual fits like this.</p>
 <p>If and when you move to using <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> to fit groups of power spectra,
 there are some slightly different ways to investigate groups of fits,
 which we’ll step through now, using some simulated data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulation settings</span>
+<div class="section" id="simulating-a-group-of-power-spectra">
+<h3>Simulating a Group of Power Spectra<a class="headerlink" href="#simulating-a-group-of-power-spectra" title="Permalink to this headline">¶</a></h3>
+<p>We will continue using simulated data, this time simulating a group of power spectra.</p>
+<p>To simulate a group of power spectra, we will use the <a class="reference internal" href="../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra"><code class="xref py py-func docutils literal notranslate"><span class="pre">gen_group_power_spectra()</span></code></a>
+in combination with called <a class="reference internal" href="../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler"><code class="xref py py-func docutils literal notranslate"><span class="pre">param_sampler()</span></code></a> that is used to sample across
+possible parameters.</p>
+<p>For more and descriptions and example of how the simulations work, check out the
+<a class="reference external" href="https://fooof-tools.github.io/fooof/auto_examples/index.html">examples</a> section.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulation settings for a group of power spectra</span>
 <span class="n">n_spectra</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">sim_freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
 <span class="n">nlv</span> <span class="o">=</span> <span class="mf">0.010</span>
 
 <span class="c1"># Set the parameter options for aperiodic component and peaks</span>
-<span class="n">ap_opts</span> <span class="o">=</span> <span class="n">param_sampler</span><span class="p">([[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]])</span>
-<span class="n">gauss_opts</span> <span class="o">=</span> <span class="n">param_sampler</span><span class="p">([[],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="n">ap_opts</span> <span class="o">=</span> <a href="../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="View documentation for fooof.sim.params.param_sampler"><span class="n">param_sampler</span></a><span class="p">([[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]])</span>
+<span class="n">gauss_opts</span> <span class="o">=</span> <a href="../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="View documentation for fooof.sim.params.param_sampler"><span class="n">param_sampler</span></a><span class="p">([[],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
 
 <span class="c1"># Simulate a group of power spectra</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectra</span> <span class="o">=</span> <span class="n">gen_group_power_spectra</span><span class="p">(</span><span class="n">n_spectra</span><span class="p">,</span> <span class="n">sim_freq_range</span><span class="p">,</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectra</span> <span class="o">=</span> <a href="../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="View documentation for fooof.sim.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="n">n_spectra</span><span class="p">,</span> <span class="n">sim_freq_range</span><span class="p">,</span>
                                                <span class="n">ap_opts</span><span class="p">,</span> <span class="n">gauss_opts</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -479,8 +495,8 @@ large number of gaussians.</p>
 <span class="c1">#  You could also do a similar analysis for particularly low errors</span>
 <span class="n">error_threshold</span> <span class="o">=</span> <span class="mf">0.010</span>
 <span class="n">to_check</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">):</span>
-    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">error_threshold</span><span class="p">:</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <a href="../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="View documentation for fooof.data.FOOOFResults"><span class="n">res</span></a> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">):</span>
+    <span class="k">if</span> <a href="../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="View documentation for fooof.data.FOOOFResults"><span class="n">res</span></a><span class="o">.</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">error_threshold</span><span class="p">:</span>
         <span class="n">to_check</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_fooof</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
 <span class="c1"># A more condensed version of the procedure above can also be used, like this:</span>
@@ -503,6 +519,7 @@ peaks per model. A particularly high value can indicate overfitting.</p>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Average number of fit peaks:  6.4
 </pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="reporting-bad-fits">
@@ -549,7 +566,7 @@ bad fits / bugs back to us, as demonstrated below.</p>
 <p>We have now stepped through the full work-flow of fitting power spectrum models, using
 FOOOF objects, picking settings, and troubleshooting model fits. In the next
 and final tutorial, we will introduce how to start analyzing FOOOF results.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.802 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.635 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-07-troubleshooting-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/e1323effd79464d1bc2f041025d82065/plot_07-TroubleShooting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_07-TroubleShooting.py</span></code></a></p>

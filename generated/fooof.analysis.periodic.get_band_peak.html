@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.analysis.periodic.get_band_peak &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.analysis.periodic.get_band_peak &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -95,7 +98,7 @@
 <h1>fooof.analysis.periodic.get_band_peak<a class="headerlink" href="#fooof-analysis-periodic-get-band-peak" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="fooof.analysis.periodic.get_band_peak">
-<code class="sig-prename descclassname">fooof.analysis.periodic.</code><code class="sig-name descname">get_band_peak</code><span class="sig-paren">(</span><em class="sig-param">peak_params</em>, <em class="sig-param">band</em>, <em class="sig-param">ret_one=True</em>, <em class="sig-param">threshold=None</em>, <em class="sig-param">thresh_param='PW'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/analysis/periodic.html#get_band_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.analysis.periodic.get_band_peak" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fooof.analysis.periodic.</code><code class="sig-name descname">get_band_peak</code><span class="sig-paren">(</span><em class="sig-param">peak_params</em>, <em class="sig-param">band</em>, <em class="sig-param">select_highest=True</em>, <em class="sig-param">threshold=None</em>, <em class="sig-param">thresh_param='PW'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/analysis/periodic.html#get_band_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.analysis.periodic.get_band_peak" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract peaks within a given band of interest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -103,9 +106,9 @@
 <dt><strong>peak_params</strong><span class="classifier">2d array</span></dt><dd><p>Peak parameters, with shape of [n_peaks, 3].</p>
 </dd>
 <dt><strong>band</strong><span class="classifier">tuple of (float, float)</span></dt><dd><p>Frequency range for the band of interest.
-Defind as: (lower_frequency_bound, upper_frequency_bound).</p>
+Defined as: (lower_frequency_bound, upper_frequency_bound).</p>
 </dd>
-<dt><strong>ret_one</strong><span class="classifier">bool, optional, default: True</span></dt><dd><p>Whether to return single peak (if True) or all peaks within the range found (if False).
+<dt><strong>select_highest</strong><span class="classifier">bool, optional, default: True</span></dt><dd><p>Whether to return single peak (if True) or all peaks within the range found (if False).
 If True, returns the highest peak within the search range.</p>
 </dd>
 <dt><strong>threshold</strong><span class="classifier">float</span></dt><dd><p>A minimum threshold value to apply.</p>
@@ -116,14 +119,14 @@ If True, returns the highest peak within the search range.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>band_peaks</strong><span class="classifier">1d or 2d array</span></dt><dd><p>Peak data. Each row is a peak, as [CF, PW, BW]</p>
+<dt><strong>band_peaks</strong><span class="classifier">1d or 2d array</span></dt><dd><p>Peak data. Each row is a peak, as [CF, PW, BW].</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </dd></dl>
 
-</div>
+<div style='clear:both'></div></div>
 
 
     </div>

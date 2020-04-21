@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.sim.params &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.sim.params &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -107,7 +110,7 @@
 <span class="c1">###################################################################################################</span>
 
 <span class="k">def</span> <span class="nf">collect_sim_params</span><span class="p">(</span><span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">periodic_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Collect sim parameters together into a SimParams object.</span>
+    <span class="sd">&quot;&quot;&quot;Collect simulation parameters into a SimParams object.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -115,7 +118,7 @@
 <span class="sd">        Parameters of the aperiodic component of the power spectrum.</span>
 <span class="sd">    periodic_params : list of float or list of list of float</span>
 <span class="sd">        Parameters of the periodic component of the power spectrum.</span>
-<span class="sd">    nlv : float, optional, default: 0.005</span>
+<span class="sd">    nlv : float</span>
 <span class="sd">        Noise level of the power spectrum.</span>
 
 <span class="sd">    Returns</span>
@@ -135,45 +138,43 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    sim_params : SimParams</span>
-<span class="sd">        Object storing the current parameter definitions.</span>
-<span class="sd">    delta : float or list</span>
+<span class="sd">        Object storing the current parameter definition.</span>
+<span class="sd">    delta : float or list of float</span>
 <span class="sd">        Value(s) by which to update the parameters.</span>
 <span class="sd">    field : {&#39;offset&#39;, &#39;knee&#39;, &#39;exponent&#39;} or list of string</span>
-<span class="sd">        Field of the aperiodic parameters to update.</span>
+<span class="sd">        Field of the aperiodic parameter(s) to update.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    new_sim_params : SimParams</span>
-<span class="sd">        Updated object storing the new parameter definitions.</span>
+<span class="sd">        Updated object storing the new parameter definition.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    InconsistentDataError</span>
 <span class="sd">        If the input parameters and update values are inconsistent.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    SimParams is a `namedtuple`, which is immutable.</span>
-<span class="sd">    Therefore, this function constructs and returns a new `SimParams` object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="c1"># Grab the aperiodic parameters that need updating</span>
     <span class="n">ap_params</span> <span class="o">=</span> <span class="n">sim_params</span><span class="o">.</span><span class="n">aperiodic_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
+    <span class="c1"># If field isn&#39;t specified, check shapes line up and update across parameters</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">field</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">ap_params</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">delta</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">InconsistentDataError</span><span class="p">(</span><span class="s2">&quot;The number of items to update and &quot;</span>
                                         <span class="s2">&quot;number of new values is inconsistent.&quot;</span><span class="p">)</span>
         <span class="n">ap_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">param</span> <span class="o">+</span> <span class="n">update</span> <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">update</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ap_params</span><span class="p">,</span> <span class="n">delta</span><span class="p">)]</span>
 
+    <span class="c1"># If labels are given, update deltas according to their labels</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">field</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">field</span><span class="p">])</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">field</span>
-        <span class="n">delta</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">delta</span><span class="p">])</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">delta</span>
+        <span class="c1"># This loop checks &amp; casts to list, to work for single or multiple passed in values</span>
+        <span class="k">for</span> <span class="n">cur_field</span><span class="p">,</span> <span class="n">cur_delta</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">list</span><span class="p">([</span><span class="n">field</span><span class="p">])</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">field</span><span class="p">,</span>
+                                        <span class="nb">list</span><span class="p">([</span><span class="n">delta</span><span class="p">])</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">delta</span><span class="p">):</span>
+            <span class="n">data_ind</span> <span class="o">=</span> <span class="n">get_indices</span><span class="p">(</span><span class="n">infer_ap_func</span><span class="p">(</span><span class="n">ap_params</span><span class="p">))[</span><span class="n">cur_field</span><span class="p">]</span>
+            <span class="n">ap_params</span><span class="p">[</span><span class="n">data_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">ap_params</span><span class="p">[</span><span class="n">data_ind</span><span class="p">]</span> <span class="o">+</span> <span class="n">cur_delta</span>
 
-        <span class="k">for</span> <span class="n">cur_field</span><span class="p">,</span> <span class="n">cur_delta</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
-            <span class="n">dat_ind</span> <span class="o">=</span> <span class="n">get_indices</span><span class="p">(</span><span class="n">infer_ap_func</span><span class="p">(</span><span class="n">sim_params</span><span class="o">.</span><span class="n">aperiodic_params</span><span class="p">))[</span><span class="n">cur_field</span><span class="p">]</span>
-            <span class="n">ap_params</span><span class="p">[</span><span class="n">dat_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">ap_params</span><span class="p">[</span><span class="n">dat_ind</span><span class="p">]</span> <span class="o">+</span> <span class="n">cur_delta</span>
-
-    <span class="n">new_sim_params</span> <span class="o">=</span> <span class="n">SimParams</span><span class="p">(</span><span class="n">ap_params</span><span class="p">,</span> <span class="o">*</span><span class="n">sim_params</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="c1"># Replace parameters. Note that this copies a new object, as data objects are immutable</span>
+    <span class="n">new_sim_params</span> <span class="o">=</span> <span class="n">sim_params</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">aperiodic_params</span><span class="o">=</span><span class="n">ap_params</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">new_sim_params</span></div>
 
@@ -196,6 +197,12 @@
 <span class="sd">        Length of generator range.</span>
 <span class="sd">    data : iterator</span>
 <span class="sd">        Set of specified parameters to iterate across.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Define a stepper object for center frequency values for an alpha peak:</span>
+
+<span class="sd">    &gt;&gt;&gt; alpha_cf_steps = Stepper(8, 12.5, 0.5)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Stepper.__init__"><a class="viewcode-back" href="../../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
@@ -233,7 +240,7 @@
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
 <span class="sd">        ValueError</span>
-<span class="sd">            If the input values to define the iteration range are inconsistent.</span>
+<span class="sd">            If the given values for defining the iteration range are inconsistent.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">ii</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">]):</span>
@@ -259,7 +266,7 @@
 <span class="sd">    Yields</span>
 <span class="sd">    ------</span>
 <span class="sd">    list of floats</span>
-<span class="sd">        Next generated list of parameters across the range.</span>
+<span class="sd">        Next generated list of parameters.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -391,8 +398,8 @@
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
 
         <span class="n">out_params</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">j1</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">jitters</span><span class="p">)):</span>
-            <span class="n">out_params</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">jitter</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">jitters</span><span class="p">)):</span>
+            <span class="n">out_params</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">param</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">jitter</span><span class="p">)</span>
 
         <span class="k">yield</span> <span class="n">out_params</span></div>
 </pre></div>

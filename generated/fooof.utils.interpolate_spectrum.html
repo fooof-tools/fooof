@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.utils.data.interpolate_spectrum &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.utils.interpolate_spectrum &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -91,11 +94,11 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-utils-data-interpolate-spectrum">
-<h1>fooof.utils.data.interpolate_spectrum<a class="headerlink" href="#fooof-utils-data-interpolate-spectrum" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="fooof-utils-interpolate-spectrum">
+<h1>fooof.utils.interpolate_spectrum<a class="headerlink" href="#fooof-utils-interpolate-spectrum" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="fooof.utils.data.interpolate_spectrum">
-<code class="sig-prename descclassname">fooof.utils.data.</code><code class="sig-name descname">interpolate_spectrum</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">powers</em>, <em class="sig-param">interp_range</em>, <em class="sig-param">buffer=3</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/utils/data.html#interpolate_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.utils.data.interpolate_spectrum" title="Permalink to this definition">¶</a></dt>
+<dt id="fooof.utils.interpolate_spectrum">
+<code class="sig-prename descclassname">fooof.utils.</code><code class="sig-name descname">interpolate_spectrum</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">powers</em>, <em class="sig-param">interp_range</em>, <em class="sig-param">buffer=3</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/utils/data.html#interpolate_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.utils.interpolate_spectrum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate a frequency region in a power spectrum.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -131,7 +134,7 @@ such as line noise regions.</p>
 and interp_range_high, respectively.</p>
 <p>To be more robust to noise, this approach takes a number of samples on either
 side of the interpolation range (the number of which is controlled by <cite>buffer</cite>)
-and averages these points to us to linearly interpolate between them.
+and averages these points to linearly interpolate between them.
 Setting <cite>buffer=1</cite> is equivalent to a linear interpolation between
 the points adjacent to the interpolation range.</p>
 <p class="rubric">Examples</p>
@@ -143,7 +146,7 @@ the points adjacent to the interpolation range.</p>
 </div>
 </dd></dl>
 
-</div>
+<div style='clear:both'></div></div>
 
 
     </div>

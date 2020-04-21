@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Frequency-by-Frequency Errors &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>Frequency-by-Frequency Errors &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -105,10 +108,10 @@
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">FOOOFGroup</span></a>
 
 <span class="c1"># Import simulation utilities to create some test data</span>
-<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_power_spectrum</span><span class="p">,</span> <span class="n">gen_group_power_spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">,</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="View documentation for fooof.sim.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a>
 
 <span class="c1"># Import functions to examine frequency-by-frequency error of model fits</span>
-<span class="kn">from</span> <span class="nn">fooof.analysis.error</span> <span class="k">import</span> <span class="n">compute_pointwise_error_fm</span><span class="p">,</span> <span class="n">compute_pointwise_error_fg</span>
+<span class="kn">from</span> <span class="nn">fooof.analysis.error</span> <span class="k">import</span> <a href="../../generated/fooof.analysis.compute_pointwise_error_fm.html#fooof.analysis.compute_pointwise_error_fm" title="View documentation for fooof.analysis.compute_pointwise_error_fm"><span class="n">compute_pointwise_error_fm</span></a><span class="p">,</span> <a href="../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="View documentation for fooof.analysis.compute_pointwise_error_fg"><span class="n">compute_pointwise_error_fg</span></a>
 </pre></div>
 </div>
 <div class="section" id="frequency-by-frequency-error">
@@ -126,11 +129,11 @@ This can allow for identifying where in the spectrum is being fit well, or not w
 <p>First we will start by examining frequency-by-frequency error of an individual model fit,
 using simulated data.</p>
 <p>The function for analyzing error from a FOOOF object is
-<a class="reference internal" href="../../generated/fooof.analysis.error.compute_pointwise_error_fm.html#fooof.analysis.error.compute_pointwise_error_fm" title="fooof.analysis.error.compute_pointwise_error_fm"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_pointwise_error_fm()</span></code></a>.
+<a class="reference internal" href="../../generated/fooof.analysis.compute_pointwise_error_fm.html#fooof.analysis.compute_pointwise_error_fm" title="fooof.analysis.compute_pointwise_error_fm"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_pointwise_error_fm()</span></code></a>.
 To start with, we will indicate to this function to plot the frequency-by-frequency
 error of our model fit.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an example power spectrum</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object to fit with</span>
@@ -141,7 +144,7 @@ error of our model fit.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the error per frequency of the model</span>
-<span class="n">compute_pointwise_error_fm</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a href="../../generated/fooof.analysis.compute_pointwise_error_fm.html#fooof.analysis.compute_pointwise_error_fm" title="View documentation for fooof.analysis.compute_pointwise_error_fm"><span class="n">compute_pointwise_error_fm</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_freq_by_freq_error_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_freq_by_freq_error_001.png" />
@@ -149,7 +152,7 @@ error of our model fit.</p>
 This suggests no particular problem with the fit.</p>
 <p>You can also calculate and return the frequency-by-frequency errors of a model fit.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can also use this function to return the frequency-by-frequency error</span>
-<span class="n">errs_fm</span> <span class="o">=</span> <span class="n">compute_pointwise_error_fm</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">errs_fm</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.compute_pointwise_error_fm.html#fooof.analysis.compute_pointwise_error_fm" title="View documentation for fooof.analysis.compute_pointwise_error_fm"><span class="n">compute_pointwise_error_fm</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note that the average of this error is the same as the global error stored</span>
@@ -167,10 +170,9 @@ FOOOF model fit error:           0.004
 <h3>Checking the Error Across Groups of Model Fits<a class="headerlink" href="#checking-the-error-across-groups-of-model-fits" title="Permalink to this headline">¶</a></h3>
 <p>Next, lets move on to calculating frequency-by-frequency error across groups of fits,
 again using some simulated data.</p>
-<p>The function for analyzing error from a FOOOFGroup object is
-<a class="reference internal" href="../../generated/fooof.analysis.error.compute_pointwise_error_fg.html#fooof.analysis.error.compute_pointwise_error_fg" title="fooof.analysis.error.compute_pointwise_error_fg"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_pointwise_error_fg()</span></code></a>.</p>
+<p>To analyze error from a FOOOFGroup object, use <a class="reference internal" href="../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="fooof.analysis.compute_pointwise_error_fg"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_pointwise_error_fg()</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a group of power spectra</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">gen_group_power_spectra</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nlvs</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="View documentation for fooof.sim.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nlvs</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object to fit</span>
@@ -185,12 +187,12 @@ again using some simulated data.</p>
 <p>When plotting the error, the plot line is the mean error per frequency, across fits,
 and the shading indicates the standard deviation of the error, also per frequency.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the group frequency-by-frequency error</span>
-<span class="n">compute_pointwise_error_fg</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a href="../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="View documentation for fooof.analysis.compute_pointwise_error_fg"><span class="n">compute_pointwise_error_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_freq_by_freq_error_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_freq_by_freq_error_002.png" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return the errors - this returns a 2D matrix of errors for all fits</span>
-<span class="n">errs_fg</span> <span class="o">=</span> <span class="n">compute_pointwise_error_fg</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">errs_fg</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="View documentation for fooof.analysis.compute_pointwise_error_fg"><span class="n">compute_pointwise_error_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can check which frequency has highest error, or standard deviation of error</span>
@@ -203,8 +205,8 @@ and the shading indicates the standard deviation of the error, also per frequenc
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Frequency with highest mean error:                       43.0
-Frequency with highest standard deviation of error:      7.5
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Frequency with highest mean error:                       27.5
+Frequency with highest standard deviation of error:      46.0
 </pre></div>
 </div>
 <p>In the plot and checks above, we again see that the error is on average low, and
@@ -222,7 +224,7 @@ we are fitting data with the wrong model form, and so we expect there to be some
 with the fit, and we can use the frequency-by-frequency error to investigate if and how
 this is the case.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a group of power spectra, with a knee</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">gen_group_power_spectra</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="View documentation for fooof.sim.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
                                         <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nlvs</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
 
 <span class="c1"># Parameterize our new group of power spectra</span>
@@ -230,7 +232,7 @@ this is the case.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the group frequency-by-frequency error</span>
-<span class="n">compute_pointwise_error_fg</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a href="../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="View documentation for fooof.analysis.compute_pointwise_error_fg"><span class="n">compute_pointwise_error_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_freq_by_freq_error_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_freq_by_freq_error_003.png" />
@@ -243,7 +245,7 @@ this is a sign that something might be going wrong, and it might be worth
 looking more into the how the model fits are going.</p>
 <p>Sphinx settings:
 sphinx_gallery_thumbnail_number = 2</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.274 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.045 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manage-plot-freq-by-freq-error-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/16d9586d4d5bb0e93cc846c336cef657/plot_freq_by_freq_error.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_freq_by_freq_error.py</span></code></a></p>

@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Frequently Asked Questions &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>Frequently Asked Questions &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -134,7 +137,7 @@ components of the underlying data, though it is agnostic to their physiological 
 putative functional roles.</p>
 <p>FOOOF operates on frequency representation of neurophysiological times series (power spectra).
 At it’s core, FOOOF is a fitting procedure to measure these two components - the periodic and
-aperiodic components - in power spectra. The full model fit consists of a parameterizing of these
+aperiodic components - in power spectra. The full model fit consists of parameterizing these
 aperiodic and periodic components, as well as a full (combined) model fit of the whole
 power spectrum.</p>
 <p>The full mathematical description of the model is described in the tutorials.</p>
@@ -176,7 +179,7 @@ in the data, more recent work has demonstrated that this aperiodic activity is d
 and systematically varies both within [<a class="reference external" href="https://doi.org/10.1152/jn.00943.2014">1</a>] and between [<a class="reference external" href="https://doi.org/10.1523/JNEUROSCI.2332-14.2015">2</a>] subjects.</p>
 <p>The dynamic properties of the aperiodic activity means that even if periodic activity
 is still the focus of the analysis, quantification of such data must explicitly account
-for aperiodic activity to appropriately measure what components of the data are actually
+for aperiodic activity to appropriately measure which components of the data are actually
 changing.</p>
 <p>In addition, aperiodic components of neural signals may be important and interesting
 in their own right as an interesting signal to investigate as potential biomarker.
@@ -194,9 +197,10 @@ frequency ranges, it is not truly ‘1/f’ across all frequencies.</p>
 <p>From the physics perspective, ‘1/f’ activity is sometimes referred to as ‘noise’,
 as shorthand for ‘statistical noise’ or <a class="reference external" href="https://en.wikipedia.org/wiki/Colors_of_noise">coloured noise</a>.
 As well as not necessarily meeting technical definitions, referring to aperiodic neural activity
-as noise in this way is also different however to how the terms ‘signal’ &amp; ‘noise’ are typically
-used in neuroscience, in terms of referring to a signal of interest and unwanted or artifactual
-activity. We consider that the aperiodic could be the signal of interest for some investigations.
+as noise in this way is also different to how the terms ‘signal’ &amp; ‘noise’ are typically
+used in neuroscience. In neuroscience, the terms ‘signal’ &amp; ‘noise’ are typically used
+to refer to data of interest, and unwanted or artefactual data, respectively.
+We consider that the aperiodic could be the signal of interest for some investigations.
 Therefore, we have moved away from this term so as not to imply it is either strictly statistical
 noise, nor is it merely unwanted ‘noise’ in the recording.</p>
 <p>For similar reasons, we have moved away from calling it ‘background’ activity, as this implies
@@ -224,10 +228,10 @@ a model quantification.</p>
 consistent with there being no periodic activity at that frequency. Without a detected peak,
 we argue that there is no evidence of periodic activity, at that frequency, over and
 above the power as expected by the aperiodic activity. In this situation, one should be very
-wary of interpreting activity at this frequency, as it is most likely to reflect aperiodic
+wary of interpreting activity at this frequency, as it is most likely reflects aperiodic
 activity.</p>
-<p>However, we can, of course not prove a negative, and the absence of a detected peak does
-therefore imply that there must be no periodic activity at that frequency band. There could
+<p>However, we cannot prove a negative, and so the absence of a detected peak does not
+imply that there is definitively no periodic activity at that particular frequency. There could
 be very low power periodic activity, and/or periodic activity that is variable through time
 (bursty) such as to not display a prominent peak across the analyzed time sample.</p>
 </div>
@@ -289,11 +293,11 @@ if the outputs are strongly dependent on the settings you choose.</p>
 <h3>I’m interested in a particular oscillation band, should I fit a small range?<a class="headerlink" href="#i-m-interested-in-a-particular-oscillation-band-should-i-fit-a-small-range" title="Permalink to this headline">¶</a></h3>
 <p>Generally, no, it is better to always try and fit a broad range, rather than to fit a small
 frequency range, even if one is interested in a specific oscillation band in particular.</p>
-<p>This is because the if a small frequency range is used, it becomes much more difficult to
+<p>This is because if a small frequency range is used, it becomes much more difficult to
 estimate the aperiodic component of the data, and without a good estimate of the aperiodic
 component, it can also be more difficult to effectively estimate the periodic components.</p>
 <p>Therefore, if one is interested in, for example, alpha oscillations (approximately 7-14 Hz),
-the we still recommend fitting a broad range (for example, 3-40 Hz), and then extracting the
+then we still recommend fitting a broad range (for example, 3-40 Hz), and then extracting the
 alpha oscillations post-hoc. There are utilities in fooof.analysis to extract oscillations
 from particular bands, and examples of this on the examples page.</p>
 </div>

@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Conflating Periodic &amp; Aperiodic Changes &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>Conflating Periodic &amp; Aperiodic Changes &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -134,10 +137,10 @@ have multiple parameters, each of which could vary.</p>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="c1"># Import simulation, utility, and plotting tools</span>
-<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <span class="n">Bands</span>
-<span class="kn">from</span> <span class="nn">fooof.sim</span> <span class="k">import</span> <span class="n">gen_power_spectrum</span>
-<span class="kn">from</span> <span class="nn">fooof.utils</span> <span class="k">import</span> <span class="n">trim_spectrum</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <span class="n">plot_spectra_shading</span>
+<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">Bands</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim</span> <span class="k">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof.utils</span> <span class="k">import</span> <a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="View documentation for fooof.utils.trim_spectrum"><span class="n">trim_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="View documentation for fooof.plts.spectra.plot_spectra_shading"><span class="n">plot_spectra_shading</span></a>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Settings</span>
@@ -154,7 +157,7 @@ investigating differences in alpha activity.</p>
 concurrent aperiodic activity. We will also simulate several altered versions of
 this spectrum, each which a change in a specific parameter of the power spectrum.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define our bands of interest</span>
-<span class="n">bands</span> <span class="o">=</span> <span class="n">Bands</span><span class="p">({</span><span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">)})</span>
+<a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">)})</span>
 
 <span class="c1"># Simulation Settings</span>
 <span class="n">nlv</span> <span class="o">=</span> <span class="mi">0</span>
@@ -173,14 +176,14 @@ this spectrum, each which a change in a specific parameter of the power spectrum
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create baseline power spectrum, to compare to</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">powers_base</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_base</span><span class="p">,</span> <span class="n">pe_base</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers_base</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_base</span><span class="p">,</span> <span class="n">pe_base</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create comparison power spectra, with differences in different parameters of the data</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">powers_pw</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_base</span><span class="p">,</span> <span class="n">pw_diff</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">powers_cf</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_base</span><span class="p">,</span> <span class="n">cf_diff</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">powers_off</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">off_diff</span><span class="p">,</span> <span class="n">pe_base</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">powers_exp</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">exp_diff</span><span class="p">,</span> <span class="n">pe_base</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">powers_pw</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_base</span><span class="p">,</span> <span class="n">pw_diff</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">powers_cf</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_base</span><span class="p">,</span> <span class="n">cf_diff</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">powers_off</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">off_diff</span><span class="p">,</span> <span class="n">pe_base</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">powers_exp</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">exp_diff</span><span class="p">,</span> <span class="n">pe_base</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Collect the comparison power spectra together</span>
@@ -210,8 +213,8 @@ where each has a change in one parameter of the data.</p>
 <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">all_powers</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 
     <span class="c1"># Create spectrum plot, with alpha band of interest shaded in</span>
-    <span class="n">plot_spectra_shading</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">powers_base</span><span class="p">,</span> <span class="n">powers</span><span class="p">],</span>
-                         <span class="n">bands</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_color</span><span class="p">,</span>
+    <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="View documentation for fooof.plts.spectra.plot_spectra_shading"><span class="n">plot_spectra_shading</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">powers_base</span><span class="p">,</span> <span class="n">powers</span><span class="p">],</span>
+                         <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_color</span><span class="p">,</span>
                          <span class="n">log_freqs</span><span class="o">=</span><span class="n">log_freqs</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="n">log_powers</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
     <span class="c1"># Add the title, and do some plot styling</span>
@@ -233,20 +236,20 @@ activity relating to this change.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_avg_power</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper function to calculate average power in a band.&quot;&quot;&quot;</span>
 
-    <span class="n">_</span><span class="p">,</span> <span class="n">band_powers</span> <span class="o">=</span> <span class="n">trim_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">band_powers</span> <span class="o">=</span> <a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="View documentation for fooof.utils.trim_spectrum"><span class="n">trim_spectrum</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
     <span class="n">avg_power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">band_powers</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">avg_power</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the amount of alpha power in the baseline power spectrum</span>
-<span class="n">base_alpha</span> <span class="o">=</span> <span class="n">calc_avg_power</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers_base</span><span class="p">,</span> <span class="n">bands</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">base_alpha</span> <span class="o">=</span> <span class="n">calc_avg_power</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers_base</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the different in alpha power for each of our comparison pairs</span>
 <span class="k">for</span> <span class="n">title</span><span class="p">,</span> <span class="n">powers</span> <span class="ow">in</span> <span class="n">all_powers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:20s}</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:1.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>\
-        <span class="n">title</span><span class="p">,</span> <span class="n">calc_avg_power</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">bands</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span> <span class="o">-</span> <span class="n">base_alpha</span><span class="p">))</span>
+        <span class="n">title</span><span class="p">,</span> <span class="n">calc_avg_power</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span> <span class="o">-</span> <span class="n">base_alpha</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -283,13 +286,13 @@ as above, but without adding any alpha peaks to the spectra.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create baseline power spectrum, to compare to</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">powers_noa_base</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_base</span><span class="p">,</span> <span class="n">pe_base_na</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers_noa_base</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_base</span><span class="p">,</span> <span class="n">pe_base_na</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
 
 <span class="c1"># Collect all powers together,</span>
 <span class="n">all_powers_na</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Offset Change&#39;</span> <span class="p">:</span> \
-                    <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">off_diff_na</span><span class="p">,</span> <span class="n">pe_base_na</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+                    <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">off_diff_na</span><span class="p">,</span> <span class="n">pe_base_na</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
                  <span class="s1">&#39;Exponent Change&#39;</span> <span class="p">:</span> \
-                    <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">exp_diff_na</span><span class="p">,</span> <span class="n">pe_base_na</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)[</span><span class="mi">1</span><span class="p">]}</span>
+                    <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">exp_diff_na</span><span class="p">,</span> <span class="n">pe_base_na</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)[</span><span class="mi">1</span><span class="p">]}</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot and compare spectra with no alpha</span>
@@ -297,8 +300,8 @@ as above, but without adding any alpha peaks to the spectra.</p>
 <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">all_powers_na</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 
     <span class="c1"># Create spectrum plot, with alpha band of interest shaded in</span>
-    <span class="n">plot_spectra_shading</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">powers_noa_base</span><span class="p">,</span> <span class="n">powers</span><span class="p">],</span>
-                         <span class="n">bands</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_color</span><span class="p">,</span>
+    <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="View documentation for fooof.plts.spectra.plot_spectra_shading"><span class="n">plot_spectra_shading</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">powers_noa_base</span><span class="p">,</span> <span class="n">powers</span><span class="p">],</span>
+                         <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_color</span><span class="p">,</span>
                          <span class="n">log_freqs</span><span class="o">=</span><span class="n">log_freqs</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="n">log_powers</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
     <span class="c1"># Add the title, and do some plot styling</span>
@@ -333,7 +336,7 @@ a combination of them, could be contributing to the measured changes.</p>
 <p>As an alternative to analyzing narrow-band power, parameterizing power spectra offers
 an approach that can measure which parameters of the data are changing, and in what
 ways.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.377 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.375 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-measurements-plot-periodicaperiodicfeatures-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/112729f849787b38e89f77cf269985c0/plot_PeriodicAperiodicFeatures.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_PeriodicAperiodicFeatures.py</span></code></a></p>

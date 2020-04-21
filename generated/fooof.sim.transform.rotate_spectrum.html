@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.sim.transform.rotate_spectrum &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.sim.transform.rotate_spectrum &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -133,7 +136,7 @@
 <li><p>unity at the rotation frequency</p></li>
 <li><p>has an exponent of the desired delta exponent</p></li>
 </ul>
-<p>This mask, when applied to a spectrum, as ‘spectrum * mask should result in:</p>
+<p>This mask, when applied to a spectrum as ‘spectrum * mask’, should result in:</p>
 <ul class="simple">
 <li><p>rotated_spectrum = 1/f^(original_exponent + delta_exponent), where</p></li>
 <li><p>spectrum[rotation_frequency] == rotated spectrum[rotation_frequency]</p></li>
@@ -149,8 +152,22 @@
 with a knee. This transformation will change them in an unspecified way, not just
 limited to doing the rotation.</p></li>
 </ul>
+<p class="rubric">Examples</p>
+<p>Rotate a simulated spectrum, changing the exponent around a rotation point of 25 Hz:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_power_spectrum</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rotated_powers</span> <span class="o">=</span> <span class="n">rotate_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
+<div class="section" id="examples-using-fooof-sim-transform-rotate-spectrum">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.sim.transform.rotate_spectrum</span></code><a class="headerlink" href="#examples-using-fooof-sim-transform-rotate-spectrum" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Apply transformations to power spectra."><div class="figure align-default" id="id1">
+<img alt="../_images/sphx_glr_plot_transforms_thumb.png" src="../_images/sphx_glr_plot_transforms_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/sims/plot_transforms.html#sphx-glr-auto-examples-sims-plot-transforms-py"><span class="std std-ref">Transforming Power Spectra</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
 </div>
 
 

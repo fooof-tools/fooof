@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Rhythmicity of Time Series &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>Rhythmicity of Time Series &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -113,13 +116,12 @@ as a sum of sinusoids.</p>
 <p>This is a powerful and useful theorem, as it means that we can use tools such as the
 Fourier transform and other similar measures, to compute frequency representations
 of any time series data.</p>
-<p>However, just because a signal _can_ be represented by sinusoids does not mean that any
+<p>However, just because a signal can be represented by sinusoids does not mean that any
 given signal, or any given aspect of a signal, for which a power spectrum can be computed
 should be conceptualized as being comprised of rhythmic components.</p>
 <p>The power spectrum is just a possible representation of the original data, not a
 descriptive claim of the actual components of the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="c1"># Use NeuroDSP for time series simulations &amp; analyses</span>
 <span class="kn">from</span> <span class="nn">neurodsp</span> <span class="k">import</span> <span class="n">sim</span>
@@ -132,7 +134,7 @@ descriptive claim of the actual components of the data.</p>
 <span class="n">n_seconds</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">s_rate</span> <span class="o">=</span> <span class="mi">1000</span>
 
-<span class="c1"># Compute a times vector, for plotting, and check length of data</span>
+<span class="c1"># Compute an array of time values, for plotting, and check length of data</span>
 <span class="n">times</span> <span class="o">=</span> <span class="n">create_times</span><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
 <span class="n">n_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
 </pre></div>
@@ -178,7 +180,7 @@ at a particular frequency does not necessarily imply that one should consider th
 there are any rhythmic properties at that frequency in the original time series.</p>
 <p>In this case, and many like it, power across all frequencies is a representation of
 transient (or aperiodic) activity in the time series. Broadly, when there are transients,
-or aperiodic components, lots of sinusoids have to added together in order to represent
+or aperiodic components, lots of sinusoids have to be added together in order to represent
 aperiodic activity out of a basis set of periodic sine waves, and this is why such
 signals typically look very broadband in the frequency domain.</p>
 </div>
@@ -352,7 +354,7 @@ as peaks in the power spectrum, but that absent a peak, we should not automatica
 interpret power at any given frequency as necessarily reflecting rhythmic activity.</p>
 <p>Sphinx settings:
 sphinx_gallery_thumbnail_number = 3</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.749 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.647 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-concepts-plot-doyouevenoscillate-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/d82e87bb1616655889a497b5b2019172/plot_DoYouEvenOscillate.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_DoYouEvenOscillate.py</span></code></a></p>

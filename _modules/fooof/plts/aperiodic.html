@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.plts.aperiodic &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.plts.aperiodic &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -100,7 +103,7 @@
 
 <span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_freqs</span><span class="p">,</span> <span class="n">gen_aperiodic</span>
 <span class="kn">from</span> <span class="nn">fooof.core.modutils</span> <span class="k">import</span> <span class="n">safe_import</span><span class="p">,</span> <span class="n">check_dependency</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.settings</span> <span class="k">import</span> <span class="n">FIGSIZE_PARAMS</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.settings</span> <span class="k">import</span> <span class="n">PLT_FIGSIZES</span>
 <span class="kn">from</span> <span class="nn">fooof.plts.style</span> <span class="k">import</span> <span class="n">check_n_style</span><span class="p">,</span> <span class="n">style_param_plot</span>
 <span class="kn">from</span> <span class="nn">fooof.plts.utils</span> <span class="k">import</span> <span class="n">check_ax</span><span class="p">,</span> <span class="n">recursive_plot</span><span class="p">,</span> <span class="n">check_plot_kwargs</span>
 
@@ -130,7 +133,7 @@
 <span class="sd">        Keyword arguments to pass into the plot call.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">check_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span> <span class="n">FIGSIZE_PARAMS</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">check_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span> <span class="n">PLT_FIGSIZES</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]))</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aps</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">recursive_plot</span><span class="p">(</span><span class="n">aps</span><span class="p">,</span> <span class="n">plot_aperiodic_params</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
@@ -180,7 +183,7 @@
 <span class="sd">        Keyword arguments to pass into the plot call.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">check_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span> <span class="n">FIGSIZE_PARAMS</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">check_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span> <span class="n">PLT_FIGSIZES</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]))</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aps</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
 
@@ -221,7 +224,8 @@
         <span class="c1"># Plot the average component</span>
         <span class="n">avg</span> <span class="o">=</span> <span class="n">avg_vals</span> <span class="o">/</span> <span class="n">aps</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">avg_color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">colors</span> <span class="k">else</span> <span class="n">colors</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plt_freqs</span><span class="p">,</span> <span class="n">avg</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">avg_color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">plot_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;linewidth&#39;</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plt_freqs</span><span class="p">,</span> <span class="n">avg</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">plot_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;linewidth&#39;</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">avg_color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
 
     <span class="c1"># Add axis labels</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;log(Frequency)&#39;</span> <span class="k">if</span> <span class="n">log_freqs</span> <span class="k">else</span> <span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>

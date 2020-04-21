@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.data.data.FOOOFMetaData &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.data.FOOOFMetaData &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -91,71 +94,47 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-data-data-fooofmetadata">
-<h1>fooof.data.data.FOOOFMetaData<a class="headerlink" href="#fooof-data-data-fooofmetadata" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="fooof-data-fooofmetadata">
+<h1>fooof.data.FOOOFMetaData<a class="headerlink" href="#fooof-data-fooofmetadata" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="fooof.data.data.FOOOFMetaData">
-<em class="property">class </em><code class="sig-prename descclassname">fooof.data.data.</code><code class="sig-name descname">FOOOFMetaData</code><a class="headerlink" href="#fooof.data.data.FOOOFMetaData" title="Permalink to this definition">¶</a></dt>
-<dd><p>The meta-data for a FOOOF object.</p>
+<dt id="fooof.data.FOOOFMetaData">
+<em class="property">class </em><code class="sig-prename descclassname">fooof.data.</code><code class="sig-name descname">FOOOFMetaData</code><a class="reference internal" href="../_modules/fooof/data/data.html#FOOOFMetaData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.data.FOOOFMetaData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Metadata information about a power spectrum.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><a class="reference internal" href="#fooof.data.data.FOOOFMetaData.freq_range" title="fooof.data.data.FOOOFMetaData.freq_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">freq_range</span></code></a><span class="classifier">list of [float, float]</span></dt><dd><p>Alias for field number 0</p>
+<dt><strong>freq_range</strong><span class="classifier">list of [float, float]</span></dt><dd><p>Frequency range of the power spectrum, as [lowest_freq, highest_freq].</p>
 </dd>
-<dt><a class="reference internal" href="#fooof.data.data.FOOOFMetaData.freq_res" title="fooof.data.data.FOOOFMetaData.freq_res"><code class="xref py py-obj docutils literal notranslate"><span class="pre">freq_res</span></code></a><span class="classifier">float</span></dt><dd><p>Alias for field number 1</p>
-</dd>
-</dl>
+<dt><strong>freq_res</strong><span class="classifier">float</span></dt><dd><p>Frequency resolution of the power spectrum.</p>
 </dd>
 </dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This object is a data object, based on a NamedTuple, with immutable data attributes.</p>
 <dl class="method">
-<dt id="fooof.data.data.FOOOFMetaData.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">/</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.data.data.FOOOFMetaData.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<dt id="fooof.data.FOOOFMetaData.count">
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">value</em>, <em class="sig-param">/</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.data.FOOOFMetaData.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of occurrences of value.</p>
 </dd></dl>
 
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.data.data.FOOOFMetaData.__init__" title="fooof.data.data.FOOOFMetaData.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(self, /, \*args, \*\*kwargs)</p></td>
-<td><p>Initialize self.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code>(self, value, /)</p></td>
-<td><p>Return number of occurrences of value.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code>(self, value[, start, stop])</p></td>
-<td><p>Return first index of value.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.data.data.FOOOFMetaData.freq_range" title="fooof.data.data.FOOOFMetaData.freq_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">freq_range</span></code></a></p></td>
-<td><p>Alias for field number 0</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#fooof.data.data.FOOOFMetaData.freq_res" title="fooof.data.data.FOOOFMetaData.freq_res"><code class="xref py py-obj docutils literal notranslate"><span class="pre">freq_res</span></code></a></p></td>
-<td><p>Alias for field number 1</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
-<dt id="fooof.data.data.FOOOFMetaData.freq_range">
-<em class="property">property </em><code class="sig-name descname">freq_range</code><a class="headerlink" href="#fooof.data.data.FOOOFMetaData.freq_range" title="Permalink to this definition">¶</a></dt>
+<dt id="fooof.data.FOOOFMetaData.freq_range">
+<em class="property">property </em><code class="sig-name descname">freq_range</code><a class="headerlink" href="#fooof.data.FOOOFMetaData.freq_range" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="fooof.data.data.FOOOFMetaData.freq_res">
-<em class="property">property </em><code class="sig-name descname">freq_res</code><a class="headerlink" href="#fooof.data.data.FOOOFMetaData.freq_res" title="Permalink to this definition">¶</a></dt>
+<dt id="fooof.data.FOOOFMetaData.freq_res">
+<em class="property">property </em><code class="sig-name descname">freq_res</code><a class="headerlink" href="#fooof.data.FOOOFMetaData.freq_res" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fooof.data.FOOOFMetaData.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">value</em>, <em class="sig-param">start=0</em>, <em class="sig-param">stop=9223372036854775807</em>, <em class="sig-param">/</em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.data.FOOOFMetaData.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return first index of value.</p>
+<p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
 </dd></dl>

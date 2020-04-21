@@ -230,10 +230,10 @@ print('Has model results: ', fm.has_model)
 
 # Print out model fit results
 print('aperiodic params: \t', fm.aperiodic_params_)
-print('peak params: \t',fm.peak_params_)
+print('peak params: \t', fm.peak_params_)
 print('r-squared: \t', fm.r_squared_)
 print('fit error: \t', fm.error_)
-print('fooofed spectrum: \t',fm.fooofed_spectrum_[0:5])
+print('fooofed spectrum: \t', fm.fooofed_spectrum_[0:5])
 
 ###################################################################################################
 # 4) Methods
@@ -253,7 +253,7 @@ print('fooofed spectrum: \t',fm.fooofed_spectrum_[0:5])
 
 # This piece of code is just a way to print out all the public methods with their description
 [print(it + '\n\t' + eval('fm.' + it + '.__doc__').split('\n')[0]) \
- for it in dir(fm) if it[0] != '_' and callable(eval('fm.' + it))];
+    for it in dir(fm) if it[0] != '_' and callable(eval('fm.' + it))];
 
 ###################################################################################################
 # Saving Data & Results
@@ -303,12 +303,6 @@ nfm.plot()
 
 # Save out a report of the current model fit & results
 fm.save_report('FOOOF_report')
-
-###################################################################################################
-
-# If you're in a notebook, you can use this code to check what the generated report looks like
-from IPython.display import IFrame
-IFrame("FOOOF_report.pdf", width=950, height=1200)
 
 ###################################################################################################
 # Conclusion

@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.plts.fm &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.plts.fm &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -108,7 +111,7 @@
 <span class="kn">from</span> <span class="nn">fooof.utils.data</span> <span class="k">import</span> <span class="n">trim_spectrum</span>
 <span class="kn">from</span> <span class="nn">fooof.utils.params</span> <span class="k">import</span> <span class="n">compute_fwhm</span>
 <span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <span class="n">plot_spectrum</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.settings</span> <span class="k">import</span> <span class="n">FIGSIZE_SPECTRAL</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.settings</span> <span class="k">import</span> <span class="n">PLT_FIGSIZES</span><span class="p">,</span> <span class="n">PLT_COLORS</span>
 <span class="kn">from</span> <span class="nn">fooof.plts.utils</span> <span class="k">import</span> <span class="n">check_ax</span><span class="p">,</span> <span class="n">check_plot_kwargs</span>
 <span class="kn">from</span> <span class="nn">fooof.plts.style</span> <span class="k">import</span> <span class="n">check_n_style</span><span class="p">,</span> <span class="n">style_spectrum_plot</span>
 
@@ -156,7 +159,7 @@
 <span class="sd">    the y-axis (power) is plotted in log spacing by default.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">check_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">FIGSIZE_SPECTRAL</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">check_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">PLT_FIGSIZES</span><span class="p">[</span><span class="s1">&#39;spectral&#39;</span><span class="p">])</span>
 
     <span class="c1"># Log settings - note that power values in FOOOF objects are already logged</span>
     <span class="n">log_freqs</span> <span class="o">=</span> <span class="n">plt_log</span>
@@ -165,7 +168,7 @@
     <span class="c1"># Plot the data, if available</span>
     <span class="k">if</span> <span class="n">fm</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
         <span class="n">data_kwargs</span> <span class="o">=</span> <span class="n">check_plot_kwargs</span><span class="p">(</span><span class="n">data_kwargs</span><span class="p">,</span> \
-            <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span> <span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+            <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">PLT_COLORS</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="s1">&#39;linewidth&#39;</span> <span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
              <span class="s1">&#39;label&#39;</span> <span class="p">:</span> <span class="s1">&#39;Original Spectrum&#39;</span> <span class="k">if</span> <span class="n">add_legend</span> <span class="k">else</span> <span class="kc">None</span><span class="p">})</span>
         <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">log_freqs</span><span class="p">,</span> <span class="n">log_powers</span><span class="p">,</span>
                       <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">data_kwargs</span><span class="p">)</span>
@@ -173,7 +176,7 @@
     <span class="c1"># Add the full model fit, and components (if requested)</span>
     <span class="k">if</span> <span class="n">fm</span><span class="o">.</span><span class="n">has_model</span><span class="p">:</span>
         <span class="n">model_kwargs</span> <span class="o">=</span> <span class="n">check_plot_kwargs</span><span class="p">(</span><span class="n">model_kwargs</span><span class="p">,</span> \
-            <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span> <span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">PLT_COLORS</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">],</span> <span class="s1">&#39;linewidth&#39;</span> <span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
              <span class="s1">&#39;label&#39;</span> <span class="p">:</span> <span class="s1">&#39;Full Model Fit&#39;</span> <span class="k">if</span> <span class="n">add_legend</span> <span class="k">else</span> <span class="kc">None</span><span class="p">})</span>
         <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">,</span> <span class="n">log_freqs</span><span class="p">,</span> <span class="n">log_powers</span><span class="p">,</span>
                       <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">model_kwargs</span><span class="p">)</span>
@@ -181,8 +184,8 @@
         <span class="c1"># Plot the aperiodic component of the model fit</span>
         <span class="k">if</span> <span class="n">plot_aperiodic</span><span class="p">:</span>
             <span class="n">aperiodic_kwargs</span> <span class="o">=</span> <span class="n">check_plot_kwargs</span><span class="p">(</span><span class="n">aperiodic_kwargs</span><span class="p">,</span> \
-                <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span> <span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;linestyle&#39;</span> <span class="p">:</span> <span class="s1">&#39;dashed&#39;</span><span class="p">,</span>
-                 <span class="s1">&#39;label&#39;</span> <span class="p">:</span> <span class="s1">&#39;Aperiodic Fit&#39;</span> <span class="k">if</span> <span class="n">add_legend</span> <span class="k">else</span> <span class="kc">None</span><span class="p">})</span>
+                <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">PLT_COLORS</span><span class="p">[</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">],</span> <span class="s1">&#39;linewidth&#39;</span> <span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                 <span class="s1">&#39;linestyle&#39;</span> <span class="p">:</span> <span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span> <span class="p">:</span> <span class="s1">&#39;Aperiodic Fit&#39;</span> <span class="k">if</span> <span class="n">add_legend</span> <span class="k">else</span> <span class="kc">None</span><span class="p">})</span>
             <span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="n">_ap_fit</span><span class="p">,</span> <span class="n">log_freqs</span><span class="p">,</span> <span class="n">log_powers</span><span class="p">,</span>
                           <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">aperiodic_kwargs</span><span class="p">)</span>
 
@@ -259,7 +262,8 @@
 <span class="sd">        Keyword arguments to pass into the plot call.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">kwargs</span> <span class="o">=</span> <span class="n">check_plot_kwargs</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.25</span><span class="p">})</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="n">check_plot_kwargs</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="p">,</span>
+                               <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">PLT_COLORS</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.25</span><span class="p">})</span>
 
     <span class="k">for</span> <span class="n">peak</span> <span class="ow">in</span> <span class="n">fm</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;gaussian_params&#39;</span><span class="p">):</span>
 
@@ -285,7 +289,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">kwargs</span> <span class="o">=</span> <span class="n">check_plot_kwargs</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="p">,</span>
-                               <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;ms&#39;</span> <span class="p">:</span> <span class="mi">6</span><span class="p">})</span>
+                               <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">PLT_COLORS</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span>
+                                <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;ms&#39;</span> <span class="p">:</span> <span class="mi">6</span><span class="p">})</span>
 
     <span class="k">for</span> <span class="n">peak</span> <span class="ow">in</span> <span class="n">fm</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">):</span>
 
@@ -315,7 +320,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">kwargs</span> <span class="o">=</span> <span class="n">check_plot_kwargs</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="p">,</span>
-                               <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="mf">1.5</span><span class="p">})</span>
+                               <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">PLT_COLORS</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span>
+                                <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="mf">1.5</span><span class="p">})</span>
 
     <span class="k">for</span> <span class="n">peak</span> <span class="ow">in</span> <span class="n">fm</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;gaussian_params&#39;</span><span class="p">):</span>
 
@@ -347,7 +353,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">kwargs</span> <span class="o">=</span> <span class="n">check_plot_kwargs</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="p">,</span>
-                               <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="mf">1.4</span><span class="p">,</span> <span class="s1">&#39;ms&#39;</span> <span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+                               <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">PLT_COLORS</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span>
+                                <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="mf">1.4</span><span class="p">,</span> <span class="s1">&#39;ms&#39;</span> <span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
 
     <span class="n">ylims</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">peak</span> <span class="ow">in</span> <span class="n">fm</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">):</span>
@@ -378,7 +385,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">kwargs</span> <span class="o">=</span> <span class="n">check_plot_kwargs</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="p">,</span>
-                               <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;ms&#39;</span> <span class="p">:</span> <span class="mi">6</span><span class="p">})</span>
+                               <span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">PLT_COLORS</span><span class="p">[</span><span class="s1">&#39;periodic&#39;</span><span class="p">],</span>
+                                <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;lw&#39;</span> <span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;ms&#39;</span> <span class="p">:</span> <span class="mi">6</span><span class="p">})</span>
 
     <span class="k">for</span> <span class="n">peak</span> <span class="ow">in</span> <span class="n">fm</span><span class="o">.</span><span class="n">gaussian_params_</span><span class="p">:</span>
 

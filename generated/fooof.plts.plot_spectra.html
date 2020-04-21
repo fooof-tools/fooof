@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.plts.spectra.plot_spectrum &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.plts.plot_spectra &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -91,24 +94,26 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-plts-spectra-plot-spectrum">
-<h1>fooof.plts.spectra.plot_spectrum<a class="headerlink" href="#fooof-plts-spectra-plot-spectrum" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="fooof-plts-plot-spectra">
+<h1>fooof.plts.plot_spectra<a class="headerlink" href="#fooof-plts-plot-spectra" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="fooof.plts.spectra.plot_spectrum">
-<code class="sig-prename descclassname">fooof.plts.spectra.</code><code class="sig-name descname">plot_spectrum</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">power_spectrum</em>, <em class="sig-param">log_freqs=False</em>, <em class="sig-param">log_powers=False</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">plot_style=&lt;function style_spectrum_plot at 0x10168344d0&gt;</em>, <em class="sig-param">**plot_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/plts/spectra.html#plot_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.plts.spectra.plot_spectrum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot a power spectrum.</p>
+<dt id="fooof.plts.plot_spectra">
+<code class="sig-prename descclassname">fooof.plts.</code><code class="sig-name descname">plot_spectra</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">power_spectra</em>, <em class="sig-param">log_freqs=False</em>, <em class="sig-param">log_powers=False</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">plot_style=&lt;function style_spectrum_plot at 0x1018e8a560&gt;</em>, <em class="sig-param">**plot_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/plts/spectra.html#plot_spectra"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.plts.plot_spectra" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot multiple power spectra on the same plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>freqs</strong><span class="classifier">1d array</span></dt><dd><p>Frequency values, to be plotted on the x-axis.</p>
+<dt><strong>freqs</strong><span class="classifier">2d array or 1d array or list of 1d array</span></dt><dd><p>Frequency values, to be plotted on the x-axis.</p>
 </dd>
-<dt><strong>power_spectrum</strong><span class="classifier">1d array</span></dt><dd><p>Power values, to be plotted on the y-axis.</p>
+<dt><strong>power_spectra</strong><span class="classifier">2d array or list of 1d array</span></dt><dd><p>Power values, to be plotted on the y-axis.</p>
 </dd>
 <dt><strong>log_freqs</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to plot the frequency axis in log spacing.</p>
 </dd>
 <dt><strong>log_powers</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to plot the power axis in log spacing.</p>
 </dd>
-<dt><strong>ax</strong><span class="classifier">matplotlib.Axes, optional</span></dt><dd><p>Figure axis upon which to plot.</p>
+<dt><strong>labels</strong><span class="classifier">list of str, optional</span></dt><dd><p>Legend labels, for each power spectrum.</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">matplotlib.Axes, optional</span></dt><dd><p>Figure axes upon which to plot.</p>
 </dd>
 <dt><strong>plot_style</strong><span class="classifier">callable, optional, default: style_spectrum_plot</span></dt><dd><p>A function to call to apply styling &amp; aesthetics to the plot.</p>
 </dd>
@@ -119,6 +124,25 @@
 </dl>
 </dd></dl>
 
+<div class="section" id="examples-using-fooof-plts-plot-spectra">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.plts.plot_spectra</span></code><a class="headerlink" href="#examples-using-fooof-plts-plot-spectra" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Visualizing power spectra."><div class="figure align-default" id="id1">
+<img alt="../_images/sphx_glr_plot_power_spectra_thumb.png" src="../_images/sphx_glr_plot_power_spectra_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plots/plot_power_spectra.html#sphx-glr-auto-examples-plots-plot-power-spectra-py"><span class="std std-ref">Plot Power Spectra</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Manage parameters for creating simulated power spectra."><div class="figure align-default" id="id2">
+<img alt="../_images/sphx_glr_plot_sim_params_thumb.png" src="../_images/sphx_glr_plot_sim_params_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/sims/plot_sim_params.html#sphx-glr-auto-examples-sims-plot-sim-params-py"><span class="std std-ref">Simulation Parameters</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Creating simulated power spectra."><div class="figure align-default" id="id3">
+<img alt="../_images/sphx_glr_plot_simulated_power_spectra_thumb.png" src="../_images/sphx_glr_plot_simulated_power_spectra_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/sims/plot_simulated_power_spectra.html#sphx-glr-auto-examples-sims-plot-simulated-power-spectra-py"><span class="std std-ref">Simulating Neural Power Spectra</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Apply transformations to power spectra."><div class="figure align-default" id="id4">
+<img alt="../_images/sphx_glr_plot_transforms_thumb.png" src="../_images/sphx_glr_plot_transforms_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/sims/plot_transforms.html#sphx-glr-auto-examples-sims-plot-transforms-py"><span class="std std-ref">Transforming Power Spectra</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
 </div>
 
 

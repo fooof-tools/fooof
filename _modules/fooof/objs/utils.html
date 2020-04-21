@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.objs.utils &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.objs.utils &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -105,7 +108,7 @@
 <span class="c1">###################################################################################################</span>
 <span class="c1">###################################################################################################</span>
 
-<div class="viewcode-block" id="compare_info"><a class="viewcode-back" href="../../../generated/fooof.objs.utils.compare_info.html#fooof.objs.utils.compare_info">[docs]</a><span class="k">def</span> <span class="nf">compare_info</span><span class="p">(</span><span class="n">fooof_lst</span><span class="p">,</span> <span class="n">aspect</span><span class="p">):</span>
+<div class="viewcode-block" id="compare_info"><a class="viewcode-back" href="../../../generated/fooof.objs.compare_info.html#fooof.compare_info">[docs]</a><span class="k">def</span> <span class="nf">compare_info</span><span class="p">(</span><span class="n">fooof_lst</span><span class="p">,</span> <span class="n">aspect</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compare a specified aspect of FOOOF objects across instances.</span>
 
 <span class="sd">    Parameters</span>
@@ -132,7 +135,7 @@
     <span class="k">return</span> <span class="n">consistent</span></div>
 
 
-<div class="viewcode-block" id="average_fg"><a class="viewcode-back" href="../../../generated/fooof.objs.utils.average_fg.html#fooof.objs.utils.average_fg">[docs]</a><span class="k">def</span> <span class="nf">average_fg</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="n">bands</span><span class="p">,</span> <span class="n">avg_method</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="average_fg"><a class="viewcode-back" href="../../../generated/fooof.objs.average_fg.html#fooof.average_fg">[docs]</a><span class="k">def</span> <span class="nf">average_fg</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="n">bands</span><span class="p">,</span> <span class="n">avg_method</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Average across model fits in a FOOOFGroup object.</span>
 
 <span class="sd">    Parameters</span>
@@ -210,7 +213,7 @@
     <span class="k">return</span> <span class="n">fm</span></div>
 
 
-<div class="viewcode-block" id="combine_fooofs"><a class="viewcode-back" href="../../../generated/fooof.objs.utils.combine_fooofs.html#fooof.objs.utils.combine_fooofs">[docs]</a><span class="k">def</span> <span class="nf">combine_fooofs</span><span class="p">(</span><span class="n">fooofs</span><span class="p">):</span>
+<div class="viewcode-block" id="combine_fooofs"><a class="viewcode-back" href="../../../generated/fooof.objs.combine_fooofs.html#fooof.combine_fooofs">[docs]</a><span class="k">def</span> <span class="nf">combine_fooofs</span><span class="p">(</span><span class="n">fooofs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Combine a group of FOOOF and/or FOOOFGroup objects into a single FOOOFGroup object.</span>
 
 <span class="sd">    Parameters</span>
@@ -227,6 +230,16 @@
 <span class="sd">    ------</span>
 <span class="sd">    IncompatibleSettingsError</span>
 <span class="sd">        If the input objects have incompatible settings for combining.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Combine FOOOF objects together (where `fm1`, `fm2` &amp; `fm3` are assumed to be defined and fit):</span>
+
+<span class="sd">    &gt;&gt;&gt; fg = combine_fooofs([fm1, fm2, f3])  # doctest:+SKIP</span>
+
+<span class="sd">    Combine FOOOFGroup objects together (where `fg1` &amp; `fg2` are assumed to be defined and fit):</span>
+
+<span class="sd">    &gt;&gt;&gt; fg = combine_fooofs([fg1, fg2])  # doctest:+SKIP</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Compare settings</span>
@@ -268,8 +281,8 @@
     <span class="k">return</span> <span class="n">fg</span></div>
 
 
-<div class="viewcode-block" id="fit_fooof_3d"><a class="viewcode-back" href="../../../generated/fooof.objs.utils.fit_fooof_3d.html#fooof.objs.utils.fit_fooof_3d">[docs]</a><span class="k">def</span> <span class="nf">fit_fooof_3d</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectra</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Fit FOOOF models across a 3D array of power spectra.</span>
+<div class="viewcode-block" id="fit_fooof_3d"><a class="viewcode-back" href="../../../generated/fooof.fit_fooof_3d.html#fooof.fit_fooof_3d">[docs]</a><span class="k">def</span> <span class="nf">fit_fooof_3d</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectra</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fit FOOOF models across a 3d array of power spectra.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -289,6 +302,15 @@
 <span class="sd">    -------</span>
 <span class="sd">    fgs : list of FOOOFGroups</span>
 <span class="sd">        Collected FOOOFGroups after fitting across power spectra, length of n_conditions.</span>
+
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Fit a 3d array of power spectra, assuming `freqs` and `spectra` are already defined:</span>
+
+<span class="sd">    &gt;&gt;&gt; from fooof import FOOOFGroup</span>
+<span class="sd">    &gt;&gt;&gt; fg = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.1)</span>
+<span class="sd">    &gt;&gt;&gt; fgs = fit_fooof_3d(fg, freqs, power_spectra, freq_range=[3, 30])  # doctest:+SKIP</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">fgs</span> <span class="o">=</span> <span class="p">[]</span>

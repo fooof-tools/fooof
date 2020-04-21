@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.analysis.periodic.get_band_peak_fg &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.analysis.get_band_peak_fm &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -91,19 +94,22 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-analysis-periodic-get-band-peak-fg">
-<h1>fooof.analysis.periodic.get_band_peak_fg<a class="headerlink" href="#fooof-analysis-periodic-get-band-peak-fg" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="fooof-analysis-get-band-peak-fm">
+<h1>fooof.analysis.get_band_peak_fm<a class="headerlink" href="#fooof-analysis-get-band-peak-fm" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="fooof.analysis.periodic.get_band_peak_fg">
-<code class="sig-prename descclassname">fooof.analysis.periodic.</code><code class="sig-name descname">get_band_peak_fg</code><span class="sig-paren">(</span><em class="sig-param">fg</em>, <em class="sig-param">band</em>, <em class="sig-param">threshold=None</em>, <em class="sig-param">thresh_param='PW'</em>, <em class="sig-param">attribute='peak_params'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/analysis/periodic.html#get_band_peak_fg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.analysis.periodic.get_band_peak_fg" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract peaks from a band of interest from a FOOOFGroup object.</p>
+<dt id="fooof.analysis.get_band_peak_fm">
+<code class="sig-prename descclassname">fooof.analysis.</code><code class="sig-name descname">get_band_peak_fm</code><span class="sig-paren">(</span><em class="sig-param">fm</em>, <em class="sig-param">band</em>, <em class="sig-param">select_highest=True</em>, <em class="sig-param">threshold=None</em>, <em class="sig-param">thresh_param='PW'</em>, <em class="sig-param">attribute='peak_params'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/analysis/periodic.html#get_band_peak_fm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.analysis.get_band_peak_fm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract peaks from a band of interest from a FOOOF object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>fg</strong><span class="classifier">FOOOFGroup</span></dt><dd><p>Object to extract peak data from.</p>
+<dt><strong>fm</strong><span class="classifier">FOOOF</span></dt><dd><p>Object to extract peak data from.</p>
 </dd>
 <dt><strong>band</strong><span class="classifier">tuple of (float, float)</span></dt><dd><p>Frequency range for the band of interest.
-Defind as: (lower_frequency_bound, upper_frequency_bound).</p>
+Defined as: (lower_frequency_bound, upper_frequency_bound).</p>
+</dd>
+<dt><strong>select_highest</strong><span class="classifier">bool, optional, default: True</span></dt><dd><p>Whether to return single peak (if True) or all peaks within the range found (if False).
+If True, returns the highest power peak within the search range.</p>
 </dd>
 <dt><strong>threshold</strong><span class="classifier">float</span></dt><dd><p>A minimum threshold value to apply.</p>
 </dd>
@@ -115,13 +121,33 @@ Defind as: (lower_frequency_bound, upper_frequency_bound).</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt>2d array</dt><dd><p>Peak data. Each row is a peak, as [CF, PW, BW].</p>
+<dt>1d or 2d array</dt><dd><p>Peak data. Each row is a peak, as [CF, PW, BW].</p>
 </dd>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<p>Select an alpha peak from an already fit FOOOF object ‘fm’, selecting the highest power alpha:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alpha</span> <span class="o">=</span> <span class="n">get_band_peak_fm</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span> <span class="n">select_highest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p>Select beta peaks from a FOOOF object ‘fm’, extracting all peaks in the range:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">betas</span> <span class="o">=</span> <span class="n">get_band_peak_fm</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="n">select_highest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  
+</pre></div>
+</div>
 </dd></dl>
 
+<div class="section" id="examples-using-fooof-analysis-get-band-peak-fm">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.analysis.get_band_peak_fm</span></code><a class="headerlink" href="#examples-using-fooof-analysis-get-band-peak-fm" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting power spectrum models."><div class="figure align-default" id="id1">
+<img alt="../_images/sphx_glr_plot_08-FurtherAnalysis_thumb.png" src="../_images/sphx_glr_plot_08-FurtherAnalysis_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_08-FurtherAnalysis.html#sphx-glr-auto-tutorials-plot-08-furtheranalysis-py"><span class="std std-ref">08: Further Analysis</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Comparing how &#x27;Band-by-Band&#x27; approaches relate to periodic &amp; aperiodic components."><div class="figure align-default" id="id2">
+<img alt="../_images/sphx_glr_plot_BandByBand_thumb.png" src="../_images/sphx_glr_plot_BandByBand_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_motivations/measurements/plot_BandByBand.html#sphx-glr-auto-motivations-measurements-plot-bandbyband-py"><span class="std std-ref">Band-by-Band</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
 </div>
 
 

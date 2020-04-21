@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>02: Fitting Power Spectrum Models &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>02: Fitting Power Spectrum Models &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -127,9 +130,9 @@ algorithm to parameterize neural power spectra.</p>
 compute power spectra, and so computing power spectra needs to be done prior to using
 the FOOOF module.</p>
 <p>The model is broadly agnostic to exactly how power spectra are computed. Common
-methods, such as using Welch’s method to compute the spectrogram</p>
+methods, such as Welch’s method, can be used to compute the spectrum.</p>
 <p>If you need a module in Python that has functionality for computing power spectra, try
-<a class="reference external" href="https://neurodsp-tools.github.io/neurodsp/">NeuroDSP</a></p>
+<a class="reference external" href="https://neurodsp-tools.github.io/neurodsp/">NeuroDSP</a>.</p>
 <p>Note that FOOOF objects require frequency and power values passed in as inputs to
 be in linear spacing. Passing in non-linear spaced data (such logged values) may
 produce erroneous results.</p>
@@ -163,17 +166,16 @@ produce erroneous results.</p>
                                  Frequency Resolution is 0.49 Hz
 
                             Aperiodic Parameters (offset, exponent):
-                                         -21.8968, 0.7635
+                                         -21.6185, 0.7160
 
-                                       4 peaks were found:
-                                CF:   9.75, PW:  1.111, BW:  2.28
-                                CF:  13.46, PW:  0.248, BW:  1.68
-                                CF:  15.81, PW:  0.250, BW:  1.56
-                                CF:  19.49, PW:  0.521, BW:  3.77
+                                       3 peaks were found:
+                                CF:   9.36, PW:  1.044, BW:  1.59
+                                CF:  11.17, PW:  0.230, BW:  2.88
+                                CF:  18.25, PW:  0.331, BW:  2.85
 
                                      Goodness of fit metrics:
-                                    R^2 of model fit is 0.9782
-                                    Error of the fit is 0.0480
+                                    R^2 of model fit is 0.9829
+                                    Error of the fit is 0.0356
 
 ==================================================================================================
 </pre></div>
@@ -234,20 +236,19 @@ the model have a trailing underscore, for example:</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Aperiodic parameters:
- [-21.89682937   0.76346863]
+ [-21.61849464   0.71602468]
 
 Peak parameters:
- [[ 9.74716521  1.11125396  2.28154043]
- [13.46025653  0.24785594  1.68052345]
- [15.81191699  0.24964901  1.55741871]
- [19.48856682  0.52143303  3.76704291]]
+ [[ 9.36187744  1.04444653  1.58739814]
+ [11.17320494  0.23009279  2.87553568]
+ [18.24842746  0.33142173  2.84617075]]
 
 Goodness of fit:
- Error -  0.0480353594391956
- R^2   -  0.9781710677951874
+ Error -  0.03560699592202281
+ R^2   -  0.982891851148891
 
 Number of fit peaks:
- 4
+ 3
 </pre></div>
 </div>
 </div>
@@ -270,7 +271,7 @@ method, which can be used to specify which parameters you want to extract.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>With an error level of 0.05, FOOOF fit an exponent of 0.76 and peaks of 9.75 &amp; 13.46 &amp; 15.81 &amp; 19.49 Hz.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>With an error level of 0.04, FOOOF fit an exponent of 0.72 and peaks of 9.36 &amp; 11.17 &amp; 18.25 Hz.
 </pre></div>
 </div>
 <p>For a full description of how you can access data with <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_params()</span></code></a>,
@@ -313,10 +314,9 @@ in the <code class="docutils literal notranslate"><span class="pre">gaussian_par
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  Peak Parameters        Gaussian Parameters
- 9.75  1.11  2.28         9.75  1.11  1.14
-13.46  0.25  1.68        13.46  0.24  0.84
-15.81  0.25  1.56        15.81  0.18  0.78
-19.49  0.52  3.77        19.49  0.52  1.88
+ 9.36  1.04  1.59         9.36  0.98  0.79
+11.17  0.23  2.88        11.17  0.17  1.44
+18.25  0.33  2.85        18.25  0.33  1.42
 </pre></div>
 </div>
 <div class="section" id="fooofresults">
@@ -329,17 +329,17 @@ parameters, collected together into a FOOOFResults object.</p>
 object used with FOOOF to organize and collect parameter data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grab each model fit result with `get_results` to gather all results together</span>
 <span class="c1">#   Note that this returns a FOOOFResult object</span>
-<span class="n">fres</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">get_results</span><span class="p">()</span>
+<a href="../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="View documentation for fooof.data.FOOOFResults"><span class="n">fres</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">get_results</span><span class="p">()</span>
 
 <span class="c1"># You can also unpack all fit parameters when using `get_results`</span>
 <span class="n">ap_params</span><span class="p">,</span> <span class="n">peak_params</span><span class="p">,</span> <span class="n">r_squared</span><span class="p">,</span> <span class="n">fit_error</span><span class="p">,</span> <span class="n">gauss_params</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">get_results</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out the FOOOFResults</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">fres</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="View documentation for fooof.data.FOOOFResults"><span class="n">fres</span></a><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="c1"># From FOOOFResults, you can access the different results</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Aperiodic Parameters: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fres</span><span class="o">.</span><span class="n">aperiodic_params</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Aperiodic Parameters: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="View documentation for fooof.data.FOOOFResults"><span class="n">fres</span></a><span class="o">.</span><span class="n">aperiodic_params</span><span class="p">)</span>
 
 <span class="c1"># Check the r^2 and error of the model fit</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;R-squared: </span><span class="se">\n</span><span class="s1"> </span><span class="si">{:5.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">r_squared_</span><span class="p">))</span>
@@ -347,20 +347,18 @@ object used with FOOOF to organize and collect parameter data.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>FOOOFResults(aperiodic_params=array([-21.89682937,   0.76346863]), peak_params=array([[ 9.74716521,  1.11125396,  2.28154043],
-       [13.46025653,  0.24785594,  1.68052345],
-       [15.81191699,  0.24964901,  1.55741871],
-       [19.48856682,  0.52143303,  3.76704291]]), r_squared=0.9781710677951874, error=0.0480353594391956, gaussian_params=array([[ 9.74716521,  1.11138316,  1.14077021],
-       [13.46025653,  0.24387152,  0.84026173],
-       [15.81191699,  0.1823705 ,  0.77870935],
-       [19.48856682,  0.52156491,  1.88352145]]))
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>FOOOFResults(aperiodic_params=array([-21.61849464,   0.71602468]), peak_params=array([[ 9.36187744,  1.04444653,  1.58739814],
+       [11.17320494,  0.23009279,  2.87553568],
+       [18.24842746,  0.33142173,  2.84617075]]), r_squared=0.982891851148891, error=0.03560699592202281, gaussian_params=array([[ 9.36187744,  0.97915801,  0.79369907],
+       [11.17320494,  0.16895002,  1.43776784],
+       [18.24842746,  0.33414213,  1.42308538]]))
 
 Aperiodic Parameters:
- [-21.89682937   0.76346863]
+ [-21.61849464   0.71602468]
 R-squared:
- 0.9782
+ 0.9829
 Fit error:
- 0.0480
+ 0.0356
 </pre></div>
 </div>
 </div>
@@ -371,7 +369,7 @@ Fit error:
 fitting power spectrum models, and extracting parameters.</p>
 <p>Before we move on to controlling the fit procedure, and interpreting the results,
 in the next tutorial, we will first explore how this model is actually fit.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.174 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.131 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-02-fooof-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/c5eab696503901303f8a324c41d3284e/plot_02-FOOOF.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_02-FOOOF.py</span></code></a></p>

@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Manipulating FOOOF Objects &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>Manipulating FOOOF Objects &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -111,17 +114,16 @@ objects.</p>
 <li><p>average across groups of FOOOF fits</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import FOOOF &amp; FOOOFGroup objects</span>
-<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">,</span> <span class="n">FOOOFGroup</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a>
 
 <span class="c1"># Import Bands object, to manage frequency band definitions</span>
-<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <span class="n">Bands</span>
+<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">Bands</span></a>
 
 <span class="c1"># Import utility functions that manage &amp; manipulate FOOOF objects</span>
-<span class="kn">from</span> <span class="nn">fooof.objs.utils</span> <span class="k">import</span> <span class="n">average_fg</span><span class="p">,</span> <span class="n">combine_fooofs</span><span class="p">,</span> <span class="n">compare_info</span>
+<span class="kn">from</span> <span class="nn">fooof.objs.utils</span> <span class="k">import</span> <a href="../../generated/fooof.objs.average_fg.html#fooof.objs.average_fg" title="View documentation for fooof.objs.average_fg"><span class="n">average_fg</span></a><span class="p">,</span> <a href="../../generated/fooof.objs.combine_fooofs.html#fooof.objs.combine_fooofs" title="View documentation for fooof.objs.combine_fooofs"><span class="n">combine_fooofs</span></a><span class="p">,</span> <a href="../../generated/fooof.objs.compare_info.html#fooof.objs.compare_info" title="View documentation for fooof.objs.compare_info"><span class="n">compare_info</span></a>
 
 <span class="c1"># Import simulation functions to create our example data</span>
-<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_power_spectrum</span>
-<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="k">import</span> <span class="n">param_sampler</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a>
 </pre></div>
 </div>
 <p>First, we will simulate some example data, and fit some individual power spectrum models.</p>
@@ -130,11 +132,11 @@ objects.</p>
 <span class="n">freq_res</span> <span class="o">=</span> <span class="mf">0.25</span>
 
 <span class="c1"># Create some example power spectra</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">powers_1</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers_1</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
                                      <span class="n">nlv</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">freq_res</span><span class="o">=</span><span class="n">freq_res</span><span class="p">)</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">powers_2</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">],</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers_2</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">],</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span>
                                      <span class="n">nlv</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">freq_res</span><span class="o">=</span><span class="n">freq_res</span><span class="p">)</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">powers_3</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers_3</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span>
                                      <span class="n">nlv</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">freq_res</span><span class="o">=</span><span class="n">freq_res</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -151,11 +153,11 @@ objects.</p>
 <h2>Combining FOOOF Objects<a class="headerlink" href="#combining-fooof-objects" title="Permalink to this headline">¶</a></h2>
 <p>Sometimes, when working with models in <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> or <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a>
 objects, you may want to combine them together, to check some group properties.</p>
-<p>The <a class="reference internal" href="../../generated/fooof.objs.utils.combine_fooofs.html#fooof.objs.utils.combine_fooofs" title="fooof.objs.utils.combine_fooofs"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_fooofs()</span></code></a> function takes a list of FOOOF and/or
+<p>The <a class="reference internal" href="../../generated/fooof.objs.combine_fooofs.html#fooof.objs.combine_fooofs" title="fooof.objs.combine_fooofs"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_fooofs()</span></code></a> function takes a list of FOOOF and/or
 FOOOFGroup objects, and combines all available fits together into a FOOOFGroup object.</p>
 <p>Let’s now combine our individual model fits into a FOOOFGroup object.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine a list of FOOOF objects into a FOOOFGroup object</span>
-<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a> <span class="o">=</span> <span class="n">combine_fooofs</span><span class="p">([</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm2</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm3</span></a><span class="p">])</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a> <span class="o">=</span> <a href="../../generated/fooof.objs.combine_fooofs.html#fooof.objs.combine_fooofs" title="View documentation for fooof.objs.combine_fooofs"><span class="n">combine_fooofs</span></a><span class="p">([</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm2</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm3</span></a><span class="p">])</span>
 
 <span class="c1"># Check the number of models in the object</span>
 <span class="c1">#   Note that the length of a FOOOFGroup object is defined as the number of model fits</span>
@@ -169,14 +171,14 @@ FOOOFGroup objects, and combines all available fits together into a FOOOFGroup o
 <div class="section" id="note-on-manipulating-fooof-objects">
 <h3>Note on Manipulating FOOOF Objects<a class="headerlink" href="#note-on-manipulating-fooof-objects" title="Permalink to this headline">¶</a></h3>
 <p>Note that these functions that manipulate FOOOF objects typically do more than just
-copying result data - they also check and manage settings and meta-data of objects.</p>
+copy results data - they also check and manage settings and meta-data of objects.</p>
 <p>For example, combining FOOOF objects returns a new FOOOFGroup object with the same settings.</p>
-<p>We can see this by using the <a class="reference internal" href="../../generated/fooof.objs.utils.compare_info.html#fooof.objs.utils.compare_info" title="fooof.objs.utils.compare_info"><code class="xref py py-func docutils literal notranslate"><span class="pre">compare_info()</span></code></a> function to compare
+<p>We can see this by using the <a class="reference internal" href="../../generated/fooof.objs.compare_info.html#fooof.objs.compare_info" title="fooof.objs.compare_info"><code class="xref py py-func docutils literal notranslate"><span class="pre">compare_info()</span></code></a> function to compare
 the settings between FOOOF objects.</p>
 <p>You can also use this function if you wish to compare FOOOF objects to ensure that
 you are comparing model results that were fit with equivalent settings.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare defined settings across FOOOF objects</span>
-<span class="n">compare_info</span><span class="p">([</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">],</span> <span class="s1">&#39;settings&#39;</span><span class="p">)</span>
+<a href="../../generated/fooof.objs.compare_info.html#fooof.objs.compare_info" title="View documentation for fooof.objs.compare_info"><span class="n">compare_info</span></a><span class="p">([</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">],</span> <span class="s1">&#39;settings&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -280,17 +282,17 @@ a set of frequency bands to average peaks across. Otherwise, there is no clear w
 to average across all the peaks across all models.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the periodic band regions to use to average across</span>
 <span class="c1">#   Since our simulated data only had alpha peaks, we will only define alpha here</span>
-<span class="n">bands</span> <span class="o">=</span> <span class="n">Bands</span><span class="p">({</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]})</span>
+<a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]})</span>
 
 <span class="c1"># Average across individual models fits, specifying bands and an averaging function</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">afm</span></a> <span class="o">=</span> <span class="n">average_fg</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">bands</span><span class="p">,</span> <span class="n">avg_method</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">afm</span></a> <span class="o">=</span> <a href="../../generated/fooof.objs.average_fg.html#fooof.objs.average_fg" title="View documentation for fooof.objs.average_fg"><span class="n">average_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="p">,</span> <span class="n">avg_method</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">)</span>
 
 <span class="c1"># Plot our average model of the data</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">afm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_manipulating_fooofs_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_manipulating_fooofs_001.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.152 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.117 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manage-plot-manipulating-fooofs-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/df69e7186299ce3b317510052e083eba/plot_manipulating_fooofs.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_manipulating_fooofs.py</span></code></a></p>

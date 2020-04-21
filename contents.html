@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Table of Contents &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>Table of Contents &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -95,30 +98,14 @@
 <h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="readme_link.html">README</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="readme_link.html#fooof-fitting-oscillations-one-over-f">FOOOF - fitting oscillations &amp; one over f</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="readme_link.html#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="readme_link.html#documentation">Documentation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="readme_link.html#dependencies">Dependencies</a></li>
-<li class="toctree-l3"><a class="reference internal" href="readme_link.html#installation">Installation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="readme_link.html#matlab-support">Matlab Support</a></li>
-<li class="toctree-l3"><a class="reference internal" href="readme_link.html#bug-reports">Bug Reports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="readme_link.html#id1">Reference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="readme_link.html#contribute">Contribute</a></li>
-<li class="toctree-l3"><a class="reference internal" href="readme_link.html#quickstart">Quickstart</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api.html#table-of-contents">Table of Contents</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api.html#fooof-objects">FOOOF Objects</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#bands-object">Bands Object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#model-objects">Model Objects</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api.html#data-objects">Data Objects</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api.html#analyze-model-results">Analyze Model Results</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api.html#simulation-code">Simulation Code</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api.html#plotting-functions">Plotting Functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#id2">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#utilities">Utilities</a></li>
 </ul>
 </li>
 </ul>
@@ -157,6 +144,7 @@
 <li class="toctree-l3"><a class="reference internal" href="reference.html#example-applications">Example Applications</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference.html#methods-reporting">Methods Reporting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference.html#reporting-template-example">Reporting Template &amp; Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference.html#generating-methods-reports">Generating Methods Reports</a></li>
 </ul>
 </li>
 </ul>
@@ -164,6 +152,7 @@
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Code Changelog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#pre-release">1.0.0 (Pre-Release)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="changelog.html#naming-updates">Naming Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#previously-saved-data">Previously Saved Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="changelog.html#code-organization">Code Organization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="changelog.html#code-updates">Code Updates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="changelog.html#documentation-updates">Documentation Updates</a></li>

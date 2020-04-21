@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.analysis.periodic.get_highest_peak &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.analysis.periodic.get_highest_peak &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -96,24 +99,27 @@
 <dl class="function">
 <dt id="fooof.analysis.periodic.get_highest_peak">
 <code class="sig-prename descclassname">fooof.analysis.periodic.</code><code class="sig-name descname">get_highest_peak</code><span class="sig-paren">(</span><em class="sig-param">peak_params</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/analysis/periodic.html#get_highest_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.analysis.periodic.get_highest_peak" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract the highest peak.</p>
+<dd><p>Extract the highest power peak.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>peak_params</strong><span class="classifier">2d array</span></dt><dd><p>Peak parameters, with shape of [n_peaks, 3] or [n_peaks, 4].</p>
+<dt><strong>peak_params</strong><span class="classifier">2d array</span></dt><dd><p>Peak parameters, with shape of [n_peaks, 3].</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt>1d array</dt><dd><p>Peak data. Each row is a peak, as [CF, PW, BW].</p>
+<dt>1d array</dt><dd><p>Peak data. The row is a peak, as [CF, PW, BW].</p>
 </dd>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This function returns the singular highest power peak from the input set, and as
+such is defined to work on periodic parameters from a single model fit.</p>
 </dd></dl>
 
-</div>
+<div style='clear:both'></div></div>
 
 
     </div>

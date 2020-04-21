@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Reference and Reporting Information &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>Reference and Reporting Information &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -94,7 +97,7 @@
   <div class="section" id="reference-and-reporting-information">
 <h1>Reference and Reporting Information<a class="headerlink" href="#reference-and-reporting-information" title="Permalink to this headline">¶</a></h1>
 <p>This page covers information for how to reference and report on using FOOOF, as well as some collected
-informaiton and examples of projects, tools, and analyses that have and can be done using FOOOF.</p>
+information and examples of projects, tools, and analyses that have and can be done using FOOOF.</p>
 <div class="section" id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="contents">
@@ -103,31 +106,53 @@ informaiton and examples of projects, tools, and analyses that have and can be d
 <li><p><a class="reference internal" href="#example-applications" id="id2">Example Applications</a></p></li>
 <li><p><a class="reference internal" href="#methods-reporting" id="id3">Methods Reporting</a></p></li>
 <li><p><a class="reference internal" href="#reporting-template-example" id="id4">Reporting Template &amp; Example</a></p></li>
+<li><p><a class="reference internal" href="#generating-methods-reports" id="id5">Generating Methods Reports</a></p></li>
 </ul>
 </div>
 <div class="section" id="reference">
 <h3>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
-<p>The reference for this method is
-<a class="reference external" href="https://doi.org/10.1101/299859">Parameterizing Neural Power Spectra</a>.</p>
-<p>This link currently leads to a preprint, on biorxiv. The paper is currently under review,
-and this link will be updated to the accepted journal version when available.</p>
-<p>The paper reports on the method, and include simulation work and example analyses and applications.
-The code for the simulations and applications is all indexed and available in the
-<a class="reference external" href="https://github.com/fooof-tools/Paper">Paper repository</a>.</p>
+<p>The reference for this power spectrum model and associated code module is the
+<a class="reference external" href="https://doi.org/10.1101/299859">Parameterizing Neural Power Spectra</a>
+paper.</p>
+<p>This link currently leads to a preprint, on biorxiv, which describes the method. The full version of the paper is currently under review, and this link will be updated to the accepted journal version when available.</p>
 <p>Please cite this paper if you use this method, and/or if you wish to refer to the our approach for parameterizing neural power spectra, and/or to refer to any ideas and examples from this website.</p>
+<div class="topic">
+<p class="topic-title first">Reference</p>
+<p>Haller M, Donoghue T, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Knight RT, Shestyuk A,
+Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859.
+doi: <a class="reference external" href="https://doi.org/10.1101/299859">https://doi.org/10.1101/299859</a></p>
+</div>
+<div class="topic">
+<p class="topic-title first">Bibtex</p>
+<div class="line-block">
+<div class="line">&#64;article{haller_parameterizing_2018,</div>
+<div class="line-block">
+<div class="line">title = {Parameterizing neural power spectra},</div>
+<div class="line">url = {<a class="reference external" href="http://biorxiv.org/lookup/doi/10.1101/299859">http://biorxiv.org/lookup/doi/10.1101/299859</a>},</div>
+<div class="line">doi = {10.1101/299859},</div>
+<div class="line">journal = {bioRxiv},</div>
+<div class="line">author = {Haller, Matar and Donoghue, Thomas and Peterson, Erik and Varma, Paroma and Sebastian, Priyadarshini and Gao, Richard and Noto, Torben and Knight, Robert T. and Shestyuk, Avgusta and Voytek, Bradley},</div>
+<div class="line">year = {2018},</div>
+<div class="line">}</div>
+</div>
+</div>
+</div>
 </div>
 <div class="section" id="example-applications">
 <h3>Example Applications<a class="headerlink" href="#example-applications" title="Permalink to this headline">¶</a></h3>
-<p>You can find the full list of articles that cite the <cite>Parameterizing Neural Power Spectra</cite> paper at this
-<a class="reference external" href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=1591416229268020768,15214833138798132105,12543969463602123647">Google scholar link</a>
-.</p>
+<p>As well as reporting on the method, the full version of the paper includes simulation work as well as example analyses and applications.
+The code for the simulations and applications is indexed and available in the
+<a class="reference external" href="https://github.com/fooof-tools/Paper">Paper repository</a>.</p>
+<p>You can also find the full list of articles that cite the <cite>Parameterizing Neural Power Spectra</cite> paper at this
+<a class="reference external" href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=1591416229268020768,15214833138798132105,12543969463602123647">Google scholar link</a>.</p>
 </div>
 <div class="section" id="methods-reporting">
 <h3>Methods Reporting<a class="headerlink" href="#methods-reporting" title="Permalink to this headline">¶</a></h3>
-<p>If you wish to report that you used FOOOF, we recommend including the following information in the methods section:</p>
+<p>If you use this module and the power spectrum model in your work, there is some information you should include in the methods section.</p>
+<p>Specifically, we recommend including the following information in the methods section:</p>
 <ul class="simple">
-<li><p>The version of FOOOF used (for example 1.0.0)</p></li>
-<li><p>The algorithm settings that were used</p>
+<li><p>The version number of the module that was used (for example 1.0.0)</p></li>
+<li><p>The settings that were used for the algorithm that were used</p>
 <ul>
 <li><p>You should report all public settings, even if default values are used</p></li>
 </ul>
@@ -136,27 +161,38 @@ The code for the simulations and applications is all indexed and available in th
 </ul>
 <p>In addition, we recommend that reports should include information on:</p>
 <ul class="simple">
-<li><p>Details of the data, including modality and any pre-processing steps applied</p></li>
+<li><p>Details of the data, including modality and any preprocessing steps applied</p></li>
 <li><p>How power spectrum were generated, including the length of segments used to calculate spectra</p></li>
 <li><p>If and how model goodness-of-fit measures were assessed</p></li>
 </ul>
 </div>
 <div class="section" id="reporting-template-example">
 <h3>Reporting Template &amp; Example<a class="headerlink" href="#reporting-template-example" title="Permalink to this headline">¶</a></h3>
-<p>An example methods report might look like:</p>
-<blockquote>
-<div><p>The FOOOF algorithm (version <em>X.X.X</em>) was used to parameterize neural power spectra. Settings for the
+<p>To assist in reporting on using FOOOF, we have some templates and examples of methods reports, and some utilities to access the required information from the code.</p>
+<p>The following box is an example of what a methods report might look like (where all of the <em>X</em>’s should be filled in with the relevant information).</p>
+<div class="topic">
+<p class="topic-title first">Methods Report Template</p>
+<p>The FOOOF algorithm (version <em>X.X.X</em>) was used to parameterize neural power spectra. Settings for the
 algorithm were set as: peak width limits : <em>XX</em>; max number of peaks : <em>XX</em>; minimum peak height : <em>XX</em>;
 peak threshold : <em>XX</em>; and aperiodic mode : <em>XX</em>. Power spectra were parameterized across
 the frequency range <em>XX</em> to <em>XX</em> Hz.</p>
-</div></blockquote>
-<p>Where all of the <em>X</em>’s should be filled in with the relevant information.</p>
-<p>Note that as of FOOOF version 1.0.0 there is code utility that will generate this information for you.
-If you have a FOOOF object defined (such as <cite>FOOOF</cite> or <cite>FOOOFGroup</cite>), as ‘fooof_obj’, you
-can run the following code to print out the information you need and/or a template of the
-methods report:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out all the methods information for reporting</span>
+</div>
+</div>
+<div class="section" id="generating-methods-reports">
+<h3>Generating Methods Reports<a class="headerlink" href="#generating-methods-reports" title="Permalink to this headline">¶</a></h3>
+<p>As of FOOOF version 1.0.0 there are code utilities to extract all required information for reporting, and for generating methods reports.</p>
+<p>These utilities require a defined FOOOF object, such as <cite>FOOOF</cite> or <cite>FOOOFGroup</cite>, assumed to be called ‘fooof_obj’ in the following examples. This object will be used to extract all the relevant settings and any available meta-data for reporting.</p>
+<p>The <a class="reference internal" href="generated/fooof.utils.reports.methods_report_info.html#fooof.utils.reports.methods_report_info" title="fooof.utils.reports.methods_report_info"><code class="xref py py-func docutils literal notranslate"><span class="pre">methods_report_info()</span></code></a> function can be used to print out the information you need for reporting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the utility to print out information for reporting</span>
+<span class="kn">from</span> <span class="nn">fooof.utils.reports</span> <span class="kn">import</span> <span class="n">methods_report_info</span>
+
+<span class="c1"># Print out all the methods information for reporting</span>
 <span class="n">methods_report_info</span><span class="p">(</span><span class="n">fooof_obj</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="generated/fooof.utils.reports.methods_report_text.html#fooof.utils.reports.methods_report_text" title="fooof.utils.reports.methods_report_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">methods_report_text()</span></code></a> function can be used to print out an auto-generated methods report, like the one demonstrated above, with all available information filled:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the utility to print out information for reporting</span>
+<span class="kn">from</span> <span class="nn">fooof.utils.reports</span> <span class="kn">import</span> <span class="n">methods_report_text</span>
 
 <span class="c1"># Generate methods text, with methods information inserted</span>
 <span class="n">methods_report_text</span><span class="p">(</span><span class="n">fooof_obj</span><span class="p">)</span>

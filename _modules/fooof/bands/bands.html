@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>fooof.bands.bands &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>fooof.bands.bands &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -99,16 +102,22 @@
 <span class="c1">###################################################################################################</span>
 <span class="c1">###################################################################################################</span>
 
-<div class="viewcode-block" id="Bands"><a class="viewcode-back" href="../../../generated/fooof.bands.bands.Bands.html#fooof.bands.bands.Bands">[docs]</a><span class="k">class</span> <span class="nc">Bands</span><span class="p">():</span>
+<div class="viewcode-block" id="Bands"><a class="viewcode-back" href="../../../generated/fooof.Bands.html#fooof.Bands">[docs]</a><span class="k">class</span> <span class="nc">Bands</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Frequency band definitions.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    bands : dict</span>
 <span class="sd">        Band definitions. Each entry should be {&#39;label&#39; : (f_low, f_high)}.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Define a bands object object storing canonical frequency bands:</span>
+
+<span class="sd">    &gt;&gt;&gt; bands = Bands({&#39;theta&#39; : [4, 8], &#39;alpha&#39; : [8, 12], &#39;beta&#39; : [15, 30]})</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Bands.__init__"><a class="viewcode-back" href="../../../generated/fooof.bands.bands.Bands.html#fooof.bands.bands.Bands.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_bands</span><span class="o">=</span><span class="p">{}):</span>
+<div class="viewcode-block" id="Bands.__init__"><a class="viewcode-back" href="../../../generated/fooof.Bands.html#fooof.Bands.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_bands</span><span class="o">=</span><span class="p">{}):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the Bands object.</span>
 
 <span class="sd">        Parameters</span>
@@ -174,7 +183,7 @@
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bands</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Bands.add_band"><a class="viewcode-back" href="../../../generated/fooof.bands.bands.Bands.html#fooof.bands.bands.Bands.add_band">[docs]</a>    <span class="k">def</span> <span class="nf">add_band</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">band_definition</span><span class="p">):</span>
+<div class="viewcode-block" id="Bands.add_band"><a class="viewcode-back" href="../../../generated/fooof.Bands.html#fooof.Bands.add_band">[docs]</a>    <span class="k">def</span> <span class="nf">add_band</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">band_definition</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a new oscillation band definition.</span>
 
 <span class="sd">        Parameters</span>
@@ -189,7 +198,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bands</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">band_definition</span></div>
 
 
-<div class="viewcode-block" id="Bands.remove_band"><a class="viewcode-back" href="../../../generated/fooof.bands.bands.Bands.html#fooof.bands.bands.Bands.remove_band">[docs]</a>    <span class="k">def</span> <span class="nf">remove_band</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+<div class="viewcode-block" id="Bands.remove_band"><a class="viewcode-back" href="../../../generated/fooof.Bands.html#fooof.Bands.remove_band">[docs]</a>    <span class="k">def</span> <span class="nf">remove_band</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove a previously defined oscillation band.</span>
 
 <span class="sd">        Parameters</span>

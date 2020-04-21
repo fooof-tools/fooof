@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Band-by-Band &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>Band-by-Band &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -109,11 +112,11 @@ often done in the context of development. The paper for that project is availabl
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a>
 
 <span class="c1"># Import simulation, utility, and plotting tools</span>
-<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <span class="n">Bands</span>
-<span class="kn">from</span> <span class="nn">fooof.utils</span> <span class="k">import</span> <span class="n">trim_spectrum</span>
-<span class="kn">from</span> <span class="nn">fooof.sim</span> <span class="k">import</span> <span class="n">gen_power_spectrum</span>
-<span class="kn">from</span> <span class="nn">fooof.plts</span> <span class="k">import</span> <span class="n">plot_spectra_shading</span>
-<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="k">import</span> <span class="n">get_band_peak_fm</span>
+<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">Bands</span></a>
+<span class="kn">from</span> <span class="nn">fooof.utils</span> <span class="k">import</span> <a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="View documentation for fooof.utils.trim_spectrum"><span class="n">trim_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="k">import</span> <a href="../../generated/fooof.analysis.get_band_peak_fm.html#fooof.analysis.get_band_peak_fm" title="View documentation for fooof.analysis.get_band_peak_fm"><span class="n">get_band_peak_fm</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="View documentation for fooof.plts.spectra.plot_spectra_shading"><span class="n">plot_spectra_shading</span></a>
 </pre></div>
 </div>
 <div class="section" id="overview">
@@ -138,7 +141,7 @@ report a pattern of changes or differences across bands, for example:</p>
 and the interpretation is typically that there are multiple things changing, with
 correlated changes in power across multiple distinct bands.</p>
 <p>An alternative hypothesis for what is changing is that this pattern of results could
-be driven by changes or differences in the aperiodic component of the data. changes
+be driven by changes or differences in the aperiodic component of the data. Changes
 in aperiodic activity, when analyzed in a band-by-band manner, can look like correlated
 changes across multiple bands.</p>
 <p>In this example, we will use simulated data to examine both the different ways of
@@ -151,7 +154,7 @@ component.</p>
 <h3>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h3>
 <p>First, we can define some settings for this notebook and analysis.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define our frequency bands of interest</span>
-<span class="n">bands</span> <span class="o">=</span> <span class="n">Bands</span><span class="p">({</span><span class="s1">&#39;delta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+<a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;delta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
                <span class="s1">&#39;theta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
                <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">13</span><span class="p">],</span>
                <span class="s1">&#39;beta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
@@ -159,7 +162,7 @@ component.</p>
 
 <span class="c1"># Define plot settings</span>
 <span class="n">t_settings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fontsize&#39;</span> <span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s1">&#39;fontweight&#39;</span> <span class="p">:</span> <span class="s1">&#39;bold&#39;</span><span class="p">}</span>
-<span class="n">shade_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#e8dc35&#39;</span><span class="p">,</span> <span class="s1">&#39;#46b870&#39;</span><span class="p">,</span> <span class="s1">&#39;#1882d9&#39;</span><span class="p">,</span>  <span class="s1">&#39;#a218d9&#39;</span><span class="p">,</span> <span class="s1">&#39;#e60026&#39;</span><span class="p">]</span>
+<span class="n">shade_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#e8dc35&#39;</span><span class="p">,</span> <span class="s1">&#39;#46b870&#39;</span><span class="p">,</span> <span class="s1">&#39;#1882d9&#39;</span><span class="p">,</span> <span class="s1">&#39;#a218d9&#39;</span><span class="p">,</span> <span class="s1">&#39;#e60026&#39;</span><span class="p">]</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Group-1&#39;</span><span class="p">,</span> <span class="s1">&#39;Group-2&#39;</span><span class="p">]</span>
 
 <span class="c1"># General simulation settings</span>
@@ -188,16 +191,16 @@ power spectra. Here, we will define some helper functions to do so.</p>
 <span class="k">def</span> <span class="nf">compare_peak_pw</span><span class="p">(</span><span class="n">fm1</span><span class="p">,</span> <span class="n">fm2</span><span class="p">,</span> <span class="n">band_def</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compare the power of detected peaks.&quot;&quot;&quot;</span>
 
-    <span class="n">pw1</span> <span class="o">=</span> <span class="n">get_band_peak_fm</span><span class="p">(</span><span class="n">fm1</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">pw2</span> <span class="o">=</span> <span class="n">get_band_peak_fm</span><span class="p">(</span><span class="n">fm2</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">pw1</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fm.html#fooof.analysis.get_band_peak_fm" title="View documentation for fooof.analysis.get_band_peak_fm"><span class="n">get_band_peak_fm</span></a><span class="p">(</span><span class="n">fm1</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">pw2</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fm.html#fooof.analysis.get_band_peak_fm" title="View documentation for fooof.analysis.get_band_peak_fm"><span class="n">get_band_peak_fm</span></a><span class="p">(</span><span class="n">fm2</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">pw1</span> <span class="o">-</span> <span class="n">pw2</span>
 
 <span class="k">def</span> <span class="nf">compare_band_pw</span><span class="p">(</span><span class="n">fm1</span><span class="p">,</span> <span class="n">fm2</span><span class="p">,</span> <span class="n">band_def</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compare the power of frequency band ranges.&quot;&quot;&quot;</span>
 
-    <span class="n">pw1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">trim_spectrum</span><span class="p">(</span><span class="n">fm1</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm1</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">pw2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">trim_spectrum</span><span class="p">(</span><span class="n">fm1</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm2</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">pw1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="View documentation for fooof.utils.trim_spectrum"><span class="n">trim_spectrum</span></a><span class="p">(</span><span class="n">fm1</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm1</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">pw2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="View documentation for fooof.utils.trim_spectrum"><span class="n">trim_spectrum</span></a><span class="p">(</span><span class="n">fm1</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm2</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="n">pw1</span> <span class="o">-</span> <span class="n">pw2</span>
 </pre></div>
@@ -223,14 +226,14 @@ simulated as being the same between groups, though in real data these could also
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate example power spectra for each group</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">g1_spectrum_bands</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">pe_g1</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">g2_spectrum_bands</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">pe_g2</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">g1_spectrum_bands</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">pe_g1</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">g2_spectrum_bands</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">pe_g2</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra differences, representing the &#39;band-by-band&#39; idea</span>
-<span class="n">plot_spectra_shading</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">g1_spectrum_bands</span><span class="p">,</span> <span class="n">g2_spectrum_bands</span><span class="p">],</span>
+<a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="View documentation for fooof.plts.spectra.plot_spectra_shading"><span class="n">plot_spectra_shading</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">g1_spectrum_bands</span><span class="p">,</span> <span class="n">g2_spectrum_bands</span><span class="p">],</span>
                      <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                     <span class="n">shades</span><span class="o">=</span><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
+                     <span class="n">shades</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
                      <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">f_range</span><span class="p">);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Band-by-Band&#39;</span><span class="p">,</span> <span class="n">t_settings</span><span class="p">);</span>
@@ -258,9 +261,9 @@ changing in the data.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra differences</span>
-<span class="n">plot_spectra_shading</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g1</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g2</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">],</span>
+<a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="View documentation for fooof.plts.spectra.plot_spectra_shading"><span class="n">plot_spectra_shading</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g1</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g2</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">],</span>
                      <span class="n">log_powers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                     <span class="n">shades</span><span class="o">=</span><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
+                     <span class="n">shades</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
                      <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">f_range</span><span class="p">);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Band-by-Band - Flattened&#39;</span><span class="p">,</span> <span class="n">t_settings</span><span class="p">);</span>
@@ -284,10 +287,10 @@ changing in the data.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the difference in periodic activity, across bands, between groups</span>
-<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">bands</span><span class="p">:</span>
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">definition</span> <span class="ow">in</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">pw_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span>
-        <span class="n">compare_peak_pw</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g2</span></a><span class="p">,</span> <span class="n">definition</span><span class="p">),</span>
-        <span class="n">compare_band_pw</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g2</span></a><span class="p">,</span> <span class="n">definition</span><span class="p">)))</span>
+                             <span class="n">compare_peak_pw</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g2</span></a><span class="p">,</span> <span class="n">definition</span><span class="p">),</span>
+                             <span class="n">compare_band_pw</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_bands_g2</span></a><span class="p">,</span> <span class="n">definition</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -313,14 +316,14 @@ power spectra give the same, and correct result for this case.</p>
 <p>In the next simulation, we will simulate each group as having same periodic activity,
 in this case, just an alpha peak, with a difference in the aperiodic activity.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate spectra for each group, with aperiodic differences</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">g1_spectrum_pa</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="n">nlv</span><span class="p">)</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">g2_spectrum_pa</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="n">nlv</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">g1_spectrum_pa</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="n">nlv</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">g2_spectrum_pa</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="n">nlv</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra differences</span>
-<span class="n">plot_spectra_shading</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">g1_spectrum_pa</span><span class="p">,</span> <span class="n">g2_spectrum_pa</span><span class="p">],</span>
+<a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="View documentation for fooof.plts.spectra.plot_spectra_shading"><span class="n">plot_spectra_shading</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">g1_spectrum_pa</span><span class="p">,</span> <span class="n">g2_spectrum_pa</span><span class="p">],</span>
                      <span class="n">log_freqs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                     <span class="n">shades</span><span class="o">=</span><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
+                     <span class="n">shades</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
                      <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">f_range</span><span class="p">);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Periodic &amp; Aperiodic&#39;</span><span class="p">,</span> <span class="n">t_settings</span><span class="p">);</span>
@@ -346,12 +349,12 @@ the spectra should show no differences in periodic peaks.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra differences</span>
-<span class="n">plot_spectra_shading</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g1</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g2</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">],</span>
+<a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="View documentation for fooof.plts.spectra.plot_spectra_shading"><span class="n">plot_spectra_shading</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g1</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g2</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">],</span>
                      <span class="n">log_powers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                     <span class="n">shades</span><span class="o">=</span><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
+                     <span class="n">shades</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">definitions</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
                      <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">f_range</span><span class="p">);</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Periodic &amp; Aperiodic - Flattened&#39;</span><span class="p">,</span>  <span class="n">t_settings</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Periodic &amp; Aperiodic - Flattened&#39;</span><span class="p">,</span> <span class="n">t_settings</span><span class="p">);</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_BandByBand_004.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandByBand_004.png" />
@@ -372,10 +375,10 @@ the spectra should show no differences in periodic peaks.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the difference in periodic activity, across bands, between groups</span>
-<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">bands</span><span class="p">:</span>
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">definition</span> <span class="ow">in</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">pw_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span>
-        <span class="n">compare_peak_pw</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g2</span></a><span class="p">,</span> <span class="n">definition</span><span class="p">),</span>
-        <span class="n">compare_band_pw</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g2</span></a><span class="p">,</span> <span class="n">definition</span><span class="p">)))</span>
+                             <span class="n">compare_peak_pw</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g2</span></a><span class="p">,</span> <span class="n">definition</span><span class="p">),</span>
+                             <span class="n">compare_band_pw</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm_pa_g2</span></a><span class="p">,</span> <span class="n">definition</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -392,7 +395,7 @@ aperiodic properties of the data.</p>
 analyze them. The band-by-band analysis reports a pattern of differences across
 the frequency bands. However, the parameterized analysis reports no differences in
 identified peaks.</p>
-<p>Note that when comparing peaks, ‘nan’ reflect thats there were no identified peaks to
+<p>Note that when comparing peaks, ‘nan’ reflects that there were no identified peaks to
 compare, where are a zero value reflects that peaks were detected, but they did not differ.</p>
 <p>In this case, we know that the parameterization approach results in the correct
 interpretation of the changes in the data.</p>
@@ -426,7 +429,7 @@ came from using the parameterization approach, but was not evidence in prior
 work using only a band-by-band approach.
 You can find more on that project
 <a class="reference external" href="https://doi.org/10.1101/839258">here</a>.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.534 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.454 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-measurements-plot-bandbyband-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/25a20a64f0f68c43d76a91f17876de66/plot_BandByBand.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_BandByBand.py</span></code></a></p>

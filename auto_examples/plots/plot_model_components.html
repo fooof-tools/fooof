@@ -3,15 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Plot Model Components &#8212; fooof 1.0.0rc3 documentation</title>
+    <title>Plot Model Components &#8212; fooof 1.0.0rc4 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -102,16 +105,16 @@
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">FOOOFGroup</span></a>
 
 <span class="c1"># Import utilities to manage frequency band definitions</span>
-<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <span class="n">Bands</span>
-<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="k">import</span> <span class="n">get_band_peak_fg</span>
+<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">Bands</span></a>
+<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="k">import</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="View documentation for fooof.analysis.get_band_peak_fg"><span class="n">get_band_peak_fg</span></a>
 
 <span class="c1"># Import simulation utilities for making example data</span>
-<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_group_power_spectra</span>
-<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="k">import</span> <span class="n">param_jitter</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="View documentation for fooof.sim.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="k">import</span> <a href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="View documentation for fooof.sim.params.param_jitter"><span class="n">param_jitter</span></a>
 
 <span class="c1"># Import plotting function for model parameters and components</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.periodic</span> <span class="k">import</span> <span class="n">plot_peak_fits</span><span class="p">,</span> <span class="n">plot_peak_params</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.aperiodic</span> <span class="k">import</span> <span class="n">plot_aperiodic_params</span><span class="p">,</span> <span class="n">plot_aperiodic_fits</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.periodic</span> <span class="k">import</span> <a href="../../generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="View documentation for fooof.plts.periodic.plot_peak_fits"><span class="n">plot_peak_fits</span></a><span class="p">,</span> <a href="../../generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="View documentation for fooof.plts.periodic.plot_peak_params"><span class="n">plot_peak_params</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.aperiodic</span> <span class="k">import</span> <a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="View documentation for fooof.plts.aperiodic.plot_aperiodic_params"><span class="n">plot_aperiodic_params</span></a><span class="p">,</span> <a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="View documentation for fooof.plts.aperiodic.plot_aperiodic_fits"><span class="n">plot_aperiodic_fits</span></a>
 </pre></div>
 </div>
 <div class="section" id="experiment-set-up-simulate-data">
@@ -119,7 +122,7 @@
 <p>In this example, we will explore the plotting functions available to visualize
 model parameters and components from fitting power spectrum models.</p>
 <p>To do so, we will consider a hypothetical experiment in which we are compare power
-spectrum models between two groups of participants, and so want to visualize differences
+spectrum models between two groups of participants, and so we want to visualize differences
 between the groups. For simplicity, we will consider that we have one ‘grand average’
 power spectrum per subject, which we can compare and visualize.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up labels and colors for plotting</span>
@@ -134,17 +137,17 @@ power spectrum per subject, which we can compare and visualize.</p>
 <span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
 
 <span class="c1"># Define aperiodic parameters for each group, with some variation</span>
-<span class="n">g1_aps</span> <span class="o">=</span> <span class="n">param_jitter</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
-<span class="n">g2_aps</span> <span class="o">=</span> <span class="n">param_jitter</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="n">g1_aps</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="View documentation for fooof.sim.params.param_jitter"><span class="n">param_jitter</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="n">g2_aps</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="View documentation for fooof.sim.params.param_jitter"><span class="n">param_jitter</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
 
 <span class="c1"># Define periodic parameters for each group, with some variation</span>
-<span class="n">g1_peaks</span> <span class="o">=</span> <span class="n">param_jitter</span><span class="p">([</span><span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
-<span class="n">g2_peaks</span> <span class="o">=</span> <span class="n">param_jitter</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="n">g1_peaks</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="View documentation for fooof.sim.params.param_jitter"><span class="n">param_jitter</span></a><span class="p">([</span><span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="n">g2_peaks</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="View documentation for fooof.sim.params.param_jitter"><span class="n">param_jitter</span></a><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate some test data, as two groups of power spectra</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">powers1</span> <span class="o">=</span> <span class="n">gen_group_power_spectra</span><span class="p">(</span><span class="n">n_subjs</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">g1_aps</span><span class="p">,</span> <span class="n">g1_peaks</span><span class="p">)</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">powers2</span> <span class="o">=</span> <span class="n">gen_group_power_spectra</span><span class="p">(</span><span class="n">n_subjs</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">g2_aps</span><span class="p">,</span> <span class="n">g2_peaks</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers1</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="View documentation for fooof.sim.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="n">n_subjs</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">g1_aps</span><span class="p">,</span> <span class="n">g1_peaks</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers2</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="View documentation for fooof.sim.gen_group_power_spectra"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="n">n_subjs</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">g2_aps</span><span class="p">,</span> <span class="n">g2_peaks</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="section" id="fit-power-spectrum-models">
@@ -180,18 +183,18 @@ functions to add plot labels, and to set the colors used for each group.</p>
 <div class="section" id="periodic-components">
 <h2>Periodic Components<a class="headerlink" href="#periodic-components" title="Permalink to this headline">¶</a></h2>
 <p>First, let’s have a look at the periodic components.</p>
-<p>To do so, we will use the <a class="reference internal" href="../../generated/fooof.bands.bands.Bands.html#fooof.bands.bands.Bands" title="fooof.bands.bands.Bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bands</span></code></a> object to store our frequency
+<p>To do so, we will use the <a class="reference internal" href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bands</span></code></a> object to store our frequency
 band definitions, which we can then use to sub-select peaks within bands of interest.</p>
 <p>We can then plot visualizations of the peak parameters, and the reconstructed fits.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define frequency bands of interest</span>
-<span class="n">bands</span> <span class="o">=</span> <span class="n">Bands</span><span class="p">({</span><span class="s1">&#39;theta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+<a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;theta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
                <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">13</span><span class="p">],</span>
                <span class="s1">&#39;beta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">30</span><span class="p">]})</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract alpha peaks from each group</span>
-<span class="n">g1_alphas</span> <span class="o">=</span> <span class="n">get_band_peak_fg</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg1</span></a><span class="p">,</span> <span class="n">bands</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
-<span class="n">g2_alphas</span> <span class="o">=</span> <span class="n">get_band_peak_fg</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg2</span></a><span class="p">,</span> <span class="n">bands</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">g1_alphas</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="View documentation for fooof.analysis.get_band_peak_fg"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg1</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">g2_alphas</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="View documentation for fooof.analysis.get_band_peak_fg"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg2</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="section" id="plotting-peak-parameters">
@@ -204,12 +207,12 @@ and visualizes them, as:</p>
 <li><p>Bandwidth as the size of the circle</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Explore the peak parameters of Group 1&#39;s alphas</span>
-<span class="n">plot_peak_params</span><span class="p">(</span><span class="n">g1_alphas</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><span class="n">bands</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+<a href="../../generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="View documentation for fooof.plts.periodic.plot_peak_params"><span class="n">plot_peak_params</span></a><span class="p">(</span><span class="n">g1_alphas</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_model_components_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_001.png" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the peak parameters of alpha peaks between groups</span>
-<span class="n">plot_peak_params</span><span class="p">([</span><span class="n">g1_alphas</span><span class="p">,</span> <span class="n">g2_alphas</span><span class="p">],</span> <span class="n">freq_range</span><span class="o">=</span><span class="n">bands</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span>
+<a href="../../generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="View documentation for fooof.plts.periodic.plot_peak_params"><span class="n">plot_peak_params</span></a><span class="p">([</span><span class="n">g1_alphas</span><span class="p">,</span> <span class="n">g2_alphas</span><span class="p">],</span> <span class="n">freq_range</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">,</span>
                  <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -220,12 +223,12 @@ and visualizes them, as:</p>
 <p>The <a class="reference internal" href="../../generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="fooof.plts.periodic.plot_peak_fits"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_peak_fits()</span></code></a> function takes in peak parameters,
 and reconstructs peak fits.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the peak fits of the alpha fits for Group 1</span>
-<span class="n">plot_peak_fits</span><span class="p">(</span><span class="n">g1_alphas</span><span class="p">)</span>
+<a href="../../generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="View documentation for fooof.plts.periodic.plot_peak_fits"><span class="n">plot_peak_fits</span></a><span class="p">(</span><span class="n">g1_alphas</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_model_components_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_003.png" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the peak fits of alpha peaks between groups</span>
-<span class="n">plot_peak_fits</span><span class="p">([</span><span class="n">g1_alphas</span><span class="p">,</span> <span class="n">g2_alphas</span><span class="p">],</span>
+<a href="../../generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="View documentation for fooof.plts.periodic.plot_peak_fits"><span class="n">plot_peak_fits</span></a><span class="p">([</span><span class="n">g1_alphas</span><span class="p">,</span> <span class="n">g2_alphas</span><span class="p">],</span>
                <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -249,12 +252,12 @@ aperiodic parameters, and visualizes them, as:</p>
 <li><p>Exponent on the y-axis</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the aperiodic parameters for Group 1</span>
-<span class="n">plot_aperiodic_params</span><span class="p">(</span><span class="n">aps1</span><span class="p">)</span>
+<a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="View documentation for fooof.plts.aperiodic.plot_aperiodic_params"><span class="n">plot_aperiodic_params</span></a><span class="p">(</span><span class="n">aps1</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_model_components_005.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_005.png" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the aperiodic parameters between groups</span>
-<span class="n">plot_aperiodic_params</span><span class="p">([</span><span class="n">aps1</span><span class="p">,</span> <span class="n">aps2</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+<a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="View documentation for fooof.plts.aperiodic.plot_aperiodic_params"><span class="n">plot_aperiodic_params</span></a><span class="p">([</span><span class="n">aps1</span><span class="p">,</span> <span class="n">aps2</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_model_components_006.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_006.png" />
@@ -265,7 +268,7 @@ aperiodic parameters, and visualizes them, as:</p>
 aperiodic parameters, and reconstructs aperiodic fits.</p>
 <p>Here again we can plot visualizations of the peak parameters, and the reconstructed fits.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the aperiodic fits for Group 1</span>
-<span class="n">plot_aperiodic_fits</span><span class="p">(</span><span class="n">aps1</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">control_offset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="View documentation for fooof.plts.aperiodic.plot_aperiodic_fits"><span class="n">plot_aperiodic_fits</span></a><span class="p">(</span><span class="n">aps1</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">control_offset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_model_components_007.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_007.png" />
@@ -280,7 +283,7 @@ that can help to tune the visualization, including:</p>
 <li><p><cite>log_freqs</cite> : whether to log the frequency values, on the x-axis</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the aperiodic fits for both groups</span>
-<span class="n">plot_aperiodic_fits</span><span class="p">([</span><span class="n">aps1</span><span class="p">,</span> <span class="n">aps2</span><span class="p">],</span> <span class="n">freq_range</span><span class="p">,</span>
+<a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="View documentation for fooof.plts.aperiodic.plot_aperiodic_fits"><span class="n">plot_aperiodic_fits</span></a><span class="p">([</span><span class="n">aps1</span><span class="p">,</span> <span class="n">aps2</span><span class="p">],</span> <span class="n">freq_range</span><span class="p">,</span>
                     <span class="n">control_offset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 </pre></div>
@@ -298,7 +301,7 @@ Qualitatively, we can see those differences in the plots above, and this (in rea
 would suggest there may be interesting differences between these groups. Follow up
 analyses in such a case could investigate whether there are statistically significant
 differences between these groups.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.958 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.240 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plots-plot-model-components-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/47009921621730270815c103aed0f359/plot_model_components.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_model_components.py</span></code></a></p>
