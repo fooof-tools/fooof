@@ -228,4 +228,4 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperio
                pe_patch if annotate_peaks else None, mo_patch]
     handles = [el for el in handles if el is not None]
 
-    ax.legend(handles=handles, handlelength=1, fontsize='xx-large')
+    ax.legend(handles=handles, handlelength=1, fontsize='x-large')
