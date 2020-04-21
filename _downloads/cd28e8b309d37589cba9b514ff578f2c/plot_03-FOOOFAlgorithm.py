@@ -285,3 +285,9 @@ fm.plot(plt_log)
 # power spectrum models. Next, we will continue to explore the FOOOF object,
 # properly introducing the settings and further exploring the parameters.
 #
+
+###################################################################################################
+#
+# Sphinx settings:
+# sphinx_gallery_thumbnail_number = 4
+#
