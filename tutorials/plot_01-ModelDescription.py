@@ -394,3 +394,9 @@ plot_annotated_model(fm2, plt_log=True)
 #
 # In the next tutorial, we will start to use this model.
 #
+
+###################################################################################################
+#
+# Sphinx settings:
+# sphinx_gallery_thumbnail_number = 5
+#

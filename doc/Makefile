@@ -37,7 +37,9 @@ plots:
 
 # Build the html site, and push it to gh-pages branch of repo to deploy
 install:
-	rm -rf _build/doctrees _build/tmp_html
+	# Clean out existing version site
+	make clean
+	rm -rf _build/doctrees _build/tmp_html	
 	# Clone, specifically, the gh-pages branch:
 	#   --no-checkout just fetches the root folder without content
 	#   --depth 1 is a speed optimization since we don't need the

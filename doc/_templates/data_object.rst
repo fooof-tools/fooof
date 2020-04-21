@@ -3,5 +3,6 @@
 .. currentmodule:: {{ module }}
 
 .. autoclass:: {{ objname }}
+    :no-inherited-members:
 
-.. include:: {{fullname}}.examples
+.. include:: {{ fullname }}.examples
