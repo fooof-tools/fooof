@@ -9,7 +9,7 @@ from fooof.core.modutils import safe_import, check_dependency
 from fooof.sim.gen import gen_aperiodic
 from fooof.plts.utils import check_ax
 from fooof.plts.spectra import plot_spectrum
-from fooof.plts.settings import FIGSIZE_SPECTRAL, PLT_COLORS
+from fooof.plts.settings import PLT_FIGSIZES, PLT_COLORS
 from fooof.plts.style import check_n_style, style_spectrum_plot
 from fooof.analysis.periodic import get_band_peak_fm
 from fooof.utils.params import compute_knee_frequency, compute_fwhm
@@ -44,7 +44,7 @@ def plot_annotated_peak_search(fm, plot_style=style_spectrum_plot):
     for ind in range(fm.n_peaks_ + 1):
 
         # This forces the creation of a new plotting axes per iteration
-        ax = check_ax(None, FIGSIZE_SPECTRAL)
+        ax = check_ax(None, PLT_FIGSIZES['spectral'])
 
         plot_spectrum(fm.freqs, flatspec, ax=ax, plot_style=None,
                       label='Flattened Spectrum', color=PLT_COLORS['data'], linewidth=2.5)
@@ -107,7 +107,7 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperio
     ms1 = 12
 
     # Create the baseline figure
-    ax = check_ax(ax, FIGSIZE_SPECTRAL)
+    ax = check_ax(ax, PLT_FIGSIZES['spectral'])
     fm.plot(plot_peaks='dot-shade-width', plt_log=plt_log, ax=ax, plot_style=None,
             data_kwargs={'lw' : lw1, 'alpha' : 0.6},
             aperiodic_kwargs={'lw' : lw1, 'zorder' : 10},

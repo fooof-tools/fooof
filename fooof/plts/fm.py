@@ -14,7 +14,7 @@ from fooof.sim.gen import gen_periodic
 from fooof.utils.data import trim_spectrum
 from fooof.utils.params import compute_fwhm
 from fooof.plts.spectra import plot_spectrum
-from fooof.plts.settings import FIGSIZE_SPECTRAL, PLT_COLORS
+from fooof.plts.settings import PLT_FIGSIZES, PLT_COLORS
 from fooof.plts.utils import check_ax, check_plot_kwargs
 from fooof.plts.style import check_n_style, style_spectrum_plot
 
@@ -62,7 +62,7 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
     the y-axis (power) is plotted in log spacing by default.
     """
 
-    ax = check_ax(ax, FIGSIZE_SPECTRAL)
+    ax = check_ax(ax, PLT_FIGSIZES['spectral'])
 
     # Log settings - note that power values in FOOOF objects are already logged
     log_freqs = plt_log

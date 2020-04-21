@@ -13,7 +13,7 @@ import numpy as np
 
 from fooof.core.modutils import safe_import
 from fooof.core.utils import resolve_aliases
-from fooof.plts.settings import ALPHA_LEVELS, PLT_ALIASES
+from fooof.plts.settings import PLT_ALPHA_LEVELS, PLT_ALIASES
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -56,7 +56,7 @@ def set_alpha(n_points):
         Value for alpha to use for plotting.
     """
 
-    for key, val in ALPHA_LEVELS.items():
+    for key, val in PLT_ALPHA_LEVELS.items():
         if n_points > key:
             alpha = val
 

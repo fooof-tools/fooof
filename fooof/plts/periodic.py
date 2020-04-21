@@ -7,7 +7,7 @@ import numpy as np
 from fooof.sim import gen_freqs
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.settings import FIGSIZE_PARAMS
+from fooof.plts.settings import PLT_FIGSIZES
 from fooof.plts.style import check_n_style, style_param_plot
 from fooof.plts.utils import check_ax, recursive_plot, check_plot_kwargs
 
@@ -39,7 +39,7 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
         Keyword arguments to pass into the plot call.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_PARAMS))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
 
     # If there is a list, use recurse function to loop across arrays of data and plot them
     if isinstance(peaks, list):
@@ -92,7 +92,7 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
         Keyword arguments to pass into the plot call.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_PARAMS))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
 
     if isinstance(peaks, list):
 

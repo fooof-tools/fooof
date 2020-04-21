@@ -10,7 +10,7 @@ from itertools import repeat
 import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.settings import FIGSIZE_SPECTRAL
+from fooof.plts.settings import PLT_FIGSIZES
 from fooof.plts.style import check_n_style, style_spectrum_plot
 from fooof.plts.utils import check_ax, add_shades, check_plot_kwargs
 
@@ -42,7 +42,7 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
         Keyword arguments to be passed to the plot call.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_SPECTRAL))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
     # Set plot data & labels, logging if requested
     plt_freqs = np.log10(freqs) if log_freqs else freqs
@@ -80,7 +80,7 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels
         Keyword arguments to be passed to the plot call.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_SPECTRAL))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
     # Make inputs iterable if need to be passed multiple times to plot each spectrum
     freqs = repeat(freqs) if isinstance(freqs, np.ndarray) and freqs.ndim == 1 else freqs
@@ -118,7 +118,7 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, shade_colors='r', add_c
         Keyword arguments to be passed to the plot call.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_SPECTRAL))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
     plot_spectrum(freqs, power_spectrum, plot_style=None, ax=ax, **plot_kwargs)
 
@@ -160,7 +160,7 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_cen
     This includes `log_freqs`, `log_powers` & `labels`. See `plot_spectra` for usage details.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_SPECTRAL))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
     plot_spectra(freqs, power_spectra, ax=ax, plot_style=None, **plot_kwargs)
 

@@ -4,7 +4,7 @@ import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.spectra import plot_spectrum
-from fooof.plts.settings import FIGSIZE_SPECTRAL
+from fooof.plts.settings import PLT_FIGSIZES
 from fooof.plts.style import check_n_style, style_spectrum_plot
 from fooof.plts.utils import check_ax
 
@@ -37,7 +37,7 @@ def plot_spectral_error(freqs, error, shade=None, log_freqs=False,
         Keyword arguments to be passed to `plot_spectra` or to the plot call.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_SPECTRAL))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
     plt_freqs = np.log10(freqs) if log_freqs else freqs
 
