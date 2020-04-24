@@ -39,7 +39,7 @@ plots:
 install:
 	# Clean out existing version site
 	make clean
-	rm -rf _build/doctrees _build/tmp_html	
+	rm -rf _build/doctrees _build/tmp_html
 	# Clone, specifically, the gh-pages branch:
 	#   --no-checkout just fetches the root folder without content
 	#   --depth 1 is a speed optimization since we don't need the
@@ -55,4 +55,3 @@ install:
 	git add .nojekyll && \
 	git commit -a -m 'Make install' && \
 	git push
-

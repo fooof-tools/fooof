@@ -66,10 +66,10 @@ fm2.fit(freqs2, powers2)
 # Plotted below is an example power spectrum, plotted in semi-log space (log10 power values
 # and linear frequencies). This is our data, that we will be trying to model.
 #
-# In the plot, we see a power spectrum in which there is a trend decreasing power
-# across increasing frequencies. In some frequency regions, there is a 'peak' of power,
-# over and above the general trend line across frequencies. These properties - power across
-# all frequencies, with overlying peaks - are considered to be hallmarks of neural field data.
+# In the plot, we see a power spectrum in which there is decreasing power across increasing
+# frequencies. In some frequency regions, there is a 'peak' of power, over and above the general
+# trend across frequencies. These properties - a pattern of power across all frequencies, with
+# overlying peaks - are considered to be hallmarks of neural field data.
 #
 
 ###################################################################################################
@@ -100,8 +100,8 @@ plot_spectrum(freqs1, powers1, log_powers=True,
 # Visualizing Power Spectrum Models
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# First, let's start by revisiting the example power spectrum, this time adding to the
-# plot our model fit of the data.
+# First, let's start by revisiting the example power spectrum, this time also adding the model
+# fit to the plot.
 #
 # In the plot below, black is the data, same as before, and in red we've added the
 # model fit of the data. If things are working, this line should be good approximation
@@ -367,7 +367,7 @@ plot_annotated_model(fm2, plt_log=True)
 # Conclusion
 # ----------
 #
-# So far, we how explored how neural power spectra, :math:`NPS`, across a set of frequencies
+# So far, we have explored how neural power spectra, :math:`NPS`, across a set of frequencies
 # :math:`F` can be modeled as a combination of an aperiodic component, :math:`L`, and the
 # periodic component, which is comprised of `N` peaks, where each :math:`G_n` is a Gaussian.
 #

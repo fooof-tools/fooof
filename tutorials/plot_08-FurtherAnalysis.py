@@ -184,9 +184,9 @@ print('Alpha BW : {:1.2f}'.format(np.nanmean(alphas[:, 2])))
 # Customizing Peak Extraction
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# If you use to do more customized extraction of peaks, for example extracting all peaks
+# If you want to do more customized extraction of peaks, for example, extracting all peaks
 # in a frequency band from each model in a FOOOFGroup object, you may need to use the
-# underlying functions that operate on array of peak parameters. To explore these functions,
+# underlying functions that operate on arrays of peak parameters. To explore these functions,
 # check the listing in the API page.
 #
 

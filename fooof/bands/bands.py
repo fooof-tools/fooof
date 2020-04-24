@@ -15,7 +15,7 @@ class Bands():
 
     Examples
     --------
-    Define a bands object object storing canonical frequency bands:
+    Define a bands object storing canonical frequency bands:
 
     >>> bands = Bands({'theta' : [4, 8], 'alpha' : [8, 12], 'beta' : [15, 30]})
     """

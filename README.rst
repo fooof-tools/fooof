@@ -2,7 +2,7 @@
 FOOOF - fitting oscillations & one over f
 =========================================
 
-|ProjectStatus|_ |Version|_ |BuildStatus|_ |BuildStatus|_ |codecov|_ |License|_ |PythonVersions|_ |Preprint|_
+|ProjectStatus|_ |Version|_ |BuildStatus|_ |codecov|_ |License|_ |PythonVersions|_ |Preprint|_
 
 .. |ProjectStatus| image:: http://www.repostatus.org/badges/latest/active.svg
 .. _ProjectStatus: https://www.repostatus.org/#active
@@ -14,7 +14,7 @@ FOOOF - fitting oscillations & one over f
 .. _BuildStatus: https://travis-ci.org/fooof-tools/fooof
 
 .. |codecov| image:: https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg
-.. _codecov : https://codecov.io/gh/fooof-tools/fooof)
+.. _codecov : https://codecov.io/gh/fooof-tools/fooof
 
 .. |License| image:: https://img.shields.io/pypi/l/fooof.svg
 .. _License: https://opensource.org/licenses/Apache-2.0
@@ -245,8 +245,8 @@ These settings can be defined when initializing the model, for example:
 **Fitting a Group of Power Spectra**
 
 Next is an example workflow for fitting a group of neural power spectra.
-In this case, 'freqs' is again a 1D array of frequency values, and 'spectra' as a 2D array of power spectra.
-We can fit this  which can be fit as:
+In this case, 'freqs' is again a 1D array of frequency values, and 'spectra' is a 2D array of power spectra.
+We can fit the group of power spectra by doing:
 
 .. code-block:: python
 

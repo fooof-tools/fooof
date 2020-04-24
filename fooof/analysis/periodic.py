@@ -110,7 +110,7 @@ def get_band_peak_group(peak_params, band, n_fits, threshold=None, thresh_param=
         Peak parameters, for a group fit, with shape of [n_peaks, 4].
     band : tuple of (float, float)
         Frequency range for the band of interest.
-        Defined as: (lower_frequency_bound, upper_frequency_bound).e
+        Defined as: (lower_frequency_bound, upper_frequency_bound).
     n_fits : int
         The number of model fits in the FOOOFGroup data.
     threshold : float
