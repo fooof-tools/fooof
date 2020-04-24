@@ -133,6 +133,16 @@ def combine_fooofs(fooofs):
     ------
     IncompatibleSettingsError
         If the input objects have incompatible settings for combining.
+
+    Examples
+    --------
+    Combine FOOOF objects together (where `fm1`, `fm2` & `fm3` are assumed to be defined and fit):
+
+    >>> fg = combine_fooofs([fm1, fm2, f3])  # doctest:+SKIP
+
+    Combine FOOOFGroup objects together (where `fg1` & `fg2` are assumed to be defined and fit):
+
+    >>> fg = combine_fooofs([fg1, fg2])  # doctest:+SKIP
     """
 
     # Compare settings
@@ -175,7 +185,7 @@ def combine_fooofs(fooofs):
 
 
 def fit_fooof_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
-    """Fit FOOOF models across a 3D array of power spectra.
+    """Fit FOOOF models across a 3d array of power spectra.
 
     Parameters
     ----------
@@ -195,6 +205,15 @@ def fit_fooof_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
     -------
     fgs : list of FOOOFGroups
         Collected FOOOFGroups after fitting across power spectra, length of n_conditions.
+
+
+    Examples
+    --------
+    Fit a 3d array of power spectra, assuming `freqs` and `spectra` are already defined:
+
+    >>> from fooof import FOOOFGroup
+    >>> fg = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
+    >>> fgs = fit_fooof_3d(fg, freqs, power_spectra, freq_range=[3, 30])  # doctest:+SKIP
     """
 
     fgs = []

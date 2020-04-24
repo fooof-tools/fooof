@@ -10,10 +10,8 @@ Using FOOOFGroup to run fit models across multiple power spectra.
 # Import the FOOOFGroup object
 from fooof import FOOOFGroup
 
-# Import some utilities for simulating some test data
-from fooof.sim.params import param_sampler
-from fooof.sim.gen import gen_group_power_spectra
-from fooof.sim.utils import set_random_seed
+# Import utility to download and load example data
+from fooof.utils.download import load_fooof_data
 
 ###################################################################################################
 # Fitting Multiple Spectra
@@ -28,59 +26,22 @@ from fooof.sim.utils import set_random_seed
 #
 
 ###################################################################################################
-# Simulated Power Spectra
-# --------------------------
+
+# Load examples data files needed for this example
+freqs = load_fooof_data('group_freqs.npy', folder='data')
+spectra = load_fooof_data('group_powers.npy', folder='data')
+
+###################################################################################################
 #
-# Before we start using :class:`~fooof.FOOOFGroup`, we need some data. For this example,
-# we will simulate some test data. The FOOOF module includes utilities for creating
-# simulated power-spectra, that mimic real data.
-#
-# To do so, we will use a function called :func:`~fooof.sim.params.param_sampler` that
-# takes a list of possible parameters, and creates an object that randomly samples from
-# them to generate power spectra.
-#
-# Note that if you would like to generate single power spectra, you can use
-# :func:`~fooof.sim.gen.gen_power_spectrum`, also in `fooof.sim.gen`.
-#
-# There are more examples and descriptions of using FOOOF to simulate data in the
-# `examples <https://fooof-tools.github.io/fooof/auto_examples/index.html>`_
-# section.
+# For parameterizing a group of spectra, we can use a 1d array of frequency values
+# corresponding to a 2d array for power spectra, as is the organization of the data we loaded.
 #
 
 ###################################################################################################
 
-# Set random seed, for consistency generating simulated data
-set_random_seed(321)
-
-###################################################################################################
-
-# Settings for simulating power spectra
-n_spectra = 10
-f_range = [3, 40]
-
-# Set some options for aperiodic parameters
-#  These pairs, as [offset, exponent], are possible values for our simulated spectra
-#  Simulated spectra will have aperiodic parameters of [20, 2], [50, 2.5] or [35, 1.5]
-ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
-
-# Set some options for peak parameters
-#  Generated power spectra will have either no peaks, a 10 Hz peak, or a 10 Hz & 20 Hz peak
-gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
-
-###################################################################################################
-#
-# We can now feed these settings into :func:`~fooof.sim.gen.gen_group_power_spectra`,
-# that will generate a group of power spectra for us.
-#
-# Note that this function also returns a list of the parameters
-# used to generate each power spectrum.
-#
-
-###################################################################################################
-
-# Simulate the group of simulated spectra
-#  Note that this function also returns a list of the parameters for each simulation
-freqs, spectra = gen_group_power_spectra(n_spectra, f_range, ap_opts, gauss_opts)
+# Check the shape of the loaded data
+print(freqs.shape)
+print(spectra.shape)
 
 ###################################################################################################
 # FOOOFGroup
@@ -118,7 +79,7 @@ fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_height=0.05, max_n_peaks=6)
 # Fit a group of power spectra with the .fit() method
 #  The key difference (compared to FOOOF) is that it takes a 2D array of spectra
 #     This matrix should have the shape of [n_spectra, n_freqs]
-fg.fit(freqs, spectra)
+fg.fit(freqs, spectra, [3, 30])
 
 ###################################################################################################
 
@@ -128,7 +89,6 @@ fg.print_results()
 ###################################################################################################
 
 # Plot a summary of the results across the group
-#   Note: given the simulations, we expect exponents at {1.5, 2.0. 2.5} and peaks around {10, 20}
 fg.plot()
 
 ###################################################################################################
@@ -211,15 +171,15 @@ print(f_res.__doc__)
 
 # Check out the extracted exponent values
 #  Note that this extraction will return an array of length equal to the number of model fits
-#    The model fit from which each data element originated is the index of this vector
+#    The model fit from which each data element originated is the index of this array
 print(exps)
 
 ###################################################################################################
 
-# Check the fit center-frequencies
+# Check out some of the fit center-frequencies
 #  Note when you extract peak data, an extra column is returned,
 #  specifying which model fit it came from
-print(cfs)
+print(cfs[0:10, :])
 
 ###################################################################################################
 # Saving & Loading with FOOOFGroup

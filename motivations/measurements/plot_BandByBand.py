@@ -21,9 +21,9 @@ from fooof import FOOOF
 # Import simulation, utility, and plotting tools
 from fooof.bands import Bands
 from fooof.utils import trim_spectrum
-from fooof.sim import gen_power_spectrum
-from fooof.plts import plot_spectra_shading
 from fooof.analysis import get_band_peak_fm
+from fooof.sim.gen import gen_power_spectrum
+from fooof.plts.spectra import plot_spectra_shading
 
 ###################################################################################################
 # Overview
@@ -81,7 +81,7 @@ bands = Bands({'delta' : [1, 4],
 
 # Define plot settings
 t_settings = {'fontsize' : 24, 'fontweight' : 'bold'}
-shade_cols = ['#e8dc35', '#46b870', '#1882d9',  '#a218d9', '#e60026']
+shade_cols = ['#e8dc35', '#46b870', '#1882d9', '#a218d9', '#e60026']
 labels = ['Group-1', 'Group-2']
 
 # General simulation settings
@@ -218,8 +218,8 @@ print(exp_template.format(compare_exp(fm_bands_g1, fm_bands_g2)))
 # Check the difference in periodic activity, across bands, between groups
 for label, definition in bands:
     print(pw_template.format(label,
-        compare_peak_pw(fm_bands_g1, fm_bands_g2, definition),
-        compare_band_pw(fm_bands_g1, fm_bands_g2, definition)))
+                             compare_peak_pw(fm_bands_g1, fm_bands_g2, definition),
+                             compare_band_pw(fm_bands_g1, fm_bands_g2, definition)))
 
 ###################################################################################################
 #
@@ -287,7 +287,7 @@ plot_spectra_shading(freqs, [fm_pa_g1._spectrum_flat, fm_pa_g2._spectrum_flat],
                      shades=bands.definitions, shade_colors=shade_cols,
                      labels=labels)
 plt.xlim(f_range);
-plt.title('Periodic & Aperiodic - Flattened',  t_settings);
+plt.title('Periodic & Aperiodic - Flattened', t_settings);
 
 ###################################################################################################
 # Compare Spectral Parameters
@@ -306,8 +306,8 @@ print(exp_template.format(compare_exp(fm_pa_g1, fm_pa_g2)))
 # Check the difference in periodic activity, across bands, between groups
 for label, definition in bands:
     print(pw_template.format(label,
-        compare_peak_pw(fm_pa_g1, fm_pa_g2, definition),
-        compare_band_pw(fm_pa_g1, fm_pa_g2, definition)))
+                             compare_peak_pw(fm_pa_g1, fm_pa_g2, definition),
+                             compare_band_pw(fm_pa_g1, fm_pa_g2, definition)))
 
 ###################################################################################################
 #

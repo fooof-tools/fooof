@@ -6,7 +6,7 @@ import numpy as np
 
 from fooof.sim.gen import gen_freqs, gen_aperiodic
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.settings import FIGSIZE_PARAMS
+from fooof.plts.settings import PLT_FIGSIZES
 from fooof.plts.style import check_n_style, style_param_plot
 from fooof.plts.utils import check_ax, recursive_plot, check_plot_kwargs
 
@@ -36,7 +36,7 @@ def plot_aperiodic_params(aps, colors=None, labels=None,
         Keyword arguments to pass into the plot call.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_PARAMS))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
 
     if isinstance(aps, list):
         recursive_plot(aps, plot_aperiodic_params, ax, colors=colors, labels=labels,
@@ -86,7 +86,7 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         Keyword arguments to pass into the plot call.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_PARAMS))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
 
     if isinstance(aps, list):
 
@@ -127,7 +127,8 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         # Plot the average component
         avg = avg_vals / aps.shape[0]
         avg_color = 'black' if not colors else colors
-        ax.plot(plt_freqs, avg, color=avg_color, linewidth=plot_kwargs.get('linewidth')*3, label=labels)
+        ax.plot(plt_freqs, avg, linewidth=plot_kwargs.get('linewidth')*3,
+                color=avg_color, label=labels)
 
     # Add axis labels
     ax.set_xlabel('log(Frequency)' if log_freqs else 'Frequency')

@@ -24,3 +24,11 @@ def test_compute_pointwise_error_fg_plt(tfg, skip_if_no_mpl):
     """Run a seperate test to run with plot pass-through."""
 
     compute_pointwise_error_fg(tfg, True, False)
+
+def test_compute_pointwise_error():
+
+    d1 = np.ones(5) * 2
+    d2 = np.ones(5)
+
+    errs = compute_pointwise_error(d1, d2)
+    assert np.array_equal(errs, np.array([1, 1, 1, 1, 1]))

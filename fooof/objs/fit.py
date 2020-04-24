@@ -88,9 +88,9 @@ class FOOOF():
     Parameters
     ----------
     peak_width_limits : tuple of (float, float), optional, default: (0.5, 12.0)
-        Limits on possible peak width, as (lower_bound, upper_bound).
+        Limits on possible peak width, in Hz, as (lower_bound, upper_bound).
     max_n_peaks : int, optional, default: inf
-        Maximum number of gaussians to be fit in a single spectrum.
+        Maximum number of peaks to fit.
     min_peak_height : float, optional, default: 0
         Absolute threshold for detecting peaks, in units of the input data.
     peak_threshold : float, optional, default: 2.0
@@ -146,6 +146,7 @@ class FOOOF():
       the PW of the peak is the height of the gaussian over and above the aperiodic component,
       and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
     """
+    # pylint: disable=attribute-defined-outside-init
 
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
                  peak_threshold=2.0, aperiodic_mode='fixed', verbose=True):

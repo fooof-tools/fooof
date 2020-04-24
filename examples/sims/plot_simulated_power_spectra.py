@@ -32,7 +32,7 @@ from fooof.plts.spectra import plot_spectrum, plot_spectra
 #
 #   - each peak is defined with three parameters, as [center frequency, height, width]
 #
-# The :func:`~fooof.sim.gen.gen_power_spectrum` function takes these parameters as input to
+# The :func:`~.gen_power_spectrum` function takes these parameters as input to
 # create and return a simulated power spectrum. Note that the parameters that define the peaks
 # are labeled as gaussian parameters, as these parameters define the simulated gaussians
 # directly, and are not the modified peak parameters that the model outputs.
@@ -106,15 +106,14 @@ plot_spectrum(freqs, powers, log_powers=True)
 # Simulating a Group of Power Spectra
 # -----------------------------------
 #
-# For simulating multiple power spectra, the :func:`~fooof.sim.gen.gen_group_power_spectra`
-# can be used.
+# For simulating multiple power spectra, the :func:`~.gen_group_power_spectra` can be used.
 #
 # This function takes the same kind of parameter definitions as
-# :func:`~fooof.sim.gen.gen_power_spectrum`, and in addition takes a number specifying
+# :func:`~.gen_power_spectrum`, and in addition takes a number specifying
 # how many power spectra to simulate, returning a 2D matrix containing the
 # desired number of spectra.
 #
-# Parameters that are passed into :func:`~fooof.sim.gen.gen_group_power_spectra` can be:
+# Parameters that are passed into :func:`~.gen_group_power_spectra` can be:
 #
 # - a single definition, whereby the same value is used for all generated spectra
 # - a list of parameters, whereby each successive entry is used for each successive spectrum

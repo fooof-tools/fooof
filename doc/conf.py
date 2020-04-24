@@ -33,10 +33,6 @@ release = version
 
 # -- General configuration ---------------------------------------------------
 
-# If your documentation needs a minimal Sphinx version, state it here.
-#
-# needs_sphinx = '1.0'
-
 # Add any Sphinx extension module names here, as strings.
 extensions = [
     'sphinx.ext.autodoc',
@@ -47,8 +43,8 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx_gallery.gen_gallery',
+    'sphinx_copybutton',
     'numpydoc',
-    'm2r'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -66,7 +62,7 @@ numpydoc_show_class_members = False
 # Set to generate sphinx docs for class members (methods)
 autodoc_default_options = {
     'members': None,
-    'no-inherited-members': None,
+    'inherited-members': None,
 }
 
 # generate autosummary even if no references
@@ -81,6 +77,8 @@ master_doc = 'index'
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+# Settings for sphinx_copybutton
+copybutton_prompt_text = "$ "
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -103,8 +101,11 @@ html_theme_options = {
         ("Tutorials", "auto_tutorials/index"),
         ("Examples", "auto_examples/index"),
         ("Reference", "reference"),
-        ("GitHub", "https://github.com/fooof-tools/fooof", True)
+        ("GitHub", "https://github.com/fooof-tools/fooof", True),
     ],
+
+    # Set the page width to not be restricted to hardset value
+    'body_max_width': None,
 
     # Bootswatch (http://bootswatch.com/) theme to apply.
     'bootswatch_theme': "flatly",
@@ -132,8 +133,7 @@ sphinx_gallery_conf = {
                                         '../motivations/measurements']),
     'within_subsection_order': FileNameSortKey,
     'default_thumb_file': 'img/spectrum.png',
-    # Settings for linking between examples & API examples
-    'backreferences_dir': 'backrefs',
+    'backreferences_dir': 'generated',   # Where to drop linking files between examples & API
     'doc_module': ('fooof',),
     'reference_url': {'fooof': None}
 }

@@ -39,7 +39,6 @@ from fooof import FOOOF
 #   These are used here to demonstrate the algorithm.
 #   You do not need to import these functions for standard use of the algorithm
 from fooof.sim.gen import gen_aperiodic
-from fooof.core.funcs import gaussian_function
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.annotate import plot_annotated_peak_search
 
@@ -61,7 +60,7 @@ spectrum = load_fooof_data('spectrum_2.npy', folder='data')
 
 # Initialize a FOOOF object, with some settings
 #   These settings will be more fully described later in the tutorials
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6 , min_peak_height=0.15)
+fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 
 ###################################################################################################
 #
@@ -109,8 +108,10 @@ init_ap_fit = gen_aperiodic(fm.freqs, fm._robust_ap_fit(fm.freqs, fm.power_spect
 
 # Plot the initial aperiodic fit
 _, ax = plt.subplots(figsize=(12, 10))
-plot_spectrum(fm.freqs, fm.power_spectrum, plt_log, label='Original Power Spectrum', ax=ax)
-plot_spectrum(fm.freqs, init_ap_fit, plt_log, label='Initial Aperiodic Fit', ax=ax)
+plot_spectrum(fm.freqs, fm.power_spectrum, plt_log,
+              label='Original Power Spectrum', color='black', ax=ax)
+plot_spectrum(fm.freqs, init_ap_fit, plt_log, label='Initial Aperiodic Fit',
+              color='blue', alpha=0.5, linestyle='dashed', ax=ax)
 
 ###################################################################################################
 # Step 2: Flatten the Spectrum
@@ -127,7 +128,8 @@ plot_spectrum(fm.freqs, init_ap_fit, plt_log, label='Initial Aperiodic Fit', ax=
 init_flat_spec = fm.power_spectrum - init_ap_fit
 
 # Plot the flattened the power spectrum
-plot_spectrum(fm.freqs, init_flat_spec, plt_log, label='Flattened Spectrum')
+plot_spectrum(fm.freqs, init_flat_spec, plt_log,
+              label='Flattened Spectrum', color='black')
 
 ###################################################################################################
 # Step 3: Detect Peaks
@@ -167,7 +169,7 @@ plot_annotated_peak_search(fm)
 ###################################################################################################
 
 # Plot the peak fit: created by re-fitting all of the candidate peaks together
-plot_spectrum(fm.freqs, fm._peak_fit, plt_log)
+plot_spectrum(fm.freqs, fm._peak_fit, plt_log, color='green', label='Final Periodic Fit')
 
 ###################################################################################################
 # Step 5: Create a Peak-Removed Spectrum
@@ -183,7 +185,8 @@ plot_spectrum(fm.freqs, fm._peak_fit, plt_log)
 ###################################################################################################
 
 # Plot the peak removed power spectrum, created by removing peak fit from original spectrum
-plot_spectrum(fm.freqs, fm._spectrum_peak_rm, plt_log, label='Peak Removed Spectrum')
+plot_spectrum(fm.freqs, fm._spectrum_peak_rm, plt_log,
+              label='Peak Removed Spectrum', color='black')
 
 ###################################################################################################
 # Step 6: Re-fit the Aperiodic Component
@@ -200,8 +203,10 @@ plot_spectrum(fm.freqs, fm._spectrum_peak_rm, plt_log, label='Peak Removed Spect
 
 # Plot the final aperiodic fit, calculated on the peak removed power spectrum
 _, ax = plt.subplots(figsize=(12, 10))
-plot_spectrum(fm.freqs, fm._spectrum_peak_rm, plt_log, label='Peak Removed Spectrum', ax=ax)
-plot_spectrum(fm.freqs, fm._ap_fit, plt_log, label='Final Aperiodic Fit', ax=ax)
+plot_spectrum(fm.freqs, fm._spectrum_peak_rm, plt_log,
+              label='Peak Removed Spectrum', color='black', ax=ax)
+plot_spectrum(fm.freqs, fm._ap_fit, plt_log, label='Final Aperiodic Fit',
+              color='blue', alpha=0.5, linestyle='dashed', ax=ax)
 
 ###################################################################################################
 # Step 7: Combine the Full Model Fit
@@ -218,7 +223,8 @@ plot_spectrum(fm.freqs, fm._ap_fit, plt_log, label='Final Aperiodic Fit', ax=ax)
 ###################################################################################################
 
 # Plot full model, created by combining the peak and aperiodic fits
-plot_spectrum(fm.freqs, fm.fooofed_spectrum_, plt_log, label='Full Model')
+plot_spectrum(fm.freqs, fm.fooofed_spectrum_, plt_log,
+              label='Full Model', color='red')
 
 ###################################################################################################
 
@@ -248,27 +254,27 @@ fm.plot(plt_log)
 #
 # Stored model components:
 #
-# - Aperiodic Component: `_ap_fit`
+# - Aperiodic Component: ``_ap_fit``
 #
 #   - This is the aperiodic-only fit of the data.
 #   - It is computed by generating a reconstruction of the measured aperiodic parameters
 #
-# - Periodic Component: `_peak_fit`
+# - Periodic Component: ``_peak_fit``
 #
 #   - This is the periodic-only (or peak) fit of the data.
 #   - It is computed by generating a reconstruction of the measured periodic (peak) parameters
 #
 # Stored data attributes:
 #
-# - Flattened Spectrum: `_spectrum_flat`
+# - Flattened Spectrum: ``_spectrum_flat``
 #
 #   - The original data, with the aperiodic component removed
-#   - This is computed as `power_spectrum - _ap_fit`
+#   - This is computed as ``power_spectrum`` - ``_ap_fit``
 #
-# - Peak Removed Spectrum: `_spectrum_peak_rm`
+# - Peak Removed Spectrum: ``_spectrum_peak_rm``
 #
 #   - The original data, with the periodic component (peaks) removed
-#   - This is computed as `power_spectrum - _peak_fit`
+#   - This is computed as ``power_spectrum`` - ``_peak_fit``
 #
 
 ###################################################################################################
@@ -278,4 +284,10 @@ fm.plot(plt_log)
 # In this tutorial we have stepped through the parameterization algorithm fitting
 # power spectrum models. Next, we will continue to explore the FOOOF object,
 # properly introducing the settings and further exploring the parameters.
+#
+
+###################################################################################################
+#
+# Sphinx settings:
+# sphinx_gallery_thumbnail_number = 4
 #

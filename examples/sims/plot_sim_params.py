@@ -14,7 +14,7 @@ from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
 from fooof.sim.params import param_sampler, param_iter, param_jitter, Stepper
 
 # Import plotting functions to visualize spectra
-from fooof.plts.spectra import plot_spectrum, plot_spectra
+from fooof.plts.spectra import plot_spectra
 
 ###################################################################################################
 # Simulation Parameters
@@ -24,11 +24,11 @@ from fooof.plts.spectra import plot_spectrum, plot_spectra
 # to ground truth values - but in order to do that, one needs to keep track of the
 # simulation parameters themselves.
 #
-# To do so, there is the :obj:`~fooof.data.data.SimParams` object to manage
+# To do so, there is the :obj:`~.SimParams` object to manage
 # and keep track of simulation parameters.
 #
 # For example, when you simulate power spectra, the parameters for each spectrum are stored
-# in a :obj:`~fooof.data.data.SimParams` object, and then these objects are collected and returned.
+# in a :obj:`~.SimParams` object, and then these objects are collected and returned.
 #
 # SimParams objects are named tuples with the following fields:
 #
@@ -73,19 +73,16 @@ freqs, powers = gen_power_spectrum(freq_range, *cur_params)
 #
 # These functions include:
 #
-# - :func:`~fooof.sim.params.param_sampler` which can be used to sample
-#   parameters from possible options
-# - :func:`~fooof.sim.params.param_iter` which can be used to iterate across
-#   parameter ranges
-# - :func:`~fooof.sim.params.param_jitter` which can be used to add some 'jitter'
-#   to simulation parameters
+# - :func:`~.param_sampler` which can be used to sample parameters from possible options
+# - :func:`~.param_iter` which can be used to iterate across parameter ranges
+# - :func:`~.param_jitter` which can be used to add some 'jitter' to simulation parameters
 #
 
 ###################################################################################################
 # param_sampler
 # ~~~~~~~~~~~~~
 #
-# The :func:`~fooof.sim.params.param_sampler` function takes a list of parameter options and
+# The :func:`~.param_sampler` function takes a list of parameter options and
 # randomly selects from the parameters to create each power spectrum. You can also optionally
 # specify the probabilities with which to sample from the options.
 #
@@ -113,11 +110,11 @@ plot_spectra(freqs, powers[0:4, :], log_powers=True)
 # param_iter
 # ~~~~~~~~~~
 #
-# The :func:`~fooof.sim.params.param_iter` function can be used to create iterators that
+# The :func:`~.param_iter` function can be used to create iterators that
 # can 'step' across a range of parameter values to be simulated.
 #
-# The :class:`~fooof.sim.params.Stepper` object needs to be used in conjunction with
-# :func:`~fooof.sim.params.param_iter`, as it specifies the values to be iterated across.
+# The :class:`~.Stepper` object needs to be used in conjunction with
+# :func:`~.param_iter`, as it specifies the values to be iterated across.
 #
 
 ###################################################################################################
@@ -148,7 +145,7 @@ plot_spectra(freqs, powers, log_freqs=True, log_powers=True)
 # param_jitter
 # ~~~~~~~~~~~~
 #
-# The :func:`~fooof.sim.params.param_jitter` function can be used to create iterators that
+# The :func:`~.param_jitter` function can be used to create iterators that
 # apply some 'jitter' to the defined parameter values.
 #
 

@@ -33,7 +33,7 @@ import numpy as np
 # Import the FOOOF and FOOOFGroup objects
 from fooof import FOOOF, FOOOFGroup
 
-# Import the Bands object, which is used to define oscillation bands
+# Import the Bands object, which is used to define frequency bands
 from fooof.bands import Bands
 
 # Import simulation code and utilities
@@ -41,7 +41,7 @@ from fooof.sim.params import param_sampler
 from fooof.sim.gen import gen_group_power_spectra
 
 # Import some analysis functions
-from fooof.analysis import get_band_peak, get_band_peak_fm, get_band_peak_fg
+from fooof.analysis import get_band_peak_fm, get_band_peak_fg
 
 # Import utility to download and load example data
 from fooof.utils.download import load_fooof_data
@@ -105,9 +105,9 @@ fg.fit(freqs, spectra)
 #
 # We will start by analyzing the periodic components.
 # In particular, these utilities mostly serve to help organize and extract periodic
-# components, for example extracting peak that fall with oscillation band definitions.
+# components, for example extracting peaks that fall within defined frequency bands.
 #
-# This also includes using the :class:`~fooof.bands.bands.Bands` object, that is provided
+# This also includes using the :class:`~.Bands` object, that is provided
 # to store band definitions.
 #
 
@@ -119,79 +119,83 @@ bands = Bands({'theta' : [4, 8],
                'beta' : [15, 30]})
 
 ###################################################################################################
-# get_band_peak
-# ~~~~~~~~~~~~~~~~
+# Extracting peaks from FOOOF Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The :func:`~fooof.analysis.periodic.get_band_peak` function is used to select peaks
-# within specific frequency ranges.
+# The :func:`~.get_band_peak_fm` function takes in a
+# :class:`~.FOOOF` object and extracts peak(s) from a requested frequency range.
 #
-# You can optionally specify whether to return all oscillations within that band,
-# or a singular result, which returns the highest power peak (if there are multiple),
-# and also apply a minimum threshold to extract peaks.
+# You can optionally specify:
 #
-
-
-###################################################################################################
-# get_band_peak_fm
-# ~~~~~~~~~~~~~~~~
-#
-# You can use the :func:`~fooof.analysis.periodic.get_band_peak` function directly if
-# you have already extracted the peak parameters from a :class:`~fooof.FOOOF` object.
-#
-# You can also use the :func:`~fooof.analysis.periodic.get_band_peak_fm`
-# function and pass in a :class:`~fooof.FOOOF` object.
+# - whether to return one peak from the specified band, in which case the highest peak is
+#   returned, or whether to return all peaks from within the band
+# - whether to apply a minimum threshold to extract peaks, for example, to extract
+#   peaks only above some minimum power threshold
 #
 
 ###################################################################################################
 
-# Extract any alpha band oscillations from the power spectrum model
-print(get_band_peak_fm(fm, bands.alpha))
+# Extract any alpha band peaks from the power spectrum model
+alpha = get_band_peak_fm(fm, bands.alpha)
+print(alpha)
 
 ###################################################################################################
-# get_band_peak_fg
-# ~~~~~~~~~~~~~~~~
+# Extracting peaks from FOOOFGroup Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Similarly, the :func:`~fooof.analysis.periodic.get_band_peak_group` function can be used
+# Similarly, the :func:`~.get_band_peak_fg` function can be used
 # to select peaks within specific frequency ranges, from :class:`~fooof.FOOOFGroup` objects.
 #
+# Note that you can also apply a threshold to extract group peaks but, as discussed below,
+# this approach will only extract one peak per individual model in the FOOOFGroup object.
+#
 
 ###################################################################################################
 
-# Get all alpha oscillations from a group of power spectrum models
+# Get all alpha peaks from a group of power spectrum models
 alphas = get_band_peak_fg(fg, bands.alpha)
-
-###################################################################################################
 
 # Check out some of the alpha data
 print(alphas[0:5, :])
 
 ###################################################################################################
 #
-# Note that when selecting peaks from a group of model fits, we retain
-# information regarding which peaks came from which model fits.
+# When selecting peaks from a group of model fits, we want to retain information about
+# which model each peak comes from.
 #
-# To do so, it's output is organized such that each row corresponds to a specific
-# model fit, such that the matrix returned is size [n_fits, 3].
+# To do so, the output of :func:`~.get_band_peak_fg` is organized
+# such that each row corresponds to a specific model fit. This means that returned array
+# has the shape [n_models, 3], and so the index of each row corresponds to the index of the
+# model from the FOOOFGroup object.
 #
 # For this to work, at most 1 peak is extracted for each model fit within the specified band.
-#
 # If more than 1 peak are found within the band, the peak with the highest power is extracted.
 # If no peaks are found, that row is filled with 'nan'.
 #
 
 ###################################################################################################
 
-# Check descriptive statistics of oscillation data
+# Check descriptive statistics of extracted peak data
 print('Alpha CF : {:1.2f}'.format(np.nanmean(alphas[:, 0])))
 print('Alpha PW : {:1.2f}'.format(np.nanmean(alphas[:, 1])))
 print('Alpha BW : {:1.2f}'.format(np.nanmean(alphas[:, 2])))
+
+###################################################################################################
+# Customizing Peak Extraction
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# If you want to do more customized extraction of peaks, for example, extracting all peaks
+# in a frequency band from each model in a FOOOFGroup object, you may need to use the
+# underlying functions that operate on arrays of peak parameters. To explore these functions,
+# check the listing in the API page.
+#
 
 ###################################################################################################
 # A Note on Frequency Ranges
 # --------------------------
 #
 # A benefit of fitting power spectrum models is that you do not have to define
-# a priori frequency ranges from which to extract oscillations.
+# a priori frequency ranges from which to extract peaks.
 #
 # Nevertheless, it may still be useful to group extracted peaks into 'bands' of interest,
 # which is why the aforementioned functions are offered.
@@ -229,9 +233,9 @@ print(exps)
 #
 # Once you have extracted the parameters you can analyze them by, for example:
 #
-# - Characterizing oscillations & aperiodic properties,
+# - Characterizing periodic & aperiodic properties,
 #   and analyzing spatial topographies, across demographics, modalities, and tasks
-# - Comparing oscillations within and between subjects across different tasks of interest
+# - Comparing peaks within and between subjects across different tasks of interest
 # - Predicting disease state based on power spectrum model parameters
 # - Fitting power spectrum models in a trial-by-trial approach to try and decode task
 #   properties, and behavioral states

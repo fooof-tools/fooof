@@ -24,7 +24,7 @@ Examples with combining, sub-selecting, dropping, and averaging power spectrum m
 ###################################################################################################
 
 # Import FOOOF & FOOOFGroup objects
-from fooof import FOOOF, FOOOFGroup
+from fooof import FOOOF
 
 # Import Bands object, to manage frequency band definitions
 from fooof.bands import Bands
@@ -34,7 +34,6 @@ from fooof.objs.utils import average_fg, combine_fooofs, compare_info
 
 # Import simulation functions to create our example data
 from fooof.sim.gen import gen_power_spectrum
-from fooof.sim.params import param_sampler
 
 ###################################################################################################
 #
@@ -72,7 +71,7 @@ fm3.fit(freqs, powers_3)
 # Sometimes, when working with models in :class:`~fooof.FOOOF` or :class:`~fooof.FOOOFGroup`
 # objects, you may want to combine them together, to check some group properties.
 #
-# The :func:`~fooof.objs.utils.combine_fooofs` function takes a list of FOOOF and/or
+# The :func:`~.combine_fooofs` function takes a list of FOOOF and/or
 # FOOOFGroup objects, and combines all available fits together into a FOOOFGroup object.
 #
 # Let's now combine our individual model fits into a FOOOFGroup object.
@@ -96,7 +95,7 @@ print('Number of model fits: ', len(fg))
 #
 # For example, combining FOOOF objects returns a new FOOOFGroup object with the same settings.
 #
-# We can see this by using the :func:`~fooof.objs.utils.compare_info` function to compare
+# We can see this by using the :func:`~.compare_info` function to compare
 # the settings between FOOOF objects.
 #
 # You can also use this function if you wish to compare FOOOF objects to ensure that

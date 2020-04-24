@@ -13,7 +13,7 @@ import numpy as np
 
 from fooof.core.modutils import safe_import
 from fooof.core.utils import resolve_aliases
-from fooof.plts.settings import ALPHA_LEVELS, PLT_ALIASES
+from fooof.plts.settings import PLT_ALPHA_LEVELS, PLT_ALIASES
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -56,9 +56,9 @@ def set_alpha(n_points):
         Value for alpha to use for plotting.
     """
 
-    for ke, va in ALPHA_LEVELS.items():
-        if n_points > ke:
-            alpha = va
+    for key, val in PLT_ALPHA_LEVELS.items():
+        if n_points > key:
+            alpha = val
 
     return alpha
 
@@ -80,7 +80,7 @@ def add_shades(ax, shades, colors='r', add_center=False, logged=False):
         Whether the shade values should be logged before applying to plot axes.
     """
 
-    # If only only one shade region is specified, this embeds in a list, so that the loop works
+    # If only one shade region is specified, this embeds in a list, so that the loop works
     if not isinstance(shades[0], list):
         shades = [shades]
 

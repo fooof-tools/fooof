@@ -10,7 +10,7 @@ from itertools import repeat
 import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.settings import FIGSIZE_SPECTRAL
+from fooof.plts.settings import PLT_FIGSIZES
 from fooof.plts.style import check_n_style, style_spectrum_plot
 from fooof.plts.utils import check_ax, add_shades, check_plot_kwargs
 
@@ -42,7 +42,7 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
         Keyword arguments to be passed to the plot call.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_SPECTRAL))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
     # Set plot data & labels, logging if requested
     plt_freqs = np.log10(freqs) if log_freqs else freqs
@@ -80,7 +80,7 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels
         Keyword arguments to be passed to the plot call.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_SPECTRAL))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
     # Make inputs iterable if need to be passed multiple times to plot each spectrum
     freqs = repeat(freqs) if isinstance(freqs, np.ndarray) and freqs.ndim == 1 else freqs
@@ -118,7 +118,7 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, shade_colors='r', add_c
         Keyword arguments to be passed to the plot call.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_SPECTRAL))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
     plot_spectrum(freqs, power_spectrum, plot_style=None, ax=ax, **plot_kwargs)
 
@@ -160,7 +160,7 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_cen
     This includes `log_freqs`, `log_powers` & `labels`. See `plot_spectra` for usage details.
     """
 
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_SPECTRAL))
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
     plot_spectra(freqs, power_spectra, ax=ax, plot_style=None, **plot_kwargs)
 
@@ -169,45 +169,3 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_cen
     check_n_style(plot_style, ax,
                   plot_kwargs.get('log_freqs', False),
                   plot_kwargs.get('log_powers', False))
-
-
-@check_dependency(plt, 'matplotlib')
-def plot_spectrum_error(freqs, error, shade=None, log_freqs=False,
-                        ax=None, plot_style=style_spectrum_plot, **plot_kwargs):
-    """Plot frequency by frequency error values.
-
-    Parameters
-    ----------
-    freqs : 1d array
-        Frequency values, to be plotted on the x-axis.
-    error : 1d array
-        Calculated error values or mean error values across frequencies, to plot on the y-axis.
-    shade : 1d array, optional
-        Values to shade in around the plotted error.
-        This could be, for example, the standard deviation of the errors.
-    log_freqs : bool, optional, default: False
-        Whether to plot the frequency axis in log spacing.
-    ax : matplotlib.Axes, optional
-        Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_spectrum_plot
-        A function to call to apply styling & aesthetics to the plot.
-    **plot_kwargs
-        Keyword arguments to be passed to `plot_spectra` or to the plot call.
-    """
-
-    ax = check_ax(ax, plot_kwargs.pop('figsize', FIGSIZE_SPECTRAL))
-
-    plt_freqs = np.log10(freqs) if log_freqs else freqs
-
-    plot_spectrum(plt_freqs, error, plot_style=None, ax=ax, linewidth=3, **plot_kwargs)
-
-    if np.any(shade):
-        ax.fill_between(plt_freqs, error-shade, error+shade, alpha=0.25)
-
-    ymin, ymax = ax.get_ylim()
-    if ymin < 0:
-        ax.set_ylim([0, ymax])
-    ax.set_xlim(plt_freqs.min(), plt_freqs.max())
-
-    check_n_style(plot_style, ax, log_freqs, True)
-    ax.set_ylabel('Absolute Error')

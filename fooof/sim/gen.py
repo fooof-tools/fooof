@@ -3,7 +3,6 @@
 import numpy as np
 
 from fooof.core.utils import check_iter, check_flat
-from fooof.core.funcs import gaussian_function
 from fooof.core.funcs import get_ap_func, get_pe_func, infer_ap_func
 
 from fooof.sim.params import collect_sim_params
@@ -26,6 +25,12 @@ def gen_freqs(freq_range, freq_res):
     -------
     freqs : 1d array
         Frequency values, in linear spacing.
+
+    Examples
+    --------
+    Generate a vector of frequency values from 1 to 50:
+
+    >>> freqs = gen_freqs([1, 50], freq_res=0.5)
     """
 
     # The end value has something added to it, to make sure the last value is included
@@ -103,8 +108,8 @@ def gen_power_spectrum(freq_range, aperiodic_params, periodic_params, nlv=0.005,
         spectrum will NOT have the requested offset. It instead will have the offset
         value required to create the requested aperiodic exponent with the requested
         rotation point.
-      * If you return SimParams, the recorded offset will be actual calculated offset
-        of the data, and not the value entered.
+      * If you return SimParams, the recorded offset will be the calculated offset
+        of the data post rotation, and not the entered value.
 
     - You cannot rotate power spectra simulated with a knee.
 
@@ -115,22 +120,23 @@ def gen_power_spectrum(freq_range, aperiodic_params, periodic_params, nlv=0.005,
     --------
     Generate a power spectrum with a single peak, at 10 Hz:
 
-    >>> freqs, psd = gen_power_spectrum([1, 50], [0, 2], [10, 0.5, 1])
+    >>> freqs, powers = gen_power_spectrum([1, 50], [0, 2], [10, 0.5, 1])
 
     Generate a power spectrum with alpha and beta peaks:
 
-    >>> freqs, psd = gen_power_spectrum([1, 50], [0, 2], [[10, 0.5, 1], [20, 0.5, 1]])
+    >>> freqs, powers = gen_power_spectrum([1, 50], [0, 2], [[10, 0.5, 1], [20, 0.5, 1]])
 
     Generate a power spectrum, that was rotated around a particular frequency point:
 
-    >>> freqs, psd = gen_power_spectrum([1, 50], [None, 2], [10, 0.5, 1], f_rotation=15)
+    >>> freqs, powers = gen_power_spectrum([1, 50], [None, 2], [10, 0.5, 1], f_rotation=15)
     """
 
     freqs = gen_freqs(freq_range, freq_res)
 
     if f_rotation:
 
-        powers = gen_rotated_power_vals(freqs, aperiodic_params, periodic_params, nlv, f_rotation)
+        powers = gen_rotated_power_vals(freqs, aperiodic_params,
+                                        check_flat(periodic_params), nlv, f_rotation)
 
         # The rotation changes the offset, so recalculate it's value & update params
         new_offset = compute_rotation_offset(aperiodic_params[1], f_rotation)
@@ -219,8 +225,8 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
         spectrum will NOT have the requested offset. It instead will have the offset
         value required to create the requested aperiodic exponent with the requested
         rotation point.
-      * If you return SimParams, the recorded offset will be actual calculated offset
-        of the data, and not the value entered.
+      * If you return SimParams, the recorded offset will be the calculated offset
+        of the data post rotation, and not the entered value.
 
     - You cannot rotate power spectra simulated with a knee.
 
@@ -231,28 +237,28 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
     --------
     Generate 2 power spectra using the same parameters:
 
-    >>> freqs, psds = gen_group_power_spectra(2, [1, 50], [0, 2], [10, 0.5, 1])
+    >>> freqs, powers = gen_group_power_spectra(2, [1, 50], [0, 2], [10, 0.5, 1])
 
     Generate 10 power spectra, randomly sampling possible parameters:
 
     >>> from fooof.sim.params import param_sampler
     >>> ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
     >>> pe_opts = param_sampler([[], [10, 0.5, 1], [10, 0.5, 1, 20, 0.25, 1]])
-    >>> freqs, psds = gen_group_power_spectra(10, [1, 50], ap_opts, pe_opts)
+    >>> freqs, powers = gen_group_power_spectra(10, [1, 50], ap_opts, pe_opts)
 
     Generate 5 power spectra, rotated around 20 Hz:
 
     >>> ap_params = [[None, 1], [None, 1.25], [None, 1.5], [None, 1.75], [None, 2]]
     >>> pe_params = [10, 0.5, 1]
-    >>> freqs, psds = gen_group_power_spectra(5, [1, 50], ap_params, pe_params, f_rotation=20)
+    >>> freqs, powers = gen_group_power_spectra(5, [1, 50], ap_params, pe_params, f_rotation=20)
 
     Generate power spectra stepping across exponent values, and return parameter values:
 
     >>> from fooof.sim.params import Stepper, param_iter
     >>> ap_params = param_iter([0, Stepper(1, 2, 0.25)])
     >>> pe_params = [10, 0.5, 1]
-    >>> freqs, psds, sps = gen_group_power_spectra(5, [1, 50], ap_params, pe_params,
-    ...                                            return_params=True)
+    >>> freqs, powers, sps = gen_group_power_spectra(5, [1, 50], ap_params, pe_params,
+    ...                                              return_params=True)
     """
 
     # Initialize things
@@ -270,11 +276,11 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
     for ind, ap, pe, nlv, f_rot in zip(range(n_spectra), ap_params, pe_params, nlvs, f_rots):
 
         if f_rotation:
-            powers = gen_rotated_power_vals(freqs, ap, pe, nlv, f_rot)
+            powers[ind, :] = gen_rotated_power_vals(freqs, ap, check_flat(pe), nlv, f_rot)
             aperiodic_params = [compute_rotation_offset(ap[1], f_rot), ap[1]]
 
         else:
-            powers[ind, :] = gen_power_vals(freqs, ap, pe, nlv)
+            powers[ind, :] = gen_power_vals(freqs, ap, check_flat(pe), nlv)
 
         sim_params[ind] = collect_sim_params(ap, pe, nlv)
 
@@ -430,7 +436,7 @@ def gen_rotated_power_vals(freqs, aperiodic_params, periodic_params, nlv, f_rota
     if len(aperiodic_params) == 3:
         raise ValueError('Cannot rotate power spectra generated with a knee.')
 
-    powers = gen_power_vals(freqs, [0, 0], check_flat(periodic_params), nlv)
+    powers = gen_power_vals(freqs, [0, 0], periodic_params, nlv)
     powers = rotate_spectrum(freqs, powers, aperiodic_params[1], f_rotation)
 
     return powers

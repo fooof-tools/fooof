@@ -52,8 +52,10 @@ FOOOF follows the following conventions:
 - Code style should follow [PEP8](https://www.python.org/dev/peps/pep-0008/)
   - Merge candidate code will be checked using [pylint](https://www.pylint.org)
   - Max line length is 100 characters
-- All functions should be unit tested, using [pytest](https://docs.pytest.org/en/latest/)
+- All functions should be tested, using [pytest](https://docs.pytest.org/en/latest/)
   - Merge candidates must pass all existing tests, and add new tests such as to not reduce test coverage
 - All code should be documented, following the [numpy docs](https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard) format
+- Example sections in docstrings are recommended, if possible.
+  - If so, these examples should be executable (through doctest), or use the SKIP directive if they cannot be run
 
 For more guidelines on how to write well formated and organized code, check out the [Python API Checklist](http://python.apichecklist.com).

@@ -56,6 +56,14 @@ def rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation):
     - This is because the rotation applied is inconsistent with the formulation of spectra
       with a knee. This transformation will change them in an unspecified way, not just
       limited to doing the rotation.
+
+    Examples
+    --------
+    Rotate a simulated spectrum, changing the exponent around a rotation point of 25 Hz:
+
+    >>> from fooof.sim.gen import gen_power_spectrum
+    >>> freqs, powers = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1])
+    >>> rotated_powers = rotate_spectrum(freqs, powers, 0.5, 25)
     """
 
     # Rotations are undefined for frequency value of exactly zero
@@ -86,6 +94,14 @@ def translate_spectrum(power_spectrum, delta_offset):
     -------
     translated_spectrum : 1d array
         Translated power spectrum.
+
+    Examples
+    --------
+    Translate a simulated spectrum, moving the offset up:
+
+    >>> from fooof.sim.gen import gen_power_spectrum
+    >>> freqs, powers = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1])
+    >>> translated_powers = translate_spectrum(powers, 0.5)
     """
 
     translated_spectrum = np.power(10, delta_offset, dtype='float') * power_spectrum
@@ -126,6 +142,14 @@ def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, sim_p
     This is because the rotation applied is inconsistent with
     the formulation of knee spectra, and will change them in an
     unspecified way, not just limited to doing the rotation.
+
+    Examples
+    --------
+    Rotate a simulated spectrum, changing the exponent around a rotation point of 25 Hz:
+
+    >>> from fooof.sim.gen import gen_power_spectrum
+    >>> freqs, powers, sp = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1], return_params=True)
+    >>> rotated_powers, new_sp = rotate_sim_spectrum(freqs, powers, 0.5, 25, sp)
     """
 
     rotated_spectrum = rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation)
@@ -157,6 +181,14 @@ def translate_sim_spectrum(power_spectrum, delta_offset, sim_params):
         Translated power spectrum.
     new_sim_params : SimParams
         New parameter definitions.
+
+    Examples
+    --------
+    Translate a simulated spectrum, moving the offset up:
+
+    >>> from fooof.sim.gen import gen_power_spectrum
+    >>> freqs, powers, sp = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1], return_params=True)
+    >>> translated_powers, new_sp = translate_sim_spectrum(powers, 0.5, sp)
     """
 
     translated_spectrum = translate_spectrum(power_spectrum, delta_offset)
@@ -179,6 +211,12 @@ def compute_rotation_offset(delta_exponent, f_rotation):
     -------
     float
         The amount the offset will change for the specified exponent change.
+
+    Examples
+    --------
+    Calculate the induced change in offset of a change in exponent of 0.5 at 25 Hz:
+
+    >>> delta_offset = compute_rotation_offset(0.5, 25)
     """
 
     return -np.log10(f_rotation) * -delta_exponent
@@ -222,7 +260,13 @@ def compute_rotation_frequency(delta_exponent_b, f_rotation_b, delta_exponent_c,
 
     To find this, we can plug everything back into the equation, to find where
     B[freqs] == C[freqs], which is how we arrive at the solution below.
+
+    Examples
+    --------
+    Calculate the rotation frequency between two transformed power spectra:
+
+    >>> f_rotation = compute_rotation_frequency(0.5, 25, -0.25, 10)
     """
 
     return (((f_rotation_c**delta_exponent_c) / (f_rotation_b**delta_exponent_b))) ** \
-         (1/(delta_exponent_c-delta_exponent_b))
+        (1/(delta_exponent_c-delta_exponent_b))

@@ -9,9 +9,9 @@ Fitting power spectrum models across 3D arrays of power spectra.
 # Running Across 3D
 # -----------------
 #
-# Most of the materials so far have explored using the :class:`~fooof.FOOOF` object to fit individual
-# power spectra, and the :class:`~fooof.FOOOFGroup` object for fitting groups of power spectra,
-# where a group of spectra is organized as a 2D array of power spectra.
+# Most of the materials so far have explored using the :class:`~fooof.FOOOF` object to fit
+# individual power spectra, and the :class:`~fooof.FOOOFGroup` object for fitting groups of
+# power spectra, where a group of spectra is organized as a 2D array of power spectra.
 #
 # In this example, we'll go one step further, and step through how to analyze data
 # organized into 3D arrays.
@@ -61,7 +61,7 @@ from fooof.objs import fit_fooof_3d, combine_fooofs
 # Import simulation & IO utilities to help with the example
 from fooof.sim.gen import gen_freqs, gen_group_power_spectra
 from fooof.sim.params import param_sampler
-from fooof.utils import load_fooofgroup
+from fooof.utils.io import load_fooofgroup
 
 ###################################################################################################
 # Example Set-Up
@@ -127,7 +127,7 @@ print('Number of conditions, channels & frequencies: \t{}, {}, {}'.format(\
 # The strategy we will take to do so is by systematically applying FOOOF objects across
 # the data.
 #
-# For working with 3D arrays of power spectra, we have the :func:`~fooof.objs.utils.fit_fooof_3d`
+# For working with 3D arrays of power spectra, we have the :func:`~.fit_fooof_3d`
 # function which takes in data and a pre-initialized model object, and uses it to fit
 # power spectrum models across all the data, while maintaining the organization of
 # the input data.
@@ -137,10 +137,10 @@ print('Number of conditions, channels & frequencies: \t{}, {}, {}'.format(\
 # fit_fooof_3d
 # ~~~~~~~~~~~~
 #
-# More specifically, :func:`~fooof.objs.utils.fit_fooof_3d` takes in:
+# More specifically, :func:`~.fit_fooof_3d` takes in:
 #
 # - a FOOOFGroup object, pre-initialized with the desired settings
-# - a frequency vector and a 3D array of power spectra
+# - an array of frequency values and a 3D array of power spectra
 #
 # Internally, this function uses the :class:`~fooof.FOOOFGroup` object to
 # fit models across the power spectra.
@@ -188,7 +188,7 @@ print('Number of conditions: \t{}'.format(n_conditions))
 # and tutorials for more information on how to do this.
 #
 # A general strategy for analyzing model fit results as they get returned from
-# :func:`~fooof.objs.utils.fit_fooof_3d` is to loop across all the objects in the
+# :func:`~.fit_fooof_3d` is to loop across all the objects in the
 # returned list, and then within the loop you can collect and/or analyze and/or plot
 # any data of interest.
 #

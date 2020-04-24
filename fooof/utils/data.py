@@ -28,6 +28,15 @@ def trim_spectrum(freqs, power_spectra, f_range):
     -----
     This function extracts frequency ranges >= f_low and <= f_high.
     It does not round to below or above f_low and f_high, respectively.
+
+
+    Examples
+    --------
+    Using a simulated spectrum, extract a frequency range:
+
+    >>> from fooof.sim import gen_power_spectrum
+    >>> freqs, powers = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1.0])
+    >>> freqs, powers = trim_spectrum(freqs, powers, [3, 30])
     """
 
     # Create mask to index only requested frequencies
@@ -97,13 +106,13 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
     interp_freqs = freqs[interp_mask]
 
     # Get the indices of the interpolation range
-    i1, i2 = np.flatnonzero(interp_mask)[[0, -1]]
+    ii1, ii2 = np.flatnonzero(interp_mask)[[0, -1]]
 
     # Extract & log the requested range of data to use around interpolated range
-    xs1 = np.log10(freqs[i1-buffer:i1])
-    xs2 = np.log10(freqs[i2:i2+buffer])
-    ys1 = np.log10(powers[i1-buffer:i1])
-    ys2 = np.log10(powers[i2:i2+buffer])
+    xs1 = np.log10(freqs[ii1-buffer:ii1])
+    xs2 = np.log10(freqs[ii2:ii2+buffer])
+    ys1 = np.log10(powers[ii1-buffer:ii1])
+    ys2 = np.log10(powers[ii2:ii2+buffer])
 
     # Linearly interpolate, in log-log space, between averages of the extracted points
     vals = np.interp(np.log10(interp_freqs),
@@ -112,22 +121,3 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
     powers[interp_mask] = np.power(10, vals)
 
     return freqs, powers
-
-
-def compute_pointwise_error(model, data):
-    """Calculate pointwise error between original data and a model fit of that data.
-
-    Parameters
-    ----------
-    model : 1d array
-        The model.
-    data : 1d array
-        The original data that is being modeled.
-
-    Returns
-    -------
-    1d array
-        Calculated values of the difference between the data and the model.
-    """
-
-    return np.abs(model - data)

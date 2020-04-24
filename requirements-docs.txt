@@ -1,9 +1,9 @@
 # Requirements for building the documentation site
 sphinx
-sphinx_gallery
+sphinx-gallery
 sphinx_bootstrap_theme
-m2r
 numpydoc
+sphinx-copybutton
 
 # Optional fooof dependencies that are required for documentation
 matplotlib
