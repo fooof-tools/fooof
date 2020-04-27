@@ -1,14 +1,13 @@
 Code Changelog
 ==============
 
-This page contains the changelog and updating instructions for the current pre-release
-version of FOOOF 1.0.0rcX.
+This page contains the changelog for the FOOOF codebase and any notes on updating between versions.
 
-Changelogs for prior released versions of FOOOF are available at the
-`release page <https://github.com/fooof-tools/fooof/releases>`_.
+This page primarly notes changes for major version updates. For notes on the specific updates
+for minor releases, see the `release page <https://github.com/fooof-tools/fooof/releases>`_.
 
-1.0.0 (Pre-Release)
--------------------
+1.0.0
+-----
 
 Warning: the 1.X.X release series is an API breaking release from the from 0.X.X series.
 
@@ -85,3 +84,11 @@ The 1.X.X series comes with a greatly updated documentation site, in which as we
 updating the tutorials and existing documentation, there are a large number of extra
 examples, and a new 'motivations' section, exploring why 'parameterizing neural power spectra'
 is a useful idea & method.
+
+0.1.X
+-----
+
+The 0.1.X series of releases for FOOOF was the initial release series of FOOOF, with the original naming scheme. This series is now deprecated.
+
+These releases can still be accessed, and are described, on the
+`release page <https://github.com/fooof-tools/fooof/releases>`_

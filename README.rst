@@ -28,11 +28,6 @@ FOOOF - fitting oscillations & one over f
 
 FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
 
-Note: FOOOF is currently on a pre-release. Please check the install instructions for
-updating to the pre-release version, and check the
-`changelog <https://fooof-tools.github.io/fooof/changelog.html>`_
-for how to get started with the new version.
-
 Overview
 --------
 
@@ -94,19 +89,9 @@ We recommend using the `Anaconda <https://www.anaconda.com/distribution/>`_ dist
 Installation
 ------------
 
-**Pre-Release Version**
+The current major release of FOOOF is the 1.X.X series, which is a breaking change from the prior 0.X.X series.
 
-To install the current pre-release version, use pip:
-
-.. code-block:: shell
-
-    $ pip install fooof --pre
-
-If you already have a version of FOOOF installed, you will need to remove it first:
-
-.. code-block:: shell
-
-    $ pip uninstall fooof
+Check the `changelog <https://fooof-tools.github.io/fooof/changelog.html>`_ for notes on updating to the new version.
 
 **Stable Version**
 

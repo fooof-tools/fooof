@@ -22,15 +22,15 @@ The model conceives of the neural power spectrum as consisting of two distinct c
 1) an aperiodic component, reflecting 1/f like characteristics, modeled with an exponential fit, with
 2) band-limited peaks, reflecting putative oscillations, and modeled as Gaussians
 
-The FOOOF codebase includes:
+The module includes:
 
 - Code for applying models to parameterize neural power spectra
 - Plotting functions for visualizing power spectra, model fits, and model parameters
-- Analysis functions for examing model components and parameters
+- Analysis functions for examining model components and parameters
 - Utilities for Input/Output management, data management and analysis reports
 - Simulation code for simulating power spectra for methods testing
 
-More details on FOOOF tool and codebase are available on the documentation site
+More details are available on the documentation site.
 
 Documentation: https://fooof-tools.github.io/
 
@@ -41,7 +41,7 @@ Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859. doi: https
 
 A full description of the method and approach is available in this paper.
 
-Direct Paper Link: https://www.biorxiv.org/content/early/2018/04/11/299859
+Direct Paper Link: https://www.biorxiv.org/content/10.1101/299859v1
 """
 
 setup(
