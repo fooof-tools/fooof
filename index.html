@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>FOOOF - fitting oscillations &amp; one over f &#8212; fooof 1.0.0rc4 documentation</title>
+    <title>FOOOF - fitting oscillations &amp; one over f &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="#">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -96,12 +96,8 @@
       
   <div class="section" id="fooof-fitting-oscillations-one-over-f">
 <h1>FOOOF - fitting oscillations &amp; one over f<a class="headerlink" href="#fooof-fitting-oscillations-one-over-f" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://www.repostatus.org/#active"><img alt="ProjectStatus" src="http://www.repostatus.org/badges/latest/active.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/fooof/"><img alt="Version" src="https://img.shields.io/pypi/v/fooof.svg" /></a> <a class="reference external" href="https://travis-ci.org/fooof-tools/fooof"><img alt="BuildStatus" src="https://travis-ci.org/fooof-tools/fooof.svg" /></a> <a class="reference external" href="https://travis-ci.org/fooof-tools/fooof"><img alt="BuildStatus" src="https://travis-ci.org/fooof-tools/fooof.svg" /></a> <a class="reference external" href="https://codecov.io/gh/fooof-tools/fooof)"><img alt="codecov" src="https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/pypi/l/fooof.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/fooof/"><img alt="PythonVersions" src="https://img.shields.io/pypi/pyversions/fooof.svg" /></a> <a class="reference external" href="https://doi.org/10.1101/299859"><img alt="Preprint" src="https://img.shields.io/badge/preprint-10.1101/299859-informational.svg" /></a></p>
+<p><a class="reference external" href="https://www.repostatus.org/#active"><img alt="ProjectStatus" src="http://www.repostatus.org/badges/latest/active.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/fooof/"><img alt="Version" src="https://img.shields.io/pypi/v/fooof.svg" /></a> <a class="reference external" href="https://travis-ci.org/fooof-tools/fooof"><img alt="BuildStatus" src="https://travis-ci.org/fooof-tools/fooof.svg" /></a> <a class="reference external" href="https://codecov.io/gh/fooof-tools/fooof"><img alt="codecov" src="https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/pypi/l/fooof.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/fooof/"><img alt="PythonVersions" src="https://img.shields.io/pypi/pyversions/fooof.svg" /></a> <a class="reference external" href="https://doi.org/10.1101/299859"><img alt="Preprint" src="https://img.shields.io/badge/preprint-10.1101/299859-informational.svg" /></a></p>
 <p>FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.</p>
-<p>Note: FOOOF is currently on a pre-release. Please check the install instructions for
-updating to the pre-release version, and check the
-<a class="reference external" href="https://fooof-tools.github.io/fooof/changelog.html">changelog</a>
-for how to get started with the new version.</p>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>FOOOF conceives of a model of the power spectrum as a combination of two distinct functional processes:</p>
@@ -157,15 +153,8 @@ with information for reporting on using and reference the module</p></li>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p><strong>Pre-Release Version</strong></p>
-<p>To install the current pre-release version, use pip:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install fooof --pre
-</pre></div>
-</div>
-<p>If you already have a version of FOOOF installed, you will need to remove it first:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip uninstall fooof
-</pre></div>
-</div>
+<p>The current major release of FOOOF is the 1.X.X series, which is a breaking change from the prior 0.X.X series.</p>
+<p>Check the <a class="reference external" href="https://fooof-tools.github.io/fooof/changelog.html">changelog</a> for notes on updating to the new version.</p>
 <p><strong>Stable Version</strong></p>
 <p>To install the latest stable release, use pip:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install fooof
@@ -269,8 +258,8 @@ any identified peaks, reflecting periodic components.</p>
 </div>
 <p><strong>Fitting a Group of Power Spectra</strong></p>
 <p>Next is an example workflow for fitting a group of neural power spectra.
-In this case, ‘freqs’ is again a 1D array of frequency values, and ‘spectra’ as a 2D array of power spectra.
-We can fit this  which can be fit as:</p>
+In this case, ‘freqs’ is again a 1D array of frequency values, and ‘spectra’ is a 2D array of power spectra.
+We can fit the group of power spectra by doing:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object, specifying some parameters</span>
 <span class="n">fg</span> <span class="o">=</span> <span class="n">FOOOFGroup</span><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 

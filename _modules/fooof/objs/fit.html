@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>fooof.objs.fit &#8212; fooof 1.0.0rc4 documentation</title>
+    <title>fooof.objs.fit &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -275,7 +275,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_bw_std_edge</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="c1"># Degree of overlap between gaussians for one to be dropped</span>
         <span class="c1">#   This is defined in units of gaussian standard deviation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_gauss_overlap_thresh</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gauss_overlap_thresh</span> <span class="o">=</span> <span class="mf">0.75</span>
         <span class="c1"># Parameter bounds for center frequency when fitting gaussians, in terms of +/- std dev</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cf_bound</span> <span class="o">=</span> <span class="mf">1.5</span>
         <span class="c1"># The maximum number of calls to the curve fitting function</span>
@@ -914,7 +914,7 @@
             <span class="n">max_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">flat_iter</span><span class="p">)</span>
             <span class="n">max_height</span> <span class="o">=</span> <span class="n">flat_iter</span><span class="p">[</span><span class="n">max_ind</span><span class="p">]</span>
 
-            <span class="c1"># Stop searching for peaks peaks once drops below height threshold</span>
+            <span class="c1"># Stop searching for peaks once height drops below height threshold</span>
             <span class="k">if</span> <span class="n">max_height</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_threshold</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">flat_iter</span><span class="p">):</span>
                 <span class="k">break</span>
 
@@ -1127,14 +1127,18 @@
 <span class="sd">        the lowest height guess guassian is dropped.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># Sort the peak guesses, so can check overlap of adjacent peaks</span>
+        <span class="c1"># Sort the peak guesses by increasing frequency, so adjacenent peaks can</span>
+        <span class="c1">#   be compared from right to left.</span>
         <span class="n">guess</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">guess</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
         <span class="c1"># Calculate standard deviation bounds for checking amount of overlap</span>
-        <span class="n">bounds</span> <span class="o">=</span> <span class="p">[[</span><span class="n">peak</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">peak</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gauss_overlap_thresh</span><span class="p">,</span> <span class="n">peak</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="c1">#   The bounds are the gaussian frequncy +/- gaussian standard deviation</span>
+        <span class="n">bounds</span> <span class="o">=</span> <span class="p">[[</span><span class="n">peak</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">peak</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gauss_overlap_thresh</span><span class="p">,</span>
                    <span class="n">peak</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">peak</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gauss_overlap_thresh</span><span class="p">]</span> <span class="k">for</span> <span class="n">peak</span> <span class="ow">in</span> <span class="n">guess</span><span class="p">]</span>
 
         <span class="c1"># Loop through peak bounds, comparing current bound to that of next peak</span>
+        <span class="c1">#   If the left peak&#39;s upper bound extends pass the right peaks lower bound,</span>
+        <span class="c1">#   Then drop the guassian with the lower height.</span>
         <span class="n">drop_inds</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">b_0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bounds</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">b_1</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
@@ -1262,7 +1266,7 @@
             <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span> <span class="o">=</span> <span class="n">trim_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
 
         <span class="c1"># Check if freqs start at 0 and move up one value if so</span>
-        <span class="c1">#   Aperiodic fit gets an inf is freq of 0 is included, which leads to an error</span>
+        <span class="c1">#   Aperiodic fit gets an inf if freq of 0 is included, which leads to an error</span>
         <span class="k">if</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
             <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span> <span class="o">=</span> <span class="n">trim_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="p">[</span><span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">freqs</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>

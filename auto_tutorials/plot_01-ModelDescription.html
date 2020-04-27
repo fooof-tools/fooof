@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>01: Model Description &#8212; fooof 1.0.0rc4 documentation</title>
+    <title>01: Model Description &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0rc4</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -143,10 +143,10 @@ yet, and can skip past reading the code itself.</p>
 <p>To start with, we can plot one of our simulated power spectra.</p>
 <p>Plotted below is an example power spectrum, plotted in semi-log space (log10 power values
 and linear frequencies). This is our data, that we will be trying to model.</p>
-<p>In the plot, we see a power spectrum in which there is a trend decreasing power
-across increasing frequencies. In some frequency regions, there is a ‘peak’ of power,
-over and above the general trend line across frequencies. These properties - power across
-all frequencies, with overlying peaks - are considered to be hallmarks of neural field data.</p>
+<p>In the plot, we see a power spectrum in which there is decreasing power across increasing
+frequencies. In some frequency regions, there is a ‘peak’ of power, over and above the general
+trend across frequencies. These properties - a pattern of power across all frequencies, with
+overlying peaks - are considered to be hallmarks of neural field data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot one of the example power spectra</span>
 <a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><span class="n">freqs1</span><span class="p">,</span> <span class="n">powers1</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
               <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Spectrum&#39;</span><span class="p">)</span>
@@ -168,8 +168,8 @@ that neural data contains both periodic and aperiodic components (or activity).<
 from frequency representations of neural field data (neural power spectra).</p>
 <div class="section" id="visualizing-power-spectrum-models">
 <h3>Visualizing Power Spectrum Models<a class="headerlink" href="#visualizing-power-spectrum-models" title="Permalink to this headline">¶</a></h3>
-<p>First, let’s start by revisiting the example power spectrum, this time adding to the
-plot our model fit of the data.</p>
+<p>First, let’s start by revisiting the example power spectrum, this time also adding the model
+fit to the plot.</p>
 <p>In the plot below, black is the data, same as before, and in red we’ve added the
 model fit of the data. If things are working, this line should be good approximation
 of the data.</p>
@@ -370,7 +370,7 @@ references the knee as the dot on the plot at the bend point.</p>
 </div>
 <div class="section" id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
-<p>So far, we how explored how neural power spectra, <span class="math notranslate nohighlight">\(NPS\)</span>, across a set of frequencies
+<p>So far, we have explored how neural power spectra, <span class="math notranslate nohighlight">\(NPS\)</span>, across a set of frequencies
 <span class="math notranslate nohighlight">\(F\)</span> can be modeled as a combination of an aperiodic component, <span class="math notranslate nohighlight">\(L\)</span>, and the
 periodic component, which is comprised of <cite>N</cite> peaks, where each <span class="math notranslate nohighlight">\(G_n\)</span> is a Gaussian.</p>
 <p>To summarize, the full model is:</p>
@@ -392,7 +392,7 @@ the <cite>offset</cite>, <cite>knee</cite> and <cite>exponent</cite>, respective
 <p>In the next tutorial, we will start to use this model.</p>
 <p>Sphinx settings:
 sphinx_gallery_thumbnail_number = 5</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.769 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.673 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-01-modeldescription-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cc804a6d6a719c9e628feb4f056bbd74/plot_01-ModelDescription.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_01-ModelDescription.py</span></code></a></p>
