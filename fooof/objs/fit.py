@@ -178,7 +178,7 @@ class FOOOF():
         self._bw_std_edge = 1.0
         # Degree of overlap between gaussians for one to be dropped
         #   This is defined in units of gaussian standard deviation
-        self._gauss_overlap_thresh = 1.5
+        self._gauss_overlap_thresh = 0.75
         # Parameter bounds for center frequency when fitting gaussians, in terms of +/- std dev
         self._cf_bound = 1.5
         # The maximum number of calls to the curve fitting function
@@ -817,7 +817,7 @@ class FOOOF():
             max_ind = np.argmax(flat_iter)
             max_height = flat_iter[max_ind]
 
-            # Stop searching for peaks peaks once drops below height threshold
+            # Stop searching for peaks once height drops below height threshold
             if max_height <= self.peak_threshold * np.std(flat_iter):
                 break
 
@@ -1030,14 +1030,18 @@ class FOOOF():
         the lowest height guess guassian is dropped.
         """
 
-        # Sort the peak guesses, so can check overlap of adjacent peaks
+        # Sort the peak guesses by increasing frequency, so adjacenent peaks can
+        #   be compared from right to left.
         guess = sorted(guess, key=lambda x: float(x[0]))
 
         # Calculate standard deviation bounds for checking amount of overlap
-        bounds = [[peak[0] - peak[2] * self._gauss_overlap_thresh, peak[0],
+        #   The bounds are the gaussian frequncy +/- gaussian standard deviation
+        bounds = [[peak[0] - peak[2] * self._gauss_overlap_thresh,
                    peak[0] + peak[2] * self._gauss_overlap_thresh] for peak in guess]
 
         # Loop through peak bounds, comparing current bound to that of next peak
+        #   If the left peak's upper bound extends pass the right peaks lower bound,
+        #   Then drop the guassian with the lower height.
         drop_inds = []
         for ind, b_0 in enumerate(bounds[:-1]):
             b_1 = bounds[ind + 1]
@@ -1165,7 +1169,7 @@ class FOOOF():
             freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, freq_range)
 
         # Check if freqs start at 0 and move up one value if so
-        #   Aperiodic fit gets an inf is freq of 0 is included, which leads to an error
+        #   Aperiodic fit gets an inf if freq of 0 is included, which leads to an error
         if freqs[0] == 0.0:
             freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, [freqs[1], freqs.max()])
             if verbose:
