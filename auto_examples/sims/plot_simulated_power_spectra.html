@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Simulating Neural Power Spectra &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../faq.html">FAQ</a></li>
+                <li><a href="../../glossary.html">Glossary</a></li>
+                <li><a href="../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-sims-plot-simulated-power-spectra-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="simulating-neural-power-spectra">
+<span id="sphx-glr-auto-examples-sims-plot-simulated-power-spectra-py"></span><h1>Simulating Neural Power Spectra<a class="headerlink" href="#simulating-neural-power-spectra" title="Permalink to this headline">¶</a></h1>
+<p>Creating simulated power spectra.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import functions for creating simulated power spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">,</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a>
+
+<span class="c1"># Import plotting functions</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">,</span> <a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a>
+</pre></div>
+</div>
+<div class="section" id="creating-simulated-power-spectra">
+<h2>Creating Simulated Power Spectra<a class="headerlink" href="#creating-simulated-power-spectra" title="Permalink to this headline">¶</a></h2>
+<p>The module also contains utilities to create simulated power spectra. Power spectra
+are simulated using the same model and conception that the model employs, namely that
+neural power spectra can be conceptualized as an aperiodic component, with overlying
+periodic peaks.</p>
+<p>To simulate power spectra, required parameters are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">freq_range</span></code>: the frequency range to simulate across</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aperiodic_params</span></code>: parameters that define the aperiodic component</p>
+<ul>
+<li><p>this component is defined with 2 or 3 parameters, as [offset, (knee), exponent]</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gaussian_params</span></code>: parameters that define the periodic component</p>
+<ul>
+<li><p>each peak is defined with three parameters, as [center frequency, height, width]</p></li>
+</ul>
+</li>
+</ul>
+<p>The <a class="reference internal" href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum"><code class="xref py py-func docutils literal notranslate"><span class="pre">gen_power_spectrum()</span></code></a> function takes these parameters as input to
+create and return a simulated power spectrum. Note that the parameters that define the peaks
+are labeled as gaussian parameters, as these parameters define the simulated gaussians
+directly, and are not the modified peak parameters that the model outputs.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Settings &amp; parameters for creating a simulated power spectrum</span>
+<span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>              <span class="c1"># The frequency range to simulate</span>
+<span class="n">aperiodic_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>         <span class="c1"># Parameters defining the aperiodic component</span>
+<span class="n">periodic_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>    <span class="c1"># Parameters for any periodic components</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a simulated power spectrum</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">periodic_params</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the simulated power spectrum</span>
+<a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">log_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_simulated_power_spectra_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_simulated_power_spectra_001.png" />
+</div>
+<div class="section" id="simulating-with-different-parameters">
+<h2>Simulating With Different Parameters<a class="headerlink" href="#simulating-with-different-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Power spectra can be simulated with any desired parameters in the power spectrum model.</p>
+<p>The aperiodic mode for the simulated power spectrum is inferred from the parameters provided.
+If two parameters are provided, this is interpreted as [offset, exponent] for simulating
+a power spectra with a ‘fixed’ aperiodic component. If three parameters are provided, as in
+the example below, this is interpreted as [offset, knee, exponent] for a ‘knee’ spectrum.</p>
+<p>Power spectra can also be simulated with any number of peaks. Peaks can be listed in a flat
+list with [center frequency, height, bandwidth] listed for as many peaks as you would
+like to add, or as a list of lists containing the same information.</p>
+<p>The following example shows simulating a different power spectrum with some different
+setttings, also changing the noise level added to the spectrum, and the frequency
+resolution of the simulated spectrum.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the frequency range to simulate across</span>
+<span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">60</span><span class="p">]</span>
+<span class="c1"># Define the frequency resolution to simulate with</span>
+<span class="n">freq_res</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="c1"># Define the amount of noise to add to the spectrum</span>
+<span class="n">nlv</span> <span class="o">=</span> <span class="mf">0.01</span>
+
+<span class="c1"># Define aperiodic params, as [offset, knee, exponent]</span>
+<span class="n">aperiodic_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Define periodic params, as a flat list of [CF, PW, BW] for each peak</span>
+<span class="c1">#   This could also be written as [[9, 0.4, 1], [24, 0.2, 3]]</span>
+<span class="n">periodic_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the new simulated power spectrum</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">,</span>
+                                   <span class="n">periodic_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">freq_res</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the new simulated power spectrum</span>
+<a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_simulated_power_spectra_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_simulated_power_spectra_002.png" />
+</div>
+<div class="section" id="simulating-a-group-of-power-spectra">
+<h2>Simulating a Group of Power Spectra<a class="headerlink" href="#simulating-a-group-of-power-spectra" title="Permalink to this headline">¶</a></h2>
+<p>For simulating multiple power spectra, the <a class="reference internal" href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra"><code class="xref py py-func docutils literal notranslate"><span class="pre">gen_group_power_spectra()</span></code></a> can be used.</p>
+<p>This function takes the same kind of parameter definitions as
+<a class="reference internal" href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum"><code class="xref py py-func docutils literal notranslate"><span class="pre">gen_power_spectrum()</span></code></a>, and in addition takes a number specifying
+how many power spectra to simulate, returning a 2D matrix containing the
+desired number of spectra.</p>
+<p>Parameters that are passed into <a class="reference internal" href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra"><code class="xref py py-func docutils literal notranslate"><span class="pre">gen_group_power_spectra()</span></code></a> can be:</p>
+<ul class="simple">
+<li><p>a single definition, whereby the same value is used for all generated spectra</p></li>
+<li><p>a list of parameters, whereby each successive entry is used for each successive spectrum</p></li>
+<li><p>a function or generator that can be called to return parameters for each spectrum</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create some new settings for simulating a group of power spectra</span>
+<span class="n">n_spectra</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+<span class="n">nlv</span> <span class="o">=</span> <span class="mf">0.02</span>
+
+<span class="c1"># Aperiodic params: define values for each spectrum, with length equal to n_spectra</span>
+<span class="n">aperiodic_params</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]]</span>
+
+<span class="c1"># Periodic parameters: define a single definition, to be applied to all spectra</span>
+<span class="n">periodic_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a group of power spectra</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="n">n_spectra</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">,</span>
+                                        <span class="n">periodic_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra that were just generated</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">log_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_simulated_power_spectra_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_simulated_power_spectra_003.png" />
+</div>
+<div class="section" id="tracking-simulation-parameters">
+<h2>Tracking Simulation Parameters<a class="headerlink" href="#tracking-simulation-parameters" title="Permalink to this headline">¶</a></h2>
+<p>When you start simulating multiple power spectra across different parameters,
+you may want to keep track of these parameters, so that you can compare any measure
+taken on these power spectra to ground truth values.</p>
+<p>When simulating power spectra, you also have the option of returning SimParams objects
+that keep track of the simulation parameters.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a power spectrum, returning the simulation parameter information</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <a href="../../generated/fooof.data.SimParams.html#fooof.data.SimParams" title="fooof.data.SimParams" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sp</span></a> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span>
+                                       <span class="mf">0.01</span><span class="p">,</span> <span class="n">return_params</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Check the information stored in the simulation params object</span>
+<span class="nb">print</span><span class="p">(</span><a href="../../generated/fooof.data.SimParams.html#fooof.data.SimParams" title="fooof.data.SimParams" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sp</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SimParams(aperiodic_params=[1, 1], periodic_params=[[10, 0.25, 1.5]], nlv=0.01)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a group of power spectrum, returning the simulation parameter information</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">sps</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">150</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">],</span>
+                                             <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                                             <span class="mf">0.01</span><span class="p">,</span> <span class="n">return_params</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Check the information stored in the simulation params object</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sps</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/anaconda3/lib/python3.7/site-packages/fooof/core/funcs.py:67: RuntimeWarning: overflow encountered in power
+  ys = ys + offset - np.log10(knee + xs**exp)
+[SimParams(aperiodic_params=[1, 100, 150], periodic_params=[[4, 0.2, 2], [22, 0.15, 3]], nlv=0.01), SimParams(aperiodic_params=[1, 100, 150], periodic_params=[[4, 0.2, 2], [22, 0.15, 3]], nlv=0.01), SimParams(aperiodic_params=[1, 100, 150], periodic_params=[[4, 0.2, 2], [22, 0.15, 3]], nlv=0.01)]
+</pre></div>
+</div>
+<p>More description of the SimParams object, and other utilities to manage parameters
+for simulating groups of power spectra can be found in the <cite>Simulation Parameters</cite> example.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.233 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-sims-plot-simulated-power-spectra-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/0c0a4641cfbd81a824468178d7a987b7/plot_simulated_power_spectra.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_simulated_power_spectra.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/5861eb06307a9c0018ffa0c6d2f98db2/plot_simulated_power_spectra.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_simulated_power_spectra.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

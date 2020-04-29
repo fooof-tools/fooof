@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Code Changelog &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="api.html">API</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="glossary.html">Glossary</a></li>
+                <li><a href="auto_motivations/index.html">Motivations</a></li>
+                <li><a href="auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="auto_examples/index.html">Examples</a></li>
+                <li><a href="reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="code-changelog">
+<h1>Code Changelog<a class="headerlink" href="#code-changelog" title="Permalink to this headline">¶</a></h1>
+<p>This page contains the changelog for the FOOOF codebase and any notes on updating between versions.</p>
+<p>This page primarly notes changes for major version updates. For notes on the specific updates
+for minor releases, see the <a class="reference external" href="https://github.com/fooof-tools/fooof/releases">release page</a>.</p>
+<div class="section" id="id1">
+<h2>1.0.0<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Warning: the 1.X.X release series is an API breaking release from the from 0.X.X series.</p>
+<p>That is it say, that some names and module organizations have changed, and you should
+only update if and when you are ready to update your code to reflect the new changes.</p>
+<p>Note that the main changes are in code organization, some names, and the addition of
+many new features. The fitting algorithm itself has not changed, and model results fit
+with the new version should be roughly equivalent to those with older versions. However,
+there are bug fixes and tweaks such that new model fits are not guaranteed to be the
+identical to prior fits.</p>
+<div class="section" id="naming-updates">
+<h3>Naming Updates<a class="headerlink" href="#naming-updates" title="Permalink to this headline">¶</a></h3>
+<p>The following is a list of the key naming updates, of public facing code.</p>
+<ul class="simple">
+<li><p>the <cite>synth</cite> module is now called them <cite>sim</cite> module</p></li>
+<li><p>references to <cite>background</cite> are now called <cite>aperiodic</cite></p>
+<ul>
+<li><p>setting <cite>background_mode</cite> -&gt; <cite>aperiodic_mode</cite></p></li>
+<li><p>attribute <cite>background_params_</cite> -&gt; <cite>aperiodic_params_</cite></p></li>
+<li><p>short name <cite>bg</cite> is now replaced with <cite>ap</cite></p></li>
+</ul>
+</li>
+<li><p><cite>slope</cite> is now called <cite>exponent</cite></p></li>
+<li><p><cite>amplitude</cite>, in reference to peaks, is now called <cite>height</cite></p>
+<ul>
+<li><p>setting <cite>min_peak_amplitude</cite> -&gt; <cite>min_peak_height</cite></p></li>
+<li><p>References to <cite>AMP</cite> are now labelled and accessed as <cite>PW</cite> (for ‘power’)</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="previously-saved-data">
+<h3>Previously Saved Data<a class="headerlink" href="#previously-saved-data" title="Permalink to this headline">¶</a></h3>
+<p>Note that if you have data saved out from the 0.X.X release series of the module, then the
+code update to the 1.X.X series won’t be able to properly load this data out of the box.</p>
+<p>This is due to the naming changes, and in particular the change from ‘background’ to
+‘aperiodic’. Note that saved FOOOF files are plain-text JSON files, and so if you find &amp; replace
+the word ‘background’ to ‘aperiodic’, this should update the files so that they can be loaded by
+the 1.X.X version. Note that if you also saved out the algorithm settings, you may need to update
+the name of <cite>min_peak_amplitude</cite> to <cite>min_peak_height</cite> as well.</p>
+</div>
+<div class="section" id="code-organization">
+<h3>Code Organization<a class="headerlink" href="#code-organization" title="Permalink to this headline">¶</a></h3>
+<p>The internal organization of the module has been changed - though the main functions and
+objects can still be imported the same as in the 0.X.X series. The internal organization
+changes typically reflect turning internal files into sub-modules.</p>
+</div>
+<div class="section" id="code-updates">
+<h3>Code Updates<a class="headerlink" href="#code-updates" title="Permalink to this headline">¶</a></h3>
+<p>This version adds a large number of code updates &amp; additions, including:
+- A big extension of the plotting sub-module
+- Adding new functions to manipulate, manage, organize and manage FOOOF objects
+- Add new analysis functions, including more utilities for checking model errors
+- Add a new ‘Bands’ object for managing frequency band definitions
+- Extra methods on FOOOF &amp; FOOOFGroup objects for managing data &amp; results
+- Miscellaneous bug fixes &amp; other additions</p>
+<p>To see all the new features in FOOOF, check out the API page on documentation site.</p>
+<p>The full history of changes is avaible in the Github commit and pull request history.
+The bulk of the updates for 1.X.X went through in the following pull requests:
+- #152: broad updates, including lots of issue fixes, and code &amp; documentation extensions
+- #139: add ‘Bands’ object and more functions for managing FOOOF objects
+- #130: updates data objects and internal data management
+- #121 &amp; #129: code reorganizations &amp; cleanups
+- #122: Updating terminology and names</p>
+</div>
+<div class="section" id="documentation-updates">
+<h3>Documentation Updates<a class="headerlink" href="#documentation-updates" title="Permalink to this headline">¶</a></h3>
+<p>The 1.X.X series comes with a greatly updated documentation site, in which as well as
+updating the tutorials and existing documentation, there are a large number of extra
+examples, and a new ‘motivations’ section, exploring why ‘parameterizing neural power spectra’
+is a useful idea &amp; method.</p>
+</div>
+</div>
+<div class="section" id="x">
+<h2>0.1.X<a class="headerlink" href="#x" title="Permalink to this headline">¶</a></h2>
+<p>The 0.1.X series of releases for FOOOF was the initial release series of FOOOF, with the original naming scheme. This series is now deprecated.</p>
+<p>These releases can still be accessed, and are described, on the
+<a class="reference external" href="https://github.com/fooof-tools/fooof/releases">release page</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

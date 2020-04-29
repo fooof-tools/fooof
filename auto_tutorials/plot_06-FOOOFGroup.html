@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>06: FOOOFGroup &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="../glossary.html">Glossary</a></li>
+                <li><a href="../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="index.html">Tutorials</a></li>
+                <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-06-fooofgroup-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="fooofgroup">
+<span id="sphx-glr-auto-tutorials-plot-06-fooofgroup-py"></span><h1>06: FOOOFGroup<a class="headerlink" href="#fooofgroup" title="Permalink to this headline">¶</a></h1>
+<p>Using FOOOFGroup to run fit models across multiple power spectra.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOFGroup object</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
+
+<span class="c1"># Import utility to download and load example data</span>
+<span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="k">import</span> <span class="n">load_fooof_data</span>
+</pre></div>
+</div>
+<div class="section" id="fitting-multiple-spectra">
+<h2>Fitting Multiple Spectra<a class="headerlink" href="#fitting-multiple-spectra" title="Permalink to this headline">¶</a></h2>
+<p>So far, we have explored using the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object to fit individual power spectra.</p>
+<p>However, many potential use cases will have many power spectra to fit.</p>
+<p>To support this, here we will introduce the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object, which
+applies the model fitting procedure across multiple power spectra.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load examples data files needed for this example</span>
+<span class="n">freqs</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;group_freqs.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<span class="n">spectra</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;group_powers.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For parameterizing a group of spectra, we can use a 1d array of frequency values
+corresponding to a 2d array for power spectra, as is the organization of the data we loaded.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the shape of the loaded data</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">freqs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">spectra</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(100,)
+(25, 100)
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>FOOOFGroup<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object is very similar to the FOOOF object (programmatically,
+it inherits from the FOOOF object), and can be used in the same way.</p>
+<p>The main difference is that instead of running across a single power spectrum, it
+operates across 2D matrices containing multiple power spectra.</p>
+<p>Note that by ‘group’ we mean merely to refer to a group of power-spectra. We
+are not using the term ‘group’ in terms of necessarily referring to multiple subjects
+or any particular idea of what a ‘group’ may be. A group of power spectra could
+be spectra from across channels, or across trials, or across subjects, or
+whatever organization makes sense for the analysis at hand.</p>
+<p>The main differences with the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object, are that it uses a
+<cite>power_spectra</cite> attribute, which stores the matrix of power-spectra to be fit,
+and collects fit results into a <cite>group_results</cite> attribute.</p>
+<p>Otherwise, FOOOFGroup supports all the same functionality,
+accessed in the same way as the FOOOF object.</p>
+<p>Internally, it runs the exact same fitting procedure, per spectrum, as the FOOOF object.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object, which accepts all the same settings as FOOOF</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit a group of power spectra with the .fit() method</span>
+<span class="c1">#  The key difference (compared to FOOOF) is that it takes a 2D array of spectra</span>
+<span class="c1">#     This matrix should have the shape of [n_spectra, n_freqs]</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 25 power spectra.
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out results</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.print_results" title="fooof.FOOOFGroup.print_results" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">print_results</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                       FOOOF - GROUP RESULTS
+
+                             Number of power spectra in the Group: 25
+
+                        The model was run on the frequency range 3 - 30 Hz
+                                 Frequency Resolution is 0.49 Hz
+
+                              Power spectra were fit without a knee.
+
+                                      Aperiodic Fit Values:
+                        Exponents - Min:  0.353, Max:  0.982, Mean: 0.664
+
+                         In total 85 peaks were extracted from the group
+
+                                     Goodness of fit metrics:
+                            R2s -  Min:  0.902, Max:  0.990, Mean: 0.970
+                         Errors -  Min:  0.025, Max:  0.121, Mean: 0.042
+
+==================================================================================================
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot a summary of the results across the group</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_06-FOOOFGroup_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_06-FOOOFGroup_001.png" />
+<p>Just as with the FOOOF object, you can call the convenience method
+<a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.report" title="fooof.FOOOFGroup.report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fooof.FOOOFGroup.report()</span></code></a> to run the fitting, and print results &amp; plots,
+printing out the same as above.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can also save out PDFs reports for FOOOFGroup fits, same as with FOOOF</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.save_report" title="fooof.FOOOFGroup.save_report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">save_report</span></a><span class="p">(</span><span class="s1">&#39;FOOOFGroup_report&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fooofgroup-results">
+<h2>FOOOFGroup Results<a class="headerlink" href="#fooofgroup-results" title="Permalink to this headline">¶</a></h2>
+<p>FOOOFGroup collects fits across power spectra, and stores them in an attribute
+called <code class="docutils literal notranslate"><span class="pre">group_results</span></code>, which is a list of FOOOFResults objects.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out some of the results stored in &#39;group_results&#39;</span>
+<span class="nb">print</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="o">.</span><span class="n">group_results</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[FOOOFResults(aperiodic_params=array([-21.5931594 ,   0.66654701]), peak_params=array([[ 9.4088037 ,  1.44223656,  2.13520589],
+       [18.44689676,  0.62328342,  2.36122322]]), r_squared=0.972947704871557, error=0.05410881202619542, gaussian_params=array([[ 9.4088037 ,  1.45321198,  1.06760295],
+       [18.44689676,  0.62588664,  1.18061161]])), FOOOFResults(aperiodic_params=array([-21.64485744,   0.78116379]), peak_params=array([[ 9.34931443,  1.59788754,  2.05215071],
+       [11.57383431,  0.44989783,  1.24937294],
+       [18.53931729,  0.73999236,  2.37682555]]), r_squared=0.9795689270758849, error=0.05326551680942457, gaussian_params=array([[ 9.34931443,  1.6014178 ,  1.02607536],
+       [11.57383431,  0.34781374,  0.62468647],
+       [18.53931729,  0.74005425,  1.18841277]]))]
+</pre></div>
+</div>
+<div class="section" id="get-params">
+<h3>get_params<a class="headerlink" href="#get-params" title="Permalink to this headline">¶</a></h3>
+<p>To collect data across all model fits, and to select specific data results from this data
+you can should the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_params()</span></code></a> method.</p>
+<p>This method works the same as in the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object, and lets you extract
+specific results by specifying a field, as a string, and (optionally) a specific column
+of that data.</p>
+<p>Since the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object collects results from across multiple model fits,
+you should always use <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_params()</span></code></a> to access parameter fits.
+The result attributes introduced with the FOOOF object do not store results across the group,
+as they are defined for individual model fits (and used internally as such by the
+FOOOFGroup object).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract aperiodic data</span>
+<span class="n">aps</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">)</span>
+<span class="n">exps</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)</span>
+
+<span class="c1"># Extract peak data</span>
+<span class="n">peaks</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">)</span>
+<span class="n">cfs</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">,</span> <span class="s1">&#39;CF&#39;</span><span class="p">)</span>
+
+<span class="c1"># Extract metadata about the model fit</span>
+<span class="n">errors</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
+<span class="n">r2s</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;r_squared&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The full list of data you can specify is available in the documentation of `get_params`</span>
+<span class="nb">print</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Return model fit parameters for specified feature(s).
+
+        Parameters
+        ----------
+        name : {&#39;aperiodic_params&#39;, &#39;peak_params&#39;, &#39;gaussian_params&#39;, &#39;error&#39;, &#39;r_squared&#39;}
+            Name of the data field to extract across the group.
+        col : {&#39;CF&#39;, &#39;PW&#39;, &#39;BW&#39;, &#39;offset&#39;, &#39;knee&#39;, &#39;exponent&#39;} or int, optional
+            Column name / index to extract from selected data, if requested.
+            Only used for name of {&#39;aperiodic_params&#39;, &#39;peak_params&#39;, &#39;gaussian_params&#39;}.
+
+        Returns
+        -------
+        out : ndarray
+            Requested data.
+
+        Raises
+        ------
+        NoModelError
+            If there are no model fit results available.
+        ValueError
+            If the input for the `col` input is not understood.
+
+        Notes
+        -----
+        For further description of the data you can extract, check the FOOOFResults documentation.
+</pre></div>
+</div>
+<p>More information about the data you can extract is also documented in the FOOOFResults object.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grab a particular FOOOFResults item</span>
+<span class="c1">#  Note that as a shortcut, you can index the FOOOFGroup object directly to access &#39;group_results&#39;</span>
+<a href="../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="fooof.data.FOOOFResults" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f_res</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Check the documentation for the FOOOFResults - with full descriptions of the resulting data</span>
+<span class="nb">print</span><span class="p">(</span><a href="../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="fooof.data.FOOOFResults" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f_res</span></a><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Model results from parameterizing a power spectrum.
+
+    Parameters
+    ----------
+    aperiodic_params : 1d array
+        Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
+        The knee parameter is only included if aperiodic is fit with knee.
+    peak_params : 2d array
+        Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
+    r_squared : float
+        R-squared of the fit between the full model fit and the input data.
+    error : float
+        Error of the full model fit.
+    gaussian_params : 2d array
+        Parameters that define the gaussian fit(s).
+        Each row is a gaussian, as [mean, height, standard deviation].
+
+    Notes
+    -----
+    This object is a data object, based on a NamedTuple, with immutable data attributes.
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out the extracted exponent values</span>
+<span class="c1">#  Note that this extraction will return an array of length equal to the number of model fits</span>
+<span class="c1">#    The model fit from which each data element originated is the index of this array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">exps</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.66654701 0.78116379 0.97596318 0.3562681  0.66222011 0.5834865
+ 0.76028339 0.46594579 0.70975764 0.60541616 0.73824334 0.39581647
+ 0.70797692 0.63143901 0.78995517 0.50376859 0.8382523  0.62707641
+ 0.72882431 0.71863449 0.74302619 0.88147793 0.35305537 0.39947469
+ 0.98214348]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out some of the fit center-frequencies</span>
+<span class="c1">#  Note when you extract peak data, an extra column is returned,</span>
+<span class="c1">#  specifying which model fit it came from</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cfs</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="p">:])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[ 9.4088037   0.        ]
+ [18.44689676  0.        ]
+ [ 9.34931443  1.        ]
+ [11.57383431  1.        ]
+ [18.53931729  1.        ]
+ [ 9.48181063  2.        ]
+ [11.25615364  2.        ]
+ [12.57271782  2.        ]
+ [18.67595773  2.        ]
+ [10.61406527  3.        ]]
+</pre></div>
+</div>
+</div>
+<div class="section" id="saving-loading-with-fooofgroup">
+<h3>Saving &amp; Loading with FOOOFGroup<a class="headerlink" href="#saving-loading-with-fooofgroup" title="Permalink to this headline">¶</a></h3>
+<p>FOOOFGroup also support saving and loading, with same options as saving from the FOOOF object.</p>
+<p>The only difference in saving FOOOFGroup, is that it saves out a ‘jsonlines’ file,
+in which each line is a JSON object, saving the specified data and results for
+a single power spectrum.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save out FOOOFGroup settings &amp; results</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.save" title="fooof.FOOOFGroup.save" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">save</span></a><span class="p">(</span><span class="s1">&#39;FG_results&#39;</span><span class="p">,</span> <span class="n">save_settings</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_results</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can then reload this group data</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">nfg</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">()</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.load" title="fooof.FOOOFGroup.load" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">nfg</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;FG_results&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print results to check that the loaded group</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.print_results" title="fooof.FOOOFGroup.print_results" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">nfg</span><span class="o">.</span><span class="n">print_results</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                       FOOOF - GROUP RESULTS
+
+                             Number of power spectra in the Group: 25
+
+                        The model was run on the frequency range 3 - 30 Hz
+                                 Frequency Resolution is 0.49 Hz
+
+                              Power spectra were fit without a knee.
+
+                                      Aperiodic Fit Values:
+                        Exponents - Min:  0.353, Max:  0.982, Mean: 0.664
+
+                         In total 85 peaks were extracted from the group
+
+                                     Goodness of fit metrics:
+                            R2s -  Min:  0.902, Max:  0.990, Mean: 0.970
+                         Errors -  Min:  0.025, Max:  0.121, Mean: 0.042
+
+==================================================================================================
+</pre></div>
+</div>
+</div>
+<div class="section" id="parallel-support">
+<h3>Parallel Support<a class="headerlink" href="#parallel-support" title="Permalink to this headline">¶</a></h3>
+<p>FOOOFGroup also has support for running in parallel, which can speed things up as
+each power spectrum is fit independently.</p>
+<p>The fit method includes an optional parameter <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>, which if set at 1 (as default),
+will fit models linearly (one at a time, in order). If you set this parameter to some other
+integer, fitting will launch ‘n_jobs’ number of jobs, in parallel. Setting n_jobs to -1 will
+launch model fitting in parallel across all available cores.</p>
+<p>Note, however, that fitting power spectrum models in parallel does not guarantee a quicker
+runtime overall. The computation time per model fit scales with the frequency range fit over,
+and the ‘complexity’ of the power spectra, in terms of number of peaks. For relatively small
+numbers of power spectra (less than ~100), across relatively small frequency ranges
+(say ~3-40Hz), running in parallel may offer no appreciable speed up.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit power spectrum models across a group of power spectra in parallel, using all cores</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 25 power spectra.
+</pre></div>
+</div>
+</div>
+<div class="section" id="progress-bar">
+<h3>Progress Bar<a class="headerlink" href="#progress-bar" title="Permalink to this headline">¶</a></h3>
+<p>If you have a large number of spectra to fit with a <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a>, and you
+want to monitor it’s progress, you can also use a progress bar to print out fitting progress.</p>
+<p>Progress bar options are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tqdm</span></code> : a progress bar for running in terminals</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tqdm.notebook</span></code> : a progress bar for running in Jupyter notebooks</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit power spectrum models across a group of power spectra, printing a progress bar</span>
+<a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="s1">&#39;tqdm&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup:   0%|          | 0/25 [00:00&lt;?, ?it/s]
+Running FOOOFGroup:  16%|#6        | 4/25 [00:00&lt;00:00, 31.94it/s]
+Running FOOOFGroup:  20%|##        | 5/25 [00:00&lt;00:01, 14.12it/s]
+Running FOOOFGroup:  32%|###2      | 8/25 [00:00&lt;00:01, 16.78it/s]
+Running FOOOFGroup:  40%|####      | 10/25 [00:00&lt;00:00, 17.20it/s]
+Running FOOOFGroup:  52%|#####2    | 13/25 [00:00&lt;00:00, 19.23it/s]
+Running FOOOFGroup:  64%|######4   | 16/25 [00:00&lt;00:00, 14.08it/s]
+Running FOOOFGroup:  72%|#######2  | 18/25 [00:01&lt;00:00, 13.14it/s]
+Running FOOOFGroup:  84%|########4 | 21/25 [00:01&lt;00:00, 15.75it/s]
+Running FOOOFGroup:  92%|#########2| 23/25 [00:01&lt;00:00, 14.93it/s]
+Running FOOOFGroup: 100%|##########| 25/25 [00:01&lt;00:00, 17.23it/s]
+</pre></div>
+</div>
+</div>
+<div class="section" id="extracting-individual-fits">
+<h3>Extracting Individual Fits<a class="headerlink" href="#extracting-individual-fits" title="Permalink to this headline">¶</a></h3>
+<p>When fitting power spectrum models for a group of power spectra, results are stored
+in FOOOFResults objects, which store (only) the results of the model fit,
+not the full model fits themselves.</p>
+<p>To examine individual model fits, <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> can regenerate
+<a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> objects for individual power spectra, with the full model available
+for visualization. To do so, you can use the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_fooof()</span></code></a> method.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract a particular spectrum, specified by index</span>
+<span class="c1">#  Here we also specify to regenerate the the full model fit, from the results</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">ind</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print results and plot extracted model fit</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_results" title="fooof.FOOOF.print_results" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">print_results</span></a><span class="p">()</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_06-FOOOFGroup_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_06-FOOOFGroup_002.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                   FOOOF - POWER SPECTRUM MODEL
+
+                        The model was run on the frequency range 1 - 50 Hz
+                                 Frequency Resolution is 0.49 Hz
+
+                            Aperiodic Parameters (offset, exponent):
+                                         -21.1789, 1.0581
+
+                                       6 peaks were found:
+                                CF:   7.18, PW:  0.292, BW:  1.00
+                                CF:   9.38, PW:  1.347, BW:  1.74
+                                CF:  11.07, PW:  0.722, BW:  1.17
+                                CF:  12.17, PW:  0.340, BW:  3.82
+                                CF:  18.50, PW:  0.708, BW:  1.90
+                                CF:  19.97, PW:  0.376, BW:  5.52
+
+                                     Goodness of fit metrics:
+                                    R^2 of model fit is 0.9940
+                                    Error of the fit is 0.0304
+
+==================================================================================================
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>Now we have explored fitting power spectrum models and running these fits across multiple
+power spectra. Next we dig deeper into how to choose and tune the algorithm settings,
+and how to troubleshoot if any of the fitting goes wrong.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.675 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-06-fooofgroup-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/551841fea6afd1b2a365663bec9e7ef8/plot_06-FOOOFGroup.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_06-FOOOFGroup.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/d49fe0cacb8bde8dde32384afc5ed2ef/plot_06-FOOOFGroup.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_06-FOOOFGroup.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
