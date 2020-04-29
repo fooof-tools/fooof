@@ -37,20 +37,21 @@ plots:
 
 # Build the html site, and push it to gh-pages branch of repo to deploy
 install:
-	# Clean out existing version site
+	# Clean out existing build
 	make clean
-	rm -rf _build/doctrees _build/tmp_html
-	# Clone, specifically, the gh-pages branch:
+	# Clone, specifically, the gh-pages branch, putting it into '_build/gh_pages/'
 	#   --no-checkout just fetches the root folder without content
-	#   --depth 1 is a speed optimization since we don't need the
-	#     history prior to the last commit
+	#   --depth 1 is a speed optimization since we don't need the history prior to the last commit
 	#   -b gh-pages fetches only the branch for the gh-pages
-	git clone -b gh-pages --single-branch --no-checkout --depth 1 https://github.com/fooof-tools/fooof _build/tmp_html
-	touch _build/tmp_html/.nojekyll
+	git clone -b gh-pages --single-branch --no-checkout --depth 1 https://github.com/fooof-tools/fooof _build/gh_pages
+	# A .nojekyll file tells Github pages to bypass Jekyll processing
+	touch _build/gh_pages/.nojekyll
+	# Build the sphinx site
 	make html
+	# Copy site into the gh-pages branch folder, then push to Github to deploy
 	cd _build/ && \
-	cp -r html/* tmp_html && \
-	cd tmp_html && \
+	cp -r html/ gh_pages && \
+	cd gh_pages && \
 	git add * && \
 	git add .nojekyll && \
 	git commit -a -m 'Make install' && \
