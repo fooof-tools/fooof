@@ -6,8 +6,10 @@
     <title>Topographical Analyses with MNE &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -96,7 +98,7 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-analyses-plot-mne-example-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-analyses-plot-mne-example-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="topographical-analyses-with-mne">
 <span id="sphx-glr-auto-examples-analyses-plot-mne-example-py"></span><h1>Topographical Analyses with MNE<a class="headerlink" href="#topographical-analyses-with-mne" title="Permalink to this headline">¶</a></h1>
@@ -120,10 +122,10 @@ and managed with MNE, and how to plot topographies of resulting model parameters
 <span class="kn">from</span> <span class="nn">mne.time_frequency</span> <span class="k">import</span> <span class="n">psd_welch</span>
 
 <span class="c1"># FOOOF imports</span>
-<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">FOOOFGroup</span></a>
-<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">Bands</span></a>
-<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="k">import</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="View documentation for fooof.analysis.get_band_peak_fg"><span class="n">get_band_peak_fg</span></a>
-<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
+<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a>
+<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="k">import</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a>
 </pre></div>
 </div>
 <div class="section" id="load-check-mne-data">
@@ -202,7 +204,7 @@ function, that takes in MNE data objects and calculates and returns power spectr
 <p>Now that we have power spectra, we can fit some power spectrum models.</p>
 <p>Since we have multiple power spectra, we will use the <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object, with desired settings</span>
-<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
                 <span class="n">peak_threshold</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Define the frequency range to fit</span>
@@ -210,11 +212,11 @@ function, that takes in MNE data objects and calculates and returns power spectr
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the power spectrum model across all channels</span>
-<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the overall results of the group fits</span>
-<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_mne_example_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_001.png" />
@@ -236,13 +238,13 @@ using the MNE object to define the corresponding channel locations.</p>
 <p>To do so, we will use to <a class="reference internal" href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bands</span></code></a> object to manage some band
 definitions, and some analysis utilities to extracts peaks from bands of interest.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define frequency bands of interest</span>
-<a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;theta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+<a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;theta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
                <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
                <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">]})</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract alpha peaks</span>
-<span class="n">alphas</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="View documentation for fooof.analysis.get_band_peak_fg"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">alphas</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 
 <span class="c1"># Extract the power values from the detected peaks</span>
 <span class="n">alpha_pw</span> <span class="o">=</span> <span class="n">alphas</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
@@ -254,7 +256,7 @@ definitions, and some analysis utilities to extracts peaks from bands of interes
 </div>
 <img alt="../../_images/sphx_glr_plot_mne_example_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_002.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x101f971bd0&gt;, &lt;matplotlib.contour.QuadContourSet object at 0x101dce6390&gt;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x101cf7ab50&gt;, &lt;matplotlib.contour.QuadContourSet object at 0x101d234790&gt;)
 </pre></div>
 </div>
 <p>And there we have it, our first topography of parameterized spectra, showing alpha power!</p>
@@ -262,10 +264,10 @@ definitions, and some analysis utilities to extracts peaks from bands of interes
 <p>Now we can extend this to plot the power of each of our other defined frequency bands.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the topographies across different frequency bands</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="p">):</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="p">):</span>
 
     <span class="c1"># Get the power values across channels for the current band</span>
-    <span class="n">band_power</span> <span class="o">=</span> <span class="n">check_nans</span><span class="p">(</span><a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="View documentation for fooof.analysis.get_band_peak_fg"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">band_def</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">band_power</span> <span class="o">=</span> <span class="n">check_nans</span><span class="p">(</span><a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <span class="n">band_def</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
 
     <span class="c1"># Create a topomap for the current oscillation band</span>
     <span class="n">mne</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">plot_topomap</span><span class="p">(</span><span class="n">band_power</span><span class="p">,</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -283,13 +285,13 @@ with our <cite>check_nan</cite> approach. Note this is also a single subject ana
 what these peaks look like in the underlying power spectra.</p>
 <p>Next, lets check the power spectra for the largest detected peaks within each band.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="View documentation for fooof.Bands"><span class="n">bands</span></a><span class="p">):</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="p">):</span>
 
     <span class="c1"># Get the power values across channels for the current band</span>
-    <span class="n">band_power</span> <span class="o">=</span> <span class="n">check_nans</span><span class="p">(</span><a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="View documentation for fooof.analysis.get_band_peak_fg"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="p">,</span> <span class="n">band_def</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">band_power</span> <span class="o">=</span> <span class="n">check_nans</span><span class="p">(</span><a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <span class="n">band_def</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
 
     <span class="c1"># Extracted and plot the power spectrum model with the most band power</span>
-    <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_fooof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">band_power</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="n">add_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">band_power</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="n">add_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="c1"># Set some plot aesthetics &amp; plot title</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">([])</span>
@@ -304,7 +306,7 @@ what these peaks look like in the underlying power spectra.</p>
 <p>To do so, we can simply extract the aperiodic parameters from our power spectrum models,
 and plot them.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract aperiodic exponent values</span>
-<span class="n">exps</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)</span>
+<span class="n">exps</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the topography of aperiodic exponents</span>
@@ -313,7 +315,7 @@ and plot them.</p>
 </div>
 <img alt="../../_images/sphx_glr_plot_mne_example_005.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_005.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x101dd47a90&gt;, &lt;matplotlib.contour.QuadContourSet object at 0x101e4e2290&gt;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x101d9ccb50&gt;, &lt;matplotlib.contour.QuadContourSet object at 0x101d99c250&gt;)
 </pre></div>
 </div>
 <p>In the topography above, we can see that there is a fair amount of variation
@@ -323,9 +325,9 @@ spatial structure to it.</p>
 spectra, in this case extracting those with the highest and lower exponent values.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the power spectra between low and high exponent channels</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_fooof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span>
+<a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span>
               <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Low Exponent&#39;</span><span class="p">)</span>
-<a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="View documentation for fooof.FOOOFGroup"><span class="n">fg</span></a><span class="o">.</span><span class="n">get_fooof</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span>
+<a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span>
               <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;High Exponent&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -336,12 +338,12 @@ spectra, in this case extracting those with the highest and lower exponent value
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
 <p>In this example, we have seen how to apply power spectrum models to data that is
 managed and processed with MNE.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.185 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.983 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-analyses-plot-mne-example-py">
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/208ddf4708879eabf6a6f4aae1ab846a/plot_mne_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_mne_example.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/22eca51ea62d18a21f9995a7bdfe8c49/plot_mne_example.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_mne_example.ipynb</span></code></a></p>
 </div>
 </div>

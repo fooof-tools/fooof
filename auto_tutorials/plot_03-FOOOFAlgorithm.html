@@ -6,8 +6,10 @@
     <title>03: Fitting Algorithm &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -96,7 +98,7 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-03-fooofalgorithm-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-03-fooofalgorithm-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="fitting-algorithm">
 <span id="sphx-glr-auto-tutorials-plot-03-fooofalgorithm-py"></span><h1>03: Fitting Algorithm<a class="headerlink" href="#fitting-algorithm" title="Permalink to this headline">¶</a></h1>
@@ -143,14 +145,14 @@ and goodness of fit metrics are calculated.</p></li>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="c1"># Import the FOOOF object</span>
-<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a>
 
 <span class="c1"># Import some internal functions</span>
 <span class="c1">#   These are used here to demonstrate the algorithm.</span>
 <span class="c1">#   You do not need to import these functions for standard use of the algorithm</span>
 <span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_aperiodic</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a>
-<span class="kn">from</span> <span class="nn">fooof.plts.annotate</span> <span class="k">import</span> <a href="../generated/fooof.plts.annotate.plot_annotated_peak_search.html#fooof.plts.annotate.plot_annotated_peak_search" title="View documentation for fooof.plts.annotate.plot_annotated_peak_search"><span class="n">plot_annotated_peak_search</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.annotate</span> <span class="k">import</span> <a href="../generated/fooof.plts.annotate.plot_annotated_peak_search.html#fooof.plts.annotate.plot_annotated_peak_search" title="fooof.plts.annotate.plot_annotated_peak_search" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_peak_search</span></a>
 
 <span class="c1"># Import utility to download and load example data</span>
 <span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="k">import</span> <span class="n">load_fooof_data</span>
@@ -167,18 +169,18 @@ and goodness of fit metrics are calculated.</p></li>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object, with some settings</span>
 <span class="c1">#   These settings will be more fully described later in the tutorials</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Note that data can be added to a FOOOF object independent of fitting the model, using the
 <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.add_data" title="fooof.FOOOF.add_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_data()</span></code></a> method. FOOOF objects can also be used to plot input data,
 without having fit any models.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add data to the object</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.add_data" title="fooof.FOOOF.add_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">add_data</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectrum</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plt_log</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plt_log</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_001.png" />
@@ -186,7 +188,7 @@ without having fit any models.</p>
 <p>For this notebook, we will first fit the full model, as normal, but then step through,
 and visualize each step the algorithm took to come to that final fit.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the power spectrum model</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="section" id="step-1-initial-aperiodic-fit">
@@ -195,13 +197,13 @@ and visualize each step the algorithm took to come to that final fit.</p>
 able to use this fit to remove our estimate of the aperiodic component from the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Do an initial aperiodic fit - a robust fit, that excludes outliers</span>
 <span class="c1">#   This recreates an initial fit that isn&#39;t ultimately stored in the FOOOF object</span>
-<span class="n">init_ap_fit</span> <span class="o">=</span> <span class="n">gen_aperiodic</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_robust_ap_fit</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">))</span>
+<span class="n">init_ap_fit</span> <span class="o">=</span> <span class="n">gen_aperiodic</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">_robust_ap_fit</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">))</span>
 
 <span class="c1"># Plot the initial aperiodic fit</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span>
+<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span>
               <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Power Spectrum&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">init_ap_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Initial Aperiodic Fit&#39;</span><span class="p">,</span>
+<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">init_ap_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Initial Aperiodic Fit&#39;</span><span class="p">,</span>
               <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -213,10 +215,10 @@ able to use this fit to remove our estimate of the aperiodic component from the 
 fit is subtracted out from the original data, leaving a flattened version of the data
 which no longer contains the aperiodic component.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Recompute the flattened spectrum using the initial aperiodic fit</span>
-<span class="n">init_flat_spec</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span> <span class="o">-</span> <span class="n">init_ap_fit</span>
+<span class="n">init_flat_spec</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span> <span class="o">-</span> <span class="n">init_ap_fit</span>
 
 <span class="c1"># Plot the flattened the power spectrum</span>
-<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">init_flat_spec</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span>
+<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">init_flat_spec</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span>
               <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Flattened Spectrum&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -241,7 +243,7 @@ the procedure halts.</p></li>
 unless <cite>max_n_peaks</cite> has been reached</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the iterative approach to finding peaks from the flattened spectrum</span>
-<a href="../generated/fooof.plts.annotate.plot_annotated_peak_search.html#fooof.plts.annotate.plot_annotated_peak_search" title="View documentation for fooof.plts.annotate.plot_annotated_peak_search"><span class="n">plot_annotated_peak_search</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="p">)</span>
+<a href="../generated/fooof.plts.annotate.plot_annotated_peak_search.html#fooof.plts.annotate.plot_annotated_peak_search" title="fooof.plts.annotate.plot_annotated_peak_search" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_peak_search</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <ul class="sphx-glr-horizontal">
@@ -259,7 +261,7 @@ unless <cite>max_n_peaks</cite> has been reached</p></li>
 flattened spectrum, the set of identified ‘guess’ peaks, are then re-fit, all together.
 This creates the full peak fit of the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the peak fit: created by re-fitting all of the candidate peaks together</span>
-<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_peak_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Final Periodic Fit&#39;</span><span class="p">)</span>
+<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">_peak_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Final Periodic Fit&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_007.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_007.png" />
@@ -271,7 +273,7 @@ used in order to try and isolate a better aperiodic fit.</p>
 <p>To do so, the peak fit is removed from the original power spectrum,
 leaving an ‘aperiodic-only’ spectrum for re-fitting.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the peak removed power spectrum, created by removing peak fit from original spectrum</span>
-<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_spectrum_peak_rm</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span>
+<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">_spectrum_peak_rm</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span>
               <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Peak Removed Spectrum&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -285,9 +287,9 @@ used to get the fitting process started.</p>
 re-estimate a better fit, without the peaks getting in the way.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the final aperiodic fit, calculated on the peak removed power spectrum</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_spectrum_peak_rm</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span>
+<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">_spectrum_peak_rm</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span>
               <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Peak Removed Spectrum&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">_ap_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Final Aperiodic Fit&#39;</span><span class="p">,</span>
+<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">_ap_fit</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Final Aperiodic Fit&#39;</span><span class="p">,</span>
               <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -301,7 +303,7 @@ to create the full model fit.</p>
 including the error of the fit and the R-squared of the fit, by comparing the
 full model fit to the original data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot full model, created by combining the peak and aperiodic fits</span>
-<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="View documentation for fooof.plts.plot_spectrum"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span>
+<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span>
               <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Full Model&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -309,7 +311,7 @@ full model fit to the original data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The last stage is to calculate the goodness of fit metrics (fit error &amp; R^2)</span>
 <span class="c1">#  and organize parameters, such as updating gaussian parameters -&gt; peak parameters</span>
 <span class="c1">#  These results are part of what are stored, and printed, as the model results</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_results" title="fooof.FOOOF.print_results" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">print_results</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -336,7 +338,7 @@ full model fit to the original data.</p>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the full model fit of the power spectrum</span>
 <span class="c1">#  The final fit (red), and aperiodic fit (blue), are the same as we plotted above</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plt_log</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plt_log</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_011.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_011.png" />
@@ -387,14 +389,12 @@ useful for some analyses, and so are briefly described here.</p>
 <p>In this tutorial we have stepped through the parameterization algorithm fitting
 power spectrum models. Next, we will continue to explore the FOOOF object,
 properly introducing the settings and further exploring the parameters.</p>
-<p>Sphinx settings:
-sphinx_gallery_thumbnail_number = 4</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.983 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.013 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-03-fooofalgorithm-py">
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cd28e8b309d37589cba9b514ff578f2c/plot_03-FOOOFAlgorithm.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_03-FOOOFAlgorithm.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/1995e37fd6109822fdf41b03edf386b2/plot_03-FOOOFAlgorithm.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_03-FOOOFAlgorithm.ipynb</span></code></a></p>
 </div>
 </div>

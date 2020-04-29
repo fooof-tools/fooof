@@ -6,8 +6,10 @@
     <title>Plot Power Spectrum Models &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -96,7 +98,7 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plots-plot-fooof-models-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plots-plot-fooof-models-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="plot-power-spectrum-models">
 <span id="sphx-glr-auto-examples-plots-plot-fooof-models-py"></span><h1>Plot Power Spectrum Models<a class="headerlink" href="#plot-power-spectrum-models" title="Permalink to this headline">¶</a></h1>
@@ -110,14 +112,14 @@ options for tuning these these visualizations.</p>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="c1"># Import the FOOOF object</span>
-<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a>
 
 <span class="c1"># Import simulation functions to create some example data</span>
-<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate an example power spectrum</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
                                    <span class="p">[[</span><span class="mi">9</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">22</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
 </pre></div>
 </div>
@@ -126,22 +128,22 @@ options for tuning these these visualizations.</p>
 <p>The FOOOF object has a <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> method that can be used to visualize
 data and models available in the <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object, and add some data to it</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.add_data" title="fooof.FOOOF.add_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">add_data</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Once you have added data to a FOOOF object, you can visualize the data using
 <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot()</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the data available in the FOOOF object</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_fooof_models_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_001.png" />
 <p>When the model is available, the <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> call also displays the
 full model reconstruction, in red.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the model, and plot the reconstruction</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">()</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_fooof_models_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_002.png" />
@@ -153,7 +155,7 @@ aperiodic component, in a dashed blue line.</p>
 <p>You can toggle whether to display the aperiodic component with the
 <code class="docutils literal notranslate"><span class="pre">plot_aperiodic</span></code> parameter.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Control whether to plot the aperiodic component</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plot_aperiodic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plot_aperiodic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_fooof_models_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_003.png" />
@@ -176,7 +178,7 @@ of which approach you wish to use to visualize the peaks.</p>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">12</span><span class="p">])</span>
 <span class="n">peak_plots</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;shade&#39;</span><span class="p">,</span> <span class="s1">&#39;dot&#39;</span><span class="p">,</span> <span class="s1">&#39;outline&#39;</span><span class="p">,</span> <span class="s1">&#39;line&#39;</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">peak_plot</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">peak_plots</span><span class="p">):</span>
-    <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plot_peaks</span><span class="o">=</span><span class="n">peak_plot</span><span class="p">,</span> <span class="n">add_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plot_peaks</span><span class="o">=</span><span class="n">peak_plot</span><span class="p">,</span> <span class="n">add_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_fooof_models_004.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_004.png" />
@@ -184,7 +186,7 @@ of which approach you wish to use to visualize the peaks.</p>
 <p>This can be done by joining all requested peak visualization approaches, with dashes (-).</p>
 <p>For example, as <cite>plot_peaks=’dot-outline-shade’</cite>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine peak representations</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plot_aperiodic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot_peaks</span><span class="o">=</span><span class="s1">&#39;line-shade-outline&#39;</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plot_aperiodic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot_peaks</span><span class="o">=</span><span class="s1">&#39;line-shade-outline&#39;</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_fooof_models_005.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_005.png" />
@@ -194,16 +196,16 @@ and what you want to check.</p>
 the most useful. Or, across broader frequency ranges, it may be easier to visualize
 where peaks were fit with the full-length vertical lines.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a new power spectrum, over a broader frequency region</span>
-<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="View documentation for fooof.sim.gen_power_spectrum"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">150</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">150</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span>
                                    <span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a new FOOOF object, in &#39;knee&#39; mode</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;knee&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;knee&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Fit the model and visualize the fit, highlighting peaks</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plot_peaks</span><span class="o">=</span><span class="s1">&#39;shade-line&#39;</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plot_peaks</span><span class="o">=</span><span class="s1">&#39;shade-line&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_fooof_models_006.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_006.png" />
@@ -223,18 +225,16 @@ where peaks were fit with the full-length vertical lines.</p>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot from FOOOF, using a custom axes with some optional inputs to tune the plot</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
-<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">add_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">add_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_fooof_models_007.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_007.png" />
-<p>Sphinx settings:
-sphinx_gallery_thumbnail_number = 2</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.855 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.110 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plots-plot-fooof-models-py">
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/e20a5bfa6c526d2378b76bd42b8330a7/plot_fooof_models.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_fooof_models.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/7e099e5ab5f83bfcc6b644a0c2cd6393/plot_fooof_models.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_fooof_models.ipynb</span></code></a></p>
 </div>
 </div>

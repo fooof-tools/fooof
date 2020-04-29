@@ -6,8 +6,10 @@
     <title>fooof.FOOOF &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -479,7 +481,7 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 
 <dl class="py method">
 <dt id="fooof.FOOOF.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">plot_peaks=None</em>, <em class="sig-param">plot_aperiodic=True</em>, <em class="sig-param">plt_log=False</em>, <em class="sig-param">add_legend=True</em>, <em class="sig-param">save_fig=False</em>, <em class="sig-param">file_name=None</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">plot_style=&lt;function style_spectrum_plot at 0x101af7f8c0&gt;</em>, <em class="sig-param">data_kwargs=None</em>, <em class="sig-param">model_kwargs=None</em>, <em class="sig-param">aperiodic_kwargs=None</em>, <em class="sig-param">peak_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">plot_peaks=None</em>, <em class="sig-param">plot_aperiodic=True</em>, <em class="sig-param">plt_log=False</em>, <em class="sig-param">add_legend=True</em>, <em class="sig-param">save_fig=False</em>, <em class="sig-param">file_name=None</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">plot_style=&lt;function style_spectrum_plot at 0x1019443d40&gt;</em>, <em class="sig-param">data_kwargs=None</em>, <em class="sig-param">model_kwargs=None</em>, <em class="sig-param">aperiodic_kwargs=None</em>, <em class="sig-param">peak_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOF.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the power spectrum and model fit results from a FOOOF object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -647,57 +649,73 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 
 <div class="section" id="examples-using-fooof-fooof">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.FOOOF</span></code><a class="headerlink" href="#examples-using-fooof-fooof" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Check the error of power spectrum models across frequencies."><div class="figure align-default" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Example of model fit failures and how to debug them."><div class="figure align-default" id="id1">
+<img alt="../_images/sphx_glr_plot_failed_fits_thumb.png" src="../_images/sphx_glr_plot_failed_fits_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_failed_fits.html#sphx-glr-auto-examples-manage-plot-failed-fits-py"><span class="std std-ref">Failed Model Fits</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Fitting power spectrum models across 3D arrays of power spectra."><div class="figure align-default" id="id2">
+<img alt="../_images/sphx_glr_plot_fit_fooof_3d_thumb.png" src="../_images/sphx_glr_plot_fit_fooof_3d_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_fit_fooof_3d.html#sphx-glr-auto-examples-manage-plot-fit-fooof-3d-py"><span class="std std-ref">Fitting Power Spectrum Models Across 3D Arrays</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Check the error of power spectrum models across frequencies."><div class="figure align-default" id="id3">
 <img alt="../_images/sphx_glr_plot_freq_by_freq_error_thumb.png" src="../_images/sphx_glr_plot_freq_by_freq_error_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_freq_by_freq_error.html#sphx-glr-auto-examples-manage-plot-freq-by-freq-error-py"><span class="std std-ref">Frequency-by-Frequency Errors</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_freq_by_freq_error.html#sphx-glr-auto-examples-manage-plot-freq-by-freq-error-py"><span class="std std-ref">Frequency-by-Frequency Errors</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Examples with combining, sub-selecting, dropping, and averaging power spectrum models."><div class="figure align-default" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Examples with combining, sub-selecting, dropping, and averaging power spectrum models."><div class="figure align-default" id="id4">
 <img alt="../_images/sphx_glr_plot_manipulating_fooofs_thumb.png" src="../_images/sphx_glr_plot_manipulating_fooofs_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_manipulating_fooofs.html#sphx-glr-auto-examples-manage-plot-manipulating-fooofs-py"><span class="std std-ref">Manipulating FOOOF Objects</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_manipulating_fooofs.html#sphx-glr-auto-examples-manage-plot-manipulating-fooofs-py"><span class="std std-ref">Manipulating FOOOF Objects</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Plotting power spectrum models, directly from FOOOF objects."><div class="figure align-default" id="id3">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Plotting power spectrum models, directly from FOOOF objects."><div class="figure align-default" id="id5">
 <img alt="../_images/sphx_glr_plot_fooof_models_thumb.png" src="../_images/sphx_glr_plot_fooof_models_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plots/plot_fooof_models.html#sphx-glr-auto-examples-plots-plot-fooof-models-py"><span class="std std-ref">Plot Power Spectrum Models</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plots/plot_fooof_models.html#sphx-glr-auto-examples-plots-plot-fooof-models-py"><span class="std std-ref">Plot Power Spectrum Models</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Apply transformations to power spectra."><div class="figure align-default" id="id4">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Plotting power spectrum model parameters and components."><div class="figure align-default" id="id6">
+<img alt="../_images/sphx_glr_plot_model_components_thumb.png" src="../_images/sphx_glr_plot_model_components_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plots/plot_model_components.html#sphx-glr-auto-examples-plots-plot-model-components-py"><span class="std std-ref">Plot Model Components</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Apply transformations to power spectra."><div class="figure align-default" id="id7">
 <img alt="../_images/sphx_glr_plot_transforms_thumb.png" src="../_images/sphx_glr_plot_transforms_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/sims/plot_transforms.html#sphx-glr-auto-examples-sims-plot-transforms-py"><span class="std std-ref">Transforming Power Spectra</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/sims/plot_transforms.html#sphx-glr-auto-examples-sims-plot-transforms-py"><span class="std std-ref">Transforming Power Spectra</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="A description and introduction to the power spectrum model."><div class="figure align-default" id="id5">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Parameterizing neural power spectra with MNE, doing a topographical analysis."><div class="figure align-default" id="id8">
+<img alt="../_images/sphx_glr_plot_mne_example_thumb.png" src="../_images/sphx_glr_plot_mne_example_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/analyses/plot_mne_example.html#sphx-glr-auto-examples-analyses-plot-mne-example-py"><span class="std std-ref">Topographical Analyses with MNE</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A description and introduction to the power spectrum model."><div class="figure align-default" id="id9">
 <img alt="../_images/sphx_glr_plot_01-ModelDescription_thumb.png" src="../_images/sphx_glr_plot_01-ModelDescription_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_01-ModelDescription.html#sphx-glr-auto-tutorials-plot-01-modeldescription-py"><span class="std std-ref">01: Model Description</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_01-ModelDescription.html#sphx-glr-auto-tutorials-plot-01-modeldescription-py"><span class="std std-ref">01: Model Description</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Introduction to the module, beginning with the FOOOF object."><div class="figure align-default" id="id6">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Introduction to the module, beginning with the FOOOF object."><div class="figure align-default" id="id10">
 <img alt="../_images/sphx_glr_plot_02-FOOOF_thumb.png" src="../_images/sphx_glr_plot_02-FOOOF_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_02-FOOOF.html#sphx-glr-auto-tutorials-plot-02-fooof-py"><span class="std std-ref">02: Fitting Power Spectrum Models</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_02-FOOOF.html#sphx-glr-auto-tutorials-plot-02-fooof-py"><span class="std std-ref">02: Fitting Power Spectrum Models</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="A step by step overview of the algorithm for parameterizing neural power spectra."><div class="figure align-default" id="id7">
+</div><div class="sphx-glr-thumbcontainer" tooltip="A step by step overview of the algorithm for parameterizing neural power spectra."><div class="figure align-default" id="id11">
 <img alt="../_images/sphx_glr_plot_03-FOOOFAlgorithm_thumb.png" src="../_images/sphx_glr_plot_03-FOOOFAlgorithm_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_03-FOOOFAlgorithm.html#sphx-glr-auto-tutorials-plot-03-fooofalgorithm-py"><span class="std std-ref">03: Fitting Algorithm</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_03-FOOOFAlgorithm.html#sphx-glr-auto-tutorials-plot-03-fooofalgorithm-py"><span class="std std-ref">03: Fitting Algorithm</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Further exploring the FOOOF object, including algorithm settings and available methods."><div class="figure align-default" id="id8">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Further exploring the FOOOF object, including algorithm settings and available methods."><div class="figure align-default" id="id12">
 <img alt="../_images/sphx_glr_plot_04-MoreFOOOF_thumb.png" src="../_images/sphx_glr_plot_04-MoreFOOOF_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_04-MoreFOOOF.html#sphx-glr-auto-tutorials-plot-04-morefooof-py"><span class="std std-ref">04: Exploring the FOOOF Object</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_04-MoreFOOOF.html#sphx-glr-auto-tutorials-plot-04-morefooof-py"><span class="std std-ref">04: Exploring the FOOOF Object</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Choosing and using different approaches for fitting the aperiodic component."><div class="figure align-default" id="id9">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Choosing and using different approaches for fitting the aperiodic component."><div class="figure align-default" id="id13">
 <img alt="../_images/sphx_glr_plot_05-AperiodicFitting_thumb.png" src="../_images/sphx_glr_plot_05-AperiodicFitting_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_05-AperiodicFitting.html#sphx-glr-auto-tutorials-plot-05-aperiodicfitting-py"><span class="std std-ref">05: Aperiodic Component Fitting</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_05-AperiodicFitting.html#sphx-glr-auto-tutorials-plot-05-aperiodicfitting-py"><span class="std std-ref">05: Aperiodic Component Fitting</span></a></span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Using FOOOFGroup to run fit models across multiple power spectra."><div class="figure align-default" id="id10">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Using FOOOFGroup to run fit models across multiple power spectra."><div class="figure align-default" id="id14">
 <img alt="../_images/sphx_glr_plot_06-FOOOFGroup_thumb.png" src="../_images/sphx_glr_plot_06-FOOOFGroup_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_06-FOOOFGroup.html#sphx-glr-auto-tutorials-plot-06-fooofgroup-py"><span class="std std-ref">06: FOOOFGroup</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_06-FOOOFGroup.html#sphx-glr-auto-tutorials-plot-06-fooofgroup-py"><span class="std std-ref">06: FOOOFGroup</span></a></span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Tips &amp; tricks for choosing algorithm settings, tuning fits, and troubleshooting."><div class="figure align-default" id="id11">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Tips &amp; tricks for choosing algorithm settings, tuning fits, and troubleshooting."><div class="figure align-default" id="id15">
 <img alt="../_images/sphx_glr_plot_07-TroubleShooting_thumb.png" src="../_images/sphx_glr_plot_07-TroubleShooting_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_07-TroubleShooting.html#sphx-glr-auto-tutorials-plot-07-troubleshooting-py"><span class="std std-ref">07: Tuning &amp; Troubleshooting</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_07-TroubleShooting.html#sphx-glr-auto-tutorials-plot-07-troubleshooting-py"><span class="std std-ref">07: Tuning &amp; Troubleshooting</span></a></span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting power spectrum models."><div class="figure align-default" id="id12">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting power spectrum models."><div class="figure align-default" id="id16">
 <img alt="../_images/sphx_glr_plot_08-FurtherAnalysis_thumb.png" src="../_images/sphx_glr_plot_08-FurtherAnalysis_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_08-FurtherAnalysis.html#sphx-glr-auto-tutorials-plot-08-furtheranalysis-py"><span class="std std-ref">08: Further Analysis</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_08-FurtherAnalysis.html#sphx-glr-auto-tutorials-plot-08-furtheranalysis-py"><span class="std std-ref">08: Further Analysis</span></a></span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Comparing how &#x27;Band-by-Band&#x27; approaches relate to periodic &amp; aperiodic components."><div class="figure align-default" id="id13">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Comparing how &#x27;Band-by-Band&#x27; approaches relate to periodic &amp; aperiodic components."><div class="figure align-default" id="id17">
 <img alt="../_images/sphx_glr_plot_BandByBand_thumb.png" src="../_images/sphx_glr_plot_BandByBand_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_motivations/measurements/plot_BandByBand.html#sphx-glr-auto-motivations-measurements-plot-bandbyband-py"><span class="std std-ref">Band-by-Band</span></a></span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_motivations/measurements/plot_BandByBand.html#sphx-glr-auto-motivations-measurements-plot-bandbyband-py"><span class="std std-ref">Band-by-Band</span></a></span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
 </div>
 </div></div>
 </div>

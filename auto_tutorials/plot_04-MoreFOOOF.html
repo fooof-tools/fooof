@@ -6,8 +6,10 @@
     <title>04: Exploring the FOOOF Object &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -96,20 +98,20 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-04-morefooof-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-04-morefooof-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="exploring-the-fooof-object">
 <span id="sphx-glr-auto-tutorials-plot-04-morefooof-py"></span><h1>04: Exploring the FOOOF Object<a class="headerlink" href="#exploring-the-fooof-object" title="Permalink to this headline">¶</a></h1>
 <p>Further exploring the FOOOF object, including algorithm settings and available methods.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
-<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a>
 
 <span class="c1"># Import utility to download and load example data</span>
 <span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="k">import</span> <span class="n">load_fooof_data</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">()</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <div class="section" id="description-of-methods-and-attributes">
@@ -204,7 +206,7 @@ or relative threshold.</p>
 <p>Whether to print out status updates and warnings.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can check all the user defined settings with check_settings</span>
 <span class="c1">#  The description parameter here is set to print out quick descriptions of the settings</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">print_settings</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_settings" title="fooof.FOOOF.print_settings" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">print_settings</span></a><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -236,7 +238,7 @@ the value, and thus may lead to a failure, either creating an error, or not appl
 the settings properly during fit and returning erroneous results.</p>
 <p>Here we will re-initialize a new FOOOF object, with some new settings.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Re-initialize a new FOOOF object, with some specified settings</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -260,11 +262,11 @@ if the current object has data loaded.</p>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set a frequency range and add the data to the object</span>
 <span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.add_data" title="fooof.FOOOF.add_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">add_data</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if the object has data loaded</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Has data loaded: &#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">has_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Has data loaded: &#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.has_data" title="fooof.FOOOF.has_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">has_data</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -272,10 +274,10 @@ if the current object has data loaded.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out the data attributes in the object</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency Range: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freq_range</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency Resolution: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freq_res</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency Values: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Power Values: </span><span class="se">\t\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency Range: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freq_range</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency Resolution: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freq_res</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency Values: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Power Values: </span><span class="se">\t\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -287,7 +289,7 @@ Power Values:            [-21.99921865 -21.99669556 -22.02605736 -21.96875308 -2
 </div>
 <p>Now that we have picked our settings, and added the data, let’s fit a power spectrum model.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit a power spectrum model to the loaded data</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -311,7 +313,7 @@ model results are indicated by a trailing underscore.</p>
 <p>The <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object also has an indicator attribute, <code class="docutils literal notranslate"><span class="pre">has_model</span></code>
 which indicates if the current object has model results available.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if the object has model results</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Has model results: &#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">has_model</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Has model results: &#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.has_model" title="fooof.FOOOF.has_model" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">has_model</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -319,11 +321,11 @@ which indicates if the current object has model results available.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out model fit results</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;aperiodic params: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">aperiodic_params_</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;peak params: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">peak_params_</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;r-squared: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">r_squared_</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fit error: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">error_</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fooofed spectrum: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;aperiodic params: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">aperiodic_params_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;peak params: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">peak_params_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;r-squared: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">r_squared_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fit error: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">error_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fooofed spectrum: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -348,7 +350,7 @@ as they may depend on internal state of the object as defined from other methods
 and so may not do as expected in isolation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This piece of code is just a way to print out all the public methods with their description</span>
 <span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">it</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;fm.&#39;</span> <span class="o">+</span> <span class="n">it</span> <span class="o">+</span> <span class="s1">&#39;.__doc__&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> \
-    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="p">)</span> <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;fm.&#39;</span> <span class="o">+</span> <span class="n">it</span><span class="p">))];</span>
+    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">)</span> <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;fm.&#39;</span> <span class="o">+</span> <span class="n">it</span><span class="p">))];</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -406,16 +408,16 @@ set_debug_mode
 <p>Selected items are saved out to JSON files. You can specify a file name to save
 or append to, or pass in a JSON file object.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save out results, settings, and data</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;FOOOF_results&#39;</span><span class="p">,</span> <span class="n">save_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_settings</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.save" title="fooof.FOOOF.save" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">save</span></a><span class="p">(</span><span class="s1">&#39;FOOOF_results&#39;</span><span class="p">,</span> <span class="n">save_results</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_settings</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load back in the saved out information</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">nfm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">FOOOF</span></a><span class="p">()</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">nfm</span></a><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;FOOOF_results&#39;</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">nfm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">()</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.load" title="fooof.FOOOF.load" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">nfm</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="s1">&#39;FOOOF_results&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot loaded results</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">nfm</span></a><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">nfm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_04-MoreFOOOF_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_04-MoreFOOOF_001.png" />
@@ -428,7 +430,7 @@ or append to, or pass in a JSON file object.</p>
 <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>, and
 <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_settings" title="fooof.FOOOF.print_settings"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print_settings()</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save out a report of the current model fit &amp; results</span>
-<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="View documentation for fooof.FOOOF"><span class="n">fm</span></a><span class="o">.</span><span class="n">save_report</span><span class="p">(</span><span class="s1">&#39;FOOOF_report&#39;</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.save_report" title="fooof.FOOOF.save_report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">save_report</span></a><span class="p">(</span><span class="s1">&#39;FOOOF_report&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -439,12 +441,12 @@ or append to, or pass in a JSON file object.</p>
 <p>We have now fully explored the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object, and all it contains.
 Next, we will take a deeper dive into how to choose different modes for fitting
 the aperiodic component of power spectra.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.379 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.388 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-04-morefooof-py">
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/91057e4aeee06f0a0baa05c9f8714658/plot_04-MoreFOOOF.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_04-MoreFOOOF.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/b4b208c1f35ab1e06a6ac5626f448096/plot_04-MoreFOOOF.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_04-MoreFOOOF.ipynb</span></code></a></p>
 </div>
 </div>
