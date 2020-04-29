@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Rhythmicity of Time Series &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../faq.html">FAQ</a></li>
+                <li><a href="../../glossary.html">Glossary</a></li>
+                <li><a href="../index.html">Motivations</a></li>
+                <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-motivations-concepts-plot-doyouevenoscillate-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="rhythmicity-of-time-series">
+<span id="sphx-glr-auto-motivations-concepts-plot-doyouevenoscillate-py"></span><h1>Rhythmicity of Time Series<a class="headerlink" href="#rhythmicity-of-time-series" title="Permalink to this headline">¶</a></h1>
+<p>Exploring the rhythmicity of time series and their frequency representations.</p>
+<div class="section" id="id1">
+<h2>Rhythmicity of Time Series<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Central to the motivation for parameterizing neural power is the claim that power at a
+given frequency is not sufficient to claim that there is evidence for rhythmic, or
+periodic, activity at that frequency.</p>
+<p>In this example, we will explore this idea by examining some example signals in the
+time domain, and their frequency domain representations. We will use these signals to
+motivate if and when signals should be interpreted as containing periodic activity.</p>
+<div class="section" id="the-fourier-theorem">
+<h3>The Fourier Theorem<a class="headerlink" href="#the-fourier-theorem" title="Permalink to this headline">¶</a></h3>
+<p>Stated informally, the Fourier theorem tells us that any time series can be represented
+as a sum of sinusoids.</p>
+<p>This is a powerful and useful theorem, as it means that we can use tools such as the
+Fourier transform and other similar measures, to compute frequency representations
+of any time series data.</p>
+<p>However, just because a signal can be represented by sinusoids does not mean that any
+given signal, or any given aspect of a signal, for which a power spectrum can be computed
+should be conceptualized as being comprised of rhythmic components.</p>
+<p>The power spectrum is just a possible representation of the original data, not a
+descriptive claim of the actual components of the data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Use NeuroDSP for time series simulations &amp; analyses</span>
+<span class="kn">from</span> <span class="nn">neurodsp</span> <span class="k">import</span> <span class="n">sim</span>
+<span class="kn">from</span> <span class="nn">neurodsp.utils</span> <span class="k">import</span> <span class="n">create_times</span>
+<span class="kn">from</span> <span class="nn">neurodsp.spectral</span> <span class="k">import</span> <span class="n">compute_spectrum_welch</span>
+<span class="kn">from</span> <span class="nn">neurodsp.plts</span> <span class="k">import</span> <span class="n">plot_time_series</span><span class="p">,</span> <span class="n">plot_power_spectra</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulation Settings</span>
+<span class="n">n_seconds</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">s_rate</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Compute an array of time values, for plotting, and check length of data</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">create_times</span><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
+<span class="n">n_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="frequency-representations-of-aperiodic-signals">
+<h2>Frequency Representations of Aperiodic Signals<a class="headerlink" href="#frequency-representations-of-aperiodic-signals" title="Permalink to this headline">¶</a></h2>
+<p>Let’s start with aperiodic signals, and examine how different types of aperiodic
+signals are represented in the frequency domain.</p>
+<div class="section" id="the-dirac-delta">
+<h3>The Dirac Delta<a class="headerlink" href="#the-dirac-delta" title="Permalink to this headline">¶</a></h3>
+<p>The Dirac delta is arguably the simplest signal, as it’s a signal of all zeros,
+except for a single value of 1.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a delta function</span>
+<span class="n">dirac_sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n_points</span><span class="p">])</span>
+<span class="n">dirac_sig</span><span class="p">[</span><span class="mi">500</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the time series of the delta signal</span>
+<span class="n">plot_time_series</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">dirac_sig</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_DoYouEvenOscillate_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_DoYouEvenOscillate_001.png" />
+<p>Next, lets compute the frequency representation of the delta function.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute a power spectrum of the Dirac delta</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">compute_spectrum_welch</span><span class="p">(</span><span class="n">dirac_sig</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectrum of the Dirac delta</span>
+<span class="n">plot_power_spectra</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_DoYouEvenOscillate_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_DoYouEvenOscillate_002.png" />
+<div class="section" id="section-conclusions">
+<h4>Section Conclusions<a class="headerlink" href="#section-conclusions" title="Permalink to this headline">¶</a></h4>
+<p>As we can see above, the power spectrum of the Dirac delta function has
+power across all frequencies.</p>
+<p>This is despite it containing containing a single non-zero value, and thus having
+no rhythmic properties to it in the time domain.</p>
+<p>The Dirac delta example can be taken as a proof of principle that observing power
+at a particular frequency does not necessarily imply that one should consider that
+there are any rhythmic properties at that frequency in the original time series.</p>
+<p>In this case, and many like it, power across all frequencies is a representation of
+transient (or aperiodic) activity in the time series. Broadly, when there are transients,
+or aperiodic components, lots of sinusoids have to be added together in order to represent
+aperiodic activity out of a basis set of periodic sine waves, and this is why such
+signals typically look very broadband in the frequency domain.</p>
+</div>
+</div>
+<div class="section" id="colored-noise-signals">
+<h3>Colored Noise Signals<a class="headerlink" href="#colored-noise-signals" title="Permalink to this headline">¶</a></h3>
+<p>Let’s now look at ‘noise’ signals.</p>
+<p>In the signals below, we will simulate colored noise signals, in which samples are
+drawn randomly from noise distributions, with no rhythmic properties.</p>
+<p>As we will see, in the power spectrum, these signals exhibit power at all frequencies,
+with specific patterns of powers across frequencies, which is dependent on the ‘color’
+of the noise.</p>
+<div class="section" id="white-noise">
+<h4>White Noise<a class="headerlink" href="#white-noise" title="Permalink to this headline">¶</a></h4>
+<p>A ‘white noise’ signal is one that is generated with uncorrelated samples drawn from
+a random distribution. Since each element of the signal is sampled randomly,
+there is no consistent rhythmic structure in the signal.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a white noise time series signal</span>
+<span class="n">white_sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the white noise time series</span>
+<span class="n">plot_time_series</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">white_sig</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_DoYouEvenOscillate_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_DoYouEvenOscillate_003.png" />
+<p>As before, we can compute and visualize the power spectrum of this signal.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the white noise signal</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">compute_spectrum_welch</span><span class="p">(</span><span class="n">white_sig</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the power spectrum of the white noise signal</span>
+<span class="n">plot_power_spectra</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_DoYouEvenOscillate_004.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_DoYouEvenOscillate_004.png" />
+<p>In the frequency representation, we can see that white noise has a flat power spectrum,
+with equal power across all frequencies. This is the definition of white noise.</p>
+<p>This is similar to the delta function, though note that in this case the power across
+frequencies is representing continuous aperiodic activity, rather than a single transient.</p>
+</div>
+<div class="section" id="pink-noise">
+<h4>Pink Noise<a class="headerlink" href="#pink-noise" title="Permalink to this headline">¶</a></h4>
+<p>Other ‘colors’ of noise refer to different patterns of power distributions
+in the power spectrum.</p>
+<p>For example, pink noise is a signal where power systematically decreases across
+frequencies in the power spectrum.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a pink noise signal</span>
+<span class="n">pink_sig</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">sim_powerlaw</span><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the pink noise time series</span>
+<span class="n">plot_time_series</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">pink_sig</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_DoYouEvenOscillate_005.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_DoYouEvenOscillate_005.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the pink noise signal</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">compute_spectrum_welch</span><span class="p">(</span><span class="n">pink_sig</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the power spectrum of the pink noise signal</span>
+<span class="n">plot_power_spectra</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_DoYouEvenOscillate_006.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_DoYouEvenOscillate_006.png" />
+</div>
+<div class="section" id="section-conclusion">
+<h4>Section Conclusion<a class="headerlink" href="#section-conclusion" title="Permalink to this headline">¶</a></h4>
+<p>The ‘colored noise’ signals above are simulated signals with no rhythmic properties,
+in the sense that there are no characteristic frequencies or visible rhythms in the data.</p>
+<p>Nevertheless, and by definition, in the power spectra of such signals, there is power across
+all frequencies, with some pattern of power across frequencies.</p>
+<p>However, there are no frequencies at which power is different from expected from an
+aperiodic noise signal. These signals are statistically, by definition, aperiodic.</p>
+</div>
+</div>
+</div>
+<div class="section" id="frequency-representations-of-rhythmic-signals">
+<h2>Frequency Representations of Rhythmic Signals<a class="headerlink" href="#frequency-representations-of-rhythmic-signals" title="Permalink to this headline">¶</a></h2>
+<p>Next, lets check what frequency representations look like for time series that do have
+rhythmic activity.</p>
+<div class="section" id="sinusoidal-signals">
+<h3>Sinusoidal Signals<a class="headerlink" href="#sinusoidal-signals" title="Permalink to this headline">¶</a></h3>
+<p>There are many different rhythmic signals we could simulate, in terms of different
+rhythmic shapes, and or temporal properties (such as rhythmic bursts). For this
+example, we will stick to simulating continuous sinusoidal signals.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate an oscillating signal</span>
+<span class="n">osc_sig</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">sim_oscillation</span><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the oscillating time series</span>
+<span class="n">plot_time_series</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">osc_sig</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_DoYouEvenOscillate_007.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_DoYouEvenOscillate_007.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the oscillating signal</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">compute_spectrum_welch</span><span class="p">(</span><span class="n">osc_sig</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the power spectrum of the oscillating signal</span>
+<span class="n">plot_power_spectra</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_DoYouEvenOscillate_008.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_DoYouEvenOscillate_008.png" />
+<div class="section" id="id2">
+<h4>Section Conclusion<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>When there is rhythmic activity at a particular frequency, this exhibits as a ‘peak’
+of power in the frequency domain. This peak indicates high power at a specific frequency,
+where as the power values at all other frequencies are effectively zero.</p>
+</div>
+</div>
+</div>
+<div class="section" id="frequency-representations-of-complex-signals">
+<h2>Frequency Representations of Complex Signals<a class="headerlink" href="#frequency-representations-of-complex-signals" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s consider the case whereby one could have a signal comprised of multiple
+components, for example one or more oscillations combined with an aperiodic component.</p>
+<div class="section" id="combined-aperiodic-periodic-signals">
+<h3>Combined Aperiodic &amp; Periodic Signals<a class="headerlink" href="#combined-aperiodic-periodic-signals" title="Permalink to this headline">¶</a></h3>
+<p>To examine this, we will simulate combined signals, comprising both periodic and aperiodic
+components, and see what the frequency representations look like.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define component of a combined signal: an oscillation and an aperiodic component</span>
+<span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;sim_oscillation&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;freq&#39;</span> <span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+    <span class="s1">&#39;sim_powerlaw&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;exponent&#39;</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Generate a combined signal</span>
+<span class="n">combined_sig</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">sim_combined</span><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="n">components</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the combined time series</span>
+<span class="n">plot_time_series</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">combined_sig</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_DoYouEvenOscillate_009.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_DoYouEvenOscillate_009.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the combined signal</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">compute_spectrum_welch</span><span class="p">(</span><span class="n">combined_sig</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the power spectrum of the combined signal</span>
+<span class="n">plot_power_spectra</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_DoYouEvenOscillate_010.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_DoYouEvenOscillate_010.png" />
+<div class="section" id="id3">
+<h4>Section Conclusion<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>In the power spectrum above, we can see that combined signals, with aperiodic &amp; periodic
+activity reflect elements of both components. The periodic power can be seen as a
+peak of power over and above the rest of the spectrum, at the frequency of the simulated
+rhythm. Across all frequencies, we also see the power contributed by the aperiodic component.</p>
+</div>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>In this example, we have seen that, in the frequency domain:</p>
+<ul class="simple">
+<li><p>transients and aperiodic activity exhibit power across all frequencies</p></li>
+<li><p>oscillations exhibit specific power, or a ‘peak’, at the frequency of the rhythm</p></li>
+<li><p>combined signals display a combination of these properties, with power
+across all frequencies, and overlying ‘peaks’ at frequencies with periodic activity</p></li>
+</ul>
+<p>Collectively, we have seen cases that motivate that simply having power at a particularly
+frequency does not imply any rhythmic component at that frequency. Peaks of frequency specific
+power are associated with rhythmic activity in the time series.</p>
+<p>What we have covered here are just a starting point for some properties of time
+series analysis and digital signal processing. For neural data, these properties alone
+do not tell us how to interpret neural power spectra. However, here we take them as a
+starting point that motivate why prominent rhythms in the time series can be measured
+as peaks in the power spectrum, but that absent a peak, we should not automatically
+interpret power at any given frequency as necessarily reflecting rhythmic activity.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.349 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-concepts-plot-doyouevenoscillate-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/d82e87bb1616655889a497b5b2019172/plot_DoYouEvenOscillate.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_DoYouEvenOscillate.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/b5b2c9277c4315e5778cb46a8f532c69/plot_DoYouEvenOscillate.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_DoYouEvenOscillate.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2020, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
