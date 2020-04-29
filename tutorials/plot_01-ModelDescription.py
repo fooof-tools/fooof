@@ -35,6 +35,8 @@ A description and introduction to the power spectrum model.
 
 ###################################################################################################
 
+# sphinx_gallery_thumbnail_number = 5
+
 # Import required code for visualizing example models
 from fooof import FOOOF
 from fooof.sim.gen import gen_power_spectrum
@@ -393,10 +395,4 @@ plot_annotated_model(fm2, plt_log=True)
 # `paper <https://www.biorxiv.org/content/early/2018/04/11/299859>`_.
 #
 # In the next tutorial, we will start to use this model.
-#
-
-###################################################################################################
-#
-# Sphinx settings:
-# sphinx_gallery_thumbnail_number = 5
 #

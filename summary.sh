@@ -14,7 +14,7 @@ cloc fooof/tests --exclude-dir='test_files'
 
 # Run Tests & Check Coverage
 printf "\n\n\n RUN TESTS & TEST COVERAGE: \n"
-coverage run --source fooof  -m py.test
+coverage run --source fooof -m py.test
 coverage report --omit="*/tests*"
 
 # Check doctests - runs doctests with pytest, skipping normal tests

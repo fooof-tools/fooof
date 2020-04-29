@@ -135,5 +135,6 @@ sphinx_gallery_conf = {
     'default_thumb_file': 'img/spectrum.png',
     'backreferences_dir': 'generated',   # Where to drop linking files between examples & API
     'doc_module': ('fooof',),
-    'reference_url': {'fooof': None}
+    'reference_url': {'fooof': None},
+    'remove_config_comments': True,
 }

@@ -29,6 +29,8 @@ A step by step overview of the algorithm for parameterizing neural power spectra
 
 ###################################################################################################
 
+# sphinx_gallery_thumbnail_number = 4
+
 # General imports
 import matplotlib.pyplot as plt
 
@@ -284,10 +286,4 @@ fm.plot(plt_log)
 # In this tutorial we have stepped through the parameterization algorithm fitting
 # power spectrum models. Next, we will continue to explore the FOOOF object,
 # properly introducing the settings and further exploring the parameters.
-#
-
-###################################################################################################
-#
-# Sphinx settings:
-# sphinx_gallery_thumbnail_number = 4
 #

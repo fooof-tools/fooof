@@ -39,6 +39,8 @@ Exploring the rhythmicity of time series and their frequency representations.
 
 ###################################################################################################
 
+# sphinx_gallery_thumbnail_number = 3
+
 import numpy as np
 
 # Use NeuroDSP for time series simulations & analyses
@@ -341,10 +343,4 @@ plot_power_spectra(freqs, powers)
 # starting point that motivate why prominent rhythms in the time series can be measured
 # as peaks in the power spectrum, but that absent a peak, we should not automatically
 # interpret power at any given frequency as necessarily reflecting rhythmic activity.
-#
-
-###################################################################################################
-#
-# Sphinx settings:
-# sphinx_gallery_thumbnail_number = 3
 #

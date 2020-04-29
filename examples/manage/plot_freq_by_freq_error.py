@@ -7,6 +7,8 @@ Check the error of power spectrum models across frequencies.
 
 ###################################################################################################
 
+# sphinx_gallery_thumbnail_number = 2
+
 # Import numpy for some utility functions
 import numpy as np
 
@@ -184,10 +186,4 @@ compute_pointwise_error_fg(fg, plot_errors=True)
 # If you see high errors, especially bunched up around particular frequencies,
 # this is a sign that something might be going wrong, and it might be worth
 # looking more into the how the model fits are going.
-#
-
-###################################################################################################
-#
-# Sphinx settings:
-# sphinx_gallery_thumbnail_number = 2
 #

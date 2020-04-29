@@ -14,6 +14,8 @@ options for tuning these these visualizations.
 
 ###################################################################################################
 
+# sphinx_gallery_thumbnail_number = 2
+
 # Import matplotlib to help manage plotting
 import matplotlib.pyplot as plt
 
@@ -168,9 +170,3 @@ fm.plot(plot_peaks='shade-line')
 # Plot from FOOOF, using a custom axes with some optional inputs to tune the plot
 _, ax = plt.subplots(figsize=[10, 10])
 fm.plot(plt_log=True, add_legend=False, ax=ax)
-
-###################################################################################################
-#
-# Sphinx settings:
-# sphinx_gallery_thumbnail_number = 2
-#
