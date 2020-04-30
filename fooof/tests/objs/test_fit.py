@@ -55,26 +55,28 @@ def test_fooof_fit_nk():
 
     ap_params = [50, 2]
     gauss_params = [10, 0.5, 2, 20, 0.3, 4]
+    nlv = 0.0025
 
-    xs, ys = gen_power_spectrum([3, 50], ap_params, gauss_params)
+    xs, ys = gen_power_spectrum([3, 50], ap_params, gauss_params, nlv)
 
     tfm = FOOOF(verbose=False)
     tfm.fit(xs, ys)
 
     # Check model results - aperiodic parameters
-    assert np.all(np.isclose(ap_params, tfm.aperiodic_params_, [0.5, 0.1]))
+    assert np.allclose(ap_params, tfm.aperiodic_params_, [0.5, 0.1])
 
     # Check model results - gaussian parameters
     for ii, gauss in enumerate(group_three(gauss_params)):
-        assert np.all(np.isclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0]))
+        assert np.allclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0])
 
 def test_fooof_fit_nk_noise():
     """Test FOOOF fit on noisy data, to make sure nothing breaks."""
 
     ap_params = [50, 2]
     gauss_params = [10, 0.5, 2, 20, 0.3, 4]
+    nlv = 1.0
 
-    xs, ys = gen_power_spectrum([3, 50], ap_params, gauss_params, nlv=1.0)
+    xs, ys = gen_power_spectrum([3, 50], ap_params, gauss_params, nlv)
 
     tfm = FOOOF(max_n_peaks=8, verbose=False)
     tfm.fit(xs, ys)
@@ -87,18 +89,19 @@ def test_fooof_fit_knee():
 
     ap_params = [50, 10, 1]
     gauss_params = [10, 0.3, 2, 20, 0.1, 4, 60, 0.3, 1]
+    nlv = 0.0025
 
-    xs, ys = gen_power_spectrum([1, 150], ap_params, gauss_params, nlv=0)
+    xs, ys = gen_power_spectrum([1, 150], ap_params, gauss_params, nlv)
 
     tfm = FOOOF(aperiodic_mode='knee', verbose=False)
     tfm.fit(xs, ys)
 
     # Check model results - aperiodic parameters
-    assert np.all(np.isclose(ap_params, tfm.aperiodic_params_, [1, 2, 0.2]))
+    assert np.allclose(ap_params, tfm.aperiodic_params_, [1, 2, 0.2])
 
     # Check model results - gaussian parameters
     for ii, gauss in enumerate(group_three(gauss_params)):
-        assert np.all(np.isclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0]))
+        assert np.allclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0])
 
 def test_fooof_fit_measures():
     """Test goodness of fit & error metrics, post model fitting."""
