@@ -106,7 +106,7 @@
 <p>This example is based on a recent project investigating band-by-band analyses as
 often done in the context of development. The paper for that project is available
 <a class="reference external" href="https://doi.org/10.1101/839258">here</a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import numpy and matplotlib</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
@@ -118,6 +118,7 @@ often done in the context of development. The paper for that project is availabl
 <span class="kn">from</span> <span class="nn">fooof.utils</span> <span class="k">import</span> <a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="fooof.utils.trim_spectrum" class="sphx-glr-backref-module-fooof-utils sphx-glr-backref-type-py-function"><span class="n">trim_spectrum</span></a>
 <span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="k">import</span> <a href="../../generated/fooof.analysis.get_band_peak_fm.html#fooof.analysis.get_band_peak_fm" title="fooof.analysis.get_band_peak_fm" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fm</span></a>
 <span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="k">import</span> <a href="../../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
 <span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="fooof.plts.spectra.plot_spectra_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectra_shading</span></a>
 </pre></div>
 </div>
@@ -225,6 +226,9 @@ simulated as being the same between groups, though in real data these could also
 <span class="c1">#   All parameters are set to match, except for systematic power differences</span>
 <span class="n">pe_g1</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">]]</span>
 <span class="n">pe_g2</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">]]</span>
+
+<span class="c1"># Set random seed, for consistency generating simulated data</span>
+<a href="../../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate example power spectra for each group</span>
@@ -431,7 +435,7 @@ came from using the parameterization approach, but was not evidence in prior
 work using only a band-by-band approach.
 You can find more on that project
 <a class="reference external" href="https://doi.org/10.1101/839258">here</a>.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.535 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.533 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-measurements-plot-bandbyband-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/25a20a64f0f68c43d76a91f17876de66/plot_BandByBand.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_BandByBand.py</span></code></a></p>

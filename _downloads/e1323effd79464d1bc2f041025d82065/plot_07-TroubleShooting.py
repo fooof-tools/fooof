@@ -18,11 +18,6 @@ from fooof.sim.params import param_sampler
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
 from fooof.sim.utils import set_random_seed
 
-###################################################################################################
-
-# Set random seed, for consistency generating simulated data
-set_random_seed(321)
-
 ####################################################################################################
 # Algorithm Settings
 # ------------------
@@ -133,6 +128,9 @@ ap_params = [20, 2]
 gauss_params = [[10, 1.0, 2.5], [20, 0.8, 2], [32, 0.6, 1]]
 # Set the level of noise to generate the power spectrum with
 nlv = 0.1
+
+# Set random seed, for consistency generating simulated data
+set_random_seed(21)
 
 # Create a simulated power spectrum
 freqs, spectrum = gen_power_spectrum(f_range, ap_params, gauss_params, nlv)

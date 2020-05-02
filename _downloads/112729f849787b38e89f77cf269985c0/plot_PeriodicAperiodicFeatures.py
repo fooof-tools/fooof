@@ -47,13 +47,13 @@ import matplotlib.pyplot as plt
 
 # Import simulation, utility, and plotting tools
 from fooof.bands import Bands
-from fooof.sim import gen_power_spectrum
 from fooof.utils import trim_spectrum
+from fooof.sim.gen import gen_power_spectrum
 from fooof.plts.spectra import plot_spectra_shading
 
 ###################################################################################################
 
-# Settings
+# Settings for plotting
 log_freqs = True
 log_powers = True
 shade_color = '#0365C0'

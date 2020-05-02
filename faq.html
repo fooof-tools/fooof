@@ -98,41 +98,37 @@
       
   <div class="section" id="frequently-asked-questions">
 <h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
-<p>The following are a collection of frequently asked questions about FOOOF.</p>
+<p>The following are a collection of frequently asked questions and answers about FOOOF.</p>
 <p>These answers focus on the ideas and concepts relating to parameterizing neural power spectra.</p>
-<p>Code specific and hands-on aspects of using FOOOF are covered in the
-<a class="reference external" href="https://fooof-tools.github.io/fooof/auto_tutorials/index.html">tutorials</a> and
-<a class="reference external" href="https://fooof-tools.github.io/fooof/auto_examples/index.html">examples</a>.</p>
 <div class="section" id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#what-is-fooof" id="id7">What is FOOOF?</a></p></li>
-<li><p><a class="reference internal" href="#what-do-you-mean-by-periodic-and-aperiodic-activity" id="id8">What do you mean by ‘periodic’ and ‘aperiodic’ activity?</a></p></li>
+<li><p><a class="reference internal" href="#what-is-meant-by-periodic-and-aperiodic-activity" id="id8">What is meant by ‘periodic’ and ‘aperiodic’ activity?</a></p></li>
 <li><p><a class="reference internal" href="#why-should-i-use-fooof" id="id9">Why should I use FOOOF?</a></p></li>
 <li><p><a class="reference internal" href="#why-is-it-important-to-measure-aperiodic-activity" id="id10">Why is it important to measure aperiodic activity?</a></p></li>
 <li><p><a class="reference internal" href="#why-call-it-aperiodic-why-not-call-it-1-f-or-noise" id="id11">Why call it ‘aperiodic’? Why not call it ‘1/f’ or ‘noise’?</a></p></li>
 <li><p><a class="reference internal" href="#why-should-i-look-for-a-peak-to-consider-periodic-activity" id="id12">Why should I look for a peak to consider periodic activity?</a></p></li>
-<li><p><a class="reference internal" href="#what-if-i-don-t-identify-a-peak-is-there-no-periodic-activity" id="id13">What if I don’t identify a peak? Is there no periodic activity?</a></p></li>
-<li><p><a class="reference internal" href="#how-should-i-interpret-peaks-are-they-equivalent-to-oscillations" id="id14">How should I interpret peaks? Are they equivalent to oscillations?</a></p></li>
-<li><p><a class="reference internal" href="#why-is-this-different-from-other-methods-what-makes-it-work" id="id15">Why is this different from other methods / what makes it work?</a></p></li>
-<li><p><a class="reference internal" href="#are-there-settings-for-the-fooof-algorithm" id="id16">Are there settings for the FOOOF algorithm?</a></p></li>
-<li><p><a class="reference internal" href="#how-do-i-pick-settings" id="id17">How do I pick settings?</a></p></li>
+<li><p><a class="reference internal" href="#what-if-there-is-no-peak-is-there-no-periodic-activity" id="id13">What if there is no peak? Is there no periodic activity?</a></p></li>
+<li><p><a class="reference internal" href="#how-should-peaks-be-interpreted-are-they-equivalent-to-oscillations" id="id14">How should peaks be interpreted? Are they equivalent to oscillations?</a></p></li>
+<li><p><a class="reference internal" href="#why-is-this-different-from-other-methods-what-makes-it-work" id="id15">Why is this different from other methods? What makes it work?</a></p></li>
+<li><p><a class="reference internal" href="#are-there-settings-for-the-fitting-algorithm" id="id16">Are there settings for the fitting algorithm?</a></p></li>
+<li><p><a class="reference internal" href="#how-should-settings-be-chosen" id="id17">How should settings be chosen?</a></p></li>
 <li><p><a class="reference internal" href="#i-m-interested-in-a-particular-oscillation-band-should-i-fit-a-small-range" id="id18">I’m interested in a particular oscillation band, should I fit a small range?</a></p></li>
-<li><p><a class="reference internal" href="#what-does-the-aperiodic-component-of-the-signal-mean-reflect" id="id19">What does the ‘aperiodic’ component of the signal mean / reflect?</a></p></li>
+<li><p><a class="reference internal" href="#what-does-the-aperiodic-component-of-the-signal-reflect" id="id19">What does the ‘aperiodic’ component of the signal reflect?</a></p></li>
 <li><p><a class="reference internal" href="#what-data-can-i-use-with-fooof" id="id20">What data can I use with FOOOF?</a></p></li>
-<li><p><a class="reference internal" href="#does-it-matter-how-i-calculate-the-power-spectra" id="id21">Does it matter how I calculate the power spectra?</a></p></li>
+<li><p><a class="reference internal" href="#does-it-matter-how-power-spectra-are-calculated" id="id21">Does it matter how power spectra are calculated?</a></p></li>
 <li><p><a class="reference internal" href="#does-this-work-on-epoched-data-can-i-fit-single-trials" id="id22">Does this work on epoched data? Can I fit single trials?</a></p></li>
 <li><p><a class="reference internal" href="#is-there-a-time-resolved-version" id="id23">Is there a time resolved version?</a></p></li>
 <li><p><a class="reference internal" href="#why-is-it-called-fooof" id="id24">Why is it called FOOOF?</a></p></li>
 <li><p><a class="reference internal" href="#how-do-i-cite-fooof" id="id25">How do I cite FOOOF?</a></p></li>
-<li><p><a class="reference internal" href="#what-colour-is-fooof" id="id26">What colour is FOOOF?</a></p></li>
 </ul>
 </div>
 <div class="section" id="what-is-fooof">
 <h3>What is FOOOF?<a class="headerlink" href="#what-is-fooof" title="Permalink to this headline">¶</a></h3>
-<p>FOOOF is an open-source Python toolbox to parameterize neural power spectra.</p>
-<p>In particular, FOOOF is a model driven approach that assumes that neurophysiological time
+<p>FOOOF is an open-source Python module for parameterizing neural power spectra.</p>
+<p>In particular, it uses a model driven approach that assumes that neurophysiological time
 series are comprised of two separable components, reflecting periodic and aperiodic activity.
 FOOOF does therefore rely on the assumption that these two components are indeed separable
 components of the underlying data, though it is agnostic to their physiological origin and
@@ -144,8 +140,8 @@ aperiodic and periodic components, as well as a full (combined) model fit of the
 power spectrum.</p>
 <p>The full mathematical description of the model is described in the tutorials.</p>
 </div>
-<div class="section" id="what-do-you-mean-by-periodic-and-aperiodic-activity">
-<h3>What do you mean by ‘periodic’ and ‘aperiodic’ activity?<a class="headerlink" href="#what-do-you-mean-by-periodic-and-aperiodic-activity" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="what-is-meant-by-periodic-and-aperiodic-activity">
+<h3>What is meant by ‘periodic’ and ‘aperiodic’ activity?<a class="headerlink" href="#what-is-meant-by-periodic-and-aperiodic-activity" title="Permalink to this headline">¶</a></h3>
 <p>By ‘periodic’ activity we mean features of the signal that are rhythmic, that are typically
 referred to as oscillations. This does not require that periodic activity be continuous,
 as oscillatory activity often exhibits as ‘bursts’ in the time series. In practice, putative
@@ -224,8 +220,8 @@ and above the aperiodic activity in the data. Using peaks in the power spectrum 
 periodic activity is an established idea (see, for example [<a class="reference external" href="https://doi.org/10.1016/j.neuron.2013.10.002">4</a>]), which we here formalize into
 a model quantification.</p>
 </div>
-<div class="section" id="what-if-i-don-t-identify-a-peak-is-there-no-periodic-activity">
-<h3>What if I don’t identify a peak? Is there no periodic activity?<a class="headerlink" href="#what-if-i-don-t-identify-a-peak-is-there-no-periodic-activity" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="what-if-there-is-no-peak-is-there-no-periodic-activity">
+<h3>What if there is no peak? Is there no periodic activity?<a class="headerlink" href="#what-if-there-is-no-peak-is-there-no-periodic-activity" title="Permalink to this headline">¶</a></h3>
 <p>If a peak is not detected, in the power spectrum, within a given frequency band, this is
 consistent with there being no periodic activity at that frequency. Without a detected peak,
 we argue that there is no evidence of periodic activity, at that frequency, over and
@@ -237,8 +233,8 @@ imply that there is definitively no periodic activity at that particular frequen
 be very low power periodic activity, and/or periodic activity that is variable through time
 (bursty) such as to not display a prominent peak across the analyzed time sample.</p>
 </div>
-<div class="section" id="how-should-i-interpret-peaks-are-they-equivalent-to-oscillations">
-<h3>How should I interpret peaks? Are they equivalent to oscillations?<a class="headerlink" href="#how-should-i-interpret-peaks-are-they-equivalent-to-oscillations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="how-should-peaks-be-interpreted-are-they-equivalent-to-oscillations">
+<h3>How should peaks be interpreted? Are they equivalent to oscillations?<a class="headerlink" href="#how-should-peaks-be-interpreted-are-they-equivalent-to-oscillations" title="Permalink to this headline">¶</a></h3>
 <p>Peaks, defined as regions of power over and above the aperiodic background are considered
 to be putative periodic activity. However, there is not necessarily a one-to-one mapping of
 peaks, as detected by the FOOOF algorithm, and oscillations in the data.</p>
@@ -261,7 +257,7 @@ potential harmonics arising from asymmetric periodic activity, one can use
 a Python tool for analyzing neural oscillations and their properties cycle-by-cycle [<a class="reference external" href="https://doi.org/10.1152/jn.00273.2019">5</a>].</p>
 </div>
 <div class="section" id="why-is-this-different-from-other-methods-what-makes-it-work">
-<h3>Why is this different from other methods / what makes it work?<a class="headerlink" href="#why-is-this-different-from-other-methods-what-makes-it-work" title="Permalink to this headline">¶</a></h3>
+<h3>Why is this different from other methods? What makes it work?<a class="headerlink" href="#why-is-this-different-from-other-methods-what-makes-it-work" title="Permalink to this headline">¶</a></h3>
 <p>Many existing approaches do not attempt to separate the periodic and aperiodic components of
 the signal. Of methods that do attempt to measure periodic and/or aperiodic signal properties,
 one difference is that FOOOF does not prioritize one or the other component, but attempts to
@@ -271,15 +267,15 @@ component are why we think FOOOF seems to do better at measuring these signal pr
 More in depth analysis of the properties of FOOOF, and systematic comparisons with other methods
 (through simulations) are upcoming.</p>
 </div>
-<div class="section" id="are-there-settings-for-the-fooof-algorithm">
-<h3>Are there settings for the FOOOF algorithm?<a class="headerlink" href="#are-there-settings-for-the-fooof-algorithm" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="are-there-settings-for-the-fitting-algorithm">
+<h3>Are there settings for the fitting algorithm?<a class="headerlink" href="#are-there-settings-for-the-fitting-algorithm" title="Permalink to this headline">¶</a></h3>
 <p>There are some settings for the algorithm that need to be set before it can be run, though the
 default values are often good enough to get started on most datasets.</p>
 <p>A full description of the settings - what they are and how to choose them -
 is covered in the tutorials.</p>
 </div>
-<div class="section" id="how-do-i-pick-settings">
-<h3>How do I pick settings?<a class="headerlink" href="#how-do-i-pick-settings" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="how-should-settings-be-chosen">
+<h3>How should settings be chosen?<a class="headerlink" href="#how-should-settings-be-chosen" title="Permalink to this headline">¶</a></h3>
 <p>There is often at least some level of picking the parameter settings that is needed to get
 FOOOF to fit well. To do so, we recommend selecting a subset of power spectra from your
 dataset, fitting FOOOF models, and tuning the settings on this dataset, like a training set.
@@ -303,8 +299,8 @@ then we still recommend fitting a broad range (for example, 3-40 Hz), and then e
 alpha oscillations post-hoc. There are utilities in fooof.analysis to extract oscillations
 from particular bands, and examples of this on the examples page.</p>
 </div>
-<div class="section" id="what-does-the-aperiodic-component-of-the-signal-mean-reflect">
-<h3>What does the ‘aperiodic’ component of the signal mean / reflect?<a class="headerlink" href="#what-does-the-aperiodic-component-of-the-signal-mean-reflect" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="what-does-the-aperiodic-component-of-the-signal-reflect">
+<h3>What does the ‘aperiodic’ component of the signal reflect?<a class="headerlink" href="#what-does-the-aperiodic-component-of-the-signal-reflect" title="Permalink to this headline">¶</a></h3>
 <p>We don’t know. Exactly what the ‘aperiodic’ component of the signal is, in terms of where
 it comes from, and what reflects is an open research question.</p>
 <p>Descriptively, we know that aperiodic activity is always there, and is a prominent
@@ -328,15 +324,16 @@ electrocorticography (ECoG) / intracranial EEG (iEEG).</p>
 <p>FOOOF should work across all of these modalities, and is broadly agnostic to the details
 of the data. However, data from different modalities may require different settings.</p>
 </div>
-<div class="section" id="does-it-matter-how-i-calculate-the-power-spectra">
-<h3>Does it matter how I calculate the power spectra?<a class="headerlink" href="#does-it-matter-how-i-calculate-the-power-spectra" title="Permalink to this headline">¶</a></h3>
-<p>For the most part, no, it does not matter exactly how you calculate power spectra that
-you will fit with FOOOF. For example, using different methods to estimate the power
-spectrum, such as Welch’s or wavelet approaches, should all be fine.</p>
-<p>Regardless of how you calculate them, the properties of the power spectra do matter somewhat
-to FOOOF - for example, the better the frequency resolution the more resolution you will have
-for estimating center frequencies and bandwidths of detected peaks, and the ‘smoother’
-the spectra, the better FOOOF will be able to fit.</p>
+<div class="section" id="does-it-matter-how-power-spectra-are-calculated">
+<h3>Does it matter how power spectra are calculated?<a class="headerlink" href="#does-it-matter-how-power-spectra-are-calculated" title="Permalink to this headline">¶</a></h3>
+<p>For the most part, it does not matter exactly how power spectra to be parameterized
+are calculated. Different methods for estimating the power spectrum, such as Welch’s
+or wavelet approaches, should all be fine.</p>
+<p>Regardless of how power spectra are computed, certain properties of the power spectra do
+influence how the parameterization goes. For example, the better the frequency resolution,
+the more precisely the algorithm will be able to estimate center frequencies and bandwidths
+of detected peaks. However, as a trade off, using longer time segments to end up with ‘smoother’
+spectra can also help with getting the algorithm to fit better.</p>
 </div>
 <div class="section" id="does-this-work-on-epoched-data-can-i-fit-single-trials">
 <h3>Does this work on epoched data? Can I fit single trials?<a class="headerlink" href="#does-this-work-on-epoched-data-can-i-fit-single-trials" title="Permalink to this headline">¶</a></h3>
@@ -381,12 +378,8 @@ of a legacy name, for a tool for parameterizing neural power spectra.</p>
 </div>
 <div class="section" id="how-do-i-cite-fooof">
 <h3>How do I cite FOOOF?<a class="headerlink" href="#how-do-i-cite-fooof" title="Permalink to this headline">¶</a></h3>
-<p>If you use FOOOF for analyses, or reference it’s approach, please cite the bioRxiv
-<a class="reference external" href="https://doi.org/10.1101/299859">preprint</a>.</p>
-</div>
-<div class="section" id="what-colour-is-fooof">
-<h3>What colour is FOOOF?<a class="headerlink" href="#what-colour-is-fooof" title="Permalink to this headline">¶</a></h3>
-<p>FOOOF is orange.</p>
+<p>See the <a class="reference external" href="https://fooof-tools.github.io/fooof/reference.html">reference</a> page
+for notes on how to report on using the algorithm and how to cite it.</p>
 </div>
 </div>
 <div class="section" id="references">

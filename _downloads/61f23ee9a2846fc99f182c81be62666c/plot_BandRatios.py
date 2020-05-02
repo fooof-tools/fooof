@@ -35,8 +35,6 @@ Exploring how band ratio measures relate to periodic & aperiodic activity.
 
 ###################################################################################################
 
-from copy import deepcopy
-
 # Import numpy and matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
@@ -45,6 +43,7 @@ import matplotlib.pyplot as plt
 from fooof.bands import Bands
 from fooof.utils import trim_spectrum
 from fooof.sim.gen import gen_power_spectrum
+from fooof.sim.utils import set_random_seed
 from fooof.plts.spectra import plot_spectrum_shading, plot_spectra_shading
 
 ###################################################################################################
@@ -82,6 +81,9 @@ ap = [0, 1]
 theta = [6, 0.4, 1]
 alpha = [10, 0.5, 0.75]
 beta  = [25, 0.3, 1.5]
+
+# Set random seed, for consistency generating simulated data
+set_random_seed(21)
 
 ###################################################################################################
 
@@ -148,8 +150,9 @@ print('Calculate theta / beta ratio is :\t {:1.2f}'.format(tbr))
 ###################################################################################################
 
 # Define a helper function for updating parameters
+from copy import deepcopy
 def upd(data, index, value):
-    """Return a updated version of an array."""
+    """Return a updated copy of an array."""
     out = deepcopy(data)
     out[index] = value
     return out

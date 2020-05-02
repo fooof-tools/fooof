@@ -58,15 +58,13 @@ bands = Bands({'delta' : [2, 4],
 
 ###################################################################################################
 
-# Set random seed for the simulations
-set_random_seed(21)
-
-###################################################################################################
-
 # Simulation settings
 s_rate = 1000
 n_seconds = 4
 times = create_times(n_seconds, s_rate)
+
+# Set random seed, for consistency generating simulated data
+set_random_seed(21)
 
 ###################################################################################################
 

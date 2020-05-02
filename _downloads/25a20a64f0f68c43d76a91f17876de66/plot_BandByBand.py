@@ -11,7 +11,7 @@ often done in the context of development. The paper for that project is availabl
 
 ###################################################################################################
 
-# General imports
+# Import numpy and matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -23,6 +23,7 @@ from fooof.bands import Bands
 from fooof.utils import trim_spectrum
 from fooof.analysis import get_band_peak_fm
 from fooof.sim.gen import gen_power_spectrum
+from fooof.sim.utils import set_random_seed
 from fooof.plts.spectra import plot_spectra_shading
 
 ###################################################################################################
@@ -151,6 +152,9 @@ ap_params = [1, 1]
 #   All parameters are set to match, except for systematic power differences
 pe_g1 = [[2, 0.25, 1], [6, 0.2, 1], [10, 0.5, 1.5], [20, 0.2, 3], [40, 0.25, 3.5]]
 pe_g2 = [[2, 0.5, 1], [6, 0.3, 1], [10, 0.5, 1.5], [20, 0.15, 3], [40, 0.15, 3.5]]
+
+# Set random seed, for consistency generating simulated data
+set_random_seed(21)
 
 ###################################################################################################
 

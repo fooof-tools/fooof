@@ -119,9 +119,7 @@ relate to periodic and aperiodic activity.</p>
 <p>We have completed a full project investigating methodological properties of band
 ratio measures, which is available
 <a class="reference external" href="https://github.com/voytekresearch/BandRatios">here</a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
-
-<span class="c1"># Import numpy and matplotlib</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import numpy and matplotlib</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
@@ -129,6 +127,7 @@ ratio measures, which is available
 <span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a>
 <span class="kn">from</span> <span class="nn">fooof.utils</span> <span class="k">import</span> <a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="fooof.utils.trim_spectrum" class="sphx-glr-backref-module-fooof-utils sphx-glr-backref-type-py-function"><span class="n">trim_spectrum</span></a>
 <span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="k">import</span> <a href="../../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
 <span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <a href="../../generated/fooof.plts.spectra.plot_spectrum_shading.html#fooof.plts.spectra.plot_spectrum_shading" title="fooof.plts.spectra.plot_spectrum_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectrum_shading</span></a><span class="p">,</span> <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="fooof.plts.spectra.plot_spectra_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectra_shading</span></a>
 </pre></div>
 </div>
@@ -161,6 +160,9 @@ a baseline power spectrum.</p>
 <span class="n">theta</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="n">alpha</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">]</span>
 <span class="n">beta</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]</span>
+
+<span class="c1"># Set random seed, for consistency generating simulated data</span>
+<a href="../../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a power spectrum</span>
@@ -217,8 +219,9 @@ they relate to the relative power between two bands.</p>
 see how this changes our measured theta / beta ratio, as compared to our baseline
 power spectrum.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a helper function for updating parameters</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
 <span class="k">def</span> <span class="nf">upd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a updated version of an array.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Return a updated copy of an array.&quot;&quot;&quot;</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="n">out</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
     <span class="k">return</span> <span class="n">out</span>
@@ -351,7 +354,7 @@ in neural data.</p>
 <p>For more investigation into band ratios, their methodological issues, applications to real
 data, and a comparison to parameterizing power spectra, see the full project
 <a class="reference external" href="https://github.com/voytekresearch/BandRatios">here</a>,</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.629 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.702 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-measurements-plot-bandratios-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/61f23ee9a2846fc99f182c81be62666c/plot_BandRatios.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_BandRatios.py</span></code></a></p>

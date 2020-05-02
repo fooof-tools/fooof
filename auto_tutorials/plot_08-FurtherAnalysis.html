@@ -128,6 +128,7 @@ power spectra to fit with power spectrum models.</p>
 <span class="c1"># Import simulation code and utilities</span>
 <span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="k">import</span> <a href="../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_sampler</span></a>
 <span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="k">import</span> <a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
 
 <span class="c1"># Import some analysis functions</span>
 <span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="k">import</span> <a href="../generated/fooof.analysis.get_band_peak_fm.html#fooof.analysis.get_band_peak_fm" title="fooof.analysis.get_band_peak_fm" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fm</span></a><span class="p">,</span> <a href="../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a>
@@ -151,7 +152,10 @@ power spectra to fit with power spectrum models.</p>
 </div>
 <div class="section" id="simulate-and-fit-group-data">
 <h3>Simulate and Fit Group Data<a class="headerlink" href="#simulate-and-fit-group-data" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate some simulated power spectra</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set random seed, for consistency generating simulated data</span>
+<a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
+
+<span class="c1"># Generate some simulated power spectra</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span> <span class="o">=</span> <a href="../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="n">n_spectra</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                                          <span class="n">freq_range</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
                                          <span class="n">aperiodic_params</span><span class="o">=</span><a href="../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_sampler</span></a><span class="p">([[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]]),</span>
@@ -226,11 +230,11 @@ this approach will only extract one peak per individual model in the FOOOFGroup 
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[10.03993749  0.48575651  3.79992456]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[10.03969821  0.48627642  3.78825898]
+ [10.03394581  0.4880723   3.82623258]
  [        nan         nan         nan]
- [        nan         nan         nan]
- [10.02226131  0.48688056  3.81660102]
- [10.03005794  0.4891892   3.7970663 ]]
+ [10.04095459  0.49087164  3.81810625]
+ [        nan         nan         nan]]
 </pre></div>
 </div>
 <p>When selecting peaks from a group of model fits, we want to retain information about
@@ -251,7 +255,7 @@ If no peaks are found, that row is filled with ‘nan’.</p>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Alpha CF : 10.03
 Alpha PW : 0.49
-Alpha BW : 3.80
+Alpha BW : 3.81
 </pre></div>
 </div>
 </div>
@@ -291,8 +295,8 @@ just need to be extracted from FOOOF objects and fit into analyses of interest.<
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[2.01868987 1.5039424  1.99932653 2.01985616 2.01823925 1.51782632
- 1.50282156 1.5016588  2.01877098 1.52056289]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[1.5174819  1.51806639 1.99827884 1.51563434 2.00559925 2.01700177
+ 2.00089211 2.02010911 1.51575116 1.99955831]
 </pre></div>
 </div>
 </div>
@@ -320,7 +324,7 @@ page.</p>
 <p>If you are having any troubles, please submit an issue on Github
 <a class="reference external" href="https://github.com/fooof-tools/fooof">here</a>,
 and/or get in contact with us at <a class="reference external" href="mailto:voytekresearch&#37;&#52;&#48;gmail&#46;com">voytekresearch<span>&#64;</span>gmail<span>&#46;</span>com</a>.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.254 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.319 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-08-furtheranalysis-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/bf02a0d9260abd47504beac02e8ba2e3/plot_08-FurtherAnalysis.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_08-FurtherAnalysis.py</span></code></a></p>

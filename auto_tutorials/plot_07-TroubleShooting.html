@@ -115,10 +115,6 @@
 <span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="k">import</span> <a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set random seed, for consistency generating simulated data</span>
-<a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a><span class="p">(</span><span class="mi">321</span><span class="p">)</span>
-</pre></div>
-</div>
 <div class="section" id="algorithm-settings">
 <h2>Algorithm Settings<a class="headerlink" href="#algorithm-settings" title="Permalink to this headline">¶</a></h2>
 <p>With default settings, the power spectrum model is minimally constrained. It defaults
@@ -204,6 +200,9 @@ function to simulate individual power spectra, following the power spectrum mode
 <span class="c1"># Set the level of noise to generate the power spectrum with</span>
 <span class="n">nlv</span> <span class="o">=</span> <span class="mf">0.1</span>
 
+<span class="c1"># Set random seed, for consistency generating simulated data</span>
+<a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
+
 <span class="c1"># Create a simulated power spectrum</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span> <span class="o">=</span> <a href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">gauss_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
 </pre></div>
@@ -228,20 +227,20 @@ function to simulate individual power spectra, following the power spectrum mode
                                  Frequency Resolution is 0.50 Hz
 
                             Aperiodic Parameters (offset, exponent):
-                                         20.0549, 2.0230
+                                         20.0456, 2.0236
 
                                        7 peaks were found:
-                                CF:  10.10, PW:  0.889, BW:  4.89
-                                CF:  18.02, PW:  0.583, BW:  0.67
-                                CF:  20.24, PW:  0.817, BW:  2.98
-                                CF:  31.50, PW:  0.529, BW:  1.60
-                                CF:  32.45, PW:  0.522, BW:  0.50
-                                CF:  33.62, PW:  0.287, BW:  0.50
-                                CF:  47.99, PW:  0.252, BW:  0.50
+                                CF:   9.83, PW:  0.908, BW:  4.90
+                                CF:  19.92, PW:  0.826, BW:  3.60
+                                CF:  22.69, PW:  0.525, BW:  0.50
+                                CF:  31.85, PW:  0.566, BW:  2.22
+                                CF:  38.65, PW:  0.262, BW:  0.59
+                                CF:  39.50, PW:  0.239, BW:  0.55
+                                CF:  49.46, PW:  0.209, BW:  0.50
 
                                      Goodness of fit metrics:
-                                    R^2 of model fit is 0.9916
-                                    Error of the fit is 0.0638
+                                    R^2 of model fit is 0.9893
+                                    Error of the fit is 0.0710
 
 ==================================================================================================
 </pre></div>
@@ -266,16 +265,16 @@ high, given the amount of noise we in the simulated power spectrum.</p>
                                  Frequency Resolution is 0.50 Hz
 
                             Aperiodic Parameters (offset, exponent):
-                                         20.0466, 2.0155
+                                         20.0242, 1.9996
 
                                        3 peaks were found:
-                                CF:  10.09, PW:  0.892, BW:  4.86
-                                CF:  20.05, PW:  0.822, BW:  3.32
-                                CF:  31.80, PW:  0.522, BW:  2.21
+                                CF:   9.82, PW:  0.910, BW:  4.87
+                                CF:  20.03, PW:  0.817, BW:  3.88
+                                CF:  31.85, PW:  0.566, BW:  2.22
 
                                      Goodness of fit metrics:
-                                    R^2 of model fit is 0.9892
-                                    Error of the fit is 0.0722
+                                    R^2 of model fit is 0.9860
+                                    Error of the fit is 0.0823
 
 ==================================================================================================
 </pre></div>
@@ -293,9 +292,9 @@ which is why we compare to the model gaussian parameters here.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Ground Truth             Model Parameters
-10.00  1.00  2.50        10.09  0.89  2.43
-20.00  0.80  2.00        20.05  0.82  1.66
-32.00  0.60  1.00        31.80  0.53  1.10
+10.00  1.00  2.50         9.82  0.91  2.43
+20.00  0.80  2.00        20.03  0.82  1.94
+32.00  0.60  1.00        31.85  0.57  1.11
 </pre></div>
 </div>
 <div class="section" id="power-spectra-with-no-peaks">
@@ -352,16 +351,16 @@ allowing you to define an absolute threshold for extracting peaks.</p>
                                  Frequency Resolution is 0.50 Hz
 
                             Aperiodic Parameters (offset, exponent):
-                                         20.0090, 2.0051
+                                         19.9965, 1.9965
 
                                        3 peaks were found:
-                                CF:  10.00, PW:  1.019, BW:  1.89
-                                CF:  20.00, PW:  0.306, BW:  2.90
-                                CF:  32.08, PW:  0.297, BW:  1.83
+                                CF:  10.00, PW:  0.986, BW:  1.94
+                                CF:  19.95, PW:  0.310, BW:  2.78
+                                CF:  32.04, PW:  0.231, BW:  1.97
 
                                      Goodness of fit metrics:
-                                    R^2 of model fit is 0.9993
-                                    Error of the fit is 0.0169
+                                    R^2 of model fit is 0.9992
+                                    Error of the fit is 0.0182
 
 ==================================================================================================
 </pre></div>
@@ -374,9 +373,9 @@ allowing you to define an absolute threshold for extracting peaks.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Ground Truth             Model Parameters
-10.00  1.00  1.00        10.00  1.02  0.95
-20.00  0.30  1.50        20.00  0.31  1.45
-32.00  0.25  1.00        32.08  0.30  0.92
+10.00  1.00  1.00        10.00  0.99  0.97
+20.00  0.30  1.50        19.95  0.31  1.39
+32.00  0.25  1.00        32.04  0.23  0.98
 </pre></div>
 </div>
 </div>
@@ -433,13 +432,13 @@ possible parameters.</p>
                               Power spectra were fit without a knee.
 
                                       Aperiodic Fit Values:
-                        Exponents - Min:  1.499, Max:  2.499, Mean: 1.912
+                        Exponents - Min:  1.495, Max:  2.539, Mean: 2.114
 
-                         In total 65 peaks were extracted from the group
+                         In total 45 peaks were extracted from the group
 
                                      Goodness of fit metrics:
                             R2s -  Min:  0.999, Max:  1.000, Mean: 1.000
-                         Errors -  Min:  0.005, Max:  0.013, Mean: 0.008
+                         Errors -  Min:  0.006, Max:  0.018, Mean: 0.009
 
 ==================================================================================================
 </pre></div>
@@ -474,16 +473,15 @@ and select these fits from the <a class="reference internal" href="../generated/
                                  Frequency Resolution is 0.50 Hz
 
                             Aperiodic Parameters (offset, exponent):
-                                         20.0773, 2.0431
+                                         50.0718, 2.5387
 
-                                       3 peaks were found:
-                                CF:  10.12, PW:  0.476, BW:  3.66
-                                CF:  18.75, PW:  0.247, BW:  6.00
-                                CF:  22.92, PW:  0.202, BW:  4.97
+                                       2 peaks were found:
+                                CF:  10.18, PW:  0.466, BW:  3.80
+                                CF:  20.08, PW:  0.300, BW:  6.00
 
                                      Goodness of fit metrics:
-                                    R^2 of model fit is 0.9994
-                                    Error of the fit is 0.0133
+                                    R^2 of model fit is 0.9993
+                                    Error of the fit is 0.0175
 
 ==================================================================================================
 </pre></div>
@@ -512,7 +510,12 @@ large number of gaussians.</p>
     <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.save_report" title="fooof.FOOOF.save_report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">save_report</span></a><span class="p">(</span><span class="s1">&#39;Report_ToCheck_#&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ind</span><span class="p">))</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_plot_07-TroubleShooting_006.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_07-TroubleShooting_006.png" />
+<ul class="sphx-glr-horizontal">
+<li><img alt="../_images/sphx_glr_plot_07-TroubleShooting_006.png" class="sphx-glr-multi-img" src="../_images/sphx_glr_plot_07-TroubleShooting_006.png" />
+</li>
+<li><img alt="../_images/sphx_glr_plot_07-TroubleShooting_007.png" class="sphx-glr-multi-img" src="../_images/sphx_glr_plot_07-TroubleShooting_007.png" />
+</li>
+</ul>
 <p>Another thing that can be worth keeping an eye on is the average number of fit
 peaks per model. A particularly high value can indicate overfitting.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the average number of fit peaks, per model</span>
@@ -520,7 +523,7 @@ peaks per model. A particularly high value can indicate overfitting.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Average number of fit peaks:  6.5
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Average number of fit peaks:  4.5
 </pre></div>
 </div>
 </div>
@@ -569,7 +572,7 @@ bad fits / bugs back to us, as demonstrated below.</p>
 <p>We have now stepped through the full work-flow of fitting power spectrum models, using
 FOOOF objects, picking settings, and troubleshooting model fits. In the next
 and final tutorial, we will introduce how to start analyzing FOOOF results.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.885 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.444 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-07-troubleshooting-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/e1323effd79464d1bc2f041025d82065/plot_07-TroubleShooting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_07-TroubleShooting.py</span></code></a></p>
