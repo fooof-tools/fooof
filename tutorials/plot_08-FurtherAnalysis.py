@@ -39,6 +39,7 @@ from fooof.bands import Bands
 # Import simulation code and utilities
 from fooof.sim.params import param_sampler
 from fooof.sim.gen import gen_group_power_spectra
+from fooof.sim.utils import set_random_seed
 
 # Import some analysis functions
 from fooof.analysis import get_band_peak_fm, get_band_peak_fg
@@ -69,6 +70,9 @@ fm.fit(freqs, spectrum, [3, 30])
 #
 
 ###################################################################################################
+
+# Set random seed, for consistency generating simulated data
+set_random_seed(21)
 
 # Generate some simulated power spectra
 freqs, spectra = gen_group_power_spectra(n_spectra=10,

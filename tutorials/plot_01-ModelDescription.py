@@ -40,10 +40,14 @@ A description and introduction to the power spectrum model.
 # Import required code for visualizing example models
 from fooof import FOOOF
 from fooof.sim.gen import gen_power_spectrum
+from fooof.sim.utils import set_random_seed
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.annotate import plot_annotated_model
 
 ###################################################################################################
+
+# Set random seed, for consistency generating simulated data
+set_random_seed(21)
 
 # Simulate example power spectra
 freqs1, powers1 = gen_power_spectrum([3, 40], [1, 1],

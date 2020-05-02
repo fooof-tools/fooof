@@ -41,15 +41,19 @@ Exploring the rhythmicity of time series and their frequency representations.
 
 # sphinx_gallery_thumbnail_number = 3
 
+# Import numpy
 import numpy as np
 
 # Use NeuroDSP for time series simulations & analyses
 from neurodsp import sim
-from neurodsp.utils import create_times
+from neurodsp.utils import create_times, set_random_seed
 from neurodsp.spectral import compute_spectrum_welch
 from neurodsp.plts import plot_time_series, plot_power_spectra
 
 ###################################################################################################
+
+# Set random seed, for consistency generating simulated data
+set_random_seed(21)
 
 # Simulation Settings
 n_seconds = 2
