@@ -98,22 +98,33 @@
       
   <div class="section" id="code-changelog">
 <h1>Code Changelog<a class="headerlink" href="#code-changelog" title="Permalink to this headline">¶</a></h1>
-<p>This page contains the changelog for the FOOOF codebase and any notes on updating between versions.</p>
-<p>This page primarly notes changes for major version updates. For notes on the specific updates
+<p>This page contains the changelog for the FOOOF module and any notes on updating between versions.</p>
+<p>This page primarily notes changes for major version updates. For notes on the specific updates
 for minor releases, see the <a class="reference external" href="https://github.com/fooof-tools/fooof/releases">release page</a>.</p>
 <div class="section" id="id1">
 <h2>1.0.0<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>Warning: the 1.X.X release series is an API breaking release from the from 0.X.X series.</p>
-<p>That is it say, that some names and module organizations have changed, and you should
-only update if and when you are ready to update your code to reflect the new changes.</p>
+<p>Warning: the 1.X.X release series is an API breaking release from prior versions (0.X.X).</p>
+<p>Some names and module organizations have changed, which means existing code may no longer
+work as currently written when updating to the new version. You should only update
+if and when you are ready to update your code to reflect the new changes.</p>
 <p>Note that the main changes are in code organization, some names, and the addition of
 many new features. The fitting algorithm itself has not changed, and model results fit
 with the new version should be roughly equivalent to those with older versions. However,
 there are bug fixes and tweaks such that new model fits are not guaranteed to be the
 identical to prior fits.</p>
+<div class="section" id="code-organization">
+<h3>Code Organization<a class="headerlink" href="#code-organization" title="Permalink to this headline">¶</a></h3>
+<p>The internal organization of the module has been changed.</p>
+<p>These internal organization changes mostly reflect turning internal files into
+sub-modules. Overall, this means that although the main functions and objects can
+still be imported the same as in the 0.X.X series, some items have changed name or moved.</p>
+<p>To see the new names and organization of the module, check the
+<a class="reference external" href="https://fooof-tools.github.io/fooof/api.html">API page</a>.</p>
+</div>
 <div class="section" id="naming-updates">
 <h3>Naming Updates<a class="headerlink" href="#naming-updates" title="Permalink to this headline">¶</a></h3>
-<p>The following is a list of the key naming updates, of public facing code.</p>
+<p>One of the major changes is name changes of some elements in the module.</p>
+<p>The following are the main name changes:</p>
 <ul class="simple">
 <li><p>the <cite>synth</cite> module is now called them <cite>sim</cite> module</p></li>
 <li><p>references to <cite>background</cite> are now called <cite>aperiodic</cite></p>
@@ -127,13 +138,46 @@ identical to prior fits.</p>
 <li><p><cite>amplitude</cite>, in reference to peaks, is now called <cite>height</cite></p>
 <ul>
 <li><p>setting <cite>min_peak_amplitude</cite> -&gt; <cite>min_peak_height</cite></p></li>
-<li><p>References to <cite>AMP</cite> are now labelled and accessed as <cite>PW</cite> (for ‘power’)</p></li>
+<li><p>References to <cite>AMP</cite> are now labeled and accessed as <cite>PW</cite> (for ‘power’)</p></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="previously-saved-data">
-<h3>Previously Saved Data<a class="headerlink" href="#previously-saved-data" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="code-updates">
+<h3>Code Updates<a class="headerlink" href="#code-updates" title="Permalink to this headline">¶</a></h3>
+<p>This version adds a large number of code updates &amp; additions, including:</p>
+<ul class="simple">
+<li><p>A big extension of the plotting sub-module</p></li>
+<li><p>Adding new functions to manipulate, manage, organize and manage FOOOF objects</p></li>
+<li><p>Add new analysis functions, including more utilities for checking model errors</p></li>
+<li><p>Add a new ‘Bands’ object for managing frequency band definitions</p></li>
+<li><p>Extra methods on FOOOF &amp; FOOOFGroup objects for managing data &amp; results</p></li>
+<li><p>Miscellaneous bug fixes &amp; other additions</p></li>
+</ul>
+<p>To see all the new features in FOOOF, check out the API page on the documentation site.</p>
+<p>The full history of changes is available in the Github commit and pull request history.</p>
+<p>The bulk of the updates for 1.X.X went through in the following pull requests:</p>
+<ul class="simple">
+<li><p>#152: broad updates, including lots of issue fixes, and code &amp; documentation extensions</p></li>
+<li><p>#139: add ‘Bands’ object and more functions for managing FOOOF objects</p></li>
+<li><p>#130: updates data objects and internal data management</p></li>
+<li><p>#121 &amp; #129: code reorganizations &amp; cleanups</p></li>
+<li><p>#122: Updating terminology and names</p></li>
+</ul>
+</div>
+<div class="section" id="documentation-updates">
+<h3>Documentation Updates<a class="headerlink" href="#documentation-updates" title="Permalink to this headline">¶</a></h3>
+<p>The 1.X.X series comes with a greatly updated documentation site.</p>
+<p>As well as updating the tutorials, API list, and other existing documentation, there is also a
+large amount of new materials, including:</p>
+<ul class="simple">
+<li><p>new examples, including those covering new functionality</p></li>
+<li><p>a new ‘motivations’ section, exploring why ‘parameterizing neural power spectra’ is a useful idea &amp; method</p></li>
+<li><p>new or updated sections on frequently asked questions, a module glossary, and how to reference the module</p></li>
+</ul>
+</div>
+<div class="section" id="a-note-on-previously-saved-data">
+<h3>A Note on Previously Saved Data<a class="headerlink" href="#a-note-on-previously-saved-data" title="Permalink to this headline">¶</a></h3>
 <p>Note that if you have data saved out from the 0.X.X release series of the module, then the
 code update to the 1.X.X series won’t be able to properly load this data out of the box.</p>
 <p>This is due to the naming changes, and in particular the change from ‘background’ to
@@ -142,41 +186,12 @@ the word ‘background’ to ‘aperiodic’, this should update the files so th
 the 1.X.X version. Note that if you also saved out the algorithm settings, you may need to update
 the name of <cite>min_peak_amplitude</cite> to <cite>min_peak_height</cite> as well.</p>
 </div>
-<div class="section" id="code-organization">
-<h3>Code Organization<a class="headerlink" href="#code-organization" title="Permalink to this headline">¶</a></h3>
-<p>The internal organization of the module has been changed - though the main functions and
-objects can still be imported the same as in the 0.X.X series. The internal organization
-changes typically reflect turning internal files into sub-modules.</p>
-</div>
-<div class="section" id="code-updates">
-<h3>Code Updates<a class="headerlink" href="#code-updates" title="Permalink to this headline">¶</a></h3>
-<p>This version adds a large number of code updates &amp; additions, including:
-- A big extension of the plotting sub-module
-- Adding new functions to manipulate, manage, organize and manage FOOOF objects
-- Add new analysis functions, including more utilities for checking model errors
-- Add a new ‘Bands’ object for managing frequency band definitions
-- Extra methods on FOOOF &amp; FOOOFGroup objects for managing data &amp; results
-- Miscellaneous bug fixes &amp; other additions</p>
-<p>To see all the new features in FOOOF, check out the API page on documentation site.</p>
-<p>The full history of changes is avaible in the Github commit and pull request history.
-The bulk of the updates for 1.X.X went through in the following pull requests:
-- #152: broad updates, including lots of issue fixes, and code &amp; documentation extensions
-- #139: add ‘Bands’ object and more functions for managing FOOOF objects
-- #130: updates data objects and internal data management
-- #121 &amp; #129: code reorganizations &amp; cleanups
-- #122: Updating terminology and names</p>
-</div>
-<div class="section" id="documentation-updates">
-<h3>Documentation Updates<a class="headerlink" href="#documentation-updates" title="Permalink to this headline">¶</a></h3>
-<p>The 1.X.X series comes with a greatly updated documentation site, in which as well as
-updating the tutorials and existing documentation, there are a large number of extra
-examples, and a new ‘motivations’ section, exploring why ‘parameterizing neural power spectra’
-is a useful idea &amp; method.</p>
-</div>
 </div>
 <div class="section" id="x">
 <h2>0.1.X<a class="headerlink" href="#x" title="Permalink to this headline">¶</a></h2>
-<p>The 0.1.X series of releases for FOOOF was the initial release series of FOOOF, with the original naming scheme. This series is now deprecated.</p>
+<p>The 0.1.X series of releases for FOOOF was the initial release beta series of FOOOF.</p>
+<p>This series a different naming scheme and module organization to th current 1.X.X series.</p>
+<p>This series is now deprecated.</p>
 <p>These releases can still be accessed, and are described, on the
 <a class="reference external" href="https://github.com/fooof-tools/fooof/releases">release page</a></p>
 </div>
