@@ -4,51 +4,22 @@ import os
 from setuptools import setup, find_packages
 
 # Get the current version number from inside the module
-with open(os.path.join('fooof', 'version.py')) as vf:
-    exec(vf.read())
+with open(os.path.join('fooof', 'version.py')) as version_file:
+    exec(version_file.read())
 
-# Copy in long description.
-#  Note: this is a partial copy from the README
-#    Only update here in coordination with the README, to keep things consistent.
-LONG_DESCRIPTION = \
-"""
-FOOOF: Fitting Oscillations & One-Over F
+# Load the long description from the README
+with open('README.rst') as readme_file:
+    long_description = readme_file.read()
 
-FOOOF is a fast, efficient, physiologically-informed model to parameterize neural
-power spectra, characterizing both the aperiodic & periodic components.
-
-The model conceives of the neural power spectrum as consisting of two distinct components:
-
-1) an aperiodic component, reflecting 1/f like characteristics, modeled with an exponential fit, with
-2) band-limited peaks, reflecting putative oscillations, and modeled as Gaussians
-
-The module includes:
-
-- Code for applying models to parameterize neural power spectra
-- Plotting functions for visualizing power spectra, model fits, and model parameters
-- Analysis functions for examining model components and parameters
-- Utilities for Input/Output management, data management and analysis reports
-- Simulation code for simulating power spectra for methods testing
-
-More details are available on the documentation site.
-
-Documentation: https://fooof-tools.github.io/
-
-If you use this code in your project, please cite:
-
-Haller M, Donoghue T, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Knight RT, Shestyuk A,
-Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859. doi: https://doi.org/10.1101/299859
-
-A full description of the method and approach is available in this paper.
-
-Direct Paper Link: https://www.biorxiv.org/content/10.1101/299859v1
-"""
+# Load the required dependencies from the requirements file
+with open("requirements.txt") as requirements_file:
+    install_requires = requirements_file.read().splitlines()
 
 setup(
     name = 'fooof',
     version = __version__,
     description = 'fitting oscillations & one-over f',
-    long_description = LONG_DESCRIPTION,
+    long_description = long_description,
     python_requires = '>=3.5',
     author = 'The Voytek Lab',
     author_email = 'voyteklab@gmail.com',
@@ -80,7 +51,7 @@ setup(
     },
     download_url = 'https://github.com/fooof-tools/fooof/releases',
     keywords = ['neuroscience', 'neural oscillations', 'power spectra', '1/f', 'electrophysiology'],
-    install_requires = ['numpy', 'scipy>=0.19.0'],
+    install_requires = install_requires,
     tests_require = ['pytest'],
     extras_require = {
         'plot'    : ['matplotlib'],
