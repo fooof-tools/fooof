@@ -1,2 +1,2 @@
 numpy
-scipy >= 0.19
+scipy>=0.19
