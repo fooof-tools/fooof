@@ -9,11 +9,15 @@ for minor releases, see the `release page <https://github.com/fooof-tools/fooof/
 1.0.0
 -----
 
-Warning: the 1.X.X release series is an API breaking release from prior versions (0.X.X).
+Warning: the 1.X.X release series is an API breaking release from the prior versions,
+in the beta series (0.X.X).
 
-Some names and module organizations have changed, which means existing code may no longer
-work as currently written when updating to the new version. You should only update
-if and when you are ready to update your code to reflect the new changes.
+The 1.X.X release series of FOOOF is the current stable version of the module.
+
+As compared to the prior series (0.X.X), some names and module organizations have changed.
+This means existing code that uses FOOOF may no longer work as currently written with the
+new version, and may need updating. You should update to the new version when you are ready to
+update your code to reflect the new changes.
 
 Note that the main changes are in code organization, some names, and the addition of
 many new features. The fitting algorithm itself has not changed, and model results fit
@@ -24,7 +28,7 @@ identical to prior fits.
 Code Organization
 ~~~~~~~~~~~~~~~~~
 
-The internal organization of the module has been changed.
+The internal organization of the module has changed with the 1.X.X series.
 
 These internal organization changes mostly reflect turning internal files into
 sub-modules. Overall, this means that although the main functions and objects can
@@ -36,9 +40,12 @@ To see the new names and organization of the module, check the
 Naming Updates
 ~~~~~~~~~~~~~~
 
-One of the major changes is name changes of some elements in the module.
+There are a series of name changes with the new 1.X.X series.
 
-The following are the main name changes:
+These name changes were done to update the module to reflect the current vocabulary
+and conceptual ideas relating to work on parameterizing neural power spectra.
+
+The main name changes are:
 
 - the `synth` module is now called them `sim` module
 - references to `background` are now called `aperiodic`
@@ -55,7 +62,7 @@ The following are the main name changes:
 Code Updates
 ~~~~~~~~~~~~
 
-This version adds a large number of code updates & additions, including:
+The 1.X.X series adds a large number of code updates & additions, including:
 
 - A big extension of the plotting sub-module
 - Adding new functions to manipulate, manage, organize and manage FOOOF objects
@@ -63,8 +70,6 @@ This version adds a large number of code updates & additions, including:
 - Add a new 'Bands' object for managing frequency band definitions
 - Extra methods on FOOOF & FOOOFGroup objects for managing data & results
 - Miscellaneous bug fixes & other additions
-
-To see all the new features in FOOOF, check out the API page on the documentation site.
 
 The full history of changes is available in the Github commit and pull request history.
 
@@ -79,12 +84,12 @@ The bulk of the updates for 1.X.X went through in the following pull requests:
 Documentation Updates
 ~~~~~~~~~~~~~~~~~~~~~
 
-The 1.X.X series comes with a greatly updated documentation site.
+The 1.X.X series comes with an updated documentation site.
 
-As well as updating the tutorials, API list, and other existing documentation, there is also a
-large amount of new materials, including:
+As well as updating the tutorials, API list, and other existing documentation, there are
+also new materials, including:
 
-- new examples, including those covering new functionality
+- new examples, including new pages that cover new functionality
 - a new 'motivations' section, exploring why 'parameterizing neural power spectra' is a useful idea & method
 - new or updated sections on frequently asked questions, a module glossary, and how to reference the module
 
@@ -103,11 +108,10 @@ the name of `min_peak_amplitude` to `min_peak_height` as well.
 0.1.X
 -----
 
-The 0.1.X series of releases for FOOOF was the initial release beta series of FOOOF.
+The 0.1.X series was the initial release series of beta versions of the FOOOF module.
 
-This series a different naming scheme and module organization to th current 1.X.X series.
+The old series of releases has a different naming scheme and module organization to the
+current 1.X.X series, and is now deprecated, with no plans to update or maintain this version.
 
-This series is now deprecated.
-
-These releases can still be accessed, and are described, on the
+These releases are described, and can still be accessed, on the
 `release page <https://github.com/fooof-tools/fooof/releases>`_
