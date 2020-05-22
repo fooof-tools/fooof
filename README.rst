@@ -2,7 +2,7 @@
 FOOOF - fitting oscillations & one over f
 =========================================
 
-|ProjectStatus|_ |Version|_ |BuildStatus|_ |codecov|_ |License|_ |PythonVersions|_ |Preprint|_
+|ProjectStatus|_ |Version|_ |BuildStatus|_ |Coverage|_ |License|_ |PythonVersions|_ |Preprint|_
 
 .. |ProjectStatus| image:: http://www.repostatus.org/badges/latest/active.svg
 .. _ProjectStatus: https://www.repostatus.org/#active
@@ -10,11 +10,11 @@ FOOOF - fitting oscillations & one over f
 .. |Version| image:: https://img.shields.io/pypi/v/fooof.svg
 .. _Version: https://pypi.python.org/pypi/fooof/
 
-.. |BuildStatus| image:: https://travis-ci.org/fooof-tools/fooof.svg
-.. _BuildStatus: https://travis-ci.org/fooof-tools/fooof
+.. |BuildStatus| image:: https://travis-ci.com/fooof-tools/fooof.svg
+.. _BuildStatus: https://travis-ci.com/fooof-tools/fooof
 
-.. |codecov| image:: https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg
-.. _codecov : https://codecov.io/gh/fooof-tools/fooof
+.. |Coverage| image:: https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg
+.. _Coverage: https://codecov.io/gh/fooof-tools/fooof
 
 .. |License| image:: https://img.shields.io/pypi/l/fooof.svg
 .. _License: https://opensource.org/licenses/Apache-2.0
