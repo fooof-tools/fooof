@@ -127,7 +127,7 @@
 </ol>
 </li>
 <li><ol class="arabic simple" start="3">
-<li><p>result attributes, that contain the results of the model fit</p></li>
+<li><p>result attributes, that contain the resulting parameters that describe the model fit</p></li>
 </ol>
 </li>
 <li><ol class="arabic simple" start="4">
@@ -151,14 +151,15 @@
 can be set by the user when initializing the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object.</p>
 <p>There are some internal settings that are not exposed at initialization.
 These settings are unlikely to need to be accessed by the user, but can be if desired -
-they are all defined and documented in __init__ (there should be no other settings, or
-‘magic numbers’ in any other parts of the code).</p>
+they are all defined and documented in the code in the object’s __init__ (there are no
+other settings, or ‘magic numbers’ in any other parts of the code).</p>
 <div class="section" id="controlling-peak-fits">
 <h4>Controlling Peak Fits<a class="headerlink" href="#controlling-peak-fits" title="Permalink to this headline">¶</a></h4>
 <p><strong>peak_width_limits (Hz)</strong> default: [0.5, 12]</p>
 <p>Enforced limits on the minimum and maximum widths of extracted peaks, given as a list of
-[minimum bandwidth, maximum bandwidth]. We recommend bandwidths be set to be at last twice
-the frequency resolution of the power spectrum.</p>
+[minimum bandwidth, maximum bandwidth]. We recommend that the minimum bandwidth be set to
+be at last twice the frequency resolution of the power spectrum, so that single points
+can not be fit as peaks.</p>
 </div>
 <div class="section" id="peak-search-stopping-criteria">
 <h4>Peak Search Stopping Criteria<a class="headerlink" href="#peak-search-stopping-criteria" title="Permalink to this headline">¶</a></h4>
@@ -181,7 +182,7 @@ in the initial fit stage. Once a candidate peak drops below this threshold, the 
 search is halted (without including the most recent candidate). Note that because
 this constraint is enforced during peak search, and prior to final peak fit, returned
 peaks are not guaranteed to surpass this value in height.</p>
-<p>Note: there are two different height-related halting conditions for the peak searching.
+<p>There are two different height-related halting conditions for the peak searching.
 By default, the relative (standard-deviation based) threshold is defined, whereas the
 absolute threshold is set to zero (this default is because there is no general way to
 set this value without knowing the scale of the data). If both are defined, both are
@@ -237,7 +238,7 @@ a new <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FO
 the value, and thus may lead to a failure, either creating an error, or not applying
 the settings properly during fit and returning erroneous results.</p>
 <p>Here we will re-initialize a new FOOOF object, with some new settings.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Re-initialize a new FOOOF object, with some specified settings</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Re-initialize a new FOOOF object, with some new specified settings</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -247,8 +248,8 @@ the settings properly during fit and returning erroneous results.</p>
 <h3>2) Data (attributes)<a class="headerlink" href="#data-attributes" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object stores the following data attributes:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">freqs</span></code>: the frequency values corresponding to the data</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">power_spectrum</span></code>: the power spectrum</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">freqs</span></code>: the frequency values of the power spectrum</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">power_spectrum</span></code>: the power values of the power spectrum</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">freq_range</span></code>: the frequency range of the data</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">freq_res</span></code>: the frequency resolution of the data</p></li>
 </ul>
@@ -296,8 +297,8 @@ Power Values:            [-21.99921865 -21.99669556 -22.02605736 -21.96875308 -2
 <div class="section" id="results-attributes">
 <h3>3) Results (attributes)<a class="headerlink" href="#results-attributes" title="Permalink to this headline">¶</a></h3>
 <p>With our model fit, the results attributes should now hold values.</p>
-<p>Recall that here we follow the scipy convention in that any attributes that contain
-model results are indicated by a trailing underscore.</p>
+<p>Recall that by convention, any attributes that contain model results are
+indicated by a trailing underscore.</p>
 <p>The model results stored by the object are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">aperiodic_params_</span></code>: a list of aperiodic parameters, stored as [Offset, (Knee), Exponent]</p></li>
@@ -346,7 +347,7 @@ to fit models and access data, and/or offer extra functionality.</p>
 <p>In addition to the exposed methods, there are some internal private methods,
 with a leading underscore in their name, that are called in the
 fitting procedure. These methods should not be called directly by the user
-as they may depend on internal state of the object as defined from other methods,
+as they may depend on internal state of the object as defined by other methods,
 and so may not do as expected in isolation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This piece of code is just a way to print out all the public methods with their description</span>
 <span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">it</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;fm.&#39;</span> <span class="o">+</span> <span class="n">it</span> <span class="o">+</span> <span class="s1">&#39;.__doc__&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> \
@@ -441,7 +442,7 @@ or append to, or pass in a JSON file object.</p>
 <p>We have now fully explored the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object, and all it contains.
 Next, we will take a deeper dive into how to choose different modes for fitting
 the aperiodic component of power spectra.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.432 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.505 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-04-morefooof-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/91057e4aeee06f0a0baa05c9f8714658/plot_04-MoreFOOOF.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_04-MoreFOOOF.py</span></code></a></p>

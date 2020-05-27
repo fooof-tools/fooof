@@ -109,7 +109,7 @@
 <span class="c1"># Import the FOOOF and FOOOFGroup objects</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
 
-<span class="c1"># Import some utilities, and tools for creating simulated power-spectra</span>
+<span class="c1"># Import some utilities for creating simulated power-spectra</span>
 <span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="k">import</span> <a href="../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_sampler</span></a>
 <span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">,</span> <a href="../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a>
 <span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="k">import</span> <a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
@@ -117,9 +117,9 @@
 </div>
 <div class="section" id="algorithm-settings">
 <h2>Algorithm Settings<a class="headerlink" href="#algorithm-settings" title="Permalink to this headline">¶</a></h2>
-<p>With default settings, the power spectrum model is minimally constrained. It defaults
-as such since there are not universal settings that work across all different recording
-modalities. Appropriate settings also vary with power spectrum quality (noise,
+<p>With default settings, the power spectrum model is relatively minimally constrained. It
+defaults as such since there are not universal settings that work across all different
+recording modalities. Appropriate settings also vary with power spectrum quality (noise,
 or effectively, the smoothness of the power spectrum), and frequency ranges.</p>
 <p>For any given dataset, you will likely have to tune some of the algorithm settings
 for optimal performance.</p>
@@ -132,8 +132,11 @@ as compared to input data</p></li>
 (however, see note at the bottom regarding interpreting these metrics)</p></li>
 </ul>
 <p>Choosing settings to tune model fitting is an imperfect art, and should be done carefully,
-as assumptions built into the settings chosen will impact the model results.</p>
-<p>We also recommend that model settings should not be changed between power spectra
+as assumptions built into the settings chosen will impact the model results. Model
+fitting is generally not overly sensitive to small changes in the settings, so as long
+as broadly appropriate settings are chosen, small perturbations to these chosen settings
+should not have a large impact on the fitting.</p>
+<p>We do recommend that model settings should not be changed between power spectra
 (across channels, trials, or subjects), if they are to be meaningfully compared.
 We therefore recommend first testing fitting the model across some representative
 spectra, in order to select settings, which you then keep constant for the full analysis.</p>
@@ -145,7 +148,8 @@ most commonly this will lead to overfitting, being overzealous at fitting small
 noisy bumps as peaks.</p>
 <p>In some cases, you may also find you need to relax some settings, to get better fits.</p>
 <p>You also need to make sure you pick an appropriate aperiodic fitting procedure,
-and that your data meets the assumptions of the approach you choose (see previous tutorial).</p>
+and that your data meets the assumptions of the approach you choose (see the tutorial
+on aperiodic fitting).</p>
 <p>The remainder of this notebook goes through some examples of choosing settings
 for different datasets.</p>
 </div>
@@ -365,7 +369,7 @@ allowing you to define an absolute threshold for extracting peaks.</p>
 ==================================================================================================
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check reconstructed parameters from simulated definition</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check reconstructed parameters compared to the simulated parameters</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ground Truth </span><span class="se">\t\t</span><span class="s1"> Model Parameters&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">sy</span><span class="p">,</span> <span class="n">fi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gauss_params</span><span class="p">),</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">gaussian_params_</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="se">\t</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">sy</span><span class="p">,</span> <span class="o">*</span><span class="n">fi</span><span class="p">))</span>
@@ -500,7 +504,7 @@ large number of gaussians.</p>
     <span class="k">if</span> <a href="../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="fooof.data.FOOOFResults" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res</span></a><span class="o">.</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">error_threshold</span><span class="p">:</span>
         <span class="n">to_check</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
-<span class="c1"># A more condensed version of the procedure above can also be used, like this:</span>
+<span class="c1"># A more condensed version of the procedure above can be written like this:</span>
 <span class="c1">#to_check = [fg.get_fooof(ind, True) for ind, res in enumerate(fg) if res.error &gt; error_threshold]</span>
 </pre></div>
 </div>
@@ -534,8 +538,7 @@ peaks per model. A particularly high value can indicate overfitting.</p>
 are just not sure what is going on, please get in touch! We will hopefully be able to
 make further recommendations, and this also serves as a way for us to investigate when
 and why model fitting fails, so that we can continue to make it better.</p>
-<p>You can report issues on Github <a class="reference external" href="https://github.com/fooof-tools/fooof">here</a>
-or get in touch with us by e-mail at <cite>voytekresearch&#64;gmail.com</cite>.</p>
+<p>You can report issues on Github <cite>here &lt;https://github.com/fooof-tools/fooof&gt;</cite>.</p>
 <p>There is also a helper method to print out instructions for reporting
 bad fits / bugs back to us, as demonstrated below.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out instructions to report bad fits</span>
@@ -572,7 +575,7 @@ bad fits / bugs back to us, as demonstrated below.</p>
 <p>We have now stepped through the full work-flow of fitting power spectrum models, using
 FOOOF objects, picking settings, and troubleshooting model fits. In the next
 and final tutorial, we will introduce how to start analyzing FOOOF results.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.942 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.731 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-07-troubleshooting-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/e1323effd79464d1bc2f041025d82065/plot_07-TroubleShooting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_07-TroubleShooting.py</span></code></a></p>

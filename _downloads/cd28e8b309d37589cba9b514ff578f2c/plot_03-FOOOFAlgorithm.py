@@ -2,7 +2,7 @@
 03: Fitting Algorithm
 =====================
 
-A step by step overview of the algorithm for parameterizing neural power spectra.
+A step-by-step overview of the algorithm for parameterizing neural power spectra.
 """
 
 ###################################################################################################
@@ -16,10 +16,10 @@ A step by step overview of the algorithm for parameterizing neural power spectra
 #
 # Broadly, the steps in the algorithm are:
 #
-# - 1) An initial fit of the aperiodic component is taken of the power spectrum
+# - 1) An initial fit of the aperiodic component is computed from the power spectrum
 # - 2) This aperiodic fit is subtracted from the power spectrum, creating a flattened spectrum
 # - 3) An iterative process identifies peaks in this flattened spectrum
-# - 4) A full peak fit is created of all peak candidates found
+# - 4) A full peak fit is re-fit from all of the identified peak candidates
 # - 5) The peak fit is subtracted from the original power spectrum,
 #      creating a peak-removed power spectrum
 # - 6) A final fit of the aperiodic component is taken of the peak-removed power spectrum
@@ -38,13 +38,13 @@ import matplotlib.pyplot as plt
 from fooof import FOOOF
 
 # Import some internal functions
-#   These are used here to demonstrate the algorithm.
-#   You do not need to import these functions for standard use of the algorithm
+#   These are used here to demonstrate the algorithm
+#   You do not need to import these functions for standard usage of the module
 from fooof.sim.gen import gen_aperiodic
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.annotate import plot_annotated_peak_search
 
-# Import utility to download and load example data
+# Import a utility to download and load example data
 from fooof.utils.download import load_fooof_data
 
 ###################################################################################################
@@ -67,8 +67,8 @@ fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 ###################################################################################################
 #
 # Note that data can be added to a FOOOF object independent of fitting the model, using the
-# :meth:`~fooof.FOOOF.add_data` method. FOOOF objects can also be used to plot input data,
-# without having fit any models.
+# :meth:`~fooof.FOOOF.add_data` method. FOOOF objects can also be used to plot data,
+# prior to fitting any models.
 #
 
 ###################################################################################################
@@ -98,8 +98,8 @@ fm.fit(freqs, spectrum, [3, 40])
 # Step 1: Initial Aperiodic Fit
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# We start by taking an initial aperiodic fit. The goal of this fit is to be
-# able to use this fit to remove our estimate of the aperiodic component from the data.
+# We start by taking an initial aperiodic fit. This goal of this fit is to get an initial
+# fit that is good enough to get started with the fitting process.
 #
 
 ###################################################################################################
@@ -119,9 +119,10 @@ plot_spectrum(fm.freqs, init_ap_fit, plt_log, label='Initial Aperiodic Fit',
 # Step 2: Flatten the Spectrum
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# The initial fit is then used to create a flattened spectrum. The initial aperiodic
-# fit is subtracted out from the original data, leaving a flattened version of the data
-# which no longer contains the aperiodic component.
+# The initial fit is then used to create a flattened spectrum.
+#
+# The initial aperiodic fit is subtracted out from the original data, leaving a flattened
+# version of the data which no longer contains the aperiodic component.
 #
 
 ###################################################################################################
@@ -144,10 +145,10 @@ plot_spectrum(fm.freqs, init_flat_spec, plt_log,
 #
 # For each iteration:
 #
-# - The maximum point of the flattened spectrum is found.
+# - The maximum point of the flattened spectrum is found
 #
 #   - If this point fails to pass the relative or absolute height threshold,
-#     the procedure halts.
+#     the procedure halts
 # - A Gaussian is fit around this maximum point
 # - This 'guess' Gaussian is then subtracted from the flatted spectrum
 # - The procedure continues to a new iteration with the new version of the flattened spectrum,
@@ -229,11 +230,24 @@ plot_spectrum(fm.freqs, fm.fooofed_spectrum_, plt_log,
               label='Full Model', color='red')
 
 ###################################################################################################
+#
+# The last stage is to calculate the goodness of fit metrics, meaning the fit error & R^2.
+#
+# At the end of the fitting process, the model object also organizes parameters, such as
+# updating gaussian parameters to be peak parameters,
+#
+# These results are part of what are stored, and printed, as the model results.
+#
 
-# The last stage is to calculate the goodness of fit metrics (fit error & R^2)
-#  and organize parameters, such as updating gaussian parameters -> peak parameters
-#  These results are part of what are stored, and printed, as the model results
+###################################################################################################
+
+# Print out the model results
 fm.print_results()
+
+###################################################################################################
+#
+# Altogether, the full model fit is now available, and can be plotted.
+#
 
 ###################################################################################################
 
@@ -283,7 +297,9 @@ fm.plot(plt_log)
 # Conclusion
 # ----------
 #
-# In this tutorial we have stepped through the parameterization algorithm fitting
-# power spectrum models. Next, we will continue to explore the FOOOF object,
-# properly introducing the settings and further exploring the parameters.
+# In this tutorial we have stepped through the parameterization algorithm for fitting
+# power spectrum models.
+#
+# Next, we will continue to explore the FOOOF object by properly introducing and more
+# fully describing the settings for the algorithm.
 #

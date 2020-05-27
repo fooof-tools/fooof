@@ -102,7 +102,7 @@
 </div>
 <div class="sphx-glr-example-title section" id="model-description">
 <span id="sphx-glr-auto-tutorials-plot-01-modeldescription-py"></span><h1>01: Model Description<a class="headerlink" href="#model-description" title="Permalink to this headline">¶</a></h1>
-<p>A description and introduction to the power spectrum model.</p>
+<p>A description of and introduction to the power spectrum model.</p>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>Welcome to the tutorials!</p>
@@ -138,21 +138,21 @@ yet, and can skip past reading the code itself.</p>
                                      <span class="p">[[</span><span class="mi">8</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a power spectrum models and fit the power spectra</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize power spectrum model objects and fit the power spectra</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm1</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm2</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;knee&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm1</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs1</span><span class="p">,</span> <span class="n">powers1</span><span class="p">)</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm2</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs2</span><span class="p">,</span> <span class="n">powers2</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Now, we have some data &amp; models to work with.</p>
+<p>Now, we have some data and models to work with.</p>
 <p>To start with, we can plot one of our simulated power spectra.</p>
 <p>Plotted below is an example power spectrum, plotted in semi-log space (log10 power values
 and linear frequencies). This is our data, that we will be trying to model.</p>
 <p>In the plot, we see a power spectrum in which there is decreasing power across increasing
 frequencies. In some frequency regions, there is a ‘peak’ of power, over and above the general
-trend across frequencies. These properties - a pattern of power across all frequencies, with
-overlying peaks - are considered to be hallmarks of neural field data.</p>
+trend across frequencies. These properties - a pattern of decreasing power across frequencies,
+with overlying peaks - are considered to be hallmarks of neural field data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot one of the example power spectra</span>
 <a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><span class="n">freqs1</span><span class="p">,</span> <span class="n">powers1</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
               <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Spectrum&#39;</span><span class="p">)</span>
@@ -169,7 +169,7 @@ neural field data. The model is therefore designed to measure these different
 ‘components’ of the data.</p>
 <p>By components, we mean that we are going to conceptualize neural field data as consisting
 of a combination of periodic (oscillatory) and aperiodic activity. Restated, we could say
-that neural data contains both periodic and aperiodic components (or activity).</p>
+that neural data contains both periodic and aperiodic components.</p>
 <p>The goal of the model is to measure these components, separately and explicitly,
 from frequency representations of neural field data (neural power spectra).</p>
 <div class="section" id="visualizing-power-spectrum-models">
@@ -187,33 +187,32 @@ of the data.</p>
 <p>Given the full model, in red, we can then describe this spectrum in terms of the
 ‘components’ that make up the model fit, which are:</p>
 <ul class="simple">
-<li><p><cite>aperiodic</cite>: activity, with no characteristic frequency (or ‘non-frequency specific’ activity)</p>
+<li><p><cite>aperiodic</cite>: activity with no characteristic frequency (or ‘non-frequency specific’ activity)</p>
 <ul>
 <li><p>in power spectra, this looks like a trend across all frequencies</p></li>
-<li><p>in the plot above, this is what’s captured by the dashed blue line</p></li>
+<li><p>in the plot above, this is what is captured by the dashed blue line</p></li>
 </ul>
 </li>
-<li><p><cite>periodic</cite> : activity, with a characteristic frequency</p>
+<li><p><cite>periodic</cite> : activity with a characteristic frequency</p>
 <ul>
 <li><p>in power spectra, this looks like a ‘peak’, or ‘bump’, reflecting frequency specific power</p></li>
-<li><p>in the plot above, this is what’s captured by the green shaded peaks</p></li>
+<li><p>in the plot above, this is what is captured by the green shaded peaks</p></li>
 </ul>
 </li>
 </ul>
-<p>Each of these components also has different ‘features’ or ‘properties’, that we can and
-want to describe and measure. Since these ‘features’ are things that we will be fitting in
+<p>Each of these components also has different ‘features’ or ‘properties’, that we want to
+describe and measure. Since these ‘features’ are things that we will be fitting in
 the model, we will call them <cite>parameters</cite> (as in, the ‘model parameters’).</p>
 <p>The full model of the power spectrum is the combination of the two components:
-the aperiodic component and the periodic component, which is the set of peaks.</p>
+the aperiodic component and the periodic component (the set of peaks).</p>
 <p>The goal of the model is to measure these two components, to create the full model
 fit, in a way that accurately and quantitatively describes the data.</p>
 </div>
 <div class="section" id="mathematical-description-of-overall-model">
 <h3>Mathematical Description of Overall Model<a class="headerlink" href="#mathematical-description-of-overall-model" title="Permalink to this headline">¶</a></h3>
-<p>To enact the conceptual idea and description above, we will need to formalize the
-model described above. To do so, throughout the rest of this tutorial, we will lay out the
-mathematical description of how neural power spectra can be modeled as a combination of
-periodic and aperiodic activity.</p>
+<p>To enact the conceptual idea described above, we will need to formalize the model. To do
+so, throughout the rest of this tutorial, we will lay out the mathematical description of
+how neural power spectra can be modeled as a combination of periodic and aperiodic activity.</p>
 <p>Overall, the goal is to describe a neural power spectrum, described as <span class="math notranslate nohighlight">\(NPS\)</span>, as
 a combination of periodic and aperiodic components. We will describe each of these
 components in their own section.</p>
@@ -233,7 +232,7 @@ there are ‘bumps’ of power over and above the aperiodic component.
 We will generally refer to the these as ‘peaks’ in the neural power spectrum.</p>
 <p>To measure the periodic activity, we would like to describe these peaks, without our
 measures of these peaks being influenced by co-occurring aperiodic activity.
-This is important, since as we can see in the plots above, the aperiodic and periodic
+This is important, since, as we can see in the plots above, the aperiodic and periodic
 components of the data can ‘overlap’, in frequency space. This means the total power
 at a given frequency may have contributions from both components. To measure periodic power,
 specifically, we need to measure the power relative to the aperiodic component of the data.</p>
@@ -251,13 +250,13 @@ where as horizontal labels reflect parameters measured in y-axis units, so power
 <ul class="simple">
 <li><p>the <cite>center frequency</cite> of the peak, in units of frequency</p></li>
 <li><p>the <cite>power</cite> of the peak, over the aperiodic component, in units of power</p></li>
-<li><p>the <cite>bandwidth</cite>, or the width of the peak, units of frequency</p></li>
+<li><p>the <cite>bandwidth</cite>, or the width of the peak, in units of frequency</p></li>
 </ul>
 <p>Wherever we detect a peak, these are the parameters that we will fit to the peak,
 to describe this component of the data.</p>
 <div class="section" id="mathematical-description-of-the-periodic-component">
 <h3>Mathematical Description of the Periodic Component<a class="headerlink" href="#mathematical-description-of-the-periodic-component" title="Permalink to this headline">¶</a></h3>
-<p>To fit these periodic components - the regions of power over above the aperiodic component,
+<p>To fit this periodic activity - the regions of power over above the aperiodic component,
 or ‘peaks’ - the model uses Gaussians. As we’ve seen, there can be multiple peaks in the model.</p>
 <p>Each Gaussian, <span class="math notranslate nohighlight">\(n\)</span>, referred to as <span class="math notranslate nohighlight">\(G(F)_n\)</span>, is of the form:</p>
 <div class="math notranslate nohighlight">
@@ -278,7 +277,7 @@ no characteristic frequency.</p>
 <p>In the power spectrum, we typically see this as 1/f-like activity, whereby (in linear space)
 the power across frequencies decreases with a <span class="math notranslate nohighlight">\(\frac{1}{F^\chi}\)</span> relationship.</p>
 <p>To measure the aperiodic activity, we would like to describe the pattern of activity
-across all frequencies, without our measure being influenced by any co-occurring periodic
+across all frequencies, without our measure being influenced by co-occurring periodic
 activity (peaks).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot an annotated version of the power spectrum model</span>
 <a href="../generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model" title="fooof.plts.annotate.plot_annotated_model" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_model</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm1</span></a><span class="p">,</span> <span class="n">annotate_peaks</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -302,7 +301,7 @@ and <span class="math notranslate nohighlight">\(log_{10}\)</span> power values.
 define the aperiodic component, as:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(b\)</span> is the broadband ‘offset’</p></li>
-<li><p><span class="math notranslate nohighlight">\(k\)</span> relates to the ‘knee’</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span> is the ‘knee’</p></li>
 <li><p><span class="math notranslate nohighlight">\(\chi\)</span> is the ‘exponent’ of the aperiodic fit</p></li>
 <li><p><span class="math notranslate nohighlight">\(F\)</span> is the array of frequency values</p></li>
 </ul>
@@ -311,9 +310,9 @@ define the aperiodic component, as:</p>
 parameter is set to zero.</p>
 <p>This function form is technically described as a Lorentzian function. We use the option
 of adding a knee parameter, since even though neural data is often discussed in terms
-of having <cite>1/f</cite> activity, across broader frequency ranges, there is typically not a single
-<cite>1/f</cite> characteristic. Using this form allows for modeling bends in the power spectrum of
-the aperiodic component, if and when they occur.</p>
+of having <cite>1/f</cite> activity, there is often not a single <cite>1/f</cite> characteristic, especially
+across broader frequency ranges. Therefore, using this function form allows for modeling
+bends in the power spectrum of the aperiodic component, if and when they occur.</p>
 <p>Note that if we were to want the equivalent function in linear power, using <span class="math notranslate nohighlight">\(AP\)</span>
 to indicate the aperiodic component in linear spacing, it would be:</p>
 <div class="math notranslate nohighlight">
@@ -328,7 +327,7 @@ are exponentially distributed.</p>
 Note that in this module, plotting in log-log is just a visualization choice, and does
 not affect how the data is stored and/or how models are fit.</p>
 <p>Below we can see the same spectrum again, with all the annotations on, plotted in log-log.
-The most notable difference, is that the aperiodic component is a straight line in log-log
+The most notable difference is that the aperiodic component is a straight line in log-log
 spacing. This is a hallmark of <cite>1/f</cite> activity.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectrum model, in log-log space</span>
 <a href="../generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model" title="fooof.plts.annotate.plot_annotated_model" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_model</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm1</span></a><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -396,7 +395,7 @@ the <cite>offset</cite>, <cite>knee</cite> and <cite>exponent</cite>, respective
 <p>For more technical details on the model formulation and fitting process, check out the
 <a class="reference external" href="https://www.biorxiv.org/content/early/2018/04/11/299859">paper</a>.</p>
 <p>In the next tutorial, we will start to use this model.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.992 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.820 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-01-modeldescription-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cc804a6d6a719c9e628feb4f056bbd74/plot_01-ModelDescription.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_01-ModelDescription.py</span></code></a></p>

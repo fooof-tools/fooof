@@ -10,12 +10,12 @@ Introduction to the module, beginning with the FOOOF object.
 # Import the FOOOF object
 from fooof import FOOOF
 
-# Import utility to download and load example data
+# Import a utility to download and load example data
 from fooof.utils.download import load_fooof_data
 
 ###################################################################################################
 
-# Download examples data files needed for this example
+# Download example data files needed for this example
 freqs = load_fooof_data('freqs.npy', folder='data')
 spectrum = load_fooof_data('spectrum.npy', folder='data')
 
@@ -23,11 +23,11 @@ spectrum = load_fooof_data('spectrum.npy', folder='data')
 # FOOOF Object
 # ------------
 #
-# At the core of the module, which is object oriented, is the :class:`~fooof.FOOOF` object,
-# which holds relevant data and settings as attributes, and contains methods to run the
-# algorithm to parameterize neural power spectra.
+# At the core of the module is the :class:`~fooof.FOOOF` object, which holds relevant data
+# and settings as attributes, and contains methods to run the algorithm to parameterize
+# neural power spectra.
 #
-# The organization is similar to sklearn:
+# The organization and use of the model object is similar to scikit-learn:
 #
 # - A model object is initialized, with relevant settings
 # - The model is used to fit the data
@@ -39,7 +39,7 @@ spectrum = load_fooof_data('spectrum.npy', folder='data')
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # The :class:`~fooof.FOOOF` object fits models to power spectra. The module itself does not
-# compute power spectra, and so computing power spectra needs to be done prior to using
+# compute power spectra. Computing power spectra needs to be done prior to using
 # the FOOOF module.
 #
 # The model is broadly agnostic to exactly how power spectra are computed. Common
@@ -79,7 +79,7 @@ fm.report(freqs, spectrum, freq_range)
 #
 # - :meth:`~fooof.FOOOF.fit`: fits the power spectrum model
 # - :meth:`~fooof.FOOOF.print_results`: prints out the results
-# - :meth:`~fooof.FOOOF.plot`: plots to data and model fit
+# - :meth:`~fooof.FOOOF.plot`: plots the data and model fit
 #
 # Each of these methods can also be called individually.
 #
@@ -100,7 +100,7 @@ fm.fit(freqs, spectrum, freq_range)
 # Once the power spectrum model has been calculated, the model fit parameters are stored
 # as object attributes that can be accessed after fitting.
 #
-# Following the sklearn convention, attributes that are fit as a result of
+# Following scikit-learn conventions, attributes that are fit as a result of
 # the model have a trailing underscore, for example:
 #
 # - ``aperiodic_params_``
@@ -144,7 +144,7 @@ print('Number of fit peaks: \n', fm.n_peaks_)
 # Extract a model parameter with `get_params`
 err = fm.get_params('error')
 
-# Extract parameters, indicating sub-selections of parameter
+# Extract parameters, indicating sub-selections of parameters
 exp = fm.get_params('aperiodic_params', 'exponent')
 cfs = fm.get_params('peak_params', 'CF')
 
@@ -161,7 +161,7 @@ print(template.format(error=err, exponent=exp,
 #
 # As a reminder, you can access the documentation for a function using '?' in a
 # Jupyter notebook (ex: `fm.get_params?`), or more generally with the `help` function
-# in general Python (ex: `help(get_params)`).
+# in general Python (ex: `help(fm.get_params)`).
 #
 
 ###################################################################################################
@@ -187,7 +187,7 @@ print(template.format(error=err, exponent=exp,
 # [1] Since the Gaussians are fit together, if any Gaussians overlap,
 # than the actual height of the fit at a given point can only be assessed
 # when considering all Gaussians. To be better able to interpret heights
-# for single peak fits, we re-define the peak height as above, and label it
+# for individual peaks, we re-define the peak height as above, and label it
 # as 'power', as the units of the input data are expected to be units of power.
 #
 # [2] Gaussian standard deviation is '1 sided', where as the returned BW is '2 sided'.
@@ -237,7 +237,7 @@ print(fres, '\n')
 # From FOOOFResults, you can access the different results
 print('Aperiodic Parameters: \n', fres.aperiodic_params)
 
-# Check the r^2 and error of the model fit
+# Check the R^2 and error of the model fit
 print('R-squared: \n {:5.4f}'.format(fm.r_squared_))
 print('Fit error: \n {:5.4f}'.format(fm.error_))
 
@@ -248,6 +248,5 @@ print('Fit error: \n {:5.4f}'.format(fm.error_))
 # In this tutorial, we have explored the basics of the :class:`~fooof.FOOOF` object,
 # fitting power spectrum models, and extracting parameters.
 #
-# Before we move on to controlling the fit procedure, and interpreting the results,
-# in the next tutorial, we will first explore how this model is actually fit.
+# In the next tutorial, we will explore how this algorithm actually works to fit the model.
 #

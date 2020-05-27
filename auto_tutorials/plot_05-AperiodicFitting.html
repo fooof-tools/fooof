@@ -102,11 +102,11 @@
 </div>
 <div class="sphx-glr-example-title section" id="aperiodic-component-fitting">
 <span id="sphx-glr-auto-tutorials-plot-05-aperiodicfitting-py"></span><h1>05: Aperiodic Component Fitting<a class="headerlink" href="#aperiodic-component-fitting" title="Permalink to this headline">¶</a></h1>
-<p>Choosing and using different approaches for fitting the aperiodic component.</p>
+<p>Choosing and using different modes for fitting the aperiodic component.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a>
 
-<span class="c1"># Import utility to download and load example data</span>
+<span class="c1"># Import a utility to download and load example data</span>
 <span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="k">import</span> <span class="n">load_fooof_data</span>
 </pre></div>
 </div>
@@ -127,14 +127,14 @@
 </ul>
 <p>Fitting in the ‘fixed’ mode assumes a single 1/f like characteristic to the aperiodic
 component, meaning it looks linear across all frequencies in log-log space.</p>
-<p>Though this assumption is true across <em>some</em> frequency ranges in neural data, it does
+<p>Though this assumption is true across <em>some</em> frequency ranges in neural data, it generally
 does not hold up across broad frequency ranges. If fitting is done in the ‘fixed’ mode,
 but the assumption of a single 1/f is violated, then fitting will go wrong.</p>
-<p>Broad frequency ranges (typically ranges greater than ~40 Hz range) don’t meet this
-criterion, as they typically exhibit a ‘bend’ in the aperiodic component, whereby there is
-not a single 1/f property across all frequencies, but rather a ‘bend’ in the aperiodic
-component. For these cases, fitting should be done using an extra parameter to capture
-this, in ‘knee’ mode.</p>
+<p>Broad frequency ranges (typically ranges greater than ~40 Hz range) typically do not
+have a single 1/f, as assumed by ‘fixed’ mode, as they typically exhibit a ‘bend’ in
+the aperiodic component. This indicates that there is not a single 1/f property across
+all frequencies, but rather a ‘bend’ in the aperiodic component. For these cases, fitting
+should be done using an extra parameter to capture this, using the ‘knee’ mode.</p>
 <div class="section" id="fitting-with-an-aperiodic-knee">
 <h3>Fitting with an Aperiodic ‘Knee’<a class="headerlink" href="#fitting-with-an-aperiodic-knee" title="Permalink to this headline">¶</a></h3>
 <p>Let’s explore fitting power spectrum models across a broader frequency range,
@@ -262,8 +262,8 @@ for what the aperiodic component looks like.</p>
 <li><p>Be wary of ambiguous ranges, where there may or may not be a knee.</p>
 <ul>
 <li><p>Trying to fit without a knee, when there is not a single consistent aperiodic component,
-can lead to very bad fits. But it is also a known issue that trying to fit with a knee
-can lead to suboptimal fits when no knee is present.</p>
+can lead to very bad fits. However, trying to fit with a knee may lead to suboptimal fits
+when no knee is present, and makes interpreting the exponent more difficult.</p>
 <ul>
 <li><p>We therefore currently recommend picking frequency ranges in which the expected
 aperiodic component process is relatively clear.</p></li>
@@ -278,7 +278,7 @@ aperiodic component process is relatively clear.</p></li>
 <p>We have now explored the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object, and different fitting
 approaches for the aperiodic component. Next up, we will be introducing how
 to scale the fitting to apply across multiple power spectra.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.377 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.277 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-05-aperiodicfitting-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/10cda1893b9860bc237ad963e22b58ac/plot_05-AperiodicFitting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_05-AperiodicFitting.py</span></code></a></p>

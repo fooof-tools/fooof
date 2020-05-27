@@ -13,7 +13,7 @@ import numpy as np
 # Import the FOOOF and FOOOFGroup objects
 from fooof import FOOOF, FOOOFGroup
 
-# Import some utilities, and tools for creating simulated power-spectra
+# Import some utilities for creating simulated power-spectra
 from fooof.sim.params import param_sampler
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
 from fooof.sim.utils import set_random_seed
@@ -22,9 +22,9 @@ from fooof.sim.utils import set_random_seed
 # Algorithm Settings
 # ------------------
 #
-# With default settings, the power spectrum model is minimally constrained. It defaults
-# as such since there are not universal settings that work across all different recording
-# modalities. Appropriate settings also vary with power spectrum quality (noise,
+# With default settings, the power spectrum model is relatively minimally constrained. It
+# defaults as such since there are not universal settings that work across all different
+# recording modalities. Appropriate settings also vary with power spectrum quality (noise,
 # or effectively, the smoothness of the power spectrum), and frequency ranges.
 #
 # For any given dataset, you will likely have to tune some of the algorithm settings
@@ -39,9 +39,12 @@ from fooof.sim.utils import set_random_seed
 #   (however, see note at the bottom regarding interpreting these metrics)
 #
 # Choosing settings to tune model fitting is an imperfect art, and should be done carefully,
-# as assumptions built into the settings chosen will impact the model results.
+# as assumptions built into the settings chosen will impact the model results. Model
+# fitting is generally not overly sensitive to small changes in the settings, so as long
+# as broadly appropriate settings are chosen, small perturbations to these chosen settings
+# should not have a large impact on the fitting.
 #
-# We also recommend that model settings should not be changed between power spectra
+# We do recommend that model settings should not be changed between power spectra
 # (across channels, trials, or subjects), if they are to be meaningfully compared.
 # We therefore recommend first testing fitting the model across some representative
 # spectra, in order to select settings, which you then keep constant for the full analysis.
@@ -58,7 +61,8 @@ from fooof.sim.utils import set_random_seed
 # In some cases, you may also find you need to relax some settings, to get better fits.
 #
 # You also need to make sure you pick an appropriate aperiodic fitting procedure,
-# and that your data meets the assumptions of the approach you choose (see previous tutorial).
+# and that your data meets the assumptions of the approach you choose (see the tutorial
+# on aperiodic fitting).
 #
 # The remainder of this notebook goes through some examples of choosing settings
 # for different datasets.
@@ -228,7 +232,7 @@ fm.report(freqs, spectrum)
 
 ###################################################################################################
 
-# Check reconstructed parameters from simulated definition
+# Check reconstructed parameters compared to the simulated parameters
 print('Ground Truth \t\t Model Parameters')
 for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*sy, *fi))
@@ -258,6 +262,7 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 #
 # For more and descriptions and example of how the simulations work, check out the
 # `examples <https://fooof-tools.github.io/fooof/auto_examples/index.html>`_ section.
+#
 
 ###################################################################################################
 
@@ -333,7 +338,7 @@ for ind, res in enumerate(fg):
     if res.error > error_threshold:
         to_check.append(fg.get_fooof(ind, regenerate=True))
 
-# A more condensed version of the procedure above can also be used, like this:
+# A more condensed version of the procedure above can be written like this:
 #to_check = [fg.get_fooof(ind, True) for ind, res in enumerate(fg) if res.error > error_threshold]
 
 ###################################################################################################
@@ -363,8 +368,7 @@ print('Average number of fit peaks: ', np.mean(fg.n_peaks_))
 # make further recommendations, and this also serves as a way for us to investigate when
 # and why model fitting fails, so that we can continue to make it better.
 #
-# You can report issues on Github `here <https://github.com/fooof-tools/fooof>`_
-# or get in touch with us by e-mail at `voytekresearch@gmail.com`.
+# You can report issues on Github `here <https://github.com/fooof-tools/fooof>`.
 #
 # There is also a helper method to print out instructions for reporting
 # bad fits / bugs back to us, as demonstrated below.

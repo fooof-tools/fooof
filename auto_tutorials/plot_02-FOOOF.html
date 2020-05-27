@@ -106,21 +106,21 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a>
 
-<span class="c1"># Import utility to download and load example data</span>
+<span class="c1"># Import a utility to download and load example data</span>
 <span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="k">import</span> <span class="n">load_fooof_data</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download examples data files needed for this example</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download example data files needed for this example</span>
 <span class="n">freqs</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;freqs.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 <span class="n">spectrum</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;spectrum.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="section" id="fooof-object">
 <h2>FOOOF Object<a class="headerlink" href="#fooof-object" title="Permalink to this headline">¶</a></h2>
-<p>At the core of the module, which is object oriented, is the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object,
-which holds relevant data and settings as attributes, and contains methods to run the
-algorithm to parameterize neural power spectra.</p>
-<p>The organization is similar to sklearn:</p>
+<p>At the core of the module is the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object, which holds relevant data
+and settings as attributes, and contains methods to run the algorithm to parameterize
+neural power spectra.</p>
+<p>The organization and use of the model object is similar to scikit-learn:</p>
 <ul class="simple">
 <li><p>A model object is initialized, with relevant settings</p></li>
 <li><p>The model is used to fit the data</p></li>
@@ -129,7 +129,7 @@ algorithm to parameterize neural power spectra.</p>
 <div class="section" id="calculating-power-spectra">
 <h3>Calculating Power Spectra<a class="headerlink" href="#calculating-power-spectra" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object fits models to power spectra. The module itself does not
-compute power spectra, and so computing power spectra needs to be done prior to using
+compute power spectra. Computing power spectra needs to be done prior to using
 the FOOOF module.</p>
 <p>The model is broadly agnostic to exactly how power spectra are computed. Common
 methods, such as Welch’s method, can be used to compute the spectrum.</p>
@@ -188,7 +188,7 @@ produce erroneous results.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>: fits the power spectrum model</p></li>
 <li><p><a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_results" title="fooof.FOOOF.print_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print_results()</span></code></a>: prints out the results</p></li>
-<li><p><a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>: plots to data and model fit</p></li>
+<li><p><a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>: plots the data and model fit</p></li>
 </ul>
 <p>Each of these methods can also be called individually.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Alternatively, just fit the model with FOOOF.fit() (without printing anything)</span>
@@ -211,7 +211,7 @@ produce erroneous results.</p>
 <h3>Model Parameters<a class="headerlink" href="#model-parameters" title="Permalink to this headline">¶</a></h3>
 <p>Once the power spectrum model has been calculated, the model fit parameters are stored
 as object attributes that can be accessed after fitting.</p>
-<p>Following the sklearn convention, attributes that are fit as a result of
+<p>Following scikit-learn conventions, attributes that are fit as a result of
 the model have a trailing underscore, for example:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">aperiodic_params_</span></code></p></li>
@@ -261,7 +261,7 @@ method, which can be used to specify which parameters you want to extract.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract a model parameter with `get_params`</span>
 <span class="n">err</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
 
-<span class="c1"># Extract parameters, indicating sub-selections of parameter</span>
+<span class="c1"># Extract parameters, indicating sub-selections of parameters</span>
 <span class="n">exp</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)</span>
 <span class="n">cfs</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">,</span> <span class="s1">&#39;CF&#39;</span><span class="p">)</span>
 
@@ -280,7 +280,7 @@ method, which can be used to specify which parameters you want to extract.</p>
 check the method’s documentation.</p>
 <p>As a reminder, you can access the documentation for a function using ‘?’ in a
 Jupyter notebook (ex: <cite>fm.get_params?</cite>), or more generally with the <cite>help</cite> function
-in general Python (ex: <cite>help(get_params)</cite>).</p>
+in general Python (ex: <cite>help(fm.get_params)</cite>).</p>
 </div>
 </div>
 <div class="section" id="notes-on-interpreting-peak-parameters">
@@ -303,7 +303,7 @@ which is not necessarily the same as the Gaussian height</p></li>
 <p>[1] Since the Gaussians are fit together, if any Gaussians overlap,
 than the actual height of the fit at a given point can only be assessed
 when considering all Gaussians. To be better able to interpret heights
-for single peak fits, we re-define the peak height as above, and label it
+for individual peaks, we re-define the peak height as above, and label it
 as ‘power’, as the units of the input data are expected to be units of power.</p>
 <p>[2] Gaussian standard deviation is ‘1 sided’, where as the returned BW is ‘2 sided’.</p>
 <p>The underlying gaussian parameters are also available from the FOOOF object,
@@ -343,7 +343,7 @@ object used with FOOOF to organize and collect parameter data.</p>
 <span class="c1"># From FOOOFResults, you can access the different results</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Aperiodic Parameters: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="fooof.data.FOOOFResults" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fres</span></a><span class="o">.</span><span class="n">aperiodic_params</span><span class="p">)</span>
 
-<span class="c1"># Check the r^2 and error of the model fit</span>
+<span class="c1"># Check the R^2 and error of the model fit</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;R-squared: </span><span class="se">\n</span><span class="s1"> </span><span class="si">{:5.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">r_squared_</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fit error: </span><span class="se">\n</span><span class="s1"> </span><span class="si">{:5.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">error_</span><span class="p">))</span>
 </pre></div>
@@ -369,9 +369,8 @@ Fit error:
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
 <p>In this tutorial, we have explored the basics of the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object,
 fitting power spectrum models, and extracting parameters.</p>
-<p>Before we move on to controlling the fit procedure, and interpreting the results,
-in the next tutorial, we will first explore how this model is actually fit.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.174 seconds)</p>
+<p>In the next tutorial, we will explore how this algorithm actually works to fit the model.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.153 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-02-fooof-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/c5eab696503901303f8a324c41d3284e/plot_02-FOOOF.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_02-FOOOF.py</span></code></a></p>
