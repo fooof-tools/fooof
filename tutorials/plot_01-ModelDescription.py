@@ -2,7 +2,7 @@
 01: Model Description
 =====================
 
-A description and introduction to the power spectrum model.
+A description of and introduction to the power spectrum model.
 """
 
 ###################################################################################################
@@ -57,7 +57,7 @@ freqs2, powers2 = gen_power_spectrum([1, 150], [1, 125, 1.25],
 
 ###################################################################################################
 
-# Initialize a power spectrum models and fit the power spectra
+# Initialize power spectrum model objects and fit the power spectra
 fm1 = FOOOF(min_peak_height=0.05, verbose=False)
 fm2 = FOOOF(min_peak_height=0.05, aperiodic_mode='knee', verbose=False)
 fm1.fit(freqs1, powers1)
@@ -65,7 +65,7 @@ fm2.fit(freqs2, powers2)
 
 ###################################################################################################
 #
-# Now, we have some data & models to work with.
+# Now, we have some data and models to work with.
 #
 # To start with, we can plot one of our simulated power spectra.
 #
@@ -74,8 +74,8 @@ fm2.fit(freqs2, powers2)
 #
 # In the plot, we see a power spectrum in which there is decreasing power across increasing
 # frequencies. In some frequency regions, there is a 'peak' of power, over and above the general
-# trend across frequencies. These properties - a pattern of power across all frequencies, with
-# overlying peaks - are considered to be hallmarks of neural field data.
+# trend across frequencies. These properties - a pattern of decreasing power across frequencies,
+# with overlying peaks - are considered to be hallmarks of neural field data.
 #
 
 ###################################################################################################
@@ -96,7 +96,7 @@ plot_spectrum(freqs1, powers1, log_powers=True,
 #
 # By components, we mean that we are going to conceptualize neural field data as consisting
 # of a combination of periodic (oscillatory) and aperiodic activity. Restated, we could say
-# that neural data contains both periodic and aperiodic components (or activity).
+# that neural data contains both periodic and aperiodic components.
 #
 # The goal of the model is to measure these components, separately and explicitly,
 # from frequency representations of neural field data (neural power spectra).
@@ -124,21 +124,21 @@ fm1.plot(plot_peaks='shade', peak_kwargs={'color' : 'green'})
 # Given the full model, in red, we can then describe this spectrum in terms of the
 # 'components' that make up the model fit, which are:
 #
-# - `aperiodic`: activity, with no characteristic frequency (or 'non-frequency specific' activity)
+# - `aperiodic`: activity with no characteristic frequency (or 'non-frequency specific' activity)
 #
 #   - in power spectra, this looks like a trend across all frequencies
-#   - in the plot above, this is what's captured by the dashed blue line
-# - `periodic` : activity, with a characteristic frequency
+#   - in the plot above, this is what is captured by the dashed blue line
+# - `periodic` : activity with a characteristic frequency
 #
 #   - in power spectra, this looks like a 'peak', or 'bump', reflecting frequency specific power
-#   - in the plot above, this is what's captured by the green shaded peaks
+#   - in the plot above, this is what is captured by the green shaded peaks
 #
-# Each of these components also has different 'features' or 'properties', that we can and
-# want to describe and measure. Since these 'features' are things that we will be fitting in
+# Each of these components also has different 'features' or 'properties', that we want to
+# describe and measure. Since these 'features' are things that we will be fitting in
 # the model, we will call them `parameters` (as in, the 'model parameters').
 #
 # The full model of the power spectrum is the combination of the two components:
-# the aperiodic component and the periodic component, which is the set of peaks.
+# the aperiodic component and the periodic component (the set of peaks).
 #
 # The goal of the model is to measure these two components, to create the full model
 # fit, in a way that accurately and quantitatively describes the data.
@@ -148,10 +148,9 @@ fm1.plot(plot_peaks='shade', peak_kwargs={'color' : 'green'})
 # Mathematical Description of Overall Model
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# To enact the conceptual idea and description above, we will need to formalize the
-# model described above. To do so, throughout the rest of this tutorial, we will lay out the
-# mathematical description of how neural power spectra can be modeled as a combination of
-# periodic and aperiodic activity.
+# To enact the conceptual idea described above, we will need to formalize the model. To do
+# so, throughout the rest of this tutorial, we will lay out the mathematical description of
+# how neural power spectra can be modeled as a combination of periodic and aperiodic activity.
 #
 # Overall, the goal is to describe a neural power spectrum, described as :math:`NPS`, as
 # a combination of periodic and aperiodic components. We will describe each of these
@@ -177,7 +176,7 @@ fm1.plot(plot_peaks='shade', peak_kwargs={'color' : 'green'})
 #
 # To measure the periodic activity, we would like to describe these peaks, without our
 # measures of these peaks being influenced by co-occurring aperiodic activity.
-# This is important, since as we can see in the plots above, the aperiodic and periodic
+# This is important, since, as we can see in the plots above, the aperiodic and periodic
 # components of the data can 'overlap', in frequency space. This means the total power
 # at a given frequency may have contributions from both components. To measure periodic power,
 # specifically, we need to measure the power relative to the aperiodic component of the data.
@@ -202,7 +201,7 @@ plot_annotated_model(fm1, annotate_aperiodic=False)
 #
 # - the `center frequency` of the peak, in units of frequency
 # - the `power` of the peak, over the aperiodic component, in units of power
-# - the `bandwidth`, or the width of the peak, units of frequency
+# - the `bandwidth`, or the width of the peak, in units of frequency
 #
 # Wherever we detect a peak, these are the parameters that we will fit to the peak,
 # to describe this component of the data.
@@ -212,7 +211,7 @@ plot_annotated_model(fm1, annotate_aperiodic=False)
 # Mathematical Description of the Periodic Component
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# To fit these periodic components - the regions of power over above the aperiodic component,
+# To fit this periodic activity - the regions of power over above the aperiodic component,
 # or 'peaks' - the model uses Gaussians. As we've seen, there can be multiple peaks in the model.
 #
 # Each Gaussian, :math:`n`, referred to as :math:`G(F)_n`, is of the form:
@@ -239,7 +238,7 @@ plot_annotated_model(fm1, annotate_aperiodic=False)
 # the power across frequencies decreases with a :math:`\frac{1}{F^\chi}` relationship.
 #
 # To measure the aperiodic activity, we would like to describe the pattern of activity
-# across all frequencies, without our measure being influenced by any co-occurring periodic
+# across all frequencies, without our measure being influenced by co-occurring periodic
 # activity (peaks).
 #
 
@@ -274,7 +273,7 @@ plot_annotated_model(fm1, annotate_peaks=False)
 # define the aperiodic component, as:
 #
 # - :math:`b` is the broadband 'offset'
-# - :math:`k` relates to the 'knee'
+# - :math:`k` is the 'knee'
 # - :math:`\chi` is the 'exponent' of the aperiodic fit
 # - :math:`F` is the array of frequency values
 #
@@ -284,9 +283,9 @@ plot_annotated_model(fm1, annotate_peaks=False)
 #
 # This function form is technically described as a Lorentzian function. We use the option
 # of adding a knee parameter, since even though neural data is often discussed in terms
-# of having `1/f` activity, across broader frequency ranges, there is typically not a single
-# `1/f` characteristic. Using this form allows for modeling bends in the power spectrum of
-# the aperiodic component, if and when they occur.
+# of having `1/f` activity, there is often not a single `1/f` characteristic, especially
+# across broader frequency ranges. Therefore, using this function form allows for modeling
+# bends in the power spectrum of the aperiodic component, if and when they occur.
 #
 # Note that if we were to want the equivalent function in linear power, using :math:`AP`
 # to indicate the aperiodic component in linear spacing, it would be:
@@ -308,7 +307,7 @@ plot_annotated_model(fm1, annotate_peaks=False)
 # not affect how the data is stored and/or how models are fit.
 #
 # Below we can see the same spectrum again, with all the annotations on, plotted in log-log.
-# The most notable difference, is that the aperiodic component is a straight line in log-log
+# The most notable difference is that the aperiodic component is a straight line in log-log
 # spacing. This is a hallmark of `1/f` activity.
 #
 

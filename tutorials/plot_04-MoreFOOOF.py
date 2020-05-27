@@ -26,7 +26,7 @@ fm = FOOOF()
 #
 # - 1) settings attributes, that control the algorithm fitting
 # - 2) data attributes, that contain and describe the data
-# - 3) result attributes, that contain the results of the model fit
+# - 3) result attributes, that contain the resulting parameters that describe the model fit
 # - 4) methods (functions) that perform procedures for fitting models and associated utilities
 #
 # Each these which are described in more detail below.
@@ -48,8 +48,8 @@ fm = FOOOF()
 #
 # There are some internal settings that are not exposed at initialization.
 # These settings are unlikely to need to be accessed by the user, but can be if desired -
-# they are all defined and documented in \__init\__ (there should be no other settings, or
-# 'magic numbers' in any other parts of the code).
+# they are all defined and documented in the code in the object's \__init\__ (there are no
+# other settings, or 'magic numbers' in any other parts of the code).
 #
 
 ###################################################################################################
@@ -59,8 +59,9 @@ fm = FOOOF()
 # **peak_width_limits (Hz)** default: [0.5, 12]
 #
 # Enforced limits on the minimum and maximum widths of extracted peaks, given as a list of
-# [minimum bandwidth, maximum bandwidth]. We recommend bandwidths be set to be at last twice
-# the frequency resolution of the power spectrum.
+# [minimum bandwidth, maximum bandwidth]. We recommend that the minimum bandwidth be set to
+# be at last twice the frequency resolution of the power spectrum, so that single points
+# can not be fit as peaks.
 #
 
 ###################################################################################################
@@ -93,7 +94,7 @@ fm = FOOOF()
 # this constraint is enforced during peak search, and prior to final peak fit, returned
 # peaks are not guaranteed to surpass this value in height.
 #
-# Note: there are two different height-related halting conditions for the peak searching.
+# There are two different height-related halting conditions for the peak searching.
 # By default, the relative (standard-deviation based) threshold is defined, whereas the
 # absolute threshold is set to zero (this default is because there is no general way to
 # set this value without knowing the scale of the data). If both are defined, both are
@@ -141,7 +142,7 @@ fm.print_settings(description=True)
 
 ###################################################################################################
 
-# Re-initialize a new FOOOF object, with some specified settings
+# Re-initialize a new FOOOF object, with some new specified settings
 fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 
 ###################################################################################################
@@ -150,8 +151,8 @@ fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 #
 # The :class:`~fooof.FOOOF` object stores the following data attributes:
 #
-# - ``freqs``: the frequency values corresponding to the data
-# - ``power_spectrum``: the power spectrum
+# - ``freqs``: the frequency values of the power spectrum
+# - ``power_spectrum``: the power values of the power spectrum
 # - ``freq_range``: the frequency range of the data
 # - ``freq_res``: the frequency resolution of the data
 #
@@ -202,8 +203,8 @@ fm.fit()
 #
 # With our model fit, the results attributes should now hold values.
 #
-# Recall that here we follow the scipy convention in that any attributes that contain
-# model results are indicated by a trailing underscore.
+# Recall that by convention, any attributes that contain model results are
+# indicated by a trailing underscore.
 #
 # The model results stored by the object are:
 #
@@ -245,7 +246,7 @@ print('fooofed spectrum: \t', fm.fooofed_spectrum_[0:5])
 # In addition to the exposed methods, there are some internal private methods,
 # with a leading underscore in their name, that are called in the
 # fitting procedure. These methods should not be called directly by the user
-# as they may depend on internal state of the object as defined from other methods,
+# as they may depend on internal state of the object as defined by other methods,
 # and so may not do as expected in isolation.
 #
 

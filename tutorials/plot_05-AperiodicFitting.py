@@ -2,7 +2,7 @@
 05: Aperiodic Component Fitting
 ===============================
 
-Choosing and using different approaches for fitting the aperiodic component.
+Choosing and using different modes for fitting the aperiodic component.
 """
 
 ###################################################################################################
@@ -10,7 +10,7 @@ Choosing and using different approaches for fitting the aperiodic component.
 # Import the FOOOF object
 from fooof import FOOOF
 
-# Import utility to download and load example data
+# Import a utility to download and load example data
 from fooof.utils.download import load_fooof_data
 
 ###################################################################################################
@@ -29,15 +29,15 @@ from fooof.utils.download import load_fooof_data
 # Fitting in the 'fixed' mode assumes a single 1/f like characteristic to the aperiodic
 # component, meaning it looks linear across all frequencies in log-log space.
 #
-# Though this assumption is true across *some* frequency ranges in neural data, it does
+# Though this assumption is true across *some* frequency ranges in neural data, it generally
 # does not hold up across broad frequency ranges. If fitting is done in the 'fixed' mode,
 # but the assumption of a single 1/f is violated, then fitting will go wrong.
 #
-# Broad frequency ranges (typically ranges greater than ~40 Hz range) don't meet this
-# criterion, as they typically exhibit a 'bend' in the aperiodic component, whereby there is
-# not a single 1/f property across all frequencies, but rather a 'bend' in the aperiodic
-# component. For these cases, fitting should be done using an extra parameter to capture
-# this, in 'knee' mode.
+# Broad frequency ranges (typically ranges greater than ~40 Hz range) typically do not
+# have a single 1/f, as assumed by 'fixed' mode, as they typically exhibit a 'bend' in
+# the aperiodic component. This indicates that there is not a single 1/f property across
+# all frequencies, but rather a 'bend' in the aperiodic component. For these cases, fitting
+# should be done using an extra parameter to capture this, using the 'knee' mode.
 #
 
 ###################################################################################################
@@ -143,8 +143,8 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 # - Be wary of ambiguous ranges, where there may or may not be a knee.
 #
 #   - Trying to fit without a knee, when there is not a single consistent aperiodic component,
-#     can lead to very bad fits. But it is also a known issue that trying to fit with a knee
-#     can lead to suboptimal fits when no knee is present.
+#     can lead to very bad fits. However, trying to fit with a knee may lead to suboptimal fits
+#     when no knee is present, and makes interpreting the exponent more difficult.
 #
 #     - We therefore currently recommend picking frequency ranges in which the expected
 #       aperiodic component process is relatively clear.

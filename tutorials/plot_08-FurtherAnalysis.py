@@ -9,20 +9,19 @@ Analyze results from fitting power spectrum models.
 # Exploring Power Spectrum Model Results
 # --------------------------------------
 #
-# So far we have explored how to parameterize neural power spectra as a method to extract
+# So far we have explored how to parameterize neural power spectra, whereby we can measure
 # parameters of interest from data - in particular measuring aperiodic and periodic activity.
 #
 # These measured parameters can then be examined within or between groups of interest,
-# and/or fed into further analysis to examine if, for example, these parameters
-# predict other behavioural or physiological features of interest.
-# Largely, it is up to you what to do after fitting power spectrum models, as it depends
-# on your questions of interest.
+# and/or fed into further analyses. For example, one could examine if these parameters
+# predict behavioural or physiological features of interest. Largely, it is up to you what
+# to do after fitting power spectrum models, as it depends on your questions of interest.
 #
 # Here, we briefly introduce some analysis utilities that are included in the module,
 # and explore some simple analyses that can be done with model parameters.
 #
 # To start, we will load and fit some example data, as well as simulate a group of
-# power spectra to fit with power spectrum models.
+# power spectra to fit with power spectrum models, to use as examples for this tutorial.
 #
 
 ###################################################################################################
@@ -44,17 +43,19 @@ from fooof.sim.utils import set_random_seed
 # Import some analysis functions
 from fooof.analysis import get_band_peak_fm, get_band_peak_fg
 
-# Import utility to download and load example data
+# Import a utility to download and load example data
 from fooof.utils.download import load_fooof_data
 
 ###################################################################################################
 # Load and Fit Example Data
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 #
+# First, let's load and fit an example power spectrum.
+#
 
 ###################################################################################################
 
-# Load examples data files needed for this example
+# Load example data files needed for this example
 freqs = load_fooof_data('freqs.npy', folder='data')
 spectrum = load_fooof_data('spectrum.npy', folder='data')
 
@@ -67,6 +68,8 @@ fm.fit(freqs, spectrum, [3, 30])
 ###################################################################################################
 # Simulate and Fit Group Data
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# We will also simulate and fit some additional example data.
 #
 
 ###################################################################################################
@@ -82,7 +85,7 @@ freqs, spectra = gen_group_power_spectra(n_spectra=10,
 
 ###################################################################################################
 
-# Initialize a FOOOFGroup object with desired settings
+# Initialize a FOOOFGroup object with some settings
 fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_height=0.05,
                 max_n_peaks=6, verbose=False)
 
@@ -93,14 +96,16 @@ fg.fit(freqs, spectra)
 # Analysis Utilities
 # ------------------
 #
-# The FOOOF module includes some analysis functions. Note that these utilities are
-# generally relatively simple utilities that assist in accessing and investigating
-# the model parameters.
+# The FOOOF module includes some analysis functions.
+#
+# Note that these utilities are generally relatively simple utilities that assist in
+# accessing and investigating the model parameters.
 #
 # In depth analysis of power spectrum model results is typically idiosyncratic to the goals of
-# the project, and so we consider that this will typically require custom code, and seek
-# here to offer the most general utilities, and not support all possible applications.
-# Here we demonstrate some of these utility functions covering very general use cases.
+# the project, and so we consider that this will typically require custom code. Here, we seek
+# to offer the most useful general utilities.
+#
+# We will demonstrate some of these utility functions covering some general use cases.
 #
 
 ###################################################################################################
@@ -108,11 +113,12 @@ fg.fit(freqs, spectra)
 # -----------------------------
 #
 # We will start by analyzing the periodic components.
-# In particular, these utilities mostly serve to help organize and extract periodic
-# components, for example extracting peaks that fall within defined frequency bands.
 #
-# This also includes using the :class:`~.Bands` object, that is provided
-# to store band definitions.
+# These utilities mostly serve to help organize and extract periodic components,
+# for example extracting peaks that fall within defined frequency bands.
+#
+# This also includes the :class:`~.Bands` object, which is a custom, dictionary-like object,
+# that is provided to store frequency band definitions.
 #
 
 ###################################################################################################
@@ -148,10 +154,11 @@ print(alpha)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Similarly, the :func:`~.get_band_peak_fg` function can be used
-# to select peaks within specific frequency ranges, from :class:`~fooof.FOOOFGroup` objects.
+# to select peaks from specified frequency ranges, from :class:`~fooof.FOOOFGroup` objects.
 #
 # Note that you can also apply a threshold to extract group peaks but, as discussed below,
-# this approach will only extract one peak per individual model in the FOOOFGroup object.
+# this approach will always only extract at most one peak per individual model fit from
+# the FOOOFGroup object.
 #
 
 ###################################################################################################
@@ -159,7 +166,7 @@ print(alpha)
 # Get all alpha peaks from a group of power spectrum models
 alphas = get_band_peak_fg(fg, bands.alpha)
 
-# Check out some of the alpha data
+# Check out some of the alpha parameters
 print(alphas[0:5, :])
 
 ###################################################################################################
@@ -167,10 +174,10 @@ print(alphas[0:5, :])
 # When selecting peaks from a group of model fits, we want to retain information about
 # which model each peak comes from.
 #
-# To do so, the output of :func:`~.get_band_peak_fg` is organized
-# such that each row corresponds to a specific model fit. This means that returned array
-# has the shape [n_models, 3], and so the index of each row corresponds to the index of the
-# model from the FOOOFGroup object.
+# To do so, the output of :func:`~.get_band_peak_fg` is organized such that each row
+# corresponds to a specific model fit. This means that returned array has the shape
+# [n_models, 3], and so the index of each row corresponds to the index of the model
+# from the FOOOFGroup object.
 #
 # For this to work, at most 1 peak is extracted for each model fit within the specified band.
 # If more than 1 peak are found within the band, the peak with the highest power is extracted.
@@ -179,7 +186,7 @@ print(alphas[0:5, :])
 
 ###################################################################################################
 
-# Check descriptive statistics of extracted peak data
+# Check descriptive statistics of extracted peak parameters
 print('Alpha CF : {:1.2f}'.format(np.nanmean(alphas[:, 0])))
 print('Alpha PW : {:1.2f}'.format(np.nanmean(alphas[:, 1])))
 print('Alpha BW : {:1.2f}'.format(np.nanmean(alphas[:, 2])))
@@ -191,7 +198,7 @@ print('Alpha BW : {:1.2f}'.format(np.nanmean(alphas[:, 2])))
 # If you want to do more customized extraction of peaks, for example, extracting all peaks
 # in a frequency band from each model in a FOOOFGroup object, you may need to use the
 # underlying functions that operate on arrays of peak parameters. To explore these functions,
-# check the listing in the API page.
+# check the listings in the API page.
 #
 
 ###################################################################################################
@@ -225,7 +232,7 @@ fg.plot()
 
 ###################################################################################################
 
-# Extract aperiodic exponent data from group results
+# Extract aperiodic exponent parameters from group results
 exps = fg.get_params('aperiodic_params', 'exponent')
 
 # Check out the aperiodic exponent results
@@ -235,7 +242,7 @@ print(exps)
 # Example Analyses
 # ----------------
 #
-# Once you have extracted the parameters you can analyze them by, for example:
+# Once you have extracted parameters of interest, you can analyze them by, for example:
 #
 # - Characterizing periodic & aperiodic properties,
 #   and analyzing spatial topographies, across demographics, modalities, and tasks
@@ -260,6 +267,5 @@ print(exps)
 # This is the end of the main tutorial materials!
 #
 # If you are having any troubles, please submit an issue on Github
-# `here <https://github.com/fooof-tools/fooof>`_,
-# and/or get in contact with us at voytekresearch@gmail.com.
+# `here <https://github.com/fooof-tools/fooof>`_.
 #

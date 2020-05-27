@@ -10,7 +10,7 @@ Using FOOOFGroup to run fit models across multiple power spectra.
 # Import the FOOOFGroup object
 from fooof import FOOOFGroup
 
-# Import utility to download and load example data
+# Import a utility to download and load example data
 from fooof.utils.download import load_fooof_data
 
 ###################################################################################################
@@ -19,7 +19,7 @@ from fooof.utils.download import load_fooof_data
 #
 # So far, we have explored using the :class:`~fooof.FOOOF` object to fit individual power spectra.
 #
-# However, many potential use cases will have many power spectra to fit.
+# However, many potential analyses will including many power spectra that need to be fit.
 #
 # To support this, here we will introduce the :class:`~fooof.FOOOFGroup` object, which
 # applies the model fitting procedure across multiple power spectra.
@@ -34,7 +34,9 @@ spectra = load_fooof_data('group_powers.npy', folder='data')
 ###################################################################################################
 #
 # For parameterizing a group of spectra, we can use a 1d array of frequency values
-# corresponding to a 2d array for power spectra, as is the organization of the data we loaded.
+# corresponding to a 2d array for power spectra.
+#
+# This is the organization of the data we just loaded.
 #
 
 ###################################################################################################
@@ -63,8 +65,8 @@ print(spectra.shape)
 # `power_spectra` attribute, which stores the matrix of power-spectra to be fit,
 # and collects fit results into a `group_results` attribute.
 #
-# Otherwise, FOOOFGroup supports all the same functionality,
-# accessed in the same way as the FOOOF object.
+# Otherwise, :class:`~fooof.FOOOFGroup` supports all the same functionality,
+# accessed in the same way as the :class:`~fooof.FOOOF` object.
 #
 # Internally, it runs the exact same fitting procedure, per spectrum, as the FOOOF object.
 #
@@ -94,13 +96,12 @@ fg.plot()
 ###################################################################################################
 #
 # Just as with the FOOOF object, you can call the convenience method
-# :meth:`fooof.FOOOFGroup.report` to run the fitting, and print results & plots,
-# printing out the same as above.
+# :meth:`fooof.FOOOFGroup.report` to run the fitting, and then print the results and plots.
 #
 
 ###################################################################################################
 
-# You can also save out PDFs reports for FOOOFGroup fits, same as with FOOOF
+# You can also save out PDF reports of the FOOOFGroup fits, same as with FOOOF
 fg.save_report('FOOOFGroup_report')
 
 ###################################################################################################
@@ -120,42 +121,43 @@ print(fg.group_results[0:2])
 # get_params
 # ~~~~~~~~~~
 #
-# To collect data across all model fits, and to select specific data results from this data
-# you can should the :func:`~fooof.FOOOFGroup.get_params` method.
+# To collect results from across all model fits, and to select specific parameters
+# you can use the :func:`~fooof.FOOOFGroup.get_params` method.
 #
 # This method works the same as in the :class:`~fooof.FOOOF` object, and lets you extract
 # specific results by specifying a field, as a string, and (optionally) a specific column
-# of that data.
+# to extract.
 #
 # Since the :class:`~fooof.FOOOFGroup` object collects results from across multiple model fits,
-# you should always use :func:`~fooof.FOOOFGroup.get_params` to access parameter fits.
-# The result attributes introduced with the FOOOF object do not store results across the group,
-# as they are defined for individual model fits (and used internally as such by the
-# FOOOFGroup object).
+# you should always use :func:`~fooof.FOOOFGroup.get_params` to access model parameters.
+# The results attributes introduced with the FOOOF object (such as `aperiodic_params_` or
+# `peak_params_`) do not store results across the group, as they are defined for individual
+# model fits (and used internally as such by the FOOOFGroup object).
 #
 
 ###################################################################################################
 
-# Extract aperiodic data
+# Extract aperiodic parameters
 aps = fg.get_params('aperiodic_params')
 exps = fg.get_params('aperiodic_params', 'exponent')
 
-# Extract peak data
+# Extract peak parameters
 peaks = fg.get_params('peak_params')
 cfs = fg.get_params('peak_params', 'CF')
 
-# Extract metadata about the model fit
+# Extract goodness-of-fit metrics
 errors = fg.get_params('error')
 r2s = fg.get_params('r_squared')
 
 ###################################################################################################
 
-# The full list of data you can specify is available in the documentation of `get_params`
+# The full list of parameters you can extract is available in the documentation of `get_params`
 print(fg.get_params.__doc__)
 
 ###################################################################################################
 #
-# More information about the data you can extract is also documented in the FOOOFResults object.
+# More information about the parameters you can extract is also documented in the
+# FOOOFResults object.
 #
 
 ###################################################################################################
@@ -164,20 +166,20 @@ print(fg.get_params.__doc__)
 #  Note that as a shortcut, you can index the FOOOFGroup object directly to access 'group_results'
 f_res = fg[0]
 
-# Check the documentation for the FOOOFResults - with full descriptions of the resulting data
+# Check the documentation for the FOOOFResults, which has descriptions of the parameters
 print(f_res.__doc__)
 
 ###################################################################################################
 
 # Check out the extracted exponent values
 #  Note that this extraction will return an array of length equal to the number of model fits
-#    The model fit from which each data element originated is the index of this array
+#    The model fit that each parameter relates to is the index of this array
 print(exps)
 
 ###################################################################################################
 
 # Check out some of the fit center-frequencies
-#  Note when you extract peak data, an extra column is returned,
+#  Note when you extract peak parameters, an extra column is returned,
 #  specifying which model fit it came from
 print(cfs[0:10, :])
 
@@ -185,10 +187,11 @@ print(cfs[0:10, :])
 # Saving & Loading with FOOOFGroup
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# FOOOFGroup also support saving and loading, with same options as saving from the FOOOF object.
+# FOOOFGroup also support saving and loading, with the same options for saving out
+# different things as defined and described for the FOOOF object.
 #
 # The only difference in saving FOOOFGroup, is that it saves out a 'jsonlines' file,
-# in which each line is a JSON object, saving the specified data and results for
+# in which each line is a JSON object, saving the specified data, settings, and results for
 # a single power spectrum.
 #
 
@@ -199,7 +202,7 @@ fg.save('FG_results', save_settings=True, save_results=True)
 
 ###################################################################################################
 
-# You can then reload this group data
+# You can then reload this group
 nfg = FOOOFGroup()
 nfg.load('FG_results')
 
@@ -212,8 +215,8 @@ nfg.print_results()
 # Parallel Support
 # ~~~~~~~~~~~~~~~~
 #
-# FOOOFGroup also has support for running in parallel, which can speed things up as
-# each power spectrum is fit independently.
+# FOOOFGroup also has support for running in parallel, which can speed things up, since
+# each power spectrum can be fit independently.
 #
 # The fit method includes an optional parameter ``n_jobs``, which if set at 1 (as default),
 # will fit models linearly (one at a time, in order). If you set this parameter to some other
@@ -281,5 +284,5 @@ fm.plot()
 #
 # Now we have explored fitting power spectrum models and running these fits across multiple
 # power spectra. Next we dig deeper into how to choose and tune the algorithm settings,
-# and how to troubleshoot if any of the fitting goes wrong.
+# and how to troubleshoot if any of the fitting seems to go wrong.
 #
