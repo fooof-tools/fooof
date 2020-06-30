@@ -11,14 +11,16 @@ import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.settings import PLT_FIGSIZES
-from fooof.plts.style import check_n_style, style_spectrum_plot
-from fooof.plts.utils import check_ax, add_shades, check_plot_kwargs
+from fooof.plts.style import check_n_style, style_spectrum_plot, style_plot
+from fooof.plts.utils import check_ax, add_shades, check_plot_kwargs, savefig
 
 plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
 
+@savefig
+@style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
                   ax=None, plot_style=style_spectrum_plot, **plot_kwargs):
@@ -55,6 +57,8 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
     check_n_style(plot_style, ax, log_freqs, log_powers)
 
 
+@savefig
+@style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels=None,
                  ax=None, plot_style=style_spectrum_plot, **plot_kwargs):
@@ -93,6 +97,8 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels
     check_n_style(plot_style, ax, log_freqs, log_powers)
 
 
+@savefig
+@style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_spectrum_shading(freqs, power_spectrum, shades, shade_colors='r', add_center=False,
                           ax=None, plot_style=style_spectrum_plot, **plot_kwargs):
@@ -129,6 +135,8 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, shade_colors='r', add_c
                   plot_kwargs.get('log_powers', False))
 
 
+@savefig
+@style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_center=False,
                          ax=None, plot_style=style_spectrum_plot, **plot_kwargs):

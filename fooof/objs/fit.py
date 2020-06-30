@@ -616,12 +616,12 @@ class FOOOF():
     @copy_doc_func_to_method(plot_fm)
     def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,
              add_legend=True, save_fig=False, file_name=None, file_path=None,
-             ax=None, plot_style=style_spectrum_plot,
-             data_kwargs=None, model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None):
+             ax=None, plot_style=style_spectrum_plot, data_kwargs=None, model_kwargs=None,
+             aperiodic_kwargs=None, peak_kwargs=None, **kwargs):
 
         plot_fm(self, plot_peaks, plot_aperiodic, plt_log, add_legend,
                 save_fig, file_name, file_path, ax, plot_style,
-                data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs)
+                data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs, **kwargs)
 
 
     @copy_doc_func_to_method(save_report_fm)

@@ -7,14 +7,16 @@ import numpy as np
 from fooof.sim.gen import gen_freqs, gen_aperiodic
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.settings import PLT_FIGSIZES
-from fooof.plts.style import check_n_style, style_param_plot
-from fooof.plts.utils import check_ax, recursive_plot, check_plot_kwargs
+from fooof.plts.style import check_n_style, style_param_plot, style_plot
+from fooof.plts.utils import check_ax, recursive_plot, check_plot_kwargs, savefig
 
 plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
 
+@savefig
+@style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_aperiodic_params(aps, colors=None, labels=None,
                           ax=None, plot_style=style_param_plot, **plot_kwargs):
@@ -58,6 +60,8 @@ def plot_aperiodic_params(aps, colors=None, labels=None,
     check_n_style(plot_style, ax)
 
 
+@savefig
+@style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_aperiodic_fits(aps, freq_range, control_offset=False,
                         log_freqs=False, colors=None, labels=None,

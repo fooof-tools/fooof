@@ -5,14 +5,16 @@ import numpy as np
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.settings import PLT_FIGSIZES
-from fooof.plts.style import check_n_style, style_spectrum_plot
-from fooof.plts.utils import check_ax
+from fooof.plts.style import check_n_style, style_spectrum_plot, style_plot
+from fooof.plts.utils import check_ax, savefig
 
 plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
 
+@savefig
+@style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_spectral_error(freqs, error, shade=None, log_freqs=False,
                         ax=None, plot_style=style_spectrum_plot, **plot_kwargs):

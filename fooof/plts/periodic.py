@@ -8,14 +8,16 @@ from fooof.sim import gen_freqs
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.settings import PLT_FIGSIZES
-from fooof.plts.style import check_n_style, style_param_plot
-from fooof.plts.utils import check_ax, recursive_plot, check_plot_kwargs
+from fooof.plts.style import check_n_style, style_param_plot, style_plot
+from fooof.plts.utils import check_ax, recursive_plot, check_plot_kwargs, savefig
 
 plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
 
+@savefig
+@style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
                      ax=None, plot_style=style_param_plot, **plot_kwargs):
@@ -69,6 +71,8 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
     check_n_style(plot_style, ax)
 
 
+@savefig
+@style_plot
 def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
                    ax=None, plot_style=style_param_plot, **plot_kwargs):
     """Plot reconstructions of model peak fits.

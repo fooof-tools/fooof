@@ -7,7 +7,6 @@ This file contains plotting functions that take as input a FOOOF object.
 
 import numpy as np
 
-from fooof.core.io import fname, fpath
 from fooof.core.utils import nearest_ind
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.sim.gen import gen_periodic
@@ -15,19 +14,20 @@ from fooof.utils.data import trim_spectrum
 from fooof.utils.params import compute_fwhm
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.settings import PLT_FIGSIZES, PLT_COLORS
-from fooof.plts.utils import check_ax, check_plot_kwargs
-from fooof.plts.style import check_n_style, style_spectrum_plot
+from fooof.plts.utils import check_ax, check_plot_kwargs, savefig
+from fooof.plts.style import check_n_style, style_spectrum_plot, style_plot
 
 plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
 
+@savefig
+@style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=True,
-            save_fig=False, file_name=None, file_path=None,
-            ax=None, plot_style=style_spectrum_plot,
-            data_kwargs=None, model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None):
+            save_fig=False, file_name=None, file_path=None, ax=None, plot_style=style_spectrum_plot,
+            data_kwargs=None, model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None, **kwargs):
     """Plot the power spectrum and model fit results from a FOOOF object.
 
     Parameters
@@ -55,6 +55,8 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         A function to call to apply styling & aesthetics to the plot.
     data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs : None or dict, optional
         Keyword arguments to pass into the plot call for each plot element.
+    **kwargs
+        Keyword arguments for customizing the plot, passed to the 'style_plot' decorator.
 
     Notes
     -----
@@ -98,12 +100,6 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
 
     # Apply style to plot
     check_n_style(plot_style, ax, log_freqs, True)
-
-    # Save out figure, if requested
-    if save_fig:
-        if not file_name:
-            raise ValueError("Input 'file_name' is required to save out the plot.")
-        plt.savefig(fpath(file_path, fname(file_name, 'png')))
 
 
 def _add_peaks(fm, approach, plt_log, ax, peak_kwargs):

@@ -7,7 +7,7 @@ from fooof.core.errors import NoModelError
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.sim.gen import gen_aperiodic
-from fooof.plts.utils import check_ax
+from fooof.plts.utils import check_ax, savefig
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.settings import PLT_FIGSIZES, PLT_COLORS
 from fooof.plts.style import check_n_style, style_spectrum_plot
@@ -20,6 +20,7 @@ mpatches = safe_import('.patches', 'matplotlib')
 ###################################################################################################
 ###################################################################################################
 
+@savefig
 @check_dependency(plt, 'matplotlib')
 def plot_annotated_peak_search(fm, plot_style=style_spectrum_plot):
     """Plot a series of plots illustrating the peak search from a flattened spectrum.
@@ -74,6 +75,7 @@ def plot_annotated_peak_search(fm, plot_style=style_spectrum_plot):
         check_n_style(plot_style, ax, False, True)
 
 
+@savefig
 @check_dependency(plt, 'matplotlib')
 def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperiodic=True,
                          ax=None, plot_style=style_spectrum_plot):
