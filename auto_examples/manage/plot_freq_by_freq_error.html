@@ -3,6 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frequency-by-Frequency Errors &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -17,9 +18,10 @@
     <script src="../../_static/language_data.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -28,6 +30,18 @@
 <script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
 <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
 <script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
 
   </head><body>
 
@@ -163,8 +177,8 @@ This suggests no particular problem with the fit.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Average freq-by-freq error:      0.003
-FOOOF model fit error:           0.003
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Average freq-by-freq error:      0.004
+FOOOF model fit error:           0.004
 </pre></div>
 </div>
 </div>
@@ -207,8 +221,8 @@ and the shading indicates the standard deviation of the error, also per frequenc
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Frequency with highest mean error:                       3.0
-Frequency with highest standard deviation of error:      31.0
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Frequency with highest mean error:                       40.5
+Frequency with highest standard deviation of error:      23.0
 </pre></div>
 </div>
 <p>In the plot and checks above, we again see that the error is on average low, and
@@ -245,7 +259,7 @@ between the data properties we simulated and the aperiodic mode used to fit the 
 <p>If you see high errors, especially bunched up around particular frequencies,
 this is a sign that something might be going wrong, and it might be worth
 looking more into the how the model fits are going.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.003 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.049 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manage-plot-freq-by-freq-error-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/16d9586d4d5bb0e93cc846c336cef657/plot_freq_by_freq_error.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_freq_by_freq_error.py</span></code></a></p>
@@ -272,7 +286,7 @@ looking more into the how the model fits are going.</p>
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.0.<br/>
     </p>
   </div>
 </footer>
