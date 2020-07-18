@@ -226,20 +226,25 @@ def test_fooof_load():
     for meta_dat in OBJ_DESC['meta_data']:
         assert getattr(tfm, meta_dat) is not None
 
-def test_adds():
-    """Tests methods that add data to FOOOF objects.
+def test_add_data():
+    """Tests method to add data to FOOOF objects."""
 
-    Checks: add_data, add_settings, add_results.
-    """
-
-    # Note: uses it's own tfm, to not add stuff to the global one
+    # This test uses it's own FOOOF object, to not add stuff to the global one
     tfm = get_tfm()
 
     # Test adding data
     freqs, pows = np.array([1, 2, 3]), np.array([10, 10, 10])
     tfm.add_data(freqs, pows)
+
+    assert tfm.has_data
     assert np.all(tfm.freqs == freqs)
     assert np.all(tfm.power_spectrum == np.log10(pows))
+
+def test_add_settings():
+    """Tests method to add settings to FOOOF objects."""
+
+    # This test uses it's own FOOOF object, to not add stuff to the global one
+    tfm = get_tfm()
 
     # Test adding settings
     fooof_settings = FOOOFSettings([1, 4], 6, 0, 2, 'fixed')
@@ -247,15 +252,28 @@ def test_adds():
     for setting in OBJ_DESC['settings']:
         assert getattr(tfm, setting) == getattr(fooof_settings, setting)
 
+def test_add_meta_data():
+    """Tests method to add meta data to FOOOF objects."""
+
+    # This test uses it's own FOOOF object, to not add stuff to the global one
+    tfm = get_tfm()
+
     # Test adding meta data
     fooof_meta_data = FOOOFMetaData([3, 40], 0.5)
     tfm.add_meta_data(fooof_meta_data)
     for meta_dat in OBJ_DESC['meta_data']:
         assert getattr(tfm, meta_dat) == getattr(fooof_meta_data, meta_dat)
 
+def test_add_results():
+    """Tests method to add results to FOOOF objects."""
+
+    # This test uses it's own FOOOF object, to not add stuff to the global one
+    tfm = get_tfm()
+
     # Test adding results
     fooof_results = FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25])
     tfm.add_results(fooof_results)
+    assert tfm.has_model
     for setting in OBJ_DESC['results']:
         assert getattr(tfm, setting) == getattr(fooof_results, setting.strip('_'))
 
