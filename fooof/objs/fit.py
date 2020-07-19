@@ -238,14 +238,10 @@ class FOOOF():
             # Bandwidth limits are given in 2-sided peak bandwidth
             #   Convert to gaussian std parameter limits
             self._gauss_std_limits = tuple([bwl / 2 for bwl in self.peak_width_limits])
-            # Bounds for aperiodic fitting. Drops bounds on knee parameter if not set to fit knee
-            self._ap_bounds = self._ap_bounds if self.aperiodic_mode == 'knee' \
-                else tuple(bound[0::2] for bound in self._ap_bounds)
 
         # Otherwise, assume settings are unknown (have been cleared) and set to None
         else:
             self._gauss_std_limits = None
-            self._ap_bounds = None
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False):
@@ -722,6 +718,10 @@ class FOOOF():
                             np.log10(self.freqs[-1]) - np.log10(self.freqs[0]))
                      if not self._ap_guess[2] else self._ap_guess[2]]
 
+        # Get bounds for aperiodic fitting, dropping knee bound if not set to fit knee
+        ap_bounds = self._ap_bounds if self.aperiodic_mode == 'knee' \
+            else tuple(bound[0::2] for bound in self._ap_bounds)
+
         # Collect together guess parameters
         guess = np.array([off_guess + kne_guess + exp_guess])
 
@@ -734,7 +734,7 @@ class FOOOF():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                                 freqs, power_spectrum, p0=guess,
-                                                maxfev=self._maxfev, bounds=self._ap_bounds)
+                                                maxfev=self._maxfev, bounds=ap_bounds)
         except RuntimeError:
             raise FitError("Model fitting failed due to not finding parameters in "
                            "the simple aperiodic component fit.")
@@ -779,6 +779,10 @@ class FOOOF():
         freqs_ignore = freqs[perc_mask]
         spectrum_ignore = power_spectrum[perc_mask]
 
+        # Get bounds for aperiodic fitting, dropping knee bound if not set to fit knee
+        ap_bounds = self._ap_bounds if self.aperiodic_mode == 'knee' \
+            else tuple(bound[0::2] for bound in self._ap_bounds)
+
         # Second aperiodic fit - using results of first fit as guess parameters
         #  See note in _simple_ap_fit about warnings
         try:
@@ -786,7 +790,7 @@ class FOOOF():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                                 freqs_ignore, spectrum_ignore, p0=popt,
-                                                maxfev=self._maxfev, bounds=self._ap_bounds)
+                                                maxfev=self._maxfev, bounds=ap_bounds)
         except RuntimeError:
             raise FitError("Model fitting failed due to not finding "
                            "parameters in the robust aperiodic fit.")
