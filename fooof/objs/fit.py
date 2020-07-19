@@ -286,7 +286,7 @@ class FOOOF():
             self._peak_fit = None
 
 
-    def add_data(self, freqs, power_spectrum, freq_range=None):
+    def add_data(self, freqs, power_spectrum, freq_range=None, clear_results=True):
         """Add data (frequencies, and power spectrum values) to the current object.
 
         Parameters
@@ -298,6 +298,9 @@ class FOOOF():
         freq_range : list of [float, float], optional
             Frequency range to restrict power spectrum to.
             If not provided, keeps the entire range.
+        clear_results : bool, optional, default: True
+            Whether to clear prior results, if any are present in the object.
+            This should only be set to False if data for the current results are being re-added.
 
         Notes
         -----
@@ -305,10 +308,12 @@ class FOOOF():
         they will be cleared by this method call.
         """
 
-        # If any data is already present, then clear data & results
+        # If any data is already present, then clear previous data
+        # Also clear results, is results are present, unless indicated not to
         #   This is to ensure object consistency of all data & results
-        if np.any(self.freqs):
-            self._reset_data_results(True, True, True)
+        self._reset_data_results(clear_freqs=self.has_data,
+                                 clear_spectrum=self.has_data,
+                                 clear_results=self.has_model and clear_results)
 
         self.freqs, self.power_spectrum, self.freq_range, self.freq_res = \
             self._prepare_data(freqs, power_spectrum, freq_range, 1, self.verbose)
