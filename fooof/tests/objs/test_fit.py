@@ -232,13 +232,27 @@ def test_add_data():
     # This test uses it's own FOOOF object, to not add stuff to the global one
     tfm = get_tfm()
 
-    # Test adding data
+    # Test data for adding
     freqs, pows = np.array([1, 2, 3]), np.array([10, 10, 10])
-    tfm.add_data(freqs, pows)
 
+    # Test adding data
+    tfm.add_data(freqs, pows)
     assert tfm.has_data
     assert np.all(tfm.freqs == freqs)
     assert np.all(tfm.power_spectrum == np.log10(pows))
+
+    # Test that prior data does not get cleared, when requesting not to clear
+    tfm._reset_data_results(True, True, True)
+    tfm.add_results(FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25]))
+    tfm.add_data(freqs, pows, clear_results=False)
+    assert tfm.has_data
+    assert tfm.has_model
+
+    # Test that prior data does get cleared, when requesting not to clear
+    tfm._reset_data_results(True, True, True)
+    tfm.add_data(freqs, pows, clear_results=True)
+    assert tfm.has_data
+    assert not tfm.has_model
 
 def test_add_settings():
     """Tests method to add settings to FOOOF objects."""
