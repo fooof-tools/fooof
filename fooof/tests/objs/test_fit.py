@@ -392,4 +392,4 @@ def test_fooof_check_data():
 
     # Model fitting should execute, but return a null model fit, given the NaNs, without failing
     tfm.fit()
-    assert not fm.has_model
+    assert not tfm.has_model
