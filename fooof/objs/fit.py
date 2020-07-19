@@ -445,7 +445,7 @@ class FOOOF():
             #   This serves as a catch all for curve_fits which will fail given NaN or Inf
             #   Because FitError's are by default caught, this allows fitting to continue
             if not self._check_data:
-                if not np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):
+                if np.any(np.isinf(self.power_spectrum)) or np.any(np.isnan(self.power_spectrum)):
                     raise FitError("There are NaN or Inf values in the data,  "
                                     "which preclude model fitting.")
 
@@ -703,7 +703,7 @@ class FOOOF():
         self._debug = debug
 
 
-    def set_check_data(self, check_data):
+    def set_check_data_mode(self, check_data):
         """Set check data mode, which controls if an error is raised if NaN or Inf data are added.
 
         Parameters

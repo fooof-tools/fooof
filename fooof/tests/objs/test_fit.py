@@ -12,7 +12,7 @@ from py.test import raises
 from fooof.core.items import OBJ_DESC
 from fooof.core.errors import FitError
 from fooof.core.utils import group_three
-from fooof.sim import gen_power_spectrum
+from fooof.sim import gen_freqs, gen_power_spectrum
 from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
 from fooof.core.errors import DataError, NoDataError, InconsistentDataError
 
@@ -364,7 +364,7 @@ def test_fooof_fit_failure():
         assert np.all(np.isnan(getattr(tfm, result)))
 
 def test_fooof_debug():
-    """Test FOOOF fit failure in debug mode."""
+    """Test FOOOF in debug mode, including with fit failures."""
 
     tfm = FOOOF(verbose=False)
     tfm._maxfev = 5
@@ -374,3 +374,22 @@ def test_fooof_debug():
 
     with raises(FitError):
         tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+
+def test_fooof_check_data():
+    """Test FOOOF in with check data mode turned off, including with NaN data."""
+
+    tfm = FOOOF(verbose=False)
+
+    tfm.set_check_data_mode(False)
+    assert tfm._check_data is False
+
+    # Add data, with check data turned off
+    #   In check data mode, adding data with NaN should run
+    freqs = gen_freqs([3, 50], 0.5)
+    powers = np.ones_like(freqs) * np.nan
+    tfm.add_data(freqs, powers)
+    assert tfm.has_data
+
+    # Model fitting should execute, but return a null model fit, given the NaNs, without failing
+    tfm.fit()
+    assert not fm.has_model
