@@ -222,7 +222,7 @@ class FOOOFGroup(FOOOF):
             self._reset_group_results()
 
         self.freqs, self.power_spectra, self.freq_range, self.freq_res = \
-            self._prepare_data(freqs, power_spectra, freq_range, 2, self.verbose)
+            self._prepare_data(freqs, power_spectra, freq_range, 2)
 
 
     def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
