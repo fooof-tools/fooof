@@ -283,7 +283,7 @@ def _add_peaks_width(fm, plt_log, ax, **plot_kwargs):
 
     Notes
     -----
-    This line representents the bandwidth (width or gaussian standard deviation) of
+    This line represents the bandwidth (width or gaussian standard deviation) of
     the peak, though what is literally plotted is the full-width half-max.
     """
 

@@ -9,7 +9,6 @@ def test_check_n_style(skip_if_no_mpl):
 
     # Check can pass None and do nothing
     check_n_style(None)
-    assert True
 
     # Check can pass a callable
     def checker(*args):

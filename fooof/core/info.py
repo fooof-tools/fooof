@@ -70,7 +70,7 @@ def get_ap_indices(aperiodic_mode):
     Returns
     -------
     indices : dict
-        Mapping of the column labels and indices for the aperiodc parameters.
+        Mapping of the column labels and indices for the aperiodic parameters.
     """
 
     if aperiodic_mode == 'fixed':

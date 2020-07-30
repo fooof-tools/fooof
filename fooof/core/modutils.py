@@ -79,7 +79,7 @@ def docs_append_to_section(docstring, section, add):
 
     Parameters
     ----------
-    ds : str
+    docstring : str
         Docstring to update.
     section : str
         Name of the section within the docstring to add to.

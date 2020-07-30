@@ -12,25 +12,20 @@ from fooof.plts.templates import *
 @plot_test
 def test_plot_scatter_1(skip_if_no_mpl):
 
-    dat = np.random.randint(0, 100, 100)
+    data = np.random.randint(0, 100, 100)
 
-    plot_scatter_1(dat, 'label', 'title')
+    plot_scatter_1(data, 'label', 'title')
 
 @plot_test
 def test_plot_scatter_2(skip_if_no_mpl):
 
-    plt.close('all')
+    data1 = np.random.randint(0, 100, 100)
+    data2 = np.random.randint(0, 100, 100)
 
-    dat1 = np.random.randint(0, 100, 100)
-    dat2 = np.random.randint(0, 100, 100)
-
-    plot_scatter_2(dat1, 'label1', dat2, 'label2', 'title')
-
-    ax = plt.gca()
-    assert ax.has_data()
+    plot_scatter_2(data1, 'label1', data2, 'label2', 'title')
 
 @plot_test
 def test_plot_hist(skip_if_no_mpl):
 
-    dat = np.random.randint(0, 100, 100)
-    plot_hist(dat, 'label', 'title')
+    data = np.random.randint(0, 100, 100)
+    plot_hist(data, 'label', 'title')
