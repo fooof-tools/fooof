@@ -101,7 +101,11 @@ To install the latest stable release, use pip:
 
     $ pip install fooof
 
-Note that this will install only the core (non-optional) FOOOF requirements.
+FOOOF can also be installed with conda, from the conda-forge channel:
+
+.. code-block:: shell
+
+    $ conda install -c conda-forge fooof
 
 **Development Version**
 
