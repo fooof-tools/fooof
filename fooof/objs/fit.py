@@ -446,8 +446,8 @@ class FOOOF():
             #   Because FitError's are by default caught, this allows fitting to continue
             if not self._check_data:
                 if np.any(np.isinf(self.power_spectrum)) or np.any(np.isnan(self.power_spectrum)):
-                    raise FitError("There are NaN or Inf values in the data,  "
-                                    "which preclude model fitting.")
+                    raise FitError("Model fitting was skipped because there are NaN or Inf "
+                                   "values in the data, which preclude model fitting.")
 
             # Fit the aperiodic component
             self.aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
@@ -816,7 +816,8 @@ class FOOOF():
             raise FitError("Model fitting failed due to not finding "
                            "parameters in the robust aperiodic fit.")
         except TypeError:
-            raise FitError("Model fitting failed due to sub-sampling in the robust aperiodic fit.")
+            raise FitError("Model fitting failed due to sub-sampling "
+                           "in the robust aperiodic fit.")
 
         return aperiodic_params
 
