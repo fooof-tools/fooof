@@ -16,6 +16,7 @@ REPORT_FIGSIZE = (16, 20)
 REPORT_FONT = {'family': 'monospace',
                'weight': 'normal',
                'size': 16}
+SAVE_FORMAT = 'pdf'
 
 ###################################################################################################
 ###################################################################################################
@@ -61,7 +62,7 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
     ax2.set_yticks([])
 
     # Save out the report
-    plt.savefig(fpath(file_path, fname(file_name, 'pdf')))
+    plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
     plt.close()
 
 
@@ -104,5 +105,5 @@ def save_report_fg(fg, file_name, file_path=None):
     plot_fg_peak_cens(fg, ax3)
 
     # Save out the report
-    plt.savefig(fpath(file_path, fname(file_name, 'pdf')))
+    plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
     plt.close()

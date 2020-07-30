@@ -557,7 +557,7 @@ class FOOOFGroup(FOOOF):
         """Check and warn about bandwidth limits / frequency resolution interaction."""
 
         # Only check & warn on first power spectrum
-        #   This is to avoid spamming stdout for every spectrum in the group
+        #   This is to avoid spamming standard output for every spectrum in the group
         if self.power_spectra[0, 0] == self.power_spectrum[0]:
             super()._check_width_limits()
 

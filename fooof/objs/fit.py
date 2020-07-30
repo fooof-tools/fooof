@@ -305,7 +305,7 @@ class FOOOF():
         """
 
         # If any data is already present, then clear previous data
-        # Also clear results, is results are present, unless indicated not to
+        # Also clear results, if present, unless indicated not to
         #   This is to ensure object consistency of all data & results
         self._reset_data_results(clear_freqs=self.has_data,
                                  clear_spectrum=self.has_data,
@@ -860,7 +860,7 @@ class FOOOF():
                 guess_std = compute_gauss_std(fwhm)
 
             except ValueError:
-                # This procedure can fail (extremely rarely), if both le & ri ind's end up as None
+                # This procedure can fail (very rarely), if both left & right inds end up as None
                 #   In this case, default the guess to the average of the peak width limits
                 guess_std = np.mean(self.peak_width_limits)
 
@@ -1036,21 +1036,21 @@ class FOOOF():
         Notes
         -----
         For any gaussians with an overlap that crosses the threshold,
-        the lowest height guess guassian is dropped.
+        the lowest height guess Gaussian is dropped.
         """
 
-        # Sort the peak guesses by increasing frequency, so adjacenent peaks can
-        #   be compared from right to left.
+        # Sort the peak guesses by increasing frequency
+        #   This is so adjacent peaks can be compared from right to left
         guess = sorted(guess, key=lambda x: float(x[0]))
 
         # Calculate standard deviation bounds for checking amount of overlap
-        #   The bounds are the gaussian frequncy +/- gaussian standard deviation
+        #   The bounds are the gaussian frequency +/- gaussian standard deviation
         bounds = [[peak[0] - peak[2] * self._gauss_overlap_thresh,
                    peak[0] + peak[2] * self._gauss_overlap_thresh] for peak in guess]
 
         # Loop through peak bounds, comparing current bound to that of next peak
         #   If the left peak's upper bound extends pass the right peaks lower bound,
-        #   Then drop the guassian with the lower height.
+        #   then drop the Gaussian with the lower height
         drop_inds = []
         for ind, b_0 in enumerate(bounds[:-1]):
             b_1 = bounds[ind + 1]

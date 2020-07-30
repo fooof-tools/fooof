@@ -102,7 +102,7 @@ def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_
 
 
 def compute_pointwise_error(model, data):
-    """Calculate pointwise error between original data and a model fit of that data.
+    """Calculate point-wise error between original data and a model fit of that data.
 
     Parameters
     ----------

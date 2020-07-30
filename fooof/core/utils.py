@@ -210,7 +210,7 @@ def check_inds(inds):
     This function works only on indices defined for 1 dimension.
     """
 
-    # Typcasting: if a single int, convert to an array
+    # Typecasting: if a single int, convert to an array
     if isinstance(inds, int):
         inds = np.array([inds])
     # Typecasting: if a list or range, convert to an array
