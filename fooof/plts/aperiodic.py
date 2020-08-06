@@ -3,12 +3,13 @@
 from itertools import cycle
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 from fooof.sim.gen import gen_freqs, gen_aperiodic
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.settings import PLT_FIGSIZES
-from fooof.plts.style import check_n_style, style_param_plot, style_plot
-from fooof.plts.utils import check_ax, recursive_plot, check_plot_kwargs, savefig
+from fooof.plts.style import style_param_plot, style_plot
+from fooof.plts.utils import check_ax, recursive_plot, savefig
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -18,8 +19,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_aperiodic_params(aps, colors=None, labels=None,
-                          ax=None, plot_style=style_param_plot, **plot_kwargs):
+def plot_aperiodic_params(aps, colors=None, labels=None, ax=None, **plot_kwargs):
     """Plot aperiodic parameters as dots representing offset and exponent value.
 
     Parameters
@@ -32,17 +32,14 @@ def plot_aperiodic_params(aps, colors=None, labels=None,
         Label(s) for plotted data, to be added in a legend.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_param_plot
-        A function to call to apply styling & aesthetics to the plot.
     **plot_kwargs
-        Keyword arguments to pass into the plot call.
+        Keyword arguments to pass into the ``style_plot``.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
 
     if isinstance(aps, list):
-        recursive_plot(aps, plot_aperiodic_params, ax, colors=colors, labels=labels,
-                       plot_style=plot_style, **plot_kwargs)
+        recursive_plot(aps, plot_aperiodic_params, ax, colors=colors, labels=labels)
 
     else:
 
@@ -50,14 +47,26 @@ def plot_aperiodic_params(aps, colors=None, labels=None,
         xs, ys = aps[:, 0], aps[:, -1]
         sizes = plot_kwargs.pop('s', 150)
 
-        plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 0.7})
-        ax.scatter(xs, ys, sizes, c=colors, label=labels, **plot_kwargs)
+        colors = 'C0' if colors is None else colors
+        colors = cycle([colors]) if not isinstance(colors, list) else cycle(colors)
+        labels = cycle([labels]) if not isinstance(labels, list) else cycle(labels)
+
+        for xi, yi in zip(xs, ys):
+
+            # Prevent duplicate labels when recursively plotting
+            _, cur_labels = plt.gca().get_legend_handles_labels()
+
+            label = next(labels)
+            if label not in cur_labels:
+                ax.scatter(xi, yi, s=sizes, color=next(colors), label=label, alpha=0.7)
+            else:
+                ax.scatter(xi, yi, s=sizes, color=next(colors), alpha=0.7)
 
     # Add axis labels
     ax.set_xlabel('Offset')
     ax.set_ylabel('Exponent')
 
-    check_n_style(plot_style, ax)
+    style_param_plot(ax)
 
 
 @savefig
@@ -65,7 +74,7 @@ def plot_aperiodic_params(aps, colors=None, labels=None,
 @check_dependency(plt, 'matplotlib')
 def plot_aperiodic_fits(aps, freq_range, control_offset=False,
                         log_freqs=False, colors=None, labels=None,
-                        ax=None, plot_style=style_param_plot, **plot_kwargs):
+                        ax=None, **plot_kwargs):
     """Plot reconstructions of model aperiodic fits.
 
     Parameters
@@ -84,10 +93,8 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         Label(s) for plotted data, to be added in a legend.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_param_plot
-        A function to call to apply styling & aesthetics to the plot.
     **plot_kwargs
-        Keyword arguments to pass into the plot call.
+        Keyword arguments to pass into the ``style_plot``.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
@@ -97,11 +104,9 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         if not colors:
             colors = cycle(plt.rcParams['axes.prop_cycle'].by_key()['color'])
 
-        recursive_plot(aps, plot_function=plot_aperiodic_fits, ax=ax,
-                       freq_range=tuple(freq_range),
-                       control_offset=control_offset,
-                       log_freqs=log_freqs, colors=colors, labels=labels,
-                       plot_style=plot_style, **plot_kwargs)
+        recursive_plot(aps, plot_aperiodic_fits, ax=ax, freq_range=tuple(freq_range),
+                       control_offset=control_offset, log_freqs=log_freqs, colors=colors,
+                       labels=labels, **plot_kwargs)
     else:
 
         freqs = gen_freqs(freq_range, 0.1)
@@ -122,8 +127,7 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
             # Recreate & plot the aperiodic component from parameters
             ap_vals = gen_aperiodic(freqs, ap_params)
 
-            plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 0.35, 'linewidth' : 1.25})
-            ax.plot(plt_freqs, ap_vals, color=colors, **plot_kwargs)
+            ax.plot(plt_freqs, ap_vals, color=colors, alpha=0.35, linewidth=1.25)
 
             # Collect a running average across components
             avg_vals = np.nansum(np.vstack([avg_vals, ap_vals]), axis=0)
@@ -131,8 +135,7 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         # Plot the average component
         avg = avg_vals / aps.shape[0]
         avg_color = 'black' if not colors else colors
-        ax.plot(plt_freqs, avg, linewidth=plot_kwargs.get('linewidth')*3,
-                color=avg_color, label=labels)
+        ax.plot(plt_freqs, avg, linewidth=3.75, color=avg_color, label=labels)
 
     # Add axis labels
     ax.set_xlabel('log(Frequency)' if log_freqs else 'Frequency')
@@ -141,5 +144,4 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
     # Set plot limit
     ax.set_xlim(np.log10(freq_range) if log_freqs else freq_range)
 
-    # Apply plot style
-    check_n_style(plot_style, ax)
+    style_param_plot(ax)

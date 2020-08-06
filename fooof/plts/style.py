@@ -13,20 +13,7 @@ from fooof.plts.settings import (LABEL_SIZE, LEGEND_SIZE, LEGEND_LOC,
 ###################################################################################################
 ###################################################################################################
 
-def check_n_style(style_func, *args):
-    """"Check if a style function has been passed, and apply it to a plot if so.
-
-    Parameters
-    ----------
-    style_func : callable or None
-        Function to apply styling to a plot axis.
-    *args
-        Inputs to the style plot.
-    """
-
-    if style_func:
-        style_func(*args)
-
+# Default plot styling
 
 def style_spectrum_plot(ax, log_freqs, log_powers):
     """Apply style and aesthetics to a power spectrum plot.
@@ -86,8 +73,7 @@ def style_param_plot(ax):
         for handle in legend.legendHandles:
             handle._sizes = [100]
 
-
-# Additional plot style customization
+# Custom plot styling
 
 def apply_axis_style(ax, style_args=AXIS_STYLE_ARGS, **kwargs):
     """Apply axis plot style.
@@ -107,50 +93,34 @@ def apply_axis_style(ax, style_args=AXIS_STYLE_ARGS, **kwargs):
     ax.set(**plot_kwargs)
 
 
-def apply_plot_style(ax, style_args=LINE_STYLE_ARGS, **kwargs):
-    """Apply line/scatter/histogram plot style.
+def apply_line_style(ax, style_args=LINE_STYLE_ARGS, **kwargs):
+    """Apply line plot style.
 
     Parameters
     ----------
     ax : matplotlib.Axes
         Figure axes to apply style to.
     style_args : list of str
-        A list of arguments to be sub-selected from `kwargs` and applied as styling.
+        A list of arguments to be sub-selected from `kwargs` and applied as line styling.
     **kwargs
-        Keyword arguments that define style to apply.
+        Keyword arguments that define line style to apply.
     """
 
-    # Get the plot object related styling arguments from the keyword arguments
-    style_kwargs = {key : val for key, val in kwargs.items() if key in style_args}
+    # Check how many lines are from the current plot call, to apply style to
+    #   If available, this indicates the apply styling to the last 'n' lines
+    n_lines_apply = kwargs.pop('n_lines_apply', 0)
 
-    # For line plots
-    if len(ax.lines) > 0:
-        plot_objs = ax.lines
+    # Get the line related styling arguments from the keyword arguments
+    line_kwargs = {key : val for key, val in kwargs.items() if key in style_args}
 
-    # For scatter plots
-    elif len(ax.collections) > 0:
-        plot_objs = ax.collections
+    # Apply any provided line style arguments
+    for style, value in line_kwargs.items():
 
-    # For histograms
-    elif len(ax.patches) > 0:
-        plot_objs = ax.patches
-
-    # There is no styling to apply
-    else:
-        return
-
-    plot_objs = [plot_objs] if not isinstance(plot_objs, list) else plot_objs
-
-    # Apply any provided plot object style arguments
-    for style, value in style_kwargs.items():
-
-        # Values should be either a single value, for all plot objects, or a list, one  value per
-        # object. This line checks type, and makes a cycle-able / loop-able object out of the values
+        # Values should be either a single value, for all lines, or a list, of a value per line
+        #   This line checks type, and makes a cycle-able / loop-able object out of the values
         values = cycle([value] if isinstance(value, (int, float, str)) else value)
-
-        # For line plots
-        for plot_obj in plot_objs:
-            plot_obj.set(**{style : next(values)})
+        for line in ax.lines[-n_lines_apply:]:
+            line.set(**{style : next(values)})
 
 
 def apply_custom_style(ax, **kwargs):
@@ -182,12 +152,10 @@ def apply_custom_style(ax, **kwargs):
         ax.legend(prop={'size': kwargs.pop('legend_size', LEGEND_SIZE)},
                   loc=kwargs.pop('legend_loc', LEGEND_LOC))
 
-    with warnings.catch_warnings():
-        warnings.simplefilter('ignore')
-        plt.tight_layout()
+    plt.tight_layout()
 
 
-def apply_style(ax, axis_styler=apply_axis_style, line_styler=apply_plot_style,
+def apply_style(ax, axis_styler=apply_axis_style, line_styler=apply_line_style,
                 custom_styler=apply_custom_style, **kwargs):
     """Apply plot style to a figure axis.
 
@@ -242,7 +210,7 @@ def style_plot(func, *args, **kwargs):
     def decorated(*args, **kwargs):
 
         # Grab a custom style function, if provided, and grab any provided style arguments
-        style_func = kwargs.pop('apply_style', apply_style)
+        style_func = kwargs.pop('plot_style', apply_style)
         style_args = kwargs.pop('style_args', STYLE_ARGS)
         style_kwargs = {key : kwargs.pop(key) for key in style_args if key in kwargs}
 
@@ -259,13 +227,7 @@ def style_plot(func, *args, **kwargs):
         n_lines_apply = len(cur_ax.lines) - n_lines_pre
         style_kwargs['n_lines_apply'] = n_lines_apply
 
-        # Determine if styling should be applied to all axes
-        all_axes = kwargs.pop('all_axes', False)
-        cur_ax = plt.gcf().get_axes() if all_axes is True else cur_ax
-        cur_ax = [cur_ax] if not isinstance(cur_ax, list) else cur_ax
-
         # Apply the styling function
-        for ax in cur_ax:
-            style_func(ax, **style_kwargs)
+        style_func(cur_ax, **style_kwargs)
 
     return decorated

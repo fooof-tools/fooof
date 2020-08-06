@@ -21,7 +21,7 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 
 @savefig
 @check_dependency(plt, 'matplotlib')
-def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **kwargs):
+def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
     """Plot a figure with subplots visualizing the parameters from a FOOOFGroup object.
 
     Parameters
@@ -48,7 +48,7 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **kwargs):
     gs = gridspec.GridSpec(2, 2, wspace=0.4, hspace=0.25, height_ratios=[1, 1.2])
 
     # Apply scatter kwargs to all subplots
-    scatter_kwargs = kwargs
+    scatter_kwargs = plot_kwargs
     scatter_kwargs['all_axes'] = True
 
     # Aperiodic parameters plot
@@ -61,13 +61,13 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **kwargs):
 
     # Center frequencies plot
     ax2 = plt.subplot(gs[1, :])
-    plot_fg_peak_cens(fg, ax2, **kwargs)
+    plot_fg_peak_cens(fg, ax2, **plot_kwargs)
 
 
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_fg_ap(fg, ax=None, **kwargs):
+def plot_fg_ap(fg, ax=None, **plot_kwargs):
     """Plot aperiodic fit parameters, in a scatter plot.
 
     Parameters
@@ -76,8 +76,8 @@ def plot_fg_ap(fg, ax=None, **kwargs):
         Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    **kwargs
-        Keyword arguments for customizing the plot, passed to the 'style_plot' decorator.
+    **plot_kwargs
+        Keyword arguments to pass into the ``style_plot``.
     """
 
     if fg.aperiodic_mode == 'knee':
@@ -92,7 +92,7 @@ def plot_fg_ap(fg, ax=None, **kwargs):
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_fg_gf(fg, ax=None, **kwargs):
+def plot_fg_gf(fg, ax=None, **plot_kwargs):
     """Plot goodness of fit results, in a scatter plot.
 
     Parameters
@@ -101,8 +101,8 @@ def plot_fg_gf(fg, ax=None, **kwargs):
         Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    **kwargs
-        Keyword arguments for customizing the plot, passed to the 'style_plot' decorator.
+    **plot_kwargs
+        Keyword arguments to pass into the ``style_plot``.
     """
 
     plot_scatter_2(fg.get_params('error'), 'Error',
@@ -112,7 +112,7 @@ def plot_fg_gf(fg, ax=None, **kwargs):
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_fg_peak_cens(fg, ax=None, **kwargs):
+def plot_fg_peak_cens(fg, ax=None, **plot_kwargs):
     """Plot peak center frequencies, in a histogram.
 
     Parameters
@@ -121,8 +121,8 @@ def plot_fg_peak_cens(fg, ax=None, **kwargs):
         Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    **kwargs
-        Keyword arguments for customizing the plot, passed to the 'style_plot' decorator.
+    **plot_kwargs
+        Keyword arguments to pass into the ``style_plot``.
     """
 
     plot_hist(fg.get_params('peak_params', 0)[:, 0], 'Center Frequency',

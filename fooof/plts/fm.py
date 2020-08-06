@@ -15,7 +15,7 @@ from fooof.utils.params import compute_fwhm
 from fooof.plts.spectra import plot_spectrum
 from fooof.plts.settings import PLT_FIGSIZES, PLT_COLORS
 from fooof.plts.utils import check_ax, check_plot_kwargs, savefig
-from fooof.plts.style import check_n_style, style_spectrum_plot, style_plot
+from fooof.plts.style import style_spectrum_plot, style_plot
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -26,8 +26,8 @@ plt = safe_import('.pyplot', 'matplotlib')
 @style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=True,
-            save_fig=False, file_name=None, file_path=None, ax=None, plot_style=style_spectrum_plot,
-            data_kwargs=None, model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None, **kwargs):
+            save_fig=False, file_name=None, file_path=None, ax=None, data_kwargs=None,
+            model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
     """Plot the power spectrum and model fit results from a FOOOF object.
 
     Parameters
@@ -51,12 +51,10 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         Path to directory to save to. If None, saves to current directory.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_spectrum_plot
-        A function to call to apply styling & aesthetics to the plot.
     data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs : None or dict, optional
         Keyword arguments to pass into the plot call for each plot element.
-    **kwargs
-        Keyword arguments for customizing the plot, passed to the 'style_plot' decorator.
+    **plot_kwargs
+        Keyword arguments to pass into the ``style_plot``.
 
     Notes
     -----
@@ -72,34 +70,29 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
 
     # Plot the data, if available
     if fm.has_data:
-        data_kwargs = check_plot_kwargs(data_kwargs, \
-            {'color' : PLT_COLORS['data'], 'linewidth' : 2.0,
-             'label' : 'Original Spectrum' if add_legend else None})
-        plot_spectrum(fm.freqs, fm.power_spectrum, log_freqs, log_powers,
-                      ax=ax, plot_style=None, **data_kwargs)
+        data_kwargs = {'color' : PLT_COLORS['data'], 'linewidth' : 2.0,
+                       'label' : 'Original Spectrum' if add_legend else None}
+        plot_spectrum(fm.freqs, fm.power_spectrum, log_freqs, log_powers, ax=ax, **data_kwargs)
 
     # Add the full model fit, and components (if requested)
     if fm.has_model:
-        model_kwargs = check_plot_kwargs(model_kwargs, \
-            {'color' : PLT_COLORS['model'], 'linewidth' : 3.0, 'alpha' : 0.5,
-             'label' : 'Full Model Fit' if add_legend else None})
-        plot_spectrum(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers,
-                      ax=ax, plot_style=None, **model_kwargs)
+        model_kwargs =  {'color' : PLT_COLORS['model'], 'linewidth' : 3.0, 'alpha' : 0.5,
+                         'label' : 'Full Model Fit' if add_legend else None}
+        plot_spectrum(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers, ax=ax, **model_kwargs)
 
         # Plot the aperiodic component of the model fit
         if plot_aperiodic:
-            aperiodic_kwargs = check_plot_kwargs(aperiodic_kwargs, \
-                {'color' : PLT_COLORS['aperiodic'], 'linewidth' : 3.0, 'alpha' : 0.5,
-                 'linestyle' : 'dashed', 'label' : 'Aperiodic Fit' if add_legend else None})
-            plot_spectrum(fm.freqs, fm._ap_fit, log_freqs, log_powers,
-                          ax=ax, plot_style=None, **aperiodic_kwargs)
+            aperiodic_kwargs = {'color' : PLT_COLORS['aperiodic'], 'linewidth' : 3.0,
+                                'alpha' : 0.5, 'linestyle' : 'dashed',
+                                'label' : 'Aperiodic Fit' if add_legend else None}
+            plot_spectrum(fm.freqs, fm._ap_fit, log_freqs, log_powers, ax=ax, **aperiodic_kwargs)
 
         # Plot the periodic components of the model fit
         if plot_peaks:
-            _add_peaks(fm, plot_peaks, plt_log, ax=ax, peak_kwargs=peak_kwargs)
+            _add_peaks(fm, plot_peaks, plt_log, ax, peak_kwargs)
 
-    # Apply style to plot
-    check_n_style(plot_style, ax, log_freqs, True)
+    # Apply default style to plot
+    style_spectrum_plot(ax, log_freqs, True)
 
 
 def _add_peaks(fm, approach, plt_log, ax, peak_kwargs):
@@ -158,18 +151,18 @@ def _add_peaks_shade(fm, plt_log, ax, **plot_kwargs):
     ax : matplotlib.Axes
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the plot call.
+        Keyword arguments to pass into the ``fill_between``.
     """
 
-    kwargs = check_plot_kwargs(plot_kwargs,
-                               {'color' : PLT_COLORS['periodic'], 'alpha' : 0.25})
+    plot_kwargs = check_plot_kwargs(plot_kwargs,
+                                    {'color' : PLT_COLORS['periodic'], 'alpha' : 0.25})
 
     for peak in fm.get_params('gaussian_params'):
 
         peak_freqs = np.log10(fm.freqs) if plt_log else fm.freqs
         peak_line = fm._ap_fit + gen_periodic(fm.freqs, peak)
 
-        ax.fill_between(peak_freqs, peak_line, fm._ap_fit, **kwargs)
+        ax.fill_between(peak_freqs, peak_line, fm._ap_fit, **plot_kwargs)
 
 
 def _add_peaks_dot(fm, plt_log, ax, **plot_kwargs):
@@ -187,9 +180,9 @@ def _add_peaks_dot(fm, plt_log, ax, **plot_kwargs):
         Keyword arguments to pass into the plot call.
     """
 
-    kwargs = check_plot_kwargs(plot_kwargs,
-                               {'color' : PLT_COLORS['periodic'],
-                                'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6})
+    plot_kwargs = check_plot_kwargs(plot_kwargs,
+                                    {'color' : PLT_COLORS['periodic'],
+                                    'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6})
 
     for peak in fm.get_params('peak_params'):
 
@@ -197,10 +190,10 @@ def _add_peaks_dot(fm, plt_log, ax, **plot_kwargs):
         freq_point = np.log10(peak[0]) if plt_log else peak[0]
 
         # Add the line from the aperiodic fit up the tip of the peak
-        ax.plot([freq_point, freq_point], [ap_point, ap_point + peak[1]], **kwargs)
+        ax.plot([freq_point, freq_point], [ap_point, ap_point + peak[1]], **plot_kwargs)
 
         # Add an extra dot at the tip of the peak
-        ax.plot(freq_point, ap_point + peak[1], marker='o', **kwargs)
+        ax.plot(freq_point, ap_point + peak[1], marker='o', **plot_kwargs)
 
 
 def _add_peaks_outline(fm, plt_log, ax, **plot_kwargs):
@@ -218,9 +211,9 @@ def _add_peaks_outline(fm, plt_log, ax, **plot_kwargs):
         Keyword arguments to pass into the plot call.
     """
 
-    kwargs = check_plot_kwargs(plot_kwargs,
-                               {'color' : PLT_COLORS['periodic'],
-                                'alpha' : 0.7, 'lw' : 1.5})
+    plot_kwargs = check_plot_kwargs(plot_kwargs,
+                                    {'color' : PLT_COLORS['periodic'],
+                                     'alpha' : 0.7, 'lw' : 1.5})
 
     for peak in fm.get_params('gaussian_params'):
 
@@ -233,7 +226,7 @@ def _add_peaks_outline(fm, plt_log, ax, **plot_kwargs):
 
         # Plot the peak outline
         peak_freqs = np.log10(peak_freqs) if plt_log else peak_freqs
-        ax.plot(peak_freqs, peak_line, **kwargs)
+        ax.plot(peak_freqs, peak_line, **plot_kwargs)
 
 
 def _add_peaks_line(fm, plt_log, ax, **plot_kwargs):
@@ -251,16 +244,16 @@ def _add_peaks_line(fm, plt_log, ax, **plot_kwargs):
         Keyword arguments to pass into the plot call.
     """
 
-    kwargs = check_plot_kwargs(plot_kwargs,
-                               {'color' : PLT_COLORS['periodic'],
-                                'alpha' : 0.7, 'lw' : 1.4, 'ms' : 10})
+    plot_kwargs = check_plot_kwargs(plot_kwargs,
+                                    {'color' : PLT_COLORS['periodic'],
+                                    'alpha' : 0.7, 'lw' : 1.4, 'ms' : 10})
 
     ylims = ax.get_ylim()
     for peak in fm.get_params('peak_params'):
 
         freq_point = np.log10(peak[0]) if plt_log else peak[0]
-        ax.plot([freq_point, freq_point], ylims, '-', **kwargs)
-        ax.plot(freq_point, ylims[1], 'v', **kwargs)
+        ax.plot([freq_point, freq_point], ylims, '-', **plot_kwargs)
+        ax.plot(freq_point, ylims[1], 'v', **plot_kwargs)
 
 
 def _add_peaks_width(fm, plt_log, ax, **plot_kwargs):
@@ -283,9 +276,9 @@ def _add_peaks_width(fm, plt_log, ax, **plot_kwargs):
     the peak, though what is literally plotted is the full-width half-max.
     """
 
-    kwargs = check_plot_kwargs(plot_kwargs,
-                               {'color' : PLT_COLORS['periodic'],
-                                'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6})
+    plot_kwargs = check_plot_kwargs(plot_kwargs,
+                                    {'color' : PLT_COLORS['periodic'],
+                                    'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6})
 
     for peak in fm.gaussian_params_:
 
@@ -296,7 +289,7 @@ def _add_peaks_width(fm, plt_log, ax, **plot_kwargs):
         if plt_log:
             bw_freqs = np.log10(bw_freqs)
 
-        ax.plot(bw_freqs, [peak_top-(0.5*peak[1]), peak_top-(0.5*peak[1])], **kwargs)
+        ax.plot(bw_freqs, [peak_top-(0.5*peak[1]), peak_top-(0.5*peak[1])], **plot_kwargs)
 
 
 # Collect all the possible `add_peak_*` functions together

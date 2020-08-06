@@ -400,7 +400,7 @@ class FOOOFGroup(FOOOF):
     @copy_doc_func_to_method(plot_fg)
     def plot(self, save_fig=False, file_name=None, file_path=None, **kwargs):
 
-        plot_fg(self, save_fig, file_name, file_path, **kwargs)
+        plot_fg(self, save_fig=save_fig, file_name=file_name, file_path=file_path, **kwargs)
 
 
     @copy_doc_func_to_method(save_report_fg)

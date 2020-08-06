@@ -5,14 +5,14 @@ Notes
 This file contains functions for plotting power spectra, that take in data directly.
 """
 
-from itertools import repeat
+from itertools import repeat, cycle
 
 import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.settings import PLT_FIGSIZES
-from fooof.plts.style import check_n_style, style_spectrum_plot, style_plot
-from fooof.plts.utils import check_ax, add_shades, check_plot_kwargs, savefig
+from fooof.plts.style import style_spectrum_plot, style_plot
+from fooof.plts.utils import check_ax, add_shades, savefig
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -23,7 +23,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 @style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
-                  ax=None, plot_style=style_spectrum_plot, **plot_kwargs):
+                  color=None, label=None, ax=None, **plot_kwargs):
     """Plot a power spectrum.
 
     Parameters
@@ -36,12 +36,14 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
         Whether to plot the frequency axis in log spacing.
     log_powers : bool, optional, default: False
         Whether to plot the power axis in log spacing.
+    label : str, optional, default: None
+        Legend label for the spectrum.
+    color : str, optional, default: None
+        Line color of the spectrum.
     ax : matplotlib.Axes, optional
         Figure axis upon which to plot.
-    plot_style : callable, optional, default: style_spectrum_plot
-        A function to call to apply styling & aesthetics to the plot.
     **plot_kwargs
-        Keyword arguments to be passed to the plot call.
+       Keyword arguments to pass into the ``style_plot``.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
@@ -51,17 +53,16 @@ def plot_spectrum(freqs, power_spectrum, log_freqs=False, log_powers=False,
     plt_powers = np.log10(power_spectrum) if log_powers else power_spectrum
 
     # Create the plot
-    plot_kwargs = check_plot_kwargs(plot_kwargs, {'linewidth' : 2.0})
-    ax.plot(plt_freqs, plt_powers, **plot_kwargs)
+    ax.plot(plt_freqs, plt_powers, linewidth=2.0, color=color, label=label)
 
-    check_n_style(plot_style, ax, log_freqs, log_powers)
+    style_spectrum_plot(ax, log_freqs, log_powers)
 
 
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels=None,
-                 ax=None, plot_style=style_spectrum_plot, **plot_kwargs):
+def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
+                 colors=None, labels=None, ax=None, **plot_kwargs):
     """Plot multiple power spectra on the same plot.
 
     Parameters
@@ -74,34 +75,35 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, labels
         Whether to plot the frequency axis in log spacing.
     log_powers : bool, optional, default: False
         Whether to plot the power axis in log spacing.
-    labels : list of str, optional
-        Legend labels, for each power spectrum.
+    labels : list of str, optional, default: None
+        Legend labels for the spectra.
+    colors : list of str, optional, default: None
+        Line colors of the spectra.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_spectrum_plot
-        A function to call to apply styling & aesthetics to the plot.
     **plot_kwargs
-        Keyword arguments to be passed to the plot call.
+        Keyword arguments to pass into the ``style_plot``.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
     # Make inputs iterable if need to be passed multiple times to plot each spectrum
     freqs = repeat(freqs) if isinstance(freqs, np.ndarray) and freqs.ndim == 1 else freqs
-    labels = repeat(labels) if not isinstance(labels, list) else labels
 
-    for freq, power_spectrum, label in zip(freqs, power_spectra, labels):
-        plot_spectrum(freq, power_spectrum, log_freqs, log_powers, label=label,
-                      plot_style=None, ax=ax, **plot_kwargs)
+    colors = repeat(colors) if not isinstance(colors, list) else cycle(colors)
+    labels = repeat(labels) if not isinstance(labels, list) else cycle(labels)
 
-    check_n_style(plot_style, ax, log_freqs, log_powers)
+    for freq, power_spectrum, color, label in zip(freqs, power_spectra, colors, labels):
+        plot_spectrum(freq, power_spectrum, log_freqs, log_powers,
+                      color=color, label=label, ax=ax)
+
+    style_spectrum_plot(ax, log_freqs, log_powers)
 
 
 @savefig
-@style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_spectrum_shading(freqs, power_spectrum, shades, shade_colors='r', add_center=False,
-                          ax=None, plot_style=style_spectrum_plot, **plot_kwargs):
+def plot_spectrum_shading(freqs, power_spectrum, shades, shade_colors='r',
+                          add_center=False, ax=None, **plot_kwargs):
     """Plot a power spectrum with a shaded frequency region (or regions).
 
     Parameters
@@ -118,28 +120,24 @@ def plot_spectrum_shading(freqs, power_spectrum, shades, shade_colors='r', add_c
         Whether to add a line at the center point of the shaded regions.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_spectrum_plot
-        A function to call to apply styling & aesthetics to the plot.
     **plot_kwargs
-        Keyword arguments to be passed to the plot call.
+        Keyword arguments to pass into :func:`~.plot_spectrum`.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
-    plot_spectrum(freqs, power_spectrum, plot_style=None, ax=ax, **plot_kwargs)
+    plot_spectrum(freqs, power_spectrum, ax=ax, **plot_kwargs)
 
     add_shades(ax, shades, shade_colors, add_center, plot_kwargs.get('log_freqs', False))
 
-    check_n_style(plot_style, ax,
-                  plot_kwargs.get('log_freqs', False),
-                  plot_kwargs.get('log_powers', False))
+    style_spectrum_plot(ax, plot_kwargs.get('log_freqs', False),
+                        plot_kwargs.get('log_powers', False))
 
 
 @savefig
-@style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_center=False,
-                         ax=None, plot_style=style_spectrum_plot, **plot_kwargs):
+def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r',
+                         add_center=False, ax=None, **plot_kwargs):
     """Plot a group of power spectra with a shaded frequency region (or regions).
 
     Parameters
@@ -156,10 +154,8 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_cen
         Whether to add a line at the center point of the shaded regions.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_spectrum_plot
-        A function to call to apply styling & aesthetics to the plot.
     **plot_kwargs
-        Keyword arguments to be passed to `plot_spectra` or to the plot call.
+        Keyword arguments to pass into :func:`~.plot_spectra`.
 
     Notes
     -----
@@ -170,10 +166,9 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r', add_cen
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
-    plot_spectra(freqs, power_spectra, ax=ax, plot_style=None, **plot_kwargs)
+    plot_spectra(freqs, power_spectra, ax=ax, **plot_kwargs)
 
     add_shades(ax, shades, shade_colors, add_center, plot_kwargs.get('log_freqs', False))
 
-    check_n_style(plot_style, ax,
-                  plot_kwargs.get('log_freqs', False),
-                  plot_kwargs.get('log_powers', False))
+    style_spectrum_plot(ax, plot_kwargs.get('log_freqs', False),
+                        plot_kwargs.get('log_powers', False))
