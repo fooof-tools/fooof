@@ -83,9 +83,9 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         Aperiodic parameters. Each row is a parameter set, as [Off, Exp] or [Off, Knee, Exp].
     freq_range : list of [float, float]
         The frequency range to plot the peak fits across, as [f_min, f_max].
-    control_offset : boolean, optonal, default: False
+    control_offset : boolean, optional, default: False
         Whether to control for the offset, by setting it to zero.
-    log_freqs : boolean, optonal, default: False
+    log_freqs : boolean, optional, default: False
         Whether to plot the x-axis in log space.
     colors : str or list of str, optional
         Color(s) to plot data.

@@ -64,7 +64,7 @@ def test_check_plot_kwargs(skip_if_no_mpl):
     plot_kwargs_out = check_plot_kwargs(plot_kwargs, defaults)
     assert plot_kwargs_out == defaults
 
-    # Check it keeps orignal values, and updates to defaults parameters when missing
+    # Check it keeps original values, and updates to defaults parameters when missing
     plot_kwargs = {'alpha' : 0.5}
     defaults = {'alpha' : 1, 'linewidth' : 2}
     plot_kwargs = check_plot_kwargs(plot_kwargs, defaults)

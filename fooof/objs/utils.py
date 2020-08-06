@@ -138,7 +138,7 @@ def combine_fooofs(fooofs):
     --------
     Combine FOOOF objects together (where `fm1`, `fm2` & `fm3` are assumed to be defined and fit):
 
-    >>> fg = combine_fooofs([fm1, fm2, f3])  # doctest:+SKIP
+    >>> fg = combine_fooofs([fm1, fm2, fm3])  # doctest:+SKIP
 
     Combine FOOOFGroup objects together (where `fg1` & `fg2` are assumed to be defined and fit):
 

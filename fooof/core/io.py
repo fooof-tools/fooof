@@ -198,7 +198,7 @@ def load_json(file_name, file_path):
 
 
 def load_jsonlines(file_name, file_path):
-    """Load a jsonlines file, yielding data line by line.
+    """Load a json-lines file, yielding data line by line.
 
     Parameters
     ----------
