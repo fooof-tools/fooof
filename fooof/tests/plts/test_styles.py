@@ -6,16 +6,6 @@ from fooof.plts.style import *
 ###################################################################################################
 ###################################################################################################
 
-def test_check_n_style(skip_if_no_mpl):
-
-    # Check can pass None and do nothing
-    check_n_style(None)
-    assert True
-
-    # Check can pass a callable
-    def checker(*args):
-        return True
-    check_n_style(checker)
 
 def test_style_spectrum_plot(skip_if_no_mpl):
 
@@ -45,14 +35,14 @@ def test_apply_axis_style():
     assert ax.get_ylabel() == ylabel
 
 
-def test_apply_plot_style():
+def test_apply_line_style():
 
     # Check applying style to one line
     _, ax = plt.subplots()
     ax.plot([1, 2], [3, 4])
 
     lw = 4
-    apply_plot_style(ax, lw=lw)
+    apply_line_style(ax, lw=lw)
 
     assert ax.get_lines()[0].get_lw() == lw
 
@@ -61,22 +51,10 @@ def test_apply_plot_style():
     ax.plot([1, 2], [[3, 4], [5, 6]])
 
     alphas = [0.5, 0.75]
-    apply_plot_style(ax, alpha=alphas)
+    apply_line_style(ax, alpha=alphas)
 
     for line, alpha in zip(ax.get_lines(), alphas):
         assert line.get_alpha() == alpha
-
-    # Check applying style to a scatter plot
-    _, ax = plt.subplots()
-    ax.scatter([1, 2], [2, 4])
-    apply_plot_style(ax, alpha=0.123)
-    assert ax.collections[0]._alpha == 0.123
-
-    # Check applying style to a histogram
-    _, ax = plt.subplots()
-    ax.hist([1, 2, 3])
-    apply_plot_style(ax, alpha=0.123)
-    assert ax.patches[0]._alpha == 0.123
 
 
 def test_apply_custom_style():
@@ -124,4 +102,4 @@ def test_style_plot():
     example_plot(title=title, lw=lw)
 
     # Test with passing in own plot_style function
-    example_plot(apply_style=my_plot_style)
+    example_plot(plot_style=my_plot_style)
