@@ -39,9 +39,15 @@ _maxfev : int
     The maximum number of calls to the curve fitting function.
 _error_metric : str
     The error metric to use for post-hoc measures of model fit error.
+
+Run Modes
+---------
 _debug : bool
     Whether the object is set in debug mode.
     This should be controlled by using the `set_debug_mode` method.
+_check_data : bool
+    Whether to check added data for NaN or Inf values, and fail out if present.
+    This should be controlled by using the `set_check_data_mode` method.
 
 Code Notes
 ----------
@@ -184,12 +190,16 @@ class FOOOF():
         # The maximum number of calls to the curve fitting function
         self._maxfev = 5000
         # The error metric to calculate, post model fitting. See `_calc_error` for options
-        #   Note: this is used to check error post-hoc, not an objective function for fitting models
+        #   Note: this is for checking error post fitting, not an objective function for fitting
         self._error_metric = 'MAE'
-        # Set whether in debug mode, in which an error is raised if a model fit fails
-        self._debug = False
 
-        # Set internal settings, based on inputs, & initialize data & results attributes
+        ## RUN MODES
+        # Set default debug mode - controls if an error is raised if model fitting is unsuccessful
+        self._debug = False
+        # Set default check data mode - controls if an error is raised if NaN / Inf data are added
+        self._check_data = True
+
+        # Set internal settings, based on inputs, and initialize data & results attributes
         self._reset_internal_settings()
         self._reset_data_results(True, True, True)
 
@@ -312,7 +322,7 @@ class FOOOF():
                                  clear_results=self.has_model and clear_results)
 
         self.freqs, self.power_spectrum, self.freq_range, self.freq_res = \
-            self._prepare_data(freqs, power_spectrum, freq_range, 1, self.verbose)
+            self._prepare_data(freqs, power_spectrum, freq_range, 1)
 
 
     def add_settings(self, fooof_settings):
@@ -431,6 +441,14 @@ class FOOOF():
 
         # In rare cases, the model fails to fit, and so uses try / except
         try:
+
+            # If not set to fail on NaN or Inf data at add time, check data here
+            #   This serves as a catch all for curve_fits which will fail given NaN or Inf
+            #   Because FitError's are by default caught, this allows fitting to continue
+            if not self._check_data:
+                if np.any(np.isinf(self.power_spectrum)) or np.any(np.isnan(self.power_spectrum)):
+                    raise FitError("Model fitting was skipped because there are NaN or Inf "
+                                   "values in the data, which preclude model fitting.")
 
             # Fit the aperiodic component
             self.aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
@@ -675,7 +693,7 @@ class FOOOF():
 
 
     def set_debug_mode(self, debug):
-        """Set whether debug mode, wherein an error is raised if fitting is unsuccessful.
+        """Set debug mode, which controls if an error is raised if model fitting is unsuccessful.
 
         Parameters
         ----------
@@ -684,6 +702,18 @@ class FOOOF():
         """
 
         self._debug = debug
+
+
+    def set_check_data_mode(self, check_data):
+        """Set check data mode, which controls if an error is raised if NaN or Inf data are added.
+
+        Parameters
+        ----------
+        check_data : bool
+            Whether to run in check data mode.
+        """
+
+        self._check_data = check_data
 
 
     def _check_width_limits(self):
@@ -795,7 +825,8 @@ class FOOOF():
             raise FitError("Model fitting failed due to not finding "
                            "parameters in the robust aperiodic fit.")
         except TypeError:
-            raise FitError("Model fitting failed due to sub-sampling in the robust aperiodic fit.")
+            raise FitError("Model fitting failed due to sub-sampling "
+                           "in the robust aperiodic fit.")
 
         return aperiodic_params
 
@@ -1110,8 +1141,7 @@ class FOOOF():
             raise ValueError(msg)
 
 
-    @staticmethod
-    def _prepare_data(freqs, power_spectrum, freq_range, spectra_dim=1, verbose=True):
+    def _prepare_data(self, freqs, power_spectrum, freq_range, spectra_dim=1):
         """Prepare input data for adding to current object.
 
         Parameters
@@ -1125,8 +1155,6 @@ class FOOOF():
             Frequency range to restrict power spectrum to. If None, keeps the entire range.
         spectra_dim : int, optional, default: 1
             Dimensionality that the power spectra should have.
-        verbose : bool, optional
-            Whether to be verbose in printing out warnings.
 
         Returns
         -------
@@ -1181,7 +1209,7 @@ class FOOOF():
         #   Aperiodic fit gets an inf if freq of 0 is included, which leads to an error
         if freqs[0] == 0.0:
             freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, [freqs[1], freqs.max()])
-            if verbose:
+            if self.verbose:
                 print("\nFOOOF WARNING: Skipping frequency == 0, "
                       "as this causes a problem with fitting.")
 
@@ -1192,12 +1220,13 @@ class FOOOF():
         # Log power values
         power_spectrum = np.log10(power_spectrum)
 
-        # Check if there are any infs / nans, and raise an error if so
-        if np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):
-            raise DataError("The input power spectra data, after logging, contains NaNs or Infs. "
-                            "This will cause the fitting to fail. "
-                            "One reason this can happen is if inputs are already logged. "
-                            "Inputs data should be in linear spacing, not log.")
+        if self._check_data:
+            # Check if there are any infs / nans, and raise an error if so
+            if np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):
+                raise DataError("The input power spectra data, after logging, contains NaNs or Infs. "
+                                "This will cause the fitting to fail. "
+                                "One reason this can happen is if inputs are already logged. "
+                                "Inputs data should be in linear spacing, not log.")
 
         return freqs, power_spectrum, freq_range, freq_res
 

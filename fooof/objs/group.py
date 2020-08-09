@@ -222,7 +222,7 @@ class FOOOFGroup(FOOOF):
             self._reset_group_results()
 
         self.freqs, self.power_spectra, self.freq_range, self.freq_res = \
-            self._prepare_data(freqs, power_spectra, freq_range, 2, self.verbose)
+            self._prepare_data(freqs, power_spectra, freq_range, 2)
 
 
     def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
@@ -476,8 +476,9 @@ class FOOOFGroup(FOOOF):
             The FOOOFResults data loaded into a FOOOF object.
         """
 
-        # Initialize a FOOOF object, with same settings as current FOOOFGroup
+        # Initialize a FOOOF object, with same settings & check data mode as current FOOOFGroup
         fm = FOOOF(*self.get_settings(), verbose=self.verbose)
+        fm.set_check_data_mode(self._check_data)
 
         # Add data for specified single power spectrum, if available
         #   The power spectrum is inverted back to linear, as it is re-logged when added to FOOOF
