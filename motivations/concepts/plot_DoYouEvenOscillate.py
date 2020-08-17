@@ -46,14 +46,14 @@ import numpy as np
 
 # Use NeuroDSP for time series simulations & analyses
 from neurodsp import sim
-from neurodsp.utils import create_times, set_random_seed
+from neurodsp.utils import create_times
 from neurodsp.spectral import compute_spectrum_welch
 from neurodsp.plts import plot_time_series, plot_power_spectra
 
 ###################################################################################################
 
 # Set random seed, for consistency generating simulated data
-set_random_seed(21)
+sim.set_random_seed(21)
 
 # Simulation Settings
 n_seconds = 2
