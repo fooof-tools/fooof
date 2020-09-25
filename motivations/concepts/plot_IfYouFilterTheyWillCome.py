@@ -33,10 +33,10 @@ import matplotlib.pyplot as plt
 from fooof.bands import Bands
 
 # Imports from NeuroDSP to simulate & plot time series
-from neurodsp.sim import sim_powerlaw
+from neurodsp.sim import sim_powerlaw, set_random_seed
 from neurodsp.filt import filter_signal
 from neurodsp.plts import plot_time_series
-from neurodsp.utils import create_times, set_random_seed
+from neurodsp.utils import create_times
 
 ###################################################################################################
 
@@ -96,8 +96,8 @@ for ax, (label, f_range) in zip(axes, bands):
     band_sig = filter_signal(sig, s_rate, 'bandpass', f_range)
 
     # Plot the time series of the current band, and adjust plot aesthetics
-    plot_time_series(times, band_sig, title=label + ' ' + str(f_range), ax=ax)
-    ax.set_xlim(0, n_seconds); ax.set_ylim(-1, 1); ax.set_xlabel('');
+    plot_time_series(times, band_sig, title=label + ' ' + str(f_range), ax=ax,
+                     xlim=(0, n_seconds), ylim=(-1, 1), xlabel='')
 
 ###################################################################################################
 #
@@ -159,8 +159,7 @@ plot_time_series(times, sig_delta_ap)
 band_sig = filter_signal(sig_delta_ap, s_rate, 'bandpass', bands.beta)
 
 # Plot the filtered time series
-plot_time_series(times, band_sig)
-plt.xlim(0, n_seconds); plt.ylim(-1, 1);
+plot_time_series(times, band_sig, xlim=(0, n_seconds), ylim=(-1, 1))
 
 ###################################################################################################
 #
@@ -177,8 +176,7 @@ plt.xlim(0, n_seconds); plt.ylim(-1, 1);
 band_sig = filter_signal(sig_delta_ap, s_rate, 'bandpass', bands.high_gamma)
 
 # Plot the filtered time series
-plot_time_series(times, band_sig)
-plt.xlim(0, n_seconds); plt.ylim(-1, 1);
+plot_time_series(times, band_sig, xlim=(0, n_seconds), ylim=(-1, 1))
 
 ###################################################################################################
 #

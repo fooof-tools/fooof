@@ -138,3 +138,7 @@ sphinx_gallery_conf = {
     'reference_url': {'fooof': None},
     'remove_config_comments': True,
 }
+
+intersphinx_mapping = {
+    'neurodsp': ('https://neurodsp-tools.github.io/neurodsp/', None),
+}
