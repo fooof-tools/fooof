@@ -148,11 +148,11 @@ to file bug reports and/or ask questions about this project.
 Reference
 ---------
 
-If you use this code in your project, please cite:
-::
-    Donoghue T, Haller M, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Lara AH, Wallis JD, 
-    Knight RT, Shestyuk A, Voytek B (2018) Parameterizing neural power spectra into periodic
-    and aperiodc components. Nature Neuroscience (in press)
+If you use this code in your project, please cite::
+
+    Donoghue T, Haller M, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Lara AH, Wallis JD,
+    Knight RT, Shestyuk A, Voytek B. Parameterizing neural power spectra into periodic
+    and aperiodic components. Nature Neuroscience (in press)
 
 More information for how to cite this method can be found on the
 `reference page <https://fooof-tools.github.io/fooof/reference.html>`_.
