@@ -126,20 +126,20 @@ and managed with MNE, and how to plot topographies of resulting model parameters
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">cm</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">colorbar</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">colorbar</span>
 
 <span class="c1"># Import MNE, as well as the MNE sample dataset</span>
 <span class="kn">import</span> <span class="nn">mne</span>
-<span class="kn">from</span> <span class="nn">mne</span> <span class="k">import</span> <span class="n">io</span>
-<span class="kn">from</span> <span class="nn">mne.datasets</span> <span class="k">import</span> <span class="n">sample</span>
-<span class="kn">from</span> <span class="nn">mne.viz</span> <span class="k">import</span> <span class="n">plot_topomap</span>
-<span class="kn">from</span> <span class="nn">mne.time_frequency</span> <span class="k">import</span> <span class="n">psd_welch</span>
+<span class="kn">from</span> <span class="nn">mne</span> <span class="kn">import</span> <span class="n">io</span>
+<span class="kn">from</span> <span class="nn">mne.datasets</span> <span class="kn">import</span> <span class="n">sample</span>
+<span class="kn">from</span> <span class="nn">mne.viz</span> <span class="kn">import</span> <span class="n">plot_topomap</span>
+<span class="kn">from</span> <span class="nn">mne.time_frequency</span> <span class="kn">import</span> <span class="n">psd_welch</span>
 
 <span class="c1"># FOOOF imports</span>
-<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
-<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a>
-<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="k">import</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a>
-<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="k">import</span> <a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
+<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="kn">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a>
+<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="kn">import</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a>
 </pre></div>
 </div>
 <div class="section" id="load-check-mne-data">
@@ -270,7 +270,7 @@ definitions, and some analysis utilities to extracts peaks from bands of interes
 </div>
 <img alt="../../_images/sphx_glr_plot_mne_example_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_002.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x1019c97c10&gt;, &lt;matplotlib.contour.QuadContourSet object at 0x1019bd9d50&gt;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x1024219750&gt;, None)
 </pre></div>
 </div>
 <p>And there we have it, our first topography of parameterized spectra, showing alpha power!</p>
@@ -329,7 +329,7 @@ and plot them.</p>
 </div>
 <img alt="../../_images/sphx_glr_plot_mne_example_005.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_005.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x101a3db190&gt;, &lt;matplotlib.contour.QuadContourSet object at 0x101a3dbe90&gt;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x10299a9f90&gt;, None)
 </pre></div>
 </div>
 <p>In the topography above, we can see that there is a fair amount of variation
@@ -352,7 +352,7 @@ spectra, in this case extracting those with the highest and lower exponent value
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
 <p>In this example, we have seen how to apply power spectrum models to data that is
 managed and processed with MNE.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.052 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.396 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-analyses-plot-mne-example-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/208ddf4708879eabf6a6f4aae1ab846a/plot_mne_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_mne_example.py</span></code></a></p>
@@ -378,7 +378,7 @@ managed and processed with MNE.</p>
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
     </p>
   </div>
 </footer>

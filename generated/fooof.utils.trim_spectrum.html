@@ -141,7 +141,7 @@
 It does not round to below or above f_low and f_high, respectively.</p>
 <p class="rubric">Examples</p>
 <p>Using a simulated spectrum, extract a frequency range:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fooof.sim</span> <span class="k">import</span> <span class="n">gen_power_spectrum</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fooof.sim</span> <span class="kn">import</span> <span class="n">gen_power_spectrum</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">trim_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
 </pre></div>
@@ -178,7 +178,7 @@ It does not round to below or above f_low and f_high, respectively.</p>
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
     </p>
   </div>
 </footer>

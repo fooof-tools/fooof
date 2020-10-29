@@ -133,21 +133,21 @@ power spectra to fit with power spectrum models, to use as examples for this tut
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Import the FOOOF and FOOOFGroup objects</span>
-<span class="kn">from</span> <span class="nn">fooof</span> <span class="k">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
 
 <span class="c1"># Import the Bands object, which is used to define frequency bands</span>
-<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <a href="../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a>
+<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="kn">import</span> <a href="../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a>
 
 <span class="c1"># Import simulation code and utilities</span>
-<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="k">import</span> <a href="../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_sampler</span></a>
-<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <a href="../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a>
-<span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="k">import</span> <a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="kn">import</span> <a href="../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_sampler</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="kn">import</span> <a href="../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="kn">import</span> <a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
 
 <span class="c1"># Import some analysis functions</span>
-<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="k">import</span> <a href="../generated/fooof.analysis.get_band_peak_fm.html#fooof.analysis.get_band_peak_fm" title="fooof.analysis.get_band_peak_fm" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fm</span></a><span class="p">,</span> <a href="../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a>
+<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="kn">import</span> <a href="../generated/fooof.analysis.get_band_peak_fm.html#fooof.analysis.get_band_peak_fm" title="fooof.analysis.get_band_peak_fm" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fm</span></a><span class="p">,</span> <a href="../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a>
 
 <span class="c1"># Import a utility to download and load example data</span>
-<span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="k">import</span> <span class="n">load_fooof_data</span>
+<span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="kn">import</span> <span class="n">load_fooof_data</span>
 </pre></div>
 </div>
 <div class="section" id="load-and-fit-example-data">
@@ -339,7 +339,7 @@ page.</p>
 <p>This is the end of the main tutorial materials!</p>
 <p>If you are having any troubles, please submit an issue on Github
 <a class="reference external" href="https://github.com/fooof-tools/fooof">here</a>.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.254 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.281 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-08-furtheranalysis-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/bf02a0d9260abd47504beac02e8ba2e3/plot_08-FurtherAnalysis.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_08-FurtherAnalysis.py</span></code></a></p>
@@ -365,7 +365,7 @@ page.</p>
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
     </p>
   </div>
 </footer>

@@ -176,7 +176,10 @@ with information for reporting on using and reference the module</p></li>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install fooof
 </pre></div>
 </div>
-<p>Note that this will install only the core (non-optional) FOOOF requirements.</p>
+<p>FOOOF can also be installed with conda, from the conda-forge channel:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ conda install -c conda-forge fooof
+</pre></div>
+</div>
 <p><strong>Development Version</strong></p>
 <p>To get the current development version, first clone this repository:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/fooof-tools/fooof
@@ -208,11 +211,11 @@ to file bug reports and/or ask questions about this project.</p>
 <div class="section" id="id1">
 <h2>Reference<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>If you use this code in your project, please cite:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Haller</span> <span class="n">M</span><span class="p">,</span> <span class="n">Donoghue</span> <span class="n">T</span><span class="p">,</span> <span class="n">Peterson</span> <span class="n">E</span><span class="p">,</span> <span class="n">Varma</span> <span class="n">P</span><span class="p">,</span> <span class="n">Sebastian</span> <span class="n">P</span><span class="p">,</span> <span class="n">Gao</span> <span class="n">R</span><span class="p">,</span> <span class="n">Noto</span> <span class="n">T</span><span class="p">,</span> <span class="n">Knight</span> <span class="n">RT</span><span class="p">,</span> <span class="n">Shestyuk</span> <span class="n">A</span><span class="p">,</span>
-<span class="n">Voytek</span> <span class="n">B</span> <span class="p">(</span><span class="mi">2018</span><span class="p">)</span> <span class="n">Parameterizing</span> <span class="n">Neural</span> <span class="n">Power</span> <span class="n">Spectra</span><span class="o">.</span> <span class="n">bioRxiv</span><span class="p">,</span> <span class="mf">299859.</span> <span class="n">doi</span><span class="p">:</span> <span class="mf">10.1101</span><span class="o">/</span><span class="mi">299859</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Donoghue</span> <span class="n">T</span><span class="p">,</span> <span class="n">Haller</span> <span class="n">M</span><span class="p">,</span> <span class="n">Peterson</span> <span class="n">E</span><span class="p">,</span> <span class="n">Varma</span> <span class="n">P</span><span class="p">,</span> <span class="n">Sebastian</span> <span class="n">P</span><span class="p">,</span> <span class="n">Gao</span> <span class="n">R</span><span class="p">,</span> <span class="n">Noto</span> <span class="n">T</span><span class="p">,</span> <span class="n">Lara</span> <span class="n">AH</span><span class="p">,</span> <span class="n">Wallis</span> <span class="n">JD</span><span class="p">,</span>
+<span class="n">Knight</span> <span class="n">RT</span><span class="p">,</span> <span class="n">Shestyuk</span> <span class="n">A</span><span class="p">,</span> <span class="n">Voytek</span> <span class="n">B</span><span class="o">.</span> <span class="n">Parameterizing</span> <span class="n">neural</span> <span class="n">power</span> <span class="n">spectra</span> <span class="n">into</span> <span class="n">periodic</span>
+<span class="ow">and</span> <span class="n">aperiodic</span> <span class="n">components</span><span class="o">.</span> <span class="n">Nature</span> <span class="n">Neuroscience</span> <span class="p">(</span><span class="ow">in</span> <span class="n">press</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Direct Link: <a class="reference external" href="https://doi.org/10.1101/299859">https://doi.org/10.1101/299859</a></p>
 <p>More information for how to cite this method can be found on the
 <a class="reference external" href="https://fooof-tools.github.io/fooof/reference.html">reference page</a>.</p>
 <p>Code and analyses from the paper are also available in the
@@ -286,7 +289,7 @@ We can fit the group of power spectra by doing:</p>
 <span class="n">fg</span><span class="o">.</span><span class="n">save_report</span><span class="p">()</span>
 
 <span class="c1"># Save out FOOOF results for further analysis later</span>
-<span class="n">fg</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;fooof_group_results&#39;</span><span class="p">,</span> <span class="n">save_results</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">fg</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;fooof_group_results&#39;</span><span class="p">,</span> <span class="n">save_results</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Example output from using FOOOFGroup across a group of power spectra:</p>
@@ -312,7 +315,7 @@ plotting models and parameters, and simulating power spectra, all of which is de
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
     </p>
   </div>
 </footer>

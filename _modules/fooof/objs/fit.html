@@ -162,30 +162,30 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="k">import</span> <span class="n">LinAlgError</span>
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">curve_fit</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">LinAlgError</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
 
-<span class="kn">from</span> <span class="nn">fooof.core.items</span> <span class="k">import</span> <span class="n">OBJ_DESC</span>
-<span class="kn">from</span> <span class="nn">fooof.core.info</span> <span class="k">import</span> <span class="n">get_indices</span>
-<span class="kn">from</span> <span class="nn">fooof.core.io</span> <span class="k">import</span> <span class="n">save_fm</span><span class="p">,</span> <span class="n">load_json</span>
-<span class="kn">from</span> <span class="nn">fooof.core.reports</span> <span class="k">import</span> <span class="n">save_report_fm</span>
-<span class="kn">from</span> <span class="nn">fooof.core.modutils</span> <span class="k">import</span> <span class="n">copy_doc_func_to_method</span>
-<span class="kn">from</span> <span class="nn">fooof.core.utils</span> <span class="k">import</span> <span class="n">group_three</span><span class="p">,</span> <span class="n">check_array_dim</span>
-<span class="kn">from</span> <span class="nn">fooof.core.funcs</span> <span class="k">import</span> <span class="n">gaussian_function</span><span class="p">,</span> <span class="n">get_ap_func</span><span class="p">,</span> <span class="n">infer_ap_func</span>
-<span class="kn">from</span> <span class="nn">fooof.core.errors</span> <span class="k">import</span> <span class="p">(</span><span class="n">FitError</span><span class="p">,</span> <span class="n">NoModelError</span><span class="p">,</span> <span class="n">DataError</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">fooof.core.items</span> <span class="kn">import</span> <span class="n">OBJ_DESC</span>
+<span class="kn">from</span> <span class="nn">fooof.core.info</span> <span class="kn">import</span> <span class="n">get_indices</span>
+<span class="kn">from</span> <span class="nn">fooof.core.io</span> <span class="kn">import</span> <span class="n">save_fm</span><span class="p">,</span> <span class="n">load_json</span>
+<span class="kn">from</span> <span class="nn">fooof.core.reports</span> <span class="kn">import</span> <span class="n">save_report_fm</span>
+<span class="kn">from</span> <span class="nn">fooof.core.modutils</span> <span class="kn">import</span> <span class="n">copy_doc_func_to_method</span>
+<span class="kn">from</span> <span class="nn">fooof.core.utils</span> <span class="kn">import</span> <span class="n">group_three</span><span class="p">,</span> <span class="n">check_array_dim</span>
+<span class="kn">from</span> <span class="nn">fooof.core.funcs</span> <span class="kn">import</span> <span class="n">gaussian_function</span><span class="p">,</span> <span class="n">get_ap_func</span><span class="p">,</span> <span class="n">infer_ap_func</span>
+<span class="kn">from</span> <span class="nn">fooof.core.errors</span> <span class="kn">import</span> <span class="p">(</span><span class="n">FitError</span><span class="p">,</span> <span class="n">NoModelError</span><span class="p">,</span> <span class="n">DataError</span><span class="p">,</span>
                                <span class="n">NoDataError</span><span class="p">,</span> <span class="n">InconsistentDataError</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">fooof.core.strings</span> <span class="k">import</span> <span class="p">(</span><span class="n">gen_settings_str</span><span class="p">,</span> <span class="n">gen_results_fm_str</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">fooof.core.strings</span> <span class="kn">import</span> <span class="p">(</span><span class="n">gen_settings_str</span><span class="p">,</span> <span class="n">gen_results_fm_str</span><span class="p">,</span>
                                 <span class="n">gen_issue_str</span><span class="p">,</span> <span class="n">gen_width_warning_str</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">fooof.plts.fm</span> <span class="k">import</span> <span class="n">plot_fm</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.style</span> <span class="k">import</span> <span class="n">style_spectrum_plot</span>
-<span class="kn">from</span> <span class="nn">fooof.utils.data</span> <span class="k">import</span> <span class="n">trim_spectrum</span>
-<span class="kn">from</span> <span class="nn">fooof.utils.params</span> <span class="k">import</span> <span class="n">compute_gauss_std</span>
-<span class="kn">from</span> <span class="nn">fooof.data</span> <span class="k">import</span> <span class="n">FOOOFResults</span><span class="p">,</span> <span class="n">FOOOFSettings</span><span class="p">,</span> <span class="n">FOOOFMetaData</span>
-<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="k">import</span> <span class="n">gen_freqs</span><span class="p">,</span> <span class="n">gen_aperiodic</span><span class="p">,</span> <span class="n">gen_periodic</span><span class="p">,</span> <span class="n">gen_model</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.fm</span> <span class="kn">import</span> <span class="n">plot_fm</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.style</span> <span class="kn">import</span> <span class="n">style_spectrum_plot</span>
+<span class="kn">from</span> <span class="nn">fooof.utils.data</span> <span class="kn">import</span> <span class="n">trim_spectrum</span>
+<span class="kn">from</span> <span class="nn">fooof.utils.params</span> <span class="kn">import</span> <span class="n">compute_gauss_std</span>
+<span class="kn">from</span> <span class="nn">fooof.data</span> <span class="kn">import</span> <span class="n">FOOOFResults</span><span class="p">,</span> <span class="n">FOOOFSettings</span><span class="p">,</span> <span class="n">FOOOFMetaData</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="kn">import</span> <span class="n">gen_freqs</span><span class="p">,</span> <span class="n">gen_aperiodic</span><span class="p">,</span> <span class="n">gen_periodic</span><span class="p">,</span> <span class="n">gen_model</span>
 
 <span class="c1">###################################################################################################</span>
 <span class="c1">###################################################################################################</span>
@@ -261,7 +261,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># pylint: disable=attribute-defined-outside-init</span>
 
-<div class="viewcode-block" id="FOOOF.__init__"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peak_width_limits</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">),</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+<div class="viewcode-block" id="FOOOF.__init__"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peak_width_limits</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">),</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                  <span class="n">peak_threshold</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;fixed&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize object with desired settings.&quot;&quot;&quot;</span>
 
@@ -1387,7 +1387,7 @@
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
     </p>
   </div>
 </footer>

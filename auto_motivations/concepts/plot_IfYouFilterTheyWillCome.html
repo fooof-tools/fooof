@@ -134,13 +134,13 @@ them, to explore these ideas.</p>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="c1"># Import the Bands object, for managing frequency band definitions</span>
-<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="k">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a>
+<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="kn">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a>
 
 <span class="c1"># Imports from NeuroDSP to simulate &amp; plot time series</span>
-<span class="kn">from</span> <span class="nn">neurodsp.sim</span> <span class="k">import</span> <span class="n">sim_powerlaw</span>
-<span class="kn">from</span> <span class="nn">neurodsp.filt</span> <span class="k">import</span> <span class="n">filter_signal</span>
-<span class="kn">from</span> <span class="nn">neurodsp.plts</span> <span class="k">import</span> <span class="n">plot_time_series</span>
-<span class="kn">from</span> <span class="nn">neurodsp.utils</span> <span class="k">import</span> <span class="n">create_times</span><span class="p">,</span> <span class="n">set_random_seed</span>
+<span class="kn">from</span> <span class="nn">neurodsp.sim</span> <span class="kn">import</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.sim_powerlaw.html#neurodsp.sim.sim_powerlaw" title="neurodsp.sim.sim_powerlaw" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">sim_powerlaw</span></a><span class="p">,</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.set_random_seed.html#neurodsp.sim.set_random_seed" title="neurodsp.sim.set_random_seed" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
+<span class="kn">from</span> <span class="nn">neurodsp.filt</span> <span class="kn">import</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.filt.filter_signal.html#neurodsp.filt.filter_signal" title="neurodsp.filt.filter_signal" class="sphx-glr-backref-module-neurodsp-filt sphx-glr-backref-type-py-function"><span class="n">filter_signal</span></a>
+<span class="kn">from</span> <span class="nn">neurodsp.plts</span> <span class="kn">import</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a>
+<span class="kn">from</span> <span class="nn">neurodsp.utils</span> <span class="kn">import</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.utils.create_times.html#neurodsp.utils.create_times" title="neurodsp.utils.create_times" class="sphx-glr-backref-module-neurodsp-utils sphx-glr-backref-type-py-function"><span class="n">create_times</span></a>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define our bands of interest</span>
@@ -159,18 +159,18 @@ that we can then apply filters to. First, let’s simulate some data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulation settings</span>
 <span class="n">s_rate</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">n_seconds</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">times</span> <span class="o">=</span> <span class="n">create_times</span><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.utils.create_times.html#neurodsp.utils.create_times" title="neurodsp.utils.create_times" class="sphx-glr-backref-module-neurodsp-utils sphx-glr-backref-type-py-function"><span class="n">create_times</span></a><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
 
 <span class="c1"># Set random seed, for consistency generating simulated data</span>
-<span class="n">set_random_seed</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
+<a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.set_random_seed.html#neurodsp.sim.set_random_seed" title="neurodsp.sim.set_random_seed" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a signal of aperiodic activity: pink noise</span>
-<span class="n">sig</span> <span class="o">=</span> <span class="n">sim_powerlaw</span><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sig</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.sim_powerlaw.html#neurodsp.sim.sim_powerlaw" title="neurodsp.sim.sim_powerlaw" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">sim_powerlaw</span></a><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot our simulated time series</span>
-<span class="n">plot_time_series</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
+<a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_001.png" />
@@ -185,11 +185,11 @@ of the signal.</p>
 <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">f_range</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="p">):</span>
 
     <span class="c1"># Filter the signal to the current band definition</span>
-    <span class="n">band_sig</span> <span class="o">=</span> <span class="n">filter_signal</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="s1">&#39;bandpass&#39;</span><span class="p">,</span> <span class="n">f_range</span><span class="p">)</span>
+    <span class="n">band_sig</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.filt.filter_signal.html#neurodsp.filt.filter_signal" title="neurodsp.filt.filter_signal" class="sphx-glr-backref-module-neurodsp-filt sphx-glr-backref-type-py-function"><span class="n">filter_signal</span></a><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="s1">&#39;bandpass&#39;</span><span class="p">,</span> <span class="n">f_range</span><span class="p">)</span>
 
     <span class="c1"># Plot the time series of the current band, and adjust plot aesthetics</span>
-    <span class="n">plot_time_series</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">band_sig</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">label</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">f_range</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_seconds</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+    <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">band_sig</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">label</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">f_range</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                     <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_seconds</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_002.png" />
@@ -218,50 +218,40 @@ changes in the aperiodic activity.</p>
 <p>We will then filter this signal into narrow-band frequency ranges, to observe how
 changes in aperiodic activity appear in filtered data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a two signals with different aperiodic activity</span>
-<span class="n">sig_comp1</span> <span class="o">=</span> <span class="n">sim_powerlaw</span><span class="p">(</span><span class="n">n_seconds</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">f_range</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
-<span class="n">sig_comp2</span> <span class="o">=</span> <span class="n">sim_powerlaw</span><span class="p">(</span><span class="n">n_seconds</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">f_range</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
+<span class="n">sig_comp1</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.sim_powerlaw.html#neurodsp.sim.sim_powerlaw" title="neurodsp.sim.sim_powerlaw" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">sim_powerlaw</span></a><span class="p">(</span><span class="n">n_seconds</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">f_range</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
+<span class="n">sig_comp2</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.sim_powerlaw.html#neurodsp.sim.sim_powerlaw" title="neurodsp.sim.sim_powerlaw" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">sim_powerlaw</span></a><span class="p">(</span><span class="n">n_seconds</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">f_range</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
 
 <span class="c1"># Combine each component signal to create a signal with a shift in aperiodic activity</span>
 <span class="n">sig_delta_ap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">sig_comp1</span><span class="p">,</span> <span class="n">sig_comp2</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot our time series, with a shift in aperiodic activity</span>
-<span class="n">plot_time_series</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sig_delta_ap</span><span class="p">)</span>
+<a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sig_delta_ap</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_003.png" />
 <p>Let’s first filter this signal in a low-frequency range that is typically
 examined for oscillatory activity, using the beta band as an example.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter the signal to the current band definition</span>
-<span class="n">band_sig</span> <span class="o">=</span> <span class="n">filter_signal</span><span class="p">(</span><span class="n">sig_delta_ap</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="s1">&#39;bandpass&#39;</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
+<span class="n">band_sig</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.filt.filter_signal.html#neurodsp.filt.filter_signal" title="neurodsp.filt.filter_signal" class="sphx-glr-backref-module-neurodsp-filt sphx-glr-backref-type-py-function"><span class="n">filter_signal</span></a><span class="p">(</span><span class="n">sig_delta_ap</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="s1">&#39;bandpass&#39;</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
 
 <span class="c1"># Plot the filtered time series</span>
-<span class="n">plot_time_series</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">band_sig</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_seconds</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">band_sig</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_seconds</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_004.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_004.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(-1, 1)
-</pre></div>
-</div>
 <p>In the above, we can see that this shift in the aperiodic component of the data
 exhibits as what looks to be change in beta band activity.</p>
 <p>We can also examine what this kind of shift looks like in high frequency regions that
 are sometimes analyzed, like our ‘high-gamma’ frequency band.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter the signal to the current band definition</span>
-<span class="n">band_sig</span> <span class="o">=</span> <span class="n">filter_signal</span><span class="p">(</span><span class="n">sig_delta_ap</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="s1">&#39;bandpass&#39;</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">high_gamma</span><span class="p">)</span>
+<span class="n">band_sig</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.filt.filter_signal.html#neurodsp.filt.filter_signal" title="neurodsp.filt.filter_signal" class="sphx-glr-backref-module-neurodsp-filt sphx-glr-backref-type-py-function"><span class="n">filter_signal</span></a><span class="p">(</span><span class="n">sig_delta_ap</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="s1">&#39;bandpass&#39;</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">high_gamma</span><span class="p">)</span>
 
 <span class="c1"># Plot the filtered time series</span>
-<span class="n">plot_time_series</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">band_sig</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_seconds</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">band_sig</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_seconds</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_005.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_005.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(-1, 1)
-</pre></div>
-</div>
 <p>Collectively, we can see that changes in aperiodic properties, that affect
 all frequencies, can look like band-specific changes when time series
 are analyzed using narrow-band filters.</p>
@@ -280,7 +270,7 @@ narrow band filtered signals should not be presumed to necessarily reflect perio
 activity. In order to ascertain whether narrow band frequency regions reflect
 periodic and/or aperiodic activity and which aspects are changing in the data,
 additional analyses, such as parameterizing neural power spectra, are recommended.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.100 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.012 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-concepts-plot-ifyoufiltertheywillcome-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/00d92849ccba2fdb99841c3319470dde/plot_IfYouFilterTheyWillCome.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_IfYouFilterTheyWillCome.py</span></code></a></p>
@@ -306,7 +296,7 @@ additional analyses, such as parameterizing neural power spectra, are recommende
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
     </p>
   </div>
 </footer>

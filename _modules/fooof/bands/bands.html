@@ -113,7 +113,7 @@
   <h1>Source code for fooof.bands.bands</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;A data oject for managing band definitions.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 
 <span class="c1">###################################################################################################</span>
 <span class="c1">###################################################################################################</span>
@@ -133,7 +133,7 @@
 <span class="sd">    &gt;&gt;&gt; bands = Bands({&#39;theta&#39; : [4, 8], &#39;alpha&#39; : [8, 12], &#39;beta&#39; : [15, 30]})</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Bands.__init__"><a class="viewcode-back" href="../../../generated/fooof.Bands.html#fooof.Bands.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_bands</span><span class="o">=</span><span class="p">{}):</span>
+<div class="viewcode-block" id="Bands.__init__"><a class="viewcode-back" href="../../../generated/fooof.Bands.html#fooof.Bands.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_bands</span><span class="o">=</span><span class="p">{}):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the Bands object.</span>
 
 <span class="sd">        Parameters</span>
@@ -147,32 +147,32 @@
         <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">band_def</span> <span class="ow">in</span> <span class="n">input_bands</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_band</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Define indexing as returning the definition of a requested band label.&quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bands</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;The label &#39;</span><span class="si">{}</span><span class="s2">&#39; was not found in the defined bands.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">None</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
 
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Define getting an attribute as returning the definition of a requested band label.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Define the string representation as a printout of the band information.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:8}</span><span class="s1"> :  </span><span class="si">{:2}</span><span class="s1"> - </span><span class="si">{:2}</span><span class="s1">  Hz&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">val</span><span class="p">)</span> \
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bands</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
 
-    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Define length as the number of bands it contains.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_bands</span>
 
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Define iteratation as stepping across each band.&quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">band_definition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bands</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -268,7 +268,7 @@
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
     </p>
   </div>
 </footer>
