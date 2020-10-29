@@ -150,10 +150,9 @@ Reference
 
 If you use this code in your project, please cite:
 ::
-    Haller M, Donoghue T, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Knight RT, Shestyuk A,
-    Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859. doi: 10.1101/299859
-
-Direct Link: https://doi.org/10.1101/299859
+    Donoghue T, Haller M, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Lara AH, Wallis JD, 
+    Knight RT, Shestyuk A, Voytek B (2018) Parameterizing neural power spectra into periodic
+    and aperiodc components. Nature Neuroscience (in press)
 
 More information for how to cite this method can be found on the
 `reference page <https://fooof-tools.github.io/fooof/reference.html>`_.
