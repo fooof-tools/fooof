@@ -1,8 +1,7 @@
 Reference and Reporting Information
 ===================================
 
-This page covers information for how to reference and report on using FOOOF, as well as some collected
-information and examples of projects, tools, and analyses that have and can be done using FOOOF.
+This page describes how to reference and report on using this method for parameterizing neural power spectra, and related information.
 
 Table of Contents
 -----------------
@@ -13,31 +12,13 @@ Table of Contents
 Reference
 ~~~~~~~~~
 
-The reference for this power spectrum model and associated code module is the
-`Parameterizing Neural Power Spectra <https://doi.org/10.1101/299859>`_
-paper.
-
-This link currently leads to a preprint, on biorxiv, which describes the method. The full version of the paper is currently under review, and this link will be updated to the accepted journal version when available.
-
-Please cite this paper if you use this method, and/or if you wish to refer to the our approach for parameterizing neural power spectra, and/or to refer to any ideas and examples from this website.
+If you use this method, and/or want to refer to our approach, examples, and discussion points, please cite the following paper:
 
 .. topic:: Reference
 
-    Haller M, Donoghue T, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Knight RT, Shestyuk A,
-    Voytek B (2018) Parameterizing Neural Power Spectra. bioRxiv, 299859.
-    doi: https://doi.org/10.1101/299859
-
-.. topic:: Bibtex
-
-    | @article{haller_parameterizing_2018,
-    |          title = {Parameterizing neural power spectra},
-    |          url = {http://biorxiv.org/lookup/doi/10.1101/299859},
-    |          doi = {10.1101/299859},
-    |          journal = {bioRxiv},
-    |          author = {Haller, Matar and Donoghue, Thomas and Peterson, Erik and Varma, Paroma and Sebastian, Priyadarshini and Gao, Richard and Noto, Torben and Knight, Robert T. and Shestyuk, Avgusta and Voytek, Bradley},
-    |          year = {2018},
-    |          }
-
+    Donoghue T, Haller M, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Lara AH, Wallis JD,
+    Knight RT, Shestyuk A, Voytek B. Parameterizing neural power spectra into periodic and aperiodic
+    components (in press)
 
 Example Applications
 ~~~~~~~~~~~~~~~~~~~~
