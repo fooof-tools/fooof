@@ -150,9 +150,12 @@ Reference
 
 If you use this code in your project, please cite::
 
-    Donoghue T, Haller M, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Lara AH, Wallis JD,
-    Knight RT, Shestyuk A, Voytek B. Parameterizing neural power spectra into periodic
-    and aperiodic components. Nature Neuroscience (in press)
+    Donoghue T, Haller M, Peterson EJ, Varma P, Sebastian P, Gao R, Noto T, Lara AH, Wallis JD,
+    Knight RT, Shestyuk A, & Voytek B (2020). Parameterizing neural power spectra into periodic
+    and aperiodic components. Nature Neuroscience, 23, 1655-1665. 
+    DOI: 10.1038/s41593-020-00744-x
+    
+Direct link: https://doi.org/10.1038/s41593-020-00744-x
 
 More information for how to cite this method can be found on the
 `reference page <https://fooof-tools.github.io/fooof/reference.html>`_.
