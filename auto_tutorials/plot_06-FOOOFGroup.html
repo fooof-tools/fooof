@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>06: FOOOFGroup &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -185,7 +185,9 @@ accessed in the same way as the <a class="reference internal" href="../generated
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/tom/opt/anaconda3/envs/sphinx/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
+==================================================================================================
 
                                        FOOOF - GROUP RESULTS
 
@@ -212,11 +214,21 @@ accessed in the same way as the <a class="reference internal" href="../generated
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_plot_06-FOOOFGroup_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_06-FOOOFGroup_001.png" />
+<img alt="Aperiodic Fit, Goodness of Fit, Peaks - Center Frequencies" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_06-FOOOFGroup_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/tom/opt/anaconda3/envs/sphinx/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
+</pre></div>
+</div>
 <p>Just as with the FOOOF object, you can call the convenience method
 <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.report" title="fooof.FOOOFGroup.report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fooof.FOOOFGroup.report()</span></code></a> to run the fitting, and then print the results and plots.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can also save out PDF reports of the FOOOFGroup fits, same as with FOOOF</span>
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.save_report" title="fooof.FOOOFGroup.save_report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">save_report</span></a><span class="p">(</span><span class="s1">&#39;FOOOFGroup_report&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/tom/opt/anaconda3/envs/sphinx/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
 </pre></div>
 </div>
 </div>
@@ -229,12 +241,12 @@ called <code class="docutils literal notranslate"><span class="pre">group_result
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[FOOOFResults(aperiodic_params=array([-21.5931594 ,   0.66654701]), peak_params=array([[ 9.4088037 ,  1.44223656,  2.13520589],
-       [18.44689676,  0.62328342,  2.36122322]]), r_squared=0.972947704871557, error=0.05410881202619542, gaussian_params=array([[ 9.4088037 ,  1.45321198,  1.06760295],
-       [18.44689676,  0.62588664,  1.18061161]])), FOOOFResults(aperiodic_params=array([-21.64485744,   0.78116379]), peak_params=array([[ 9.34931443,  1.59788754,  2.05215071],
-       [11.57383431,  0.44989783,  1.24937294],
-       [18.53931729,  0.73999236,  2.37682555]]), r_squared=0.9795689270758849, error=0.05326551680942457, gaussian_params=array([[ 9.34931443,  1.6014178 ,  1.02607536],
-       [11.57383431,  0.34781374,  0.62468647],
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[FOOOFResults(aperiodic_params=array([-21.59315936,   0.66654704]), peak_params=array([[ 9.4088037 ,  1.44223655,  2.13520589],
+       [18.44689676,  0.62328342,  2.36122322]]), r_squared=0.9729477045852084, error=0.05410881048657798, gaussian_params=array([[ 9.4088037 ,  1.45321198,  1.06760295],
+       [18.44689676,  0.62588664,  1.18061161]])), FOOOFResults(aperiodic_params=array([-21.64485745,   0.78116378]), peak_params=array([[ 9.34931442,  1.59788754,  2.0521507 ],
+       [11.57383429,  0.44989783,  1.24937297],
+       [18.53931729,  0.73999236,  2.37682555]]), r_squared=0.9795689272106969, error=0.05326551718177874, gaussian_params=array([[ 9.34931442,  1.6014178 ,  1.02607535],
+       [11.57383429,  0.34781374,  0.62468648],
        [18.53931729,  0.74005425,  1.18841277]]))]
 </pre></div>
 </div>
@@ -261,6 +273,11 @@ model fits (and used internally as such by the FOOOFGroup object).</p>
 <span class="c1"># Extract goodness-of-fit metrics</span>
 <span class="n">errors</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
 <span class="n">r2s</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;r_squared&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/tom/opt/anaconda3/envs/sphinx/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The full list of parameters you can extract is available in the documentation of `get_params`</span>
@@ -335,11 +352,11 @@ FOOOFResults object.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.66654701 0.78116379 0.97596318 0.3562681  0.66222011 0.5834865
- 0.76028339 0.46594579 0.70975764 0.60541616 0.73824334 0.39581647
- 0.70797692 0.63143901 0.78995517 0.50376859 0.8382523  0.62707641
- 0.72882431 0.71863449 0.74302619 0.88147793 0.35305537 0.39947469
- 0.98214348]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.66654704 0.78116378 0.97596318 0.3562681  0.66222007 0.58348652
+ 0.76028337 0.46594582 0.70975765 0.60541614 0.73824335 0.39581643
+ 0.70797694 0.63143903 0.78995517 0.50376865 0.83825231 0.62707642
+ 0.72882429 0.71863453 0.74302617 0.88147791 0.3530554  0.39947471
+ 0.98214346]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out some of the fit center-frequencies</span>
@@ -351,13 +368,13 @@ FOOOFResults object.</p>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[ 9.4088037   0.        ]
  [18.44689676  0.        ]
- [ 9.34931443  1.        ]
- [11.57383431  1.        ]
+ [ 9.34931442  1.        ]
+ [11.57383429  1.        ]
  [18.53931729  1.        ]
- [ 9.48181063  2.        ]
- [11.25615364  2.        ]
- [12.57271782  2.        ]
- [18.67595773  2.        ]
+ [ 9.4818106   2.        ]
+ [11.25615361  2.        ]
+ [12.5727175   2.        ]
+ [18.67595774  2.        ]
  [10.61406527  3.        ]]
 </pre></div>
 </div>
@@ -383,7 +400,9 @@ a single power spectrum.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/tom/opt/anaconda3/envs/sphinx/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
+==================================================================================================
 
                                        FOOOF - GROUP RESULTS
 
@@ -444,14 +463,14 @@ want to monitor it’s progress, you can also use a progress bar to print out fi
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup:   0%|          | 0/25 [00:00&lt;?, ?it/s]
-Running FOOOFGroup:  16%|#6        | 4/25 [00:00&lt;00:00, 39.72it/s]
-Running FOOOFGroup:  24%|##4       | 6/25 [00:00&lt;00:00, 22.83it/s]
-Running FOOOFGroup:  36%|###6      | 9/25 [00:00&lt;00:00, 24.45it/s]
-Running FOOOFGroup:  52%|#####2    | 13/25 [00:00&lt;00:00, 27.45it/s]
-Running FOOOFGroup:  64%|######4   | 16/25 [00:00&lt;00:00, 18.50it/s]
-Running FOOOFGroup:  76%|#######6  | 19/25 [00:00&lt;00:00, 19.93it/s]
-Running FOOOFGroup:  88%|########8 | 22/25 [00:01&lt;00:00, 21.59it/s]
-Running FOOOFGroup: 100%|##########| 25/25 [00:01&lt;00:00, 22.88it/s]
+Running FOOOFGroup:  16%|#6        | 4/25 [00:00&lt;00:00, 38.95it/s]
+Running FOOOFGroup:  24%|##4       | 6/25 [00:00&lt;00:00, 24.58it/s]
+Running FOOOFGroup:  40%|####      | 10/25 [00:00&lt;00:00, 26.94it/s]
+Running FOOOFGroup:  56%|#####6    | 14/25 [00:00&lt;00:00, 29.61it/s]
+Running FOOOFGroup:  68%|######8   | 17/25 [00:00&lt;00:00, 19.87it/s]
+Running FOOOFGroup:  80%|########  | 20/25 [00:00&lt;00:00, 21.01it/s]
+Running FOOOFGroup:  92%|#########2| 23/25 [00:00&lt;00:00, 22.98it/s]
+Running FOOOFGroup: 100%|##########| 25/25 [00:01&lt;00:00, 24.76it/s]
 </pre></div>
 </div>
 </div>
@@ -473,7 +492,7 @@ for visualization. To do so, you can use the <a class="reference internal" href=
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_plot_06-FOOOFGroup_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_06-FOOOFGroup_002.png" />
+<img alt="plot 06 FOOOFGroup" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_06-FOOOFGroup_002.png" />
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
 
@@ -507,7 +526,7 @@ for visualization. To do so, you can use the <a class="reference internal" href=
 <p>Now we have explored fitting power spectrum models and running these fits across multiple
 power spectra. Next we dig deeper into how to choose and tune the algorithm settings,
 and how to troubleshoot if any of the fitting seems to go wrong.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.033 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.217 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-06-fooofgroup-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/551841fea6afd1b2a365663bec9e7ef8/plot_06-FOOOFGroup.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_06-FOOOFGroup.py</span></code></a></p>
@@ -533,7 +552,7 @@ and how to troubleshoot if any of the fitting seems to go wrong.</p>
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
     </p>
   </div>
 </footer>

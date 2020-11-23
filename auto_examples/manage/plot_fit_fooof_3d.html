@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fitting Power Spectrum Models Across 3D Arrays &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -252,7 +252,7 @@ Running FOOOFGroup across 10 power spectra.
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;fooof.objs.group.FOOOFGroup object at 0x1023469910&gt;, &lt;fooof.objs.group.FOOOFGroup object at 0x102347b310&gt;, &lt;fooof.objs.group.FOOOFGroup object at 0x102347b3d0&gt;]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;fooof.objs.group.FOOOFGroup object at 0x7f8ca30cd790&gt;, &lt;fooof.objs.group.FOOOFGroup object at 0x7f8ca2bbba30&gt;, &lt;fooof.objs.group.FOOOFGroup object at 0x7f8ca30ed790&gt;]
 </pre></div>
 </div>
 <p>Note that the length of the returned list of objects should be equivalent to
@@ -287,9 +287,9 @@ difference in aperiodic exponent between different conditions.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Aperiodic exponent for condition 0 is 1.6006
-Aperiodic exponent for condition 1 is 1.6007
-Aperiodic exponent for condition 2 is 1.5003
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Aperiodic exponent for condition 0 is 1.5003
+Aperiodic exponent for condition 1 is 1.3001
+Aperiodic exponent for condition 2 is 1.7504
 </pre></div>
 </div>
 </div>
@@ -325,9 +325,11 @@ and these object utility functions is available in other examples.</p>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">all_fg</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_fit_fooof_3d_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fit_fooof_3d_001.png" />
+<img alt="Aperiodic Fit, Goodness of Fit, Peaks - Center Frequencies" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fit_fooof_3d_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/tom/opt/anaconda3/envs/sphinx/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
+==================================================================================================
 
                                        FOOOF - GROUP RESULTS
 
@@ -339,18 +341,18 @@ and these object utility functions is available in other examples.</p>
                               Power spectra were fit without a knee.
 
                                       Aperiodic Fit Values:
-                        Exponents - Min:  0.998, Max:  2.003, Mean: 1.567
+                        Exponents - Min:  0.998, Max:  2.003, Mean: 1.517
 
                          In total 27 peaks were extracted from the group
 
                                      Goodness of fit metrics:
                             R2s -  Min:  1.000, Max:  1.000, Mean: 1.000
-                         Errors -  Min:  0.003, Max:  0.004, Mean: 0.004
+                         Errors -  Min:  0.003, Max:  0.005, Mean: 0.004
 
 ==================================================================================================
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.398 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.523 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manage-plot-fit-fooof-3d-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/ce373e0838d5783353a4548ff47106a9/plot_fit_fooof_3d.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_fit_fooof_3d.py</span></code></a></p>
@@ -377,7 +379,7 @@ and these object utility functions is available in other examples.</p>
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
     </p>
   </div>
 </footer>

@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Plot Model Components &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -213,6 +213,11 @@ band definitions, which we can then use to sub-select peaks within bands of inte
 <span class="n">g2_alphas</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg2</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 </pre></div>
 </div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/tom/opt/anaconda3/envs/sphinx/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
+</pre></div>
+</div>
 <div class="section" id="plotting-peak-parameters">
 <h3>Plotting Peak Parameters<a class="headerlink" href="#plotting-peak-parameters" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="../../generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="fooof.plts.periodic.plot_peak_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_peak_params()</span></code></a> function takes in peak parameters,
@@ -226,13 +231,13 @@ and visualizes them, as:</p>
 <a href="../../generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="fooof.plts.periodic.plot_peak_params" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_params</span></a><span class="p">(</span><span class="n">g1_alphas</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_model_components_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_001.png" />
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_001.png" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the peak parameters of alpha peaks between groups</span>
 <a href="../../generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="fooof.plts.periodic.plot_peak_params" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_params</span></a><span class="p">([</span><span class="n">g1_alphas</span><span class="p">,</span> <span class="n">g2_alphas</span><span class="p">],</span> <span class="n">freq_range</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">,</span>
                  <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_model_components_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_002.png" />
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_002.png" />
 </div>
 <div class="section" id="plotting-peak-fits">
 <h3>Plotting Peak Fits<a class="headerlink" href="#plotting-peak-fits" title="Permalink to this headline">¶</a></h3>
@@ -242,13 +247,13 @@ and reconstructs peak fits.</p>
 <a href="../../generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="fooof.plts.periodic.plot_peak_fits" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_fits</span></a><span class="p">(</span><span class="n">g1_alphas</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_model_components_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_003.png" />
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_003.png" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the peak fits of alpha peaks between groups</span>
 <a href="../../generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="fooof.plts.periodic.plot_peak_fits" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_fits</span></a><span class="p">([</span><span class="n">g1_alphas</span><span class="p">,</span> <span class="n">g2_alphas</span><span class="p">],</span>
                <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_model_components_004.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_004.png" />
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_004.png" />
 </div>
 </div>
 <div class="section" id="aperiodic-components">
@@ -271,12 +276,12 @@ aperiodic parameters, and visualizes them, as:</p>
 <a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="fooof.plts.aperiodic.plot_aperiodic_params" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_params</span></a><span class="p">(</span><span class="n">aps1</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_model_components_005.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_005.png" />
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_005.png" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the aperiodic parameters between groups</span>
 <a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="fooof.plts.aperiodic.plot_aperiodic_params" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_params</span></a><span class="p">([</span><span class="n">aps1</span><span class="p">,</span> <span class="n">aps2</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_model_components_006.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_006.png" />
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_006.png" />
 </div>
 <div class="section" id="plotting-aperiodic-fits">
 <h3>Plotting Aperiodic Fits<a class="headerlink" href="#plotting-aperiodic-fits" title="Permalink to this headline">¶</a></h3>
@@ -287,7 +292,7 @@ aperiodic parameters, and reconstructs aperiodic fits.</p>
 <a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="fooof.plts.aperiodic.plot_aperiodic_fits" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_fits</span></a><span class="p">(</span><span class="n">aps1</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">control_offset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_model_components_007.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_007.png" />
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_007.png" />
 <p>The <a class="reference internal" href="../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="fooof.plts.aperiodic.plot_aperiodic_fits"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_aperiodic_fits()</span></code></a> also has some additional options
 that can help to tune the visualization, including:</p>
 <ul class="simple">
@@ -304,7 +309,7 @@ that can help to tune the visualization, including:</p>
                     <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_model_components_008.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_008.png" />
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_008.png" />
 </div>
 </div>
 <div class="section" id="conclusions">
@@ -317,7 +322,7 @@ Qualitatively, we can see those differences in the plots above, and this (in rea
 would suggest there may be interesting differences between these groups. Follow up
 analyses in such a case could investigate whether there are statistically significant
 differences between these groups.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.925 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.368 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plots-plot-model-components-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/47009921621730270815c103aed0f359/plot_model_components.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_model_components.py</span></code></a></p>
@@ -343,7 +348,7 @@ differences between these groups.</p>
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
     </p>
   </div>
 </footer>

@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Band Ratio Measures &#8212; fooof 1.0.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -213,7 +213,7 @@ to different bands and ranges.</p>
                       <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_BandRatios_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandRatios_001.png" />
+<img alt="plot BandRatios" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandRatios_001.png" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate a band ratio measure</span>
 <span class="n">tbr</span> <span class="o">=</span> <span class="n">calc_band_ratio</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Calculate theta / beta ratio is :</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:1.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tbr</span><span class="p">))</span>
@@ -301,7 +301,7 @@ TBR difference from   Beta Bandwidth         is          -1.000
 <span class="n">_</span> <span class="o">=</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="p">[</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]]</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_BandRatios_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandRatios_002.png" />
+<img alt="Theta Power, Theta Bandwidth, Alpha Frequency, Alpha Bandwidth, Beta Frequency, Beta Power, Beta Bandwidth" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandRatios_002.png" />
 <p>In the simulations above, we systematically manipulated each parameter of each of the
 three different band peaks present in our data. For 7 of the 9 possible changes, we can
 do so in a way that creates an identical change in the measured band ratio measure.</p>
@@ -342,7 +342,7 @@ next section).</p>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">35</span><span class="p">]);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.75</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_BandRatios_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandRatios_003.png" />
+<img alt="Exponent w Peaks, Exponent w/out Peaks" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandRatios_003.png" />
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TBR difference from   Exponent w Peaks       is          -1.000
 TBR difference from   Exponent w/out Peaks   is          -1.000
@@ -368,7 +368,7 @@ in neural data.</p>
 <p>For more investigation into band ratios, their methodological issues, applications to real
 data, and a comparison to parameterizing power spectra, see the full project
 <a class="reference external" href="https://github.com/voytekresearch/BandRatios">here</a>,</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.534 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.590 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-measurements-plot-bandratios-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/61f23ee9a2846fc99f182c81be62666c/plot_BandRatios.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_BandRatios.py</span></code></a></p>
@@ -394,7 +394,7 @@ data, and a comparison to parameterizing power spectra, see the full project
     </p>
     <p>
         &copy; Copyright 2018-2020, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.2.1.<br/>
     </p>
   </div>
 </footer>
