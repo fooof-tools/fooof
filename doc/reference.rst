@@ -16,9 +16,11 @@ If you use this method, and/or want to refer to our approach, examples, and disc
 
 .. topic:: Reference
 
-    Donoghue T, Haller M, Peterson E, Varma P, Sebastian P, Gao R, Noto T, Lara AH, Wallis JD,
-    Knight RT, Shestyuk A, Voytek B. Parameterizing neural power spectra into periodic and aperiodic
-    components. Nature Neuroscience (in press)
+    Donoghue T, Haller M, Peterson EJ, Varma P, Sebastian P, Gao R, Noto T, Lara AH, Wallis JD,
+    Knight RT, Shestyuk A, Voytek B (2020). Parameterizing neural power spectra into periodic and aperiodic
+    components. Nature Neuroscience, 23, 1655-1665. DOI: 10.1038/s41593-020-00744-x
+
+Direct link: https://doi.org/10.1038/s41593-020-00744-x
 
 Example Applications
 ~~~~~~~~~~~~~~~~~~~~
