@@ -2,7 +2,7 @@
 FOOOF - fitting oscillations & one over f
 =========================================
 
-|ProjectStatus|_ |Version|_ |BuildStatus|_ |Coverage|_ |License|_ |PythonVersions|_ |Preprint|_
+|ProjectStatus|_ |Version|_ |BuildStatus|_ |Coverage|_ |License|_ |PythonVersions|_ |Paper|_
 
 .. |ProjectStatus| image:: http://www.repostatus.org/badges/latest/active.svg
 .. _ProjectStatus: https://www.repostatus.org/#active
@@ -22,8 +22,8 @@ FOOOF - fitting oscillations & one over f
 .. |PythonVersions| image:: https://img.shields.io/pypi/pyversions/fooof.svg
 .. _PythonVersions: https://pypi.python.org/pypi/fooof/
 
-.. |Preprint| image:: https://img.shields.io/badge/preprint-10.1101/299859-informational.svg
-.. _Preprint: https://doi.org/10.1101/299859
+.. |Paper| image:: https://img.shields.io/badge/paper-nn10.1038-informational.svg
+.. _Paper: https://doi.org/10.1038/s41593-020-00744-x
 
 
 FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
