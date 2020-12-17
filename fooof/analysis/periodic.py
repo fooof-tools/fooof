@@ -21,7 +21,7 @@ def get_band_peak_fm(fm, band, select_highest=True, threshold=None, thresh_param
     select_highest : bool, optional, default: True
         Whether to return single peak (if True) or all peaks within the range found (if False).
         If True, returns the highest power peak within the search range.
-    threshold : float
+    threshold : float, optional
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
         Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
@@ -58,7 +58,7 @@ def get_band_peak_fg(fg, band, threshold=None, thresh_param='PW', attribute='pea
     band : tuple of (float, float)
         Frequency range for the band of interest.
         Defined as: (lower_frequency_bound, upper_frequency_bound).
-    threshold : float
+    threshold : float, optional
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
         Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
@@ -113,7 +113,7 @@ def get_band_peak_group(peak_params, band, n_fits, threshold=None, thresh_param=
         Defined as: (lower_frequency_bound, upper_frequency_bound).
     n_fits : int
         The number of model fits in the FOOOFGroup data.
-    threshold : float
+    threshold : float, optional
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
         Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
@@ -157,7 +157,7 @@ def get_band_peak(peak_params, band, select_highest=True, threshold=None, thresh
     select_highest : bool, optional, default: True
         Whether to return single peak (if True) or all peaks within the range found (if False).
         If True, returns the highest peak within the search range.
-    threshold : float
+    threshold : float, optional
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
         Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
