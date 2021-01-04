@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plot Model Components &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../faq.html">FAQ</a></li>
+                <li><a href="../../glossary.html">Glossary</a></li>
+                <li><a href="../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plots-plot-model-components-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="plot-model-components">
+<span id="sphx-glr-auto-examples-plots-plot-model-components-py"></span><h1>Plot Model Components<a class="headerlink" href="#plot-model-components" title="Permalink to this headline">¶</a></h1>
+<p>Plotting power spectrum model parameters and components.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOFGroup object</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
+
+<span class="c1"># Import utilities to manage frequency band definitions</span>
+<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="kn">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a>
+<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="kn">import</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a>
+
+<span class="c1"># Import simulation utilities for making example data</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="kn">import</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="kn">import</span> <a href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="fooof.sim.params.param_jitter" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_jitter</span></a>
+
+<span class="c1"># Import plotting function for model parameters and components</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.periodic</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="fooof.plts.periodic.plot_peak_fits" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_fits</span></a><span class="p">,</span> <a href="../../generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="fooof.plts.periodic.plot_peak_params" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_params</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.aperiodic</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="fooof.plts.aperiodic.plot_aperiodic_params" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_params</span></a><span class="p">,</span> <a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="fooof.plts.aperiodic.plot_aperiodic_fits" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_fits</span></a>
+</pre></div>
+</div>
+<div class="section" id="experiment-set-up-simulate-data">
+<h2>Experiment Set Up &amp; Simulate Data<a class="headerlink" href="#experiment-set-up-simulate-data" title="Permalink to this headline">¶</a></h2>
+<p>In this example, we will explore the plotting functions available to visualize
+model parameters and components from fitting power spectrum models.</p>
+<p>To do so, we will consider a hypothetical experiment in which we are compare power
+spectrum models between two groups of participants, and so we want to visualize differences
+between the groups. For simplicity, we will consider that we have one ‘grand average’
+power spectrum per subject, which we can compare and visualize.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up labels and colors for plotting</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#2400a8&#39;</span><span class="p">,</span> <span class="s1">&#39;#00700b&#39;</span><span class="p">]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Group-1&#39;</span><span class="p">,</span> <span class="s1">&#39;Group-2&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the number of &#39;subjects&#39; per group</span>
+<span class="n">n_subjs</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="c1"># Define the frequency range for our simulations</span>
+<span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+
+<span class="c1"># Define aperiodic parameters for each group, with some variation</span>
+<span class="n">g1_aps</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="fooof.sim.params.param_jitter" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_jitter</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="n">g2_aps</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="fooof.sim.params.param_jitter" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_jitter</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+
+<span class="c1"># Define periodic parameters for each group, with some variation</span>
+<span class="n">g1_peaks</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="fooof.sim.params.param_jitter" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_jitter</span></a><span class="p">([</span><span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="n">g2_peaks</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="fooof.sim.params.param_jitter" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_jitter</span></a><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate some test data, as two groups of power spectra</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers1</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="n">n_subjs</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">g1_aps</span><span class="p">,</span> <span class="n">g1_peaks</span><span class="p">)</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers2</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="n">n_subjs</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">g2_aps</span><span class="p">,</span> <span class="n">g2_peaks</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="fit-power-spectrum-models">
+<h3>Fit Power Spectrum Models<a class="headerlink" href="#fit-power-spectrum-models" title="Permalink to this headline">¶</a></h3>
+<p>Now that we have our simulated data, we can fit our power spectrum models, using FOOOFGroup.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object for each group</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg1</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg2</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameterize neural power spectra</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg1</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers1</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg2</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="plotting-parameters-components">
+<h2>Plotting Parameters &amp; Components<a class="headerlink" href="#plotting-parameters-components" title="Permalink to this headline">¶</a></h2>
+<p>In the following, we will explore two visualization options:</p>
+<ul class="simple">
+<li><p>plotting parameter values</p></li>
+<li><p>plotting component reconstructions</p></li>
+</ul>
+<p>Each of these approaches can be done for either aperiodic or periodic parameters.</p>
+<p>All of the plots that we will use in this example can be used to visualize either
+one or multiple groups of data. As we will see, you can pass in a single group of
+parameters or components to visualize them, or pass in a list of group results to
+visualize and compare between groups.</p>
+<p>You can also pass in optional inputs <cite>labels</cite> and <cite>colors</cite> to all the following
+functions to add plot labels, and to set the colors used for each group.</p>
+</div>
+<div class="section" id="periodic-components">
+<h2>Periodic Components<a class="headerlink" href="#periodic-components" title="Permalink to this headline">¶</a></h2>
+<p>First, let’s have a look at the periodic components.</p>
+<p>To do so, we will use the <a class="reference internal" href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bands</span></code></a> object to store our frequency
+band definitions, which we can then use to sub-select peaks within bands of interest.</p>
+<p>We can then plot visualizations of the peak parameters, and the reconstructed fits.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define frequency bands of interest</span>
+<a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;theta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+               <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">13</span><span class="p">],</span>
+               <span class="s1">&#39;beta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">30</span><span class="p">]})</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract alpha peaks from each group</span>
+<span class="n">g1_alphas</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg1</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">g2_alphas</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg2</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/rph/Projects/fooof/.env/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
+</pre></div>
+</div>
+<div class="section" id="plotting-peak-parameters">
+<h3>Plotting Peak Parameters<a class="headerlink" href="#plotting-peak-parameters" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="../../generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="fooof.plts.periodic.plot_peak_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_peak_params()</span></code></a> function takes in peak parameters,
+and visualizes them, as:</p>
+<ul class="simple">
+<li><p>Center Frequency on the x-axis</p></li>
+<li><p>Power on the y-axis</p></li>
+<li><p>Bandwidth as the size of the circle</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Explore the peak parameters of Group 1&#39;s alphas</span>
+<a href="../../generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="fooof.plts.periodic.plot_peak_params" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_params</span></a><span class="p">(</span><span class="n">g1_alphas</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_001.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the peak parameters of alpha peaks between groups</span>
+<a href="../../generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="fooof.plts.periodic.plot_peak_params" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_params</span></a><span class="p">([</span><span class="n">g1_alphas</span><span class="p">,</span> <span class="n">g2_alphas</span><span class="p">],</span> <span class="n">freq_range</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">,</span>
+                 <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_002.png" />
+</div>
+<div class="section" id="plotting-peak-fits">
+<h3>Plotting Peak Fits<a class="headerlink" href="#plotting-peak-fits" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="../../generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="fooof.plts.periodic.plot_peak_fits"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_peak_fits()</span></code></a> function takes in peak parameters,
+and reconstructs peak fits.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the peak fits of the alpha fits for Group 1</span>
+<a href="../../generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="fooof.plts.periodic.plot_peak_fits" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_fits</span></a><span class="p">(</span><span class="n">g1_alphas</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_003.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the peak fits of alpha peaks between groups</span>
+<a href="../../generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="fooof.plts.periodic.plot_peak_fits" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_fits</span></a><span class="p">([</span><span class="n">g1_alphas</span><span class="p">,</span> <span class="n">g2_alphas</span><span class="p">],</span>
+               <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_004.png" />
+</div>
+</div>
+<div class="section" id="aperiodic-components">
+<h2>Aperiodic Components<a class="headerlink" href="#aperiodic-components" title="Permalink to this headline">¶</a></h2>
+<p>Next, let’s have a look at the aperiodic components.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract the aperiodic parameters for each group</span>
+<span class="n">aps1</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg1</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">)</span>
+<span class="n">aps2</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg2</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="plotting-aperiodic-parameters">
+<h3>Plotting Aperiodic Parameters<a class="headerlink" href="#plotting-aperiodic-parameters" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="fooof.plts.aperiodic.plot_aperiodic_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_aperiodic_params()</span></code></a> function takes in
+aperiodic parameters, and visualizes them, as:</p>
+<ul class="simple">
+<li><p>Offset on the x-axis</p></li>
+<li><p>Exponent on the y-axis</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the aperiodic parameters for Group 1</span>
+<a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="fooof.plts.aperiodic.plot_aperiodic_params" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_params</span></a><span class="p">(</span><span class="n">aps1</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_005.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the aperiodic parameters between groups</span>
+<a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="fooof.plts.aperiodic.plot_aperiodic_params" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_params</span></a><span class="p">([</span><span class="n">aps1</span><span class="p">,</span> <span class="n">aps2</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_006.png" />
+</div>
+<div class="section" id="plotting-aperiodic-fits">
+<h3>Plotting Aperiodic Fits<a class="headerlink" href="#plotting-aperiodic-fits" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="fooof.plts.aperiodic.plot_aperiodic_fits"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_aperiodic_fits()</span></code></a> function takes in
+aperiodic parameters, and reconstructs aperiodic fits.</p>
+<p>Here again we can plot visualizations of the peak parameters, and the reconstructed fits.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the aperiodic fits for Group 1</span>
+<a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="fooof.plts.aperiodic.plot_aperiodic_fits" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_fits</span></a><span class="p">(</span><span class="n">aps1</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">control_offset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_007.png" />
+<p>The <a class="reference internal" href="../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="fooof.plts.aperiodic.plot_aperiodic_fits"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_aperiodic_fits()</span></code></a> also has some additional options
+that can help to tune the visualization, including:</p>
+<ul class="simple">
+<li><p><cite>control_offset</cite> : whether the control for offset differences, by setting to zero</p>
+<ul>
+<li><p>This can be useful to visualize if it’s the exponent specifically that is changing</p></li>
+</ul>
+</li>
+<li><p><cite>log_freqs</cite> : whether to log the frequency values, on the x-axis</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the aperiodic fits for both groups</span>
+<a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="fooof.plts.aperiodic.plot_aperiodic_fits" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_fits</span></a><span class="p">([</span><span class="n">aps1</span><span class="p">,</span> <span class="n">aps2</span><span class="p">],</span> <span class="n">freq_range</span><span class="p">,</span>
+                    <span class="n">control_offset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot model components" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_model_components_008.png" />
+</div>
+</div>
+<div class="section" id="conclusions">
+<h2>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this headline">¶</a></h2>
+<p>In this example, we explored plotting model parameters and components within and between
+groups of parameterized neural power spectra.</p>
+<p>If you check the simulation parameters used for the two groups, you can see that
+we set these groups to vary in their alpha center frequency and in the exponent value.
+Qualitatively, we can see those differences in the plots above, and this (in real data)
+would suggest there may be interesting differences between these groups. Follow up
+analyses in such a case could investigate whether there are statistically significant
+differences between these groups.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.310 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plots-plot-model-components-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/47009921621730270815c103aed0f359/plot_model_components.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_model_components.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/150024fcd7d38e98042735387d6f4e6d/plot_model_components.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_model_components.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2021, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

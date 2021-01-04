@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fooof.plts.aperiodic &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../../api.html">API</a></li>
+                <li><a href="../../../faq.html">FAQ</a></li>
+                <li><a href="../../../glossary.html">Glossary</a></li>
+                <li><a href="../../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for fooof.plts.aperiodic</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Plots for aperiodic fits and parameters.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="kn">import</span> <span class="n">gen_freqs</span><span class="p">,</span> <span class="n">gen_aperiodic</span>
+<span class="kn">from</span> <span class="nn">fooof.core.modutils</span> <span class="kn">import</span> <span class="n">safe_import</span><span class="p">,</span> <span class="n">check_dependency</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.settings</span> <span class="kn">import</span> <span class="n">PLT_FIGSIZES</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.style</span> <span class="kn">import</span> <span class="n">check_n_style</span><span class="p">,</span> <span class="n">style_param_plot</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.utils</span> <span class="kn">import</span> <span class="n">check_ax</span><span class="p">,</span> <span class="n">recursive_plot</span><span class="p">,</span> <span class="n">check_plot_kwargs</span>
+
+<span class="n">plt</span> <span class="o">=</span> <span class="n">safe_import</span><span class="p">(</span><span class="s1">&#39;.pyplot&#39;</span><span class="p">,</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">)</span>
+
+<span class="c1">###################################################################################################</span>
+<span class="c1">###################################################################################################</span>
+
+<div class="viewcode-block" id="plot_aperiodic_params"><a class="viewcode-back" href="../../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params">[docs]</a><span class="nd">@check_dependency</span><span class="p">(</span><span class="n">plt</span><span class="p">,</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">plot_aperiodic_params</span><span class="p">(</span><span class="n">aps</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="n">style_param_plot</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot aperiodic parameters as dots representing offset and exponent value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    aps : 2d array or list of 2d array</span>
+<span class="sd">        Aperiodic parameters. Each row is a parameter set, as [Off, Exp] or [Off, Knee, Exp].</span>
+<span class="sd">    colors : str or list of str, optional</span>
+<span class="sd">        Color(s) to plot data.</span>
+<span class="sd">    labels : list of str, optional</span>
+<span class="sd">        Label(s) for plotted data, to be added in a legend.</span>
+<span class="sd">    ax : matplotlib.Axes, optional</span>
+<span class="sd">        Figure axes upon which to plot.</span>
+<span class="sd">    plot_style : callable, optional, default: style_param_plot</span>
+<span class="sd">        A function to call to apply styling &amp; aesthetics to the plot.</span>
+<span class="sd">    **plot_kwargs</span>
+<span class="sd">        Keyword arguments to pass into the plot call.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">check_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span> <span class="n">PLT_FIGSIZES</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aps</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">recursive_plot</span><span class="p">(</span><span class="n">aps</span><span class="p">,</span> <span class="n">plot_aperiodic_params</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+                       <span class="n">plot_style</span><span class="o">=</span><span class="n">plot_style</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="c1"># Unpack data: offset as x; exponent as y</span>
+        <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">aps</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">aps</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">sizes</span> <span class="o">=</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+
+        <span class="n">plot_kwargs</span> <span class="o">=</span> <span class="n">check_plot_kwargs</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.7</span><span class="p">})</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Add axis labels</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Offset&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Exponent&#39;</span><span class="p">)</span>
+
+    <span class="n">check_n_style</span><span class="p">(</span><span class="n">plot_style</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="plot_aperiodic_fits"><a class="viewcode-back" href="../../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits">[docs]</a><span class="nd">@check_dependency</span><span class="p">(</span><span class="n">plt</span><span class="p">,</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">plot_aperiodic_fits</span><span class="p">(</span><span class="n">aps</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">control_offset</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">log_freqs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="n">style_param_plot</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot reconstructions of model aperiodic fits.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    aps : 2d array</span>
+<span class="sd">        Aperiodic parameters. Each row is a parameter set, as [Off, Exp] or [Off, Knee, Exp].</span>
+<span class="sd">    freq_range : list of [float, float]</span>
+<span class="sd">        The frequency range to plot the peak fits across, as [f_min, f_max].</span>
+<span class="sd">    control_offset : boolean, optonal, default: False</span>
+<span class="sd">        Whether to control for the offset, by setting it to zero.</span>
+<span class="sd">    log_freqs : boolean, optonal, default: False</span>
+<span class="sd">        Whether to plot the x-axis in log space.</span>
+<span class="sd">    colors : str or list of str, optional</span>
+<span class="sd">        Color(s) to plot data.</span>
+<span class="sd">    labels : list of str, optional</span>
+<span class="sd">        Label(s) for plotted data, to be added in a legend.</span>
+<span class="sd">    ax : matplotlib.Axes, optional</span>
+<span class="sd">        Figure axes upon which to plot.</span>
+<span class="sd">    plot_style : callable, optional, default: style_param_plot</span>
+<span class="sd">        A function to call to apply styling &amp; aesthetics to the plot.</span>
+<span class="sd">    **plot_kwargs</span>
+<span class="sd">        Keyword arguments to pass into the plot call.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">check_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span> <span class="n">PLT_FIGSIZES</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aps</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">colors</span><span class="p">:</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s1">&#39;color&#39;</span><span class="p">])</span>
+
+        <span class="n">recursive_plot</span><span class="p">(</span><span class="n">aps</span><span class="p">,</span> <span class="n">plot_function</span><span class="o">=</span><span class="n">plot_aperiodic_fits</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                       <span class="n">freq_range</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">freq_range</span><span class="p">),</span>
+                       <span class="n">control_offset</span><span class="o">=</span><span class="n">control_offset</span><span class="p">,</span>
+                       <span class="n">log_freqs</span><span class="o">=</span><span class="n">log_freqs</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+                       <span class="n">plot_style</span><span class="o">=</span><span class="n">plot_style</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">freqs</span> <span class="o">=</span> <span class="n">gen_freqs</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">plt_freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span> <span class="k">if</span> <span class="n">log_freqs</span> <span class="k">else</span> <span class="n">freqs</span>
+
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">colors</span>
+
+        <span class="n">avg_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">)])</span>
+
+        <span class="k">for</span> <span class="n">ap_params</span> <span class="ow">in</span> <span class="n">aps</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">control_offset</span><span class="p">:</span>
+
+                <span class="c1"># Copy the object to not overwrite any data</span>
+                <span class="n">ap_params</span> <span class="o">=</span> <span class="n">ap_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">ap_params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># Recreate &amp; plot the aperiodic component from parameters</span>
+            <span class="n">ap_vals</span> <span class="o">=</span> <span class="n">gen_aperiodic</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">)</span>
+
+            <span class="n">plot_kwargs</span> <span class="o">=</span> <span class="n">check_plot_kwargs</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="mf">0.35</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span> <span class="p">:</span> <span class="mf">1.25</span><span class="p">})</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plt_freqs</span><span class="p">,</span> <span class="n">ap_vals</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span>
+
+            <span class="c1"># Collect a running average across components</span>
+            <span class="n">avg_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">avg_vals</span><span class="p">,</span> <span class="n">ap_vals</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Plot the average component</span>
+        <span class="n">avg</span> <span class="o">=</span> <span class="n">avg_vals</span> <span class="o">/</span> <span class="n">aps</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">avg_color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">colors</span> <span class="k">else</span> <span class="n">colors</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plt_freqs</span><span class="p">,</span> <span class="n">avg</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">plot_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;linewidth&#39;</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">avg_color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+
+    <span class="c1"># Add axis labels</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;log(Frequency)&#39;</span> <span class="k">if</span> <span class="n">log_freqs</span> <span class="k">else</span> <span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;log(Power)&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Set plot limit</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">freq_range</span><span class="p">)</span> <span class="k">if</span> <span class="n">log_freqs</span> <span class="k">else</span> <span class="n">freq_range</span><span class="p">)</span>
+
+    <span class="c1"># Apply plot style</span>
+    <span class="n">check_n_style</span><span class="p">(</span><span class="n">plot_style</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2021, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

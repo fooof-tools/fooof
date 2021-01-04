@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossary &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="api.html">API</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="#">Glossary</a></li>
+                <li><a href="auto_motivations/index.html">Motivations</a></li>
+                <li><a href="auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="auto_examples/index.html">Examples</a></li>
+                <li><a href="reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="glossary">
+<h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h1>
+<p>A glossary of terms used in the module, with a description of how they are used, as well as common abbreviations.</p>
+<dl class="glossary simple">
+<dt id="term-FOOOF">FOOOF</dt><dd><p>FOOOF stands for ‘fitting oscillations &amp; one-over f’.
+We use <cite>FOOOF</cite> to refer to either the current module, or to <cite>FOOOF</cite> objects.</p>
+</dd>
+<dt id="term-Field-Data">Field Data</dt><dd><p>‘Field data’ is used as a catch-all for the relevant types of data that the power spectrum model can be applied to. This includes recordings of electrophysiological or magnetophysiological ‘fields’, meaning recording modalities such as electroencephalography (EEG), magnetoencephalography (MEG), electrocorticography (ECoG), and local field potential (LFP) data.</p>
+</dd>
+<dt id="term-Power-Spectrum">Power Spectrum</dt><dd><p>A power spectrum (short for power spectral density) describes the distribution of power across frequencies.</p>
+</dd>
+<dt id="term-Power-Spectrum-Model">Power Spectrum Model</dt><dd><p>A power spectrum is a model that describes neural power spectra.
+This module implements a particular power spectrum model, whereby we conceptualize and describe mathematically a model that considers power spectra as a combination of periodic and aperiodic components, each of which can be described by a set of model parameters.</p>
+</dd>
+<dt id="term-FOOOF-Objects">FOOOF Objects</dt><dd><p>This module is object-oriented, whereby the algorithm to parameterize neural power spectra is implemented in Python objects. We refer to those objects as ‘FOOOF objects’.</p>
+</dd>
+<dt id="term-Component">Component</dt><dd><p>By ‘component’ we mean a part, or aspect, of the data.
+Different components of the data are considered to be separate aspects of, or entities in, the data, (though they need not be be completely independent).</p>
+</dd>
+<dt id="term-Parameters">Parameters</dt><dd><p>We use the term ‘parameters’ to describe the parameters of the model, meaning the values in the model that are fit to the data. These model parameters are the results of the model fitting.</p>
+</dd>
+<dt id="term-Settings">Settings</dt><dd><p>We use ‘settings’ to refer to things that control the algorithm, or any the settings for the algorithm that can be used to adjust the fitting procedure.</p>
+</dd>
+<dt id="term-Periodic">Periodic</dt><dd><p>Periodic (or ‘rhythmic’) component(s) of the data, that reflect putative oscillations.</p>
+</dd>
+<dt id="term-Peaks">Peaks</dt><dd><p>Parts of the power spectrum that are identified to have power over and above the aperiodic component, and are thus modeled as ‘peaks’, reflecting putative oscillations. The set of identified peaks are the periodic component(s) of the data. The peaks are described by the peak parameters: center frequency (CF), power (PW), and bandwidth (bw).</p>
+</dd>
+<dt id="term-Aperiodic">Aperiodic</dt><dd><p>Aperiodic (or ‘arrhythmic’) components of the data.
+In neural power spectra, by aperiodic activity, we typically mean the 1/f-like activity.</p>
+</dd>
+<dt id="term-One-Over-F-1-f">One-Over F (1/f)</dt><dd><p>‘One over f’ or ‘1/f’ activity describes activity whereby the power spectrum has a <span class="math notranslate nohighlight">\(1/f^\chi\)</span> property.
+1/f activity is a type of aperiodic activity.</p>
+</dd>
+<dt id="term-1-f-like">1/f-like</dt><dd><p>Refers to cases in which the activity, or power spectrum, approximates or is similar to a 1/f distribution. In neural data, we often see data which has some aspects of 1/f, but is not formally 1/f, and so we describe this as ‘1/f-like’.</p>
+</dd>
+<dt id="term-Center-Frequency-CF">Center Frequency (CF)</dt><dd><p>The peak frequency of identified peaks.
+The CF is a peak parameter, as part of the periodic component of the data.</p>
+</dd>
+<dt id="term-Power-PW">Power (PW)</dt><dd><p>The power, over and above the aperiodic component, of identified peaks.
+The PW is a peak parameter, as part of the periodic component of the data.</p>
+</dd>
+<dt id="term-Bandwidth-BW">Bandwidth (BW)</dt><dd><p>The bandwidth of identified peaks.
+The BW is a peak parameter, as part of the periodic component of the data.</p>
+</dd>
+<dt id="term-Offset-OFF">Offset (OFF)</dt><dd><p>The y-intercept of the model fit.
+The OFF is an aperiodic parameter, as part of the aperiodic component of the data.</p>
+</dd>
+<dt id="term-Knee-KNE">Knee (KNE)</dt><dd><p>An optional parameter of the aperiodic fit that relates to frequency locations where there is a ‘bend’ or a ‘knee’, when plotted in log-log space, in the 1/f-like aperiodic activity.
+The KNE is an aperiodic parameter, as part of the aperiodic component of the data.</p>
+</dd>
+<dt id="term-Exponent-EXP">Exponent (EXP)</dt><dd><p>The exponent of the aperiodic fit, which is <span class="math notranslate nohighlight">\(\chi\)</span> in the <span class="math notranslate nohighlight">\(1/f^\chi\)</span> formulation. FOOOF uses and fits exponential functions for the aperiodic fit, whereby <span class="math notranslate nohighlight">\(\chi\)</span> is equivalent to the slope of a linear fit in log-log space (with a sign flip).
+The EXP is an aperiodic parameter, as part of the aperiodic component of the data.</p>
+</dd>
+</dl>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2021, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

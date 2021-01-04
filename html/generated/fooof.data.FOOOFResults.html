@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fooof.data.FOOOFResults &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="../glossary.html">Glossary</a></li>
+                <li><a href="../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="fooof-data-fooofresults">
+<h1>fooof.data.FOOOFResults<a class="headerlink" href="#fooof-data-fooofresults" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="fooof.data.FOOOFResults">
+<em class="property">class </em><code class="sig-prename descclassname">fooof.data.</code><code class="sig-name descname">FOOOFResults</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">aperiodic_params</span></em>, <em class="sig-param"><span class="n">peak_params</span></em>, <em class="sig-param"><span class="n">r_squared</span></em>, <em class="sig-param"><span class="n">error</span></em>, <em class="sig-param"><span class="n">gaussian_params</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/data/data.html#FOOOFResults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.data.FOOOFResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model results from parameterizing a power spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>aperiodic_params</strong><span class="classifier">1d array</span></dt><dd><p>Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
+The knee parameter is only included if aperiodic is fit with knee.</p>
+</dd>
+<dt><strong>peak_params</strong><span class="classifier">2d array</span></dt><dd><p>Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].</p>
+</dd>
+<dt><strong>r_squared</strong><span class="classifier">float</span></dt><dd><p>R-squared of the fit between the full model fit and the input data.</p>
+</dd>
+<dt><strong>error</strong><span class="classifier">float</span></dt><dd><p>Error of the full model fit.</p>
+</dd>
+<dt><strong>gaussian_params</strong><span class="classifier">2d array</span></dt><dd><p>Parameters that define the gaussian fit(s).
+Each row is a gaussian, as [mean, height, standard deviation].</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This object is a data object, based on a NamedTuple, with immutable data attributes.</p>
+</dd></dl>
+
+<div class="section" id="examples-using-fooof-data-fooofresults">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.data.FOOOFResults</span></code><a class="headerlink" href="#examples-using-fooof-data-fooofresults" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Introduction to the module, beginning with the FOOOF object."><div class="figure align-default" id="id1">
+<img alt="02: Fitting Power Spectrum Models" src="../_images/sphx_glr_plot_02-FOOOF_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_02-FOOOF.html#sphx-glr-auto-tutorials-plot-02-fooof-py"><span class="std std-ref">02: Fitting Power Spectrum Models</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Using FOOOFGroup to run fit models across multiple power spectra."><div class="figure align-default" id="id2">
+<img alt="06: FOOOFGroup" src="../_images/sphx_glr_plot_06-FOOOFGroup_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_06-FOOOFGroup.html#sphx-glr-auto-tutorials-plot-06-fooofgroup-py"><span class="std std-ref">06: FOOOFGroup</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Tips &amp; tricks for choosing algorithm settings, tuning fits, and troubleshooting."><div class="figure align-default" id="id3">
+<img alt="07: Tuning &amp; Troubleshooting" src="../_images/sphx_glr_plot_07-TroubleShooting_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_07-TroubleShooting.html#sphx-glr-auto-tutorials-plot-07-troubleshooting-py"><span class="std std-ref">07: Tuning &amp; Troubleshooting</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div></div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2021, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

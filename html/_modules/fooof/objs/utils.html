@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fooof.objs.utils &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../../api.html">API</a></li>
+                <li><a href="../../../faq.html">FAQ</a></li>
+                <li><a href="../../../glossary.html">Glossary</a></li>
+                <li><a href="../../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for fooof.objs.utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utility functions for managing and manipulating FOOOF objects.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">fooof.sim</span> <span class="kn">import</span> <span class="n">gen_freqs</span>
+<span class="kn">from</span> <span class="nn">fooof.data</span> <span class="kn">import</span> <span class="n">FOOOFResults</span>
+<span class="kn">from</span> <span class="nn">fooof.objs</span> <span class="kn">import</span> <span class="n">FOOOF</span><span class="p">,</span> <span class="n">FOOOFGroup</span>
+<span class="kn">from</span> <span class="nn">fooof.analysis.periodic</span> <span class="kn">import</span> <span class="n">get_band_peak_fg</span>
+<span class="kn">from</span> <span class="nn">fooof.core.errors</span> <span class="kn">import</span> <span class="n">NoModelError</span><span class="p">,</span> <span class="n">IncompatibleSettingsError</span>
+
+<span class="c1">###################################################################################################</span>
+<span class="c1">###################################################################################################</span>
+
+<div class="viewcode-block" id="compare_info"><a class="viewcode-back" href="../../../generated/fooof.objs.compare_info.html#fooof.compare_info">[docs]</a><span class="k">def</span> <span class="nf">compare_info</span><span class="p">(</span><span class="n">fooof_lst</span><span class="p">,</span> <span class="n">aspect</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compare a specified aspect of FOOOF objects across instances.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fooof_lst : list of FOOOF and / or FOOOFGroup</span>
+<span class="sd">        Objects whose attributes are to be compared.</span>
+<span class="sd">    aspect : {&#39;settings&#39;, &#39;meta_data&#39;}</span>
+<span class="sd">        Which set of attributes to compare the objects across.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    consistent : bool</span>
+<span class="sd">        Whether the settings are consistent across the input list of objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Check specified aspect of the objects are the same across instances</span>
+    <span class="k">for</span> <span class="n">f_obj_1</span><span class="p">,</span> <span class="n">f_obj_2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fooof_lst</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">fooof_lst</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">f_obj_1</span><span class="p">,</span> <span class="s1">&#39;get_&#39;</span> <span class="o">+</span> <span class="n">aspect</span><span class="p">)()</span> <span class="o">!=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">f_obj_2</span><span class="p">,</span> <span class="s1">&#39;get_&#39;</span> <span class="o">+</span> <span class="n">aspect</span><span class="p">)():</span>
+            <span class="n">consistent</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">consistent</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="n">consistent</span></div>
+
+
+<div class="viewcode-block" id="average_fg"><a class="viewcode-back" href="../../../generated/fooof.objs.average_fg.html#fooof.average_fg">[docs]</a><span class="k">def</span> <span class="nf">average_fg</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="n">bands</span><span class="p">,</span> <span class="n">avg_method</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Average across model fits in a FOOOFGroup object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fg : FOOOFGroup</span>
+<span class="sd">        Object with model fit results to average across.</span>
+<span class="sd">    bands : Bands</span>
+<span class="sd">        Bands object that defines the frequency bands to collapse peaks across.</span>
+<span class="sd">    avg : {&#39;mean&#39;, &#39;median&#39;}</span>
+<span class="sd">        Averaging function to use.</span>
+<span class="sd">    regenerate : bool, optional, default: True</span>
+<span class="sd">        Whether to regenerate the model for the averaged parameters.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fm : FOOOF</span>
+<span class="sd">        Object containing the average model results.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the requested averaging method is not understood.</span>
+<span class="sd">    NoModelError</span>
+<span class="sd">        If there are no model fit results available to average across.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">avg_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Requested average method not understood.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fg</span><span class="o">.</span><span class="n">has_model</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">NoModelError</span><span class="p">(</span><span class="s2">&quot;No model fit results are available, can not proceed.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">avg_method</span> <span class="o">==</span> <span class="s1">&#39;mean&#39;</span><span class="p">:</span>
+        <span class="n">avg_func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span>
+    <span class="k">elif</span> <span class="n">avg_method</span> <span class="o">==</span> <span class="s1">&#39;median&#39;</span><span class="p">:</span>
+        <span class="n">avg_func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span>
+
+    <span class="c1"># Aperiodic parameters: extract &amp; average</span>
+    <span class="n">ap_params</span> <span class="o">=</span> <span class="n">avg_func</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Periodic parameters: extract &amp; average</span>
+    <span class="n">peak_params</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">gauss_params</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">band_def</span> <span class="ow">in</span> <span class="n">bands</span><span class="o">.</span><span class="n">definitions</span><span class="p">:</span>
+
+        <span class="n">peaks</span> <span class="o">=</span> <span class="n">get_band_peak_fg</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="n">band_def</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="s1">&#39;peak_params&#39;</span><span class="p">)</span>
+        <span class="n">gauss</span> <span class="o">=</span> <span class="n">get_band_peak_fg</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="n">band_def</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="s1">&#39;gaussian_params&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Check if there are any extracted peaks - if not, don&#39;t add</span>
+        <span class="c1">#   Note that we only check peaks, but gauss should be the same</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">peaks</span><span class="p">)):</span>
+            <span class="n">peak_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_func</span><span class="p">(</span><span class="n">peaks</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">gauss_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_func</span><span class="p">(</span><span class="n">gauss</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+    <span class="n">peak_params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">peak_params</span><span class="p">)</span>
+    <span class="n">gauss_params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gauss_params</span><span class="p">)</span>
+
+    <span class="c1"># Goodness of fit measures: extract &amp; average</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">avg_func</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;r_squared&#39;</span><span class="p">))</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">avg_func</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Collect all results together, to be added to FOOOF object</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">FOOOFResults</span><span class="p">(</span><span class="n">ap_params</span><span class="p">,</span> <span class="n">peak_params</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">gauss_params</span><span class="p">)</span>
+
+    <span class="c1"># Create the new FOOOF object, with settings, data info &amp; results</span>
+    <span class="n">fm</span> <span class="o">=</span> <span class="n">FOOOF</span><span class="p">()</span>
+    <span class="n">fm</span><span class="o">.</span><span class="n">add_settings</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">get_settings</span><span class="p">())</span>
+    <span class="n">fm</span><span class="o">.</span><span class="n">add_meta_data</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">get_meta_data</span><span class="p">())</span>
+    <span class="n">fm</span><span class="o">.</span><span class="n">add_results</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+    <span class="c1"># Generate the average model from the parameters</span>
+    <span class="k">if</span> <span class="n">regenerate</span><span class="p">:</span>
+        <span class="n">fm</span><span class="o">.</span><span class="n">_regenerate_model</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">fm</span></div>
+
+
+<div class="viewcode-block" id="combine_fooofs"><a class="viewcode-back" href="../../../generated/fooof.objs.combine_fooofs.html#fooof.combine_fooofs">[docs]</a><span class="k">def</span> <span class="nf">combine_fooofs</span><span class="p">(</span><span class="n">fooofs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Combine a group of FOOOF and/or FOOOFGroup objects into a single FOOOFGroup object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fooofs : list of FOOOF or FOOOFGroup</span>
+<span class="sd">        Objects to be concatenated into a FOOOFGroup.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fg : FOOOFGroup</span>
+<span class="sd">        Resultant object from combining inputs.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    IncompatibleSettingsError</span>
+<span class="sd">        If the input objects have incompatible settings for combining.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Combine FOOOF objects together (where `fm1`, `fm2` &amp; `fm3` are assumed to be defined and fit):</span>
+
+<span class="sd">    &gt;&gt;&gt; fg = combine_fooofs([fm1, fm2, f3])  # doctest:+SKIP</span>
+
+<span class="sd">    Combine FOOOFGroup objects together (where `fg1` &amp; `fg2` are assumed to be defined and fit):</span>
+
+<span class="sd">    &gt;&gt;&gt; fg = combine_fooofs([fg1, fg2])  # doctest:+SKIP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Compare settings</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">compare_info</span><span class="p">(</span><span class="n">fooofs</span><span class="p">,</span> <span class="s1">&#39;settings&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">compare_info</span><span class="p">(</span><span class="n">fooofs</span><span class="p">,</span> <span class="s1">&#39;meta_data&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">IncompatibleSettingsError</span><span class="p">(</span><span class="s2">&quot;These objects have incompatible settings &quot;</span>
+                                        <span class="s2">&quot;or meta data, and so cannot be combined.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Initialize FOOOFGroup object, with settings derived from input objects</span>
+    <span class="n">fg</span> <span class="o">=</span> <span class="n">FOOOFGroup</span><span class="p">(</span><span class="o">*</span><span class="n">fooofs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_settings</span><span class="p">(),</span> <span class="n">verbose</span><span class="o">=</span><span class="n">fooofs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="c1"># Use a temporary store to collect spectra, as we&#39;ll only add it if it is consistently present</span>
+    <span class="c1">#   We check how many frequencies by accessing meta data, in case of no frequency vector</span>
+    <span class="n">meta_data</span> <span class="o">=</span> <span class="n">fooofs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_meta_data</span><span class="p">()</span>
+    <span class="n">n_freqs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gen_freqs</span><span class="p">(</span><span class="n">meta_data</span><span class="o">.</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">meta_data</span><span class="o">.</span><span class="n">freq_res</span><span class="p">))</span>
+    <span class="n">temp_power_spectra</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_freqs</span><span class="p">])</span>
+
+    <span class="c1"># Add FOOOF results from each FOOOF object to group</span>
+    <span class="k">for</span> <span class="n">f_obj</span> <span class="ow">in</span> <span class="n">fooofs</span><span class="p">:</span>
+
+        <span class="c1"># Add FOOOFGroup object</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f_obj</span><span class="p">,</span> <span class="n">FOOOFGroup</span><span class="p">):</span>
+            <span class="n">fg</span><span class="o">.</span><span class="n">group_results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">f_obj</span><span class="o">.</span><span class="n">group_results</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">f_obj</span><span class="o">.</span><span class="n">power_spectra</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">temp_power_spectra</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">temp_power_spectra</span><span class="p">,</span> <span class="n">f_obj</span><span class="o">.</span><span class="n">power_spectra</span><span class="p">])</span>
+
+        <span class="c1"># Add FOOOF object</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fg</span><span class="o">.</span><span class="n">group_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_obj</span><span class="o">.</span><span class="n">get_results</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">f_obj</span><span class="o">.</span><span class="n">power_spectrum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">temp_power_spectra</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">temp_power_spectra</span><span class="p">,</span> <span class="n">f_obj</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">])</span>
+
+    <span class="c1"># If the number of collected power spectra is consistent, then add them to object</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fg</span><span class="p">)</span> <span class="o">==</span> <span class="n">temp_power_spectra</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">fg</span><span class="o">.</span><span class="n">power_spectra</span> <span class="o">=</span> <span class="n">temp_power_spectra</span>
+
+    <span class="c1"># Add data information information</span>
+    <span class="n">fg</span><span class="o">.</span><span class="n">add_meta_data</span><span class="p">(</span><span class="n">fooofs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_meta_data</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">fg</span></div>
+
+
+<div class="viewcode-block" id="fit_fooof_3d"><a class="viewcode-back" href="../../../generated/fooof.fit_fooof_3d.html#fooof.fit_fooof_3d">[docs]</a><span class="k">def</span> <span class="nf">fit_fooof_3d</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectra</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fit FOOOF models across a 3d array of power spectra.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fg : FOOOFGroup</span>
+<span class="sd">        Object to fit with, initialized with desired settings.</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency values for the power spectra, in linear space.</span>
+<span class="sd">    power_spectra : 3d array</span>
+<span class="sd">        Power values, in linear space, with shape as: [n_conditions, n_power_spectra, n_freqs].</span>
+<span class="sd">    freq_range : list of [float, float], optional</span>
+<span class="sd">        Desired frequency range to fit. If not provided, fits the entire given range.</span>
+<span class="sd">    n_jobs : int, optional, default: 1</span>
+<span class="sd">        Number of jobs to run in parallel.</span>
+<span class="sd">        1 is no parallelization. -1 uses all available cores.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fgs : list of FOOOFGroups</span>
+<span class="sd">        Collected FOOOFGroups after fitting across power spectra, length of n_conditions.</span>
+
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Fit a 3d array of power spectra, assuming `freqs` and `spectra` are already defined:</span>
+
+<span class="sd">    &gt;&gt;&gt; from fooof import FOOOFGroup</span>
+<span class="sd">    &gt;&gt;&gt; fg = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.1)</span>
+<span class="sd">    &gt;&gt;&gt; fgs = fit_fooof_3d(fg, freqs, power_spectra, freq_range=[3, 30])  # doctest:+SKIP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">fgs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">cond_spectra</span> <span class="ow">in</span> <span class="n">power_spectra</span><span class="p">:</span>
+        <span class="n">fg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">cond_spectra</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">)</span>
+        <span class="n">fgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">fgs</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2021, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

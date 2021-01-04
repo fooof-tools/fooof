@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="#">API</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="glossary.html">Glossary</a></li>
+                <li><a href="auto_motivations/index.html">Motivations</a></li>
+                <li><a href="auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="auto_examples/index.html">Examples</a></li>
+                <li><a href="reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="api-documentation">
+<span id="id1"></span><h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<p>API reference for the FOOOF module.</p>
+<div class="section" id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#model-objects" id="id2">Model Objects</a></p>
+<ul>
+<li><p><a class="reference internal" href="#fooof-object" id="id3">FOOOF Object</a></p></li>
+<li><p><a class="reference internal" href="#fooofgroup-object" id="id4">FOOOFGroup Object</a></p></li>
+<li><p><a class="reference internal" href="#object-utilities" id="id5">Object Utilities</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#data-objects" id="id6">Data Objects</a></p>
+<ul>
+<li><p><a class="reference internal" href="#bands-object" id="id7">Bands Object</a></p></li>
+<li><p><a class="reference internal" href="#model-information" id="id8">Model Information</a></p></li>
+<li><p><a class="reference internal" href="#simulation-parameters" id="id9">Simulation Parameters</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#analyze-model-results" id="id10">Analyze Model Results</a></p>
+<ul>
+<li><p><a class="reference internal" href="#analyze-model-errors" id="id11">Analyze Model Errors</a></p></li>
+<li><p><a class="reference internal" href="#analyze-periodic-components" id="id12">Analyze Periodic Components</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#simulation-code" id="id13">Simulation Code</a></p>
+<ul>
+<li><p><a class="reference internal" href="#generate-power-spectra" id="id14">Generate Power Spectra</a></p></li>
+<li><p><a class="reference internal" href="#manage-parameters" id="id15">Manage Parameters</a></p></li>
+<li><p><a class="reference internal" href="#transform-power-spectra" id="id16">Transform Power Spectra</a></p></li>
+<li><p><a class="reference internal" href="#simulation-utilities" id="id17">Simulation Utilities</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#plotting-functions" id="id18">Plotting Functions</a></p>
+<ul>
+<li><p><a class="reference internal" href="#plot-power-spectra" id="id19">Plot Power Spectra</a></p></li>
+<li><p><a class="reference internal" href="#plot-model-properties-parameters" id="id20">Plot Model Properties &amp; Parameters</a></p></li>
+<li><p><a class="reference internal" href="#plot-fooof-objects" id="id21">Plot FOOOF Objects</a></p></li>
+<li><p><a class="reference internal" href="#annotated-plots" id="id22">Annotated Plots</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#utilities" id="id23">Utilities</a></p>
+<ul>
+<li><p><a class="reference internal" href="#data-utilities" id="id24">Data Utilities</a></p></li>
+<li><p><a class="reference internal" href="#parameter-utilities" id="id25">Parameter Utilities</a></p></li>
+<li><p><a class="reference internal" href="#input-output-io" id="id26">Input / Output (IO)</a></p></li>
+<li><p><a class="reference internal" href="#methods-reports" id="id27">Methods Reports</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="model-objects">
+<h3><a class="toc-backref" href="#id2">Model Objects</a><a class="headerlink" href="#model-objects" title="Permalink to this headline">¶</a></h3>
+<p>Objects that manage data and fit the model to parameterize neural power spectra.</p>
+<div class="section" id="fooof-object">
+<h4><a class="toc-backref" href="#id3">FOOOF Object</a><a class="headerlink" href="#fooof-object" title="Permalink to this headline">¶</a></h4>
+<p>The FOOOF object is the base object for the model, and can be used to fit individual power spectra.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOF</span></code></a>([peak_width_limits, max_n_peaks, …])</p></td>
+<td><p>Model a physiological power spectrum as a combination of aperiodic and periodic components.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="fooofgroup-object">
+<h4><a class="toc-backref" href="#id4">FOOOFGroup Object</a><a class="headerlink" href="#fooofgroup-object" title="Permalink to this headline">¶</a></h4>
+<p>The FOOOFGroup object allows for parameterizing groups of power spectra.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Model a group of power spectra as a combination of aperiodic and periodic components.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="object-utilities">
+<h4><a class="toc-backref" href="#id5">Object Utilities</a><a class="headerlink" href="#object-utilities" title="Permalink to this headline">¶</a></h4>
+<p>Functions to manipulate, examine and analyze FOOOF objects, and related utilities.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.objs.compare_info.html#fooof.objs.compare_info" title="fooof.objs.compare_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_info</span></code></a>(fooof_lst, aspect)</p></td>
+<td><p>Compare a specified aspect of FOOOF objects across instances.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.objs.average_fg.html#fooof.objs.average_fg" title="fooof.objs.average_fg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">average_fg</span></code></a>(fg, bands[, avg_method, regenerate])</p></td>
+<td><p>Average across model fits in a FOOOFGroup object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.objs.combine_fooofs.html#fooof.objs.combine_fooofs" title="fooof.objs.combine_fooofs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_fooofs</span></code></a>(fooofs)</p></td>
+<td><p>Combine a group of FOOOF and/or FOOOFGroup objects into a single FOOOFGroup object.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.fit_fooof_3d.html#fooof.fit_fooof_3d" title="fooof.fit_fooof_3d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_fooof_3d</span></code></a>(fg, freqs, power_spectra[, …])</p></td>
+<td><p>Fit FOOOF models across a 3d array of power spectra.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="data-objects">
+<h3><a class="toc-backref" href="#id6">Data Objects</a><a class="headerlink" href="#data-objects" title="Permalink to this headline">¶</a></h3>
+<p>Objects to manage frequency bands, model information, and simulation parameters.</p>
+<div class="section" id="bands-object">
+<h4><a class="toc-backref" href="#id7">Bands Object</a><a class="headerlink" href="#bands-object" title="Permalink to this headline">¶</a></h4>
+<p>An object to handle frequency band definitions.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bands</span></code></a>([input_bands])</p></td>
+<td><p>Frequency band definitions.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="model-information">
+<h4><a class="toc-backref" href="#id8">Model Information</a><a class="headerlink" href="#model-information" title="Permalink to this headline">¶</a></h4>
+<p>Objects to store settings, metadata and results for power spectrum models.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.data.FOOOFSettings.html#fooof.data.FOOOFSettings" title="fooof.data.FOOOFSettings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOFSettings</span></code></a>(peak_width_limits, …)</p></td>
+<td><p>User defined settings for the fitting algorithm.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.data.FOOOFMetaData.html#fooof.data.FOOOFMetaData" title="fooof.data.FOOOFMetaData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOFMetaData</span></code></a>(freq_range, freq_res)</p></td>
+<td><p>Metadata information about a power spectrum.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="fooof.data.FOOOFResults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FOOOFResults</span></code></a>(aperiodic_params, peak_params, …)</p></td>
+<td><p>Model results from parameterizing a power spectrum.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="simulation-parameters">
+<h4><a class="toc-backref" href="#id9">Simulation Parameters</a><a class="headerlink" href="#simulation-parameters" title="Permalink to this headline">¶</a></h4>
+<p>Object to store information about simulated data.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.data.SimParams.html#fooof.data.SimParams" title="fooof.data.SimParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimParams</span></code></a>(aperiodic_params, periodic_params, nlv)</p></td>
+<td><p>Parameters that define a simulated power spectrum.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="analyze-model-results">
+<h3><a class="toc-backref" href="#id10">Analyze Model Results</a><a class="headerlink" href="#analyze-model-results" title="Permalink to this headline">¶</a></h3>
+<p>Functions to analyze power spectrum models and the results parameters / components.</p>
+<div class="section" id="analyze-model-errors">
+<h4><a class="toc-backref" href="#id11">Analyze Model Errors</a><a class="headerlink" href="#analyze-model-errors" title="Permalink to this headline">¶</a></h4>
+<p>Functions for analyzing the error of model fits.</p>
+<p><strong>Object Inputs</strong></p>
+<p>The following functions take in FOOOF objects directly, which is the recommended approach.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.analysis.compute_pointwise_error_fm.html#fooof.analysis.compute_pointwise_error_fm" title="fooof.analysis.compute_pointwise_error_fm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_pointwise_error_fm</span></code></a>(fm[, …])</p></td>
+<td><p>Calculate the frequency by frequency error of a model fit from a FOOOF object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="fooof.analysis.compute_pointwise_error_fg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_pointwise_error_fg</span></code></a>(fg[, …])</p></td>
+<td><p>Calculate the frequency by frequency error of model fits from a FOOOFGroup object.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Array Inputs</strong></p>
+<p>The following functions operate on arrays of models and data, which may be useful for more custom work-flows.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.analysis.error.compute_pointwise_error.html#fooof.analysis.error.compute_pointwise_error" title="fooof.analysis.error.compute_pointwise_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_pointwise_error</span></code></a>(model, data)</p></td>
+<td><p>Calculate pointwise error between original data and a model fit of that data.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="analyze-periodic-components">
+<h4><a class="toc-backref" href="#id12">Analyze Periodic Components</a><a class="headerlink" href="#analyze-periodic-components" title="Permalink to this headline">¶</a></h4>
+<p>Functions for analyzing the periodic components of model fits.</p>
+<p><strong>Object Inputs</strong></p>
+<p>The following functions take in FOOOF objects directly, which is the typical use case.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.analysis.get_band_peak_fm.html#fooof.analysis.get_band_peak_fm" title="fooof.analysis.get_band_peak_fm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_band_peak_fm</span></code></a>(fm, band[, select_highest, …])</p></td>
+<td><p>Extract peaks from a band of interest from a FOOOF object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_band_peak_fg</span></code></a>(fg, band[, threshold, …])</p></td>
+<td><p>Extract peaks from a band of interest from a FOOOFGroup object.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Array Inputs</strong></p>
+<p>The following functions operate on arrays of peak parameters, which may be useful for more custom work-flows.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.analysis.periodic.get_band_peak.html#fooof.analysis.periodic.get_band_peak" title="fooof.analysis.periodic.get_band_peak"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_band_peak</span></code></a>(peak_params, band[, …])</p></td>
+<td><p>Extract peaks within a given band of interest.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.analysis.periodic.get_band_peak_group.html#fooof.analysis.periodic.get_band_peak_group" title="fooof.analysis.periodic.get_band_peak_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_band_peak_group</span></code></a>(peak_params, band, n_fits)</p></td>
+<td><p>Extract peaks within a given band of interest, from peaks from a group fit.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.analysis.periodic.get_highest_peak.html#fooof.analysis.periodic.get_highest_peak" title="fooof.analysis.periodic.get_highest_peak"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_highest_peak</span></code></a>(peak_params)</p></td>
+<td><p>Extract the highest power peak.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.analysis.periodic.threshold_peaks.html#fooof.analysis.periodic.threshold_peaks" title="fooof.analysis.periodic.threshold_peaks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">threshold_peaks</span></code></a>(peak_params, threshold[, param])</p></td>
+<td><p>Extract peaks that are above a given threshold value.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="simulation-code">
+<h3><a class="toc-backref" href="#id13">Simulation Code</a><a class="headerlink" href="#simulation-code" title="Permalink to this headline">¶</a></h3>
+<p>Code &amp; utilities for simulating power spectra.</p>
+<div class="section" id="generate-power-spectra">
+<h4><a class="toc-backref" href="#id14">Generate Power Spectra</a><a class="headerlink" href="#generate-power-spectra" title="Permalink to this headline">¶</a></h4>
+<p>Functions for simulating neural power spectra.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.sim.gen_freqs.html#fooof.sim.gen_freqs" title="fooof.sim.gen_freqs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gen_freqs</span></code></a>(freq_range, freq_res)</p></td>
+<td><p>Generate a frequency vector.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gen_power_spectrum</span></code></a>(freq_range, …[, nlv, …])</p></td>
+<td><p>Generate a simulated power spectrum.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gen_group_power_spectra</span></code></a>(n_spectra, …[, …])</p></td>
+<td><p>Generate a group of simulated power spectra.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="manage-parameters">
+<h4><a class="toc-backref" href="#id15">Manage Parameters</a><a class="headerlink" href="#manage-parameters" title="Permalink to this headline">¶</a></h4>
+<p>Functions and objects for managing parameters for simulated power spectra.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper" title="fooof.sim.params.Stepper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stepper</span></code></a>(start, stop, step)</p></td>
+<td><p>Object for stepping across parameter values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.sim.params.param_iter.html#fooof.sim.params.param_iter" title="fooof.sim.params.param_iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_iter</span></code></a>(params)</p></td>
+<td><p>Create a generator to iterate across parameter ranges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_sampler</span></code></a>(params[, probs])</p></td>
+<td><p>Create a generator to sample randomly from possible parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="fooof.sim.params.param_jitter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_jitter</span></code></a>(params, jitters)</p></td>
+<td><p>Create a generator that adds jitter to parameter definitions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.sim.params.update_sim_ap_params.html#fooof.sim.params.update_sim_ap_params" title="fooof.sim.params.update_sim_ap_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sim_ap_params</span></code></a>(sim_params, delta[, field])</p></td>
+<td><p>Update the aperiodic parameter definition in a SimParams object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="transform-power-spectra">
+<h4><a class="toc-backref" href="#id16">Transform Power Spectra</a><a class="headerlink" href="#transform-power-spectra" title="Permalink to this headline">¶</a></h4>
+<p>Functions for transforming power spectra.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.sim.transform.translate_spectrum.html#fooof.sim.transform.translate_spectrum" title="fooof.sim.transform.translate_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate_spectrum</span></code></a>(power_spectrum, delta_offset)</p></td>
+<td><p>Translate a spectrum, changing the offset value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.sim.transform.translate_sim_spectrum.html#fooof.sim.transform.translate_sim_spectrum" title="fooof.sim.transform.translate_sim_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate_sim_spectrum</span></code></a>(power_spectrum, …)</p></td>
+<td><p>Translate a simulated spectrum, updating a SimParams object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.sim.transform.rotate_spectrum.html#fooof.sim.transform.rotate_spectrum" title="fooof.sim.transform.rotate_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate_spectrum</span></code></a>(freqs, power_spectrum, …)</p></td>
+<td><p>Rotate a power spectrum about a frequency point, changing the aperiodic exponent.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.sim.transform.rotate_sim_spectrum.html#fooof.sim.transform.rotate_sim_spectrum" title="fooof.sim.transform.rotate_sim_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate_sim_spectrum</span></code></a>(freqs, power_spectrum, …)</p></td>
+<td><p>Rotate a simulated power spectrum, updating a SimParams object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.sim.transform.compute_rotation_offset.html#fooof.sim.transform.compute_rotation_offset" title="fooof.sim.transform.compute_rotation_offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_rotation_offset</span></code></a>(delta_exponent, …)</p></td>
+<td><p>Calculate the change in offset from a given rotation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.sim.transform.compute_rotation_frequency.html#fooof.sim.transform.compute_rotation_frequency" title="fooof.sim.transform.compute_rotation_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_rotation_frequency</span></code></a>(delta_exponent_b, …)</p></td>
+<td><p>Calculate the rotation frequency between two rotated power spectra.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="simulation-utilities">
+<h4><a class="toc-backref" href="#id17">Simulation Utilities</a><a class="headerlink" href="#simulation-utilities" title="Permalink to this headline">¶</a></h4>
+<p>Utilities for simulating power spectra.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_random_seed</span></code></a>([seed_value])</p></td>
+<td><p>Set the random seed value.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="plotting-functions">
+<h3><a class="toc-backref" href="#id18">Plotting Functions</a><a class="headerlink" href="#plotting-functions" title="Permalink to this headline">¶</a></h3>
+<p>Visualizations.</p>
+<div class="section" id="plot-power-spectra">
+<h4><a class="toc-backref" href="#id19">Plot Power Spectra</a><a class="headerlink" href="#plot-power-spectra" title="Permalink to this headline">¶</a></h4>
+<p>Plots for visualizing power spectra.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_spectrum</span></code></a>(freqs, power_spectrum[, …])</p></td>
+<td><p>Plot a power spectrum.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_spectra</span></code></a>(freqs, power_spectra[, …])</p></td>
+<td><p>Plot multiple power spectra on the same plot.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Plots for plotting power spectra with shaded regions.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.plts.spectra.plot_spectrum_shading.html#fooof.plts.spectra.plot_spectrum_shading" title="fooof.plts.spectra.plot_spectrum_shading"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_spectrum_shading</span></code></a>(freqs, power_spectrum, …)</p></td>
+<td><p>Plot a power spectrum with a shaded frequency region (or regions).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="fooof.plts.spectra.plot_spectra_shading"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_spectra_shading</span></code></a>(freqs, power_spectra, …)</p></td>
+<td><p>Plot a group of power spectra with a shaded frequency region (or regions).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="plot-model-properties-parameters">
+<h4><a class="toc-backref" href="#id20">Plot Model Properties &amp; Parameters</a><a class="headerlink" href="#plot-model-properties-parameters" title="Permalink to this headline">¶</a></h4>
+<p>Plots for visualizing <strong>periodic</strong> parameters and model components.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="fooof.plts.periodic.plot_peak_fits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_peak_fits</span></code></a>(peaks[, freq_range, colors, …])</p></td>
+<td><p>Plot reconstructions of model peak fits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="fooof.plts.periodic.plot_peak_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_peak_params</span></code></a>(peaks[, freq_range, …])</p></td>
+<td><p>Plot peak parameters as dots representing center frequency, power and bandwidth.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Plots for visualizing <strong>aperiodic</strong> parameters and model components.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="fooof.plts.aperiodic.plot_aperiodic_fits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_aperiodic_fits</span></code></a>(aps, freq_range[, …])</p></td>
+<td><p>Plot reconstructions of model aperiodic fits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="fooof.plts.aperiodic.plot_aperiodic_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_aperiodic_params</span></code></a>(aps[, colors, labels, …])</p></td>
+<td><p>Plot aperiodic parameters as dots representing offset and exponent value.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Plots for visualizing model error.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.plts.error.plot_spectral_error.html#fooof.plts.error.plot_spectral_error" title="fooof.plts.error.plot_spectral_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_spectral_error</span></code></a>(freqs, error[, shade, …])</p></td>
+<td><p>Plot frequency by frequency error values.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="plot-fooof-objects">
+<h4><a class="toc-backref" href="#id21">Plot FOOOF Objects</a><a class="headerlink" href="#plot-fooof-objects" title="Permalink to this headline">¶</a></h4>
+<p>Plots for visualizing models from FOOOF objects.
+Note that these are the same plotting functions that can be called from FOOOF objects directly.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.plts.fm.plot_fm.html#fooof.plts.fm.plot_fm" title="fooof.plts.fm.plot_fm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_fm</span></code></a>(fm[, plot_peaks, plot_aperiodic, …])</p></td>
+<td><p>Plot the power spectrum and model fit results from a FOOOF object.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.plts.fg.plot_fg.html#fooof.plts.fg.plot_fg" title="fooof.plts.fg.plot_fg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_fg</span></code></a>(fg[, save_fig, file_name, file_path])</p></td>
+<td><p>Plot a figure with subplots visualizing the parameters from a FOOOFGroup object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="annotated-plots">
+<h4><a class="toc-backref" href="#id22">Annotated Plots</a><a class="headerlink" href="#annotated-plots" title="Permalink to this headline">¶</a></h4>
+<p>Annotated plots that describe the model and fitting process.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model" title="fooof.plts.annotate.plot_annotated_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_annotated_model</span></code></a>(fm[, plt_log, …])</p></td>
+<td><p>Plot a an annotated power spectrum and model, from a FOOOF object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.plts.annotate.plot_annotated_peak_search.html#fooof.plts.annotate.plot_annotated_peak_search" title="fooof.plts.annotate.plot_annotated_peak_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_annotated_peak_search</span></code></a>(fm[, plot_style])</p></td>
+<td><p>Plot a series of plots illustrating the peak search from a flattened spectrum.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="utilities">
+<h3><a class="toc-backref" href="#id23">Utilities</a><a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h3>
+<p>Utility functions and objects.</p>
+<div class="section" id="data-utilities">
+<h4><a class="toc-backref" href="#id24">Data Utilities</a><a class="headerlink" href="#data-utilities" title="Permalink to this headline">¶</a></h4>
+<p>Utilities for working with data.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="fooof.utils.trim_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim_spectrum</span></code></a>(freqs, power_spectra, f_range)</p></td>
+<td><p>Extract a frequency range from power spectra.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.utils.interpolate_spectrum.html#fooof.utils.interpolate_spectrum" title="fooof.utils.interpolate_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_spectrum</span></code></a>(freqs, powers, interp_range)</p></td>
+<td><p>Interpolate a frequency region in a power spectrum.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="parameter-utilities">
+<h4><a class="toc-backref" href="#id25">Parameter Utilities</a><a class="headerlink" href="#parameter-utilities" title="Permalink to this headline">¶</a></h4>
+<p>Utilities for working with parameters</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.utils.params.compute_knee_frequency.html#fooof.utils.params.compute_knee_frequency" title="fooof.utils.params.compute_knee_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_knee_frequency</span></code></a>(knee, exponent)</p></td>
+<td><p>Compute the frequency value of the knee given the aperiodic parameter values.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="input-output-io">
+<h4><a class="toc-backref" href="#id26">Input / Output (IO)</a><a class="headerlink" href="#input-output-io" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.utils.io.load_fooof.html#fooof.utils.io.load_fooof" title="fooof.utils.io.load_fooof"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_fooof</span></code></a>(file_name[, file_path, regenerate])</p></td>
+<td><p>Load a FOOOF file into a FOOOF object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.utils.io.load_fooofgroup.html#fooof.utils.io.load_fooofgroup" title="fooof.utils.io.load_fooofgroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_fooofgroup</span></code></a>(file_name[, file_path])</p></td>
+<td><p>Load data from file into a FOOOFGroup object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods-reports">
+<h4><a class="toc-backref" href="#id27">Methods Reports</a><a class="headerlink" href="#methods-reports" title="Permalink to this headline">¶</a></h4>
+<p>Utilities to creating methods reports.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/fooof.utils.reports.methods_report_info.html#fooof.utils.reports.methods_report_info" title="fooof.utils.reports.methods_report_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">methods_report_info</span></code></a>([fooof_obj, concise])</p></td>
+<td><p>Prints out a report of information required for methods reporting.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/fooof.utils.reports.methods_report_text.html#fooof.utils.reports.methods_report_text" title="fooof.utils.reports.methods_report_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">methods_report_text</span></code></a>([fooof_obj])</p></td>
+<td><p>Prints out a text template of methods reporting information.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2021, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

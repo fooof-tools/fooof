@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fooof.sim.transform.rotate_spectrum &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="../glossary.html">Glossary</a></li>
+                <li><a href="../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="fooof-sim-transform-rotate-spectrum">
+<h1>fooof.sim.transform.rotate_spectrum<a class="headerlink" href="#fooof-sim-transform-rotate-spectrum" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="fooof.sim.transform.rotate_spectrum">
+<code class="sig-prename descclassname">fooof.sim.transform.</code><code class="sig-name descname">rotate_spectrum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">freqs</span></em>, <em class="sig-param"><span class="n">power_spectrum</span></em>, <em class="sig-param"><span class="n">delta_exponent</span></em>, <em class="sig-param"><span class="n">f_rotation</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/sim/transform.html#rotate_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.sim.transform.rotate_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate a power spectrum about a frequency point, changing the aperiodic exponent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>freqs</strong><span class="classifier">1d array</span></dt><dd><p>Frequency axis of input power spectrum, in Hz.</p>
+</dd>
+<dt><strong>power_spectrum</strong><span class="classifier">1d array</span></dt><dd><p>Power values of the spectrum.</p>
+</dd>
+<dt><strong>delta_exponent</strong><span class="classifier">float</span></dt><dd><p>Change in aperiodic exponent to be applied, where:</p>
+<ul class="simple">
+<li><p>positive is clockwise rotation (steepen)</p></li>
+<li><p>negative is counterclockwise rotation (flatten)</p></li>
+</ul>
+</dd>
+<dt><strong>f_rotation</strong><span class="classifier">float</span></dt><dd><p>Frequency value, in Hz, about which rotation is applied, at which power is unchanged.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>rotated_spectrum</strong><span class="classifier">1d array</span></dt><dd><p>Rotated power spectrum.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If the rotation frequency is invalid.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Rotating in log-log spacing is equivalent to multiplying with a 1/f shaped mask that is:</p>
+<ul class="simple">
+<li><p>unity at the rotation frequency</p></li>
+<li><p>has an exponent of the desired delta exponent</p></li>
+</ul>
+<p>This mask, when applied to a spectrum as ‘spectrum * mask’, should result in:</p>
+<ul class="simple">
+<li><p>rotated_spectrum = 1/f^(original_exponent + delta_exponent), where</p></li>
+<li><p>spectrum[rotation_frequency] == rotated spectrum[rotation_frequency]</p></li>
+</ul>
+<p>This mask is defined as:</p>
+<ul class="simple">
+<li><p>mask = (freqs / rotation_frequency) ** -delta_exponent</p></li>
+</ul>
+<p>Note that this approach / function should only be applied to spectra without a knee:</p>
+<ul class="simple">
+<li><p>If using simulated data, this is spectra created in ‘fixed’ mode.</p></li>
+<li><p>This is because the rotation applied is inconsistent with the formulation of spectra
+with a knee. This transformation will change them in an unspecified way, not just
+limited to doing the rotation.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<p>Rotate a simulated spectrum, changing the exponent around a rotation point of 25 Hz:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="kn">import</span> <span class="n">gen_power_spectrum</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <span class="n">gen_power_spectrum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rotated_powers</span> <span class="o">=</span> <span class="n">rotate_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="section" id="examples-using-fooof-sim-transform-rotate-spectrum">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.sim.transform.rotate_spectrum</span></code><a class="headerlink" href="#examples-using-fooof-sim-transform-rotate-spectrum" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Apply transformations to power spectra."><div class="figure align-default" id="id1">
+<img alt="Transforming Power Spectra" src="../_images/sphx_glr_plot_transforms_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/sims/plot_transforms.html#sphx-glr-auto-examples-sims-plot-transforms-py"><span class="std std-ref">Transforming Power Spectra</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2021, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

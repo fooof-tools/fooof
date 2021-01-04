@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fooof.sim.gen &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../../api.html">API</a></li>
+                <li><a href="../../../faq.html">FAQ</a></li>
+                <li><a href="../../../glossary.html">Glossary</a></li>
+                <li><a href="../../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for fooof.sim.gen</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Functions for generating model components and simulated power spectra.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">fooof.core.utils</span> <span class="kn">import</span> <span class="n">check_iter</span><span class="p">,</span> <span class="n">check_flat</span>
+<span class="kn">from</span> <span class="nn">fooof.core.funcs</span> <span class="kn">import</span> <span class="n">get_ap_func</span><span class="p">,</span> <span class="n">get_pe_func</span><span class="p">,</span> <span class="n">infer_ap_func</span>
+
+<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="kn">import</span> <span class="n">collect_sim_params</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.transform</span> <span class="kn">import</span> <span class="n">rotate_spectrum</span><span class="p">,</span> <span class="n">compute_rotation_offset</span>
+
+<span class="c1">###################################################################################################</span>
+<span class="c1">###################################################################################################</span>
+
+<div class="viewcode-block" id="gen_freqs"><a class="viewcode-back" href="../../../generated/fooof.sim.gen_freqs.html#fooof.sim.gen_freqs">[docs]</a><span class="k">def</span> <span class="nf">gen_freqs</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">freq_res</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate a frequency vector.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freq_range : list of [float, float]</span>
+<span class="sd">        Frequency range to create frequencies across, as [f_low, f_high], inclusive.</span>
+<span class="sd">    freq_res : float</span>
+<span class="sd">        Frequency resolution of desired frequency vector.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency values, in linear spacing.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Generate a vector of frequency values from 1 to 50:</span>
+
+<span class="sd">    &gt;&gt;&gt; freqs = gen_freqs([1, 50], freq_res=0.5)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># The end value has something added to it, to make sure the last value is included</span>
+    <span class="c1">#   It adds a fraction to not accidentally include points beyond range</span>
+    <span class="c1">#   due to rounding / or uneven division of the freq_res into range to simulate</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">freq_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">freq_res</span><span class="p">),</span> <span class="n">freq_res</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">freqs</span></div>
+
+
+<div class="viewcode-block" id="gen_power_spectrum"><a class="viewcode-back" href="../../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum">[docs]</a><span class="k">def</span> <span class="nf">gen_power_spectrum</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">periodic_params</span><span class="p">,</span> <span class="n">nlv</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span>
+                       <span class="n">freq_res</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">f_rotation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_params</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate a simulated power spectrum.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freq_range : list of [float, float]</span>
+<span class="sd">        Frequency range to simulate power spectrum across, as [f_low, f_high], inclusive.</span>
+<span class="sd">    aperiodic_params : list of float</span>
+<span class="sd">        Parameters to create the aperiodic component of a power spectrum.</span>
+<span class="sd">        Length should be 2 or 3 (see note).</span>
+<span class="sd">    periodic_params : list of float or list of list of float</span>
+<span class="sd">        Parameters to create the periodic component of a power spectrum.</span>
+<span class="sd">        Total length of n_peaks * 3 (see note).</span>
+<span class="sd">    nlv : float, optional, default: 0.005</span>
+<span class="sd">        Noise level to add to generated power spectrum.</span>
+<span class="sd">    freq_res : float, optional, default: 0.5</span>
+<span class="sd">        Frequency resolution for the simulated power spectrum.</span>
+<span class="sd">    f_rotation : float, optional</span>
+<span class="sd">        Frequency value, in Hz, to rotate around.</span>
+<span class="sd">        Should only be set if spectrum is to be rotated.</span>
+<span class="sd">    return_params : bool, optional, default: False</span>
+<span class="sd">        Whether to return the parameters for the simulated spectrum.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency values, in linear spacing.</span>
+<span class="sd">    powers : 1d array</span>
+<span class="sd">        Power values, in linear spacing.</span>
+<span class="sd">    sim_params : SimParams</span>
+<span class="sd">        Definition of parameters used to create the spectrum.</span>
+<span class="sd">        Only returned if `return_params` is True.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Aperiodic Parameters:</span>
+
+<span class="sd">    - The function for the aperiodic process to use is inferred from the provided parameters.</span>
+<span class="sd">    - If length of 2, the &#39;fixed&#39; aperiodic mode is used, if length of 3, &#39;knee&#39; is used.</span>
+
+<span class="sd">    Periodic Parameters:</span>
+
+<span class="sd">    - The periodic component is comprised of a set of &#39;peaks&#39;, each of which is described as:</span>
+
+<span class="sd">      * Mean (Center Frequency), height (Power), and standard deviation (Bandwidth).</span>
+<span class="sd">      * Make sure any center frequencies you request are within the simulated frequency range.</span>
+
+<span class="sd">    - The total number of parameters that need to be specified is number of peaks * 3</span>
+
+<span class="sd">      * These can be specified in as all together in a flat list (ex: [10, 1, 1, 20, 0.5, 1])</span>
+<span class="sd">      * They can also be grouped into a list of lists (ex: [[10, 1, 1], [20, 0.5, 1]])</span>
+
+<span class="sd">    Rotating Power Spectra:</span>
+
+<span class="sd">    - You can optionally specify a rotation frequency, such that power spectra will be</span>
+<span class="sd">      simulated and rotated around that point to the specified aperiodic exponent.</span>
+
+<span class="sd">      * This can be used so that any power spectra simulated with the same &#39;f_rotation&#39;</span>
+<span class="sd">        will relate to each other by having the specified rotation point.</span>
+
+<span class="sd">    - Note that rotating power spectra changes the offset.</span>
+
+<span class="sd">      * If you specify an offset value to simulate as well as &#39;f_rotation&#39;, the returned</span>
+<span class="sd">        spectrum will NOT have the requested offset. It instead will have the offset</span>
+<span class="sd">        value required to create the requested aperiodic exponent with the requested</span>
+<span class="sd">        rotation point.</span>
+<span class="sd">      * If you return SimParams, the recorded offset will be the calculated offset</span>
+<span class="sd">        of the data post rotation, and not the entered value.</span>
+
+<span class="sd">    - You cannot rotate power spectra simulated with a knee.</span>
+
+<span class="sd">      * The procedure we use to rotate does not support spectra with a knee, and so</span>
+<span class="sd">        setting &#39;f_rotation&#39; with a knee will lead to an error.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Generate a power spectrum with a single peak, at 10 Hz:</span>
+
+<span class="sd">    &gt;&gt;&gt; freqs, powers = gen_power_spectrum([1, 50], [0, 2], [10, 0.5, 1])</span>
+
+<span class="sd">    Generate a power spectrum with alpha and beta peaks:</span>
+
+<span class="sd">    &gt;&gt;&gt; freqs, powers = gen_power_spectrum([1, 50], [0, 2], [[10, 0.5, 1], [20, 0.5, 1]])</span>
+
+<span class="sd">    Generate a power spectrum, that was rotated around a particular frequency point:</span>
+
+<span class="sd">    &gt;&gt;&gt; freqs, powers = gen_power_spectrum([1, 50], [None, 2], [10, 0.5, 1], f_rotation=15)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">gen_freqs</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">freq_res</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">f_rotation</span><span class="p">:</span>
+
+        <span class="n">powers</span> <span class="o">=</span> <span class="n">gen_rotated_power_vals</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">,</span>
+                                        <span class="n">check_flat</span><span class="p">(</span><span class="n">periodic_params</span><span class="p">),</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_rotation</span><span class="p">)</span>
+
+        <span class="c1"># The rotation changes the offset, so recalculate it&#39;s value &amp; update params</span>
+        <span class="n">new_offset</span> <span class="o">=</span> <span class="n">compute_rotation_offset</span><span class="p">(</span><span class="n">aperiodic_params</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">f_rotation</span><span class="p">)</span>
+        <span class="n">aperiodic_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_offset</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">powers</span> <span class="o">=</span> <span class="n">gen_power_vals</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">check_flat</span><span class="p">(</span><span class="n">periodic_params</span><span class="p">),</span> <span class="n">nlv</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_params</span><span class="p">:</span>
+        <span class="n">sim_params</span> <span class="o">=</span> <span class="n">collect_sim_params</span><span class="p">(</span><span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">periodic_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">sim_params</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span></div>
+
+
+<div class="viewcode-block" id="gen_group_power_spectra"><a class="viewcode-back" href="../../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra">[docs]</a><span class="k">def</span> <span class="nf">gen_group_power_spectra</span><span class="p">(</span><span class="n">n_spectra</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">periodic_params</span><span class="p">,</span> <span class="n">nlvs</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span>
+                            <span class="n">freq_res</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">f_rotation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_params</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate a group of simulated power spectra.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_spectra : int</span>
+<span class="sd">        The number of power spectra to generate.</span>
+<span class="sd">    freq_range : list of [float, float]</span>
+<span class="sd">        Frequency range to simulate power spectra across, as [f_low, f_high], inclusive.</span>
+<span class="sd">    aperiodic_params : list of float or generator</span>
+<span class="sd">        Parameters for the aperiodic component of the power spectra.</span>
+<span class="sd">    periodic_params : list of float or generator</span>
+<span class="sd">        Parameters for the periodic component of the power spectra.</span>
+<span class="sd">        Length of n_peaks * 3.</span>
+<span class="sd">    nlvs : float or list of float or generator, optional, default: 0.005</span>
+<span class="sd">        Noise level to add to generated power spectrum.</span>
+<span class="sd">    freq_res : float, optional, default: 0.5</span>
+<span class="sd">        Frequency resolution for the simulated power spectra.</span>
+<span class="sd">    f_rotation : float, optional</span>
+<span class="sd">        Frequency value, in Hz, to rotate around.</span>
+<span class="sd">        Should only be set if spectra are to be rotated.</span>
+<span class="sd">    return_params : bool, optional, default: False</span>
+<span class="sd">        Whether to return the parameters for the simulated spectra.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency values, in linear spacing.</span>
+<span class="sd">    powers : 2d array</span>
+<span class="sd">        Matrix of power values, in linear spacing, as [n_power_spectra, n_freqs].</span>
+<span class="sd">    sim_params : list of SimParams</span>
+<span class="sd">        Definitions of parameters used for each spectrum. Has length of n_spectra.</span>
+<span class="sd">        Only returned if `return_params` is True.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Parameters options can be:</span>
+
+<span class="sd">    - A single set of parameters.</span>
+<span class="sd">      If so, these same parameters are used for all spectra.</span>
+<span class="sd">    - A list of parameters whose length is n_spectra.</span>
+<span class="sd">      If so, each successive parameter set is such for each successive spectrum.</span>
+<span class="sd">    - A generator object that returns parameters for a power spectrum.</span>
+<span class="sd">      If so, each spectrum has parameters sampled from the generator.</span>
+
+<span class="sd">    Aperiodic Parameters:</span>
+
+<span class="sd">    - The function for the aperiodic process to use is inferred from the provided parameters.</span>
+<span class="sd">    - If length of 2, the &#39;fixed&#39; aperiodic mode is used, if length of 3, &#39;knee&#39; is used.</span>
+
+<span class="sd">    Periodic Parameters:</span>
+
+<span class="sd">    - The periodic component is comprised of a set of &#39;peaks&#39;, each of which is described as:</span>
+
+<span class="sd">      * Mean (Center Frequency), height (Power), and standard deviation (Bandwidth).</span>
+<span class="sd">      * Make sure any center frequencies you request are within the simulated frequency range.</span>
+
+<span class="sd">    Rotating Power Spectra:</span>
+
+<span class="sd">    - You can optionally specify a rotation frequency, such that power spectra will be</span>
+<span class="sd">      simulated and rotated around that point to the specified aperiodic exponent.</span>
+
+<span class="sd">      * This can be used so that any power spectra simulated with the same &#39;f_rotation&#39;</span>
+<span class="sd">        will relate to each other by having the specified rotation point.</span>
+
+<span class="sd">    - Note that rotating power spectra changes the offset.</span>
+
+<span class="sd">      * If you specify an offset value to simulate as well as &#39;f_rotation&#39;, the returned</span>
+<span class="sd">        spectrum will NOT have the requested offset. It instead will have the offset</span>
+<span class="sd">        value required to create the requested aperiodic exponent with the requested</span>
+<span class="sd">        rotation point.</span>
+<span class="sd">      * If you return SimParams, the recorded offset will be the calculated offset</span>
+<span class="sd">        of the data post rotation, and not the entered value.</span>
+
+<span class="sd">    - You cannot rotate power spectra simulated with a knee.</span>
+
+<span class="sd">      * The procedure we use to rotate does not support spectra with a knee, and so</span>
+<span class="sd">        setting &#39;f_rotation&#39; with a knee will lead to an error.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Generate 2 power spectra using the same parameters:</span>
+
+<span class="sd">    &gt;&gt;&gt; freqs, powers = gen_group_power_spectra(2, [1, 50], [0, 2], [10, 0.5, 1])</span>
+
+<span class="sd">    Generate 10 power spectra, randomly sampling possible parameters:</span>
+
+<span class="sd">    &gt;&gt;&gt; from fooof.sim.params import param_sampler</span>
+<span class="sd">    &gt;&gt;&gt; ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])</span>
+<span class="sd">    &gt;&gt;&gt; pe_opts = param_sampler([[], [10, 0.5, 1], [10, 0.5, 1, 20, 0.25, 1]])</span>
+<span class="sd">    &gt;&gt;&gt; freqs, powers = gen_group_power_spectra(10, [1, 50], ap_opts, pe_opts)</span>
+
+<span class="sd">    Generate 5 power spectra, rotated around 20 Hz:</span>
+
+<span class="sd">    &gt;&gt;&gt; ap_params = [[None, 1], [None, 1.25], [None, 1.5], [None, 1.75], [None, 2]]</span>
+<span class="sd">    &gt;&gt;&gt; pe_params = [10, 0.5, 1]</span>
+<span class="sd">    &gt;&gt;&gt; freqs, powers = gen_group_power_spectra(5, [1, 50], ap_params, pe_params, f_rotation=20)</span>
+
+<span class="sd">    Generate power spectra stepping across exponent values, and return parameter values:</span>
+
+<span class="sd">    &gt;&gt;&gt; from fooof.sim.params import Stepper, param_iter</span>
+<span class="sd">    &gt;&gt;&gt; ap_params = param_iter([0, Stepper(1, 2, 0.25)])</span>
+<span class="sd">    &gt;&gt;&gt; pe_params = [10, 0.5, 1]</span>
+<span class="sd">    &gt;&gt;&gt; freqs, powers, sps = gen_group_power_spectra(5, [1, 50], ap_params, pe_params,</span>
+<span class="sd">    ...                                              return_params=True)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialize things</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">gen_freqs</span><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">freq_res</span><span class="p">)</span>
+    <span class="n">powers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n_spectra</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">)])</span>
+    <span class="n">sim_params</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_spectra</span>
+
+    <span class="c1"># Check if inputs are generators, if not, make them into repeat generators</span>
+    <span class="n">ap_params</span> <span class="o">=</span> <span class="n">check_iter</span><span class="p">(</span><span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">n_spectra</span><span class="p">)</span>
+    <span class="n">pe_params</span> <span class="o">=</span> <span class="n">check_iter</span><span class="p">(</span><span class="n">periodic_params</span><span class="p">,</span> <span class="n">n_spectra</span><span class="p">)</span>
+    <span class="n">nlvs</span> <span class="o">=</span> <span class="n">check_iter</span><span class="p">(</span><span class="n">nlvs</span><span class="p">,</span> <span class="n">n_spectra</span><span class="p">)</span>
+    <span class="n">f_rots</span> <span class="o">=</span> <span class="n">check_iter</span><span class="p">(</span><span class="n">f_rotation</span><span class="p">,</span> <span class="n">n_spectra</span><span class="p">)</span>
+
+    <span class="c1"># Simulate power spectra</span>
+    <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">ap</span><span class="p">,</span> <span class="n">pe</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_rot</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_spectra</span><span class="p">),</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">pe_params</span><span class="p">,</span> <span class="n">nlvs</span><span class="p">,</span> <span class="n">f_rots</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">f_rotation</span><span class="p">:</span>
+            <span class="n">powers</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">gen_rotated_power_vals</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">ap</span><span class="p">,</span> <span class="n">check_flat</span><span class="p">(</span><span class="n">pe</span><span class="p">),</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_rot</span><span class="p">)</span>
+            <span class="n">aperiodic_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_rotation_offset</span><span class="p">(</span><span class="n">ap</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">f_rot</span><span class="p">),</span> <span class="n">ap</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">powers</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">gen_power_vals</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">ap</span><span class="p">,</span> <span class="n">check_flat</span><span class="p">(</span><span class="n">pe</span><span class="p">),</span> <span class="n">nlv</span><span class="p">)</span>
+
+        <span class="n">sim_params</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">collect_sim_params</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span> <span class="n">pe</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_params</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">sim_params</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span></div>
+
+
+<span class="k">def</span> <span class="nf">gen_aperiodic</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">aperiodic_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate aperiodic values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency vector to create aperiodic component for.</span>
+<span class="sd">    aperiodic_params : list of float</span>
+<span class="sd">        Parameters that define the aperiodic component.</span>
+<span class="sd">    aperiodic_mode : {&#39;fixed&#39;, &#39;knee&#39;}, optional</span>
+<span class="sd">        Which kind of aperiodic component to generate.</span>
+<span class="sd">        If not provided, is inferred from the parameters.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ap_vals : 1d array</span>
+<span class="sd">        Aperiodic values, in log10 spacing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">aperiodic_mode</span><span class="p">:</span>
+        <span class="n">aperiodic_mode</span> <span class="o">=</span> <span class="n">infer_ap_func</span><span class="p">(</span><span class="n">aperiodic_params</span><span class="p">)</span>
+
+    <span class="n">ap_func</span> <span class="o">=</span> <span class="n">get_ap_func</span><span class="p">(</span><span class="n">aperiodic_mode</span><span class="p">)</span>
+
+    <span class="n">ap_vals</span> <span class="o">=</span> <span class="n">ap_func</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="o">*</span><span class="n">aperiodic_params</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ap_vals</span>
+
+
+<span class="k">def</span> <span class="nf">gen_periodic</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">periodic_params</span><span class="p">,</span> <span class="n">periodic_mode</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate periodic values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency vector to create peak values for.</span>
+<span class="sd">    periodic_params : list of float</span>
+<span class="sd">        Parameters to create the periodic component.</span>
+<span class="sd">    periodic_mode : {&#39;gaussian&#39;}, optional</span>
+<span class="sd">        Which kind of periodic component to generate.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    peak_vals : 1d array</span>
+<span class="sd">        Peak values, in log10 spacing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">pe_func</span> <span class="o">=</span> <span class="n">get_pe_func</span><span class="p">(</span><span class="n">periodic_mode</span><span class="p">)</span>
+
+    <span class="n">pe_vals</span> <span class="o">=</span> <span class="n">pe_func</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="o">*</span><span class="n">periodic_params</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pe_vals</span>
+
+
+<span class="k">def</span> <span class="nf">gen_noise</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">nlv</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate noise values for a simulated power spectrum.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency vector to create noise values for.</span>
+<span class="sd">    nlv : float</span>
+<span class="sd">        Noise level to generate.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    noise_vals : 1d vector</span>
+<span class="sd">        Noise values.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This approach generates noise as randomly distributed white noise.</span>
+<span class="sd">    The &#39;level&#39; of noise is controlled as the scale of the normal distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">noise_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">noise_vals</span>
+
+
+<span class="k">def</span> <span class="nf">gen_power_vals</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">periodic_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate power values for a simulated power spectrum.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency vector to create power values for.</span>
+<span class="sd">    aperiodic_params : list of float</span>
+<span class="sd">        Parameters to create the aperiodic component of the power spectrum.</span>
+<span class="sd">    periodic_params : list of float</span>
+<span class="sd">        Parameters to create the periodic component of the power spectrum.</span>
+<span class="sd">    nlv : float</span>
+<span class="sd">        Noise level to add to generated power spectrum.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    powers : 1d vector</span>
+<span class="sd">        Power values, in linear spacing.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function should be used when simulating power spectra, as it:</span>
+
+<span class="sd">    - Takes in input parameter definitions as lists, as used for simulating power spectra.</span>
+<span class="sd">    - Returns the power spectrum in linear spacing, as is used for simulating power spectra.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ap_vals</span> <span class="o">=</span> <span class="n">gen_aperiodic</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">)</span>
+    <span class="n">pe_vals</span> <span class="o">=</span> <span class="n">gen_periodic</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">periodic_params</span><span class="p">)</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">gen_noise</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
+
+    <span class="n">powers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">ap_vals</span> <span class="o">+</span> <span class="n">pe_vals</span> <span class="o">+</span> <span class="n">noise</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">powers</span>
+
+
+<span class="k">def</span> <span class="nf">gen_rotated_power_vals</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">periodic_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_rotation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate power values for a simulated power spectrum, rotated around a given frequency.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency vector to create power values for.</span>
+<span class="sd">    aperiodic_params : list of float</span>
+<span class="sd">        Parameters to create the aperiodic component of the power spectrum.</span>
+<span class="sd">    periodic_params : list of float</span>
+<span class="sd">        Parameters to create the periodic component of the power spectrum.</span>
+<span class="sd">    nlv : float</span>
+<span class="sd">        Noise level to add to generated power spectrum.</span>
+<span class="sd">    f_rotation : float</span>
+<span class="sd">        Frequency value, in Hz, about which rotation is applied, at which power is unchanged.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    powers : 1d vector</span>
+<span class="sd">        Power values, in linear spacing.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If a rotation is requested on a power spectrum with a knee, as this is not supported.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">aperiodic_params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot rotate power spectra generated with a knee.&#39;</span><span class="p">)</span>
+
+    <span class="n">powers</span> <span class="o">=</span> <span class="n">gen_power_vals</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">periodic_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
+    <span class="n">powers</span> <span class="o">=</span> <span class="n">rotate_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">f_rotation</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">powers</span>
+
+
+<span class="k">def</span> <span class="nf">gen_model</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">periodic_params</span><span class="p">,</span> <span class="n">return_components</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate a power spectrum model for a given parameter definition.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency vector to create the model for.</span>
+<span class="sd">    aperiodic_params : 1d array</span>
+<span class="sd">        Parameters to create the aperiodic component of the modeled power spectrum.</span>
+<span class="sd">    periodic_params : 2d array</span>
+<span class="sd">        Parameters to create the periodic component of the modeled power spectrum.</span>
+<span class="sd">    return_components : bool, optional, default: False</span>
+<span class="sd">        Whether to also return the components of the model.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    full_model : 1d array</span>
+<span class="sd">        The full power spectrum model, in log10 spacing.</span>
+<span class="sd">    pe_fit : 1d array</span>
+<span class="sd">        The periodic component of the model, containing the peaks.</span>
+<span class="sd">        Only returned if `return_components` is True.</span>
+<span class="sd">    ap_fit : 1d array</span>
+<span class="sd">        The aperiodic component of the model.</span>
+<span class="sd">        Only returned if `return_components` is True.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function should be used when computing model reconstructions, as it:</span>
+
+<span class="sd">    - Takes in input parameter definitions as arrays, as used in FOOOF objects.</span>
+<span class="sd">    - Returns the power spectrum in log10 spacing, as is used in FOOOF models.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ap_fit</span> <span class="o">=</span> <span class="n">gen_aperiodic</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">aperiodic_params</span><span class="p">)</span>
+    <span class="n">pe_fit</span> <span class="o">=</span> <span class="n">gen_periodic</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">periodic_params</span><span class="p">))</span>
+    <span class="n">full_model</span> <span class="o">=</span> <span class="n">pe_fit</span> <span class="o">+</span> <span class="n">ap_fit</span>
+
+    <span class="k">if</span> <span class="n">return_components</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">full_model</span><span class="p">,</span> <span class="n">pe_fit</span><span class="p">,</span> <span class="n">ap_fit</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">full_model</span>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2021, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

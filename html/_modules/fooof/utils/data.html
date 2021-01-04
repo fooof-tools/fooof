@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fooof.utils.data &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../../api.html">API</a></li>
+                <li><a href="../../../faq.html">FAQ</a></li>
+                <li><a href="../../../glossary.html">Glossary</a></li>
+                <li><a href="../../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for fooof.utils.data</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utilities for working with data and models.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1">###################################################################################################</span>
+<span class="c1">###################################################################################################</span>
+
+<div class="viewcode-block" id="trim_spectrum"><a class="viewcode-back" href="../../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum">[docs]</a><span class="k">def</span> <span class="nf">trim_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectra</span><span class="p">,</span> <span class="n">f_range</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract a frequency range from power spectra.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency values for the power spectrum.</span>
+<span class="sd">    power_spectra : 1d or 2d array</span>
+<span class="sd">        Power spectral density values.</span>
+<span class="sd">    f_range: list of [float, float]</span>
+<span class="sd">        Frequency range to restrict to, as [lowest_freq, highest_freq].</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    freqs_ext : 1d array</span>
+<span class="sd">        Extracted frequency values for the power spectrum.</span>
+<span class="sd">    power_spectra_ext : 1d or 2d array</span>
+<span class="sd">        Extracted power spectral density values.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function extracts frequency ranges &gt;= f_low and &lt;= f_high.</span>
+<span class="sd">    It does not round to below or above f_low and f_high, respectively.</span>
+
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Using a simulated spectrum, extract a frequency range:</span>
+
+<span class="sd">    &gt;&gt;&gt; from fooof.sim import gen_power_spectrum</span>
+<span class="sd">    &gt;&gt;&gt; freqs, powers = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1.0])</span>
+<span class="sd">    &gt;&gt;&gt; freqs, powers = trim_spectrum(freqs, powers, [3, 30])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Create mask to index only requested frequencies</span>
+    <span class="n">f_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">freqs</span> <span class="o">&gt;=</span> <span class="n">f_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freqs</span> <span class="o">&lt;=</span> <span class="n">f_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># Restrict freqs &amp; spectra to requested range</span>
+    <span class="c1">#   The if/else is to cover both 1d or 2d arrays</span>
+    <span class="n">freqs_ext</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[</span><span class="n">f_mask</span><span class="p">]</span>
+    <span class="n">power_spectra_ext</span> <span class="o">=</span> <span class="n">power_spectra</span><span class="p">[</span><span class="n">f_mask</span><span class="p">]</span> <span class="k">if</span> <span class="n">power_spectra</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> \
+        <span class="k">else</span> <span class="n">power_spectra</span><span class="p">[:,</span> <span class="n">f_mask</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">freqs_ext</span><span class="p">,</span> <span class="n">power_spectra_ext</span></div>
+
+
+<div class="viewcode-block" id="interpolate_spectrum"><a class="viewcode-back" href="../../../generated/fooof.utils.interpolate_spectrum.html#fooof.utils.interpolate_spectrum">[docs]</a><span class="k">def</span> <span class="nf">interpolate_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">interp_range</span><span class="p">,</span> <span class="n">buffer</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Interpolate a frequency region in a power spectrum.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency values for the power spectrum.</span>
+<span class="sd">    powers : 1d array</span>
+<span class="sd">        Power values for the power spectrum.</span>
+<span class="sd">    interp_range : list of float</span>
+<span class="sd">        Frequency range to interpolate, as [lowest_freq, highest_freq].</span>
+<span class="sd">    buffer : int</span>
+<span class="sd">        The number of samples to use on either side of the interpolation</span>
+<span class="sd">        range, that are then averaged and used to calculate the interpolation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    freqs : 1d array</span>
+<span class="sd">        Frequency values for the power spectrum.</span>
+<span class="sd">    powers : 1d array</span>
+<span class="sd">        Power values, with interpolation, for the power spectrum.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function takes in, and returns, linearly spaced values.</span>
+
+<span class="sd">    This approach interpolates data linearly, in log-log spacing. This assumes a</span>
+<span class="sd">    1/f property of the data, and so should only be applied where this assumption</span>
+<span class="sd">    is valid. This approach is intended for interpolating small frequency ranges,</span>
+<span class="sd">    such as line noise regions.</span>
+
+<span class="sd">    The interpolation range is taken as the range from &gt;= interp_range_low and</span>
+<span class="sd">    &lt;= interp_range_high. It does not round to below or above interp_range_low</span>
+<span class="sd">    and interp_range_high, respectively.</span>
+
+<span class="sd">    To be more robust to noise, this approach takes a number of samples on either</span>
+<span class="sd">    side of the interpolation range (the number of which is controlled by `buffer`)</span>
+<span class="sd">    and averages these points to linearly interpolate between them.</span>
+<span class="sd">    Setting `buffer=1` is equivalent to a linear interpolation between</span>
+<span class="sd">    the points adjacent to the interpolation range.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Using a simulated spectrum, interpolate away a line noise peak:</span>
+
+<span class="sd">    &gt;&gt;&gt; from fooof.sim import gen_power_spectrum</span>
+<span class="sd">    &gt;&gt;&gt; freqs, powers = gen_power_spectrum([1, 75], [1, 1], [[10, 0.5, 1.0], [60, 2, 0.1]])</span>
+<span class="sd">    &gt;&gt;&gt; freqs, powers = interpolate_spectrum(freqs, powers, [58, 62])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Get the set of frequency values that need to be interpolated</span>
+    <span class="n">interp_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">freqs</span> <span class="o">&gt;=</span> <span class="n">interp_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freqs</span> <span class="o">&lt;=</span> <span class="n">interp_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">interp_freqs</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[</span><span class="n">interp_mask</span><span class="p">]</span>
+
+    <span class="c1"># Get the indices of the interpolation range</span>
+    <span class="n">ii1</span><span class="p">,</span> <span class="n">ii2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">interp_mask</span><span class="p">)[[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+
+    <span class="c1"># Extract &amp; log the requested range of data to use around interpolated range</span>
+    <span class="n">xs1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="n">ii1</span><span class="o">-</span><span class="n">buffer</span><span class="p">:</span><span class="n">ii1</span><span class="p">])</span>
+    <span class="n">xs2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="n">ii2</span><span class="p">:</span><span class="n">ii2</span><span class="o">+</span><span class="n">buffer</span><span class="p">])</span>
+    <span class="n">ys1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">powers</span><span class="p">[</span><span class="n">ii1</span><span class="o">-</span><span class="n">buffer</span><span class="p">:</span><span class="n">ii1</span><span class="p">])</span>
+    <span class="n">ys2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">powers</span><span class="p">[</span><span class="n">ii2</span><span class="p">:</span><span class="n">ii2</span><span class="o">+</span><span class="n">buffer</span><span class="p">])</span>
+
+    <span class="c1"># Linearly interpolate, in log-log space, between averages of the extracted points</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">interp_freqs</span><span class="p">),</span>
+                     <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">xs1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">xs2</span><span class="p">)],</span>
+                     <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">ys1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">ys2</span><span class="p">)])</span>
+    <span class="n">powers</span><span class="p">[</span><span class="n">interp_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">vals</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2021, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation Parameters &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../faq.html">FAQ</a></li>
+                <li><a href="../../glossary.html">Glossary</a></li>
+                <li><a href="../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-sims-plot-sim-params-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="simulation-parameters">
+<span id="sphx-glr-auto-examples-sims-plot-sim-params-py"></span><h1>Simulation Parameters<a class="headerlink" href="#simulation-parameters" title="Permalink to this headline">¶</a></h1>
+<p>Manage parameters for creating simulated power spectra.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import simulation functions for creating spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="kn">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">,</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a>
+
+<span class="c1"># Import simulation utilities for managing parameters</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="kn">import</span> <a href="../../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_sampler</span></a><span class="p">,</span> <a href="../../generated/fooof.sim.params.param_iter.html#fooof.sim.params.param_iter" title="fooof.sim.params.param_iter" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_iter</span></a><span class="p">,</span> <a href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="fooof.sim.params.param_jitter" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_jitter</span></a><span class="p">,</span> <a href="../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper" title="fooof.sim.params.Stepper" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-class"><span class="n">Stepper</span></a>
+
+<span class="c1"># Import plotting functions to visualize spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a>
+</pre></div>
+</div>
+<div class="section" id="id1">
+<h2>Simulation Parameters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>One of the useful things about using simulated data is being able to compare results
+to ground truth values - but in order to do that, one needs to keep track of the
+simulation parameters themselves.</p>
+<p>To do so, there is the <a class="reference internal" href="../../generated/fooof.data.SimParams.html#fooof.data.SimParams" title="fooof.data.SimParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimParams</span></code></a> object to manage
+and keep track of simulation parameters.</p>
+<p>For example, when you simulate power spectra, the parameters for each spectrum are stored
+in a <a class="reference internal" href="../../generated/fooof.data.SimParams.html#fooof.data.SimParams" title="fooof.data.SimParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimParams</span></code></a> object, and then these objects are collected and returned.</p>
+<p>SimParams objects are named tuples with the following fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">aperiodic_params</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">periodic_params</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nlv</span></code></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up settings for simulating a group of power spectra</span>
+<span class="n">n_spectra</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+<span class="n">ap_params</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]]</span>
+<span class="n">pe_params</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+<span class="n">nlv</span> <span class="o">=</span> <span class="mf">0.02</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a group of power spectra</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">sim_params</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="n">n_spectra</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span>
+                                                    <span class="n">pe_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">return_params</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out the SimParams objects that track the parameters used to create power spectra</span>
+<span class="k">for</span> <a href="../../generated/fooof.data.SimParams.html#fooof.data.SimParams" title="fooof.data.SimParams" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sim_param</span></a> <span class="ow">in</span> <span class="n">sim_params</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><a href="../../generated/fooof.data.SimParams.html#fooof.data.SimParams" title="fooof.data.SimParams" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sim_param</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SimParams(aperiodic_params=[0.5, 1], periodic_params=[[10, 0.4, 1]], nlv=0.02)
+SimParams(aperiodic_params=[1, 1.5], periodic_params=[[10, 0.2, 1], [22, 0.1, 3]], nlv=0.02)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can also use a SimParams object to regenerate a particular power spectrum</span>
+<a href="../../generated/fooof.data.SimParams.html#fooof.data.SimParams" title="fooof.data.SimParams" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cur_params</span></a> <span class="o">=</span> <span class="n">sim_params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">freq_range</span><span class="p">,</span> <span class="o">*</span><a href="../../generated/fooof.data.SimParams.html#fooof.data.SimParams" title="fooof.data.SimParams" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cur_params</span></a><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="managing-parameters">
+<h2>Managing Parameters<a class="headerlink" href="#managing-parameters" title="Permalink to this headline">¶</a></h2>
+<p>There are also helper functions for managing and selecting parameters for
+simulating groups of power spectra.</p>
+<p>These functions include:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler"><code class="xref py py-func docutils literal notranslate"><span class="pre">param_sampler()</span></code></a> which can be used to sample parameters from possible options</p></li>
+<li><p><a class="reference internal" href="../../generated/fooof.sim.params.param_iter.html#fooof.sim.params.param_iter" title="fooof.sim.params.param_iter"><code class="xref py py-func docutils literal notranslate"><span class="pre">param_iter()</span></code></a> which can be used to iterate across parameter ranges</p></li>
+<li><p><a class="reference internal" href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="fooof.sim.params.param_jitter"><code class="xref py py-func docutils literal notranslate"><span class="pre">param_jitter()</span></code></a> which can be used to add some ‘jitter’ to simulation parameters</p></li>
+</ul>
+<div class="section" id="param-sampler">
+<h3>param_sampler<a class="headerlink" href="#param-sampler" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="../../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler"><code class="xref py py-func docutils literal notranslate"><span class="pre">param_sampler()</span></code></a> function takes a list of parameter options and
+randomly selects from the parameters to create each power spectrum. You can also optionally
+specify the probabilities with which to sample from the options.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a sampler to choose from two options for aperiodic parameters</span>
+<span class="n">ap_opts</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_sampler</span></a><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+
+<span class="c1"># Create sampler to choose from two options for periodic parameters, and specify probabilities</span>
+<span class="n">pe_opts</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_sampler</span></a><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]],</span>
+                        <span class="n">probs</span><span class="o">=</span><span class="p">[</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate some power spectra, using param_sampler</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">ap_opts</span><span class="p">,</span> <span class="n">pe_opts</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot some of the spectra that were generated</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="p">:],</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot sim params" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_sim_params_001.png" />
+</div>
+<div class="section" id="param-iter">
+<h3>param_iter<a class="headerlink" href="#param-iter" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="../../generated/fooof.sim.params.param_iter.html#fooof.sim.params.param_iter" title="fooof.sim.params.param_iter"><code class="xref py py-func docutils literal notranslate"><span class="pre">param_iter()</span></code></a> function can be used to create iterators that
+can ‘step’ across a range of parameter values to be simulated.</p>
+<p>The <a class="reference internal" href="../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper" title="fooof.sim.params.Stepper"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stepper</span></code></a> object needs to be used in conjunction with
+<a class="reference internal" href="../../generated/fooof.sim.params.param_iter.html#fooof.sim.params.param_iter" title="fooof.sim.params.param_iter"><code class="xref py py-func docutils literal notranslate"><span class="pre">param_iter()</span></code></a>, as it specifies the values to be iterated across.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the aperiodic parameters to be stable</span>
+<span class="n">ap_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Use a stepper object to define the range of values to step across</span>
+<span class="c1">#   Stepper is defined with `start, stop, step`</span>
+<span class="c1">#   Here we&#39;ll define a step across alpha center frequency values</span>
+<a href="../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper" title="fooof.sim.params.Stepper" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cf_steps</span></a> <span class="o">=</span> <a href="../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper" title="fooof.sim.params.Stepper" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-class"><span class="n">Stepper</span></a><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># We can use use param_iter, with our Stepper object, to create the full peak params</span>
+<span class="c1">#   The other parameter values will be held constant as we step across CF values</span>
+<span class="n">pe_params</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_iter.html#fooof.sim.params.param_iter" title="fooof.sim.params.param_iter" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_iter</span></a><span class="p">([</span><a href="../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper" title="fooof.sim.params.Stepper" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cf_steps</span></a><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate some power spectra, using param_iter</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="nb">len</span><span class="p">(</span><a href="../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper" title="fooof.sim.params.Stepper" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cf_steps</span></a><span class="p">),</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">pe_params</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the generated spectra</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">log_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot sim params" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_sim_params_002.png" />
+</div>
+<div class="section" id="param-jitter">
+<h3>param_jitter<a class="headerlink" href="#param-jitter" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="fooof.sim.params.param_jitter"><code class="xref py py-func docutils literal notranslate"><span class="pre">param_jitter()</span></code></a> function can be used to create iterators that
+apply some ‘jitter’ to the defined parameter values.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define default aperiodic values, with some jitter</span>
+<span class="c1">#   The first input is the default values, the second the scale of the jitter</span>
+<span class="c1">#   You can set zero for any value that should not be jittered</span>
+<span class="n">ap_params</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter" title="fooof.sim.params.param_jitter" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_jitter</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">])</span>
+
+<span class="c1"># Define the peak parameters, to be stable, with an alpha and a beta</span>
+<span class="n">pe_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate some power spectra, using param_jitter</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">pe_params</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the generated spectra</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">log_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot sim params" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_sim_params_003.png" />
+<p>We can see that in the generated spectra above, there is some jitter
+to the simulated aperiodic exponent values.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.218 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-sims-plot-sim-params-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/d6d3735918e741e175feffe3dffd20b7/plot_sim_params.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_sim_params.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/55d902bedd994ca5f11c063498ec382f/plot_sim_params.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_sim_params.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2021, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
