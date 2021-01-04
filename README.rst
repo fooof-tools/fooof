@@ -152,9 +152,9 @@ If you use this code in your project, please cite::
 
     Donoghue T, Haller M, Peterson EJ, Varma P, Sebastian P, Gao R, Noto T, Lara AH, Wallis JD,
     Knight RT, Shestyuk A, & Voytek B (2020). Parameterizing neural power spectra into periodic
-    and aperiodic components. Nature Neuroscience, 23, 1655-1665. 
+    and aperiodic components. Nature Neuroscience, 23, 1655-1665.
     DOI: 10.1038/s41593-020-00744-x
-    
+
 Direct link: https://doi.org/10.1038/s41593-020-00744-x
 
 More information for how to cite this method can be found on the
@@ -263,3 +263,13 @@ FOOOF also has functionality for running the FOOOF model across matrices of mult
 saving and loading results, creating reports from FOOOF outputs, analyzing model outputs,
 plotting models and parameters, and simulating power spectra, all of which is described in the
 `documentation <https://fooof-tools.github.io/fooof/>`_.
+
+Funding
+-------
+
+Supported by NIH award R01 GM134363
+
+`NIGMS <https://www.nigms.nih.gov/>`_
+
+.. image:: https://www.nih.gov/sites/all/themes/nih/images/nih-logo-color.png
+  :width: 400
