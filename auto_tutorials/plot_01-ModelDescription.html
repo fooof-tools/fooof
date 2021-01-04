@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01: Model Description &#8212; fooof 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../faq.html">FAQ</a></li>
+                <li><a href="../glossary.html">Glossary</a></li>
+                <li><a href="../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="index.html">Tutorials</a></li>
+                <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-01-modeldescription-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="model-description">
+<span id="sphx-glr-auto-tutorials-plot-01-modeldescription-py"></span><h1>01: Model Description<a class="headerlink" href="#model-description" title="Permalink to this headline">¶</a></h1>
+<p>A description of and introduction to the power spectrum model.</p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Welcome to the tutorials!</p>
+<p>In this first tutorial, we will introduce an overview and description of power spectrum
+model, as well as visualizing some examples.</p>
+<p>Keep in mind as you go, that if you want more information that describes, motivates, and
+justifies our modeling approach, you can also check out the associated
+<a class="reference external" href="https://www.biorxiv.org/content/early/2018/04/11/299859">paper</a>,
+and/or the
+<a class="reference external" href="https://fooof-tools.github.io/fooof/auto_tutorials/index.html">motivations</a>
+section of the site.</p>
+<div class="section" id="example-power-spectra-and-models">
+<h3>Example Power Spectra and Models<a class="headerlink" href="#example-power-spectra-and-models" title="Permalink to this headline">¶</a></h3>
+<p>First, we will import and run some code to simulate some example power spectra, and
+fit some power spectrum models to them, to use as examples.</p>
+<p>For the purpose of this tutorial, you don’t need to know how this code works
+yet, and can skip past reading the code itself.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import required code for visualizing example models</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="kn">import</span> <a href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="kn">import</span> <a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.annotate</span> <span class="kn">import</span> <a href="../generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model" title="fooof.plts.annotate.plot_annotated_model" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_model</span></a>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set random seed, for consistency generating simulated data</span>
+<a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
+
+<span class="c1"># Simulate example power spectra</span>
+<span class="n">freqs1</span><span class="p">,</span> <span class="n">powers1</span> <span class="o">=</span> <a href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                                     <span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">],</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+<span class="n">freqs2</span><span class="p">,</span> <span class="n">powers2</span> <span class="o">=</span> <a href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">150</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">125</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">],</span>
+                                     <span class="p">[[</span><span class="mi">8</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize power spectrum model objects and fit the power spectra</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm1</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm2</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;knee&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm1</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs1</span><span class="p">,</span> <span class="n">powers1</span><span class="p">)</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm2</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs2</span><span class="p">,</span> <span class="n">powers2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, we have some data and models to work with.</p>
+<p>To start with, we can plot one of our simulated power spectra.</p>
+<p>Plotted below is an example power spectrum, plotted in semi-log space (log10 power values
+and linear frequencies). This is our data, that we will be trying to model.</p>
+<p>In the plot, we see a power spectrum in which there is decreasing power across increasing
+frequencies. In some frequency regions, there is a ‘peak’ of power, over and above the general
+trend across frequencies. These properties - a pattern of decreasing power across frequencies,
+with overlying peaks - are considered to be hallmarks of neural field data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot one of the example power spectra</span>
+<a href="../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><span class="n">freqs1</span><span class="p">,</span> <span class="n">powers1</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+              <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Spectrum&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot 01 ModelDescription" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_01-ModelDescription_001.png" />
+</div>
+</div>
+<div class="section" id="conceptual-overview">
+<h2>Conceptual Overview<a class="headerlink" href="#conceptual-overview" title="Permalink to this headline">¶</a></h2>
+<p>The goal of this module is to fit models to parameterize neural power spectra.</p>
+<p>One reason to do so is the idea that there are multiple distinct ‘components’ within
+neural field data. The model is therefore designed to measure these different
+‘components’ of the data.</p>
+<p>By components, we mean that we are going to conceptualize neural field data as consisting
+of a combination of periodic (oscillatory) and aperiodic activity. Restated, we could say
+that neural data contains both periodic and aperiodic components.</p>
+<p>The goal of the model is to measure these components, separately and explicitly,
+from frequency representations of neural field data (neural power spectra).</p>
+<div class="section" id="visualizing-power-spectrum-models">
+<h3>Visualizing Power Spectrum Models<a class="headerlink" href="#visualizing-power-spectrum-models" title="Permalink to this headline">¶</a></h3>
+<p>First, let’s start by revisiting the example power spectrum, this time also adding the model
+fit to the plot.</p>
+<p>In the plot below, black is the data, same as before, and in red we’ve added the
+model fit of the data. If things are working, this line should be good approximation
+of the data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot an example power spectrum, with a model fit</span>
+<a href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm1</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plot_peaks</span><span class="o">=</span><span class="s1">&#39;shade&#39;</span><span class="p">,</span> <span class="n">peak_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="s1">&#39;green&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<img alt="plot 01 ModelDescription" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_01-ModelDescription_002.png" />
+<p>Given the full model, in red, we can then describe this spectrum in terms of the
+‘components’ that make up the model fit, which are:</p>
+<ul class="simple">
+<li><p><cite>aperiodic</cite>: activity with no characteristic frequency (or ‘non-frequency specific’ activity)</p>
+<ul>
+<li><p>in power spectra, this looks like a trend across all frequencies</p></li>
+<li><p>in the plot above, this is what is captured by the dashed blue line</p></li>
+</ul>
+</li>
+<li><p><cite>periodic</cite> : activity with a characteristic frequency</p>
+<ul>
+<li><p>in power spectra, this looks like a ‘peak’, or ‘bump’, reflecting frequency specific power</p></li>
+<li><p>in the plot above, this is what is captured by the green shaded peaks</p></li>
+</ul>
+</li>
+</ul>
+<p>Each of these components also has different ‘features’ or ‘properties’, that we want to
+describe and measure. Since these ‘features’ are things that we will be fitting in
+the model, we will call them <cite>parameters</cite> (as in, the ‘model parameters’).</p>
+<p>The full model of the power spectrum is the combination of the two components:
+the aperiodic component and the periodic component (the set of peaks).</p>
+<p>The goal of the model is to measure these two components, to create the full model
+fit, in a way that accurately and quantitatively describes the data.</p>
+</div>
+<div class="section" id="mathematical-description-of-overall-model">
+<h3>Mathematical Description of Overall Model<a class="headerlink" href="#mathematical-description-of-overall-model" title="Permalink to this headline">¶</a></h3>
+<p>To enact the conceptual idea described above, we will need to formalize the model. To do
+so, throughout the rest of this tutorial, we will lay out the mathematical description of
+how neural power spectra can be modeled as a combination of periodic and aperiodic activity.</p>
+<p>Overall, the goal is to describe a neural power spectrum, described as <span class="math notranslate nohighlight">\(NPS\)</span>, as
+a combination of periodic and aperiodic components. We will describe each of these
+components in their own section.</p>
+<p>Note that as we go, we will continue to consider power in log10 spacing. You will
+also see each component includes <span class="math notranslate nohighlight">\((F)\)</span>, where <span class="math notranslate nohighlight">\(F\)</span> is the array of
+frequency values (in linear spacing) for the power spectrum, which just indicates that
+each component is a function of frequency.</p>
+</div>
+</div>
+<div class="section" id="periodic-component">
+<h2>Periodic Component<a class="headerlink" href="#periodic-component" title="Permalink to this headline">¶</a></h2>
+<p>By periodic activity, we mean activity that has a characteristic frequency.
+This includes what are typically referred to as neural oscillations, often described
+in particular frequency bands such as delta, theta, alpha, beta, gamma, etc.</p>
+<p>In the frequency domain, putative oscillations are frequency regions in which
+there are ‘bumps’ of power over and above the aperiodic component.
+We will generally refer to the these as ‘peaks’ in the neural power spectrum.</p>
+<p>To measure the periodic activity, we would like to describe these peaks, without our
+measures of these peaks being influenced by co-occurring aperiodic activity.
+This is important, since, as we can see in the plots above, the aperiodic and periodic
+components of the data can ‘overlap’, in frequency space. This means the total power
+at a given frequency may have contributions from both components. To measure periodic power,
+specifically, we need to measure the power relative to the aperiodic component of the data.</p>
+<p>Next, let’s explore an annotated version of our power spectrum model.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot an annotated version of the power spectrum model</span>
+<a href="../generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model" title="fooof.plts.annotate.plot_annotated_model" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_model</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm1</span></a><span class="p">,</span> <span class="n">annotate_aperiodic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot 01 ModelDescription" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_01-ModelDescription_003.png" />
+<p>In the labeled plot above, we can again see the different components of the model,
+as well as the labeled peak parameters.</p>
+<p>Note that vertical labels reflect parameters measured in the x-axis units, so in frequency,
+where as horizontal labels reflect parameters measured in y-axis units, so power.</p>
+<p>The periodic parameters are:</p>
+<ul class="simple">
+<li><p>the <cite>center frequency</cite> of the peak, in units of frequency</p></li>
+<li><p>the <cite>power</cite> of the peak, over the aperiodic component, in units of power</p></li>
+<li><p>the <cite>bandwidth</cite>, or the width of the peak, in units of frequency</p></li>
+</ul>
+<p>Wherever we detect a peak, these are the parameters that we will fit to the peak,
+to describe this component of the data.</p>
+<div class="section" id="mathematical-description-of-the-periodic-component">
+<h3>Mathematical Description of the Periodic Component<a class="headerlink" href="#mathematical-description-of-the-periodic-component" title="Permalink to this headline">¶</a></h3>
+<p>To fit this periodic activity - the regions of power over above the aperiodic component,
+or ‘peaks’ - the model uses Gaussians. As we’ve seen, there can be multiple peaks in the model.</p>
+<p>Each Gaussian, <span class="math notranslate nohighlight">\(n\)</span>, referred to as <span class="math notranslate nohighlight">\(G(F)_n\)</span>, is of the form:</p>
+<div class="math notranslate nohighlight">
+\[G(F)_n = a * exp (\frac{- (F - c)^2}{2 * w^2})\]</div>
+<p>This describes each peak in terms of parameters <cite>a</cite>, <cite>c</cite> and <cite>w</cite>, where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(a\)</span> is the height of the peak, over and above the aperiodic component</p></li>
+<li><p><span class="math notranslate nohighlight">\(c\)</span> is the center frequency of the peak</p></li>
+<li><p><span class="math notranslate nohighlight">\(w\)</span> is the width of the peak</p></li>
+<li><p><span class="math notranslate nohighlight">\(F\)</span> is the array of frequency values</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="aperiodic-component">
+<h2>Aperiodic Component<a class="headerlink" href="#aperiodic-component" title="Permalink to this headline">¶</a></h2>
+<p>By ‘aperiodic’ activity, we mean activity that is not rhythmic, or activity that has
+no characteristic frequency.</p>
+<p>In the power spectrum, we typically see this as 1/f-like activity, whereby (in linear space)
+the power across frequencies decreases with a <span class="math notranslate nohighlight">\(\frac{1}{F^\chi}\)</span> relationship.</p>
+<p>To measure the aperiodic activity, we would like to describe the pattern of activity
+across all frequencies, without our measure being influenced by co-occurring periodic
+activity (peaks).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot an annotated version of the power spectrum model</span>
+<a href="../generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model" title="fooof.plts.annotate.plot_annotated_model" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_model</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm1</span></a><span class="p">,</span> <span class="n">annotate_peaks</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot 01 ModelDescription" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_01-ModelDescription_004.png" />
+<p>The aperiodic parameters in the above plot are:</p>
+<ul class="simple">
+<li><p>the <cite>offset</cite>, or overall up/down translation of the whole spectrum</p></li>
+<li><p>the <cite>exponent</cite>, which describes the ‘curve’, or overall ‘line’ of the aperiodic component</p></li>
+</ul>
+<p>Note that diagonal labels indicate unit-less measures (in neither units of frequency or power).</p>
+<div class="section" id="mathematical-description-of-the-aperiodic-component">
+<h3>Mathematical Description of the Aperiodic Component<a class="headerlink" href="#mathematical-description-of-the-aperiodic-component" title="Permalink to this headline">¶</a></h3>
+<p>To fit the aperiodic component, we will use the function <span class="math notranslate nohighlight">\(L\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[L(F) = b - \log(k + F^\chi)\]</div>
+<p>Note that this function is fit on the semi-log power spectrum, meaning linear frequencies
+and <span class="math notranslate nohighlight">\(log_{10}\)</span> power values.</p>
+<p>In this formulation, the parameters <span class="math notranslate nohighlight">\(b\)</span>, <span class="math notranslate nohighlight">\(k\)</span>, and <span class="math notranslate nohighlight">\(\chi\)</span>
+define the aperiodic component, as:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(b\)</span> is the broadband ‘offset’</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span> is the ‘knee’</p></li>
+<li><p><span class="math notranslate nohighlight">\(\chi\)</span> is the ‘exponent’ of the aperiodic fit</p></li>
+<li><p><span class="math notranslate nohighlight">\(F\)</span> is the array of frequency values</p></li>
+</ul>
+<p>Note that fitting the knee parameter is optional. If used, the knee parameter defines a
+‘bend’ in the aperiodic <cite>1/f</cite> like component of the data. If not used, the ‘knee’
+parameter is set to zero.</p>
+<p>This function form is technically described as a Lorentzian function. We use the option
+of adding a knee parameter, since even though neural data is often discussed in terms
+of having <cite>1/f</cite> activity, there is often not a single <cite>1/f</cite> characteristic, especially
+across broader frequency ranges. Therefore, using this function form allows for modeling
+bends in the power spectrum of the aperiodic component, if and when they occur.</p>
+<p>Note that if we were to want the equivalent function in linear power, using <span class="math notranslate nohighlight">\(AP\)</span>
+to indicate the aperiodic component in linear spacing, it would be:</p>
+<div class="math notranslate nohighlight">
+\[AP(F) = 10^b * \frac{1}{(k + F^\chi)}\]</div>
+</div>
+<div class="section" id="a-note-on-logging">
+<h3>A Note on Logging<a class="headerlink" href="#a-note-on-logging" title="Permalink to this headline">¶</a></h3>
+<p>So far, we have been plotting in semi-log, meaning the x-axis (frequency) is in linear
+spacing, and the y-axis (power) is in log10 space. This is common practice, as power values
+are exponentially distributed.</p>
+<p>It can also be useful, for visualization, to plot with both axes on a log scale.
+Note that in this module, plotting in log-log is just a visualization choice, and does
+not affect how the data is stored and/or how models are fit.</p>
+<p>Below we can see the same spectrum again, with all the annotations on, plotted in log-log.
+The most notable difference is that the aperiodic component is a straight line in log-log
+spacing. This is a hallmark of <cite>1/f</cite> activity.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectrum model, in log-log space</span>
+<a href="../generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model" title="fooof.plts.annotate.plot_annotated_model" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_model</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm1</span></a><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot 01 ModelDescription" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_01-ModelDescription_005.png" />
+</div>
+<div class="section" id="relating-exponents-to-power-spectrum-slope">
+<h3>Relating Exponents to Power Spectrum Slope<a class="headerlink" href="#relating-exponents-to-power-spectrum-slope" title="Permalink to this headline">¶</a></h3>
+<p>Another way to measure 1/f properties in neural power spectra is to measure the slope
+of the spectrum in log-log spacing, fitting a linear equation as:</p>
+<div class="math notranslate nohighlight">
+\[L(log(F)) = aF + b\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(a\)</span> is the power spectrum slope</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span> is the offset</p></li>
+<li><p><span class="math notranslate nohighlight">\(F\)</span> is the array of frequency values</p></li>
+</ul>
+<p>In this formulation, the data is considered in log-log space, meaning the frequency values
+are also in log space. Since 1/f is a straight line in log-log spacing, this approach captures
+1/f activity.</p>
+<p>This is equivalent to the power spectrum model in this module, when fitting with no knee,
+with a direct relationship between the slope (<span class="math notranslate nohighlight">\(a\)</span>) and the exponent (<span class="math notranslate nohighlight">\(\chi\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[\chi = -a\]</div>
+</div>
+<div class="section" id="fitting-knees">
+<h3>Fitting Knees<a class="headerlink" href="#fitting-knees" title="Permalink to this headline">¶</a></h3>
+<p>In the original model we fit and explored, there was no aperiodic ‘knee’. Depending on
+the data, or the frequency range, there may or may not be a knee present in the data
+(more on that later in the tutorial).</p>
+<p>In the next plot, there is another annotated model, from a broader frequency range that also
+includes a knee. When plotted in log-log, the presence of a knee can be seen as ‘bend’ or
+‘knee’ in the  aperiodic component.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot an annotated version of the power spectrum model</span>
+<a href="../generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model" title="fooof.plts.annotate.plot_annotated_model" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_model</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm2</span></a><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot 01 ModelDescription" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_01-ModelDescription_006.png" />
+<p>The knee parameter fit to the model is a unit-less value that describes the curve of the
+aperiodic component (when plotted in log-log spacing). On the plot above, the annotation
+references the knee as the dot on the plot at the bend point.</p>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>So far, we have explored how neural power spectra, <span class="math notranslate nohighlight">\(NPS\)</span>, across a set of frequencies
+<span class="math notranslate nohighlight">\(F\)</span> can be modeled as a combination of an aperiodic component, <span class="math notranslate nohighlight">\(L\)</span>, and the
+periodic component, which is comprised of <cite>N</cite> peaks, where each <span class="math notranslate nohighlight">\(G_n\)</span> is a Gaussian.</p>
+<p>To summarize, the full model is:</p>
+<div class="math notranslate nohighlight">
+\[NPS(F) = L(F) + G(F)_n\]</div>
+<p>where:</p>
+<div class="math notranslate nohighlight">
+\[L(F) = b - \log(k + F^\chi) \quad \quad G(F)_n = a * exp (\frac{- (F - c)^2}{2 * w^2})\]</div>
+<p>This approach allows us to measure periodic and aperiodic activity from neural
+power spectra, and describe them with model parameters:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(b\)</span>, <span class="math notranslate nohighlight">\(k\)</span>, and <span class="math notranslate nohighlight">\(\chi\)</span> of the aperiodic component which reflect
+the <cite>offset</cite>, <cite>knee</cite> and <cite>exponent</cite>, respectively</p></li>
+<li><p><span class="math notranslate nohighlight">\(c\)</span>, <span class="math notranslate nohighlight">\(a\)</span>, <span class="math notranslate nohighlight">\(w\)</span> for each periodic peak, relating to the
+<cite>center frequency</cite>, <cite>power</cite> and <cite>bandwidth</cite> of putative periodic activity</p></li>
+</ul>
+<p>For more technical details on the model formulation and fitting process, check out the
+<a class="reference external" href="https://www.biorxiv.org/content/early/2018/04/11/299859">paper</a>.</p>
+<p>In the next tutorial, we will start to use this model.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.892 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-01-modeldescription-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/cc804a6d6a719c9e628feb4f056bbd74/plot_01-ModelDescription.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_01-ModelDescription.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/8bfec2e3f0f74ee4d9194f322c31b51e/plot_01-ModelDescription.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_01-ModelDescription.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2021, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
