@@ -50,7 +50,7 @@ install:
 	make html
 	# Copy site into the gh-pages branch folder, then push to Github to deploy
 	cd _build/ && \
-	cp -r html/ gh_pages && \
+	cp -r html/* gh_pages && \
 	cd gh_pages && \
 	git add * && \
 	git add .nojekyll && \
