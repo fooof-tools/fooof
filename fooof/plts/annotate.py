@@ -85,6 +85,10 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperio
         FOOOF object, with model fit, data and settings available.
     plt_log : boolean, optional, default: False
         Whether to plot the frequency values in log10 spacing.
+    annotate_peaks : boolean, optional, default: True
+        Whether to annotate the periodic components of the model fit.
+    annotate_aperiodic : boolean, optional, default: True
+        Whether to annotate the aperiodic components of the model fit.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     plot_style : callable, optional, default: style_spectrum_plot
