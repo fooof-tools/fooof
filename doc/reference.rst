@@ -40,7 +40,7 @@ If you use this module and the power spectrum model in your work, there is some 
 Specifically, we recommend including the following information in the methods section:
 
 - The version number of the module that was used (for example 1.0.0)
-- The settings that were used for the algorithm that were used
+- The algorithm settings that were used
 
   - You should report all public settings, even if default values are used
 - The frequency range of the data that was fit
@@ -54,7 +54,7 @@ In addition, we recommend that reports should include information on:
 Reporting Template & Example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To assist in reporting on using FOOOF, we have some templates and examples of methods reports, and some utilities to access the required information from the code.
+To assist in reporting on using FOOOF, we have created some templates for reporting on spectral parameterization methods. There are also some utilities included in the code to collected the required information. 
 
 The following box is an example of what a methods report might look like (where all of the *X*'s should be filled in with the relevant information).
 
