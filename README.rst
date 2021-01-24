@@ -139,12 +139,6 @@ If you would like to use FOOOF, from Python, within a pipeline that is mostly in
 `mat_py_mat <https://github.com/fooof-tools/mat_py_mat>`_
 repository also has some examples and utilities for doing so.
 
-Bug Reports
------------
-
-Please use the `Github issue tracker <https://github.com/fooof-tools/fooof/issues>`_
-to file bug reports and/or ask questions about this project.
-
 Reference
 ---------
 
@@ -168,16 +162,19 @@ Contribute
 
 This project welcomes and encourages contributions from the community!
 
-If you have an idea of something to add to FOOOF, please start by opening an
-`issue <https://github.com/fooof-tools/fooof/issues>`_.
-Note that this issue tracker is used for code specific questions and suggestions.
-If you have a question or suggestion related to the model or conceptual ideas, check out the
-`development <https://github.com/fooof-tools/Development>`_ page.
+To file bug reports and/or ask questions about this project, please use the
+`Github issue tracker <https://github.com/fooof-tools/fooof/issues>`_.
 
-When writing code to add to FOOOF, please follow the
-`Contribution Guidelines <https://github.com/fooof-tools/fooof/blob/master/CONTRIBUTING.md>`_
-, and also make sure to follow our
-`Code of Conduct <https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md>`_.
+Discussions of updates for the module happen on the
+`issues board <https://github.com/fooof-tools/fooof/issues>`_,
+for code updates and fixes, and on the
+`development page <https://github.com/fooof-tools/Development>`_
+for discussion on major developments to the module.
+
+For all questions, reports, and contributions, please follow the
+`contribution guidelines <https://github.com/fooof-tools/fooof/blob/master/CONTRIBUTING.md>`_
+, and make sure to follow our
+`code of conduct <https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md>`_.
 
 Quickstart
 ----------
