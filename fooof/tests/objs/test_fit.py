@@ -187,7 +187,7 @@ def test_fooof_load():
     # Test that settings and data are None
     #   Except for aperiodic mode, which can be inferred from the data
     for setting in OBJ_DESC['settings']:
-        if setting is not 'aperiodic_mode':
+        if setting != 'aperiodic_mode':
             assert getattr(tfm, setting) is None
     assert getattr(tfm, 'power_spectrum') is None
 

@@ -247,7 +247,7 @@ def test_fg_load():
     # Test that settings and data are None
     #   Except for aperiodic mode, which can be inferred from the data
     for setting in OBJ_DESC['settings']:
-        if setting is not 'aperiodic_mode':
+        if setting != 'aperiodic_mode':
             assert getattr(tfg, setting) is None
     assert tfg.power_spectra is None
 
