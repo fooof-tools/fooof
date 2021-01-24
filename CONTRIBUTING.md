@@ -3,9 +3,10 @@
 Thank you for your interest in contributing to `fooof`!
 
 We welcome all contributions to the project that extend or improve code and/or documentation!
+
 This page includes information for how to get involved and contribute to the project, and guidelines for how to do so.
 
-Note that this project adheres to a
+This project adheres to a
 [code of conduct](https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md)
 that you are expected to uphold when participating in this project.
 
@@ -19,12 +20,12 @@ On this page, you can find information on:
 
 ## Reporting a Problem
 
-To report a bug, please submit it to our [issue tracker](https://github.com/fooof-tools/fooof/issues).
+To report an issue with the code, please submit it to our [issue tracker](https://github.com/fooof-tools/fooof/issues).
 
 In doing so, please try to include the following:
 
-1. A short, top-level summary of the bug (usually 1-2 sentences)
-2. A short, self-contained code snippet to reproduce the bug, ideally allowing a simple copy and paste to reproduce
+1. A short, top-level summary of the issue (usually 1-2 sentences)
+2. A short, self-contained code snippet to reproduce the issue, ideally allowing a simple copy and paste to reproduce
    - Please do your best to reduce the code snippet to the minimum required
 3. The actual outcome of the code snippet
 4. The expected outcome of the code snippet
@@ -39,13 +40,13 @@ If you have a new idea you would like to suggest or contribute, please do the fo
    [issues](https://github.com/fooof-tools/fooof/issues) or
    [development](https://github.com/fooof-tools/Development) page
 2. Check that your idea is within the [project scope](#project-scope)
-3. Open an [issue](https://github.com/fooof-tools/neurodsp/issues) describing
+3. Open an [issue](https://github.com/fooof-tools/fooof/issues) describing
    what you would like to see added / changed, and why
-4. If the idea is something you be willing to help implement, indicate this in the issue, and
-   get feedback from project maintainers in order to coordinate a plan for the contribution
-5. If you want to work on the contribution, following the [contribution guidelines](#making-a-contribution) to do so
+4. Indicate in the issue if the idea is something you would be willing to help implement
+   - if so, project maintainers can give feedback to help make a plan for the contribution
+5. If you want to work on the contribution, follow the [contribution guidelines](#making-a-contribution) to do so
 
-If you are interested in getting involved and helping out with the project, a great place to start is to visit the
+If you are interested in getting involved and helping with the project, a great place to start is to visit the
 [issues](https://github.com/fooof-tools/fooof/issues) or
 [development](https://github.com/fooof-tools/Development) page
 and see if there is anything you would be interested in helping with. If so, join the conversation, and project developers can help get you started.
@@ -56,17 +57,17 @@ All contributions to the module must be within it's scope.
 
 `fooof` is a module for parameterizing neural power spectra. This includes model fitting, management and analysis of resulting parameters, and utilities to visualize power spectra and model results. This module also includes functionality to simulate power spectra based on the model.
 
-Procedures and utilities that do not deal with operating upon power spectra or on model outputs will most likely be considered out of scope. Notably, this model does not include doing spectral estimation or time-domain analysis. For approaches such as these, the [neurodsp](https://github.com/neurodsp-tools/neurodsp/) module may be a more appropriate target for new functionality.
+Procedures and utilities that do not deal with operating upon power spectra or on model outputs will most likely be considered out of scope. Notably, this model does not include doing spectral estimation or time-domain analysis. For approaches such as these, the [neurodsp](https://github.com/neurodsp-tools/neurodsp/) module may be a more appropriate target.
 
 ## Making a Contribution
 
-If there is a feature you would like to add, or an issue you saw that you think you can help with, you are ready to make a code submission to the project!
+If there is a feature you would like to add, or an issue you saw that you think you can help with, you are ready to make a submission to the project!
 
 If you are working on a feature, please indicate so in the relevant issue, so that we can keep track of who is working on what.
 
 Once you're ready to start working on your contribution, do the following:
 
-1. [Fork this repository](https://help.github.com/articles/fork-a-repo/), which makes your own version of this project you can edit and use
+1. [Fork this repository](https://help.github.com/articles/fork-a-repo/), which makes your own version of this project you can edit
 2. [Make your changes](https://guides.github.com/activities/forking/#making-changes), updating or adding code to add the desired functionality
 3. [Check the project conventions](#project-conventions), and make sure all new or updated code follows the guidelines
 4. [Submit a pull request](https://help.github.com/articles/proposing-changes-to-a-project-with-pull-requests/), to start the process of merging the new code to the main branch
@@ -75,7 +76,7 @@ If it's your first time contributing to open source software, check out this fre
 
 ## Project Conventions
 
-All code that is to be added to FOOOF must follow the code conventions of the project.
+All code contributed to the module should follow these conventions:
 
 1. Code Requirements
     * All code should be written in Python, and run on the minimum required version that is noted in the README
@@ -92,7 +93,7 @@ All code that is to be added to FOOOF must follow the code conventions of the pr
     * Use standard casing, for example:
          * function names should be in snake_case (all lowercase with underscores)
          * class names should be in CamelCase (leading capitals with no separation)
-    * If calling an external function, naming and ordering of parameters should generally follow that of the external function
+    * If passing through arguments to an external function, the naming and ordering of parameters in this module should generally follow that of the external function
 
 4. Code Documentation
     * All code should be documented, including in-code comments describing procedures, and detailed docstrings
@@ -104,21 +105,21 @@ All code that is to be added to FOOOF must follow the code conventions of the pr
         * If examples cannot be run, use the SKIP directive
 
 5. Code Tests
-    * All new code requires test code, written as unit tests, that checks the code
-    * This project uses [pytest](https://docs.pytest.org/en/latest/)
+    * This project uses the [pytest](https://docs.pytest.org/en/latest/) testing tool for testing module code
+    * All new code requires test code, written as unit tests that check each function and class in the module
     * Tests should be, at a minimum, 'smoke tests' that execute the code and check that it runs without raising an error
-        * If possible, accuracy checking is encouraged, but not strictly required
+        * Where possible, accuracy checking is encouraged, though not strictly required
     * Merge candidates must pass all existing tests, and add new tests such as to not reduce test coverage
 
 6. Documentation Website
     * This project uses a documentation website, created using [sphinx](https://www.sphinx-doc.org/)
-    * Any new public functions should be added to the `doc/api.rst` file, so they get included in the API list
+    * Any new public functions or classes should be added to the `doc/api.rst` file, so they get included in the API list
     * Any new functionality should be added and described in the tutorials and/or examples
         * If a new approach is added, a new tutorial or example may be appropriate
-    * To build the documentation locally:
-        * install the requirements for the docsite (`pip install -r requirements-doc.txt`)
-        * move to the `fooof/doc` directory (`cd doc`)
-        * run `make html` to create a local copy of the documentation website
+    * To build and check the documentation locally:
+        * Install the requirements for the docsite (`pip install -r requirements-doc.txt`)
+        * Move to the `fooof/doc` directory (`cd doc`)
+        * Run `make html` to create a local copy of the documentation website
         * The documentation can then be opened in a web browser by opening the file `fooof/doc/_build/html/index.html`
 
 For more guidelines on how to write well formated and organized code, check out the [Python API Checklist](http://python.apichecklist.com).
