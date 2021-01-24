@@ -31,7 +31,7 @@ FOOOF is a fast, efficient, and physiologically-informed tool to parameterize ne
 Overview
 --------
 
-FOOOF conceives of a model of the power spectrum as a combination of two distinct functional processes:
+The power spectrum model conceives of a model of the power spectrum as a combination of two distinct functional processes:
 
 - An aperiodic component, reflecting 1/f like characteristics, with
 - A variable number of periodic components (putative oscillations), as peaks rising above the aperiodic component
@@ -39,16 +39,16 @@ FOOOF conceives of a model of the power spectrum as a combination of two distinc
 This model driven approach can be used to measure periodic and aperiodic properties of electrophysiological data,
 including EEG, MEG, ECoG and LFP data.
 
-The benefit of using FOOOF for measuring putative oscillations, is that peaks in the power spectrum are
+The benefit of fitting a model in order to measure putative oscillations, is that peaks in the power spectrum are
 characterized in terms of their specific center frequency, power and bandwidth without requiring predefining
 specific bands of interest and controlling for the aperiodic component.
-FOOOF also gives you a measure of this aperiodic components of the signal, allowing for measuring and
+The model also returns a measure of this aperiodic components of the signal, allowing for measuring and
 comparison of 1/f-like components of the signal within and between subjects.
 
 Documentation
 -------------
 
-Documentation for FOOOF is available on the
+Documentation is available on the
 `documentation site <https://fooof-tools.github.io/fooof/index.html>`_.
 
 This documentation includes:
@@ -89,7 +89,7 @@ We recommend using the `Anaconda <https://www.anaconda.com/distribution/>`_ dist
 Installation
 ------------
 
-The current major release of FOOOF is the 1.X.X series, which is a breaking change from the prior 0.X.X series.
+The current major release is the 1.X.X series, which is a breaking change from the prior 0.X.X series.
 
 Check the `changelog <https://fooof-tools.github.io/fooof/changelog.html>`_ for notes on updating to the new version.
 
@@ -101,7 +101,7 @@ To install the latest stable release, use pip:
 
     $ pip install fooof
 
-FOOOF can also be installed with conda, from the conda-forge channel:
+The module can also be installed with conda, from the conda-forge channel:
 
 .. code-block:: shell
 
@@ -170,7 +170,7 @@ To see and get involved in discussions about the module, check out:
 - the `issues board <https://github.com/fooof-tools/fooof/issues>`_ for topics relating to code updates, bugs, and fixes
 - the `development page <https://github.com/fooof-tools/Development>`_ for discussion of potential major updates to the module
 
-When interacting with this project, please follow the
+When interacting with this project, please use the
 `contribution guidelines <https://github.com/fooof-tools/fooof/blob/master/CONTRIBUTING.md>`_
 and follow the
 `code of conduct <https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md>`_.
@@ -178,7 +178,7 @@ and follow the
 Quickstart
 ----------
 
-FOOOF is object oriented, and uses a similar approach as used in scikit-learn.
+This module is object oriented, and uses a similar approach as used in scikit-learn.
 
 The algorithm works on frequency representations, that is power spectra in linear space.
 
@@ -211,9 +211,7 @@ Example output for the report of a FOOOF fit on an individual power spectrum:
 
 **Defining the model Settings**
 
-FOOOF also has some settings for the algorithm.
-
-These settings are:
+The settings for the algorithm are:
 
 * ``peak_width_limits`` sets the possible lower- and upper-bounds for the fitted peak widths.
 * ``max_n_peaks`` sets the maximum number of peaks to fit.
@@ -255,8 +253,8 @@ Example output from using FOOOFGroup across a group of power spectra:
 
 **Other Functionality**
 
-FOOOF also has functionality for running the FOOOF model across matrices of multiple power spectra,
-saving and loading results, creating reports from FOOOF outputs, analyzing model outputs,
+The module also includes functionality for fitting the model to matrices of multiple power spectra,
+saving and loading results, creating reports describing model fits, analyzing model outputs,
 plotting models and parameters, and simulating power spectra, all of which is described in the
 `documentation <https://fooof-tools.github.io/fooof/>`_.
 
