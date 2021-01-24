@@ -110,6 +110,8 @@ All code contributed to the module should follow these conventions:
     * Tests should be, at a minimum, 'smoke tests' that execute the code and check that it runs without raising an error
         * Where possible, accuracy checking is encouraged, though not strictly required
     * Merge candidates must pass all existing tests, and add new tests such as to not reduce test coverage
+    * To run the tests locally, pytest needs to be installed (`pip install pytest`)
+        * To run the tests on a local copy of the module, move into the folder and run `pytest .`
 
 6. Documentation Website
     * This project uses a documentation website, created using [sphinx](https://www.sphinx-doc.org/)
