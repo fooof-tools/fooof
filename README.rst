@@ -66,7 +66,7 @@ This documentation includes:
 - `Glossary <https://fooof-tools.github.io/fooof/glossary.html>`_:
   which defines all the key terms used in the module
 - `Reference <https://fooof-tools.github.io/fooof/reference.html>`_:
-  with information for reporting on using and reference the module
+  with information for how to reference and report on using the module
 
 Dependencies
 ------------
