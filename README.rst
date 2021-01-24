@@ -165,15 +165,14 @@ This project welcomes and encourages contributions from the community!
 To file bug reports and/or ask questions about this project, please use the
 `Github issue tracker <https://github.com/fooof-tools/fooof/issues>`_.
 
-Discussions of updates for the module happen on the
-`issues board <https://github.com/fooof-tools/fooof/issues>`_,
-for code updates and fixes, and on the
-`development page <https://github.com/fooof-tools/Development>`_
-for discussion on major developments to the module.
+To see and get involved in discussions about the module, check out:
 
-For all questions, reports, and contributions, please follow the
+- the `issues board <https://github.com/fooof-tools/fooof/issues>`_ for topics relating to code updates, bugs, and fixes
+- the `development page <https://github.com/fooof-tools/Development>`_ for discussion of potential major updates to the module
+
+When interacting with this project, please follow the
 `contribution guidelines <https://github.com/fooof-tools/fooof/blob/master/CONTRIBUTING.md>`_
-, and make sure to follow our
+and follow the
 `code of conduct <https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md>`_.
 
 Quickstart
