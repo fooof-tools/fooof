@@ -53,7 +53,7 @@ and see if there is anything you would be interested in helping with. If so, joi
 
 ## Project Scope
 
-All contributions to the module must be within it's scope.
+All contributions must be within the scope of the module.
 
 `fooof` is a module for parameterizing neural power spectra. This includes model fitting, management and analysis of resulting parameters, and utilities to visualize power spectra and model results. This module also includes functionality to simulate power spectra based on the model.
 
