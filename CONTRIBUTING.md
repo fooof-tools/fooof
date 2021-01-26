@@ -7,7 +7,7 @@ We welcome all contributions to the project that extend or improve code and/or d
 This page includes information for how to get involved and contribute to the project, and guidelines for how to do so.
 
 This project adheres to a
-[code of conduct](https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md)
+[code of conduct](https://github.com/fooof-tools/fooof/blob/main/CODE_OF_CONDUCT.md)
 that you are expected to uphold when participating in this project.
 
 On this page, you can find information on:
