@@ -8,7 +8,7 @@ import numpy as np
 ###################################################################################################
 ###################################################################################################
 
-DATA_URL = 'https://raw.githubusercontent.com/fooof-tools/fooof/master/data/'
+DATA_URL = 'https://raw.githubusercontent.com/fooof-tools/fooof/main/data/'
 
 def check_data_folder(folder):
     """Check if a data folder exists, and create if not.

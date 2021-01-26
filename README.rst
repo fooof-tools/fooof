@@ -13,7 +13,7 @@ FOOOF - fitting oscillations & one over f
 .. |BuildStatus| image:: https://travis-ci.com/fooof-tools/fooof.svg
 .. _BuildStatus: https://travis-ci.com/fooof-tools/fooof
 
-.. |Coverage| image:: https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg
+.. |Coverage| image:: https://codecov.io/gh/fooof-tools/fooof/branch/main/graph/badge.svg
 .. _Coverage: https://codecov.io/gh/fooof-tools/fooof
 
 .. |License| image:: https://img.shields.io/pypi/l/fooof.svg
@@ -171,9 +171,9 @@ To see and get involved in discussions about the module, check out:
 - the `development page <https://github.com/fooof-tools/Development>`_ for discussion of potential major updates to the module
 
 When interacting with this project, please use the
-`contribution guidelines <https://github.com/fooof-tools/fooof/blob/master/CONTRIBUTING.md>`_
+`contribution guidelines <https://github.com/fooof-tools/fooof/blob/main/CONTRIBUTING.md>`_
 and follow the
-`code of conduct <https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md>`_.
+`code of conduct <https://github.com/fooof-tools/fooof/blob/main/CODE_OF_CONDUCT.md>`_.
 
 Quickstart
 ----------
@@ -207,7 +207,7 @@ any identified peaks, reflecting periodic components.
 
 Example output for the report of a FOOOF fit on an individual power spectrum:
 
-.. image:: https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOF_report.png
+.. image:: https://raw.githubusercontent.com/fooof-tools/fooof/main/doc/img/FOOOF_report.png
 
 **Defining the model Settings**
 
@@ -249,7 +249,7 @@ We can fit the group of power spectra by doing:
 
 Example output from using FOOOFGroup across a group of power spectra:
 
-.. image:: https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOFGroup_report.png
+.. image:: https://raw.githubusercontent.com/fooof-tools/fooof/main/doc/img/FOOOFGroup_report.png
 
 **Other Functionality**
 
