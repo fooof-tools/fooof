@@ -8,7 +8,13 @@ Notes on FOOOF data objects:
     - this means no additional attributes can be defined (which is more memory efficient)
 """
 
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
+
+import numpy as np
+
+from fooof.core.modutils import safe_import
+
+pd = safe_import('pandas')
 
 ###################################################################################################
 ###################################################################################################
@@ -98,3 +104,33 @@ class SimParams(namedtuple('SimParams', ['aperiodic_params', 'periodic_params', 
     This object is a data object, based on a NamedTuple, with immutable data attributes.
     """
     __slots__ = ()
+
+
+class FitParams(np.ndarray):
+
+    def __new__(cls, results, labels):
+
+        return np.asarray(results).view(cls)
+
+    def __init__(self, results, labels):
+
+        self.results = results
+        self.labels = labels
+
+    def to_dict(self):
+
+        results = OrderedDict((k, v) for k, v in \
+            zip(self.labels, self.results.transpose()))
+
+        return results
+
+    def to_pandas(self):
+
+        if pd is None:
+            raise ValueError("Pandas is not installed.")
+
+        results = self.to_dict()
+
+        results = pd.DataFrame(results)
+
+        return results
