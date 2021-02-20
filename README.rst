@@ -71,7 +71,7 @@ This documentation includes:
 Dependencies
 ------------
 
-FOOOF is written in Python, and requires Python >= 3.5 to run.
+FOOOF is written in Python, and requires Python >= 3.6 to run.
 
 It has the following required dependencies:
 
