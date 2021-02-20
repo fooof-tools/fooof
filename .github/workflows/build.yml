@@ -1,0 +1,36 @@
+# This workflow runs CI tests: it installs Python dependencies and run tests across a variety of Python versions
+
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+        pip install pytest-cov
+        pip install -r requirements.txt
+        pip install -r optional-requirements.txt
+    - name: Test with pytest
+      run: |
+        pytest --cov=./
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1

@@ -10,8 +10,8 @@ FOOOF - fitting oscillations & one over f
 .. |Version| image:: https://img.shields.io/pypi/v/fooof.svg
 .. _Version: https://pypi.python.org/pypi/fooof/
 
-.. |BuildStatus| image:: https://travis-ci.com/fooof-tools/fooof.svg
-.. _BuildStatus: https://travis-ci.com/fooof-tools/fooof
+.. |BuildStatus| image:: https://github.com/fooof-tools/fooof/actions/workflows/build.yml/badge.svg
+.. _BuildStatus: https://github.com/fooof-tools/fooof/actions/workflows/build.yml
 
 .. |Coverage| image:: https://codecov.io/gh/fooof-tools/fooof/branch/main/graph/badge.svg
 .. _Coverage: https://codecov.io/gh/fooof-tools/fooof
