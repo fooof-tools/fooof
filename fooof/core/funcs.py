@@ -167,7 +167,9 @@ def get_pe_func(periodic_mode):
 
     """
 
-    if periodic_mode == 'gaussian':
+    if isinstance(periodic_mode, function):
+        pe_func = periodic_mode
+    elif periodic_mode == 'gaussian':
         pe_func = gaussian_function
     else:
         raise ValueError("Requested periodic mode not understood.")
@@ -194,7 +196,9 @@ def get_ap_func(aperiodic_mode):
         If the specified aperiodic mode label is not understood.
     """
 
-    if aperiodic_mode == 'fixed':
+    if isinstance(aperiodic_mode, function):
+        ap_func = aperiodic_mode
+    elif aperiodic_mode == 'fixed':
         ap_func = expo_nk_function
     elif aperiodic_mode == 'knee':
         ap_func = expo_function
