@@ -29,7 +29,7 @@ def test_model_to_dict(tresults, tbands):
     assert 'cf_2' in out
     assert np.isnan(out['cf_2'])
 
-    out = model_to_dataframe(tresults, peak_org=tbands)
+    out = model_to_dict(tresults, peak_org=tbands)
     assert 'alpha_cf' in out
 
 def test_model_to_dataframe(tresults, tbands, skip_if_no_pandas):
