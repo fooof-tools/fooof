@@ -56,6 +56,7 @@ Methods without defined docstrings import docs at runtime, from aliased external
 
 import warnings
 from copy import deepcopy
+from inspect import signature
 
 import numpy as np
 from numpy.linalg import LinAlgError
@@ -77,7 +78,7 @@ from fooof.plts.fm import plot_fm
 from fooof.plts.style import style_spectrum_plot
 from fooof.utils.data import trim_spectrum
 from fooof.utils.params import compute_gauss_std
-from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
+from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData, FitParams
 from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 
 ###################################################################################################
@@ -484,6 +485,14 @@ class FOOOF():
             # Convert gaussian definitions to peak parameters
             self.peak_params_ = self._create_peak_params(self.gaussian_params_)
 
+            # Create a flexible datatype object for ap/pe parameters
+            pe_labels = list(signature(self._pe_func).parameters.keys())[1:]
+            ap_labels = list(signature(self._ap_func).parameters.keys())[1:]
+
+            self.peak_params_ = FitParams(self.peak_params_, pe_labels)
+            self.gaussian_params_ = FitParams(self.gaussian_params_, pe_labels)
+            self.aperiodic_params_ = FitParams(self.aperiodic_params_, ap_labels)
+
             # Calculate R^2 and error of the model fit
             self._calc_r_squared()
             self._calc_error()
@@ -635,7 +644,6 @@ class FOOOF():
 
         return FOOOFResults(**{key.strip('_') : getattr(self, key) \
             for key in OBJ_DESC['results']})
-
 
     @copy_doc_func_to_method(plot_fm)
     def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,

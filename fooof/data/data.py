@@ -84,7 +84,29 @@ class FOOOFResults(namedtuple('FOOOFResults', ['aperiodic_params', 'peak_params'
     -----
     This object is a data object, based on a NamedTuple, with immutable data attributes.
     """
+
     __slots__ = ()
+
+    def to_dict(self):
+
+        # Combined peak, aperiodic, and goodness of fit params
+        results_dict = OrderedDict()
+        results_dict.update(self.peak_params.to_dict())
+        results_dict.update(self.aperiodic_params.to_dict())
+        results_dict.update(OrderedDict(r_squared=self.r_squared, error=self.error))
+
+        return results_dict
+
+    def to_pandas(self):
+
+        if pd is None:
+            raise ValueError("Pandas is not installed.")
+
+        results_dict = self.to_dict()
+
+        results_df = pd.DataFrame(results_dict)
+
+        return results_df
 
 
 class SimParams(namedtuple('SimParams', ['aperiodic_params', 'periodic_params', 'nlv'])):
@@ -108,29 +130,29 @@ class SimParams(namedtuple('SimParams', ['aperiodic_params', 'periodic_params', 
 
 class FitParams(np.ndarray):
 
-    def __new__(cls, results, labels):
+    def __new__(cls, params, labels):
 
-        return np.asarray(results).view(cls)
+        return np.asarray(params).view(cls)
 
-    def __init__(self, results, labels):
+    def __init__(self, params, labels):
 
-        self.results = results
+        self.params = params
         self.labels = labels
 
     def to_dict(self):
 
-        results = OrderedDict((k, v) for k, v in \
-            zip(self.labels, self.results.transpose()))
+        params = OrderedDict((k, v) for k, v in \
+            zip(self.labels, self.params.transpose()))
 
-        return results
+        return params
 
     def to_pandas(self):
 
         if pd is None:
             raise ValueError("Pandas is not installed.")
 
-        results = self.to_dict()
+        params = self.to_dict()
 
-        results = pd.DataFrame(results)
+        params = pd.DataFrame(params)
 
-        return results
+        return params

@@ -7,6 +7,8 @@ NOTES
     - They are left available for easy swapping back in, if desired.
 """
 
+from inspect import isfunction
+
 import numpy as np
 
 from fooof.core.errors import InconsistentDataError
@@ -14,15 +16,21 @@ from fooof.core.errors import InconsistentDataError
 ###################################################################################################
 ###################################################################################################
 
-def gaussian_function(xs, *params):
+def gaussian_function(xs, cf, pw, bw, *params):
     """Gaussian fitting function.
 
     Parameters
     ----------
     xs : 1d array
         Input x-axis values.
+    cf : float
+        The center of the gaussian.
+    pw : float
+        The height of the gaussian.
+    bw : float
+        The width of the gaussian.
     *params : float
-        Parameters that define gaussian function.
+        Additional centers, heights, and widths.
 
     Returns
     -------
@@ -32,16 +40,17 @@ def gaussian_function(xs, *params):
 
     ys = np.zeros_like(xs)
 
+    params = [cf, pw, bw, *params]
+
     for ii in range(0, len(params), 3):
 
         ctr, hgt, wid = params[ii:ii+3]
-
         ys = ys + hgt * np.exp(-(xs-ctr)**2 / (2*wid**2))
 
     return ys
 
 
-def expo_function(xs, *params):
+def expo_function(xs, offset, knee, exp):
     """Exponential fitting function, for fitting aperiodic component with a 'knee'.
 
     NOTE: this function requires linear frequency (not log).
@@ -50,26 +59,32 @@ def expo_function(xs, *params):
     ----------
     xs : 1d array
         Input x-axis values.
-    *params : float
-        Parameters (offset, knee, exp) that define Lorentzian function:
-        y = 10^offset * (1/(knee + x^exp))
+    offset : float
+        The y-intercept of the fit.
+    knee : float
+        The bend in the fit.
+    exp : float
+        The exponential slope of the fit.
 
     Returns
     -------
     ys : 1d array
         Output values for exponential function.
+
+    Notes
+    -----
+    Parameters (offset, knee, exp) that define Lorentzian function:
+    y = 10^offset * (1/(knee + x^exp))
     """
 
     ys = np.zeros_like(xs)
-
-    offset, knee, exp = params
 
     ys = ys + offset - np.log10(knee + xs**exp)
 
     return ys
 
 
-def expo_nk_function(xs, *params):
+def expo_nk_function(xs, offset, exp):
     """Exponential fitting function, for fitting aperiodic component without a 'knee'.
 
     NOTE: this function requires linear frequency (not log).
@@ -78,34 +93,40 @@ def expo_nk_function(xs, *params):
     ----------
     xs : 1d array
         Input x-axis values.
-    *params : float
-        Parameters (offset, exp) that define Lorentzian function:
-        y = 10^off * (1/(x^exp))
+    offset : float
+        The y-intercept of the fit.
+    exp : float
+        The exponential slope of the fit.
 
     Returns
     -------
     ys : 1d array
         Output values for exponential function, without a knee.
+
+    Notes
+    -----
+    Parameters (offset, exp) that define Lorentzian function:
+    y = 10^off * (1/(x^exp))
     """
 
     ys = np.zeros_like(xs)
-
-    offset, exp = params
 
     ys = ys + offset - np.log10(xs**exp)
 
     return ys
 
 
-def linear_function(xs, *params):
+def linear_function(xs, offset, slope):
     """Linear fitting function.
 
     Parameters
     ----------
     xs : 1d array
         Input x-axis values.
-    *params : float
-        Parameters that define linear function.
+    offset : float
+        The y-intercept of the fit.
+    slope : float
+        The slope of the fit.
 
     Returns
     -------
@@ -115,22 +136,24 @@ def linear_function(xs, *params):
 
     ys = np.zeros_like(xs)
 
-    offset, slope = params
-
     ys = ys + offset + (xs*slope)
 
     return ys
 
 
-def quadratic_function(xs, *params):
+def quadratic_function(xs, offset, slope, curve):
     """Quadratic fitting function.
 
     Parameters
     ----------
     xs : 1d array
         Input x-axis values.
-    *params : float
-        Parameters that define quadratic function.
+    offset : float
+        The y-intercept of the fit.
+    slope : float
+        The slope of the fit.
+    curve : float
+        The curve of the fit.
 
     Returns
     -------
@@ -139,8 +162,6 @@ def quadratic_function(xs, *params):
     """
 
     ys = np.zeros_like(xs)
-
-    offset, slope, curve = params
 
     ys = ys + offset + (xs*slope) + ((xs**2)*curve)
 
@@ -167,7 +188,7 @@ def get_pe_func(periodic_mode):
 
     """
 
-    if isinstance(periodic_mode, function):
+    if isfunction(periodic_mode):
         pe_func = periodic_mode
     elif periodic_mode == 'gaussian':
         pe_func = gaussian_function
@@ -196,7 +217,7 @@ def get_ap_func(aperiodic_mode):
         If the specified aperiodic mode label is not understood.
     """
 
-    if isinstance(aperiodic_mode, function):
+    if isfunction(aperiodic_mode):
         ap_func = aperiodic_mode
     elif aperiodic_mode == 'fixed':
         ap_func = expo_nk_function
