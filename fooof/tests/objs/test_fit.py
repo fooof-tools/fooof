@@ -12,9 +12,12 @@ from py.test import raises
 from fooof.core.items import OBJ_DESC
 from fooof.core.errors import FitError
 from fooof.core.utils import group_three
+from fooof.core.modutils import safe_import
+from fooof.core.errors import DataError, NoDataError, InconsistentDataError
 from fooof.sim import gen_freqs, gen_power_spectrum
 from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
-from fooof.core.errors import DataError, NoDataError, InconsistentDataError
+
+pd = safe_import('pandas')
 
 from fooof.tests.settings import TEST_DATA_PATH
 from fooof.tests.tutils import get_tfm, plot_test
@@ -425,3 +428,10 @@ def test_fooof_check_data():
     # Model fitting should execute, but return a null model fit, given the NaNs, without failing
     tfm.fit()
     assert not tfm.has_model
+
+def test_fooof_to_df(tfm, tbands, skip_if_no_pandas):
+
+    df1 = tfm.to_df(2)
+    assert isinstance(df1, pd.Series)
+    df2 = tfm.to_df(tbands)
+    assert isinstance(df2, pd.Series)
