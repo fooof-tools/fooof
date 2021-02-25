@@ -168,7 +168,7 @@ def _add_peaks_shade(fm, plt_log, ax, **plot_kwargs):
     kwargs = check_plot_kwargs(plot_kwargs,
                                {'color' : PLT_COLORS['periodic'], 'alpha' : 0.25})
 
-    for peak in fm.get_params('gaussian_params'):
+    for peak in fm.gaussian_params_:
 
         peak_freqs = np.log10(fm.freqs) if plt_log else fm.freqs
         peak_line = fm._ap_fit + gen_periodic(fm.freqs, peak)
@@ -195,7 +195,7 @@ def _add_peaks_dot(fm, plt_log, ax, **plot_kwargs):
                                {'color' : PLT_COLORS['periodic'],
                                 'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6})
 
-    for peak in fm.get_params('peak_params'):
+    for peak in fm.peak_params_:
 
         ap_point = np.interp(peak[0], fm.freqs, fm._ap_fit)
         freq_point = np.log10(peak[0]) if plt_log else peak[0]
@@ -226,7 +226,7 @@ def _add_peaks_outline(fm, plt_log, ax, **plot_kwargs):
                                {'color' : PLT_COLORS['periodic'],
                                 'alpha' : 0.7, 'lw' : 1.5})
 
-    for peak in fm.get_params('gaussian_params'):
+    for peak in fm.gaussian_params_:
 
         # Define the frequency range around each peak to plot - peak bandwidth +/- 3
         peak_range = [peak[0] - peak[2]*3, peak[0] + peak[2]*3]
@@ -260,7 +260,8 @@ def _add_peaks_line(fm, plt_log, ax, **plot_kwargs):
                                 'alpha' : 0.7, 'lw' : 1.4, 'ms' : 10})
 
     ylims = ax.get_ylim()
-    for peak in fm.get_params('peak_params'):
+
+    for peak in fm.peak_params_:
 
         freq_point = np.log10(peak[0]) if plt_log else peak[0]
         ax.plot([freq_point, freq_point], ylims, '-', **kwargs)
