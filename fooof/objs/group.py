@@ -354,7 +354,7 @@ class FOOOFGroup(FOOOF):
 
         Notes
         -----
-        When extracting peak informartion ('peak_params' or 'gaussian_params'), an additional column
+        When extracting peak information ('peak_params' or 'gaussian_params'), an additional column
         is appended to the returned array, indicating the index of the model that the peak came from.
         """
 
