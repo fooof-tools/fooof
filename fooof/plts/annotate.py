@@ -133,7 +133,7 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperio
     #   See: https://github.com/matplotlib/matplotlib/issues/12820. Fixed in 3.2.1.
     bug_buff = 0.000001
 
-    if annotate_peaks:
+    if annotate_peaks and fm.n_peaks_:
 
         # Extract largest peak, to annotate, grabbing gaussian params
         gauss = get_band_peak_fm(fm, fm.freq_range, attribute='gaussian_params')
