@@ -586,9 +586,7 @@ class FOOOF():
 
         Notes
         -----
-        For further description of the data you can extract, check the FOOOFResults documentation.
-
-        If there is no data on periodic features, this method will return NaN.
+        If there are no fit peak (no peak parameters), this method will return NaN.
         """
 
         if not self.has_model:

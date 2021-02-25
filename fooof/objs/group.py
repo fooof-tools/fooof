@@ -354,7 +354,8 @@ class FOOOFGroup(FOOOF):
 
         Notes
         -----
-        For further description of the data you can extract, check the FOOOFResults documentation.
+        When extracting peak informartion ('peak_params' or 'gaussian_params'), an additional column
+        is appended to the returned array, indicating the index of the model that the peak came from.
         """
 
         if not self.has_model:
