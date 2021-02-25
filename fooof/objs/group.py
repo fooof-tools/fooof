@@ -354,7 +354,8 @@ class FOOOFGroup(FOOOF):
 
         Notes
         -----
-        For further description of the data you can extract, check the FOOOFResults documentation.
+        When extracting peak information ('peak_params' or 'gaussian_params'), an additional column
+        is appended to the returned array, indicating the index of the model that the peak came from.
         """
 
         if not self.has_model:
@@ -375,20 +376,17 @@ class FOOOFGroup(FOOOF):
         # As a special case, peak_params are pulled out in a way that appends
         #  an extra column, indicating which FOOOF run each peak comes from
         if name in ('peak_params', 'gaussian_params'):
-            out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
-                            for index, data in enumerate(self.group_results)])
+
+            # Collect peak data, appending the index of the model it comes from
+            out = np.vstack([np.insert(getattr(data, name), 3, index, axis=1)
+                             for index, data in enumerate(self.group_results)])
+
             # This updates index to grab selected column, and the last column
             #  This last column is the 'index' column (FOOOF object source)
             if col is not None:
                 col = [col, -1]
         else:
             out = np.array([getattr(data, name) for data in self.group_results])
-
-        # Some data can end up as a list of separate arrays
-        #   If so, concatenate it all into one 2d array
-        if isinstance(out[0], np.ndarray):
-            out = np.concatenate([arr.reshape(1, len(arr)) \
-                if arr.ndim == 1 else arr for arr in out], 0)
 
         # Select out a specific column, if requested
         if col is not None:
