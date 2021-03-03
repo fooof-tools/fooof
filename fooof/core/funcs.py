@@ -7,6 +7,8 @@ NOTES
     - They are left available for easy swapping back in, if desired.
 """
 
+from inspect import isfunction
+
 import numpy as np
 
 from fooof.core.errors import InconsistentDataError
@@ -167,7 +169,7 @@ def get_pe_func(periodic_mode):
 
     """
 
-    if isinstance(periodic_mode, function):
+    if isfunction(periodic_mode):
         pe_func = periodic_mode
     elif periodic_mode == 'gaussian':
         pe_func = gaussian_function
@@ -196,7 +198,7 @@ def get_ap_func(aperiodic_mode):
         If the specified aperiodic mode label is not understood.
     """
 
-    if isinstance(aperiodic_mode, function):
+    if isfunction(aperiodic_mode):
         ap_func = aperiodic_mode
     elif aperiodic_mode == 'fixed':
         ap_func = expo_nk_function
