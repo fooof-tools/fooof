@@ -41,7 +41,7 @@ A description of and introduction to the power spectrum model.
 from fooof import FOOOF
 from fooof.sim.gen import gen_power_spectrum
 from fooof.sim.utils import set_random_seed
-from fooof.plts.spectra import plot_spectrum
+from fooof.plts.spectra import plot_spectra
 from fooof.plts.annotate import plot_annotated_model
 
 ###################################################################################################
@@ -81,8 +81,8 @@ fm2.fit(freqs2, powers2)
 ###################################################################################################
 
 # Plot one of the example power spectra
-plot_spectrum(freqs1, powers1, log_powers=True,
-              color='black', label='Original Spectrum')
+plot_spectra(freqs1, powers1, log_powers=True,
+             color='black', label='Original Spectrum')
 
 ###################################################################################################
 # Conceptual Overview

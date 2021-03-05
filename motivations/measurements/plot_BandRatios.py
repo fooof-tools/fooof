@@ -44,7 +44,7 @@ from fooof.bands import Bands
 from fooof.utils import trim_spectrum
 from fooof.sim.gen import gen_power_spectrum
 from fooof.sim.utils import set_random_seed
-from fooof.plts.spectra import plot_spectrum_shading, plot_spectra_shading
+from fooof.plts.spectra import plot_spectra_shading
 
 ###################################################################################################
 
@@ -124,9 +124,9 @@ def calc_band_ratio(freqs, powers, low_band, high_band):
 ###################################################################################################
 
 # Plot the power spectrum, shading the frequency bands used for the ratio
-plot_spectrum_shading(freqs, powers, [bands.theta, bands.beta],
-                      color='black', shade_colors=shade_color,
-                      log_powers=True, linewidth=3.5)
+plot_spectra_shading(freqs, powers, [bands.theta, bands.beta],
+                     color='black', shade_colors=shade_color,
+                     log_powers=True, linewidth=3.5)
 
 ###################################################################################################
 
