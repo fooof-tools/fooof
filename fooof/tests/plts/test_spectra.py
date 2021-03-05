@@ -10,15 +10,10 @@ from fooof.plts.spectra import *
 ###################################################################################################
 
 @plot_test
-def test_plot_spectrum(tfm, skip_if_no_mpl):
+def test_plot_spectra(tfm, tfg, skip_if_no_mpl):
 
-    plot_spectrum(tfm.freqs, tfm.power_spectrum)
-
-    # Test with logging both axes
-    plot_spectrum(tfm.freqs, tfm.power_spectrum, True, True)
-
-@plot_test
-def test_plot_spectra(tfg, skip_if_no_mpl):
+    # Test with 1d inputs - 1d freq array and 1d power spectrum
+    plot_spectra(tfm.freqs, tfm.power_spectrum)
 
     # Test with 1d inputs - 1d freq array and list of 1d power spectra
     plot_spectra(tfg.freqs, [tfg.power_spectra[0, :], tfg.power_spectra[1, :]])
@@ -34,12 +29,9 @@ def test_plot_spectra(tfg, skip_if_no_mpl):
     plot_spectra(tfg.freqs, [tfg.power_spectra[0, :], tfg.power_spectra[1, :]], labels=['A', 'B'])
 
 @plot_test
-def test_plot_spectrum_shading(tfm, skip_if_no_mpl):
+def test_plot_spectra_shading(tfm, tfg, skip_if_no_mpl):
 
-    plot_spectrum_shading(tfm.freqs, tfm.power_spectrum, shades=[8, 12], add_center=True)
-
-@plot_test
-def test_plot_spectra_shading(tfg, skip_if_no_mpl):
+    plot_spectra_shading(tfm.freqs, tfm.power_spectrum, shades=[8, 12], add_center=True)
 
     plot_spectra_shading(tfg.freqs, [tfg.power_spectra[0, :], tfg.power_spectra[1, :]],
                          shades=[8, 12], add_center=True)
