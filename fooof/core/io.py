@@ -33,36 +33,7 @@ def fname(file_name, extension):
     return file_name
 
 
-def fpath(file_path, file_name):
-    """Build the full file path from file name and directory.
-
-    Parameters
-    ----------
-    file_path : str or None
-        Path to the directory where the file is located.
-    file_name : str
-        Name of the file.
-
-    Returns
-    -------
-    full_path : str
-        Full file path to the file, including directory, if provided.
-
-    Notes
-    -----
-    This function is mainly used to deal with the case in which file_path is None.
-    """
-
-    if not file_path:
-        full_path = file_name
-    else:
-        full_path = os.path.join(file_path, file_name)
-
-    return full_path
-
-
-def save_fm(fm, file_name, file_path=None, append=False,
-            save_results=False, save_settings=False, save_data=False):
+def save_fm(fm, file_name, append=False, save_results=False, save_settings=False, save_data=False):
     """Save out data, results and/or settings from a FOOOF object into a JSON file.
 
     Parameters
@@ -70,9 +41,7 @@ def save_fm(fm, file_name, file_path=None, append=False,
     fm : FOOOF
         Object to save data from.
     file_name : str or FileObject
-        File to save data to.
-    file_path : str, optional
-        Path to directory to save to. If None, saves to current directory.
+        File to save data to. Absolute or relative paths may be included.
     append : bool, optional, default: False
         Whether to append to an existing file, if available.
         This option is only valid (and only used) if 'file_name' is a str.
@@ -101,12 +70,12 @@ def save_fm(fm, file_name, file_path=None, append=False,
 
     # Save out - create new file, (creates a JSON file)
     if isinstance(file_name, str) and not append:
-        with open(fpath(file_path, fname(file_name, 'json')), 'w') as outfile:
+        with open(fname(file_name, 'json'), 'w') as outfile:
             json.dump(obj_dict, outfile)
 
     # Save out - append to file_name (appends to a JSONlines file)
     elif isinstance(file_name, str) and append:
-        with open(fpath(file_path, fname(file_name, 'json')), 'a') as outfile:
+        with open(fname(file_name, 'json'), 'a') as outfile:
             json.dump(obj_dict, outfile)
             outfile.write('\n')
 
@@ -119,8 +88,7 @@ def save_fm(fm, file_name, file_path=None, append=False,
         raise ValueError("Save file not understood.")
 
 
-def save_fg(fg, file_name, file_path=None, append=False,
-            save_results=False, save_settings=False, save_data=False):
+def save_fg(fg, file_name, append=False, save_results=False, save_settings=False, save_data=False):
     """Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.
 
     Parameters
@@ -128,9 +96,7 @@ def save_fg(fg, file_name, file_path=None, append=False,
     fg : FOOOFGroup
         Object to save data from.
     file_name : str or FileObject
-        File to save data to.
-    file_path : str, optional
-        Path to directory to load from. If None, loads from current directory.
+        File to save data to, including absolute or relative path.
     append : bool, optional, default: False
         Whether to append to an existing file, if available.
         This option is only valid (and only used) if 'file_name' is a str.
@@ -152,12 +118,12 @@ def save_fg(fg, file_name, file_path=None, append=False,
 
     # Save to string specified file, do not append
     if isinstance(file_name, str) and not append:
-        with open(fpath(file_path, fname(file_name, 'json')), 'w') as f_obj:
+        with open(fname(file_name, 'json'), 'w') as f_obj:
             _save_fg(fg, f_obj, save_results, save_settings, save_data)
 
     # Save to string specified file, appending
     elif isinstance(file_name, str) and append:
-        with open(fpath(file_path, fname(file_name, 'json')), 'a') as f_obj:
+        with open(fname(file_name, 'json'), 'a') as f_obj:
             _save_fg(fg, f_obj, save_results, save_settings, save_data)
 
     # Save to file-object specified file
@@ -168,15 +134,13 @@ def save_fg(fg, file_name, file_path=None, append=False,
         raise ValueError("Save file not understood.")
 
 
-def load_json(file_name, file_path):
+def load_json(file_name):
     """Load json file.
 
     Parameters
     ----------
     file_name : str or FileObject
-        File to load data from.
-    file_path : str
-        Path to directory to load from.
+        File to load data from, including absolute or relative path.
 
     Returns
     -------
@@ -186,7 +150,7 @@ def load_json(file_name, file_path):
 
     # Load data from file
     if isinstance(file_name, str):
-        with open(fpath(file_path, fname(file_name, 'json')), 'r') as infile:
+        with open(fname(file_name, 'json'), 'r') as infile:
             data = json.load(infile)
     elif isinstance(file_name, io.IOBase):
         data = json.loads(file_name.readline())
@@ -197,15 +161,13 @@ def load_json(file_name, file_path):
     return data
 
 
-def load_jsonlines(file_name, file_path):
+def load_jsonlines(file_name):
     """Load a json-lines file, yielding data line by line.
 
     Parameters
     ----------
     file_name : str
-        File to load data from.
-    file_path : str
-        Path to directory from load from.
+        File to load data from, including absolute or relative path.
 
     Yields
     ------
@@ -213,13 +175,13 @@ def load_jsonlines(file_name, file_path):
         Dictionary of data loaded from file.
     """
 
-    with open(fpath(file_path, fname(file_name, 'json')), 'r') as f_obj:
+    with open(fname(file_name, 'json'), 'r') as f_obj:
 
         while True:
 
             # Load each line, as JSON file
             try:
-                yield load_json(f_obj, '')
+                yield load_json(f_obj)
 
             # Break off when get a JSON error - end of the file
             except JSONDecodeError:
@@ -245,11 +207,11 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
 
     # Since there is a single set of object settings, save them out once, at the top
     if save_settings:
-        save_fm(fg, file_name=f_obj, file_path=None, append=False, save_settings=True)
+        save_fm(fg, file_name=f_obj, append=False, save_settings=True)
 
     # For results & data, loop across all data and/or models, and save each out to a new line
     if save_results or save_data:
         for ind in range(len(fg.group_results)):
             fm = fg.get_fooof(ind, regenerate=False)
-            save_fm(fm, file_name=f_obj, file_path=None, append=False,
+            save_fm(fm, file_name=f_obj, append=False,
                     save_results=save_results, save_data=save_data)

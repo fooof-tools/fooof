@@ -7,7 +7,7 @@ This file contains plotting functions that take as input a FOOOF object.
 
 import numpy as np
 
-from fooof.core.io import fname, fpath
+from fooof.core.io import fname
 from fooof.core.utils import nearest_ind
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.sim.gen import gen_periodic
@@ -25,8 +25,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 
 @check_dependency(plt, 'matplotlib')
 def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=True,
-            save_fig=False, file_name=None, file_path=None,
-            ax=None, plot_style=style_spectrum_plot,
+            file_name=None, ax=None, plot_style=style_spectrum_plot,
             data_kwargs=None, model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None):
     """Plot the power spectrum and model fit results from a FOOOF object.
 
@@ -43,13 +42,9 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         Whether to plot the frequency values in log10 spacing.
     add_legend : boolean, optional, default: False
         Whether to add a legend describing the plot components.
-    save_fig : bool, optional, default: False
-        Whether to save out a copy of the plot.
-    file_name : str, optional
-        Name to give the saved out file.
-    file_path : str, optional
-        Path to directory to save to. If None, saves to current directory.
-    ax : matplotlib.Axes, optional
+    file_name : str, optional, default: None
+        Name with format to save as, including absolute or relative path.
+    ax : matplotlib.Axes, optional, default: None
         Figure axes upon which to plot.
     plot_style : callable, optional, default: style_spectrum_plot
         A function to call to apply styling & aesthetics to the plot.
@@ -100,10 +95,8 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
     check_n_style(plot_style, ax, log_freqs, True)
 
     # Save out figure, if requested
-    if save_fig:
-        if not file_name:
-            raise ValueError("Input 'file_name' is required to save out the plot.")
-        plt.savefig(fpath(file_path, fname(file_name, 'png')))
+    if file_name is not None:
+        plt.savefig(fname(file_name, 'png'))
 
 
 def _add_peaks(fm, approach, plt_log, ax, peak_kwargs):

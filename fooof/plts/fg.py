@@ -5,7 +5,7 @@ Notes
 This file contains plotting functions that take as input a FOOOFGroup object.
 """
 
-from fooof.core.io import fname, fpath
+from fooof.core.io import fname
 from fooof.core.errors import NoModelError
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.settings import PLT_FIGSIZES
@@ -18,19 +18,15 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_fg(fg, save_fig=False, file_name=None, file_path=None):
+def plot_fg(fg, file_name=None):
     """Plot a figure with subplots visualizing the parameters from a FOOOFGroup object.
 
     Parameters
     ----------
     fg : FOOOFGroup
         Object containing results from fitting a group of power spectra.
-    save_fig : bool, optional, default: False
-        Whether to save out a copy of the plot.
-    file_name : str, optional
-        Name to give the saved out file.
-    file_path : str, optional
-        Path to directory to save to. If None, saves to current directory.
+    file_name : str, optional, default: None
+        Name with format to save as, including absolute or relative path.
 
     Raises
     ------
@@ -56,10 +52,8 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None):
     ax2 = plt.subplot(gs[1, :])
     plot_fg_peak_cens(fg, ax2)
 
-    if save_fig:
-        if not file_name:
-            raise ValueError("Input 'file_name' is required to save out the plot.")
-        plt.savefig(fpath(file_path, fname(file_name, 'png')))
+    if file_name is not None:
+        plt.savefig(fname(file_name, 'png'))
 
 
 @check_dependency(plt, 'matplotlib')

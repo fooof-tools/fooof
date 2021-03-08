@@ -1,6 +1,6 @@
 """Generate reports from FOOOF objects."""
 
-from fooof.core.io import fname, fpath
+from fooof.core.io import fname
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.core.strings import gen_settings_str, gen_results_fm_str, gen_results_fg_str
 from fooof.plts.fg import plot_fg_ap, plot_fg_gf, plot_fg_peak_cens
@@ -22,7 +22,7 @@ SAVE_FORMAT = 'pdf'
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def save_report_fm(fm, file_name, file_path=None, plt_log=False):
+def save_report_fm(fm, file_name, plt_log=False):
     """Generate and save out a PDF report for a power spectrum model fit.
 
     Parameters
@@ -30,9 +30,7 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
     fm : FOOOF
         Object with results from fitting a power spectrum.
     file_name : str
-        Name to give the saved out file.
-    file_path : str, optional
-        Path to directory to save to. If None, saves to current directory.
+        Name of output file to save, including absolute or relative path.
     plt_log : bool, optional, default: False
         Whether or not to plot the frequency axis in log space.
     """
@@ -62,12 +60,12 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
     ax2.set_yticks([])
 
     # Save out the report
-    plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+    plt.savefig(fname(file_name, SAVE_FORMAT))
     plt.close()
 
 
 @check_dependency(plt, 'matplotlib')
-def save_report_fg(fg, file_name, file_path=None):
+def save_report_fg(fg, file_name):
     """Generate and save out a PDF report for a group of power spectrum models.
 
     Parameters
@@ -75,9 +73,7 @@ def save_report_fg(fg, file_name, file_path=None):
     fg : FOOOFGroup
         Object with results from fitting a group of power spectra.
     file_name : str
-        Name to give the saved out file.
-    file_path : str, optional
-        Path to directory to save to. If None, saves to current directory.
+        Name of output file to save, including absolute or relative path.
     """
 
     # Initialize figure
@@ -105,5 +101,5 @@ def save_report_fg(fg, file_name, file_path=None):
     plot_fg_peak_cens(fg, ax3)
 
     # Save out the report
-    plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+    plt.savefig(fname(file_name, SAVE_FORMAT))
     plt.close()

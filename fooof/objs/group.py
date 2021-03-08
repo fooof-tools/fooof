@@ -398,40 +398,38 @@ class FOOOFGroup(FOOOF):
 
 
     @copy_doc_func_to_method(plot_fg)
-    def plot(self, save_fig=False, file_name=None, file_path=None):
+    def plot(self, file_name=None):
 
-        plot_fg(self, save_fig, file_name, file_path)
+        plot_fg(self, file_name)
 
 
     @copy_doc_func_to_method(save_report_fg)
-    def save_report(self, file_name, file_path=None):
+    def save_report(self, file_name):
 
-        save_report_fg(self, file_name, file_path)
+        save_report_fg(self, file_name)
 
 
     @copy_doc_func_to_method(save_fg)
-    def save(self, file_name, file_path=None, append=False,
+    def save(self, file_name, append=False,
              save_results=False, save_settings=False, save_data=False):
 
-        save_fg(self, file_name, file_path, append, save_results, save_settings, save_data)
+        save_fg(self, file_name, append, save_results, save_settings, save_data)
 
 
-    def load(self, file_name, file_path=None):
+    def load(self, file_name):
         """Load FOOOFGroup data from file.
 
         Parameters
         ----------
         file_name : str
-            File to load data from.
-        file_path : str, optional
-            Path to directory to load from. If None, loads from current directory.
+            File to load data from, including absolute or relative path.
         """
 
         # Clear results so as not to have possible prior results interfere
         self._reset_group_results()
 
         power_spectra = []
-        for ind, data in enumerate(load_jsonlines(file_name, file_path)):
+        for ind, data in enumerate(load_jsonlines(file_name)):
 
             self._add_from_dict(data)
 

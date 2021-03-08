@@ -3,15 +3,13 @@
 ###################################################################################################
 ###################################################################################################
 
-def load_fooof(file_name, file_path=None, regenerate=True):
+def load_fooof(file_name, regenerate=True):
     """Load a FOOOF file into a FOOOF object.
 
     Parameters
     ----------
     file_name : str or FileObject
-        File to load the data from.
-    file_path : str or None, optional
-        Path to directory to load from. If None, loads from current directory.
+        File to load the data from, including absolute or relative path.
     regenerate : bool, optional, default: True
         Whether to regenerate the model fit from the loaded data, if data is available.
 
@@ -26,20 +24,18 @@ def load_fooof(file_name, file_path=None, regenerate=True):
     fm = FOOOF()
 
     # Load data into object
-    fm.load(file_name, file_path, regenerate)
+    fm.load(file_name, regenerate)
 
     return fm
 
 
-def load_fooofgroup(file_name, file_path=None):
+def load_fooofgroup(file_name):
     """Load data from file into a FOOOFGroup object.
 
     Parameters
     ----------
     file_name : str
-        File to load data data.
-    file_path : str, optional
-        Path to directory to load from. If None, loads from current directory.
+        File to load data data, including absolute or relative path.
 
     Returns
     -------
@@ -52,6 +48,6 @@ def load_fooofgroup(file_name, file_path=None):
     fg = FOOOFGroup()
 
     # Load data into object
-    fg.load(file_name, file_path)
+    fg.load(file_name)
 
     return fg

@@ -633,38 +633,34 @@ class FOOOF():
 
 
     @copy_doc_func_to_method(plot_fm)
-    def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,
-             add_legend=True, save_fig=False, file_name=None, file_path=None,
-             ax=None, plot_style=style_spectrum_plot,
-             data_kwargs=None, model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None):
+    def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=True,
+             file_name=None, ax=None, plot_style=style_spectrum_plot, data_kwargs=None,
+             model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None):
 
-        plot_fm(self, plot_peaks, plot_aperiodic, plt_log, add_legend,
-                save_fig, file_name, file_path, ax, plot_style,
-                data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs)
+        plot_fm(self, plot_peaks, plot_aperiodic, plt_log, add_legend, file_name, ax,
+                plot_style, data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs)
 
 
     @copy_doc_func_to_method(save_report_fm)
-    def save_report(self, file_name, file_path=None, plt_log=False):
+    def save_report(self, file_name, plt_log=False):
 
-        save_report_fm(self, file_name, file_path, plt_log)
+        save_report_fm(self, file_name, plt_log)
 
 
     @copy_doc_func_to_method(save_fm)
-    def save(self, file_name, file_path=None, append=False,
+    def save(self, file_name, append=False,
              save_results=False, save_settings=False, save_data=False):
 
-        save_fm(self, file_name, file_path, append, save_results, save_settings, save_data)
+        save_fm(self, file_name, append, save_results, save_settings, save_data)
 
 
-    def load(self, file_name, file_path=None, regenerate=True):
+    def load(self, file_name, regenerate=True):
         """Load in a FOOOF formatted JSON file to the current object.
 
         Parameters
         ----------
         file_name : str or FileObject
-            File to load data from.
-        file_path : str or None, optional
-            Path to directory to load from. If None, loads from current directory.
+            File to load data from, including absolute or relative path.
         regenerate : bool, optional, default: True
             Whether to regenerate the model fit from the loaded data, if data is available.
         """
@@ -673,7 +669,7 @@ class FOOOF():
         self._reset_data_results(True, True, True)
 
         # Load JSON file, add to self and check loaded data
-        data = load_json(file_name, file_path)
+        data = load_json(file_name)
         self._add_from_dict(data)
         self._check_loaded_settings(data)
         self._check_loaded_results(data)
