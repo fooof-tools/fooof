@@ -6,6 +6,7 @@ The tests here are not strong tests for accuracy.
 They serve rather as 'smoke tests', for if anything fails completely.
 """
 
+import os
 import numpy as np
 from py.test import raises
 
@@ -179,8 +180,8 @@ def test_fooof_load():
 
     # Test loading just results
     tfm = FOOOF(verbose=False)
-    file_name_res = 'test_fooof_res'
-    tfm.load(file_name_res, TEST_DATA_PATH)
+    file_name_res = os.path.join(TEST_DATA_PATH, 'test_fooof_res')
+    tfm.load(file_name_res)
     # Check that result attributes get filled
     for result in OBJ_DESC['results']:
         assert not np.all(np.isnan(getattr(tfm, result)))
@@ -193,8 +194,8 @@ def test_fooof_load():
 
     # Test loading just settings
     tfm = FOOOF(verbose=False)
-    file_name_set = 'test_fooof_set'
-    tfm.load(file_name_set, TEST_DATA_PATH)
+    file_name_set = os.path.join(TEST_DATA_PATH, 'test_fooof_set')
+    tfm.load(file_name_set)
     for setting in OBJ_DESC['settings']:
         assert getattr(tfm, setting) is not None
     # Test that results and data are None
@@ -204,8 +205,8 @@ def test_fooof_load():
 
     # Test loading just data
     tfm = FOOOF(verbose=False)
-    file_name_dat = 'test_fooof_dat'
-    tfm.load(file_name_dat, TEST_DATA_PATH)
+    file_name_dat = os.path.join(TEST_DATA_PATH, 'test_fooof_dat')
+    tfm.load(file_name_dat)
     assert tfm.power_spectrum is not None
     # Test that settings and results are None
     for setting in OBJ_DESC['settings']:
@@ -215,8 +216,8 @@ def test_fooof_load():
 
     # Test loading all elements
     tfm = FOOOF(verbose=False)
-    file_name_all = 'test_fooof_all'
-    tfm.load(file_name_all, TEST_DATA_PATH)
+    file_name_all = os.path.join(TEST_DATA_PATH, 'test_fooof_all')
+    tfm.load(file_name_all)
     for result in OBJ_DESC['results']:
         assert not np.all(np.isnan(getattr(tfm, result)))
     for setting in OBJ_DESC['settings']:

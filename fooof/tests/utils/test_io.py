@@ -1,5 +1,6 @@
 """Test functions for fooof.utils.io."""
 
+import os
 import numpy as np
 
 from fooof.core.items import OBJ_DESC
@@ -14,9 +15,9 @@ from fooof.utils.io import *
 
 def test_load_fooof():
 
-    file_name = 'test_fooof_all'
+    file_name = os.path.join(TEST_DATA_PATH, 'test_fooof_all')
 
-    tfm = load_fooof(file_name, TEST_DATA_PATH)
+    tfm = load_fooof(file_name)
 
     assert isinstance(tfm, FOOOF)
 
@@ -32,8 +33,8 @@ def test_load_fooof():
 
 def test_load_fooofgroup():
 
-    file_name = 'test_fooofgroup_all'
-    tfg = load_fooofgroup(file_name, TEST_DATA_PATH)
+    file_name = os.path.join(TEST_DATA_PATH, 'test_fooofgroup_all')
+    tfg = load_fooofgroup(file_name)
 
     assert isinstance(tfg, FOOOFGroup)
 

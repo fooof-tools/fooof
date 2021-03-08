@@ -6,6 +6,7 @@ The tests here are not strong tests for accuracy.
 They serve rather as 'smoke tests', for if anything fails completely.
 """
 
+import os
 import numpy as np
 from numpy.testing import assert_equal
 
@@ -236,13 +237,13 @@ def test_fg_plot(tfg, skip_if_no_mpl):
 def test_fg_load():
     """Test load into FOOOFGroup. Note: loads files from test_core_io."""
 
-    file_name_res = 'test_fooofgroup_res'
-    file_name_set = 'test_fooofgroup_set'
-    file_name_dat = 'test_fooofgroup_dat'
+    file_name_res = os.path.join(TEST_DATA_PATH, 'test_fooofgroup_res')
+    file_name_set = os.path.join(TEST_DATA_PATH, 'test_fooofgroup_set')
+    file_name_dat = os.path.join(TEST_DATA_PATH, 'test_fooofgroup_dat')
 
     # Test loading just results
     tfg = FOOOFGroup(verbose=False)
-    tfg.load(file_name_res, TEST_DATA_PATH)
+    tfg.load(file_name_res)
     assert len(tfg.group_results) > 0
     # Test that settings and data are None
     #   Except for aperiodic mode, which can be inferred from the data
@@ -253,7 +254,7 @@ def test_fg_load():
 
     # Test loading just settings
     tfg = FOOOFGroup(verbose=False)
-    tfg.load(file_name_set, TEST_DATA_PATH)
+    tfg.load(file_name_set)
     for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is not None
     # Test that results and data are None
@@ -263,7 +264,7 @@ def test_fg_load():
 
     # Test loading just data
     tfg = FOOOFGroup(verbose=False)
-    tfg.load(file_name_dat, TEST_DATA_PATH)
+    tfg.load(file_name_dat)
     assert tfg.power_spectra is not None
     # Test that settings and results are None
     for setting in OBJ_DESC['settings']:
@@ -273,8 +274,8 @@ def test_fg_load():
 
     # Test loading all elements
     tfg = FOOOFGroup(verbose=False)
-    file_name_all = 'test_fooofgroup_all'
-    tfg.load(file_name_all, TEST_DATA_PATH)
+    file_name_all = os.path.join(TEST_DATA_PATH, 'test_fooofgroup_all')
+    tfg.load(file_name_all)
     assert len(tfg.group_results) > 0
     for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is not None
