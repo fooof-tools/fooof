@@ -56,18 +56,20 @@ def plot_spectral_error(freqs, error, shade=None, log_freqs=False,
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_shade_spectra(freqs, power_spectra, shade=None, log_freqs=False, log_powers=False,
-                       ax=None, plot_style=style_spectrum_plot, **plot_kwargs):
-    """Plot error or standard deviation as a shaded region.
+def plot_error_shade(freqs, power_spectra, shade=None, scale=1, log_freqs=False,
+                     log_powers=False, ax=None, plot_style=style_spectrum_plot, **plot_kwargs):
+    """Plot standard deviation or error as a shaded region around the mean spectrum.
 
     Parameters
     ----------
     freqs : 1d array
         Frequency values, to be plotted on the x-axis.
-    power_spectra : 2d array
-        Power values, to be plotted on the y-axis.
+    power_spectra : 1d or 2d array
+        Power values, to be plotted on the y-axis. ``shade`` must be provided if 1d.
     shade : 1d array, optional, default: None
-        Values to shade in around the plotted error. None defaults to standard deviation.
+        Powers to shade above/below the mean spectrum. None defaults to one standard deviation.
+    scale : int, optional, default: 1
+        Factor to multiply the the standard deviation, or ``shade``, by.
     log_freqs : bool, optional, default: False
         Whether to plot the frequency axis in log spacing.
     log_powers : bool, optional, default: False
@@ -80,21 +82,25 @@ def plot_shade_spectra(freqs, power_spectra, shade=None, log_freqs=False, log_po
         Keyword arguments to be passed to `plot_spectra` or to the plot call.
     """
 
+    if shade is None and power_spectra.ndim != 2:
+        raise ValueError('Power spectra must be 2d if shade is not given.')
+
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
     # Set plot data & labels, logging if requested
     plt_freqs = np.log10(freqs) if log_freqs else freqs
     plt_powers = np.log10(power_spectra) if log_powers else power_spectra
 
-    # Shade +/- 1 standard deviation
-    powers_mean = np.mean(plt_powers, axis=0)
+    # Plot mean
+    powers_mean = np.mean(plt_powers, axis=0) if plt_powers.ndim == 2 else plt_powers
+    ax.plot(plt_freqs, powers_mean)
 
-    shade = np.std(plt_powers, axis=0) if shade is None else shade
+    # Shade +/- scale * (standard deviation or shade)
+    shade = scale * np.std(plt_powers, axis=0) if shade is None else scale * shade
     upper_shade = powers_mean + shade
     lower_shade = powers_mean - shade
 
-    # Fill shade
     alpha = plot_kwargs.pop('alpha', 0.25)
-    ax.fill_between(freqs, lower_shade, upper_shade, alpha=alpha)
+    ax.fill_between(plt_freqs, lower_shade, upper_shade, alpha=alpha, **plot_kwargs)
 
     check_n_style(plot_style, ax, log_freqs, log_powers)
