@@ -30,7 +30,11 @@ def group_three(vec):
     if len(vec) % 3 != 0:
         raise ValueError("Wrong size array to group by three.")
 
-    return [list(vec[ii:ii+3]) for ii in range(0, len(vec), 3)]
+    if isinstance(vec, np.ndarray):
+        # Reshaping is faster if already an array
+        return np.reshape(vec, (-1, 3))
+    else:
+        return [list(vec[ii:ii+3]) for ii in range(0, len(vec), 3)]
 
 
 def nearest_ind(array, value):

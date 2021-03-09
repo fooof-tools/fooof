@@ -1007,18 +1007,16 @@ class FOOOF():
         with `freqs`, `fooofed_spectrum_` and `_ap_fit` all required to be available.
         """
 
-        peak_params = np.empty([0, 3])
+        peak_params = np.empty((len(gaus_params), 3))
 
         for ii, peak in enumerate(gaus_params):
 
             # Gets the index of the power_spectrum at the frequency closest to the CF of the peak
-            ind = min(range(len(self.freqs)), key=lambda ii: abs(self.freqs[ii] - peak[0]))
+            ind = np.argmin(np.abs(self.freqs - peak[0]))
 
             # Collect peak parameter data
-            peak_params = np.vstack((peak_params,
-                                     [peak[0],
-                                      self.fooofed_spectrum_[ind] - self._ap_fit[ind],
-                                      peak[2] * 2]))
+            peak_params[ii] = [peak[0], self.fooofed_spectrum_[ind] - self._ap_fit[ind],
+                               peak[2] * 2]
 
         return peak_params
 
@@ -1037,8 +1035,8 @@ class FOOOF():
             Guess parameters for gaussian peak fits. Shape: [n_peaks, 3].
         """
 
-        cf_params = [item[0] for item in guess]
-        bw_params = [item[2] * self._bw_std_edge for item in guess]
+        cf_params = guess[:, 0]
+        bw_params = guess[:, 2] * self._bw_std_edge
 
         # Check if peaks within drop threshold from the edge of the frequency range
         keep_peak = \
