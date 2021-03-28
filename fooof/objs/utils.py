@@ -219,14 +219,14 @@ def fit_fooof_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
     >>> fgs = fit_fooof_3d(fg, freqs, power_spectra, freq_range=[3, 30])  # doctest:+SKIP
     """
 
-    # Reshape 3d to 2d and fit
+    # Reshape 3d data to 2d and fit, in order to fit with a single group model object
     shape = np.shape(power_spectra)
     powers_2d = np.reshape(power_spectra, (shape[0] * shape[1], shape[2]))
 
     fg.fit(freqs, powers_2d, freq_range, n_jobs)
 
-    # Reorganize 2d results
+    # Reorganize 2d results into a list of model group objects, to reflect original shape
     fgs = [fg.get_group(range(dim_a * shape[1], (dim_a + 1) * shape[1])) \
-        for dim_a in range(shape[0]) ]
+        for dim_a in range(shape[0])]
 
     return fgs
