@@ -120,13 +120,17 @@ def test_combine_errors(tfm, tfg):
 
 def test_fit_fooof_3d(tfg):
 
-    n_spectra = 2
+    n_groups = 2
+    n_spectra = 3
     xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
-    ys = np.stack([ys, ys], axis=0)
+    ys = np.stack([ys] * n_groups, axis=0)
+    spectra_shape = np.shape(ys)
 
     tfg = FOOOFGroup()
     fgs = fit_fooof_3d(tfg, xs, ys)
 
-    assert len(fgs) == 2
+    assert len(fgs) == n_groups == spectra_shape[0]
     for fg in fgs:
         assert fg
+        assert len(fg) == n_spectra
+        assert fg.power_spectra.shape == spectra_shape[1:]
