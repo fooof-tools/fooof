@@ -13,13 +13,13 @@ def group_three(vec):
 
     Parameters
     ----------
-    vec : 1d array
-        Array of items to group by 3. Length of array must be divisible by three.
+    vec : list or 1d array
+        List or array of items to group by 3. Length of array must be divisible by three.
 
     Returns
     -------
-    list of list
-        List of lists, each with three items.
+    array or list of list
+        Array or list of lists, each with three items. Output type will match input type.
 
     Raises
     ------
@@ -30,7 +30,11 @@ def group_three(vec):
     if len(vec) % 3 != 0:
         raise ValueError("Wrong size array to group by three.")
 
-    return [list(vec[ii:ii+3]) for ii in range(0, len(vec), 3)]
+    # Reshape, if an array, as it's faster, otherwise asssume lise
+    if isinstance(vec, np.ndarray):
+        return np.reshape(vec, (-1, 3))
+    else:
+        return [list(vec[ii:ii+3]) for ii in range(0, len(vec), 3)]
 
 
 def nearest_ind(array, value):
