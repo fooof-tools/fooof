@@ -101,6 +101,9 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
     >>> freqs, powers = interpolate_spectrum(freqs, powers, [58, 62])
     """
 
+    # Take a copy of the array, to not change original array
+    powers = np.copy(powers)
+
     # Get the set of frequency values that need to be interpolated
     interp_mask = np.logical_and(freqs >= interp_range[0], freqs <= interp_range[1])
     interp_freqs = freqs[interp_mask]
