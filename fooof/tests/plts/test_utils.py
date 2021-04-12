@@ -1,5 +1,8 @@
 """Tests for fooof.plts.utils."""
 
+import os
+import tempfile
+
 from fooof.tests.tutils import plot_test
 
 from fooof.core.modutils import safe_import
@@ -69,3 +72,13 @@ def test_check_plot_kwargs(skip_if_no_mpl):
     assert len(plot_kwargs) == 2
     assert plot_kwargs['alpha'] == 0.5
     assert plot_kwargs['linewidth'] == 2
+
+def test_savefig():
+
+    @savefig
+    def example_plot():
+        plt.plot([1, 2], [3, 4])
+
+    with tempfile.NamedTemporaryFile(mode='w+') as file:
+        example_plot(save_fig=True, file_name=file.name)
+        assert os.path.exists(file.name)

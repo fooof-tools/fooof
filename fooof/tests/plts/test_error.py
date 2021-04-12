@@ -5,6 +5,7 @@ from pytest import raises, mark, param
 import numpy as np
 
 from fooof.tests.tutils import plot_test
+from fooof.tests.settings import TEST_PLOTS_PATH
 
 from fooof.plts.error import *
 
@@ -17,7 +18,9 @@ def test_plot_spectral_error(skip_if_no_mpl):
     fs = np.arange(3, 41, 1)
     errs = np.ones(len(fs))
 
-    plot_spectral_error(fs, errs)
+    plot_spectral_error(fs, errs, save_fig=True, file_path=TEST_PLOTS_PATH,
+                        file_name='test_plot_spectral_error.png')
+
 
 
 @plot_test
@@ -31,7 +34,10 @@ def test_plot_error_shade(skip_if_no_mpl, tfg):
         plot_error_shade(freqs, powers[0])
 
     # Valid 1d array with shade
-    plot_error_shade(freqs, np.mean(powers, axis=0), shade=np.std(powers, axis=0))
+    plot_error_shade(freqs, np.mean(powers, axis=0), shade=np.std(powers, axis=0), 
+                     save_fig=True, file_path=TEST_PLOTS_PATH, 
+                     file_name='test_plot_spectral_error_shade1.png')
 
     # 2d array
-    plot_error_shade(freqs, powers)
+    plot_error_shade(freqs, powers, save_fig=True, file_path=TEST_PLOTS_PATH, 
+                     file_name='test_plot_spectral_error_shade2.png')
