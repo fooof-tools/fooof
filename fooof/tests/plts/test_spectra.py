@@ -12,9 +12,9 @@ from fooof.plts.spectra import *
 
 @plot_test
 def test_plot_spectra(tfm, tfg, skip_if_no_mpl):
-  
+
     # Test with 1d inputs - 1d freq array and list of 1d power spectra
-    plot_spectra(tfm.freqs, tfm.power_spectrum, 
+    plot_spectra(tfm.freqs, tfm.power_spectrum,
                  save_fig=True, file_path=TEST_PLOTS_PATH, file_name='test_plot_spectra_1d.png')
 
     # Test with 1d inputs - 1d freq array and list of 1d power spectra
@@ -37,10 +37,10 @@ def test_plot_spectra(tfm, tfg, skip_if_no_mpl):
 
 @plot_test
 def test_plot_spectra_shading(tfm, tfg, skip_if_no_mpl):
-  
-    plot_spectrum_shading(tfm.freqs, tfm.power_spectrum, shades=[8, 12], add_center=True,
-                          save_fig=True, file_path=TEST_PLOTS_PATH,
-                          file_name='test_plot_spectrum_shading1.png')
+
+    plot_spectra_shading(tfm.freqs, tfm.power_spectrum, shades=[8, 12], add_center=True,
+                         save_fig=True, file_path=TEST_PLOTS_PATH,
+                         file_name='test_plot_spectrum_shading1.png')
 
     plot_spectra_shading(tfg.freqs, [tfg.power_spectra[0, :], tfg.power_spectra[1, :]],
                          shades=[8, 12], add_center=True, save_fig=True, file_path=TEST_PLOTS_PATH,

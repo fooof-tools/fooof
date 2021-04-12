@@ -12,7 +12,7 @@ import numpy as np
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.settings import PLT_FIGSIZES
 from fooof.plts.style import style_spectrum_plot, style_plot
-from fooof.plts.utils import check_ax, add_shades, savefig
+from fooof.plts.utils import check_ax, add_shades, savefig, check_plot_kwargs
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -36,10 +36,10 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
         Whether to plot the frequency axis in log spacing.
     log_powers : bool, optional, default: False
         Whether to plot the power axis in log spacing.
-    labels : list of str, optional, default: None
-        Legend labels for the spectra.
     colors : list of str, optional, default: None
         Line colors of the spectra.
+    labels : list of str, optional, default: None
+        Legend labels for the spectra.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
@@ -64,15 +64,17 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
     # Plot
     for freqs, powers, color, label in zip(plt_freqs, plt_powers, colors, labels):
 
-        # Set plot data, logging if requested
+        # Set plot data, logging if requested, and collect color, if absent
         freqs = np.log10(freqs) if log_freqs else freqs
         powers = np.log10(powers) if log_powers else powers
+        if color:
+            plot_kwargs['color'] = color
 
-        ax.plot(freqs, powers, color=color, label=label, **plot_kwargs)
+        ax.plot(freqs, powers, label=label, **plot_kwargs)
 
     style_spectrum_plot(ax, log_freqs, log_powers)
 
-    
+
 @savefig
 @check_dependency(plt, 'matplotlib')
 def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r',
