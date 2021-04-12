@@ -9,7 +9,7 @@ from fooof.sim.gen import gen_freqs, gen_aperiodic
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.settings import PLT_FIGSIZES
 from fooof.plts.style import style_param_plot, style_plot
-from fooof.plts.utils import check_ax, recursive_plot, savefig
+from fooof.plts.utils import check_ax, recursive_plot, savefig, check_plot_kwargs
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -47,20 +47,9 @@ def plot_aperiodic_params(aps, colors=None, labels=None, ax=None, **plot_kwargs)
         xs, ys = aps[:, 0], aps[:, -1]
         sizes = plot_kwargs.pop('s', 150)
 
-        colors = 'C0' if colors is None else colors
-        colors = cycle([colors]) if not isinstance(colors, list) else cycle(colors)
-        labels = cycle([labels]) if not isinstance(labels, list) else cycle(labels)
-
-        for xi, yi in zip(xs, ys):
-
-            # Prevent duplicate labels when recursively plotting
-            _, cur_labels = plt.gca().get_legend_handles_labels()
-
-            label = next(labels)
-            if label not in cur_labels:
-                ax.scatter(xi, yi, s=sizes, color=next(colors), label=label, alpha=0.7)
-            else:
-                ax.scatter(xi, yi, s=sizes, color=next(colors), alpha=0.7)
+        # Create the plot
+        plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 0.7})
+        ax.scatter(xs, ys, sizes, c=colors, label=labels, **plot_kwargs)
 
     # Add axis labels
     ax.set_xlabel('Offset')

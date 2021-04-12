@@ -70,21 +70,24 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
 
     # Plot the data, if available
     if fm.has_data:
-        data_kwargs = {'color' : PLT_COLORS['data'], 'linewidth' : 2.0,
-                       'label' : 'Original Spectrum' if add_legend else None}
+        data_defaults = {'color' : PLT_COLORS['data'], 'linewidth' : 2.0,
+                         'label' : 'Original Spectrum' if add_legend else None}
+        data_kwargs = check_plot_kwargs(data_kwargs, data_defaults)
         plot_spectrum(fm.freqs, fm.power_spectrum, log_freqs, log_powers, ax=ax, **data_kwargs)
 
     # Add the full model fit, and components (if requested)
     if fm.has_model:
-        model_kwargs = {'color' : PLT_COLORS['model'], 'linewidth' : 3.0, 'alpha' : 0.5,
-                        'label' : 'Full Model Fit' if add_legend else None}
+        model_defaults = {'color' : PLT_COLORS['model'], 'linewidth' : 3.0, 'alpha' : 0.5,
+                          'label' : 'Full Model Fit' if add_legend else None}
+        model_kwargs = check_plot_kwargs(model_kwargs, model_defaults)
         plot_spectrum(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers, ax=ax, **model_kwargs)
 
         # Plot the aperiodic component of the model fit
         if plot_aperiodic:
-            aperiodic_kwargs = {'color' : PLT_COLORS['aperiodic'], 'linewidth' : 3.0,
-                                'alpha' : 0.5, 'linestyle' : 'dashed',
-                                'label' : 'Aperiodic Fit' if add_legend else None}
+            aperiodic_defaults = {'color' : PLT_COLORS['aperiodic'], 'linewidth' : 3.0,
+                                  'alpha' : 0.5, 'linestyle' : 'dashed',
+                                  'label' : 'Aperiodic Fit' if add_legend else None}
+            aperiodic_kwargs = check_plot_kwargs(aperiodic_kwargs, aperiodic_defaults)
             plot_spectrum(fm.freqs, fm._ap_fit, log_freqs, log_powers, ax=ax, **aperiodic_kwargs)
 
         # Plot the periodic components of the model fit
