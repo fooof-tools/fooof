@@ -157,5 +157,5 @@ fig, ax = plt.subplots(figsize=[12, 8])
 plot_spectra_shading(freqs_al, powers_al, [8, 12],
                      log_powers=True, alpha=0.6, ax=ax)
 plot_spectra(freqs_al10, powers_al10, log_powers=True,
-              color='black', linewidth=3, label='10 Hz Alpha', ax=ax)
+             color='black', linewidth=3, label='10 Hz Alpha', ax=ax)
 plt.title('Comparing Alphas', {'fontsize' : 20, 'fontweight' : 'bold'});
