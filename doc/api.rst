@@ -259,6 +259,7 @@ Plots for plotting power spectra with shaded regions.
 
     plot_spectrum_shading
     plot_spectra_shading
+    plot_spectra_yshade
 
 Plot Model Properties & Parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
