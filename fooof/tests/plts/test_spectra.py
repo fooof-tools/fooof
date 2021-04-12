@@ -1,5 +1,7 @@
 """Tests for fooof.plts.spectra."""
 
+from pytest import raises
+
 import numpy as np
 
 from fooof.tests.tutils import plot_test
@@ -59,3 +61,22 @@ def test_plot_spectra_shading(tfg, skip_if_no_mpl):
                          shades=[8, 12], add_center=True, log_freqs=True, log_powers=True,
                          labels=['A', 'B'], save_fig=True, file_path=TEST_PLOTS_PATH,
                          file_name='test_plot_spectra_shading_kwargs.png')
+
+@plot_test
+def test_plot_spectra_yshade(skip_if_no_mpl, tfg):
+
+    freqs = tfg.freqs
+    powers = tfg.power_spectra
+
+    # Invalid 1d array, without shade
+    with raises(ValueError):
+        plot_spectra_yshade(freqs, powers[0])
+
+    # Valid 1d array with shade
+    plot_spectra_yshade(freqs, np.mean(powers, axis=0), shade=np.std(powers, axis=0),
+                        save_fig=True, file_path=TEST_PLOTS_PATH,
+                        file_name='test_plot_spectra_yshade1.png')
+
+    # 2d array
+    plot_spectra_yshade(freqs, powers, save_fig=True, file_path=TEST_PLOTS_PATH,
+                        file_name='test_plot_spectra_yshade2.png')
