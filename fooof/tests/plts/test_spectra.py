@@ -72,11 +72,18 @@ def test_plot_spectra_yshade(skip_if_no_mpl, tfg):
     with raises(ValueError):
         plot_spectra_yshade(freqs, powers[0])
 
-    # Valid 1d array with shade
-    plot_spectra_yshade(freqs, np.mean(powers, axis=0), shade=np.std(powers, axis=0),
+    # Plot with 2d array
+    plot_spectra_yshade(freqs, powers, shade='std',
                         save_fig=True, file_path=TEST_PLOTS_PATH,
                         file_name='test_plot_spectra_yshade1.png')
 
-    # 2d array
-    plot_spectra_yshade(freqs, powers, save_fig=True, file_path=TEST_PLOTS_PATH,
+    # Plot shade with given 1d array
+    plot_spectra_yshade(freqs, np.mean(powers, axis=0),
+                        shade=np.std(powers, axis=0),
+                        save_fig=True, file_path=TEST_PLOTS_PATH,
                         file_name='test_plot_spectra_yshade2.png')
+
+    # Plot shade with different average and shade approaches
+    plot_spectra_yshade(freqs, powers, shade='sem', average='median',
+                        save_fig=True, file_path=TEST_PLOTS_PATH,
+                        file_name='test_plot_spectra_yshade3.png')
