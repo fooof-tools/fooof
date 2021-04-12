@@ -34,6 +34,9 @@ AXIS_STYLE_ARGS = ['title', 'xlabel', 'ylabel', 'xlim', 'ylim']
 LINE_STYLE_ARGS = ['alpha', 'lw', 'linewidth', 'ls', 'linestyle',
                    'marker', 'ms', 'markersize']
 
+# Collection style arguments are those that can be defined on a collections object
+COLLECTION_STYLE_ARGS = ['alpha', 'edgecolor']
+
 # Custom style arguments are those that are custom-handled by the plot style function
 CUSTOM_STYLE_ARGS = ['title_fontsize', 'label_size', 'tick_labelsize',
                      'legend_size', 'legend_loc']

@@ -5,9 +5,9 @@ from functools import wraps
 
 import matplotlib.pyplot as plt
 
-from fooof.plts.settings import AXIS_STYLE_ARGS, LINE_STYLE_ARGS, CUSTOM_STYLE_ARGS, STYLE_ARGS
-from fooof.plts.settings import (LABEL_SIZE, LEGEND_SIZE, LEGEND_LOC,
-                                 TICK_LABELSIZE, TITLE_FONTSIZE)
+from fooof.plts.settings import (AXIS_STYLE_ARGS, LINE_STYLE_ARGS, COLLECTION_STYLE_ARGS,
+                                 CUSTOM_STYLE_ARGS, STYLE_ARGS, LABEL_SIZE, LEGEND_SIZE,
+                                 LEGEND_LOC, TICK_LABELSIZE, TITLE_FONTSIZE)
 
 ###################################################################################################
 ###################################################################################################
@@ -119,6 +119,27 @@ def apply_line_style(ax, style_args=LINE_STYLE_ARGS, **kwargs):
             line.set(**{style : next(values)})
 
 
+def apply_collection_style(ax, style_args=COLLECTION_STYLE_ARGS, **kwargs):
+    """Apply collection plot style.
+
+    Parameters
+    ----------
+    ax : matplotlib.Axes
+        Figure axes to apply style to.
+    style_args : list of str
+        A list of arguments to be sub-selected from `kwargs` and applied as collection styling.
+    **kwargs
+        Keyword arguments that define collection style to apply.
+    """
+
+    # Get the collection related styling arguments from the keyword arguments
+    collection_kwargs = {key : val for key, val in kwargs.items() if key in style_args}
+
+    # Apply any provided collection style arguments
+    for collection in ax.collections:
+        collection.set(**collection_kwargs)
+
+
 def apply_custom_style(ax, **kwargs):
     """Apply custom plot style.
 
@@ -152,14 +173,15 @@ def apply_custom_style(ax, **kwargs):
 
 
 def apply_style(ax, axis_styler=apply_axis_style, line_styler=apply_line_style,
-                custom_styler=apply_custom_style, **kwargs):
+                collection_styler=apply_collection_style, custom_styler=apply_custom_style,
+                **kwargs):
     """Apply plot style to a figure axis.
 
     Parameters
     ----------
     ax : matplotlib.Axes
         Figure axes to apply style to.
-    axis_styler, line_styler, custom_styler : callable, optional
+    axis_styler, line_styler, collection_style, custom_styler : callable, optional
         Functions to apply style to aspects of the plot.
     **kwargs
         Keyword arguments that define style to apply.
@@ -172,6 +194,7 @@ def apply_style(ax, axis_styler=apply_axis_style, line_styler=apply_line_style,
 
     axis_styler(ax, **kwargs)
     line_styler(ax, **kwargs)
+    collection_styler(ax, **kwargs)
     custom_styler(ax, **kwargs)
 
 
