@@ -2,7 +2,6 @@
 
 from itertools import cycle
 from functools import wraps
-import warnings
 
 import matplotlib.pyplot as plt
 
@@ -12,8 +11,6 @@ from fooof.plts.settings import (LABEL_SIZE, LEGEND_SIZE, LEGEND_LOC,
 
 ###################################################################################################
 ###################################################################################################
-
-# Default plot styling
 
 def style_spectrum_plot(ax, log_freqs, log_powers):
     """Apply style and aesthetics to a power spectrum plot.
@@ -73,7 +70,6 @@ def style_param_plot(ax):
         for handle in legend.legendHandles:
             handle._sizes = [100]
 
-# Custom plot styling
 
 def apply_axis_style(ax, style_args=AXIS_STYLE_ARGS, **kwargs):
     """Apply axis plot style.

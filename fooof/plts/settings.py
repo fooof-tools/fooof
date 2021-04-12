@@ -40,7 +40,7 @@ CUSTOM_STYLE_ARGS = ['title_fontsize', 'label_size', 'tick_labelsize',
 STYLERS = ['axis_styler', 'line_styler', 'custom_styler']
 STYLE_ARGS = AXIS_STYLE_ARGS + LINE_STYLE_ARGS + CUSTOM_STYLE_ARGS + STYLERS
 
-## Define default values for aesthetic
+## Define default values for plot aesthetics
 # These are all custom style arguments
 TITLE_FONTSIZE = 20
 LABEL_SIZE = 16

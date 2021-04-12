@@ -34,7 +34,7 @@ def test_plot_spectra(tfg, skip_if_no_mpl):
     # Test with 2d array inputs
     plot_spectra(np.vstack([tfg.freqs, tfg.freqs]),
                  np.vstack([tfg.power_spectra[0, :], tfg.power_spectra[1, :]]),
-                  save_fig=True, file_path=TEST_PLOTS_PATH, file_name='test_plot_spectra_2d.png')
+                 save_fig=True, file_path=TEST_PLOTS_PATH, file_name='test_plot_spectra_2d.png')
 
     # Test with labels
     plot_spectra(tfg.freqs, [tfg.power_spectra[0, :], tfg.power_spectra[1, :]], labels=['A', 'B'],

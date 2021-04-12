@@ -62,7 +62,7 @@ def plot_annotated_peak_search(fm):
         if ind < fm.n_peaks_:
 
             gauss = gaussian_function(fm.freqs, *fm.gaussian_params_[ind, :])
-            plot_spectrum(fm.freqs, gauss, ax=ax,  label='Gaussian Fit',
+            plot_spectrum(fm.freqs, gauss, ax=ax, label='Gaussian Fit',
                           color=PLT_COLORS['periodic'], linestyle=':', linewidth=3.0)
 
             flatspec = flatspec - gauss
@@ -84,7 +84,6 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True,
         Whether to plot the frequency values in log10 spacing.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-
 
     Raises
     ------

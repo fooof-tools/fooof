@@ -5,7 +5,6 @@ Notes
 This file contains plotting functions that take as input a FOOOFGroup object.
 """
 
-from fooof.core.io import fname, fpath
 from fooof.core.errors import NoModelError
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.settings import PLT_FIGSIZES
