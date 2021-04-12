@@ -24,13 +24,13 @@ plt = safe_import('.pyplot', 'matplotlib')
 @check_dependency(plt, 'matplotlib')
 def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
                  colors=None, labels=None, ax=None, **plot_kwargs):
-    """Plot multiple power spectra on the same plot.
+    """Plot one or multiple power spectra.
 
     Parameters
     ----------
-    freqs : 2d array or 1d array or list of 1d array
+    freqs : 1d or 2d array or list of 1d array
         Frequency values, to be plotted on the x-axis.
-    power_spectra : 2d array or list of 1d array
+    power_spectra : 1d or 2d array or list of 1d array
         Power values, to be plotted on the y-axis.
     log_freqs : bool, optional, default: False
         Whether to plot the frequency axis in log spacing.
@@ -79,13 +79,13 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
 @check_dependency(plt, 'matplotlib')
 def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r',
                          add_center=False, ax=None, **plot_kwargs):
-    """Plot a group of power spectra with a shaded frequency region (or regions).
+    """Plot one or multiple power spectra with a shaded frequency region (or regions).
 
     Parameters
     ----------
-    freqs : 2d array or 1d array or list of 1d array
+    freqs : 1d or 2d array or list of 1d array
         Frequency values, to be plotted on the x-axis.
-    power_spectra : 2d array or list of 1d array
+    power_spectra : 1d or 2d array or list of 1d array
         Power values, to be plotted on the y-axis.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
