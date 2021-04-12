@@ -9,7 +9,8 @@ import numpy as np
 from fooof.core.modutils import safe_import
 
 from fooof.tests.tutils import get_tfm, get_tfg, get_tbands
-from fooof.tests.settings import BASE_TEST_FILE_PATH, TEST_DATA_PATH, TEST_REPORTS_PATH
+from fooof.tests.settings import (BASE_TEST_FILE_PATH, TEST_DATA_PATH,
+                                  TEST_REPORTS_PATH, TEST_PLOTS_PATH)
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -33,6 +34,7 @@ def check_dir():
     os.mkdir(BASE_TEST_FILE_PATH)
     os.mkdir(TEST_DATA_PATH)
     os.mkdir(TEST_REPORTS_PATH)
+    os.mkdir(TEST_PLOTS_PATH)
 
 @pytest.fixture(scope='session')
 def tfm():
