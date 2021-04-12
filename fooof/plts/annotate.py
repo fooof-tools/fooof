@@ -6,13 +6,15 @@ from fooof.core.utils import nearest_ind
 from fooof.core.errors import NoModelError
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
+
 from fooof.sim.gen import gen_aperiodic
-from fooof.plts.utils import check_ax
-from fooof.plts.spectra import plot_spectra
-from fooof.plts.settings import PLT_FIGSIZES, PLT_COLORS
-from fooof.plts.style import check_n_style, style_spectrum_plot
 from fooof.analysis.periodic import get_band_peak_fm
 from fooof.utils.params import compute_knee_frequency, compute_fwhm
+
+from fooof.plts.spectra import plot_spectra
+from fooof.plts.utils import check_ax, savefig
+from fooof.plts.settings import PLT_FIGSIZES, PLT_COLORS
+from fooof.plts.style import style_spectrum_plot
 
 plt = safe_import('.pyplot', 'matplotlib')
 mpatches = safe_import('.patches', 'matplotlib')
@@ -20,16 +22,15 @@ mpatches = safe_import('.patches', 'matplotlib')
 ###################################################################################################
 ###################################################################################################
 
+@savefig
 @check_dependency(plt, 'matplotlib')
-def plot_annotated_peak_search(fm, plot_style=style_spectrum_plot):
+def plot_annotated_peak_search(fm):
     """Plot a series of plots illustrating the peak search from a flattened spectrum.
 
     Parameters
     ----------
     fm : FOOOF
         FOOOF object, with model fit, data and settings available.
-    plot_style : callable, optional, default: style_spectrum_plot
-        A function to call to apply styling & aesthetics to the plots.
     """
 
     # Recalculate the initial aperiodic fit and flattened spectrum that
@@ -46,14 +47,12 @@ def plot_annotated_peak_search(fm, plot_style=style_spectrum_plot):
         # This forces the creation of a new plotting axes per iteration
         ax = check_ax(None, PLT_FIGSIZES['spectral'])
 
-        plot_spectra(fm.freqs, flatspec, ax=ax, plot_style=None,
-                     label='Flattened Spectrum', color=PLT_COLORS['data'], linewidth=2.5)
-        plot_spectra(fm.freqs, [fm.peak_threshold * np.std(flatspec)]*len(fm.freqs),
-                     ax=ax, plot_style=None, label='Relative Threshold',
-                     color='orange', linewidth=2.5, linestyle='dashed')
-        plot_spectra(fm.freqs, [fm.min_peak_height]*len(fm.freqs),
-                     ax=ax, plot_style=None, label='Absolute Threshold',
-                     color='red', linewidth=2.5, linestyle='dashed')
+        plot_spectra(fm.freqs, flatspec, ax=ax, linewidth=2.5,
+                     label='Flattened Spectrum', color=PLT_COLORS['data'])
+        plot_spectra(fm.freqs, [fm.peak_threshold * np.std(flatspec)]*len(fm.freqs), ax=ax,
+                     label='Relative Threshold', color='orange', linewidth=2.5, linestyle='dashed')
+        plot_spectra(fm.freqs, [fm.min_peak_height]*len(fm.freqs), ax=ax,
+                     label='Absolute Threshold', color='red', linewidth=2.5, linestyle='dashed')
 
         maxi = np.argmax(flatspec)
         ax.plot(fm.freqs[maxi], flatspec[maxi], '.',
@@ -65,18 +64,18 @@ def plot_annotated_peak_search(fm, plot_style=style_spectrum_plot):
         if ind < fm.n_peaks_:
 
             gauss = gaussian_function(fm.freqs, *fm.gaussian_params_[ind, :])
-            plot_spectra(fm.freqs, gauss, ax=ax, plot_style=None,
-                         label='Gaussian Fit', color=PLT_COLORS['periodic'],
-                         linestyle=':', linewidth=3.0)
+            plot_spectra(fm.freqs, gauss, ax=ax, label='Gaussian Fit',
+                         color=PLT_COLORS['periodic'], linestyle=':', linewidth=3.0)
 
             flatspec = flatspec - gauss
 
-        check_n_style(plot_style, ax, False, True)
+        style_spectrum_plot(ax, False, True)
 
 
+@savefig
 @check_dependency(plt, 'matplotlib')
-def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperiodic=True,
-                         ax=None, plot_style=style_spectrum_plot):
+def plot_annotated_model(fm, plt_log=False, annotate_peaks=True,
+                         annotate_aperiodic=True, ax=None):
     """Plot a an annotated power spectrum and model, from a FOOOF object.
 
     Parameters
@@ -91,8 +90,6 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperio
         Whether to annotate the aperiodic components of the model fit.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_spectrum_plot
-        A function to call to apply styling & aesthetics to the plots.
 
     Raises
     ------
@@ -112,7 +109,7 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperio
 
     # Create the baseline figure
     ax = check_ax(ax, PLT_FIGSIZES['spectral'])
-    fm.plot(plot_peaks='dot-shade-width', plt_log=plt_log, ax=ax, plot_style=None,
+    fm.plot(plot_peaks='dot-shade-width', plt_log=plt_log, ax=ax,
             data_kwargs={'lw' : lw1, 'alpha' : 0.6},
             aperiodic_kwargs={'lw' : lw1, 'zorder' : 10},
             model_kwargs={'lw' : lw1, 'alpha' : 0.5},
@@ -219,7 +216,7 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True, annotate_aperio
                     color=PLT_COLORS['aperiodic'], fontsize=fontsize)
 
     # Apply style to plot & tune grid styling
-    check_n_style(plot_style, ax, plt_log, True)
+    style_spectrum_plot(ax, plt_log, True)
     ax.grid(True, alpha=0.5)
 
     # Add labels to plot in the legend

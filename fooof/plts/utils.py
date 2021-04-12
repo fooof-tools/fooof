@@ -8,9 +8,11 @@ They are not expected to be called directly by the user.
 
 from itertools import repeat
 from collections.abc import Iterator
+from functools import wraps
 
 import numpy as np
 
+from fooof.core.io import fname, fpath
 from fooof.core.modutils import safe_import
 from fooof.core.utils import resolve_aliases
 from fooof.plts.settings import PLT_ALPHA_LEVELS, PLT_ALIASES
@@ -171,3 +173,23 @@ def check_plot_kwargs(plot_kwargs, defaults):
             plot_kwargs[key] = value
 
     return plot_kwargs
+
+
+def savefig(func):
+    """Decorator function to save out figures."""
+
+    @wraps(func)
+    def decorated(*args, **kwargs):
+
+        save_fig = kwargs.pop('save_fig', False)
+        file_name = kwargs.pop('file_name', None)
+        file_path = kwargs.pop('file_path', None)
+
+        func(*args, **kwargs)
+
+        if save_fig:
+            if not file_name:
+                raise ValueError("Input 'file_name' is required to save out the plot.")
+            plt.savefig(fpath(file_path, fname(file_name, 'png')))
+
+    return decorated
