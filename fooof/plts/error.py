@@ -54,9 +54,11 @@ def plot_spectral_error(freqs, error, shade=None, log_freqs=False, ax=None, **pl
     ax.set_ylabel('Absolute Error')
 
 
+@savefig
+@style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_error_shade(freqs, power_spectra, shade=None, scale=1, log_freqs=False,
-                     log_powers=False, ax=None, plot_style=style_spectrum_plot, **plot_kwargs):
+                     log_powers=False, ax=None, **plot_kwargs):
     """Plot standard deviation or error as a shaded region around the mean spectrum.
 
     Parameters
@@ -102,4 +104,4 @@ def plot_error_shade(freqs, power_spectra, shade=None, scale=1, log_freqs=False,
     alpha = plot_kwargs.pop('alpha', 0.25)
     ax.fill_between(plt_freqs, lower_shade, upper_shade, alpha=alpha, **plot_kwargs)
 
-    check_n_style(plot_style, ax, log_freqs, log_powers)
+    style_spectrum_plot(ax, log_freqs, log_powers)
