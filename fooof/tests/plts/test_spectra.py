@@ -87,3 +87,11 @@ def test_plot_spectra_yshade(skip_if_no_mpl, tfg):
     plot_spectra_yshade(freqs, powers, shade='sem', average='median',
                         save_fig=True, file_path=TEST_PLOTS_PATH,
                         file_name='test_plot_spectra_yshade3.png')
+
+    # Plot shade with custom average and shade callables
+    def _average_callable(powers): return np.mean(powers, axis=0)
+    def _shade_callable(powers): return np.std(powers, axis=0)
+
+    plot_spectra_yshade(freqs, powers, shade=_shade_callable,  average=_average_callable,
+                        log_powers=True, save_fig=True, file_path=TEST_PLOTS_PATH,
+                        file_name='test_plot_spectra_yshade4.png')

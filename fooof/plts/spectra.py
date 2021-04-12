@@ -5,6 +5,7 @@ Notes
 This file contains functions for plotting power spectra, that take in data directly.
 """
 
+from inspect import isfunction
 from itertools import repeat, cycle
 
 import numpy as np
@@ -209,7 +210,7 @@ def plot_spectra_yshade(freqs, power_spectra, shade='std', average='mean', scale
         Keyword arguments to be passed to `plot_spectra` or to the plot call.
     """
 
-    if isinstance(shade, str) and power_spectra.ndim != 2:
+    if (isinstance(shade, str) or isfunction(shade)) and power_spectra.ndim != 2:
         raise ValueError('Power spectra must be 2d if shade is not given.')
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
@@ -220,17 +221,27 @@ def plot_spectra_yshade(freqs, power_spectra, shade='std', average='mean', scale
 
     # Organize mean spectrum to plot
     avg_funcs = {'mean' : np.mean, 'median' : np.median}
-    avg_func = avg_funcs[average] if isinstance(average, str) else average
-    avg_powers = avg_func(plt_powers, axis=0) if plt_powers.ndim == 2 else plt_powers
+
+    if isinstance(average, str) and plt_powers.ndim == 2:
+        avg_powers = avg_funcs[average](plt_powers, axis=0)
+    elif isfunction(average) and plt_powers.ndim == 2:
+        avg_powers = average(plt_powers)
+    else:
+        avg_powers = plt_powers
 
     # Plot average power spectrum
     ax.plot(plt_freqs, avg_powers, linewidth=2.0, color=color, label=label)
 
     # Organize shading to plot
     shade_funcs = {'std' : np.std, 'sem' : sem}
-    shade_func = shade_funcs[shade] if isinstance(shade, str) else shade
-    shade_vals = scale * shade_func(plt_powers, axis=0) \
-        if isinstance(shade, str) else scale * shade
+
+    if isinstance(shade, str):
+        shade_vals = scale * shade_funcs[shade](plt_powers, axis=0)
+    elif isfunction(shade):
+        shade_vals = scale * shade(plt_powers)
+    else:
+        shade_vals = scale * shade
+
     upper_shade = avg_powers + shade_vals
     lower_shade = avg_powers - shade_vals
 
