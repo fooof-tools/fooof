@@ -126,6 +126,7 @@ sphinx_gallery_conf = {
     'examples_dirs': ['../examples', '../tutorials', '../motivations'],
     'gallery_dirs': ['auto_examples', 'auto_tutorials', 'auto_motivations'],
     'subsection_order' : ExplicitOrder(['../examples/manage',
+                                        '../examples/processing',
                                         '../examples/plots',
                                         '../examples/sims',
                                         '../examples/analyses',
