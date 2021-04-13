@@ -11,7 +11,7 @@ This example covers strategies for dealing with line noise.
 
 # Import the spectral parameterization object and utilities
 from fooof import FOOOF
-from fooof.plts import plot_spectrum, plot_spectra
+from fooof.plts import plot_spectra
 from fooof.utils import trim_spectrum, interpolate_spectrum
 
 # Import simulation functions to create some example data
@@ -50,7 +50,7 @@ freqs1, powers1 = gen_power_spectrum([3, 75], [1, 1],
                                      [[10, 0.75, 2], [60, 1, 0.5]])
 
 # Visualize the generated power spectrum
-plot_spectrum(freqs1, powers1, log_powers=True)
+plot_spectra(freqs1, powers1, log_powers=True)
 
 ###################################################################################################
 #
