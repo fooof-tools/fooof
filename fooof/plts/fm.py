@@ -12,7 +12,7 @@ from fooof.core.modutils import safe_import, check_dependency
 from fooof.sim.gen import gen_periodic
 from fooof.utils.data import trim_spectrum
 from fooof.utils.params import compute_fwhm
-from fooof.plts.spectra import plot_spectrum
+from fooof.plts.spectra import plot_spectra
 from fooof.plts.settings import PLT_FIGSIZES, PLT_COLORS
 from fooof.plts.utils import check_ax, check_plot_kwargs, savefig
 from fooof.plts.style import style_spectrum_plot, style_plot
@@ -73,14 +73,14 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         data_defaults = {'color' : PLT_COLORS['data'], 'linewidth' : 2.0,
                          'label' : 'Original Spectrum' if add_legend else None}
         data_kwargs = check_plot_kwargs(data_kwargs, data_defaults)
-        plot_spectrum(fm.freqs, fm.power_spectrum, log_freqs, log_powers, ax=ax, **data_kwargs)
+        plot_spectra(fm.freqs, fm.power_spectrum, log_freqs, log_powers, ax=ax, **data_kwargs)
 
     # Add the full model fit, and components (if requested)
     if fm.has_model:
         model_defaults = {'color' : PLT_COLORS['model'], 'linewidth' : 3.0, 'alpha' : 0.5,
                           'label' : 'Full Model Fit' if add_legend else None}
         model_kwargs = check_plot_kwargs(model_kwargs, model_defaults)
-        plot_spectrum(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers, ax=ax, **model_kwargs)
+        plot_spectra(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers, ax=ax, **model_kwargs)
 
         # Plot the aperiodic component of the model fit
         if plot_aperiodic:
@@ -88,7 +88,7 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
                                   'alpha' : 0.5, 'linestyle' : 'dashed',
                                   'label' : 'Aperiodic Fit' if add_legend else None}
             aperiodic_kwargs = check_plot_kwargs(aperiodic_kwargs, aperiodic_defaults)
-            plot_spectrum(fm.freqs, fm._ap_fit, log_freqs, log_powers, ax=ax, **aperiodic_kwargs)
+            plot_spectra(fm.freqs, fm._ap_fit, log_freqs, log_powers, ax=ax, **aperiodic_kwargs)
 
         # Plot the periodic components of the model fit
         if plot_peaks:

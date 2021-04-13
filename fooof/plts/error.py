@@ -3,7 +3,7 @@
 import numpy as np
 
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.spectra import plot_spectrum
+from fooof.plts.spectra import plot_spectra
 from fooof.plts.settings import PLT_FIGSIZES
 from fooof.plts.style import style_spectrum_plot, style_plot
 from fooof.plts.utils import check_ax, savefig
@@ -40,7 +40,7 @@ def plot_spectral_error(freqs, error, shade=None, log_freqs=False, ax=None, **pl
 
     plt_freqs = np.log10(freqs) if log_freqs else freqs
 
-    plot_spectrum(plt_freqs, error, ax=ax, linewidth=3)
+    plot_spectra(plt_freqs, error, ax=ax, linewidth=3)
 
     if np.any(shade):
         ax.fill_between(plt_freqs, error-shade, error+shade, alpha=0.25)

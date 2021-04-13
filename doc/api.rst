@@ -247,7 +247,6 @@ Plots for visualizing power spectra.
 .. autosummary::
     :toctree: generated/
 
-    plot_spectrum
     plot_spectra
 
 Plots for plotting power spectra with shaded regions.
@@ -257,7 +256,6 @@ Plots for plotting power spectra with shaded regions.
 .. autosummary::
     :toctree: generated/
 
-    plot_spectrum_shading
     plot_spectra_shading
 
 Plot Model Properties & Parameters

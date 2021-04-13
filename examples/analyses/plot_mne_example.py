@@ -32,7 +32,7 @@ from mne.time_frequency import psd_welch
 from fooof import FOOOFGroup
 from fooof.bands import Bands
 from fooof.analysis import get_band_peak_fg
-from fooof.plts.spectra import plot_spectrum
+from fooof.plts.spectra import plot_spectra
 
 ###################################################################################################
 # Load & Check MNE Data
@@ -284,10 +284,11 @@ plot_topomap(exps, raw.info, cmap=cm.viridis, contours=0)
 
 # Compare the power spectra between low and high exponent channels
 fig, ax = plt.subplots(figsize=(8, 6))
-plot_spectrum(fg.freqs, fg.get_fooof(np.argmin(exps)).power_spectrum,
-              ax=ax, label='Low Exponent')
-plot_spectrum(fg.freqs, fg.get_fooof(np.argmax(exps)).power_spectrum,
-              ax=ax, label='High Exponent')
+
+spectra = [fg.get_fooof(np.argmin(exps)).power_spectrum,
+           fg.get_fooof(np.argmax(exps)).power_spectrum]
+
+plot_spectra(fg.freqs, spectra, ax=ax, labels=['Low Exponent', 'High Exponent'])
 
 ###################################################################################################
 # Conclusion
