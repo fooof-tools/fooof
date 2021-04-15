@@ -88,7 +88,7 @@ def gen_settings_str(model_obj, description=False, concise=False):
 
     Parameters
     ----------
-    model_obj : FOOOF or FOOOFGroup or FOOOFSettings
+    model_obj : FOOOF or FOOOFGroup or ModelSettings
         Object to access settings from.
     description : bool, optional, default: True
         Whether to also print out a description of the settings.

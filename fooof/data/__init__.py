@@ -1,3 +1,3 @@
 """Data sub-module."""
 
-from .data import FOOOFSettings, FOOOFMetaData, FOOOFResults, SimParams
+from .data import ModelSettings, SpectrumMetaData, FitResults, SimParams

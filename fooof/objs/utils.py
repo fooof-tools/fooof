@@ -3,7 +3,7 @@
 import numpy as np
 
 from fooof.sim import gen_freqs
-from fooof.data import FOOOFResults
+from fooof.data import FitResults
 from fooof.objs import FOOOF, FOOOFGroup
 from fooof.analysis.periodic import get_band_peak_fg
 from fooof.core.errors import NoModelError, IncompatibleSettingsError
@@ -101,7 +101,7 @@ def average_fg(fg, bands, avg_method='mean', regenerate=True):
     error = avg_func(fg.get_params('error'))
 
     # Collect all results together, to be added to FOOOF object
-    results = FOOOFResults(ap_params, peak_params, r2, error, gauss_params)
+    results = FitResults(ap_params, peak_params, r2, error, gauss_params)
 
     # Create the new FOOOF object, with settings, data info & results
     fm = FOOOF()

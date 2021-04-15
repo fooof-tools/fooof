@@ -9,7 +9,7 @@ They serve rather as 'smoke tests', for if anything fails completely.
 import numpy as np
 from numpy.testing import assert_equal
 
-from fooof.data import FOOOFResults
+from fooof.data import FitResults
 from fooof.core.items import OBJ_DESC
 from fooof.sim import gen_group_power_spectra
 
@@ -85,7 +85,7 @@ def test_fg_fit_nk():
 
     assert out
     assert len(out) == n_spectra
-    assert isinstance(out[0], FOOOFResults)
+    assert isinstance(out[0], FitResults)
     assert np.all(out[1].aperiodic_params)
 
 def test_fg_fit_nk_noise():
@@ -199,7 +199,7 @@ def test_fg_fit_par():
 
     assert out
     assert len(out) == n_spectra
-    assert isinstance(out[0], FOOOFResults)
+    assert isinstance(out[0], FitResults)
     assert np.all(out[1].aperiodic_params)
 
 def test_fg_print(tfg):

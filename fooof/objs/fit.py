@@ -76,7 +76,7 @@ from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
 from fooof.plts.fm import plot_fm
 from fooof.utils.data import trim_spectrum
 from fooof.utils.params import compute_gauss_std
-from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
+from fooof.data import FitResults, ModelSettings, SpectrumMetaData
 from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 
 ###################################################################################################
@@ -325,11 +325,11 @@ class FOOOF():
 
 
     def add_settings(self, fooof_settings):
-        """Add settings into object from a FOOOFSettings object.
+        """Add settings into object from a ModelSettings object.
 
         Parameters
         ----------
-        fooof_settings : FOOOFSettings
+        fooof_settings : ModelSettings
             A data object containing the settings for a power spectrum model.
         """
 
@@ -340,11 +340,11 @@ class FOOOF():
 
 
     def add_meta_data(self, fooof_meta_data):
-        """Add data information into object from a FOOOFMetaData object.
+        """Add data information into object from a SpectrumMetaData object.
 
         Parameters
         ----------
-        fooof_meta_data : FOOOFMetaData
+        fooof_meta_data : SpectrumMetaData
             A meta data object containing meta data information.
         """
 
@@ -355,11 +355,11 @@ class FOOOF():
 
 
     def add_results(self, fooof_result):
-        """Add results data into object from a FOOOFResults object.
+        """Add results data into object from a FitResults object.
 
         Parameters
         ----------
-        fooof_result : FOOOFResults
+        fooof_result : FitResults
             A data object containing the results from fitting a power spectrum model.
         """
 
@@ -541,11 +541,11 @@ class FOOOF():
 
         Returns
         -------
-        FOOOFSettings
+        ModelSettings
             Object containing the settings from the current object.
         """
 
-        return FOOOFSettings(**{key : getattr(self, key) \
+        return ModelSettings(**{key : getattr(self, key) \
                              for key in OBJ_DESC['settings']})
 
 
@@ -554,11 +554,11 @@ class FOOOF():
 
         Returns
         -------
-        FOOOFMetaData
+        SpectrumMetaData
             Object containing meta data from the current object.
         """
 
-        return FOOOFMetaData(**{key : getattr(self, key) \
+        return SpectrumMetaData(**{key : getattr(self, key) \
                              for key in OBJ_DESC['meta_data']})
 
 
@@ -621,11 +621,11 @@ class FOOOF():
 
         Returns
         -------
-        FOOOFResults
+        FitResults
             Object containing the model fit results from the current object.
         """
 
-        return FOOOFResults(**{key.strip('_') : getattr(self, key) \
+        return FitResults(**{key.strip('_') : getattr(self, key) \
             for key in OBJ_DESC['results']})
 
 

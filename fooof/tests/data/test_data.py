@@ -13,7 +13,7 @@ from fooof.data.data import *
 
 def test_fooof_settings():
 
-    settings = FOOOFSettings([1, 8], 8, 0.25, 2, 'fixed')
+    settings = ModelSettings([1, 8], 8, 0.25, 2, 'fixed')
     assert settings
 
     for field in OBJ_DESC['settings']:
@@ -21,7 +21,7 @@ def test_fooof_settings():
 
 def test_fooof_meta_data():
 
-    meta_data = FOOOFMetaData([1, 50], 0.5)
+    meta_data = SpectrumMetaData([1, 50], 0.5)
     assert meta_data
 
     for field in OBJ_DESC['meta_data']:
@@ -29,7 +29,7 @@ def test_fooof_meta_data():
 
 def test_fooof_results():
 
-    results = FOOOFResults([1, 1], [10, 0.5, 1], 0.95, 0.05, [10, 0.5, 0.5])
+    results = FitResults([1, 1], [10, 0.5, 1], 0.95, 0.05, [10, 0.5, 0.5])
     assert results
 
     results_fields = OBJ_DESC['results']

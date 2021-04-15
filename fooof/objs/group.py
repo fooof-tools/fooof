@@ -58,7 +58,7 @@ class FOOOFGroup(FOOOF):
         Frequency range of the power spectra, as [lowest_freq, highest_freq].
     freq_res : float
         Frequency resolution of the power spectra.
-    group_results : list of FOOOFResults
+    group_results : list of FitResults
         Results of the model fit for each power spectrum.
     has_data : bool
         Whether data is loaded to the object.
@@ -463,14 +463,14 @@ class FOOOFGroup(FOOOF):
         Parameters
         ----------
         ind : int
-            The index of the FOOOFResults in FOOOFGroup.group_results to load.
+            The index of the FitResults in FOOOFGroup.group_results to load.
         regenerate : bool, optional, default: False
             Whether to regenerate the model fits from the given fit parameters.
 
         Returns
         -------
         fm : FOOOF
-            The FOOOFResults data loaded into a FOOOF object.
+            The FitResults data loaded into a FOOOF object.
         """
 
         # Initialize a model object, with same settings & check data mode as current object

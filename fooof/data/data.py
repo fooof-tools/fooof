@@ -13,7 +13,7 @@ from collections import namedtuple
 ###################################################################################################
 ###################################################################################################
 
-class FOOOFSettings(namedtuple('FOOOFSettings', ['peak_width_limits', 'max_n_peaks',
+class ModelSettings(namedtuple('ModelSettings', ['peak_width_limits', 'max_n_peaks',
                                                  'min_peak_height', 'peak_threshold',
                                                  'aperiodic_mode'])):
     """User defined settings for the fitting algorithm.
@@ -38,7 +38,7 @@ class FOOOFSettings(namedtuple('FOOOFSettings', ['peak_width_limits', 'max_n_pea
     __slots__ = ()
 
 
-class FOOOFMetaData(namedtuple('FOOOFMetaData', ['freq_range', 'freq_res'])):
+class SpectrumMetaData(namedtuple('SpectrumMetaData', ['freq_range', 'freq_res'])):
     """Metadata information about a power spectrum.
 
     Parameters
@@ -55,8 +55,8 @@ class FOOOFMetaData(namedtuple('FOOOFMetaData', ['freq_range', 'freq_res'])):
     __slots__ = ()
 
 
-class FOOOFResults(namedtuple('FOOOFResults', ['aperiodic_params', 'peak_params',
-                                               'r_squared', 'error', 'gaussian_params'])):
+class FitResults(namedtuple('FitResults', ['aperiodic_params', 'peak_params',
+                                           'r_squared', 'error', 'gaussian_params'])):
     """Model results from parameterizing a power spectrum.
 
     Parameters

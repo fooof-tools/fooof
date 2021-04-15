@@ -13,7 +13,7 @@ from fooof.core.items import OBJ_DESC
 from fooof.core.errors import FitError
 from fooof.core.utils import group_three
 from fooof.sim import gen_freqs, gen_power_spectrum
-from fooof.data import FOOOFSettings, FOOOFMetaData, FOOOFResults
+from fooof.data import ModelSettings, SpectrumMetaData, FitResults
 from fooof.core.errors import DataError, NoDataError, InconsistentDataError
 
 from fooof.tests.settings import TEST_DATA_PATH
@@ -243,7 +243,7 @@ def test_add_data():
 
     # Test that prior data does not get cleared, when requesting not to clear
     tfm._reset_data_results(True, True, True)
-    tfm.add_results(FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25]))
+    tfm.add_results(FitResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25]))
     tfm.add_data(freqs, pows, clear_results=False)
     assert tfm.has_data
     assert tfm.has_model
@@ -261,7 +261,7 @@ def test_add_settings():
     tfm = get_tfm()
 
     # Test adding settings
-    fooof_settings = FOOOFSettings([1, 4], 6, 0, 2, 'fixed')
+    fooof_settings = ModelSettings([1, 4], 6, 0, 2, 'fixed')
     tfm.add_settings(fooof_settings)
     for setting in OBJ_DESC['settings']:
         assert getattr(tfm, setting) == getattr(fooof_settings, setting)
@@ -273,7 +273,7 @@ def test_add_meta_data():
     tfm = get_tfm()
 
     # Test adding meta data
-    fooof_meta_data = FOOOFMetaData([3, 40], 0.5)
+    fooof_meta_data = SpectrumMetaData([3, 40], 0.5)
     tfm.add_meta_data(fooof_meta_data)
     for meta_dat in OBJ_DESC['meta_data']:
         assert getattr(tfm, meta_dat) == getattr(fooof_meta_data, meta_dat)
@@ -285,7 +285,7 @@ def test_add_results():
     tfm = get_tfm()
 
     # Test adding results
-    fooof_results = FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25])
+    fooof_results = FitResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25])
     tfm.add_results(fooof_results)
     assert tfm.has_model
     for setting in OBJ_DESC['results']:
@@ -298,11 +298,11 @@ def test_obj_gets(tfm):
     """
 
     settings = tfm.get_settings()
-    assert isinstance(settings, FOOOFSettings)
+    assert isinstance(settings, ModelSettings)
     meta_data = tfm.get_meta_data()
-    assert isinstance(meta_data, FOOOFMetaData)
+    assert isinstance(meta_data, SpectrumMetaData)
     results = tfm.get_results()
-    assert isinstance(results, FOOOFResults)
+    assert isinstance(results, FitResults)
 
 def test_get_params(tfm):
     """Test the get_params method."""
