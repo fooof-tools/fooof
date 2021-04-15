@@ -83,12 +83,12 @@ def gen_version_str(concise=False):
     return output
 
 
-def gen_settings_str(fooof_obj, description=False, concise=False):
+def gen_settings_str(model_obj, description=False, concise=False):
     """Generate a string representation of current fit settings.
 
     Parameters
     ----------
-    fooof_obj : FOOOF or FOOOFGroup or FOOOFSettings
+    model_obj : FOOOF or FOOOFGroup or FOOOFSettings
         Object to access settings from.
     description : bool, optional, default: True
         Whether to also print out a description of the settings.
@@ -124,15 +124,15 @@ def gen_settings_str(fooof_obj, description=False, concise=False):
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Peak Width Limits : {}'.format(fooof_obj.peak_width_limits),
+        *[el for el in ['Peak Width Limits : {}'.format(model_obj.peak_width_limits),
                         '{}'.format(desc['peak_width_limits']),
-                        'Max Number of Peaks : {}'.format(fooof_obj.max_n_peaks),
+                        'Max Number of Peaks : {}'.format(model_obj.max_n_peaks),
                         '{}'.format(desc['max_n_peaks']),
-                        'Minimum Peak Height : {}'.format(fooof_obj.min_peak_height),
+                        'Minimum Peak Height : {}'.format(model_obj.min_peak_height),
                         '{}'.format(desc['min_peak_height']),
-                        'Peak Threshold: {}'.format(fooof_obj.peak_threshold),
+                        'Peak Threshold: {}'.format(model_obj.peak_threshold),
                         '{}'.format(desc['peak_threshold']),
-                        'Aperiodic Mode : {}'.format(fooof_obj.aperiodic_mode),
+                        'Aperiodic Mode : {}'.format(model_obj.aperiodic_mode),
                         '{}'.format(desc['aperiodic_mode'])] if el != ''],
 
         # Footer
@@ -145,12 +145,12 @@ def gen_settings_str(fooof_obj, description=False, concise=False):
     return output
 
 
-def gen_freq_range_str(fooof_obj, concise=False):
+def gen_freq_range_str(model_obj, concise=False):
     """Generate a string representation of the fit range that was used for the model.
 
     Parameters
     ----------
-    fooof_obj : FOOOF or FOOOFGroup
+    model_obj : FOOOF or FOOOFGroup
         Object to access settings from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
@@ -160,7 +160,7 @@ def gen_freq_range_str(fooof_obj, concise=False):
     If fit range is not available, will print out 'XX' for missing values.
     """
 
-    freq_range = fooof_obj.freq_range if fooof_obj.has_data else ('XX', 'XX')
+    freq_range = model_obj.freq_range if model_obj.has_data else ('XX', 'XX')
 
     str_lst = [
 
@@ -223,12 +223,12 @@ def gen_methods_report_str(concise=False):
     return output
 
 
-def gen_methods_text_str(fooof_obj=None):
+def gen_methods_text_str(model_obj=None):
     """Generate a string representation of a template methods report.
 
     Parameters
     ----------
-    fooof_obj : FOOOF or FOOOFGroup, optional
+    model_obj : FOOOF or FOOOFGroup, optional
         A model object with settings information available.
         If None, the text is returned as a template, without values.
     """
@@ -245,17 +245,17 @@ def gen_methods_text_str(fooof_obj=None):
         "{} to {} Hz."
     )
 
-    if fooof_obj:
-        freq_range = fooof_obj.freq_range if fooof_obj.has_data else ('XX', 'XX')
+    if model_obj:
+        freq_range = model_obj.freq_range if model_obj.has_data else ('XX', 'XX')
     else:
         freq_range = ('XX', 'XX')
 
     methods_str = template.format(MODULE_VERSION,
-                                  fooof_obj.peak_width_limits if fooof_obj else 'XX',
-                                  fooof_obj.max_n_peaks if fooof_obj else 'XX',
-                                  fooof_obj.min_peak_height if fooof_obj else 'XX',
-                                  fooof_obj.peak_threshold if fooof_obj else 'XX',
-                                  fooof_obj.aperiodic_mode if fooof_obj else 'XX',
+                                  model_obj.peak_width_limits if model_obj else 'XX',
+                                  model_obj.max_n_peaks if model_obj else 'XX',
+                                  model_obj.min_peak_height if model_obj else 'XX',
+                                  model_obj.peak_threshold if model_obj else 'XX',
+                                  model_obj.aperiodic_mode if model_obj else 'XX',
                                   *freq_range)
 
     return methods_str

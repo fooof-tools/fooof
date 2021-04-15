@@ -106,12 +106,12 @@ def get_indices(aperiodic_mode):
     return indices
 
 
-def get_info(fooof_obj, aspect):
+def get_info(model_obj, aspect):
     """Get a selection of information from a model objects.
 
     Parameters
     ----------
-    fooof_obj : FOOOF or FOOOFGroup
+    model_obj : FOOOF or FOOOFGroup
         Object to get attributes from.
     aspect : {'settings', 'meta_data', 'results'}
         Which set of attributes to compare the objects across.
@@ -122,4 +122,4 @@ def get_info(fooof_obj, aspect):
         The set of specified info from the model object.
     """
 
-    return {key : getattr(fooof_obj, key) for key in get_description()[aspect]}
+    return {key : getattr(model_obj, key) for key in get_description()[aspect]}
