@@ -1,22 +1,22 @@
 """Custom error definitions."""
 
-class FOOOFError(Exception):
+class SpecParamError(Exception):
     """Base class for custom errors."""
 
-class FitError(FOOOFError):
+class FitError(SpecParamError):
     """Error for a failure to fit."""
 
-class NoDataError(FOOOFError):
+class NoDataError(SpecParamError):
     """Error for if data is missing."""
 
-class DataError(FOOOFError):
+class DataError(SpecParamError):
     """Error for if there is a problem with the data."""
 
-class InconsistentDataError(FOOOFError):
+class InconsistentDataError(SpecParamError):
     """Error for if the data is inconsistent."""
 
-class IncompatibleSettingsError(FOOOFError):
+class IncompatibleSettingsError(SpecParamError):
     """Error for if settings are incompatible."""
 
-class NoModelError(FOOOFError):
+class NoModelError(SpecParamError):
     """Error for if the model is not fit."""
