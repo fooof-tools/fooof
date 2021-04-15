@@ -257,6 +257,7 @@ Plots for plotting power spectra with shaded regions.
     :toctree: generated/
 
     plot_spectra_shading
+    plot_spectra_yshade
 
 Plot Model Properties & Parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

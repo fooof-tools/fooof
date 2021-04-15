@@ -1,5 +1,7 @@
 """Tests for fooof.plts.spectra."""
 
+from pytest import raises
+
 import numpy as np
 
 from fooof.tests.tutils import plot_test
@@ -51,3 +53,37 @@ def test_plot_spectra_shading(tfm, tfg, skip_if_no_mpl):
                          shades=[8, 12], add_center=True, log_freqs=True, log_powers=True,
                          labels=['A', 'B'], save_fig=True, file_path=TEST_PLOTS_PATH,
                          file_name='test_plot_spectra_shading_kwargs.png')
+
+@plot_test
+def test_plot_spectra_yshade(skip_if_no_mpl, tfg):
+
+    freqs = tfg.freqs
+    powers = tfg.power_spectra
+
+    # Invalid 1d array, without shade
+    with raises(ValueError):
+        plot_spectra_yshade(freqs, powers[0])
+
+    # Plot with 2d array
+    plot_spectra_yshade(freqs, powers, shade='std',
+                        save_fig=True, file_path=TEST_PLOTS_PATH,
+                        file_name='test_plot_spectra_yshade1.png')
+
+    # Plot shade with given 1d array
+    plot_spectra_yshade(freqs, np.mean(powers, axis=0),
+                        shade=np.std(powers, axis=0),
+                        save_fig=True, file_path=TEST_PLOTS_PATH,
+                        file_name='test_plot_spectra_yshade2.png')
+
+    # Plot shade with different average and shade approaches
+    plot_spectra_yshade(freqs, powers, shade='sem', average='median',
+                        save_fig=True, file_path=TEST_PLOTS_PATH,
+                        file_name='test_plot_spectra_yshade3.png')
+
+    # Plot shade with custom average and shade callables
+    def _average_callable(powers): return np.mean(powers, axis=0)
+    def _shade_callable(powers): return np.std(powers, axis=0)
+
+    plot_spectra_yshade(freqs, powers, shade=_shade_callable,  average=_average_callable,
+                        log_powers=True, save_fig=True, file_path=TEST_PLOTS_PATH,
+                        file_name='test_plot_spectra_yshade4.png')
