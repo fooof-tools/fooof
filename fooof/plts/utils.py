@@ -181,9 +181,13 @@ def savefig(func):
     @wraps(func)
     def decorated(*args, **kwargs):
 
-        save_fig = kwargs.pop('save_fig', False)
+        # Grab file name and path arguments, if they are in kwargs
         file_name = kwargs.pop('file_name', None)
         file_path = kwargs.pop('file_path', None)
+
+        # Check for an explicit argument for whether to save figure or not
+        #   Defaults to saving when file name given (since bool(str)->True; bool(None)->False)
+        save_fig = kwargs.pop('save_fig', bool(file_name))
 
         func(*args, **kwargs)
 
