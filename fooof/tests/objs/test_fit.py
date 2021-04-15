@@ -110,7 +110,7 @@ def test_fooof_fit_measures():
 
     # Hack fake data with known properties: total error magnitude 2
     tfm.power_spectrum = np.array([1, 2, 3, 4, 5])
-    tfm.fooofed_spectrum_ = np.array([1, 2, 5, 4, 5])
+    tfm.modeled_spectrum_ = np.array([1, 2, 5, 4, 5])
 
     # Check default goodness of fit and error measures
     tfm._calc_r_squared()
@@ -357,7 +357,7 @@ def test_fooof_resets():
             assert getattr(tfm, field) is None
     for field in OBJ_DESC['results']:
         assert np.all(np.isnan(getattr(tfm, field)))
-    assert tfm.freqs is None and tfm.fooofed_spectrum_ is None
+    assert tfm.freqs is None and tfm.modeled_spectrum_ is None
 
 def test_fooof_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""

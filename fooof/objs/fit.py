@@ -115,7 +115,7 @@ class FOOOF():
         Frequency range of the power spectrum, as [lowest_freq, highest_freq].
     freq_res : float
         Frequency resolution of the power spectrum.
-    fooofed_spectrum_ : 1d array
+    modeled_spectrum_ : 1d array
         The full model fit of the power spectrum, in log10 scale.
     aperiodic_params_ : 1d array
         Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
@@ -283,7 +283,7 @@ class FOOOF():
             self.r_squared_ = np.nan
             self.error_ = np.nan
 
-            self.fooofed_spectrum_ = None
+            self.modeled_spectrum_ = None
 
             self._spectrum_flat = None
             self._spectrum_peak_rm = None
@@ -473,7 +473,7 @@ class FOOOF():
             self._spectrum_flat = self.power_spectrum - self._ap_fit
 
             # Create full power_spectrum model fit
-            self.fooofed_spectrum_ = self._peak_fit + self._ap_fit
+            self.modeled_spectrum_ = self._peak_fit + self._ap_fit
 
             # Convert gaussian definitions to peak parameters
             self.peak_params_ = self._create_peak_params(self.gaussian_params_)
@@ -1002,7 +1002,7 @@ class FOOOF():
         'bandwidth' of the peak, as opposed to the gaussian parameter, which is 1-sided.
 
         Performing this conversion requires that the model has been run,
-        with `freqs`, `fooofed_spectrum_` and `_ap_fit` all required to be available.
+        with `freqs`, `modeled_spectrum_` and `_ap_fit` all required to be available.
         """
 
         peak_params = np.empty((len(gaus_params), 3))
@@ -1013,7 +1013,7 @@ class FOOOF():
             ind = np.argmin(np.abs(self.freqs - peak[0]))
 
             # Collect peak parameter data
-            peak_params[ii] = [peak[0], self.fooofed_spectrum_[ind] - self._ap_fit[ind],
+            peak_params[ii] = [peak[0], self.modeled_spectrum_[ind] - self._ap_fit[ind],
                                peak[2] * 2]
 
         return peak_params
@@ -1098,7 +1098,7 @@ class FOOOF():
     def _calc_r_squared(self):
         """Calculate the r-squared goodness of fit of the model, compared to the original data."""
 
-        r_val = np.corrcoef(self.power_spectrum, self.fooofed_spectrum_)
+        r_val = np.corrcoef(self.power_spectrum, self.modeled_spectrum_)
         self.r_squared_ = r_val[0][1] ** 2
 
 
@@ -1124,13 +1124,13 @@ class FOOOF():
         metric = self._error_metric if not metric else metric
 
         if metric == 'MAE':
-            self.error_ = np.abs(self.power_spectrum - self.fooofed_spectrum_).mean()
+            self.error_ = np.abs(self.power_spectrum - self.modeled_spectrum_).mean()
 
         elif metric == 'MSE':
-            self.error_ = ((self.power_spectrum - self.fooofed_spectrum_) ** 2).mean()
+            self.error_ = ((self.power_spectrum - self.modeled_spectrum_) ** 2).mean()
 
         elif metric == 'RMSE':
-            self.error_ = np.sqrt(((self.power_spectrum - self.fooofed_spectrum_) ** 2).mean())
+            self.error_ = np.sqrt(((self.power_spectrum - self.modeled_spectrum_) ** 2).mean())
 
         else:
             msg = "Error metric '{}' not understood or not implemented.".format(metric)
@@ -1292,5 +1292,5 @@ class FOOOF():
     def _regenerate_model(self):
         """Regenerate model fit from parameters."""
 
-        self.fooofed_spectrum_, self._peak_fit, self._ap_fit = gen_model(
+        self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(
             self.freqs, self.aperiodic_params_, self.gaussian_params_, return_components=True)

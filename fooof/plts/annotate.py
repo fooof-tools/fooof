@@ -177,7 +177,7 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True,
         # Annotate Aperiodic Offset
         #   Add a line to indicate offset, without adjusting plot limits below it
         ax.set_autoscaley_on(False)
-        ax.plot([freqs[0], freqs[0]], [ax.get_ylim()[0], fm.fooofed_spectrum_[0]],
+        ax.plot([freqs[0], freqs[0]], [ax.get_ylim()[0], fm.modeled_spectrum_[0]],
                 color=PLT_COLORS['aperiodic'], linewidth=lw2, alpha=0.5)
         ax.annotate('Offset',
                     xy=(freqs[0]+bug_buff, fm.power_spectrum[0]-y_buff1),

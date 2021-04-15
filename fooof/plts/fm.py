@@ -79,7 +79,7 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         model_defaults = {'color' : PLT_COLORS['model'], 'linewidth' : 3.0, 'alpha' : 0.5,
                           'label' : 'Full Model Fit' if add_legend else None}
         model_kwargs = check_plot_kwargs(model_kwargs, model_defaults)
-        plot_spectra(fm.freqs, fm.fooofed_spectrum_, log_freqs, log_powers, ax=ax, **model_kwargs)
+        plot_spectra(fm.freqs, fm.modeled_spectrum_, log_freqs, log_powers, ax=ax, **model_kwargs)
 
         # Plot the aperiodic component of the model fit
         if plot_aperiodic:

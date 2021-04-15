@@ -33,7 +33,7 @@ def get_description():
                   'meta_data' : ['freq_range', 'freq_res'],
                   'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',
                               'peak_params_', 'gaussian_params_'],
-                  'model_components' : ['fooofed_spectrum_', '_spectrum_flat',
+                  'model_components' : ['modeled_spectrum_', '_spectrum_flat',
                                         '_spectrum_peak_rm', '_ap_fit', '_peak_fit'],
                   'descriptors' : ['has_data', 'has_model', 'n_peaks_']
                   }
