@@ -1,4 +1,4 @@
-"""Objects sub-module, for FOOOF objects and functions that operate on FOOOF objects."""
+"""Objects sub-module, for model objects and functions that operate on model objects."""
 
 from .fit import FOOOF
 from .group import FOOOFGroup

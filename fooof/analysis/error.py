@@ -1,4 +1,4 @@
-"""Functions to analyze and investigate FOOOF results - model fit error."""
+"""Functions to analyze and investigate model fit results, in terms of model fit error."""
 
 import numpy as np
 
@@ -10,7 +10,7 @@ from fooof.core.errors import NoModelError, NoDataError
 ###################################################################################################
 
 def compute_pointwise_error_fm(fm, plot_errors=True, return_errors=False, **plt_kwargs):
-    """Calculate the frequency by frequency error of a model fit from a FOOOF object.
+    """Calculate the frequency by frequency error of a model fit.
 
     Parameters
     ----------
@@ -52,7 +52,7 @@ def compute_pointwise_error_fm(fm, plot_errors=True, return_errors=False, **plt_
 
 
 def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_kwargs):
-    """Calculate the frequency by frequency error of model fits from a FOOOFGroup object.
+    """Calculate the frequency by frequency error of model fits for a group of fits.
 
     Parameters
     ----------

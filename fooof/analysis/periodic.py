@@ -1,4 +1,4 @@
-"""Functions to analyze and investigate FOOOF results - periodic components."""
+"""Functions to analyze and investigate model fit results - periodic components."""
 
 import numpy as np
 
@@ -9,7 +9,7 @@ from fooof.core.items import PEAK_INDS
 
 def get_band_peak_fm(fm, band, select_highest=True, threshold=None, thresh_param='PW',
                      attribute='peak_params',):
-    """Extract peaks from a band of interest from a FOOOF object.
+    """Extract peaks from a band of interest from a model object.
 
     Parameters
     ----------
@@ -35,11 +35,11 @@ def get_band_peak_fm(fm, band, select_highest=True, threshold=None, thresh_param
 
     Examples
     --------
-    Select an alpha peak from an already fit FOOOF object 'fm', selecting the highest power alpha:
+    Select an alpha peak from an already fit model object 'fm', selecting the highest power alpha:
 
     >>> alpha = get_band_peak_fm(fm, [7, 14], select_highest=True)  # doctest:+SKIP
 
-    Select beta peaks from a FOOOF object 'fm', extracting all peaks in the range:
+    Select beta peaks from a model object 'fm', extracting all peaks in the range:
 
     >>> betas = get_band_peak_fm(fm, [13, 30], select_highest=False)  # doctest:+SKIP
     """
@@ -49,7 +49,7 @@ def get_band_peak_fm(fm, band, select_highest=True, threshold=None, thresh_param
 
 
 def get_band_peak_fg(fg, band, threshold=None, thresh_param='PW', attribute='peak_params'):
-    """Extract peaks from a band of interest from a FOOOFGroup object.
+    """Extract peaks from a band of interest from a group model object.
 
     Parameters
     ----------
@@ -88,11 +88,11 @@ def get_band_peak_fg(fg, band, threshold=None, thresh_param='PW', attribute='pea
 
     Examples
     --------
-    Extract alpha peaks from a FOOOFGroup object 'fg' that already has model results:
+    Extract alpha peaks from a group model object 'fg' that already has model results:
 
     >>> alphas = get_band_peak_fg(fg, [7, 14])  # doctest:+SKIP
 
-    Extract peaks from a FOOOFGroup object 'fg', selecting those above a power threshold:
+    Extract peaks from a group model object 'fg', selecting those above a power threshold:
 
     >>> betas = get_band_peak_fg(fg, [13, 30], threshold=0.1)  # doctest:+SKIP
     """
@@ -112,7 +112,7 @@ def get_band_peak_group(peak_params, band, n_fits, threshold=None, thresh_param=
         Frequency range for the band of interest.
         Defined as: (lower_frequency_bound, upper_frequency_bound).
     n_fits : int
-        The number of model fits in the FOOOFGroup data.
+        The number of model fits in the group.
     threshold : float, optional
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
@@ -133,7 +133,7 @@ def get_band_peak_group(peak_params, band, n_fits, threshold=None, thresh_param=
     - Each row reflects an individual model fit, in order, filled with nan if no peak was present.
     """
 
-    # Extracts an array per FOOOF fit, and extracts band peaks from it
+    # Extracts an array per model fit, and extracts band peaks from it
     band_peaks = np.zeros(shape=[n_fits, 3])
     for ind in range(n_fits):
         band_peaks[ind, :] = get_band_peak(peak_params[tuple([peak_params[:, -1] == ind])][:, 0:3],

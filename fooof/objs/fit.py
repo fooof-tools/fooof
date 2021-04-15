@@ -1,8 +1,8 @@
-"""FOOOF Object - base object which defines the model.
+"""Base model object, which defines the power spectrum model.
 
 Private Attributes
 ==================
-Private attributes of the FOOOF object are documented here.
+Private attributes of the model object are documented here.
 
 Data Attributes
 ---------------
@@ -85,7 +85,7 @@ from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 class FOOOF():
     """Model a physiological power spectrum as a combination of aperiodic and periodic components.
 
-    WARNING: FOOOF expects frequency and power values in linear space.
+    WARNING: frequency and power values inputs must be in linear space.
 
     Passing in logged frequencies and/or power spectra is not detected,
     and will silently produce incorrect results.
@@ -330,7 +330,7 @@ class FOOOF():
         Parameters
         ----------
         fooof_settings : FOOOFSettings
-            A data object containing the settings for a FOOOF model.
+            A data object containing the settings for a power spectrum model.
         """
 
         for setting in OBJ_DESC['settings']:
@@ -360,7 +360,7 @@ class FOOOF():
         Parameters
         ----------
         fooof_result : FOOOFResults
-            A data object containing the results from fitting a FOOOF model.
+            A data object containing the results from fitting a power spectrum model.
         """
 
         self.aperiodic_params_ = fooof_result.aperiodic_params
@@ -1188,7 +1188,7 @@ class FOOOF():
         # Check if power values are complex
         if np.iscomplexobj(power_spectrum):
             raise DataError("Input power spectra are complex values. "
-                            "FOOOF does not currently support complex inputs.")
+                            "Model fitting does not currently support complex inputs.")
 
         # Force data to be dtype of float64
         #   If they end up as float32, or less, scipy curve_fit fails (sometimes implicitly)
@@ -1206,7 +1206,7 @@ class FOOOF():
         if freqs[0] == 0.0:
             freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, [freqs[1], freqs.max()])
             if self.verbose:
-                print("\nFOOOF WARNING: Skipping frequency == 0, "
+                print("\nFITTING WARNING: Skipping frequency == 0, "
                       "as this causes a problem with fitting.")
 
         # Calculate frequency resolution, and actual frequency range of the data

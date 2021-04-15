@@ -1,4 +1,4 @@
-"""Functions and utilities for downloading example data for fooof."""
+"""Functions and utilities for downloading example data."""
 
 import os
 from urllib.request import urlretrieve

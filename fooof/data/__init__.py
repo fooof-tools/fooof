@@ -1,3 +1,3 @@
-"""Data sub-module for FOOOF."""
+"""Data sub-module."""
 
 from .data import FOOOFSettings, FOOOFMetaData, FOOOFResults, SimParams

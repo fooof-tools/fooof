@@ -1,3 +1,3 @@
-"""Utilities sub-module for FOOOF."""
+"""Utilities sub-module."""
 
 from .data import trim_spectrum, interpolate_spectrum

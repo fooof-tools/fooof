@@ -1,8 +1,7 @@
-"""FOOOFGroup object and associated code for using the FOOOF model on 2D groups of power spectra.
+"""Group model object and associated code for fitting the model to 2D groups of power spectra.
 
 Notes
 -----
-FOOOFGroup object docs are imported from FOOOF object at runtime.
 Methods without defined docstrings import docs at runtime, from aliased external functions.
 """
 
@@ -28,7 +27,7 @@ from fooof.core.modutils import copy_doc_func_to_method, safe_import
 class FOOOFGroup(FOOOF):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
-    WARNING: FOOOF expects frequency and power values in linear space.
+    WARNING: frequency and power values inputs must be in linear space.
 
     Passing in logged frequencies and/or power spectra is not detected,
     and will silently produce incorrect results.
@@ -60,7 +59,7 @@ class FOOOFGroup(FOOOF):
     freq_res : float
         Frequency resolution of the power spectra.
     group_results : list of FOOOFResults
-        Results of FOOOF model fit for each power spectrum.
+        Results of the model fit for each power spectrum.
     has_data : bool
         Whether data is loaded to the object.
     has_model : bool
@@ -235,7 +234,7 @@ class FOOOFGroup(FOOOF):
         power_spectra : 2d array, shape: [n_power_spectra, n_freqs], optional
             Matrix of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
-            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+            Desired frequency range to fit the model to. If not provided, fits the entire given range.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -262,7 +261,7 @@ class FOOOFGroup(FOOOF):
         power_spectra : 2d array, shape: [n_power_spectra, n_freqs], optional
             Matrix of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
-            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+            Desired frequency range to fit the model to. If not provided, fits the entire given range.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -280,7 +279,7 @@ class FOOOFGroup(FOOOF):
 
         # If 'verbose', print out a marker of what is being run
         if self.verbose and not progress:
-            print('Running FOOOFGroup across {} power spectra.'.format(len(self.power_spectra)))
+            print('Fitting model across {} power spectra.'.format(len(self.power_spectra)))
 
         # Run linearly
         if n_jobs == 1:
@@ -374,7 +373,7 @@ class FOOOFGroup(FOOOF):
 
         # Pull out the requested data field from the group data
         # As a special case, peak_params are pulled out in a way that appends
-        #  an extra column, indicating which FOOOF run each peak comes from
+        #  an extra column, indicating which model each peak comes from
         if name in ('peak_params', 'gaussian_params'):
 
             # Collect peak data, appending the index of the model it comes from
@@ -382,7 +381,7 @@ class FOOOFGroup(FOOOF):
                              for index, data in enumerate(self.group_results)])
 
             # This updates index to grab selected column, and the last column
-            #  This last column is the 'index' column (FOOOF object source)
+            #   This last column is the 'index' column (model object source)
             if col is not None:
                 col = [col, -1]
         else:
@@ -459,7 +458,7 @@ class FOOOFGroup(FOOOF):
 
 
     def get_fooof(self, ind, regenerate=True):
-        """Get a FOOOF object for a specified model fit.
+        """Get a model fit object for a specified index.
 
         Parameters
         ----------
@@ -474,12 +473,12 @@ class FOOOFGroup(FOOOF):
             The FOOOFResults data loaded into a FOOOF object.
         """
 
-        # Initialize a FOOOF object, with same settings & check data mode as current FOOOFGroup
+        # Initialize a model object, with same settings & check data mode as current object
         fm = FOOOF(*self.get_settings(), verbose=self.verbose)
         fm.set_check_data_mode(self._check_data)
 
         # Add data for specified single power spectrum, if available
-        #   The power spectrum is inverted back to linear, as it is re-logged when added to FOOOF
+        #   The power spectrum is inverted back to linear, as it is re-logged when added to object
         if self.has_data:
             fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
         # If no power spectrum data available, copy over data information & regenerate freqs
@@ -495,7 +494,7 @@ class FOOOFGroup(FOOOF):
 
 
     def get_group(self, inds):
-        """Get a FOOOFGroup object with the specified sub-selection of model fits.
+        """Get a Group model object with the specified sub-selection of model fits.
 
         Parameters
         ----------
@@ -516,7 +515,7 @@ class FOOOFGroup(FOOOF):
         fg = FOOOFGroup(*self.get_settings(), verbose=self.verbose)
 
         # Add data for specified power spectra, if available
-        #   The power spectra are inverted back to linear, as they are re-logged when added to FOOOF
+        #   Power spectra are inverted back to linear, as they are re-logged when added to object
         if self.has_data:
             fg.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]))
         # If no power spectrum data available, copy over data information & regenerate freqs

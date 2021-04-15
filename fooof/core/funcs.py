@@ -2,8 +2,8 @@
 
 NOTES
 -----
-- FOOOF currently (only) uses the exponential and gaussian functions.
-- Linear & Quadratic functions are from previous versions of FOOOF.
+- Model fitting currently (only) uses the exponential and gaussian functions.
+- Linear & Quadratic functions are from previous versions.
     - They are left available for easy swapping back in, if desired.
 """
 

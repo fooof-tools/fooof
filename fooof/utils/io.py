@@ -4,7 +4,7 @@
 ###################################################################################################
 
 def load_fooof(file_name, file_path=None, regenerate=True):
-    """Load a FOOOF file into a FOOOF object.
+    """Load a file into a FOOOF object.
 
     Parameters
     ----------
@@ -21,7 +21,7 @@ def load_fooof(file_name, file_path=None, regenerate=True):
         Object with the loaded data.
     """
 
-    # Initialize a FOOOF object (imported locally to avoid circular imports)
+    # Initialize a model object (imported locally to avoid circular imports)
     from fooof.objs import FOOOF
     fm = FOOOF()
 
@@ -32,7 +32,7 @@ def load_fooof(file_name, file_path=None, regenerate=True):
 
 
 def load_fooofgroup(file_name, file_path=None):
-    """Load data from file into a FOOOFGroup object.
+    """Load a file into a FOOOFGroup object.
 
     Parameters
     ----------

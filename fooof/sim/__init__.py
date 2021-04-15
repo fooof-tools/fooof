@@ -1,4 +1,4 @@
-""""Simulation sub-module for FOOOF."""
+""""Simulation sub-module."""
 
 # Link the Sim Params object into `sim`, so it can be imported from here
 from fooof.data import SimParams

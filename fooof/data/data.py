@@ -1,6 +1,6 @@
-"""Data objects for FOOOF.
+"""Data objects.
 
-Notes on FOOOF data objects:
+Notes on data objects:
 - these data objects are NamedTuples, immutable data types with attribute labels
 - the namedtuples are wrapped as classes (they are still immutable when doing this)
 - wrapping in objects helps to be able to render well formed documentation for them.

@@ -1,3 +1,3 @@
-"""Bands sub-module for FOOOF."""
+"""Bands sub-module."""
 
 from .bands import Bands

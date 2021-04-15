@@ -1,4 +1,4 @@
-"""Generate reports from FOOOF objects."""
+"""Generate reports from model objects."""
 
 from fooof.core.io import fname, fpath
 from fooof.core.modutils import safe_import, check_dependency
@@ -53,7 +53,7 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
     ax1 = plt.subplot(grid[1])
     fm.plot(plt_log=plt_log, ax=ax1)
 
-    # Third - FOOOF settings
+    # Third - settings
     ax2 = plt.subplot(grid[2])
     settings_str = gen_settings_str(fm, False)
     ax2.text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')

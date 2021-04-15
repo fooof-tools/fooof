@@ -1,19 +1,19 @@
-"""Internal functions to manage info related to FOOOF objects."""
+"""Internal functions to manage info related to model objects."""
 
 ###################################################################################################
 ###################################################################################################
 
 def get_description():
-    """Get dictionary specifying FOOOF attributes, and what kind of data they store.
+    """Get dictionary specifying model object attributes, and what kind of data they store.
 
     Returns
     -------
     attributes : dict
-        Mapping of FOOOF object attributes, and what kind of data they are.
+        Mapping of model object attributes, and what kind of data they are.
 
     Notes
     -----
-    This function organizes public FOOOF object attributes into:
+    This function organizes public model object attributes into:
 
     - results : parameters for and measures of the model
     - settings : model settings
@@ -107,7 +107,7 @@ def get_indices(aperiodic_mode):
 
 
 def get_info(fooof_obj, aspect):
-    """Get a selection of information from a FOOOF derived object.
+    """Get a selection of information from a model objects.
 
     Parameters
     ----------
@@ -119,7 +119,7 @@ def get_info(fooof_obj, aspect):
     Returns
     -------
     dict
-        The set of specified info from the FOOOF derived object.
+        The set of specified info from the model object.
     """
 
     return {key : getattr(fooof_obj, key) for key in get_description()[aspect]}

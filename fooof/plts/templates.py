@@ -1,8 +1,8 @@
-"""Plot templates for the FOOOF module.
+"""Plot templates for the module.
 
 Notes
 -----
-These are template plot structures for FOOOF plots and/or reports.
+These are template plot structures for plots and/or reports.
 They are not expected to be used directly by the user.
 """
 

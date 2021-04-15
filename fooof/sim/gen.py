@@ -471,8 +471,8 @@ def gen_model(freqs, aperiodic_params, periodic_params, return_components=False)
     -----
     This function should be used when computing model reconstructions, as it:
 
-    - Takes in input parameter definitions as arrays, as used in FOOOF objects.
-    - Returns the power spectrum in log10 spacing, as is used in FOOOF models.
+    - Takes in input parameter definitions as arrays, as used in model objects.
+    - Returns the power spectrum in log10 spacing, as is used in model models.
     """
 
     ap_fit = gen_aperiodic(freqs, aperiodic_params)

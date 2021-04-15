@@ -1,7 +1,7 @@
-"""Custom error definitions for FOOOF."""
+"""Custom error definitions."""
 
 class FOOOFError(Exception):
-    """Base class for errors in the FOOOF module."""
+    """Base class for custom errors."""
 
 class FitError(FOOOFError):
     """Error for a failure to fit."""

@@ -1,4 +1,4 @@
-"""Utility functions for managing and manipulating FOOOF objects."""
+"""Utility functions for managing and manipulating model objects."""
 
 import numpy as np
 

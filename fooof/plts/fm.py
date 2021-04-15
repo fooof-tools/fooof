@@ -1,8 +1,8 @@
-"""Plots for the FOOOF object.
+"""Plots for the model object.
 
 Notes
 -----
-This file contains plotting functions that take as input a FOOOF object.
+This file contains plotting functions that take as input a model object.
 """
 
 import numpy as np
@@ -28,7 +28,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=True,
             save_fig=False, file_name=None, file_path=None, ax=None, data_kwargs=None,
             model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
-    """Plot the power spectrum and model fit results from a FOOOF object.
+    """Plot the power spectrum and model fit results from a model object.
 
     Parameters
     ----------
@@ -58,13 +58,12 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
 
     Notes
     -----
-    Since FOOOF objects store power values in log spacing,
-    the y-axis (power) is plotted in log spacing by default.
+    The y-axis (power) is plotted in log spacing by default.
     """
 
     ax = check_ax(ax, PLT_FIGSIZES['spectral'])
 
-    # Log settings - note that power values in FOOOF objects are already logged
+    # Log settings - note that power values in model objects are already logged
     log_freqs = plt_log
     log_powers = False
 
@@ -104,7 +103,7 @@ def _add_peaks(fm, approach, plt_log, ax, peak_kwargs):
     Parameters
     ----------
     fm : FOOOF
-        FOOOF object containing results from fitting.
+        Model object containing results from fitting.
     approach : {'shade', 'dot', 'outline', 'outline', 'line'}
         What kind of approach to take to plot peaks.
         Can also be a combination of approaches, separated by '-' (for example 'shade-line').
@@ -148,7 +147,7 @@ def _add_peaks_shade(fm, plt_log, ax, **plot_kwargs):
     Parameters
     ----------
     fm : FOOOF
-        FOOOF object containing results from fitting.
+        Model object containing results from fitting.
     plt_log : boolean
         Whether to plot the frequency values in log10 spacing.
     ax : matplotlib.Axes
@@ -174,7 +173,7 @@ def _add_peaks_dot(fm, plt_log, ax, **plot_kwargs):
     Parameters
     ----------
     fm : FOOOF
-        FOOOF object containing results from fitting.
+        Model object containing results from fitting.
     plt_log : boolean
         Whether to plot the frequency values in log10 spacing.
     ax : matplotlib.Axes
@@ -204,7 +203,7 @@ def _add_peaks_outline(fm, plt_log, ax, **plot_kwargs):
     Parameters
     ----------
     fm : FOOOF
-        FOOOF object containing results from fitting.
+        Model object containing results from fitting.
     plt_log : boolean
         Whether to plot the frequency values in log10 spacing.
     ax : matplotlib.Axes
@@ -236,7 +235,7 @@ def _add_peaks_line(fm, plt_log, ax, **plot_kwargs):
     Parameters
     ----------
     fm : FOOOF
-        FOOOF object containing results from fitting.
+        Model object containing results from fitting.
     plt_log : boolean
         Whether to plot the frequency values in log10 spacing.
     ax : matplotlib.Axes
@@ -263,7 +262,7 @@ def _add_peaks_width(fm, plt_log, ax, **plot_kwargs):
     Parameters
     ----------
     fm : FOOOF
-        FOOOF object containing results from fitting.
+        Model object containing results from fitting.
     plt_log : boolean
         Whether to plot the frequency values in log10 spacing.
     ax : matplotlib.Axes

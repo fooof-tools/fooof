@@ -1,4 +1,4 @@
-"""File I/O for FOOOF."""
+"""File I/O."""
 
 import io
 import os
@@ -77,9 +77,9 @@ def save_fm(fm, file_name, file_path=None, append=False,
         Whether to append to an existing file, if available.
         This option is only valid (and only used) if 'file_name' is a str.
     save_results : bool, optional
-        Whether to save out FOOOF model fit results.
+        Whether to save out model fit results.
     save_settings : bool, optional
-        Whether to save out FOOOF settings.
+        Whether to save out settings.
     save_data : bool, optional
         Whether to save out input data.
 
@@ -135,9 +135,9 @@ def save_fg(fg, file_name, file_path=None, append=False,
         Whether to append to an existing file, if available.
         This option is only valid (and only used) if 'file_name' is a str.
     save_results : bool, optional
-        Whether to save out FOOOF model fit results.
+        Whether to save out model fit results.
     save_settings : bool, optional
-        Whether to save out FOOOF settings.
+        Whether to save out settings.
     save_data : bool, optional
         Whether to save out power spectra data.
 
@@ -236,9 +236,9 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
     f_obj : FileObject
         File object to save data to.
     save_results : bool
-        Whether to save out FOOOF model fit results.
+        Whether to save out model fit results.
     save_settings : bool
-        Whether to save out FOOOF settings.
+        Whether to save out settings.
     save_data : bool
         Whether to save out power spectra data.
     """

@@ -1,4 +1,4 @@
-"""Instantiated objects that can be used as 'helper items' for working with FOOOF."""
+"""Instantiated objects that can be used as 'helper items' for working with model objects."""
 
 from fooof.core.info import get_description, get_peak_indices
 

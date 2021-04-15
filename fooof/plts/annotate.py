@@ -30,7 +30,7 @@ def plot_annotated_peak_search(fm):
     Parameters
     ----------
     fm : FOOOF
-        FOOOF object, with model fit, data and settings available.
+        Model object, with model fit, data and settings available.
     """
 
     # Recalculate the initial aperiodic fit and flattened spectrum that
@@ -76,12 +76,12 @@ def plot_annotated_peak_search(fm):
 @check_dependency(plt, 'matplotlib')
 def plot_annotated_model(fm, plt_log=False, annotate_peaks=True,
                          annotate_aperiodic=True, ax=None):
-    """Plot a an annotated power spectrum and model, from a FOOOF object.
+    """Plot a an annotated power spectrum and model, from a model object.
 
     Parameters
     ----------
     fm : FOOOF
-        FOOOF object, with model fit, data and settings available.
+        Model object, with model fit, data and settings available.
     plt_log : boolean, optional, default: False
         Whether to plot the frequency values in log10 spacing.
     annotate_peaks : boolean, optional, default: True

@@ -1,8 +1,8 @@
-"""Plots for the FOOOFGroup object.
+"""Plots for the group model object.
 
 Notes
 -----
-This file contains plotting functions that take as input a FOOOFGroup object.
+This file contains plotting functions that take as input a group model object.
 """
 
 from fooof.core.errors import NoModelError
@@ -37,7 +37,7 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
     Raises
     ------
     NoModelError
-        If the FOOOF object does not have model fit data available to plot.
+        If the model object does not have model fit data available to plot.
     """
 
     if not fg.has_model:
