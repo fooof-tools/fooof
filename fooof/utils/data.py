@@ -1,5 +1,7 @@
 """Utilities for working with data and models."""
 
+from itertools import repeat
+
 import numpy as np
 
 ###################################################################################################
@@ -60,9 +62,10 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
         Frequency values for the power spectrum.
     powers : 1d array
         Power values for the power spectrum.
-    interp_range : list of float
+    interp_range : list of float or list of list of float
         Frequency range to interpolate, as [lowest_freq, highest_freq].
-    buffer : int
+        If a list of lists, applies each as it's own interpolation range.
+    buffer : int or list of int
         The number of samples to use on either side of the interpolation
         range, that are then averaged and used to calculate the interpolation.
 
@@ -101,23 +104,35 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
     >>> freqs, powers = interpolate_spectrum(freqs, powers, [58, 62])
     """
 
-    # Get the set of frequency values that need to be interpolated
-    interp_mask = np.logical_and(freqs >= interp_range[0], freqs <= interp_range[1])
-    interp_freqs = freqs[interp_mask]
+    # If given a list of interpolation zones, recurse to apply each one
+    if isinstance(interp_range[0], list):
+        buffer = repeat(buffer) if isinstance(buffer, int) else buffer
+        for interp_zone, cur_buffer in zip(interp_range, buffer):
+            freqs, powers = interpolate_spectrum(freqs, powers, interp_zone, cur_buffer)
 
-    # Get the indices of the interpolation range
-    ii1, ii2 = np.flatnonzero(interp_mask)[[0, -1]]
+    # Assuming list of two floats, interpolate a single frequency range
+    else:
 
-    # Extract & log the requested range of data to use around interpolated range
-    xs1 = np.log10(freqs[ii1-buffer:ii1])
-    xs2 = np.log10(freqs[ii2:ii2+buffer])
-    ys1 = np.log10(powers[ii1-buffer:ii1])
-    ys2 = np.log10(powers[ii2:ii2+buffer])
+        # Take a copy of the array, to not change original array
+        powers = np.copy(powers)
 
-    # Linearly interpolate, in log-log space, between averages of the extracted points
-    vals = np.interp(np.log10(interp_freqs),
-                     [np.median(xs1), np.median(xs2)],
-                     [np.median(ys1), np.median(ys2)])
-    powers[interp_mask] = np.power(10, vals)
+        # Get the set of frequency values that need to be interpolated
+        interp_mask = np.logical_and(freqs >= interp_range[0], freqs <= interp_range[1])
+        interp_freqs = freqs[interp_mask]
+
+        # Get the indices of the interpolation range
+        ii1, ii2 = np.flatnonzero(interp_mask)[[0, -1]]
+
+        # Extract & log the requested range of data to use around interpolated range
+        xs1 = np.log10(freqs[ii1-buffer:ii1])
+        xs2 = np.log10(freqs[ii2:ii2+buffer])
+        ys1 = np.log10(powers[ii1-buffer:ii1])
+        ys2 = np.log10(powers[ii2:ii2+buffer])
+
+        # Linearly interpolate, in log-log space, between averages of the extracted points
+        vals = np.interp(np.log10(interp_freqs),
+                         [np.median(xs1), np.median(xs2)],
+                         [np.median(ys1), np.median(ys2)])
+        powers[interp_mask] = np.power(10, vals)
 
     return freqs, powers

@@ -8,17 +8,18 @@ from fooof.sim import gen_freqs
 from fooof.core.funcs import gaussian_function
 from fooof.core.modutils import safe_import, check_dependency
 from fooof.plts.settings import PLT_FIGSIZES
-from fooof.plts.style import check_n_style, style_param_plot
-from fooof.plts.utils import check_ax, recursive_plot, check_plot_kwargs
+from fooof.plts.style import style_param_plot, style_plot
+from fooof.plts.utils import check_ax, recursive_plot, savefig, check_plot_kwargs
 
 plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
 
+@savefig
+@style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
-                     ax=None, plot_style=style_param_plot, **plot_kwargs):
+def plot_peak_params(peaks, freq_range=None, colors=None, labels=None, ax=None, **plot_kwargs):
     """Plot peak parameters as dots representing center frequency, power and bandwidth.
 
     Parameters
@@ -33,18 +34,15 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
         Label(s) for plotted data, to be added in a legend.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_param_plot
-        A function to call to apply styling & aesthetics to the plot.
     **plot_kwargs
-        Keyword arguments to pass into the plot call.
+        Keyword arguments to pass into the ``style_plot``.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
 
     # If there is a list, use recurse function to loop across arrays of data and plot them
     if isinstance(peaks, list):
-        recursive_plot(peaks, plot_peak_params, ax, colors=colors, labels=labels,
-                       plot_style=plot_style, **plot_kwargs)
+        recursive_plot(peaks, plot_peak_params, ax, colors=colors, labels=labels)
 
     # Otherwise, plot the array of data
     else:
@@ -66,11 +64,12 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None,
         ax.set_xlim(freq_range)
     ax.set_ylim([0, ax.get_ylim()[1]])
 
-    check_n_style(plot_style, ax)
+    style_param_plot(ax)
 
 
-def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
-                   ax=None, plot_style=style_param_plot, **plot_kwargs):
+@savefig
+@style_plot
+def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None, ax=None, **plot_kwargs):
     """Plot reconstructions of model peak fits.
 
     Parameters
@@ -86,8 +85,6 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
         Label(s) for plotted data, to be added in a legend.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
-    plot_style : callable, optional, default: style_param_plot
-        A function to call to apply styling & aesthetics to the plot.
     **plot_kwargs
         Keyword arguments to pass into the plot call.
     """
@@ -101,8 +98,7 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
 
         recursive_plot(peaks, plot_function=plot_peak_fits, ax=ax,
                        freq_range=tuple(freq_range) if freq_range else freq_range,
-                       colors=colors, labels=labels,
-                       plot_style=plot_style, **plot_kwargs)
+                       colors=colors, labels=labels, **plot_kwargs)
 
     else:
 
@@ -128,8 +124,7 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
 
             # Create & plot the peak model from parameters
             peak_vals = gaussian_function(freqs, *peak_params)
-            plot_kwargs = check_plot_kwargs(plot_kwargs, {'alpha' : 0.35, 'linewidth' : 1.25})
-            ax.plot(freqs, peak_vals, color=colors, **plot_kwargs)
+            ax.plot(freqs, peak_vals, color=colors, alpha=0.35, linewidth=1.25)
 
             # Collect a running average average peaks
             avg_vals = np.nansum(np.vstack([avg_vals, peak_vals]), axis=0)
@@ -137,7 +132,7 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
         # Plot the average across all components
         avg = avg_vals / peaks.shape[0]
         avg_color = 'black' if not colors else colors
-        ax.plot(freqs, avg, color=avg_color, linewidth=plot_kwargs.get('linewidth')*3, label=labels)
+        ax.plot(freqs, avg, color=avg_color, linewidth=3.75, label=labels)
 
     # Add axis labels
     ax.set_xlabel('Frequency')
@@ -148,4 +143,4 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None,
     ax.set_ylim([0, ax.get_ylim()[1]])
 
     # Apply plot style
-    check_n_style(plot_style, ax)
+    style_param_plot(ax)

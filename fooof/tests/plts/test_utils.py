@@ -1,8 +1,11 @@
 """Tests for fooof.plts.utils."""
 
-from fooof.tests.tutils import plot_test
+import os
 
 from fooof.core.modutils import safe_import
+
+from fooof.tests.tutils import plot_test
+from fooof.tests.settings import TEST_PLOTS_PATH
 
 from fooof.plts.utils import *
 
@@ -69,3 +72,21 @@ def test_check_plot_kwargs(skip_if_no_mpl):
     assert len(plot_kwargs) == 2
     assert plot_kwargs['alpha'] == 0.5
     assert plot_kwargs['linewidth'] == 2
+
+def test_savefig():
+
+    @savefig
+    def example_plot():
+        plt.plot([1, 2], [3, 4])
+
+    # Test defaults to saving given file path & name
+    example_plot(file_path=TEST_PLOTS_PATH, file_name='test_savefig1.pdf')
+    assert os.path.exists(os.path.join(TEST_PLOTS_PATH, 'test_savefig1.pdf'))
+
+    # Test works the same when explicitly given `save_fig`
+    example_plot(save_fig=True, file_path=TEST_PLOTS_PATH, file_name='test_savefig2.pdf')
+    assert os.path.exists(os.path.join(TEST_PLOTS_PATH, 'test_savefig2.pdf'))
+
+    # Test does not save when `save_fig` set to False
+    example_plot(save_fig=False, file_path=TEST_PLOTS_PATH, file_name='test_savefig3.pdf')
+    assert not os.path.exists(os.path.join(TEST_PLOTS_PATH, 'test_savefig3.pdf'))

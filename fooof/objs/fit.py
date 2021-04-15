@@ -74,7 +74,6 @@ from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
                                 gen_issue_str, gen_width_warning_str)
 
 from fooof.plts.fm import plot_fm
-from fooof.plts.style import style_spectrum_plot
 from fooof.utils.data import trim_spectrum
 from fooof.utils.params import compute_gauss_std
 from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
@@ -587,9 +586,7 @@ class FOOOF():
 
         Notes
         -----
-        For further description of the data you can extract, check the FOOOFResults documentation.
-
-        If there is no data on periodic features, this method will return NaN.
+        If there are no fit peak (no peak parameters), this method will return NaN.
         """
 
         if not self.has_model:
@@ -636,12 +633,13 @@ class FOOOF():
     @copy_doc_func_to_method(plot_fm)
     def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,
              add_legend=True, save_fig=False, file_name=None, file_path=None,
-             ax=None, plot_style=style_spectrum_plot,
-             data_kwargs=None, model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None):
+             ax=None, data_kwargs=None, model_kwargs=None,
+             aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
 
-        plot_fm(self, plot_peaks, plot_aperiodic, plt_log, add_legend,
-                save_fig, file_name, file_path, ax, plot_style,
-                data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs)
+        plot_fm(self, plot_peaks=plot_peaks, plot_aperiodic=plot_aperiodic, plt_log=plt_log,
+                add_legend=add_legend, save_fig=save_fig, file_name=file_name,
+                file_path=file_path, ax=ax, data_kwargs=data_kwargs, model_kwargs=model_kwargs,
+                aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs, **plot_kwargs)
 
 
     @copy_doc_func_to_method(save_report_fm)
@@ -1027,18 +1025,16 @@ class FOOOF():
         with `freqs`, `fooofed_spectrum_` and `_ap_fit` all required to be available.
         """
 
-        peak_params = np.empty([0, 3])
+        peak_params = np.empty((len(gaus_params), 3))
 
         for ii, peak in enumerate(gaus_params):
 
             # Gets the index of the power_spectrum at the frequency closest to the CF of the peak
-            ind = min(range(len(self.freqs)), key=lambda ii: abs(self.freqs[ii] - peak[0]))
+            ind = np.argmin(np.abs(self.freqs - peak[0]))
 
             # Collect peak parameter data
-            peak_params = np.vstack((peak_params,
-                                     [peak[0],
-                                      self.fooofed_spectrum_[ind] - self._ap_fit[ind],
-                                      peak[2] * 2]))
+            peak_params[ii] = [peak[0], self.fooofed_spectrum_[ind] - self._ap_fit[ind],
+                               peak[2] * 2]
 
         return peak_params
 
@@ -1057,8 +1053,8 @@ class FOOOF():
             Guess parameters for gaussian peak fits. Shape: [n_peaks, 3].
         """
 
-        cf_params = [item[0] for item in guess]
-        bw_params = [item[2] * self._bw_std_edge for item in guess]
+        cf_params = guess[:, 0]
+        bw_params = guess[:, 2] * self._bw_std_edge
 
         # Check if peaks within drop threshold from the edge of the frequency range
         keep_peak = \
