@@ -2,4 +2,4 @@
 
 from .fit import FOOOF
 from .group import FOOOFGroup
-from .utils import compare_info, average_fg, combine_fooofs, fit_fooof_3d
+from .utils import compare_model_objs, average_group, combine_model_objs, fit_models_3d

@@ -11,12 +11,12 @@ from fooof.core.errors import NoModelError, IncompatibleSettingsError
 ###################################################################################################
 ###################################################################################################
 
-def compare_info(fooof_lst, aspect):
-    """Compare a specified aspect of FOOOF objects across instances.
+def compare_model_objs(model_objs, aspect):
+    """Compare multiple model, checking for consistent attributes.
 
     Parameters
     ----------
-    fooof_lst : list of FOOOF and / or FOOOFGroup
+    model_objs : list of FOOOF and/or FOOOFGroup
         Objects whose attributes are to be compared.
     aspect : {'settings', 'meta_data'}
         Which set of attributes to compare the objects across.
@@ -28,8 +28,8 @@ def compare_info(fooof_lst, aspect):
     """
 
     # Check specified aspect of the objects are the same across instances
-    for f_obj_1, f_obj_2 in zip(fooof_lst[:-1], fooof_lst[1:]):
-        if getattr(f_obj_1, 'get_' + aspect)() != getattr(f_obj_2, 'get_' + aspect)():
+    for m_obj_1, m_obj_2 in zip(model_objs[:-1], model_objs[1:]):
+        if getattr(m_obj_1, 'get_' + aspect)() != getattr(m_obj_2, 'get_' + aspect)():
             consistent = False
             break
     else:
@@ -38,8 +38,8 @@ def compare_info(fooof_lst, aspect):
     return consistent
 
 
-def average_fg(fg, bands, avg_method='mean', regenerate=True):
-    """Average across model fits in a FOOOFGroup object.
+def average_group(fg, bands, avg_method='mean', regenerate=True):
+    """Average across model fits in a group model object.
 
     Parameters
     ----------
@@ -100,10 +100,10 @@ def average_fg(fg, bands, avg_method='mean', regenerate=True):
     r2 = avg_func(fg.get_params('r_squared'))
     error = avg_func(fg.get_params('error'))
 
-    # Collect all results together, to be added to FOOOF object
+    # Collect all results together, to be added to the model object
     results = FitResults(ap_params, peak_params, r2, error, gauss_params)
 
-    # Create the new FOOOF object, with settings, data info & results
+    # Create the new model object, with settings, data info & results
     fm = FOOOF()
     fm.add_settings(fg.get_settings())
     fm.add_meta_data(fg.get_meta_data())
@@ -116,13 +116,13 @@ def average_fg(fg, bands, avg_method='mean', regenerate=True):
     return fm
 
 
-def combine_fooofs(fooofs):
-    """Combine a group of FOOOF and/or FOOOFGroup objects into a single FOOOFGroup object.
+def combine_model_objs(model_objs):
+    """Combine a group of model objects into a single group model object.
 
     Parameters
     ----------
-    fooofs : list of FOOOF or FOOOFGroup
-        Objects to be concatenated into a FOOOFGroup.
+    model_objs : list of FOOOF or FOOOFGroup
+        Objects to be concatenated into a group model object.
 
     Returns
     -------
@@ -136,59 +136,59 @@ def combine_fooofs(fooofs):
 
     Examples
     --------
-    Combine FOOOF objects together (where `fm1`, `fm2` & `fm3` are assumed to be defined and fit):
+    Combine model objects together (where `fm1`, `fm2` & `fm3` are assumed to be defined and fit):
 
-    >>> fg = combine_fooofs([fm1, fm2, fm3])  # doctest:+SKIP
+    >>> fg = combine_model_objs([fm1, fm2, fm3])  # doctest:+SKIP
 
-    Combine FOOOFGroup objects together (where `fg1` & `fg2` are assumed to be defined and fit):
+    Combine group model objects together (where `fg1` & `fg2` are assumed to be defined and fit):
 
-    >>> fg = combine_fooofs([fg1, fg2])  # doctest:+SKIP
+    >>> fg = combine_model_objs([fg1, fg2])  # doctest:+SKIP
     """
 
     # Compare settings
-    if not compare_info(fooofs, 'settings') or not compare_info(fooofs, 'meta_data'):
+    if not compare_model_objs(model_objs, 'settings') or not compare_model_objs(model_objs, 'meta_data'):
         raise IncompatibleSettingsError("These objects have incompatible settings "
                                         "or meta data, and so cannot be combined.")
 
-    # Initialize FOOOFGroup object, with settings derived from input objects
-    fg = FOOOFGroup(*fooofs[0].get_settings(), verbose=fooofs[0].verbose)
+    # Initialize group model object, with settings derived from input objects
+    fg = FOOOFGroup(*model_objs[0].get_settings(), verbose=model_objs[0].verbose)
 
     # Use a temporary store to collect spectra, as we'll only add it if it is consistently present
     #   We check how many frequencies by accessing meta data, in case of no frequency vector
-    meta_data = fooofs[0].get_meta_data()
+    meta_data = model_objs[0].get_meta_data()
     n_freqs = len(gen_freqs(meta_data.freq_range, meta_data.freq_res))
     temp_power_spectra = np.empty([0, n_freqs])
 
-    # Add FOOOF results from each FOOOF object to group
-    for f_obj in fooofs:
+    # Add results from each model object to group
+    for m_obj in model_objs:
 
-        # Add FOOOFGroup object
-        if isinstance(f_obj, FOOOFGroup):
-            fg.group_results.extend(f_obj.group_results)
-            if f_obj.power_spectra is not None:
-                temp_power_spectra = np.vstack([temp_power_spectra, f_obj.power_spectra])
+        # Add group object
+        if isinstance(m_obj, FOOOFGroup):
+            fg.group_results.extend(m_obj.group_results)
+            if m_obj.power_spectra is not None:
+                temp_power_spectra = np.vstack([temp_power_spectra, m_obj.power_spectra])
 
-        # Add FOOOF object
+        # Add model object
         else:
-            fg.group_results.append(f_obj.get_results())
-            if f_obj.power_spectrum is not None:
-                temp_power_spectra = np.vstack([temp_power_spectra, f_obj.power_spectrum])
+            fg.group_results.append(m_obj.get_results())
+            if m_obj.power_spectrum is not None:
+                temp_power_spectra = np.vstack([temp_power_spectra, m_obj.power_spectrum])
 
     # If the number of collected power spectra is consistent, then add them to object
     if len(fg) == temp_power_spectra.shape[0]:
         fg.power_spectra = temp_power_spectra
 
     # Set the check data mode, as True if any of the inputs have it on, False otherwise
-    fg.set_check_data_mode(any([getattr(f_obj, '_check_data') for f_obj in fooofs]))
+    fg.set_check_data_mode(any([getattr(m_obj, '_check_data') for m_obj in model_objs]))
 
     # Add data information information
-    fg.add_meta_data(fooofs[0].get_meta_data())
+    fg.add_meta_data(model_objs[0].get_meta_data())
 
     return fg
 
 
-def fit_fooof_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
-    """Fit FOOOF models across a 3d array of power spectra.
+def fit_models_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
+    """Fit power spectrum models across a 3d array of power spectra.
 
     Parameters
     ----------
@@ -206,9 +206,8 @@ def fit_fooof_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
 
     Returns
     -------
-    fgs : list of FOOOFGroups
-        Collected FOOOFGroups after fitting across power spectra, length of n_conditions.
-
+    fgs : list of FOOOFGroup
+        Collected model results after fitting across power spectra, length of n_conditions.
 
     Examples
     --------
@@ -216,7 +215,7 @@ def fit_fooof_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
 
     >>> from fooof import FOOOFGroup
     >>> fg = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
-    >>> fgs = fit_fooof_3d(fg, freqs, power_spectra, freq_range=[3, 30])  # doctest:+SKIP
+    >>> fgs = fit_models_3d(fg, freqs, power_spectra, freq_range=[3, 30])  # doctest:+SKIP
     """
 
     # Reshape 3d data to 2d and fit, in order to fit with a single group model object
