@@ -63,7 +63,7 @@ from scipy.optimize import curve_fit
 
 from fooof.core.items import OBJ_DESC
 from fooof.core.info import get_indices
-from fooof.core.io import save_fm, load_json
+from fooof.core.io import save_model, load_json
 from fooof.core.reports import save_report_fm
 from fooof.core.modutils import copy_doc_func_to_method
 from fooof.core.utils import group_three, check_array_dim
@@ -324,52 +324,52 @@ class FOOOF():
             self._prepare_data(freqs, power_spectrum, freq_range, 1)
 
 
-    def add_settings(self, fooof_settings):
+    def add_settings(self, settings):
         """Add settings into object from a ModelSettings object.
 
         Parameters
         ----------
-        fooof_settings : ModelSettings
+        settings : ModelSettings
             A data object containing the settings for a power spectrum model.
         """
 
         for setting in OBJ_DESC['settings']:
-            setattr(self, setting, getattr(fooof_settings, setting))
+            setattr(self, setting, getattr(settings, setting))
 
-        self._check_loaded_settings(fooof_settings._asdict())
+        self._check_loaded_settings(settings._asdict())
 
 
-    def add_meta_data(self, fooof_meta_data):
+    def add_meta_data(self, meta_data):
         """Add data information into object from a SpectrumMetaData object.
 
         Parameters
         ----------
-        fooof_meta_data : SpectrumMetaData
+        meta_data : SpectrumMetaData
             A meta data object containing meta data information.
         """
 
         for meta_dat in OBJ_DESC['meta_data']:
-            setattr(self, meta_dat, getattr(fooof_meta_data, meta_dat))
+            setattr(self, meta_dat, getattr(meta_data, meta_dat))
 
         self._regenerate_freqs()
 
 
-    def add_results(self, fooof_result):
+    def add_results(self, results):
         """Add results data into object from a FitResults object.
 
         Parameters
         ----------
-        fooof_result : FitResults
+        results : FitResults
             A data object containing the results from fitting a power spectrum model.
         """
 
-        self.aperiodic_params_ = fooof_result.aperiodic_params
-        self.gaussian_params_ = fooof_result.gaussian_params
-        self.peak_params_ = fooof_result.peak_params
-        self.r_squared_ = fooof_result.r_squared
-        self.error_ = fooof_result.error
+        self.aperiodic_params_ = results.aperiodic_params
+        self.gaussian_params_ = results.gaussian_params
+        self.peak_params_ = results.peak_params
+        self.r_squared_ = results.r_squared
+        self.error_ = results.error
 
-        self._check_loaded_results(fooof_result._asdict())
+        self._check_loaded_results(results._asdict())
 
 
     def report(self, freqs=None, power_spectrum=None, freq_range=None, plt_log=False):
@@ -647,15 +647,15 @@ class FOOOF():
         save_report_fm(self, file_name, file_path, plt_log)
 
 
-    @copy_doc_func_to_method(save_fm)
+    @copy_doc_func_to_method(save_model)
     def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 
-        save_fm(self, file_name, file_path, append, save_results, save_settings, save_data)
+        save_model(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
     def load(self, file_name, file_path=None, regenerate=True):
-        """Load in a FOOOF formatted JSON file to the current object.
+        """Load in a data file to the current object.
 
         Parameters
         ----------

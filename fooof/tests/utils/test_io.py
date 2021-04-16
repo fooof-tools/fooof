@@ -12,11 +12,11 @@ from fooof.utils.io import *
 ###################################################################################################
 ###################################################################################################
 
-def test_load_fooof():
+def test_load_model():
 
-    file_name = 'test_fooof_all'
+    file_name = 'test_all'
 
-    tfm = load_fooof(file_name, TEST_DATA_PATH)
+    tfm = load_model(file_name, TEST_DATA_PATH)
 
     assert isinstance(tfm, FOOOF)
 
@@ -30,10 +30,10 @@ def test_load_fooof():
     for meta_dat in OBJ_DESC['meta_data']:
         assert getattr(tfm, meta_dat) is not None
 
-def test_load_fooofgroup():
+def test_load_group():
 
-    file_name = 'test_fooofgroup_all'
-    tfg = load_fooofgroup(file_name, TEST_DATA_PATH)
+    file_name = 'test_group_all'
+    tfg = load_group(file_name, TEST_DATA_PATH)
 
     assert isinstance(tfg, FOOOFGroup)
 

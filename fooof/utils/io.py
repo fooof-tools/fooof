@@ -3,8 +3,8 @@
 ###################################################################################################
 ###################################################################################################
 
-def load_fooof(file_name, file_path=None, regenerate=True):
-    """Load a file into a FOOOF object.
+def load_model(file_name, file_path=None, regenerate=True):
+    """Load a model file.
 
     Parameters
     ----------
@@ -31,8 +31,8 @@ def load_fooof(file_name, file_path=None, regenerate=True):
     return fm
 
 
-def load_fooofgroup(file_name, file_path=None):
-    """Load a file into a FOOOFGroup object.
+def load_group(file_name, file_path=None):
+    """Load a group file.
 
     Parameters
     ----------
@@ -47,7 +47,7 @@ def load_fooofgroup(file_name, file_path=None):
         Object with the loaded data.
     """
 
-    # Initialize a FOOOFGroup object (imported locally to avoid circular imports)
+    # Initialize a group object (imported locally to avoid circular imports)
     from fooof.objs import FOOOFGroup
     fg = FOOOFGroup()
 

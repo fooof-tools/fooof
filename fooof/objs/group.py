@@ -18,7 +18,7 @@ from fooof.core.utils import check_inds
 from fooof.core.errors import NoModelError
 from fooof.core.reports import save_report_fg
 from fooof.core.strings import gen_results_fg_str
-from fooof.core.io import save_fg, load_jsonlines
+from fooof.core.io import save_group, load_jsonlines
 from fooof.core.modutils import copy_doc_func_to_method, safe_import
 
 ###################################################################################################
@@ -406,11 +406,11 @@ class FOOOFGroup(FOOOF):
         save_report_fg(self, file_name, file_path)
 
 
-    @copy_doc_func_to_method(save_fg)
+    @copy_doc_func_to_method(save_group)
     def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 
-        save_fg(self, file_name, file_path, append, save_results, save_settings, save_data)
+        save_group(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
     def load(self, file_name, file_path=None):

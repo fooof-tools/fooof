@@ -66,7 +66,7 @@ def gen_version_str(concise=False):
         # Header
         '=',
         '',
-        'FOOOF - VERSION',
+        'SpecParam - VERSION',
         '',
 
         # Version information
@@ -120,7 +120,7 @@ def gen_settings_str(model_obj, description=False, concise=False):
         # Header
         '=',
         '',
-        'FOOOF - SETTINGS',
+        'SpecParam - SETTINGS',
         '',
 
         # Settings - include descriptions if requested
@@ -167,7 +167,7 @@ def gen_freq_range_str(model_obj, concise=False):
         # Header
         '=',
         '',
-        'FOOOF - FIT RANGE',
+        'SpecParam - FIT RANGE',
         '',
 
         # Frequency range information information
@@ -203,7 +203,7 @@ def gen_methods_report_str(concise=False):
         # Header
         '=',
         '',
-        'FOOOF - REPORTING',
+        'SpecParam - REPORTING',
         '',
 
         # Methods report information
@@ -234,8 +234,8 @@ def gen_methods_text_str(model_obj=None):
     """
 
     template = (
-        "The FOOOF algorithm (version {}) was used to parameterize "
-        "neural power spectra. Settings for the algorithm were set as: "
+        "The periodic & aperiodic spectral parameterization algorithm (version {}) "
+        "was used to parameterize neural power spectra. Settings for the algorithm were set as: "
         "peak width limits : {}; "
         "max number of peaks : {}; "
         "minimum peak height : {}; "
@@ -287,7 +287,7 @@ def gen_results_fm_str(fm, concise=False):
         # Header
         '=',
         '',
-        ' FOOOF - POWER SPECTRUM MODEL',
+        'POWER SPECTRUM MODEL',
         '',
 
         # Frequency range and resolution
@@ -364,7 +364,7 @@ def gen_results_fg_str(fg, concise=False):
         # Header
         '=',
         '',
-        ' FOOOF - GROUP RESULTS',
+        'GROUP RESULTS',
         '',
 
         # Group information
@@ -431,7 +431,7 @@ def gen_issue_str(concise=False):
         # Header
         '=',
         '',
-        'FOOOF - ISSUE REPORTING',
+        'SpecParam - ISSUE REPORTING',
         '',
 
         # Reporting bugs

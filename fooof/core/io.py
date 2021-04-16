@@ -61,9 +61,9 @@ def fpath(file_path, file_name):
     return full_path
 
 
-def save_fm(fm, file_name, file_path=None, append=False,
-            save_results=False, save_settings=False, save_data=False):
-    """Save out data, results and/or settings from a FOOOF object into a JSON file.
+def save_model(fm, file_name, file_path=None, append=False,
+               save_results=False, save_settings=False, save_data=False):
+    """Save out data, results and/or settings from a model object into a JSON file.
 
     Parameters
     ----------
@@ -119,9 +119,9 @@ def save_fm(fm, file_name, file_path=None, append=False,
         raise ValueError("Save file not understood.")
 
 
-def save_fg(fg, file_name, file_path=None, append=False,
-            save_results=False, save_settings=False, save_data=False):
-    """Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.
+def save_group(fg, file_name, file_path=None, append=False,
+               save_results=False, save_settings=False, save_data=False):
+    """Save out results and/or settings from group object. Saves out to a JSON file.
 
     Parameters
     ----------
@@ -153,16 +153,16 @@ def save_fg(fg, file_name, file_path=None, append=False,
     # Save to string specified file, do not append
     if isinstance(file_name, str) and not append:
         with open(fpath(file_path, fname(file_name, 'json')), 'w') as f_obj:
-            _save_fg(fg, f_obj, save_results, save_settings, save_data)
+            _save_group(fg, f_obj, save_results, save_settings, save_data)
 
     # Save to string specified file, appending
     elif isinstance(file_name, str) and append:
         with open(fpath(file_path, fname(file_name, 'json')), 'a') as f_obj:
-            _save_fg(fg, f_obj, save_results, save_settings, save_data)
+            _save_group(fg, f_obj, save_results, save_settings, save_data)
 
     # Save to file-object specified file
     elif isinstance(file_name, io.IOBase):
-        _save_fg(fg, file_name, save_results, save_settings, save_data)
+        _save_group(fg, file_name, save_results, save_settings, save_data)
 
     else:
         raise ValueError("Save file not understood.")
@@ -226,8 +226,8 @@ def load_jsonlines(file_name, file_path):
                 break
 
 
-def _save_fg(fg, f_obj, save_results, save_settings, save_data):
-    """Helper function for saving FOOOFGroup - saves data given a file object.
+def _save_group(fg, f_obj, save_results, save_settings, save_data):
+    """Helper function for saving a group object - saves data given a file object.
 
     Parameters
     ----------
@@ -245,11 +245,11 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
 
     # Since there is a single set of object settings, save them out once, at the top
     if save_settings:
-        save_fm(fg, file_name=f_obj, file_path=None, append=False, save_settings=True)
+        save_model(fg, file_name=f_obj, file_path=None, append=False, save_settings=True)
 
     # For results & data, loop across all data and/or models, and save each out to a new line
     if save_results or save_data:
         for ind in range(len(fg.group_results)):
             fm = fg.get_model(ind, regenerate=False)
-            save_fm(fm, file_name=f_obj, file_path=None, append=False,
+            save_model(fm, file_name=f_obj, file_path=None, append=False,
                     save_results=save_results, save_data=save_data)

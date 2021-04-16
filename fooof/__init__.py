@@ -1,4 +1,4 @@
-"""FOOOF - Fitting Oscillations & One-Over F"""
+"""SpecParam - spectral parameterization."""
 
 from .version import __version__
 

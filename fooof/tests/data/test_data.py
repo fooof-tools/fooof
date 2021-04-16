@@ -11,7 +11,7 @@ from fooof.data.data import *
 ###################################################################################################
 ###################################################################################################
 
-def test_fooof_settings():
+def test_model_settings():
 
     settings = ModelSettings([1, 8], 8, 0.25, 2, 'fixed')
     assert settings
@@ -19,7 +19,7 @@ def test_fooof_settings():
     for field in OBJ_DESC['settings']:
         assert getattr(settings, field)
 
-def test_fooof_meta_data():
+def test_spectrum_meta_data():
 
     meta_data = SpectrumMetaData([1, 50], 0.5)
     assert meta_data
@@ -27,7 +27,7 @@ def test_fooof_meta_data():
     for field in OBJ_DESC['meta_data']:
         assert getattr(meta_data, field)
 
-def test_fooof_results():
+def test_fit_results():
 
     results = FitResults([1, 1], [10, 0.5, 1], 0.95, 0.05, [10, 0.5, 0.5])
     assert results

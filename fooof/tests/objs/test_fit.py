@@ -1,4 +1,4 @@
-"""Tests for fooof.objs.fit, including the FOOOF object and it's methods.
+"""Tests for fooof.objs.fit, including the model object and it's methods.
 
 NOTES
 -----
@@ -24,12 +24,12 @@ from fooof.objs.fit import *
 ###################################################################################################
 ###################################################################################################
 
-def test_fooof():
-    """Check FOOOF object initializes properly."""
+def test_model_object():
+    """Check model object initializes properly."""
 
     assert FOOOF(verbose=False)
 
-def test_fooof_has_data(tfm):
+def test_has_data(tfm):
     """Test the has_data property attribute, with and without model fits."""
 
     assert tfm.has_data
@@ -37,7 +37,7 @@ def test_fooof_has_data(tfm):
     ntfm = FOOOF()
     assert not ntfm.has_data
 
-def test_fooof_has_model(tfm):
+def test_has_model(tfm):
     """Test the has_model property attribute, with and without model fits."""
 
     assert tfm.has_model
@@ -45,13 +45,13 @@ def test_fooof_has_model(tfm):
     ntfm = FOOOF()
     assert not ntfm.has_model
 
-def test_fooof_n_peaks(tfm):
+def test_n_peaks(tfm):
     """Test the n_peaks property attribute."""
 
     assert tfm.n_peaks_
 
-def test_fooof_fit_nk():
-    """Test FOOOF fit, no knee."""
+def test_fit_nk():
+    """Test fit, no knee."""
 
     ap_params = [50, 2]
     gauss_params = [10, 0.5, 2, 20, 0.3, 4]
@@ -69,8 +69,8 @@ def test_fooof_fit_nk():
     for ii, gauss in enumerate(group_three(gauss_params)):
         assert np.allclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0])
 
-def test_fooof_fit_nk_noise():
-    """Test FOOOF fit on noisy data, to make sure nothing breaks."""
+def test_fit_nk_noise():
+    """Test fit on noisy data, to make sure nothing breaks."""
 
     ap_params = [50, 2]
     gauss_params = [10, 0.5, 2, 20, 0.3, 4]
@@ -84,8 +84,8 @@ def test_fooof_fit_nk_noise():
     # No accuracy checking here - just checking that it ran
     assert tfm.has_model
 
-def test_fooof_fit_knee():
-    """Test FOOOF fit, with a knee."""
+def test_fit_knee():
+    """Test fit, with a knee."""
 
     ap_params = [50, 10, 1]
     gauss_params = [10, 0.3, 2, 20, 0.1, 4, 60, 0.3, 1]
@@ -103,7 +103,7 @@ def test_fooof_fit_knee():
     for ii, gauss in enumerate(group_three(gauss_params)):
         assert np.allclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0])
 
-def test_fooof_fit_measures():
+def test_fit_measures():
     """Test goodness of fit & error metrics, post model fitting."""
 
     tfm = FOOOF(verbose=False)
@@ -126,8 +126,8 @@ def test_fooof_fit_measures():
     with raises(ValueError):
         tfm._calc_error(metric='BAD')
 
-def test_fooof_checks():
-    """Test various checks, errors and edge cases in FOOOF.
+def test_checks():
+    """Test various checks, errors and edge cases for model fitting.
     This tests all the input checking done in `_prepare_data`.
     """
 
@@ -174,12 +174,12 @@ def test_fooof_checks():
     with raises(NoDataError):
         tfm.fit()
 
-def test_fooof_load():
-    """Test load into FOOOF. Note: loads files from test_core_io."""
+def test_load():
+    """Test loading data into model object. Note: loads files from test_core_io."""
 
     # Test loading just results
     tfm = FOOOF(verbose=False)
-    file_name_res = 'test_fooof_res'
+    file_name_res = 'test_res'
     tfm.load(file_name_res, TEST_DATA_PATH)
     # Check that result attributes get filled
     for result in OBJ_DESC['results']:
@@ -193,7 +193,7 @@ def test_fooof_load():
 
     # Test loading just settings
     tfm = FOOOF(verbose=False)
-    file_name_set = 'test_fooof_set'
+    file_name_set = 'test_set'
     tfm.load(file_name_set, TEST_DATA_PATH)
     for setting in OBJ_DESC['settings']:
         assert getattr(tfm, setting) is not None
@@ -204,7 +204,7 @@ def test_fooof_load():
 
     # Test loading just data
     tfm = FOOOF(verbose=False)
-    file_name_dat = 'test_fooof_dat'
+    file_name_dat = 'test_dat'
     tfm.load(file_name_dat, TEST_DATA_PATH)
     assert tfm.power_spectrum is not None
     # Test that settings and results are None
@@ -215,7 +215,7 @@ def test_fooof_load():
 
     # Test loading all elements
     tfm = FOOOF(verbose=False)
-    file_name_all = 'test_fooof_all'
+    file_name_all = 'test_all'
     tfm.load(file_name_all, TEST_DATA_PATH)
     for result in OBJ_DESC['results']:
         assert not np.all(np.isnan(getattr(tfm, result)))
@@ -227,9 +227,9 @@ def test_fooof_load():
         assert getattr(tfm, meta_dat) is not None
 
 def test_add_data():
-    """Tests method to add data to FOOOF objects."""
+    """Tests method to add data to model objects."""
 
-    # This test uses it's own FOOOF object, to not add stuff to the global one
+    # This test uses it's own model object, to not add stuff to the global one
     tfm = get_tfm()
 
     # Test data for adding
@@ -255,44 +255,44 @@ def test_add_data():
     assert not tfm.has_model
 
 def test_add_settings():
-    """Tests method to add settings to FOOOF objects."""
+    """Tests method to add settings to model object."""
 
-    # This test uses it's own FOOOF object, to not add stuff to the global one
+    # This test uses it's own model object, to not add stuff to the global one
     tfm = get_tfm()
 
     # Test adding settings
-    fooof_settings = ModelSettings([1, 4], 6, 0, 2, 'fixed')
-    tfm.add_settings(fooof_settings)
+    settings = ModelSettings([1, 4], 6, 0, 2, 'fixed')
+    tfm.add_settings(settings)
     for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) == getattr(fooof_settings, setting)
+        assert getattr(tfm, setting) == getattr(settings, setting)
 
 def test_add_meta_data():
-    """Tests method to add meta data to FOOOF objects."""
+    """Tests method to add meta data to model object."""
 
-    # This test uses it's own FOOOF object, to not add stuff to the global one
+    # This test uses it's own model object, to not add stuff to the global one
     tfm = get_tfm()
 
     # Test adding meta data
-    fooof_meta_data = SpectrumMetaData([3, 40], 0.5)
-    tfm.add_meta_data(fooof_meta_data)
+    meta_data = SpectrumMetaData([3, 40], 0.5)
+    tfm.add_meta_data(meta_data)
     for meta_dat in OBJ_DESC['meta_data']:
-        assert getattr(tfm, meta_dat) == getattr(fooof_meta_data, meta_dat)
+        assert getattr(tfm, meta_dat) == getattr(meta_data, meta_dat)
 
 def test_add_results():
-    """Tests method to add results to FOOOF objects."""
+    """Tests method to add results to model object."""
 
-    # This test uses it's own FOOOF object, to not add stuff to the global one
+    # This test uses it's own model object, to not add stuff to the global one
     tfm = get_tfm()
 
     # Test adding results
-    fooof_results = FitResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25])
-    tfm.add_results(fooof_results)
+    results = FitResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25])
+    tfm.add_results(results)
     assert tfm.has_model
     for setting in OBJ_DESC['results']:
-        assert getattr(tfm, setting) == getattr(fooof_results, setting.strip('_'))
+        assert getattr(tfm, setting) == getattr(results, setting.strip('_'))
 
 def test_obj_gets(tfm):
-    """Tests methods that return FOOOF data objects.
+    """Tests methods that return data objects.
 
     Checks: get_settings, get_meta_data, get_results
     """
@@ -320,14 +320,14 @@ def test_get_params(tfm):
                 assert np.any(tfm.get_params(dname, dtype))
 
 def test_copy():
-    """Test copy FOOOF method."""
+    """Test copy model object method."""
 
     tfm = FOOOF(verbose=False)
     ntfm = tfm.copy()
 
     assert tfm != ntfm
 
-def test_fooof_prints(tfm):
+def test_prints(tfm):
     """Test methods that print (alias and pass through methods).
 
     Checks: print_settings, print_results, print_report_issue.
@@ -338,12 +338,12 @@ def test_fooof_prints(tfm):
     tfm.print_report_issue()
 
 @plot_test
-def test_fooof_plot(tfm, skip_if_no_mpl):
-    """Check the alias to plot FOOOF."""
+def test_plot(tfm, skip_if_no_mpl):
+    """Check the alias to plot spectra & model results."""
 
     tfm.plot()
 
-def test_fooof_resets():
+def test_resets():
     """Check that all relevant data is cleared in the reset method."""
 
     # Note: uses it's own tfm, to not clear the global one
@@ -359,7 +359,7 @@ def test_fooof_resets():
         assert np.all(np.isnan(getattr(tfm, field)))
     assert tfm.freqs is None and tfm.modeled_spectrum_ is None
 
-def test_fooof_report(skip_if_no_mpl):
+def test_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
 
     tfm = FOOOF(verbose=False)
@@ -368,8 +368,8 @@ def test_fooof_report(skip_if_no_mpl):
 
     assert tfm
 
-def test_fooof_fit_failure():
-    """Test FOOOF fit failures."""
+def test_fit_failure():
+    """Test model fit failures."""
 
     ## Induce a runtime error, and check it runs through
     tfm = FOOOF(verbose=False)
@@ -388,15 +388,15 @@ def test_fooof_fit_failure():
         raise FitError('Test-MonkeyPatch')
     tfm._fit_peaks = raise_runtime_error
 
-    # Run a FOOOF fit - this should raise an error, but continue in try/except
+    # Run a model fit - this should raise an error, but continue in try/except
     tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
     # Check after failing out of fit, all results are reset
     for result in OBJ_DESC['results']:
         assert np.all(np.isnan(getattr(tfm, result)))
 
-def test_fooof_debug():
-    """Test FOOOF in debug mode, including with fit failures."""
+def test_debug():
+    """Test model object in debug mode, including with fit failures."""
 
     tfm = FOOOF(verbose=False)
     tfm._maxfev = 5
@@ -407,8 +407,8 @@ def test_fooof_debug():
     with raises(FitError):
         tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
-def test_fooof_check_data():
-    """Test FOOOF in with check data mode turned off, including with NaN data."""
+def test_check_data():
+    """Test model fitting with check data mode turned off, including with NaN data."""
 
     tfm = FOOOF(verbose=False)
 

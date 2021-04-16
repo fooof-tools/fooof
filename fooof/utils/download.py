@@ -40,8 +40,8 @@ def check_data_file(filename, folder, url=DATA_URL):
         urlretrieve(url + filename, filename=filepath)
 
 
-def fetch_fooof_data(filename, folder='data', url=DATA_URL):
-    """Download a data file for FOOOF.
+def fetch_example_data(filename, folder='data', url=DATA_URL):
+    """Download an example data file.
 
     Parameters
     ----------
@@ -62,8 +62,8 @@ def fetch_fooof_data(filename, folder='data', url=DATA_URL):
     check_data_file(filename, folder, url)
 
 
-def load_fooof_data(filename, folder='data', url=DATA_URL):
-    """Download, if not already available, and load an example data file for fooof.
+def load_example_data(filename, folder='data', url=DATA_URL):
+    """Download, if not already available, and load an example data file.
 
     Parameters
     ----------
@@ -84,7 +84,7 @@ def load_fooof_data(filename, folder='data', url=DATA_URL):
     This function assumes that data files are numpy (npy) files.
     """
 
-    fetch_fooof_data(filename, folder, url)
+    fetch_example_data(filename, folder, url)
     data = np.load(os.path.join(folder, filename))
 
     return data

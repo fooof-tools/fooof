@@ -1,1 +1,1 @@
-"""Tests for FOOOF."""
+"""Tests for the spectral parameterization module."""

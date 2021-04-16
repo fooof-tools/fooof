@@ -1,4 +1,4 @@
-"""Settings for testing fooof."""
+"""Settings for testing spectral parameterization."""
 
 import os
 import pkg_resources as pkg

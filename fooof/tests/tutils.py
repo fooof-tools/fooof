@@ -1,4 +1,4 @@
-"""Utilities for testing fooof."""
+"""Utilities for testing spectral parameterization."""
 
 from functools import wraps
 
@@ -14,7 +14,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 def get_tfm():
-    """Get a FOOOF object, with a fit power spectrum, for testing."""
+    """Get a model object, with a fit power spectrum, for testing."""
 
     freq_range = [3, 50]
     ap_params = [50, 2]
@@ -28,7 +28,7 @@ def get_tfm():
     return tfm
 
 def get_tfg():
-    """Get a FOOOFGroup object, with some fit power spectra, for testing."""
+    """Get a group object, with some fit power spectra, for testing."""
 
     n_spectra = 3
     xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
