@@ -1,6 +1,6 @@
-=========================================
-FOOOF - fitting oscillations & one over f
-=========================================
+=========================
+Spectral Parameterization
+=========================
 
 |ProjectStatus|_ |Version|_ |BuildStatus|_ |Coverage|_ |License|_ |PythonVersions|_ |Paper|_
 
@@ -26,7 +26,7 @@ FOOOF - fitting oscillations & one over f
 .. _Paper: https://doi.org/10.1038/s41593-020-00744-x
 
 
-FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
+Spectral parameterization is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
 
 Overview
 --------
@@ -71,7 +71,7 @@ This documentation includes:
 Dependencies
 ------------
 
-FOOOF is written in Python, and requires Python >= 3.6 to run.
+SpecParam is written in Python, and requires Python >= 3.6 to run.
 
 It has the following required dependencies:
 
@@ -132,10 +132,10 @@ To install an editable version, download the development version as above, and r
 Matlab Support
 --------------
 
-FOOOF is implemented in Python, but there is also Matlab wrapper that allows you to use FOOOF from Matlab.
+`specparam` is implemented in Python, but there is also Matlab wrapper that allows you to use it from Matlab.
 The wrapper is available in the `fooof_mat <http://github.com/fooof-tools/fooof_mat>`_ repository.
 
-If you would like to use FOOOF, from Python, within a pipeline that is mostly in Matlab, the
+If you would like to use `specparam`, from Python, within a pipeline that is mostly in Matlab, the
 `mat_py_mat <https://github.com/fooof-tools/mat_py_mat>`_
 repository also has some examples and utilities for doing so.
 
@@ -185,27 +185,27 @@ The algorithm works on frequency representations, that is power spectra in linea
 **Fitting a Single Power Spectrum**
 
 With a power spectrum loaded (with 'freqs' storing frequency values, and 'spectrum' storing
-the power spectrum, both as 1D arrays in linear space) FOOOF can be used as follows:
+the power spectrum, both as 1D arrays in linear space) parameterization can be done as follows:
 
 .. code-block:: python
 
-    # Import the FOOOF object
-    from fooof import FOOOF
+    # Import the model object
+    from specparam import PSD
 
-    # Initialize FOOOF object
-    fm = FOOOF()
+    # Initialize model object
+    fm = PSD()
 
     # Define frequency range across which to model the spectrum
     freq_range = [3, 40]
 
-    # Model the power spectrum with FOOOF, and print out a report
+    # Parameterize the power spectrum, and print out a report
     fm.report(freqs, spectrum, freq_range)
 
-FOOOF.report() fits the model, plots the original power spectrum with the associated FOOOF model fit,
+PSD.report() fits the model, plots the original power spectrum with the associated model fit,
 and prints out the parameters of the model fit for both the aperiodic component, and parameters for
 any identified peaks, reflecting periodic components.
 
-Example output for the report of a FOOOF fit on an individual power spectrum:
+Example output for the report of a parameterized fit on an individual power spectrum:
 
 .. image:: https://raw.githubusercontent.com/fooof-tools/fooof/main/doc/img/FOOOF_report.png
 
@@ -223,9 +223,9 @@ These settings can be defined when initializing the model, for example:
 
 .. code-block:: python
 
-    # Initialize a FOOOF model object with defined settings
-    fm = FOOOF(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_height=0.1,
-               peak_threshold=2.0, aperiodic_mode='fixed')
+    # Initialize a model object with defined settings
+    fm = PSD(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_height=0.1,
+             peak_threshold=2.0, aperiodic_mode='fixed')
 
 **Fitting a Group of Power Spectra**
 
@@ -235,19 +235,19 @@ We can fit the group of power spectra by doing:
 
 .. code-block:: python
 
-    # Initialize a FOOOFGroup object, specifying some parameters
-    fg = FOOOFGroup(peak_width_limits=[1.0, 8.0], max_n_peaks=8)
+    # Initialize a PSDGroup object, specifying some parameters
+    fg = PSDGroup(peak_width_limits=[1.0, 8.0], max_n_peaks=8)
 
-    # Fit FOOOF model across the matrix of power spectra
+    # Fit models across the matrix of power spectra
     fg.fit(freqs, spectra)
 
     # Create and save out a report summarizing the results across the group of power spectra
     fg.save_report()
 
-    # Save out FOOOF results for further analysis later
-    fg.save(file_name='fooof_group_results', save_results=True)
+    # Save out results for further analysis later
+    fg.save(file_name='group_results', save_results=True)
 
-Example output from using FOOOFGroup across a group of power spectra:
+Example output from using PSDGroup across a group of power spectra:
 
 .. image:: https://raw.githubusercontent.com/fooof-tools/fooof/main/doc/img/FOOOFGroup_report.png
 
