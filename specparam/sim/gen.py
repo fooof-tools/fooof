@@ -19,7 +19,7 @@ def gen_freqs(freq_range, freq_res):
     freq_range : list of [float, float]
         Frequency range to create frequencies across, as [f_low, f_high], inclusive.
     freq_res : float
-        Frequency resolution of desired frequency vector.
+        Frequency resolution for the frequency vector.
 
     Returns
     -------

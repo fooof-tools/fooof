@@ -146,7 +146,8 @@ def combine_model_objs(model_objs):
     """
 
     # Compare settings
-    if not compare_model_objs(model_objs, 'settings') or not compare_model_objs(model_objs, 'meta_data'):
+    if not compare_model_objs(model_objs, 'settings') \
+        or not compare_model_objs(model_objs, 'meta_data'):
         raise IncompatibleSettingsError("These objects have incompatible settings "
                                         "or meta data, and so cannot be combined.")
 
@@ -199,7 +200,7 @@ def fit_models_3d(group, freqs, power_spectra, freq_range=None, n_jobs=1):
     power_spectra : 3d array
         Power values, in linear space, with shape as: [n_conditions, n_power_spectra, n_freqs].
     freq_range : list of [float, float], optional
-        Desired frequency range to fit. If not provided, fits the entire given range.
+        Frequency range to fit. If not provided, fits the entire given range.
     n_jobs : int, optional, default: 1
         Number of jobs to run in parallel.
         1 is no parallelization. -1 uses all available cores.

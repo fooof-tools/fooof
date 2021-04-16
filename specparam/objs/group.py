@@ -234,7 +234,7 @@ class PSDGroup(PSD):
         power_spectra : 2d array, shape: [n_power_spectra, n_freqs], optional
             Matrix of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
-            Desired frequency range to fit the model to. If not provided, fits the entire given range.
+            Frequency range to fit the model to. If not provided, fits the entire given range.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -261,7 +261,7 @@ class PSDGroup(PSD):
         power_spectra : 2d array, shape: [n_power_spectra, n_freqs], optional
             Matrix of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
-            Desired frequency range to fit the model to. If not provided, fits the entire given range.
+            Frequency range to fit the model to. If not provided, fits the entire given range.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -353,8 +353,8 @@ class PSDGroup(PSD):
 
         Notes
         -----
-        When extracting peak information ('peak_params' or 'gaussian_params'), an additional column
-        is appended to the returned array, indicating the index of the model that the peak came from.
+        When extracting peak information ('peak_params' or 'gaussian_params'), an additional
+        column is appended to the returned array, indicating the index that the peak came from.
         """
 
         if not self.has_model:

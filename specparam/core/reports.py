@@ -2,8 +2,10 @@
 
 from specparam.core.io import fname, fpath
 from specparam.core.modutils import safe_import, check_dependency
-from specparam.core.strings import gen_settings_str, gen_model_results_str, gen_group_results_str
-from specparam.plts.group import plot_group_aperiodic, plot_group_goodness, plot_group_peak_frequencies
+from specparam.core.strings import (gen_settings_str, gen_model_results_str,
+                                    gen_group_results_str)
+from specparam.plts.group import (plot_group_aperiodic, plot_group_goodness,
+                                  plot_group_peak_frequencies)
 
 plt = safe_import('.pyplot', 'matplotlib')
 gridspec = safe_import('.gridspec', 'matplotlib')

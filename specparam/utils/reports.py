@@ -1,7 +1,7 @@
 """Utilities to create reports and useful print outs."""
 
 from specparam.core.strings import (gen_version_str, gen_settings_str, gen_freq_range_str,
-                                gen_methods_report_str, gen_methods_text_str)
+                                    gen_methods_report_str, gen_methods_text_str)
 
 ###################################################################################################
 ###################################################################################################

@@ -8,7 +8,7 @@ from specparam.core.items import PEAK_INDS
 ###################################################################################################
 
 def get_band_peak(model, band, select_highest=True, threshold=None,
-                     thresh_param='PW', attribute='peak_params',):
+                  thresh_param='PW', attribute='peak_params'):
     """Extract peaks from a band of interest from a model object.
 
     Parameters
@@ -136,10 +136,9 @@ def get_band_peak_group_arr(peak_params, band, n_fits, threshold=None, thresh_pa
     # Extracts an array per model fit, and extracts band peaks from it
     band_peaks = np.zeros(shape=[n_fits, 3])
     for ind in range(n_fits):
-        band_peaks[ind, :] = get_band_peak_arr(peak_params[tuple([peak_params[:, -1] == ind])][:, 0:3],
-                                               band=band, select_highest=True,
-                                               threshold=threshold,
-                                               thresh_param=thresh_param)
+        band_peaks[ind, :] = get_band_peak_arr(\
+            peak_params[tuple([peak_params[:, -1] == ind])][:, 0:3],
+            band=band, select_highest=True, threshold=threshold, thresh_param=thresh_param)
 
     return band_peaks
 

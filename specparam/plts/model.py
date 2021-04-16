@@ -25,9 +25,9 @@ plt = safe_import('.pyplot', 'matplotlib')
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_model(model, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=True,
-               save_fig=False, file_name=None, file_path=None, ax=None, data_kwargs=None,
-               model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
+def plot_model(model, plot_peaks=None, plot_aperiodic=True, plt_log=False,
+               add_legend=True, ax=None, data_kwargs=None, model_kwargs=None,
+               aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
     """Plot the power spectrum and model fit results from a model object.
 
     Parameters
@@ -43,18 +43,12 @@ def plot_model(model, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_l
         Whether to plot the frequency values in log10 spacing.
     add_legend : boolean, optional, default: False
         Whether to add a legend describing the plot components.
-    save_fig : bool, optional, default: False
-        Whether to save out a copy of the plot.
-    file_name : str, optional
-        Name to give the saved out file.
-    file_path : str, optional
-        Path to directory to save to. If None, saves to current directory.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs : None or dict, optional
         Keyword arguments to pass into the plot call for each plot element.
     **plot_kwargs
-        Keyword arguments to pass into the ``style_plot``.
+        Keyword arguments to apply to the plot.
 
     Notes
     -----

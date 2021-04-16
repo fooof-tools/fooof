@@ -113,9 +113,11 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
                data_kwargs={'lw' : lw1, 'alpha' : 0.6},
                aperiodic_kwargs={'lw' : lw1, 'zorder' : 10},
                model_kwargs={'lw' : lw1, 'alpha' : 0.5},
-               peak_kwargs={'dot' : {'color' : PLT_COLORS['periodic'], 'ms' : ms1, 'lw' : lw2},
+               peak_kwargs={'dot' : {'color' : PLT_COLORS['periodic'],
+                                     'ms' : ms1, 'lw' : lw2},
                             'shade' : {'color' : PLT_COLORS['periodic']},
-                            'width' : {'color' : PLT_COLORS['periodic'], 'alpha' : 0.75, 'lw' : lw2}})
+                            'width' : {'color' : PLT_COLORS['periodic'],
+                                       'alpha' : 0.75, 'lw' : lw2}})
 
     # Get freqs for plotting, and convert to log if needed
     freqs = model.freqs if not plt_log else np.log10(model.freqs)

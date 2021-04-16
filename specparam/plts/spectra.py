@@ -59,7 +59,8 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
     plt_freqs = repeat(freqs) if isinstance(freqs, np.ndarray) and freqs.ndim == 1 else freqs
 
     # Set labels
-    labels = plot_kwargs.pop('label') if 'label' in plot_kwargs.keys() and labels is None else labels
+    labels = plot_kwargs.pop('label') \
+        if 'label' in plot_kwargs.keys() and labels is None else labels
     labels = repeat(labels) if not isinstance(labels, list) else cycle(labels)
     colors = repeat(colors) if not isinstance(colors, list) else cycle(colors)
 

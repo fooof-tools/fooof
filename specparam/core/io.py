@@ -252,4 +252,4 @@ def _save_group(group, f_obj, save_results, save_settings, save_data):
         for ind in range(len(group.group_results)):
             model = group.get_model(ind, regenerate=False)
             save_model(model, file_name=f_obj, file_path=None, append=False,
-                    save_results=save_results, save_data=save_data)
+                       save_results=save_results, save_data=save_data)

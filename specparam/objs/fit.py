@@ -69,9 +69,9 @@ from specparam.core.modutils import copy_doc_func_to_method
 from specparam.core.utils import group_three, check_array_dim
 from specparam.core.funcs import gaussian_function, get_ap_func, infer_ap_func
 from specparam.core.errors import (FitError, NoModelError, DataError,
-                               NoDataError, InconsistentDataError)
+                                   NoDataError, InconsistentDataError)
 from specparam.core.strings import (gen_settings_str, gen_model_results_str,
-                                gen_issue_str, gen_width_warning_str)
+                                    gen_issue_str, gen_width_warning_str)
 
 from specparam.plts.model import plot_model
 from specparam.utils.data import trim_spectrum
@@ -155,7 +155,7 @@ class PSD():
 
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
                  peak_threshold=2.0, aperiodic_mode='fixed', verbose=True):
-        """Initialize object with desired settings."""
+        """Initialize model object."""
 
         # Set input settings
         self.peak_width_limits = peak_width_limits
@@ -175,7 +175,7 @@ class PSD():
         self._ap_guess = (None, 0, None)
         # Bounds for aperiodic fitting, as: ((offset_low_bound, knee_low_bound, exp_low_bound),
         #                                    (offset_high_bound, knee_high_bound, exp_high_bound))
-        # By default, aperiodic fitting is unbound, but can be restricted here, if desired
+        # By default, aperiodic fitting is unbound, but can be restricted here
         #   Even if fitting without knee, leave bounds for knee (they are dropped later)
         self._ap_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
         # Threshold for how far a peak has to be from edge to keep.
@@ -382,7 +382,7 @@ class PSD():
         power_spectrum : 1d array, optional
             Power values, which must be input in linear space.
         freq_range : list of [float, float], optional
-            Desired frequency range to fit the model to.
+            Frequency range to fit the model to.
             If not provided, fits across the entire given range.
         plt_log : bool, optional, default: False
             Whether or not to plot the frequency axis in log space.
@@ -407,7 +407,8 @@ class PSD():
         power_spectrum : 1d array, optional
             Power values, which must be input in linear space.
         freq_range : list of [float, float], optional
-            Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
+            Frequency range to restrict power spectrum to.
+            If not provided, keeps the entire range.
 
         Raises
         ------
@@ -1148,7 +1149,8 @@ class PSD():
             Power values, which must be input in linear space.
             1d vector, or 2d as [n_power_spectra, n_freqs].
         freq_range : list of [float, float]
-            Frequency range to restrict power spectrum to. If None, keeps the entire range.
+            Frequency range to restrict power spectrum to.
+            If None, keeps the entire range.
         spectra_dim : int, optional, default: 1
             Dimensionality that the power spectra should have.
 
@@ -1219,10 +1221,10 @@ class PSD():
         if self._check_data:
             # Check if there are any infs / nans, and raise an error if so
             if np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):
-                raise DataError("The input power spectra data, after logging, contains NaNs or Infs. "
-                                "This will cause the fitting to fail. "
+                raise DataError("The input power spectra data, after logging, "
+                                "contains NaNs or Infs. This will cause the fitting to fail. "
                                 "One reason this can happen is if inputs are already logged. "
-                                "Inputs data should be in linear spacing, not log.")
+                                "Input data should be in linear spacing, not log.")
 
         return freqs, power_spectrum, freq_range, freq_res
 

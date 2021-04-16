@@ -20,19 +20,15 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 
 @savefig
 @check_dependency(plt, 'matplotlib')
-def plot_group(group, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
+def plot_group(group, **plot_kwargs):
     """Plot a figure with subplots visualizing the parameters from a group model object.
 
     Parameters
     ----------
     group : PSDGroup
         Object containing results from fitting a group of power spectra.
-    save_fig : bool, optional, default: False
-        Whether to save out a copy of the plot.
-    file_name : str, optional
-        Name to give the saved out file.
-    file_path : str, optional
-        Path to directory to save to. If None, saves to current directory.
+    **plot_kwargs
+        Keyword arguments to apply to the plot.
 
     Raises
     ------
