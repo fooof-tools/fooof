@@ -250,6 +250,6 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
     # For results & data, loop across all data and/or models, and save each out to a new line
     if save_results or save_data:
         for ind in range(len(fg.group_results)):
-            fm = fg.get_fooof(ind, regenerate=False)
+            fm = fg.get_model(ind, regenerate=False)
             save_fm(fm, file_name=f_obj, file_path=None, append=False,
                     save_results=save_results, save_data=save_data)

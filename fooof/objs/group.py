@@ -85,7 +85,7 @@ class FOOOFGroup(FOOOF):
       params are a modified version, in which the CF of the peak is the mean of the gaussian,
       the PW of the peak is the height of the gaussian over and above the aperiodic component,
       and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
-    - The FOOOFGroup object inherits from the FOOOF object. As such it also has data
+    - The group object inherits from the model object. As such it also has data
       attributes (`power_spectrum` & `modeled_spectrum_`), and parameter attributes
       (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)
       which are defined in the context of individual model fits. These attributes are
@@ -317,7 +317,7 @@ class FOOOFGroup(FOOOF):
         """
 
         for ind in check_inds(inds):
-            fm = self.get_fooof(ind)
+            fm = self.get_model(ind)
             fm._reset_data_results(clear_results=True)
             self.group_results[ind] = fm.get_results()
 
@@ -414,7 +414,7 @@ class FOOOFGroup(FOOOF):
 
 
     def load(self, file_name, file_path=None):
-        """Load FOOOFGroup data from file.
+        """Load group data from file.
 
         Parameters
         ----------
@@ -457,20 +457,20 @@ class FOOOFGroup(FOOOF):
         self._reset_data_results(clear_spectrum=True, clear_results=True)
 
 
-    def get_fooof(self, ind, regenerate=True):
+    def get_model(self, ind, regenerate=True):
         """Get a model fit object for a specified index.
 
         Parameters
         ----------
         ind : int
-            The index of the FitResults in FOOOFGroup.group_results to load.
+            The index of the model from `group_results` to access.
         regenerate : bool, optional, default: False
-            Whether to regenerate the model fits from the given fit parameters.
+            Whether to regenerate the model fits for the requested model.
 
         Returns
         -------
         fm : FOOOF
-            The FitResults data loaded into a FOOOF object.
+            The FitResults data loaded into a model object.
         """
 
         # Initialize a model object, with same settings & check data mode as current object
@@ -505,13 +505,13 @@ class FOOOFGroup(FOOOF):
         Returns
         -------
         fg : FOOOFGroup
-            The requested selection of results data loaded into a new FOOOFGroup object.
+            The requested selection of results data loaded into a new group model object.
         """
 
         # Check and convert indices encoding to list of int
         inds = check_inds(inds)
 
-        # Initialize a new FOOOFGroup object, with same settings as current FOOOFGroup
+        # Initialize a new model object, with same settings as current object
         fg = FOOOFGroup(*self.get_settings(), verbose=self.verbose)
 
         # Add data for specified power spectra, if available
@@ -529,7 +529,7 @@ class FOOOFGroup(FOOOF):
 
 
     def print_results(self, concise=False):
-        """Print out FOOOFGroup results.
+        """Print out the group results.
 
         Parameters
         ----------
@@ -541,13 +541,13 @@ class FOOOFGroup(FOOOF):
 
 
     def _fit(self, *args, **kwargs):
-        """Create an alias to FOOOF.fit for FOOOFGroup object, for internal use."""
+        """Create an alias to FOOOF.fit for the group object, for internal use."""
 
         super().fit(*args, **kwargs)
 
 
     def _get_results(self):
-        """Create an alias to FOOOF.get_results for FOOOFGroup object, for internal use."""
+        """Create an alias to FOOOF.get_results for the group object, for internal use."""
 
         return super().get_results()
 
@@ -605,7 +605,7 @@ def _progress(iterable, progress, n_to_run):
         raise ValueError("Progress bar option not understood.")
 
     # Set the display text for the progress bar
-    pbar_desc = 'Running FOOOFGroup'
+    pbar_desc = 'Running group fits.'
 
     # Use a tqdm, progress bar, if requested
     if progress:

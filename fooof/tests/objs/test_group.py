@@ -293,18 +293,18 @@ def test_fg_report(skip_if_no_mpl):
 
     assert tfg
 
-def test_fg_get_fooof(tfg):
+def test_fg_get_model(tfg):
     """Check return of an individual model fit to a FOOOF object from FOOOFGroup."""
 
     # Check without regenerating
-    tfm0 = tfg.get_fooof(0, False)
+    tfm0 = tfg.get_model(0, False)
     assert tfm0
     # Check that settings are copied over properly
     for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) == getattr(tfm0, setting)
 
     # Check with regenerating
-    tfm1 = tfg.get_fooof(1, True)
+    tfm1 = tfg.get_model(1, True)
     assert tfm1
     # Check that regenerated model is created
     for result in OBJ_DESC['results']:
@@ -313,7 +313,7 @@ def test_fg_get_fooof(tfg):
     # Test when object has no data (clear a copy of tfg)
     new_tfg = tfg.copy()
     new_tfg._reset_data_results(False, True, True, True)
-    tfm2 = new_tfg.get_fooof(0, True)
+    tfm2 = new_tfg.get_model(0, True)
     assert tfm2
     # Check that data info is copied over properly
     for meta_dat in OBJ_DESC['meta_data']:
