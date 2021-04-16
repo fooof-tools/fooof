@@ -82,8 +82,8 @@ from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 ###################################################################################################
 ###################################################################################################
 
-class FOOOF():
-    """Model a physiological power spectrum as a combination of aperiodic and periodic components.
+class PSD():
+    """Model a power spectrum as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
 

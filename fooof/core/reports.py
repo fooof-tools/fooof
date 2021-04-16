@@ -27,7 +27,7 @@ def save_model_report(model, file_name, file_path=None, plt_log=False):
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Object with results from fitting a power spectrum.
     file_name : str
         Name to give the saved out file.

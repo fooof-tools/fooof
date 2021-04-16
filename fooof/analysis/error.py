@@ -14,7 +14,7 @@ def compute_pointwise_error(model, plot_errors=True, return_errors=False, **plt_
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Object containing the data and model.
     plot_errors : bool, optional, default: True
         Whether to plot the errors across frequencies.

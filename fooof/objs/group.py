@@ -10,7 +10,7 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
-from fooof.objs import FOOOF
+from fooof.objs import PSD
 from fooof.plts.group import plot_group
 from fooof.core.items import OBJ_DESC
 from fooof.core.info import get_indices
@@ -24,7 +24,7 @@ from fooof.core.modutils import copy_doc_func_to_method, safe_import
 ###################################################################################################
 ###################################################################################################
 
-class PSDGroup(FOOOF):
+class PSDGroup(PSD):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -99,7 +99,7 @@ class PSDGroup(FOOOF):
     def __init__(self, *args, **kwargs):
         """Initialize object with desired settings."""
 
-        FOOOF.__init__(self, *args, **kwargs)
+        PSD.__init__(self, *args, **kwargs)
 
         self.power_spectra = None
 
@@ -469,12 +469,12 @@ class PSDGroup(FOOOF):
 
         Returns
         -------
-        model : FOOOF
+        model : PSD
             The FitResults data loaded into a model object.
         """
 
         # Initialize a model object, with same settings & check data mode as current object
-        model = FOOOF(*self.get_settings(), verbose=self.verbose)
+        model = PSD(*self.get_settings(), verbose=self.verbose)
         model.set_check_data_mode(self._check_data)
 
         # Add data for specified single power spectrum, if available
@@ -541,13 +541,13 @@ class PSDGroup(FOOOF):
 
 
     def _fit(self, *args, **kwargs):
-        """Create an alias to FOOOF.fit for the group object, for internal use."""
+        """Create an alias to PSD.fit for the group object, for internal use."""
 
         super().fit(*args, **kwargs)
 
 
     def _get_results(self):
-        """Create an alias to FOOOF.get_results for the group object, for internal use."""
+        """Create an alias to PSD.get_results for the group object, for internal use."""
 
         return super().get_results()
 

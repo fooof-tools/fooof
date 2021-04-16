@@ -4,7 +4,7 @@ import numpy as np
 
 from fooof.sim import gen_freqs
 from fooof.data import FitResults
-from fooof.objs import FOOOF, PSDGroup
+from fooof.objs import PSD, PSDGroup
 from fooof.analysis.periodic import get_band_peak_group
 from fooof.core.errors import NoModelError, IncompatibleSettingsError
 
@@ -16,7 +16,7 @@ def compare_model_objs(model_objs, aspect):
 
     Parameters
     ----------
-    model_objs : list of FOOOF and/or PSDGroup
+    model_objs : list of PSD and/or PSDGroup
         Objects whose attributes are to be compared.
     aspect : {'settings', 'meta_data'}
         Which set of attributes to compare the objects across.
@@ -54,7 +54,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
 
     Returns
     -------
-    model : FOOOF
+    model : PSD
         Object containing the average model results.
 
     Raises
@@ -104,7 +104,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
     results = FitResults(ap_params, peak_params, r2, error, gauss_params)
 
     # Create the new model object, with settings, data info & results
-    model = FOOOF()
+    model = PSD()
     model.add_settings(group.get_settings())
     model.add_meta_data(group.get_meta_data())
     model.add_results(results)
@@ -121,7 +121,7 @@ def combine_model_objs(model_objs):
 
     Parameters
     ----------
-    model_objs : list of FOOOF or PSDGroup
+    model_objs : list of PSD or PSDGroup
         Objects to be concatenated into a group model object.
 
     Returns

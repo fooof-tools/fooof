@@ -3,7 +3,7 @@
 from functools import wraps
 
 from fooof.bands import Bands
-from fooof.objs import FOOOF, PSDGroup
+from fooof.objs import PSD, PSDGroup
 from fooof.core.modutils import safe_import
 from fooof.sim.params import param_sampler
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
@@ -22,7 +22,7 @@ def get_tfm():
 
     xs, ys = gen_power_spectrum(freq_range, ap_params, gaussian_params)
 
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
     tfm.fit(xs, ys)
 
     return tfm

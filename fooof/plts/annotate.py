@@ -29,7 +29,7 @@ def plot_annotated_peak_search(model):
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Model object, with model fit, data and settings available.
     """
 
@@ -80,7 +80,7 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Model object, with model fit, data and settings available.
     plt_log : boolean, optional, default: False
         Whether to plot the frequency values in log10 spacing.

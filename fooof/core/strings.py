@@ -88,7 +88,7 @@ def gen_settings_str(model_obj, description=False, concise=False):
 
     Parameters
     ----------
-    model_obj : FOOOF or PSDGroup or ModelSettings
+    model_obj : PSD or PSDGroup or ModelSettings
         Object to access settings from.
     description : bool, optional, default: True
         Whether to also print out a description of the settings.
@@ -150,7 +150,7 @@ def gen_freq_range_str(model_obj, concise=False):
 
     Parameters
     ----------
-    model_obj : FOOOF or PSDGroup
+    model_obj : PSD or PSDGroup
         Object to access settings from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
@@ -228,7 +228,7 @@ def gen_methods_text_str(model_obj=None):
 
     Parameters
     ----------
-    model_obj : FOOOF or PSDGroup, optional
+    model_obj : PSD or PSDGroup, optional
         A model object with settings information available.
         If None, the text is returned as a template, without values.
     """
@@ -266,7 +266,7 @@ def gen_model_results_str(model, concise=False):
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Object to access results from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.

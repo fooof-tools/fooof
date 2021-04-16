@@ -17,13 +17,13 @@ def load_model(file_name, file_path=None, regenerate=True):
 
     Returns
     -------
-    model : FOOOF
+    model : PSD
         Object with the loaded data.
     """
 
     # Initialize a model object (imported locally to avoid circular imports)
-    from fooof.objs import FOOOF
-    model = FOOOF()
+    from fooof.objs import PSD
+    model = PSD()
 
     # Load data into object
     model.load(file_name, file_path, regenerate)

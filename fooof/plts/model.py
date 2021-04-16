@@ -32,7 +32,7 @@ def plot_model(model, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_l
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Object containing a power spectrum and (optionally) results from fitting.
     plot_peaks : None or {'shade', 'dot', 'outline', 'line'}, optional
         What kind of approach to take to plot peaks. If None, peaks are not specifically plotted.
@@ -105,7 +105,7 @@ def _add_peaks(model, approach, plt_log, ax, peak_kwargs):
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Model object containing results from fitting.
     approach : {'shade', 'dot', 'outline', 'outline', 'line'}
         What kind of approach to take to plot peaks.
@@ -149,7 +149,7 @@ def _add_peaks_shade(model, plt_log, ax, **plot_kwargs):
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Model object containing results from fitting.
     plt_log : boolean
         Whether to plot the frequency values in log10 spacing.
@@ -175,7 +175,7 @@ def _add_peaks_dot(model, plt_log, ax, **plot_kwargs):
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Model object containing results from fitting.
     plt_log : boolean
         Whether to plot the frequency values in log10 spacing.
@@ -205,7 +205,7 @@ def _add_peaks_outline(model, plt_log, ax, **plot_kwargs):
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Model object containing results from fitting.
     plt_log : boolean
         Whether to plot the frequency values in log10 spacing.
@@ -237,7 +237,7 @@ def _add_peaks_line(model, plt_log, ax, **plot_kwargs):
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Model object containing results from fitting.
     plt_log : boolean
         Whether to plot the frequency values in log10 spacing.
@@ -264,7 +264,7 @@ def _add_peaks_width(model, plt_log, ax, **plot_kwargs):
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Model object containing results from fitting.
     plt_log : boolean
         Whether to plot the frequency values in log10 spacing.

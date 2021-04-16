@@ -67,7 +67,7 @@ def save_model(model, file_name, file_path=None, append=False,
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Object to save data from.
     file_name : str or FileObject
         File to save data to.

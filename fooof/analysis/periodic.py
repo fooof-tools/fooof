@@ -13,7 +13,7 @@ def get_band_peak(model, band, select_highest=True, threshold=None,
 
     Parameters
     ----------
-    model : FOOOF
+    model : PSD
         Object to extract peak data from.
     band : tuple of (float, float)
         Frequency range for the band of interest.

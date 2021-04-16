@@ -3,7 +3,7 @@
 import numpy as np
 
 from fooof.core.items import OBJ_DESC
-from fooof.objs import FOOOF, PSDGroup
+from fooof.objs import PSD, PSDGroup
 
 from fooof.tests.settings import TEST_DATA_PATH
 
@@ -18,7 +18,7 @@ def test_load_model():
 
     tfm = load_model(file_name, TEST_DATA_PATH)
 
-    assert isinstance(tfm, FOOOF)
+    assert isinstance(tfm, PSD)
 
     # Check that all elements get loaded
     for result in OBJ_DESC['results']:

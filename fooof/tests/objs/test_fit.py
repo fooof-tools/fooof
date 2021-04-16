@@ -27,14 +27,14 @@ from fooof.objs.fit import *
 def test_model_object():
     """Check model object initializes properly."""
 
-    assert FOOOF(verbose=False)
+    assert PSD(verbose=False)
 
 def test_has_data(tfm):
     """Test the has_data property attribute, with and without model fits."""
 
     assert tfm.has_data
 
-    ntfm = FOOOF()
+    ntfm = PSD()
     assert not ntfm.has_data
 
 def test_has_model(tfm):
@@ -42,7 +42,7 @@ def test_has_model(tfm):
 
     assert tfm.has_model
 
-    ntfm = FOOOF()
+    ntfm = PSD()
     assert not ntfm.has_model
 
 def test_n_peaks(tfm):
@@ -59,7 +59,7 @@ def test_fit_nk():
 
     xs, ys = gen_power_spectrum([3, 50], ap_params, gauss_params, nlv)
 
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
     tfm.fit(xs, ys)
 
     # Check model results - aperiodic parameters
@@ -78,7 +78,7 @@ def test_fit_nk_noise():
 
     xs, ys = gen_power_spectrum([3, 50], ap_params, gauss_params, nlv)
 
-    tfm = FOOOF(max_n_peaks=8, verbose=False)
+    tfm = PSD(max_n_peaks=8, verbose=False)
     tfm.fit(xs, ys)
 
     # No accuracy checking here - just checking that it ran
@@ -93,7 +93,7 @@ def test_fit_knee():
 
     xs, ys = gen_power_spectrum([1, 150], ap_params, gauss_params, nlv)
 
-    tfm = FOOOF(aperiodic_mode='knee', verbose=False)
+    tfm = PSD(aperiodic_mode='knee', verbose=False)
     tfm.fit(xs, ys)
 
     # Check model results - aperiodic parameters
@@ -106,7 +106,7 @@ def test_fit_knee():
 def test_fit_measures():
     """Test goodness of fit & error metrics, post model fitting."""
 
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
 
     # Hack fake data with known properties: total error magnitude 2
     tfm.power_spectrum = np.array([1, 2, 3, 4, 5])
@@ -133,7 +133,7 @@ def test_checks():
 
     xs, ys = gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2])
 
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
 
     ## Check checks & errors done in `_prepare_data`
 
@@ -170,7 +170,7 @@ def test_checks():
     ## Check errors & errors done in `fit`
 
     # Check fit, and string report model error (no data / model fit)
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
     with raises(NoDataError):
         tfm.fit()
 
@@ -178,7 +178,7 @@ def test_load():
     """Test loading data into model object. Note: loads files from test_core_io."""
 
     # Test loading just results
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
     file_name_res = 'test_res'
     tfm.load(file_name_res, TEST_DATA_PATH)
     # Check that result attributes get filled
@@ -192,7 +192,7 @@ def test_load():
     assert getattr(tfm, 'power_spectrum') is None
 
     # Test loading just settings
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
     file_name_set = 'test_set'
     tfm.load(file_name_set, TEST_DATA_PATH)
     for setting in OBJ_DESC['settings']:
@@ -203,7 +203,7 @@ def test_load():
     assert tfm.power_spectrum is None
 
     # Test loading just data
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
     file_name_dat = 'test_dat'
     tfm.load(file_name_dat, TEST_DATA_PATH)
     assert tfm.power_spectrum is not None
@@ -214,7 +214,7 @@ def test_load():
         assert np.all(np.isnan(getattr(tfm, result)))
 
     # Test loading all elements
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
     file_name_all = 'test_all'
     tfm.load(file_name_all, TEST_DATA_PATH)
     for result in OBJ_DESC['results']:
@@ -322,7 +322,7 @@ def test_get_params(tfm):
 def test_copy():
     """Test copy model object method."""
 
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
     ntfm = tfm.copy()
 
     assert tfm != ntfm
@@ -362,7 +362,7 @@ def test_resets():
 def test_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
 
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
 
     tfm.report(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
@@ -372,7 +372,7 @@ def test_fit_failure():
     """Test model fit failures."""
 
     ## Induce a runtime error, and check it runs through
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
     tfm._maxfev = 5
 
     tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
@@ -383,7 +383,7 @@ def test_fit_failure():
 
     ## Monkey patch to check errors in general
     #  This mimics the main fit-failure, without requiring bad data / waiting for it to fail.
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
     def raise_runtime_error(*args, **kwargs):
         raise FitError('Test-MonkeyPatch')
     tfm._fit_peaks = raise_runtime_error
@@ -398,7 +398,7 @@ def test_fit_failure():
 def test_debug():
     """Test model object in debug mode, including with fit failures."""
 
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
     tfm._maxfev = 5
 
     tfm.set_debug_mode(True)
@@ -410,7 +410,7 @@ def test_debug():
 def test_check_data():
     """Test model fitting with check data mode turned off, including with NaN data."""
 
-    tfm = FOOOF(verbose=False)
+    tfm = PSD(verbose=False)
 
     tfm.set_check_data_mode(False)
     assert tfm._check_data is False
