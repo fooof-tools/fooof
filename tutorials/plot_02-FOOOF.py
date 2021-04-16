@@ -2,28 +2,28 @@
 02: Fitting Power Spectrum Models
 =================================
 
-Introduction to the module, beginning with the FOOOF object.
+Introduction to the module, beginning with the model object.
 """
 
 ###################################################################################################
 
-# Import the FOOOF object
-from fooof import FOOOF
+# Import the model object
+from specparam import PSD
 
 # Import a utility to download and load example data
-from fooof.utils.download import load_fooof_data
+from specparam.utils.download import load_example_data
 
 ###################################################################################################
 
 # Download example data files needed for this example
-freqs = load_fooof_data('freqs.npy', folder='data')
-spectrum = load_fooof_data('spectrum.npy', folder='data')
+freqs = load_example_data('freqs.npy', folder='data')
+spectrum = load_example_data('spectrum.npy', folder='data')
 
 ###################################################################################################
-# FOOOF Object
+# Model Object
 # ------------
 #
-# At the core of the module is the :class:`~fooof.FOOOF` object, which holds relevant data
+# At the core of the module is the :class:`~specparam.PSD` object, which holds relevant data
 # and settings as attributes, and contains methods to run the algorithm to parameterize
 # neural power spectra.
 #
@@ -38,9 +38,9 @@ spectrum = load_fooof_data('spectrum.npy', folder='data')
 # Calculating Power Spectra
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The :class:`~fooof.FOOOF` object fits models to power spectra. The module itself does not
+# The :class:`~specparam.PSD` object fits models to power spectra. The module itself does not
 # compute power spectra. Computing power spectra needs to be done prior to using
-# the FOOOF module.
+# the specparam module.
 #
 # The model is broadly agnostic to exactly how power spectra are computed. Common
 # methods, such as Welch's method, can be used to compute the spectrum.
@@ -48,7 +48,7 @@ spectrum = load_fooof_data('spectrum.npy', folder='data')
 # If you need a module in Python that has functionality for computing power spectra, try
 # `NeuroDSP <https://neurodsp-tools.github.io/neurodsp/>`_.
 #
-# Note that FOOOF objects require frequency and power values passed in as inputs to
+# Note that model objects require frequency and power values passed in as inputs to
 # be in linear spacing. Passing in non-linear spaced data (such logged values) may
 # produce erroneous results.
 #
@@ -62,8 +62,8 @@ spectrum = load_fooof_data('spectrum.npy', folder='data')
 
 ###################################################################################################
 
-# Initialize a FOOOF object
-fm = FOOOF()
+# Initialize a model object
+fm = PSD()
 
 # Set the frequency range to fit the model
 freq_range = [2, 40]
@@ -77,16 +77,16 @@ fm.report(freqs, spectrum, freq_range)
 #
 # The above method 'report', is a convenience method that calls a series of methods:
 #
-# - :meth:`~fooof.FOOOF.fit`: fits the power spectrum model
-# - :meth:`~fooof.FOOOF.print_results`: prints out the results
-# - :meth:`~fooof.FOOOF.plot`: plots the data and model fit
+# - :meth:`~specparam.PSD.fit`: fits the power spectrum model
+# - :meth:`~specparam.PSD.print_results`: prints out the results
+# - :meth:`~specparam.PSD.plot`: plots the data and model fit
 #
 # Each of these methods can also be called individually.
 #
 
 ###################################################################################################
 
-# Alternatively, just fit the model with FOOOF.fit() (without printing anything)
+# Alternatively, just fit the model with PSD.fit() (without printing anything)
 fm.fit(freqs, spectrum, freq_range)
 
 # After fitting, plotting and parameter fitting can be called independently:
@@ -112,7 +112,7 @@ fm.fit(freqs, spectrum, freq_range)
 
 ###################################################################################################
 #
-# Access model fit parameters from FOOOF object, after fitting:
+# Access model fit parameters from specparam object, after fitting:
 #
 
 ###################################################################################################
@@ -135,7 +135,7 @@ print('Number of fit peaks: \n', fm.n_peaks_)
 # Selecting Parameters
 # ~~~~~~~~~~~~~~~~~~~~
 #
-# You can also select parameters using the :meth:`~fooof.FOOOF.get_params`
+# You can also select parameters using the :meth:`~specparam.PSD.get_params`
 # method, which can be used to specify which parameters you want to extract.
 #
 
@@ -149,14 +149,14 @@ exp = fm.get_params('aperiodic_params', 'exponent')
 cfs = fm.get_params('peak_params', 'CF')
 
 # Print out a custom parameter report
-template = ("With an error level of {error:1.2f}, FOOOF fit an exponent "
-            "of {exponent:1.2f} and peaks of {cfs:s} Hz.")
+template = ("With an error level of {error:1.2f}, an exponent "
+            "of {exponent:1.2f} and peaks of {cfs:s} Hz were fit.")
 print(template.format(error=err, exponent=exp,
                       cfs=' & '.join(map(str, [round(cf, 2) for cf in cfs]))))
 
 ###################################################################################################
 #
-# For a full description of how you can access data with :meth:`~fooof.FOOOF.get_params`,
+# For a full description of how you can access data with :meth:`~specparam.PSD.get_params`,
 # check the method's documentation.
 #
 # As a reminder, you can access the documentation for a function using '?' in a
@@ -195,7 +195,7 @@ print(template.format(error=err, exponent=exp,
 
 ###################################################################################################
 #
-# The underlying gaussian parameters are also available from the FOOOF object,
+# The underlying gaussian parameters are also available from the model object,
 # in the ``gaussian_params_`` attribute.
 #
 
@@ -207,23 +207,23 @@ for peak, gauss in zip(fm.peak_params_, fm.gaussian_params_):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*peak, *gauss))
 
 ####################################################################################################
-# FOOOFResults
-# ~~~~~~~~~~~~
+# FitResults
+# ~~~~~~~~~~
 #
 # There is also a convenience method to return all model fit results:
-# :func:`~fooof.FOOOF.get_results`.
+# :func:`~specparam.PSD.get_results`.
 #
 # This method returns all the model fit parameters, including the underlying Gaussian
-# parameters, collected together into a FOOOFResults object.
+# parameters, collected together into a FitResults object.
 #
-# The FOOOFResults object, which in Python terms is a named tuple, is a standard data
-# object used with FOOOF to organize and collect parameter data.
+# The FitResults object, which in Python terms is a named tuple, is a standard data
+# object used to organize and collect parameter data.
 #
 
 ###################################################################################################
 
 # Grab each model fit result with `get_results` to gather all results together
-#   Note that this returns a FOOOFResult object
+#   Note that this returns a FitResults object
 fres = fm.get_results()
 
 # You can also unpack all fit parameters when using `get_results`
@@ -231,10 +231,10 @@ ap_params, peak_params, r_squared, fit_error, gauss_params = fm.get_results()
 
 ###################################################################################################
 
-# Print out the FOOOFResults
+# Print out the FitResults
 print(fres, '\n')
 
-# From FOOOFResults, you can access the different results
+# from specparamResults, you can access the different results
 print('Aperiodic Parameters: \n', fres.aperiodic_params)
 
 # Check the R^2 and error of the model fit
@@ -245,7 +245,7 @@ print('Fit error: \n {:5.4f}'.format(fm.error_))
 # Conclusion
 # ----------
 #
-# In this tutorial, we have explored the basics of the :class:`~fooof.FOOOF` object,
+# In this tutorial, we have explored the basics of the :class:`~specparam.PSD` object,
 # fitting power spectrum models, and extracting parameters.
 #
 # In the next tutorial, we will explore how this algorithm actually works to fit the model.

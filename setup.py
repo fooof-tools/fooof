@@ -1,10 +1,10 @@
-"""FOOOF setup script."""
+"""Setup script for specparam."""
 
 import os
 from setuptools import setup, find_packages
 
 # Get the current version number from inside the module
-with open(os.path.join('fooof', 'version.py')) as version_file:
+with open(os.path.join('specparam', 'version.py')) as version_file:
     exec(version_file.read())
 
 # Load the long description from the README
@@ -16,9 +16,9 @@ with open("requirements.txt") as requirements_file:
     install_requires = requirements_file.read().splitlines()
 
 setup(
-    name = 'fooof',
+    name = 'specparam',
     version = __version__,
-    description = 'fitting oscillations & one-over f',
+    description = 'Spectral parameterization.',
     long_description = long_description,
     python_requires = '>=3.6',
     author = 'The Voytek Lab',

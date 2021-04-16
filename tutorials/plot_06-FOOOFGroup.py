@@ -1,35 +1,35 @@
 """
-06: FOOOFGroup
-==============
+06: Fitting group of spectra
+============================
 
-Using FOOOFGroup to run fit models across multiple power spectra.
+Using the group model object to run fit models across multiple power spectra.
 """
 
 ###################################################################################################
 
-# Import the FOOOFGroup object
-from fooof import FOOOFGroup
+# Import the group model object
+from specparam import PSDGroup
 
 # Import a utility to download and load example data
-from fooof.utils.download import load_fooof_data
+from specparam.utils.download import load_example_data
 
 ###################################################################################################
 # Fitting Multiple Spectra
 # ------------------------
 #
-# So far, we have explored using the :class:`~fooof.FOOOF` object to fit individual power spectra.
+# So far, we have explored using the :class:`~specparam.PSD` object to fit individual power spectra.
 #
 # However, many potential analyses will including many power spectra that need to be fit.
 #
-# To support this, here we will introduce the :class:`~fooof.FOOOFGroup` object, which
+# To support this, here we will introduce the :class:`~specparam.PSDGroup` object, which
 # applies the model fitting procedure across multiple power spectra.
 #
 
 ###################################################################################################
 
 # Load examples data files needed for this example
-freqs = load_fooof_data('group_freqs.npy', folder='data')
-spectra = load_fooof_data('group_powers.npy', folder='data')
+freqs = load_example_data('group_freqs.npy', folder='data')
+spectra = load_example_data('group_powers.npy', folder='data')
 
 ###################################################################################################
 #
@@ -46,11 +46,11 @@ print(freqs.shape)
 print(spectra.shape)
 
 ###################################################################################################
-# FOOOFGroup
-# ----------
+# PSDGroup
+# --------
 #
-# The :class:`~fooof.FOOOFGroup` object is very similar to the FOOOF object (programmatically,
-# it inherits from the FOOOF object), and can be used in the same way.
+# The :class:`~specparam.PSDGroup` object is very similar to the PSD object (programmatically,
+# it inherits from the PSD object), and can be used in the same way.
 #
 # The main difference is that instead of running across a single power spectrum, it
 # operates across 2D matrices containing multiple power spectra.
@@ -61,25 +61,25 @@ print(spectra.shape)
 # be spectra from across channels, or across trials, or across subjects, or
 # whatever organization makes sense for the analysis at hand.
 #
-# The main differences with the :class:`~fooof.FOOOFGroup` object, are that it uses a
+# The main differences with the :class:`~specparam.PSDGroup` object, are that it uses a
 # `power_spectra` attribute, which stores the matrix of power-spectra to be fit,
 # and collects fit results into a `group_results` attribute.
 #
-# Otherwise, :class:`~fooof.FOOOFGroup` supports all the same functionality,
-# accessed in the same way as the :class:`~fooof.FOOOF` object.
+# Otherwise, :class:`~specparam.PSDGroup` supports all the same functionality,
+# accessed in the same way as the :class:`~specparam.PSD` object.
 #
-# Internally, it runs the exact same fitting procedure, per spectrum, as the FOOOF object.
+# Internally, it runs the exact same fitting procedure, per spectrum, as the PSD object.
 #
 
 ###################################################################################################
 
-# Initialize a FOOOFGroup object, which accepts all the same settings as FOOOF
-fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_height=0.05, max_n_peaks=6)
+# Initialize a PSDGroup object, which accepts all the same settings as PSD
+fg = PSDGroup(peak_width_limits=[1, 8], min_peak_height=0.05, max_n_peaks=6)
 
 ###################################################################################################
 
 # Fit a group of power spectra with the .fit() method
-#  The key difference (compared to FOOOF) is that it takes a 2D array of spectra
+#  The key difference (compared to PSD) is that it takes a 2D array of spectra
 #     This matrix should have the shape of [n_spectra, n_freqs]
 fg.fit(freqs, spectra, [3, 30])
 
@@ -95,21 +95,21 @@ fg.plot()
 
 ###################################################################################################
 #
-# Just as with the FOOOF object, you can call the convenience method
-# :meth:`fooof.FOOOFGroup.report` to run the fitting, and then print the results and plots.
+# Just as with the PSD object, you can call the convenience method
+# :meth:`specparam.PSDGroup.report` to run the fitting, and then print the results and plots.
 #
 
 ###################################################################################################
 
-# You can also save out PDF reports of the FOOOFGroup fits, same as with FOOOF
-fg.save_report('FOOOFGroup_report')
+# You can also save out PDF reports of the group fits, same as for an individual model
+fg.save_report('group_report')
 
 ###################################################################################################
-# FOOOFGroup Results
-# ------------------
+# Group Results
+# -------------
 #
-# FOOOFGroup collects fits across power spectra, and stores them in an attribute
-# called ``group_results``, which is a list of FOOOFResults objects.
+# The group model object collects fits across power spectra, and stores them in an attribute
+# called ``group_results``, which is a list of FitResults objects.
 #
 
 ###################################################################################################
@@ -122,17 +122,17 @@ print(fg.group_results[0:2])
 # ~~~~~~~~~~
 #
 # To collect results from across all model fits, and to select specific parameters
-# you can use the :func:`~fooof.FOOOFGroup.get_params` method.
+# you can use the :func:`~specparam.PSDGroup.get_params` method.
 #
-# This method works the same as in the :class:`~fooof.FOOOF` object, and lets you extract
+# This method works the same as in the :class:`~specparam.PSD` object, and lets you extract
 # specific results by specifying a field, as a string, and (optionally) a specific column
 # to extract.
 #
-# Since the :class:`~fooof.FOOOFGroup` object collects results from across multiple model fits,
-# you should always use :func:`~fooof.FOOOFGroup.get_params` to access model parameters.
-# The results attributes introduced with the FOOOF object (such as `aperiodic_params_` or
+# Since the :class:`~specparam.PSDGroup` object collects results from across multiple model fits,
+# you should always use :func:`~specparam.PSDGroup.get_params` to access model parameters.
+# The results attributes introduced with the PSD object (such as `aperiodic_params_` or
 # `peak_params_`) do not store results across the group, as they are defined for individual
-# model fits (and used internally as such by the FOOOFGroup object).
+# model fits (and used internally as such by the PSDGroup object).
 #
 
 ###################################################################################################
@@ -157,16 +157,16 @@ print(fg.get_params.__doc__)
 ###################################################################################################
 #
 # More information about the parameters you can extract is also documented in the
-# FOOOFResults object.
+# FitResults object.
 #
 
 ###################################################################################################
 
-# Grab a particular FOOOFResults item
-#  Note that as a shortcut, you can index the FOOOFGroup object directly to access 'group_results'
+# Grab a particular FitResults data object
+#  Note that as a shortcut, you can index the PSDGroup object directly to access 'group_results'
 f_res = fg[0]
 
-# Check the documentation for the FOOOFResults, which has descriptions of the parameters
+# Check the documentation for the FitResults, which has descriptions of the parameters
 print(f_res.__doc__)
 
 ###################################################################################################
@@ -184,26 +184,26 @@ print(exps)
 print(cfs[0:10, :])
 
 ###################################################################################################
-# Saving & Loading with FOOOFGroup
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Saving & Loading Group Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# FOOOFGroup also support saving and loading, with the same options for saving out
-# different things as defined and described for the FOOOF object.
+# The group object also support saving and loading, with the same options for saving out
+# different things as defined and described for the PSD object.
 #
-# The only difference in saving FOOOFGroup, is that it saves out a 'jsonlines' file,
+# The only difference in saving PSDGroup, is that it saves out a 'jsonlines' file,
 # in which each line is a JSON object, saving the specified data, settings, and results for
 # a single power spectrum.
 #
 
 ###################################################################################################
 
-# Save out FOOOFGroup settings & results
+# Save out group settings & results
 fg.save('FG_results', save_settings=True, save_results=True)
 
 ###################################################################################################
 
 # You can then reload this group
-nfg = FOOOFGroup()
+nfg = PSDGroup()
 nfg.load('FG_results')
 
 ###################################################################################################
@@ -215,7 +215,7 @@ nfg.print_results()
 # Parallel Support
 # ~~~~~~~~~~~~~~~~
 #
-# FOOOFGroup also has support for running in parallel, which can speed things up, since
+# PSDGroup also has support for running in parallel, which can speed things up, since
 # each power spectrum can be fit independently.
 #
 # The fit method includes an optional parameter ``n_jobs``, which if set at 1 (as default),
@@ -239,7 +239,7 @@ fg.fit(freqs, spectra, n_jobs=-1)
 # Progress Bar
 # ~~~~~~~~~~~~
 #
-# If you have a large number of spectra to fit with a :class:`~fooof.FOOOFGroup`, and you
+# If you have a large number of spectra to fit with a :class:`~specparam.PSDGroup`, and you
 # want to monitor it's progress, you can also use a progress bar to print out fitting progress.
 #
 # Progress bar options are:
@@ -258,19 +258,19 @@ fg.fit(freqs, spectra, progress='tqdm')
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # When fitting power spectrum models for a group of power spectra, results are stored
-# in FOOOFResults objects, which store (only) the results of the model fit,
+# in FitResults objects, which store (only) the results of the model fit,
 # not the full model fits themselves.
 #
-# To examine individual model fits, :class:`~fooof.FOOOFGroup` can regenerate
-# :class:`~fooof.FOOOF` objects for individual power spectra, with the full model available
-# for visualization. To do so, you can use the :meth:`~fooof.FOOOFGroup.get_fooof` method.
+# To examine individual model fits, :class:`~specparam.PSDGroup` can regenerate
+# :class:`~specparam.PSD` objects for individual power spectra, with the full model available
+# for visualization. To do so, you can use the :meth:`~specparam.PSDGroup.get_model` method.
 #
 
 ###################################################################################################
 
 # Extract a particular spectrum, specified by index
 #  Here we also specify to regenerate the the full model fit, from the results
-fm = fg.get_fooof(ind=2, regenerate=True)
+fm = fg.get_model(ind=2, regenerate=True)
 
 ###################################################################################################
 

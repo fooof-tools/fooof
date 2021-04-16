@@ -1,28 +1,28 @@
 """
-04: Exploring the FOOOF Object
+04: Exploring the model object
 ==============================
 
-Further exploring the FOOOF object, including algorithm settings and available methods.
+Further exploring the PSD object, including algorithm settings and available methods.
 """
 
 ###################################################################################################
 
-# Import the FOOOF object
-from fooof import FOOOF
+# Import the model object
+from specparam import PSD
 
 # Import utility to download and load example data
-from fooof.utils.download import load_fooof_data
+from specparam.utils.download import load_example_data
 
 ###################################################################################################
 
-# Initialize a FOOOF object
-fm = FOOOF()
+# Initialize a model object
+fm = PSD()
 
 ###################################################################################################
 # Description of methods and attributes
 # -------------------------------------
 #
-# The :class:`~fooof.FOOOF` object contents consist of 4 main components (groups of data / code):
+# The :class:`~specparam.PSD` object contents consist of 4 main components (groups of data / code):
 #
 # - 1) settings attributes, that control the algorithm fitting
 # - 2) data attributes, that contain and describe the data
@@ -31,7 +31,7 @@ fm = FOOOF()
 #
 # Each these which are described in more detail below.
 #
-# The FOOOF module follows the following Python conventions:
+# The `specparam` module follows the following Python conventions:
 #
 # - all user exposed settings, data, and methods are directly accessible through the object
 # - 'hidden' (internal) settings and methods have a leading underscore
@@ -44,7 +44,7 @@ fm = FOOOF()
 # ^^^^^^^^^^^^^^^^^^^^^^^^
 #
 # There are a number of settings that control the fitting algorithm, that
-# can be set by the user when initializing the :class:`~fooof.FOOOF` object.
+# can be set by the user when initializing the :class:`~specparam.PSD` object.
 #
 # There are some internal settings that are not exposed at initialization.
 # These settings are unlikely to need to be accessed by the user, but can be if desired -
@@ -131,25 +131,25 @@ fm.print_settings(description=True)
 # ~~~~~~~~~~~~~~~~~
 #
 # Note that if you wish to change settings, then you should re-initialize
-# a new :class:`~fooof.FOOOF` object with new settings.
+# a new :class:`~specparam.PSD` object with new settings.
 #
 # Simply changing the value of the relevant attribute may not appropriately propagate
 # the value, and thus may lead to a failure, either creating an error, or not applying
 # the settings properly during fit and returning erroneous results.
 #
-# Here we will re-initialize a new FOOOF object, with some new settings.
+# Here we will re-initialize a new PSD object, with some new settings.
 #
 
 ###################################################################################################
 
-# Re-initialize a new FOOOF object, with some new specified settings
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
+# Re-initialize a new model object, with some new specified settings
+fm = PSD(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 
 ###################################################################################################
 # 2) Data (attributes)
 # ^^^^^^^^^^^^^^^^^^^^
 #
-# The :class:`~fooof.FOOOF` object stores the following data attributes:
+# The :class:`~specparam.PSD` object stores the following data attributes:
 #
 # - ``freqs``: the frequency values of the power spectrum
 # - ``power_spectrum``: the power values of the power spectrum
@@ -165,8 +165,8 @@ fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 ###################################################################################################
 
 # Load example data files needed for this example
-freqs = load_fooof_data('freqs_2.npy', folder='data')
-spectrum = load_fooof_data('spectrum_2.npy', folder='data')
+freqs = load_example_data('freqs_2.npy', folder='data')
+spectrum = load_example_data('spectrum_2.npy', folder='data')
 
 ###################################################################################################
 
@@ -215,10 +215,10 @@ fm.fit()
 #
 # Other attributes which store outputs from the model are:
 #
-# - ``fooofed_spectrum_``: the full model reconstruction
+# - ``modeled_spectrum_``: the full model reconstruction
 # - ``n_peaks_``: a helper attribute which indicates how many peaks were fit in the model
 #
-# The :class:`~fooof.FOOOF` object also has an indicator attribute, ``has_model``
+# The :class:`~specparam.PSD` object also has an indicator attribute, ``has_model``
 # which indicates if the current object has model results available.
 #
 
@@ -234,13 +234,13 @@ print('aperiodic params: \t', fm.aperiodic_params_)
 print('peak params: \t', fm.peak_params_)
 print('r-squared: \t', fm.r_squared_)
 print('fit error: \t', fm.error_)
-print('fooofed spectrum: \t', fm.fooofed_spectrum_[0:5])
+print('modeled spectrum: \t', fm.modeled_spectrum_[0:5])
 
 ###################################################################################################
 # 4) Methods
 # ^^^^^^^^^^
 #
-# The :class:`~fooof.FOOOF` object contains a number of methods that are either used
+# The :class:`~specparam.PSD` object contains a number of methods that are either used
 # to fit models and access data, and/or offer extra functionality.
 #
 # In addition to the exposed methods, there are some internal private methods,
@@ -264,7 +264,7 @@ print('fooofed spectrum: \t', fm.fooofed_spectrum_[0:5])
 #
 # You have the option to specify which data to save.
 #
-# - `results`: model fit results (same as is returned in FOOOFResult)
+# - `results`: model fit results (same as is returned in FitResults)
 # - `settings`: all public settings (everything available at initialization)
 # - `data`: freqs & power spectrum
 #
@@ -275,13 +275,13 @@ print('fooofed spectrum: \t', fm.fooofed_spectrum_[0:5])
 ###################################################################################################
 
 # Save out results, settings, and data
-fm.save('FOOOF_results', save_results=True, save_settings=True, save_data=True)
+fm.save('results', save_results=True, save_settings=True, save_data=True)
 
 ###################################################################################################
 
 # Load back in the saved out information
-nfm = FOOOF()
-nfm.load('FOOOF_results')
+nfm = PSD()
+nfm.load('results')
 
 ###################################################################################################
 
@@ -295,21 +295,21 @@ nfm.plot()
 # There is also functionality to save out a 'report' of a particular model fit.
 #
 # This generates and saves a PDF which contains the same output as
-# :meth:`~fooof.FOOOF.print_results`,
-# :meth:`~fooof.FOOOF.plot`, and
-# :meth:`~fooof.FOOOF.print_settings`.
+# :meth:`~specparam.PSD.print_results`,
+# :meth:`~specparam.PSD.plot`, and
+# :meth:`~specparam.PSD.print_settings`.
 #
 
 ###################################################################################################
 
 # Save out a report of the current model fit & results
-fm.save_report('FOOOF_report')
+fm.save_report('report')
 
 ###################################################################################################
 # Conclusion
 # ----------
 #
-# We have now fully explored the :class:`~fooof.FOOOF` object, and all it contains.
+# We have now fully explored the :class:`~specparam.PSD` object, and all it contains.
 # Next, we will take a deeper dive into how to choose different modes for fitting
 # the aperiodic component of power spectra.
 #

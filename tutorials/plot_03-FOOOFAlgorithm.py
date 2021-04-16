@@ -34,18 +34,18 @@ A step-by-step overview of the algorithm for parameterizing neural power spectra
 # General imports
 import matplotlib.pyplot as plt
 
-# Import the FOOOF object
-from fooof import FOOOF
+# Import the model object
+from specparam import PSD
 
 # Import some internal functions
 #   These are used here to demonstrate the algorithm
 #   You do not need to import these functions for standard usage of the module
-from fooof.sim.gen import gen_aperiodic
-from fooof.plts.spectra import plot_spectra
-from fooof.plts.annotate import plot_annotated_peak_search
+from specparam.sim.gen import gen_aperiodic
+from specparam.plts.spectra import plot_spectra
+from specparam.plts.annotate import plot_annotated_peak_search
 
 # Import a utility to download and load example data
-from fooof.utils.download import load_fooof_data
+from specparam.utils.download import load_example_data
 
 ###################################################################################################
 
@@ -55,19 +55,19 @@ plt_log = False
 ###################################################################################################
 
 # Load example data files needed for this example
-freqs = load_fooof_data('freqs_2.npy', folder='data')
-spectrum = load_fooof_data('spectrum_2.npy', folder='data')
+freqs = load_example_data('freqs_2.npy', folder='data')
+spectrum = load_example_data('spectrum_2.npy', folder='data')
 
 ###################################################################################################
 
-# Initialize a FOOOF object, with some settings
+# Initialize a model object, with some settings
 #   These settings will be more fully described later in the tutorials
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
+fm = PSD(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 
 ###################################################################################################
 #
-# Note that data can be added to a FOOOF object independent of fitting the model, using the
-# :meth:`~fooof.FOOOF.add_data` method. FOOOF objects can also be used to plot data,
+# Note that data can be added to a PSD object independent of fitting the model, using the
+# :meth:`~specparam.PSD.add_data` method. Model objects can also be used to plot data,
 # prior to fitting any models.
 #
 
@@ -83,7 +83,7 @@ fm.plot(plt_log)
 
 ###################################################################################################
 #
-# The FOOOF object stores most of the intermediate steps internally.
+# The model object stores most of the intermediate steps internally.
 #
 # For this notebook, we will first fit the full model, as normal, but then step through,
 # and visualize each step the algorithm took to come to that final fit.
@@ -105,7 +105,7 @@ fm.fit(freqs, spectrum, [3, 40])
 ###################################################################################################
 
 # Do an initial aperiodic fit - a robust fit, that excludes outliers
-#   This recreates an initial fit that isn't ultimately stored in the FOOOF object
+#   This recreates an initial fit that isn't ultimately stored in the model object
 init_ap_fit = gen_aperiodic(fm.freqs, fm._robust_ap_fit(fm.freqs, fm.power_spectrum))
 
 # Plot the initial aperiodic fit
@@ -226,7 +226,7 @@ plot_spectra(fm.freqs, fm._ap_fit, plt_log, label='Final Aperiodic Fit',
 ###################################################################################################
 
 # Plot full model, created by combining the peak and aperiodic fits
-plot_spectra(fm.freqs, fm.fooofed_spectrum_, plt_log,
+plot_spectra(fm.freqs, fm.modeled_spectrum_, plt_log,
              label='Full Model', color='red')
 
 ###################################################################################################
@@ -259,11 +259,11 @@ fm.plot(plt_log)
 # Addendum: Data & Model Component Attributes
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# As you may have noticed through this tutorial, the :class:`~fooof.FOOOF` object keeps
+# As you may have noticed through this tutorial, the :class:`~specparam.PSD` object keeps
 # track of some versions of the original data as well as individual model components fits,
 # as well as the final model fit, the ultimate outcome of the fitting procedure.
 #
-# These attributes in the FOOOF object are kept at the end of the fitting procedure.
+# These attributes in the PSD object are kept at the end of the fitting procedure.
 # Though they are primarily computed for internal use (hence being considered 'private'
 # attributes, with the leading underscore), they are accessible and potentially
 # useful for some analyses, and so are briefly described here.
@@ -300,6 +300,6 @@ fm.plot(plt_log)
 # In this tutorial we have stepped through the parameterization algorithm for fitting
 # power spectrum models.
 #
-# Next, we will continue to explore the FOOOF object by properly introducing and more
+# Next, we will continue to explore the model object by properly introducing and more
 # fully describing the settings for the algorithm.
 #

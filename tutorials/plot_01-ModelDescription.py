@@ -38,11 +38,11 @@ A description of and introduction to the power spectrum model.
 # sphinx_gallery_thumbnail_number = 5
 
 # Import required code for visualizing example models
-from fooof import FOOOF
-from fooof.sim.gen import gen_power_spectrum
-from fooof.sim.utils import set_random_seed
-from fooof.plts.spectra import plot_spectra
-from fooof.plts.annotate import plot_annotated_model
+from specparam import PSD
+from specparam.sim.gen import gen_power_spectrum
+from specparam.sim.utils import set_random_seed
+from specparam.plts.spectra import plot_spectra
+from specparam.plts.annotate import plot_annotated_model
 
 ###################################################################################################
 
@@ -58,8 +58,8 @@ freqs2, powers2 = gen_power_spectrum([1, 150], [1, 125, 1.25],
 ###################################################################################################
 
 # Initialize power spectrum model objects and fit the power spectra
-fm1 = FOOOF(min_peak_height=0.05, verbose=False)
-fm2 = FOOOF(min_peak_height=0.05, aperiodic_mode='knee', verbose=False)
+fm1 = PSD(min_peak_height=0.05, verbose=False)
+fm2 = PSD(min_peak_height=0.05, aperiodic_mode='knee', verbose=False)
 fm1.fit(freqs1, powers1)
 fm2.fit(freqs2, powers2)
 
