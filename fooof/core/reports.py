@@ -2,8 +2,8 @@
 
 from fooof.core.io import fname, fpath
 from fooof.core.modutils import safe_import, check_dependency
-from fooof.core.strings import gen_settings_str, gen_results_fm_str, gen_results_fg_str
-from fooof.plts.fg import plot_fg_ap, plot_fg_gf, plot_fg_peak_cens
+from fooof.core.strings import gen_settings_str, gen_model_results_str, gen_group_results_str
+from fooof.plts.group import plot_group_aperiodic, plot_group_goodness, plot_group_peak_frequencies
 
 plt = safe_import('.pyplot', 'matplotlib')
 gridspec = safe_import('.gridspec', 'matplotlib')
@@ -22,12 +22,12 @@ SAVE_FORMAT = 'pdf'
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def save_report_fm(fm, file_name, file_path=None, plt_log=False):
+def save_model_report(model, file_name, file_path=None, plt_log=False):
     """Generate and save out a PDF report for a power spectrum model fit.
 
     Parameters
     ----------
-    fm : FOOOF
+    model : FOOOF
         Object with results from fitting a power spectrum.
     file_name : str
         Name to give the saved out file.
@@ -43,7 +43,7 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
 
     # First - text results
     ax0 = plt.subplot(grid[0])
-    results_str = gen_results_fm_str(fm)
+    results_str = gen_model_results_str(model)
     ax0.text(0.5, 0.7, results_str, REPORT_FONT, ha='center', va='center')
     ax0.set_frame_on(False)
     ax0.set_xticks([])
@@ -51,11 +51,11 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
 
     # Second - data plot
     ax1 = plt.subplot(grid[1])
-    fm.plot(plt_log=plt_log, ax=ax1)
+    model.plot(plt_log=plt_log, ax=ax1)
 
     # Third - settings
     ax2 = plt.subplot(grid[2])
-    settings_str = gen_settings_str(fm, False)
+    settings_str = gen_settings_str(model, False)
     ax2.text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')
     ax2.set_frame_on(False)
     ax2.set_xticks([])
@@ -67,12 +67,12 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
 
 
 @check_dependency(plt, 'matplotlib')
-def save_report_fg(fg, file_name, file_path=None):
+def save_group_report(group, file_name, file_path=None):
     """Generate and save out a PDF report for a group of power spectrum models.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    group : FOOOFGroup
         Object with results from fitting a group of power spectra.
     file_name : str
         Name to give the saved out file.
@@ -86,7 +86,7 @@ def save_report_fg(fg, file_name, file_path=None):
 
     # First / top: text results
     ax0 = plt.subplot(grid[0, :])
-    results_str = gen_results_fg_str(fg)
+    results_str = gen_group_results_str(group)
     ax0.text(0.5, 0.7, results_str, REPORT_FONT, ha='center', va='center')
     ax0.set_frame_on(False)
     ax0.set_xticks([])
@@ -94,15 +94,15 @@ def save_report_fg(fg, file_name, file_path=None):
 
     # Aperiodic parameters plot
     ax1 = plt.subplot(grid[1, 0])
-    plot_fg_ap(fg, ax1)
+    plot_group_aperiodic(group, ax1)
 
     # Goodness of fit plot
     ax2 = plt.subplot(grid[1, 1])
-    plot_fg_gf(fg, ax2)
+    plot_group_goodness(group, ax2)
 
     # Peak center frequencies plot
     ax3 = plt.subplot(grid[2, :])
-    plot_fg_peak_cens(fg, ax3)
+    plot_group_peak_frequencies(group, ax3)
 
     # Save out the report
     plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))

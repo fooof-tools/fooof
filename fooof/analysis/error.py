@@ -9,12 +9,12 @@ from fooof.core.errors import NoModelError, NoDataError
 ###################################################################################################
 ###################################################################################################
 
-def compute_pointwise_error_fm(fm, plot_errors=True, return_errors=False, **plt_kwargs):
+def compute_pointwise_error(model, plot_errors=True, return_errors=False, **plt_kwargs):
     """Calculate the frequency by frequency error of a model fit.
 
     Parameters
     ----------
-    fm : FOOOF
+    model : FOOOF
         Object containing the data and model.
     plot_errors : bool, optional, default: True
         Whether to plot the errors across frequencies.
@@ -37,26 +37,26 @@ def compute_pointwise_error_fm(fm, plot_errors=True, return_errors=False, **plt_
         If there are no model results available to calculate model error from.
     """
 
-    if not fm.has_data:
+    if not model.has_data:
         raise NoDataError("Data must be available in the object to calculate errors.")
-    if not fm.has_model:
+    if not model.has_model:
         raise NoModelError("No model is available to use, can not proceed.")
 
-    errors = compute_pointwise_error(fm.modeled_spectrum_, fm.power_spectrum)
+    errors = compute_pointwise_error_arr(model.modeled_spectrum_, model.power_spectrum)
 
     if plot_errors:
-        plot_spectral_error(fm.freqs, errors, **plt_kwargs)
+        plot_spectral_error(model.freqs, errors, **plt_kwargs)
 
     if return_errors:
         return errors
 
 
-def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_kwargs):
+def compute_pointwise_error_group(group, plot_errors=True, return_errors=False, **plt_kwargs):
     """Calculate the frequency by frequency error of model fits for a group of fits.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    group : FOOOFGroup
         Object containing the data and models.
     plot_errors : bool, optional, default: True
         Whether to plot the errors across frequencies.
@@ -79,35 +79,35 @@ def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_
         If there are no model results available to calculate model errors from.
     """
 
-    if not np.any(fg.power_spectra):
+    if not np.any(group.power_spectra):
         raise NoDataError("Data must be available in the object to calculate errors.")
-    if not fg.has_model:
+    if not group.has_model:
         raise NoModelError("No model is available to use, can not proceed.")
 
-    errors = np.zeros_like(fg.power_spectra)
+    errors = np.zeros_like(group.power_spectra)
 
-    for ind, (res, data) in enumerate(zip(fg, fg.power_spectra)):
+    for ind, (res, data) in enumerate(zip(group, group.power_spectra)):
 
-        model = gen_model(fg.freqs, res.aperiodic_params, res.gaussian_params)
+        model = gen_model(group.freqs, res.aperiodic_params, res.gaussian_params)
         errors[ind, :] = np.abs(model - data)
 
     mean = np.mean(errors, 0)
     standard_dev = np.std(errors, 0)
 
     if plot_errors:
-        plot_spectral_error(fg.freqs, mean, standard_dev, **plt_kwargs)
+        plot_spectral_error(group.freqs, mean, standard_dev, **plt_kwargs)
 
     if return_errors:
         return errors
 
 
-def compute_pointwise_error(model, data):
+def compute_pointwise_error_arr(data_model, data):
     """Calculate point-wise error between original data and a model fit of that data.
 
     Parameters
     ----------
-    model : 1d array
-        The model.
+    data_model : 1d array
+        The model of the data.
     data : 1d array
         The original data that is being modeled.
 
@@ -117,4 +117,4 @@ def compute_pointwise_error(model, data):
         Calculated values of the difference between the data and the model.
     """
 
-    return np.abs(model - data)
+    return np.abs(data_model - data)

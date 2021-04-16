@@ -32,13 +32,13 @@ def test_gen_methods_text_str(tfm):
     assert gen_methods_text_str()
     assert gen_methods_text_str(tfm)
 
-def test_gen_results_fm_str(tfm):
+def test_gen_model_results_str(tfm):
 
-    assert gen_results_fm_str(tfm)
+    assert gen_model_results_str(tfm)
 
-def test_gen_results_fg_str(tfg):
+def test_gen_group_results_str(tfg):
 
-    assert gen_results_fg_str(tfg)
+    assert gen_group_results_str(tfg)
 
 def test_gen_issue_str():
 

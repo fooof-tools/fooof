@@ -64,16 +64,16 @@ from scipy.optimize import curve_fit
 from fooof.core.items import OBJ_DESC
 from fooof.core.info import get_indices
 from fooof.core.io import save_model, load_json
-from fooof.core.reports import save_report_fm
+from fooof.core.reports import save_model_report
 from fooof.core.modutils import copy_doc_func_to_method
 from fooof.core.utils import group_three, check_array_dim
 from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
 from fooof.core.errors import (FitError, NoModelError, DataError,
                                NoDataError, InconsistentDataError)
-from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
+from fooof.core.strings import (gen_settings_str, gen_model_results_str,
                                 gen_issue_str, gen_width_warning_str)
 
-from fooof.plts.fm import plot_fm
+from fooof.plts.model import plot_model
 from fooof.utils.data import trim_spectrum
 from fooof.utils.params import compute_gauss_std
 from fooof.data import FitResults, ModelSettings, SpectrumMetaData
@@ -520,7 +520,7 @@ class FOOOF():
             Whether to print the report in a concise mode, or not.
         """
 
-        print(gen_results_fm_str(self, concise))
+        print(gen_model_results_str(self, concise))
 
 
     @staticmethod
@@ -629,22 +629,22 @@ class FOOOF():
             for key in OBJ_DESC['results']})
 
 
-    @copy_doc_func_to_method(plot_fm)
+    @copy_doc_func_to_method(plot_model)
     def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,
              add_legend=True, save_fig=False, file_name=None, file_path=None,
              ax=None, data_kwargs=None, model_kwargs=None,
              aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
 
-        plot_fm(self, plot_peaks=plot_peaks, plot_aperiodic=plot_aperiodic, plt_log=plt_log,
-                add_legend=add_legend, save_fig=save_fig, file_name=file_name,
-                file_path=file_path, ax=ax, data_kwargs=data_kwargs, model_kwargs=model_kwargs,
-                aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs, **plot_kwargs)
+        plot_model(self, plot_peaks=plot_peaks, plot_aperiodic=plot_aperiodic, plt_log=plt_log,
+                   add_legend=add_legend, save_fig=save_fig, file_name=file_name,
+                   file_path=file_path, ax=ax, data_kwargs=data_kwargs, model_kwargs=model_kwargs,
+                   aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs, **plot_kwargs)
 
 
-    @copy_doc_func_to_method(save_report_fm)
+    @copy_doc_func_to_method(save_model_report)
     def save_report(self, file_name, file_path=None, plt_log=False):
 
-        save_report_fm(self, file_name, file_path, plt_log)
+        save_model_report(self, file_name, file_path, plt_log)
 
 
     @copy_doc_func_to_method(save_model)

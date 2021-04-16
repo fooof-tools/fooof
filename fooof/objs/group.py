@@ -11,13 +11,13 @@ from multiprocessing import Pool, cpu_count
 import numpy as np
 
 from fooof.objs import FOOOF
-from fooof.plts.fg import plot_fg
+from fooof.plts.group import plot_group
 from fooof.core.items import OBJ_DESC
 from fooof.core.info import get_indices
 from fooof.core.utils import check_inds
 from fooof.core.errors import NoModelError
-from fooof.core.reports import save_report_fg
-from fooof.core.strings import gen_results_fg_str
+from fooof.core.reports import save_group_report
+from fooof.core.strings import gen_group_results_str
 from fooof.core.io import save_group, load_jsonlines
 from fooof.core.modutils import copy_doc_func_to_method, safe_import
 
@@ -143,14 +143,14 @@ class FOOOFGroup(FOOOF):
     def n_peaks_(self):
         """How many peaks were fit for each model."""
 
-        return [f_res.peak_params.shape[0] for f_res in self] if self.has_model else None
+        return [res.peak_params.shape[0] for res in self] if self.has_model else None
 
 
     @property
     def n_null_(self):
         """How many model fits are null."""
 
-        return sum([1 for f_res in self.group_results if np.isnan(f_res.aperiodic_params[0])]) \
+        return sum([1 for res in self.group_results if np.isnan(res.aperiodic_params[0])]) \
             if self.has_model else None
 
 
@@ -158,8 +158,8 @@ class FOOOFGroup(FOOOF):
     def null_inds_(self):
         """The indices for model fits that are null."""
 
-        return [ind for ind, f_res in enumerate(self.group_results) \
-            if np.isnan(f_res.aperiodic_params[0])] \
+        return [ind for ind, res in enumerate(self.group_results) \
+            if np.isnan(res.aperiodic_params[0])] \
             if self.has_model else None
 
 
@@ -294,7 +294,7 @@ class FOOOFGroup(FOOOF):
             self._reset_group_results()
             n_jobs = cpu_count() if n_jobs == -1 else n_jobs
             with Pool(processes=n_jobs) as pool:
-                self.group_results = list(_progress(pool.imap(partial(_par_fit, fg=self),
+                self.group_results = list(_progress(pool.imap(partial(_par_fit, group=self),
                                                               self.power_spectra),
                                                     progress, len(self.power_spectra)))
 
@@ -317,9 +317,9 @@ class FOOOFGroup(FOOOF):
         """
 
         for ind in check_inds(inds):
-            fm = self.get_model(ind)
-            fm._reset_data_results(clear_results=True)
-            self.group_results[ind] = fm.get_results()
+            model = self.get_model(ind)
+            model._reset_data_results(clear_results=True)
+            self.group_results[ind] = model.get_results()
 
 
     def get_results(self):
@@ -394,16 +394,16 @@ class FOOOFGroup(FOOOF):
         return out
 
 
-    @copy_doc_func_to_method(plot_fg)
+    @copy_doc_func_to_method(plot_group)
     def plot(self, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
 
-        plot_fg(self, save_fig=save_fig, file_name=file_name, file_path=file_path, **plot_kwargs)
+        plot_group(self, save_fig=save_fig, file_name=file_name, file_path=file_path, **plot_kwargs)
 
 
-    @copy_doc_func_to_method(save_report_fg)
+    @copy_doc_func_to_method(save_group_report)
     def save_report(self, file_name, file_path=None):
 
-        save_report_fg(self, file_name, file_path)
+        save_group_report(self, file_name, file_path)
 
 
     @copy_doc_func_to_method(save_group)
@@ -469,28 +469,28 @@ class FOOOFGroup(FOOOF):
 
         Returns
         -------
-        fm : FOOOF
+        model : FOOOF
             The FitResults data loaded into a model object.
         """
 
         # Initialize a model object, with same settings & check data mode as current object
-        fm = FOOOF(*self.get_settings(), verbose=self.verbose)
-        fm.set_check_data_mode(self._check_data)
+        model = FOOOF(*self.get_settings(), verbose=self.verbose)
+        model.set_check_data_mode(self._check_data)
 
         # Add data for specified single power spectrum, if available
         #   The power spectrum is inverted back to linear, as it is re-logged when added to object
         if self.has_data:
-            fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
+            model.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
         # If no power spectrum data available, copy over data information & regenerate freqs
         else:
-            fm.add_meta_data(self.get_meta_data())
+            model.add_meta_data(self.get_meta_data())
 
         # Add results for specified power spectrum, regenerating full fit if requested
-        fm.add_results(self.group_results[ind])
+        model.add_results(self.group_results[ind])
         if regenerate:
-            fm._regenerate_model()
+            model._regenerate_model()
 
-        return fm
+        return model
 
 
     def get_group(self, inds):
@@ -504,7 +504,7 @@ class FOOOFGroup(FOOOF):
 
         Returns
         -------
-        fg : FOOOFGroup
+        group : FOOOFGroup
             The requested selection of results data loaded into a new group model object.
         """
 
@@ -512,20 +512,20 @@ class FOOOFGroup(FOOOF):
         inds = check_inds(inds)
 
         # Initialize a new model object, with same settings as current object
-        fg = FOOOFGroup(*self.get_settings(), verbose=self.verbose)
+        group = FOOOFGroup(*self.get_settings(), verbose=self.verbose)
 
         # Add data for specified power spectra, if available
         #   Power spectra are inverted back to linear, as they are re-logged when added to object
         if self.has_data:
-            fg.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]))
+            group.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]))
         # If no power spectrum data available, copy over data information & regenerate freqs
         else:
-            fg.add_meta_data(self.get_meta_data())
+            group.add_meta_data(self.get_meta_data())
 
         # Add results for specified power spectra
-        fg.group_results = [self.group_results[ind] for ind in inds]
+        group.group_results = [self.group_results[ind] for ind in inds]
 
-        return fg
+        return group
 
 
     def print_results(self, concise=False):
@@ -537,7 +537,7 @@ class FOOOFGroup(FOOOF):
             Whether to print the report in a concise mode, or not.
         """
 
-        print(gen_results_fg_str(self, concise))
+        print(gen_group_results_str(self, concise))
 
 
     def _fit(self, *args, **kwargs):
@@ -562,12 +562,12 @@ class FOOOFGroup(FOOOF):
 ###################################################################################################
 ###################################################################################################
 
-def _par_fit(power_spectrum, fg):
+def _par_fit(power_spectrum, group):
     """Helper function for running in parallel."""
 
-    fg._fit(power_spectrum=power_spectrum)
+    group._fit(power_spectrum=power_spectrum)
 
-    return fg._get_results()
+    return group._get_results()
 
 
 def _progress(iterable, progress, n_to_run):

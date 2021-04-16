@@ -17,18 +17,18 @@ def load_model(file_name, file_path=None, regenerate=True):
 
     Returns
     -------
-    fm : FOOOF
+    model : FOOOF
         Object with the loaded data.
     """
 
     # Initialize a model object (imported locally to avoid circular imports)
     from fooof.objs import FOOOF
-    fm = FOOOF()
+    model = FOOOF()
 
     # Load data into object
-    fm.load(file_name, file_path, regenerate)
+    model.load(file_name, file_path, regenerate)
 
-    return fm
+    return model
 
 
 def load_group(file_name, file_path=None):
@@ -43,15 +43,15 @@ def load_group(file_name, file_path=None):
 
     Returns
     -------
-    fg : FOOOFGroup
+    group : FOOOFGroup
         Object with the loaded data.
     """
 
     # Initialize a group object (imported locally to avoid circular imports)
     from fooof.objs import FOOOFGroup
-    fg = FOOOFGroup()
+    group = FOOOFGroup()
 
     # Load data into object
-    fg.load(file_name, file_path)
+    group.load(file_name, file_path)
 
-    return fg
+    return group

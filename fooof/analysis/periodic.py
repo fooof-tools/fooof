@@ -7,13 +7,13 @@ from fooof.core.items import PEAK_INDS
 ###################################################################################################
 ###################################################################################################
 
-def get_band_peak_fm(fm, band, select_highest=True, threshold=None, thresh_param='PW',
-                     attribute='peak_params',):
+def get_band_peak(model, band, select_highest=True, threshold=None,
+                     thresh_param='PW', attribute='peak_params',):
     """Extract peaks from a band of interest from a model object.
 
     Parameters
     ----------
-    fm : FOOOF
+    model : FOOOF
         Object to extract peak data from.
     band : tuple of (float, float)
         Frequency range for the band of interest.
@@ -35,25 +35,25 @@ def get_band_peak_fm(fm, band, select_highest=True, threshold=None, thresh_param
 
     Examples
     --------
-    Select an alpha peak from an already fit model object 'fm', selecting the highest power alpha:
+    Select an alpha peak from a fit model object 'model', selecting the highest power alpha:
 
-    >>> alpha = get_band_peak_fm(fm, [7, 14], select_highest=True)  # doctest:+SKIP
+    >>> alpha = get_band_peak(model, [7, 14], select_highest=True)  # doctest:+SKIP
 
-    Select beta peaks from a model object 'fm', extracting all peaks in the range:
+    Select beta peaks from a model object 'model', extracting all peaks in the range:
 
-    >>> betas = get_band_peak_fm(fm, [13, 30], select_highest=False)  # doctest:+SKIP
+    >>> betas = get_band_peak(model, [13, 30], select_highest=False)  # doctest:+SKIP
     """
 
-    return get_band_peak(getattr(fm, attribute + '_'), band,
-                         select_highest, threshold, thresh_param)
+    return get_band_peak_arr(getattr(model, attribute + '_'), band,
+                             select_highest, threshold, thresh_param)
 
 
-def get_band_peak_fg(fg, band, threshold=None, thresh_param='PW', attribute='peak_params'):
+def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribute='peak_params'):
     """Extract peaks from a band of interest from a group model object.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    group : FOOOFGroup
         Object to extract peak data from.
     band : tuple of (float, float)
         Frequency range for the band of interest.
@@ -83,25 +83,25 @@ def get_band_peak_fg(fg, band, threshold=None, thresh_param='PW', attribute='pea
     you can do something like:
 
     >>> peaks = np.empty((0, 3))
-    >>> for f_res in fg:  # doctest:+SKIP
-    ...     peaks = np.vstack((peaks, get_band_peak(f_res.peak_params, band, select_highest=False)))
+    >>> for res in group:  # doctest:+SKIP
+    ...     peaks = np.vstack((peaks, get_band_peak(res.peak_params, band, select_highest=False)))
 
     Examples
     --------
-    Extract alpha peaks from a group model object 'fg' that already has model results:
+    Extract alpha peaks from a group model object 'group' that already has model results:
 
-    >>> alphas = get_band_peak_fg(fg, [7, 14])  # doctest:+SKIP
+    >>> alphas = get_band_peak_group(group, [7, 14])  # doctest:+SKIP
 
-    Extract peaks from a group model object 'fg', selecting those above a power threshold:
+    Extract peaks from a group model object 'group', selecting those above a power threshold:
 
-    >>> betas = get_band_peak_fg(fg, [13, 30], threshold=0.1)  # doctest:+SKIP
+    >>> betas = get_band_peak_group(group, [13, 30], threshold=0.1)  # doctest:+SKIP
     """
 
-    return get_band_peak_group(fg.get_params(attribute), band, len(fg),
-                               threshold, thresh_param)
+    return get_band_peak_group_arr(group.get_params(attribute), band, len(group),
+                                   threshold, thresh_param)
 
 
-def get_band_peak_group(peak_params, band, n_fits, threshold=None, thresh_param='PW'):
+def get_band_peak_group_arr(peak_params, band, n_fits, threshold=None, thresh_param='PW'):
     """Extract peaks within a given band of interest, from peaks from a group fit.
 
     Parameters
@@ -136,15 +136,15 @@ def get_band_peak_group(peak_params, band, n_fits, threshold=None, thresh_param=
     # Extracts an array per model fit, and extracts band peaks from it
     band_peaks = np.zeros(shape=[n_fits, 3])
     for ind in range(n_fits):
-        band_peaks[ind, :] = get_band_peak(peak_params[tuple([peak_params[:, -1] == ind])][:, 0:3],
-                                           band=band, select_highest=True,
-                                           threshold=threshold,
-                                           thresh_param=thresh_param)
+        band_peaks[ind, :] = get_band_peak_arr(peak_params[tuple([peak_params[:, -1] == ind])][:, 0:3],
+                                               band=band, select_highest=True,
+                                               threshold=threshold,
+                                               thresh_param=thresh_param)
 
     return band_peaks
 
 
-def get_band_peak(peak_params, band, select_highest=True, threshold=None, thresh_param='PW'):
+def get_band_peak_arr(peak_params, band, select_highest=True, threshold=None, thresh_param='PW'):
     """Extract peaks within a given band of interest.
 
     Parameters

@@ -13,13 +13,13 @@ from fooof.sim.gen import *
 def test_gen_freqs():
 
     f_range = [3, 40]
-    f_res = 0.5
+    fs = 0.5
 
-    freqs = gen_freqs(f_range, f_res)
+    freqs = gen_freqs(f_range, fs)
 
     assert freqs.min() == f_range[0]
     assert freqs.max() == f_range[1]
-    assert np.mean(np.diff(freqs)) == f_res
+    assert np.mean(np.diff(freqs)) == fs
 
 def test_gen_power_spectrum():
 

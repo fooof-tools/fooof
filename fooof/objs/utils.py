@@ -5,7 +5,7 @@ import numpy as np
 from fooof.sim import gen_freqs
 from fooof.data import FitResults
 from fooof.objs import FOOOF, FOOOFGroup
-from fooof.analysis.periodic import get_band_peak_fg
+from fooof.analysis.periodic import get_band_peak_group
 from fooof.core.errors import NoModelError, IncompatibleSettingsError
 
 ###################################################################################################
@@ -38,12 +38,12 @@ def compare_model_objs(model_objs, aspect):
     return consistent
 
 
-def average_group(fg, bands, avg_method='mean', regenerate=True):
+def average_group(group, bands, avg_method='mean', regenerate=True):
     """Average across model fits in a group model object.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    group : FOOOFGroup
         Object with model fit results to average across.
     bands : Bands
         Bands object that defines the frequency bands to collapse peaks across.
@@ -54,7 +54,7 @@ def average_group(fg, bands, avg_method='mean', regenerate=True):
 
     Returns
     -------
-    fm : FOOOF
+    model : FOOOF
         Object containing the average model results.
 
     Raises
@@ -67,7 +67,7 @@ def average_group(fg, bands, avg_method='mean', regenerate=True):
 
     if avg_method not in ['mean', 'median']:
         raise ValueError("Requested average method not understood.")
-    if not fg.has_model:
+    if not group.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     if avg_method == 'mean':
@@ -76,7 +76,7 @@ def average_group(fg, bands, avg_method='mean', regenerate=True):
         avg_func = np.nanmedian
 
     # Aperiodic parameters: extract & average
-    ap_params = avg_func(fg.get_params('aperiodic_params'), 0)
+    ap_params = avg_func(group.get_params('aperiodic_params'), 0)
 
     # Periodic parameters: extract & average
     peak_params = []
@@ -84,8 +84,8 @@ def average_group(fg, bands, avg_method='mean', regenerate=True):
 
     for band_def in bands.definitions:
 
-        peaks = get_band_peak_fg(fg, band_def, attribute='peak_params')
-        gauss = get_band_peak_fg(fg, band_def, attribute='gaussian_params')
+        peaks = get_band_peak_group(group, band_def, attribute='peak_params')
+        gauss = get_band_peak_group(group, band_def, attribute='gaussian_params')
 
         # Check if there are any extracted peaks - if not, don't add
         #   Note that we only check peaks, but gauss should be the same
@@ -97,23 +97,23 @@ def average_group(fg, bands, avg_method='mean', regenerate=True):
     gauss_params = np.array(gauss_params)
 
     # Goodness of fit measures: extract & average
-    r2 = avg_func(fg.get_params('r_squared'))
-    error = avg_func(fg.get_params('error'))
+    r2 = avg_func(group.get_params('r_squared'))
+    error = avg_func(group.get_params('error'))
 
     # Collect all results together, to be added to the model object
     results = FitResults(ap_params, peak_params, r2, error, gauss_params)
 
     # Create the new model object, with settings, data info & results
-    fm = FOOOF()
-    fm.add_settings(fg.get_settings())
-    fm.add_meta_data(fg.get_meta_data())
-    fm.add_results(results)
+    model = FOOOF()
+    model.add_settings(group.get_settings())
+    model.add_meta_data(group.get_meta_data())
+    model.add_results(results)
 
     # Generate the average model from the parameters
     if regenerate:
-        fm._regenerate_model()
+        model._regenerate_model()
 
-    return fm
+    return model
 
 
 def combine_model_objs(model_objs):
@@ -126,7 +126,7 @@ def combine_model_objs(model_objs):
 
     Returns
     -------
-    fg : FOOOFGroup
+    group : FOOOFGroup
         Resultant object from combining inputs.
 
     Raises
@@ -138,11 +138,11 @@ def combine_model_objs(model_objs):
     --------
     Combine model objects together (where `fm1`, `fm2` & `fm3` are assumed to be defined and fit):
 
-    >>> fg = combine_model_objs([fm1, fm2, fm3])  # doctest:+SKIP
+    >>> group = combine_model_objs([fm1, fm2, fm3])  # doctest:+SKIP
 
     Combine group model objects together (where `fg1` & `fg2` are assumed to be defined and fit):
 
-    >>> fg = combine_model_objs([fg1, fg2])  # doctest:+SKIP
+    >>> group = combine_model_objs([fg1, fg2])  # doctest:+SKIP
     """
 
     # Compare settings
@@ -151,7 +151,7 @@ def combine_model_objs(model_objs):
                                         "or meta data, and so cannot be combined.")
 
     # Initialize group model object, with settings derived from input objects
-    fg = FOOOFGroup(*model_objs[0].get_settings(), verbose=model_objs[0].verbose)
+    group = FOOOFGroup(*model_objs[0].get_settings(), verbose=model_objs[0].verbose)
 
     # Use a temporary store to collect spectra, as we'll only add it if it is consistently present
     #   We check how many frequencies by accessing meta data, in case of no frequency vector
@@ -164,35 +164,35 @@ def combine_model_objs(model_objs):
 
         # Add group object
         if isinstance(m_obj, FOOOFGroup):
-            fg.group_results.extend(m_obj.group_results)
+            group.group_results.extend(m_obj.group_results)
             if m_obj.power_spectra is not None:
                 temp_power_spectra = np.vstack([temp_power_spectra, m_obj.power_spectra])
 
         # Add model object
         else:
-            fg.group_results.append(m_obj.get_results())
+            group.group_results.append(m_obj.get_results())
             if m_obj.power_spectrum is not None:
                 temp_power_spectra = np.vstack([temp_power_spectra, m_obj.power_spectrum])
 
     # If the number of collected power spectra is consistent, then add them to object
-    if len(fg) == temp_power_spectra.shape[0]:
-        fg.power_spectra = temp_power_spectra
+    if len(group) == temp_power_spectra.shape[0]:
+        group.power_spectra = temp_power_spectra
 
     # Set the check data mode, as True if any of the inputs have it on, False otherwise
-    fg.set_check_data_mode(any([getattr(m_obj, '_check_data') for m_obj in model_objs]))
+    group.set_check_data_mode(any([getattr(m_obj, '_check_data') for m_obj in model_objs]))
 
     # Add data information information
-    fg.add_meta_data(model_objs[0].get_meta_data())
+    group.add_meta_data(model_objs[0].get_meta_data())
 
-    return fg
+    return group
 
 
-def fit_models_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
+def fit_models_3d(group, freqs, power_spectra, freq_range=None, n_jobs=1):
     """Fit power spectrum models across a 3d array of power spectra.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    group : FOOOFGroup
         Object to fit with, initialized with desired settings.
     freqs : 1d array
         Frequency values for the power spectra, in linear space.
@@ -206,7 +206,7 @@ def fit_models_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
 
     Returns
     -------
-    fgs : list of FOOOFGroup
+    all_models : list of FOOOFGroup
         Collected model results after fitting across power spectra, length of n_conditions.
 
     Examples
@@ -214,18 +214,18 @@ def fit_models_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
     Fit a 3d array of power spectra, assuming `freqs` and `spectra` are already defined:
 
     >>> from fooof import FOOOFGroup
-    >>> fg = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
-    >>> fgs = fit_models_3d(fg, freqs, power_spectra, freq_range=[3, 30])  # doctest:+SKIP
+    >>> group = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
+    >>> models = fit_models_3d(group, freqs, power_spectra, freq_range=[3, 30])  # doctest:+SKIP
     """
 
     # Reshape 3d data to 2d and fit, in order to fit with a single group model object
     shape = np.shape(power_spectra)
     powers_2d = np.reshape(power_spectra, (shape[0] * shape[1], shape[2]))
 
-    fg.fit(freqs, powers_2d, freq_range, n_jobs)
+    group.fit(freqs, powers_2d, freq_range, n_jobs)
 
     # Reorganize 2d results into a list of model group objects, to reflect original shape
-    fgs = [fg.get_group(range(dim_a * shape[1], (dim_a + 1) * shape[1])) \
+    all_models = [group.get_group(range(dim_a * shape[1], (dim_a + 1) * shape[1])) \
         for dim_a in range(shape[0])]
 
-    return fgs
+    return all_models

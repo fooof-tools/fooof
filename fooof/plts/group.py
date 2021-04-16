@@ -20,12 +20,12 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 
 @savefig
 @check_dependency(plt, 'matplotlib')
-def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
-    """Plot a figure with subplots visualizing the parameters from a FOOOFGroup object.
+def plot_group(group, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
+    """Plot a figure with subplots visualizing the parameters from a group model object.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    group : FOOOFGroup
         Object containing results from fitting a group of power spectra.
     save_fig : bool, optional, default: False
         Whether to save out a copy of the plot.
@@ -40,7 +40,7 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
         If the model object does not have model fit data available to plot.
     """
 
-    if not fg.has_model:
+    if not group.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     fig = plt.figure(figsize=PLT_FIGSIZES['group'])
@@ -52,26 +52,26 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
 
     # Aperiodic parameters plot
     ax0 = plt.subplot(gs[0, 0])
-    plot_fg_ap(fg, ax0, **scatter_kwargs)
+    plot_group_aperiodic(group, ax0, **scatter_kwargs)
 
     # Goodness of fit plot
     ax1 = plt.subplot(gs[0, 1])
-    plot_fg_gf(fg, ax1, **scatter_kwargs)
+    plot_group_goodness(group, ax1, **scatter_kwargs)
 
     # Center frequencies plot
     ax2 = plt.subplot(gs[1, :])
-    plot_fg_peak_cens(fg, ax2, **plot_kwargs)
+    plot_group_peak_frequencies(group, ax2, **plot_kwargs)
 
 
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_fg_ap(fg, ax=None, **plot_kwargs):
+def plot_group_aperiodic(group, ax=None, **plot_kwargs):
     """Plot aperiodic fit parameters, in a scatter plot.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    group : FOOOFGroup
         Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -79,24 +79,24 @@ def plot_fg_ap(fg, ax=None, **plot_kwargs):
         Keyword arguments to pass into the ``style_plot``.
     """
 
-    if fg.aperiodic_mode == 'knee':
-        plot_scatter_2(fg.get_params('aperiodic_params', 'exponent'), 'Knee',
-                       fg.get_params('aperiodic_params', 'knee'), 'Exponent',
+    if group.aperiodic_mode == 'knee':
+        plot_scatter_2(group.get_params('aperiodic_params', 'exponent'), 'Knee',
+                       group.get_params('aperiodic_params', 'knee'), 'Exponent',
                        'Aperiodic Fit', ax=ax)
     else:
-        plot_scatter_1(fg.get_params('aperiodic_params', 'exponent'), 'Exponent',
+        plot_scatter_1(group.get_params('aperiodic_params', 'exponent'), 'Exponent',
                        'Aperiodic Fit', ax=ax)
 
 
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_fg_gf(fg, ax=None, **plot_kwargs):
+def plot_group_goodness(group, ax=None, **plot_kwargs):
     """Plot goodness of fit results, in a scatter plot.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    group : FOOOFGroup
         Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -104,19 +104,19 @@ def plot_fg_gf(fg, ax=None, **plot_kwargs):
         Keyword arguments to pass into the ``style_plot``.
     """
 
-    plot_scatter_2(fg.get_params('error'), 'Error',
-                   fg.get_params('r_squared'), 'R^2', 'Goodness of Fit', ax=ax)
+    plot_scatter_2(group.get_params('error'), 'Error',
+                   group.get_params('r_squared'), 'R^2', 'Goodness of Fit', ax=ax)
 
 
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_fg_peak_cens(fg, ax=None, **plot_kwargs):
+def plot_group_peak_frequencies(group, ax=None, **plot_kwargs):
     """Plot peak center frequencies, in a histogram.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    group : FOOOFGroup
         Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -124,5 +124,5 @@ def plot_fg_peak_cens(fg, ax=None, **plot_kwargs):
         Keyword arguments to pass into the ``style_plot``.
     """
 
-    plot_hist(fg.get_params('peak_params', 0)[:, 0], 'Center Frequency',
-              'Peaks - Center Frequencies', x_lims=fg.freq_range, ax=ax)
+    plot_hist(group.get_params('peak_params', 0)[:, 0], 'Center Frequency',
+              'Peaks - Center Frequencies', x_lims=group.freq_range, ax=ax)

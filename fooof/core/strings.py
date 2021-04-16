@@ -261,12 +261,12 @@ def gen_methods_text_str(model_obj=None):
     return methods_str
 
 
-def gen_results_fm_str(fm, concise=False):
+def gen_model_results_str(model, concise=False):
     """Generate a string representation of model fit results.
 
     Parameters
     ----------
-    fm : FOOOF
+    model : FOOOF
         Object to access results from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
@@ -278,7 +278,7 @@ def gen_results_fm_str(fm, concise=False):
     """
 
     # Returns a null report if no results are available
-    if np.all(np.isnan(fm.aperiodic_params_)):
+    if np.all(np.isnan(model.aperiodic_params_)):
         return _no_model_str(concise)
 
     # Create the formatted strings for printing
@@ -292,27 +292,28 @@ def gen_results_fm_str(fm, concise=False):
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(fm.freq_range[0])), int(np.ceil(fm.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(fm.freq_res),
+            int(np.floor(model.freq_range[0])), int(np.ceil(model.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(model.freq_res),
         '',
 
         # Aperiodic parameters
-        ('Aperiodic Parameters (offset, ' + ('knee, ' if fm.aperiodic_mode == 'knee' else '') + \
+        ('Aperiodic Parameters (offset, ' + \
+         ('knee, ' if model.aperiodic_mode == 'knee' else '') + \
          'exponent): '),
-        ', '.join(['{:2.4f}'] * len(fm.aperiodic_params_)).format(*fm.aperiodic_params_),
+        ', '.join(['{:2.4f}'] * len(model.aperiodic_params_)).format(*model.aperiodic_params_),
         '',
 
         # Peak parameters
         '{} peaks were found:'.format(
-            len(fm.peak_params_)),
+            len(model.peak_params_)),
         *['CF: {:6.2f}, PW: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]) \
-          for op in fm.peak_params_],
+          for op in model.peak_params_],
         '',
 
         # Goodness if fit
         'Goodness of fit metrics:',
-        'R^2 of model fit is {:5.4f}'.format(fm.r_squared_),
-        'Error of the fit is {:5.4f}'.format(fm.error_),
+        'R^2 of model fit is {:5.4f}'.format(model.r_squared_),
+        'Error of the fit is {:5.4f}'.format(model.error_),
         '',
 
         # Footer
@@ -324,12 +325,12 @@ def gen_results_fm_str(fm, concise=False):
     return output
 
 
-def gen_results_fg_str(fg, concise=False):
+def gen_group_results_str(group, concise=False):
     """Generate a string representation of group fit results.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    group : FOOOFGroup
         Object to access results from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
@@ -345,16 +346,16 @@ def gen_results_fg_str(fg, concise=False):
         If no model fit data is available to report.
     """
 
-    if not fg.has_model:
+    if not group.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     # Extract all the relevant data for printing
-    n_peaks = len(fg.get_params('peak_params'))
-    r2s = fg.get_params('r_squared')
-    errors = fg.get_params('error')
-    exps = fg.get_params('aperiodic_params', 'exponent')
-    kns = fg.get_params('aperiodic_params', 'knee') \
-        if fg.aperiodic_mode == 'knee' else np.array([0])
+    n_peaks = len(group.get_params('peak_params'))
+    r2s = group.get_params('r_squared')
+    errors = group.get_params('error')
+    exps = group.get_params('aperiodic_params', 'exponent')
+    kns = group.get_params('aperiodic_params', 'knee') \
+        if group.aperiodic_mode == 'knee' else np.array([0])
 
     # Check if there are any power spectra that failed to fit
     n_failed = sum(np.isnan(exps))
@@ -368,24 +369,24 @@ def gen_results_fg_str(fg, concise=False):
         '',
 
         # Group information
-        'Number of power spectra in the Group: {}'.format(len(fg.group_results)),
+        'Number of power spectra in the Group: {}'.format(len(group.group_results)),
         *[el for el in ['{} power spectra failed to fit'.format(n_failed)] if n_failed],
         '',
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(fg.freq_range[0])), int(np.ceil(fg.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(fg.freq_res),
+            int(np.floor(group.freq_range[0])), int(np.ceil(group.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(group.freq_res),
         '',
 
         # Aperiodic parameters - knee fit status, and quick exponent description
         'Power spectra were fit {} a knee.'.format(\
-            'with' if fg.aperiodic_mode == 'knee' else 'without'),
+            'with' if group.aperiodic_mode == 'knee' else 'without'),
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
                         .format(np.nanmin(kns), np.nanmax(kns), np.nanmean(kns)),
-                       ] if fg.aperiodic_mode == 'knee'],
+                       ] if group.aperiodic_mode == 'knee'],
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(np.nanmin(exps), np.nanmax(exps), np.nanmean(exps)),
         '',
@@ -443,9 +444,9 @@ def gen_issue_str(concise=False):
         'If model fitting gives you any weird / bad fits, please let us know!',
         'To do so, you can send us a fit report, and an associated data file, ',
         '',
-        'With a model object (fm), after fitting, run the following commands:',
-        "fm.create_report('bad_fit_report')",
-        "fm.save('bad_fit_data', True, True, True)",
+        'With a model object (model), after fitting, run the following commands:',
+        "model.create_report('bad_fit_report')",
+        "model.save('bad_fit_data', True, True, True)",
         '',
         'You can attach the generated files to a Github issue.',
         '',
