@@ -2,7 +2,7 @@
 
 from py.test import raises
 
-from fooof import FOOOFGroup
+from fooof import PSDGroup
 from fooof.core.errors import NoModelError
 
 from fooof.tests.tutils import plot_test
@@ -20,7 +20,7 @@ def test_plot_group(tfg, skip_if_no_mpl):
                file_name='test_plot_group.png')
 
     # Test error if no data available to plot
-    tfg = FOOOFGroup()
+    tfg = PSDGroup()
     with raises(NoModelError):
         tfg.plot()
 

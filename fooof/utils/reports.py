@@ -11,7 +11,7 @@ def methods_report_info(model_obj=None, concise=False):
 
     Parameters
     ----------
-    model_obj : FOOOF or FOOOFGroup, optional
+    model_obj : FOOOF or PSDGroup, optional
         An object with setting information available.
         If provided, is used to collect and print information to be reported.
     concise : bool, optional, default: False
@@ -34,7 +34,7 @@ def methods_report_text(model_obj=None):
 
     Parameters
     ----------
-    model_obj : FOOOF or FOOOFGroup, optional
+    model_obj : FOOOF or PSDGroup, optional
         An object with setting information available.
         If None, the text is returned as a template, without values.
 

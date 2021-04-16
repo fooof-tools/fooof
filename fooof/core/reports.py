@@ -72,7 +72,7 @@ def save_group_report(group, file_name, file_path=None):
 
     Parameters
     ----------
-    group : FOOOFGroup
+    group : PSDGroup
         Object with results from fitting a group of power spectra.
     file_name : str
         Name to give the saved out file.

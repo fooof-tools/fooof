@@ -4,7 +4,7 @@ import numpy as np
 
 from fooof.sim import gen_freqs
 from fooof.data import FitResults
-from fooof.objs import FOOOF, FOOOFGroup
+from fooof.objs import FOOOF, PSDGroup
 from fooof.analysis.periodic import get_band_peak_group
 from fooof.core.errors import NoModelError, IncompatibleSettingsError
 
@@ -16,7 +16,7 @@ def compare_model_objs(model_objs, aspect):
 
     Parameters
     ----------
-    model_objs : list of FOOOF and/or FOOOFGroup
+    model_objs : list of FOOOF and/or PSDGroup
         Objects whose attributes are to be compared.
     aspect : {'settings', 'meta_data'}
         Which set of attributes to compare the objects across.
@@ -43,7 +43,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
 
     Parameters
     ----------
-    group : FOOOFGroup
+    group : PSDGroup
         Object with model fit results to average across.
     bands : Bands
         Bands object that defines the frequency bands to collapse peaks across.
@@ -121,12 +121,12 @@ def combine_model_objs(model_objs):
 
     Parameters
     ----------
-    model_objs : list of FOOOF or FOOOFGroup
+    model_objs : list of FOOOF or PSDGroup
         Objects to be concatenated into a group model object.
 
     Returns
     -------
-    group : FOOOFGroup
+    group : PSDGroup
         Resultant object from combining inputs.
 
     Raises
@@ -151,7 +151,7 @@ def combine_model_objs(model_objs):
                                         "or meta data, and so cannot be combined.")
 
     # Initialize group model object, with settings derived from input objects
-    group = FOOOFGroup(*model_objs[0].get_settings(), verbose=model_objs[0].verbose)
+    group = PSDGroup(*model_objs[0].get_settings(), verbose=model_objs[0].verbose)
 
     # Use a temporary store to collect spectra, as we'll only add it if it is consistently present
     #   We check how many frequencies by accessing meta data, in case of no frequency vector
@@ -163,7 +163,7 @@ def combine_model_objs(model_objs):
     for m_obj in model_objs:
 
         # Add group object
-        if isinstance(m_obj, FOOOFGroup):
+        if isinstance(m_obj, PSDGroup):
             group.group_results.extend(m_obj.group_results)
             if m_obj.power_spectra is not None:
                 temp_power_spectra = np.vstack([temp_power_spectra, m_obj.power_spectra])
@@ -192,7 +192,7 @@ def fit_models_3d(group, freqs, power_spectra, freq_range=None, n_jobs=1):
 
     Parameters
     ----------
-    group : FOOOFGroup
+    group : PSDGroup
         Object to fit with, initialized with desired settings.
     freqs : 1d array
         Frequency values for the power spectra, in linear space.
@@ -206,15 +206,15 @@ def fit_models_3d(group, freqs, power_spectra, freq_range=None, n_jobs=1):
 
     Returns
     -------
-    all_models : list of FOOOFGroup
+    all_models : list of PSDGroup
         Collected model results after fitting across power spectra, length of n_conditions.
 
     Examples
     --------
     Fit a 3d array of power spectra, assuming `freqs` and `spectra` are already defined:
 
-    >>> from fooof import FOOOFGroup
-    >>> group = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
+    >>> from fooof import PSDGroup
+    >>> group = PSDGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
     >>> models = fit_models_3d(group, freqs, power_spectra, freq_range=[3, 30])  # doctest:+SKIP
     """
 

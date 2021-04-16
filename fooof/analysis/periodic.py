@@ -53,7 +53,7 @@ def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribut
 
     Parameters
     ----------
-    group : FOOOFGroup
+    group : PSDGroup
         Object to extract peak data from.
     band : tuple of (float, float)
         Frequency range for the band of interest.

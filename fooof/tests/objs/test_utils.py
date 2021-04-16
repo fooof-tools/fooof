@@ -4,7 +4,7 @@ from py.test import raises
 
 import numpy as np
 
-from fooof import FOOOFGroup
+from fooof import PSDGroup
 from fooof.objs.utils import compare_model_objs
 from fooof.sim import gen_group_power_spectra
 from fooof.core.errors import NoModelError, IncompatibleSettingsError
@@ -41,7 +41,7 @@ def test_average_group(tfg, tbands):
         average_group(tfg, tbands, avg_method='BAD')
 
     # Test no data available error
-    ntfg = FOOOFGroup()
+    ntfg = PSDGroup()
     with raises(NoModelError):
         average_group(ntfg, tbands)
 
@@ -126,7 +126,7 @@ def test_fit_models_3d(tfg):
     ys = np.stack([ys] * n_groups, axis=0)
     spectra_shape = np.shape(ys)
 
-    tfg = FOOOFGroup()
+    tfg = PSDGroup()
     fgs = fit_models_3d(tfg, xs, ys)
 
     assert len(fgs) == n_groups == spectra_shape[0]

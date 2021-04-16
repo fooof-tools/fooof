@@ -3,7 +3,7 @@
 import numpy as np
 
 from fooof.core.items import OBJ_DESC
-from fooof.objs import FOOOF, FOOOFGroup
+from fooof.objs import FOOOF, PSDGroup
 
 from fooof.tests.settings import TEST_DATA_PATH
 
@@ -35,7 +35,7 @@ def test_load_group():
     file_name = 'test_group_all'
     tfg = load_group(file_name, TEST_DATA_PATH)
 
-    assert isinstance(tfg, FOOOFGroup)
+    assert isinstance(tfg, PSDGroup)
 
     # Check that all elements get loaded
     assert len(tfg.group_results) > 0

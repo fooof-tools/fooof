@@ -3,7 +3,7 @@
 from functools import wraps
 
 from fooof.bands import Bands
-from fooof.objs import FOOOF, FOOOFGroup
+from fooof.objs import FOOOF, PSDGroup
 from fooof.core.modutils import safe_import
 from fooof.sim.params import param_sampler
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
@@ -33,7 +33,7 @@ def get_tfg():
     n_spectra = 3
     xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
 
-    tfg = FOOOFGroup(verbose=False)
+    tfg = PSDGroup(verbose=False)
     tfg.fit(xs, ys)
 
     return tfg

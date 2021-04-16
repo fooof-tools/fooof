@@ -26,8 +26,8 @@ def test_group():
 
     # Note: doesn't assert the object itself, which returns false when `group_results` is empty
     #  This is due to the `__len__` used in the group object
-    fg = FOOOFGroup(verbose=False)
-    assert isinstance(fg, FOOOFGroup)
+    fg = PSDGroup(verbose=False)
+    assert isinstance(fg, PSDGroup)
 
 def test_iter(tfg):
     """Check iterating through group object."""
@@ -45,7 +45,7 @@ def test_has_data(tfg):
 
     assert tfg.has_model
 
-    ntfg = FOOOFGroup()
+    ntfg = PSDGroup()
     assert not ntfg.has_data
 
 def test_has_model(tfg):
@@ -53,7 +53,7 @@ def test_has_model(tfg):
 
     assert tfg.has_model
 
-    ntfg = FOOOFGroup()
+    ntfg = PSDGroup()
     assert not ntfg.has_model
 
 def test_n_peaks(tfg):
@@ -79,7 +79,7 @@ def test_fit_nk():
     n_spectra = 2
     xs, ys = gen_group_power_spectra(n_spectra, *default_group_params(), nlvs=0)
 
-    tfg = FOOOFGroup(verbose=False)
+    tfg = PSDGroup(verbose=False)
     tfg.fit(xs, ys)
     out = tfg.get_results()
 
@@ -94,7 +94,7 @@ def test_fit_nk_noise():
     n_spectra = 5
     xs, ys = gen_group_power_spectra(n_spectra, *default_group_params(), nlvs=1.0)
 
-    tfg = FOOOFGroup(max_n_peaks=8, verbose=False)
+    tfg = PSDGroup(max_n_peaks=8, verbose=False)
     tfg.fit(xs, ys)
 
     # No accuracy checking here - just checking that it ran
@@ -109,7 +109,7 @@ def test_fit_knee():
 
     xs, ys = gen_group_power_spectra(n_spectra, [1, 150], ap_params, gaussian_params, nlvs=0)
 
-    tfg = FOOOFGroup(aperiodic_mode='knee', verbose=False)
+    tfg = PSDGroup(aperiodic_mode='knee', verbose=False)
     tfg.fit(xs, ys)
 
     # No accuracy checking here - just checking that it ran
@@ -129,7 +129,7 @@ def test_fg_fail():
     fs, ps = gen_group_power_spectra(10, [3, 6], [1, 1], [10, 1, 1], nlvs=10)
 
     # Use a fg with the max iterations set so low that it will fail to converge
-    ntfg = FOOOFGroup()
+    ntfg = PSDGroup()
     ntfg._maxfev = 5
 
     # Fit models, where some will fail, to see if it completes cleanly
@@ -161,7 +161,7 @@ def test_drop():
     n_spectra = 3
     xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
 
-    tfg = FOOOFGroup(verbose=False)
+    tfg = PSDGroup(verbose=False)
 
     # Test dropping one ind
     tfg.fit(xs, ys)
@@ -193,7 +193,7 @@ def test_fit_par():
     n_spectra = 2
     xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
 
-    tfg = FOOOFGroup(verbose=False)
+    tfg = PSDGroup(verbose=False)
     tfg.fit(xs, ys, n_jobs=2)
     out = tfg.get_results()
 
@@ -241,7 +241,7 @@ def test_load():
     file_name_dat = 'test_group_dat'
 
     # Test loading just results
-    tfg = FOOOFGroup(verbose=False)
+    tfg = PSDGroup(verbose=False)
     tfg.load(file_name_res, TEST_DATA_PATH)
     assert len(tfg.group_results) > 0
     # Test that settings and data are None
@@ -252,7 +252,7 @@ def test_load():
     assert tfg.power_spectra is None
 
     # Test loading just settings
-    tfg = FOOOFGroup(verbose=False)
+    tfg = PSDGroup(verbose=False)
     tfg.load(file_name_set, TEST_DATA_PATH)
     for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is not None
@@ -262,7 +262,7 @@ def test_load():
     assert tfg.power_spectra is None
 
     # Test loading just data
-    tfg = FOOOFGroup(verbose=False)
+    tfg = PSDGroup(verbose=False)
     tfg.load(file_name_dat, TEST_DATA_PATH)
     assert tfg.power_spectra is not None
     # Test that settings and results are None
@@ -272,7 +272,7 @@ def test_load():
         assert np.all(np.isnan(getattr(tfg, result)))
 
     # Test loading all elements
-    tfg = FOOOFGroup(verbose=False)
+    tfg = PSDGroup(verbose=False)
     file_name_all = 'test_group_all'
     tfg.load(file_name_all, TEST_DATA_PATH)
     assert len(tfg.group_results) > 0
@@ -288,7 +288,7 @@ def test_report(skip_if_no_mpl):
     n_spectra = 2
     xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
 
-    tfg = FOOOFGroup(verbose=False)
+    tfg = PSDGroup(verbose=False)
     tfg.report(xs, ys)
 
     assert tfg
@@ -325,12 +325,12 @@ def test_get_group(tfg):
     # Check with list index
     inds1 = [1, 2]
     nfg1 = tfg.get_group(inds1)
-    assert isinstance(nfg1, FOOOFGroup)
+    assert isinstance(nfg1, PSDGroup)
 
     # Check with range index
     inds2 = range(0, 2)
     nfg2 = tfg.get_group(inds2)
-    assert isinstance(nfg2, FOOOFGroup)
+    assert isinstance(nfg2, PSDGroup)
 
     # Check that settings are copied over properly
     for setting in OBJ_DESC['settings']:

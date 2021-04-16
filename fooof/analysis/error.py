@@ -56,7 +56,7 @@ def compute_pointwise_error_group(group, plot_errors=True, return_errors=False, 
 
     Parameters
     ----------
-    group : FOOOFGroup
+    group : PSDGroup
         Object containing the data and models.
     plot_errors : bool, optional, default: True
         Whether to plot the errors across frequencies.

@@ -24,7 +24,7 @@ from fooof.core.modutils import copy_doc_func_to_method, safe_import
 ###################################################################################################
 ###################################################################################################
 
-class FOOOFGroup(FOOOF):
+class PSDGroup(FOOOF):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -504,7 +504,7 @@ class FOOOFGroup(FOOOF):
 
         Returns
         -------
-        group : FOOOFGroup
+        group : PSDGroup
             The requested selection of results data loaded into a new group model object.
         """
 
@@ -512,7 +512,7 @@ class FOOOFGroup(FOOOF):
         inds = check_inds(inds)
 
         # Initialize a new model object, with same settings as current object
-        group = FOOOFGroup(*self.get_settings(), verbose=self.verbose)
+        group = PSDGroup(*self.get_settings(), verbose=self.verbose)
 
         # Add data for specified power spectra, if available
         #   Power spectra are inverted back to linear, as they are re-logged when added to object

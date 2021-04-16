@@ -43,13 +43,13 @@ def load_group(file_name, file_path=None):
 
     Returns
     -------
-    group : FOOOFGroup
+    group : PSDGroup
         Object with the loaded data.
     """
 
     # Initialize a group object (imported locally to avoid circular imports)
-    from fooof.objs import FOOOFGroup
-    group = FOOOFGroup()
+    from fooof.objs import PSDGroup
+    group = PSDGroup()
 
     # Load data into object
     group.load(file_name, file_path)
