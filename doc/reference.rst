@@ -54,40 +54,40 @@ In addition, we recommend that reports should include information on:
 Reporting Template & Example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To assist in reporting on using FOOOF, we have created some templates for reporting on spectral parameterization methods. There are also some utilities included in the code to collected the required information. 
+To assist in reporting on using spectral parameterization, we have created some templates for reporting on spectral parameterization methods. There are also some utilities included in the code to collected the required information.
 
 The following box is an example of what a methods report might look like (where all of the *X*'s should be filled in with the relevant information).
 
 .. topic:: Methods Report Template
 
-    The FOOOF algorithm (version *X.X.X*) was used to parameterize neural power spectra. Settings for the
-    algorithm were set as: peak width limits : *XX*; max number of peaks : *XX*; minimum peak height : *XX*;
-    peak threshold : *XX*; and aperiodic mode : *XX*. Power spectra were parameterized across
-    the frequency range *XX* to *XX* Hz.
+    Spectral parameterization, using the specparam Python tool (version *X.X.X*) was used to
+    parameterize neural power spectra. Settings for the algorithm were: peak width limits : *XX*;
+    max number of peaks : *XX*; minimum peak height : *XX*; peak threshold : *XX*; and aperiodic
+    mode : *XX*. Power spectra were parameterized across the frequency range *XX* to *XX* Hz.
 
 Generating Methods Reports
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As of FOOOF version 1.0.0 there are code utilities to extract all required information for reporting, and for generating methods reports.
+As of version 1.0.0 there are code utilities to extract all required information for reporting, and for generating methods reports.
 
-These utilities require a defined FOOOF object, such as `FOOOF` or `FOOOFGroup`, assumed to be called 'fooof_obj' in the following examples. This object will be used to extract all the relevant settings and any available meta-data for reporting.
+These utilities require a defined model object, such as `PSD` or `PSDGroup`, assumed to be called 'model_obj' in the following examples. This object will be used to extract all the relevant settings and any available meta-data for reporting.
 
-The :func:`~fooof.utils.reports.methods_report_info` function can be used to print out the information you need for reporting:
+The :func:`~specparam.utils.reports.methods_report_info` function can be used to print out the information you need for reporting:
 
 .. code-block:: python
 
     # Import the utility to print out information for reporting
-    from fooof.utils.reports import methods_report_info
+    from specparam.utils.reports import methods_report_info
 
     # Print out all the methods information for reporting
-    methods_report_info(fooof_obj)
+    methods_report_info(model_obj)
 
-The :func:`~fooof.utils.reports.methods_report_text` function can be used to print out an auto-generated methods report, like the one demonstrated above, with all available information filled:
+The :func:`~specparam.utils.reports.methods_report_text` function can be used to print out an auto-generated methods report, like the one demonstrated above, with all available information filled:
 
 .. code-block:: python
 
     # Import the utility to print out information for reporting
-    from fooof.utils.reports import methods_report_text
+    from specparam.utils.reports import methods_report_text
 
     # Generate methods text, with methods information inserted
-    methods_report_text(fooof_obj)
+    methods_report_text(model_obj)

@@ -1,7 +1,7 @@
 Code Changelog
 ==============
 
-This page contains the changelog for the FOOOF module and any notes on updating between versions.
+This page contains the changelog for the `specparam` module and any notes on updating between versions.
 
 This page primarily notes changes for major version updates. For notes on the specific updates
 for minor releases, see the `release page <https://github.com/fooof-tools/fooof/releases>`_.
@@ -12,11 +12,11 @@ for minor releases, see the `release page <https://github.com/fooof-tools/fooof/
 Warning: the 1.X.X release series is an API breaking release from the prior versions,
 in the beta series (0.X.X).
 
-The 1.X.X release series of FOOOF is the current stable version of the module.
+The 1.X.X release series is the current stable version of the module.
 
 As compared to the prior series (0.X.X), some names and module organizations have changed.
-This means existing code that uses FOOOF may no longer work as currently written with the
-new version, and may need updating. You should update to the new version when you are ready to
+This means existing code may no longer work as currently written with the new version,
+and may need updating. You should update to the new version when you are ready to
 update your code to reflect the new changes.
 
 Note that the main changes are in code organization, some names, and the addition of
@@ -65,10 +65,10 @@ Code Updates
 The 1.X.X series adds a large number of code updates & additions, including:
 
 - A big extension of the plotting sub-module
-- Adding new functions to manipulate, manage, organize and manage FOOOF objects
+- Adding new functions to manipulate, manage, organize and manage model objects
 - Add new analysis functions, including more utilities for checking model errors
 - Add a new 'Bands' object for managing frequency band definitions
-- Extra methods on FOOOF & FOOOFGroup objects for managing data & results
+- Extra methods on model objects for managing data & results
 - Miscellaneous bug fixes & other additions
 
 The full history of changes is available in the Github commit and pull request history.
@@ -76,7 +76,7 @@ The full history of changes is available in the Github commit and pull request h
 The bulk of the updates for 1.X.X went through in the following pull requests:
 
 - #152: broad updates, including lots of issue fixes, and code & documentation extensions
-- #139: add 'Bands' object and more functions for managing FOOOF objects
+- #139: add 'Bands' object and more functions for managing model objects
 - #130: updates data objects and internal data management
 - #121 & #129: code reorganizations & cleanups
 - #122: Updating terminology and names
@@ -100,7 +100,7 @@ Note that if you have data saved out from the 0.X.X release series of the module
 code update to the 1.X.X series won't be able to properly load this data out of the box.
 
 This is due to the naming changes, and in particular the change from 'background' to
-'aperiodic'. Note that saved FOOOF files are plain-text JSON files, and so if you find & replace
+'aperiodic'. Note that saved files are plain-text JSON files, and so if you find & replace
 the word 'background' to 'aperiodic', this should update the files so that they can be loaded by
 the 1.X.X version. Note that if you also saved out the algorithm settings, you may need to update
 the name of `min_peak_amplitude` to `min_peak_height` as well.
@@ -108,7 +108,7 @@ the name of `min_peak_amplitude` to `min_peak_height` as well.
 0.1.X
 -----
 
-The 0.1.X series was the initial release series of beta versions of the FOOOF module.
+The 0.1.X series was the initial release series of beta versions of the module.
 
 The old series of releases has a different naming scheme and module organization to the
 current 1.X.X series, and is now deprecated, with no plans to update or maintain this version.

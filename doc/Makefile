@@ -3,7 +3,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = fooof
+SPHINXPROJ    = specparam
 SOURCEDIR     = .
 BUILDDIR      = _build
 
@@ -31,7 +31,7 @@ check:
 	make SPHINXOPTS="-n" html
 	make linkcheck
 
-# Create the plots used in the FOOOF documentation
+# Create the plots used in the documentation
 plots:
 	python make_doc_plots.py
 
