@@ -1,7 +1,7 @@
 Frequently Asked Questions
 ==========================
 
-The following are a collection of frequently asked questions and answers about FOOOF.
+The following is a collection of frequently asked questions and answers about spectral parameterization.
 
 These answers focus on the ideas and concepts relating to parameterizing neural power spectra.
 
@@ -13,23 +13,23 @@ Table of Contents
    :local:
    :backlinks: none
 
-What is FOOOF?
-~~~~~~~~~~~~~~
+What is spectral parameterization?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-FOOOF is an open-source Python module for parameterizing neural power spectra.
+Spectral parameterization means fitting a model to describe power spectra.
+A particular algorithm and implementation for doing this is available in `specparam`,
+an open-source Python module for parameterizing neural power spectra.
 
-The parameterization uses a model-driven approach that assumes that neurophysiological time
+Spectral parameterization uses a model-driven approach that assumes that neurophysiological time
 series are comprised of two separable components, reflecting periodic (or oscillatory) and
-aperiodic activity.
-
-This approach therefore does rely on the assumption that these two components are indeed separable
+aperiodic activity. This approach relies on the assumption that these two components are indeed separable
 components of the underlying data, though it is agnostic to their physiological origin and
 putative functional roles.
 
-The parameterization approach operates on frequency representations of neurophysiological times
+Spectral parameterization operates on frequency representations of neurophysiological times
 series (power spectra). At it's core, the module contains an algorithm to measure these two
 components - the periodic and aperiodic components - in power spectra. The final model
-of the neural power spectrum, consists of quantifications of each of the two components, as well as
+of the neural power spectrum consists of quantifications of each of the two components, as well as
 a combined model fit of the whole power spectrum.
 
 The full mathematical description of the model is described in the tutorials.
@@ -38,10 +38,10 @@ What is meant by 'aperiodic' activity?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By 'aperiodic' activity we mean non-periodic (or arrhythmic) activity, meaning activity that
-has no characteristic frequency. For a general example, white noise, would be considered to
-be an aperiodic signal.
+has no characteristic frequency. For example, white noise, would be considered to be an
+aperiodic signal.
 
-In neural data, the aperiodic component of the signal, typically follows a 1/f-like distribution,
+In neural data, the aperiodic component of the signal typically follows a 1/f-like distribution,
 whereby power systematically decreases with increasing frequencies. Due to the aperiodic
 component, in a neural power spectrum, there is power at all frequencies, though this does
 not imply there is rhythmic power.
@@ -51,12 +51,12 @@ What is meant by 'periodic' activity?
 
 By 'periodic' activity we mean features of the signal that are rhythmic, with activity
 at a characteristic frequency. This kind of activity is typically referred to as
-neural oscillations.
+'oscillatory' or reflecting neural oscillations.
 
 In practice, putative oscillations, reflecting periodic activity, are operationally defined
 and detectable by the fitting algorithm if they exhibit as band-limited power over and above
-the aperiodic component of the signal in the power spectrum. This 'peak' of power over the
-aperiodic is taken as evidence of frequency specific power, distinct from the aperiodic component.
+the aperiodic component in the power spectrum. This 'peak' of power over the aperiodic is taken as
+evidence of frequency specific power, distinct from the aperiodic component.
 
 Note that this periodic activity need not be continuous, as oscillatory activity often
 exhibits as 'bursts' in the time series, nor sinusoidal, as rhythmic neural activity is
@@ -94,17 +94,16 @@ Why is it important to measure aperiodic activity?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Aperiodic activity has long known to be present in neural data, but has been less of a
-research focus, as compared to periodic activity. Recent work has demonstrated
+research focus (as compared to periodic activity). Recent work has demonstrated
 that aperiodic activity is dynamic, and systematically varies both within [1_] and between
 [2_] subjects, and has suggested potential physiological interpretations of aperiodic activity
 [3_] (see also below for more on this).
 
 We consider measuring aperiodic activity to be important for two reasons:
 
-- Aperiodic activity is always there, and it is dynamic. Even if periodic activity
-  is the focus of the analysis, quantification of such data must explicitly account
-  for aperiodic activity to appropriately measure which components of the data are actually
-  changing.
+- Aperiodic activity is always there, and it is dynamic. Even if periodic activity is the
+  focus of the analysis, quantification of such data must explicitly account for aperiodic
+  activity to accurately measure which components of the data are actually changing.
 - Aperiodic components of neural signals may be important and interesting in their own right
   as an interesting signal to investigate. This is motivated by findings that aperiodic activity
   is dynamic, correlates with other features of interest, and is of theoretical interest [1_, 2_, 3_].
@@ -144,12 +143,12 @@ that the aperiodic component may be a signal of interest, and not merely 'noise'
 Overall, we have moved to using the term 'aperiodic' to relate to any activity that is,
 descriptively, non-periodic. We prefer this term, as a neutral descriptor, to avoid
 implying particular theoretical interpretations, and/or what aspects of the signal
-or of interest for any particular investigation.
+are of interest for any particular investigation.
 
 Why are spectral peak used as evidence of periodic activity?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Due to neural signals containing aperiodic activity, there will always be power within
+Since neural activity contains aperiodic activity, there will always be power within
 any given frequency range. If this aperiodic activity changes, the measured power within
 a predefined frequency range can also change. All this can occur without any truly periodic
 activity being present in the data. Even if there is periodic activity, quantifications of it
@@ -168,8 +167,7 @@ If, for a given frequency band, no peak is detected in the power spectrum, this 
 consistent with there being no periodic activity at that frequency. Without a detected peak,
 we argue that there is not evidence of periodic activity, at that frequency, over and
 above the power as expected by the aperiodic activity. In this situation, one should be very
-wary of interpreting activity at this frequency, as it is most likely reflects aperiodic
-activity.
+wary of interpreting activity at this frequency, as it is likely reflects aperiodic activity.
 
 However, one cannot prove a negative, of course, and so the absence of a detected peak does not
 imply that there is definitively no periodic activity at that particular frequency. There could
@@ -183,9 +181,9 @@ Peaks, defined as regions of power over and above the aperiodic component, are c
 to be putative periodic activity. However, there is not necessarily a one-to-one mapping
 between power spectrum peaks, and oscillations in the data.
 
-One reason for this is that sometimes overlapping peaks can be fit to what is may
-be a single oscillatory component in the data. This can happen if the peak in the power
-spectrum is asymmetric. Since peaks are fit with gaussians, the model sometimes fits
+One reason for this is that sometimes overlapping peaks can be fit to what may be a
+single oscillatory component in the data. This can happen if the peak in the power
+spectrum is asymmetric. Since peaks are fit with Gaussians, the model sometimes fits
 partially overlapping peaks to fit what may be a single asymmetric peak in the data.
 
 Because of this, it is often useful to focus on the dominant (highest power) peak within a
@@ -213,7 +211,7 @@ There are many existing methods for analyzing periodic activity, and also other 
 analyzing aperiodic activity. Most existing methods are designed to measure one or the other
 signal component. Few methods attempt to explicitly separate and quantify both the periodic
 and aperiodic components of the signal. This combined approach is a key factor that we
-consider to be important for getting the measurements to work well. By jointly learning
+consider to be important for getting the measurements to work well. By jointly measuring
 both components, the method is more capable of quantifying which aspects of the data
 are changing and in what ways.
 
@@ -237,7 +235,7 @@ the model can be fit. The fitting algorithm is otherwise broadly agnostic to det
 Note that data from different modalities, or across different frequency ranges, may require
 different algorithm settings.
 
-More information for checking for if the model fit seems to be appropriate, and for picking
+More information on checking if model fits are appropriate, and for picking
 settings and tuning them to different datasets are all available in the Tutorials.
 
 Are there settings for the fitting algorithm?
@@ -253,20 +251,19 @@ is covered in the tutorials.
 How should algorithm settings be chosen?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For any given dataset, there is often some tuning of the algorithm settings needed to
-get models to fit well. For any given dataset, settings should therefore be checked, and
-tuned if necessary, though, overall, model fits tend not to be overly sensitive to small
-changes in the settings.
+For any given dataset, there is often some tuning of the algorithm settings needed to get
+models to fit well. For any given dataset, settings should therefore be checked, and tuned
+if necessary. Model fits tend not to be overly sensitive to small changes in the settings.
 
-One strategy for choosing settings, is to select a subset of power spectra from the
+One strategy for choosing settings is to select a subset of power spectra from the
 dataset to use as something analogous to a 'training set'. This group of spectra can be
-used to fit power spectrum models, check model fit properties, visually inspect fits, and
-choose the best settings for the data. Once settings have been chosen for the subset,
-they can applied to the dataset to be analyzed. Note that in order to be able to systematically
+used to fit power spectrum models, check model fit properties, and visually inspect fits,
+in order to choose the best settings for the data. Once settings have been chosen for the subset,
+they can applied to the full dataset to be analyzed. Note that in order to be able to systematically
 compare model fits between conditions / tasks / subjects, etc, we recommend using the same
 algorithm settings across the whole dataset.
 
-Details of what the algorithm settings are, and how to set them are available in the code Tutorials.
+Details of what the algorithm settings are, and how to set them are available in the Tutorials.
 
 What frequency range should the model be fit on?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -282,9 +279,9 @@ By comparison, an analysis in ECoG that wants to include high frequency activity
 use a range of [1, 150], or perhaps [50, 150] if the goal is to focus specifically on
 high frequency activity.
 
-Picking a frequency range should be considered in the context of choosing the
-aperiodic mode, as whether or not a 'knee' should be fit depends in part on the frequency
-range that is being examined. For more information on choosing the aperiodic mode, see the Tutorials.
+Picking a frequency range should be considered in the context of choosing the aperiodic
+mode, as whether or not a 'knee' should be fit depends in part on the frequency range that
+is being examined. For more information on choosing the aperiodic mode, see the Tutorials.
 
 If I am interested in a particular oscillation band, should I fit a small range?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -322,27 +319,27 @@ potential arise from balanced activity of excitatory (E) and inhibitory (I) syna
 currents. In this model, changes in aperiodic properties of the data relate to changes
 in EI balance [3_].
 
-Does it matter how power spectra are calculated?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Does it matter how power spectra are computed?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For the most part, it does not matter exactly how power spectra to be parameterized
-are calculated. The algorithm is agnostic to precise details of calculating power
+are computed. The algorithm is agnostic to precise details of calculating power
 spectra, and so different estimation methods should all be fine.
 
 Regardless of how power spectra are computed, certain properties of the power spectra do
 influence how the parameterization goes. For example, the better the frequency resolution,
 the more precisely the algorithm will be able to estimate center frequencies and bandwidths
-of detected peaks. However, as a trade off, using longer time segments to end up with 'smoother'
-spectra can also help with getting the algorithm to fit better.
+of detected peaks. However, as a trade off, averaging over a greater number of shorter windows
+may help to end up with 'smoother' spectra, which may help with getting better fits.
 
-Can this be applied to task or trial based analyses?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Can spectral parameterization be applied to task data?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Yes, power spectra can be fit in task based analyses.
 
 However, one thing to keep in mind is the resolution of the data. The shorter the
-time segments of data used, and/or the fewer data segments averaged over, can lead to
-'messy' power spectra, which may not be fit very well by the model.
+time segments of data used, and/or the fewer data segments averaged over, the 'messier'
+the power spectra may be. Noisy power spectra may not be fit very well by the model.
 
 With these considerations in mind, there are broadly two approaches for task related analyses:
 
@@ -350,17 +347,17 @@ With these considerations in mind, there are broadly two approaches for task rel
   fitting one power spectrum model per condition
 
   - This doesn't allow for measurements per trial, but averaging across trials allows
-    for smoother spectra, and better model fits, per condition. This approach may be
-    for short trials, as the trial averaging allows want to use FOOOF to characterize
-    short time segments in a task design.
+    for smoother spectra, and better model fits, per condition. This approach may be better
+    for short trials, as the trial averaging allows for getting better estimates of trial
+    activity, per condition, in a way that may be difficult to estimate per trial.
 
 - Calculate power spectra and fit power spectrum models per trial,
   analyzing the distribution of model parameters outputs per condition
 
   - This approach can be used with longer trials, when there are relatively long time
     segments to fit. Model fits of individual trials are likely to be somewhat messy, but
-    as long as there is not a systematic bias in the fits, then the distributions of fit values
-    can be interpreted and compared.
+    as long as there is not a systematic bias in the fits, then the distributions of fit
+    values across and between trials can be interpreted and compared.
   - Exactly how much long segments need to to be analyzed in this way is somewhat
     dependent on the cleanliness of the data. As a rule of thumb, we currently recommend
     using segments of at least about 500 ms for this approach.
@@ -382,15 +379,15 @@ spectral features across time, somewhat analogous to a spectrogram.
 This functionality is not currently available or described in the current module, but is a focus
 off current work. We hope to add information, guidelines, and tooling to do this once this soon.
 
-Why is it called FOOOF?
-~~~~~~~~~~~~~~~~~~~~~~~
+What is the 'FOOOF' name?
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-FOOOF stands for "fitting oscillations & one-over f".
+The original name of the module was 'FOOOF', which stood for "fitting oscillations & one-over f".
 
-This was a working title for the project that stuck as the name of the code and the tool.
-We have moved away from referring to the components that FOOOF fits in this way, preferring
-'periodic' and 'aperiodic' activity, but the name 'FOOOF' stuck around as the name of the tool
-itself.
+This was a working title for the project that stuck as the name of the code and the tool. Since
+we have moved away from using these terms in the module and algorithm, now preferring terms such
+as 'periodic' and 'aperiodic' activity, the module has been renamed to the more general name
+of 'spectral parameterization'.
 
 How do I cite this method?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -415,7 +412,7 @@ References
 
 .. _3 : https://doi.org/10.1016/j.neuroimage.2017.06.078
 
-- [4_] Buzsaki, Logothetis & Singer (2013). Scaling Brain Size, Keeping Timing: Evolutionary Preservation
+- [4_] Buzsáki, Logothetis & Singer (2013). Scaling Brain Size, Keeping Timing: Evolutionary Preservation
   of Brain Rhythms. DOI: 10.1016/j.neuron.2013.10.002
 
 .. _4 : https://doi.org/10.1016/j.neuron.2013.10.002
