@@ -8,13 +8,13 @@ Manage parameters for creating simulated power spectra.
 ###################################################################################################
 
 # Import simulation functions for creating spectra
-from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
+from specparam.sim.gen import gen_power_spectrum, gen_group_power_spectra
 
 # Import simulation utilities for managing parameters
-from fooof.sim.params import param_sampler, param_iter, param_jitter, Stepper
+from specparam.sim.params import param_sampler, param_iter, param_jitter, Stepper
 
 # Import plotting functions to visualize spectra
-from fooof.plts.spectra import plot_spectra
+from specparam.plts.spectra import plot_spectra
 
 ###################################################################################################
 # Simulation Parameters

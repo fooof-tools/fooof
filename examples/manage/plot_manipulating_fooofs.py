@@ -1,39 +1,38 @@
 """
-Manipulating FOOOF Objects
-==========================
+Manipulating Objects
+====================
 
 Examples with combining, sub-selecting, dropping, and averaging power spectrum models.
 """
 
 ###################################################################################################
 #
-# As you fit power spectrum models, you may end up with multiple FOOOF objects, as you fit
+# As you fit power spectrum models, you may end up with multiple model objects, as you fit
 # models within and across subjects, conditions, trials, etc. To help manage and organize
-# the potentially multiple FOOOF objects that can arise in these cases, here we will
-# explore the utilities offered for managing and organizing within and between FOOOF
-# objects.
+# the potentially multiple objects that can arise in these cases, here we will explore the
+# utilities offered for managing and organizing within and between model objects.
 #
 # Using simulated data, in this example we will cover:
 #
-# - combining results across FOOOF objects
-# - sub-selecting fits from FOOOFGroup objects
-# - dropping specified model fits from FOOOFGroup objects
-# - average across groups of FOOOF fits
+# - combining results across model objects
+# - sub-selecting fits from specparamGroup objects
+# - dropping specified model fits from specparamGroup objects
+# - average across groups of model fits
 #
 
 ###################################################################################################
 
-# Import FOOOF & FOOOFGroup objects
-from fooof import FOOOF
+# Import model object
+from specparam import PSD
 
 # Import Bands object, to manage frequency band definitions
-from fooof.bands import Bands
+from specparam.bands import Bands
 
-# Import utility functions that manage & manipulate FOOOF objects
-from fooof.objs.utils import average_fg, combine_fooofs, compare_info
+# Import utility functions for working with model objects
+from specparam.objs.utils import average_group, combine_model_objs, compare_model_objs
 
 # Import simulation functions to create our example data
-from fooof.sim.gen import gen_power_spectrum
+from specparam.sim.gen import gen_power_spectrum
 
 ###################################################################################################
 #
@@ -56,8 +55,8 @@ freqs, powers_3 = gen_power_spectrum(freq_range, [0, 1.5], [11, 0.3, 2.5],
 
 ###################################################################################################
 
-# Initialize a set of FOOOF objects
-fm1, fm2, fm3 = FOOOF(max_n_peaks=4), FOOOF(max_n_peaks=4), FOOOF(max_n_peaks=4)
+# Initialize a set of model objects
+fm1, fm2, fm3 = PSD(max_n_peaks=4), PSD(max_n_peaks=4), PSD(max_n_peaks=4)
 
 # Fit power spectrum models
 fm1.fit(freqs, powers_1)
@@ -65,53 +64,53 @@ fm2.fit(freqs, powers_2)
 fm3.fit(freqs, powers_3)
 
 ###################################################################################################
-# Combining FOOOF Objects
+# Combining Model Objects
 # -----------------------
 #
-# Sometimes, when working with models in :class:`~fooof.FOOOF` or :class:`~fooof.FOOOFGroup`
+# Sometimes, when working with models in :class:`~specparam.PSD` or :class:`~specparam.PSDGroup`
 # objects, you may want to combine them together, to check some group properties.
 #
-# The :func:`~.combine_fooofs` function takes a list of FOOOF and/or
-# FOOOFGroup objects, and combines all available fits together into a FOOOFGroup object.
+# The :func:`~.combine_model_objs` function takes a list of PSD and/or
+# PSDGroup objects, and combines all available fits together into a PSDGroup object.
 #
-# Let's now combine our individual model fits into a FOOOFGroup object.
+# Let's now combine our individual model fits into a PSDGroup object.
 #
 
 ###################################################################################################
 
-# Combine a list of FOOOF objects into a FOOOFGroup object
-fg = combine_fooofs([fm1, fm2, fm3])
+# Combine a list of model objects into a PSDGroup object
+fg = combine_model_objs([fm1, fm2, fm3])
 
 # Check the number of models in the object
-#   Note that the length of a FOOOFGroup object is defined as the number of model fits
+#   Note that the length of a PSDGroup object is defined as the number of model fits
 print('Number of model fits: ', len(fg))
 
 ###################################################################################################
-# Note on Manipulating FOOOF Objects
+# Note on Manipulating Model Objects
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Note that these functions that manipulate FOOOF objects typically do more than just
+# Note that these functions that manipulate model objects typically do more than just
 # copy results data - they also check and manage settings and meta-data of objects.
 #
-# For example, combining FOOOF objects returns a new FOOOFGroup object with the same settings.
+# For example, combining PSD objects returns a new PSDGroup object with the same settings.
 #
-# We can see this by using the :func:`~.compare_info` function to compare
-# the settings between FOOOF objects.
+# We can see this by using the :func:`~.compare_model_objs` function to compare
+# the settings between PSD objects.
 #
-# You can also use this function if you wish to compare FOOOF objects to ensure that
+# You can also use this function if you wish to compare PSD objects to ensure that
 # you are comparing model results that were fit with equivalent settings.
 #
 
 ###################################################################################################
 
-# Compare defined settings across FOOOF objects
-compare_info([fm1, fg], 'settings')
+# Compare defined settings across model objects
+compare_model_objs([fm1, fg], 'settings')
 
 ###################################################################################################
-# Sub-Select from FOOOFGroup
+# Sub-Select from specparamGroup
 # --------------------------
 #
-# When you have a :class:`~fooof.FOOOFGroup` object, you may also want to sub-select
+# When you have a :class:`~specparam.PSDGroup` object, you may also want to sub-select
 # a group of models.
 #
 # Example use cases for this could be:
@@ -119,12 +118,12 @@ compare_info([fm1, fg], 'settings')
 # - you want to sub-select models that meet some kind of goodness-of-fit criterion
 # - you want to examine a subset of model reflect, for example, particular channels or trials
 #
-# To do so, we can use the :func:`~fooof.FOOOFGroup.get_group` method of the FOOOFGroup object.
+# To do so, we can use the :func:`~specparam.PSDGroup.get_group` method of the PSDGroup object.
 # This method takes in an input specifying which indices to sub-select, and returns a
-# new FOOOFGroup object, containing only the requested model fits.
+# new PSDGroup object, containing only the requested model fits.
 #
-# Note that if you want to sub-select a single FOOOF model you can
-# use the :meth:`~fooof.FOOOFGroup.get_fooof` method.
+# Note that if you want to sub-select a single model you can
+# use the :meth:`~specparam.PSDGroup.get_model` method.
 #
 
 ###################################################################################################
@@ -133,24 +132,24 @@ compare_info([fm1, fg], 'settings')
 #   This could be a the indices for a 'region of interest', for example
 inds = [0, 1]
 
-# Sub-select our selection of models from the FOOOFGroup object
+# Sub-select our selection of models from the PSDGroup object
 nfg = fg.get_group(inds)
 
-# Check how many models our new FOOOFGroup object contains
+# Check how many models our new PSDGroup object contains
 print('Number of model fits: ', len(nfg))
 
 ###################################################################################################
 #
 # From here, we could continue to do any analyses of interest on our new
-# FOOOFGroup object, which contains only our models of interest.
+# PSDGroup object, which contains only our models of interest.
 #
 
 ###################################################################################################
-# Dropping Fits from FOOOFGroup
+# Dropping Fits from specparamGroup
 # -----------------------------
 #
-# Another option is to 'drop' model fits from a FOOOFGroup object. You can do this with
-# the :meth:`~fooof.FOOOFGroup.drop` method from a :class:`~fooof.FOOOFGroup` object.
+# Another option is to 'drop' model fits from a PSDGroup object. You can do this with
+# the :meth:`~specparam.PSDGroup.drop` method from a :class:`~specparam.PSDGroup` object.
 #
 # This can be used, for example, for a quality control step. If you have checked through
 # the object, and noticed some outlier model fits, you may want to exclude them from
@@ -169,12 +168,12 @@ fg.drop(fg.get_params('error') > 0.01)
 # Note on Dropped or Failed Fits
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# When models are dropped from :class:`~fooof.FOOOFGroup` objects, they are set as null models.
+# When models are dropped from :class:`~specparam.PSDGroup` objects, they are set as null models.
 # They are therefore cleared of results, but not literally dropped, which
-# is done to preserve the ordering of the FOOOFGroup, so that the `n-th` model
+# is done to preserve the ordering of the PSDGroup, so that the `n-th` model
 # doesn't change if some models are dropped.
 #
-# Note that there may in some cases be Null models in a FOOOFGroup without
+# Note that there may in some cases be Null models in a PSDGroup without
 # explicitly dropping them, if any models failed during the fitting process.
 #
 
@@ -195,11 +194,11 @@ for ind in fg.null_inds_:
     print(fg[ind])
 
 ###################################################################################################
-# Note on Selecting From FOOOF Objects
+# Note on Selecting from specparam Objects
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Both the :meth:`~fooof.FOOOFGroup.get_group` and :meth:`~fooof.FOOOFGroup.drop` methods
-# take an input of the indices of FOOOF model to select or drop.
+# Both the :meth:`~specparam.PSDGroup.get_group` and :meth:`~specparam.PSDGroup.drop` methods
+# take an input of the indices of the model(s) to select or drop.
 #
 # In both cases, the input can be defined in multiple ways, including directly indicating
 # the indices as a list of integers, or boolean masks.
@@ -209,7 +208,7 @@ for ind in fg.null_inds_:
 # Averaging Across Model Fits
 # ---------------------------
 #
-# Finally, let's average across the models in our FOOOFGroup object, to examine
+# Finally, let's average across the models in our PSDGroup object, to examine
 # the average model of the data.
 #
 # Note that in order to be able to average across individual models, we need to define
@@ -224,7 +223,7 @@ for ind in fg.null_inds_:
 bands = Bands({'alpha': [7, 14]})
 
 # Average across individual models fits, specifying bands and an averaging function
-afm = average_fg(fg, bands, avg_method='median')
+afm = average_group(fg, bands, avg_method='median')
 
 # Plot our average model of the data
 afm.plot()

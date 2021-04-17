@@ -10,12 +10,12 @@ This example covers strategies for dealing with line noise.
 # sphinx_gallery_thumbnail_number = 2
 
 # Import the spectral parameterization object and utilities
-from fooof import FOOOF
-from fooof.plts import plot_spectra
-from fooof.utils import trim_spectrum, interpolate_spectrum
+from specparam import PSD
+from specparam.plts import plot_spectra
+from specparam.utils import trim_spectrum, interpolate_spectrum
 
 # Import simulation functions to create some example data
-from fooof.sim.gen import gen_power_spectrum
+from specparam.sim.gen import gen_power_spectrum
 
 # Import NeuroDSP functions for simulating & processing time series
 from neurodsp.sim import sim_combined
@@ -38,7 +38,7 @@ from neurodsp.spectral import compute_spectrum
 # approach simply gets rid of the peaks, interpolating the data to maintain the 1/f
 # character of the data, allowing for subsequent fitting.
 #
-# The :func:`~fooof.utils.interpolate_spectrum` function allows for doing simple
+# The :func:`~specparam.utils.interpolate_spectrum` function allows for doing simple
 # interpolation. Given a narrow frequency region, this function interpolates the spectrum,
 # such that the 'peak' of the line noise is removed.
 #
@@ -81,7 +81,7 @@ plot_spectra(freqs1, [powers1, powers_int1], log_powers=True,
 ###################################################################################################
 
 # Initialize a power spectrum model
-fm1 = FOOOF(verbose=False)
+fm1 = PSD(verbose=False)
 fm1.report(freqs_int1, powers_int1)
 
 ###################################################################################################
@@ -92,7 +92,7 @@ fm1.report(freqs_int1, powers_int1)
 # frequency ranges, there may be multiple peaks that need to be interpolated.
 #
 # This can be done by passing in multiple interpolation regions to
-# :func:`~fooof.utils.interpolate_spectrum`, which we will do in the next example.
+# :func:`~specparam.utils.interpolate_spectrum`, which we will do in the next example.
 #
 
 ###################################################################################################
@@ -114,7 +114,7 @@ plot_spectra(freqs2, [powers2, powers_int2], log_powers=True,
 ###################################################################################################
 
 # Parameterize the interpolated power spectrum
-fm2 = FOOOF(aperiodic_mode='knee', verbose=False)
+fm2 = PSD(aperiodic_mode='knee', verbose=False)
 fm2.report(freqs2, powers_int2)
 
 ###################################################################################################
@@ -207,7 +207,7 @@ plot_spectra(freqs, [powers_pre, powers_post], log_powers=True,
 ###################################################################################################
 
 # Initialize and fit a power spectrum model
-fm = FOOOF()
+fm = PSD()
 fm.report(freqs, powers_post)
 
 ###################################################################################################

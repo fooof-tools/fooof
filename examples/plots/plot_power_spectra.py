@@ -11,11 +11,11 @@ Visualizing power spectra.
 import matplotlib.pyplot as plt
 
 # Import plotting functions
-from fooof.plts.spectra import plot_spectra, plot_spectra_shading
+from specparam.plts.spectra import plot_spectra, plot_spectra_shading
 
 # Import simulation utilities for creating test data
-from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
-from fooof.sim.params import param_iter, Stepper
+from specparam.sim.gen import gen_power_spectrum, gen_group_power_spectra
+from specparam.sim.params import param_iter, Stepper
 
 ###################################################################################################
 # Plotting Power Spectra
@@ -24,8 +24,8 @@ from fooof.sim.params import param_iter, Stepper
 # The module also includes a plotting sub-module that includes several plotting
 # options for visualizing power spectra.
 #
-# These plot functions overlap with what is accessible directly through the FOOOF objects,
-# as the :meth:`~fooof.FOOOF.plot` method. There are extra functions in the module, and
+# These plot functions overlap with what is accessible directly through the model objects,
+# as the :meth:`~specparam.PSD.plot` method. There are extra functions in the module, and
 # extra functionality available in the plotting module.
 #
 # Note that the plots in the module are all built using matplotlib. They all allow for

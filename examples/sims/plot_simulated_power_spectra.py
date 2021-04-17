@@ -8,10 +8,10 @@ Creating simulated power spectra.
 ###################################################################################################
 
 # Import functions for creating simulated power spectra
-from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
+from specparam.sim.gen import gen_power_spectrum, gen_group_power_spectra
 
 # Import plotting functions
-from fooof.plts.spectra import plot_spectra
+from specparam.plts.spectra import plot_spectra
 
 ###################################################################################################
 # Creating Simulated Power Spectra

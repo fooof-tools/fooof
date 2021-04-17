@@ -9,8 +9,8 @@ Fitting power spectrum models across 3D arrays of power spectra.
 # Running Across 3D
 # -----------------
 #
-# Most of the materials so far have explored using the :class:`~fooof.FOOOF` object to fit
-# individual power spectra, and the :class:`~fooof.FOOOFGroup` object for fitting groups of
+# Most of the materials so far have explored using the :class:`~specparam.PSD` object to fit
+# individual power spectra, and the :class:`~specparam.PSDGroup` object for fitting groups of
 # power spectra, where a group of spectra is organized as a 2D array of power spectra.
 #
 # In this example, we'll go one step further, and step through how to analyze data
@@ -38,11 +38,10 @@ Fitting power spectrum models across 3D arrays of power spectra.
 # explore how to fit, manage, and organize this data.
 #
 # A reminder that no matter how the data is organized, it's always the exact same model
-# that is fit, that is the one defined in the FOOOF object. All other objects or organizations
-# use this same code to do the fitting. For example, the FOOOFGroup object inherits from the
-# FOOOF, and calls the same underlying fit function.
+# that is fit. All other objects or organizations use the same code to do the fitting.
+# For example, the PSDGroup object inherits from PSD, and calls the same underlying fit function.
 #
-# As we'll see, we can fit 3D arrays of spectra by distributing FOOOFGroup objects
+# As we'll see, we can fit 3D arrays of spectra by distributing PSDGroup objects
 # across the data, which also uses the same underlying code.
 #
 
@@ -52,16 +51,16 @@ Fitting power spectrum models across 3D arrays of power spectra.
 import os
 import numpy as np
 
-# Import the FOOOFGroup object
-from fooof import FOOOFGroup
+# Import the PSDGroup object
+from specparam import PSDGroup
 
-# Import utilities for working with FOOOF objects
-from fooof.objs import fit_fooof_3d, combine_fooofs
+# Import utilities for working with model objects
+from specparam.objs import fit_models_3d, combine_model_objs
 
 # Import simulation & IO utilities to help with the example
-from fooof.sim.gen import gen_freqs, gen_group_power_spectra
-from fooof.sim.params import param_sampler
-from fooof.utils.io import load_fooofgroup
+from specparam.sim.gen import gen_freqs, gen_group_power_spectra
+from specparam.sim.params import param_sampler
+from specparam.utils.io import load_group
 
 ###################################################################################################
 # Example Set-Up
@@ -124,44 +123,41 @@ print('Number of conditions, channels & frequencies: \t{}, {}, {}'.format(\
 # efficiently across all power spectra, while keeping our data and results organized
 # in a way that we keep track of which model results reflect which data.
 #
-# The strategy we will take to do so is by systematically applying FOOOF objects across
-# the data.
-#
-# For working with 3D arrays of power spectra, we have the :func:`~.fit_fooof_3d`
+# For working with 3D arrays of power spectra, we have the :func:`~.fit_models_3d`
 # function which takes in data and a pre-initialized model object, and uses it to fit
 # power spectrum models across all the data, while maintaining the organization of
 # the input data.
 #
 
 ###################################################################################################
-# fit_fooof_3d
+# fit_models_3d
 # ~~~~~~~~~~~~
 #
-# More specifically, :func:`~.fit_fooof_3d` takes in:
+# More specifically, :func:`~.fit_models_3d` takes in:
 #
-# - a FOOOFGroup object, pre-initialized with the desired settings
+# - a PSDGroup object, pre-initialized with the desired settings
 # - an array of frequency values and a 3D array of power spectra
 #
-# Internally, this function uses the :class:`~fooof.FOOOFGroup` object to
+# Internally, this function uses the :class:`~specparam.PSDGroup` object to
 # fit models across the power spectra.
 #
-# This function then returns a list of :class:`~fooof.FOOOFGroup` objects, which
+# This function then returns a list of :class:`~specparam.PSDGroup` objects, which
 # collectively store all the model fit results.
 #
 
 ###################################################################################################
 
-# Initialize a FOOOFGroup object, with desired settings
-fg = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
+# Initialize a PSDGroup object, with desired settings
+fg = PSDGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
 
 ###################################################################################################
 
 # Fit the 3D array of power spectra
-fgs = fit_fooof_3d(fg, freqs, spectra)
+fgs = fit_models_3d(fg, freqs, spectra)
 
 ###################################################################################################
 
-# This returns a list of FOOOFGroup objects
+# This returns a list of PSDGroup objects
 print(fgs)
 
 ###################################################################################################
@@ -169,26 +165,26 @@ print(fgs)
 # Note that the length of the returned list of objects should be equivalent to
 # the outermost dimensionality of the input data.
 #
-# In our example setup, this corresponds to `n_conditions` :class:`~fooof.FOOOFGroup` objects.
+# In our example setup, this corresponds to `n_conditions` :class:`~specparam.PSDGroup` objects.
 #
 
 ###################################################################################################
 
-print('Number of FOOOFGroups: \t{}'.format(len(fgs)))
+print('Number of PSDGroups: \t{}'.format(len(fgs)))
 print('Number of conditions: \t{}'.format(n_conditions))
 
 ###################################################################################################
-# Analyzing FOOOF Objects
+# Analyzing Model Objects
 # ~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Once you have fit the power spectrum models, you want to analyze the results in some way!
 #
-# Since you have a collection of :class:`~fooof.FOOOF` objects, you can analyze these the same
-# way as you would look into any other FOOOF objects. You can check out the other examples
+# Since you have a collection of :class:`~specparam.PSD` objects, you can analyze these the same
+# way as you would look into any other model objects. You can check out the other examples
 # and tutorials for more information on how to do this.
 #
 # A general strategy for analyzing model fit results as they get returned from
-# :func:`~.fit_fooof_3d` is to loop across all the objects in the
+# :func:`~.fit_models_3d` is to loop across all the objects in the
 # returned list, and then within the loop you can collect and/or analyze and/or plot
 # any data of interest.
 #
@@ -204,18 +200,18 @@ for ind, fg in enumerate(fgs):
         ind, np.mean(fg.get_params('aperiodic_params', 'exponent'))))
 
 ###################################################################################################
-# Managing FOOOF Objects
+# Managing Model Objects
 # ~~~~~~~~~~~~~~~~~~~~~~
 #
-# When running analyses like this, you may start to have many :class:`~fooof.FOOOF` objects.
+# When running analyses like this, you may start to have many :class:`~specparam.PSD` objects.
 #
 # For example, you may want to save them out, reload them as needed, and analyze
-# results from each :class:`~fooof.FOOOF` or :class:`~fooof.FOOOFGroup` object.
+# results from each :class:`~specparam.PSD` or :class:`~specparam.PSDGroup` object.
 # You may also manipulate the objects by, for example, combining model results
 # across objects to check overall model fit properties.
 #
 # Here, we will continue with a quick example of saving, loading and then combining
-# FOOOF objects. Note that a broader exploration of managing different FOOOF objects
+# model objects. Note that a broader exploration of managing different model objects
 # and these object utility functions is available in other examples.
 #
 
@@ -231,14 +227,14 @@ for ind, fg in enumerate(fgs):
 
 ###################################################################################################
 
-# Reload our list of FOOOFGroups
-fgs = [load_fooofgroup(file_name, file_path='results') \
+# Reload our list of PSDGroups
+fgs = [load_group(file_name, file_path='results') \
     for file_name in os.listdir('results')]
 
 ###################################################################################################
 
-# Combine a list of FOOOF objects into a single FOOOFGroup object
-all_fg = combine_fooofs(fgs)
+# Combine a list of model objects into a single PSDGroup object
+all_fg = combine_model_objs(fgs)
 
 # Explore the results from across all model fits
 all_fg.print_results()
