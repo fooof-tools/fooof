@@ -4,7 +4,7 @@
 API Documentation
 =================
 
-API reference for the FOOOF module.
+API reference for the module.
 
 Table of Contents
 =================
@@ -13,53 +13,53 @@ Table of Contents
    :local:
    :depth: 2
 
-.. currentmodule:: fooof
+.. currentmodule:: specparam
 
 Model Objects
 -------------
 
 Objects that manage data and fit the model to parameterize neural power spectra.
 
-FOOOF Object
+Base Object
+~~~~~~~~~~~
+
+The PSD object is the base object for the model, and can be used to fit individual power spectra.
+
+.. autosummary::
+   :toctree: generated/
+
+   PSD
+
+Group Object
 ~~~~~~~~~~~~
 
-The FOOOF object is the base object for the model, and can be used to fit individual power spectra.
+The PSDGroup object allows for parameterizing groups of power spectra.
 
 .. autosummary::
    :toctree: generated/
 
-   FOOOF
-
-FOOOFGroup Object
-~~~~~~~~~~~~~~~~~
-
-The FOOOFGroup object allows for parameterizing groups of power spectra.
-
-.. autosummary::
-   :toctree: generated/
-
-   FOOOFGroup
+   PSDGroup
 
 Object Utilities
 ~~~~~~~~~~~~~~~~
 
-Functions to manipulate, examine and analyze FOOOF objects, and related utilities.
+Functions to manipulate, examine, and analyze model objects.
 
-.. currentmodule:: fooof.objs
-
-.. autosummary::
-   :toctree: generated/
-
-   compare_info
-   average_fg
-   combine_fooofs
-
-.. currentmodule:: fooof
+.. currentmodule:: specparam.objs
 
 .. autosummary::
    :toctree: generated/
 
-   fit_fooof_3d
+   compare_model_objs
+   combine_model_objs
+   average_group
+
+.. currentmodule:: specparam
+
+.. autosummary::
+   :toctree: generated/
+
+   fit_models_3d
 
 Data Objects
 ------------
@@ -71,7 +71,7 @@ Bands Object
 
 An object to handle frequency band definitions.
 
-.. currentmodule:: fooof
+.. currentmodule:: specparam
 
 .. autosummary::
    :toctree: generated/
@@ -83,15 +83,15 @@ Model Information
 
 Objects to store settings, metadata and results for power spectrum models.
 
-.. currentmodule:: fooof.data
+.. currentmodule:: specparam.data
 
 .. autosummary::
    :toctree: generated/
    :template: data_object.rst
 
-   FOOOFSettings
-   FOOOFMetaData
-   FOOOFResults
+   FitResults
+   ModelSettings
+   SpectrumMetaData
 
 Simulation Parameters
 ~~~~~~~~~~~~~~~~~~~~~
@@ -116,26 +116,26 @@ Functions for analyzing the error of model fits.
 
 **Object Inputs**
 
-The following functions take in FOOOF objects directly, which is the recommended approach.
+The following functions take in model objects directly.
 
-.. currentmodule:: fooof.analysis
-
-.. autosummary::
-    :toctree: generated/
-
-    compute_pointwise_error_fm
-    compute_pointwise_error_fg
-
-**Array Inputs**
-
-The following functions operate on arrays of models and data, which may be useful for more custom work-flows.
-
-.. currentmodule:: fooof.analysis.error
+.. currentmodule:: specparam.analysis
 
 .. autosummary::
     :toctree: generated/
 
     compute_pointwise_error
+    compute_pointwise_error_group
+
+**Array Inputs**
+
+The following functions operate on arrays of models and data, which may be useful for more custom work-flows.
+
+.. currentmodule:: specparam.analysis.error
+
+.. autosummary::
+    :toctree: generated/
+
+    compute_pointwise_error_arr
 
 Analyze Periodic Components
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -144,27 +144,27 @@ Functions for analyzing the periodic components of model fits.
 
 **Object Inputs**
 
-The following functions take in FOOOF objects directly, which is the typical use case.
+The following functions take in model objects directly, which is the typical use case.
 
-.. currentmodule:: fooof.analysis
-
-.. autosummary::
-    :toctree: generated/
-
-    get_band_peak_fm
-    get_band_peak_fg
-
-**Array Inputs**
-
-The following functions operate on arrays of peak parameters, which may be useful for more custom work-flows.
-
-.. currentmodule:: fooof.analysis.periodic
+.. currentmodule:: specparam.analysis
 
 .. autosummary::
     :toctree: generated/
 
     get_band_peak
     get_band_peak_group
+
+**Array Inputs**
+
+The following functions operate on arrays of peak parameters, which may be useful for more custom work-flows.
+
+.. currentmodule:: specparam.analysis.periodic
+
+.. autosummary::
+    :toctree: generated/
+
+    get_band_peak_arr
+    get_band_peak_group_arr
     get_highest_peak
     threshold_peaks
 
@@ -178,7 +178,7 @@ Generate Power Spectra
 
 Functions for simulating neural power spectra.
 
-.. currentmodule:: fooof.sim
+.. currentmodule:: specparam.sim
 
 .. autosummary::
     :toctree: generated/
@@ -192,7 +192,7 @@ Manage Parameters
 
 Functions and objects for managing parameters for simulated power spectra.
 
-.. currentmodule:: fooof.sim.params
+.. currentmodule:: specparam.sim.params
 
 .. autosummary::
     :toctree: generated/
@@ -208,7 +208,7 @@ Transform Power Spectra
 
 Functions for transforming power spectra.
 
-.. currentmodule:: fooof.sim.transform
+.. currentmodule:: specparam.sim.transform
 
 .. autosummary::
     :toctree: generated/
@@ -225,7 +225,7 @@ Simulation Utilities
 
 Utilities for simulating power spectra.
 
-.. currentmodule:: fooof.sim.utils
+.. currentmodule:: specparam.sim.utils
 
 .. autosummary::
     :toctree: generated/
@@ -242,7 +242,7 @@ Plot Power Spectra
 
 Plots for visualizing power spectra.
 
-.. currentmodule:: fooof.plts
+.. currentmodule:: specparam.plts
 
 .. autosummary::
     :toctree: generated/
@@ -251,7 +251,7 @@ Plots for visualizing power spectra.
 
 Plots for plotting power spectra with shaded regions.
 
-.. currentmodule:: fooof.plts.spectra
+.. currentmodule:: specparam.plts.spectra
 
 .. autosummary::
     :toctree: generated/
@@ -264,7 +264,7 @@ Plot Model Properties & Parameters
 
 Plots for visualizing **periodic** parameters and model components.
 
-.. currentmodule:: fooof.plts.periodic
+.. currentmodule:: specparam.plts.periodic
 
 .. autosummary::
     :toctree: generated/
@@ -274,7 +274,7 @@ Plots for visualizing **periodic** parameters and model components.
 
 Plots for visualizing **aperiodic** parameters and model components.
 
-.. currentmodule:: fooof.plts.aperiodic
+.. currentmodule:: specparam.plts.aperiodic
 
 .. autosummary::
     :toctree: generated/
@@ -284,39 +284,39 @@ Plots for visualizing **aperiodic** parameters and model components.
 
 Plots for visualizing model error.
 
-.. currentmodule:: fooof.plts.error
+.. currentmodule:: specparam.plts.error
 
 .. autosummary::
     :toctree: generated/
 
     plot_spectral_error
 
-Plot FOOOF Objects
+Plot Model Objects
 ~~~~~~~~~~~~~~~~~~
 
-Plots for visualizing models from FOOOF objects.
-Note that these are the same plotting functions that can be called from FOOOF objects directly.
+Plots for visualizing from model objects.
+Note that these are the same plotting functions that can be called from the model objects directly.
 
-.. currentmodule:: fooof.plts.fm
-
-.. autosummary::
-    :toctree: generated/
-
-    plot_fm
-
-.. currentmodule:: fooof.plts.fg
+.. currentmodule:: specparam.plts.fm
 
 .. autosummary::
     :toctree: generated/
 
-    plot_fg
+    plot_model
+
+.. currentmodule:: specparam.plts.fg
+
+.. autosummary::
+    :toctree: generated/
+
+    plot_group
 
 Annotated Plots
 ~~~~~~~~~~~~~~~
 
 Annotated plots that describe the model and fitting process.
 
-.. currentmodule:: fooof.plts.annotate
+.. currentmodule:: specparam.plts.annotate
 
 .. autosummary::
     :toctree: generated/
@@ -334,7 +334,7 @@ Data Utilities
 
 Utilities for working with data.
 
-.. currentmodule:: fooof.utils
+.. currentmodule:: specparam.utils
 
 .. autosummary::
     :toctree: generated/
@@ -347,7 +347,7 @@ Parameter Utilities
 
 Utilities for working with parameters
 
-.. currentmodule:: fooof.utils.params
+.. currentmodule:: specparam.utils.params
 
 .. autosummary::
     :toctree: generated/
@@ -357,20 +357,20 @@ Utilities for working with parameters
 Input / Output (IO)
 ~~~~~~~~~~~~~~~~~~~
 
-.. currentmodule:: fooof.utils.io
+.. currentmodule:: specparam.utils.io
 
 .. autosummary::
     :toctree: generated/
 
-    load_fooof
-    load_fooofgroup
+    load_model
+    load_group
 
 Methods Reports
 ~~~~~~~~~~~~~~~
 
 Utilities to creating methods reports.
 
-.. currentmodule:: fooof.utils.reports
+.. currentmodule:: specparam.utils.reports
 
 .. autosummary::
     :toctree: generated/
