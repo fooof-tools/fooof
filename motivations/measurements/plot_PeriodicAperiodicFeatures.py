@@ -46,10 +46,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import simulation, utility, and plotting tools
-from fooof.bands import Bands
-from fooof.utils import trim_spectrum
-from fooof.sim.gen import gen_power_spectrum
-from fooof.plts.spectra import plot_spectra_shading
+from specparam.bands import Bands
+from specparam.utils import trim_spectrum
+from specparam.sim.gen import gen_power_spectrum
+from specparam.plts.spectra import plot_spectra_shading
 
 ###################################################################################################
 

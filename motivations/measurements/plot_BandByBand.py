@@ -15,16 +15,16 @@ often done in the context of development. The paper for that project is availabl
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Import the FOOOF object
-from fooof import FOOOF
+# Import the model object
+from specparam import PSD
 
 # Import simulation, utility, and plotting tools
-from fooof.bands import Bands
-from fooof.utils import trim_spectrum
-from fooof.analysis import get_band_peak_fm
-from fooof.sim.gen import gen_power_spectrum
-from fooof.sim.utils import set_random_seed
-from fooof.plts.spectra import plot_spectra_shading
+from specparam.bands import Bands
+from specparam.utils import trim_spectrum
+from specparam.analysis import get_band_peak
+from specparam.sim.gen import gen_power_spectrum
+from specparam.sim.utils import set_random_seed
+from specparam.plts.spectra import plot_spectra_shading
 
 ###################################################################################################
 # Overview
@@ -115,8 +115,8 @@ def compare_exp(fm1, fm2):
 def compare_peak_pw(fm1, fm2, band_def):
     """Compare the power of detected peaks."""
 
-    pw1 = get_band_peak_fm(fm1, band_def)[1]
-    pw2 = get_band_peak_fm(fm2, band_def)[1]
+    pw1 = get_band_peak(fm1, band_def)[1]
+    pw2 = get_band_peak(fm2, band_def)[1]
 
     return pw1 - pw2
 
@@ -187,9 +187,9 @@ plt.title('Band-by-Band', t_settings);
 
 ###################################################################################################
 
-# Initialize FOOOF objects
-fm_bands_g1 = FOOOF(verbose=False)
-fm_bands_g2 = FOOOF(verbose=False)
+# Initialize model objects
+fm_bands_g1 = PSD(verbose=False)
+fm_bands_g2 = PSD(verbose=False)
 
 # Fit power spectrum models
 fm_bands_g1.fit(freqs, g1_spectrum_bands)
@@ -275,9 +275,9 @@ plt.title('Periodic & Aperiodic', t_settings);
 
 ###################################################################################################
 
-# Initialize FOOOF objects
-fm_pa_g1 = FOOOF(verbose=False)
-fm_pa_g2 = FOOOF(verbose=False)
+# Initialize model objects
+fm_pa_g1 = PSD(verbose=False)
+fm_pa_g2 = PSD(verbose=False)
 
 # Fit power spectrum models
 fm_pa_g1.fit(freqs, g1_spectrum_pa)

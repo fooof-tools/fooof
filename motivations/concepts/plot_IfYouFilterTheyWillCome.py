@@ -30,7 +30,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import the Bands object, for managing frequency band definitions
-from fooof.bands import Bands
+from specparam.bands import Bands
 
 # Imports from NeuroDSP to simulate & plot time series
 from neurodsp.sim import sim_powerlaw, set_random_seed
