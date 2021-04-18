@@ -751,7 +751,7 @@ class FOOOF():
             else tuple(bound[0::2] for bound in self._ap_bounds)
 
         # Collect together guess parameters
-        guess = np.array([off_guess + kne_guess + exp_guess])
+        guess = np.array(off_guess + kne_guess + exp_guess)
 
         # Ignore warnings that are raised in curve_fit
         #   A runtime warning can occur while exploring parameters in curve fitting
