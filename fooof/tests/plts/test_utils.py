@@ -88,7 +88,7 @@ def test_savefig():
     assert os.path.exists(os.path.join(TEST_PLOTS_PATH, 'test_savefig2.pdf'))
 
     # Test giving additional save kwargs
-    example_plot(file_path=TEST_PLOTS_PATH,, file_name='test_savefig3.pdf',
+    example_plot(file_path=TEST_PLOTS_PATH, file_name='test_savefig3.pdf',
                  save_kwargs={'facecolor' : 'red'})
     assert os.path.exists(os.path.join(TEST_PLOTS_PATH, 'test_savefig3.pdf'))
 
