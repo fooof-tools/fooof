@@ -189,11 +189,21 @@ def savefig(func):
         #   Defaults to saving when file name given (since bool(str)->True; bool(None)->False)
         save_fig = kwargs.pop('save_fig', bool(file_name))
 
+        # Check any collect any other plot keywords
+        save_kwargs = kwargs.pop('save_kwargs', {})
+        save_kwargs.setdefault('bbox_inches', 'tight')
+
+        # Check and collect whether to close the plot
+        close = kwargs.pop('close', None)
+
         func(*args, **kwargs)
 
         if save_fig:
             if not file_name:
                 raise ValueError("Input 'file_name' is required to save out the plot.")
-            plt.savefig(fpath(file_path, fname(file_name, 'png')))
+            plt.savefig(fpath(file_path, fname(file_name, 'png')), **save_kwargs)
+
+        if close:
+            plt.close()
 
     return decorated

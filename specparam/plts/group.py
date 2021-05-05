@@ -75,9 +75,9 @@ def plot_group_aperiodic(group, ax=None, **plot_kwargs):
         Keyword arguments to pass into the ``style_plot``.
     """
 
-    if group.aperiodic_mode == 'knee':
-        plot_scatter_2(group.get_params('aperiodic_params', 'exponent'), 'Knee',
-                       group.get_params('aperiodic_params', 'knee'), 'Exponent',
+    if fg.aperiodic_mode == 'knee':
+        plot_scatter_2(fg.get_params('aperiodic_params', 'exponent'), 'Exponent',
+                       fg.get_params('aperiodic_params', 'knee'), 'Knee',
                        'Aperiodic Fit', ax=ax)
     else:
         plot_scatter_1(group.get_params('aperiodic_params', 'exponent'), 'Exponent',
