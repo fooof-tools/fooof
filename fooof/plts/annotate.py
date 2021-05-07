@@ -41,6 +41,9 @@ def plot_annotated_peak_search(fm):
     # Calculate ylims of the plot that are scaled to the range of the data
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
 
+    # Sort parameters by peak height
+    gaussian_params = fm.gaussian_params_[fm.gaussian_params_[:, 1].argsort()][::-1]
+
     # Loop through the iterative search for each peak
     for ind in range(fm.n_peaks_ + 1):
 
@@ -63,7 +66,7 @@ def plot_annotated_peak_search(fm):
 
         if ind < fm.n_peaks_:
 
-            gauss = gaussian_function(fm.freqs, *fm.gaussian_params_[ind, :])
+            gauss = gaussian_function(fm.freqs, *gaussian_params[ind, :])
             plot_spectra(fm.freqs, gauss, ax=ax, label='Gaussian Fit',
                          color=PLT_COLORS['periodic'], linestyle=':', linewidth=3.0)
 
