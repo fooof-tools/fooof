@@ -17,8 +17,8 @@ Exploring how band ratio measures relate to periodic & aperiodic activity.
 # .. math::
 #    BR = \frac{avg(low band power)}{avg(high band power)}
 #
-# In this notebook we will explore this measure in the context of conceptualizing
-# neural power spectra as a combination of aperiodic and periodic activity.
+# In this notebook we will explore this measure in the context of conceptualizing neural power
+# spectra as a combination of aperiodic and periodic activity.
 #
 
 ###################################################################################################
@@ -29,8 +29,9 @@ Exploring how band ratio measures relate to periodic & aperiodic activity.
 # relate to periodic and aperiodic activity.
 #
 # We have completed a full project investigating methodological properties of band
-# ratio measures, which is available
-# `here <https://github.com/voytekresearch/BandRatios>`_.
+# ratio measures, which is available as a
+# `published paper <https://doi.org/10.1523/ENEURO.0192-20.2020 >`_ and/or on
+# `Github <https://github.com/voytekresearch/BandRatios>`_.
 #
 
 ###################################################################################################
@@ -287,6 +288,9 @@ for ax, (label, (comparison, spectrum)) in zip(axes, exp_spectra.items()):
 # in neural data.
 #
 # For more investigation into band ratios, their methodological issues, applications to real
-# data, and a comparison to parameterizing power spectra, see the full project
-# `here <https://github.com/voytekresearch/BandRatios>`_,
+# data, and a comparison to parameterizing power spectra, you can read about a full project
+# on this topic in the
+# `published paper <https://doi.org/10.1523/ENEURO.0192-20.2020 >`_
+# and/or explore the code on
+# `Github <https://github.com/voytekresearch/BandRatios>`_.
 #

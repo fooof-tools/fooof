@@ -16,7 +16,7 @@ A description of and introduction to the power spectrum model.
 #
 # Keep in mind as you go, that if you want more information that describes, motivates, and
 # justifies our modeling approach, you can also check out the associated
-# `paper <https://www.biorxiv.org/content/early/2018/04/11/299859>`_,
+# `paper <https://doi.org/10.1038/s41593-020-00744-x>`_,
 # and/or the
 # `motivations <https://fooof-tools.github.io/fooof/auto_tutorials/index.html>`_
 # section of the site.
@@ -395,7 +395,7 @@ plot_annotated_model(fm2, plt_log=True)
 #   `center frequency`, `power` and `bandwidth` of putative periodic activity
 #
 # For more technical details on the model formulation and fitting process, check out the
-# `paper <https://www.biorxiv.org/content/early/2018/04/11/299859>`_.
+# `paper <https://doi.org/10.1038/s41593-020-00744-x>`_.
 #
 # In the next tutorial, we will start to use this model.
 #

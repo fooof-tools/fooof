@@ -5,7 +5,7 @@ Conflating Periodic & Aperiodic Changes
 Demonstrating how changes in periodic & aperiodic parameters can be conflated.
 
 This example is a code implementation and quantitatively exact version of Figure 1 from the
-`Parameterizing Neural Power Spectra <https://www.biorxiv.org/content/10.1101/2020.01.11.900977v1>`_
+`Parameterizing Neural Power Spectra <https://doi.org/10.1038/s41593-020-00744-x>`_
 paper.
 """
 
