@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from specparam.sim.gen import gen_power_spectrum
+from specparam.sim import sim_power_spectrum
 
 from specparam.utils.data import *
 
@@ -22,7 +22,7 @@ def test_trim_spectrum():
 def test_interpolate_spectrum():
 
     # Test with single buffer exclusion zone
-    freqs, powers = gen_power_spectrum(\
+    freqs, powers = sim_power_spectrum(\
         [1, 75], [1, 1], [[10, 0.5, 1.0], [60, 2, 0.1]])
 
     exclude = [58, 62]
@@ -36,7 +36,7 @@ def test_interpolate_spectrum():
     assert powers[mask].sum() > powers_out[mask].sum()
 
     # Test with multiple buffer exclusion zones
-    freqs, powers = gen_power_spectrum(\
+    freqs, powers = sim_power_spectrum(\
         [1, 150], [1, 100, 1], [[10, 0.5, 1.0], [60, 1, 0.1], [120, 0.5, 0.1]])
 
     exclude = [[58, 62], [118, 122]]

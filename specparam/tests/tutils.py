@@ -6,7 +6,7 @@ from specparam.bands import Bands
 from specparam.objs import PSD, PSDGroup
 from specparam.core.modutils import safe_import
 from specparam.sim.params import param_sampler
-from specparam.sim.gen import gen_power_spectrum, gen_group_power_spectra
+from specparam.sim.sim import sim_power_spectrum, sim_group_power_spectra
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -20,7 +20,7 @@ def get_tfm():
     ap_params = [50, 2]
     gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = gen_power_spectrum(freq_range, ap_params, gaussian_params)
+    xs, ys = sim_power_spectrum(freq_range, ap_params, gaussian_params)
 
     tfm = PSD(verbose=False)
     tfm.fit(xs, ys)
@@ -31,7 +31,7 @@ def get_tfg():
     """Get a group object, with some fit power spectra, for testing."""
 
     n_spectra = 3
-    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys = sim_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = PSDGroup(verbose=False)
     tfg.fit(xs, ys)
@@ -44,7 +44,7 @@ def get_tbands():
     return Bands({'theta' : (4, 8), 'alpha' : (8, 12), 'beta' : (13, 30)})
 
 def default_group_params():
-    """Create default parameters for generating a test group of power spectra."""
+    """Create default parameters for simulating a test group of power spectra."""
 
     freq_range = [3, 50]
     ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])

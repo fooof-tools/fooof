@@ -12,7 +12,7 @@ from py.test import raises
 from specparam.core.items import OBJ_DESC
 from specparam.core.errors import FitError
 from specparam.core.utils import group_three
-from specparam.sim import gen_freqs, gen_power_spectrum
+from specparam.sim import gen_freqs, sim_power_spectrum
 from specparam.data import ModelSettings, SpectrumMetaData, FitResults
 from specparam.core.errors import DataError, NoDataError, InconsistentDataError
 
@@ -57,7 +57,7 @@ def test_fit_nk():
     gauss_params = [10, 0.5, 2, 20, 0.3, 4]
     nlv = 0.0025
 
-    xs, ys = gen_power_spectrum([3, 50], ap_params, gauss_params, nlv)
+    xs, ys = sim_power_spectrum([3, 50], ap_params, gauss_params, nlv)
 
     tfm = PSD(verbose=False)
     tfm.fit(xs, ys)
@@ -76,7 +76,7 @@ def test_fit_nk_noise():
     gauss_params = [10, 0.5, 2, 20, 0.3, 4]
     nlv = 1.0
 
-    xs, ys = gen_power_spectrum([3, 50], ap_params, gauss_params, nlv)
+    xs, ys = sim_power_spectrum([3, 50], ap_params, gauss_params, nlv)
 
     tfm = PSD(max_n_peaks=8, verbose=False)
     tfm.fit(xs, ys)
@@ -91,7 +91,7 @@ def test_fit_knee():
     gauss_params = [10, 0.3, 2, 20, 0.1, 4, 60, 0.3, 1]
     nlv = 0.0025
 
-    xs, ys = gen_power_spectrum([1, 150], ap_params, gauss_params, nlv)
+    xs, ys = sim_power_spectrum([1, 150], ap_params, gauss_params, nlv)
 
     tfm = PSD(aperiodic_mode='knee', verbose=False)
     tfm.fit(xs, ys)
@@ -131,7 +131,7 @@ def test_checks():
     This tests all the input checking done in `_prepare_data`.
     """
 
-    xs, ys = gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2])
+    xs, ys = sim_power_spectrum([3, 50], [50, 2], [10, 0.5, 2])
 
     tfm = PSD(verbose=False)
 
@@ -157,7 +157,7 @@ def test_checks():
     tfm.fit(xs, ys, [3, 40])
 
     # Check freq of 0 issue
-    xs, ys = gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2])
+    xs, ys = sim_power_spectrum([3, 50], [50, 2], [10, 0.5, 2])
     tfm.fit(xs, ys)
     assert tfm.freqs[0] != 0
 
@@ -364,7 +364,7 @@ def test_report(skip_if_no_mpl):
 
     tfm = PSD(verbose=False)
 
-    tfm.report(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+    tfm.report(*sim_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
     assert tfm
 
@@ -375,7 +375,7 @@ def test_fit_failure():
     tfm = PSD(verbose=False)
     tfm._maxfev = 5
 
-    tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+    tfm.fit(*sim_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
     # Check after failing out of fit, all results are reset
     for result in OBJ_DESC['results']:
@@ -389,7 +389,7 @@ def test_fit_failure():
     tfm._fit_peaks = raise_runtime_error
 
     # Run a model fit - this should raise an error, but continue in try/except
-    tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+    tfm.fit(*sim_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
     # Check after failing out of fit, all results are reset
     for result in OBJ_DESC['results']:
@@ -405,7 +405,7 @@ def test_debug():
     assert tfm._debug is True
 
     with raises(FitError):
-        tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+        tfm.fit(*sim_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
 def test_check_data():
     """Test model fitting with check data mode turned off, including with NaN data."""

@@ -6,7 +6,7 @@ import numpy as np
 
 from specparam import PSDGroup
 from specparam.objs.utils import compare_model_objs
-from specparam.sim import gen_group_power_spectra
+from specparam.sim import sim_group_power_spectra
 from specparam.core.errors import NoModelError, IncompatibleSettingsError
 
 from specparam.tests.tutils import default_group_params
@@ -122,7 +122,7 @@ def test_fit_models_3d(tfg):
 
     n_groups = 2
     n_spectra = 3
-    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys = sim_group_power_spectra(n_spectra, *default_group_params())
     ys = np.stack([ys] * n_groups, axis=0)
     spectra_shape = np.shape(ys)
 

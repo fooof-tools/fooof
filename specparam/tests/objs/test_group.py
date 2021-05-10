@@ -11,7 +11,7 @@ from numpy.testing import assert_equal
 
 from specparam.data import FitResults
 from specparam.core.items import OBJ_DESC
-from specparam.sim import gen_group_power_spectra
+from specparam.sim import sim_group_power_spectra
 
 from specparam.tests.settings import TEST_DATA_PATH
 from specparam.tests.tutils import default_group_params, plot_test
@@ -77,7 +77,7 @@ def test_fit_nk():
     """Test group fit, no knee."""
 
     n_spectra = 2
-    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params(), nlvs=0)
+    xs, ys = sim_group_power_spectra(n_spectra, *default_group_params(), nlvs=0)
 
     tfg = PSDGroup(verbose=False)
     tfg.fit(xs, ys)
@@ -92,7 +92,7 @@ def test_fit_nk_noise():
     """Test group fit, no knee, on noisy data, to make sure nothing breaks."""
 
     n_spectra = 5
-    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params(), nlvs=1.0)
+    xs, ys = sim_group_power_spectra(n_spectra, *default_group_params(), nlvs=1.0)
 
     tfg = PSDGroup(max_n_peaks=8, verbose=False)
     tfg.fit(xs, ys)
@@ -107,7 +107,7 @@ def test_fit_knee():
     ap_params = [50, 2, 1]
     gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = gen_group_power_spectra(n_spectra, [1, 150], ap_params, gaussian_params, nlvs=0)
+    xs, ys = sim_group_power_spectra(n_spectra, [1, 150], ap_params, gaussian_params, nlvs=0)
 
     tfg = PSDGroup(aperiodic_mode='knee', verbose=False)
     tfg.fit(xs, ys)
@@ -126,7 +126,7 @@ def test_fg_fail():
     """
 
     # Create some noisy spectra that will be hard to fit
-    fs, ps = gen_group_power_spectra(10, [3, 6], [1, 1], [10, 1, 1], nlvs=10)
+    fs, ps = sim_group_power_spectra(10, [3, 6], [1, 1], [10, 1, 1], nlvs=10)
 
     # Use a fg with the max iterations set so low that it will fail to converge
     ntfg = PSDGroup()
@@ -159,7 +159,7 @@ def test_drop():
     """Test function to drop results from group object."""
 
     n_spectra = 3
-    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys = sim_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = PSDGroup(verbose=False)
 
@@ -191,7 +191,7 @@ def test_fit_par():
     """Test group fit, running in parallel."""
 
     n_spectra = 2
-    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys = sim_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = PSDGroup(verbose=False)
     tfg.fit(xs, ys, n_jobs=2)
@@ -286,7 +286,7 @@ def test_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
 
     n_spectra = 2
-    xs, ys = gen_group_power_spectra(n_spectra, *default_group_params())
+    xs, ys = sim_group_power_spectra(n_spectra, *default_group_params())
 
     tfg = PSDGroup(verbose=False)
     tfg.report(xs, ys)

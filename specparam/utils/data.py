@@ -36,8 +36,8 @@ def trim_spectrum(freqs, power_spectra, f_range):
     --------
     Using a simulated spectrum, extract a frequency range:
 
-    >>> from specparam.sim import gen_power_spectrum
-    >>> freqs, powers = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1.0])
+    >>> from specparam.sim import sim_power_spectrum
+    >>> freqs, powers = sim_power_spectrum([1, 50], [1, 1], [10, 0.5, 1.0])
     >>> freqs, powers = trim_spectrum(freqs, powers, [3, 30])
     """
 
@@ -99,8 +99,8 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
     --------
     Using a simulated spectrum, interpolate away a line noise peak:
 
-    >>> from specparam.sim import gen_power_spectrum
-    >>> freqs, powers = gen_power_spectrum([1, 75], [1, 1], [[10, 0.5, 1.0], [60, 2, 0.1]])
+    >>> from specparam.sim import sim_power_spectrum
+    >>> freqs, powers = sim_power_spectrum([1, 75], [1, 1], [[10, 0.5, 1.0], [60, 2, 0.1]])
     >>> freqs, powers = interpolate_spectrum(freqs, powers, [58, 62])
     """
 

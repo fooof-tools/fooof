@@ -183,9 +183,8 @@ Functions for simulating neural power spectra.
 .. autosummary::
     :toctree: generated/
 
-    gen_freqs
-    gen_power_spectrum
-    gen_group_power_spectra
+    sim_power_spectrum
+    sim_group_power_spectra
 
 Manage Parameters
 ~~~~~~~~~~~~~~~~~
@@ -230,6 +229,7 @@ Utilities for simulating power spectra.
 .. autosummary::
     :toctree: generated/
 
+    create_freqs
     set_random_seed
 
 Plotting Functions
