@@ -66,7 +66,7 @@ def plot_annotated_peak_search(model):
 
         if ind < model.n_peaks_:
 
-            gauss = gaussian_function(model.freqs, *gaussian_params_[ind, :])
+            gauss = gaussian_function(model.freqs, *gaussian_params[ind, :])
             plot_spectra(model.freqs, gauss, ax=ax, label='Gaussian Fit',
                          color=PLT_COLORS['periodic'], linestyle=':', linewidth=3.0)
 
