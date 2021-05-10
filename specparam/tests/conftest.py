@@ -10,7 +10,7 @@ from specparam.core.modutils import safe_import
 
 from specparam.tests.tutils import get_tfm, get_tfg, get_tbands
 from specparam.tests.settings import (BASE_TEST_FILE_PATH, TEST_DATA_PATH,
-                                  TEST_REPORTS_PATH, TEST_PLOTS_PATH)
+                                      TEST_REPORTS_PATH, TEST_PLOTS_PATH)
 
 plt = safe_import('.pyplot', 'matplotlib')
 

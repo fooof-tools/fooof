@@ -19,7 +19,7 @@ def test_plot_peak_params(skip_if_no_mpl):
     plot_peak_params(peaks)
 
     # Test with multiple set of params
-    plot_peak_params([peaks, peaks], save_fig=True, file_path=TEST_PLOTS_PATH,
+    plot_peak_params([peaks, peaks], file_path=TEST_PLOTS_PATH,
                      file_name='test_plot_peak_params.png')
 
 @plot_test
@@ -31,5 +31,5 @@ def test_plot_peak_fits(skip_if_no_mpl):
     plot_peak_fits(peaks)
 
     # Test with multiple set of params
-    plot_peak_fits([peaks, peaks], save_fig=True, file_path=TEST_PLOTS_PATH,
+    plot_peak_fits([peaks, peaks], file_path=TEST_PLOTS_PATH,
                    file_name='test_plot_peak_fits.png')
