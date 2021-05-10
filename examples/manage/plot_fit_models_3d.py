@@ -132,7 +132,7 @@ print('Number of conditions, channels & frequencies: \t{}, {}, {}'.format(\
 
 ###################################################################################################
 # fit_models_3d
-# ~~~~~~~~~~~~
+# ~~~~~~~~~~~~~
 #
 # More specifically, :func:`~.fit_models_3d` takes in:
 #

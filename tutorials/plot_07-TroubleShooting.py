@@ -377,7 +377,7 @@ print('Average number of fit peaks: ', np.mean(fg.n_peaks_))
 ###################################################################################################
 
 # Print out instructions to report bad fits
-#  Note you can also call this from specparamGroup, and from instances (ex: `fm.print_report_issue()`)
+#  Note you can also call this from PSDGroup, and from instances (ex: `fm.print_report_issue()`)
 PSD.print_report_issue()
 
 ###################################################################################################

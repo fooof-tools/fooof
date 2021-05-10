@@ -30,7 +30,7 @@ Exploring how band ratio measures relate to periodic & aperiodic activity.
 #
 # We have completed a full project investigating methodological properties of band
 # ratio measures, which is available as a
-# `published paper <https://doi.org/10.1523/ENEURO.0192-20.2020 >`_ and/or on
+# `published paper <https://doi.org/10.1523/ENEURO.0192-20.2020>`_ and/or on
 # `Github <https://github.com/voytekresearch/BandRatios>`_.
 #
 
@@ -290,7 +290,7 @@ for ax, (label, (comparison, spectrum)) in zip(axes, exp_spectra.items()):
 # For more investigation into band ratios, their methodological issues, applications to real
 # data, and a comparison to parameterizing power spectra, you can read about a full project
 # on this topic in the
-# `published paper <https://doi.org/10.1523/ENEURO.0192-20.2020 >`_
+# `published paper <https://doi.org/10.1523/ENEURO.0192-20.2020>`_
 # and/or explore the code on
 # `Github <https://github.com/voytekresearch/BandRatios>`_.
 #

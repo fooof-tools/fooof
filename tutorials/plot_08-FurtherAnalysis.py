@@ -36,8 +36,8 @@ from specparam import PSD, PSDGroup
 from specparam.bands import Bands
 
 # Import simulation code and utilities
+from specparam.sim import sim_group_power_spectra
 from specparam.sim.params import param_sampler
-from specparam.sim.gen import gen_group_power_spectra
 from specparam.sim.utils import set_random_seed
 
 # Import some analysis functions
@@ -74,11 +74,11 @@ fm.fit(freqs, spectrum, [3, 30])
 
 ###################################################################################################
 
-# Set random seed, for consistency generating simulated data
+# Set random seed, for consistency creating simulated data
 set_random_seed(21)
 
-# Generate some simulated power spectra
-freqs, spectra = gen_group_power_spectra(n_spectra=10,
+# Create some simulated power spectra
+freqs, spectra = sim_group_power_spectra(n_spectra=10,
                                          freq_range=[3, 40],
                                          aperiodic_params=param_sampler([[20, 2], [35, 1.5]]),
                                          periodic_params=param_sampler([[], [10, 0.5, 2]]))
@@ -129,8 +129,8 @@ bands = Bands({'theta' : [4, 8],
                'beta' : [15, 30]})
 
 ###################################################################################################
-# Extracting peaks from specparam Objects
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Extracting peaks from PSD Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # The :func:`~.get_band_peak` function takes in a
 # :class:`~.PSD` object and extracts peak(s) from a requested frequency range.
@@ -150,8 +150,8 @@ alpha = get_band_peak(fm, bands.alpha)
 print(alpha)
 
 ###################################################################################################
-# Extracting peaks from specparamGroup Objects
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Extracting peaks from PSDGroup Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Similarly, the :func:`~.get_band_peak_group` function can be used
 # to select peaks from specified frequency ranges, from :class:`~specparam.PSDGroup` objects.

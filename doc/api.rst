@@ -297,14 +297,14 @@ Plot Model Objects
 Plots for visualizing from model objects.
 Note that these are the same plotting functions that can be called from the model objects directly.
 
-.. currentmodule:: specparam.plts.fm
+.. currentmodule:: specparam.plts.model
 
 .. autosummary::
     :toctree: generated/
 
     plot_model
 
-.. currentmodule:: specparam.plts.fg
+.. currentmodule:: specparam.plts.group
 
 .. autosummary::
     :toctree: generated/

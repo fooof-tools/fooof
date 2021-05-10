@@ -15,8 +15,8 @@ Examples with combining, sub-selecting, dropping, and averaging power spectrum m
 # Using simulated data, in this example we will cover:
 #
 # - combining results across model objects
-# - sub-selecting fits from specparamGroup objects
-# - dropping specified model fits from specparamGroup objects
+# - sub-selecting fits from PSDGroup objects
+# - dropping specified model fits from PSDGroup objects
 # - average across groups of model fits
 #
 
@@ -107,8 +107,8 @@ print('Number of model fits: ', len(fg))
 compare_model_objs([fm1, fg], 'settings')
 
 ###################################################################################################
-# Sub-Select from specparamGroup
-# --------------------------
+# Sub-Select from PSDGroup
+# ------------------------
 #
 # When you have a :class:`~specparam.PSDGroup` object, you may also want to sub-select
 # a group of models.
@@ -145,8 +145,8 @@ print('Number of model fits: ', len(nfg))
 #
 
 ###################################################################################################
-# Dropping Fits from specparamGroup
-# -----------------------------
+# Dropping Fits from PSDGroup
+# ---------------------------
 #
 # Another option is to 'drop' model fits from a PSDGroup object. You can do this with
 # the :meth:`~specparam.PSDGroup.drop` method from a :class:`~specparam.PSDGroup` object.
@@ -194,8 +194,8 @@ for ind in fg.null_inds_:
     print(fg[ind])
 
 ###################################################################################################
-# Note on Selecting from specparam Objects
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Note on Selecting from PSD Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Both the :meth:`~specparam.PSDGroup.get_group` and :meth:`~specparam.PSDGroup.drop` methods
 # take an input of the indices of the model(s) to select or drop.
