@@ -32,7 +32,7 @@ from specparam.bands import Bands
 from specparam.objs.utils import average_group, combine_model_objs, compare_model_objs
 
 # Import simulation functions to create our example data
-from specparam.sim.gen import gen_power_spectrum
+from specparam.sim import sim_power_spectrum
 
 ###################################################################################################
 #
@@ -46,11 +46,11 @@ freq_range = [1, 50]
 freq_res = 0.25
 
 # Create some example power spectra
-freqs, powers_1 = gen_power_spectrum(freq_range, [0, 1.0], [10, 0.25, 2],
+freqs, powers_1 = sim_power_spectrum(freq_range, [0, 1.0], [10, 0.25, 2],
                                      nlv=0.00, freq_res=freq_res)
-freqs, powers_2 = gen_power_spectrum(freq_range, [0, 1.2], [9, 0.20, 1.5],
+freqs, powers_2 = sim_power_spectrum(freq_range, [0, 1.2], [9, 0.20, 1.5],
                                      nlv=0.01, freq_res=freq_res)
-freqs, powers_3 = gen_power_spectrum(freq_range, [0, 1.5], [11, 0.3, 2.5],
+freqs, powers_3 = sim_power_spectrum(freq_range, [0, 1.5], [11, 0.3, 2.5],
                                      nlv=0.02, freq_res=freq_res)
 
 ###################################################################################################

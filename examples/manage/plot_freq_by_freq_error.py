@@ -16,7 +16,7 @@ import numpy as np
 from specparam import PSD, PSDGroup
 
 # Import simulation utilities to create some test data
-from specparam.sim.gen import gen_power_spectrum, gen_group_power_spectra
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 
 # Import functions to examine frequency-by-frequency error of model fits
 from specparam.analysis.error import compute_pointwise_error, compute_pointwise_error_group
@@ -53,7 +53,7 @@ from specparam.analysis.error import compute_pointwise_error, compute_pointwise_
 ###################################################################################################
 
 # Simulate an example power spectrum
-freqs, powers = gen_power_spectrum([3, 50], [1, 1], [10, 0.25, 0.5])
+freqs, powers = sim_power_spectrum([3, 50], [1, 1], [10, 0.25, 0.5])
 
 ###################################################################################################
 
@@ -100,7 +100,7 @@ print('Model fit error: \t\t {:1.3f}'.format(fm.error_))
 ###################################################################################################
 
 # Simulate a group of power spectra
-freqs, powers = gen_group_power_spectra(10, [3, 50], [1, 1], [10, 0.3, 1], nlvs=0.1)
+freqs, powers = sim_group_power_spectra(10, [3, 50], [1, 1], [10, 0.3, 1], nlvs=0.1)
 
 ###################################################################################################
 
@@ -165,7 +165,7 @@ print('Frequency with highest standard deviation of error: \t', f_max_std)
 ###################################################################################################
 
 # Simulate a group of power spectra, with a knee
-freqs, powers = gen_group_power_spectra(10, [1, 50], [0, 10, 2],
+freqs, powers = sim_group_power_spectra(10, [1, 50], [0, 10, 2],
                                         [10, 0.3, 1], nlvs=0.01)
 
 # Parameterize our new group of power spectra

@@ -39,20 +39,20 @@ A description of and introduction to the power spectrum model.
 
 # Import required code for visualizing example models
 from specparam import PSD
-from specparam.sim.gen import gen_power_spectrum
+from specparam.sim import sim_power_spectrum
 from specparam.sim.utils import set_random_seed
 from specparam.plts.spectra import plot_spectra
 from specparam.plts.annotate import plot_annotated_model
 
 ###################################################################################################
 
-# Set random seed, for consistency generating simulated data
+# Set random seed, for consistency simulating data
 set_random_seed(21)
 
 # Simulate example power spectra
-freqs1, powers1 = gen_power_spectrum([3, 40], [1, 1],
+freqs1, powers1 = sim_power_spectrum([3, 40], [1, 1],
                                      [[10, 0.2, 1.25], [30, 0.15, 2]])
-freqs2, powers2 = gen_power_spectrum([1, 150], [1, 125, 1.25],
+freqs2, powers2 = sim_power_spectrum([1, 150], [1, 125, 1.25],
                                      [[8, 0.15, 1.], [30, 0.1, 2]])
 
 ###################################################################################################

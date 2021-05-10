@@ -8,7 +8,7 @@ Creating simulated power spectra.
 ###################################################################################################
 
 # Import functions for creating simulated power spectra
-from specparam.sim.gen import gen_power_spectrum, gen_group_power_spectra
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 
 # Import plotting functions
 from specparam.plts.spectra import plot_spectra
@@ -32,7 +32,7 @@ from specparam.plts.spectra import plot_spectra
 #
 #   - each peak is defined with three parameters, as [center frequency, height, width]
 #
-# The :func:`~.gen_power_spectrum` function takes these parameters as input to
+# The :func:`~.sim_power_spectrum` function takes these parameters as input to
 # create and return a simulated power spectrum. Note that the parameters that define the peaks
 # are labeled as gaussian parameters, as these parameters define the simulated gaussians
 # directly, and are not the modified peak parameters that the model outputs.
@@ -47,8 +47,8 @@ periodic_params = [10, 0.3, 1]    # Parameters for any periodic components
 
 ###################################################################################################
 
-# Generate a simulated power spectrum
-freqs, powers = gen_power_spectrum(freq_range, aperiodic_params, periodic_params)
+# Simulate a power spectrum
+freqs, powers = sim_power_spectrum(freq_range, aperiodic_params, periodic_params)
 
 ###################################################################################################
 
@@ -93,8 +93,8 @@ periodic_params = [9, 0.4, 1, 24, 0.2, 3]
 
 ###################################################################################################
 
-# Generate the new simulated power spectrum
-freqs, powers = gen_power_spectrum(freq_range, aperiodic_params,
+# Simulate the new power spectrum
+freqs, powers = sim_power_spectrum(freq_range, aperiodic_params,
                                    periodic_params, nlv, freq_res)
 
 ###################################################################################################
@@ -106,16 +106,16 @@ plot_spectra(freqs, powers, log_powers=True)
 # Simulating a Group of Power Spectra
 # -----------------------------------
 #
-# For simulating multiple power spectra, the :func:`~.gen_group_power_spectra` can be used.
+# For simulating multiple power spectra, the :func:`~.sim_group_power_spectra` can be used.
 #
 # This function takes the same kind of parameter definitions as
-# :func:`~.gen_power_spectrum`, and in addition takes a number specifying
+# :func:`~.sim_power_spectrum`, and in addition takes a number specifying
 # how many power spectra to simulate, returning a 2D matrix containing the
 # desired number of spectra.
 #
-# Parameters that are passed into :func:`~.gen_group_power_spectra` can be:
+# Parameters that are passed into :func:`~.sim_group_power_spectra` can be:
 #
-# - a single definition, whereby the same value is used for all generated spectra
+# - a single definition, whereby the same value is used for all simulated spectra
 # - a list of parameters, whereby each successive entry is used for each successive spectrum
 # - a function or generator that can be called to return parameters for each spectrum
 #
@@ -136,12 +136,12 @@ periodic_params = [10, 0.4, 1]
 ###################################################################################################
 
 # Simulate a group of power spectra
-freqs, powers = gen_group_power_spectra(n_spectra, freq_range, aperiodic_params,
+freqs, powers = sim_group_power_spectra(n_spectra, freq_range, aperiodic_params,
                                         periodic_params, nlv)
 
 ###################################################################################################
 
-# Plot the power spectra that were just generated
+# Plot the power spectra that were just simulated
 plot_spectra(freqs, powers, log_freqs=True, log_powers=True)
 
 ###################################################################################################
@@ -159,7 +159,7 @@ plot_spectra(freqs, powers, log_freqs=True, log_powers=True)
 ###################################################################################################
 
 # Simulate a power spectrum, returning the simulation parameter information
-freqs, powers, sp = gen_power_spectrum([1, 50], [1, 1], [10, 0.25, 1.5],
+freqs, powers, sp = sim_power_spectrum([1, 50], [1, 1], [10, 0.25, 1.5],
                                        0.01, return_params=True)
 
 # Check the information stored in the simulation params object
@@ -168,7 +168,7 @@ print(sp)
 ###################################################################################################
 
 # Simulate a group of power spectrum, returning the simulation parameter information
-freqs, powers, sps = gen_group_power_spectra(3, [1, 150], [1, 100, 150],
+freqs, powers, sps = sim_group_power_spectra(3, [1, 150], [1, 100, 150],
                                              [4, 0.2, 2, 22, 0.15, 3],
                                              0.01, return_params=True)
 

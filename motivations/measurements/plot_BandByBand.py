@@ -22,7 +22,7 @@ from specparam import PSD
 from specparam.bands import Bands
 from specparam.utils import trim_spectrum
 from specparam.analysis import get_band_peak
-from specparam.sim.gen import gen_power_spectrum
+from specparam.sim import sim_power_spectrum
 from specparam.sim.utils import set_random_seed
 from specparam.plts.spectra import plot_spectra_shading
 
@@ -153,14 +153,14 @@ ap_params = [1, 1]
 pe_g1 = [[2, 0.25, 1], [6, 0.2, 1], [10, 0.5, 1.5], [20, 0.2, 3], [40, 0.25, 3.5]]
 pe_g2 = [[2, 0.5, 1], [6, 0.3, 1], [10, 0.5, 1.5], [20, 0.15, 3], [40, 0.15, 3.5]]
 
-# Set random seed, for consistency generating simulated data
+# Set random seed, for consistency creating simulated data
 set_random_seed(21)
 
 ###################################################################################################
 
 # Simulate example power spectra for each group
-freqs, g1_spectrum_bands = gen_power_spectrum(f_range, ap_params, pe_g1, nlv)
-freqs, g2_spectrum_bands = gen_power_spectrum(f_range, ap_params, pe_g2, nlv)
+freqs, g1_spectrum_bands = sim_power_spectrum(f_range, ap_params, pe_g1, nlv)
+freqs, g2_spectrum_bands = sim_power_spectrum(f_range, ap_params, pe_g2, nlv)
 
 ###################################################################################################
 
@@ -250,8 +250,8 @@ for label, definition in bands:
 ###################################################################################################
 
 # Simulate spectra for each group, with aperiodic differences
-freqs, g1_spectrum_pa = gen_power_spectrum(f_range, [1.0, 1.25], [10, 0.5, 1.5], nlv)
-freqs, g2_spectrum_pa = gen_power_spectrum(f_range, [0.7, 1.00], [10, 0.5, 1.5], nlv)
+freqs, g1_spectrum_pa = sim_power_spectrum(f_range, [1.0, 1.25], [10, 0.5, 1.5], nlv)
+freqs, g2_spectrum_pa = sim_power_spectrum(f_range, [0.7, 1.00], [10, 0.5, 1.5], nlv)
 
 ###################################################################################################
 

@@ -15,7 +15,7 @@ from specparam.bands import Bands
 from specparam.analysis import get_band_peak_group
 
 # Import simulation utilities for making example data
-from specparam.sim.gen import gen_group_power_spectra
+from specparam.sim import sim_group_power_spectra
 from specparam.sim.params import param_jitter
 
 # Import plotting function for model parameters and components
@@ -60,8 +60,8 @@ g2_peaks = param_jitter([9, 1, 0.5], [0.25, 0.1, 0.3])
 ###################################################################################################
 
 # Simulate some test data, as two groups of power spectra
-freqs, powers1 = gen_group_power_spectra(n_subjs, freq_range, g1_aps, g1_peaks)
-freqs, powers2 = gen_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
+freqs, powers1 = sim_group_power_spectra(n_subjs, freq_range, g1_aps, g1_peaks)
+freqs, powers2 = sim_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
 
 ###################################################################################################
 # Fit Power Spectrum Models

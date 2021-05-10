@@ -23,12 +23,12 @@ import matplotlib.pyplot as plt
 from specparam import PSD
 
 # Import simulation functions to create some example data
-from specparam.sim.gen import gen_power_spectrum
+from specparam.sim import sim_power_spectrum
 
 ###################################################################################################
 
-# Generate an example power spectrum
-freqs, powers = gen_power_spectrum([3, 50], [1, 1],
+# Simulate an example power spectrum
+freqs, powers = sim_power_spectrum([3, 50], [1, 1],
                                    [[9, 0.25, 0.5], [22, 0.1, 1.5], [25, 0.2, 1.]])
 
 ###################################################################################################
@@ -139,7 +139,7 @@ fm.plot(plot_aperiodic=True, plot_peaks='line-shade-outline', plt_log=False)
 ###################################################################################################
 
 # Simulate a new power spectrum, over a broader frequency region
-freqs, powers = gen_power_spectrum([1, 150], [0, 10, 1.5],
+freqs, powers = sim_power_spectrum([1, 150], [0, 10, 1.5],
                                    [[4, 0.25, 1], [12, 0.2, 1.5], [25, 0.1, 2]])
 
 ###################################################################################################

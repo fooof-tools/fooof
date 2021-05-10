@@ -43,7 +43,7 @@ import matplotlib.pyplot as plt
 # Import simulation, utility, and plotting tools
 from specparam.bands import Bands
 from specparam.utils import trim_spectrum
-from specparam.sim.gen import gen_power_spectrum
+from specparam.sim import sim_power_spectrum
 from specparam.sim.utils import set_random_seed
 from specparam.plts.spectra import plot_spectra_shading
 
@@ -83,13 +83,13 @@ theta = [6, 0.4, 1]
 alpha = [10, 0.5, 0.75]
 beta  = [25, 0.3, 1.5]
 
-# Set random seed, for consistency generating simulated data
+# Set random seed, for consistency creating simulated data
 set_random_seed(21)
 
 ###################################################################################################
 
 # Simulate a power spectrum
-freqs, powers = gen_power_spectrum(f_range, ap, [theta, alpha, beta], nlv, f_res)
+freqs, powers = sim_power_spectrum(f_range, ap, [theta, alpha, beta], nlv, f_res)
 
 ###################################################################################################
 # Calculating Band Ratios
@@ -163,20 +163,20 @@ def upd(data, index, value):
 # Simulate and collect power spectra with changes in each periodic parameter
 spectra = {
     'Theta Frequency' : None,
-    'Theta Power' : gen_power_spectrum(\
+    'Theta Power' : sim_power_spectrum(\
         f_range, ap, [upd(theta, ipw, 0.5041), alpha, beta], nlv, f_res)[1],
-    'Theta Bandwidth' : gen_power_spectrum(\
+    'Theta Bandwidth' : sim_power_spectrum(\
         f_range, ap, [upd(theta, ibw, 1.61), alpha, beta], nlv, f_res)[1],
-    'Alpha Frequency' : gen_power_spectrum(\
+    'Alpha Frequency' : sim_power_spectrum(\
         f_range, ap, [theta, upd(alpha, icf, 8.212), beta], nlv, f_res)[1],
     'Alpha Power' : None,
-    'Alpha Bandwidth' : gen_power_spectrum(\
+    'Alpha Bandwidth' : sim_power_spectrum(\
         f_range, ap, [theta, upd(alpha, ibw, 1.8845), beta], nlv, f_res)[1],
-    'Beta Frequency' : gen_power_spectrum(\
+    'Beta Frequency' : sim_power_spectrum(\
         f_range, ap, [theta, alpha, upd(beta, icf, 19.388)], nlv, f_res)[1],
-    'Beta Power' : gen_power_spectrum(\
+    'Beta Power' : sim_power_spectrum(\
         f_range, ap, [theta, alpha, upd(beta, ipw, 0.1403)], nlv, f_res)[1],
-    'Beta Bandwidth' : gen_power_spectrum(\
+    'Beta Bandwidth' : sim_power_spectrum(\
         f_range, ap, [theta, alpha, upd(beta, ibw, 0.609)], nlv, f_res)[1],
 }
 
@@ -240,11 +240,11 @@ _ = [ax.axis('off') for ax in [axes[0, 0], axes[1, 1]]]
 exp_spectra = {
     'Exponent w Peaks' : \
         [powers,
-         gen_power_spectrum(f_range, [0.13, 1.1099],
+         sim_power_spectrum(f_range, [0.13, 1.1099],
                             [theta, alpha, beta], nlv, f_res)[1]],
     'Exponent w/out Peaks' : \
-        [gen_power_spectrum(f_range, ap, [], nlv, f_res)[1],
-         gen_power_spectrum(f_range, [0.13, 1.1417], [], nlv, f_res)[1]]}
+        [sim_power_spectrum(f_range, ap, [], nlv, f_res)[1],
+         sim_power_spectrum(f_range, [0.13, 1.1417], [], nlv, f_res)[1]]}
 
 ###################################################################################################
 

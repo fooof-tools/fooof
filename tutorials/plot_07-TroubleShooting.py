@@ -14,8 +14,8 @@ import numpy as np
 from specparam import PSD, PSDGroup
 
 # Import some utilities for creating simulated power-spectra
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 from specparam.sim.params import param_sampler
-from specparam.sim.gen import gen_power_spectrum, gen_group_power_spectra
 from specparam.sim.utils import set_random_seed
 
 ####################################################################################################
@@ -116,28 +116,28 @@ from specparam.sim.utils import set_random_seed
 # ------------------------
 #
 # For this example, we will use simulated data. The `specparam` module includes utilities
-# for creating simulated power-spectra. To do so, we can use the :func:`~.gen_power_spectrum`
+# for creating simulated power-spectra. To do so, we can use the :func:`~.sim_power_spectrum`
 # function to simulate individual power spectra, following the power spectrum model.
 #
-# First, we will start by generating a noisy simulated power spectrum
+# First, we will start by simulating a noisy power spectrum.
 #
 
 ###################################################################################################
 
-# Set the frequency range to generate the power spectrum
+# Set the frequency range to simualate the power spectrum
 f_range = [1, 50]
 # Set aperiodic component parameters, as [offset, exponent]
 ap_params = [20, 2]
 # Gaussian peak parameters
 gauss_params = [[10, 1.0, 2.5], [20, 0.8, 2], [32, 0.6, 1]]
-# Set the level of noise to generate the power spectrum with
+# Set the level of noise to simulate the power spectrum with
 nlv = 0.1
 
-# Set random seed, for consistency generating simulated data
+# Set random seed, for consistency creating simulated data
 set_random_seed(21)
 
 # Create a simulated power spectrum
-freqs, spectrum = gen_power_spectrum(f_range, ap_params, gauss_params, nlv)
+freqs, spectrum = sim_power_spectrum(f_range, ap_params, gauss_params, nlv)
 
 ###################################################################################################
 
@@ -212,17 +212,17 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 
 ###################################################################################################
 
-# Set the frequency range to generate the power spectrum
+# Set the frequency range to simulate the power spectrum
 f_range = [1, 50]
 # Define aperiodic parameters, as [offset, exponent]
 ap_params = [20, 2]
 # Define peak parameters, each peak defined as [CF, PW, BW]
 gauss_params = [[10, 1.0, 1.0], [20, 0.3, 1.5], [32, 0.25, 1]]
-# Set the level of noise to generate the power spectrum with
+# Set the level of noise to simulate the power spectrum with
 nlv = 0.025
 
 # Create a simulated power spectrum
-freqs, spectrum = gen_power_spectrum([1, 50], ap_params, gauss_params, nlv=nlv)
+freqs, spectrum = sim_power_spectrum([1, 50], ap_params, gauss_params, nlv=nlv)
 
 ###################################################################################################
 
@@ -256,7 +256,7 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 #
 # We will continue using simulated data, this time simulating a group of power spectra.
 #
-# To simulate a group of power spectra, we will use the :func:`~.gen_group_power_spectra`
+# To simulate a group of power spectra, we will use the :func:`~.sim_group_power_spectra`
 # in combination with called :func:`~.param_sampler` that is used to sample across
 # possible parameters.
 #
@@ -276,7 +276,7 @@ ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
 gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
 # Simulate a group of power spectra
-freqs, power_spectra = gen_group_power_spectra(n_spectra, sim_freq_range,
+freqs, power_spectra = sim_group_power_spectra(n_spectra, sim_freq_range,
                                                ap_opts, gauss_opts, nlv)
 
 ###################################################################################################

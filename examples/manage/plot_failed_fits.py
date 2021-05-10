@@ -11,7 +11,7 @@ Example of model fit failures and how to debug them.
 from specparam import PSDGroup
 
 # Import simulation code to create test power spectra
-from specparam.sim.gen import gen_group_power_spectra
+from specparam.sim import sim_group_power_spectra
 
 # Import FitError, which we will use to help debug model fit errors
 from specparam.core.errors import FitError
@@ -36,7 +36,7 @@ from specparam.core.errors import FitError
 ###################################################################################################
 
 # Simulate some example power spectra to use for the example
-freqs, powers = gen_group_power_spectra(25, [1, 50], [1, 1], [10, 0.25, 3],
+freqs, powers = sim_group_power_spectra(25, [1, 50], [1, 1], [10, 0.25, 3],
                                         nlvs=0.1, freq_res=0.25)
 
 ###################################################################################################

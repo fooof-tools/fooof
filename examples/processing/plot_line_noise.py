@@ -15,7 +15,7 @@ from specparam.plts import plot_spectra
 from specparam.utils import trim_spectrum, interpolate_spectrum
 
 # Import simulation functions to create some example data
-from specparam.sim.gen import gen_power_spectrum
+from specparam.sim import sim_power_spectrum
 
 # Import NeuroDSP functions for simulating & processing time series
 from neurodsp.sim import sim_combined
@@ -45,11 +45,11 @@ from neurodsp.spectral import compute_spectrum
 
 ###################################################################################################
 
-# Generate an example power spectrum, with line noise
-freqs1, powers1 = gen_power_spectrum([3, 75], [1, 1],
+# Simulate an example power spectrum, with line noise
+freqs1, powers1 = sim_power_spectrum([3, 75], [1, 1],
                                      [[10, 0.75, 2], [60, 1, 0.5]])
 
-# Visualize the generated power spectrum
+# Visualize the simulated power spectrum
 plot_spectra(freqs1, powers1, log_powers=True)
 
 ###################################################################################################
@@ -97,8 +97,8 @@ fm1.report(freqs_int1, powers_int1)
 
 ###################################################################################################
 
-# Generate an example power spectrum, with line noise & harmonics
-freqs2, powers2 = gen_power_spectrum([1, 150], [1, 500, 1.5],
+# Simulate an example power spectrum, with line noise & harmonics
+freqs2, powers2 = sim_power_spectrum([1, 150], [1, 500, 1.5],
                                      [[10, 0.5, 2], [60, 0.75, 0.5], [120, 0.5, 0.5]])
 
 # Interpolate away the line noise region & harmonics

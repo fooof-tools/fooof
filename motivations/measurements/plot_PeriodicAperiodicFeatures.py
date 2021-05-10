@@ -48,7 +48,7 @@ import matplotlib.pyplot as plt
 # Import simulation, utility, and plotting tools
 from specparam.bands import Bands
 from specparam.utils import trim_spectrum
-from specparam.sim.gen import gen_power_spectrum
+from specparam.sim import sim_power_spectrum
 from specparam.plts.spectra import plot_spectra_shading
 
 ###################################################################################################
@@ -93,15 +93,15 @@ exp_diff = [-0.87, 0.75]
 ###################################################################################################
 
 # Create baseline power spectrum, to compare to
-freqs, powers_base = gen_power_spectrum(f_range, ap_base, pe_base, nlv, f_res)
+freqs, powers_base = sim_power_spectrum(f_range, ap_base, pe_base, nlv, f_res)
 
 ###################################################################################################
 
 # Create comparison power spectra, with differences in different parameters of the data
-_, powers_pw = gen_power_spectrum(f_range, ap_base, pw_diff, nlv, f_res)
-_, powers_cf = gen_power_spectrum(f_range, ap_base, cf_diff, nlv, f_res)
-_, powers_off = gen_power_spectrum(f_range, off_diff, pe_base, nlv, f_res)
-_, powers_exp = gen_power_spectrum(f_range, exp_diff, pe_base, nlv, f_res)
+_, powers_pw = sim_power_spectrum(f_range, ap_base, pw_diff, nlv, f_res)
+_, powers_cf = sim_power_spectrum(f_range, ap_base, cf_diff, nlv, f_res)
+_, powers_off = sim_power_spectrum(f_range, off_diff, pe_base, nlv, f_res)
+_, powers_exp = sim_power_spectrum(f_range, exp_diff, pe_base, nlv, f_res)
 
 ###################################################################################################
 
@@ -224,13 +224,13 @@ exp_diff_na = [-1.31, 0.5]
 ###################################################################################################
 
 # Create baseline power spectrum, to compare to
-freqs, powers_noa_base = gen_power_spectrum(f_range, ap_base, pe_base_na, nlv, f_res)
+freqs, powers_noa_base = sim_power_spectrum(f_range, ap_base, pe_base_na, nlv, f_res)
 
 # Collect all powers together,
 all_powers_na = {'Offset Change' : \
-                    gen_power_spectrum(f_range, off_diff_na, pe_base_na, nlv, f_res)[1],
+                    sim_power_spectrum(f_range, off_diff_na, pe_base_na, nlv, f_res)[1],
                  'Exponent Change' : \
-                    gen_power_spectrum(f_range, exp_diff_na, pe_base_na, nlv, f_res)[1]}
+                    sim_power_spectrum(f_range, exp_diff_na, pe_base_na, nlv, f_res)[1]}
 
 ###################################################################################################
 

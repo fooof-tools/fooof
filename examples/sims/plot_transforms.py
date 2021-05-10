@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 from specparam import PSD
 
 # Import simulation utilities to create example data
-from specparam.sim.gen import gen_power_spectrum
+from specparam.sim import sim_power_spectrum
 
 # Import functions that can transform power spectra
 from specparam.sim.transform import (rotate_spectrum, translate_spectrum,
@@ -34,8 +34,8 @@ from specparam.plts.spectra import plot_spectra
 
 ###################################################################################################
 
-# Generate a simulated power spectrum
-freqs, powers, params = gen_power_spectrum([3, 40], [1, 1], [10, 0.5, 1],
+# Simulate a power spectrum
+freqs, powers, params = sim_power_spectrum([3, 40], [1, 1], [10, 0.5, 1],
                                            return_params=True)
 
 ###################################################################################################
@@ -171,8 +171,8 @@ print(t_params)
 
 ###################################################################################################
 
-# Create a baseline power spectrum
-freqs, powers = gen_power_spectrum([3, 50], [0, 1.5], [10, 0.3, 0.5], nlv=0)
+# Simulate a baseline power spectrum
+freqs, powers = sim_power_spectrum([3, 50], [0, 1.5], [10, 0.3, 0.5], nlv=0)
 
 ###################################################################################################
 

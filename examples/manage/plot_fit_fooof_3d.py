@@ -58,7 +58,8 @@ from specparam import PSDGroup
 from specparam.objs import fit_models_3d, combine_model_objs
 
 # Import simulation & IO utilities to help with the example
-from specparam.sim.gen import gen_freqs, gen_group_power_spectra
+from specparam.sim import sim_group_power_spectra
+from specparam.sim.utils import create_freqs
 from specparam.sim.params import param_sampler
 from specparam.utils.io import load_group
 
@@ -89,7 +90,7 @@ freq_res = 0.25
 # Set up the shape of the data
 n_conditions = 3
 n_channels = 10
-n_freqs = len(gen_freqs(freq_range, freq_res))
+n_freqs = len(create_freqs(freq_range, freq_res))
 
 # Define parameters for the simulated power spectra
 ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
@@ -97,10 +98,10 @@ pe_opts = param_sampler([[], [10, 0.25, 1], [10, 0.25, 1, 20, 0.15, 1]])
 
 ###################################################################################################
 
-# Generate some simulated power spectra, and organize into a 3D array
+# Simulate power spectra, and organize into a 3D array
 spectra = []
 for ind in range(n_conditions):
-    freqs, powers = gen_group_power_spectra(n_channels, freq_range, ap_opts,
+    freqs, powers = sim_group_power_spectra(n_channels, freq_range, ap_opts,
                                             pe_opts, freq_res=freq_res)
     spectra.append(powers)
 
