@@ -172,7 +172,7 @@ class FOOOF():
         # Guess parameters for aperiodic fitting, [offset, knee, exponent]
         #   If offset guess is None, the first value of the power spectrum is used as offset guess
         #   If exponent guess is None, the abs(log-log slope) of first & last points is used
-        self._ap_guess = (None, 0, None)
+        self._ap_guess = (None, 1, None)
         # Bounds for aperiodic fitting, as: ((offset_low_bound, knee_low_bound, exp_low_bound),
         #                                    (offset_high_bound, knee_high_bound, exp_high_bound))
         # By default, aperiodic fitting is unbound, but can be restricted here, if desired

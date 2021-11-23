@@ -51,8 +51,8 @@ def expo_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (offset, knee, exp) that define Lorentzian function:
-        y = 10^offset * (1/(knee + x^exp))
+        Parameters (offset, knee_freq, exp) that define Lorentzian function:
+        y = 10^offset * (1/(knee_freq^exp + x^exp))
 
     Returns
     -------
@@ -62,9 +62,9 @@ def expo_function(xs, *params):
 
     ys = np.zeros_like(xs)
 
-    offset, knee, exp = params
+    offset, knee_freq, exp = params
 
-    ys = ys + offset - np.log10(knee + xs**exp)
+    ys = ys + offset - np.log10(knee_freq**exp + xs**exp)
 
     return ys
 
