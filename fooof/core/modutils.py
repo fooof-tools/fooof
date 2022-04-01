@@ -177,6 +177,6 @@ def check_dependency(dep, name):
             if not dep:
                 raise ImportError("Optional FOOOF dependency " + name + \
                                   " is required for this functionality.")
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
         return wrapped_func
     return wrap
