@@ -51,7 +51,7 @@ def gen_power_spectrum(freq_range, aperiodic_params, periodic_params, nlv=0.005,
         Frequency range to simulate power spectrum across, as [f_low, f_high], inclusive.
     aperiodic_params : list of float
         Parameters to create the aperiodic component of a power spectrum.
-        Length should be 2 or 3 (see note).
+        Length should be 2, 3, or 4 (see note).
     periodic_params : list of float or list of list of float
         Parameters to create the periodic component of a power spectrum.
         Total length of n_peaks * 3 (see note).
@@ -80,7 +80,8 @@ def gen_power_spectrum(freq_range, aperiodic_params, periodic_params, nlv=0.005,
     Aperiodic Parameters:
 
     - The function for the aperiodic process to use is inferred from the provided parameters.
-    - If length of 2, the 'fixed' aperiodic mode is used, if length of 3, 'knee' is used.
+    - If length of 2, the 'fixed' aperiodic mode is used, if length of 3, 'knee' is used, and
+      if length of 4, 'knee_constant' is used.
 
     Periodic Parameters:
 
@@ -140,7 +141,7 @@ def gen_power_spectrum(freq_range, aperiodic_params, periodic_params, nlv=0.005,
 
         # The rotation changes the offset, so recalculate it's value & update params
         new_offset = compute_rotation_offset(aperiodic_params[1], f_rotation)
-        aperiodic_params = [new_offset, aperiodic_params[1]]
+        aperiodic_params[0] = new_offset
 
     else:
 
@@ -299,7 +300,7 @@ def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):
         Frequency vector to create aperiodic component for.
     aperiodic_params : list of float
         Parameters that define the aperiodic component.
-    aperiodic_mode : {'fixed', 'knee'}, optional
+    aperiodic_mode : {'fixed', 'knee', 'knee_constant'}, optional
         Which kind of aperiodic component to generate.
         If not provided, is inferred from the parameters.
 

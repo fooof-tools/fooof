@@ -69,6 +69,37 @@ def expo_function(xs, *params):
     return ys
 
 
+def expo_const_function(xs, *params):
+    """Exponential fitting function, for fitting aperiodic component with a 'knee' and constant.
+
+    NOTE: this function requires linear frequency (not log).
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters (offset, knee_freq, exp, const) that define Lorentzian function:
+        y = 10^offset * (1/(knee_freq^exp + x^exp)) + const
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for exponential function.
+    """
+
+    ys = np.zeros_like(xs)
+
+    offset, knee_freq, exp, const = params
+
+    f_e = xs**exp
+    fk_e = knee_freq**exp
+
+    ys = ys + np.log10((10**offset + (const * fk_e) + (const * f_e)) / (fk_e + f_e))
+
+    return ys
+
+
 def expo_nk_function(xs, *params):
     """Exponential fitting function, for fitting aperiodic component without a 'knee'.
 
@@ -180,7 +211,7 @@ def get_ap_func(aperiodic_mode):
 
     Parameters
     ----------
-    aperiodic_mode : {'fixed', 'knee'}
+    aperiodic_mode : {'fixed', 'knee', 'knee_constant'}
         Which aperiodic fitting function to return.
 
     Returns
@@ -198,6 +229,8 @@ def get_ap_func(aperiodic_mode):
         ap_func = expo_nk_function
     elif aperiodic_mode == 'knee':
         ap_func = expo_function
+    elif aperiodic_mode == 'knee_constant':
+        ap_func = expo_const_function
     else:
         raise ValueError("Requested aperiodic mode not understood.")
 
@@ -214,7 +247,7 @@ def infer_ap_func(aperiodic_params):
 
     Returns
     -------
-    aperiodic_mode : {'fixed', 'knee'}
+    aperiodic_mode : {'fixed', 'knee', 'knee_constant'}
         Which kind of aperiodic fitting function the given parameters are consistent with.
 
     Raises
@@ -227,6 +260,8 @@ def infer_ap_func(aperiodic_params):
         aperiodic_mode = 'fixed'
     elif len(aperiodic_params) == 3:
         aperiodic_mode = 'knee'
+    elif len(aperiodic_params) == 4:
+        aperiodic_mode = 'knee_constant'
     else:
         raise InconsistentDataError("The given aperiodic parameters are "
                                     "inconsistent with available options.")

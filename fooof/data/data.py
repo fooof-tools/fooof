@@ -28,7 +28,7 @@ class FOOOFSettings(namedtuple('FOOOFSettings', ['peak_width_limits', 'max_n_pea
         Absolute threshold for detecting peaks, in units of the input data.
     peak_threshold : float
         Relative threshold for detecting peaks, in units of standard deviation of the input data.
-    aperiodic_mode : {'fixed', 'knee'}
+    aperiodic_mode : {'fixed', 'knee', 'knee_constant'}
         Which approach to take for fitting the aperiodic component.
 
     Notes
@@ -62,8 +62,9 @@ class FOOOFResults(namedtuple('FOOOFResults', ['aperiodic_params', 'peak_params'
     Parameters
     ----------
     aperiodic_params : 1d array
-        Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
+        Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent, Constant].
         The knee parameter is only included if aperiodic is fit with knee.
+        The constant paramter is only included is aperiodic is fit with knee_constant.
     peak_params : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
     r_squared : float

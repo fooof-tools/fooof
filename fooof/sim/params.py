@@ -44,7 +44,7 @@ def update_sim_ap_params(sim_params, delta, field=None):
         Object storing the current parameter definition.
     delta : float or list of float
         Value(s) by which to update the parameters.
-    field : {'offset', 'knee', 'exponent'} or list of string
+    field : {'offset', 'knee', 'exponent', 'constant'} or list of string
         Field of the aperiodic parameter(s) to update.
 
     Returns
