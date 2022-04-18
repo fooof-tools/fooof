@@ -103,6 +103,25 @@ def test_fooof_fit_knee():
     for ii, gauss in enumerate(group_three(gauss_params)):
         assert np.allclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0])
 
+def test_fooof_fit_knee_constant():
+    """Test FOOOF fit, with a knee and constant."""
+
+    ap_params = [0, 10, 2, 1e-4]
+    gauss_params = [10, 0.3, 2, 20, 0.3, 4, 60, 0.3, 1]
+    nlv = 0.0025
+
+    xs, ys = gen_power_spectrum([1, 150], ap_params, gauss_params, nlv)
+
+    tfm = FOOOF(aperiodic_mode='knee_constant', max_n_peaks=3, verbose=False)
+    tfm.fit(xs, ys)
+
+    # Check model results - aperiodic parameters
+    assert np.allclose(ap_params, tfm.aperiodic_params_, [1, 2, 0.2, 1])
+
+    # Check model results - gaussian parameters
+    for ii, gauss in enumerate(group_three(gauss_params)):
+        assert np.allclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0])
+
 def test_fooof_fit_measures():
     """Test goodness of fit & error metrics, post model fitting."""
 

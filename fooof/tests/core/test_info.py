@@ -40,6 +40,13 @@ def test_get_ap_indices():
     for ind, val in enumerate(['offset', 'knee', 'exponent']):
         assert indices_knee[val] == ind
 
+    indices_knee = get_indices('knee_constant')
+
+    assert indices_knee
+    for ind, val in enumerate(['offset', 'knee', 'exponent', 'constant']):
+        assert indices_knee[val] == ind
+
+
 def test_get_indices():
 
     all_indices_fixed = get_indices('fixed')
@@ -47,6 +54,9 @@ def test_get_indices():
 
     all_indices_knee = get_indices('knee')
     assert len(all_indices_knee) == 6
+
+    all_indices_knee = get_indices('knee_constant')
+    assert len(all_indices_knee) == 7
 
 def test_get_info(tfm, tfg):
 
