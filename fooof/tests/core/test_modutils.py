@@ -3,6 +3,8 @@
 Note: decorators (that are in modutils) are currently not tested.
 """
 
+from pytest import raises
+
 from fooof.core.modutils import *
 
 ###################################################################################################
@@ -15,6 +17,21 @@ def test_safe_import():
 
     bad = safe_import('bad')
     assert not bad
+
+def test_check_dependency():
+
+    import numpy as np
+    @check_dependency(np, 'numpy')
+    def subfunc_good():
+        pass
+    subfunc_good()
+
+    bad = None
+    @check_dependency(bad, 'bad')
+    def subfunc_bad():
+        pass
+    with raises(ImportError):
+        subfunc_bad()
 
 def test_docs_drop_param():
 
