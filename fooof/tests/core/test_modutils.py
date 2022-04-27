@@ -1,6 +1,6 @@
 """Tests for fooof.core.modutils.
 
-Note: decorators (that are in modutils) are currently not tested.
+Note: the decorators for copying documentation are not currently tested.
 """
 
 from pytest import raises
