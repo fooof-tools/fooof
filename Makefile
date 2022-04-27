@@ -12,7 +12,7 @@
 #   setuptools          For creating distributions
 #
 # The following command line utilities are required:
-#   cloc                For counting code
+#   cloc                For counting lines of code
 #
 
 ##########################################################################
