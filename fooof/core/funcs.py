@@ -100,6 +100,22 @@ def expo_const_function(xs, *params):
     return ys
 
 
+def expo_double_const_function(xs, *params):
+    """Double exponential fitting function, for fitting aperiodic component."""
+
+    offset0, fk0, exp0, const0, offset1, fk1, exp1, const1 = params
+
+    num_a = 10**offset0 + (const0 * fk0**exp0) + (const0 * xs**exp0)
+    num_b = 10**offset1 + (const1 * fk1**exp1) + (const1 * xs**exp1)
+
+    denom_a = fk0**exp0 + xs**exp0
+    denom_b =  fk1**exp1 + xs**exp1
+
+    ys =  np.log10((num_a/denom_a) + (num_b/denom_b))
+
+    return ys
+
+
 def expo_nk_function(xs, *params):
     """Exponential fitting function, for fitting aperiodic component without a 'knee'.
 
