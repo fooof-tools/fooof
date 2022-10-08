@@ -33,7 +33,8 @@ def check_data_file(filename, folder, url=DATA_URL):
     folder : str
         Name of the folder to save the datafile to.
     """
-
+    
+    check_data_folder(folder)
     filepath = os.path.join(folder, filename)
 
     if not os.path.isfile(filepath):
