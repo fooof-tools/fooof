@@ -112,45 +112,49 @@ def test_save_fg_fobj(tfg):
 
     assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name + '.json'))
 
-def test_load_json_str():
+def test_load_json_str(tfm):
     """Test loading JSON file, with str file specifier.
     Loads files from test_save_fm_str.
     """
 
     file_name = 'test_fooof_all'
+    test_save_fm_str(tfm)
 
     data = load_json(file_name, TEST_DATA_PATH)
 
     assert data
 
-def test_load_json_fobj():
+def test_load_json_fobj(tfm):
     """Test loading JSON file, with file object file specifier.
     Loads files from test_save_fm_str.
     """
 
     file_name = 'test_fooof_all'
+    test_save_fm_str(tfm)
 
     with open(os.path.join(TEST_DATA_PATH, file_name + '.json'), 'r') as f_obj:
         data = load_json(f_obj, '')
 
     assert data
 
-def test_load_jsonlines():
+def test_load_jsonlines(tfg):
     """Test loading JSONlines file.
     Loads files from test_save_fg.
     """
 
     res_file_name = 'test_fooofgroup_res'
+    test_save_fg(tfg)
 
     for data in load_jsonlines(res_file_name, TEST_DATA_PATH):
         assert data
 
-def test_load_file_contents():
+def test_load_file_contents(tfm):
     """Check that loaded files contain the contents they should.
     Note that is this test fails, it likely stems from an issue from saving.
     """
 
     file_name = 'test_fooof_all'
+    test_load_json_str(tfm)
     loaded_data = load_json(file_name, TEST_DATA_PATH)
 
     # Check settings
