@@ -380,7 +380,8 @@ class FOOOF():
         self._check_loaded_results(fooof_result._asdict())
 
 
-    def report(self, freqs=None, power_spectrum=None, freq_range=None, plt_log=False):
+    def report(self, freqs=None, power_spectrum=None, freq_range=None, plt_log=False,
+               plot_range=None):
         """Run model fit, and display a report, which includes a plot, and printed results.
 
         Parameters
@@ -401,7 +402,7 @@ class FOOOF():
         """
 
         self.fit(freqs, power_spectrum, freq_range)
-        self.plot(plt_log=plt_log)
+        self.plot(plt_log=plt_log, plot_range=plot_range)
         self.print_results(concise=False)
 
 
@@ -652,9 +653,9 @@ class FOOOF():
 
 
     @copy_doc_func_to_method(save_report_fm)
-    def save_report(self, file_name, file_path=None, plt_log=False):
+    def save_report(self, file_name, file_path=None, plt_log=False, plot_range=None):
 
-        save_report_fm(self, file_name, file_path, plt_log)
+        save_report_fm(self, file_name, file_path, plt_log, plot_range)
 
 
     @copy_doc_func_to_method(save_fm)

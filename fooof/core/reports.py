@@ -22,7 +22,7 @@ SAVE_FORMAT = 'pdf'
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def save_report_fm(fm, file_name, file_path=None, plt_log=False):
+def save_report_fm(fm, file_name, file_path=None, plt_log=False, plot_range=None):
     """Generate and save out a PDF report for a power spectrum model fit.
 
     Parameters
@@ -51,7 +51,7 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
 
     # Second - data plot
     ax1 = plt.subplot(grid[1])
-    fm.plot(plt_log=plt_log, ax=ax1)
+    fm.plot(plt_log=plt_log, plot_range=plot_range, ax=ax1)
 
     # Third - FOOOF settings
     ax2 = plt.subplot(grid[2])
