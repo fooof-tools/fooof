@@ -76,7 +76,7 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         data_defaults = {'color' : PLT_COLORS['data'], 'linewidth' : 2.0,
                          'label' : 'Original Spectrum' if add_legend else None}
         data_kwargs = check_plot_kwargs(data_kwargs, data_defaults)
-        if plot_range is None:
+        if plot_range is None or fm.power_spectrum_full is None:
             freqs_plot = fm.freqs
             powers_plot = fm.power_spectrum
         else:
