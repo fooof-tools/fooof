@@ -29,10 +29,11 @@ def get_description():
                   'settings' : ['peak_width_limits', 'max_n_peaks',
                                 'min_peak_height', 'peak_threshold',
                                 'aperiodic_mode'],
-                  'data' : ['power_spectrum', 'freq_range', 'freq_res'],
+                  'data' : ['power_spectrum', 'freq_range', 'freq_res', 'freqs_full', 'power_spectrum_full'],
                   'meta_data' : ['freq_range', 'freq_res'],
                   'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',
-                              'peak_params_', 'gaussian_params_'],
+                              'peak_params_', 'gaussian_params_',
+                              'freqs_full', 'power_spectrum_full'],
                   'model_components' : ['fooofed_spectrum_', '_spectrum_flat',
                                         '_spectrum_peak_rm', '_ap_fit', '_peak_fit'],
                   'descriptors' : ['has_data', 'has_model', 'n_peaks_']
