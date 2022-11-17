@@ -27,7 +27,8 @@ plt = safe_import('.pyplot', 'matplotlib')
 @check_dependency(plt, 'matplotlib')
 def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=True,
             save_fig=False, file_name=None, file_path=None, ax=None, data_kwargs=None,
-            model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
+            model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None, plot_range=None,
+            **plot_kwargs):
     """Plot the power spectrum and model fit results from a FOOOF object.
 
     Parameters
@@ -53,6 +54,8 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         Figure axes upon which to plot.
     data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs : None or dict, optional
         Keyword arguments to pass into the plot call for each plot element.
+    plot_range : tuple of (float, float), optional, default: None
+        Frequency range to plot. If None, plots the fitting range.
     **plot_kwargs
         Keyword arguments to pass into the ``style_plot``.
 
@@ -73,7 +76,14 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         data_defaults = {'color' : PLT_COLORS['data'], 'linewidth' : 2.0,
                          'label' : 'Original Spectrum' if add_legend else None}
         data_kwargs = check_plot_kwargs(data_kwargs, data_defaults)
-        plot_spectra(fm.freqs, fm.power_spectrum, log_freqs, log_powers, ax=ax, **data_kwargs)
+        if plot_range is None:
+            freqs_plot = fm.freqs
+            powers_plot = fm.power_spectrum
+        else:
+            if plot_range[0] > fm.freq_range[0] or plot_range[1] < fm.freq_range[1]:
+                raise ValueError(f"Plot range must be larger than the fitting range {fm.freq_range}.")
+            freqs_plot, powers_plot = trim_spectrum(fm.freqs_full, fm.power_spectrum_full, plot_range)
+        plot_spectra(freqs_plot, powers_plot, log_freqs, log_powers, ax=ax, **data_kwargs)
 
     # Add the full model fit, and components (if requested)
     if fm.has_model:

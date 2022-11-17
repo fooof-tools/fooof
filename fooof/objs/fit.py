@@ -135,6 +135,11 @@ class FOOOF():
         Whether data is loaded to the object.
     has_model : bool
         Whether model results are available in the object.
+    freqs_full : 1d array
+        Frequency values for the full power spectrum (entire frequency range).
+    power_spectrum_full : 1d array
+        Power values for the full power spectrum (entire frequency range).
+        Stored internally in log10 scale.
 
     Notes
     -----
@@ -270,9 +275,11 @@ class FOOOF():
             self.freqs = None
             self.freq_range = None
             self.freq_res = None
+            self.freqs_full = None
 
         if clear_spectrum:
             self.power_spectrum = None
+            self.power_spectrum_full = None
 
         if clear_results:
 
@@ -320,7 +327,8 @@ class FOOOF():
                                  clear_spectrum=self.has_data,
                                  clear_results=self.has_model and clear_results)
 
-        self.freqs, self.power_spectrum, self.freq_range, self.freq_res = \
+        self.freqs, self.power_spectrum, self.freq_range, self.freq_res, \
+            self.freqs_full, self.power_spectrum_full = \
             self._prepare_data(freqs, power_spectrum, freq_range, 1)
 
 
@@ -633,12 +641,14 @@ class FOOOF():
     def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,
              add_legend=True, save_fig=False, file_name=None, file_path=None,
              ax=None, data_kwargs=None, model_kwargs=None,
-             aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
+             aperiodic_kwargs=None, peak_kwargs=None, plot_range=None,
+             **plot_kwargs):
 
         plot_fm(self, plot_peaks=plot_peaks, plot_aperiodic=plot_aperiodic, plt_log=plt_log,
                 add_legend=add_legend, save_fig=save_fig, file_name=file_name,
                 file_path=file_path, ax=ax, data_kwargs=data_kwargs, model_kwargs=model_kwargs,
-                aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs, **plot_kwargs)
+                aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs, plot_range=plot_range,
+                **plot_kwargs)
 
 
     @copy_doc_func_to_method(save_report_fm)
@@ -1163,6 +1173,10 @@ class FOOOF():
             Minimum and maximum values of the frequency vector.
         freq_res : float
             Frequency resolution of the power spectrum.
+        freqs_full : 1d array
+            Frequency values for the full power_spectrum, in linear space.
+        power_spectrum_full : 1d or 2d array
+            Full power spectrum values, in log10 scale.
 
         Raises
         ------
@@ -1197,6 +1211,10 @@ class FOOOF():
         if power_spectrum.dtype != 'float64':
             power_spectrum = power_spectrum.astype('float64')
 
+        # Add full data to object for full frequency range plotting
+        freqs_full = freqs
+        power_spectrum_full = power_spectrum
+
         # Check frequency range, trim the power_spectrum range if requested
         if freq_range:
             freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, freq_range)
@@ -1215,6 +1233,7 @@ class FOOOF():
 
         # Log power values
         power_spectrum = np.log10(power_spectrum)
+        power_spectrum_full = np.log10(power_spectrum_full)
 
         if self._check_data:
             # Check if there are any infs / nans, and raise an error if so
@@ -1224,7 +1243,7 @@ class FOOOF():
                                 "One reason this can happen is if inputs are already logged. "
                                 "Inputs data should be in linear spacing, not log.")
 
-        return freqs, power_spectrum, freq_range, freq_res
+        return freqs, power_spectrum, freq_range, freq_res, freqs_full, power_spectrum_full
 
 
     def _add_from_dict(self, data):
