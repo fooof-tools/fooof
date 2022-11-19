@@ -71,6 +71,11 @@ class FOOOFGroup(FOOOF):
         The number of models that failed to fit.
     failed_fit_inds_ : list of int
         The indices of any models that failed to fit.
+    freqs_full : 1d array
+        Frequency values for the full power spectrum (entire frequency range).
+    power_spectra_full : 1d array
+        Power values for the full power spectrum (entire frequency range).
+        Stored internally in log10 scale.
 
     Notes
     -----
@@ -221,7 +226,8 @@ class FOOOFGroup(FOOOF):
             self._reset_data_results(True, True, True, True)
             self._reset_group_results()
 
-        self.freqs, self.power_spectra, self.freq_range, self.freq_res = \
+        self.freqs, self.power_spectra, self.freq_range, self.freq_res, \
+            self.freqs_full, self.power_spectra_full = \
             self._prepare_data(freqs, power_spectra, freq_range, 2)
 
 
