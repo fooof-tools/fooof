@@ -1,6 +1,6 @@
 """Test functions for fooof.data.bands."""
 
-from py.test import raises
+from pytest import raises
 
 from fooof.bands.bands import *
 

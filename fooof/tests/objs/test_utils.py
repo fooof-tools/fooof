@@ -1,6 +1,6 @@
 """Test functions for fooof.objs.utils."""
 
-from py.test import raises
+from pytest import raises
 
 import numpy as np
 
