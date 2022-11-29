@@ -1,6 +1,6 @@
 """Tests for fooof.core.funcs."""
 
-from py.test import raises
+from pytest import raises
 
 import numpy as np
 from scipy.stats import norm, linregress
