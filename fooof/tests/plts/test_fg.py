@@ -1,6 +1,6 @@
 """Tests for fooof.plts.fg."""
 
-from py.test import raises
+from pytest import raises
 
 from fooof import FOOOFGroup
 from fooof.core.errors import NoModelError
