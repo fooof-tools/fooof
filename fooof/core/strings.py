@@ -312,6 +312,7 @@ def gen_results_fm_str(fm, concise=False):
         # Goodness if fit
         'Goodness of fit metrics:',
         'R^2 of model fit is {:5.4f}'.format(fm.r_squared_),
+        'Adjusted R^2 of model fit is {:5.4f}'.format(fm.adj_r_squared_),
         'Error of the fit is {:5.4f}'.format(fm.error_),
         '',
 
@@ -351,6 +352,7 @@ def gen_results_fg_str(fg, concise=False):
     # Extract all the relevant data for printing
     n_peaks = len(fg.get_params('peak_params'))
     r2s = fg.get_params('r_squared')
+    adj_r2s = fg.get_params('adj_r_squared')
     errors = fg.get_params('error')
     exps = fg.get_params('aperiodic_params', 'exponent')
     kns = fg.get_params('aperiodic_params', 'knee') \
@@ -399,6 +401,8 @@ def gen_results_fg_str(fg, concise=False):
         'Goodness of fit metrics:',
         '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(np.nanmin(r2s), np.nanmax(r2s), np.nanmean(r2s)),
+        'Adj R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(np.nanmin(adj_r2s), np.nanmax(adj_r2s), np.nanmean(adj_r2s)),
         'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(np.nanmin(errors), np.nanmax(errors), np.nanmean(errors)),
         '',

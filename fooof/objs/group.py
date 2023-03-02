@@ -88,8 +88,8 @@ class FOOOFGroup(FOOOF):
       and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
     - The FOOOFGroup object inherits from the FOOOF object. As such it also has data
       attributes (`power_spectrum` & `fooofed_spectrum_`), and parameter attributes
-      (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)
-      which are defined in the context of individual model fits. These attributes are
+      (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `adj_r_squared_`,
+       `error_`) which are defined in the context of individual model fits. These attributes are
       used during the fitting process, but in the group context do not store results
       post-fitting. Rather, all model fit results are collected and stored into the
       `group_results` attribute. To access individual parameters of the fit, use
@@ -334,7 +334,7 @@ class FOOOFGroup(FOOOF):
 
         Parameters
         ----------
-        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
+        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared', 'adj_r_squared'}
             Name of the data field to extract across the group.
         col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
             Column name / index to extract from selected data, if requested.

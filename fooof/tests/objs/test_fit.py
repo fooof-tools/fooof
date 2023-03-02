@@ -243,7 +243,7 @@ def test_add_data():
 
     # Test that prior data does not get cleared, when requesting not to clear
     tfm._reset_data_results(True, True, True)
-    tfm.add_results(FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25]))
+    tfm.add_results(FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.94, 0.02, [10, 0.5, 0.25]))
     tfm.add_data(freqs, pows, clear_results=False)
     assert tfm.has_data
     assert tfm.has_model
@@ -285,7 +285,7 @@ def test_add_results():
     tfm = get_tfm()
 
     # Test adding results
-    fooof_results = FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25])
+    fooof_results = FOOOFResults([1, 1], [10, 0.5, 0.5], 0.95, 0.94, 0.02, [10, 0.5, 0.25])
     tfm.add_results(fooof_results)
     assert tfm.has_model
     for setting in OBJ_DESC['results']:

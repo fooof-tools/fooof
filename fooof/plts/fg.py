@@ -11,6 +11,7 @@ from fooof.plts.settings import PLT_FIGSIZES
 from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
 from fooof.plts.utils import savefig
 from fooof.plts.style import style_plot
+from fooof.plts.utils import check_ax
 
 plt = safe_import('.pyplot', 'matplotlib')
 gridspec = safe_import('.gridspec', 'matplotlib')
@@ -104,8 +105,17 @@ def plot_fg_gf(fg, ax=None, **plot_kwargs):
         Keyword arguments to pass into the ``style_plot``.
     """
 
-    plot_scatter_2(fg.get_params('error'), 'Error',
-                   fg.get_params('r_squared'), 'R^2', 'Goodness of Fit', ax=ax)
+    ax = check_ax(ax)
+    ax1 = ax.twinx()
+
+    plot_scatter_1(fg.get_params('error'), 'Error', 'Goodness of Fit', color='#1f77b4', ax=ax)
+    plot_scatter_1(fg.get_params('r_squared'), 'R^2', x_val=1, color='#1f77b4', ax=ax1)
+    plot_scatter_1(fg.get_params('adj_r_squared'), x_val=2, color='#1f77b4', ax=ax1)
+
+    ax.set(xlim=[-0.5, 2.5],
+           xticks=[0, 1, 2],
+           xticklabels=['Error', 'R^2', 'Adj. R^2'])
+    ax.tick_params(axis='x', labelsize=16)
 
 
 @savefig

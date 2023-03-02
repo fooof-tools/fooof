@@ -17,7 +17,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_scatter_1(data, label=None, title=None, x_val=0, ax=None):
+def plot_scatter_1(data, label=None, title=None, x_val=0, color=None, ax=None):
     """Plot a scatter plot, with a single y-axis.
 
     Parameters
@@ -30,6 +30,9 @@ def plot_scatter_1(data, label=None, title=None, x_val=0, ax=None):
         Title for the plot.
     x_val : int, optional, default: 0
         Position along the x-axis to plot set of data.
+    color : color, optional, default: None
+        Color of data points plotted ('c' argument for pyplot.scatter).
+        None will use default color.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
 
@@ -43,7 +46,11 @@ def plot_scatter_1(data, label=None, title=None, x_val=0, ax=None):
     # Create x-axis data, with small jitter for visualization purposes
     x_data = np.ones_like(data) * x_val + np.random.normal(0, 0.025, data.shape)
 
-    ax.scatter(x_data, data, s=36, alpha=set_alpha(len(data)))
+    # Plot the data
+    if color is None:
+        ax.scatter(x_data, data, s=36, alpha=set_alpha(len(data)))
+    else:
+        ax.scatter(x_data, data, s=36, alpha=set_alpha(len(data)), c=color)
 
     if label:
         ax.set_ylabel(label, fontsize=16)

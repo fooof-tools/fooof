@@ -29,7 +29,7 @@ def test_fooof_meta_data():
 
 def test_fooof_results():
 
-    results = FOOOFResults([1, 1], [10, 0.5, 1], 0.95, 0.05, [10, 0.5, 0.5])
+    results = FOOOFResults([1, 1], [10, 0.5, 1], 0.95, 0.94, 0.05, [10, 0.5, 0.5])
     assert results
 
     results_fields = OBJ_DESC['results']
