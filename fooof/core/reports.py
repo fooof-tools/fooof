@@ -22,7 +22,9 @@ SAVE_FORMAT = 'pdf'
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def save_report_fm(fm, file_name, file_path=None, plt_log=False):
+def save_report_fm(fm, file_name, file_path=None, plot_peaks=None, plot_aperiodic=True, 
+                   plt_log=True, add_legend=True, data_kwargs=None, model_kwargs=None, 
+                   aperiodic_kwargs=None, peak_kwargs=None):
     """Generate and save out a PDF report for a power spectrum model fit.
 
     Parameters
@@ -33,8 +35,17 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
         Name to give the saved out file.
     file_path : str, optional
         Path to directory to save to. If None, saves to current directory.
+    plot_peaks : None or {'shade', 'dot', 'outline', 'line'}, optional
+        What kind of approach to take to plot peaks. If None, peaks are not specifically plotted.
+        Can also be a combination of approaches, separated by '-', for example: 'shade-line'.
+    plot_aperiodic : boolean, optional, default: True
+        Whether to plot the aperiodic component of the model fit.
     plt_log : bool, optional, default: False
         Whether or not to plot the frequency axis in log space.
+    add_legend : boolean, optional, default: False
+        Whether to add a legend describing the plot components.
+    data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs : None or dict, optional
+        Keyword arguments to pass into the plot call for each plot element.
     """
 
     # Set up outline figure, using gridspec
@@ -51,7 +62,9 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
 
     # Second - data plot
     ax1 = plt.subplot(grid[1])
-    fm.plot(plt_log=plt_log, ax=ax1)
+    fm.plot(plot_peaks=plot_peaks, plot_aperiodic=plot_aperiodic, plt_log=plt_log, add_legend=add_legend,
+            ax=ax1, data_kwargs=data_kwargs, model_kwargs=model_kwargs, aperiodic_kwargs=aperiodic_kwargs, 
+            peak_kwargs=peak_kwargs)
 
     # Third - FOOOF settings
     ax2 = plt.subplot(grid[2])
