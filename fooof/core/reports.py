@@ -120,3 +120,59 @@ def save_report_fg(fg, file_name, file_path=None):
     # Save out the report
     plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
     plt.close()
+
+
+def save_report_fg_i(fg, i_model, file_name, file_path=None, plot_peaks=None, 
+                            plot_aperiodic=True, plt_log=True, add_legend=True, data_kwargs=None,
+                            model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None):
+    """Generate and save out a PDF report for a single model fit within a FOOOFGroup object.
+
+    Parameters
+    ----------
+    fg : FOOOFGroup
+        Object with results from fitting a group of power spectra.
+    i_model : int
+        Index of the model for which to generate a report.
+    file_name : str
+        Name to give the saved out file.
+    file_path : str, optional
+        Path to directory to save to. If None, saves to current directory.
+    plot_peaks : None or {'shade', 'dot', 'outline', 'line'}, optional
+        What kind of approach to take to plot peaks. If None, peaks are not specifically plotted.
+        Can also be a combination of approaches, separated by '-', for example: 'shade-line'.
+    plot_aperiodic : boolean, optional, default: True
+        Whether to plot the aperiodic component of the model fit.
+    plt_log : bool, optional, default: False
+        Whether or not to plot the frequency axis in log space.
+    add_legend : boolean, optional, default: False
+        Whether to add a legend describing the plot components.
+    data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs : None or dict, optional
+        Keyword arguments to pass into the plot call for each plot element.
+    """
+
+    # imports
+    import numpy as np
+    from fooof import FOOOF
+    from fooof.sim.gen import gen_aperiodic, gen_periodic
+
+    # create fooof object and add settings
+    fm = FOOOF()
+    fm.add_settings(fg.get_settings())
+
+    # Copy results for model of interest and additional data needed for plotting
+    fm.add_results(fg[i_model])
+    fm.power_spectrum = fg.power_spectra[i_model]
+    fm.freq_range = fg.freq_range
+    fm.freq_res = fg.freq_res
+    fm.freqs = fg.freqs
+
+    # generate and perioidc/aperiodic fits from parameters
+    fm._ap_fit = gen_aperiodic(fg.freqs, fg[i_model].aperiodic_params)
+    fm._peak_fit = gen_periodic(fg.freqs, np.ndarray.flatten(fg[i_model].gaussian_params))
+    fm.fooofed_spectrum_ = fm._ap_fit + fm._peak_fit
+
+    # save report
+    save_report_fm(fm, file_name, file_path=file_path, plot_peaks=plot_peaks, 
+                   plot_aperiodic=plot_aperiodic, plt_log=plt_log, add_legend=add_legend,
+                   data_kwargs=data_kwargs, model_kwargs=model_kwargs, 
+                   aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs)
