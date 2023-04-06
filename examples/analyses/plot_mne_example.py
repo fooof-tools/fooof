@@ -16,6 +16,8 @@ and managed with MNE, and how to plot topographies of resulting model parameters
 
 ###################################################################################################
 
+import os.path
+
 # General imports
 import numpy as np
 import matplotlib.pyplot as plt
@@ -26,7 +28,6 @@ import mne
 from mne import io
 from mne.datasets import sample
 from mne.viz import plot_topomap
-from mne.time_frequency import psd_welch
 
 # FOOOF imports
 from fooof import FOOOFGroup
@@ -52,8 +53,8 @@ from fooof.plts.spectra import plot_spectra
 ###################################################################################################
 
 # Get the data path for the MNE example data
-raw_fname = sample.data_path() + '/MEG/sample/sample_audvis_filt-0-40_raw.fif'
-event_fname = sample.data_path() + '/MEG/sample/sample_audvis_filt-0-40_raw-eve.fif'
+raw_fname = os.path.join(sample.data_path(), 'MEG', 'sample', 'sample_audvis_filt-0-40_raw.fif')
+event_fname = os.path.join(sample.data_path(), 'MEG', 'sample', 'sample_audvis_filt-0-40_raw-eve.fif')
 
 # Load the example MNE data
 raw = mne.io.read_raw_fif(raw_fname, preload=True, verbose=False)
@@ -110,15 +111,16 @@ def check_nans(data, nan_policy='zero'):
 # frequency representations - meaning we have to calculate power spectra.
 #
 # To do so, we will leverage the time frequency tools available with MNE,
-# in the `time_frequency` module. In particular, we can use the ``psd_welch``
-# function, that takes in MNE data objects and calculates and returns power spectra.
+# in the `time_frequency` module. In particular, we can use the ``compute_psd``
+# method, that takes in MNE data objects and calculates and returns power spectra.
 #
 
 ###################################################################################################
 
-# Calculate power spectra across the the continuous data
-spectra, freqs = psd_welch(raw, fmin=1, fmax=40, tmin=0, tmax=250,
-                           n_overlap=150, n_fft=300)
+# Calculate power spectra across the continuous data
+psd = raw.compute_psd(method="welch", fmin=1, fmax=40, tmin=0, tmax=250,
+                      n_overlap=150, n_fft=300)
+spectra, freqs = psd.get_data(return_freqs=True)
 
 ###################################################################################################
 # Fitting Power Spectrum Models
