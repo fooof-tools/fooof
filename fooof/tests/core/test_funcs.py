@@ -26,6 +26,20 @@ def test_gaussian_function():
     assert max(ys) == hgt
     assert np.allclose([i/sum(ys) for i in ys], norm.pdf(xs, ctr, wid))
 
+def test_skewed_gaussian_function():
+
+    ctr, hgt, wid, alpha = 50, 5, 10, 4
+
+    xs = np.arange(1, 100)
+    ys_gaussian = gaussian_function(xs, ctr, hgt, wid)
+    ys = skewed_gaussian_function(xs, ctr, hgt, wid, alpha)
+
+    assert np.all(ys)
+
+    # Positive alphas shift the max to the right
+    assert np.argmax(ys) >= np.argmax(ys_gaussian)
+    assert np.max(ys) == np.max(ys_gaussian) == hgt
+
 def test_expo_function():
 
     off, knee, exp = 10, 5, 2

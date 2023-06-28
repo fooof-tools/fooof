@@ -7,7 +7,11 @@ NOTES
     - They are left available for easy swapping back in, if desired.
 """
 
+from inspect import isfunction
+
 import numpy as np
+
+from scipy.stats import norm
 
 from fooof.core.errors import InconsistentDataError
 
@@ -37,6 +41,43 @@ def gaussian_function(xs, *params):
         ctr, hgt, wid = params[ii:ii+3]
 
         ys = ys + hgt * np.exp(-(xs-ctr)**2 / (2*wid**2))
+
+    return ys
+
+
+def skewed_gaussian_function(xs, *params):
+    """Skewed gaussian fitting function.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define the skewed gaussian function (center, height, width, alpha).
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for skewed gaussian function.
+    """
+
+    ys = np.zeros_like(xs)
+
+    for ii in range(0, len(params), 4):
+
+        ctr, hgt, wid, alpha = params[ii:ii+4]
+
+        # Gaussian distribution
+        ys = gaussian_function(xs, ctr, hgt, wid)
+
+        # Skewed cumulative distribution function
+        cdf = norm.cdf(alpha * ((xs - ctr) / wid))
+
+        # Skew the gaussian
+        ys = ys * cdf
+
+        # Rescale height
+        ys = (ys / np.max(ys)) * hgt
 
     return ys
 
@@ -167,7 +208,9 @@ def get_pe_func(periodic_mode):
 
     """
 
-    if periodic_mode == 'gaussian':
+    if isfunction(periodic_mode):
+        pe_func = periodic_mode
+    elif periodic_mode == 'gaussian':
         pe_func = gaussian_function
     else:
         raise ValueError("Requested periodic mode not understood.")
@@ -194,7 +237,9 @@ def get_ap_func(aperiodic_mode):
         If the specified aperiodic mode label is not understood.
     """
 
-    if aperiodic_mode == 'fixed':
+    if isfunction(aperiodic_mode):
+        ap_func = aperiodic_mode
+    elif aperiodic_mode == 'fixed':
         ap_func = expo_nk_function
     elif aperiodic_mode == 'knee':
         ap_func = expo_function
