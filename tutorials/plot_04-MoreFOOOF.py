@@ -79,20 +79,20 @@ fm = FOOOF()
 # iteratively by height (over and above the aperiodic component), and so this approach will
 # extract (up to) the *n* largest peaks.
 #
-# **peak_threshold (in units of standard deviation)** default: 2.0
+# **peak_threshold (relative threshold - standard deviation of power spectrum)** default: 2.0
 #
 # The threshold, in terms of standard deviation of the aperiodic-removed power
 # spectrum, above which a data point must pass to be considered a candidate peak.
 # Once a candidate peak drops below this threshold, the peak search is halted (without
 # including the most recent candidate).
 #
-# **min_peak_height (units of power - same as the input spectrum)** default: 0
+# **min_peak_height (absolute threshold - units of log power)** default: 0
 #
 # The minimum height, above the aperiodic fit, that a peak must have to be extracted
-# in the initial fit stage. Once a candidate peak drops below this threshold, the peak
-# search is halted (without including the most recent candidate). Note that because
-# this constraint is enforced during peak search, and prior to final peak fit, returned
-# peaks are not guaranteed to surpass this value in height.
+# in the initial fit stage. This threshold is defined in units of log power. Once a
+# candidate peak drops below this threshold, the peak search is halted (without including
+# the most recent candidate). Note that because this constraint is enforced during peak search,
+# and prior to final peak fit, returned peaks are not guaranteed to surpass this value in height.
 #
 # There are two different height-related halting conditions for the peak searching.
 # By default, the relative (standard-deviation based) threshold is defined, whereas the
