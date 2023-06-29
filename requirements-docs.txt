@@ -10,7 +10,7 @@ matplotlib
 tqdm
 
 # Requirements for running the examples
-mne
+mne > 1.2
 
 # Requirements for running the motivations
 neurodsp >= 2.0.0
