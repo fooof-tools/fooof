@@ -198,7 +198,10 @@ class FOOOF():
         ## RUN MODES
         # Set default debug mode - controls if an error is raised if model fitting is unsuccessful
         self._debug = False
-        # Set default check data mode - controls if an error is raised if NaN / Inf data are added
+        # Set default data checking modes - controls which checks get run on input data
+        #   check_freqs: check the frequency values, and raises an error for uneven spacing
+        self._check_freqs = True
+        #   check_data: checks the power values and raises an error for any NaN / Inf values
         self._check_data = True
 
         # Set internal settings, based on inputs, and initialize data & results attributes
@@ -1241,6 +1244,14 @@ class FOOOF():
         # Log power values
         power_spectrum = np.log10(power_spectrum)
 
+        ## Data checks - run checks on inputs based on check modes
+
+        if self._check_freqs:
+            # Check if the frequency data is unevenly spaced, and raise an error if so
+            freq_diffs = np.diff(freqs)
+            if not np.all(np.isclose(freq_diffs, freq_res)):
+                raise DataError("The input frequency values are not evenly spaced. "
+                                "The model expects equidistant frequency values in linear space.")
         if self._check_data:
             # Check if there are any infs / nans, and raise an error if so
             if np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):
