@@ -100,7 +100,7 @@ class FOOOF():
         Absolute threshold for detecting peaks, in units of the input data.
     peak_threshold : float, optional, default: 2.0
         Relative threshold for detecting peaks, in units of standard deviation of the input data.
-    aperiodic_mode : {'fixed', 'knee'}
+    aperiodic_mode : {'fixed', 'knee', 'knee_constant'}
         Which approach to take for fitting the aperiodic component.
     verbose : bool, optional, default: True
         Verbosity mode. If True, prints out warnings and general status updates.
@@ -172,12 +172,18 @@ class FOOOF():
         # Guess parameters for aperiodic fitting, [offset, knee, exponent]
         #   If offset guess is None, the first value of the power spectrum is used as offset guess
         #   If exponent guess is None, the abs(log-log slope) of first & last points is used
-        self._ap_guess = (None, 0, None)
-        # Bounds for aperiodic fitting, as: ((offset_low_bound, knee_low_bound, exp_low_bound),
-        #                                    (offset_high_bound, knee_high_bound, exp_high_bound))
+        self._ap_guess = (None, 1, None, 0)
+        # Bounds for aperiodic fitting, as:
+        #   ((offset_low_bound, knee_low_bound, exp_low_bound, const_low_bound),
+        #    (offset_high_bound, knee_high_bound, exp_high_bound, const_high_bounds))
         # By default, aperiodic fitting is unbound, but can be restricted here, if desired
-        #   Even if fitting without knee, leave bounds for knee (they are dropped later)
-        self._ap_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
+        self._ap_bounds = ((-np.inf, -np.inf, -np.inf, 0), (np.inf, np.inf, np.inf, np.inf))
+
+        if self.aperiodic_mode == 'knee':
+            self._ap_bounds = tuple(bound[:-1] for bound in self._ap_bounds)
+        elif self.aperiodic_mode == 'fixed':
+            self._ap_bounds = tuple(bound[0::2] for bound in self._ap_bounds)
+
         # Threshold for how far a peak has to be from edge to keep.
         #   This is defined in units of gaussian standard deviation
         self._bw_std_edge = 1.0
@@ -276,8 +282,7 @@ class FOOOF():
 
         if clear_results:
 
-            self.aperiodic_params_ = np.array([np.nan] * \
-                (2 if self.aperiodic_mode == 'fixed' else 3))
+            self.aperiodic_params_ = np.array([np.nan] * len(self._ap_bounds[0]))
             self.gaussian_params_ = np.empty([0, 3])
             self.peak_params_ = np.empty([0, 3])
             self.r_squared_ = np.nan
@@ -741,17 +746,14 @@ class FOOOF():
         # Get the guess parameters and/or calculate from the data, as needed
         #   Note that these are collected as lists, to concatenate with or without knee later
         off_guess = [power_spectrum[0] if not self._ap_guess[0] else self._ap_guess[0]]
-        kne_guess = [self._ap_guess[1]] if self.aperiodic_mode == 'knee' else []
+        kne_guess = [self._ap_guess[1]] if self.aperiodic_mode != 'fixed' else []
         exp_guess = [np.abs((self.power_spectrum[-1] - self.power_spectrum[0]) /
                             (np.log10(self.freqs[-1]) - np.log10(self.freqs[0])))
                      if not self._ap_guess[2] else self._ap_guess[2]]
-
-        # Get bounds for aperiodic fitting, dropping knee bound if not set to fit knee
-        ap_bounds = self._ap_bounds if self.aperiodic_mode == 'knee' \
-            else tuple(bound[0::2] for bound in self._ap_bounds)
+        const_guess = [self._ap_guess[-1]] if self.aperiodic_mode == 'knee_constant' else []
 
         # Collect together guess parameters
-        guess = np.array(off_guess + kne_guess + exp_guess)
+        guess = np.array(off_guess + kne_guess + exp_guess + const_guess)
 
         # Ignore warnings that are raised in curve_fit
         #   A runtime warning can occur while exploring parameters in curve fitting
@@ -762,7 +764,7 @@ class FOOOF():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                                 freqs, power_spectrum, p0=guess,
-                                                maxfev=self._maxfev, bounds=ap_bounds)
+                                                maxfev=self._maxfev, bounds=self._ap_bounds)
         except RuntimeError:
             raise FitError("Model fitting failed due to not finding parameters in "
                            "the simple aperiodic component fit.")
@@ -807,10 +809,6 @@ class FOOOF():
         freqs_ignore = freqs[perc_mask]
         spectrum_ignore = power_spectrum[perc_mask]
 
-        # Get bounds for aperiodic fitting, dropping knee bound if not set to fit knee
-        ap_bounds = self._ap_bounds if self.aperiodic_mode == 'knee' \
-            else tuple(bound[0::2] for bound in self._ap_bounds)
-
         # Second aperiodic fit - using results of first fit as guess parameters
         #  See note in _simple_ap_fit about warnings
         try:
@@ -818,7 +816,7 @@ class FOOOF():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                                 freqs_ignore, spectrum_ignore, p0=popt,
-                                                maxfev=self._maxfev, bounds=ap_bounds)
+                                                maxfev=self._maxfev, bounds=self._ap_bounds)
         except RuntimeError:
             raise FitError("Model fitting failed due to not finding "
                            "parameters in the robust aperiodic fit.")

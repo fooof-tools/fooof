@@ -43,7 +43,7 @@ class FOOOFGroup(FOOOF):
         Absolute threshold for detecting peaks, in units of the input data.
     peak_threshold : float, optional, default: 2.0
         Relative threshold for detecting peaks, in units of standard deviation of the input data.
-    aperiodic_mode : {'fixed', 'knee'}
+    aperiodic_mode : {'fixed', 'knee', 'knee_constant'}
         Which approach to take for fitting the aperiodic component.
     verbose : bool, optional, default: True
         Verbosity mode. If True, prints out warnings and general status updates.
@@ -336,7 +336,7 @@ class FOOOFGroup(FOOOF):
         ----------
         name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
             Name of the data field to extract across the group.
-        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent', 'constant'} or int, optional
             Column name / index to extract from selected data, if requested.
             Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
 
@@ -369,7 +369,7 @@ class FOOOFGroup(FOOOF):
         if isinstance(col, str):
             col = get_indices(self.aperiodic_mode)[col]
         elif isinstance(col, int):
-            if col not in [0, 1, 2]:
+            if col not in [0, 1, 2, 3]:
                 raise ValueError("Input value for `col` not valid.")
 
         # Pull out the requested data field from the group data

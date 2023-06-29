@@ -42,6 +42,24 @@ def test_expo_function():
     assert np.isclose(off_meas, off, 0.1)
     assert np.isclose(np.abs(exp_meas), exp, 0.1)
 
+
+def test_expo_const_function():
+
+    off, knee, exp, const = 10, 5, 2, 0
+
+    xs = np.arange(1, 100)
+    ys = expo_const_function(xs, off, knee, exp, const)
+
+    assert np.all(ys)
+
+    # Note: no obvious way to test the knee specifically
+    #  Here - test that past the knee, has expected exponent & offset value
+    exp_meas, off_meas, _, _, _ = linregress(np.log10(xs[knee**2:]), ys[knee**2:])
+
+    assert np.isclose(off_meas, off, 0.1)
+    assert np.isclose(np.abs(exp_meas), exp, 0.1)
+
+
 def test_expo_nk_function():
 
     off, exp = 10, 2
@@ -103,6 +121,9 @@ def test_get_ap_func():
     ap_kn_func = get_ap_func('knee')
     assert callable(ap_kn_func)
 
+    ap_kn_const_func = get_ap_func('knee_constant')
+    assert callable(ap_kn_const_func)
+
     with raises(ValueError):
         get_ap_func('bad')
 
@@ -116,5 +137,9 @@ def test_infer_ap_func():
     apf_kn = infer_ap_func(ap_kn)
     assert apf_kn == 'knee'
 
+    ap_kn_const = [50, 2, 1, 0]
+    apf_kn_const = infer_ap_func(ap_kn_const)
+    assert apf_kn_const == 'knee_constant'
+
     with raises(InconsistentDataError):
-        infer_ap_func([1, 2, 3, 4])
+        infer_ap_func([1, 2, 3, 4, 5])

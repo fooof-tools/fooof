@@ -282,6 +282,13 @@ def gen_results_fm_str(fm, concise=False):
         return _no_model_str(concise)
 
     # Create the formatted strings for printing
+    ap_params = ['offset', 'exponent']
+
+    if fm.aperiodic_mode != 'fixed':
+        ap_params.insert(1, 'knee')
+    if fm.aperiodic_mode == 'knee_constant':
+        ap_params.insert(3, 'constant')
+
     str_lst = [
 
         # Header
@@ -297,8 +304,7 @@ def gen_results_fm_str(fm, concise=False):
         '',
 
         # Aperiodic parameters
-        ('Aperiodic Parameters (offset, ' + ('knee, ' if fm.aperiodic_mode == 'knee' else '') + \
-         'exponent): '),
+        ('Aperiodic Parameters (' + ', '.join(ap_params) + '): '),
         ', '.join(['{:2.4f}'] * len(fm.aperiodic_params_)).format(*fm.aperiodic_params_),
         '',
 
@@ -355,6 +361,8 @@ def gen_results_fg_str(fg, concise=False):
     exps = fg.get_params('aperiodic_params', 'exponent')
     kns = fg.get_params('aperiodic_params', 'knee') \
         if fg.aperiodic_mode == 'knee' else np.array([0])
+    consts = fg.get_params('aperiodic_params', 'constant') \
+        if fg.aperiodic_mode == 'knee_constant' else np.array([0])
 
     # Check if there are any power spectra that failed to fit
     n_failed = sum(np.isnan(exps))
@@ -379,15 +387,19 @@ def gen_results_fg_str(fg, concise=False):
         '',
 
         # Aperiodic parameters - knee fit status, and quick exponent description
-        'Power spectra were fit {} a knee.'.format(\
-            'with' if fg.aperiodic_mode == 'knee' else 'without'),
+        'Power spectra were fit {w} a knee{e}'.format(
+            w='with' if fg.aperiodic_mode != 'fixed' else 'without',
+            e=' and constant.' if fg.aperiodic_mode == 'knee_constant' else '.'),
         '',
         'Aperiodic Fit Values:',
-        *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
+        *[el for el in ['    Knees - Min: {:8.2f}, Max: {:8.2f}, Mean: {:8.2f}'
                         .format(np.nanmin(kns), np.nanmax(kns), np.nanmean(kns)),
-                       ] if fg.aperiodic_mode == 'knee'],
-        'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+                       ] if fg.aperiodic_mode != 'fixed'],
+        'Exponents - Min: {:8.3f}, Max: {:8.3f}, Mean: {:8.3f}'
         .format(np.nanmin(exps), np.nanmax(exps), np.nanmean(exps)),
+        *[el for el in [' Constants - Min: {:8.1e}, Max: {:8.1e}, Mean: {:8.1e}'
+                        .format(np.nanmin(consts), np.nanmax(consts), np.nanmean(consts)),
+                       ] if fg.aperiodic_mode == 'knee_constant'],
         '',
 
         # Peak Parameters
@@ -397,9 +409,9 @@ def gen_results_fg_str(fg, concise=False):
 
         # Goodness if fit
         'Goodness of fit metrics:',
-        '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        '   R2s -  Min: {:8.3f}, Max: {:8.3f}, Mean: {:8.3f}'
         .format(np.nanmin(r2s), np.nanmax(r2s), np.nanmean(r2s)),
-        'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        'Errors -  Min: {:8.3f}, Max: {:8.3f}, Mean: {:8.3f}'
         .format(np.nanmin(errors), np.nanmax(errors), np.nanmean(errors)),
         '',
 
