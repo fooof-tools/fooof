@@ -41,11 +41,11 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False, add_settings=Tr
 
     # Define grid settings based on what is to be plotted
     n_rows = 3 if add_settings else 2
-    height_ratios = [0.45, 1.0, 0.25] if add_settings else [0.45, 1.0]
+    height_ratios = [0.5, 1.0, 0.25] if add_settings else [0.45, 1.0]
 
     # Set up outline figure, using gridspec
     _ = plt.figure(figsize=REPORT_FIGSIZE)
-    grid = gridspec.GridSpec(n_rows, 1, height_ratios=height_ratios)
+    grid = gridspec.GridSpec(n_rows, 1, hspace=0.25, height_ratios=height_ratios)
 
     # First - text results
     ax0 = plt.subplot(grid[0])
@@ -89,7 +89,7 @@ def save_report_fg(fg, file_name, file_path=None, add_settings=True):
 
     # Define grid settings based on what is to be plotted
     n_rows = 4 if add_settings else 3
-    height_ratios = [0.8, 1.0, 1.0, 0.5] if add_settings else [0.8, 1.0, 1.0]
+    height_ratios = [1.0, 1.0, 1.0, 0.5] if add_settings else [0.8, 1.0, 1.0]
 
     # Initialize figure
     _ = plt.figure(figsize=REPORT_FIGSIZE)
