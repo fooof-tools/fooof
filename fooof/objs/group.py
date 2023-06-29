@@ -542,7 +542,8 @@ class FOOOFGroup(FOOOF):
         print(gen_results_fg_str(self, concise))
 
 
-    def save_model_report(self, index, file_name, file_path=None, plt_log=False, **plot_kwargs):
+    def save_model_report(self, index, file_name, file_path=None, plt_log=False,
+                          add_settings=True, **plot_kwargs):
         """"Save out an individual model report for a specified model fit.
 
         Parameters
@@ -555,14 +556,16 @@ class FOOOFGroup(FOOOF):
             Path to directory to save to. If None, saves to current directory.
         plt_log : bool, optional, default: False
             Whether or not to plot the frequency axis in log space.
+        add_settings : bool, optional, default: True
+            Whether to add a print out of the model settings to the end of the report.
         plot_kwargs : keyword arguments
             Keyword arguments to pass into the plot method.
-        
         """
-        
-        self.get_fooof(ind=index, regenerate=True).save_report(file_name, file_path, plt_log, **plot_kwargs)
 
-        
+        self.get_fooof(ind=index, regenerate=True).save_report(\
+            file_name, file_path, plt_log, **plot_kwargs)
+
+
     def to_df(self, peak_org):
         """Convert and extract the model results as a pandas object.
 

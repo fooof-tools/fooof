@@ -393,7 +393,7 @@ class FOOOF():
         plt_log : bool, optional, default: False
             Whether or not to plot the frequency axis in log space.
         **plot_kwargs
-        Keyword arguments to pass into the plot method.
+            Keyword arguments to pass into the plot method.
 
         Notes
         -----
@@ -650,7 +650,8 @@ class FOOOF():
 
 
     @copy_doc_func_to_method(save_report_fm)
-    def save_report(self, file_name, file_path=None, plt_log=False, add_settings=True, **plot_kwargs):
+    def save_report(self, file_name, file_path=None, plt_log=False,
+                    add_settings=True, **plot_kwargs):
 
         save_report_fm(self, file_name, file_path, plt_log, add_settings, **plot_kwargs)
 
