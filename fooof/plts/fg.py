@@ -43,7 +43,7 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
     if not fg.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
-    fig = plt.figure(figsize=PLT_FIGSIZES['group'])
+    fig = plt.figure(figsize=plot_kwargs.pop('figsize', PLT_FIGSIZES['group']))
     gs = gridspec.GridSpec(2, 2, wspace=0.4, hspace=0.25, height_ratios=[1, 1.2])
 
     # Apply scatter kwargs to all subplots
