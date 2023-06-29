@@ -22,7 +22,7 @@ SAVE_FORMAT = 'pdf'
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def save_report_fm(fm, file_name, file_path=None, plt_log=False):
+def save_report_fm(fm, file_name, file_path=None, plt_log=False, add_settings=True):
     """Generate and save out a PDF report for a power spectrum model fit.
 
     Parameters
@@ -35,31 +35,36 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
         Path to directory to save to. If None, saves to current directory.
     plt_log : bool, optional, default: False
         Whether or not to plot the frequency axis in log space.
+    add_settings : bool, optional, default: True
+        Whether to add a print out of the model settings to the end of the report.
     """
+
+    # Define grid settings based on what is to be plotted
+    n_rows = 3 if add_settings else 2
+    height_ratios = [0.45, 1.0, 0.25] if add_settings else [0.45, 1.0]
 
     # Set up outline figure, using gridspec
     _ = plt.figure(figsize=REPORT_FIGSIZE)
-    grid = gridspec.GridSpec(3, 1, height_ratios=[0.45, 1.0, 0.25])
+    grid = gridspec.GridSpec(n_rows, 1, height_ratios=height_ratios)
 
     # First - text results
     ax0 = plt.subplot(grid[0])
     results_str = gen_results_fm_str(fm)
     ax0.text(0.5, 0.7, results_str, REPORT_FONT, ha='center', va='center')
     ax0.set_frame_on(False)
-    ax0.set_xticks([])
-    ax0.set_yticks([])
+    ax0.set(xticks=[], yticks=[])
 
     # Second - data plot
     ax1 = plt.subplot(grid[1])
     fm.plot(plt_log=plt_log, ax=ax1)
 
     # Third - FOOOF settings
-    ax2 = plt.subplot(grid[2])
-    settings_str = gen_settings_str(fm, False)
-    ax2.text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')
-    ax2.set_frame_on(False)
-    ax2.set_xticks([])
-    ax2.set_yticks([])
+    if add_settings:
+        ax2 = plt.subplot(grid[2])
+        settings_str = gen_settings_str(fm, False)
+        ax2.text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')
+        ax2.set_frame_on(False)
+        ax2.set(xticks=[], yticks=[])
 
     # Save out the report
     plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
@@ -67,7 +72,7 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False):
 
 
 @check_dependency(plt, 'matplotlib')
-def save_report_fg(fg, file_name, file_path=None):
+def save_report_fg(fg, file_name, file_path=None, add_settings=True):
     """Generate and save out a PDF report for a group of power spectrum models.
 
     Parameters
@@ -78,19 +83,24 @@ def save_report_fg(fg, file_name, file_path=None):
         Name to give the saved out file.
     file_path : str, optional
         Path to directory to save to. If None, saves to current directory.
+    add_settings : bool, optional, default: True
+        Whether to add a print out of the model settings to the end of the report.
     """
+
+    # Define grid settings based on what is to be plotted
+    n_rows = 4 if add_settings else 3
+    height_ratios = [0.8, 1.0, 1.0, 0.5] if add_settings else [0.8, 1.0, 1.0]
 
     # Initialize figure
     _ = plt.figure(figsize=REPORT_FIGSIZE)
-    grid = gridspec.GridSpec(4, 2, wspace=0.4, hspace=0.25, height_ratios=[0.8, 1.0, 1.0, 0.5])
+    grid = gridspec.GridSpec(n_rows, 2, wspace=0.4, hspace=0.25, height_ratios=height_ratios)
 
     # First / top: text results
     ax0 = plt.subplot(grid[0, :])
     results_str = gen_results_fg_str(fg)
     ax0.text(0.5, 0.7, results_str, REPORT_FONT, ha='center', va='center')
     ax0.set_frame_on(False)
-    ax0.set_xticks([])
-    ax0.set_yticks([])
+    ax0.set(xticks=[], yticks=[])
 
     # Second - data plots
 
@@ -107,12 +117,12 @@ def save_report_fg(fg, file_name, file_path=None):
     plot_fg_peak_cens(fg, ax3)
 
     # Third - Model settings
-    ax4 = plt.subplot(grid[3, :])
-    settings_str = gen_settings_str(fg, False)
-    ax4.text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')
-    ax4.set_frame_on(False)
-    ax4.set_xticks([])
-    ax4.set_yticks([])
+    if add_settings:
+        ax4 = plt.subplot(grid[3, :])
+        settings_str = gen_settings_str(fg, False)
+        ax4.text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')
+        ax4.set_frame_on(False)
+        ax4.set(xticks=[], yticks=[])
 
     # Save out the report
     plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))

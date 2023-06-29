@@ -402,9 +402,9 @@ class FOOOFGroup(FOOOF):
 
 
     @copy_doc_func_to_method(save_report_fg)
-    def save_report(self, file_name, file_path=None):
+    def save_report(self, file_name, file_path=None, add_settings=True):
 
-        save_report_fg(self, file_name, file_path)
+        save_report_fg(self, file_name, file_path, add_settings)
 
 
     @copy_doc_func_to_method(save_fg)
