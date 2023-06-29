@@ -163,14 +163,14 @@ def subsample_spectra(spectra, selection, return_inds=False):
     --------
     Using a group of simulated spectra, subsample a specific number:
 
-    >>> from fooof.sim import gen_group_power_spectra
-    >>> freqs, powers = gen_group_power_spectra(10, [1, 50], [1, 1], [10, 0.5, 1.0])
+    >>> from specparam.sim import sim_group_power_spectra
+    >>> freqs, powers = sim_group_power_spectra(10, [1, 50], [1, 1], [10, 0.5, 1.0])
     >>> subsample = subsample_spectra(powers, 5)
 
     Using a group of simulated spectra, subsample a proportion:
 
-    >>> from fooof.sim import gen_group_power_spectra
-    >>> freqs, powers = gen_group_power_spectra(10, [1, 50], [1, 1], [10, 0.5, 1.0])
+    >>> from specparam.sim import sim_group_power_spectra
+    >>> freqs, powers = sim_group_power_spectra(10, [1, 50], [1, 1], [10, 0.5, 1.0])
     >>> subsample = subsample_spectra(powers, 0.25)
     """
 
