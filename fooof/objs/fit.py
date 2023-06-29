@@ -77,6 +77,7 @@ from fooof.plts.fm import plot_fm
 from fooof.utils.data import trim_spectrum
 from fooof.utils.params import compute_gauss_std
 from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
+from fooof.data.conversions import model_to_dataframe
 from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 
 ###################################################################################################
@@ -714,6 +715,25 @@ class FOOOF():
         """
 
         self._check_data = check_data
+
+
+    def to_df(self, peak_org):
+        """Convert and extract the model results as a pandas object.
+
+        Parameters
+        ----------
+        peak_org : int or Bands
+            How to organize peaks.
+            If int, extracts the first n peaks.
+            If Bands, extracts peaks based on band definitions.
+
+        Returns
+        -------
+        pd.Series
+            Model results organized into a pandas object.
+        """
+
+        return model_to_dataframe(self.get_results(), peak_org)
 
 
     def _check_width_limits(self):
