@@ -1,6 +1,6 @@
 """Tests for specparam.plts.group."""
 
-from py.test import raises
+from pytest import raises
 
 from specparam import PSDGroup
 from specparam.core.errors import NoModelError
