@@ -82,6 +82,7 @@ There are also optional dependencies, which are not required for model fitting i
 
 - `matplotlib <https://github.com/matplotlib/matplotlib>`_ is needed to visualize data and model fits
 - `tqdm <https://github.com/tqdm/tqdm>`_ is needed to print progress bars when fitting many models
+- `pandas <https://github.com/pandas-dev/pandas>`_ is needed to for exporting model fit results to dataframes
 - `pytest <https://github.com/pytest-dev/pytest>`_ is needed to run the test suite locally
 
 We recommend using the `Anaconda <https://www.anaconda.com/distribution/>`_ distribution to manage these requirements.
