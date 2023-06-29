@@ -5,7 +5,7 @@ Topographical Analyses with MNE
 Parameterizing neural power spectra with MNE, doing a topographical analysis.
 
 This tutorial requires that you have `MNE <https://mne-tools.github.io/>`_
-installed.
+installed. This tutorial needs mne >= 1.2.
 
 If you don't already have MNE, you can follow instructions to get it
 `here <https://mne-tools.github.io/stable/getting_started.html>`_.
@@ -16,8 +16,6 @@ and managed with MNE, and how to plot topographies of resulting model parameters
 
 ###################################################################################################
 
-import os.path
-
 # General imports
 import numpy as np
 import matplotlib.pyplot as plt
@@ -25,9 +23,7 @@ from matplotlib import cm, colors, colorbar
 
 # Import MNE, as well as the MNE sample dataset
 import mne
-from mne import io
 from mne.datasets import sample
-from mne.viz import plot_topomap
 
 # FOOOF imports
 from fooof import FOOOFGroup
@@ -53,8 +49,7 @@ from fooof.plts.spectra import plot_spectra
 ###################################################################################################
 
 # Get the data path for the MNE example data
-raw_fname = os.path.join(sample.data_path(), 'MEG', 'sample', 'sample_audvis_filt-0-40_raw.fif')
-event_fname = os.path.join(sample.data_path(), 'MEG', 'sample', 'sample_audvis_filt-0-40_raw-eve.fif')
+raw_fname = sample.data_path() / 'MEG' / 'sample' / 'sample_audvis_filt-0-40_raw.fif'
 
 # Load the example MNE data
 raw = mne.io.read_raw_fif(raw_fname, preload=True, verbose=False)
@@ -62,7 +57,7 @@ raw = mne.io.read_raw_fif(raw_fname, preload=True, verbose=False)
 ###################################################################################################
 
 # Select EEG channels from the dataset
-raw = raw.pick_types(meg=False, eeg=True, eog=False, exclude='bads')
+raw = raw.pick(['eeg'], exclude='bads')
 
 ###################################################################################################
 
@@ -195,7 +190,7 @@ alpha_pw = alphas[:, 1]
 ###################################################################################################
 
 # Plot the topography of alpha power
-plot_topomap(alpha_pw, raw.info, cmap=cm.viridis, contours=0);
+mne.viz.plot_topomap(alpha_pw, raw.info, cmap=cm.viridis, contours=0, size=4)
 
 ###################################################################################################
 #
@@ -216,8 +211,7 @@ for ind, (label, band_def) in enumerate(bands):
     band_power = check_nans(get_band_peak_fg(fg, band_def)[:, 1])
 
     # Create a topomap for the current oscillation band
-    mne.viz.plot_topomap(band_power, raw.info, cmap=cm.viridis, contours=0,
-                         axes=axes[ind], show=False);
+    mne.viz.plot_topomap(band_power, raw.info, cmap=cm.viridis, contours=0, axes=axes[ind])
 
     # Set the plot title
     axes[ind].set_title(label + ' power', {'fontsize' : 20})
@@ -270,7 +264,7 @@ exps = fg.get_params('aperiodic_params', 'exponent')
 ###################################################################################################
 
 # Plot the topography of aperiodic exponents
-plot_topomap(exps, raw.info, cmap=cm.viridis, contours=0)
+mne.viz.plot_topomap(exps, raw.info, cmap=cm.viridis, contours=0, size=4)
 
 ###################################################################################################
 #
@@ -298,7 +292,4 @@ plot_spectra(fg.freqs, spectra, ax=ax, labels=['Low Exponent', 'High Exponent'])
 #
 # In this example, we have seen how to apply power spectrum models to data that is
 # managed and processed with MNE.
-#
-
-###################################################################################################
 #
