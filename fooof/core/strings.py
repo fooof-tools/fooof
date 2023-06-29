@@ -36,7 +36,7 @@ def gen_width_warning_str(freq_res, bwl):
     output = '\n'.join([
         '',
         'FOOOF WARNING: Lower-bound peak width limit is < or ~= the frequency resolution: ' + \
-            '{:1.2f} <= {:1.2f}'.format(freq_res, bwl),
+            '{:1.2f} <= {:1.2f}'.format(bwl, freq_res),
         '\tLower bounds below frequency-resolution have no effect ' + \
         '(effective lower bound is the frequency resolution).',
         '\tToo low a limit may lead to overfitting noise as small bandwidth peaks.',
