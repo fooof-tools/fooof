@@ -97,9 +97,11 @@ class FOOOF():
     max_n_peaks : int, optional, default: inf
         Maximum number of peaks to fit.
     min_peak_height : float, optional, default: 0
-        Absolute threshold for detecting peaks, in units of the input data.
+        Absolute threshold for detecting peaks.
+        This threshold is defined in absolute units of the power spectrum (log power).
     peak_threshold : float, optional, default: 2.0
-        Relative threshold for detecting peaks, in units of standard deviation of the input data.
+        Relative threshold for detecting peaks.
+        This threshold is defined in relative units of the power spectrum (standard deviation).
     aperiodic_mode : {'fixed', 'knee'}
         Which approach to take for fitting the aperiodic component.
     verbose : bool, optional, default: True
