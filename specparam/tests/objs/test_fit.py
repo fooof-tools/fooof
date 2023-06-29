@@ -7,7 +7,7 @@ They serve rather as 'smoke tests', for if anything fails completely.
 """
 
 import numpy as np
-from py.test import raises
+from pytest import raises
 
 from specparam.core.items import OBJ_DESC
 from specparam.core.errors import FitError

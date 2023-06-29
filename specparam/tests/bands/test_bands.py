@@ -1,6 +1,6 @@
 """Test functions for specparam.data.bands."""
 
-from py.test import raises
+from pytest import raises
 
 from specparam.bands.bands import *
 

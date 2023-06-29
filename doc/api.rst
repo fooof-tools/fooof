@@ -341,6 +341,7 @@ Utilities for working with data.
 
     trim_spectrum
     interpolate_spectrum
+    subsample_spectra
 
 Parameter Utilities
 ~~~~~~~~~~~~~~~~~~~

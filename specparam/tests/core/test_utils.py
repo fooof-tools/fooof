@@ -5,7 +5,7 @@ from itertools import repeat
 
 from numpy import array_equal
 
-from py.test import raises
+from pytest import raises
 
 from specparam.core.utils import *
 

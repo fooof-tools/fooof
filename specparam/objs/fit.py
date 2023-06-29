@@ -1109,7 +1109,10 @@ class PSD():
         Parameters
         ----------
         metric : {'MAE', 'MSE', 'RMSE'}, optional
-            Which error measure to calculate.
+            Which error measure to calculate:
+            * 'MAE' : mean absolute error
+            * 'MSE' : mean squared error
+            * 'RMSE' : root mean squared error
 
         Raises
         ------
