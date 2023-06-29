@@ -56,6 +56,7 @@ Methods without defined docstrings import docs at runtime, from aliased external
 
 import warnings
 from copy import deepcopy
+from inspect import signature
 
 import numpy as np
 from numpy.linalg import LinAlgError
@@ -67,7 +68,7 @@ from fooof.core.io import save_fm, load_json
 from fooof.core.reports import save_report_fm
 from fooof.core.modutils import copy_doc_func_to_method
 from fooof.core.utils import group_three, check_array_dim
-from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
+from fooof.core.funcs import get_pe_func, get_ap_func, infer_ap_func
 from fooof.core.errors import (FitError, NoModelError, DataError,
                                NoDataError, InconsistentDataError)
 from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
@@ -76,7 +77,7 @@ from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
 from fooof.plts.fm import plot_fm
 from fooof.utils.data import trim_spectrum
 from fooof.utils.params import compute_gauss_std
-from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
+from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData, FitParams
 from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 
 ###################################################################################################
@@ -155,8 +156,9 @@ class FOOOF():
     """
     # pylint: disable=attribute-defined-outside-init
 
-    def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
-                 peak_threshold=2.0, aperiodic_mode='fixed', verbose=True):
+    def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf,
+                 min_peak_height=0.0, peak_threshold=2.0, aperiodic_mode='fixed',
+                 periodic_mode='gaussian', verbose=True):
         """Initialize object with desired settings."""
 
         # Set input settings
@@ -165,6 +167,7 @@ class FOOOF():
         self.min_peak_height = min_peak_height
         self.peak_threshold = peak_threshold
         self.aperiodic_mode = aperiodic_mode
+        self.periodic_mode = periodic_mode
         self.verbose = verbose
 
         ## PRIVATE SETTINGS
@@ -440,6 +443,9 @@ class FOOOF():
         if self.verbose:
             self._check_width_limits()
 
+        # Determine the aperiodic and periodic fit funcs
+        self._set_fit_funcs()
+
         # In rare cases, the model fails to fit, and so uses try / except
         try:
 
@@ -479,6 +485,14 @@ class FOOOF():
 
             # Convert gaussian definitions to peak parameters
             self.peak_params_ = self._create_peak_params(self.gaussian_params_)
+
+            # Create a flexible datatype object for ap/pe parameters
+            pe_labels = list(signature(self._pe_func).parameters.keys())[1:]
+            ap_labels = list(signature(self._ap_func).parameters.keys())[1:]
+
+            self.peak_params_ = FitParams(self.peak_params_, pe_labels)
+            self.gaussian_params_ = FitParams(self.gaussian_params_, pe_labels)
+            self.aperiodic_params_ = FitParams(self.aperiodic_params_, ap_labels)
 
             # Calculate R^2 and error of the model fit
             self._calc_r_squared()
@@ -630,7 +644,6 @@ class FOOOF():
         return FOOOFResults(**{key.strip('_') : getattr(self, key) \
             for key in OBJ_DESC['results']})
 
-
     @copy_doc_func_to_method(plot_fm)
     def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,
              add_legend=True, save_fig=False, file_name=None, file_path=None,
@@ -715,6 +728,11 @@ class FOOOF():
 
         self._check_data = check_data
 
+    def _set_fit_funcs(self):
+        """Set the requested aperiodic and periodic fit functions."""
+
+        self._pe_func = get_pe_func(self.periodic_mode)
+        self._ap_func = get_ap_func(self.aperiodic_mode)
 
     def _check_width_limits(self):
         """Check and warn about peak width limits / frequency resolution interaction."""
@@ -762,8 +780,7 @@ class FOOOF():
         try:
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
-                aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
-                                                freqs, power_spectrum, p0=guess,
+                aperiodic_params, _ = curve_fit(self._ap_func, freqs, power_spectrum, p0=guess,
                                                 maxfev=self._maxfev, bounds=ap_bounds)
         except RuntimeError:
             raise FitError("Model fitting failed due to not finding parameters in "
@@ -818,9 +835,8 @@ class FOOOF():
         try:
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
-                aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
-                                                freqs_ignore, spectrum_ignore, p0=popt,
-                                                maxfev=self._maxfev, bounds=ap_bounds)
+                aperiodic_params, _ = curve_fit(self._ap_func, freqs_ignore, spectrum_ignore,
+                                                p0=popt, maxfev=self._maxfev, bounds=ap_bounds)
         except RuntimeError:
             raise FitError("Model fitting failed due to not finding "
                            "parameters in the robust aperiodic fit.")
@@ -904,7 +920,7 @@ class FOOOF():
 
             # Collect guess parameters and subtract this guess gaussian from the data
             guess = np.vstack((guess, (guess_freq, guess_height, guess_std)))
-            peak_gauss = gaussian_function(self.freqs, guess_freq, guess_height, guess_std)
+            peak_gauss = self._pe_func(self.freqs, guess_freq, guess_height, guess_std)
             flat_iter = flat_iter - peak_gauss
 
         # Check peaks based on edges, and on overlap, dropping any that violate requirements
@@ -963,7 +979,7 @@ class FOOOF():
 
         # Fit the peaks
         try:
-            gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._spectrum_flat,
+            gaussian_params, _ = curve_fit(self._pe_func, self.freqs, self._spectrum_flat,
                                            p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds)
         except RuntimeError:
             raise FitError("Model fitting failed due to not finding "
