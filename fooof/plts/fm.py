@@ -27,7 +27,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 @check_dependency(plt, 'matplotlib')
 def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=True,
             save_fig=False, file_name=None, file_path=None, ax=None, data_kwargs=None,
-            model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None):
+            model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
     """Plot the power spectrum and model fit results from a FOOOF object.
 
     Parameters
@@ -53,6 +53,8 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
         Figure axes upon which to plot.
     data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs : None or dict, optional
         Keyword arguments to pass into the plot call for each plot element.
+    **plot_kwargs
+        Keyword arguments to pass into the ``style_plot``.
 
     Notes
     -----
