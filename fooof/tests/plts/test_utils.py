@@ -87,6 +87,17 @@ def test_savefig():
     example_plot(save_fig=True, file_path=TEST_PLOTS_PATH, file_name='test_savefig2.pdf')
     assert os.path.exists(os.path.join(TEST_PLOTS_PATH, 'test_savefig2.pdf'))
 
+    # Test giving additional save kwargs
+    example_plot(file_path=TEST_PLOTS_PATH, file_name='test_savefig3.pdf',
+                 save_kwargs={'facecolor' : 'red'})
+    assert os.path.exists(os.path.join(TEST_PLOTS_PATH, 'test_savefig3.pdf'))
+
     # Test does not save when `save_fig` set to False
-    example_plot(save_fig=False, file_path=TEST_PLOTS_PATH, file_name='test_savefig3.pdf')
-    assert not os.path.exists(os.path.join(TEST_PLOTS_PATH, 'test_savefig3.pdf'))
+    example_plot(save_fig=False, file_path=TEST_PLOTS_PATH, file_name='test_savefig_nope.pdf')
+    assert not os.path.exists(os.path.join(TEST_PLOTS_PATH, 'test_savefig_nope.pdf'))
+
+def test_save_figure():
+
+    plt.plot([1, 2], [3, 4])
+    save_figure(file_name='test_save_figure.pdf', file_path=TEST_PLOTS_PATH)
+    assert os.path.exists(os.path.join(TEST_PLOTS_PATH, 'test_save_figure.pdf'))

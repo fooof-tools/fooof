@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from fooof.sim.gen import gen_power_spectrum
+from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
 
 from fooof.utils.data import *
 
@@ -49,3 +49,34 @@ def test_interpolate_spectrum():
     for f_range in exclude:
         mask = np.logical_and(freqs >= f_range[0], freqs <= f_range[1])
         assert powers[mask].sum() > powers_out[mask].sum()
+
+def test_subsample_spectra():
+
+    # Simulate spectra, each with unique osc peak (for checking)
+    n_sim = 10
+    oscs = [[10 + ind, 0.25, 0.5] for ind in range(n_sim)]
+    freqs, powers = gen_group_power_spectra(\
+        n_sim, [1, 50], [1, 1], oscs)
+
+    # Test with int input
+    n_select = 2
+    out = subsample_spectra(powers, n_select)
+    assert isinstance(out, np.ndarray)
+    assert out.shape == (n_select, powers.shape[1])
+
+    # Test with foat input
+    prop_select = 0.75
+    out = subsample_spectra(powers, prop_select)
+    assert isinstance(out, np.ndarray)
+    assert out.shape == (int(prop_select * n_sim), powers.shape[1])
+
+    # Test returning indices
+    out, inds = subsample_spectra(powers, n_select, return_inds=True)
+    assert len(set(inds)) == n_select
+    for ind, spectrum in zip(inds, out):
+        assert np.array_equal(spectrum, powers[ind, :])
+
+    out, inds = subsample_spectra(powers, prop_select, return_inds=True)
+    assert len(set(inds)) == int(prop_select * n_sim)
+    for ind, spectrum in zip(inds, out):
+        assert np.array_equal(spectrum, powers[ind, :])

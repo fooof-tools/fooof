@@ -80,8 +80,8 @@ def plot_fg_ap(fg, ax=None, **plot_kwargs):
     """
 
     if fg.aperiodic_mode == 'knee':
-        plot_scatter_2(fg.get_params('aperiodic_params', 'exponent'), 'Knee',
-                       fg.get_params('aperiodic_params', 'knee'), 'Exponent',
+        plot_scatter_2(fg.get_params('aperiodic_params', 'exponent'), 'Exponent',
+                       fg.get_params('aperiodic_params', 'knee'), 'Knee',
                        'Aperiodic Fit', ax=ax)
     else:
         plot_scatter_1(fg.get_params('aperiodic_params', 'exponent'), 'Exponent',

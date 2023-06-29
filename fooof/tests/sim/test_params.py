@@ -1,6 +1,6 @@
 """Test functions for fooof.sim.params."""
 
-from py.test import raises
+from pytest import raises
 
 from numpy import array_equal
 

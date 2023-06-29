@@ -11,15 +11,20 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    # Tag ubuntu version to 20.04, in order to support python 3.6
+    #   See issue: https://github.com/actions/setup-python/issues/544
+    #   When ready to drop 3.6, can revert from 'ubuntu-20.04' -> 'ubuntu-latest'
+    runs-on: ubuntu-20.04
+    env:
+      MODULE_NAME: fooof
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -32,5 +37,8 @@ jobs:
     - name: Test with pytest
       run: |
         pytest --cov=./
+    - name: Run doctests
+      run: |
+        pytest --doctest-modules --ignore=$MODULE_NAME/tests $MODULE_NAME
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3

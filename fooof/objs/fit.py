@@ -762,8 +762,8 @@ class FOOOF():
         #   Note that these are collected as lists, to concatenate with or without knee later
         off_guess = [power_spectrum[0] if not self._ap_guess[0] else self._ap_guess[0]]
         kne_guess = [self._ap_guess[1]] if self.aperiodic_mode == 'knee' else []
-        exp_guess = [np.abs(self.power_spectrum[-1] - self.power_spectrum[0] /
-                            np.log10(self.freqs[-1]) - np.log10(self.freqs[0]))
+        exp_guess = [np.abs((self.power_spectrum[-1] - self.power_spectrum[0]) /
+                            (np.log10(self.freqs[-1]) - np.log10(self.freqs[0])))
                      if not self._ap_guess[2] else self._ap_guess[2]]
 
         # Get bounds for aperiodic fitting, dropping knee bound if not set to fit knee
@@ -771,7 +771,7 @@ class FOOOF():
             else tuple(bound[0::2] for bound in self._ap_bounds)
 
         # Collect together guess parameters
-        guess = np.array([off_guess + kne_guess + exp_guess])
+        guess = np.array(off_guess + kne_guess + exp_guess)
 
         # Ignore warnings that are raised in curve_fit
         #   A runtime warning can occur while exploring parameters in curve fitting
@@ -1128,7 +1128,10 @@ class FOOOF():
         Parameters
         ----------
         metric : {'MAE', 'MSE', 'RMSE'}, optional
-            Which error measure to calculate.
+            Which error measure to calculate:
+            * 'MAE' : mean absolute error
+            * 'MSE' : mean squared error
+            * 'RMSE' : root mean squared error
 
         Raises
         ------

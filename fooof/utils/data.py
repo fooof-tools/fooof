@@ -136,3 +136,55 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
         powers[interp_mask] = np.power(10, vals)
 
     return freqs, powers
+
+
+def subsample_spectra(spectra, selection, return_inds=False):
+    """Subsample a group of power spectra.
+
+    Parameters
+    ----------
+    spectra : 2d array
+        A group of power spectra to subsample from.
+    selection : int or float
+        The number of spectra to subsample.
+        If int, is the number to select, if float, is a proportion based on input size.
+    return_inds : bool, optional, default: False
+        Whether to return the list of indices that were selected.
+
+    Returns
+    -------
+    subsample : 2d array
+        A subsampled selection of power spectra.
+    inds : list of int
+        A list of which indices where subsampled.
+        Only returned if `return_inds` is True.
+
+    Examples
+    --------
+    Using a group of simulated spectra, subsample a specific number:
+
+    >>> from fooof.sim import gen_group_power_spectra
+    >>> freqs, powers = gen_group_power_spectra(10, [1, 50], [1, 1], [10, 0.5, 1.0])
+    >>> subsample = subsample_spectra(powers, 5)
+
+    Using a group of simulated spectra, subsample a proportion:
+
+    >>> from fooof.sim import gen_group_power_spectra
+    >>> freqs, powers = gen_group_power_spectra(10, [1, 50], [1, 1], [10, 0.5, 1.0])
+    >>> subsample = subsample_spectra(powers, 0.25)
+    """
+
+    n_spectra = spectra.shape[0]
+
+    if isinstance(selection, float):
+        n_sample = int(n_spectra * selection)
+    else:
+        n_sample = selection
+
+    inds = np.random.choice(n_spectra, n_sample, replace=False)
+    subsample = spectra[inds, :]
+
+    if return_inds:
+        return subsample, inds
+    else:
+        return subsample

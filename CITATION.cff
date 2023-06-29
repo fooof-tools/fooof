@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Donoghue"
+    given-names: "Thomas"
+    orcid: "https://orcid.org/0000-0001-5911-0472"
+  - family-names: "Haller"
+    given-names: "Matar"
+  - family-names: "Peterson"
+    given-names: "Erik J"
+  - family-names: "Varma"
+    given-names: "Paroma"
+  - family-names: "Sebastian"
+    given-names: "Priyadarshini"
+  - family-names: "Gao"
+    given-names: "Richard"
+  - family-names: "Noto"
+    given-names: "Torben"
+  - family-names: "Lara"
+    given-names: "Antonio H"
+  - family-names: "Wallis"
+    given-names: "Joni D"
+  - family-names: "Knight"
+    given-names: "Robert T"
+  - family-names: "Shestyuk"
+    given-names: "Avgusta"
+  - family-names: "Voytek"
+    given-names: "Bradley"
+  doi: "10.1038/s41593-020-00744-x"
+  journal: "Nature Neuroscience"
+  title: "Parameterizing neural power spectra into periodic and aperiodic components"
+  issue: 12
+  volume: 23
+  year: 2020
+  start: 1655
+  end: 1665
