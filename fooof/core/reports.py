@@ -82,7 +82,7 @@ def save_report_fg(fg, file_name, file_path=None):
 
     # Initialize figure
     _ = plt.figure(figsize=REPORT_FIGSIZE)
-    grid = gridspec.GridSpec(3, 2, wspace=0.4, hspace=0.25, height_ratios=[0.8, 1.0, 1.0])
+    grid = gridspec.GridSpec(4, 2, wspace=0.4, hspace=0.25, height_ratios=[0.8, 1.0, 1.0, 0.5])
 
     # First / top: text results
     ax0 = plt.subplot(grid[0, :])
@@ -91,6 +91,8 @@ def save_report_fg(fg, file_name, file_path=None):
     ax0.set_frame_on(False)
     ax0.set_xticks([])
     ax0.set_yticks([])
+
+    # Second - data plots
 
     # Aperiodic parameters plot
     ax1 = plt.subplot(grid[1, 0])
@@ -103,6 +105,14 @@ def save_report_fg(fg, file_name, file_path=None):
     # Peak center frequencies plot
     ax3 = plt.subplot(grid[2, :])
     plot_fg_peak_cens(fg, ax3)
+
+    # Third - Model settings
+    ax4 = plt.subplot(grid[3, :])
+    settings_str = gen_settings_str(fg, False)
+    ax4.text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')
+    ax4.set_frame_on(False)
+    ax4.set_xticks([])
+    ax4.set_yticks([])
 
     # Save out the report
     plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
