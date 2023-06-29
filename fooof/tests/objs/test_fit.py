@@ -161,7 +161,11 @@ def test_fooof_checks():
     tfm.fit(xs, ys)
     assert tfm.freqs[0] != 0
 
-    # Check error if there is a post-logging inf or nan
+    # Check error for `check_freqs` - for if there is non-even frequency values
+    with raises(DataError):
+        tfm.fit(np.array([1, 2, 4]), np.array([1, 2, 3]))
+
+    # Check error for `check_data` - for if there is a post-logging inf or nan
     with raises(DataError):  # Double log (1) -> -inf
         tfm.fit(np.array([1, 2, 3]), np.log10(np.array([1, 2, 3])))
     with raises(DataError):  # Log (-1) -> NaN
