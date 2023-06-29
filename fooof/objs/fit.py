@@ -77,6 +77,7 @@ from fooof.plts.fm import plot_fm
 from fooof.utils.data import trim_spectrum
 from fooof.utils.params import compute_gauss_std
 from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
+from fooof.data.conversions import model_to_dataframe
 from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 
 ###################################################################################################
@@ -97,9 +98,11 @@ class FOOOF():
     max_n_peaks : int, optional, default: inf
         Maximum number of peaks to fit.
     min_peak_height : float, optional, default: 0
-        Absolute threshold for detecting peaks, in units of the input data.
+        Absolute threshold for detecting peaks.
+        This threshold is defined in absolute units of the power spectrum (log power).
     peak_threshold : float, optional, default: 2.0
-        Relative threshold for detecting peaks, in units of standard deviation of the input data.
+        Relative threshold for detecting peaks.
+        This threshold is defined in relative units of the power spectrum (standard deviation).
     aperiodic_mode : {'fixed', 'knee'}
         Which approach to take for fitting the aperiodic component.
     verbose : bool, optional, default: True
@@ -195,7 +198,10 @@ class FOOOF():
         ## RUN MODES
         # Set default debug mode - controls if an error is raised if model fitting is unsuccessful
         self._debug = False
-        # Set default check data mode - controls if an error is raised if NaN / Inf data are added
+        # Set default data checking modes - controls which checks get run on input data
+        #   check_freqs: check the frequency values, and raises an error for uneven spacing
+        self._check_freqs = True
+        #   check_data: checks the power values and raises an error for any NaN / Inf values
         self._check_data = True
 
         # Set internal settings, based on inputs, and initialize data & results attributes
@@ -644,9 +650,9 @@ class FOOOF():
 
 
     @copy_doc_func_to_method(save_report_fm)
-    def save_report(self, file_name, file_path=None, plt_log=False, **plot_kwargs):
+    def save_report(self, file_name, file_path=None, plt_log=False, add_settings=True):
 
-        save_report_fm(self, file_name, file_path, plt_log, **plot_kwargs)
+        save_report_fm(self, file_name, file_path, plt_log, add_settings, **plot_kwargs)
 
 
     @copy_doc_func_to_method(save_fm)
@@ -714,6 +720,25 @@ class FOOOF():
         """
 
         self._check_data = check_data
+
+
+    def to_df(self, peak_org):
+        """Convert and extract the model results as a pandas object.
+
+        Parameters
+        ----------
+        peak_org : int or Bands
+            How to organize peaks.
+            If int, extracts the first n peaks.
+            If Bands, extracts peaks based on band definitions.
+
+        Returns
+        -------
+        pd.Series
+            Model results organized into a pandas object.
+        """
+
+        return model_to_dataframe(self.get_results(), peak_org)
 
 
     def _check_width_limits(self):
@@ -1110,7 +1135,10 @@ class FOOOF():
         Parameters
         ----------
         metric : {'MAE', 'MSE', 'RMSE'}, optional
-            Which error measure to calculate.
+            Which error measure to calculate:
+            * 'MAE' : mean absolute error
+            * 'MSE' : mean squared error
+            * 'RMSE' : root mean squared error
 
         Raises
         ------
@@ -1218,6 +1246,14 @@ class FOOOF():
         # Log power values
         power_spectrum = np.log10(power_spectrum)
 
+        ## Data checks - run checks on inputs based on check modes
+
+        if self._check_freqs:
+            # Check if the frequency data is unevenly spaced, and raise an error if so
+            freq_diffs = np.diff(freqs)
+            if not np.all(np.isclose(freq_diffs, freq_res)):
+                raise DataError("The input frequency values are not evenly spaced. "
+                                "The model expects equidistant frequency values in linear space.")
         if self._check_data:
             # Check if there are any infs / nans, and raise an error if so
             if np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):

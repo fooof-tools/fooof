@@ -2,7 +2,10 @@
 
 from functools import wraps
 
+import numpy as np
+
 from fooof.bands import Bands
+from fooof.data import FOOOFResults
 from fooof.objs import FOOOF, FOOOFGroup
 from fooof.core.modutils import safe_import
 from fooof.sim.params import param_sampler
@@ -42,6 +45,14 @@ def get_tbands():
     """Get a bands object, for testing."""
 
     return Bands({'theta' : (4, 8), 'alpha' : (8, 12), 'beta' : (13, 30)})
+
+def get_tresults():
+    """Get a FOOOFResults objet, for testing."""
+
+    return FOOOFResults(aperiodic_params=np.array([1.0, 1.00]),
+                        peak_params=np.array([[10.0, 1.25, 2.0], [20.0, 1.0, 3.0]]),
+                        r_squared=0.97, error=0.01,
+                        gaussian_params=np.array([[10.0, 1.25, 1.0], [20.0, 1.0, 1.5]]))
 
 def default_group_params():
     """Create default parameters for generating a test group of power spectra."""

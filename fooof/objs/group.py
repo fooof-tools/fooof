@@ -21,6 +21,7 @@ from fooof.core.reports import save_report_fg
 from fooof.core.strings import gen_results_fg_str
 from fooof.core.io import save_fg, load_jsonlines
 from fooof.core.modutils import copy_doc_func_to_method, safe_import
+from fooof.data.conversions import group_to_dataframe
 
 ###################################################################################################
 ###################################################################################################
@@ -402,9 +403,9 @@ class FOOOFGroup(FOOOF):
 
 
     @copy_doc_func_to_method(save_report_fg)
-    def save_report(self, file_name, file_path=None):
+    def save_report(self, file_name, file_path=None, add_settings=True):
 
-        save_report_fg(self, file_name, file_path)
+        save_report_fg(self, file_name, file_path, add_settings)
 
 
     @copy_doc_func_to_method(save_fg)
@@ -560,6 +561,25 @@ class FOOOFGroup(FOOOF):
         """
         
         self.get_fooof(ind=index, regenerate=True).save_report(file_name, file_path, plt_log, **plot_kwargs)
+
+        
+    def to_df(self, peak_org):
+        """Convert and extract the model results as a pandas object.
+
+        Parameters
+        ----------
+        peak_org : int or Bands
+            How to organize peaks.
+            If int, extracts the first n peaks.
+            If Bands, extracts peaks based on band definitions.
+
+        Returns
+        -------
+        pd.DataFrame
+            Model results organized into a pandas object.
+        """
+
+        return group_to_dataframe(self.get_results(), peak_org)
 
 
     def _fit(self, *args, **kwargs):

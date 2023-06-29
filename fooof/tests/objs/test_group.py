@@ -9,9 +9,13 @@ They serve rather as 'smoke tests', for if anything fails completely.
 import numpy as np
 from numpy.testing import assert_equal
 
-from fooof.data import FOOOFResults
 from fooof.core.items import OBJ_DESC
+from fooof.core.modutils import safe_import
+from fooof.core.errors import DataError, NoDataError, InconsistentDataError
+from fooof.data import FOOOFResults
 from fooof.sim import gen_group_power_spectra
+
+pd = safe_import('pandas')
 
 from fooof.tests.settings import TEST_DATA_PATH
 from fooof.tests.tutils import default_group_params, plot_test
@@ -349,3 +353,10 @@ def test_fg_get_group(tfg):
     # Check that the correct results are extracted
     assert [tfg.group_results[ind] for ind in inds1] == nfg1.group_results
     assert [tfg.group_results[ind] for ind in inds2] == nfg2.group_results
+
+def test_fg_to_df(tfg, tbands, skip_if_no_pandas):
+
+    df1 = tfg.to_df(2)
+    assert isinstance(df1, pd.DataFrame)
+    df2 = tfg.to_df(tbands)
+    assert isinstance(df2, pd.DataFrame)
