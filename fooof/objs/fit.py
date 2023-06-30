@@ -378,7 +378,7 @@ class FOOOF():
         self._check_loaded_results(fooof_result._asdict())
 
 
-    def report(self, freqs=None, power_spectrum=None, freq_range=None, plt_log=False):
+    def report(self, freqs=None, power_spectrum=None, freq_range=None, plt_log=False, **plot_kwargs):
         """Run model fit, and display a report, which includes a plot, and printed results.
 
         Parameters
@@ -392,6 +392,8 @@ class FOOOF():
             If not provided, fits across the entire given range.
         plt_log : bool, optional, default: False
             Whether or not to plot the frequency axis in log space.
+        **plot_kwargs
+            Keyword arguments to pass into the plot method.
 
         Notes
         -----
@@ -399,7 +401,7 @@ class FOOOF():
         """
 
         self.fit(freqs, power_spectrum, freq_range)
-        self.plot(plt_log=plt_log)
+        self.plot(plt_log=plt_log, **plot_kwargs)
         self.print_results(concise=False)
 
 
@@ -648,9 +650,10 @@ class FOOOF():
 
 
     @copy_doc_func_to_method(save_report_fm)
-    def save_report(self, file_name, file_path=None, plt_log=False, add_settings=True):
+    def save_report(self, file_name, file_path=None, plt_log=False,
+                    add_settings=True, **plot_kwargs):
 
-        save_report_fm(self, file_name, file_path, plt_log, add_settings)
+        save_report_fm(self, file_name, file_path, plt_log, add_settings, **plot_kwargs)
 
 
     @copy_doc_func_to_method(save_fm)

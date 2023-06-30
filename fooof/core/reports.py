@@ -22,7 +22,7 @@ SAVE_FORMAT = 'pdf'
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def save_report_fm(fm, file_name, file_path=None, plt_log=False, add_settings=True):
+def save_report_fm(fm, file_name, file_path=None, plt_log=False, add_settings=True, **plot_kwargs):
     """Generate and save out a PDF report for a power spectrum model fit.
 
     Parameters
@@ -37,6 +37,8 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False, add_settings=Tr
         Whether or not to plot the frequency axis in log space.
     add_settings : bool, optional, default: True
         Whether to add a print out of the model settings to the end of the report.
+    plot_kwargs : keyword arguments
+        Keyword arguments to pass into the plot method.
     """
 
     # Define grid settings based on what is to be plotted
@@ -56,7 +58,7 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False, add_settings=Tr
 
     # Second - data plot
     ax1 = plt.subplot(grid[1])
-    fm.plot(plt_log=plt_log, ax=ax1)
+    fm.plot(plt_log=plt_log, ax=ax1, **plot_kwargs)
 
     # Third - FOOOF settings
     if add_settings:
