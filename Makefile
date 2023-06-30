@@ -96,8 +96,12 @@ summary:
 
 # Create a distribution build of the module
 dist:
+	@printf "\n\nCREATING DISTRIBUTION BUILD...\n"
 	@python setup.py sdist bdist_wheel
+	@printf "\n\nDISTRIBUTION BUILD CREATED\n\n\n"
 
 # Clear out distribution files
 clear-dist:
+	@printf "\n\nCLEARING DISTRIBUTION FILES...\n"
 	@rm -rf build dist $(MODULE).egg-info
+	@printf "DISTRIBUTION FILES CLEARED\n\n\n"
