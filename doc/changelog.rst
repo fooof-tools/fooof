@@ -1,18 +1,28 @@
 Code Changelog
 ==============
 
-This page contains the changelog for the FOOOF module and any notes on updating between versions.
+This page contains the changelog for the `specparam` / `fooof` module,
+including release notes and guidance on updating between versions.
 
-This page primarily notes changes for major version updates. For notes on the specific updates
-for minor releases, see the `release page <https://github.com/fooof-tools/fooof/releases>`_.
+This page primarily notes changes for major version updates.
+For notes on the specific updates for minor releases, see the
+`release page <https://github.com/fooof-tools/fooof/releases>`_.
+
+1.1.0
+-----
+
+The 1.1.X release is a minor (non-breaking) update to the 1.X.X release series.
+More detailed information on what is updated in 1.1.0 is on the release page.
+
+Note that 1.1.0 is the last planned release in the 1.X.X, and under the `fooof` name.
+All future development will be under the new `specparam` module name, starting with
+the upcoming `specparam 2.0.0` release.
 
 1.0.0
 -----
 
 Warning: the 1.X.X release series is an API breaking release from the prior versions,
-in the beta series (0.X.X).
-
-The 1.X.X release series of FOOOF is the current stable version of the module.
+in the beta series (0.X.X). It is a stable release version of the module.
 
 As compared to the prior series (0.X.X), some names and module organizations have changed.
 This means existing code that uses FOOOF may no longer work as currently written with the
