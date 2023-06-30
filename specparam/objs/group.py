@@ -561,7 +561,7 @@ class PSDGroup(PSD):
             Keyword arguments to pass into the plot method.
         """
 
-        self.get_fooof(ind=index, regenerate=True).save_report(\
+        self.get_model(ind=index, regenerate=True).save_report(\
             file_name, file_path, plt_log, **plot_kwargs)
 
 

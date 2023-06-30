@@ -62,12 +62,12 @@ def save_model_report(model, file_name, file_path=None, plt_log=False,
 
     # Second - data plot
     ax1 = plt.subplot(grid[1])
-    fm.plot(plt_log=plt_log, ax=ax1, **plot_kwargs)
+    model.plot(plt_log=plt_log, ax=ax1, **plot_kwargs)
 
     # Third - model settings
     if add_settings:
         ax2 = plt.subplot(grid[2])
-        settings_str = gen_settings_str(fm, False)
+        settings_str = gen_settings_str(model, False)
         ax2.text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')
         ax2.set_frame_on(False)
         ax2.set(xticks=[], yticks=[])
@@ -125,7 +125,7 @@ def save_group_report(group, file_name, file_path=None, add_settings=True):
     # Third - Model settings
     if add_settings:
         ax4 = plt.subplot(grid[3, :])
-        settings_str = gen_settings_str(fg, False)
+        settings_str = gen_settings_str(group, False)
         ax4.text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')
         ax4.set_frame_on(False)
         ax4.set(xticks=[], yticks=[])
