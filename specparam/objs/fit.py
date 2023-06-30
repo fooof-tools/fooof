@@ -251,7 +251,7 @@ class PSD():
 
             # Bandwidth limits are given in 2-sided peak bandwidth
             #   Convert to gaussian std parameter limits
-            self._gauss_std_limits = tuple([bwl / 2 for bwl in self.peak_width_limits])
+            self._gauss_std_limits = tuple(bwl / 2 for bwl in self.peak_width_limits)
 
         # Otherwise, assume settings are unknown (have been cleared) and set to None
         else:
@@ -377,7 +377,8 @@ class PSD():
         self._check_loaded_results(results._asdict())
 
 
-    def report(self, freqs=None, power_spectrum=None, freq_range=None, plt_log=False, **plot_kwargs):
+    def report(self, freqs=None, power_spectrum=None, freq_range=None,
+               plt_log=False, **plot_kwargs):
         """Run model fit, and display a report, which includes a plot, and printed results.
 
         Parameters
@@ -791,9 +792,10 @@ class PSD():
                 aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                                 freqs, power_spectrum, p0=guess,
                                                 maxfev=self._maxfev, bounds=ap_bounds)
-        except RuntimeError:
-            raise FitError("Model fitting failed due to not finding parameters in "
-                           "the simple aperiodic component fit.")
+        except RuntimeError as excp:
+            error_msg = ("Model fitting failed due to not finding parameters in "
+                         "the simple aperiodic component fit.")
+            raise FitError(error_msg) from excp
 
         return aperiodic_params
 
@@ -847,12 +849,14 @@ class PSD():
                 aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                                 freqs_ignore, spectrum_ignore, p0=popt,
                                                 maxfev=self._maxfev, bounds=ap_bounds)
-        except RuntimeError:
-            raise FitError("Model fitting failed due to not finding "
-                           "parameters in the robust aperiodic fit.")
-        except TypeError:
-            raise FitError("Model fitting failed due to sub-sampling "
-                           "in the robust aperiodic fit.")
+        except RuntimeError as excp:
+            error_msg = ("Model fitting failed due to not finding "
+                         "parameters in the robust aperiodic fit.")
+            raise FitError(error_msg) from excp
+        except TypeError as excp:
+            error_msg = ("Model fitting failed due to sub-sampling "
+                         "in the robust aperiodic fit.")
+            raise FitError(error_msg) from excp
 
         return aperiodic_params
 
@@ -981,8 +985,8 @@ class PSD():
 
         # Unpacks the embedded lists into flat tuples
         #   This is what the fit function requires as input
-        gaus_param_bounds = (tuple([item for sublist in lo_bound for item in sublist]),
-                             tuple([item for sublist in hi_bound for item in sublist]))
+        gaus_param_bounds = (tuple(item for sublist in lo_bound for item in sublist),
+                             tuple(item for sublist in hi_bound for item in sublist))
 
         # Flatten guess, for use with curve fit
         guess = np.ndarray.flatten(guess)
@@ -991,13 +995,15 @@ class PSD():
         try:
             gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._spectrum_flat,
                                            p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds)
-        except RuntimeError:
-            raise FitError("Model fitting failed due to not finding "
-                           "parameters in the peak component fit.")
-        except LinAlgError:
-            raise FitError("Model fitting failed due to a LinAlgError during peak fitting. "
-                           "This can happen with settings that are too liberal, leading, "
-                           "to a large number of guess peaks that cannot be fit together.")
+        except RuntimeError as excp:
+            error_msg = ("Model fitting failed due to not finding "
+                         "parameters in the peak component fit.")
+            raise FitError(error_msg) from excp
+        except LinAlgError as excp:
+            error_msg = ("Model fitting failed due to a LinAlgError during peak fitting. "
+                         "This can happen with settings that are too liberal, leading, "
+                         "to a large number of guess peaks that cannot be fit together.")
+            raise FitError(error_msg) from excp
 
         # Re-organize params into 2d matrix
         gaussian_params = np.array(group_three(gaussian_params))
@@ -1164,8 +1170,8 @@ class PSD():
             self.error_ = np.sqrt(((self.power_spectrum - self.modeled_spectrum_) ** 2).mean())
 
         else:
-            msg = "Error metric '{}' not understood or not implemented.".format(metric)
-            raise ValueError(msg)
+            error_msg = "Error metric '{}' not understood or not implemented.".format(metric)
+            raise ValueError(error_msg)
 
 
     def _prepare_data(self, freqs, power_spectrum, freq_range, spectra_dim=1):
@@ -1259,10 +1265,11 @@ class PSD():
         if self._check_data:
             # Check if there are any infs / nans, and raise an error if so
             if np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):
-                raise DataError("The input power spectra data, after logging, "
-                                "contains NaNs or Infs. This will cause the fitting to fail. "
-                                "One reason this can happen is if inputs are already logged. "
-                                "Input data should be in linear spacing, not log.")
+                error_msg = ("The input power spectra data, after logging, contains NaNs or Infs. "
+                             "This will cause the fitting to fail. "
+                             "One reason this can happen is if inputs are already logged. "
+                             "Input data should be in linear spacing, not log.")
+                raise DataError(error_msg)
 
         return freqs, power_spectrum, freq_range, freq_res
 

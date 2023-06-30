@@ -180,7 +180,7 @@ def combine_model_objs(model_objs):
         group.power_spectra = temp_power_spectra
 
     # Set the check data mode, as True if any of the inputs have it on, False otherwise
-    group.set_check_data_mode(any([getattr(m_obj, '_check_data') for m_obj in model_objs]))
+    group.set_check_data_mode(any(getattr(m_obj, '_check_data') for m_obj in model_objs))
 
     # Add data information information
     group.add_meta_data(model_objs[0].get_meta_data())
