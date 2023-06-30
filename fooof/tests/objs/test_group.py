@@ -6,6 +6,8 @@ The tests here are not strong tests for accuracy.
 They serve rather as 'smoke tests', for if anything fails completely.
 """
 
+import os
+
 import numpy as np
 from numpy.testing import assert_equal
 
@@ -17,7 +19,7 @@ from fooof.sim import gen_group_power_spectra
 
 pd = safe_import('pandas')
 
-from fooof.tests.settings import TEST_DATA_PATH
+from fooof.tests.settings import TEST_DATA_PATH, TEST_REPORTS_PATH
 from fooof.tests.tutils import default_group_params, plot_test
 
 from fooof.objs.group import *
@@ -211,6 +213,13 @@ def test_fg_print(tfg):
 
     tfg.print_results()
     assert True
+
+def test_save_model_report(tfg):
+
+    file_name = 'test_group_model_report'
+    tfg.save_model_report(0, file_name, TEST_REPORTS_PATH)
+
+    assert os.path.exists(os.path.join(TEST_REPORTS_PATH, file_name + '.pdf'))
 
 def test_get_results(tfg):
     """Check get results method."""
