@@ -145,10 +145,8 @@ Matlab
 ~~~~~~
 
 In Matlab, there is a reimplementation available in common toolboxes:
-- The `Brainstorm <https://neuroimage.usc.edu/brainstorm/Introduction>`_ toolbox has a reimplementation of specparam
-    - See the Brainstorm `fooof tutorial <https://neuroimage.usc.edu/brainstorm/Tutorials/Fooof>`_
-- The `Fieldtrip <https://www.fieldtriptoolbox.org/>`_ also uses the same reimplementation
-    - See the Fieldtrip `fooof tutorial <https://www.fieldtriptoolbox.org/example/fooof/>`_
+- The `Brainstorm <https://neuroimage.usc.edu/brainstorm/Introduction>`_ toolbox has a reimplementation of specparam (see the `Brainstorm fooof tutorial <https://neuroimage.usc.edu/brainstorm/Tutorials/Fooof>`_)
+- The `Fieldtrip <https://www.fieldtriptoolbox.org/>`_ toolbox also uses the same reimplementation (see the `Fieldtrip fooof tutorial <https://www.fieldtriptoolbox.org/example/fooof/>`_)
 
 There is also a Matlab wrapper in the `fooof_mat <http://github.com/fooof-tools/fooof_mat>`_ repository.
 
@@ -159,11 +157,9 @@ Other Languages
 ~~~~~~~~~~~~~~~
 
 Other languages with wrappers include:
-- In Julia, there is
-`fooof wrapper <https://juliahub.com/ui/Packages/PyFOOOF/Ng8hN/0.1.0>`_
-- In R, fooof can be run using
-`reticulate <https://rstudio.github.io/reticulate/>`_, as
-`shown here <https://github.com/fooof-tools/DevelopmentalDemo/tree/main/R>`_
+
+- Julia, for which there is a `fooof wrapper <https://juliahub.com/ui/Packages/PyFOOOF/Ng8hN/0.1.0>`_
+- R, in which fooof can be run using `reticulate <https://rstudio.github.io/reticulate/>`_, as `shown here <https://github.com/fooof-tools/DevelopmentalDemo/tree/main/R>`_
 
 Reference
 ---------
