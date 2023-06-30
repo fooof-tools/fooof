@@ -15,15 +15,15 @@ Examples with combining, sub-selecting, dropping, and averaging power spectrum m
 # Using simulated data, in this example we will cover:
 #
 # - combining results across model objects
-# - sub-selecting fits from PSDGroup objects
-# - dropping specified model fits from PSDGroup objects
+# - sub-selecting fits from SpectralGroupModel objects
+# - dropping specified model fits from SpectralGroupModel objects
 # - average across groups of model fits
 #
 
 ###################################################################################################
 
 # Import model object
-from specparam import PSD
+from specparam import SpectralModel
 
 # Import Bands object, to manage frequency band definitions
 from specparam.bands import Bands
@@ -56,7 +56,7 @@ freqs, powers_3 = sim_power_spectrum(freq_range, [0, 1.5], [11, 0.3, 2.5],
 ###################################################################################################
 
 # Initialize a set of model objects
-fm1, fm2, fm3 = PSD(max_n_peaks=4), PSD(max_n_peaks=4), PSD(max_n_peaks=4)
+fm1, fm2, fm3 = SpectralModel(max_n_peaks=4), SpectralModel(max_n_peaks=4), SpectralModel(max_n_peaks=4)
 
 # Fit power spectrum models
 fm1.fit(freqs, powers_1)
@@ -67,22 +67,22 @@ fm3.fit(freqs, powers_3)
 # Combining Model Objects
 # -----------------------
 #
-# Sometimes, when working with models in :class:`~specparam.PSD` or :class:`~specparam.PSDGroup`
+# Sometimes, when working with models in :class:`~specparam.SpectralModel` or :class:`~specparam.SpectralGroupModel`
 # objects, you may want to combine them together, to check some group properties.
 #
-# The :func:`~.combine_model_objs` function takes a list of PSD and/or
-# PSDGroup objects, and combines all available fits together into a PSDGroup object.
+# The :func:`~.combine_model_objs` function takes a list of SpectralModel and/or
+# SpectralGroupModel objects, and combines all available fits together into a SpectralGroupModel object.
 #
-# Let's now combine our individual model fits into a PSDGroup object.
+# Let's now combine our individual model fits into a SpectralGroupModel object.
 #
 
 ###################################################################################################
 
-# Combine a list of model objects into a PSDGroup object
+# Combine a list of model objects into a SpectralGroupModel object
 fg = combine_model_objs([fm1, fm2, fm3])
 
 # Check the number of models in the object
-#   Note that the length of a PSDGroup object is defined as the number of model fits
+#   Note that the length of a SpectralGroupModel object is defined as the number of model fits
 print('Number of model fits: ', len(fg))
 
 ###################################################################################################
@@ -92,12 +92,12 @@ print('Number of model fits: ', len(fg))
 # Note that these functions that manipulate model objects typically do more than just
 # copy results data - they also check and manage settings and meta-data of objects.
 #
-# For example, combining PSD objects returns a new PSDGroup object with the same settings.
+# For example, combining SpectralModel objects returns a new SpectralGroupModel object with the same settings.
 #
 # We can see this by using the :func:`~.compare_model_objs` function to compare
-# the settings between PSD objects.
+# the settings between SpectralModel objects.
 #
-# You can also use this function if you wish to compare PSD objects to ensure that
+# You can also use this function if you wish to compare SpectralModel objects to ensure that
 # you are comparing model results that were fit with equivalent settings.
 #
 
@@ -107,10 +107,10 @@ print('Number of model fits: ', len(fg))
 compare_model_objs([fm1, fg], 'settings')
 
 ###################################################################################################
-# Sub-Select from PSDGroup
-# ------------------------
+# Sub-Select from SpectralGroupModel
+# ----------------------------------
 #
-# When you have a :class:`~specparam.PSDGroup` object, you may also want to sub-select
+# When you have a :class:`~specparam.SpectralGroupModel` object, you may also want to sub-select
 # a group of models.
 #
 # Example use cases for this could be:
@@ -118,12 +118,12 @@ compare_model_objs([fm1, fg], 'settings')
 # - you want to sub-select models that meet some kind of goodness-of-fit criterion
 # - you want to examine a subset of model reflect, for example, particular channels or trials
 #
-# To do so, we can use the :func:`~specparam.PSDGroup.get_group` method of the PSDGroup object.
+# To do so, we can use the :func:`~specparam.SpectralGroupModel.get_group` method of the SpectralGroupModel object.
 # This method takes in an input specifying which indices to sub-select, and returns a
-# new PSDGroup object, containing only the requested model fits.
+# new SpectralGroupModel object, containing only the requested model fits.
 #
 # Note that if you want to sub-select a single model you can
-# use the :meth:`~specparam.PSDGroup.get_model` method.
+# use the :meth:`~specparam.SpectralGroupModel.get_model` method.
 #
 
 ###################################################################################################
@@ -132,24 +132,24 @@ compare_model_objs([fm1, fg], 'settings')
 #   This could be a the indices for a 'region of interest', for example
 inds = [0, 1]
 
-# Sub-select our selection of models from the PSDGroup object
+# Sub-select our selection of models from the SpectralGroupModel object
 nfg = fg.get_group(inds)
 
-# Check how many models our new PSDGroup object contains
+# Check how many models our new SpectralGroupModel object contains
 print('Number of model fits: ', len(nfg))
 
 ###################################################################################################
 #
 # From here, we could continue to do any analyses of interest on our new
-# PSDGroup object, which contains only our models of interest.
+# SpectralGroupModel object, which contains only our models of interest.
 #
 
 ###################################################################################################
-# Dropping Fits from PSDGroup
-# ---------------------------
+# Dropping Fits from SpectralGroupModel
+# -------------------------------------
 #
-# Another option is to 'drop' model fits from a PSDGroup object. You can do this with
-# the :meth:`~specparam.PSDGroup.drop` method from a :class:`~specparam.PSDGroup` object.
+# Another option is to 'drop' model fits from a SpectralGroupModel object. You can do this with
+# the :meth:`~specparam.SpectralGroupModel.drop` method from a :class:`~specparam.SpectralGroupModel` object.
 #
 # This can be used, for example, for a quality control step. If you have checked through
 # the object, and noticed some outlier model fits, you may want to exclude them from
@@ -168,12 +168,12 @@ fg.drop(fg.get_params('error') > 0.01)
 # Note on Dropped or Failed Fits
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# When models are dropped from :class:`~specparam.PSDGroup` objects, they are set as null models.
+# When models are dropped from :class:`~specparam.SpectralGroupModel` objects, they are set as null models.
 # They are therefore cleared of results, but not literally dropped, which
-# is done to preserve the ordering of the PSDGroup, so that the `n-th` model
+# is done to preserve the ordering of the SpectralGroupModel, so that the `n-th` model
 # doesn't change if some models are dropped.
 #
-# Note that there may in some cases be Null models in a PSDGroup without
+# Note that there may in some cases be Null models in a SpectralGroupModel without
 # explicitly dropping them, if any models failed during the fitting process.
 #
 
@@ -194,10 +194,10 @@ for ind in fg.null_inds_:
     print(fg[ind])
 
 ###################################################################################################
-# Note on Selecting from PSD Objects
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Note on Selecting from SpectralModel Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Both the :meth:`~specparam.PSDGroup.get_group` and :meth:`~specparam.PSDGroup.drop` methods
+# Both the :meth:`~specparam.SpectralGroupModel.get_group` and :meth:`~specparam.SpectralGroupModel.drop` methods
 # take an input of the indices of the model(s) to select or drop.
 #
 # In both cases, the input can be defined in multiple ways, including directly indicating
@@ -208,7 +208,7 @@ for ind in fg.null_inds_:
 # Averaging Across Model Fits
 # ---------------------------
 #
-# Finally, let's average across the models in our PSDGroup object, to examine
+# Finally, let's average across the models in our SpectralGroupModel object, to examine
 # the average model of the data.
 #
 # Note that in order to be able to average across individual models, we need to define

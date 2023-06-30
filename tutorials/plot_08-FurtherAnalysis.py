@@ -30,7 +30,7 @@ Analyze results from fitting power spectrum models.
 import numpy as np
 
 # Import the model objects
-from specparam import PSD, PSDGroup
+from specparam import SpectralModel, SpectralGroupModel
 
 # Import the Bands object, which is used to define frequency bands
 from specparam.bands import Bands
@@ -62,7 +62,7 @@ spectrum = load_example_data('spectrum.npy', folder='data')
 ###################################################################################################
 
 # Fit a power spectrum model
-fm = PSD(peak_width_limits=[2, 8])
+fm = SpectralModel(peak_width_limits=[2, 8])
 fm.fit(freqs, spectrum, [3, 30])
 
 ###################################################################################################
@@ -86,7 +86,7 @@ freqs, spectra = sim_group_power_spectra(n_spectra=10,
 ###################################################################################################
 
 # Initialize a group model object with some settings
-fg = PSDGroup(peak_width_limits=[1, 8], min_peak_height=0.05,
+fg = SpectralGroupModel(peak_width_limits=[1, 8], min_peak_height=0.05,
                 max_n_peaks=6, verbose=False)
 
 # Fit power spectrum models across the group of simulated power spectra
@@ -129,11 +129,11 @@ bands = Bands({'theta' : [4, 8],
                'beta' : [15, 30]})
 
 ###################################################################################################
-# Extracting peaks from PSD Objects
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Extracting peaks from SpectralModel Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # The :func:`~.get_band_peak` function takes in a
-# :class:`~.PSD` object and extracts peak(s) from a requested frequency range.
+# :class:`~.SpectralModel` object and extracts peak(s) from a requested frequency range.
 #
 # You can optionally specify:
 #
@@ -150,15 +150,15 @@ alpha = get_band_peak(fm, bands.alpha)
 print(alpha)
 
 ###################################################################################################
-# Extracting peaks from PSDGroup Objects
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Extracting peaks from SpectralGroupModel Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Similarly, the :func:`~.get_band_peak_group` function can be used
-# to select peaks from specified frequency ranges, from :class:`~specparam.PSDGroup` objects.
+# to select peaks from specified frequency ranges, from :class:`~specparam.SpectralGroupModel` objects.
 #
 # Note that you can also apply a threshold to extract group peaks but, as discussed below,
 # this approach will always only extract at most one peak per individual model fit from
-# the PSDGroup object.
+# the SpectralGroupModel object.
 #
 
 ###################################################################################################
@@ -177,7 +177,7 @@ print(alphas[0:5, :])
 # To do so, the output of :func:`~.get_band_peak_group` is organized such that each row
 # corresponds to a specific model fit. This means that returned array has the shape
 # [n_models, 3], and so the index of each row corresponds to the index of the model
-# from the PSDGroup object.
+# from the SpectralGroupModel object.
 #
 # For this to work, at most 1 peak is extracted for each model fit within the specified band.
 # If more than 1 peak are found within the band, the peak with the highest power is extracted.
@@ -196,7 +196,7 @@ print('Alpha BW : {:1.2f}'.format(np.nanmean(alphas[:, 2])))
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # If you want to do more customized extraction of peaks, for example, extracting all peaks
-# in a frequency band from each model in a PSDGroup object, you may need to use the
+# in a frequency band from each model in a SpectralGroupModel object, you may need to use the
 # underlying functions that operate on arrays of peak parameters. To explore these functions,
 # check the listings in the API page.
 #

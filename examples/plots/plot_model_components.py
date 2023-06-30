@@ -7,8 +7,8 @@ Plotting power spectrum model parameters and components.
 
 ###################################################################################################
 
-# Import the PSDGroup object
-from specparam import PSDGroup
+# Import the SpectralGroupModel object
+from specparam import SpectralGroupModel
 
 # Import utilities to manage frequency band definitions
 from specparam.bands import Bands
@@ -67,14 +67,14 @@ freqs, powers2 = sim_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
 # Fit Power Spectrum Models
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Now that we have our simulated data, we can fit our power spectrum models, using PSDGroup.
+# Now that we have our simulated data, we can fit our power spectrum models, using SpectralGroupModel.
 #
 
 ###################################################################################################
 
-# Initialize a PSDGroup object for each group
-fg1 = PSDGroup(verbose=False)
-fg2 = PSDGroup(verbose=False)
+# Initialize a SpectralGroupModel object for each group
+fg1 = SpectralGroupModel(verbose=False)
+fg2 = SpectralGroupModel(verbose=False)
 
 ###################################################################################################
 

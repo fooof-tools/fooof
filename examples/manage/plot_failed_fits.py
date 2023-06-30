@@ -7,8 +7,8 @@ Example of model fit failures and how to debug them.
 
 ###################################################################################################
 
-# Import the PSDGroup object
-from specparam import PSDGroup
+# Import the SpectralGroupModel object
+from specparam import SpectralGroupModel
 
 # Import simulation code to create test power spectra
 from specparam.sim import sim_group_power_spectra
@@ -41,8 +41,8 @@ freqs, powers = sim_group_power_spectra(25, [1, 50], [1, 1], [10, 0.25, 3],
 
 ###################################################################################################
 
-# Initialize a PSDGroup object, with some desired settings
-fg = PSDGroup(min_peak_height=0.1, max_n_peaks=6)
+# Initialize a SpectralGroupModel object, with some desired settings
+fg = SpectralGroupModel(min_peak_height=0.1, max_n_peaks=6)
 
 ###################################################################################################
 
@@ -54,7 +54,7 @@ fg.fit(freqs, powers)
 # If there are failed fits, these are stored as null models.
 #
 # Let's check if there were any null models, from model failures, in the models
-# that we have fit so far. To do so, the :class:`~specparam.PSDGroup` object has some
+# that we have fit so far. To do so, the :class:`~specparam.SpectralGroupModel` object has some
 # attributes that provide information on any null model fits.
 #
 # These attributes are:
@@ -129,7 +129,7 @@ print('Indices of Null models : \t', fg.null_inds_)
 
 ###################################################################################################
 
-# Set PSDGroup into debug mode
+# Set SpectralGroupModel into debug mode
 fg.set_debug_mode(True)
 
 ###################################################################################################

@@ -23,22 +23,22 @@ Objects that manage data and fit the model to parameterize neural power spectra.
 Base Object
 ~~~~~~~~~~~
 
-The PSD object is the base object for the model, and can be used to fit individual power spectra.
+The SpectralModel object is the base object for the model, and can be used to fit individual power spectra.
 
 .. autosummary::
    :toctree: generated/
 
-   PSD
+   SpectralModel
 
 Group Object
 ~~~~~~~~~~~~
 
-The PSDGroup object allows for parameterizing groups of power spectra.
+The SpectralGroupModel object allows for parameterizing groups of power spectra.
 
 .. autosummary::
    :toctree: generated/
 
-   PSDGroup
+   SpectralGroupModel
 
 Object Utilities
 ~~~~~~~~~~~~~~~~

@@ -2,7 +2,7 @@
 
 from pytest import raises
 
-from specparam import PSDGroup
+from specparam import SpectralGroupModel
 from specparam.core.errors import NoModelError
 
 from specparam.tests.tutils import plot_test
@@ -20,7 +20,7 @@ def test_plot_group(tfg, skip_if_no_mpl):
                file_name='test_plot_group.png')
 
     # Test error if no data available to plot
-    tfg = PSDGroup()
+    tfg = SpectralGroupModel()
     with raises(NoModelError):
         tfg.plot()
 

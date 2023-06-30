@@ -10,7 +10,7 @@ This example covers strategies for dealing with line noise.
 # sphinx_gallery_thumbnail_number = 2
 
 # Import the spectral parameterization object and utilities
-from specparam import PSD
+from specparam import SpectralModel
 from specparam.plts import plot_spectra
 from specparam.utils import trim_spectrum, interpolate_spectrum
 
@@ -81,7 +81,7 @@ plot_spectra(freqs1, [powers1, powers_int1], log_powers=True,
 ###################################################################################################
 
 # Initialize a power spectrum model
-fm1 = PSD(verbose=False)
+fm1 = SpectralModel(verbose=False)
 fm1.report(freqs_int1, powers_int1)
 
 ###################################################################################################
@@ -114,7 +114,7 @@ plot_spectra(freqs2, [powers2, powers_int2], log_powers=True,
 ###################################################################################################
 
 # Parameterize the interpolated power spectrum
-fm2 = PSD(aperiodic_mode='knee', verbose=False)
+fm2 = SpectralModel(aperiodic_mode='knee', verbose=False)
 fm2.report(freqs2, powers_int2)
 
 ###################################################################################################
@@ -207,7 +207,7 @@ plot_spectra(freqs, [powers_pre, powers_post], log_powers=True,
 ###################################################################################################
 
 # Initialize and fit a power spectrum model
-fm = PSD()
+fm = SpectralModel()
 fm.report(freqs, powers_post)
 
 ###################################################################################################

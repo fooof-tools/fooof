@@ -70,7 +70,7 @@ Generating Methods Reports
 
 As of version 1.0.0 there are code utilities to extract all required information for reporting, and for generating methods reports.
 
-These utilities require a defined model object, such as `PSD` or `PSDGroup`, assumed to be called 'model_obj' in the following examples. This object will be used to extract all the relevant settings and any available meta-data for reporting.
+These utilities require a defined model object, such as `SpectralModel` or `SpectralGroupModel`, assumed to be called 'model_obj' in the following examples. This object will be used to extract all the relevant settings and any available meta-data for reporting.
 
 The :func:`~specparam.utils.reports.methods_report_info` function can be used to print out the information you need for reporting:
 

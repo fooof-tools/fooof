@@ -8,7 +8,7 @@ Introduction to the module, beginning with the model object.
 ###################################################################################################
 
 # Import the model object
-from specparam import PSD
+from specparam import SpectralModel
 
 # Import a utility to download and load example data
 from specparam.utils.download import load_example_data
@@ -23,7 +23,7 @@ spectrum = load_example_data('spectrum.npy', folder='data')
 # Model Object
 # ------------
 #
-# At the core of the module is the :class:`~specparam.PSD` object, which holds relevant data
+# At the core of the module is the :class:`~specparam.SpectralModel` object, which holds relevant data
 # and settings as attributes, and contains methods to run the algorithm to parameterize
 # neural power spectra.
 #
@@ -38,7 +38,7 @@ spectrum = load_example_data('spectrum.npy', folder='data')
 # Calculating Power Spectra
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The :class:`~specparam.PSD` object fits models to power spectra. The module itself does not
+# The :class:`~specparam.SpectralModel` object fits models to power spectra. The module itself does not
 # compute power spectra. Computing power spectra needs to be done prior to using
 # the specparam module.
 #
@@ -63,7 +63,7 @@ spectrum = load_example_data('spectrum.npy', folder='data')
 ###################################################################################################
 
 # Initialize a model object
-fm = PSD()
+fm = SpectralModel()
 
 # Set the frequency range to fit the model
 freq_range = [2, 40]
@@ -77,16 +77,16 @@ fm.report(freqs, spectrum, freq_range)
 #
 # The above method 'report', is a convenience method that calls a series of methods:
 #
-# - :meth:`~specparam.PSD.fit`: fits the power spectrum model
-# - :meth:`~specparam.PSD.print_results`: prints out the results
-# - :meth:`~specparam.PSD.plot`: plots the data and model fit
+# - :meth:`~specparam.SpectralModel.fit`: fits the power spectrum model
+# - :meth:`~specparam.SpectralModel.print_results`: prints out the results
+# - :meth:`~specparam.SpectralModel.plot`: plots the data and model fit
 #
 # Each of these methods can also be called individually.
 #
 
 ###################################################################################################
 
-# Alternatively, just fit the model with PSD.fit() (without printing anything)
+# Alternatively, just fit the model with SpectralModel.fit() (without printing anything)
 fm.fit(freqs, spectrum, freq_range)
 
 # After fitting, plotting and parameter fitting can be called independently:
@@ -135,7 +135,7 @@ print('Number of fit peaks: \n', fm.n_peaks_)
 # Selecting Parameters
 # ~~~~~~~~~~~~~~~~~~~~
 #
-# You can also select parameters using the :meth:`~specparam.PSD.get_params`
+# You can also select parameters using the :meth:`~specparam.SpectralModel.get_params`
 # method, which can be used to specify which parameters you want to extract.
 #
 
@@ -156,7 +156,7 @@ print(template.format(error=err, exponent=exp,
 
 ###################################################################################################
 #
-# For a full description of how you can access data with :meth:`~specparam.PSD.get_params`,
+# For a full description of how you can access data with :meth:`~specparam.SpectralModel.get_params`,
 # check the method's documentation.
 #
 # As a reminder, you can access the documentation for a function using '?' in a
@@ -211,7 +211,7 @@ for peak, gauss in zip(fm.peak_params_, fm.gaussian_params_):
 # ~~~~~~~~~~
 #
 # There is also a convenience method to return all model fit results:
-# :func:`~specparam.PSD.get_results`.
+# :func:`~specparam.SpectralModel.get_results`.
 #
 # This method returns all the model fit parameters, including the underlying Gaussian
 # parameters, collected together into a FitResults object.
@@ -245,7 +245,7 @@ print('Fit error: \n {:5.4f}'.format(fm.error_))
 # Conclusion
 # ----------
 #
-# In this tutorial, we have explored the basics of the :class:`~specparam.PSD` object,
+# In this tutorial, we have explored the basics of the :class:`~specparam.SpectralModel` object,
 # fitting power spectrum models, and extracting parameters.
 #
 # In the next tutorial, we will explore how this algorithm actually works to fit the model.

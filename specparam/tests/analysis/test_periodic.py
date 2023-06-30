@@ -66,7 +66,7 @@ def test_threshold_peaks():
     assert np.array_equal(threshold_peaks(data, 2, param='BW'),
                           np.array([[14, 2, 4], [12, 3, 2.5]]))
 
-    # Check it works with an [n_peaks, 4] array, as from PSDGroup
+    # Check it works with an [n_peaks, 4] array, as from SpectralGroupModel
     data = np.array([[10, 1, 1.8, 0], [13, 1, 2, 2], [14, 2, 4, 2]])
     assert np.array_equal(threshold_peaks(data, 1.5), np.array([[14, 2, 4, 2]]))
 

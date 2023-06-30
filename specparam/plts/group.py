@@ -25,7 +25,7 @@ def plot_group(group, **plot_kwargs):
 
     Parameters
     ----------
-    group : PSDGroup
+    group : SpectralGroupModel
         Object containing results from fitting a group of power spectra.
     **plot_kwargs
         Keyword arguments to apply to the plot.
@@ -67,7 +67,7 @@ def plot_group_aperiodic(group, ax=None, **plot_kwargs):
 
     Parameters
     ----------
-    group : PSDGroup
+    group : SpectralGroupModel
         Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -92,7 +92,7 @@ def plot_group_goodness(group, ax=None, **plot_kwargs):
 
     Parameters
     ----------
-    group : PSDGroup
+    group : SpectralGroupModel
         Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -112,7 +112,7 @@ def plot_group_peak_frequencies(group, ax=None, **plot_kwargs):
 
     Parameters
     ----------
-    group : PSDGroup
+    group : SpectralGroupModel
         Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.

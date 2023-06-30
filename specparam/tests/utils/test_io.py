@@ -3,7 +3,7 @@
 import numpy as np
 
 from specparam.core.items import OBJ_DESC
-from specparam.objs import PSD, PSDGroup
+from specparam.objs import SpectralModel, SpectralGroupModel
 
 from specparam.tests.settings import TEST_DATA_PATH
 
@@ -18,7 +18,7 @@ def test_load_model():
 
     tfm = load_model(file_name, TEST_DATA_PATH)
 
-    assert isinstance(tfm, PSD)
+    assert isinstance(tfm, SpectralModel)
 
     # Check that all elements get loaded
     for result in OBJ_DESC['results']:
@@ -35,7 +35,7 @@ def test_load_group():
     file_name = 'test_group_all'
     tfg = load_group(file_name, TEST_DATA_PATH)
 
-    assert isinstance(tfg, PSDGroup)
+    assert isinstance(tfg, SpectralGroupModel)
 
     # Check that all elements get loaded
     assert len(tfg.group_results) > 0

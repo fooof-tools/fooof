@@ -35,7 +35,7 @@ A step-by-step overview of the algorithm for parameterizing neural power spectra
 import matplotlib.pyplot as plt
 
 # Import the model object
-from specparam import PSD
+from specparam import SpectralModel
 
 # Import some internal functions
 #   These are used here to demonstrate the algorithm
@@ -62,12 +62,12 @@ spectrum = load_example_data('spectrum_2.npy', folder='data')
 
 # Initialize a model object, with some settings
 #   These settings will be more fully described later in the tutorials
-fm = PSD(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
+fm = SpectralModel(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 
 ###################################################################################################
 #
-# Note that data can be added to a PSD object independent of fitting the model, using the
-# :meth:`~specparam.PSD.add_data` method. Model objects can also be used to plot data,
+# Note that data can be added to a SpectralModel object independent of fitting the model, using the
+# :meth:`~specparam.SpectralModel.add_data` method. Model objects can also be used to plot data,
 # prior to fitting any models.
 #
 
@@ -259,11 +259,11 @@ fm.plot(plt_log)
 # Addendum: Data & Model Component Attributes
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# As you may have noticed through this tutorial, the :class:`~specparam.PSD` object keeps
+# As you may have noticed through this tutorial, the :class:`~specparam.SpectralModel` object keeps
 # track of some versions of the original data as well as individual model components fits,
 # as well as the final model fit, the ultimate outcome of the fitting procedure.
 #
-# These attributes in the PSD object are kept at the end of the fitting procedure.
+# These attributes in the SpectralModel object are kept at the end of the fitting procedure.
 # Though they are primarily computed for internal use (hence being considered 'private'
 # attributes, with the leading underscore), they are accessible and potentially
 # useful for some analyses, and so are briefly described here.

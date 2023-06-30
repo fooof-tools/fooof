@@ -4,7 +4,7 @@ from pytest import raises
 
 import numpy as np
 
-from specparam import PSDGroup
+from specparam import SpectralGroupModel
 from specparam.objs.utils import compare_model_objs
 from specparam.sim import sim_group_power_spectra
 from specparam.core.errors import NoModelError, IncompatibleSettingsError
@@ -41,7 +41,7 @@ def test_average_group(tfg, tbands):
         average_group(tfg, tbands, avg_method='BAD')
 
     # Test no data available error
-    ntfg = PSDGroup()
+    ntfg = SpectralGroupModel()
     with raises(NoModelError):
         average_group(ntfg, tbands)
 
@@ -126,7 +126,7 @@ def test_fit_models_3d(tfg):
     ys = np.stack([ys] * n_groups, axis=0)
     spectra_shape = np.shape(ys)
 
-    tfg = PSDGroup()
+    tfg = SpectralGroupModel()
     fgs = fit_models_3d(tfg, xs, ys)
 
     assert len(fgs) == n_groups == spectra_shape[0]

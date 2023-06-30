@@ -16,7 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import the model object
-from specparam import PSD
+from specparam import SpectralModel
 
 # Import simulation, utility, and plotting tools
 from specparam.bands import Bands
@@ -188,8 +188,8 @@ plt.title('Band-by-Band', t_settings);
 ###################################################################################################
 
 # Initialize model objects
-fm_bands_g1 = PSD(verbose=False)
-fm_bands_g2 = PSD(verbose=False)
+fm_bands_g1 = SpectralModel(verbose=False)
+fm_bands_g2 = SpectralModel(verbose=False)
 
 # Fit power spectrum models
 fm_bands_g1.fit(freqs, g1_spectrum_bands)
@@ -276,8 +276,8 @@ plt.title('Periodic & Aperiodic', t_settings);
 ###################################################################################################
 
 # Initialize model objects
-fm_pa_g1 = PSD(verbose=False)
-fm_pa_g2 = PSD(verbose=False)
+fm_pa_g1 = SpectralModel(verbose=False)
+fm_pa_g2 = SpectralModel(verbose=False)
 
 # Fit power spectrum models
 fm_pa_g1.fit(freqs, g1_spectrum_pa)

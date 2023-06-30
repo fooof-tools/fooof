@@ -6,7 +6,7 @@ import numpy as np
 
 from specparam.bands import Bands
 from specparam.data import FitResults
-from specparam.objs import PSD, PSDGroup
+from specparam.objs import SpectralModel, SpectralGroupModel
 from specparam.core.modutils import safe_import
 from specparam.sim.params import param_sampler
 from specparam.sim.sim import sim_power_spectrum, sim_group_power_spectra
@@ -25,7 +25,7 @@ def get_tfm():
 
     xs, ys = sim_power_spectrum(freq_range, ap_params, gaussian_params)
 
-    tfm = PSD(verbose=False)
+    tfm = SpectralModel(verbose=False)
     tfm.fit(xs, ys)
 
     return tfm
@@ -36,7 +36,7 @@ def get_tfg():
     n_spectra = 3
     xs, ys = sim_group_power_spectra(n_spectra, *default_group_params())
 
-    tfg = PSDGroup(verbose=False)
+    tfg = SpectralGroupModel(verbose=False)
     tfg.fit(xs, ys)
 
     return tfg

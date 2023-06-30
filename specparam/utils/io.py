@@ -17,13 +17,13 @@ def load_model(file_name, file_path=None, regenerate=True):
 
     Returns
     -------
-    model : PSD
+    model : SpectralModel
         Object with the loaded data.
     """
 
     # Initialize a model object (imported locally to avoid circular imports)
-    from specparam.objs import PSD
-    model = PSD()
+    from specparam.objs import SpectralModel
+    model = SpectralModel()
 
     # Load data into object
     model.load(file_name, file_path, regenerate)
@@ -43,13 +43,13 @@ def load_group(file_name, file_path=None):
 
     Returns
     -------
-    group : PSDGroup
+    group : SpectralGroupModel
         Object with the loaded data.
     """
 
     # Initialize a group object (imported locally to avoid circular imports)
-    from specparam.objs import PSDGroup
-    group = PSDGroup()
+    from specparam.objs import SpectralGroupModel
+    group = SpectralGroupModel()
 
     # Load data into object
     group.load(file_name, file_path)

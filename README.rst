@@ -191,10 +191,10 @@ the power spectrum, both as 1D arrays in linear space) parameterization can be d
 .. code-block:: python
 
     # Import the model object
-    from specparam import PSD
+    from specparam import SpectralModel
 
     # Initialize model object
-    fm = PSD()
+    fm = SpectralModel()
 
     # Define frequency range across which to model the spectrum
     freq_range = [3, 40]
@@ -202,7 +202,7 @@ the power spectrum, both as 1D arrays in linear space) parameterization can be d
     # Parameterize the power spectrum, and print out a report
     fm.report(freqs, spectrum, freq_range)
 
-PSD.report() fits the model, plots the original power spectrum with the associated model fit,
+SpectralModel.report() fits the model, plots the original power spectrum with the associated model fit,
 and prints out the parameters of the model fit for both the aperiodic component, and parameters for
 any identified peaks, reflecting periodic components.
 
@@ -225,8 +225,8 @@ These settings can be defined when initializing the model, for example:
 .. code-block:: python
 
     # Initialize a model object with defined settings
-    fm = PSD(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_height=0.1,
-             peak_threshold=2.0, aperiodic_mode='fixed')
+    fm = SpectralModel(peak_width_limits=[1.0, 8.0], max_n_peaks=6, min_peak_height=0.1,
+                       peak_threshold=2.0, aperiodic_mode='fixed')
 
 **Fitting a Group of Power Spectra**
 
@@ -236,8 +236,8 @@ We can fit the group of power spectra by doing:
 
 .. code-block:: python
 
-    # Initialize a PSDGroup object, specifying some parameters
-    fg = PSDGroup(peak_width_limits=[1.0, 8.0], max_n_peaks=8)
+    # Initialize a SpectralGroupModel object, specifying some parameters
+    fg = SpectralGroupModel(peak_width_limits=[1.0, 8.0], max_n_peaks=8)
 
     # Fit models across the matrix of power spectra
     fg.fit(freqs, spectra)
@@ -248,7 +248,7 @@ We can fit the group of power spectra by doing:
     # Save out results for further analysis later
     fg.save(file_name='group_results', save_results=True)
 
-Example output from using PSDGroup across a group of power spectra:
+Example output from using SpectralGroupModel across a group of power spectra:
 
 .. image:: https://raw.githubusercontent.com/fooof-tools/fooof/main/doc/img/FOOOFGroup_report.png
 

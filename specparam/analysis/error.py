@@ -14,7 +14,7 @@ def compute_pointwise_error(model, plot_errors=True, return_errors=False, **plt_
 
     Parameters
     ----------
-    model : PSD
+    model : SpectralModel
         Object containing the data and model.
     plot_errors : bool, optional, default: True
         Whether to plot the errors across frequencies.
@@ -56,7 +56,7 @@ def compute_pointwise_error_group(group, plot_errors=True, return_errors=False, 
 
     Parameters
     ----------
-    group : PSDGroup
+    group : SpectralGroupModel
         Object containing the data and models.
     plot_errors : bool, optional, default: True
         Whether to plot the errors across frequencies.

@@ -8,7 +8,7 @@ Choosing and using different modes for fitting the aperiodic component.
 ###################################################################################################
 
 # Import the model object
-from specparam import PSD
+from specparam import SpectralModel
 
 # Import a utility to download and load example data
 from specparam.utils.download import load_example_data
@@ -57,7 +57,7 @@ spectrum = load_example_data('spectrum_lfp.npy', folder='data')
 ###################################################################################################
 
 # Initialize a model object, setting the aperiodic mode to use a 'knee' fit
-fm = PSD(peak_width_limits=[2, 8], aperiodic_mode='knee')
+fm = SpectralModel(peak_width_limits=[2, 8], aperiodic_mode='knee')
 
 ###################################################################################################
 
@@ -103,7 +103,7 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 ###################################################################################################
 
 # Create and fit a power spectrum model in fixed mode to the same data as above
-fm = PSD(peak_width_limits=[2, 8], aperiodic_mode='fixed')
+fm = SpectralModel(peak_width_limits=[2, 8], aperiodic_mode='fixed')
 fm.report(freqs, spectrum, [2, 70], plt_log=True)
 
 ###################################################################################################
@@ -154,7 +154,7 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 # Conclusion
 # ----------
 #
-# We have now explored the :class:`~specparam.PSD` object, and different fitting
+# We have now explored the :class:`~specparam.SpectralModel` object, and different fitting
 # approaches for the aperiodic component. Next up, we will be introducing how
 # to scale the fitting to apply across multiple power spectra.
 #

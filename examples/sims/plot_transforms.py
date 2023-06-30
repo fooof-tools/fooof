@@ -19,7 +19,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import the model object
-from specparam import PSD
+from specparam import SpectralModel
 
 # Import simulation utilities to create example data
 from specparam.sim import sim_power_spectrum
@@ -69,8 +69,8 @@ plot_spectra(freqs, [powers, r_powers], log_freqs=True, log_powers=True)
 ###################################################################################################
 
 # Initialize model objects
-fm1 = PSD(verbose=False)
-fm2 = PSD(verbose=False)
+fm1 = SpectralModel(verbose=False)
+fm2 = SpectralModel(verbose=False)
 
 # Fit power spectrum models to the original, and rotated, spectrum
 fm1.fit(freqs, powers)
@@ -177,8 +177,8 @@ freqs, powers = sim_power_spectrum([3, 50], [0, 1.5], [10, 0.3, 0.5], nlv=0)
 ###################################################################################################
 
 # Initialize some power spectrum models for checking our transformations
-fm1 = PSD(verbose=False)
-fm2 = PSD(verbose=False)
+fm1 = SpectralModel(verbose=False)
+fm2 = SpectralModel(verbose=False)
 
 ###################################################################################################
 # Rotate at the Same Rotation Frequencies

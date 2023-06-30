@@ -5,7 +5,7 @@ import shutil
 import numpy as np
 import matplotlib.pyplot as plt
 
-from specparam import PSD, PSDGroup
+from specparam import SpectralModel, SpectralGroupModel
 from specparam.sim.gen import gen_power_spectrum
 from specparam.plts.utils import check_ax
 from specparam.plts.spectra import plot_spectrum
@@ -23,7 +23,8 @@ def main():
     spectrum = load_example_data('spectrum.npy', folder='data')
 
     # Initialize and fit an example power spectrum model
-    fm = PSD(peak_width_limits=[1, 6], max_n_peaks=6, min_peak_height=0.2, verbose=False)
+    fm = SpectralModel(peak_width_limits=[1, 6], max_n_peaks=6,
+                       min_peak_height=0.2, verbose=False)
     fm.fit(freqs, spectrum, [3, 40])
 
     # Save out the report
@@ -36,7 +37,8 @@ def main():
     spectra = load_example_data('group_powers.npy', folder='data')
 
     # Initialize and fit a group of example power spectrum models
-    fg = PSDGroup(peak_width_limits=[1, 6], max_n_peaks=6, min_peak_height=0.2, verbose=False)
+    fg = SpectralGroupModel(peak_width_limits=[1, 6], max_n_peaks=6,
+                            min_peak_height=0.2, verbose=False)
     fg.fit(freqs, spectra, [3, 30])
 
     # Save out the report

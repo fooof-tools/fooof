@@ -31,7 +31,7 @@ def save_model_report(model, file_name, file_path=None, plt_log=False,
 
     Parameters
     ----------
-    model : PSD
+    model : SpectralModel
         Object with results from fitting a power spectrum.
     file_name : str
         Name to give the saved out file.
@@ -83,7 +83,7 @@ def save_group_report(group, file_name, file_path=None, add_settings=True):
 
     Parameters
     ----------
-    group : PSDGroup
+    group : SpectralGroupModel
         Object with results from fitting a group of power spectra.
     file_name : str
         Name to give the saved out file.

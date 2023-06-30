@@ -11,7 +11,7 @@ Tips & tricks for choosing algorithm settings, tuning fits, and troubleshooting.
 import numpy as np
 
 # Import the model objects
-from specparam import PSD, PSDGroup
+from specparam import SpectralModel, SpectralGroupModel
 
 # Import some utilities for creating simulated power-spectra
 from specparam.sim import sim_power_spectrum, sim_group_power_spectra
@@ -142,7 +142,7 @@ freqs, spectrum = sim_power_spectrum(f_range, ap_params, gauss_params, nlv)
 ###################################################################################################
 
 # Fit an (unconstrained) model, liable to overfit
-fm = PSD()
+fm = SpectralModel()
 fm.report(freqs, spectrum)
 
 ###################################################################################################
@@ -159,7 +159,7 @@ fm.report(freqs, spectrum)
 ###################################################################################################
 
 # Update settings to fit a more constrained model, to reduce overfitting
-fm = PSD(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.4)
+fm = SpectralModel(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.4)
 fm.report(freqs, spectrum)
 
 ###################################################################################################
@@ -227,7 +227,7 @@ freqs, spectrum = sim_power_spectrum([1, 50], ap_params, gauss_params, nlv=nlv)
 ###################################################################################################
 
 # Update settings to make sure they are sensitive to smaller peaks in smoother power spectra
-fm = PSD(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.2)
+fm = SpectralModel(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.2)
 fm.report(freqs, spectrum)
 
 ###################################################################################################
@@ -245,7 +245,7 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 # a new analysis, or working with a new dataset, we do recommend starting by
 # trying some individual fits like this.
 #
-# If and when you move to using :class:`~specparam.PSDGroup` to fit groups of power spectra,
+# If and when you move to using :class:`~specparam.SpectralGroupModel` to fit groups of power spectra,
 # there are some slightly different ways to investigate groups of fits,
 # which we'll step through now, using some simulated data.
 #
@@ -282,7 +282,7 @@ freqs, power_spectra = sim_group_power_spectra(n_spectra, sim_freq_range,
 ###################################################################################################
 
 # Initialize a group model object
-fg = PSDGroup(peak_width_limits=[1, 6])
+fg = SpectralGroupModel(peak_width_limits=[1, 6])
 
 ###################################################################################################
 
@@ -291,7 +291,7 @@ fg.report(freqs, power_spectra)
 
 ###################################################################################################
 #
-# In the :class:`~specparam.PSDGroup` report we can get a sense of the overall performance
+# In the :class:`~specparam.SpectralGroupModel` report we can get a sense of the overall performance
 # by looking at the information about the goodness of fit metrics, and also things like
 # the distribution of peaks.
 #
@@ -300,7 +300,7 @@ fg.report(freqs, power_spectra)
 #
 # To do so, we will typically still want to visualize some example fits, to see
 # what is happening. To do so, next we will find which fits have the most error,
-# and select these fits from the :class:`~specparam.PSDGroup` object to visualize.
+# and select these fits from the :class:`~specparam.SpectralGroupModel` object to visualize.
 #
 
 ###################################################################################################
@@ -319,7 +319,7 @@ fm.plot()
 
 ###################################################################################################
 #
-# You can also loop through all the results in a :class:`~specparam.PSDGroup`, extracting
+# You can also loop through all the results in a :class:`~specparam.SpectralGroupModel`, extracting
 # all fits that meet some criterion that makes them worth checking.
 #
 # This might be checking for fits above some error threshold, as below, but note
@@ -377,8 +377,8 @@ print('Average number of fit peaks: ', np.mean(fg.n_peaks_))
 ###################################################################################################
 
 # Print out instructions to report bad fits
-#  Note you can also call this from PSDGroup, and from instances (ex: `fm.print_report_issue()`)
-PSD.print_report_issue()
+#  Note you can also call this from SpectralGroupModel, and from instances (ex: `fm.print_report_issue()`)
+SpectralModel.print_report_issue()
 
 ###################################################################################################
 # Conclusion

@@ -38,7 +38,7 @@ A description of and introduction to the power spectrum model.
 # sphinx_gallery_thumbnail_number = 5
 
 # Import required code for visualizing example models
-from specparam import PSD
+from specparam import SpectralModel
 from specparam.sim import sim_power_spectrum
 from specparam.sim.utils import set_random_seed
 from specparam.plts.spectra import plot_spectra
@@ -58,8 +58,8 @@ freqs2, powers2 = sim_power_spectrum([1, 150], [1, 125, 1.25],
 ###################################################################################################
 
 # Initialize power spectrum model objects and fit the power spectra
-fm1 = PSD(min_peak_height=0.05, verbose=False)
-fm2 = PSD(min_peak_height=0.05, aperiodic_mode='knee', verbose=False)
+fm1 = SpectralModel(min_peak_height=0.05, verbose=False)
+fm2 = SpectralModel(min_peak_height=0.05, aperiodic_mode='knee', verbose=False)
 fm1.fit(freqs1, powers1)
 fm2.fit(freqs2, powers2)
 

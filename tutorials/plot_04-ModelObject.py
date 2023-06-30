@@ -2,13 +2,13 @@
 04: Exploring the model object
 ==============================
 
-Further exploring the PSD object, including algorithm settings and available methods.
+Further exploring the SpectralModel object, including algorithm settings and available methods.
 """
 
 ###################################################################################################
 
 # Import the model object
-from specparam import PSD
+from specparam import SpectralModel
 
 # Import utility to download and load example data
 from specparam.utils.download import load_example_data
@@ -16,13 +16,13 @@ from specparam.utils.download import load_example_data
 ###################################################################################################
 
 # Initialize a model object
-fm = PSD()
+fm = SpectralModel()
 
 ###################################################################################################
 # Description of methods and attributes
 # -------------------------------------
 #
-# The :class:`~specparam.PSD` object contents consist of 4 main components (groups of data / code):
+# The :class:`~specparam.SpectralModel` object contents consist of 4 main components (groups of data / code):
 #
 # - 1) settings attributes, that control the algorithm fitting
 # - 2) data attributes, that contain and describe the data
@@ -44,7 +44,7 @@ fm = PSD()
 # ^^^^^^^^^^^^^^^^^^^^^^^^
 #
 # There are a number of settings that control the fitting algorithm, that
-# can be set by the user when initializing the :class:`~specparam.PSD` object.
+# can be set by the user when initializing the :class:`~specparam.SpectralModel` object.
 #
 # There are some internal settings that are not exposed at initialization.
 # These settings are unlikely to need to be accessed by the user, but can be if desired -
@@ -131,25 +131,25 @@ fm.print_settings(description=True)
 # ~~~~~~~~~~~~~~~~~
 #
 # Note that if you wish to change settings, then you should re-initialize
-# a new :class:`~specparam.PSD` object with new settings.
+# a new :class:`~specparam.SpectralModel` object with new settings.
 #
 # Simply changing the value of the relevant attribute may not appropriately propagate
 # the value, and thus may lead to a failure, either creating an error, or not applying
 # the settings properly during fit and returning erroneous results.
 #
-# Here we will re-initialize a new PSD object, with some new settings.
+# Here we will re-initialize a new SpectralModel object, with some new settings.
 #
 
 ###################################################################################################
 
 # Re-initialize a new model object, with some new specified settings
-fm = PSD(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
+fm = SpectralModel(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 
 ###################################################################################################
 # 2) Data (attributes)
 # ^^^^^^^^^^^^^^^^^^^^
 #
-# The :class:`~specparam.PSD` object stores the following data attributes:
+# The :class:`~specparam.SpectralModel` object stores the following data attributes:
 #
 # - ``freqs``: the frequency values of the power spectrum
 # - ``power_spectrum``: the power values of the power spectrum
@@ -218,7 +218,7 @@ fm.fit()
 # - ``modeled_spectrum_``: the full model reconstruction
 # - ``n_peaks_``: a helper attribute which indicates how many peaks were fit in the model
 #
-# The :class:`~specparam.PSD` object also has an indicator attribute, ``has_model``
+# The :class:`~specparam.SpectralModel` object also has an indicator attribute, ``has_model``
 # which indicates if the current object has model results available.
 #
 
@@ -240,7 +240,7 @@ print('modeled spectrum: \t', fm.modeled_spectrum_[0:5])
 # 4) Methods
 # ^^^^^^^^^^
 #
-# The :class:`~specparam.PSD` object contains a number of methods that are either used
+# The :class:`~specparam.SpectralModel` object contains a number of methods that are either used
 # to fit models and access data, and/or offer extra functionality.
 #
 # In addition to the exposed methods, there are some internal private methods,
@@ -280,7 +280,7 @@ fm.save('results', save_results=True, save_settings=True, save_data=True)
 ###################################################################################################
 
 # Load back in the saved out information
-nfm = PSD()
+nfm = SpectralModel()
 nfm.load('results')
 
 ###################################################################################################
@@ -295,9 +295,9 @@ nfm.plot()
 # There is also functionality to save out a 'report' of a particular model fit.
 #
 # This generates and saves a PDF which contains the same output as
-# :meth:`~specparam.PSD.print_results`,
-# :meth:`~specparam.PSD.plot`, and
-# :meth:`~specparam.PSD.print_settings`.
+# :meth:`~specparam.SpectralModel.print_results`,
+# :meth:`~specparam.SpectralModel.plot`, and
+# :meth:`~specparam.SpectralModel.print_settings`.
 #
 
 ###################################################################################################
@@ -309,7 +309,7 @@ fm.save_report('report')
 # Conclusion
 # ----------
 #
-# We have now fully explored the :class:`~specparam.PSD` object, and all it contains.
+# We have now fully explored the :class:`~specparam.SpectralModel` object, and all it contains.
 # Next, we will take a deeper dive into how to choose different modes for fitting
 # the aperiodic component of power spectra.
 #

@@ -26,7 +26,7 @@ import mne
 from mne.datasets import sample
 
 # Spectral parameterization imports
-from specparam import PSDGroup
+from specparam import SpectralGroupModel
 from specparam.bands import Bands
 from specparam.analysis import get_band_peak_group
 from specparam.plts.spectra import plot_spectra
@@ -123,13 +123,13 @@ spectra, freqs = psd.get_data(return_freqs=True)
 #
 # Now that we have power spectra, we can fit some power spectrum models.
 #
-# Since we have multiple power spectra, we will use the :class:`~specparam.PSDGroup` object.
+# Since we have multiple power spectra, we will use the :class:`~specparam.SpectralGroupModel` object.
 #
 
 ###################################################################################################
 
-# Initialize a PSDGroup object, with desired settings
-fg = PSDGroup(peak_width_limits=[1, 6], min_peak_height=0.15,
+# Initialize a SpectralGroupModel object, with desired settings
+fg = SpectralGroupModel(peak_width_limits=[1, 6], min_peak_height=0.15,
                 peak_threshold=2., max_n_peaks=6, verbose=False)
 
 # Define the frequency range to fit
@@ -154,7 +154,7 @@ fg.plot()
 #
 # To do so, we can leverage the fact that both MNE and specparam objects preserve data order.
 # So, when we calculated power spectra, our output spectra kept the channel order
-# that is described in the MNE data object, and so did our :class:`~specparam.PSDGroup`
+# that is described in the MNE data object, and so did our :class:`~specparam.SpectralGroupModel`
 # object.
 #
 # That means that to plot our topography, we can use the MNE ``plot_topomap``

@@ -13,7 +13,7 @@ Check the error of power spectrum models across frequencies.
 import numpy as np
 
 # Import model objects
-from specparam import PSD, PSDGroup
+from specparam import SpectralModel, SpectralGroupModel
 
 # Import simulation utilities to create some test data
 from specparam.sim import sim_power_spectrum, sim_group_power_spectra
@@ -58,7 +58,7 @@ freqs, powers = sim_power_spectrum([3, 50], [1, 1], [10, 0.25, 0.5])
 ###################################################################################################
 
 # Initialize a model object
-fm = PSD(verbose=False)
+fm = SpectralModel(verbose=False)
 
 # Parameterize our power spectrum
 fm.fit(freqs, powers)
@@ -94,7 +94,7 @@ print('Model fit error: \t\t {:1.3f}'.format(fm.error_))
 # Next, lets move on to calculating frequency-by-frequency error across groups of fits,
 # again using some simulated data.
 #
-# To analyze error from a PSDGroup object, use :func:`~.compute_pointwise_error_group`.
+# To analyze error from a SpectralGroupModel object, use :func:`~.compute_pointwise_error_group`.
 #
 
 ###################################################################################################
@@ -104,8 +104,8 @@ freqs, powers = sim_group_power_spectra(10, [3, 50], [1, 1], [10, 0.3, 1], nlvs=
 
 ###################################################################################################
 
-# Initialize a PSDGroup object to fit
-fg = PSDGroup(min_peak_height=0.25, verbose=False)
+# Initialize a SpectralGroupModel object to fit
+fg = SpectralGroupModel(min_peak_height=0.25, verbose=False)
 
 ###################################################################################################
 
@@ -155,7 +155,7 @@ print('Frequency with highest standard deviation of error: \t', f_max_std)
 #
 # As a final example, let's examine a case in which the model is not working well,
 # and see how the errors look. In particular, we will simulate some new power spectra,
-# with a knee parameter, and refit with the same PSDGroup object, in 'fixed' aperiodic
+# with a knee parameter, and refit with the same SpectralGroupModel object, in 'fixed' aperiodic
 # mode, and then analyze the frequency-by-frequency errors, as before. In this scenario,
 # we are fitting data with the wrong model form, and so we expect there to be some issues
 # with the fit, and we can use the frequency-by-frequency error to investigate if and how

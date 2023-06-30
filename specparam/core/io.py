@@ -67,7 +67,7 @@ def save_model(model, file_name, file_path=None, append=False,
 
     Parameters
     ----------
-    model : PSD
+    model : SpectralModel
         Object to save data from.
     file_name : str or FileObject
         File to save data to.
@@ -125,7 +125,7 @@ def save_group(group, file_name, file_path=None, append=False,
 
     Parameters
     ----------
-    group : PSDGroup
+    group : SpectralGroupModel
         Object to save data from.
     file_name : str or FileObject
         File to save data to.
@@ -231,7 +231,7 @@ def _save_group(group, f_obj, save_results, save_settings, save_data):
 
     Parameters
     ----------
-    group : PSDGroup
+    group : SpectralGroupModel
         Object to save data from.
     f_obj : FileObject
         File object to save data to.

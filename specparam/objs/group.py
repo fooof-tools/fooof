@@ -10,7 +10,7 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
-from specparam.objs import PSD
+from specparam.objs import SpectralModel
 from specparam.plts.group import plot_group
 from specparam.core.items import OBJ_DESC
 from specparam.core.info import get_indices
@@ -25,7 +25,7 @@ from specparam.data.conversions import group_to_dataframe
 ###################################################################################################
 ###################################################################################################
 
-class PSDGroup(PSD):
+class SpectralGroupModel(SpectralModel):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -100,7 +100,7 @@ class PSDGroup(PSD):
     def __init__(self, *args, **kwargs):
         """Initialize object with desired settings."""
 
-        PSD.__init__(self, *args, **kwargs)
+        SpectralModel.__init__(self, *args, **kwargs)
 
         self.power_spectra = None
 
@@ -470,12 +470,12 @@ class PSDGroup(PSD):
 
         Returns
         -------
-        model : PSD
+        model : SpectralModel
             The FitResults data loaded into a model object.
         """
 
         # Initialize a model object, with same settings & check data mode as current object
-        model = PSD(*self.get_settings(), verbose=self.verbose)
+        model = SpectralModel(*self.get_settings(), verbose=self.verbose)
         model.set_check_data_mode(self._check_data)
 
         # Add data for specified single power spectrum, if available
@@ -505,7 +505,7 @@ class PSDGroup(PSD):
 
         Returns
         -------
-        group : PSDGroup
+        group : SpectralGroupModel
             The requested selection of results data loaded into a new group model object.
         """
 
@@ -513,7 +513,7 @@ class PSDGroup(PSD):
         inds = check_inds(inds)
 
         # Initialize a new model object, with same settings as current object
-        group = PSDGroup(*self.get_settings(), verbose=self.verbose)
+        group = SpectralGroupModel(*self.get_settings(), verbose=self.verbose)
 
         # Add data for specified power spectra, if available
         #   Power spectra are inverted back to linear, as they are re-logged when added to object
@@ -585,13 +585,13 @@ class PSDGroup(PSD):
 
 
     def _fit(self, *args, **kwargs):
-        """Create an alias to PSD.fit for the group object, for internal use."""
+        """Create an alias to SpectralModel.fit for the group object, for internal use."""
 
         super().fit(*args, **kwargs)
 
 
     def _get_results(self):
-        """Create an alias to PSD.get_results for the group object, for internal use."""
+        """Create an alias to SpectralModel.get_results for the group object, for internal use."""
 
         return super().get_results()
 

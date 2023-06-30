@@ -9,8 +9,8 @@ Fitting power spectrum models across 3D arrays of power spectra.
 # Running Across 3D
 # -----------------
 #
-# Most of the materials so far have explored using the :class:`~specparam.PSD` object to fit
-# individual power spectra, and the :class:`~specparam.PSDGroup` object for fitting groups of
+# Most of the materials so far have explored using the :class:`~specparam.SpectralModel` object to fit
+# individual power spectra, and the :class:`~specparam.SpectralGroupModel` object for fitting groups of
 # power spectra, where a group of spectra is organized as a 2D array of power spectra.
 #
 # In this example, we'll go one step further, and step through how to analyze data
@@ -39,9 +39,9 @@ Fitting power spectrum models across 3D arrays of power spectra.
 #
 # A reminder that no matter how the data is organized, it's always the exact same model
 # that is fit. All other objects or organizations use the same code to do the fitting.
-# For example, the PSDGroup object inherits from PSD, and calls the same underlying fit function.
+# For example, the SpectralGroupModel object inherits from SpectralModel, and calls the same underlying fit function.
 #
-# As we'll see, we can fit 3D arrays of spectra by distributing PSDGroup objects
+# As we'll see, we can fit 3D arrays of spectra by distributing SpectralGroupModel objects
 # across the data, which also uses the same underlying code.
 #
 
@@ -51,8 +51,8 @@ Fitting power spectrum models across 3D arrays of power spectra.
 import os
 import numpy as np
 
-# Import the PSDGroup object
-from specparam import PSDGroup
+# Import the SpectralGroupModel object
+from specparam import SpectralGroupModel
 
 # Import utilities for working with model objects
 from specparam.objs import fit_models_3d, combine_model_objs
@@ -136,20 +136,20 @@ print('Number of conditions, channels & frequencies: \t{}, {}, {}'.format(\
 #
 # More specifically, :func:`~.fit_models_3d` takes in:
 #
-# - a PSDGroup object, pre-initialized with the desired settings
+# - a SpectralGroupModel object, pre-initialized with the desired settings
 # - an array of frequency values and a 3D array of power spectra
 #
-# Internally, this function uses the :class:`~specparam.PSDGroup` object to
+# Internally, this function uses the :class:`~specparam.SpectralGroupModel` object to
 # fit models across the power spectra.
 #
-# This function then returns a list of :class:`~specparam.PSDGroup` objects, which
+# This function then returns a list of :class:`~specparam.SpectralGroupModel` objects, which
 # collectively store all the model fit results.
 #
 
 ###################################################################################################
 
-# Initialize a PSDGroup object, with desired settings
-fg = PSDGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
+# Initialize a SpectralGroupModel object, with desired settings
+fg = SpectralGroupModel(peak_width_limits=[1, 6], min_peak_height=0.1)
 
 ###################################################################################################
 
@@ -158,7 +158,7 @@ fgs = fit_models_3d(fg, freqs, spectra)
 
 ###################################################################################################
 
-# This returns a list of PSDGroup objects
+# This returns a list of SpectralGroupModel objects
 print(fgs)
 
 ###################################################################################################
@@ -166,12 +166,12 @@ print(fgs)
 # Note that the length of the returned list of objects should be equivalent to
 # the outermost dimensionality of the input data.
 #
-# In our example setup, this corresponds to `n_conditions` :class:`~specparam.PSDGroup` objects.
+# In our example setup, this corresponds to `n_conditions` :class:`~specparam.SpectralGroupModel` objects.
 #
 
 ###################################################################################################
 
-print('Number of PSDGroups: \t{}'.format(len(fgs)))
+print('Number of SpectralGroupModels: \t{}'.format(len(fgs)))
 print('Number of conditions: \t{}'.format(n_conditions))
 
 ###################################################################################################
@@ -180,7 +180,7 @@ print('Number of conditions: \t{}'.format(n_conditions))
 #
 # Once you have fit the power spectrum models, you want to analyze the results in some way!
 #
-# Since you have a collection of :class:`~specparam.PSD` objects, you can analyze these the same
+# Since you have a collection of :class:`~specparam.SpectralModel` objects, you can analyze these the same
 # way as you would look into any other model objects. You can check out the other examples
 # and tutorials for more information on how to do this.
 #
@@ -204,10 +204,10 @@ for ind, fg in enumerate(fgs):
 # Managing Model Objects
 # ~~~~~~~~~~~~~~~~~~~~~~
 #
-# When running analyses like this, you may start to have many :class:`~specparam.PSD` objects.
+# When running analyses like this, you may start to have many :class:`~specparam.SpectralModel` objects.
 #
 # For example, you may want to save them out, reload them as needed, and analyze
-# results from each :class:`~specparam.PSD` or :class:`~specparam.PSDGroup` object.
+# results from each :class:`~specparam.SpectralModel` or :class:`~specparam.SpectralGroupModel` object.
 # You may also manipulate the objects by, for example, combining model results
 # across objects to check overall model fit properties.
 #
@@ -228,13 +228,13 @@ for ind, fg in enumerate(fgs):
 
 ###################################################################################################
 
-# Reload our list of PSDGroups
+# Reload our list of SpectralGroupModels
 fgs = [load_group(file_name, file_path='results') \
     for file_name in os.listdir('results')]
 
 ###################################################################################################
 
-# Combine a list of model objects into a single PSDGroup object
+# Combine a list of model objects into a single SpectralGroupModel object
 all_fg = combine_model_objs(fgs)
 
 # Explore the results from across all model fits

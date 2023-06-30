@@ -4,7 +4,7 @@ import numpy as np
 
 from specparam.sim import gen_freqs
 from specparam.data import FitResults
-from specparam.objs import PSD, PSDGroup
+from specparam.objs import SpectralModel, SpectralGroupModel
 from specparam.analysis.periodic import get_band_peak_group
 from specparam.core.errors import NoModelError, IncompatibleSettingsError
 
@@ -16,7 +16,7 @@ def compare_model_objs(model_objs, aspect):
 
     Parameters
     ----------
-    model_objs : list of PSD and/or PSDGroup
+    model_objs : list of SpectralModel and/or SpectralGroupModel
         Objects whose attributes are to be compared.
     aspect : {'settings', 'meta_data'}
         Which set of attributes to compare the objects across.
@@ -43,7 +43,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
 
     Parameters
     ----------
-    group : PSDGroup
+    group : SpectralGroupModel
         Object with model fit results to average across.
     bands : Bands
         Bands object that defines the frequency bands to collapse peaks across.
@@ -54,7 +54,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
 
     Returns
     -------
-    model : PSD
+    model : SpectralModel
         Object containing the average model results.
 
     Raises
@@ -104,7 +104,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
     results = FitResults(ap_params, peak_params, r2, error, gauss_params)
 
     # Create the new model object, with settings, data info & results
-    model = PSD()
+    model = SpectralModel()
     model.add_settings(group.get_settings())
     model.add_meta_data(group.get_meta_data())
     model.add_results(results)
@@ -121,12 +121,12 @@ def combine_model_objs(model_objs):
 
     Parameters
     ----------
-    model_objs : list of PSD or PSDGroup
+    model_objs : list of SpectralModel or SpectralGroupModel
         Objects to be concatenated into a group model object.
 
     Returns
     -------
-    group : PSDGroup
+    group : SpectralGroupModel
         Resultant object from combining inputs.
 
     Raises
@@ -152,7 +152,7 @@ def combine_model_objs(model_objs):
                                         "or meta data, and so cannot be combined.")
 
     # Initialize group model object, with settings derived from input objects
-    group = PSDGroup(*model_objs[0].get_settings(), verbose=model_objs[0].verbose)
+    group = SpectralGroupModel(*model_objs[0].get_settings(), verbose=model_objs[0].verbose)
 
     # Use a temporary store to collect spectra, as we'll only add it if it is consistently present
     #   We check how many frequencies by accessing meta data, in case of no frequency vector
@@ -164,7 +164,7 @@ def combine_model_objs(model_objs):
     for m_obj in model_objs:
 
         # Add group object
-        if isinstance(m_obj, PSDGroup):
+        if isinstance(m_obj, SpectralGroupModel):
             group.group_results.extend(m_obj.group_results)
             if m_obj.power_spectra is not None:
                 temp_power_spectra = np.vstack([temp_power_spectra, m_obj.power_spectra])
@@ -193,7 +193,7 @@ def fit_models_3d(group, freqs, power_spectra, freq_range=None, n_jobs=1):
 
     Parameters
     ----------
-    group : PSDGroup
+    group : SpectralGroupModel
         Object to fit with, initialized with desired settings.
     freqs : 1d array
         Frequency values for the power spectra, in linear space.
@@ -207,15 +207,15 @@ def fit_models_3d(group, freqs, power_spectra, freq_range=None, n_jobs=1):
 
     Returns
     -------
-    all_models : list of PSDGroup
+    all_models : list of SpectralGroupModel
         Collected model results after fitting across power spectra, length of n_conditions.
 
     Examples
     --------
     Fit a 3d array of power spectra, assuming `freqs` and `spectra` are already defined:
 
-    >>> from specparam import PSDGroup
-    >>> group = PSDGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
+    >>> from specparam import SpectralGroupModel
+    >>> group = SpectralGroupModel(peak_width_limits=[1, 6], min_peak_height=0.1)
     >>> models = fit_models_3d(group, freqs, power_spectra, freq_range=[3, 30])  # doctest:+SKIP
     """
 

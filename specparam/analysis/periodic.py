@@ -13,7 +13,7 @@ def get_band_peak(model, band, select_highest=True, threshold=None,
 
     Parameters
     ----------
-    model : PSD
+    model : SpectralModel
         Object to extract peak data from.
     band : tuple of (float, float)
         Frequency range for the band of interest.
@@ -53,7 +53,7 @@ def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribut
 
     Parameters
     ----------
-    group : PSDGroup
+    group : SpectralGroupModel
         Object to extract peak data from.
     band : tuple of (float, float)
         Frequency range for the band of interest.

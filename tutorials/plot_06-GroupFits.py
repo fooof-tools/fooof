@@ -8,7 +8,7 @@ Using the group model object to run fit models across multiple power spectra.
 ###################################################################################################
 
 # Import the group model object
-from specparam import PSDGroup
+from specparam import SpectralGroupModel
 
 # Import a utility to download and load example data
 from specparam.utils.download import load_example_data
@@ -17,11 +17,11 @@ from specparam.utils.download import load_example_data
 # Fitting Multiple Spectra
 # ------------------------
 #
-# So far, we have explored using the :class:`~specparam.PSD` object to fit individual power spectra.
+# So far, we have explored using the :class:`~specparam.SpectralModel` object to fit individual power spectra.
 #
 # However, many potential analyses will including many power spectra that need to be fit.
 #
-# To support this, here we will introduce the :class:`~specparam.PSDGroup` object, which
+# To support this, here we will introduce the :class:`~specparam.SpectralGroupModel` object, which
 # applies the model fitting procedure across multiple power spectra.
 #
 
@@ -46,11 +46,11 @@ print(freqs.shape)
 print(spectra.shape)
 
 ###################################################################################################
-# PSDGroup
-# --------
+# SpectralGroupModel
+# ------------------
 #
-# The :class:`~specparam.PSDGroup` object is very similar to the PSD object (programmatically,
-# it inherits from the PSD object), and can be used in the same way.
+# The :class:`~specparam.SpectralGroupModel` object is very similar to the SpectralModel object (programmatically,
+# it inherits from the SpectralModel object), and can be used in the same way.
 #
 # The main difference is that instead of running across a single power spectrum, it
 # operates across 2D matrices containing multiple power spectra.
@@ -61,25 +61,25 @@ print(spectra.shape)
 # be spectra from across channels, or across trials, or across subjects, or
 # whatever organization makes sense for the analysis at hand.
 #
-# The main differences with the :class:`~specparam.PSDGroup` object, are that it uses a
+# The main differences with the :class:`~specparam.SpectralGroupModel` object, are that it uses a
 # `power_spectra` attribute, which stores the matrix of power-spectra to be fit,
 # and collects fit results into a `group_results` attribute.
 #
-# Otherwise, :class:`~specparam.PSDGroup` supports all the same functionality,
-# accessed in the same way as the :class:`~specparam.PSD` object.
+# Otherwise, :class:`~specparam.SpectralGroupModel` supports all the same functionality,
+# accessed in the same way as the :class:`~specparam.SpectralModel` object.
 #
-# Internally, it runs the exact same fitting procedure, per spectrum, as the PSD object.
+# Internally, it runs the exact same fitting procedure, per spectrum, as the SpectralModel object.
 #
 
 ###################################################################################################
 
-# Initialize a PSDGroup object, which accepts all the same settings as PSD
-fg = PSDGroup(peak_width_limits=[1, 8], min_peak_height=0.05, max_n_peaks=6)
+# Initialize a SpectralGroupModel object, which accepts all the same settings as SpectralModel
+fg = SpectralGroupModel(peak_width_limits=[1, 8], min_peak_height=0.05, max_n_peaks=6)
 
 ###################################################################################################
 
 # Fit a group of power spectra with the .fit() method
-#  The key difference (compared to PSD) is that it takes a 2D array of spectra
+#  The key difference (compared to SpectralModel) is that it takes a 2D array of spectra
 #     This matrix should have the shape of [n_spectra, n_freqs]
 fg.fit(freqs, spectra, [3, 30])
 
@@ -95,8 +95,8 @@ fg.plot()
 
 ###################################################################################################
 #
-# Just as with the PSD object, you can call the convenience method
-# :meth:`specparam.PSDGroup.report` to run the fitting, and then print the results and plots.
+# Just as with the SpectralModel object, you can call the convenience method
+# :meth:`specparam.SpectralGroupModel.report` to run the fitting, and then print the results and plots.
 #
 
 ###################################################################################################
@@ -122,17 +122,17 @@ print(fg.group_results[0:2])
 # ~~~~~~~~~~
 #
 # To collect results from across all model fits, and to select specific parameters
-# you can use the :func:`~specparam.PSDGroup.get_params` method.
+# you can use the :func:`~specparam.SpectralGroupModel.get_params` method.
 #
-# This method works the same as in the :class:`~specparam.PSD` object, and lets you extract
+# This method works the same as in the :class:`~specparam.SpectralModel` object, and lets you extract
 # specific results by specifying a field, as a string, and (optionally) a specific column
 # to extract.
 #
-# Since the :class:`~specparam.PSDGroup` object collects results from across multiple model fits,
-# you should always use :func:`~specparam.PSDGroup.get_params` to access model parameters.
-# The results attributes introduced with the PSD object (such as `aperiodic_params_` or
+# Since the :class:`~specparam.SpectralGroupModel` object collects results from across multiple model fits,
+# you should always use :func:`~specparam.SpectralGroupModel.get_params` to access model parameters.
+# The results attributes introduced with the SpectralModel object (such as `aperiodic_params_` or
 # `peak_params_`) do not store results across the group, as they are defined for individual
-# model fits (and used internally as such by the PSDGroup object).
+# model fits (and used internally as such by the SpectralGroupModel object).
 #
 
 ###################################################################################################
@@ -163,7 +163,7 @@ print(fg.get_params.__doc__)
 ###################################################################################################
 
 # Grab a particular FitResults data object
-#  Note that as a shortcut, you can index the PSDGroup object directly to access 'group_results'
+#  Note that as a shortcut, you can index the SpectralGroupModel object directly to access 'group_results'
 f_res = fg[0]
 
 # Check the documentation for the FitResults, which has descriptions of the parameters
@@ -188,9 +188,9 @@ print(cfs[0:10, :])
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # The group object also support saving and loading, with the same options for saving out
-# different things as defined and described for the PSD object.
+# different things as defined and described for the SpectralModel object.
 #
-# The only difference in saving PSDGroup, is that it saves out a 'jsonlines' file,
+# The only difference in saving SpectralGroupModel, is that it saves out a 'jsonlines' file,
 # in which each line is a JSON object, saving the specified data, settings, and results for
 # a single power spectrum.
 #
@@ -203,7 +203,7 @@ fg.save('FG_results', save_settings=True, save_results=True)
 ###################################################################################################
 
 # You can then reload this group
-nfg = PSDGroup()
+nfg = SpectralGroupModel()
 nfg.load('FG_results')
 
 ###################################################################################################
@@ -215,7 +215,7 @@ nfg.print_results()
 # Parallel Support
 # ~~~~~~~~~~~~~~~~
 #
-# PSDGroup also has support for running in parallel, which can speed things up, since
+# SpectralGroupModel also has support for running in parallel, which can speed things up, since
 # each power spectrum can be fit independently.
 #
 # The fit method includes an optional parameter ``n_jobs``, which if set at 1 (as default),
@@ -239,7 +239,7 @@ fg.fit(freqs, spectra, n_jobs=-1)
 # Progress Bar
 # ~~~~~~~~~~~~
 #
-# If you have a large number of spectra to fit with a :class:`~specparam.PSDGroup`, and you
+# If you have a large number of spectra to fit with a :class:`~specparam.SpectralGroupModel`, and you
 # want to monitor it's progress, you can also use a progress bar to print out fitting progress.
 #
 # Progress bar options are:
@@ -261,9 +261,9 @@ fg.fit(freqs, spectra, progress='tqdm')
 # in FitResults objects, which store (only) the results of the model fit,
 # not the full model fits themselves.
 #
-# To examine individual model fits, :class:`~specparam.PSDGroup` can regenerate
-# :class:`~specparam.PSD` objects for individual power spectra, with the full model available
-# for visualization. To do so, you can use the :meth:`~specparam.PSDGroup.get_model` method.
+# To examine individual model fits, :class:`~specparam.SpectralGroupModel` can regenerate
+# :class:`~specparam.SpectralModel` objects for individual power spectra, with the full model available
+# for visualization. To do so, you can use the :meth:`~specparam.SpectralGroupModel.get_model` method.
 #
 
 ###################################################################################################

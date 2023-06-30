@@ -82,7 +82,7 @@ from specparam.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 ###################################################################################################
 ###################################################################################################
 
-class PSD():
+class SpectralModel():
     """Model a power spectrum as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.

@@ -25,7 +25,7 @@ from specparam.sim.params import param_iter, Stepper
 # options for visualizing power spectra.
 #
 # These plot functions overlap with what is accessible directly through the model objects,
-# as the :meth:`~specparam.PSD.plot` method. There are extra functions in the module, and
+# as the :meth:`~specparam.SpectralModel.plot` method. There are extra functions in the module, and
 # extra functionality available in the plotting module.
 #
 # Note that the plots in the module are all built using matplotlib. They all allow for
@@ -86,7 +86,7 @@ plot_spectra(freqs, powers1, log_powers=True)
 ###################################################################################################
 
 # Plot multiple spectra on the same plot, in log-log space, specifying some labels
-labels = ['PSD-1', 'PSD-2']
+labels = ['SpectralModel-1', 'SpectralModel-2']
 plot_spectra(freqs, [powers1, powers2], log_freqs=True, log_powers=True, labels=labels)
 
 ###################################################################################################

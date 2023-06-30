@@ -111,7 +111,7 @@ def get_info(model_obj, aspect):
 
     Parameters
     ----------
-    model_obj : PSD or PSDGroup
+    model_obj : SpectralModel or SpectralGroupModel
         Object to get attributes from.
     aspect : {'settings', 'meta_data', 'results'}
         Which set of attributes to compare the objects across.
