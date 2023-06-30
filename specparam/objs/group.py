@@ -20,6 +20,7 @@ from specparam.core.reports import save_group_report
 from specparam.core.strings import gen_group_results_str
 from specparam.core.io import save_group, load_jsonlines
 from specparam.core.modutils import copy_doc_func_to_method, safe_import
+from specparam.data.conversions import group_to_dataframe
 
 ###################################################################################################
 ###################################################################################################
@@ -401,9 +402,9 @@ class PSDGroup(PSD):
 
 
     @copy_doc_func_to_method(save_group_report)
-    def save_report(self, file_name, file_path=None):
+    def save_report(self, file_name, file_path=None, add_settings=True):
 
-        save_group_report(self, file_name, file_path)
+        save_group_report(self, file_name, file_path, add_settings)
 
 
     @copy_doc_func_to_method(save_group)
@@ -538,6 +539,49 @@ class PSDGroup(PSD):
         """
 
         print(gen_group_results_str(self, concise))
+
+
+    def save_model_report(self, index, file_name, file_path=None, plt_log=False,
+                          add_settings=True, **plot_kwargs):
+        """"Save out an individual model report for a specified model fit.
+
+        Parameters
+        ----------
+        index : int
+            Index of the model fit to save out.
+        file_name : str
+            Name to give the saved out file.
+        file_path : str, optional
+            Path to directory to save to. If None, saves to current directory.
+        plt_log : bool, optional, default: False
+            Whether or not to plot the frequency axis in log space.
+        add_settings : bool, optional, default: True
+            Whether to add a print out of the model settings to the end of the report.
+        plot_kwargs : keyword arguments
+            Keyword arguments to pass into the plot method.
+        """
+
+        self.get_fooof(ind=index, regenerate=True).save_report(\
+            file_name, file_path, plt_log, **plot_kwargs)
+
+
+    def to_df(self, peak_org):
+        """Convert and extract the model results as a pandas object.
+
+        Parameters
+        ----------
+        peak_org : int or Bands
+            How to organize peaks.
+            If int, extracts the first n peaks.
+            If Bands, extracts peaks based on band definitions.
+
+        Returns
+        -------
+        pd.DataFrame
+            Model results organized into a pandas object.
+        """
+
+        return group_to_dataframe(self.get_results(), peak_org)
 
 
     def _fit(self, *args, **kwargs):

@@ -55,7 +55,7 @@ def plot_model(model, plot_peaks=None, plot_aperiodic=True, plt_log=False,
     The y-axis (power) is plotted in log spacing by default.
     """
 
-    ax = check_ax(ax, PLT_FIGSIZES['spectral'])
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
     # Log settings - note that power values in model objects are already logged
     log_freqs = plt_log

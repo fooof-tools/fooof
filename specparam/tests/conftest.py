@@ -7,8 +7,7 @@ import pytest
 import numpy as np
 
 from specparam.core.modutils import safe_import
-
-from specparam.tests.tutils import get_tfm, get_tfg, get_tbands
+from specparam.tests.tutils import get_tfm, get_tfg, get_tbands, get_tresults
 from specparam.tests.settings import (BASE_TEST_FILE_PATH, TEST_DATA_PATH,
                                       TEST_REPORTS_PATH, TEST_PLOTS_PATH)
 
@@ -49,6 +48,15 @@ def tbands():
     yield get_tbands()
 
 @pytest.fixture(scope='session')
+def tresults():
+    yield get_tresults()
+
+@pytest.fixture(scope='session')
 def skip_if_no_mpl():
     if not safe_import('matplotlib'):
         pytest.skip('Matplotlib not available: skipping test.')
+
+@pytest.fixture(scope='session')
+def skip_if_no_pandas():
+    if not safe_import('pandas'):
+        pytest.skip('Pandas not available: skipping test.')

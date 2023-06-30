@@ -14,7 +14,10 @@ from specparam.core.errors import FitError
 from specparam.core.utils import group_three
 from specparam.sim import gen_freqs, sim_power_spectrum
 from specparam.data import ModelSettings, SpectrumMetaData, FitResults
+from specparam.core.modutils import safe_import
 from specparam.core.errors import DataError, NoDataError, InconsistentDataError
+
+pd = safe_import('pandas')
 
 from specparam.tests.settings import TEST_DATA_PATH
 from specparam.tests.tutils import get_tfm, plot_test
@@ -161,7 +164,11 @@ def test_checks():
     tfm.fit(xs, ys)
     assert tfm.freqs[0] != 0
 
-    # Check error if there is a post-logging inf or nan
+    # Check error for `check_freqs` - for if there is non-even frequency values
+    with raises(DataError):
+        tfm.fit(np.array([1, 2, 4]), np.array([1, 2, 3]))
+
+    # Check error for `check_data` - for if there is a post-logging inf or nan
     with raises(DataError):  # Double log (1) -> -inf
         tfm.fit(np.array([1, 2, 3]), np.log10(np.array([1, 2, 3])))
     with raises(DataError):  # Log (-1) -> NaN
@@ -425,3 +432,10 @@ def test_check_data():
     # Model fitting should execute, but return a null model fit, given the NaNs, without failing
     tfm.fit()
     assert not tfm.has_model
+
+def test_fooof_to_df(tfm, tbands, skip_if_no_pandas):
+
+    df1 = tfm.to_df(2)
+    assert isinstance(df1, pd.Series)
+    df2 = tfm.to_df(tbands)
+    assert isinstance(df2, pd.Series)
