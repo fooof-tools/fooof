@@ -136,6 +136,7 @@ Other Language Support
 The original implementation of FOOOF, available in this repository, is implemented in Python.
 
 If you wish to run FOOOF from another language, there are a couple potential options:
+
 - a `wrapper`, which allows for running the Python code from another language
 - a `reimplementation`, which reflects a new implementation of the fooof algorithm in another language
 
