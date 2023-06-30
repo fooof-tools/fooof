@@ -10,6 +10,7 @@
 #   coverage            For running test coverage
 #   pylint              For running linting on code
 #   setuptools          For creating distributions
+#   twine		For checking and publishing distributions
 #
 # The following command line utilities are required:
 #   cloc                For counting lines of code
@@ -100,8 +101,22 @@ dist:
 	@python setup.py sdist bdist_wheel
 	@printf "\n\nDISTRIBUTION BUILD CREATED\n\n\n"
 
+# Check a distribution build using twine
+check-dist:
+	@printf "\n\nCHECKING DISTRIBUTION BUILD:\n"
+	twine check dist/*
+	@printf "\n"
+
 # Clear out distribution files
 clear-dist:
 	@printf "\n\nCLEARING DISTRIBUTION FILES...\n"
 	@rm -rf build dist $(MODULE).egg-info
 	@printf "DISTRIBUTION FILES CLEARED\n\n\n"
+
+# Show commands for publishing the distribution
+#   Note: this doesn't run the commands (to avoid accidental publishing)
+#   This also assumes that you are using twine + .pypirc
+publish:
+	@printf "\n\nTO PUBLISH THE DISTRIBUTION:\n\n"
+	@printf "to testpypi: \n\ttwine upload --repository testpypi dist/*\n"
+	@printf "to pypi: \n\ttwine upload --repository pypi dist/*\n\n"
