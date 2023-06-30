@@ -1,6 +1,6 @@
 # Ignore source release files
 /dist/*
-/specparam.egg-info/*
+/*.egg-info/*
 /build/*
 
 # Ignore notebook checkpoints

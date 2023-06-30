@@ -43,6 +43,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     platforms = 'any',
     project_urls = {
@@ -56,7 +57,8 @@ setup(
     tests_require = ['pytest'],
     extras_require = {
         'plot'    : ['matplotlib'],
+        'data'    : ['pandas'],
         'tests'   : ['pytest'],
-        'all'     : ['matplotlib', 'tqdm', 'pytest']
+        'all'     : ['matplotlib', 'pandas', 'tqdm', 'pytest']
     }
 )

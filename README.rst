@@ -82,7 +82,7 @@ There are also optional dependencies, which are not required for model fitting i
 
 - `matplotlib <https://github.com/matplotlib/matplotlib>`_ is needed to visualize data and model fits
 - `tqdm <https://github.com/tqdm/tqdm>`_ is needed to print progress bars when fitting many models
-- `pandas <https://github.com/pandas-dev/pandas>`_ is needed to for exporting model fit results to dataframes
+- `pandas <https://github.com/pandas-dev/pandas>`_ is needed for exporting model fit results to dataframes
 - `pytest <https://github.com/pytest-dev/pytest>`_ is needed to run the test suite locally
 
 We recommend using the `Anaconda <https://www.anaconda.com/distribution/>`_ distribution to manage these requirements.
@@ -130,15 +130,40 @@ To install an editable version, download the development version as above, and r
 
     $ pip install -e .
 
-Matlab Support
---------------
+Other Language Support
+----------------------
 
-`specparam` is implemented in Python, but there is also Matlab wrapper that allows you to use it from Matlab.
-The wrapper is available in the `fooof_mat <http://github.com/fooof-tools/fooof_mat>`_ repository.
+The original implementation of `specparam`, available in this repository, is implemented in Python.
 
-If you would like to use `specparam`, from Python, within a pipeline that is mostly in Matlab, the
-`mat_py_mat <https://github.com/fooof-tools/mat_py_mat>`_
-repository also has some examples and utilities for doing so.
+If you wish to run specparam from another language, there are a couple potential options:
+- a `wrapper`, which allows for running the Python code from another language
+- a `reimplementation`, which reflects a new implementation of the specparam algorithm in another language
+
+Below are listed some examples of wrappers and/or reimplementations in other languages (non-exhaustive).
+
+Matlab
+~~~~~~
+
+In Matlab, there is a reimplementation available in common toolboxes:
+- The `Brainstorm <https://neuroimage.usc.edu/brainstorm/Introduction>`_ toolbox has a reimplementation of specparam
+    - See the Brainstorm `fooof tutorial <https://neuroimage.usc.edu/brainstorm/Tutorials/Fooof>`_
+- The `Fieldtrip <https://www.fieldtriptoolbox.org/>`_ also uses the same reimplementation
+    - See the Fieldtrip `fooof tutorial <https://www.fieldtriptoolbox.org/example/fooof/>`_
+
+There is also a Matlab wrapper in the `fooof_mat <http://github.com/fooof-tools/fooof_mat>`_ repository.
+
+Note that another option is to use Python FOOOF within a Matlab pipeline, as explored in the
+`mat_py_mat <https://github.com/fooof-tools/mat_py_mat>`_ repository.
+
+Other Languages
+~~~~~~~~~~~~~~~
+
+Other languages with wrappers include:
+- In Julia, there is
+`fooof wrapper <https://juliahub.com/ui/Packages/PyFOOOF/Ng8hN/0.1.0>`_
+- In R, fooof can be run using
+`reticulate <https://rstudio.github.io/reticulate/>`_, as
+`shown here <https://github.com/fooof-tools/DevelopmentalDemo/tree/main/R>`_
 
 Reference
 ---------
