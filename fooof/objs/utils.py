@@ -179,7 +179,7 @@ def combine_fooofs(fooofs):
         fg.power_spectra = temp_power_spectra
 
     # Set the check data mode, as True if any of the inputs have it on, False otherwise
-    fg.set_check_data_mode(any([getattr(f_obj, '_check_data') for f_obj in fooofs]))
+    fg.set_check_data_mode(any(getattr(f_obj, '_check_data') for f_obj in fooofs))
 
     # Add data information information
     fg.add_meta_data(fooofs[0].get_meta_data())
