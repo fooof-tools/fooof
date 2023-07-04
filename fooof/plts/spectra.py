@@ -24,7 +24,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
+def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, freq_range=None,
                  colors=None, labels=None, ax=None, **plot_kwargs):
     """Plot one or multiple power spectra.
 
@@ -38,6 +38,9 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
         Whether to plot the frequency axis in log spacing.
     log_powers : bool, optional, default: False
         Whether to plot the power axis in log spacing.
+    freq_range : list of [float, float], optional
+        Frequency range to plot.
+        Should be provided in linear space, regardless of value of `log_freqs`.
     colors : list of str, optional, default: None
         Line colors of the spectra.
     labels : list of str, optional, default: None
@@ -53,6 +56,10 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
     # Create the plot
     plot_kwargs = check_plot_kwargs(plot_kwargs, {'linewidth' : 2.0})
 
+    # Check for frequency range input, and log if x-axis is in log space
+    if freq_range is not None:
+        freq_range = np.log10(freq_range) if log_freqs else freq_range
+
     # Make inputs iterable if need to be passed multiple times to plot each spectrum
     plt_powers = np.reshape(power_spectra, (1, -1)) if np.ndim(power_spectra) == 1 else \
         power_spectra
@@ -63,7 +70,7 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
     labels = repeat(labels) if not isinstance(labels, list) else cycle(labels)
     colors = repeat(colors) if not isinstance(colors, list) else cycle(colors)
 
-    # Plot
+    # Plot power spectra, looping across all spectra to plot
     for freqs, powers, color, label in zip(plt_freqs, plt_powers, colors, labels):
 
         # Set plot data, logging if requested, and collect color, if absent
@@ -73,6 +80,8 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
             plot_kwargs['color'] = color
 
         ax.plot(freqs, powers, label=label, **plot_kwargs)
+
+    ax.set_xlim(freq_range)
 
     style_spectrum_plot(ax, log_freqs, log_powers)
 
