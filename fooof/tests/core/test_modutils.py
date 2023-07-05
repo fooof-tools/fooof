@@ -85,3 +85,55 @@ def test_docs_add_section(tdocstring):
     assert 'Notes' in new_docstring
     assert '%' not in new_docstring
     assert 'new note' in new_docstring
+
+def test_copy_doc_func_to_method(tdocstring):
+
+    def tfunc(): pass
+    tfunc.__doc__ = tdocstring
+
+    class tObj():
+
+        @copy_doc_func_to_method(tfunc)
+        def tmethod():
+            pass
+
+    assert tObj.tmethod.__doc__
+    assert 'first' not in tObj.tmethod.__doc__
+    assert 'second' in tObj.tmethod.__doc__
+
+
+def test_copy_doc_class(tdocstring):
+
+    class tObj1():
+        pass
+    tObj1.__doc__ = tdocstring
+
+    new_section = \
+    """
+    third : stuff
+        Words, words, words.
+    """
+    @copy_doc_class(tObj1, 'Parameters', new_section)
+    class tObj2():
+        pass
+
+    assert 'third' in tObj2.__doc__
+    assert 'third' not in tObj1.__doc__
+
+def test_replace_docstring_sections(tdocstring):
+
+    # Extract just the parameters section from general test docstring
+    new_parameters = '\n'.join(tdocstring.split('\n')[2:8])
+
+    @replace_docstring_sections(new_parameters)
+    def tfunc():
+        """Test function docstring
+
+        Parameters
+        ----------
+        % copied in at runtime
+        """
+        pass
+
+    assert 'first' in tfunc.__doc__
+    assert 'second' in tfunc.__doc__
