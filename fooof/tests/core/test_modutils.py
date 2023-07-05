@@ -76,7 +76,7 @@ def test_docs_get_section(tdocstring):
 def test_docs_add_section(tdocstring):
 
     tdocstring = tdocstring + \
-    """\nNotes\n-----\n    % copied in at runtime"""
+    """\nNotes\n-----\n    % copied in"""
 
     new_section = \
     """Notes\n-----\n    \nThis is a new note."""
@@ -131,7 +131,7 @@ def test_replace_docstring_sections(tdocstring):
 
         Parameters
         ----------
-        % copied in at runtime
+        % copied in
         """
         pass
 
