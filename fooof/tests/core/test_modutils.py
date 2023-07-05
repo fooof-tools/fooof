@@ -33,43 +33,13 @@ def test_check_dependency():
     with raises(ImportError):
         subfunc_bad()
 
-def test_docs_drop_param():
+def test_docs_drop_param(tdocstring):
 
-    ds = """STUFF
-
-    Parameters
-    ----------
-    first : thing
-        Words, words, words.
-    second : stuff
-        Words, words, words.
-
-    Returns
-    -------
-    out : yay
-        Words, words, words.
-    """
-
-    out = docs_drop_param(ds)
+    out = docs_drop_param(tdocstring)
     assert 'first' not in out
     assert 'second' in out
 
-def test_docs_append_to_section():
-
-    ds = """STUFF
-
-    Parameters
-    ----------
-    first : thing
-        Words, words, words.
-    second : stuff
-        Words, words, words.
-
-    Returns
-    -------
-    out : yay
-        Words, words, words.
-    """
+def test_docs_append_to_section(tdocstring):
 
     section = 'Parameters'
     add = \
@@ -78,7 +48,7 @@ def test_docs_append_to_section():
         Added description.
     """
 
-    new_ds = docs_append_to_section(ds, section, add)
+    new_ds = docs_append_to_section(tdocstring, section, add)
 
     assert 'third' in new_ds
     assert 'Added description' in new_ds

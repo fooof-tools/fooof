@@ -8,7 +8,7 @@ import numpy as np
 
 from fooof.core.modutils import safe_import
 
-from fooof.tests.tutils import get_tfm, get_tfg, get_tbands, get_tresults
+from fooof.tests.tutils import get_tfm, get_tfg, get_tbands, get_tresults, get_tdocstring
 from fooof.tests.settings import (BASE_TEST_FILE_PATH, TEST_DATA_PATH,
                                   TEST_REPORTS_PATH, TEST_PLOTS_PATH)
 
@@ -51,6 +51,10 @@ def tbands():
 @pytest.fixture(scope='session')
 def tresults():
     yield get_tresults()
+
+@pytest.fixture(scope='function')
+def tdocstring():
+    yield get_tdocstring()
 
 @pytest.fixture(scope='session')
 def skip_if_no_mpl():
