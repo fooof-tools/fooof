@@ -20,7 +20,7 @@ def test_plot_fm(tfm, skip_if_no_mpl):
             file_name='test_plot_fm.png')
 
 @plot_test
-def test_plot_fm(tfm, skip_if_no_mpl):
+def test_plot_fm_custom(tfm, skip_if_no_mpl):
 
     # Extract broader range of data available in the object
     custom_freqs = tfm.freqs
