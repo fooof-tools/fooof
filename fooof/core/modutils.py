@@ -297,3 +297,26 @@ def copy_doc_class(source, section='Attributes', add=''):
         return func
 
     return wrapper
+
+
+def replace_docstring_sections(replacements):
+    """Decorator to drop in docstring sections
+
+    Parameters
+    ----------
+    replacements : str or list of str
+        Section(s) to drop into the decorated function's docstring.
+    """
+
+    def wrapper(func):
+
+        docstring = func.__doc__
+
+        for replacement in [replacements] if isinstance(replacements, str) else replacements:
+            docstring = docs_add_section(docstring, replacement)
+
+        func.__doc__ = docstring
+
+        return func
+
+    return wrapper
