@@ -52,3 +52,36 @@ def test_docs_append_to_section(tdocstring):
 
     assert 'third' in new_ds
     assert 'Added description' in new_ds
+
+def test_get_docs_indices(tdocstring):
+
+    inds = get_docs_indices(tdocstring)
+
+    for el in DOCSTRING_SECTIONS:
+        assert el in inds.keys()
+
+    assert inds['Parameters'] == 2
+    assert inds['Returns'] == 9
+
+def test_docs_get_section(tdocstring):
+
+    out1 = docs_get_section(tdocstring, 'Parameters', output='extract')
+    assert 'Parameters' in out1
+    assert 'Returns' not in out1
+
+    out2 = docs_get_section(tdocstring, 'Parameters', output='remove')
+    assert 'Parameters' not in out2
+    assert 'Returns' in out2
+
+def test_docs_add_section(tdocstring):
+
+    tdocstring = tdocstring + \
+    """\nNotes\n-----\n    % copied in at runtime"""
+
+    new_section = \
+    """Notes\n-----\n    \nThis is a new note."""
+    new_docstring = docs_add_section(tdocstring, new_section)
+
+    assert 'Notes' in new_docstring
+    assert '%' not in new_docstring
+    assert 'new note' in new_docstring
