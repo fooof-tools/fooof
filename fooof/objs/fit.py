@@ -379,7 +379,7 @@ class FOOOF():
 
 
     def report(self, freqs=None, power_spectrum=None, freq_range=None,
-               plt_log=False, **plot_kwargs):
+               plt_log=False, plot_full_range=False, **plot_kwargs):
         """Run model fit, and display a report, which includes a plot, and printed results.
 
         Parameters
@@ -393,8 +393,13 @@ class FOOOF():
             If not provided, fits across the entire given range.
         plt_log : bool, optional, default: False
             Whether or not to plot the frequency axis in log space.
+        plot_full_range : bool, default: False
+            If True, plots the full range of the given power spectrum.
+            Only relevant / effective if `freqs` and `power_spectrum` passed in in this call.
         **plot_kwargs
             Keyword arguments to pass into the plot method.
+            Plot options with a name conflict be passed by pre-pending 'plot_'.
+            e.g. `freqs`, `power_spectrum` and `freq_range`.
 
         Notes
         -----
@@ -402,7 +407,12 @@ class FOOOF():
         """
 
         self.fit(freqs, power_spectrum, freq_range)
-        self.plot(plt_log=plt_log, **plot_kwargs)
+        self.plot(plt_log=plt_log,
+                  freqs=freqs if plot_full_range else plot_kwargs.pop('plot_freqs', None),
+                  power_spectrum=power_spectrum if \
+                      plot_full_range else plot_kwargs.pop('plot_power_spectrum', None),
+                  freq_range=plot_kwargs.pop('plot_freq_range', None),
+                  **plot_kwargs)
         self.print_results(concise=False)
 
 
@@ -639,12 +649,13 @@ class FOOOF():
 
 
     @copy_doc_func_to_method(plot_fm)
-    def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,
-             add_legend=True, save_fig=False, file_name=None, file_path=None,
-             ax=None, data_kwargs=None, model_kwargs=None,
+    def plot(self, plot_peaks=None, plot_aperiodic=True, freqs=None, power_spectrum=None,
+             freq_range=None, plt_log=False, add_legend=True, save_fig=False, file_name=None,
+             file_path=None, ax=None, data_kwargs=None, model_kwargs=None,
              aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
 
-        plot_fm(self, plot_peaks=plot_peaks, plot_aperiodic=plot_aperiodic, plt_log=plt_log,
+        plot_fm(self, plot_peaks=plot_peaks, plot_aperiodic=plot_aperiodic, freqs=freqs,
+                power_spectrum=power_spectrum, freq_range=freq_range, plt_log=plt_log,
                 add_legend=add_legend, save_fig=save_fig, file_name=file_name,
                 file_path=file_path, ax=ax, data_kwargs=data_kwargs, model_kwargs=model_kwargs,
                 aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs, **plot_kwargs)
