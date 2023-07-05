@@ -39,8 +39,7 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, freq_r
     log_powers : bool, optional, default: False
         Whether to plot the power axis in log spacing.
     freq_range : list of [float, float], optional
-        Frequency range to plot.
-        Should be provided in linear space, regardless of value of `log_freqs`.
+        Frequency range to plot, defined in linear space.
     colors : list of str, optional, default: None
         Line colors of the spectra.
     labels : list of str, optional, default: None
@@ -48,7 +47,7 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, freq_r
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the ``style_plot``.
+        Additional plot related keyword arguments.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
@@ -107,7 +106,8 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r',
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into :func:`~.plot_spectra`.
+        Additional plot related keyword arguments.
+        This can include additional inputs into :func:`~.plot_spectra`.
 
     Notes
     -----
@@ -157,7 +157,7 @@ def plot_spectra_yshade(freqs, power_spectra, shade='std', average='mean', scale
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to be passed to `plot_spectra` or to the plot call.
+        Additional plot related keyword arguments.
     """
 
     if (isinstance(shade, str) or isfunction(shade)) and power_spectra.ndim != 2:
