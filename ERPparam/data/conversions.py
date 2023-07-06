@@ -3,8 +3,7 @@
 import numpy as np
 
 from ERPparam import Bands
-from ERPparam.core.funcs import infer_ap_func
-from ERPparam.core.info import get_ap_indices, get_peak_indices
+from ERPparam.core.info import get_peak_indices
 from ERPparam.core.modutils import safe_import, check_dependency
 from ERPparam.analysis.periodic import get_band_peak
 
@@ -32,11 +31,6 @@ def model_to_dict(fit_results, peak_org):
     """
 
     fr_dict = {}
-
-    # aperiodic parameters
-    for label, param in zip(get_ap_indices(infer_ap_func(fit_results.aperiodic_params)),
-                            fit_results.aperiodic_params):
-        fr_dict[label] = param
 
     # periodic parameters
     peaks = fit_results.peak_params

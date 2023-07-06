@@ -12,13 +12,11 @@ from ERPparam.data import SimParams
 ###################################################################################################
 ###################################################################################################
 
-def collect_sim_params(aperiodic_params, periodic_params, nlv):
+def collect_sim_params(periodic_params, nlv):
     """Collect simulation parameters into a SimParams object.
 
     Parameters
     ----------
-    aperiodic_params : list of float
-        Parameters of the aperiodic component of the power spectrum.
     periodic_params : list of float or list of list of float
         Parameters of the periodic component of the power spectrum.
     nlv : float
@@ -30,8 +28,7 @@ def collect_sim_params(aperiodic_params, periodic_params, nlv):
         Object containing the simulation parameters.
     """
 
-    return SimParams(aperiodic_params.copy(),
-                     sorted(group_three(check_flat(periodic_params))),
+    return SimParams(sorted(group_three(check_flat(periodic_params))),
                      nlv)
 
 

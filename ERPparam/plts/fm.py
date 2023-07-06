@@ -22,6 +22,29 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 ###################################################################################################
 
+@check_dependency(plt, 'matplotlib')
+def plot_ERPparam(self, y_units=None):
+    """Plot ERP and model fit results."""
+
+    # create figure
+    fig, ax = plt.subplots(1,1, figsize=[6,4])
+
+    # plot signal
+    ax.plot(self.time, self.signal, alpha=0.5, label='ERP')
+
+    # plot fit
+    ax.plot(self.time, self._peak_fit, linestyle='--', color='k', label='Gaussian fit')
+    ax.scatter(self.peak_params_[:,0], self.peak_params_[:,1], color='r', label='Peak fit')
+    
+    # label
+    if y_units is not None:
+        ax.set(xlabel="time (s)", ylabel=f"voltage ({y_units})")
+    else:
+        ax.set(xlabel="time (s)", ylabel="voltage")
+    ax.legend()
+    plt.show()
+
+
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')

@@ -24,17 +24,13 @@ def get_description():
     - descriptors : descriptors of the object status and model results
     """
 
-    attributes = {'results' : ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
-                               'r_squared_', 'error_'],
-                  'settings' : ['peak_width_limits', 'max_n_peaks',
-                                'min_peak_height', 'peak_threshold',
-                                'aperiodic_mode'],
-                  'data' : ['power_spectrum', 'freq_range', 'freq_res'],
-                  'meta_data' : ['freq_range', 'freq_res'],
-                  'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',
-                              'peak_params_', 'gaussian_params_'],
-                  'model_components' : ['fooofed_spectrum_', '_spectrum_flat',
-                                        '_spectrum_peak_rm', '_ap_fit', '_peak_fit'],
+    attributes = {'results' : ['gaussian_params_', 'peak_params_', 'r_squared_', 'error_'],
+                  'settings' : ['peak_width_limits', 'max_n_peaks', 'min_peak_height', 
+                                'peak_threshold'],
+                  'data' : ['signal', 'time'],
+                  'meta_data' : ['time_range', 'fs'],
+                  'arrays' : ['time', 'signal', 'peak_params_', 'gaussian_params_'],
+                  'model_components' : ['_peak_fit'],
                   'descriptors' : ['has_data', 'has_model', 'n_peaks_']
                   }
 
@@ -59,39 +55,11 @@ def get_peak_indices():
     return indices
 
 
-def get_ap_indices(aperiodic_mode):
-    """Get a mapping from column labels to indices for aperiodic parameters.
-
-    Parameters
-    ----------
-    aperiodic_mode : {'fixed', 'knee'}
-        Which mode was used for the aperiodic component.
-
-    Returns
-    -------
-    indices : dict
-        Mapping of the column labels and indices for the aperiodic parameters.
-    """
-
-    if aperiodic_mode == 'fixed':
-        labels = ('offset', 'exponent')
-    elif aperiodic_mode == 'knee':
-        labels = ('offset', 'knee', 'exponent')
-    else:
-        raise ValueError("Aperiodic mode not understood.")
-
-    indices = {label : index for index, label in enumerate(labels)}
-
-    return indices
-
-
-def get_indices(aperiodic_mode):
+def get_indices():
     """Get a mapping from column labels to indices for all parameters.
 
     Parameters
     ----------
-    aperiodic_mode : {'fixed', 'knee'}
-        Which mode was used for the aperiodic component.
 
     Returns
     -------
@@ -101,7 +69,6 @@ def get_indices(aperiodic_mode):
 
     # Get the periodic indices, and then update dictionary with aperiodic ones
     indices = get_peak_indices()
-    indices.update(get_ap_indices(aperiodic_mode))
 
     return indices
 

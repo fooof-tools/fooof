@@ -14,8 +14,7 @@ from collections import namedtuple
 ###################################################################################################
 
 class ERPparamSettings(namedtuple('ERPparamSettings', ['peak_width_limits', 'max_n_peaks',
-                                                 'min_peak_height', 'peak_threshold',
-                                                 'aperiodic_mode'])):
+                                                 'min_peak_height', 'peak_threshold', 'rectify'])):
     """User defined settings for the fitting algorithm.
 
     Parameters
@@ -28,8 +27,8 @@ class ERPparamSettings(namedtuple('ERPparamSettings', ['peak_width_limits', 'max
         Absolute threshold for detecting peaks, in units of the input data.
     peak_threshold : float
         Relative threshold for detecting peaks, in units of standard deviation of the input data.
-    aperiodic_mode : {'fixed', 'knee'}
-        Which approach to take for fitting the aperiodic component.
+    rectify : bool
+        Whether to rectify the signal prior to fitting.
 
     Notes
     -----
@@ -38,15 +37,15 @@ class ERPparamSettings(namedtuple('ERPparamSettings', ['peak_width_limits', 'max
     __slots__ = ()
 
 
-class ERPparamMetaData(namedtuple('ERPparamMetaData', ['freq_range', 'freq_res'])):
+class ERPparamMetaData(namedtuple('ERPparamMetaData', ['time_range', 'fs'])):
     """Metadata information about a power spectrum.
 
     Parameters
     ----------
-    freq_range : list of [float, float]
-        Frequency range of the power spectrum, as [lowest_freq, highest_freq].
-    freq_res : float
-        Frequency resolution of the power spectrum.
+    time_range : list of [float, float]
+        Time range of the signal, as [start_time, end_time].
+    fs : float
+        Sampling frequency of the signal.
 
     Notes
     -----
@@ -55,15 +54,12 @@ class ERPparamMetaData(namedtuple('ERPparamMetaData', ['freq_range', 'freq_res']
     __slots__ = ()
 
 
-class ERPparamResults(namedtuple('ERPparamResults', ['aperiodic_params', 'peak_params',
-                                               'r_squared', 'error', 'gaussian_params'])):
+class ERPparamResults(namedtuple('ERPparamResults', ['peak_params', 'r_squared', 'error', 
+                                                     'gaussian_params'])):
     """Model results from parameterizing a power spectrum.
 
     Parameters
     ----------
-    aperiodic_params : 1d array
-        Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
-        The knee parameter is only included if aperiodic is fit with knee.
     peak_params : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
     r_squared : float
@@ -81,13 +77,11 @@ class ERPparamResults(namedtuple('ERPparamResults', ['aperiodic_params', 'peak_p
     __slots__ = ()
 
 
-class SimParams(namedtuple('SimParams', ['aperiodic_params', 'periodic_params', 'nlv'])):
+class SimParams(namedtuple('SimParams', ['periodic_params', 'nlv'])):
     """Parameters that define a simulated power spectrum.
 
     Parameters
     ----------
-    aperiodic_params : list
-        Parameters that define the aperiodic component.
     periodic_params : list or list of lists
         Parameters that define the periodic component.
     nlv : float

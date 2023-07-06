@@ -6,28 +6,16 @@ Private attributes of the ERPparam object are documented here.
 
 Data Attributes
 ---------------
-_spectrum_flat : 1d array
-    Flattened power spectrum, with the aperiodic component removed.
-_spectrum_peak_rm : 1d array
-    Power spectrum, with peaks removed.
 
 Model Component Attributes
 --------------------------
-_ap_fit : 1d array
-    Values of the isolated aperiodic fit.
 _peak_fit : 1d array
     Values of the isolated peak fit.
 
 Internal Settings Attributes
 ----------------------------
-_ap_percentile_thresh : float
-    Percentile threshold for finding peaks above the aperiodic component.
-_ap_guess : list of [float, float, float]
-    Guess parameters for fitting the aperiodic component.
-_ap_bounds : tuple of tuple of float
-    Upper and lower bounds on fitting aperiodic component.
 _cf_bound : float
-    Parameter bounds for center frequency when fitting gaussians.
+    Parameter bounds for peak time when fitting gaussians.
 _bw_std_edge : float
     Bandwidth threshold for edge rejection of peaks, in units of gaussian standard deviation.
 _gauss_overlap_thresh : float
@@ -67,29 +55,24 @@ from ERPparam.core.io import save_fm, load_json
 from ERPparam.core.reports import save_report_fm
 from ERPparam.core.modutils import copy_doc_func_to_method
 from ERPparam.core.utils import group_three, check_array_dim
-from ERPparam.core.funcs import gaussian_function, get_ap_func, infer_ap_func
+from ERPparam.core.funcs import gaussian_function
 from ERPparam.core.errors import (FitError, NoModelError, DataError,
                                NoDataError, InconsistentDataError)
 from ERPparam.core.strings import (gen_settings_str, gen_results_fm_str,
                                 gen_issue_str, gen_width_warning_str)
 
-from ERPparam.plts.fm import plot_fm
+from ERPparam.plts.fm import plot_ERPparam # plot_fm
 from ERPparam.utils.data import trim_spectrum
 from ERPparam.utils.params import compute_gauss_std
 from ERPparam.data import ERPparamResults, ERPparamSettings, ERPparamMetaData
 from ERPparam.data.conversions import model_to_dataframe
-from ERPparam.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
+from ERPparam.sim.gen import gen_time_vector, gen_periodic
 
 ###################################################################################################
 ###################################################################################################
 
 class ERPparam():
-    """Model a physiological power spectrum as a combination of aperiodic and periodic components.
-
-    WARNING: ERPparam expects frequency and power values in linear space.
-
-    Passing in logged frequencies and/or power spectra is not detected,
-    and will silently produce incorrect results.
+    """Model an event-related potential (ERP) as a combination of periodic components (Gaussian peaks).
 
     Parameters
     ----------
@@ -99,37 +82,30 @@ class ERPparam():
         Maximum number of peaks to fit.
     min_peak_height : float, optional, default: 0
         Absolute threshold for detecting peaks.
-        This threshold is defined in absolute units of the power spectrum (log power).
+        This threshold is defined in absolute units of the signal (log power).
     peak_threshold : float, optional, default: 2.0
         Relative threshold for detecting peaks.
-        This threshold is defined in relative units of the power spectrum (standard deviation).
-    aperiodic_mode : {'fixed', 'knee'}
-        Which approach to take for fitting the aperiodic component.
+        This threshold is defined in relative units of the signal (standard deviation).
     verbose : bool, optional, default: True
         Verbosity mode. If True, prints out warnings and general status updates.
 
     Attributes
     ----------
-    freqs : 1d array
-        Frequency values for the power spectrum.
-    power_spectrum : 1d array
-        Power values, stored internally in log10 scale.
-    freq_range : list of [float, float]
-        Frequency range of the power spectrum, as [lowest_freq, highest_freq].
-    freq_res : float
-        Frequency resolution of the power spectrum.
-    fooofed_spectrum_ : 1d array
-        The full model fit of the power spectrum, in log10 scale.
-    aperiodic_params_ : 1d array
-        Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
-        The knee parameter is only included if aperiodic component is fit with a knee.
+    time : 1d array
+        Time vector for the signal.
+    signal : 1d array
+        Evoked response, voltage values.
+    time_range : list of [float, float]
+        Time range of the signal to be fit, as [earliest_time, latest_time].
+    fs : float
+        Sampling frequency.
     peak_params_ : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
     gaussian_params_ : 2d array
         Parameters that define the gaussian fit(s).
         Each row is a gaussian, as [mean, height, standard deviation].
     r_squared_ : float
-        R-squared of the fit between the input power spectrum and the full model fit.
+        R-squared of the fit between the input signal and the full model fit.
     error_ : float
         Error of the full model fit.
     n_peaks_ : int
@@ -142,55 +118,36 @@ class ERPparam():
     Notes
     -----
     - Commonly used abbreviations used in this module include:
-      CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic
-    - Input power spectra must be provided in linear scale.
-      Internally they are stored in log10 scale, as this is what the model operates upon.
-    - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
-      For example, raw FFT inputs are not appropriate. Where possible and appropriate, use
-      longer time segments for power spectrum calculation to get smoother power spectra,
-      as this will give better model fits.
+      CF: peak time, PW: power, BW: Bandwidth
+    - Input signal must be provided.
+    - Input signals should be smooth, as overly noisy signals may lead to bad fits.
     - The gaussian params are those that define the gaussian of the fit, where as the peak
       params are a modified version, in which the CF of the peak is the mean of the gaussian,
-      the PW of the peak is the height of the gaussian over and above the aperiodic component,
-      and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
+      the PW of the peak is the height of the gaussian, and the BW of the peak, is 2*std of the 
+      gaussian (as 'two sided' bandwidth).
     """
     # pylint: disable=attribute-defined-outside-init
 
-    def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
-                 peak_threshold=2.0, aperiodic_mode='fixed', verbose=True):
-        """Initialize object with desired settings."""
-
-        # Set input settings
+    def __init__(self, signal=None, time=None, time_range=None, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, 
+                 peak_threshold=2.0, min_peak_height=0.0, rectify=False, verbose=True):
+        
         self.peak_width_limits = peak_width_limits
         self.max_n_peaks = max_n_peaks
         self.min_peak_height = min_peak_height
         self.peak_threshold = peak_threshold
-        self.aperiodic_mode = aperiodic_mode
+        self.rectify = rectify
         self.verbose = verbose
 
-        ## PRIVATE SETTINGS
-        # Percentile threshold, to select points from a flat spectrum for an initial aperiodic fit
-        #   Points are selected at a low percentile value to restrict to non-peak points
-        self._ap_percentile_thresh = 0.025
-        # Guess parameters for aperiodic fitting, [offset, knee, exponent]
-        #   If offset guess is None, the first value of the power spectrum is used as offset guess
-        #   If exponent guess is None, the abs(log-log slope) of first & last points is used
-        self._ap_guess = (None, 0, None)
-        # Bounds for aperiodic fitting, as: ((offset_low_bound, knee_low_bound, exp_low_bound),
-        #                                    (offset_high_bound, knee_high_bound, exp_high_bound))
-        # By default, aperiodic fitting is unbound, but can be restricted here, if desired
-        #   Even if fitting without knee, leave bounds for knee (they are dropped later)
-        self._ap_bounds = ((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf))
         # Threshold for how far a peak has to be from edge to keep.
         #   This is defined in units of gaussian standard deviation
         self._bw_std_edge = 1.0
         # Degree of overlap between gaussians for one to be dropped
         #   This is defined in units of gaussian standard deviation
         self._gauss_overlap_thresh = 0.75
-        # Parameter bounds for center frequency when fitting gaussians, in terms of +/- std dev
+        # Parameter bounds for center when fitting gaussians, in terms of +/- std dev
         self._cf_bound = 1.5
         # The maximum number of calls to the curve fitting function
-        self._maxfev = 5000
+        self._maxfev = 500
         # The error metric to calculate, post model fitting. See `_calc_error` for options
         #   Note: this is for checking error post fitting, not an objective function for fitting
         self._error_metric = 'MAE'
@@ -199,8 +156,8 @@ class ERPparam():
         # Set default debug mode - controls if an error is raised if model fitting is unsuccessful
         self._debug = False
         # Set default data checking modes - controls which checks get run on input data
-        #   check_freqs: check the frequency values, and raises an error for uneven spacing
-        self._check_freqs = True
+        #   check_times: check the frequency values, and raises an error for uneven spacing
+        self._check_times = True
         #   check_data: checks the power values and raises an error for any NaN / Inf values
         self._check_data = True
 
@@ -208,12 +165,16 @@ class ERPparam():
         self._reset_internal_settings()
         self._reset_data_results(True, True, True)
 
+        # If user inputs data upon initialization, then populate these, but AFTER we've run _reset_data_results()
+        if time is not None and signal is not None:
+            self.add_data(time, signal, time_range)
+
 
     @property
     def has_data(self):
         """Indicator for if the object contains data."""
 
-        return True if np.any(self.power_spectrum) else False
+        return True if (np.any(self.signal) and np.any(self.time)) else False
 
 
     @property
@@ -222,13 +183,13 @@ class ERPparam():
 
         Notes
         -----
-        This check uses the aperiodic params, which are:
+        This check uses the Gaussian params, which are:
 
         - nan if no model has been fit
         - necessarily defined, as floats, if model has been fit
         """
 
-        return True if not np.all(np.isnan(self.aperiodic_params_)) else False
+        return True if not np.all(np.isnan(self.gaussian_params_)) else False
 
 
     @property
@@ -259,55 +220,47 @@ class ERPparam():
             self._gauss_std_limits = None
 
 
-    def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False):
+    def _reset_data_results(self, clear_time=False, clear_signal=False, clear_results=False):
         """Set, or reset, data & results attributes to empty.
 
         Parameters
         ----------
-        clear_freqs : bool, optional, default: False
-            Whether to clear frequency attributes.
-        clear_spectrum : bool, optional, default: False
-            Whether to clear power spectrum attribute.
+        clear_time : bool, optional, default: False
+            Whether to clear tike attributes.
+        clear_signal : bool, optional, default: False
+            Whether to clear signal attribute.
         clear_results : bool, optional, default: False
             Whether to clear model results attributes.
         """
 
-        if clear_freqs:
-            self.freqs = None
-            self.freq_range = None
-            self.freq_res = None
+        if clear_time:
+            self.time = None
+            self.fs = None
 
-        if clear_spectrum:
-            self.power_spectrum = None
+        if clear_signal:
+            self.signal = None
 
         if clear_results:
 
-            self.aperiodic_params_ = np.array([np.nan] * \
-                (2 if self.aperiodic_mode == 'fixed' else 3))
-            self.gaussian_params_ = np.empty([0, 3])
-            self.peak_params_ = np.empty([0, 3])
+            self.gaussian_params_ = np.ones([0,3])*np.nan
+            self.peak_params_ = np.ones([0,3])*np.nan
             self.r_squared_ = np.nan
             self.error_ = np.nan
 
-            self.fooofed_spectrum_ = None
-
-            self._spectrum_flat = None
-            self._spectrum_peak_rm = None
-            self._ap_fit = None
             self._peak_fit = None
 
 
-    def add_data(self, freqs, power_spectrum, freq_range=None, clear_results=True):
-        """Add data (frequencies, and power spectrum values) to the current object.
+    def add_data(self, time, signal, time_range=None, clear_results=True):
+        """Add data (time, and signal values) to the current object.
 
         Parameters
         ----------
-        freqs : 1d array
-            Frequency values for the power spectrum, in linear space.
-        power_spectrum : 1d array
-            Power spectrum values, which must be input in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to restrict power spectrum to.
+        time : 1d array, optional
+            Time values for the signal.
+        signal : 1d array, optional
+            voltage values.
+        time_range : list of [float, float], optional
+            Time range to restrict signal to.
             If not provided, keeps the entire range.
         clear_results : bool, optional, default: True
             Whether to clear prior results, if any are present in the object.
@@ -322,12 +275,12 @@ class ERPparam():
         # If any data is already present, then clear previous data
         # Also clear results, if present, unless indicated not to
         #   This is to ensure object consistency of all data & results
-        self._reset_data_results(clear_freqs=self.has_data,
-                                 clear_spectrum=self.has_data,
-                                 clear_results=self.has_model and clear_results)
-
-        self.freqs, self.power_spectrum, self.freq_range, self.freq_res = \
-            self._prepare_data(freqs, power_spectrum, freq_range, 1)
+        self._reset_data_results(clear_time=self.has_data,
+                                clear_signal=self.has_data,
+                                clear_results=self.has_model and clear_results)
+        
+        self.time, self.signal, self.raw_signal, self.time_range, self.fs = \
+            self._prepare_data(time, signal, time_range, signal_dim=1) 
 
 
     def add_settings(self, ERPparam_settings):
@@ -357,8 +310,6 @@ class ERPparam():
         for meta_dat in OBJ_DESC['meta_data']:
             setattr(self, meta_dat, getattr(ERPparam_meta_data, meta_dat))
 
-        self._regenerate_freqs()
-
 
     def add_results(self, ERPparam_result):
         """Add results data into object from a ERPparamResults object.
@@ -369,7 +320,6 @@ class ERPparam():
             A data object containing the results from fitting a ERPparam model.
         """
 
-        self.aperiodic_params_ = ERPparam_result.aperiodic_params
         self.gaussian_params_ = ERPparam_result.gaussian_params
         self.peak_params_ = ERPparam_result.peak_params
         self.r_squared_ = ERPparam_result.r_squared
@@ -378,21 +328,19 @@ class ERPparam():
         self._check_loaded_results(ERPparam_result._asdict())
 
 
-    def report(self, freqs=None, power_spectrum=None, freq_range=None,
-               plt_log=False, **plot_kwargs):
-        """Run model fit, and display a report, which includes a plot, and printed results.
+    def report(self, time=None, signal=None, time_range=None, **plot_kwargs):
+        """Run model fit, and display a report, which includes a plot, 
+        and printed results.
 
         Parameters
         ----------
-        freqs : 1d array, optional
-            Frequency values for the power spectrum.
-        power_spectrum : 1d array, optional
-            Power values, which must be input in linear space.
-        freq_range : list of [float, float], optional
-            Desired frequency range to fit the model to.
+        time : 1d array, optional
+            Time values for the signal,.
+        signal : 1d array, optional
+            voltage values, which must be input.
+        time_range : list of [float, float], optional
+            Desired time range to fit the model to.
             If not provided, fits across the entire given range.
-        plt_log : bool, optional, default: False
-            Whether or not to plot the frequency axis in log space.
         **plot_kwargs
             Keyword arguments to pass into the plot method.
 
@@ -401,22 +349,26 @@ class ERPparam():
         Data is optional, if data has already been added to the object.
         """
 
-        self.fit(freqs, power_spectrum, freq_range)
-        self.plot(plt_log=plt_log, **plot_kwargs)
+        # If time & signal provided together, add data to object.
+        if time is not None and signal is not None:
+            self.add_data(time, signal)
+
+        self.fit(self.time, self.signal)
+        self.plot(**plot_kwargs)
         self.print_results(concise=False)
 
 
-    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
-        """Fit the full power spectrum as a combination of periodic and aperiodic components.
+    def fit(self, time=None, signal=None, time_range=None):
+        """Fit the signal as a combination of periodic components (Gaussian peaks).
 
         Parameters
         ----------
-        freqs : 1d array, optional
-            Frequency values for the power spectrum, in linear space.
-        power_spectrum : 1d array, optional
-            Power values, which must be input in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to restrict power spectrum to. If not provided, keeps the entire range.
+        time : 1d array, optional
+            Time values for the signal.
+        signal : 1d array, optional
+            voltage values, which must be input.
+        time_range : list of [float, float], optional
+            Time range to restrict signal to. If not provided, keeps the entire range.
 
         Raises
         ------
@@ -430,14 +382,9 @@ class ERPparam():
         Data is optional, if data has already been added to the object.
         """
 
-        # If freqs & power_spectrum provided together, add data to object.
-        if freqs is not None and power_spectrum is not None:
-            self.add_data(freqs, power_spectrum, freq_range)
-        # If power spectrum provided alone, add to object, and use existing frequency data
-        #   Note: be careful passing in power_spectrum data like this:
-        #     It assumes the power_spectrum is already logged, with correct freq_range
-        elif isinstance(power_spectrum, np.ndarray):
-            self.power_spectrum = power_spectrum
+        # If time & signal provided together, add data to object.
+        if time is not None and signal is not None:
+            self.add_data(time, signal)
 
         # Check that data is available
         if not self.has_data:
@@ -454,35 +401,16 @@ class ERPparam():
             #   This serves as a catch all for curve_fits which will fail given NaN or Inf
             #   Because FitError's are by default caught, this allows fitting to continue
             if not self._check_data:
-                if np.any(np.isinf(self.power_spectrum)) or np.any(np.isnan(self.power_spectrum)):
+                if np.any(np.isinf(self.signal)) or np.any(np.isnan(self.signal)):
                     raise FitError("Model fitting was skipped because there are NaN or Inf "
                                    "values in the data, which preclude model fitting.")
 
-            # Fit the aperiodic component
-            self.aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
-            self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
-
-            # Flatten the power spectrum using fit aperiodic fit
-            self._spectrum_flat = self.power_spectrum - self._ap_fit
-
             # Find peaks, and fit them with gaussians
-            self.gaussian_params_ = self._fit_peaks(np.copy(self._spectrum_flat))
+            self.gaussian_params_ = self._fit_peaks(np.copy(self.signal))
 
             # Calculate the peak fit
             #   Note: if no peaks are found, this creates a flat (all zero) peak fit
-            self._peak_fit = gen_periodic(self.freqs, np.ndarray.flatten(self.gaussian_params_))
-
-            # Create peak-removed (but not flattened) power spectrum
-            self._spectrum_peak_rm = self.power_spectrum - self._peak_fit
-
-            # Run final aperiodic fit on peak-removed power spectrum
-            #   This overwrites previous aperiodic fit, and recomputes the flattened spectrum
-            self.aperiodic_params_ = self._simple_ap_fit(self.freqs, self._spectrum_peak_rm)
-            self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
-            self._spectrum_flat = self.power_spectrum - self._ap_fit
-
-            # Create full power_spectrum model fit
-            self.fooofed_spectrum_ = self._peak_fit + self._ap_fit
+            self._peak_fit = gen_periodic(self.time, np.ndarray.flatten(self.gaussian_params_))
 
             # Convert gaussian definitions to peak parameters
             self.peak_params_ = self._create_peak_params(self.gaussian_params_)
@@ -576,11 +504,11 @@ class ERPparam():
 
         Parameters
         ----------
-        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
+        name : {'peak_params', 'gaussian_params', 'error', 'r_squared'}
             Name of the data field to extract.
-        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+        col : {'CF', 'PW', 'BW'} or int, optional
             Column name / index to extract from selected data, if requested.
-            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+            Only used for name of {'peak_params', 'gaussian_params'}.
 
         Returns
         -------
@@ -602,10 +530,10 @@ class ERPparam():
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
-            col = get_indices(self.aperiodic_mode)[col]
+            col = get_indices()[col]
 
         # Allow for shortcut alias, without adding `_params`
-        if name in ['aperiodic', 'peak', 'gaussian']:
+        if name in ['peak', 'gaussian']:
             name = name + '_params'
 
         # Extract the request data field from object
@@ -638,16 +566,20 @@ class ERPparam():
             for key in OBJ_DESC['results']})
 
 
-    @copy_doc_func_to_method(plot_fm)
-    def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,
-             add_legend=True, save_fig=False, file_name=None, file_path=None,
-             ax=None, data_kwargs=None, model_kwargs=None,
-             aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
+    # @copy_doc_func_to_method(plot_fm)
+    # def plot(self, plot_peaks=None, plot_aperiodic=True, plt_log=False,
+    #          add_legend=True, save_fig=False, file_name=None, file_path=None,
+    #          ax=None, data_kwargs=None, model_kwargs=None,
+    #          aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
 
-        plot_fm(self, plot_peaks=plot_peaks, plot_aperiodic=plot_aperiodic, plt_log=plt_log,
-                add_legend=add_legend, save_fig=save_fig, file_name=file_name,
-                file_path=file_path, ax=ax, data_kwargs=data_kwargs, model_kwargs=model_kwargs,
-                aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs, **plot_kwargs)
+    #     plot_fm(self, plot_peaks=plot_peaks, plot_aperiodic=plot_aperiodic, plt_log=plt_log,
+    #             add_legend=add_legend, save_fig=save_fig, file_name=file_name,
+    #             file_path=file_path, ax=ax, data_kwargs=data_kwargs, model_kwargs=model_kwargs,
+    #             aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs, **plot_kwargs)
+    @copy_doc_func_to_method(plot_ERPparam)
+    def plot(self, y_units=None):
+
+        plot_ERPparam(self, y_units=y_units)
 
 
     @copy_doc_func_to_method(save_report_fm)
@@ -688,9 +620,9 @@ class ERPparam():
 
         # Regenerate model components, based on what is available
         if regenerate:
-            if self.freq_res:
-                self._regenerate_freqs()
-            if np.all(self.freqs) and np.all(self.aperiodic_params_):
+            if self.time_range and self.fs:
+                self._regenerate_time_vector()
+            if np.all(self.time) and np.all(self.gaussian_params_):
                 self._regenerate_model()
 
 
@@ -744,130 +676,20 @@ class ERPparam():
 
 
     def _check_width_limits(self):
-        """Check and warn about peak width limits / frequency resolution interaction."""
+        """Check and warn about peak width limits / sampling frequency interaction."""
 
-        # Check peak width limits against frequency resolution and warn if too close
-        if 1.5 * self.freq_res >= self.peak_width_limits[0]:
-            print(gen_width_warning_str(self.freq_res, self.peak_width_limits[0]))
-
-
-    def _simple_ap_fit(self, freqs, power_spectrum):
-        """Fit the aperiodic component of the power spectrum.
-
-        Parameters
-        ----------
-        freqs : 1d array
-            Frequency values for the power_spectrum, in linear scale.
-        power_spectrum : 1d array
-            Power values, in log10 scale.
-
-        Returns
-        -------
-        aperiodic_params : 1d array
-            Parameter estimates for aperiodic fit.
-        """
-
-        # Get the guess parameters and/or calculate from the data, as needed
-        #   Note that these are collected as lists, to concatenate with or without knee later
-        off_guess = [power_spectrum[0] if not self._ap_guess[0] else self._ap_guess[0]]
-        kne_guess = [self._ap_guess[1]] if self.aperiodic_mode == 'knee' else []
-        exp_guess = [np.abs((self.power_spectrum[-1] - self.power_spectrum[0]) /
-                            (np.log10(self.freqs[-1]) - np.log10(self.freqs[0])))
-                     if not self._ap_guess[2] else self._ap_guess[2]]
-
-        # Get bounds for aperiodic fitting, dropping knee bound if not set to fit knee
-        ap_bounds = self._ap_bounds if self.aperiodic_mode == 'knee' \
-            else tuple(bound[0::2] for bound in self._ap_bounds)
-
-        # Collect together guess parameters
-        guess = np.array(off_guess + kne_guess + exp_guess)
-
-        # Ignore warnings that are raised in curve_fit
-        #   A runtime warning can occur while exploring parameters in curve fitting
-        #     This doesn't effect outcome - it won't settle on an answer that does this
-        #   It happens if / when b < 0 & |b| > x**2, as it leads to log of a negative number
-        try:
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
-                                                freqs, power_spectrum, p0=guess,
-                                                maxfev=self._maxfev, bounds=ap_bounds)
-        except RuntimeError as excp:
-            error_msg = ("Model fitting failed due to not finding parameters in "
-                         "the simple aperiodic component fit.")
-            raise FitError(error_msg) from excp
-
-        return aperiodic_params
+        # Check peak width limits against time resolution and warn if too close
+        if 1.5 * (1/self.fs) >= self.peak_width_limits[0]:
+            print(gen_width_warning_str((1/self.fs), self.peak_width_limits[0]))
 
 
-    def _robust_ap_fit(self, freqs, power_spectrum):
-        """Fit the aperiodic component of the power spectrum robustly, ignoring outliers.
+    def _fit_peaks(self, iter_signal):
+        """Iteratively fit peaks to the signal.
 
         Parameters
         ----------
-        freqs : 1d array
-            Frequency values for the power spectrum, in linear scale.
-        power_spectrum : 1d array
-            Power values, in log10 scale.
-
-        Returns
-        -------
-        aperiodic_params : 1d array
-            Parameter estimates for aperiodic fit.
-
-        Raises
-        ------
-        FitError
-            If the fitting encounters an error.
-        """
-
-        # Do a quick, initial aperiodic fit
-        popt = self._simple_ap_fit(freqs, power_spectrum)
-        initial_fit = gen_aperiodic(freqs, popt)
-
-        # Flatten power_spectrum based on initial aperiodic fit
-        flatspec = power_spectrum - initial_fit
-
-        # Flatten outliers, defined as any points that drop below 0
-        flatspec[flatspec < 0] = 0
-
-        # Use percentile threshold, in terms of # of points, to extract and re-fit
-        perc_thresh = np.percentile(flatspec, self._ap_percentile_thresh)
-        perc_mask = flatspec <= perc_thresh
-        freqs_ignore = freqs[perc_mask]
-        spectrum_ignore = power_spectrum[perc_mask]
-
-        # Get bounds for aperiodic fitting, dropping knee bound if not set to fit knee
-        ap_bounds = self._ap_bounds if self.aperiodic_mode == 'knee' \
-            else tuple(bound[0::2] for bound in self._ap_bounds)
-
-        # Second aperiodic fit - using results of first fit as guess parameters
-        #  See note in _simple_ap_fit about warnings
-        try:
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
-                                                freqs_ignore, spectrum_ignore, p0=popt,
-                                                maxfev=self._maxfev, bounds=ap_bounds)
-        except RuntimeError as excp:
-            error_msg = ("Model fitting failed due to not finding "
-                         "parameters in the robust aperiodic fit.")
-            raise FitError(error_msg) from excp
-        except TypeError as excp:
-            error_msg = ("Model fitting failed due to sub-sampling "
-                         "in the robust aperiodic fit.")
-            raise FitError(error_msg) from excp
-
-        return aperiodic_params
-
-
-    def _fit_peaks(self, flat_iter):
-        """Iteratively fit peaks to flattened spectrum.
-
-        Parameters
-        ----------
-        flat_iter : 1d array
-            Flattened power spectrum values.
+        iter_signal : 1d array
+            Evoked response to be fit.
 
         Returns
         -------
@@ -883,16 +705,16 @@ class ERPparam():
         #   Stopping procedures: limit on # of peaks, or relative or absolute height thresholds
         while len(guess) < self.max_n_peaks:
 
-            # Find candidate peak - the maximum point of the flattened spectrum
-            max_ind = np.argmax(flat_iter)
-            max_height = flat_iter[max_ind]
+            # Find candidate peak - the maximum point of the signal
+            max_ind = np.argmax(iter_signal)
+            max_height = iter_signal[max_ind]
 
             # Stop searching for peaks once height drops below height threshold
-            if max_height <= self.peak_threshold * np.std(flat_iter):
+            if max_height <= self.peak_threshold * np.std(iter_signal):
                 break
 
             # Set the guess parameters for gaussian fitting, specifying the mean and height
-            guess_freq = self.freqs[max_ind]
+            guess_time = self.time[max_ind]
             guess_height = max_height
 
             # Halt fitting process if candidate peak drops below minimum height
@@ -903,9 +725,9 @@ class ERPparam():
             #   Find half height index on each side of the center frequency
             half_height = 0.5 * max_height
             le_ind = next((val for val in range(max_ind - 1, 0, -1)
-                           if flat_iter[val] <= half_height), None)
-            ri_ind = next((val for val in range(max_ind + 1, len(flat_iter), 1)
-                           if flat_iter[val] <= half_height), None)
+                           if iter_signal[val] <= half_height), None)
+            ri_ind = next((val for val in range(max_ind + 1, len(iter_signal), 1)
+                           if iter_signal[val] <= half_height), None)
 
             # Guess bandwidth procedure: estimate the width of the peak
             try:
@@ -917,7 +739,7 @@ class ERPparam():
 
                 # Use the shortest side to estimate full-width, half max (converted to Hz)
                 #   and use this to estimate that guess for gaussian standard deviation
-                fwhm = short_side * 2 * self.freq_res
+                fwhm = short_side * 2 * (1/self.fs)
                 guess_std = compute_gauss_std(fwhm)
 
             except ValueError:
@@ -933,9 +755,9 @@ class ERPparam():
                 guess_std = self._gauss_std_limits[1]
 
             # Collect guess parameters and subtract this guess gaussian from the data
-            guess = np.vstack((guess, (guess_freq, guess_height, guess_std)))
-            peak_gauss = gaussian_function(self.freqs, guess_freq, guess_height, guess_std)
-            flat_iter = flat_iter - peak_gauss
+            guess = np.vstack((guess, (guess_time, guess_height, guess_std)))
+            peak_gauss = gaussian_function(self.time, guess_time, guess_height, guess_std)
+            iter_signal = iter_signal - peak_gauss
 
         # Check peaks based on edges, and on overlap, dropping any that violate requirements
         guess = self._drop_peak_cf(guess)
@@ -976,12 +798,12 @@ class ERPparam():
         hi_bound = [[peak[0] + 2 * self._cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]
                     for peak in guess]
 
-        # Check that CF bounds are within frequency range
-        #   If they are  not, update them to be restricted to frequency range
-        lo_bound = [bound if bound[0] > self.freq_range[0] else \
-            [self.freq_range[0], *bound[1:]] for bound in lo_bound]
-        hi_bound = [bound if bound[0] < self.freq_range[1] else \
-            [self.freq_range[1], *bound[1:]] for bound in hi_bound]
+        # Check that CF bounds are within time range
+        #   If they are  not, update them to be restricted to time range
+        lo_bound = [bound if bound[0] > self.time_range[0] else \
+            [self.time_range[0], *bound[1:]] for bound in lo_bound]
+        hi_bound = [bound if bound[0] < self.time_range[1] else \
+            [self.time_range[1], *bound[1:]] for bound in hi_bound]
 
         # Unpacks the embedded lists into flat tuples
         #   This is what the fit function requires as input
@@ -993,8 +815,8 @@ class ERPparam():
 
         # Fit the peaks
         try:
-            gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._spectrum_flat,
-                                           p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds)
+            gaussian_params, _ = curve_fit(gaussian_function, self.time, self.signal,
+                                        p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
                          "parameters in the peak component fit.")
@@ -1026,35 +848,33 @@ class ERPparam():
 
         Notes
         -----
-        The gaussian center is unchanged as the peak center frequency.
+        The gaussian center is unchanged as the peak center.
 
-        The gaussian height is updated to reflect the height of the peak above
-        the aperiodic fit. This is returned instead of the gaussian height, as
-        the gaussian height is harder to interpret, due to peak overlaps.
+        The gaussian height is updated to reflect the height of the signal. This is 
+        returned instead of the gaussian height, as the gaussian height is harder to interpret, 
+        due to peak overlaps.
 
         The gaussian standard deviation is updated to be 'both-sided', to reflect the
         'bandwidth' of the peak, as opposed to the gaussian parameter, which is 1-sided.
 
-        Performing this conversion requires that the model has been run,
-        with `freqs`, `fooofed_spectrum_` and `_ap_fit` all required to be available.
+        Performing this conversion requires that the model has been run.
         """
 
         peak_params = np.empty((len(gaus_params), 3))
 
         for ii, peak in enumerate(gaus_params):
 
-            # Gets the index of the power_spectrum at the frequency closest to the CF of the peak
-            ind = np.argmin(np.abs(self.freqs - peak[0]))
+            # Gets the index of the signal at the time closest to the CF of the peak
+            ind = np.argmin(np.abs(self.time - peak[0]))
 
             # Collect peak parameter data
-            peak_params[ii] = [peak[0], self.fooofed_spectrum_[ind] - self._ap_fit[ind],
-                               peak[2] * 2]
+            peak_params[ii] = [peak[0], self.signal[ind], peak[2] * 2]
 
         return peak_params
 
 
     def _drop_peak_cf(self, guess):
-        """Check whether to drop peaks based on center's proximity to the edge of the spectrum.
+        """Check whether to drop peaks based on center's proximity to the edge of the signal.
 
         Parameters
         ----------
@@ -1070,12 +890,12 @@ class ERPparam():
         cf_params = guess[:, 0]
         bw_params = guess[:, 2] * self._bw_std_edge
 
-        # Check if peaks within drop threshold from the edge of the frequency range
+        # Check if peaks within drop threshold from the edge of the time range
         keep_peak = \
-            (np.abs(np.subtract(cf_params, self.freq_range[0])) > bw_params) & \
-            (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)
+            (np.abs(np.subtract(cf_params, self.time_range[0])) > bw_params) & \
+            (np.abs(np.subtract(cf_params, self.time_range[1])) > bw_params)
 
-        # Drop peaks that fail the center frequency edge criterion
+        # Drop peaks that fail the center edge criterion
         guess = np.array([gu for (gu, keep) in zip(guess, keep_peak) if keep])
 
         return guess
@@ -1100,12 +920,12 @@ class ERPparam():
         the lowest height guess Gaussian is dropped.
         """
 
-        # Sort the peak guesses by increasing frequency
+        # Sort the peak guesses sequentially
         #   This is so adjacent peaks can be compared from right to left
         guess = sorted(guess, key=lambda x: float(x[0]))
 
         # Calculate standard deviation bounds for checking amount of overlap
-        #   The bounds are the gaussian frequency +/- gaussian standard deviation
+        #   The bounds are the gaussian peak time +/- gaussian standard deviation
         bounds = [[peak[0] - peak[2] * self._gauss_overlap_thresh,
                    peak[0] + peak[2] * self._gauss_overlap_thresh] for peak in guess]
 
@@ -1132,7 +952,7 @@ class ERPparam():
     def _calc_r_squared(self):
         """Calculate the r-squared goodness of fit of the model, compared to the original data."""
 
-        r_val = np.corrcoef(self.power_spectrum, self.fooofed_spectrum_)
+        r_val = np.corrcoef(self.signal, self._peak_fit)
         self.r_squared_ = r_val[0][1] ** 2
 
 
@@ -1161,45 +981,40 @@ class ERPparam():
         metric = self._error_metric if not metric else metric
 
         if metric == 'MAE':
-            self.error_ = np.abs(self.power_spectrum - self.fooofed_spectrum_).mean()
+            self.error_ = np.abs(self.signal - self._peak_fit).mean()
 
         elif metric == 'MSE':
-            self.error_ = ((self.power_spectrum - self.fooofed_spectrum_) ** 2).mean()
+            self.error_ = ((self.signal - self._peak_fit) ** 2).mean()
 
         elif metric == 'RMSE':
-            self.error_ = np.sqrt(((self.power_spectrum - self.fooofed_spectrum_) ** 2).mean())
+            self.error_ = np.sqrt(((self.signal - self._peak_fit) ** 2).mean())
 
         else:
-            error_msg = "Error metric '{}' not understood or not implemented.".format(metric)
-            raise ValueError(error_msg)
+            msg = "Error metric '{}' not understood or not implemented.".format(metric)
+            raise ValueError(msg)
 
 
-    def _prepare_data(self, freqs, power_spectrum, freq_range, spectra_dim=1):
+    def _prepare_data(self, time, signal, time_range=None, signal_dim=1):
         """Prepare input data for adding to current object.
 
         Parameters
         ----------
-        freqs : 1d array
-            Frequency values for the power_spectrum, in linear space.
-        power_spectrum : 1d or 2d array
-            Power values, which must be input in linear space.
-            1d vector, or 2d as [n_power_spectra, n_freqs].
-        freq_range : list of [float, float]
-            Frequency range to restrict power spectrum to. If None, keeps the entire range.
-        spectra_dim : int, optional, default: 1
-            Dimensionality that the power spectra should have.
+        time : 1d array, optional
+            Time values for the signal.
+        signal : 1d array
+            ERP timeseries
+            1d vector, or 2d as [n_ERPs, n_times].
+        time_range : list of [float, float]
+            Time range to restrict signal to. If None, keeps the entire range.
+        signal_dim : int, optional, default: 1
+            Dimensionality that the signal should have.
 
         Returns
         -------
-        freqs : 1d array
-            Frequency values for the power_spectrum, in linear space.
-        power_spectrum : 1d or 2d array
-            Power spectrum values, in log10 scale.
-            1d vector, or 2d as [n_power_specta, n_freqs].
-        freq_range : list of [float, float]
-            Minimum and maximum values of the frequency vector.
-        freq_res : float
-            Frequency resolution of the power spectrum.
+        signal : 1d or 2d array
+            Rectified signal (if user specified)
+        time_range : list of [float, float]
+            Minimum and maximum values of the time vector.
 
         Raises
         ------
@@ -1210,67 +1025,55 @@ class ERPparam():
         """
 
         # Check that data are the right types
-        if not isinstance(freqs, np.ndarray) or not isinstance(power_spectrum, np.ndarray):
+        if not isinstance(time, np.ndarray) or not isinstance(signal, np.ndarray):
             raise DataError("Input data must be numpy arrays.")
 
         # Check that data have the right dimensionality
-        if freqs.ndim != 1 or (power_spectrum.ndim != spectra_dim):
+        if time.ndim != 1 or (signal.ndim != signal_dim):
             raise DataError("Inputs are not the right dimensions.")
 
         # Check that data sizes are compatible
-        if freqs.shape[-1] != power_spectrum.shape[-1]:
-            raise InconsistentDataError("The input frequencies and power spectra "
-                                        "are not consistent size.")
-
-        # Check if power values are complex
-        if np.iscomplexobj(power_spectrum):
-            raise DataError("Input power spectra are complex values. "
-                            "FOOOF does not currently support complex inputs.")
+        if time.shape[-1] != signal.shape[-1]:
+            raise InconsistentDataError("The input times and ERP signal "
+                                        "are not a consistent size.")
 
         # Force data to be dtype of float64
         #   If they end up as float32, or less, scipy curve_fit fails (sometimes implicitly)
-        if freqs.dtype != 'float64':
-            freqs = freqs.astype('float64')
-        if power_spectrum.dtype != 'float64':
-            power_spectrum = power_spectrum.astype('float64')
+        if time.dtype != 'float64':
+            time = time.astype('float64')
+        if signal.dtype != 'float64':
+            signal = signal.astype('float64')
 
-        # Check frequency range, trim the power_spectrum range if requested
-        if freq_range:
-            freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, freq_range)
+        # Check time range, trim the signal range if requested
+        if time_range:
+            time, signal = trim_spectrum(time, signal, time_range)
 
-        # Check if freqs start at 0 and move up one value if so
-        #   Aperiodic fit gets an inf if freq of 0 is included, which leads to an error
-        if freqs[0] == 0.0:
-            freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, [freqs[1], freqs.max()])
-            if self.verbose:
-                print("\nFOOOF WARNING: Skipping frequency == 0, "
-                      "as this causes a problem with fitting.")
-
-        # Calculate frequency resolution, and actual frequency range of the data
-        freq_range = [freqs.min(), freqs.max()]
-        freq_res = freqs[1] - freqs[0]
-
-        # Log power values
-        power_spectrum = np.log10(power_spectrum)
+        # Calculate temporal resolution, and actual time range of the data
+        time_range = [time.min(), time.max()]
+        time_res = np.abs(time[1] - time[0])
+        fs = 1 / time_res
 
         ## Data checks - run checks on inputs based on check modes
 
-        if self._check_freqs:
-            # Check if the frequency data is unevenly spaced, and raise an error if so
-            freq_diffs = np.diff(freqs)
-            if not np.all(np.isclose(freq_diffs, freq_res)):
-                raise DataError("The input frequency values are not evenly spaced. "
-                                "The model expects equidistant frequency values in linear space.")
+        if self._check_times:
+            # Check if the time data is unevenly spaced, and raise an error if so
+            time_diffs = np.diff(time)
+            if not np.all(np.isclose(time_diffs, time_res)):
+                raise DataError("The input time values are not evenly spaced. "
+                                "The model expects equidistant time values.")
         if self._check_data:
             # Check if there are any infs / nans, and raise an error if so
-            if np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):
-                error_msg = ("The input power spectra data, after logging, contains NaNs or Infs. "
-                             "This will cause the fitting to fail. "
-                             "One reason this can happen is if inputs are already logged. "
-                             "Inputs data should be in linear spacing, not log.")
+            if np.any(np.isinf(signal)) or np.any(np.isnan(signal)):
+                error_msg = ("The input data contains NaNs or Infs. "
+                             "This will cause the fitting to yield NaNs. ")
                 raise DataError(error_msg)
+            
+        # recitfy signal
+        raw_signal = signal.copy()
+        if self.rectify:
+            signal = np.abs(signal)
 
-        return freqs, power_spectrum, freq_range, freq_res
+        return time, signal, raw_signal, time_range, fs
 
 
     def _add_from_dict(self, data):
@@ -1320,23 +1123,19 @@ class ERPparam():
             for setting in OBJ_DESC['settings']:
                 setattr(self, setting, None)
 
-            # If aperiodic params available, infer whether knee fitting was used,
-            if not np.all(np.isnan(self.aperiodic_params_)):
-                self.aperiodic_mode = infer_ap_func(self.aperiodic_params_)
-
         # Reset internal settings so that they are consistent with what was loaded
         #   Note that this will set internal settings to None, if public settings unavailable
         self._reset_internal_settings()
 
 
-    def _regenerate_freqs(self):
-        """Regenerate the frequency vector, given the object metadata."""
+    def _regenerate_time_vector(self):
+        """Regenerate the time vector, given the object metadata."""
 
-        self.freqs = gen_freqs(self.freq_range, self.freq_res)
+        self.time = gen_time_vector(self.time_range, self.fs)
 
 
     def _regenerate_model(self):
         """Regenerate model fit from parameters."""
 
-        self.fooofed_spectrum_, self._peak_fit, self._ap_fit = gen_model(
-            self.freqs, self.aperiodic_params_, self.gaussian_params_, return_components=True)
+        self._peak_fit = gen_periodic(
+            self.time,  np.ndarray.flatten(self.gaussian_params_))

@@ -1,20 +1,20 @@
-"""Functions to analyze and investigate FOOOF results - model fit error."""
+"""Functions to analyze and investigate ERPparam results - model fit error."""
 
 import numpy as np
 
-from fooof.sim.gen import gen_model
-from fooof.plts.error import plot_spectral_error
-from fooof.core.errors import NoModelError, NoDataError
+from ERPparam.sim.gen import gen_periodic
+from ERPparam.plts.error import plot_spectral_error
+from ERPparam.core.errors import NoModelError, NoDataError
 
 ###################################################################################################
 ###################################################################################################
 
 def compute_pointwise_error_fm(fm, plot_errors=True, return_errors=False, **plt_kwargs):
-    """Calculate the frequency by frequency error of a model fit from a FOOOF object.
+    """Calculate the time-point by time-point error of a model fit from a ERPparam object.
 
     Parameters
     ----------
-    fm : FOOOF
+    fm : ERPparam
         Object containing the data and model.
     plot_errors : bool, optional, default: True
         Whether to plot the errors across frequencies.
@@ -42,21 +42,21 @@ def compute_pointwise_error_fm(fm, plot_errors=True, return_errors=False, **plt_
     if not fm.has_model:
         raise NoModelError("No model is available to use, can not proceed.")
 
-    errors = compute_pointwise_error(fm.fooofed_spectrum_, fm.power_spectrum)
+    errors = compute_pointwise_error(fm._peak_fit, fm.signal)
 
     if plot_errors:
-        plot_spectral_error(fm.freqs, errors, **plt_kwargs)
+        plot_spectral_error(fm.time, errors, **plt_kwargs)
 
     if return_errors:
         return errors
 
 
 def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_kwargs):
-    """Calculate the frequency by frequency error of model fits from a FOOOFGroup object.
+    """Calculate the time-point by time-point error of model fits from a ERPparamGroup object.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Object containing the data and models.
     plot_errors : bool, optional, default: True
         Whether to plot the errors across frequencies.
@@ -79,23 +79,23 @@ def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_
         If there are no model results available to calculate model errors from.
     """
 
-    if not np.any(fg.power_spectra):
+    if not np.any(fg.signal):
         raise NoDataError("Data must be available in the object to calculate errors.")
     if not fg.has_model:
         raise NoModelError("No model is available to use, can not proceed.")
 
-    errors = np.zeros_like(fg.power_spectra)
+    errors = np.zeros_like(fg.signal)
 
-    for ind, (res, data) in enumerate(zip(fg, fg.power_spectra)):
+    for ind, (res, data) in enumerate(zip(fg, fg.signal)):
 
-        model = gen_model(fg.freqs, res.aperiodic_params, res.gaussian_params)
+        model = gen_periodic(fg.time, res.gaussian_params)
         errors[ind, :] = np.abs(model - data)
 
     mean = np.mean(errors, 0)
     standard_dev = np.std(errors, 0)
 
     if plot_errors:
-        plot_spectral_error(fg.freqs, mean, standard_dev, **plt_kwargs)
+        plot_spectral_error(fg.time, mean, standard_dev, **plt_kwargs)
 
     if return_errors:
         return errors

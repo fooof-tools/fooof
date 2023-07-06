@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from ERPparam.sim import gen_freqs
+from ERPparam.sim import gen_time_vector
 from ERPparam.data import ERPparamResults
 from ERPparam.objs import ERPparam, ERPparamGroup
 from ERPparam.analysis.periodic import get_band_peak_fg
@@ -156,7 +156,7 @@ def combine_ERPparams(ERPparams):
     # Use a temporary store to collect spectra, as we'll only add it if it is consistently present
     #   We check how many frequencies by accessing meta data, in case of no frequency vector
     meta_data = ERPparams[0].get_meta_data()
-    n_freqs = len(gen_freqs(meta_data.freq_range, meta_data.freq_res))
+    n_freqs = len(gen_time_vector(meta_data.time_range, meta_data.fs))
     temp_power_spectra = np.empty([0, n_freqs])
 
     # Add ERPparam results from each ERPparam object to group

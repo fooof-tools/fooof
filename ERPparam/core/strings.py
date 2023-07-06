@@ -278,7 +278,7 @@ def gen_results_fm_str(fm, concise=False):
     """
 
     # Returns a null report if no results are available
-    if np.all(np.isnan(fm.aperiodic_params_)):
+    if np.all(np.isnan(fm.gaussian_params_)):
         return _no_model_str(concise)
 
     # Create the formatted strings for printing
@@ -287,25 +287,13 @@ def gen_results_fm_str(fm, concise=False):
         # Header
         '=',
         '',
-        ' ERPparam - POWER SPECTRUM MODEL',
-        '',
-
-        # Frequency range and resolution
-        'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(fm.freq_range[0])), int(np.ceil(fm.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(fm.freq_res),
-        '',
-
-        # Aperiodic parameters
-        ('Aperiodic Parameters (offset, ' + ('knee, ' if fm.aperiodic_mode == 'knee' else '') + \
-         'exponent): '),
-        ', '.join(['{:2.4f}'] * len(fm.aperiodic_params_)).format(*fm.aperiodic_params_),
+        ' ERP MODEL',
         '',
 
         # Peak parameters
         '{} peaks were found:'.format(
             len(fm.peak_params_)),
-        *['CF: {:6.2f}, PW: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]) \
+        *['Time: {:6.2f}, Amp: {:6.3f}, Dur: {:5.2f}'.format(op[0], op[1], op[2]) \
           for op in fm.peak_params_],
         '',
 
