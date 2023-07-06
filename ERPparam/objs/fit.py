@@ -1,8 +1,8 @@
-"""FOOOF Object - base object which defines the model.
+"""ERPparam Object - base object which defines the model.
 
 Private Attributes
 ==================
-Private attributes of the FOOOF object are documented here.
+Private attributes of the ERPparam object are documented here.
 
 Data Attributes
 ---------------
@@ -61,32 +61,32 @@ import numpy as np
 from numpy.linalg import LinAlgError
 from scipy.optimize import curve_fit
 
-from fooof.core.items import OBJ_DESC
-from fooof.core.info import get_indices
-from fooof.core.io import save_fm, load_json
-from fooof.core.reports import save_report_fm
-from fooof.core.modutils import copy_doc_func_to_method
-from fooof.core.utils import group_three, check_array_dim
-from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
-from fooof.core.errors import (FitError, NoModelError, DataError,
+from ERPparam.core.items import OBJ_DESC
+from ERPparam.core.info import get_indices
+from ERPparam.core.io import save_fm, load_json
+from ERPparam.core.reports import save_report_fm
+from ERPparam.core.modutils import copy_doc_func_to_method
+from ERPparam.core.utils import group_three, check_array_dim
+from ERPparam.core.funcs import gaussian_function, get_ap_func, infer_ap_func
+from ERPparam.core.errors import (FitError, NoModelError, DataError,
                                NoDataError, InconsistentDataError)
-from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
+from ERPparam.core.strings import (gen_settings_str, gen_results_fm_str,
                                 gen_issue_str, gen_width_warning_str)
 
-from fooof.plts.fm import plot_fm
-from fooof.utils.data import trim_spectrum
-from fooof.utils.params import compute_gauss_std
-from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
-from fooof.data.conversions import model_to_dataframe
-from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
+from ERPparam.plts.fm import plot_fm
+from ERPparam.utils.data import trim_spectrum
+from ERPparam.utils.params import compute_gauss_std
+from ERPparam.data import ERPparamResults, ERPparamSettings, ERPparamMetaData
+from ERPparam.data.conversions import model_to_dataframe
+from ERPparam.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 
 ###################################################################################################
 ###################################################################################################
 
-class FOOOF():
+class ERPparam():
     """Model a physiological power spectrum as a combination of aperiodic and periodic components.
 
-    WARNING: FOOOF expects frequency and power values in linear space.
+    WARNING: ERPparam expects frequency and power values in linear space.
 
     Passing in logged frequencies and/or power spectra is not detected,
     and will silently produce incorrect results.
@@ -330,52 +330,52 @@ class FOOOF():
             self._prepare_data(freqs, power_spectrum, freq_range, 1)
 
 
-    def add_settings(self, fooof_settings):
-        """Add settings into object from a FOOOFSettings object.
+    def add_settings(self, ERPparam_settings):
+        """Add settings into object from a ERPparamSettings object.
 
         Parameters
         ----------
-        fooof_settings : FOOOFSettings
-            A data object containing the settings for a FOOOF model.
+        ERPparam_settings : ERPparamSettings
+            A data object containing the settings for a ERPparam model.
         """
 
         for setting in OBJ_DESC['settings']:
-            setattr(self, setting, getattr(fooof_settings, setting))
+            setattr(self, setting, getattr(ERPparam_settings, setting))
 
-        self._check_loaded_settings(fooof_settings._asdict())
+        self._check_loaded_settings(ERPparam_settings._asdict())
 
 
-    def add_meta_data(self, fooof_meta_data):
-        """Add data information into object from a FOOOFMetaData object.
+    def add_meta_data(self, ERPparam_meta_data):
+        """Add data information into object from a ERPparamMetaData object.
 
         Parameters
         ----------
-        fooof_meta_data : FOOOFMetaData
+        ERPparam_meta_data : ERPparamMetaData
             A meta data object containing meta data information.
         """
 
         for meta_dat in OBJ_DESC['meta_data']:
-            setattr(self, meta_dat, getattr(fooof_meta_data, meta_dat))
+            setattr(self, meta_dat, getattr(ERPparam_meta_data, meta_dat))
 
         self._regenerate_freqs()
 
 
-    def add_results(self, fooof_result):
-        """Add results data into object from a FOOOFResults object.
+    def add_results(self, ERPparam_result):
+        """Add results data into object from a ERPparamResults object.
 
         Parameters
         ----------
-        fooof_result : FOOOFResults
-            A data object containing the results from fitting a FOOOF model.
+        ERPparam_result : ERPparamResults
+            A data object containing the results from fitting a ERPparam model.
         """
 
-        self.aperiodic_params_ = fooof_result.aperiodic_params
-        self.gaussian_params_ = fooof_result.gaussian_params
-        self.peak_params_ = fooof_result.peak_params
-        self.r_squared_ = fooof_result.r_squared
-        self.error_ = fooof_result.error
+        self.aperiodic_params_ = ERPparam_result.aperiodic_params
+        self.gaussian_params_ = ERPparam_result.gaussian_params
+        self.peak_params_ = ERPparam_result.peak_params
+        self.r_squared_ = ERPparam_result.r_squared
+        self.error_ = ERPparam_result.error
 
-        self._check_loaded_results(fooof_result._asdict())
+        self._check_loaded_results(ERPparam_result._asdict())
 
 
     def report(self, freqs=None, power_spectrum=None, freq_range=None,
@@ -550,11 +550,11 @@ class FOOOF():
 
         Returns
         -------
-        FOOOFSettings
+        ERPparamSettings
             Object containing the settings from the current object.
         """
 
-        return FOOOFSettings(**{key : getattr(self, key) \
+        return ERPparamSettings(**{key : getattr(self, key) \
                              for key in OBJ_DESC['settings']})
 
 
@@ -563,11 +563,11 @@ class FOOOF():
 
         Returns
         -------
-        FOOOFMetaData
+        ERPparamMetaData
             Object containing meta data from the current object.
         """
 
-        return FOOOFMetaData(**{key : getattr(self, key) \
+        return ERPparamMetaData(**{key : getattr(self, key) \
                              for key in OBJ_DESC['meta_data']})
 
 
@@ -630,11 +630,11 @@ class FOOOF():
 
         Returns
         -------
-        FOOOFResults
+        ERPparamResults
             Object containing the model fit results from the current object.
         """
 
-        return FOOOFResults(**{key.strip('_') : getattr(self, key) \
+        return ERPparamResults(**{key.strip('_') : getattr(self, key) \
             for key in OBJ_DESC['results']})
 
 
@@ -665,7 +665,7 @@ class FOOOF():
 
 
     def load(self, file_name, file_path=None, regenerate=True):
-        """Load in a FOOOF formatted JSON file to the current object.
+        """Load in a ERPparam formatted JSON file to the current object.
 
         Parameters
         ----------

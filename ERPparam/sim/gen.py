@@ -2,11 +2,11 @@
 
 import numpy as np
 
-from fooof.core.utils import check_iter, check_flat
-from fooof.core.funcs import get_ap_func, get_pe_func, infer_ap_func
+from ERPparam.core.utils import check_iter, check_flat
+from ERPparam.core.funcs import get_ap_func, get_pe_func, infer_ap_func
 
-from fooof.sim.params import collect_sim_params
-from fooof.sim.transform import rotate_spectrum, compute_rotation_offset
+from ERPparam.sim.params import collect_sim_params
+from ERPparam.sim.transform import rotate_spectrum, compute_rotation_offset
 
 ###################################################################################################
 ###################################################################################################
@@ -241,7 +241,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
 
     Generate 10 power spectra, randomly sampling possible parameters:
 
-    >>> from fooof.sim.params import param_sampler
+    >>> from ERPparam.sim.params import param_sampler
     >>> ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
     >>> pe_opts = param_sampler([[], [10, 0.5, 1], [10, 0.5, 1, 20, 0.25, 1]])
     >>> freqs, powers = gen_group_power_spectra(10, [1, 50], ap_opts, pe_opts)
@@ -254,7 +254,7 @@ def gen_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
 
     Generate power spectra stepping across exponent values, and return parameter values:
 
-    >>> from fooof.sim.params import Stepper, param_iter
+    >>> from ERPparam.sim.params import Stepper, param_iter
     >>> ap_params = param_iter([0, Stepper(1, 2, 0.25)])
     >>> pe_params = [10, 0.5, 1]
     >>> freqs, powers, sps = gen_group_power_spectra(5, [1, 50], ap_params, pe_params,
@@ -471,8 +471,8 @@ def gen_model(freqs, aperiodic_params, periodic_params, return_components=False)
     -----
     This function should be used when computing model reconstructions, as it:
 
-    - Takes in input parameter definitions as arrays, as used in FOOOF objects.
-    - Returns the power spectrum in log10 spacing, as is used in FOOOF models.
+    - Takes in input parameter definitions as arrays, as used in ERPparam objects.
+    - Returns the power spectrum in log10 spacing, as is used in ERPparam models.
     """
 
     ap_fit = gen_aperiodic(freqs, aperiodic_params)

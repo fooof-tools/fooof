@@ -1,6 +1,6 @@
-"""Instantiated objects that can be used as 'helper items' for working with FOOOF."""
+"""Instantiated objects that can be used as 'helper items' for working with ERPparam."""
 
-from fooof.core.info import get_description, get_peak_indices
+from ERPparam.core.info import get_description, get_peak_indices
 
 ###################################################################################################
 ###################################################################################################

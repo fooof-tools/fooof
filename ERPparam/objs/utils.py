@@ -1,22 +1,22 @@
-"""Utility functions for managing and manipulating FOOOF objects."""
+"""Utility functions for managing and manipulating ERPparam objects."""
 
 import numpy as np
 
-from fooof.sim import gen_freqs
-from fooof.data import FOOOFResults
-from fooof.objs import FOOOF, FOOOFGroup
-from fooof.analysis.periodic import get_band_peak_fg
-from fooof.core.errors import NoModelError, IncompatibleSettingsError
+from ERPparam.sim import gen_freqs
+from ERPparam.data import ERPparamResults
+from ERPparam.objs import ERPparam, ERPparamGroup
+from ERPparam.analysis.periodic import get_band_peak_fg
+from ERPparam.core.errors import NoModelError, IncompatibleSettingsError
 
 ###################################################################################################
 ###################################################################################################
 
-def compare_info(fooof_lst, aspect):
-    """Compare a specified aspect of FOOOF objects across instances.
+def compare_info(ERPparam_lst, aspect):
+    """Compare a specified aspect of ERPparam objects across instances.
 
     Parameters
     ----------
-    fooof_lst : list of FOOOF and / or FOOOFGroup
+    ERPparam_lst : list of ERPparam and / or ERPparamGroup
         Objects whose attributes are to be compared.
     aspect : {'settings', 'meta_data'}
         Which set of attributes to compare the objects across.
@@ -28,7 +28,7 @@ def compare_info(fooof_lst, aspect):
     """
 
     # Check specified aspect of the objects are the same across instances
-    for f_obj_1, f_obj_2 in zip(fooof_lst[:-1], fooof_lst[1:]):
+    for f_obj_1, f_obj_2 in zip(ERPparam_lst[:-1], ERPparam_lst[1:]):
         if getattr(f_obj_1, 'get_' + aspect)() != getattr(f_obj_2, 'get_' + aspect)():
             consistent = False
             break
@@ -39,11 +39,11 @@ def compare_info(fooof_lst, aspect):
 
 
 def average_fg(fg, bands, avg_method='mean', regenerate=True):
-    """Average across model fits in a FOOOFGroup object.
+    """Average across model fits in a ERPparamGroup object.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Object with model fit results to average across.
     bands : Bands
         Bands object that defines the frequency bands to collapse peaks across.
@@ -54,7 +54,7 @@ def average_fg(fg, bands, avg_method='mean', regenerate=True):
 
     Returns
     -------
-    fm : FOOOF
+    fm : ERPparam
         Object containing the average model results.
 
     Raises
@@ -100,11 +100,11 @@ def average_fg(fg, bands, avg_method='mean', regenerate=True):
     r2 = avg_func(fg.get_params('r_squared'))
     error = avg_func(fg.get_params('error'))
 
-    # Collect all results together, to be added to FOOOF object
-    results = FOOOFResults(ap_params, peak_params, r2, error, gauss_params)
+    # Collect all results together, to be added to ERPparam object
+    results = ERPparamResults(ap_params, peak_params, r2, error, gauss_params)
 
-    # Create the new FOOOF object, with settings, data info & results
-    fm = FOOOF()
+    # Create the new ERPparam object, with settings, data info & results
+    fm = ERPparam()
     fm.add_settings(fg.get_settings())
     fm.add_meta_data(fg.get_meta_data())
     fm.add_results(results)
@@ -116,17 +116,17 @@ def average_fg(fg, bands, avg_method='mean', regenerate=True):
     return fm
 
 
-def combine_fooofs(fooofs):
-    """Combine a group of FOOOF and/or FOOOFGroup objects into a single FOOOFGroup object.
+def combine_ERPparams(ERPparams):
+    """Combine a group of ERPparam and/or ERPparamGroup objects into a single ERPparamGroup object.
 
     Parameters
     ----------
-    fooofs : list of FOOOF or FOOOFGroup
-        Objects to be concatenated into a FOOOFGroup.
+    ERPparams : list of ERPparam or ERPparamGroup
+        Objects to be concatenated into a ERPparamGroup.
 
     Returns
     -------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Resultant object from combining inputs.
 
     Raises
@@ -136,39 +136,39 @@ def combine_fooofs(fooofs):
 
     Examples
     --------
-    Combine FOOOF objects together (where `fm1`, `fm2` & `fm3` are assumed to be defined and fit):
+    Combine ERPparam objects together (where `fm1`, `fm2` & `fm3` are assumed to be defined and fit):
 
-    >>> fg = combine_fooofs([fm1, fm2, fm3])  # doctest:+SKIP
+    >>> fg = combine_ERPparams([fm1, fm2, fm3])  # doctest:+SKIP
 
-    Combine FOOOFGroup objects together (where `fg1` & `fg2` are assumed to be defined and fit):
+    Combine ERPparamGroup objects together (where `fg1` & `fg2` are assumed to be defined and fit):
 
-    >>> fg = combine_fooofs([fg1, fg2])  # doctest:+SKIP
+    >>> fg = combine_ERPparams([fg1, fg2])  # doctest:+SKIP
     """
 
     # Compare settings
-    if not compare_info(fooofs, 'settings') or not compare_info(fooofs, 'meta_data'):
+    if not compare_info(ERPparams, 'settings') or not compare_info(ERPparams, 'meta_data'):
         raise IncompatibleSettingsError("These objects have incompatible settings "
                                         "or meta data, and so cannot be combined.")
 
-    # Initialize FOOOFGroup object, with settings derived from input objects
-    fg = FOOOFGroup(*fooofs[0].get_settings(), verbose=fooofs[0].verbose)
+    # Initialize ERPparamGroup object, with settings derived from input objects
+    fg = ERPparamGroup(*ERPparams[0].get_settings(), verbose=ERPparams[0].verbose)
 
     # Use a temporary store to collect spectra, as we'll only add it if it is consistently present
     #   We check how many frequencies by accessing meta data, in case of no frequency vector
-    meta_data = fooofs[0].get_meta_data()
+    meta_data = ERPparams[0].get_meta_data()
     n_freqs = len(gen_freqs(meta_data.freq_range, meta_data.freq_res))
     temp_power_spectra = np.empty([0, n_freqs])
 
-    # Add FOOOF results from each FOOOF object to group
-    for f_obj in fooofs:
+    # Add ERPparam results from each ERPparam object to group
+    for f_obj in ERPparams:
 
-        # Add FOOOFGroup object
-        if isinstance(f_obj, FOOOFGroup):
+        # Add ERPparamGroup object
+        if isinstance(f_obj, ERPparamGroup):
             fg.group_results.extend(f_obj.group_results)
             if f_obj.power_spectra is not None:
                 temp_power_spectra = np.vstack([temp_power_spectra, f_obj.power_spectra])
 
-        # Add FOOOF object
+        # Add ERPparam object
         else:
             fg.group_results.append(f_obj.get_results())
             if f_obj.power_spectrum is not None:
@@ -179,20 +179,20 @@ def combine_fooofs(fooofs):
         fg.power_spectra = temp_power_spectra
 
     # Set the check data mode, as True if any of the inputs have it on, False otherwise
-    fg.set_check_data_mode(any(getattr(f_obj, '_check_data') for f_obj in fooofs))
+    fg.set_check_data_mode(any(getattr(f_obj, '_check_data') for f_obj in ERPparams))
 
     # Add data information information
-    fg.add_meta_data(fooofs[0].get_meta_data())
+    fg.add_meta_data(ERPparams[0].get_meta_data())
 
     return fg
 
 
-def fit_fooof_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
-    """Fit FOOOF models across a 3d array of power spectra.
+def fit_ERPparam_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
+    """Fit ERPparam models across a 3d array of power spectra.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Object to fit with, initialized with desired settings.
     freqs : 1d array
         Frequency values for the power spectra, in linear space.
@@ -206,17 +206,17 @@ def fit_fooof_3d(fg, freqs, power_spectra, freq_range=None, n_jobs=1):
 
     Returns
     -------
-    fgs : list of FOOOFGroups
-        Collected FOOOFGroups after fitting across power spectra, length of n_conditions.
+    fgs : list of ERPparamGroups
+        Collected ERPparamGroups after fitting across power spectra, length of n_conditions.
 
 
     Examples
     --------
     Fit a 3d array of power spectra, assuming `freqs` and `spectra` are already defined:
 
-    >>> from fooof import FOOOFGroup
-    >>> fg = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
-    >>> fgs = fit_fooof_3d(fg, freqs, power_spectra, freq_range=[3, 30])  # doctest:+SKIP
+    >>> from ERPparam import ERPparamGroup
+    >>> fg = ERPparamGroup(peak_width_limits=[1, 6], min_peak_height=0.1)
+    >>> fgs = fit_ERPparam_3d(fg, freqs, power_spectra, freq_range=[3, 30])  # doctest:+SKIP
     """
 
     # Reshape 3d data to 2d and fit, in order to fit with a single group model object

@@ -36,7 +36,7 @@ def trim_spectrum(freqs, power_spectra, f_range):
     --------
     Using a simulated spectrum, extract a frequency range:
 
-    >>> from fooof.sim import gen_power_spectrum
+    >>> from ERPparam.sim import gen_power_spectrum
     >>> freqs, powers = gen_power_spectrum([1, 50], [1, 1], [10, 0.5, 1.0])
     >>> freqs, powers = trim_spectrum(freqs, powers, [3, 30])
     """
@@ -99,7 +99,7 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
     --------
     Using a simulated spectrum, interpolate away a line noise peak:
 
-    >>> from fooof.sim import gen_power_spectrum
+    >>> from ERPparam.sim import gen_power_spectrum
     >>> freqs, powers = gen_power_spectrum([1, 75], [1, 1], [[10, 0.5, 1.0], [60, 2, 0.1]])
     >>> freqs, powers = interpolate_spectrum(freqs, powers, [58, 62])
     """
@@ -163,13 +163,13 @@ def subsample_spectra(spectra, selection, return_inds=False):
     --------
     Using a group of simulated spectra, subsample a specific number:
 
-    >>> from fooof.sim import gen_group_power_spectra
+    >>> from ERPparam.sim import gen_group_power_spectra
     >>> freqs, powers = gen_group_power_spectra(10, [1, 50], [1, 1], [10, 0.5, 1.0])
     >>> subsample = subsample_spectra(powers, 5)
 
     Using a group of simulated spectra, subsample a proportion:
 
-    >>> from fooof.sim import gen_group_power_spectra
+    >>> from ERPparam.sim import gen_group_power_spectra
     >>> freqs, powers = gen_group_power_spectra(10, [1, 50], [1, 1], [10, 0.5, 1.0])
     >>> subsample = subsample_spectra(powers, 0.25)
     """

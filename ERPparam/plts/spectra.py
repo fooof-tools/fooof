@@ -11,10 +11,10 @@ from itertools import repeat, cycle
 import numpy as np
 from scipy.stats import sem
 
-from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.settings import PLT_FIGSIZES
-from fooof.plts.style import style_spectrum_plot, style_plot
-from fooof.plts.utils import check_ax, add_shades, savefig, check_plot_kwargs
+from ERPparam.core.modutils import safe_import, check_dependency
+from ERPparam.plts.settings import PLT_FIGSIZES
+from ERPparam.plts.style import style_spectrum_plot, style_plot
+from ERPparam.plts.utils import check_ax, add_shades, savefig, check_plot_kwargs
 
 plt = safe_import('.pyplot', 'matplotlib')
 

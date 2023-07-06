@@ -2,14 +2,14 @@
 
 NOTES
 -----
-- FOOOF currently (only) uses the exponential and gaussian functions.
-- Linear & Quadratic functions are from previous versions of FOOOF.
+- ERPparam currently (only) uses the exponential and gaussian functions.
+- Linear & Quadratic functions are from previous versions of ERPparam.
     - They are left available for easy swapping back in, if desired.
 """
 
 import numpy as np
 
-from fooof.core.errors import InconsistentDataError
+from ERPparam.core.errors import InconsistentDataError
 
 ###################################################################################################
 ###################################################################################################

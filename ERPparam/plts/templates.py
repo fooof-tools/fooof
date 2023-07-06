@@ -1,15 +1,15 @@
-"""Plot templates for the FOOOF module.
+"""Plot templates for the ERPparam module.
 
 Notes
 -----
-These are template plot structures for FOOOF plots and/or reports.
+These are template plot structures for ERPparam plots and/or reports.
 They are not expected to be used directly by the user.
 """
 
 import numpy as np
 
-from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.utils import check_ax, set_alpha
+from ERPparam.core.modutils import safe_import, check_dependency
+from ERPparam.plts.utils import check_ax, set_alpha
 
 plt = safe_import('.pyplot', 'matplotlib')
 

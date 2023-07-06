@@ -1,9 +1,9 @@
-"""Generate reports from FOOOF objects."""
+"""Generate reports from ERPparam objects."""
 
-from fooof.core.io import fname, fpath
-from fooof.core.modutils import safe_import, check_dependency
-from fooof.core.strings import gen_settings_str, gen_results_fm_str, gen_results_fg_str
-from fooof.plts.fg import plot_fg_ap, plot_fg_gf, plot_fg_peak_cens
+from ERPparam.core.io import fname, fpath
+from ERPparam.core.modutils import safe_import, check_dependency
+from ERPparam.core.strings import gen_settings_str, gen_results_fm_str, gen_results_fg_str
+from ERPparam.plts.fg import plot_fg_ap, plot_fg_gf, plot_fg_peak_cens
 
 plt = safe_import('.pyplot', 'matplotlib')
 gridspec = safe_import('.gridspec', 'matplotlib')
@@ -27,7 +27,7 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False, add_settings=Tr
 
     Parameters
     ----------
-    fm : FOOOF
+    fm : ERPparam
         Object with results from fitting a power spectrum.
     file_name : str
         Name to give the saved out file.
@@ -60,7 +60,7 @@ def save_report_fm(fm, file_name, file_path=None, plt_log=False, add_settings=Tr
     ax1 = plt.subplot(grid[1])
     fm.plot(plt_log=plt_log, ax=ax1, **plot_kwargs)
 
-    # Third - FOOOF settings
+    # Third - ERPparam settings
     if add_settings:
         ax2 = plt.subplot(grid[2])
         settings_str = gen_settings_str(fm, False)
@@ -79,7 +79,7 @@ def save_report_fg(fg, file_name, file_path=None, add_settings=True):
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Object with results from fitting a group of power spectra.
     file_name : str
         Name to give the saved out file.

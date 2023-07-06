@@ -1,22 +1,22 @@
-"""Custom error definitions for FOOOF."""
+"""Custom error definitions for ERPparam."""
 
-class FOOOFError(Exception):
-    """Base class for errors in the FOOOF module."""
+class ERPparamError(Exception):
+    """Base class for errors in the ERPparam module."""
 
-class FitError(FOOOFError):
+class FitError(ERPparamError):
     """Error for a failure to fit."""
 
-class NoDataError(FOOOFError):
+class NoDataError(ERPparamError):
     """Error for if data is missing."""
 
-class DataError(FOOOFError):
+class DataError(ERPparamError):
     """Error for if there is a problem with the data."""
 
-class InconsistentDataError(FOOOFError):
+class InconsistentDataError(ERPparamError):
     """Error for if the data is inconsistent."""
 
-class IncompatibleSettingsError(FOOOFError):
+class IncompatibleSettingsError(ERPparamError):
     """Error for if settings are incompatible."""
 
-class NoModelError(FOOOFError):
+class NoModelError(ERPparamError):
     """Error for if the model is not fit."""

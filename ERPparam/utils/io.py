@@ -3,8 +3,8 @@
 ###################################################################################################
 ###################################################################################################
 
-def load_fooof(file_name, file_path=None, regenerate=True):
-    """Load a FOOOF file into a FOOOF object.
+def load_ERPparam(file_name, file_path=None, regenerate=True):
+    """Load a ERPparam file into a ERPparam object.
 
     Parameters
     ----------
@@ -17,13 +17,13 @@ def load_fooof(file_name, file_path=None, regenerate=True):
 
     Returns
     -------
-    fm : FOOOF
+    fm : ERPparam
         Object with the loaded data.
     """
 
-    # Initialize a FOOOF object (imported locally to avoid circular imports)
-    from fooof.objs import FOOOF
-    fm = FOOOF()
+    # Initialize a ERPparam object (imported locally to avoid circular imports)
+    from ERPparam.objs import ERPparam
+    fm = ERPparam()
 
     # Load data into object
     fm.load(file_name, file_path, regenerate)
@@ -31,8 +31,8 @@ def load_fooof(file_name, file_path=None, regenerate=True):
     return fm
 
 
-def load_fooofgroup(file_name, file_path=None):
-    """Load data from file into a FOOOFGroup object.
+def load_ERPparamGroup(file_name, file_path=None):
+    """Load data from file into a ERPparamGroup object.
 
     Parameters
     ----------
@@ -43,13 +43,13 @@ def load_fooofgroup(file_name, file_path=None):
 
     Returns
     -------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Object with the loaded data.
     """
 
-    # Initialize a FOOOFGroup object (imported locally to avoid circular imports)
-    from fooof.objs import FOOOFGroup
-    fg = FOOOFGroup()
+    # Initialize a ERPparamGroup object (imported locally to avoid circular imports)
+    from ERPparam.objs import ERPparamGroup
+    fg = ERPparamGroup()
 
     # Load data into object
     fg.load(file_name, file_path)

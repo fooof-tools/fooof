@@ -1,4 +1,4 @@
-"""Internal utility functions for FOOOF."""
+"""Internal utility functions for ERPparam."""
 
 from inspect import isgenerator
 from itertools import chain, repeat

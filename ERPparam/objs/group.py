@@ -1,8 +1,8 @@
-"""FOOOFGroup object and associated code for using the FOOOF model on 2D groups of power spectra.
+"""ERPparamGroup object and associated code for using the ERPparam model on 2D groups of power spectra.
 
 Notes
 -----
-FOOOFGroup object docs are imported from FOOOF object at runtime.
+ERPparamGroup object docs are imported from ERPparam object at runtime.
 Methods without defined docstrings import docs at runtime, from aliased external functions.
 """
 
@@ -11,25 +11,25 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
-from fooof.objs import FOOOF
-from fooof.plts.fg import plot_fg
-from fooof.core.items import OBJ_DESC
-from fooof.core.info import get_indices
-from fooof.core.utils import check_inds
-from fooof.core.errors import NoModelError
-from fooof.core.reports import save_report_fg
-from fooof.core.strings import gen_results_fg_str
-from fooof.core.io import save_fg, load_jsonlines
-from fooof.core.modutils import copy_doc_func_to_method, safe_import
-from fooof.data.conversions import group_to_dataframe
+from ERPparam.objs import ERPparam
+from ERPparam.plts.fg import plot_fg
+from ERPparam.core.items import OBJ_DESC
+from ERPparam.core.info import get_indices
+from ERPparam.core.utils import check_inds
+from ERPparam.core.errors import NoModelError
+from ERPparam.core.reports import save_report_fg
+from ERPparam.core.strings import gen_results_fg_str
+from ERPparam.core.io import save_fg, load_jsonlines
+from ERPparam.core.modutils import copy_doc_func_to_method, safe_import
+from ERPparam.data.conversions import group_to_dataframe
 
 ###################################################################################################
 ###################################################################################################
 
-class FOOOFGroup(FOOOF):
+class ERPparamGroup(ERPparam):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
-    WARNING: FOOOF expects frequency and power values in linear space.
+    WARNING: ERPparam expects frequency and power values in linear space.
 
     Passing in logged frequencies and/or power spectra is not detected,
     and will silently produce incorrect results.
@@ -60,8 +60,8 @@ class FOOOFGroup(FOOOF):
         Frequency range of the power spectra, as [lowest_freq, highest_freq].
     freq_res : float
         Frequency resolution of the power spectra.
-    group_results : list of FOOOFResults
-        Results of FOOOF model fit for each power spectrum.
+    group_results : list of ERPparamResults
+        Results of ERPparam model fit for each power spectrum.
     has_data : bool
         Whether data is loaded to the object.
     has_model : bool
@@ -87,7 +87,7 @@ class FOOOFGroup(FOOOF):
       params are a modified version, in which the CF of the peak is the mean of the gaussian,
       the PW of the peak is the height of the gaussian over and above the aperiodic component,
       and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
-    - The FOOOFGroup object inherits from the FOOOF object. As such it also has data
+    - The ERPparamGroup object inherits from the ERPparam object. As such it also has data
       attributes (`power_spectrum` & `fooofed_spectrum_`), and parameter attributes
       (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)
       which are defined in the context of individual model fits. These attributes are
@@ -101,7 +101,7 @@ class FOOOFGroup(FOOOF):
     def __init__(self, *args, **kwargs):
         """Initialize object with desired settings."""
 
-        FOOOF.__init__(self, *args, **kwargs)
+        ERPparam.__init__(self, *args, **kwargs)
 
         self.power_spectra = None
 
@@ -236,7 +236,7 @@ class FOOOFGroup(FOOOF):
         power_spectra : 2d array, shape: [n_power_spectra, n_freqs], optional
             Matrix of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
-            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+            Desired frequency range to run ERPparam on. If not provided, fits the entire given range.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -263,7 +263,7 @@ class FOOOFGroup(FOOOF):
         power_spectra : 2d array, shape: [n_power_spectra, n_freqs], optional
             Matrix of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
-            Desired frequency range to run FOOOF on. If not provided, fits the entire given range.
+            Desired frequency range to run ERPparam on. If not provided, fits the entire given range.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -281,7 +281,7 @@ class FOOOFGroup(FOOOF):
 
         # If 'verbose', print out a marker of what is being run
         if self.verbose and not progress:
-            print('Running FOOOFGroup across {} power spectra.'.format(len(self.power_spectra)))
+            print('Running ERPparamGroup across {} power spectra.'.format(len(self.power_spectra)))
 
         # Run linearly
         if n_jobs == 1:
@@ -319,7 +319,7 @@ class FOOOFGroup(FOOOF):
         """
 
         for ind in check_inds(inds):
-            fm = self.get_fooof(ind)
+            fm = self.get_ERPparam(ind)
             fm._reset_data_results(clear_results=True)
             self.group_results[ind] = fm.get_results()
 
@@ -375,7 +375,7 @@ class FOOOFGroup(FOOOF):
 
         # Pull out the requested data field from the group data
         # As a special case, peak_params are pulled out in a way that appends
-        #  an extra column, indicating which FOOOF run each peak comes from
+        #  an extra column, indicating which ERPparam run each peak comes from
         if name in ('peak_params', 'gaussian_params'):
 
             # Collect peak data, appending the index of the model it comes from
@@ -383,7 +383,7 @@ class FOOOFGroup(FOOOF):
                              for index, data in enumerate(self.group_results)])
 
             # This updates index to grab selected column, and the last column
-            #  This last column is the 'index' column (FOOOF object source)
+            #  This last column is the 'index' column (ERPparam object source)
             if col is not None:
                 col = [col, -1]
         else:
@@ -416,7 +416,7 @@ class FOOOFGroup(FOOOF):
 
 
     def load(self, file_name, file_path=None):
-        """Load FOOOFGroup data from file.
+        """Load ERPparamGroup data from file.
 
         Parameters
         ----------
@@ -459,28 +459,28 @@ class FOOOFGroup(FOOOF):
         self._reset_data_results(clear_spectrum=True, clear_results=True)
 
 
-    def get_fooof(self, ind, regenerate=True):
-        """Get a FOOOF object for a specified model fit.
+    def get_ERPparam(self, ind, regenerate=True):
+        """Get a ERPparam object for a specified model fit.
 
         Parameters
         ----------
         ind : int
-            The index of the FOOOFResults in FOOOFGroup.group_results to load.
+            The index of the ERPparamResults in ERPparamGroup.group_results to load.
         regenerate : bool, optional, default: False
             Whether to regenerate the model fits from the given fit parameters.
 
         Returns
         -------
-        fm : FOOOF
-            The FOOOFResults data loaded into a FOOOF object.
+        fm : ERPparam
+            The ERPparamResults data loaded into a ERPparam object.
         """
 
-        # Initialize a FOOOF object, with same settings & check data mode as current FOOOFGroup
-        fm = FOOOF(*self.get_settings(), verbose=self.verbose)
+        # Initialize a ERPparam object, with same settings & check data mode as current ERPparamGroup
+        fm = ERPparam(*self.get_settings(), verbose=self.verbose)
         fm.set_check_data_mode(self._check_data)
 
         # Add data for specified single power spectrum, if available
-        #   The power spectrum is inverted back to linear, as it is re-logged when added to FOOOF
+        #   The power spectrum is inverted back to linear, as it is re-logged when added to ERPparam
         if self.has_data:
             fm.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
         # If no power spectrum data available, copy over data information & regenerate freqs
@@ -496,7 +496,7 @@ class FOOOFGroup(FOOOF):
 
 
     def get_group(self, inds):
-        """Get a FOOOFGroup object with the specified sub-selection of model fits.
+        """Get a ERPparamGroup object with the specified sub-selection of model fits.
 
         Parameters
         ----------
@@ -506,18 +506,18 @@ class FOOOFGroup(FOOOF):
 
         Returns
         -------
-        fg : FOOOFGroup
-            The requested selection of results data loaded into a new FOOOFGroup object.
+        fg : ERPparamGroup
+            The requested selection of results data loaded into a new ERPparamGroup object.
         """
 
         # Check and convert indices encoding to list of int
         inds = check_inds(inds)
 
-        # Initialize a new FOOOFGroup object, with same settings as current FOOOFGroup
-        fg = FOOOFGroup(*self.get_settings(), verbose=self.verbose)
+        # Initialize a new ERPparamGroup object, with same settings as current ERPparamGroup
+        fg = ERPparamGroup(*self.get_settings(), verbose=self.verbose)
 
         # Add data for specified power spectra, if available
-        #   The power spectra are inverted back to linear, as they are re-logged when added to FOOOF
+        #   The power spectra are inverted back to linear, as they are re-logged when added to ERPparam
         if self.has_data:
             fg.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]))
         # If no power spectrum data available, copy over data information & regenerate freqs
@@ -531,7 +531,7 @@ class FOOOFGroup(FOOOF):
 
 
     def print_results(self, concise=False):
-        """Print out FOOOFGroup results.
+        """Print out ERPparamGroup results.
 
         Parameters
         ----------
@@ -562,7 +562,7 @@ class FOOOFGroup(FOOOF):
             Keyword arguments to pass into the plot method.
         """
 
-        self.get_fooof(ind=index, regenerate=True).save_report(\
+        self.get_ERPparam(ind=index, regenerate=True).save_report(\
             file_name, file_path, plt_log, **plot_kwargs)
 
 
@@ -586,13 +586,13 @@ class FOOOFGroup(FOOOF):
 
 
     def _fit(self, *args, **kwargs):
-        """Create an alias to FOOOF.fit for FOOOFGroup object, for internal use."""
+        """Create an alias to ERPparam.fit for ERPparamGroup object, for internal use."""
 
         super().fit(*args, **kwargs)
 
 
     def _get_results(self):
-        """Create an alias to FOOOF.get_results for FOOOFGroup object, for internal use."""
+        """Create an alias to ERPparam.get_results for ERPparamGroup object, for internal use."""
 
         return super().get_results()
 
@@ -650,7 +650,7 @@ def _progress(iterable, progress, n_to_run):
         raise ValueError("Progress bar option not understood.")
 
     # Set the display text for the progress bar
-    pbar_desc = 'Running FOOOFGroup'
+    pbar_desc = 'Running ERPparamGroup'
 
     # Use a tqdm, progress bar, if requested
     if progress:

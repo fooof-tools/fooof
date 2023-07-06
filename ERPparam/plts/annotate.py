@@ -2,19 +2,19 @@
 
 import numpy as np
 
-from fooof.core.utils import nearest_ind
-from fooof.core.errors import NoModelError
-from fooof.core.funcs import gaussian_function
-from fooof.core.modutils import safe_import, check_dependency
+from ERPparam.core.utils import nearest_ind
+from ERPparam.core.errors import NoModelError
+from ERPparam.core.funcs import gaussian_function
+from ERPparam.core.modutils import safe_import, check_dependency
 
-from fooof.sim.gen import gen_aperiodic
-from fooof.analysis.periodic import get_band_peak_fm
-from fooof.utils.params import compute_knee_frequency, compute_fwhm
+from ERPparam.sim.gen import gen_aperiodic
+from ERPparam.analysis.periodic import get_band_peak_fm
+from ERPparam.utils.params import compute_knee_frequency, compute_fwhm
 
-from fooof.plts.spectra import plot_spectra
-from fooof.plts.utils import check_ax, savefig
-from fooof.plts.settings import PLT_FIGSIZES, PLT_COLORS
-from fooof.plts.style import style_spectrum_plot
+from ERPparam.plts.spectra import plot_spectra
+from ERPparam.plts.utils import check_ax, savefig
+from ERPparam.plts.settings import PLT_FIGSIZES, PLT_COLORS
+from ERPparam.plts.style import style_spectrum_plot
 
 plt = safe_import('.pyplot', 'matplotlib')
 mpatches = safe_import('.patches', 'matplotlib')
@@ -29,8 +29,8 @@ def plot_annotated_peak_search(fm):
 
     Parameters
     ----------
-    fm : FOOOF
-        FOOOF object, with model fit, data and settings available.
+    fm : ERPparam
+        ERPparam object, with model fit, data and settings available.
     """
 
     # Recalculate the initial aperiodic fit and flattened spectrum that
@@ -79,12 +79,12 @@ def plot_annotated_peak_search(fm):
 @check_dependency(plt, 'matplotlib')
 def plot_annotated_model(fm, plt_log=False, annotate_peaks=True,
                          annotate_aperiodic=True, ax=None):
-    """Plot a an annotated power spectrum and model, from a FOOOF object.
+    """Plot a an annotated power spectrum and model, from a ERPparam object.
 
     Parameters
     ----------
-    fm : FOOOF
-        FOOOF object, with model fit, data and settings available.
+    fm : ERPparam
+        ERPparam object, with model fit, data and settings available.
     plt_log : boolean, optional, default: False
         Whether to plot the frequency values in log10 spacing.
     annotate_peaks : boolean, optional, default: True

@@ -1,4 +1,4 @@
-"""Utility functions & decorators for dealing with FOOOF, as a module."""
+"""Utility functions & decorators for dealing with ERPparam, as a module."""
 
 from importlib import import_module
 from functools import wraps
@@ -70,7 +70,7 @@ def check_dependency(dep, name):
         @wraps(func)
         def wrapped_func(*args, **kwargs):
             if not dep:
-                raise ImportError("Optional FOOOF dependency " + name + \
+                raise ImportError("Optional ERPparam dependency " + name + \
                                   " is required for this functionality.")
             return func(*args, **kwargs)
         return wrapped_func

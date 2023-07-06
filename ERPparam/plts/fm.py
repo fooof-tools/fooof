@@ -1,21 +1,21 @@
-"""Plots for the FOOOF object.
+"""Plots for the ERPparam object.
 
 Notes
 -----
-This file contains plotting functions that take as input a FOOOF object.
+This file contains plotting functions that take as input a ERPparam object.
 """
 
 import numpy as np
 
-from fooof.core.utils import nearest_ind
-from fooof.core.modutils import safe_import, check_dependency
-from fooof.sim.gen import gen_periodic
-from fooof.utils.data import trim_spectrum
-from fooof.utils.params import compute_fwhm
-from fooof.plts.spectra import plot_spectra
-from fooof.plts.settings import PLT_FIGSIZES, PLT_COLORS
-from fooof.plts.utils import check_ax, check_plot_kwargs, savefig
-from fooof.plts.style import style_spectrum_plot, style_plot
+from ERPparam.core.utils import nearest_ind
+from ERPparam.core.modutils import safe_import, check_dependency
+from ERPparam.sim.gen import gen_periodic
+from ERPparam.utils.data import trim_spectrum
+from ERPparam.utils.params import compute_fwhm
+from ERPparam.plts.spectra import plot_spectra
+from ERPparam.plts.settings import PLT_FIGSIZES, PLT_COLORS
+from ERPparam.plts.utils import check_ax, check_plot_kwargs, savefig
+from ERPparam.plts.style import style_spectrum_plot, style_plot
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -28,11 +28,11 @@ plt = safe_import('.pyplot', 'matplotlib')
 def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=True,
             save_fig=False, file_name=None, file_path=None, ax=None, data_kwargs=None,
             model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
-    """Plot the power spectrum and model fit results from a FOOOF object.
+    """Plot the power spectrum and model fit results from a ERPparam object.
 
     Parameters
     ----------
-    fm : FOOOF
+    fm : ERPparam
         Object containing a power spectrum and (optionally) results from fitting.
     plot_peaks : None or {'shade', 'dot', 'outline', 'line'}, optional
         What kind of approach to take to plot peaks. If None, peaks are not specifically plotted.
@@ -58,13 +58,13 @@ def plot_fm(fm, plot_peaks=None, plot_aperiodic=True, plt_log=False, add_legend=
 
     Notes
     -----
-    Since FOOOF objects store power values in log spacing,
+    Since ERPparam objects store power values in log spacing,
     the y-axis (power) is plotted in log spacing by default.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
-    # Log settings - note that power values in FOOOF objects are already logged
+    # Log settings - note that power values in ERPparam objects are already logged
     log_freqs = plt_log
     log_powers = False
 

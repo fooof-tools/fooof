@@ -1,12 +1,12 @@
-"""File I/O for FOOOF."""
+"""File I/O for ERPparam."""
 
 import io
 import os
 import json
 from json import JSONDecodeError
 
-from fooof.core.items import OBJ_DESC
-from fooof.core.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
+from ERPparam.core.items import OBJ_DESC
+from ERPparam.core.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
 
 ###################################################################################################
 ###################################################################################################
@@ -63,11 +63,11 @@ def fpath(file_path, file_name):
 
 def save_fm(fm, file_name, file_path=None, append=False,
             save_results=False, save_settings=False, save_data=False):
-    """Save out data, results and/or settings from a FOOOF object into a JSON file.
+    """Save out data, results and/or settings from a ERPparam object into a JSON file.
 
     Parameters
     ----------
-    fm : FOOOF
+    fm : ERPparam
         Object to save data from.
     file_name : str or FileObject
         File to save data to.
@@ -77,9 +77,9 @@ def save_fm(fm, file_name, file_path=None, append=False,
         Whether to append to an existing file, if available.
         This option is only valid (and only used) if 'file_name' is a str.
     save_results : bool, optional
-        Whether to save out FOOOF model fit results.
+        Whether to save out ERPparam model fit results.
     save_settings : bool, optional
-        Whether to save out FOOOF settings.
+        Whether to save out ERPparam settings.
     save_data : bool, optional
         Whether to save out input data.
 
@@ -121,11 +121,11 @@ def save_fm(fm, file_name, file_path=None, append=False,
 
 def save_fg(fg, file_name, file_path=None, append=False,
             save_results=False, save_settings=False, save_data=False):
-    """Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.
+    """Save out results and/or settings from ERPparamGroup object. Saves out to a JSON file.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Object to save data from.
     file_name : str or FileObject
         File to save data to.
@@ -135,9 +135,9 @@ def save_fg(fg, file_name, file_path=None, append=False,
         Whether to append to an existing file, if available.
         This option is only valid (and only used) if 'file_name' is a str.
     save_results : bool, optional
-        Whether to save out FOOOF model fit results.
+        Whether to save out ERPparam model fit results.
     save_settings : bool, optional
-        Whether to save out FOOOF settings.
+        Whether to save out ERPparam settings.
     save_data : bool, optional
         Whether to save out power spectra data.
 
@@ -227,18 +227,18 @@ def load_jsonlines(file_name, file_path):
 
 
 def _save_fg(fg, f_obj, save_results, save_settings, save_data):
-    """Helper function for saving FOOOFGroup - saves data given a file object.
+    """Helper function for saving ERPparamGroup - saves data given a file object.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Object to save data from.
     f_obj : FileObject
         File object to save data to.
     save_results : bool
-        Whether to save out FOOOF model fit results.
+        Whether to save out ERPparam model fit results.
     save_settings : bool
-        Whether to save out FOOOF settings.
+        Whether to save out ERPparam settings.
     save_data : bool
         Whether to save out power spectra data.
     """
@@ -250,6 +250,6 @@ def _save_fg(fg, f_obj, save_results, save_settings, save_data):
     # For results & data, loop across all data and/or models, and save each out to a new line
     if save_results or save_data:
         for ind in range(len(fg.group_results)):
-            fm = fg.get_fooof(ind, regenerate=False)
+            fm = fg.get_ERPparam(ind, regenerate=False)
             save_fm(fm, file_name=f_obj, file_path=None, append=False,
                     save_results=save_results, save_data=save_data)

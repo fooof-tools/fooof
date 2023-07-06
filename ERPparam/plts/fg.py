@@ -1,16 +1,16 @@
-"""Plots for the FOOOFGroup object.
+"""Plots for the ERPparamGroup object.
 
 Notes
 -----
-This file contains plotting functions that take as input a FOOOFGroup object.
+This file contains plotting functions that take as input a ERPparamGroup object.
 """
 
-from fooof.core.errors import NoModelError
-from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.settings import PLT_FIGSIZES
-from fooof.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
-from fooof.plts.utils import savefig
-from fooof.plts.style import style_plot
+from ERPparam.core.errors import NoModelError
+from ERPparam.core.modutils import safe_import, check_dependency
+from ERPparam.plts.settings import PLT_FIGSIZES
+from ERPparam.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
+from ERPparam.plts.utils import savefig
+from ERPparam.plts.style import style_plot
 
 plt = safe_import('.pyplot', 'matplotlib')
 gridspec = safe_import('.gridspec', 'matplotlib')
@@ -21,11 +21,11 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 @savefig
 @check_dependency(plt, 'matplotlib')
 def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
-    """Plot a figure with subplots visualizing the parameters from a FOOOFGroup object.
+    """Plot a figure with subplots visualizing the parameters from a ERPparamGroup object.
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Object containing results from fitting a group of power spectra.
     save_fig : bool, optional, default: False
         Whether to save out a copy of the plot.
@@ -37,7 +37,7 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
     Raises
     ------
     NoModelError
-        If the FOOOF object does not have model fit data available to plot.
+        If the ERPparam object does not have model fit data available to plot.
     """
 
     if not fg.has_model:
@@ -71,7 +71,7 @@ def plot_fg_ap(fg, ax=None, **plot_kwargs):
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -96,7 +96,7 @@ def plot_fg_gf(fg, ax=None, **plot_kwargs):
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -116,7 +116,7 @@ def plot_fg_peak_cens(fg, ax=None, **plot_kwargs):
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Object to plot data from.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.

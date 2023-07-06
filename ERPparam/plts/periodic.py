@@ -4,12 +4,12 @@ from itertools import cycle
 
 import numpy as np
 
-from fooof.sim import gen_freqs
-from fooof.core.funcs import gaussian_function
-from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.settings import PLT_FIGSIZES
-from fooof.plts.style import style_param_plot, style_plot
-from fooof.plts.utils import check_ax, recursive_plot, savefig, check_plot_kwargs
+from ERPparam.sim import gen_freqs
+from ERPparam.core.funcs import gaussian_function
+from ERPparam.core.modutils import safe_import, check_dependency
+from ERPparam.plts.settings import PLT_FIGSIZES
+from ERPparam.plts.style import style_param_plot, style_plot
+from ERPparam.plts.utils import check_ax, recursive_plot, savefig, check_plot_kwargs
 
 plt = safe_import('.pyplot', 'matplotlib')
 

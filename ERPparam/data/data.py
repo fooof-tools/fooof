@@ -1,6 +1,6 @@
-"""Data objects for FOOOF.
+"""Data objects for ERPparam.
 
-Notes on FOOOF data objects:
+Notes on ERPparam data objects:
 - these data objects are NamedTuples, immutable data types with attribute labels
 - the namedtuples are wrapped as classes (they are still immutable when doing this)
 - wrapping in objects helps to be able to render well formed documentation for them.
@@ -13,7 +13,7 @@ from collections import namedtuple
 ###################################################################################################
 ###################################################################################################
 
-class FOOOFSettings(namedtuple('FOOOFSettings', ['peak_width_limits', 'max_n_peaks',
+class ERPparamSettings(namedtuple('ERPparamSettings', ['peak_width_limits', 'max_n_peaks',
                                                  'min_peak_height', 'peak_threshold',
                                                  'aperiodic_mode'])):
     """User defined settings for the fitting algorithm.
@@ -38,7 +38,7 @@ class FOOOFSettings(namedtuple('FOOOFSettings', ['peak_width_limits', 'max_n_pea
     __slots__ = ()
 
 
-class FOOOFMetaData(namedtuple('FOOOFMetaData', ['freq_range', 'freq_res'])):
+class ERPparamMetaData(namedtuple('ERPparamMetaData', ['freq_range', 'freq_res'])):
     """Metadata information about a power spectrum.
 
     Parameters
@@ -55,7 +55,7 @@ class FOOOFMetaData(namedtuple('FOOOFMetaData', ['freq_range', 'freq_res'])):
     __slots__ = ()
 
 
-class FOOOFResults(namedtuple('FOOOFResults', ['aperiodic_params', 'peak_params',
+class ERPparamResults(namedtuple('ERPparamResults', ['aperiodic_params', 'peak_params',
                                                'r_squared', 'error', 'gaussian_params'])):
     """Model results from parameterizing a power spectrum.
 

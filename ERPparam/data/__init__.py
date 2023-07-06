@@ -1,3 +1,3 @@
-"""Data sub-module for FOOOF."""
+"""Data sub-module for ERPparam."""
 
-from .data import FOOOFSettings, FOOOFMetaData, FOOOFResults, SimParams
+from .data import ERPparamSettings, ERPparamMetaData, ERPparamResults, SimParams

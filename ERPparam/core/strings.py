@@ -1,9 +1,9 @@
-"""Formatted strings for printing out FOOOF related information."""
+"""Formatted strings for printing out ERPparam related information."""
 
 import numpy as np
 
-from fooof.core.errors import NoModelError
-from fooof.version import __version__ as FOOOF_VERSION
+from ERPparam.core.errors import NoModelError
+from ERPparam.version import __version__ as ERPPARAM_VERSION
 
 ###################################################################################################
 ###################################################################################################
@@ -35,7 +35,7 @@ def gen_width_warning_str(freq_res, bwl):
 
     output = '\n'.join([
         '',
-        'FOOOF WARNING: Lower-bound peak width limit is < or ~= the frequency resolution: ' + \
+        'ERPparam WARNING: Lower-bound peak width limit is < or ~= the frequency resolution: ' + \
             '{:1.2f} <= {:1.2f}'.format(bwl, freq_res),
         '\tLower bounds below frequency-resolution have no effect ' + \
         '(effective lower bound is the frequency resolution).',
@@ -48,7 +48,7 @@ def gen_width_warning_str(freq_res, bwl):
 
 
 def gen_version_str(concise=False):
-    """Generate a string representation of the current version of FOOOF.
+    """Generate a string representation of the current version of ERPparam.
 
     Parameters
     ----------
@@ -66,11 +66,11 @@ def gen_version_str(concise=False):
         # Header
         '=',
         '',
-        'FOOOF - VERSION',
+        'ERPparam - VERSION',
         '',
 
         # Version information
-        '{}'.format(FOOOF_VERSION),
+        '{}'.format(ERPPARAM_VERSION),
 
         # Footer
         '',
@@ -83,12 +83,12 @@ def gen_version_str(concise=False):
     return output
 
 
-def gen_settings_str(fooof_obj, description=False, concise=False):
-    """Generate a string representation of current FOOOF settings.
+def gen_settings_str(ERPparam_obj, description=False, concise=False):
+    """Generate a string representation of current ERPparam settings.
 
     Parameters
     ----------
-    fooof_obj : FOOOF or FOOOFGroup or FOOOFSettings
+    ERPparam_obj : ERPparam or ERPparamGroup or ERPparamSettings
         Object to access settings from.
     description : bool, optional, default: True
         Whether to also print out a description of the settings.
@@ -120,19 +120,19 @@ def gen_settings_str(fooof_obj, description=False, concise=False):
         # Header
         '=',
         '',
-        'FOOOF - SETTINGS',
+        'ERPparam - SETTINGS',
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Peak Width Limits : {}'.format(fooof_obj.peak_width_limits),
+        *[el for el in ['Peak Width Limits : {}'.format(ERPparam_obj.peak_width_limits),
                         '{}'.format(desc['peak_width_limits']),
-                        'Max Number of Peaks : {}'.format(fooof_obj.max_n_peaks),
+                        'Max Number of Peaks : {}'.format(ERPparam_obj.max_n_peaks),
                         '{}'.format(desc['max_n_peaks']),
-                        'Minimum Peak Height : {}'.format(fooof_obj.min_peak_height),
+                        'Minimum Peak Height : {}'.format(ERPparam_obj.min_peak_height),
                         '{}'.format(desc['min_peak_height']),
-                        'Peak Threshold: {}'.format(fooof_obj.peak_threshold),
+                        'Peak Threshold: {}'.format(ERPparam_obj.peak_threshold),
                         '{}'.format(desc['peak_threshold']),
-                        'Aperiodic Mode : {}'.format(fooof_obj.aperiodic_mode),
+                        'Aperiodic Mode : {}'.format(ERPparam_obj.aperiodic_mode),
                         '{}'.format(desc['aperiodic_mode'])] if el != ''],
 
         # Footer
@@ -145,12 +145,12 @@ def gen_settings_str(fooof_obj, description=False, concise=False):
     return output
 
 
-def gen_freq_range_str(fooof_obj, concise=False):
+def gen_freq_range_str(ERPparam_obj, concise=False):
     """Generate a string representation of the fit range that was used for the model.
 
     Parameters
     ----------
-    fooof_obj : FOOOF or FOOOFGroup
+    ERPparam_obj : ERPparam or ERPparamGroup
         Object to access settings from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
@@ -160,14 +160,14 @@ def gen_freq_range_str(fooof_obj, concise=False):
     If fit range is not available, will print out 'XX' for missing values.
     """
 
-    freq_range = fooof_obj.freq_range if fooof_obj.has_data else ('XX', 'XX')
+    freq_range = ERPparam_obj.freq_range if ERPparam_obj.has_data else ('XX', 'XX')
 
     str_lst = [
 
         # Header
         '=',
         '',
-        'FOOOF - FIT RANGE',
+        'ERPparam - FIT RANGE',
         '',
 
         # Frequency range information information
@@ -185,7 +185,7 @@ def gen_freq_range_str(fooof_obj, concise=False):
 
 
 def gen_methods_report_str(concise=False):
-    """Generate a string representation of instructions for reporting about using FOOOF.
+    """Generate a string representation of instructions for reporting about using ERPparam.
 
     Parameters
     ----------
@@ -203,11 +203,11 @@ def gen_methods_report_str(concise=False):
         # Header
         '=',
         '',
-        'FOOOF - REPORTING',
+        'ERPparam - REPORTING',
         '',
 
         # Methods report information
-        'To report on using FOOOF, you should report (at minimum):',
+        'To report on using ERPparam, you should report (at minimum):',
         '',
         '- the code version that was used used',
         '- the algorithm settings that were used',
@@ -223,18 +223,18 @@ def gen_methods_report_str(concise=False):
     return output
 
 
-def gen_methods_text_str(fooof_obj=None):
+def gen_methods_text_str(ERPparam_obj=None):
     """Generate a string representation of a template methods report.
 
     Parameters
     ----------
-    fooof_obj : FOOOF or FOOOFGroup, optional
-        A FOOOF object with settings information available.
+    ERPparam_obj : ERPparam or ERPparamGroup, optional
+        A ERPparam object with settings information available.
         If None, the text is returned as a template, without values.
     """
 
     template = (
-        "The FOOOF algorithm (version {}) was used to parameterize "
+        "The ERPparam algorithm (version {}) was used to parameterize "
         "neural power spectra. Settings for the algorithm were set as: "
         "peak width limits : {}; "
         "max number of peaks : {}; "
@@ -245,17 +245,17 @@ def gen_methods_text_str(fooof_obj=None):
         "{} to {} Hz."
     )
 
-    if fooof_obj:
-        freq_range = fooof_obj.freq_range if fooof_obj.has_data else ('XX', 'XX')
+    if ERPparam_obj:
+        freq_range = ERPparam_obj.freq_range if ERPparam_obj.has_data else ('XX', 'XX')
     else:
         freq_range = ('XX', 'XX')
 
-    methods_str = template.format(FOOOF_VERSION,
-                                  fooof_obj.peak_width_limits if fooof_obj else 'XX',
-                                  fooof_obj.max_n_peaks if fooof_obj else 'XX',
-                                  fooof_obj.min_peak_height if fooof_obj else 'XX',
-                                  fooof_obj.peak_threshold if fooof_obj else 'XX',
-                                  fooof_obj.aperiodic_mode if fooof_obj else 'XX',
+    methods_str = template.format(ERPPARAM_VERSION,
+                                  ERPparam_obj.peak_width_limits if ERPparam_obj else 'XX',
+                                  ERPparam_obj.max_n_peaks if ERPparam_obj else 'XX',
+                                  ERPparam_obj.min_peak_height if ERPparam_obj else 'XX',
+                                  ERPparam_obj.peak_threshold if ERPparam_obj else 'XX',
+                                  ERPparam_obj.aperiodic_mode if ERPparam_obj else 'XX',
                                   *freq_range)
 
     return methods_str
@@ -266,7 +266,7 @@ def gen_results_fm_str(fm, concise=False):
 
     Parameters
     ----------
-    fm : FOOOF
+    fm : ERPparam
         Object to access results from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
@@ -287,7 +287,7 @@ def gen_results_fm_str(fm, concise=False):
         # Header
         '=',
         '',
-        ' FOOOF - POWER SPECTRUM MODEL',
+        ' ERPparam - POWER SPECTRUM MODEL',
         '',
 
         # Frequency range and resolution
@@ -329,7 +329,7 @@ def gen_results_fg_str(fg, concise=False):
 
     Parameters
     ----------
-    fg : FOOOFGroup
+    fg : ERPparamGroup
         Object to access results from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
@@ -364,7 +364,7 @@ def gen_results_fg_str(fg, concise=False):
         # Header
         '=',
         '',
-        ' FOOOF - GROUP RESULTS',
+        ' ERPparam - GROUP RESULTS',
         '',
 
         # Group information
@@ -431,21 +431,20 @@ def gen_issue_str(concise=False):
         # Header
         '=',
         '',
-        'FOOOF - ISSUE REPORTING',
+        'ERPparam - ISSUE REPORTING',
         '',
 
         # Reporting bugs
         'Please report any bugs or unexpected errors on Github.',
-        'https://github.com/fooof-tools/fooof/issues',
         '',
 
         # Reporting a weird fit
-        'If FOOOF gives you any weird / bad fits, please let us know!',
-        'To do so, send us a FOOOF report, and a FOOOF data file, ',
+        'If ERPparam gives you any weird / bad fits, please let us know!',
+        'To do so, send us a ERPparam report, and a ERPparam data file, ',
         '',
-        'With a FOOOF object (fm), after fitting, run the following commands:',
-        "fm.create_report('FOOOF_bad_fit_report')",
-        "fm.save('FOOOF_bad_fit_data', True, True, True)",
+        'With a ERPparam object (fm), after fitting, run the following commands:',
+        "fm.create_report('ERPparam_bad_fit_report')",
+        "fm.save('ERPparam_bad_fit_data', True, True, True)",
         '',
         'Send the generated files to us.',
         'We will have a look, and provide any feedback we can.',

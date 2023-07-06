@@ -12,10 +12,10 @@ from functools import wraps
 
 import numpy as np
 
-from fooof.core.io import fname, fpath
-from fooof.core.modutils import safe_import
-from fooof.core.utils import resolve_aliases
-from fooof.plts.settings import PLT_ALPHA_LEVELS, PLT_ALIASES
+from ERPparam.core.io import fname, fpath
+from ERPparam.core.modutils import safe_import
+from ERPparam.core.utils import resolve_aliases
+from ERPparam.plts.settings import PLT_ALPHA_LEVELS, PLT_ALIASES
 
 plt = safe_import('.pyplot', 'matplotlib')
 

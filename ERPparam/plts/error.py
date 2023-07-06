@@ -2,11 +2,11 @@
 
 import numpy as np
 
-from fooof.core.modutils import safe_import, check_dependency
-from fooof.plts.spectra import plot_spectra
-from fooof.plts.settings import PLT_FIGSIZES
-from fooof.plts.style import style_spectrum_plot, style_plot
-from fooof.plts.utils import check_ax, savefig
+from ERPparam.core.modutils import safe_import, check_dependency
+from ERPparam.plts.spectra import plot_spectra
+from ERPparam.plts.settings import PLT_FIGSIZES
+from ERPparam.plts.style import style_spectrum_plot, style_plot
+from ERPparam.plts.utils import check_ax, savefig
 
 plt = safe_import('.pyplot', 'matplotlib')
 

@@ -2,11 +2,11 @@
 
 import numpy as np
 
-from fooof import Bands
-from fooof.core.funcs import infer_ap_func
-from fooof.core.info import get_ap_indices, get_peak_indices
-from fooof.core.modutils import safe_import, check_dependency
-from fooof.analysis.periodic import get_band_peak
+from ERPparam import Bands
+from ERPparam.core.funcs import infer_ap_func
+from ERPparam.core.info import get_ap_indices, get_peak_indices
+from ERPparam.core.modutils import safe_import, check_dependency
+from ERPparam.analysis.periodic import get_band_peak
 
 pd = safe_import('pandas')
 
@@ -18,7 +18,7 @@ def model_to_dict(fit_results, peak_org):
 
     Parameters
     ----------
-    fit_results : FOOOFResults
+    fit_results : ERPparamResults
         Results of a model fit.
     peak_org : int or Bands
         How to organize peaks.
@@ -68,7 +68,7 @@ def model_to_dataframe(fit_results, peak_org):
 
     Parameters
     ----------
-    fit_results : FOOOFResults
+    fit_results : ERPparamResults
         Results of a model fit.
     peak_org : int or Bands
         How to organize peaks.
@@ -90,8 +90,8 @@ def group_to_dataframe(fit_results, peak_org):
 
     Parameters
     ----------
-    fit_results : list of FOOOFResults
-        List of FOOOFResults objects.
+    fit_results : list of ERPparamResults
+        List of ERPparamResults objects.
     peak_org : int or Bands
         How to organize peaks.
         If int, extracts the first n peaks.
