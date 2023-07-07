@@ -68,10 +68,10 @@ class FOOOFGroup(FOOOF):
         Whether model results are available in the object.
     n_peaks_ : int
         The number of peaks fit in the model.
-    n_failed_fits_ : int
-        The number of models that failed to fit.
-    failed_fit_inds_ : list of int
-        The indices of any models that failed to fit.
+    n_null_ : int
+        The number of models that failed to fit and/or that are marked as null.
+    null_inds_ : list of int
+        The indices of any models that are null.
 
     Notes
     -----
