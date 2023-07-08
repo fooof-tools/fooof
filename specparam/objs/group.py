@@ -26,8 +26,8 @@ from specparam.data.conversions import group_to_dataframe
 ###################################################################################################
 ###################################################################################################
 
-@replace_docstring_sections([docs_get_section(FOOOF.__doc__, 'Parameters'),
-                             docs_get_section(FOOOF.__doc__, 'Notes')])
+@replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
+                             docs_get_section(SpectralModel.__doc__, 'Notes')])
 class SpectralGroupModel(SpectralModel):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
@@ -38,7 +38,7 @@ class SpectralGroupModel(SpectralModel):
 
     Parameters
     ----------
-    %copied in from FOOOF object
+    %copied in from SpectralModel object
 
     Attributes
     ----------
@@ -66,7 +66,7 @@ class SpectralGroupModel(SpectralModel):
 
     Notes
     -----
-    %copied in from FOOOF object
+    %copied in from SpectralModel object
     - The group object inherits from the model object. As such it also has data
       attributes (`power_spectrum` & `modeled_spectrum_`), and parameter attributes
       (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)
