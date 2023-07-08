@@ -9,9 +9,9 @@
 #   pytest              For running tests
 #   coverage            For running test coverage
 #   pylint              For running linting on code
-#   setuptools		For creating distributions
-#   build		For creating distributions
-#   twine		For checking and publishing distributions
+#   setuptools          For creating distributions
+#   build               For creating distributions
+#   twine               For checking and publishing distributions
 #
 # The following command line utilities are required:
 #   cloc                For counting lines of code
