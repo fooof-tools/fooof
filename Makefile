@@ -99,7 +99,7 @@ summary:
 # Create a distribution build of the module
 dist:
 	@printf "\n\nCREATING DISTRIBUTION BUILD...\n"
-	@python setup.py sdist bdist_wheel
+	@python -m build
 	@printf "\n\nDISTRIBUTION BUILD CREATED\n\n\n"
 
 # Check a distribution build using twine
