@@ -41,6 +41,17 @@ def test_model_to_dataframe(tresults, tbands, skip_if_no_pandas):
     out = model_to_dataframe(tresults, peak_org=tbands)
     assert isinstance(out, pd.Series)
 
+def test_group_to_dict(tresults, tbands):
+
+    fit_results = [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]
+
+    for peak_org in [1, 2, 3]:
+        out = group_to_dict(fit_results, peak_org=peak_org)
+        assert isinstance(out, dict)
+
+    out = group_to_dict(fit_results, peak_org=tbands)
+    assert isinstance(out, dict)
+
 def test_group_to_dataframe(tresults,  tbands, skip_if_no_pandas):
 
     fit_results = [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]

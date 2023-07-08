@@ -357,9 +357,6 @@ def gen_group_results_str(group, concise=False):
     kns = group.get_params('aperiodic_params', 'knee') \
         if group.aperiodic_mode == 'knee' else np.array([0])
 
-    # Check if there are any power spectra that failed to fit
-    n_failed = sum(np.isnan(exps))
-
     str_lst = [
 
         # Header
@@ -370,7 +367,7 @@ def gen_group_results_str(group, concise=False):
 
         # Group information
         'Number of power spectra in the Group: {}'.format(len(group.group_results)),
-        *[el for el in ['{} power spectra failed to fit'.format(n_failed)] if n_failed],
+        *[el for el in ['{} power spectra failed to fit'.format(group.n_null_)] if group.n_null_],
         '',
 
         # Frequency range and resolution

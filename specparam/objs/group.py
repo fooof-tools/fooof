@@ -19,12 +19,15 @@ from specparam.core.errors import NoModelError
 from specparam.core.reports import save_group_report
 from specparam.core.strings import gen_group_results_str
 from specparam.core.io import save_group, load_jsonlines
-from specparam.core.modutils import copy_doc_func_to_method, safe_import
+from specparam.core.modutils import (copy_doc_func_to_method, safe_import,
+                                     docs_get_section, replace_docstring_sections)
 from specparam.data.conversions import group_to_dataframe
 
 ###################################################################################################
 ###################################################################################################
 
+@replace_docstring_sections([docs_get_section(FOOOF.__doc__, 'Parameters'),
+                             docs_get_section(FOOOF.__doc__, 'Notes')])
 class SpectralGroupModel(SpectralModel):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
@@ -35,18 +38,7 @@ class SpectralGroupModel(SpectralModel):
 
     Parameters
     ----------
-    peak_width_limits : tuple of (float, float), optional, default: (0.5, 12.0)
-        Limits on possible peak width, as (lower_bound, upper_bound).
-    max_n_peaks : int, optional, default: inf
-        Maximum number of gaussians to be fit in a single spectrum.
-    min_peak_height : float, optional, default: 0
-        Absolute threshold for detecting peaks, in units of the input data.
-    peak_threshold : float, optional, default: 2.0
-        Relative threshold for detecting peaks, in units of standard deviation of the input data.
-    aperiodic_mode : {'fixed', 'knee'}
-        Which approach to take for fitting the aperiodic component.
-    verbose : bool, optional, default: True
-        Verbosity mode. If True, prints out warnings and general status updates.
+    %copied in from FOOOF object
 
     Attributes
     ----------
@@ -67,25 +59,14 @@ class SpectralGroupModel(SpectralModel):
         Whether model results are available in the object.
     n_peaks_ : int
         The number of peaks fit in the model.
-    n_failed_fits_ : int
-        The number of models that failed to fit.
-    failed_fit_inds_ : list of int
-        The indices of any models that failed to fit.
+    n_null_ : int
+        The number of models that failed to fit and/or that are marked as null.
+    null_inds_ : list of int
+        The indices of any models that are null.
 
     Notes
     -----
-    - Commonly used abbreviations used in this module include:
-      CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic
-    - Input power spectra must be provided in linear scale.
-      Internally they are stored in log10 scale, as this is what the model operates upon.
-    - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
-      For example, raw FFT inputs are not appropriate. Where possible and appropriate, use
-      longer time segments for power spectrum calculation to get smoother power spectra,
-      as this will give better model fits.
-    - The gaussian params are those that define the gaussian of the fit, where as the peak
-      params are a modified version, in which the CF of the peak is the mean of the gaussian,
-      the PW of the peak is the height of the gaussian over and above the aperiodic component,
-      and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
+    %copied in from FOOOF object
     - The group object inherits from the model object. As such it also has data
       attributes (`power_spectrum` & `modeled_spectrum_`), and parameter attributes
       (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)

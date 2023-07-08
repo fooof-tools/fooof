@@ -77,6 +77,38 @@ def check_dependency(dep, name):
     return wrap
 
 
+DOCSTRING_SECTIONS = ['Parameters', 'Returns', 'Yields', 'Raises',
+                      'Warns', 'Examples', 'References', 'Notes',
+                      'Attributes', 'Methods']
+
+
+def get_docs_indices(docstring, sections=DOCSTRING_SECTIONS):
+    """Get the indices of each section within a docstring.
+
+    Parameters
+    ----------
+    docstring : str
+        Docstring to check indices for.
+    sections : list of str, optional
+        List of sections to check and get indices for.
+        If not provided, uses the default set of
+
+    Returns
+    -------
+    inds : dict
+        Dictionary in which each key is a section label, and each value is the corresponding index.
+    """
+
+    inds = {label : None for label in DOCSTRING_SECTIONS}
+
+    for ind, line in enumerate(docstring.split('\n')):
+        for key, val in inds.items():
+            if key in line:
+                inds[key] = ind
+
+    return inds
+
+
 def docs_drop_param(docstring):
     """Drop the first parameter description for a string representation of a docstring.
 
@@ -132,6 +164,91 @@ def docs_append_to_section(docstring, section, add):
                         for split in docstring.split('\n\n')])
 
 
+def docs_get_section(docstring, section, output='extract'):
+    """Extract and/or remove a specified section from a docstring.
+
+    Parameters
+    ----------
+    docstring : str
+        Docstring to extract / remove a section from.
+    section : str
+        Label of the section to extract / remove.
+    mode : {'extract', 'remove'}
+        Run mode, options:
+            'extract' - returns the extracted section from the docstring.
+            'remove' - returns the docstring after removing the specified section.
+
+    Returns
+    -------
+    out_docstring : str
+        Extracted / updated docstring.
+    """
+
+    outs = []
+    in_section = False
+
+    docstring_split = docstring.split('\n')
+    for ind, line in enumerate(docstring_split):
+
+        # Track whether in the desired section
+        if section in line and '--' in docstring_split[ind + 1]:
+            in_section = True
+        if in_section and line == '':
+            in_section = False
+
+        # Collect desired outputs based on whether extracting or removing section
+        if output == 'extract' and in_section:
+            outs.append(line)
+        if output == 'remove' and not in_section:
+            outs.append(line)
+
+        # As a special case, when removing section, end section marker if there is a '%' line
+        if in_section and output == 'remove' and not line.isspace() and line.strip()[0] == '%':
+            in_section = False
+
+    out_docstring = '\n'.join(outs)
+
+    return out_docstring
+
+
+def docs_add_section(docstring, section):
+    """Add a section to a specified index of a docstring.
+
+    Parameters
+    ----------
+    docstring : str
+        Docstring to add section to.
+    section : str
+        New section to add to docstring.
+
+    Returns
+    -------
+    out_docstring : str
+        Updated docstring, with the new section added.
+    """
+
+    inds = get_docs_indices(docstring)
+
+    # Split the section, extract the label, and check it's a known docstring section
+    split_section = section.split('\n')
+    section_label = split_section[0].strip()
+    assert section_label in inds, 'Section label does not match expected list.'
+
+    # Remove the header section from the docstring (to replace it)
+    docstring = docs_get_section(docstring, section_label, 'remove')
+
+    # Check for and drop leading and trailing empty lines
+    split_section = split_section[1:] if split_section[0] == '' else split_section
+    split_section = split_section[:-1] if split_section[-1] == '    ' else split_section
+
+    # Insert the new section into the docstring and rejoin it together
+    split_docstring = docstring.split('\n')
+    split_docstring[inds[section_label]:inds[section_label]] = split_section
+    new_docstring = '\n'.join(split_docstring)
+
+    return new_docstring
+
+
 def copy_doc_func_to_method(source):
     """Decorator that copies method docstring from function, dropping first parameter.
 
@@ -181,3 +298,25 @@ def copy_doc_class(source, section='Attributes', add=''):
 
     return wrapper
 
+
+def replace_docstring_sections(replacements):
+    """Decorator to drop in docstring sections
+
+    Parameters
+    ----------
+    replacements : str or list of str
+        Section(s) to drop into the decorated function's docstring.
+    """
+
+    def wrapper(func):
+
+        docstring = func.__doc__
+
+        for replacement in [replacements] if isinstance(replacements, str) else replacements:
+            docstring = docs_add_section(docstring, replacement)
+
+        func.__doc__ = docstring
+
+        return func
+
+    return wrapper
