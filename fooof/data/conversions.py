@@ -84,6 +84,32 @@ def model_to_dataframe(fit_results, peak_org):
     return pd.Series(model_to_dict(fit_results, peak_org))
 
 
+def group_to_dict(fit_results, peak_org):
+    """Convert a group of model fit results into a dictionary.
+
+    Parameters
+    ----------
+    fit_results : list of FOOOFResults
+        List of FOOOFResults objects.
+    peak_org : int or Bands
+        How to organize peaks.
+        If int, extracts the first n peaks.
+        If Bands, extracts peaks based on band definitions.
+
+    Returns
+    -------
+    dict
+        Model results organized into a dictionary.
+    """
+
+    fr_dict = {ke : [] for ke in model_to_dict(fit_results[0], peak_org).keys()}
+    for f_res in fit_results:
+        for key, val in model_to_dict(f_res, peak_org).items():
+            fr_dict[key].append(val)
+
+    return fr_dict
+
+
 @check_dependency(pd, 'pandas')
 def group_to_dataframe(fit_results, peak_org):
     """Convert a group of model fit results into a dataframe.
@@ -103,4 +129,4 @@ def group_to_dataframe(fit_results, peak_org):
         Model results organized into a dataframe.
     """
 
-    return pd.DataFrame([model_to_dataframe(f_res, peak_org) for f_res in fit_results])
+    return pd.DataFrame(group_to_dict(fit_results, peak_org))
