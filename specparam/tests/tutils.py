@@ -54,6 +54,27 @@ def get_tresults():
                       r_squared=0.97, error=0.01,
                       gaussian_params=np.array([[10.0, 1.25, 1.0], [20.0, 1.0, 1.5]]))
 
+def get_tdocstring():
+    """Get an example docstring, for testing."""
+
+    docstring = \
+    """This is a test doctring.
+
+    Parameters
+    ----------
+    first : thing
+        Words, words, words.
+    second : stuff
+        Words, words, words.
+
+    Returns
+    -------
+    out : yay
+        Words, words, words.
+    """
+
+    return docstring
+
 def default_group_params():
     """Create default parameters for simulating a test group of power spectra."""
 
