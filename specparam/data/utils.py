@@ -25,3 +25,26 @@ def get_periodic_labels(results):
         outs[label] = [key for key in keys if label in key]
 
     return outs
+
+
+def get_results_by_ind(results, ind):
+    """Get a specified index from a dictionary of results.
+
+    Parameters
+    ----------
+    results : dict
+        A results dictionary with parameter label keys and corresponding parameter values.
+    ind : int
+        Index to extract from results.
+
+    Returns
+    -------
+    dict
+        Dictionary including the results for the specified index.
+    """
+
+    out = {}
+    for key in results.keys():
+        out[key] = results[key][ind]
+
+    return out

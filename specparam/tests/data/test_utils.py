@@ -50,3 +50,27 @@ def test_get_periodic_labels():
         assert len(out3[key]) == 2
         for el in out3[key]:
             assert key in el
+
+def test_get_results_by_ind():
+
+    tdict = {
+        'offset' : [0, 1],
+        'exponent' : [0, 1],
+        'error' : [0, 1],
+        'r_squared' : [0, 1],
+        'alpha_cf' : [0, 1],
+        'alpha_pw' : [0, 1],
+        'alpha_bw' : [0, 1],
+    }
+
+    ind = 0
+    out0 = get_results_by_ind(tdict, ind)
+    assert isinstance(out0, dict)
+    for key in tdict.keys():
+        assert key in out0.keys()
+        assert out0[key] == tdict[key][ind]
+
+    ind = 1
+    out1 = get_results_by_ind(tdict, ind)
+    for key in tdict.keys():
+        assert out1[key] == tdict[key][ind]
