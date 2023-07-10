@@ -51,3 +51,10 @@ def test_plot_params_over_time():
               np.array([2, 3, 2, 1, 2, 4, 2, 3, 2, 1, 2])]
 
     plot_params_over_time(None, params, labels=['param1', 'param2'], colors=['blue', 'red'])
+
+@plot_test
+def test_plot_param_over_time_yshade():
+
+    params = np.array([[1, 2, 3, 2, 1, 2, 4, 2, 3, 2, 1],
+                       [2, 3, 2, 1, 2, 4, 2, 3, 2, 1, 2]])
+    plot_param_over_time_yshade(None, params)

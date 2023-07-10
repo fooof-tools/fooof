@@ -203,7 +203,7 @@ def plot_param_over_time(times, param, label=None, title=None, add_legend=True, 
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the ``style_plot``.
+        Additional keyword arguments for the plot call.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['time']))
@@ -250,7 +250,7 @@ def plot_params_over_time(times, params, labels=None, title=None, colors=None,
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the ``style_plot``.
+        Additional keyword arguments for the plot call.
     """
 
     labels = repeat(labels) if not isinstance(labels, list) else cycle(labels)
@@ -279,3 +279,37 @@ def plot_params_over_time(times, params, labels=None, title=None, colors=None,
     # Puts the axis with the legend 'on top', while also making it transparent (to see others)
     ax0.set_zorder(1)
     ax0.patch.set_visible(False)
+
+
+@check_dependency(plt, 'matplotlib')
+def plot_param_over_time_yshade(times, param, average='mean', shade='std', scale=1.,
+                                color=None, ax=None, **plot_kwargs):
+    """Plot parameter over time with y-axis shading.
+
+    Parameters
+    ----------
+    times : 1d array
+        Time indices, to be plotted on the x-axis.
+        If set as None, the x-labels are set as window indices.
+    param : 2d array
+        Parameter values to plot, organized as [n_events, n_time_windows].
+    average : 'mean', 'median' or callable, optional, default: 'mean'
+        Averaging approach for plotting the average. Only used if y_vals is 2d.
+    shade : 'std', 'sem', 1d array or callable, optional, default: 'std'
+        Approach for shading above/below the average.
+    scale : float, optional, default: 1.
+        Factor to multiply the plotted shade by.
+    color : str, optional, default: None
+        Color to plot.
+    ax : matplotlib.Axes, optional
+        Figure axes upon which to plot.
+    **plot_kwargs
+        Additional keyword arguments for the plot call.
+    """
+
+    ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['time']))
+
+    times = np.arange(0, param.shape[-1]) if times is None else times
+    plot_yshade(times, param, average=average, shade=shade, scale=scale,
+                color=color, plot_function=plot_param_over_time,
+                ax=ax, **plot_kwargs)
