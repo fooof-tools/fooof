@@ -44,7 +44,7 @@ class SpectralTimeModel(SpectralGroupModel):
 
     Parameters
     ----------
-    %copied in from SpectralGroupModel object
+    %copied in from SpectralModel object
 
     Attributes
     ----------
@@ -165,7 +165,7 @@ class SpectralTimeModel(SpectralGroupModel):
 
     def fit(self, freqs=None, power_spectra=None, freq_range=None, peak_org=None,
             n_jobs=1, progress=None):
-        """Fit a spectrogram
+        """Fit a spectrogram.
 
         Parameters
         ----------
@@ -255,7 +255,7 @@ class SpectralTimeModel(SpectralGroupModel):
 
 
     def _convert_to_time_results(self, peak_org):
-        """Convert the model results into to be organized across time windows.
+        """Convert the model results to be organized across time windows.
 
         Parameters
         ----------
