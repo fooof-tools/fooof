@@ -3,6 +3,7 @@
 import numpy as np
 
 from specparam.core.errors import NoModelError
+from specparam.data.utils import get_periodic_labels
 from specparam.version import __version__ as MODULE_VERSION
 
 ###################################################################################################
@@ -408,6 +409,106 @@ def gen_group_results_str(group, concise=False):
     output = _format(str_lst, concise)
 
     return output
+
+
+def gen_time_results_str(time_model, concise=False):
+    """Generate a string representation of time fit results.
+
+    Parameters
+    ----------
+    time_model : SpectralTimeModel
+        Object to access results from.
+    concise : bool, optional, default: False
+        Whether to print the report in concise mode.
+
+    Returns
+    -------
+    output : str
+        Formatted string of results.
+
+    Raises
+    ------
+    NoModelError
+        If no model fit data is available to report.
+    """
+
+    if not time_model.has_model:
+        raise NoModelError("No model fit results are available, can not proceed.")
+
+    # Extract all the relevant data for printing
+    pe_labels = get_periodic_labels(time_model.time_results)
+    band_labels = [\
+        pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
+        for band_ind in range(len(pe_labels['cf']))]
+
+    kns = time_model.get_params('aperiodic_params', 'knee') \
+       if time_model.aperiodic_mode == 'knee' else np.array([0])
+
+    str_lst = [
+
+        # Header
+        '=',
+        '',
+        'TIME RESULTS',
+        '',
+
+        # Group information
+        'Number of time windows fit: {}'.format(len(time_model.group_results)),
+        *[el for el in ['{} power spectra failed to fit'.format(time_model.n_null_)] if time_model.n_null_],
+        '',
+
+        # Frequency range and resolution
+        'The model was run on the frequency range {} - {} Hz'.format(
+            int(np.floor(time_model.freq_range[0])), int(np.ceil(time_model.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(time_model.freq_res),
+        '',
+
+        # Aperiodic parameters - knee fit status, and quick exponent description
+        'Power spectra were fit {} a knee.'.format(\
+            'with' if time_model.aperiodic_mode == 'knee' else 'without'),
+        '',
+        'Aperiodic Fit Values:',
+        *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
+                        .format(np.nanmin(kns), np.nanmax(kns), np.nanmean(kns)),
+                       ] if time_model.aperiodic_mode == 'knee'],
+        'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(np.nanmin(time_model.time_results['exponent']),
+                np.nanmax(time_model.time_results['exponent']),
+                np.nanmean(time_model.time_results['exponent'])),
+        '',
+
+        # Periodic parameters
+        'Periodic params (mean values across windows):',
+        *['{:>6s} - CF: {:5.2f}, PW: {:5.2f}, BW: {:5.2f}, Presence: {:3.1f}%'.format(
+            label,
+            np.nanmean(time_model.time_results[pe_labels['cf'][ind]]),
+            np.nanmean(time_model.time_results[pe_labels['pw'][ind]]),
+            np.nanmean(time_model.time_results[pe_labels['bw'][ind]]),
+            100 * sum(~np.isnan(time_model.time_results[pe_labels['cf'][ind]])) \
+                / len(time_model.time_results[pe_labels['cf'][ind]])) \
+                for ind, label in enumerate(band_labels)],
+        '',
+
+        # Goodness if fit
+        'Goodness of fit (mean values across windows):',
+        '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(np.nanmin(time_model.time_results['r_squared']),
+                np.nanmax(time_model.time_results['r_squared']),
+                np.nanmean(time_model.time_results['r_squared'])),
+        'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(np.nanmin(time_model.time_results['error']),
+                np.nanmax(time_model.time_results['error']),
+                np.nanmean(time_model.time_results['error'])),
+        '',
+
+        # Footer
+        '='
+    ]
+
+    output = _format(str_lst, concise)
+
+    return output
+
 
 
 def gen_issue_str(concise=False):

@@ -40,6 +40,10 @@ def test_gen_group_results_str(tfg):
 
     assert gen_group_results_str(tfg)
 
+def test_gen_time_results_str(tft):
+
+    assert gen_group_results_str(tft)
+
 def test_gen_issue_str():
 
     assert gen_issue_str()
