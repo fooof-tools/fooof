@@ -4,12 +4,13 @@ from functools import wraps
 
 import numpy as np
 
-from specparam.objs import SpectralGroupModel
+from specparam.objs import SpectralModel, SpectralGroupModel
 from specparam.plts.time import plot_time_model
 from specparam.data.conversions import group_to_dict
 from specparam.data.utils import get_results_by_ind
 from specparam.core.reports import save_time_report
-from specparam.core.modutils import copy_doc_func_to_method, docs_get_section
+from specparam.core.modutils import (copy_doc_func_to_method, docs_get_section,
+                                     replace_docstring_sections)
 from specparam.core.strings import gen_time_results_str
 
 ###################################################################################################
@@ -31,9 +32,46 @@ def transpose_arg1(func):
 
     return decorated
 
-
+@replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
+                             docs_get_section(SpectralModel.__doc__, 'Notes')])
 class SpectralTimeModel(SpectralGroupModel):
-    """ToDo."""
+    """Model a group of power spectra as a combination of aperiodic and periodic components.
+
+    WARNING: frequency and power values inputs must be in linear space.
+
+    Passing in logged frequencies and/or power spectra is not detected,
+    and will silently produce incorrect results.
+
+    Parameters
+    ----------
+    %copied in from SpectralGroupModel object
+
+    Attributes
+    ----------
+    freqs : 1d array
+        Frequency values for the power spectra.
+    spectrogram : 2d array
+        Power values for the spectrogram, as [n_freqs, n_time_windows].
+        Power values are stored internally in log10 scale.
+    freq_range : list of [float, float]
+        Frequency range of the power spectra, as [lowest_freq, highest_freq].
+    freq_res : float
+        Frequency resolution of the power spectra.
+    time_results : dict
+        Results of the model fit across each time window.
+
+    Notes
+    -----
+    %copied in from SpectralModel object
+    - The time object inherits from the group model, which in turn inherits from the
+      model object. As such it also has data attributes defined on the model object,
+      as well as additional attributes that are added to the group object (see notes
+      and attribute list in SpectralGroupModel).
+    - Notably, while this object organizes the results into the `time_results`
+      attribute, which may include sub-selecting peaks per band (depending on settings)
+      the `group_results` attribute is also available, which maintains the full
+      model results.
+    """
 
     def __init__(self, *args, **kwargs):
         """Initialize object with desired settings."""
