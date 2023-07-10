@@ -1,6 +1,7 @@
 """Utilities for working with data and models."""
 
 from itertools import repeat
+from inspect import isfunction
 
 import numpy as np
 from scipy.stats import sem

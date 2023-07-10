@@ -21,6 +21,12 @@ def test_compute_average():
     out2 = compute_average(data, 'median')
     assert not np.array_equal(out2, out1)
 
+    def _average_callable(data):
+        return np.mean(data, axis=0)
+    out3 = compute_average(data, _average_callable)
+    assert isinstance(out3, np.ndarray)
+    assert np.array_equal(out3, out1)
+
 def test_compute_dispersion():
 
     data = np.array([[0., 1., 2., 3., 4., 5.],
@@ -35,6 +41,12 @@ def test_compute_dispersion():
 
     out3 = compute_dispersion(data, 'sem')
     assert not np.array_equal(out3, out1)
+
+    def _dispersion_callable(data):
+        return np.std(data, axis=0)
+    out4 = compute_dispersion(data, _dispersion_callable)
+    assert isinstance(out4, np.ndarray)
+    assert np.array_equal(out4, out2)
 
 def test_trim_spectrum():
 
