@@ -15,8 +15,6 @@ from specparam.plts.utils import check_ax, set_alpha
 from specparam.plts.settings import PLT_FIGSIZES, PLT_COLORS, DEFAULT_COLORS
 
 plt = safe_import('.pyplot', 'matplotlib')
-#ticker = safe_import('.ticker', 'matplotlib')
-#Note / ToDo: see if need to put back ticker management, or remove
 
 ###################################################################################################
 ###################################################################################################
@@ -169,15 +167,13 @@ def plot_param_over_time(param, label=None, title=None, add_legend=True, add_xla
 
     if add_xlabel:
         ax.set_xlabel('Time Window')
-    ax.set_ylabel(label if label else 'Parameter Value', fontsize=10)
+    ax.set_ylabel(label if label else 'Parameter Value')
 
     if label and add_legend:
         ax.legend(loc='upper left', framealpha=plot_kwargs.pop('legend_framealpha', 0.9))
 
     if title:
-        ax.set_title(title, fontsize=20)
-
-    #ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%.2f'))
+        ax.set_title(title)
 
 
 @check_dependency(plt, 'matplotlib')
@@ -219,7 +215,7 @@ def plot_params_over_time(params, labels=None, title=None, colors=None, ax=None,
                    loc='upper left', framealpha=plot_kwargs.pop('legend_framealpha', 0.9))
 
     if title:
-        ax0.set_title(title, fontsize=20)
+        ax0.set_title(title, fontsize=14)
 
     # Puts the axis with the legend 'on top', while also making it transparent (to see others)
     ax0.set_zorder(1)
