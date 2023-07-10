@@ -111,6 +111,21 @@ def test_save_group_fobj(tfg):
 
     assert os.path.exists(os.path.join(TEST_DATA_PATH, file_name + '.json'))
 
+def test_save_time(tft):
+    """Check saving ft data."""
+
+    res_file_name = 'test_time_res'
+    set_file_name = 'test_time_set'
+    dat_file_name = 'test_time_dat'
+
+    save_group(tft, file_name=res_file_name, file_path=TEST_DATA_PATH, save_results=True)
+    save_group(tft, file_name=set_file_name, file_path=TEST_DATA_PATH, save_settings=True)
+    save_group(tft, file_name=dat_file_name, file_path=TEST_DATA_PATH, save_data=True)
+
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, res_file_name + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, set_file_name + '.json'))
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, dat_file_name + '.json'))
+
 def test_load_json_str():
     """Test loading JSON file, with str file specifier.
     Loads files from test_save_model_str.
