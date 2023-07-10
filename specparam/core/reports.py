@@ -3,7 +3,8 @@
 from specparam.core.io import fname, fpath
 from specparam.core.modutils import safe_import, check_dependency
 from specparam.core.strings import (gen_settings_str, gen_model_results_str,
-                                    gen_group_results_str)
+                                    gen_group_results_str, gen_time_results_str)
+from specparam.data.utils import get_periodic_labels
 from specparam.plts.group import (plot_group_aperiodic, plot_group_goodness,
                                   plot_group_peak_frequencies)
 
@@ -129,6 +130,54 @@ def save_group_report(group, file_name, file_path=None, add_settings=True):
         ax4.text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')
         ax4.set_frame_on(False)
         ax4.set(xticks=[], yticks=[])
+
+    # Save out the report
+    plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+    plt.close()
+
+
+@check_dependency(plt, 'matplotlib')
+def save_time_report(time_model, file_name, file_path=None, add_settings=True):
+    """Generate and save out a PDF report for a group of power spectrum models.
+
+    Parameters
+    ----------
+    time_model : SpectralTimeModel
+        Object with results from fitting a group of power spectra.
+    file_name : str
+        Name to give the saved out file.
+    file_path : str, optional
+        Path to directory to save to. If None, saves to current directory.
+    add_settings : bool, optional, default: True
+        Whether to add a print out of the model settings to the end of the report.
+    """
+
+    # Check model object for number of bands, to decide report size
+    pe_labels = get_periodic_labels(time_model.time_results)
+    n_bands = len(pe_labels['cf'])
+
+    # Initialize figure, defining number of axes based on model + what is to be plotted
+    n_rows = 1 + 2 + n_bands + (1 if add_settings else 0)
+    height_ratios = [1.0] + [0.5] * (n_bands + 2) + ([0.4] if add_settings else [])
+    _, axes = plt.subplots(n_rows, 1,
+                           gridspec_kw={'hspace' : 0.35, 'height_ratios' : height_ratios},
+                           figsize=REPORT_FIGSIZE)
+
+    # First / top: text results
+    results_str = gen_time_results_str(time_model)
+    axes[0].text(0.5, 0.7, results_str, REPORT_FONT, ha='center', va='center')
+    axes[0].set_frame_on(False)
+    axes[0].set(xticks=[], yticks=[])
+
+    # Second - data plots
+    time_model.plot(axes=axes[1:2+n_bands+1])
+
+    # Third - Model settings
+    if add_settings:
+        settings_str = gen_settings_str(time_model, False)
+        axes[-1].text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')
+        axes[-1].set_frame_on(False)
+        axes[-1].set(xticks=[], yticks=[])
 
     # Save out the report
     plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
