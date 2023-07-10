@@ -6,10 +6,10 @@ import numpy as np
 
 from specparam.bands import Bands
 from specparam.data import FitResults
-from specparam.objs import SpectralModel, SpectralGroupModel
+from specparam.objs import SpectralModel, SpectralGroupModel, SpectralTimeModel
 from specparam.core.modutils import safe_import
 from specparam.sim.params import param_sampler
-from specparam.sim.sim import sim_power_spectrum, sim_group_power_spectra
+from specparam.sim.sim import sim_power_spectrum, sim_group_power_spectra, sim_spectrogram
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -40,6 +40,18 @@ def get_tfg():
     tfg.fit(xs, ys)
 
     return tfg
+
+def get_tft():
+    """Get a time object, with some fit power spectra, for testing."""
+
+    n_spectra = 3
+    xs, ys = sim_spectrogram(n_spectra, *default_group_params())
+
+    bands = Bands({'alpha' : (7, 14), 'beta' : (15, 30)})
+    tft = SpectralTimeModel(verbose=False)
+    tft.fit(xs, ys, peak_org=bands)
+
+    return tft
 
 def get_tbands():
     """Get a bands object, for testing."""

@@ -7,7 +7,8 @@ import pytest
 import numpy as np
 
 from specparam.core.modutils import safe_import
-from specparam.tests.tutils import get_tfm, get_tfg, get_tbands, get_tresults, get_tdocstring
+from specparam.tests.tutils import (get_tfm, get_tfg, get_tft, get_tbands,
+                                    get_tresults, get_tdocstring)
 from specparam.tests.settings import (BASE_TEST_FILE_PATH, TEST_DATA_PATH,
                                       TEST_REPORTS_PATH, TEST_PLOTS_PATH)
 
@@ -42,6 +43,10 @@ def tfm():
 @pytest.fixture(scope='session')
 def tfg():
     yield get_tfg()
+
+@pytest.fixture(scope='session')
+def tft():
+    yield get_tft()
 
 @pytest.fixture(scope='session')
 def tbands():
