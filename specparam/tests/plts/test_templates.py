@@ -29,3 +29,18 @@ def test_plot_hist(skip_if_no_mpl):
 
     data = np.random.randint(0, 100, 100)
     plot_hist(data, 'label', 'title')
+
+@plot_test
+def test_plot_param_over_time():
+
+    param = np.array([1, 2, 3, 2, 1, 2, 4, 2, 3, 2, 1])
+
+    plot_param_over_time(param, label='param', color='red')
+
+@plot_test
+def test_plot_params_over_time():
+
+    params = [np.array([1, 2, 3, 2, 1, 2, 4, 2, 3, 2, 1]),
+              np.array([2, 3, 2, 1, 2, 4, 2, 3, 2, 1, 2])]
+
+    plot_params_over_time(params, labels=['param1', 'param2'], colors=['blue', 'red'])
