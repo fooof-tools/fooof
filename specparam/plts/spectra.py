@@ -193,3 +193,38 @@ def plot_spectra_yshade(freqs, power_spectra, shade='std', average='mean', scale
                     alpha=alpha, color=color, **plot_kwargs)
 
     style_spectrum_plot(ax, log_freqs, log_powers)
+
+
+@savefig
+@style_plot
+@check_dependency(plt, 'matplotlib')
+def plot_spectrogram(freqs, powers, times=None, **plot_kwargs):
+    """Plot a spectrogram.
+
+    Parameters
+    ----------
+    freqs : 1d array
+        Frequency values.
+    powers : 2d array
+        Power values for the spectrogram, organized as [n_frequencies, n_time_windows].
+    times : 1d array, optional
+        Time values for the time windows.
+    **plot_kwargs
+        Keyword arguments to pass into the ``style_plot``.
+    """
+
+    _, ax = plt.subplots(figsize=(12, 6))
+
+    n_freqs, n_times = powers.shape
+
+    ax.imshow(powers, origin='lower', **plot_kwargs)
+
+    ax.set(yticks=np.arange(0, n_freqs, 1)[freqs % 5 == 0],
+           yticklabels=freqs[freqs % 5 == 0])
+
+    if times is not None:
+        ax.set(xticks=np.arange(0, n_times, 1)[times % 10 == 0],
+               xticklabels=times[times % 10 == 0])
+
+    ax.set_xlabel('Time Windows' if times is None else 'Time (s)')
+    ax.set_ylabel('Frequency')
