@@ -435,14 +435,12 @@ def gen_time_results_str(time_model, concise=False):
     if not time_model.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
-    # Extract all the relevant data for printing
+    # Get parameter information needed for printing
     pe_labels = get_periodic_labels(time_model.time_results)
     band_labels = [\
         pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
         for band_ind in range(len(pe_labels['cf']))]
-
-    kns = time_model.get_params('aperiodic_params', 'knee') \
-       if time_model.aperiodic_mode == 'knee' else np.array([0])
+    has_knee = time_model.aperiodic_mode == 'knee'
 
     str_lst = [
 
@@ -469,8 +467,10 @@ def gen_time_results_str(time_model, concise=False):
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
-                        .format(np.nanmin(kns), np.nanmax(kns), np.nanmean(kns)),
-                       ] if time_model.aperiodic_mode == 'knee'],
+                        .format(np.nanmin(time_model.time_results['knee'] if has_knee else 0),
+                                np.nanmax(time_model.time_results['knee'] if has_knee else 0),
+                                np.nanmean(time_model.time_results['knee'] if has_knee else 0)),
+                       ] if has_knee],
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(np.nanmin(time_model.time_results['exponent']),
                 np.nanmax(time_model.time_results['exponent']),
@@ -508,7 +508,6 @@ def gen_time_results_str(time_model, concise=False):
     output = _format(str_lst, concise)
 
     return output
-
 
 
 def gen_issue_str(concise=False):
