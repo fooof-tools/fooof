@@ -3,9 +3,78 @@
 from itertools import repeat
 
 import numpy as np
+from scipy.stats import sem
 
 ###################################################################################################
 ###################################################################################################
+
+AVG_FUNCS = {
+    'mean' : np.mean,
+    'median' : np.median,
+}
+
+DISPERSION_FUNCS = {
+    'var' : np.var,
+    'std' : np.std,
+    'sem' : sem,
+}
+
+###################################################################################################
+###################################################################################################
+
+def compute_average(data, average='mean'):
+    """Compute the average across an array of data.
+
+    Parameters
+    ----------
+    data : 2d array
+        Data to compute average across.
+        Average is computed across the 0th axis.
+    average : {'mean', 'median'} or callable
+        Which approach to take to compute the average.
+
+    Returns
+    -------
+    avg_data : 1d array
+        Average across given data array.
+    """
+
+    if isinstance(average, str) and data.ndim == 2:
+        avg_data = AVG_FUNCS[average](data, axis=0)
+    elif isfunction(average) and data.ndim == 2:
+        avg_data = average(data)
+    else:
+        avg_data = data
+
+    return avg_data
+
+
+def compute_dispersion(data, dispersion='std'):
+    """Compute the dispersion across an array of data.
+
+    Parameters
+    ----------
+    data : 2d array
+        Data to compute dispersion across.
+        Dispersion is computed across the 0th axis.
+    dispersion : {'var', 'std', 'sem'}
+        Which approach to take to compute the dispersion.
+
+    Returns
+    -------
+    dispersion_data : 1d array
+        Dispersion across given data array.
+    """
+
+    if isinstance(dispersion, str):
+        dispersion_data = DISPERSION_FUNCS[dispersion](data, axis=0)
+    elif isfunction(dispersion):
+        dispersion_data = dispersion(data)
+    else:
+        dispersion_data = data
+
+    return dispersion_data
+
 
 def trim_spectrum(freqs, power_spectra, f_range):
     """Extract a frequency range from power spectra.

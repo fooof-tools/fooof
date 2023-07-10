@@ -9,6 +9,33 @@ from specparam.utils.data import *
 ###################################################################################################
 ###################################################################################################
 
+def test_compute_average():
+
+    data = np.array([[0., 1., 2., 3., 4., 5.],
+                     [1., 2., 3., 4., 5., 6.],
+                     [5., 6., 7., 8., 9., 8.]])
+
+    out1 = compute_average(data, 'mean')
+    assert isinstance(out1, np.ndarray)
+
+    out2 = compute_average(data, 'median')
+    assert not np.array_equal(out2, out1)
+
+def test_compute_dispersion():
+
+    data = np.array([[0., 1., 2., 3., 4., 5.],
+                     [1., 2., 3., 4., 5., 6.],
+                     [5., 6., 7., 8., 9., 8.]])
+
+    out1 = compute_dispersion(data, 'var')
+    assert isinstance(out1, np.ndarray)
+
+    out2 = compute_dispersion(data, 'std')
+    assert not np.array_equal(out2, out1)
+
+    out3 = compute_dispersion(data, 'sem')
+    assert not np.array_equal(out3, out1)
+
 def test_trim_spectrum():
 
     f_in = np.array([0., 1., 2., 3., 4., 5.])
