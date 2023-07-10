@@ -35,7 +35,7 @@ def transpose_arg1(func):
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
 class SpectralTimeModel(SpectralGroupModel):
-    """Model a group of power spectra as a combination of aperiodic and periodic components.
+    """Model a spectrogram as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
 
@@ -133,7 +133,7 @@ class SpectralTimeModel(SpectralGroupModel):
 
     def report(self, freqs=None, power_spectra=None, freq_range=None,
                peak_org=None, report_type='time', n_jobs=1, progress=None):
-        """Fit a group of power spectra and display a report, with a plot and printed results.
+        """Fit a spectrogram and display a report, with a plot and printed results.
 
         Parameters
         ----------
@@ -234,7 +234,7 @@ class SpectralTimeModel(SpectralGroupModel):
 
 
     def load(self, file_name, file_path=None, peak_org=None):
-        """Load group data from file.
+        """Load time data from file.
 
         Parameters
         ----------
