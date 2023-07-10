@@ -137,12 +137,14 @@ def plot_hist(data, label, title=None, n_bins=25, x_lims=None, ax=None):
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_param_over_time(param, label=None, title=None, add_legend=True, add_xlabel=True,
-                         ax=None, **plot_kwargs):
+def plot_param_over_time(times, param, label=None, title=None, add_legend=True, add_xlabel=True,
+                         drop_xticks=False, ax=None, **plot_kwargs):
     """Plot a parameter over time.
 
     Parameters
     ----------
+    times : 1d array
+        xx
     param : 1d array
         Parameter values to plot.
     label : str, optional
@@ -161,13 +163,19 @@ def plot_param_over_time(param, label=None, title=None, add_legend=True, add_xla
 
     n_windows = len(param)
 
-    ax.plot(param, label=label,
+    if times is None:
+        times = np.arange(0, len(param))
+
+    ax.plot(times, param, label=label,
             alpha=plot_kwargs.pop('alpha', 0.8),
             **plot_kwargs)
 
     if add_xlabel:
         ax.set_xlabel('Time Window')
     ax.set_ylabel(label if label else 'Parameter Value')
+
+    if drop_xticks:
+        ax.set_xticks([], [])
 
     if label and add_legend:
         ax.legend(loc='upper left', framealpha=plot_kwargs.pop('legend_framealpha', 0.9))
@@ -177,7 +185,8 @@ def plot_param_over_time(param, label=None, title=None, add_legend=True, add_xla
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_params_over_time(params, labels=None, title=None, colors=None, ax=None, **plot_kwargs):
+def plot_params_over_time(times, params, labels=None, title=None, colors=None,
+                          ax=None, **plot_kwargs):
     """Plot multiple parameters over time.
 
     Parameters
@@ -207,7 +216,7 @@ def plot_params_over_time(params, labels=None, title=None, colors=None, ax=None,
             axes[ind].spines.right.set_position(("axes", 1.1 + (.1 * nax)))
 
     for cax, cparams, label, color in zip(axes, params, labels, colors):
-        plot_param_over_time(cparams, label, add_legend=False, color=color,
+        plot_param_over_time(times, cparams, label, add_legend=False, color=color,
                              ax=cax, **plot_kwargs)
 
     if bool(labels):

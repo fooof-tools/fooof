@@ -65,12 +65,13 @@ def plot_time_model(time_model, save_fig=False, file_name=None, file_path=None, 
         ap_labels.insert(1, 'Knee')
         ap_colors.insert(1, PARAM_COLORS['knee'])
 
-    plot_params_over_time(ap_params, labels=ap_labels, add_xlabel=False,
+    plot_params_over_time(None, ap_params, labels=ap_labels, add_xlabel=False,
                           colors=ap_colors, title='Aperiodic', ax=next(axes))
 
     # 02: periodic parameters
     for band_ind in range(n_bands):
         plot_params_over_time(\
+            None,
             [time_model.time_results[pe_labels['cf'][band_ind]],
              time_model.time_results[pe_labels['pw'][band_ind]],
              time_model.time_results[pe_labels['bw'][band_ind]]],
@@ -79,7 +80,8 @@ def plot_time_model(time_model, save_fig=False, file_name=None, file_path=None, 
             title='Periodic', ax=next(axes))
 
     # 03: goodness of fit
-    plot_params_over_time([time_model.time_results['error'],
+    plot_params_over_time(None,
+                          [time_model.time_results['error'],
                            time_model.time_results['r_squared']],
                           labels=['Error', 'R-squared'],
                           colors=[PARAM_COLORS['error'], PARAM_COLORS['r_squared']],
