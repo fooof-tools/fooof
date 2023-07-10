@@ -25,7 +25,7 @@ def get_description():
     """
 
     attributes = {'results' : ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
-                               'r_squared_', 'error_'],
+                               'r_squared_', 'adj_r_squared_', 'error_'],
                   'settings' : ['peak_width_limits', 'max_n_peaks',
                                 'min_peak_height', 'peak_threshold',
                                 'aperiodic_mode'],

@@ -56,7 +56,8 @@ class FOOOFMetaData(namedtuple('FOOOFMetaData', ['freq_range', 'freq_res'])):
 
 
 class FOOOFResults(namedtuple('FOOOFResults', ['aperiodic_params', 'peak_params',
-                                               'r_squared', 'error', 'gaussian_params'])):
+                                               'r_squared', 'adj_r_squared', 'error',
+                                                'gaussian_params'])):
     """Model results from parameterizing a power spectrum.
 
     Parameters
@@ -68,6 +69,9 @@ class FOOOFResults(namedtuple('FOOOFResults', ['aperiodic_params', 'peak_params'
         Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
     r_squared : float
         R-squared of the fit between the full model fit and the input data.
+    adj_r_squared : float
+        R-squared of the fit between the full model fit and the input data, 
+        adjusted for the number of parameters in the model.
     error : float
         Error of the full model fit.
     gaussian_params : 2d array

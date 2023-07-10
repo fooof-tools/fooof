@@ -130,6 +130,9 @@ class FOOOF():
         Each row is a gaussian, as [mean, height, standard deviation].
     r_squared_ : float
         R-squared of the fit between the input power spectrum and the full model fit.
+    adj_r_squared_ : float
+        Adjusted R-squared of the fit between the input power spectrum and the full model fit,
+         adjusted for the number of parameters in the model.
     error_ : float
         Error of the full model fit.
     n_peaks_ : int
@@ -287,6 +290,7 @@ class FOOOF():
             self.gaussian_params_ = np.empty([0, 3])
             self.peak_params_ = np.empty([0, 3])
             self.r_squared_ = np.nan
+            self.adj_r_squared_ = np.nan
             self.error_ = np.nan
 
             self.fooofed_spectrum_ = None
@@ -373,6 +377,7 @@ class FOOOF():
         self.gaussian_params_ = fooof_result.gaussian_params
         self.peak_params_ = fooof_result.peak_params
         self.r_squared_ = fooof_result.r_squared
+        self.adj_r_squared_ = fooof_result.adj_r_squared
         self.error_ = fooof_result.error
 
         self._check_loaded_results(fooof_result._asdict())
@@ -576,7 +581,7 @@ class FOOOF():
 
         Parameters
         ----------
-        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
+        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared', 'adj_r_squared'}
             Name of the data field to extract.
         col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
             Column name / index to extract from selected data, if requested.
@@ -1132,8 +1137,14 @@ class FOOOF():
     def _calc_r_squared(self):
         """Calculate the r-squared goodness of fit of the model, compared to the original data."""
 
+        # compute r-squared
         r_val = np.corrcoef(self.power_spectrum, self.fooofed_spectrum_)
         self.r_squared_ = r_val[0][1] ** 2
+        
+        # compute adjusted r-squared
+        n = len(self.power_spectrum) # number of data points
+        k = len(self.peak_params_) * 3 + 2 # number of parameters
+        self.adj_r_squared_ = 1 - (1 - self.r_squared_) * (n - 1) / (n - k - 1)
 
 
     def _calc_error(self, metric=None):

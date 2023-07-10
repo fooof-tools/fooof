@@ -98,10 +98,11 @@ def average_fg(fg, bands, avg_method='mean', regenerate=True):
 
     # Goodness of fit measures: extract & average
     r2 = avg_func(fg.get_params('r_squared'))
+    adj_r2 = avg_func(fg.get_params('adj_r_squared'))
     error = avg_func(fg.get_params('error'))
 
     # Collect all results together, to be added to FOOOF object
-    results = FOOOFResults(ap_params, peak_params, r2, error, gauss_params)
+    results = FOOOFResults(ap_params, peak_params, r2, adj_r2, error, gauss_params)
 
     # Create the new FOOOF object, with settings, data info & results
     fm = FOOOF()
