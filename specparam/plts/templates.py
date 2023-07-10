@@ -10,6 +10,7 @@ from itertools import repeat, cycle
 
 import numpy as np
 
+from specparam.utils.data import compute_average, compute_dispersion
 from specparam.core.modutils import safe_import, check_dependency
 from specparam.plts.utils import check_ax, set_alpha
 from specparam.plts.settings import PLT_FIGSIZES, PLT_COLORS, DEFAULT_COLORS
@@ -182,6 +183,51 @@ def plot_param_over_time(times, param, label=None, title=None, add_legend=True, 
 
     if title:
         ax.set_title(title)
+
+
+@check_dependency(plt, 'matplotlib')
+def plot_yshade(x_vals, y_vals, average='mean', shade='std', scale=1., color=None,
+                plot_function=None, ax=None, **plot_kwargs):
+    """Create a plot with y-shading.
+
+    Parameters
+    ----------
+    x_vals : 1d array
+        Data values to be plotted on the x-axis.
+    y_vals : 1d or 2d array
+        Data values to be plotted on the y-axis. `shade` must be provided if 1d.
+    average : 'mean', 'median' or callable, optional, default: 'mean'
+        Averaging approach for plotting the average. Only used if y_vals is 2d.
+    shade : 'std', 'sem', 1d array or callable, optional, default: 'std'
+        Approach for shading above/below the average.
+    scale : float, optional, default: 1.
+        Factor to multiply the plotted shade by.
+    color : str, optional, default: None
+        Color to plot.
+    plot_function : callable, optional
+        xx
+    ax : matplotlib.Axes, optional
+        Figure axes upon which to plot.
+    **plot_kwargs
+        Additional keyword arguments to pass into the plot function.
+    """
+
+    ax = check_ax(ax)
+
+    shade_alpha = plot_kwargs.pop('shade_alpha', 0.25)
+
+    avg_data = compute_average(y_vals, average=average)
+    if plot_function:
+        plot_function(x_vals, avg_data, color=color, ax=ax, **plot_kwargs)
+    else:
+        ax.plot(x_vals, avg_data, color=color, **plot_kwargs)
+
+    # Compute shade values and apply scaling
+    shade_vals = compute_dispersion(y_vals, shade) * scale
+
+    # Plot +/- yshading around spectrum
+    ax.fill_between(x_vals, avg_data - shade_vals, avg_data + shade_vals,
+                    alpha=shade_alpha, color=color)
 
 
 @check_dependency(plt, 'matplotlib')

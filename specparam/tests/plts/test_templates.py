@@ -31,6 +31,13 @@ def test_plot_hist(skip_if_no_mpl):
     plot_hist(data, 'label', 'title')
 
 @plot_test
+def test_plot_yshade(skip_if_no_mpl):
+
+    xs = np.array([1, 2, 3])
+    ys = np.array([[1, 2, 3], [2, 3, 4]])
+    plot_yshade(xs, ys)
+
+@plot_test
 def test_plot_param_over_time():
 
     param = np.array([1, 2, 3, 2, 1, 2, 4, 2, 3, 2, 1])
