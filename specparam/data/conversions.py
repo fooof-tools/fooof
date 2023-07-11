@@ -103,7 +103,7 @@ def group_to_dict(fit_results, peak_org):
         Model results organized into a dictionary.
     """
 
-    fr_dict = {ke : [] for ke in model_to_dict(fit_results[0], peak_org).keys()}
+    fr_dict = {ke : [] for ke in model_to_dict(fit_results[0], peak_org)}
     for f_res in fit_results:
         for key, val in model_to_dict(f_res, peak_org).items():
             fr_dict[key].append(val)

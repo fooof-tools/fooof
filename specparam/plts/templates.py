@@ -13,7 +13,7 @@ import numpy as np
 from specparam.utils.data import compute_average, compute_dispersion
 from specparam.core.modutils import safe_import, check_dependency
 from specparam.plts.utils import check_ax, set_alpha
-from specparam.plts.settings import PLT_FIGSIZES, PLT_COLORS, DEFAULT_COLORS
+from specparam.plts.settings import PLT_FIGSIZES, DEFAULT_COLORS
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -207,8 +207,6 @@ def plot_param_over_time(times, param, label=None, title=None, add_legend=True, 
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['time']))
-
-    n_windows = len(param)
 
     if times is None:
         times = np.arange(0, len(param))

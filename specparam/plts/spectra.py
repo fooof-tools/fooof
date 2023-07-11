@@ -9,7 +9,6 @@ from inspect import isfunction
 from itertools import repeat, cycle
 
 import numpy as np
-from scipy.stats import sem
 
 from specparam.core.modutils import safe_import, check_dependency
 from specparam.plts.templates import plot_yshade

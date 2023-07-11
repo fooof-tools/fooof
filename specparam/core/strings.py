@@ -452,7 +452,8 @@ def gen_time_results_str(time_model, concise=False):
 
         # Group information
         'Number of time windows fit: {}'.format(len(time_model.group_results)),
-        *[el for el in ['{} power spectra failed to fit'.format(time_model.n_null_)] if time_model.n_null_],
+        *[el for el in ['{} power spectra failed to fit'.format(time_model.n_null_)] \
+            if time_model.n_null_],
         '',
 
         # Frequency range and resolution
@@ -565,9 +566,12 @@ def gen_event_results_str(event_model, concise=False):
         '',
         'Aperiodic params (values across events):',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
-                        .format(np.nanmin(np.mean(event_model.event_time_results['knee'], 1) if has_knee else 0),
-                                np.nanmax(np.mean(event_model.event_time_results['knee'], 1) if has_knee else 0),
-                                np.nanmean(np.mean(event_model.event_time_results['knee'], 1) if has_knee else 0)),
+                        .format(np.nanmin(np.mean(event_model.event_time_results['knee'], 1) \
+                                    if has_knee else 0),
+                                np.nanmax(np.mean(event_model.event_time_results['knee'], 1) \
+                                    if has_knee else 0),
+                                np.nanmean(np.mean(event_model.event_time_results['knee'], 1) \
+                                    if has_knee else 0)),
                        ] if has_knee],
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(np.nanmin(np.mean(event_model.event_time_results['exponent'], 1)),

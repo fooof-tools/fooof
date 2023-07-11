@@ -32,7 +32,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
     ----------
     freqs : 1d array
         Frequency values for the power spectra.
-    spectrograms : list 2d array
+    spectrograms : list of 2d array
         Power values for the spectrograms, which each array as [n_freqs, n_time_windows].
         Power values are stored internally in log10 scale.
     freq_range : list of [float, float]
@@ -119,7 +119,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
             Frequency values for the power spectra, in linear space.
         spectrograms : list of 2d array, shape=[n_freqs, n_time_windows]
             Matrix of power values, in linear space.
-            Each spectrogram should reflect a separate event, each with the same set of time windows.
+            Each spectrogram should an event, each with the same set of time windows.
         freq_range : list of [float, float], optional
             Frequency range to restrict power spectra to. If not provided, keeps the entire range.
 
@@ -158,7 +158,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
             Frequency values for the power_spectra, in linear space.
         spectrograms : list of 2d array, shape=[n_freqs, n_time_windows]
             Matrix of power values, in linear space.
-            Each spectrogram should reflect a separate event, each with the same set of time windows.
+            Each spectrogram should an event, each with the same set of time windows.
         freq_range : list of [float, float], optional
             Frequency range to fit the model to. If not provided, fits the entire given range.
         peak_org : int or Bands
@@ -191,7 +191,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
             Frequency values for the power_spectra, in linear space.
         spectrograms : list of 2d array, shape=[n_freqs, n_time_windows]
             Matrix of power values, in linear space.
-            Each spectrogram should reflect a separate event, each with the same set of time windows.
+            Each spectrogram should an event, each with the same set of time windows.
         freq_range : list of [float, float], optional
             Frequency range to fit the model to. If not provided, fits the entire given range.
         peak_org : int or Bands
@@ -273,7 +273,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
             for key in dictres:
                 self.event_time_results[key].append(dictres[key])
 
-        for key in self.event_time_results.keys():
+        for key in self.event_time_results:
             self.event_time_results[key] = np.array(self.event_time_results[key])
 
     # ToDo: check & figure out adding `load` method
