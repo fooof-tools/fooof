@@ -25,15 +25,14 @@ def test_time_model():
     ft = SpectralTimeModel(verbose=False)
     assert isinstance(ft, SpectralTimeModel)
 
-def test_time_iter(tft):
-
-    for out in tft:
-        print(out)
-        assert out
-
 def test_time_getitem(tft):
 
     assert tft[0]
+
+def test_time_iter(tft):
+
+    for out in tft:
+        assert out
 
 def test_time_fit():
 

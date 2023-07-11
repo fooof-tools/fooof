@@ -34,16 +34,16 @@ def test_group():
     fg = SpectralGroupModel(verbose=False)
     assert isinstance(fg, SpectralGroupModel)
 
+def test_getitem(tfg):
+    """Check indexing, from custom `__getitem__` in group object."""
+
+    assert tfg[0]
+
 def test_iter(tfg):
     """Check iterating through group object."""
 
     for res in tfg:
         assert res
-
-def test_getitem(tfg):
-    """Check indexing, from custom `__getitem__` in group object."""
-
-    assert tfg[0]
 
 def test_has_data(tfg):
     """Test the has_data property attribute, with and without data."""

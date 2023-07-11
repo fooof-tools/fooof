@@ -27,7 +27,6 @@ SAVE_FORMAT = 'pdf'
 @check_dependency(plt, 'matplotlib')
 def save_model_report(model, file_name, file_path=None, plt_log=False,
                       add_settings=True, **plot_kwargs):
-
     """Generate and save out a PDF report for a power spectrum model fit.
 
     Parameters
@@ -80,7 +79,7 @@ def save_model_report(model, file_name, file_path=None, plt_log=False,
 
 @check_dependency(plt, 'matplotlib')
 def save_group_report(group, file_name, file_path=None, add_settings=True):
-    """Generate and save out a PDF report for a group of power spectrum models.
+    """Generate and save out a PDF report for models of a group of power spectra.
 
     Parameters
     ----------
@@ -138,12 +137,12 @@ def save_group_report(group, file_name, file_path=None, add_settings=True):
 
 @check_dependency(plt, 'matplotlib')
 def save_time_report(time_model, file_name, file_path=None, add_settings=True):
-    """Generate and save out a PDF report for a group of power spectrum models.
+    """Generate and save out a PDF report for models of a spectrogram.
 
     Parameters
     ----------
     time_model : SpectralTimeModel
-        Object with results from fitting a group of power spectra.
+        Object with results from fitting a spectrogram.
     file_name : str
         Name to give the saved out file.
     file_path : str, optional

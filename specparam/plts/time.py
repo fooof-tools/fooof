@@ -1,4 +1,4 @@
-"""Plots for the group model object.
+"""Plots for the time model object.
 
 Notes
 -----

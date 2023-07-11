@@ -1,4 +1,4 @@
-"""Time model object and associated code for fitting the model to spectra across time."""
+"""Time model object and associated code for fitting the model to spectrograms."""
 
 from functools import wraps
 
@@ -79,13 +79,6 @@ class SpectralTimeModel(SpectralGroupModel):
         SpectralGroupModel.__init__(self, *args, **kwargs)
 
         self._reset_time_results()
-
-
-    def __iter__(self):
-        """Allow for iterating across the object by stepping across fit results per time window."""
-
-        for ind in range(len(self)):
-            yield self[ind]
 
 
     def __getitem__(self, ind):
