@@ -510,6 +510,104 @@ def gen_time_results_str(time_model, concise=False):
     return output
 
 
+def gen_event_results_str(event_model, concise=False):
+    """Generate a string representation of event fit results.
+
+    Parameters
+    ----------
+    event_model : SpectralTimeEventModel
+        Object to access results from.
+    concise : bool, optional, default: False
+        Whether to print the report in concise mode.
+
+    Returns
+    -------
+    output : str
+        Formatted string of results.
+
+    Raises
+    ------
+    NoModelError
+        If no model fit data is available to report.
+    """
+
+    if not event_model.has_model:
+        raise NoModelError("No model fit results are available, can not proceed.")
+
+    # Extract all the relevant data for printing
+    pe_labels = get_periodic_labels(event_model.event_time_results)
+    band_labels = [\
+        pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
+        for band_ind in range(len(pe_labels['cf']))]
+    has_knee = event_model.aperiodic_mode == 'knee'
+
+    str_lst = [
+
+        # Header
+        '=',
+        '',
+        'EVENT RESULTS',
+        '',
+
+        # Group information
+        'Number of events fit: {}'.format(len(event_model.event_group_results)),
+        '',
+
+        # Frequency range and resolution
+        'The model was run on the frequency range {} - {} Hz'.format(
+            int(np.floor(event_model.freq_range[0])), int(np.ceil(event_model.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(event_model.freq_res),
+        '',
+
+        # Aperiodic parameters - knee fit status, and quick exponent description
+        'Power spectra were fit {} a knee.'.format(\
+            'with' if event_model.aperiodic_mode == 'knee' else 'without'),
+        '',
+        'Aperiodic params (values across events):',
+        *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
+                        .format(np.nanmin(np.mean(event_model.event_time_results['knee'], 1) if has_knee else 0),
+                                np.nanmax(np.mean(event_model.event_time_results['knee'], 1) if has_knee else 0),
+                                np.nanmean(np.mean(event_model.event_time_results['knee'], 1) if has_knee else 0)),
+                       ] if has_knee],
+        'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(np.nanmin(np.mean(event_model.event_time_results['exponent'], 1)),
+                np.nanmax(np.mean(event_model.event_time_results['exponent'], 1)),
+                np.nanmean(np.mean(event_model.event_time_results['exponent'], 1))),
+        '',
+
+        # Periodic parameters
+        'Periodic params (mean values across events):',
+        *['{:>6s} - CF: {:5.2f}, PW: {:5.2f}, BW: {:5.2f}, Presence: {:3.1f}%'.format(
+            label,
+            np.nanmean(event_model.event_time_results[pe_labels['cf'][ind]]),
+            np.nanmean(event_model.event_time_results[pe_labels['pw'][ind]]),
+            np.nanmean(event_model.event_time_results[pe_labels['bw'][ind]]),
+            100 * sum(sum(~np.isnan(event_model.event_time_results[pe_labels['cf'][ind]]))) \
+                / event_model.event_time_results[pe_labels['cf'][ind]].size)
+                for ind, label in enumerate(band_labels)],
+        '',
+
+        # Goodness if fit
+        'Goodness of fit (values across events):',
+        '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(np.nanmin(np.mean(event_model.event_time_results['r_squared'], 1)),
+                np.nanmax(np.mean(event_model.event_time_results['r_squared'], 1)),
+                np.nanmean(np.mean(event_model.event_time_results['r_squared'], 1))),
+        'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(np.nanmin(np.mean(event_model.event_time_results['error'], 1)),
+                np.nanmax(np.mean(event_model.event_time_results['error'], 1)),
+                np.nanmean(np.mean(event_model.event_time_results['error'], 1))),
+        '',
+
+        # Footer
+        '='
+    ]
+
+    output = _format(str_lst, concise)
+
+    return output
+
+
 def gen_issue_str(concise=False):
     """Generate a string representation of instructions to report an issue.
 
