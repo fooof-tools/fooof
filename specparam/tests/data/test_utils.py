@@ -2,6 +2,8 @@
 
 from copy import deepcopy
 
+import numpy as np
+
 from specparam.data.utils import *
 
 ###################################################################################################
@@ -74,3 +76,28 @@ def test_get_results_by_ind():
     out1 = get_results_by_ind(tdict, ind)
     for key in tdict.keys():
         assert out1[key] == tdict[key][ind]
+
+
+def test_get_results_by_row():
+
+    tdict = {
+        'offset' : np.array([[0, 1], [2, 3]]),
+        'exponent' : np.array([[0, 1], [2, 3]]),
+        'error' : np.array([[0, 1], [2, 3]]),
+        'r_squared' : np.array([[0, 1], [2, 3]]),
+        'alpha_cf' : np.array([[0, 1], [2, 3]]),
+        'alpha_pw' : np.array([[0, 1], [2, 3]]),
+        'alpha_bw' : np.array([[0, 1], [2, 3]]),
+    }
+
+    ind = 0
+    out0 = get_results_by_row(tdict, ind)
+    assert isinstance(out0, dict)
+    for key in tdict.keys():
+        assert key in out0.keys()
+        assert np.array_equal(out0[key], tdict[key][ind])
+
+    ind = 1
+    out1 = get_results_by_row(tdict, ind)
+    for key in tdict.keys():
+        assert np.array_equal(out1[key], tdict[key][ind])

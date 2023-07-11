@@ -48,3 +48,26 @@ def get_results_by_ind(results, ind):
         out[key] = results[key][ind]
 
     return out
+
+
+def get_results_by_row(results, ind):
+    """Get a specified index from a dictionary of results across events.
+
+    Parameters
+    ----------
+    results : dict
+        A results dictionary with parameter label keys and corresponding parameter values.
+    ind : int
+        Index to extract from results.
+
+    Returns
+    -------
+    dict
+        Dictionary including the results for the specified index.
+    """
+
+    outs = {}
+    for key in results.keys():
+        outs[key] = results[key][ind, :]
+
+    return outs
