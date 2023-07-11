@@ -94,17 +94,17 @@ class SpectralGroupModel(SpectralModel):
         return len(self.group_results)
 
 
-    def __iter__(self):
-        """Allow for iterating across the object by stepping across model fit results."""
-
-        for result in self.group_results:
-            yield result
-
-
     def __getitem__(self, index):
         """Allow for indexing into the object to select model fit results."""
 
         return self.group_results[index]
+
+
+    def __iter__(self):
+        """Allow for iterating across the object by stepping across model fit results."""
+
+        for ind in range(len(self)):
+            yield self[ind]
 
 
     @property
