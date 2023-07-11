@@ -1,0 +1,83 @@
+"""Plots for the event model object.
+
+Notes
+-----
+This file contains plotting functions that take as input an event model object.
+"""
+
+from itertools import cycle
+
+from specparam.data.utils import get_periodic_labels
+from specparam.plts.utils import savefig
+from specparam.plts.templates import plot_param_over_time_yshade
+from specparam.plts.settings import PARAM_COLORS
+from specparam.core.errors import NoModelError
+from specparam.core.modutils import safe_import, check_dependency
+
+plt = safe_import('.pyplot', 'matplotlib')
+
+###################################################################################################
+###################################################################################################
+
+@savefig
+@check_dependency(plt, 'matplotlib')
+def plot_event_model(event_model, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
+    """Plot a figure with subplots visualizing the parameters from a SpectralTimeEventModel object.
+
+    Parameters
+    ----------
+    event_model : SpectralTimeEventModel
+        Object containing results from fitting power spectra across events.
+    save_fig : bool, optional, default: False
+        Whether to save out a copy of the plot.
+    file_name : str, optional
+        Name to give the saved out file.
+    file_path : str, optional
+        Path to directory to save to. If None, saves to current directory.
+
+    Raises
+    ------
+    NoModelError
+        If the model object does not have model fit data available to plot.
+    """
+
+    if not event_model.has_model:
+        raise NoModelError("No model fit results are available, can not proceed.")
+
+    pe_labels = get_periodic_labels(event_model.event_time_results)
+    n_bands = len(pe_labels['cf'])
+
+    has_knee = 'knee' in event_model.event_time_results.keys()
+    height_ratios = [1] * (3 if has_knee else 2) + [0.25, 1, 1, 1] * n_bands + [0.25] + [1, 1]
+
+    if plot_kwargs.pop('axes', None) is None:
+        _, axes = plt.subplots((4 if has_knee else 3) + (n_bands * 4) + 2, 1,
+                               gridspec_kw={'hspace' : 0.1, 'height_ratios' : height_ratios},
+                               figsize=plot_kwargs.pop('figsize', [10, 4 + 4 * n_bands]))
+    axes = cycle(axes)
+
+    # 01: aperiodic params
+    alabels = ['offset', 'knee', 'exponent'] if has_knee else ['offset', 'exponent']
+    for alabel in alabels:
+            plot_param_over_time_yshade(None, event_model.event_time_results[alabel],
+                                        label=alabel, drop_xticks=True, add_xlabel=False,
+                                        title='Aperiodic' if alabel == 'offset' else None,
+                                        color=PARAM_COLORS[alabel], ax=next(axes))
+    next(axes).axis('off')
+
+    # 02: periodic params
+    for band_ind in range(n_bands):
+        for plabel in ['cf', 'pw', 'bw']:
+            plot_param_over_time_yshade(None, event_model.event_time_results[pe_labels[plabel][band_ind]],
+                                        label=plabel.upper(), drop_xticks=True, add_xlabel=False,
+                                        title='Periodic' if plabel == 'cf' else None,
+                                        color=PARAM_COLORS[plabel], ax=next(axes))
+        next(axes).axis('off')
+
+    # 03: goodness of fit
+    for glabel in ['error', 'r_squared']:
+        plot_param_over_time_yshade(None, event_model.event_time_results[glabel], label=glabel,
+                                    drop_xticks=False if glabel == 'r_squared' else True,
+                                    add_xlabel=True if glabel == 'r_squared' else False,
+                                    title='Goodness of Fit' if glabel == 'error' else None,
+                                    color=PARAM_COLORS[glabel], ax=next(axes))

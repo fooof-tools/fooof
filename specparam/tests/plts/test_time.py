@@ -19,6 +19,6 @@ def test_plot_time(tft, skip_if_no_mpl):
     plot_time_model(tft, file_path=TEST_PLOTS_PATH, file_name='test_plot_time.png')
 
     # Test error if no data available to plot
-    tfg = SpectralTimeModel()
+    ntft = SpectralTimeModel()
     with raises(NoModelError):
-        tfg.plot()
+        ntft.plot()
