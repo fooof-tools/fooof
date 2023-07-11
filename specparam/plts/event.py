@@ -50,7 +50,8 @@ def plot_event_model(event_model, save_fig=False, file_name=None, file_path=None
     has_knee = 'knee' in event_model.event_time_results.keys()
     height_ratios = [1] * (3 if has_knee else 2) + [0.25, 1, 1, 1] * n_bands + [0.25] + [1, 1]
 
-    if plot_kwargs.pop('axes', None) is None:
+    axes = plot_kwargs.pop('axes', None)
+    if axes is None:
         _, axes = plt.subplots((4 if has_knee else 3) + (n_bands * 4) + 2, 1,
                                gridspec_kw={'hspace' : 0.1, 'height_ratios' : height_ratios},
                                figsize=plot_kwargs.pop('figsize', [10, 4 + 4 * n_bands]))
