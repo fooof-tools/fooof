@@ -3,4 +3,5 @@
 from .fit import SpectralModel
 from .group import SpectralGroupModel
 from .time import SpectralTimeModel
+from .event import SpectralTimeEventModel
 from .utils import compare_model_objs, average_group, combine_model_objs, fit_models_3d
