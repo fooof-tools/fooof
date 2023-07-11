@@ -11,7 +11,7 @@ from specparam.core.reports import *
 
 def test_save_model_report(tfm, skip_if_no_mpl):
 
-    file_name = 'test_report'
+    file_name = 'test_model_report'
 
     save_model_report(tfm, file_name, TEST_REPORTS_PATH)
 
@@ -29,6 +29,6 @@ def test_save_time_report(tft, skip_if_no_mpl):
 
     file_name = 'test_time_report'
 
-    save_group_report(tft, file_name, TEST_REPORTS_PATH)
+    save_time_report(tft, file_name, TEST_REPORTS_PATH)
 
     assert os.path.exists(os.path.join(TEST_REPORTS_PATH, file_name + '.pdf'))

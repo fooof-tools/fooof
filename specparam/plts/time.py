@@ -48,7 +48,8 @@ def plot_time_model(time_model, save_fig=False, file_name=None, file_path=None, 
     pe_labels = get_periodic_labels(time_model.time_results)
     n_bands = len(pe_labels['cf'])
 
-    if plot_kwargs.pop('axes', None) is None:
+    axes = plot_kwargs.pop('axes', None)
+    if axes is None:
         _, axes = plt.subplots(2 + n_bands, 1,
                                gridspec_kw={'hspace' : 0.4},
                                figsize=plot_kwargs.pop('figsize', [10, 4 + 2 * n_bands]))
