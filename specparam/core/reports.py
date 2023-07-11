@@ -3,7 +3,8 @@
 from specparam.core.io import fname, fpath
 from specparam.core.modutils import safe_import, check_dependency
 from specparam.core.strings import (gen_settings_str, gen_model_results_str,
-                                    gen_group_results_str, gen_time_results_str)
+                                    gen_group_results_str, gen_time_results_str,
+                                    gen_event_results_str)
 from specparam.data.utils import get_periodic_labels
 from specparam.plts.group import (plot_group_aperiodic, plot_group_goodness,
                                   plot_group_peak_frequencies)
@@ -174,6 +175,56 @@ def save_time_report(time_model, file_name, file_path=None, add_settings=True):
     # Third - Model settings
     if add_settings:
         settings_str = gen_settings_str(time_model, False)
+        axes[-1].text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')
+        axes[-1].set_frame_on(False)
+        axes[-1].set(xticks=[], yticks=[])
+
+    # Save out the report
+    plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+    plt.close()
+
+
+@check_dependency(plt, 'matplotlib')
+def save_event_report(event_model, file_name, file_path=None, add_settings=True):
+    """Generate and save out a PDF report for models of a set of events.
+
+    Parameters
+    ----------
+    event_model : SpectralTimeEventModel
+        Object with results from fitting a group of power spectra.
+    file_name : str
+        Name to give the saved out file.
+    file_path : str, optional
+        Path to directory to save to. If None, saves to current directory.
+    add_settings : bool, optional, default: True
+        Whether to add a print out of the model settings to the end of the report.
+    """
+
+    # Check model object for number of bands & aperiodic mode, to decide report size
+    pe_labels = get_periodic_labels(event_model.event_time_results)
+    n_bands = len(pe_labels['cf'])
+    has_knee = 'knee' in event_model.event_time_results.keys()
+
+    # Initialize figure, defining number of axes based on model + what is to be plotted
+    n_rows = 1 + (4 if has_knee else 3) + (n_bands * 4) + 2 + (1 if add_settings else 0)
+    height_ratios = [2.75] + [1] * (3 if has_knee else 2) + \
+        [0.25, 1, 1, 1] * n_bands + [0.25] + [1, 1] + ([1.5] if add_settings else [])
+    _, axes = plt.subplots(n_rows, 1,
+                           gridspec_kw={'hspace' : 0.1, 'height_ratios' : height_ratios},
+                           figsize=(REPORT_FIGSIZE[0], REPORT_FIGSIZE[1] + 6))
+
+    # First / top: text results
+    results_str = gen_event_results_str(event_model)
+    axes[0].text(0.5, 0.7, results_str, REPORT_FONT, ha='center', va='center')
+    axes[0].set_frame_on(False)
+    axes[0].set(xticks=[], yticks=[])
+
+    # Second - data plots
+    event_model.plot(axes=axes[1:-1])
+
+    # Third - Model settings
+    if add_settings:
+        settings_str = gen_settings_str(event_model, False)
         axes[-1].text(0.5, 0.1, settings_str, REPORT_FONT, ha='center', va='center')
         axes[-1].set_frame_on(False)
         axes[-1].set(xticks=[], yticks=[])

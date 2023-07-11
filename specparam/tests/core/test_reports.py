@@ -32,3 +32,11 @@ def test_save_time_report(tft, skip_if_no_mpl):
     save_time_report(tft, file_name, TEST_REPORTS_PATH)
 
     assert os.path.exists(os.path.join(TEST_REPORTS_PATH, file_name + '.pdf'))
+
+def test_save_event_report(tfe, skip_if_no_mpl):
+
+    file_name = 'test_event_report'
+
+    save_event_report(tfe, file_name, TEST_REPORTS_PATH)
+
+    assert os.path.exists(os.path.join(TEST_REPORTS_PATH, file_name + '.pdf'))
