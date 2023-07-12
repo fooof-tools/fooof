@@ -7,7 +7,7 @@ This file contains plotting functions that take as input an event model object.
 
 from itertools import cycle
 
-from specparam.data.utils import get_periodic_labels
+from specparam.data.utils import get_periodic_labels, get_band_labels
 from specparam.plts.utils import savefig
 from specparam.plts.templates import plot_param_over_time_yshade
 from specparam.plts.settings import PARAM_COLORS
@@ -41,6 +41,7 @@ def plot_event_model(event_model, **plot_kwargs):
         raise NoModelError("No model fit results are available, can not proceed.")
 
     pe_labels = get_periodic_labels(event_model.event_time_results)
+    band_labels = get_band_labels(pe_labels)
     n_bands = len(pe_labels['cf'])
 
     has_knee = 'knee' in event_model.event_time_results.keys()
@@ -59,7 +60,7 @@ def plot_event_model(event_model, **plot_kwargs):
         plot_param_over_time_yshade(\
             None, event_model.event_time_results[alabel],
             label=alabel, drop_xticks=True, add_xlabel=False,
-            title='Aperiodic' if alabel == 'offset' else None,
+            title='Aperiodic Parameters' if alabel == 'offset' else None,
             color=PARAM_COLORS[alabel], ax=next(axes))
     next(axes).axis('off')
 
@@ -69,7 +70,7 @@ def plot_event_model(event_model, **plot_kwargs):
             plot_param_over_time_yshade(\
                 None, event_model.event_time_results[pe_labels[plabel][band_ind]],
                 label=plabel.upper(), drop_xticks=True, add_xlabel=False,
-                title='Periodic' if plabel == 'cf' else None,
+                title='Periodic Parameters - ' + band_labels[band_ind] if plabel == 'cf' else None,
                 color=PARAM_COLORS[plabel], ax=next(axes))
         next(axes).axis('off')
 

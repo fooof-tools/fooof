@@ -7,7 +7,7 @@ This file contains plotting functions that take as input a time model object.
 
 from itertools import cycle
 
-from specparam.data.utils import get_periodic_labels
+from specparam.data.utils import get_periodic_labels, get_band_labels
 from specparam.plts.utils import savefig
 from specparam.plts.templates import plot_params_over_time
 from specparam.plts.settings import PARAM_COLORS
@@ -42,6 +42,7 @@ def plot_time_model(time_model, **plot_kwargs):
 
     # Check band structure
     pe_labels = get_periodic_labels(time_model.time_results)
+    band_labels = get_band_labels(pe_labels)
     n_bands = len(pe_labels['cf'])
 
     axes = plot_kwargs.pop('axes', None)
@@ -63,7 +64,7 @@ def plot_time_model(time_model, **plot_kwargs):
         ap_colors.insert(1, PARAM_COLORS['knee'])
 
     plot_params_over_time(None, ap_params, labels=ap_labels, add_xlabel=False,
-                          colors=ap_colors, title='Aperiodic', ax=next(axes))
+                          colors=ap_colors, title='Aperiodic Parameters', ax=next(axes))
 
     # 02: periodic parameters
     for band_ind in range(n_bands):
@@ -74,7 +75,7 @@ def plot_time_model(time_model, **plot_kwargs):
              time_model.time_results[pe_labels['bw'][band_ind]]],
             labels=['CF', 'PW', 'BW'], add_xlabel=False,
             colors=[PARAM_COLORS['cf'], PARAM_COLORS['pw'], PARAM_COLORS['bw']],
-            title='Periodic', ax=next(axes))
+            title='Periodic Parameters - ' + band_labels[band_ind], ax=next(axes))
 
     # 03: goodness of fit
     plot_params_over_time(None,
