@@ -53,6 +53,28 @@ def test_get_periodic_labels():
         for el in out3[key]:
             assert key in el
 
+def test_get_band_labels():
+
+    tdict1 = {
+        'offset' : [0, 1],
+        'exponent' : [0, 1],
+        'error' : [0, 1],
+        'r_squared' : [0, 1],
+        'alpha_cf' : [0, 1],
+        'alpha_pw' : [0, 1],
+        'alpha_bw' : [0, 1],
+    }
+
+    band_labels1 = get_band_labels(tdict1)
+    assert band_labels1 == ['alpha']
+
+    tdict2 = {'cf': ['alpha_cf', 'beta_cf'],
+              'pw': ['alpha_pw', 'beta_pw'],
+              'bw': ['alpha_bw', 'beta_bw']}
+
+    band_labels2 = get_band_labels(tdict2)
+    assert band_labels2 == ['alpha', 'beta']
+
 def test_get_results_by_ind():
 
     tdict = {
