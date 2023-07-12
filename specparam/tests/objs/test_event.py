@@ -74,10 +74,10 @@ def test_event_report(skip_if_no_mpl):
 def test_event_get_model(tfe):
 
     # Check without regenerating
-    tfm0 = tfe.get_model([0, 0], False)
+    tfm0 = tfe.get_model(0, 0, False)
     assert tfm0
 
     # Check with regenerating
-    tfm1 = tfe.get_model([1, 1], True)
+    tfm1 = tfe.get_model(1, 1, True)
     assert tfm1
     assert np.all(tfm1.modeled_spectrum_)

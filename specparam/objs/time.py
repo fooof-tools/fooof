@@ -6,7 +6,7 @@ import numpy as np
 
 from specparam.objs import SpectralModel, SpectralGroupModel
 from specparam.plts.time import plot_time_model
-from specparam.data.conversions import group_to_dict
+from specparam.data.conversions import group_to_dict, group_to_dataframe, dict_to_df
 from specparam.data.utils import get_results_by_ind
 from specparam.core.reports import save_time_report
 from specparam.core.modutils import (copy_doc_func_to_method, docs_get_section,
@@ -245,6 +245,31 @@ class SpectralTimeModel(SpectralGroupModel):
         self._reset_time_results()
         super().load(file_name, file_path=file_path)
         self._convert_to_time_results(peak_org)
+
+
+    def to_df(self, peak_org=None):
+        """Convert and extract the model results as a pandas object.
+
+        Parameters
+        ----------
+        peak_org : int or Bands, optional
+            How to organize peaks.
+            If int, extracts the first n peaks.
+            If Bands, extracts peaks based on band definitions.
+            If provided, re-extracts peak features; if not provided, converts from `time_results`.
+
+        Returns
+        -------
+        pd.DataFrame
+            Model results organized into a pandas object.
+        """
+
+        if peak_org is not None:
+            df = group_to_dataframe(self.group_results, peak_org)
+        else:
+            df = dict_to_df(self.get_results())
+
+        return df
 
 
     def _convert_to_time_results(self, peak_org):

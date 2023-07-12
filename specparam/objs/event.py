@@ -4,8 +4,8 @@ import numpy as np
 
 from specparam.objs import SpectralModel, SpectralTimeModel
 from specparam.plts.event import plot_event_model
-from specparam.data.conversions import group_to_dict
-from specparam.data.utils import get_results_by_row
+from specparam.data.conversions import event_group_to_dict, event_group_to_dataframe, dict_to_df
+from specparam.data.utils import get_results_by_row, flatten_results_dict
 from specparam.core.modutils import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
 from specparam.core.reports import save_event_report
@@ -253,13 +253,15 @@ class SpectralTimeEventModel(SpectralTimeModel):
         save_event_report(self, file_name, file_path, add_settings)
 
 
-    def get_model(self, ind, regenerate=True):
+    def get_model(self, event_ind, window_ind, regenerate=True):
         """Get a model fit object for a specified index.
 
         Parameters
         ----------
-        ind : list of [int, int]
-            Index to extract, listed as [event_index, time_window_index].
+        event_ind : int
+            Index for which event to extract from.
+        window_ind : int
+            Index for which time window to extract from.
         regenerate : bool, optional, default: False
             Whether to regenerate the model fits for the requested model.
 
@@ -276,17 +278,42 @@ class SpectralTimeEventModel(SpectralTimeModel):
         # Add data for specified single power spectrum, if available
         #   The power spectrum is inverted back to linear, as it is re-logged when added to object
         if self.has_data:
-            model.add_data(self.freqs, np.power(10, self.spectrograms[ind[0]][:, ind[1]]))
+            model.add_data(self.freqs, np.power(10, self.spectrograms[event_ind][:, window_ind]))
         # If no power spectrum data available, copy over data information & regenerate freqs
         else:
             model.add_meta_data(self.get_meta_data())
 
         # Add results for specified power spectrum, regenerating full fit if requested
-        model.add_results(self.event_group_results[ind[0]][ind[1]])
+        model.add_results(self.event_group_results[event_ind][window_ind])
         if regenerate:
             model._regenerate_model()
 
         return model
+
+
+    def to_df(self, peak_org=None):
+        """Convert and extract the model results as a pandas object.
+
+        Parameters
+        ----------
+        peak_org : int or Bands, optional
+            How to organize peaks.
+            If int, extracts the first n peaks.
+            If Bands, extracts peaks based on band definitions.
+            If provided, re-extracts peak features; if not provided, converts from `time_results`.
+
+        Returns
+        -------
+        pd.DataFrame
+            Model results organized into a pandas object.
+        """
+
+        if peak_org is not None:
+            df = event_group_to_dataframe(self.event_group_results, peak_org)
+        else:
+            df = dict_to_df(flatten_results_dict(self.get_results()))
+
+        return df
 
 
     def _convert_to_event_results(self, peak_org):
@@ -300,17 +327,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
             If Bands, extracts peaks based on band definitions.
         """
 
-        temp = group_to_dict(self.event_group_results[0], peak_org)
-        for key in temp:
-            self.event_time_results[key] = []
-
-        for gres in self.event_group_results:
-            dictres = group_to_dict(gres, peak_org)
-            for key in dictres:
-                self.event_time_results[key].append(dictres[key])
-
-        for key in self.event_time_results:
-            self.event_time_results[key] = np.array(self.event_time_results[key])
+        self.event_time_results = event_group_to_dict(self.event_group_results, peak_org)
 
     # ToDo: check & figure out adding `load` method
 
