@@ -253,6 +253,42 @@ class SpectralTimeEventModel(SpectralTimeModel):
         save_event_report(self, file_name, file_path, add_settings)
 
 
+    def get_model(self, ind, regenerate=True):
+        """Get a model fit object for a specified index.
+
+        Parameters
+        ----------
+        ind : list of [int, int]
+            Index to extract, listed as [event_index, time_window_index].
+        regenerate : bool, optional, default: False
+            Whether to regenerate the model fits for the requested model.
+
+        Returns
+        -------
+        model : SpectralModel
+            The FitResults data loaded into a model object.
+        """
+
+        # Initialize a model object, with same settings & check data mode as current object
+        model = SpectralModel(*self.get_settings(), verbose=self.verbose)
+        model.set_check_data_mode(self._check_data)
+
+        # Add data for specified single power spectrum, if available
+        #   The power spectrum is inverted back to linear, as it is re-logged when added to object
+        if self.has_data:
+            model.add_data(self.freqs, np.power(10, self.spectrograms[ind[0]][:, ind[1]]))
+        # If no power spectrum data available, copy over data information & regenerate freqs
+        else:
+            model.add_meta_data(self.get_meta_data())
+
+        # Add results for specified power spectrum, regenerating full fit if requested
+        model.add_results(self.event_group_results[ind[0]][ind[1]])
+        if regenerate:
+            model._regenerate_model()
+
+        return model
+
+
     def _convert_to_event_results(self, peak_org):
         """Convert the event results to be organized across across and time windows.
 
