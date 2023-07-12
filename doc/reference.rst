@@ -54,7 +54,7 @@ In addition, we recommend that reports should include information on:
 Reporting Template & Example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To assist in reporting on using FOOOF, we have created some templates for reporting on spectral parameterization methods. There are also some utilities included in the code to collected the required information. 
+To assist in reporting on using FOOOF, we have created some templates for reporting on spectral parameterization methods. There are also some utilities included in the code to collected the required information.
 
 The following box is an example of what a methods report might look like (where all of the *X*'s should be filled in with the relevant information).
 
@@ -64,6 +64,18 @@ The following box is an example of what a methods report might look like (where 
     algorithm were set as: peak width limits : *XX*; max number of peaks : *XX*; minimum peak height : *XX*;
     peak threshold : *XX*; and aperiodic mode : *XX*. Power spectra were parameterized across
     the frequency range *XX* to *XX* Hz.
+
+Checking module version
+~~~~~~~~~~~~~~~~~~~~~~~
+
+If you are not sure which version of the module you have installed, you can
+check the `__version__` from Python, using the following code:
+
+.. code-block:: python
+
+    # Check the version of the tool
+    from fooof import __version__ as fooof_version
+    print('Current fooof version:', fooof_version)
 
 Generating Methods Reports
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
