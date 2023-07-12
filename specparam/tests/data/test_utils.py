@@ -123,3 +123,24 @@ def test_get_results_by_row():
     out1 = get_results_by_row(tdict, ind)
     for key in tdict.keys():
         assert np.array_equal(out1[key], tdict[key][ind])
+
+def test_flatten_results_dict():
+
+    tdict = {
+        'offset' : np.array([[0, 1], [2, 3]]),
+        'exponent' : np.array([[0, 1], [2, 3]]),
+        'error' : np.array([[0, 1], [2, 3]]),
+        'r_squared' : np.array([[0, 1], [2, 3]]),
+        'alpha_cf' : np.array([[0, 1], [2, 3]]),
+        'alpha_pw' : np.array([[0, 1], [2, 3]]),
+        'alpha_bw' : np.array([[0, 1], [2, 3]]),
+    }
+
+    out = flatten_results_dict(tdict)
+
+    assert np.array_equal(out['event'], np.array([0, 0, 1, 1]))
+    assert np.array_equal(out['window'], np.array([0, 1, 0, 1]))
+    for key, values in out.items():
+        assert values.ndim == 1
+        if key not in ['event', 'window']:
+            assert np.array_equal(values, np.array([0, 1, 2, 3]))

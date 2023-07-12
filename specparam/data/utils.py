@@ -1,5 +1,7 @@
 """"Utility functions for working with data and data objects."""
 
+import numpy as np
+
 ###################################################################################################
 ###################################################################################################
 
@@ -101,3 +103,31 @@ def get_results_by_row(results, ind):
         outs[key] = results[key][ind, :]
 
     return outs
+
+
+def flatten_results_dict(results):
+    """Flatten a results dictionary containing results across events.
+
+    Parameters
+    ----------
+    results : dict
+        Results dictionary wherein parameters are organized in 2d arrays as [n_events, n_windows].
+
+    Returns
+    -------
+    flatdict : dict
+        Flattened results dictionary.
+    """
+
+    keys = list(results.keys())
+    n_events, n_windows = results[keys[0]].shape
+
+    flatdict = {
+        'event' : np.repeat(range(n_events), n_windows),
+        'window' : np.tile(range(n_windows), n_events),
+    }
+
+    for key in keys:
+        flatdict[key] = results[key].flatten()
+
+    return flatdict
