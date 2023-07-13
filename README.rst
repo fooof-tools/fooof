@@ -71,7 +71,7 @@ This documentation includes:
 Dependencies
 ------------
 
-SpecParam is written in Python, and requires Python >= 3.6 to run.
+SpecParam is written in Python, and requires Python >= 3.7 to run.
 
 It has the following required dependencies:
 
