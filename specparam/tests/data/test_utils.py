@@ -9,6 +9,35 @@ from specparam.data.utils import *
 ###################################################################################################
 ###################################################################################################
 
+def test_get_model_params(tresults):
+
+    for dname in ['aperiodic_params', 'aperiodic', 'peak_params', 'peak',
+                  'error', 'r_squared', 'gaussian_params', 'gaussian']:
+        assert np.any(get_model_params(tresults, dname))
+
+    if dname == 'aperiodic_params' or dname == 'aperiodic':
+        for dtype in ['offset', 'exponent']:
+            assert np.any(get_model_params(tresults, dname, dtype))
+
+    if dname == 'peak_params' or dname == 'peak':
+        for dtype in ['CF', 'PW', 'BW']:
+            assert np.any(get_model_params(tresults, dname, dtype))
+
+def test_get_group_params(tresults):
+
+    gresults = [tresults, tresults]
+
+    for dname in ['aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params']:
+        assert np.any(get_group_params(gresults, dname))
+
+    if dname == 'aperiodic_params':
+        for dtype in ['offset', 'exponent']:
+            assert np.any(get_group_params(gresults, dname, dtype))
+
+    if dname == 'peak_params':
+        for dtype in ['CF', 'PW', 'BW']:
+            assert np.any(get_group_params(gresults, dname, dtype))
+
 def test_get_periodic_labels():
 
     keys = ['cf', 'pw', 'bw']
