@@ -522,7 +522,7 @@ class SpectralGroupModel(SpectralModel):
         print(gen_group_results_str(self, concise))
 
 
-    def save_model_report(self, index, file_name, file_path=None, plt_log=False,
+    def save_model_report(self, index, file_name, file_path=None,
                           add_settings=True, **plot_kwargs):
         """"Save out an individual model report for a specified model fit.
 
@@ -534,8 +534,6 @@ class SpectralGroupModel(SpectralModel):
             Name to give the saved out file.
         file_path : str, optional
             Path to directory to save to. If None, saves to current directory.
-        plt_log : bool, optional, default: False
-            Whether or not to plot the frequency axis in log space.
         add_settings : bool, optional, default: True
             Whether to add a print out of the model settings to the end of the report.
         plot_kwargs : keyword arguments
@@ -543,7 +541,7 @@ class SpectralGroupModel(SpectralModel):
         """
 
         self.get_model(ind=index, regenerate=True).save_report(\
-            file_name, file_path, plt_log, **plot_kwargs)
+            file_name, file_path, add_settings, **plot_kwargs)
 
 
     def to_df(self, peak_org):

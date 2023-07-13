@@ -299,6 +299,30 @@ class SpectralTimeEventModel(SpectralTimeModel):
         return model
 
 
+    def save_model_report(self, event_index, window_index, file_name,
+                          file_path=None, add_settings=True, **plot_kwargs):
+        """"Save out an individual model report for a specified model fit.
+
+        Parameters
+        ----------
+        event_ind : int
+            Index for which event to extract from.
+        window_ind : int
+            Index for which time window to extract from.
+        file_name : str
+            Name to give the saved out file.
+        file_path : str, optional
+            Path to directory to save to. If None, saves to current directory.
+        add_settings : bool, optional, default: True
+            Whether to add a print out of the model settings to the end of the report.
+        plot_kwargs : keyword arguments
+            Keyword arguments to pass into the plot method.
+        """
+
+        self.get_model(event_index, window_index, regenerate=True).save_report(\
+            file_name, file_path, add_settings, **plot_kwargs)
+
+
     def to_df(self, peak_org=None):
         """Convert and extract the model results as a pandas object.
 

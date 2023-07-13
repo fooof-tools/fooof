@@ -651,10 +651,9 @@ class SpectralModel():
 
 
     @copy_doc_func_to_method(save_model_report)
-    def save_report(self, file_name, file_path=None, plt_log=False,
-                    add_settings=True, **plot_kwargs):
+    def save_report(self, file_name, file_path=None, add_settings=True, **plot_kwargs):
 
-        save_model_report(self, file_name, file_path, plt_log, add_settings, **plot_kwargs)
+        save_model_report(self, file_name, file_path, add_settings, **plot_kwargs)
 
 
     @copy_doc_func_to_method(save_model)
