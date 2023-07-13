@@ -5,7 +5,7 @@ import numpy as np
 from specparam.objs import SpectralModel, SpectralTimeModel
 from specparam.plts.event import plot_event_model
 from specparam.data.conversions import event_group_to_dict, event_group_to_dataframe, dict_to_df
-from specparam.data.utils import get_results_by_row, flatten_results_dict
+from specparam.data.utils import get_group_params, get_results_by_row, flatten_results_dict
 from specparam.core.modutils import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
 from specparam.core.reports import save_event_report
@@ -234,6 +234,38 @@ class SpectralTimeEventModel(SpectralTimeModel):
         """Return the results from across the set of events."""
 
         return self.event_time_results
+
+
+    def get_params(self, name, col=None):
+        """Return model fit parameters for specified feature(s).
+
+        Parameters
+        ----------
+        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
+            Name of the data field to extract across the group.
+        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+            Column name / index to extract from selected data, if requested.
+            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+
+        Returns
+        -------
+        out : list of ndarray
+            Requested data.
+
+        Raises
+        ------
+        NoModelError
+            If there are no model fit results available.
+        ValueError
+            If the input for the `col` input is not understood.
+
+        Notes
+        -----
+        When extracting peak information ('peak_params' or 'gaussian_params'), an additional
+        column is appended to the returned array, indicating the index that the peak came from.
+        """
+
+        return [get_group_params(gres, name, col) for gres in self.event_group_results]
 
 
     def print_results(self, concise=False):

@@ -13,7 +13,6 @@ import numpy as np
 from specparam.objs import SpectralModel
 from specparam.plts.group import plot_group
 from specparam.core.items import OBJ_DESC
-from specparam.core.info import get_indices
 from specparam.core.utils import check_inds
 from specparam.core.errors import NoModelError
 from specparam.core.reports import save_group_report
@@ -22,6 +21,7 @@ from specparam.core.io import save_group, load_jsonlines
 from specparam.core.modutils import (copy_doc_func_to_method, safe_import,
                                      docs_get_section, replace_docstring_sections)
 from specparam.data.conversions import group_to_dataframe
+from specparam.data.utils import get_group_params
 
 ###################################################################################################
 ###################################################################################################
@@ -342,38 +342,7 @@ class SpectralGroupModel(SpectralModel):
         if not self.has_model:
             raise NoModelError("No model fit results are available, can not proceed.")
 
-        # Allow for shortcut alias, without adding `_params`
-        if name in ['aperiodic', 'peak', 'gaussian']:
-            name = name + '_params'
-
-        # If col specified as string, get mapping back to integer
-        if isinstance(col, str):
-            col = get_indices(self.aperiodic_mode)[col]
-        elif isinstance(col, int):
-            if col not in [0, 1, 2]:
-                raise ValueError("Input value for `col` not valid.")
-
-        # Pull out the requested data field from the group data
-        # As a special case, peak_params are pulled out in a way that appends
-        #  an extra column, indicating which model each peak comes from
-        if name in ('peak_params', 'gaussian_params'):
-
-            # Collect peak data, appending the index of the model it comes from
-            out = np.vstack([np.insert(getattr(data, name), 3, index, axis=1)
-                             for index, data in enumerate(self.group_results)])
-
-            # This updates index to grab selected column, and the last column
-            #   This last column is the 'index' column (model object source)
-            if col is not None:
-                col = [col, -1]
-        else:
-            out = np.array([getattr(data, name) for data in self.group_results])
-
-        # Select out a specific column, if requested
-        if col is not None:
-            out = out[:, col]
-
-        return out
+        return get_group_params(self.group_results, name, col)
 
 
     @copy_doc_func_to_method(plot_group)
