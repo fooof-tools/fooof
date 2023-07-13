@@ -97,6 +97,14 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
 
     @property
+    def n_peaks_(self):
+        """How many peaks were fit for each model, for each event."""
+
+        return np.array([[res.peak_params.shape[0] for res in gres] \
+            if self.has_model else None for gres in self.event_group_results])
+
+
+    @property
     def n_events(self):
         # ToDo: double check if we want this - I think is never used internally?
 

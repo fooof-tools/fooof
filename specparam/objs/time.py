@@ -87,6 +87,14 @@ class SpectralTimeModel(SpectralGroupModel):
         return get_results_by_ind(self.time_results, ind)
 
 
+    @property
+    def n_peaks_(self):
+        """How many peaks were fit for each model."""
+
+        return [res.peak_params.shape[0] for res in self.group_results] \
+            if self.has_model else None
+
+
     def _reset_time_results(self):
         """Set, or reset, time results to be empty."""
 

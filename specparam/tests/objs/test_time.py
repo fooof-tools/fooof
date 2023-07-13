@@ -34,6 +34,10 @@ def test_time_iter(tft):
     for out in tft:
         assert out
 
+def test_time_n_peaks(tft):
+
+    assert tft.n_peaks_
+
 def test_time_fit():
 
     n_windows = 10

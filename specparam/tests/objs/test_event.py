@@ -34,6 +34,10 @@ def test_event_iter(tfe):
     for out in tfe:
         assert out
 
+def test_event_n_peaks(tfe):
+
+    assert np.all(tfe.n_peaks_)
+
 def test_event_fit():
 
     n_windows = 3
