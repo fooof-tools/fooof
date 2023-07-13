@@ -9,6 +9,9 @@ They serve rather as 'smoke tests', for if anything fails completely.
 import numpy as np
 
 from specparam.sim import sim_spectrogram
+from specparam.core.modutils import safe_import
+
+pd = safe_import('pandas')
 
 from specparam.tests.settings import TEST_DATA_PATH
 from specparam.tests.tutils import default_group_params, plot_test
@@ -83,3 +86,12 @@ def test_time_load(tbands):
     tft = SpectralTimeModel(verbose=False)
     tft.load(file_name_res, TEST_DATA_PATH, peak_org=tbands)
     assert tft.time_results
+
+def test_time_to_df(tft, tbands, skip_if_no_pandas):
+
+    df0 = tft.to_df()
+    assert isinstance(df0, pd.DataFrame)
+    df1 = tft.to_df(2)
+    assert isinstance(df1, pd.DataFrame)
+    df2 = tft.to_df(tbands)
+    assert isinstance(df2, pd.DataFrame)
