@@ -466,7 +466,7 @@ class SpectralGroupModel(SpectralModel):
         group = SpectralGroupModel(*self.get_settings(), verbose=self.verbose)
 
         # Add data for specified power spectra, if available
-        #   Power spectra are inverted back to linear, as they are re-logged when added to object
+        #   Power spectra are inverted to linear, as they are re-logged when added to object
         if self.has_data:
             group.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]))
         # If no power spectrum data available, copy over data information & regenerate freqs

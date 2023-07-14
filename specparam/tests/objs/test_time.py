@@ -87,6 +87,16 @@ def test_time_load(tbands):
     tft.load(file_name_res, TEST_DATA_PATH, peak_org=tbands)
     assert tft.time_results
 
+def test_get_group(tft):
+
+    inds = [1, 2]
+
+    nft = tft.get_group(inds)
+    assert isinstance(nft, SpectralTimeModel)
+
+    nfg = tft.get_group(inds)
+    assert isinstance(nfg, SpectralGroupModel)
+
 def test_time_to_df(tft, tbands, skip_if_no_pandas):
 
     df0 = tft.to_df()

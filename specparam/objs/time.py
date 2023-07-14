@@ -8,6 +8,7 @@ from specparam.objs import SpectralModel, SpectralGroupModel
 from specparam.plts.time import plot_time_model
 from specparam.data.conversions import group_to_dict, group_to_dataframe, dict_to_df
 from specparam.data.utils import get_results_by_ind
+from specparam.core.utils import check_inds
 from specparam.core.reports import save_time_report
 from specparam.core.modutils import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
@@ -199,6 +200,52 @@ class SpectralTimeModel(SpectralGroupModel):
         """Return the results run across a spectrogram."""
 
         return self.time_results
+
+
+    def get_group(self, inds, output_type='time'):
+        """Get a Group model object with the specified sub-selection of model fits.
+
+        Parameters
+        ----------
+        inds : array_like of int or array_like of bool
+            Indices to extract from the object.
+            If a boolean mask, True indicates indices to select.
+        output_type : {'time', 'group'}, optional
+            Type of model object to extract:
+                'time' : SpectralTimeObject
+                'group' : SpectralGroupObject
+
+        Returns
+        -------
+        group : SpectralGroupModel
+            The requested selection of results data loaded into a new group model object.
+        """
+
+        if output_type == 'time':
+
+            # Check and convert indices encoding to list of int
+            inds = check_inds(inds)
+
+            # Initialize a new model object, with same settings as current object
+            output = SpectralTimeModel(*self.get_settings(), verbose=self.verbose)
+
+            # Add data for specified power spectra, if available
+            #   Power spectra are inverted to linear, as they are re-logged when added to object
+            #   Also, take transpose to re-add in spectrogram orientation
+            if self.has_data:
+                output.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]).T)
+            # If no power spectrum data available, copy over data information & regenerate freqs
+            else:
+                output.add_meta_data(self.get_meta_data())
+
+            # Add results for specified power spectra
+            output.group_results = [self.group_results[ind] for ind in inds]
+            output.time_results = get_results_by_ind(self.time_results, inds)
+
+        if output_type == 'group':
+            output = super().get_group(inds)
+
+        return output
 
 
     def print_results(self, print_type='time', concise=False):
