@@ -1196,7 +1196,8 @@ class SpectralModel():
             raise DataError("Inputs are not the right dimensions.")
 
         # Check that data sizes are compatible
-        if freqs.shape[-1] != power_spectrum.shape[-1]:
+        if (spectra_dim < 3 and freqs.shape[-1] != power_spectrum.shape[-1]) or \
+            spectra_dim == 3 and freqs.shape[-1] != power_spectrum.shape[1]:
             raise InconsistentDataError("The input frequencies and power spectra "
                                         "are not consistent size.")
 

@@ -231,9 +231,8 @@ class SpectralTimeModel(SpectralGroupModel):
 
             # Add data for specified power spectra, if available
             #   Power spectra are inverted to linear, as they are re-logged when added to object
-            #   Also, take transpose to re-add in spectrogram orientation
             if self.has_data:
-                output.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]).T)
+                output.add_data(self.freqs, np.power(10, self.spectrogram[:, inds]))
             # If no power spectrum data available, copy over data information & regenerate freqs
             else:
                 output.add_meta_data(self.get_meta_data())

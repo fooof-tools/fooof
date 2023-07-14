@@ -32,8 +32,8 @@ class SpectralTimeEventModel(SpectralTimeModel):
     ----------
     freqs : 1d array
         Frequency values for the power spectra.
-    spectrograms : list of 2d array
-        Power values for the spectrograms, which each array as [n_freqs, n_time_windows].
+    spectrograms : 3d array
+        Power values for the spectrograms, organized as [n_events, n_freqs, n_time_windows].
         Power values are stored internally in log10 scale.
     freq_range : list of [float, float]
         Frequency range of the power spectra, as [lowest_freq, highest_freq].
@@ -58,7 +58,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
         SpectralTimeModel.__init__(self, *args, **kwargs)
 
-        self.spectrograms = []
+        self.spectrograms = None
 
         self._reset_event_results()
 
@@ -125,9 +125,10 @@ class SpectralTimeEventModel(SpectralTimeModel):
         ----------
         freqs : 1d array
             Frequency values for the power spectra, in linear space.
-        spectrograms : list of 2d array, shape=[n_freqs, n_time_windows]
+        spectrograms : 3d array or list of 2d array
             Matrix of power values, in linear space.
-            Each spectrogram should an event, each with the same set of time windows.
+            If a list of 2d arrays, each should be have the same shape of [n_freqs, n_time_windows].
+            If a 3d array, should have shape [n_events, n_freqs, n_time_windows].
         freq_range : list of [float, float], optional
             Frequency range to restrict power spectra to. If not provided, keeps the entire range.
 
@@ -137,21 +138,20 @@ class SpectralTimeEventModel(SpectralTimeModel):
         these will be cleared by this method call.
         """
 
-        # If given a list of spectrograms, add to object
+        # If given a list of spectrograms, convert to 3d array
         if isinstance(spectrograms, list):
+            spectrograms = np.array(spectrograms)
+
+        # If is a 3d array, add to object as spectrograms
+        if spectrograms.ndim == 3:
 
             if np.any(self.freqs):
                 self._reset_event_results()
-                self.spectrograms = []
-            for spectrogram in spectrograms:
-                t_freqs, spectrogram, t_freq_range, t_freq_res = \
-                    self._prepare_data(freqs, spectrogram.T, freq_range, 2)
-                self.spectrograms.append(spectrogram.T)
-            self.freqs = t_freqs
-            self.freq_range = t_freq_range
-            self.freq_res = t_freq_res
 
-        # If input is an array, pass through to underlying object method
+            self.freqs, self.spectrograms, self.freq_range, self.freq_res = \
+                self._prepare_data(freqs, spectrograms, freq_range, 3)
+
+        # Otherwise, pass through 2d array to underlying object method
         else:
             super().add_data(freqs, spectrograms, freq_range)
 
@@ -164,9 +164,10 @@ class SpectralTimeEventModel(SpectralTimeModel):
         ----------
         freqs : 1d array, optional
             Frequency values for the power_spectra, in linear space.
-        spectrograms : list of 2d array, shape=[n_freqs, n_time_windows]
+        spectrograms : 3d array or list of 2d array
             Matrix of power values, in linear space.
-            Each spectrogram should an event, each with the same set of time windows.
+            If a list of 2d arrays, each should be have the same shape of [n_freqs, n_time_windows].
+            If a 3d array, should have shape [n_events, n_freqs, n_time_windows].
         freq_range : list of [float, float], optional
             Frequency range to fit the model to. If not provided, fits the entire given range.
         peak_org : int or Bands
@@ -197,9 +198,10 @@ class SpectralTimeEventModel(SpectralTimeModel):
         ----------
         freqs : 1d array, optional
             Frequency values for the power_spectra, in linear space.
-        spectrograms : list of 2d array, shape=[n_freqs, n_time_windows]
+        spectrograms : 3d array or list of 2d array
             Matrix of power values, in linear space.
-            Each spectrogram should an event, each with the same set of time windows.
+            If a list of 2d arrays, each should be have the same shape of [n_freqs, n_time_windows].
+            If a 3d array, should have shape [n_events, n_freqs, n_time_windows].
         freq_range : list of [float, float], optional
             Frequency range to fit the model to. If not provided, fits the entire given range.
         peak_org : int or Bands
