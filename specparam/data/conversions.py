@@ -104,10 +104,11 @@ def group_to_dict(group_results, peak_org):
         Model results organized into a dictionary.
     """
 
-    fr_dict = {ke : [] for ke in model_to_dict(group_results[0], peak_org)}
-    for f_res in group_results:
+    nres = len(group_results)
+    fr_dict = {ke : np.zeros(nres) for ke in model_to_dict(group_results[0], peak_org)}
+    for ind, f_res in enumerate(group_results):
         for key, val in model_to_dict(f_res, peak_org).items():
-            fr_dict[key].append(val)
+            fr_dict[key][ind] = val
 
     return fr_dict
 

@@ -226,6 +226,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
             self.power_spectra = spectrogram.T
             super().fit()
             self.event_group_results.append(self.group_results)
+            self._reset_group_results()
 
         self._convert_to_event_results(peak_org)
 
