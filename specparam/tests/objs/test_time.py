@@ -87,6 +87,20 @@ def test_time_load(tbands):
     tft.load(file_name_res, TEST_DATA_PATH, peak_org=tbands)
     assert tft.time_results
 
+def test_time_drop():
+
+    n_windows = 3
+    xs, ys = sim_spectrogram(n_windows, *default_group_params())
+    tft = SpectralTimeModel(verbose=False)
+
+    tft.fit(xs, ys)
+    drop_inds = [0, 2]
+    tft.drop(drop_inds)
+    assert len(tft) == n_windows
+    for dind in drop_inds:
+        for key in tft.time_results:
+            assert np.isnan(tft.time_results[key][dind])
+
 def test_time_get_group(tft):
 
     inds = [1, 2]

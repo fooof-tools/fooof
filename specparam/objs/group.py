@@ -291,7 +291,6 @@ class SpectralGroupModel(SpectralModel):
         ----------
         inds : int or array_like of int or array_like of bool
             Indices to drop model fit results for.
-            If a boolean mask, True indicates indices to drop.
 
         Notes
         -----

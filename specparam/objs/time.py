@@ -196,6 +196,24 @@ class SpectralTimeModel(SpectralGroupModel):
         self._convert_to_time_results(peak_org)
 
 
+    def drop(self, inds):
+        """Drop one or more model fit results from the object.
+
+        Parameters
+        ----------
+        inds : int or array_like of int or array_like of bool
+            Indices to drop model fit results for.
+
+        Notes
+        -----
+        This method sets the model fits as null, and preserves the shape of the model fits.
+        """
+
+        super().drop(inds)
+        for key in self.time_results.keys():
+            self.time_results[key][inds] = np.nan
+
+
     def get_results(self):
         """Return the results run across a spectrogram."""
 
