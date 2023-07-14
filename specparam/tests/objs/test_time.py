@@ -87,7 +87,7 @@ def test_time_load(tbands):
     tft.load(file_name_res, TEST_DATA_PATH, peak_org=tbands)
     assert tft.time_results
 
-def test_get_group(tft):
+def test_time_get_group(tft):
 
     inds = [1, 2]
 

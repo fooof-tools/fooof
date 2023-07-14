@@ -203,13 +203,12 @@ class SpectralTimeModel(SpectralGroupModel):
 
 
     def get_group(self, inds, output_type='time'):
-        """Get a Group model object with the specified sub-selection of model fits.
+        """Get a new model object with the specified sub-selection of model fits.
 
         Parameters
         ----------
         inds : array_like of int or array_like of bool
             Indices to extract from the object.
-            If a boolean mask, True indicates indices to select.
         output_type : {'time', 'group'}, optional
             Type of model object to extract:
                 'time' : SpectralTimeObject
@@ -217,8 +216,8 @@ class SpectralTimeModel(SpectralGroupModel):
 
         Returns
         -------
-        group : SpectralGroupModel
-            The requested selection of results data loaded into a new group model object.
+        output : SpectralTimeModel or SpectralGroupModel
+            The requested selection of results data loaded into a new model object.
         """
 
         if output_type == 'time':

@@ -89,10 +89,15 @@ def test_event_get_model(tfe):
     assert tfm1
     assert np.all(tfm1.modeled_spectrum_)
 
-def test_get_params(tfe):
+def test_event_get_params(tfe):
 
     for dname in ['aperiodic', 'peak', 'error', 'r_squared']:
         assert np.any(tfe.get_params(dname))
+
+def test_event_get_group(tfe):
+
+    ntfe = tfe.get_group([0], [1, 2])
+    assert ntfe
 
 def test_event_to_df(tfe, tbands, skip_if_no_pandas):
 

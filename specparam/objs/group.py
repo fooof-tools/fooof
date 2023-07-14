@@ -451,7 +451,6 @@ class SpectralGroupModel(SpectralModel):
         ----------
         inds : array_like of int or array_like of bool
             Indices to extract from the object.
-            If a boolean mask, True indicates indices to select.
 
         Returns
         -------

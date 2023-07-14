@@ -199,13 +199,14 @@ def check_inds(inds):
 
     Parameters
     ----------
-    inds : int or array_like of int or array_like of bool
+    inds : int or range or array_like of int or array_like of bool
         Indices, indicated in multiple possible ways.
+        If None, converted to slice object representing all inds.
 
     Returns
     -------
-    array of int
-        Indices, indicated
+    array of int or slice or range
+        Indices.
 
     Notes
     -----
@@ -217,12 +218,14 @@ def check_inds(inds):
     # Typecasting: if a single int, convert to an array
     if isinstance(inds, int):
         inds = np.array([inds])
-    # Typecasting: if a list or range, convert to an array
-    elif isinstance(inds, (list, range)):
+    # Typecasting: if a list, convert to an array
+    if isinstance(inds, (list)):
         inds = np.array(inds)
-
+    # If range or slice type, leave as is
+    if isinstance(inds, (range, slice)):
+        inds = inds
     # Conversion: if array is boolean, get integer indices of True
-    if inds.dtype == bool:
+    if isinstance(inds, np.ndarray) and inds.dtype == bool:
         inds = np.where(inds)[0]
 
     return inds
