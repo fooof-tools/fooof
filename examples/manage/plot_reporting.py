@@ -84,13 +84,13 @@ methods_report_info(fooof_obj)
 methods_report_text(fooof_obj)
 
 ###################################################################################################
-# Addtional Examples
-# ~~~~~~~~~~~~~~~~~~
+# Additional Examples
+# ~~~~~~~~~~~~~~~~~~~
 #
 # In the above examples, not all the information was printed, as not all information was
 # available in the example object (for example, it had no data).
 #
-# In the next example, let's see how the ouputs look for an example object with model fit results.
+# In the next example, let's see how the outputs look for an example object with model fit results.
 #
 
 ###################################################################################################

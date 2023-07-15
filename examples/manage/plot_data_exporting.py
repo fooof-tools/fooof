@@ -103,7 +103,7 @@ fm.to_df(bands1)
 
 ###################################################################################################
 #
-# Note that there are limitations to using the bands definitons - notably that doing so
+# Note that there are limitations to using the bands definitions - notably that doing so
 # necessarily requires extracting at most 1 peak per band. In doing so, the extraction will
 # select the dominant peak per band. However, this may not fully reflect the full model fit
 # if there are, for example, multiple peaks fit within a band.
