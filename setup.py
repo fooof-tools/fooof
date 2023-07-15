@@ -4,7 +4,7 @@ import os
 from setuptools import setup, find_packages
 
 # Get the current version number from inside the module
-with open(os.path.join('fooof', 'version.py')) as version_file:
+with open(os.path.join('ERPparam', 'version.py')) as version_file:
     exec(version_file.read())
 
 # Load the long description from the README
@@ -16,7 +16,7 @@ with open("requirements.txt") as requirements_file:
     install_requires = requirements_file.read().splitlines()
 
 setup(
-    name = 'fooof',
+    name = 'ERPparam',
     version = __version__,
     description = 'fitting oscillations & one-over f',
     long_description = long_description,
@@ -26,7 +26,7 @@ setup(
     author_email = 'voyteklab@gmail.com',
     maintainer = 'Thomas Donoghue',
     maintainer_email = 'tdonoghue.research@gmail.com',
-    url = 'https://github.com/fooof-tools/fooof',
+    url = 'https://github.com/voytekresearch/ERPparam',
     packages = find_packages(),
     license = 'Apache License, 2.0',
     classifiers = [

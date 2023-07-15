@@ -49,7 +49,7 @@ class ERPparamGroup(ERPparam):
     signals : 2d array
         Power values for the group of power spectra, as [n_signals, n_times].
         Power values are stored internally in log10 scale.
-    freq_range : list of [float, float]
+    time_range : list of [float, float]
         Frequency range of the power spectra, as [lowest_freq, highest_freq].
     freq_res : float
         Frequency resolution of the power spectra.
@@ -69,7 +69,7 @@ class ERPparamGroup(ERPparam):
     Notes
     -----
     - Commonly used abbreviations used in this module include:
-      CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic
+      CF: center time, PW: power, BW: Bandwidth, AP: aperiodic
     - Input power spectra must be provided in linear scale.
       Internally they are stored in log10 scale, as this is what the model operates upon.
     - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
@@ -94,7 +94,7 @@ class ERPparamGroup(ERPparam):
     def __init__(self, *args, **kwargs):
         """Initialize object with desired settings."""
 
-        ERP_Shape.__init__(self, *args, **kwargs)
+        ERPparam.__init__(self, *args, **kwargs)
 
         self.signals = None
 
@@ -165,7 +165,7 @@ class ERPparamGroup(ERPparam):
         Parameters
         ----------
         clear_times : bool, optional, default: False
-            Whether to clear frequency attributes.
+            Whether to clear time attributes.
         clear_spectrum : bool, optional, default: False
             Whether to clear power spectrum attribute.
         clear_results : bool, optional, default: False
@@ -191,7 +191,7 @@ class ERPparamGroup(ERPparam):
         self.group_results = [[]] * length
 
 
-    def add_data(self, time, signals):
+    def add_data(self, time, signals, time_range):
         """Add data (frequencies and power spectrum values) to the current object.
 
         Parameters
@@ -200,7 +200,7 @@ class ERPparamGroup(ERPparam):
             Frequency values for the power spectra, in linear space.
         signals : 2d array, shape=[n_signals, n_times]
             Matrix of power values, in linear space.
-        freq_range : list of [float, float], optional
+        time_range : list of [float, float], optional
             Frequency range to restrict power spectra to. If not provided, keeps the entire range.
 
         Notes
@@ -215,12 +215,10 @@ class ERPparamGroup(ERPparam):
             self._reset_data_results(True, True, True, True)
             self._reset_group_results()
 
-        self.time = time
-        self.fs = 1 / (time[1] - time[0])
-        self.signals = self._prepare_data(signals, 2)
+        self.time, self.signals, self.time_range, self.time_res, self.fs = self._prepare_data(time, signals, time_range=time_range, signal_dim=2)
 
 
-    def report(self, time=None, signals=None, n_jobs=1, progress=None):
+    def report(self, time=None, signals=None, time_range=None, n_jobs=1, progress=None):
         """Fit a group of power spectra and display a report, with a plot and printed results.
 
         Parameters
@@ -229,8 +227,8 @@ class ERPparamGroup(ERPparam):
             Frequency values for the signals, in linear space.
         signals : 2d array, shape: [n_signals, n_times], optional
             Matrix of power spectrum values, in linear space.
-        freq_range : list of [float, float], optional
-            Desired frequency range to run ERPparam on. If not provided, fits the entire given range.
+        time_range : list of [float, float], optional
+            Desired time range to run ERPparam on. If not provided, fits the entire given range.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -243,12 +241,12 @@ class ERPparamGroup(ERPparam):
         """
 
         if time is not None and signals is not None:
-            self.fit(time, signals, n_jobs=n_jobs, progress=progress)
+            self.fit(time, signals, time_range, n_jobs=n_jobs, progress=progress)
         self.plot()
         self.print_results(False)
 
 
-    def fit(self,  time=None, signals=None, n_jobs=1, progress=None):
+    def fit(self,  time=None, signals=None, time_range=None, n_jobs=1, progress=None):
         """Fit a group of power spectra.
 
         Parameters
@@ -257,8 +255,8 @@ class ERPparamGroup(ERPparam):
             Frequency values for the signals, in linear space.
         signals : 2d array, shape: [n_signals, n_times], optional
             Matrix of power spectrum values, in linear space.
-        freq_range : list of [float, float], optional
-            Desired frequency range to run ERPparam on. If not provided, fits the entire given range.
+        time_range : list of [float, float], optional
+            Desired time range to run ERPparam on. If not provided, fits the entire given range.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -271,7 +269,7 @@ class ERPparamGroup(ERPparam):
         """
         # If times & power spectra provided together, add data to object
         if time is not None and signals is not None:
-            self._add_data(time, signals)
+            self.add_data(time, signals, time_range)
 
         # If 'verbose', print out a marker of what is being run
         if self.verbose and not progress:
@@ -444,7 +442,7 @@ class ERPparamGroup(ERPparam):
                 self._check_loaded_results(data)
                 self.group_results.append(self._get_results())
 
-        # Reconstruct frequency vector, if information is available to do so
+        # Reconstruct time vector, if information is available to do so
         if self.time_range:
             self._regenerate_time_vector()
 
@@ -516,7 +514,7 @@ class ERPparamGroup(ERPparam):
         # Add data for specified power spectra, if available
         #   The power spectra are inverted back to linear, as they are re-logged when added to ERPparam
         if self.has_data:
-            fg._add_data(self.time, self.signals[inds, :])
+            fg.add_data(self.time, self.signals[inds, :])
         # If no power spectrum data available, copy over data information & regenerate times
         else:
             fg.add_meta_data(self.get_meta_data())
@@ -539,7 +537,7 @@ class ERPparamGroup(ERPparam):
         print(gen_results_fg_str(self, concise))
 
 
-    def save_model_report(self, index, file_name, file_path=None, plt_log=False,
+    def save_model_report(self, index, file_name, file_path=None, 
                           add_settings=True, **plot_kwargs):
         """"Save out an individual model report for a specified model fit.
 
@@ -551,8 +549,6 @@ class ERPparamGroup(ERPparam):
             Name to give the saved out file.
         file_path : str, optional
             Path to directory to save to. If None, saves to current directory.
-        plt_log : bool, optional, default: False
-            Whether or not to plot the frequency axis in log space.
         add_settings : bool, optional, default: True
             Whether to add a print out of the model settings to the end of the report.
         plot_kwargs : keyword arguments
@@ -560,7 +556,7 @@ class ERPparamGroup(ERPparam):
         """
 
         self.get_ERPparam(ind=index, regenerate=True).save_report(\
-            file_name, file_path, plt_log, **plot_kwargs)
+            file_name, file_path, **plot_kwargs)
 
 
     def to_df(self, peak_org):
@@ -594,7 +590,7 @@ class ERPparamGroup(ERPparam):
         return super().get_results()
 
     def _check_width_limits(self):
-        """Check and warn about bandwidth limits / frequency resolution interaction."""
+        """Check and warn about bandwidth limits / time resolution interaction."""
 
         # Only check & warn on first power spectrum
         #   This is to avoid spamming standard output for every spectrum in the group
