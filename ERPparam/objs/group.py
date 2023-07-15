@@ -214,8 +214,7 @@ class ERPparamGroup(ERPparam):
         if np.any(self.time):
             self._reset_data_results(True, True, True, True)
             self._reset_group_results()
-
-        self.time, self.signals, self.time_range, self.time_res, self.fs = self._prepare_data(time, signals, time_range=time_range, signal_dim=2)
+        self.time, self.signals, self.raw_signal, self.time_range, self.fs = self._prepare_data(time, signals, time_range=time_range, signal_dim=2)
 
 
     def report(self, time=None, signals=None, time_range=None, n_jobs=1, progress=None):
