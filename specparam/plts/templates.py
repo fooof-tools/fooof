@@ -13,7 +13,7 @@ import numpy as np
 from specparam.utils.data import compute_average, compute_dispersion
 from specparam.core.modutils import safe_import, check_dependency
 from specparam.plts.utils import check_ax, set_alpha
-from specparam.plts.settings import PLT_FIGSIZES, DEFAULT_COLORS
+from specparam.plts.settings import PLT_FIGSIZES, DEFAULT_COLORS, PLT_TEXT_FONT
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -311,3 +311,26 @@ def plot_param_over_time_yshade(times, param, average='mean', shade='std', scale
     plot_yshade(times, param, average=average, shade=shade, scale=scale,
                 color=color, plot_function=plot_param_over_time,
                 ax=ax, **plot_kwargs)
+
+
+@check_dependency(plt, 'matplotlib')
+def plot_text(text, x, y, ax=None, **plot_kwargs):
+    """Plot text.
+
+    Parameters
+    ----------
+    text : str
+        Text to plot.
+    x, y : float
+        The position to place the text.
+    ax : matplotlib.Axes, optional
+        Figure axes upon which to plot.
+    **plot_kwargs
+        Additional keyword arguments to pass into the plot call.
+    """
+
+    ax = check_ax(ax, plot_kwargs.pop('figsize', None))
+
+    ax.text(x, y, text, PLT_TEXT_FONT, ha='center', va='center', **plot_kwargs)
+    ax.set_frame_on(False)
+    ax.set(xticks=[], yticks=[])

@@ -68,3 +68,8 @@ LABEL_SIZE = 16
 TICK_LABELSIZE = 16
 LEGEND_SIZE = 12
 LEGEND_LOC = 'best'
+
+# Define default for plot text font
+PLT_TEXT_FONT = {'family': 'monospace',
+                 'weight': 'normal',
+                 'size': 16}
