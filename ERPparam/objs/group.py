@@ -191,7 +191,7 @@ class ERPparamGroup(ERPparam):
         self.group_results = [[]] * length
 
 
-    def add_data(self, time, signals, time_range):
+    def add_data(self, time, signals, time_range=None):
         """Add data (frequencies and power spectrum values) to the current object.
 
         Parameters
@@ -280,7 +280,7 @@ class ERPparamGroup(ERPparam):
             self._reset_group_results(len(self.signals))
             for ind, signal in \
                 _progress(enumerate(self.signals), progress, len(self)):
-                self._fit(time=time, signal=signal)
+                self._fit(signal=signal)
                 self.group_results[ind] = self._get_results()
 
         # Run in parallel
