@@ -359,7 +359,7 @@ class ERPparamGroup(ERPparam):
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
-            col = get_peak_indices()[col]
+            col = get_indices()[col]
         elif isinstance(col, int):
             if col not in [0, 1]:
                 raise ValueError("Input value for `col` not valid.")
