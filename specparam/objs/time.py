@@ -193,7 +193,8 @@ class SpectralTimeModel(SpectralGroupModel):
         """
 
         super().fit(freqs, power_spectra, freq_range, n_jobs, progress)
-        self._convert_to_time_results(peak_org)
+        if peak_org is not False:
+            self.convert_results(peak_org)
 
 
     def drop(self, inds):
@@ -315,7 +316,7 @@ class SpectralTimeModel(SpectralGroupModel):
         # Clear results so as not to have possible prior results interfere
         self._reset_time_results()
         super().load(file_name, file_path=file_path)
-        self._convert_to_time_results(peak_org)
+        self.convert_results(peak_org)
 
 
     def to_df(self, peak_org=None):
@@ -343,7 +344,7 @@ class SpectralTimeModel(SpectralGroupModel):
         return df
 
 
-    def _convert_to_time_results(self, peak_org):
+    def convert_results(self, peak_org):
         """Convert the model results to be organized across time windows.
 
         Parameters

@@ -229,12 +229,13 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
         for spectrogram in self.spectrograms:
             self.power_spectra = spectrogram.T
-            super().fit()
+            super().fit(peak_org=False)
             self.event_group_results.append(self.group_results)
             self._reset_group_results()
             self._reset_data_results(clear_spectra=True)
 
-        self._convert_to_event_results(peak_org)
+        if peak_org is not False:
+            self.convert_results(peak_org)
 
 
     def drop(self, drop_inds=None, window_inds=None):
@@ -458,8 +459,8 @@ class SpectralTimeEventModel(SpectralTimeModel):
         return df
 
 
-    def _convert_to_event_results(self, peak_org):
-        """Convert the event results to be organized across across and time windows.
+    def convert_results(self, peak_org):
+        """Convert the event results to be organized across events and time windows.
 
         Parameters
         ----------
@@ -470,9 +471,3 @@ class SpectralTimeEventModel(SpectralTimeModel):
         """
 
         self.event_time_results = event_group_to_dict(self.event_group_results, peak_org)
-
-    # ToDo: check & figure out adding `load` method
-
-    def _convert_to_time_results(self, peak_org):
-        """Overrides inherited objects function to void running this conversion per spectrogram."""
-        pass
