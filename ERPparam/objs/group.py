@@ -274,9 +274,6 @@ class ERPparamGroup(ERPparam):
         # If 'verbose', print out a marker of what is being run
         if self.verbose and not progress:
             print('Running ERP Shape Group across {} ERPs.'.format(len(self.signals)))
-        
-        if self.verbose:
-            self._check_width_limits()
 
         # Run linearly
         if n_jobs == 1:
