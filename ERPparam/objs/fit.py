@@ -386,6 +386,11 @@ class ERPparam():
         if time is not None and signal is not None:
             self.add_data(time, signal)
 
+        # If signal provided alone, add to object
+        #   Note: be careful passing in power_spectrum data like this:
+        elif isinstance(signal, np.ndarray):
+            self.signal = signal
+
         # Check that data is available
         if not self.has_data:
             raise NoDataError("No data available to fit, can not proceed.")
