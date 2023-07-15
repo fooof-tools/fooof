@@ -61,7 +61,7 @@ def get_tfe():
     xs, ys = sim_spectrogram(n_spectra, *default_group_params())
     ys = [ys, ys]
 
-    bands = Bands({'alpha' : (7, 14), 'beta' : (15, 30)})
+    bands = Bands({'alpha' : (7, 14)})
     tfe = SpectralTimeEventModel(verbose=False)
     tfe.fit(xs, ys, peak_org=bands)
 
