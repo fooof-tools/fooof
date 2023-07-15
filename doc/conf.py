@@ -100,6 +100,7 @@ html_theme_options = {
         ("Motivations", "auto_motivations/index"),
         ("Tutorials", "auto_tutorials/index"),
         ("Examples", "auto_examples/index"),
+        ("Visualizers", "visualizers"),
         ("Reference", "reference"),
         ("GitHub", "https://github.com/fooof-tools/fooof", True),
     ],
