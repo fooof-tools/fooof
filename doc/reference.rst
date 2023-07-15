@@ -30,7 +30,7 @@ The code for the simulations and applications is indexed and available in the
 `Paper repository <https://github.com/fooof-tools/Paper>`_.
 
 You can also find the full list of articles that cite the `Parameterizing Neural Power Spectra` paper at this
-`Google scholar link <https://scholar.google.com/scholar?oi=bibs&hl=en&cites=1591416229268020768,15214833138798132105,12543969463602123647>`_.
+`Google scholar link <https://scholar.google.com/scholar?cites=1871208307712966933&as_sdt=5,33&sciodt=0,33&hl=en>`_.
 
 Methods Reporting
 ~~~~~~~~~~~~~~~~~
