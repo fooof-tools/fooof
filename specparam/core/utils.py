@@ -199,7 +199,7 @@ def check_inds(inds):
 
     Parameters
     ----------
-    inds : int or range or array_like of int or array_like of bool
+    inds : int or slice or range or array_like of int or array_like of bool or None
         Indices, indicated in multiple possible ways.
         If None, converted to slice object representing all inds.
 
@@ -215,6 +215,9 @@ def check_inds(inds):
     This function works only on indices defined for 1 dimension.
     """
 
+    # If inds is None, replace with slice object to get all indices
+    if inds is None:
+        inds = slice(None, None)
     # Typecasting: if a single int, convert to an array
     if isinstance(inds, int):
         inds = np.array([inds])

@@ -297,10 +297,9 @@ class SpectralGroupModel(SpectralModel):
         This method sets the model fits as null, and preserves the shape of the model fits.
         """
 
+        null_model = SpectralModel(*self.get_settings()).get_results()
         for ind in check_inds(inds):
-            model = self.get_model(ind)
-            model._reset_data_results(clear_results=True)
-            self.group_results[ind] = model.get_results()
+            self.group_results[ind] = null_model
 
 
     def get_results(self):

@@ -1,5 +1,7 @@
 """Event model object and associated code for fitting the model to spectrograms across events."""
 
+from itertools import repeat
+
 import numpy as np
 
 from specparam.objs import SpectralModel, SpectralTimeModel
@@ -233,6 +235,38 @@ class SpectralTimeEventModel(SpectralTimeModel):
             self._reset_data_results(clear_spectra=True)
 
         self._convert_to_event_results(peak_org)
+
+
+    def drop(self, drop_inds=None, window_inds=None):
+        """Drop one or more model fit results from the object.
+
+        Parameters
+        ----------
+        drop_inds : dict or int or array_like of int or array_like of bool
+            Indices to drop model fit results for.
+            If not dict, specifies the event indices, with time windows specified by `window_inds`.
+            If dict, each key reflects an event index, with corresponding time windows to drop.
+        window_inds : int or array_like of int or array_like of bool
+            Indices of time windows to drop model fits for (applied across all events).
+            Only used if `drop_inds` is not a dictionary.
+
+        Notes
+        -----
+        This method sets the model fits as null, and preserves the shape of the model fits.
+        """
+
+        null_model = SpectralModel(*self.get_settings()).get_results()
+
+        drop_inds = drop_inds if isinstance(drop_inds, dict) else \
+            {eind : winds for eind, winds in zip(check_inds(drop_inds), repeat(window_inds))}
+
+        for eind, winds in drop_inds.items():
+
+            winds = check_inds(winds)
+            for wind in winds:
+                self.event_group_results[eind][wind] = null_model
+            for key in self.event_time_results:
+                self.event_time_results[key][eind, winds] = np.nan
 
 
     def get_results(self):

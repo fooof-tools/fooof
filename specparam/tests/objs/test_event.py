@@ -99,6 +99,35 @@ def test_event_get_group(tfe):
     ntfe = tfe.get_group([0], [1, 2])
     assert ntfe
 
+def test_event_drop():
+
+    n_windows = 3
+    xs, ys = sim_spectrogram(n_windows, *default_group_params())
+    ys = [ys, ys]
+    tfe = SpectralTimeEventModel(verbose=False)
+    tfe.fit(xs, ys)
+
+    # Check list drops
+    event_inds = [0]
+    window_inds = [1]
+    tfe.drop(event_inds, window_inds)
+    assert len(tfe) == len(ys)
+    dropped_fres = tfe.event_group_results[event_inds[0]][window_inds[0]]
+    for field in dropped_fres._fields:
+        assert np.all(np.isnan(getattr(dropped_fres, field)))
+    for key in tfe.event_time_results:
+        assert np.isnan(tfe.event_time_results[key][event_inds[0], window_inds[0]])
+
+    # Check dictionary drops
+    drop_inds = {0 : [2], 1 : [1, 2]}
+    tfe.drop(drop_inds)
+    assert len(tfe) == len(ys)
+    dropped_fres = tfe.event_group_results[0][drop_inds[0][0]]
+    for field in dropped_fres._fields:
+        assert np.all(np.isnan(getattr(dropped_fres, field)))
+    for key in tfe.event_time_results:
+        assert np.isnan(tfe.event_time_results[key][0, drop_inds[0][0]])
+
 def test_event_to_df(tfe, tbands, skip_if_no_pandas):
 
     df0 = tfe.to_df()

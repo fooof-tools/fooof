@@ -170,9 +170,10 @@ def test_drop():
 
     # Test dropping one ind
     tfg.fit(xs, ys)
-    tfg.drop(0)
 
-    dropped_fres = tfg.group_results[0]
+    drop_ind = 0
+    tfg.drop(drop_ind)
+    dropped_fres = tfg.group_results[drop_ind]
     for field in dropped_fres._fields:
         assert np.all(np.isnan(getattr(dropped_fres, field)))
 
@@ -181,8 +182,8 @@ def test_drop():
     drop_inds = [0, 2]
     tfg.drop(drop_inds)
 
-    for drop_ind in drop_inds:
-        dropped_fres = tfg.group_results[drop_ind]
+    for d_ind in drop_inds:
+        dropped_fres = tfg.group_results[d_ind]
         for field in dropped_fres._fields:
             assert np.all(np.isnan(getattr(dropped_fres, field)))
 
