@@ -37,6 +37,7 @@ from fooof import FOOOF, FOOOFGroup
 from fooof.bands import Bands
 from fooof.analysis import get_band_peak_fg
 from fooof.utils import trim_spectrum
+from fooof.utils.data import subsample_spectra
 from fooof.sim.gen import gen_aperiodic
 from fooof.data import FOOOFSettings
 from fooof.plts.templates import plot_hist
@@ -86,10 +87,6 @@ fetch_fooof_data('indv.csv', data_path, data_url)
 # Load data
 freqs = np.ravel(pd.read_csv(data_path / "freqs.csv"))
 spectrum = np.ravel(pd.read_csv(data_path / "indv.csv"))[1:101]
-
-# Check shapes of loaded data
-print(freqs.shape)
-print(spectrum.shape)
 
 ###################################################################################################
 #
@@ -161,8 +158,8 @@ r2s = fm.get_params('r_squared')
 ###################################################################################################
 
 # Extract specific parameters
-exp = fm.get_params('aperiodic_params','exponent')
-cfs = fm.get_params('peak_params','CF')
+exp = fm.get_params('aperiodic_params', 'exponent')
+cfs = fm.get_params('peak_params', 'CF')
 
 ###################################################################################################
 
@@ -170,7 +167,7 @@ cfs = fm.get_params('peak_params','CF')
 template = ("With an error level of {error:1.2f}, specparam fit an exponent "
             "of {exponent:1.2f} and peaks of {cfs:s} Hz.")
 print(template.format(error=err, exponent=exp,
-                      cfs=' & '.join(map(str, [round(CF,2) for CF in cfs]))))
+                      cfs=' & '.join(map(str, [round(CF, 2) for CF in cfs]))))
 
 ###################################################################################################
 #
@@ -275,7 +272,7 @@ fetch_fooof_data('eop.csv', data_path, data_url)
 
 # Load csv files containing frequency and power values
 freqs = np.ravel(pd.read_csv(data_path / "freqs.csv"))
-spectra = np.array(pd.read_csv(data_path / "eop.csv"))[:,1:101]
+spectra = np.array(pd.read_csv(data_path / "eop.csv"))[:, 1:101]
 
 ###################################################################################################
 
@@ -362,7 +359,7 @@ plot_aperiodic_params(aps)
 ###################################################################################################
 
 # Plot the parameters for peaks, split up by band
-_, axes = plt.subplots(1, 3, figsize=(14,7))
+_, axes = plt.subplots(1, 3, figsize=(14, 7))
 all_bands = [thetas, alphas, betas]
 for ax, label, peaks in zip(np.ravel(axes), bands.labels, all_bands):
     plot_peak_params(peaks, ax=ax)
@@ -379,7 +376,7 @@ plt.subplots_adjust(hspace=0.4)
 ###################################################################################################
 
 # Plot reconstructions of model components
-_, axes = plt.subplots(1, 2, figsize=(14,6))
+_, axes = plt.subplots(1, 2, figsize=(14, 6))
 plot_peak_fits(alphas, ax=axes[0])
 plot_aperiodic_fits(aps, fg.freq_range, ax=axes[1])
 
@@ -405,13 +402,9 @@ plot_aperiodic_fits(aps, fg.freq_range, ax=axes[1])
 # Set random seed
 np.random.seed(1)
 
-# Define settings for subsampling a selection of power spectra
+# Define settings for & subsample a selection of power spectra
 subsample_frac = 0.10
-n_sample = int(n_subjs * subsample_frac)
-
-# Select a random selection of spectra to explore
-select = np.random.choice(n_subjs, int(n_subjs * subsample_frac), replace=False)
-spectra_subsample = spectra[select, :]
+spectra_subsample = subsample_spectra(spectra, subsample_frac)
 
 ###################################################################################################
 #
@@ -526,9 +519,10 @@ fg2.fit(freqs, spectra_subsample, freq_range=m2_PSD_range)
 
 ###################################################################################################
 #
-# # Print and save subset results and plots of fit parameters, for further examination
-# fg1.save_report(file_name='EOP_' + 'fg1_settings', file_path=output_path)
-# fg2.save_report(file_name='EOP_' + 'fg2_settings', file_path=output_path)
+# At this point, it may typically be useful to save out reports from the above
+# different model fits (using `.save_report`), such that these different setting regimes
+# can be compared.
+#
 
 ###################################################################################################
 #
