@@ -422,17 +422,14 @@ class SpectralGroupModel(SpectralModel):
             The FitResults data loaded into a model object.
         """
 
-        # Initialize a model object, with same settings & check data mode as current object
+        # Initialize model object, with same settings, metadata, & check mode as current object
         model = SpectralModel(*self.get_settings(), verbose=self.verbose)
+        model.add_meta_data(self.get_meta_data())
         model.set_check_data_mode(self._check_data)
 
         # Add data for specified single power spectrum, if available
-        #   The power spectrum is inverted back to linear, as it is re-logged when added to object
         if self.has_data:
-            model.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
-        # If no power spectrum data available, copy over data information & regenerate freqs
-        else:
-            model.add_meta_data(self.get_meta_data())
+            model.power_spectrum = self.power_spectra[ind]
 
         # Add results for specified power spectrum, regenerating full fit if requested
         model.add_results(self.group_results[ind])
