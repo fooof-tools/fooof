@@ -1,5 +1,9 @@
 """Event model object and associated code for fitting the model to spectrograms across events."""
 
+from functools import partial
+from multiprocessing import Pool, cpu_count
+
+
 from itertools import repeat
 
 import numpy as np
@@ -78,10 +82,10 @@ class SpectralTimeEventModel(SpectralTimeModel):
         return get_results_by_row(self.event_time_results, ind)
 
 
-    def _reset_event_results(self):
+    def _reset_event_results(self, length=0):
         """Set, or reset, event results to be empty."""
 
-        self.event_group_results = []
+        self.event_group_results = [[]] * length
         self.event_time_results = {}
 
 
@@ -222,17 +226,33 @@ class SpectralTimeEventModel(SpectralTimeModel):
         Data is optional, if data has already been added to the object.
         """
 
+        # ToDo: here because of circular import - updates / refactors should fix & move
+        from specparam.objs.group import _progress
+
         if spectrograms is not None:
             self.add_data(freqs, spectrograms, freq_range)
-        if len(self):
-            self._reset_event_results()
 
-        for spectrogram in self.spectrograms:
-            self.power_spectra = spectrogram.T
-            super().fit(peak_org=False)
-            self.event_group_results.append(self.group_results)
-            self._reset_group_results()
-            self._reset_data_results(clear_spectra=True)
+        if n_jobs == 1:
+            self._reset_event_results(len(self.spectrograms))
+            for ind, spectrogram in _progress(enumerate(self.spectrograms), progress, len(self)):
+                self.power_spectra = spectrogram.T
+                super().fit(peak_org=False)
+                self.event_group_results[ind] = self.group_results
+                self._reset_group_results()
+                self._reset_data_results(clear_spectra=True)
+
+        else:
+
+            ft = SpectralTimeModel(*self.get_settings(), verbose=False)
+            ft.add_meta_data(self.get_meta_data())
+            ft.freqs = self.freqs
+
+            n_jobs = cpu_count() if n_jobs == -1 else n_jobs
+            with Pool(processes=n_jobs) as pool:
+
+                self.event_group_results = \
+                    list(_progress(pool.imap(partial(_par_fit, model=ft), self.spectrograms),
+                                   progress, len(self.spectrograms)))
 
         if peak_org is not False:
             self.convert_results(peak_org)
@@ -471,3 +491,12 @@ class SpectralTimeEventModel(SpectralTimeModel):
         """
 
         self.event_time_results = event_group_to_dict(self.event_group_results, peak_org)
+
+
+def _par_fit(spectrogram, model):
+    """Helper function for running in parallel."""
+
+    model.power_spectra = spectrogram.T
+    model.fit(peak_org=False)
+
+    return model.group_results
