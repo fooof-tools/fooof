@@ -316,7 +316,8 @@ class SpectralTimeModel(SpectralGroupModel):
         # Clear results so as not to have possible prior results interfere
         self._reset_time_results()
         super().load(file_name, file_path=file_path)
-        self.convert_results(peak_org)
+        if peak_org is not False:
+            self.convert_results(peak_org)
 
 
     def to_df(self, peak_org=None):

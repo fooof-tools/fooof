@@ -1,14 +1,12 @@
 """Event model object and associated code for fitting the model to spectrograms across events."""
 
+from itertools import repeat
 from functools import partial
 from multiprocessing import Pool, cpu_count
 
-
-from itertools import repeat
-
 import numpy as np
 
-from specparam.objs import SpectralModel, SpectralTimeModel
+from specparam.objs import SpectralModel, SpectralGroupModel, SpectralTimeModel
 from specparam.plts.event import plot_event_model
 from specparam.data.conversions import event_group_to_dict, event_group_to_dataframe, dict_to_df
 from specparam.data.utils import get_group_params, get_results_by_row, flatten_results_dict
@@ -17,6 +15,7 @@ from specparam.core.modutils import (copy_doc_func_to_method, docs_get_section,
 from specparam.core.reports import save_event_report
 from specparam.core.strings import gen_event_results_str
 from specparam.core.utils import check_inds
+from specparam.core.io import get_files, save_group
 
 ###################################################################################################
 ###################################################################################################
@@ -243,7 +242,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
         else:
 
-            ft = SpectralTimeModel(*self.get_settings(), verbose=False)
+            ft = SpectralGroupModel(*self.get_settings(), verbose=False)
             ft.add_meta_data(self.get_meta_data())
             ft.freqs = self.freqs
 
@@ -390,6 +389,53 @@ class SpectralTimeEventModel(SpectralTimeModel):
     def save_report(self, file_name, file_path=None, add_settings=True):
 
         save_event_report(self, file_name, file_path, add_settings)
+
+
+    @copy_doc_func_to_method(save_group)
+    def save(self, file_name, file_path=None, append=False,
+             save_results=False, save_settings=False, save_data=False):
+
+        fg = SpectralGroupModel(*self.get_settings())
+        fg.add_meta_data(self.get_meta_data())
+        fg.freqs = self.freqs
+
+        if save_settings and not save_results and not save_data:
+            fg.save(file_name, file_path, save_settings=True)
+        else:
+            ndigits = len(str(len(self)))
+            for ind, gres in enumerate(self.event_group_results):
+                fg.group_results = gres
+                if save_data:
+                    fg.power_spectra = self.spectrograms[ind, :, :].T
+                fg.save(file_name + '_{:0{ndigits}d}'.format(ind, ndigits=ndigits),
+                        file_path=file_path, save_results=save_results,
+                        save_settings=save_settings, save_data=save_data)
+
+
+    def load(self, file_name, file_path=None, peak_org=None):
+        """Load data from file(s).
+
+        Parameters
+        ----------
+        file_name : str
+            File(s) to load data from.
+        file_path : str, optional
+            Path to directory to load from. If None, loads from current directory.
+        peak_org : int or Bands, optional
+            How to organize peaks.
+            If int, extracts the first n peaks.
+            If Bands, extracts peaks based on band definitions.
+        """
+
+        files = get_files(file_path, select=file_name)
+        for file in files:
+            super().load(file, file_path, peak_org=False)
+            if self.group_results:
+                self.event_group_results.append(self.group_results)
+
+        self._reset_group_results()
+        if peak_org is not False:
+            self.convert_results(peak_org)
 
 
     def get_model(self, event_ind, window_ind, regenerate=True):
