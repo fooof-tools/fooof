@@ -343,17 +343,26 @@ class SpectralTimeEventModel(SpectralTimeModel):
         if event_inds is not None or window_inds is not None:
 
             # Check and convert indices encoding to list of int
-            event_inds = check_inds(event_inds)
-            window_inds = check_inds(window_inds)
+            einds = check_inds(event_inds, self.n_events)
+            winds = check_inds(window_inds, self.n_time_windows)
 
             # Add data for specified power spectra, if available
             if self.has_data:
-                output.spectrograms = self.spectrograms[event_inds, :, :][:, :, window_inds]
+                output.spectrograms = self.spectrograms[einds, :, :][:, :, winds]
 
-            # Add results for specified power spectra
-            # ToDo: this doesn't work... needs fixing.
+            # Add results for specified power spectra - event group results
+            temp = [self.event_group_results[ei][wi] for ei in einds for wi in winds]
+            step = int(len(temp) / len(einds))
+            output.event_group_results = [temp[ind:ind+step] for ind in range(0, len(temp), step)]
+
+            # # Note: this equivalent to above (but slower)
+            # n_out = len(einds) * len(winds)
+            # step = int(n_out / len(einds))
             # output.event_group_results = \
-            #     [self.event_group_results[eind][wind] for eind in event_inds for wind in window_inds]
+            #     [[self.event_group_results[ei][wi] for ei in einds for wi in winds]\
+            #         [ind:ind+step]for ind in range(0, n_out, step)]
+
+            # Add results for specified power spectra - event time results
             output.event_time_results = \
                 {key : self.event_time_results[key][event_inds][:, window_inds] \
                 for key in self.event_time_results}
