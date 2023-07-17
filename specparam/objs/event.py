@@ -241,7 +241,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
                 self._reset_data_results(clear_spectra=True)
 
         else:
-            fg = self.get_group(None)
+            fg = super().get_group(None, 'group')
             n_jobs = cpu_count() if n_jobs == -1 else n_jobs
             with Pool(processes=n_jobs) as pool:
                 self.event_group_results = \
@@ -533,6 +533,6 @@ def _par_fit(spectrogram, model):
     """Helper function for running in parallel."""
 
     model.power_spectra = spectrogram.T
-    model.fit(peak_org=False)
+    model.fit()
 
-    return model.group_results
+    return model.get_results()

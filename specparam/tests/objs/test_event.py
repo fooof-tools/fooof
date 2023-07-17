@@ -49,9 +49,23 @@ def test_event_fit():
 
     tfe = SpectralTimeEventModel(verbose=False)
     tfe.fit(xs, ys)
-
     results = tfe.get_results()
+    assert results
+    assert isinstance(results, dict)
+    for key in results.keys():
+        assert np.all(results[key])
+        assert results[key].shape == (len(ys), n_windows)
 
+def test_event_fit_par():
+    """Test group fit, running in parallel."""
+
+    n_windows = 3
+    xs, ys = sim_spectrogram(n_windows, *default_group_params())
+    ys = [ys, ys]
+
+    tfe = SpectralTimeEventModel(verbose=False)
+    tfe.fit(xs, ys, n_jobs=2)
+    results =  tfe.get_results()
     assert results
     assert isinstance(results, dict)
     for key in results.keys():
