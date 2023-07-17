@@ -1,8 +1,8 @@
 """
-Reporting & Referencing
-=======================
+09: Reporting & Referencing
+===========================
 
-This example covers utilities for getting reporting information and referencing use of the module.
+This section covers how to access reporting info and reference use of the module.
 
 This page is a hands-on example of the reporting and referencing information on the
 `Reference page <https://fooof-tools.github.io/fooof/reference.html>`_.
@@ -18,6 +18,19 @@ from fooof.sim import gen_power_spectrum, gen_group_power_spectra
 
 # Import utilities to print out information for reporting
 from fooof.utils.reports import methods_report_info, methods_report_text
+
+# sphinx_gallery_start_ignore
+# Note: this code gets hidden, but serves to create the text plot for the icon
+from fooof.core.strings import gen_methods_report_str
+from fooof.core.reports import REPORT_FONT
+import matplotlib.pyplot as plt
+text = gen_methods_report_str(concise=True)
+text = text[0:142] + '\n' + text[142:]
+_, ax = plt.subplots(figsize=(8, 3))
+ax.text(0.5, 0.5, text, REPORT_FONT, ha='center', va='center')
+ax.set_frame_on(False)
+_ = ax.set(xticks=[], yticks=[])
+# sphinx_gallery_end_ignore
 
 ###################################################################################################
 # Checking Module Version
