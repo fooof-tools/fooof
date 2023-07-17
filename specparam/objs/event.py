@@ -241,7 +241,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
                 self._reset_data_results(clear_spectra=True)
 
         else:
-            fg = super().get_group(None, 'group')
+            fg = self.get_group(None, None, 'group')
             n_jobs = cpu_count() if n_jobs == -1 else n_jobs
             with Pool(processes=n_jobs) as pool:
                 self.event_group_results = \
@@ -414,7 +414,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
     def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 
-        fg = self.get_group(None)
+        fg = self.get_group(None, None, 'group')
         if save_settings and not save_results and not save_data:
             fg.save(file_name, file_path, save_settings=True)
         else:
