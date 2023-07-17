@@ -322,13 +322,18 @@ class SpectralTimeEventModel(SpectralTimeModel):
         return [get_group_params(gres, name, col) for gres in self.event_group_results]
 
 
-    def get_group(self, event_inds, window_inds):
+    def get_group(self, event_inds, window_inds, output_type='event'):
         """Get a new model object with the specified sub-selection of model fits.
 
         Parameters
         ----------
         event_inds, window_inds : array_like of int or array_like of bool
             Indices to extract from the object, for event and time windows.
+        output_type : {'time', 'group'}, optional
+            Type of model object to extract:
+                'event' : SpectralTimeEventObject
+                'time' : SpectralTimeObject
+                'group' : SpectralGroupObject
 
         Returns
         -------
@@ -336,29 +341,47 @@ class SpectralTimeEventModel(SpectralTimeModel):
             The requested selection of results data loaded into a new model object.
         """
 
-        # Initialize a new model object, with same settings as current object
-        output = SpectralTimeEventModel(*self.get_settings(), verbose=self.verbose)
-        output.add_meta_data(self.get_meta_data())
+        # Check and convert indices encoding to list of int
+        einds = check_inds(event_inds, self.n_events)
+        winds = check_inds(window_inds, self.n_time_windows)
 
-        if event_inds is not None or window_inds is not None:
+        if output_type == 'event':
 
-            # Check and convert indices encoding to list of int
-            einds = check_inds(event_inds, self.n_events)
-            winds = check_inds(window_inds, self.n_time_windows)
+            # Initialize a new model object, with same settings as current object
+            output = SpectralTimeEventModel(*self.get_settings(), verbose=self.verbose)
+            output.add_meta_data(self.get_meta_data())
 
-            # Add data for specified power spectra, if available
-            if self.has_data:
-                output.spectrograms = self.spectrograms[einds, :, :][:, :, winds]
+            if event_inds is not None or window_inds is not None:
 
-            # Add results for specified power spectra - event group results
-            temp = [self.event_group_results[ei][wi] for ei in einds for wi in winds]
-            step = int(len(temp) / len(einds))
-            output.event_group_results = [temp[ind:ind+step] for ind in range(0, len(temp), step)]
+                # Add data for specified power spectra, if available
+                if self.has_data:
+                    output.spectrograms = self.spectrograms[einds, :, :][:, :, winds]
 
-            # Add results for specified power spectra - event time results
-            output.event_time_results = \
-                {key : self.event_time_results[key][event_inds][:, window_inds] \
-                for key in self.event_time_results}
+                # Add results for specified power spectra - event group results
+                temp = [self.event_group_results[ei][wi] for ei in einds for wi in winds]
+                step = int(len(temp) / len(einds))
+                output.event_group_results = [temp[ind:ind+step] for ind in range(0, len(temp), step)]
+
+                # Add results for specified power spectra - event time results
+                output.event_time_results = \
+                    {key : self.event_time_results[key][event_inds][:, window_inds] \
+                    for key in self.event_time_results}
+
+        elif output_type in ['time', 'group']:
+
+            if event_inds is not None or window_inds is not None:
+
+                # Move specified results & data to `group_results` & `power_spectra` for export
+                self.group_results = \
+                    [self.event_group_results[ei][wi] for ei in einds for wi in winds]
+                if self.has_data:
+                    self.power_spectra = np.hstack(self.spectrograms[einds, :, :][:, :, winds]).T
+
+            new_inds = range(0, len(self.group_results)) if self.group_results else None
+            output = super().get_group(new_inds, output_type)
+
+            self._reset_group_results()
+            self._reset_data_results(clear_spectra=True)
 
         return output
 

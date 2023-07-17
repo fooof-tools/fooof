@@ -115,12 +115,33 @@ def test_event_get_group(tfe):
 
     einds = [0, 1]
     winds = [1, 2]
+    n_out = len(einds) * len(winds)
+
     ntfe1 = tfe.get_group(einds, winds)
     assert ntfe1
     assert ntfe1.spectrograms.shape == (len(einds), len(tfe.freqs), len(winds))
     tkey = list(ntfe1.event_time_results.keys())[0]
     assert ntfe1.event_time_results[tkey].shape == (len(einds), len(winds))
     assert len(ntfe1.event_group_results), len(ntfe1.event_group_results[0]) == (len(einds, len(winds)))
+
+    # Test export sub-objects, including with None input
+    ntft0 = tfe.get_group(None, None, 'time')
+    assert not isinstance(ntft0, SpectralTimeEventModel)
+    assert not ntft0.group_results
+
+    ntft1 = tfe.get_group(einds, winds, 'time')
+    assert not isinstance(ntft1, SpectralTimeEventModel)
+    assert ntft1.group_results
+    assert len(ntft1.group_results) == len(ntft1.power_spectra) == n_out
+
+    ntfg0 = tfe.get_group(None, None, 'group')
+    assert not isinstance(ntfg0, SpectralTimeEventModel)
+    assert not ntfg0.group_results
+
+    ntfg1 = tfe.get_group(einds, winds, 'group')
+    assert not isinstance(ntfg1, SpectralTimeEventModel)
+    assert ntfg1.group_results
+    assert len(ntfg1.group_results) == len(ntfg1.power_spectra) == n_out
 
 def test_event_drop():
 
