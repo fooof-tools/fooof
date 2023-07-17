@@ -191,7 +191,7 @@ class ERPparamGroup(ERPparam):
         self.group_results = [[]] * length
 
 
-    def add_data(self, time, signals, time_range=None):
+    def add_data(self, time, signals, time_range):
         """Add data (frequencies and power spectrum values) to the current object.
 
         Parameters
@@ -214,7 +214,8 @@ class ERPparamGroup(ERPparam):
         if np.any(self.time):
             self._reset_data_results(True, True, True, True)
             self._reset_group_results()
-        self.time, self.signals, self.raw_signal, self.time_range, self.fs = self._prepare_data(time, signals, time_range=time_range, signal_dim=2)
+
+        self.time, self.signals, self.time_range, self.time_res, self.fs = self._prepare_data(time, signals, time_range=time_range, signal_dim=2)
 
 
     def report(self, time=None, signals=None, time_range=None, n_jobs=1, progress=None):
@@ -273,13 +274,16 @@ class ERPparamGroup(ERPparam):
         # If 'verbose', print out a marker of what is being run
         if self.verbose and not progress:
             print('Running ERP Shape Group across {} ERPs.'.format(len(self.signals)))
+        
+        if self.verbose:
+            self._check_width_limits()
 
         # Run linearly
         if n_jobs == 1:
             self._reset_group_results(len(self.signals))
             for ind, signal in \
                 _progress(enumerate(self.signals), progress, len(self)):
-                self._fit(signal=signal)
+                self._fit(time=time, signal=signal)
                 self.group_results[ind] = self._get_results()
 
         # Run in parallel
@@ -359,7 +363,7 @@ class ERPparamGroup(ERPparam):
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
-            col = get_indices()[col]
+            col = get_peak_indices()[col]
         elif isinstance(col, int):
             if col not in [0, 1]:
                 raise ValueError("Input value for `col` not valid.")
@@ -467,7 +471,7 @@ class ERPparamGroup(ERPparam):
         """
 
         # Initialize a ERPparam object, with same settings & check data mode as current ERPparamGroup
-        fm = ERPparam(*self.get_settings(), verbose=self.verbose)
+        fm = ERPparam(**self.get_settings(), verbose=self.verbose)
         fm.set_check_data_mode(self._check_data)
 
         # Add data for specified single power spectrum, if available
@@ -505,12 +509,12 @@ class ERPparamGroup(ERPparam):
         inds = check_inds(inds)
 
         # Initialize a new ERPparamGroup object, with same settings as current ERPparamGroup
-        fg = ERPparamGroup(*self.get_settings(), verbose=self.verbose)
+        fg = ERPparamGroup(**self.get_settings(), verbose=self.verbose)
 
         # Add data for specified power spectra, if available
         #   The power spectra are inverted back to linear, as they are re-logged when added to ERPparam
         if self.has_data:
-            fg.add_data(self.time, self.signals[inds, :])
+            fg.add_data(self.time, self.signals[inds, :], self.time_range)
         # If no power spectrum data available, copy over data information & regenerate times
         else:
             fg.add_meta_data(self.get_meta_data())

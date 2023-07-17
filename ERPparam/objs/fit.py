@@ -137,6 +137,10 @@ class ERPparam():
         self.peak_threshold = peak_threshold
         self.rectify = rectify
         self.verbose = verbose
+        # print('...')
+        # print(peak_width_limits)
+        # print(max_n_peaks)
+        # print('...')
 
         # Threshold for how far a peak has to be from edge to keep.
         #   This is defined in units of gaussian standard deviation
@@ -487,8 +491,10 @@ class ERPparam():
             Object containing the settings from the current object.
         """
 
-        return ERPparamSettings(**{key : getattr(self, key) \
-                             for key in OBJ_DESC['settings']})
+        sets = {key : getattr(self, key) for key in OBJ_DESC['settings']}
+               # # ERPparamSettings(**{key : getattr(self, key) \
+               #              for key in OBJ_DESC['settings']})
+        return sets# {key:getattr(sets,key) for key in sets}
 
 
     def get_meta_data(self):
