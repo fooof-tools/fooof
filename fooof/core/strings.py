@@ -209,7 +209,7 @@ def gen_methods_report_str(concise=False):
         # Methods report information
         'To report on using FOOOF, you should report (at minimum):',
         '',
-        '- the code version that was used used',
+        '- the code version that was used',
         '- the algorithm settings that were used',
         '- the frequency range that was fit',
 
