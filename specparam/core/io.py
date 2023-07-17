@@ -61,6 +61,32 @@ def fpath(file_path, file_name):
     return full_path
 
 
+def get_files(file_path, select=None):
+    """Get a list of files from a directory.
+
+    Parameters
+    ----------
+    file_path : Path or str
+        Name of the folder to get the list of files from.
+    select : str, optional
+        A search string to use to select files.
+
+    Returns
+    -------
+    list of str
+        A list of files.
+    """
+
+    # Get list of available files, and drop hidden files
+    files = os.listdir(file_path)
+    files = [file for file in files if file[0] != '.']
+
+    if select:
+        files = [file for file in files if search in file]
+
+    return files
+
+
 def save_model(model, file_name, file_path=None, append=False,
                save_results=False, save_settings=False, save_data=False):
     """Save out data, results and/or settings from a model object into a JSON file.

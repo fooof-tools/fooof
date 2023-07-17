@@ -27,6 +27,11 @@ def test_fpath():
     assert fpath(None, 'data.json') == 'data.json'
     assert fpath('/path/', 'data.json') == '/path/data.json'
 
+def test_get_files():
+
+    out = get_files('.')
+    assert isinstance(out, list)
+
 def test_save_model_str(tfm):
     """Check saving model object data, with file specifiers as strings."""
 
