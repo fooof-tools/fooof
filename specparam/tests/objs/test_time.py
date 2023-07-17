@@ -87,6 +87,16 @@ def test_time_load(tbands):
     tft.load(file_name_res, TEST_DATA_PATH, peak_org=tbands)
     assert tft.time_results
 
+    # Test loading settings
+    tft = SpectralTimeModel(verbose=False)
+    tft.load(file_name_set, TEST_DATA_PATH)
+    assert tft.get_settings()
+
+    # Test loading data
+    tft = SpectralTimeModel(verbose=False)
+    tft.load(file_name_dat, TEST_DATA_PATH)
+    assert np.all(tft.power_spectra)
+
 def test_time_drop():
 
     n_windows = 3

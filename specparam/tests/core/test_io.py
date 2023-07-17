@@ -134,6 +134,22 @@ def test_save_time(tft):
     assert os.path.exists(os.path.join(TEST_DATA_PATH, set_file_name + '.json'))
     assert os.path.exists(os.path.join(TEST_DATA_PATH, dat_file_name + '.json'))
 
+def test_save_event(tfe):
+    """Check saving fe data."""
+
+    res_file_name = 'test_event_res'
+    set_file_name = 'test_event_set'
+    dat_file_name = 'test_event_dat'
+
+    save_event(tfe, file_name=res_file_name, file_path=TEST_DATA_PATH, save_results=True)
+    save_event(tfe, file_name=set_file_name, file_path=TEST_DATA_PATH, save_settings=True)
+    save_event(tfe, file_name=dat_file_name, file_path=TEST_DATA_PATH, save_data=True)
+
+    assert os.path.exists(os.path.join(TEST_DATA_PATH, set_file_name + '.json'))
+    for ind in range(len(tfe)):
+        assert os.path.exists(os.path.join(TEST_DATA_PATH, res_file_name + '_' + str(ind) + '.json'))
+        assert os.path.exists(os.path.join(TEST_DATA_PATH, dat_file_name + '_' + str(ind) + '.json'))
+
 def test_load_json_str():
     """Test loading JSON file, with str file specifier.
     Loads files from test_save_model_str.

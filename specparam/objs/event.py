@@ -433,13 +433,17 @@ class SpectralTimeEventModel(SpectralTimeModel):
         """
 
         files = get_files(file_path, select=file_name)
+        spectrograms = []
         for file in files:
             super().load(file, file_path, peak_org=False)
             if self.group_results:
                 self.event_group_results.append(self.group_results)
+            if np.all(self.power_spectra):
+                spectrograms.append(self.spectrogram)
+        self.spectrograms = np.array(spectrograms) if spectrograms else None
 
         self._reset_group_results()
-        if peak_org is not False:
+        if peak_org is not False and self.event_group_results:
             self.convert_results(peak_org)
 
 

@@ -92,6 +92,27 @@ def test_event_report(skip_if_no_mpl):
 
     assert tfe
 
+def test_event_load(tbands):
+
+    file_name_res = 'test_event_res'
+    file_name_set = 'test_event_set'
+    file_name_dat = 'test_event_dat'
+
+    # Test loading results
+    tfe = SpectralTimeEventModel(verbose=False)
+    tfe.load(file_name_res, TEST_DATA_PATH, peak_org=tbands)
+    assert tfe.event_time_results
+
+    # Test loading settings
+    tfe = SpectralTimeEventModel(verbose=False)
+    tfe.load(file_name_set, TEST_DATA_PATH)
+    assert tfe.get_settings()
+
+    # Test loading data
+    tfe = SpectralTimeEventModel(verbose=False)
+    tfe.load(file_name_dat, TEST_DATA_PATH)
+    assert np.all(tfe.spectrograms)
+
 def test_event_get_model(tfe):
 
     # Check without regenerating
