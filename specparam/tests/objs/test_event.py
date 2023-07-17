@@ -96,8 +96,18 @@ def test_event_get_params(tfe):
 
 def test_event_get_group(tfe):
 
-    ntfe = tfe.get_group([0], [1, 2])
-    assert ntfe
+    ntfe0 = tfe.get_group(None, None)
+    assert isinstance(ntfe0, SpectralTimeEventModel)
+
+    einds = [0, 1]
+    winds = [1, 2]
+    ntfe1 = tfe.get_group(einds, winds)
+    #assert ntfe1
+    assert ntfe1.spectrograms.shape == (len(einds), len(tfe.freqs), len(winds))
+    tkey = list(ntfe1.event_time_results.keys())[0]
+    assert ntfe1.event_time_results[tkey].shape == (len(einds), len(winds))
+    # ToDo: turn this test back on when functionality is fixed
+    #assert len(ntfe1.event_group_results), len(ntfe1.event_group_results[0]) == (len(einds, len(winds)))
 
 def test_event_drop():
 

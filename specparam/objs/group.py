@@ -456,22 +456,21 @@ class SpectralGroupModel(SpectralModel):
             The requested selection of results data loaded into a new group model object.
         """
 
-        # Check and convert indices encoding to list of int
-        inds = check_inds(inds)
-
         # Initialize a new model object, with same settings as current object
         group = SpectralGroupModel(*self.get_settings(), verbose=self.verbose)
+        group.add_meta_data(self.get_meta_data())
 
-        # Add data for specified power spectra, if available
-        #   Power spectra are inverted to linear, as they are re-logged when added to object
-        if self.has_data:
-            group.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]))
-        # If no power spectrum data available, copy over data information & regenerate freqs
-        else:
-            group.add_meta_data(self.get_meta_data())
+        if inds is not None:
 
-        # Add results for specified power spectra
-        group.group_results = [self.group_results[ind] for ind in inds]
+            # Check and convert indices encoding to list of int
+            inds = check_inds(inds)
+
+            # Add data for specified power spectra, if available
+            if self.has_data:
+                group.power_spectra = self.power_spectra[inds, :]
+
+            # Add results for specified power spectra
+            group.group_results = [self.group_results[ind] for ind in inds]
 
         return group
 

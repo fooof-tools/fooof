@@ -341,28 +341,27 @@ class SpectralTimeEventModel(SpectralTimeModel):
             The requested selection of results data loaded into a new model object.
         """
 
-        # Check and convert indices encoding to list of int
-        event_inds = check_inds(event_inds)
-        window_inds = check_inds(window_inds)
-
         # Initialize a new model object, with same settings as current object
         output = SpectralTimeEventModel(*self.get_settings(), verbose=self.verbose)
+        output.add_meta_data(self.get_meta_data())
 
-        # Add data for specified power spectra, if available
-        #   Power spectra are inverted to linear, as they are re-logged when added to object
-        if self.has_data:
-            output.add_data(self.freqs,
-                            np.power(10, self.spectrograms[event_inds, :, :][:, :, window_inds]))
-        # If no power spectrum data available, copy over data information & regenerate freqs
-        else:
-            output.add_meta_data(self.get_meta_data())
+        if event_inds is not None or window_inds is not None:
 
-        # Add results for specified power spectra
-        output.event_group_results = \
-            [self.event_group_results[eind][wind] for eind in event_inds for wind in window_inds]
-        output.event_time_results = \
-            {key : self.event_time_results[key][event_inds][:, window_inds] \
-            for key in self.event_time_results}
+            # Check and convert indices encoding to list of int
+            event_inds = check_inds(event_inds)
+            window_inds = check_inds(window_inds)
+
+            # Add data for specified power spectra, if available
+            if self.has_data:
+                output.spectrograms = self.spectrograms[event_inds, :, :][:, :, window_inds]
+
+            # Add results for specified power spectra
+            # ToDo: this doesn't work... needs fixing.
+            # output.event_group_results = \
+            #     [self.event_group_results[eind][wind] for eind in event_inds for wind in window_inds]
+            output.event_time_results = \
+                {key : self.event_time_results[key][event_inds][:, window_inds] \
+                for key in self.event_time_results}
 
         return output
 
@@ -397,7 +396,6 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
         fg = SpectralGroupModel(*self.get_settings())
         fg.add_meta_data(self.get_meta_data())
-        fg.freqs = self.freqs
 
         if save_settings and not save_results and not save_data:
             fg.save(file_name, file_path, save_settings=True)

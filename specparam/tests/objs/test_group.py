@@ -327,6 +327,12 @@ def test_get_model(tfg):
 def test_get_group(tfg):
     """Check the return of a sub-sampled group object."""
 
+    # Test with no inds
+    nfg0 = tfg.get_group(None)
+    assert isinstance(nfg0, SpectralGroupModel)
+    assert nfg0.get_settings() == tfg.get_settings()
+    assert nfg0.get_meta_data() == tfg.get_meta_data()
+
     # Check with list index
     inds1 = [1, 2]
     nfg1 = tfg.get_group(inds1)

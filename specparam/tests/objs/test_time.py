@@ -103,13 +103,20 @@ def test_time_drop():
 
 def test_time_get_group(tft):
 
+    nft0 = tft.get_group(None)
+    assert isinstance(nft0, SpectralTimeModel)
+
     inds = [1, 2]
 
     nft = tft.get_group(inds)
     assert isinstance(nft, SpectralTimeModel)
+    assert len(nft.group_results) == len(inds)
+    assert len(nft.time_results[list(nft.time_results.keys())[0]]) == len(inds)
+    assert nft.spectrogram.shape[-1] == len(inds)
 
-    nfg = tft.get_group(inds)
-    assert isinstance(nfg, SpectralGroupModel)
+    nfg = tft.get_group(inds, 'group')
+    assert not isinstance(nfg, SpectralTimeModel)
+    assert len(nfg.group_results) == len(inds)
 
 def test_time_to_df(tft, tbands, skip_if_no_pandas):
 

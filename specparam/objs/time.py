@@ -241,23 +241,22 @@ class SpectralTimeModel(SpectralGroupModel):
 
         if output_type == 'time':
 
-            # Check and convert indices encoding to list of int
-            inds = check_inds(inds)
-
             # Initialize a new model object, with same settings as current object
             output = SpectralTimeModel(*self.get_settings(), verbose=self.verbose)
+            output.add_meta_data(self.get_meta_data())
 
-            # Add data for specified power spectra, if available
-            #   Power spectra are inverted to linear, as they are re-logged when added to object
-            if self.has_data:
-                output.add_data(self.freqs, np.power(10, self.spectrogram[:, inds]))
-            # If no power spectrum data available, copy over data information & regenerate freqs
-            else:
-                output.add_meta_data(self.get_meta_data())
+            if inds is not None:
 
-            # Add results for specified power spectra
-            output.group_results = [self.group_results[ind] for ind in inds]
-            output.time_results = get_results_by_ind(self.time_results, inds)
+                # Check and convert indices encoding to list of int
+                inds = check_inds(inds)
+
+                # Add data for specified power spectra, if available
+                if self.has_data:
+                    output.power_spectra = self.power_spectra[inds, :]
+
+                # Add results for specified power spectra
+                output.group_results = [self.group_results[ind] for ind in inds]
+                output.time_results = get_results_by_ind(self.time_results, inds)
 
         if output_type == 'group':
             output = super().get_group(inds)
