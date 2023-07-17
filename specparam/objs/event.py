@@ -6,7 +6,7 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
-from specparam.objs import SpectralModel, SpectralGroupModel, SpectralTimeModel
+from specparam.objs import SpectralModel, SpectralTimeModel
 from specparam.plts.event import plot_event_model
 from specparam.data.conversions import event_group_to_dict, event_group_to_dataframe, dict_to_df
 from specparam.data.utils import get_group_params, get_results_by_row, flatten_results_dict
@@ -241,16 +241,11 @@ class SpectralTimeEventModel(SpectralTimeModel):
                 self._reset_data_results(clear_spectra=True)
 
         else:
-
-            ft = SpectralGroupModel(*self.get_settings(), verbose=False)
-            ft.add_meta_data(self.get_meta_data())
-            ft.freqs = self.freqs
-
+            fg = self.get_group(None)
             n_jobs = cpu_count() if n_jobs == -1 else n_jobs
             with Pool(processes=n_jobs) as pool:
-
                 self.event_group_results = \
-                    list(_progress(pool.imap(partial(_par_fit, model=ft), self.spectrograms),
+                    list(_progress(pool.imap(partial(_par_fit, model=fg), self.spectrograms),
                                    progress, len(self.spectrograms)))
 
         if peak_org is not False:
@@ -394,9 +389,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
     def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 
-        fg = SpectralGroupModel(*self.get_settings())
-        fg.add_meta_data(self.get_meta_data())
-
+        fg = self.get_group(None)
         if save_settings and not save_results and not save_data:
             fg.save(file_name, file_path, save_settings=True)
         else:
