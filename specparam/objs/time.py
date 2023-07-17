@@ -26,8 +26,8 @@ def transpose_arg1(func):
         if len(args) >= 2:
             args = list(args)
             args[2] = args[2].T if isinstance(args[2], np.ndarray) else args[2]
-        if 'power_spectra' in kwargs:
-            kwargs['power_spectra'] = kwargs['power_spectra'].T
+        if 'spectrogram' in kwargs:
+            kwargs['spectrogram'] = kwargs['spectrogram'].T
 
         return func(*args, **kwargs)
 
@@ -50,14 +50,14 @@ class SpectralTimeModel(SpectralGroupModel):
     Attributes
     ----------
     freqs : 1d array
-        Frequency values for the power spectra.
+        Frequency values for the spectrogram.
     spectrogram : 2d array
         Power values for the spectrogram, as [n_freqs, n_time_windows].
         Power values are stored internally in log10 scale.
     freq_range : list of [float, float]
-        Frequency range of the power spectra, as [lowest_freq, highest_freq].
+        Frequency range of the spectrogram, as [lowest_freq, highest_freq].
     freq_res : float
-        Frequency resolution of the power spectra.
+        Frequency resolution of the spectrogram.
     time_results : dict
         Results of the model fit across each time window.
 
@@ -116,11 +116,11 @@ class SpectralTimeModel(SpectralGroupModel):
         Parameters
         ----------
         freqs : 1d array
-            Frequency values for the power spectra, in linear space.
+            Frequency values for the spectrogram, in linear space.
         spectrogram : 2d array, shape=[n_freqs, n_time_windows]
             Matrix of power values, in linear space.
         freq_range : list of [float, float], optional
-            Frequency range to restrict power spectra to. If not provided, keeps the entire range.
+            Frequency range to restrict spectrogram to. If not provided, keeps the entire range.
 
         Notes
         -----
@@ -133,15 +133,15 @@ class SpectralTimeModel(SpectralGroupModel):
         super().add_data(freqs, spectrogram, freq_range)
 
 
-    def report(self, freqs=None, power_spectra=None, freq_range=None,
+    def report(self, freqs=None, spectrogram=None, freq_range=None,
                peak_org=None, report_type='time', n_jobs=1, progress=None):
         """Fit a spectrogram and display a report, with a plot and printed results.
 
         Parameters
         ----------
         freqs : 1d array, optional
-            Frequency values for the power_spectra, in linear space.
-        power_spectra : 2d array, shape: [n_freqs, n_time_windows], optional
+            Frequency values for the spectrogram, in linear space.
+        spectrogram : 2d array, shape: [n_freqs, n_time_windows], optional
             Spectrogram of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
             Frequency range to fit the model to. If not provided, fits the entire given range.
@@ -160,20 +160,20 @@ class SpectralTimeModel(SpectralGroupModel):
         Data is optional, if data has already been added to the object.
         """
 
-        self.fit(freqs, power_spectra, freq_range, peak_org, n_jobs=n_jobs, progress=progress)
+        self.fit(freqs, spectrogram, freq_range, peak_org, n_jobs=n_jobs, progress=progress)
         self.plot(report_type)
         self.print_results(report_type)
 
 
-    def fit(self, freqs=None, power_spectra=None, freq_range=None, peak_org=None,
+    def fit(self, freqs=None, spectrogram=None, freq_range=None, peak_org=None,
             n_jobs=1, progress=None):
         """Fit a spectrogram.
 
         Parameters
         ----------
         freqs : 1d array, optional
-            Frequency values for the power_spectra, in linear space.
-        power_spectra : 2d array, shape: [n_freqs, n_time_windows], optional
+            Frequency values for the spectrogram, in linear space.
+        spectrogram : 2d array, shape: [n_freqs, n_time_windows], optional
             Spectrogram of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
             Frequency range to fit the model to. If not provided, fits the entire given range.
@@ -192,7 +192,7 @@ class SpectralTimeModel(SpectralGroupModel):
         Data is optional, if data has already been added to the object.
         """
 
-        super().fit(freqs, power_spectra, freq_range, n_jobs, progress)
+        super().fit(freqs, spectrogram, freq_range, n_jobs, progress)
         if peak_org is not False:
             self.convert_results(peak_org)
 
