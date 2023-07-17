@@ -355,13 +355,6 @@ class SpectralTimeEventModel(SpectralTimeModel):
             step = int(len(temp) / len(einds))
             output.event_group_results = [temp[ind:ind+step] for ind in range(0, len(temp), step)]
 
-            # # Note: this equivalent to above (but slower)
-            # n_out = len(einds) * len(winds)
-            # step = int(n_out / len(einds))
-            # output.event_group_results = \
-            #     [[self.event_group_results[ei][wi] for ei in einds for wi in winds]\
-            #         [ind:ind+step]for ind in range(0, n_out, step)]
-
             # Add results for specified power spectra - event time results
             output.event_time_results = \
                 {key : self.event_time_results[key][event_inds][:, window_inds] \
