@@ -114,6 +114,10 @@ def test_check_inds():
     # Test boolean array input
     assert array_equal(check_inds(np.array([True, False, True])), np.array([0, 2]))
 
+    # Check None inputs, including length input
+    assert isinstance(check_inds(None), slice)
+    assert isinstance(check_inds(None, 4), range)
+
 def test_resolve_aliases():
 
     # Define a test set of aliases
