@@ -671,7 +671,7 @@ class FOOOF():
         ----------
         file_name : str or FileObject
             File to load data from.
-        file_path : str or None, optional
+        file_path : Path or str, optional
             Path to directory to load from. If None, loads from current directory.
         regenerate : bool, optional, default: True
             Whether to regenerate the model fit from the loaded data, if data is available.

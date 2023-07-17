@@ -1,6 +1,7 @@
 """Tests for fooof.core.io."""
 
 import os
+from pathlib import Path
 
 from fooof.core.items import OBJ_DESC
 
@@ -26,6 +27,7 @@ def test_fpath():
 
     assert fpath(None, 'data.json') == 'data.json'
     assert fpath('/path/', 'data.json') == '/path/data.json'
+    assert fpath(Path('/path/'), 'data.json') == '/path/data.json'
 
 def test_save_fm_str(tfm):
     """Check saving fm data, with file specifiers as strings."""

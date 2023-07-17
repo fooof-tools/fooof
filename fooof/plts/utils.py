@@ -211,7 +211,7 @@ def save_figure(file_name, file_path=None, close=False, **save_kwargs):
     ----------
     file_name : str
         File name for the figure file to save out.
-    file_path : str or Path
+    file_path : Path or str
         Path for where to save out the figure to.
     close : bool, optional, default: False
         Whether to close the plot after saving.

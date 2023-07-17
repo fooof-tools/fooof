@@ -31,7 +31,7 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
         Whether to save out a copy of the plot.
     file_name : str, optional
         Name to give the saved out file.
-    file_path : str, optional
+    file_path : Path or str, optional
         Path to directory to save to. If None, saves to current directory.
 
     Raises
