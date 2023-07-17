@@ -156,7 +156,7 @@ def save_group(group, file_name, file_path=None, append=False,
     file_name : str or FileObject
         File to save data to.
     file_path : str, optional
-        Path to directory to load from. If None, loads from current directory.
+        Path to directory to load from. If None, saves to current directory.
     append : bool, optional, default: False
         Whether to append to an existing file, if available.
         This option is only valid (and only used) if 'file_name' is a str.
@@ -192,6 +192,48 @@ def save_group(group, file_name, file_path=None, append=False,
 
     else:
         raise ValueError("Save file not understood.")
+
+
+def save_event(event, file_name, file_path=None, append=False,
+               save_results=False, save_settings=False, save_data=False):
+    """Save out results and/or settings from event object. Saves out to a JSON file.
+
+    Parameters
+    ----------
+    event : SpectralTimeEventModel
+        Object to save data from.
+    file_name : str or FileObject
+        File to save data to.
+    file_path : str, optional
+        Path to directory to load from. If None, saves to current directory.
+    append : bool, optional, default: False
+        Whether to append to an existing file, if available.
+        This option is only valid (and only used) if 'file_name' is a str.
+    save_results : bool, optional
+        Whether to save out model fit results.
+    save_settings : bool, optional
+        Whether to save out settings.
+    save_data : bool, optional
+        Whether to save out power spectra data.
+
+    Raises
+    ------
+    ValueError
+        If the data or save file specified are not understood.
+    """
+
+    fg = event.get_group(None, None, 'group')
+    if save_settings and not save_results and not save_data:
+        fg.save(file_name, file_path, save_settings=True)
+    else:
+        ndigits = len(str(len(event)))
+        for ind, gres in enumerate(event.event_group_results):
+            fg.group_results = gres
+            if save_data:
+                fg.power_spectra = event.spectrograms[ind, :, :].T
+            fg.save(file_name + '_{:0{ndigits}d}'.format(ind, ndigits=ndigits),
+                    file_path=file_path, save_results=save_results,
+                    save_settings=save_settings, save_data=save_data)
 
 
 def load_json(file_name, file_path):

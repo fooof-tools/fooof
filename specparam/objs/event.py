@@ -15,7 +15,7 @@ from specparam.core.modutils import (copy_doc_func_to_method, docs_get_section,
 from specparam.core.reports import save_event_report
 from specparam.core.strings import gen_event_results_str
 from specparam.core.utils import check_inds
-from specparam.core.io import get_files, save_group
+from specparam.core.io import get_files, save_event
 
 ###################################################################################################
 ###################################################################################################
@@ -410,22 +410,11 @@ class SpectralTimeEventModel(SpectralTimeModel):
         save_event_report(self, file_name, file_path, add_settings)
 
 
-    @copy_doc_func_to_method(save_group)
+    @copy_doc_func_to_method(save_event)
     def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 
-        fg = self.get_group(None, None, 'group')
-        if save_settings and not save_results and not save_data:
-            fg.save(file_name, file_path, save_settings=True)
-        else:
-            ndigits = len(str(len(self)))
-            for ind, gres in enumerate(self.event_group_results):
-                fg.group_results = gres
-                if save_data:
-                    fg.power_spectra = self.spectrograms[ind, :, :].T
-                fg.save(file_name + '_{:0{ndigits}d}'.format(ind, ndigits=ndigits),
-                        file_path=file_path, save_results=save_results,
-                        save_settings=save_settings, save_data=save_data)
+        save_event(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
     def load(self, file_name, file_path=None, peak_org=None):
