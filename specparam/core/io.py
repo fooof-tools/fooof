@@ -82,7 +82,7 @@ def get_files(file_path, select=None):
     files = [file for file in files if file[0] != '.']
 
     if select:
-        files = [file for file in files if search in file]
+        files = [file for file in files if select in file]
 
     return files
 

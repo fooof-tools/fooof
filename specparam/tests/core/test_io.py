@@ -29,8 +29,11 @@ def test_fpath():
 
 def test_get_files():
 
-    out = get_files('.')
-    assert isinstance(out, list)
+    out1 = get_files('.')
+    assert isinstance(out1, list)
+
+    out2 = get_files('.', 'search')
+    assert isinstance(out2, list)
 
 def test_save_model_str(tfm):
     """Check saving model object data, with file specifiers as strings."""
