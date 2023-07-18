@@ -116,6 +116,44 @@ def average_fg(fg, bands, avg_method='mean', regenerate=True):
     return fm
 
 
+def average_reconstructions(fg, avg_method='mean'):
+    """Average across model reconstructions for a group of power spectra.
+
+    Parameters
+    ----------
+    fg : FOOOFGroup
+        Object with model fit results to average across.
+    avg : {'mean', 'median'}
+        Averaging function to use.
+
+    Returns
+    -------
+    freqs : 1d array
+        Frequency values for the average model reconstruction.
+    avg_model : 1d array
+        Power values for the average model reconstruction.
+        Note that power values are in log10 space.
+    """
+
+    if avg_method not in ['mean', 'median']:
+        raise ValueError("Requested average method not understood.")
+    if not fg.has_model:
+        raise NoModelError("No model fit results are available, can not proceed.")
+
+    if avg_method == 'mean':
+        avg_func = np.nanmean
+    elif avg_method == 'median':
+        avg_func = np.nanmedian
+
+    models = np.zeros(shape=fg.power_spectra.shape)
+    for ind in range(len(fg)):
+        models[ind, :] = fg.get_fooof(ind, regenerate=True).fooofed_spectrum_
+
+    avg_model = avg_func(models, 0)
+
+    return fg.freqs, avg_model
+
+
 def combine_fooofs(fooofs):
     """Combine a group of FOOOF and/or FOOOFGroup objects into a single FOOOFGroup object.
 

@@ -45,6 +45,13 @@ def test_average_fg(tfg, tbands):
     with raises(NoModelError):
         average_fg(ntfg, tbands)
 
+def test_average_reconstructions(tfg):
+
+    freqs, avg_model = average_reconstructions(tfg)
+    assert isinstance(freqs, np.ndarray)
+    assert isinstance(avg_model, np.ndarray)
+    assert freqs.shape == avg_model.shape
+
 def test_combine_fooofs(tfm, tfg):
 
     tfm2 = tfm.copy()
