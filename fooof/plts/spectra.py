@@ -77,6 +77,10 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False,
     style_spectrum_plot(ax, log_freqs, log_powers)
 
 
+# Alias `plot_spectrum` to `plot_spectra` for backwards compatibility
+plot_spectrum = plot_spectra
+
+
 @savefig
 @check_dependency(plt, 'matplotlib')
 def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r',
