@@ -169,10 +169,14 @@ def apply_custom_style(ax, **kwargs):
         ax.legend(prop={'size': kwargs.pop('legend_size', LEGEND_SIZE)},
                   loc=kwargs.pop('legend_loc', LEGEND_LOC))
 
-    # Apply tight layout to the figure object
-    #   This should be equivalent to `plt.tight_layout()`, but seems to raise fewer warnings...
-    fig = plt.gcf()
-    fig.set_layout_engine('tight')
+    # Apply tight layout to the figure object, if matplotlib is new enough
+    #   If available, `.set_layout_engine` should be equivalent to
+    #   `plt.tight_layout()`, but seems to raise fewer warnings...
+    try:
+        fig = plt.gcf()
+        fig.set_layout_engine('tight')
+    except:
+        plt.tight_layout()
 
 
 def apply_style(ax, axis_styler=apply_axis_style, line_styler=apply_line_style,
