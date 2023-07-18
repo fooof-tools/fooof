@@ -388,7 +388,7 @@ class ERPparam():
 
         # If time & signal provided together, add data to object.
         if time is not None and signal is not None:
-            self.add_data(time, signal)
+            self.add_data(time, signal, time_range)
 
         # If signal provided alone, add to object
         #   Note: be careful passing in power_spectrum data like this:
@@ -1035,6 +1035,8 @@ class ERPparam():
             If the input data are inconsistent size.
         """
 
+        print(signal_dim)
+        print(signal.ndim)
         # Check that data are the right types
         if not isinstance(time, np.ndarray) or not isinstance(signal, np.ndarray):
             raise DataError("Input data must be numpy arrays.")

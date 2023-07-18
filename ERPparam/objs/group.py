@@ -275,15 +275,15 @@ class ERPparamGroup(ERPparam):
         if self.verbose and not progress:
             print('Running ERP Shape Group across {} ERPs.'.format(len(self.signals)))
         
-        if self.verbose:
-            self._check_width_limits()
+        # if self.verbose:
+        #     self._check_width_limits()
 
         # Run linearly
         if n_jobs == 1:
             self._reset_group_results(len(self.signals))
             for ind, signal in \
                 _progress(enumerate(self.signals), progress, len(self)):
-                self._fit(time=time, signal=signal)
+                self._fit(time=self.time, signal=signal, time_range=self.time_range)
                 self.group_results[ind] = self._get_results()
 
         # Run in parallel
