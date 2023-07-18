@@ -164,7 +164,7 @@ def docs_append_to_section(docstring, section, add):
                         for split in docstring.split('\n\n')])
 
 
-def docs_get_section(docstring, section, output='extract'):
+def docs_get_section(docstring, section, output='extract', end=None):
     """Extract and/or remove a specified section from a docstring.
 
     Parameters
@@ -177,6 +177,7 @@ def docs_get_section(docstring, section, output='extract'):
         Run mode, options:
             'extract' - returns the extracted section from the docstring.
             'remove' - returns the docstring after removing the specified section.
+    end : str, optional
 
     Returns
     -------
@@ -193,7 +194,12 @@ def docs_get_section(docstring, section, output='extract'):
         # Track whether in the desired section
         if section in line and '--' in docstring_split[ind + 1]:
             in_section = True
-        if in_section and line == '':
+        if end:
+            if in_section and '    ' + end == line:
+                in_section = False
+                # In this approach, an extra newline is caught - so pop it off
+                outs.pop()
+        elif in_section and line == '':
             in_section = False
 
         # Collect desired outputs based on whether extracting or removing section
