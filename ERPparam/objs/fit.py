@@ -100,7 +100,7 @@ class ERPparam():
     fs : float
         Sampling frequency.
     peak_params_ : 2d array
-        Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
+        Fitted parameter values for the peaks. Each row is a peak, as [CT, PW, BW].
     gaussian_params_ : 2d array
         Parameters that define the gaussian fit(s).
         Each row is a gaussian, as [mean, height, standard deviation].
@@ -118,11 +118,11 @@ class ERPparam():
     Notes
     -----
     - Commonly used abbreviations used in this module include:
-      CF: peak time, PW: power, BW: Bandwidth
+      CT: peak time, PW: power, BW: Bandwidth
     - Input signal must be provided.
     - Input signals should be smooth, as overly noisy signals may lead to bad fits.
     - The gaussian params are those that define the gaussian of the fit, where as the peak
-      params are a modified version, in which the CF of the peak is the mean of the gaussian,
+      params are a modified version, in which the CT of the peak is the mean of the gaussian,
       the PW of the peak is the height of the gaussian, and the BW of the peak, is 2*std of the 
       gaussian (as 'two sided' bandwidth).
     """
@@ -282,8 +282,8 @@ class ERPparam():
         self._reset_data_results(clear_time=self.has_data,
                                 clear_signal=self.has_data,
                                 clear_results=self.has_model and clear_results)
-        
-        self.time, self.signal, self.raw_signal, self.time_range, self.fs = \
+        #time, signal, raw_signal, time_range, fs, time_res
+        self.time, self.signal, self.raw_signal, self.time_range, self.fs, self.time_res = \
             self._prepare_data(time, signal, time_range, signal_dim=1) 
 
 
@@ -517,7 +517,7 @@ class ERPparam():
         ----------
         name : {'peak_params', 'gaussian_params', 'error', 'r_squared'}
             Name of the data field to extract.
-        col : {'CF', 'PW', 'BW'} or int, optional
+        col : {'CT', 'PW', 'BW'} or int, optional
             Column name / index to extract from selected data, if requested.
             Only used for name of {'peak_params', 'gaussian_params'}.
 
@@ -798,7 +798,7 @@ class ERPparam():
             Parameters for gaussian fits to peaks, as gaussian parameters.
         """
 
-        # Set the bounds for CF, enforce positive height value, and set bandwidth limits
+        # Set the bounds for CT, enforce positive height value, and set bandwidth limits
         #   Note that 'guess' is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std
         #   This set of list comprehensions is a way to end up with bounds in the form:
         #     ((cf_low_peak1, height_low_peak1, bw_low_peak1, *repeated for n_peaks*),
@@ -809,7 +809,7 @@ class ERPparam():
         hi_bound = [[peak[0] + 2 * self._cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]
                     for peak in guess]
 
-        # Check that CF bounds are within time range
+        # Check that CT bounds are within time range
         #   If they are  not, update them to be restricted to time range
         lo_bound = [bound if bound[0] > self.time_range[0] else \
             [self.time_range[0], *bound[1:]] for bound in lo_bound]
@@ -855,7 +855,7 @@ class ERPparam():
         Returns
         -------
         peak_params : 2d array
-            Fitted parameter values for the peaks, with each row as [CF, PW, BW].
+            Fitted parameter values for the peaks, with each row as [CT, PW, BW].
 
         Notes
         -----
@@ -875,7 +875,7 @@ class ERPparam():
 
         for ii, peak in enumerate(gaus_params):
 
-            # Gets the index of the signal at the time closest to the CF of the peak
+            # Gets the index of the signal at the time closest to the CT of the peak
             ind = np.argmin(np.abs(self.time - peak[0]))
 
             # Collect peak parameter data
@@ -1086,7 +1086,7 @@ class ERPparam():
         if self.rectify:
             signal = np.abs(signal)
 
-        return time, signal, raw_signal, time_range, fs
+        return time, signal, raw_signal, time_range, fs, time_res
 
 
     def _add_from_dict(self, data):

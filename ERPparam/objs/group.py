@@ -69,7 +69,7 @@ class ERPparamGroup(ERPparam):
     Notes
     -----
     - Commonly used abbreviations used in this module include:
-      CF: center time, PW: power, BW: Bandwidth, AP: aperiodic
+      CT: center time, PW: power, BW: Bandwidth, AP: aperiodic
     - Input power spectra must be provided in linear scale.
       Internally they are stored in log10 scale, as this is what the model operates upon.
     - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
@@ -77,12 +77,12 @@ class ERPparamGroup(ERPparam):
       longer time segments for power spectrum calculation to get smoother power spectra,
       as this will give better model fits.
     - The gaussian params are those that define the gaussian of the fit, where as the peak
-      params are a modified version, in which the CF of the peak is the mean of the gaussian,
+      params are a modified version, in which the CT of the peak is the mean of the gaussian,
       the PW of the peak is the height of the gaussian over and above the aperiodic component,
       and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
     - The ERPparamGroup object inherits from the ERPparam object. As such it also has data
-      attributes (`signal` & `fooofed_spectrum_`), and parameter attributes
-      (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)
+      attributes (`signal`), and parameter attributes
+      ( `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)
       which are defined in the context of individual model fits. These attributes are
       used during the fitting process, but in the group context do not store results
       post-fitting. Rather, all model fit results are collected and stored into the
@@ -138,14 +138,14 @@ class ERPparamGroup(ERPparam):
     def n_peaks_(self):
         """How many peaks were fit for each model."""
 
-        return [single_tr_erp.peak_params_.shape[0] for single_tr_erp in self] if self.has_model else None
+        return [single_tr_erp.peak_params.shape[0] for single_tr_erp in self] if self.has_model else None
 
 
     @property
     def n_null_(self):
         """How many model fits are null."""
 
-        return sum([1 for single_tr_erp in self.group_results if np.isnan(single_tr_erp.peak_params_[0])]) \
+        return sum([1 for single_tr_erp in self.group_results if np.sum(np.isnan(single_tr_erp.peak_params))]) \
             if self.has_model else None
 
 
@@ -154,7 +154,7 @@ class ERPparamGroup(ERPparam):
         """The indices for model fits that are null."""
 
         return [ind for ind, single_tr_erp in enumerate(self.group_results) \
-            if np.isnan(single_tr_erp.peak_params[0])] \
+            if np.sum(np.isnan(single_tr_erp.peak_params))] \
             if self.has_model else None
 
 
@@ -215,8 +215,8 @@ class ERPparamGroup(ERPparam):
             self._reset_data_results(True, True, True, True)
             self._reset_group_results()
 
-        #output of prepare data: time, signal, raw_signal, time_range, fs
-        self.time, self.signals, self.raw_signals, self.time_range,  self.fs = self._prepare_data(time=time, signal=signals, time_range=time_range, signal_dim=2)
+        #output of prepare data: time, signal, raw_signal, time_range, fs, time-res
+        self.time, self.signals, self.raw_signals, self.time_range,  self.fs, self.time_res = self._prepare_data(time=time, signal=signals, time_range=time_range, signal_dim=2)
 
 
     def report(self, time=None, signals=None, time_range=None, n_jobs=1, progress=None):
@@ -331,11 +331,11 @@ class ERPparamGroup(ERPparam):
 
         Parameters
         ----------
-        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
+        name : { 'peak_params', 'gaussian_params', 'error', 'r_squared'}
             Name of the data field to extract across the group.
-        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+        col : {'CT', 'PW', 'BW'} or int, optional
             Column name / index to extract from selected data, if requested.
-            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+            Only used for name of {'peak_params', 'gaussian_params'}.
 
         Returns
         -------
@@ -364,7 +364,7 @@ class ERPparamGroup(ERPparam):
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
-            col = get_peak_indices()[col]
+            col = get_indices()[col]
         elif isinstance(col, int):
             if col not in [0, 1]:
                 raise ValueError("Input value for `col` not valid.")

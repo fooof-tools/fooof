@@ -47,7 +47,7 @@ def get_peak_indices():
     """
 
     indices = {
-        'CF' : 0,
+        'CT' : 0,
         'PW' : 1,
         'BW' : 2,
     }

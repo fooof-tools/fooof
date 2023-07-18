@@ -340,12 +340,11 @@ def gen_results_fg_str(fg, concise=False):
     n_peaks = len(fg.get_params('peak_params'))
     r2s = fg.get_params('r_squared')
     errors = fg.get_params('error')
-    exps = fg.get_params('aperiodic_params', 'exponent')
-    kns = fg.get_params('aperiodic_params', 'knee') \
-        if fg.aperiodic_mode == 'knee' else np.array([0])
+    bws = fg.get_params('peak_params', 'BW')
+    pws = fg.get_params('peak_params', 'PW')
 
     # Check if there are any power spectra that failed to fit
-    n_failed = sum(np.isnan(exps))
+    n_failed = fg.n_null_#sum(np.isnan(bws))
 
     str_lst = [
 
@@ -356,26 +355,26 @@ def gen_results_fg_str(fg, concise=False):
         '',
 
         # Group information
-        'Number of power spectra in the Group: {}'.format(len(fg.group_results)),
-        *[el for el in ['{} power spectra failed to fit'.format(n_failed)] if n_failed],
+        'Number of Events in the Group: {}'.format(len(fg.group_results)),
+        *[el for el in ['{} Events failed to fit'.format(n_failed)] if n_failed],
         '',
 
         # Frequency range and resolution
-        'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(fg.freq_range[0])), int(np.ceil(fg.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(fg.freq_res),
+        'The model was run on the time range {} - {} '.format(
+            int(np.floor(fg.time_range[0])), int(np.ceil(fg.time_range[1]))),
+        'Time Resolution is {:1.2f}'.format(fg.time_res),
         '',
 
         # Aperiodic parameters - knee fit status, and quick exponent description
-        'Power spectra were fit {} a knee.'.format(\
-            'with' if fg.aperiodic_mode == 'knee' else 'without'),
-        '',
-        'Aperiodic Fit Values:',
-        *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
-                        .format(np.nanmin(kns), np.nanmax(kns), np.nanmean(kns)),
-                       ] if fg.aperiodic_mode == 'knee'],
-        'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(exps), np.nanmax(exps), np.nanmean(exps)),
+        # 'Power spectra were fit {} a knee.'.format(\
+        #     'with' if fg.aperiodic_mode == 'knee' else 'without'),
+        # '',
+        'Peak Fit Values:',
+        *[el for el in ['    Amplitudes - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
+                        .format(np.nanmin(pws), np.nanmax(pws), np.nanmean(pws)),
+                       ]],
+        'Bandwidths - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(np.nanmin(bws), np.nanmax(bws), np.nanmean(bws)),
         '',
 
         # Peak Parameters

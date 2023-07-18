@@ -79,13 +79,10 @@ def plot_fg_ap(fg, ax=None, **plot_kwargs):
         Keyword arguments to pass into the ``style_plot``.
     """
 
-    if fg.aperiodic_mode == 'knee':
-        plot_scatter_2(fg.get_params('aperiodic_params', 'exponent'), 'Exponent',
-                       fg.get_params('aperiodic_params', 'knee'), 'Knee',
-                       'Aperiodic Fit', ax=ax)
-    else:
-        plot_scatter_1(fg.get_params('aperiodic_params', 'exponent'), 'Exponent',
-                       'Aperiodic Fit', ax=ax)
+    
+    plot_scatter_2(fg.get_params('peak_params', 'BW'), 'Bandwidth',
+                   fg.get_params('peak_params', "PW"), 'Amplitude',
+                    'Peak Fits', ax=ax)
 
 
 @savefig
@@ -124,5 +121,5 @@ def plot_fg_peak_cens(fg, ax=None, **plot_kwargs):
         Keyword arguments to pass into the ``style_plot``.
     """
 
-    plot_hist(fg.get_params('peak_params', 0)[:, 0], 'Center Frequency',
-              'Peaks - Center Frequencies', x_lims=fg.freq_range, ax=ax)
+    plot_hist(fg.get_params('peak_params', 0)[:, 0], 'Center Peak Times',
+              'Peaks - Center Times', x_lims=fg.time_range, ax=ax)
