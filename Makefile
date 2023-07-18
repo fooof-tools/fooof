@@ -10,7 +10,8 @@
 #   coverage            For running test coverage
 #   pylint              For running linting on code
 #   setuptools          For creating distributions
-#   twine		For checking and publishing distributions
+#   build               For creating distributions
+#   twine               For checking and publishing distributions
 #
 # The following command line utilities are required:
 #   cloc                For counting lines of code
@@ -98,13 +99,13 @@ summary:
 # Create a distribution build of the module
 dist:
 	@printf "\n\nCREATING DISTRIBUTION BUILD...\n"
-	@python setup.py sdist bdist_wheel
+	@python -m build
 	@printf "\n\nDISTRIBUTION BUILD CREATED\n\n\n"
 
 # Check a distribution build using twine
 check-dist:
 	@printf "\n\nCHECKING DISTRIBUTION BUILD:\n"
-	twine check dist/*
+	@twine check dist/*
 	@printf "\n"
 
 # Clear out distribution files
