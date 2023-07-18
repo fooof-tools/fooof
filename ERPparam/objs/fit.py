@@ -1035,8 +1035,8 @@ class ERPparam():
             If the input data are inconsistent size.
         """
 
-        print(signal_dim)
-        print(signal.ndim)
+        # print(signal_dim)
+        # print(signal.ndim)
         # Check that data are the right types
         if not isinstance(time, np.ndarray) or not isinstance(signal, np.ndarray):
             raise DataError("Input data must be numpy arrays.")

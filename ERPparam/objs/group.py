@@ -191,7 +191,7 @@ class ERPparamGroup(ERPparam):
         self.group_results = [[]] * length
 
 
-    def add_data(self, time, signals, time_range):
+    def _add_data(self, time, signals, time_range):
         """Add data (frequencies and power spectrum values) to the current object.
 
         Parameters
@@ -215,7 +215,8 @@ class ERPparamGroup(ERPparam):
             self._reset_data_results(True, True, True, True)
             self._reset_group_results()
 
-        self.time, self.signals, self.time_range, self.time_res, self.fs = self._prepare_data(time, signals, time_range=time_range, signal_dim=2)
+        #output of prepare data: time, signal, raw_signal, time_range, fs
+        self.time, self.signals, self.raw_signals, self.time_range,  self.fs = self._prepare_data(time=time, signal=signals, time_range=time_range, signal_dim=2)
 
 
     def report(self, time=None, signals=None, time_range=None, n_jobs=1, progress=None):
@@ -235,7 +236,7 @@ class ERPparamGroup(ERPparam):
         progress : {None, 'tqdm', 'tqdm.notebook'}, optional
             Which kind of progress bar to use. If None, no progress bar is used.
 
-        Notes
+        Notesif
         -----
         Data is optional, if data has already been added to the object.
         """
@@ -269,7 +270,7 @@ class ERPparamGroup(ERPparam):
         """
         # If times & power spectra provided together, add data to object
         if time is not None and signals is not None:
-            self.add_data(time, signals, time_range)
+            self._add_data(time, signals, time_range)
 
         # If 'verbose', print out a marker of what is being run
         if self.verbose and not progress:
@@ -514,7 +515,7 @@ class ERPparamGroup(ERPparam):
         # Add data for specified power spectra, if available
         #   The power spectra are inverted back to linear, as they are re-logged when added to ERPparam
         if self.has_data:
-            fg.add_data(self.time, self.signals[inds, :], self.time_range)
+            fg._add_data(self.time, self.signals[inds, :], self.time_range)
         # If no power spectrum data available, copy over data information & regenerate times
         else:
             fg.add_meta_data(self.get_meta_data())
