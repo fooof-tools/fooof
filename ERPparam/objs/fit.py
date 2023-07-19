@@ -588,9 +588,9 @@ class ERPparam():
     #             file_path=file_path, ax=ax, data_kwargs=data_kwargs, model_kwargs=model_kwargs,
     #             aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs, **plot_kwargs)
     @copy_doc_func_to_method(plot_ERPparam)
-    def plot(self, y_units=None):
+    def plot(self, ax=None, y_units=None):
 
-        plot_ERPparam(self, y_units=y_units)
+        plot_ERPparam(self, ax=ax, y_units=y_units)
 
 
     @copy_doc_func_to_method(save_report_fm)

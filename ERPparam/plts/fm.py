@@ -23,11 +23,12 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_ERPparam(self, y_units=None):
+def plot_ERPparam(self, ax=None, y_units=None):
     """Plot ERP and model fit results."""
 
     # create figure
-    fig, ax = plt.subplots(1,1, figsize=[6,4])
+    if ax is None:
+        fig, ax = plt.subplots(1,1, figsize=[6,4])
 
     # plot signal
     ax.plot(self.time, self.signal, alpha=0.5, label='ERP')
