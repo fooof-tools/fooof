@@ -107,7 +107,6 @@ def gen_settings_str(ERPparam_obj, description=False, concise=False):
         'max_n_peaks'       : 'Maximum number of peaks that can be extracted.',
         'min_peak_height'   : 'Minimum absolute height of a peak, above the aperiodic component.',
         'peak_threshold'    : 'Relative threshold for minimum height required for detecting peaks.',
-        'aperiodic_mode'    : 'The approach taken for fitting the aperiodic component.'
         }
 
     # Clear description for printing, if not requested
@@ -131,9 +130,7 @@ def gen_settings_str(ERPparam_obj, description=False, concise=False):
                         'Minimum Peak Height : {}'.format(ERPparam_obj.min_peak_height),
                         '{}'.format(desc['min_peak_height']),
                         'Peak Threshold: {}'.format(ERPparam_obj.peak_threshold),
-                        '{}'.format(desc['peak_threshold']),
-                        'Aperiodic Mode : {}'.format(ERPparam_obj.aperiodic_mode),
-                        '{}'.format(desc['aperiodic_mode'])] if el != ''],
+                        '{}'.format(desc['peak_threshold'])] if el != ''],
 
         # Footer
         '',
