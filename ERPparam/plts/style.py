@@ -12,22 +12,18 @@ from ERPparam.plts.settings import (AXIS_STYLE_ARGS, LINE_STYLE_ARGS, COLLECTION
 ###################################################################################################
 ###################################################################################################
 
-def style_spectrum_plot(ax, log_freqs, log_powers):
-    """Apply style and aesthetics to a power spectrum plot.
+def style_erp_plot(ax):
+    """Apply style and aesthetics to an ERP plot.
 
     Parameters
     ----------
     ax : matplotlib.Axes
         Figure axes to apply styling to.
-    log_freqs : bool
-        Whether the frequency axis is plotted in log space.
-    log_powers : bool
-        Whether the power axis is plotted in log space.
     """
 
     # Get labels, based on log status
-    xlabel = 'Frequency' if not log_freqs else 'log(Frequency)'
-    ylabel = 'Power' if not log_powers else 'log(Power)'
+    xlabel = 'time'
+    ylabel = 'amplitude'
 
     # Aesthetics and axis labels
     ax.set_xlabel(xlabel, fontsize=20)
