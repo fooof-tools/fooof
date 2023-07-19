@@ -170,9 +170,9 @@ def plot_yshade(x_vals, y_vals, average='mean', shade='std', scale=1., color=Non
 
     shade_alpha = plot_kwargs.pop('shade_alpha', 0.25)
 
-    if average is not None:
+    avg_data = compute_average(y_vals, average=average if average else 'mean')
 
-        avg_data = compute_average(y_vals, average=average)
+    if average is not None:
 
         if plot_function:
             plot_function(x_vals, avg_data, color=color, ax=ax, **plot_kwargs)

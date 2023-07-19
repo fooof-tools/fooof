@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from specparam.sim.gen import gen_freqs, gen_aperiodic
 from specparam.core.modutils import safe_import, check_dependency
 from specparam.plts.settings import PLT_FIGSIZES
+from specparam.plts.templates import plot_yshade
 from specparam.plts.style import style_param_plot, style_plot
 from specparam.plts.utils import check_ax, recursive_plot, savefig, check_plot_kwargs
 
@@ -62,6 +63,7 @@ def plot_aperiodic_params(aps, colors=None, labels=None, ax=None, **plot_kwargs)
 @style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_aperiodic_fits(aps, freq_range, control_offset=False,
+                        average='mean', shade='sem', plot_individual=True,
                         log_freqs=False, colors=None, labels=None,
                         ax=None, **plot_kwargs):
     """Plot reconstructions of model aperiodic fits.
@@ -72,6 +74,15 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         Aperiodic parameters. Each row is a parameter set, as [Off, Exp] or [Off, Knee, Exp].
     freq_range : list of [float, float]
         The frequency range to plot the peak fits across, as [f_min, f_max].
+    average : {'mean', 'median'}, optional, default: 'mean'
+        Approach to take to average across components.
+        If set to None, no average is plotted.
+    shade : {'sem', 'std'}, optional, default: 'sem'
+        Approach for shading above/below the average reconstruction
+        If set to None, no yshade is plotted.
+    plot_individual : bool, optional, default: True
+        Whether to plot individual component reconstructions.
+        If False, only the average component reconstruction is plotted.
     control_offset : boolean, optional, default: False
         Whether to control for the offset, by setting it to zero.
     log_freqs : boolean, optional, default: False
@@ -103,9 +114,8 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
 
         colors = colors[0] if isinstance(colors, list) else colors
 
-        avg_vals = np.zeros(shape=[len(freqs)])
-
-        for ap_params in aps:
+        all_ap_vals = np.zeros(shape=(len(aps), len(freqs)))
+        for ind, ap_params in enumerate(aps):
 
             if control_offset:
 
@@ -113,18 +123,19 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
                 ap_params = ap_params.copy()
                 ap_params[0] = 0
 
-            # Recreate & plot the aperiodic component from parameters
+            # Create & collect the aperiodic component model from parameters
             ap_vals = gen_aperiodic(freqs, ap_params)
+            all_ap_vals[ind, :] = ap_vals
 
-            ax.plot(plt_freqs, ap_vals, color=colors, alpha=0.35, linewidth=1.25)
+            if plot_individual:
+                ax.plot(plt_freqs, ap_vals, color=colors, alpha=0.35, linewidth=1.25)
 
-            # Collect a running average across components
-            avg_vals = np.nansum(np.vstack([avg_vals, ap_vals]), axis=0)
-
-        # Plot the average component
-        avg = avg_vals / aps.shape[0]
-        avg_color = 'black' if not colors else colors
-        ax.plot(plt_freqs, avg, linewidth=3.75, color=avg_color, label=labels)
+        # Plot the average across all components
+        if average is not False:
+            avg_color = 'black' if not colors else colors
+            plot_yshade(freqs, all_ap_vals, average=average, shade=shade,
+                        shade_alpha=plot_kwargs.pop('shade_alpha', 0.15),
+                        color=avg_color, linewidth=3.75, label=labels, ax=ax)
 
     # Add axis labels
     ax.set_xlabel('log(Frequency)' if log_freqs else 'Frequency')
