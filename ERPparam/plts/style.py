@@ -36,6 +36,34 @@ def style_erp_plot(ax):
         ax.legend(prop={'size': 16}, loc='upper right')
 
 
+def style_spectrum_plot(ax, log_freqs, log_powers):
+    """Apply style and aesthetics to a power spectrum plot.
+
+    Parameters
+    ----------
+    ax : matplotlib.Axes
+        Figure axes to apply styling to.
+    log_freqs : bool
+        Whether the frequency axis is plotted in log space.
+    log_powers : bool
+        Whether the power axis is plotted in log space.
+    """
+
+    # Get labels, based on log status
+    xlabel = 'Frequency' if not log_freqs else 'log(Frequency)'
+    ylabel = 'Power' if not log_powers else 'log(Power)'
+
+    # Aesthetics and axis labels
+    ax.set_xlabel(xlabel, fontsize=20)
+    ax.set_ylabel(ylabel, fontsize=20)
+    ax.tick_params(axis='both', which='major', labelsize=16)
+    ax.grid(True)
+
+    # If labels were provided, add a legend
+    if ax.get_legend_handles_labels()[0]:
+        ax.legend(prop={'size': 16}, loc='upper right')
+
+
 def style_param_plot(ax):
     """Apply style and aesthetics to a peaks plot.
 
