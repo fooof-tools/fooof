@@ -594,10 +594,10 @@ class ERPparam():
 
 
     @copy_doc_func_to_method(save_report_fm)
-    def save_report(self, file_name, file_path=None, plt_log=False,
+    def save_report(self, file_name, file_path=None,
                     add_settings=True, **plot_kwargs):
 
-        save_report_fm(self, file_name, file_path, plt_log, add_settings, **plot_kwargs)
+        save_report_fm(self, file_name, file_path, add_settings, **plot_kwargs)
 
 
     @copy_doc_func_to_method(save_fm)
