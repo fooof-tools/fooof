@@ -150,14 +150,16 @@ def plot_yshade(x_vals, y_vals, average='mean', shade='std', scale=1., color=Non
         Data values to be plotted on the y-axis. `shade` must be provided if 1d.
     average : 'mean', 'median' or callable, optional, default: 'mean'
         Averaging approach for plotting the average. Only used if y_vals is 2d.
+        If set to None, no average line is plotted.
     shade : 'std', 'sem', 1d array or callable, optional, default: 'std'
         Approach for shading above/below the average.
+        If set to None, no shading is plotted.
     scale : float, optional, default: 1.
         Factor to multiply the plotted shade by.
     color : str, optional, default: None
         Color to plot.
     plot_function : callable, optional
-        xx
+        Function to use to create the plot.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
@@ -168,18 +170,21 @@ def plot_yshade(x_vals, y_vals, average='mean', shade='std', scale=1., color=Non
 
     shade_alpha = plot_kwargs.pop('shade_alpha', 0.25)
 
-    avg_data = compute_average(y_vals, average=average)
-    if plot_function:
-        plot_function(x_vals, avg_data, color=color, ax=ax, **plot_kwargs)
-    else:
-        ax.plot(x_vals, avg_data, color=color, **plot_kwargs)
+    if average is not None:
 
-    # Compute shade values and apply scaling
-    shade_vals = compute_dispersion(y_vals, shade) * scale
+        avg_data = compute_average(y_vals, average=average)
 
-    # Plot +/- y-shading around spectrum
-    ax.fill_between(x_vals, avg_data - shade_vals, avg_data + shade_vals,
-                    alpha=shade_alpha, color=color)
+        if plot_function:
+            plot_function(x_vals, avg_data, color=color, ax=ax, **plot_kwargs)
+        else:
+            ax.plot(x_vals, avg_data, color=color, **plot_kwargs)
+
+    if shade is not None:
+
+        # Compute shade values, apply scaling & plot +/- y-shading
+        shade_vals = compute_dispersion(y_vals, shade) * scale
+        ax.fill_between(x_vals, avg_data - shade_vals, avg_data + shade_vals,
+                        alpha=shade_alpha, color=color)
 
 
 @check_dependency(plt, 'matplotlib')
