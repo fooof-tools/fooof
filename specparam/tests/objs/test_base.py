@@ -1,4 +1,4 @@
-"""Tests for specparam.objs.base, including the model object and it's methods."""
+"""Tests for specparam.objs.base, including the base object and it's methods."""
 
 from specparam.sim import sim_power_spectrum
 

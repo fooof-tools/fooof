@@ -18,7 +18,7 @@ from specparam.sim.gen import gen_aperiodic, gen_periodic
 ###################################################################################################
 
 class BaseSpectralModel():
-    """Base object defining model & algorithm for parameterizing a power spectrum.
+    """Base object defining model & algorithm for spectral parameterization.
 
     Parameters
     ----------

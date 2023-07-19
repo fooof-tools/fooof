@@ -1,4 +1,4 @@
-"""Base model object, which defines the power spectrum model.
+"""Model object, which defines the power spectrum model.
 
 Code Notes
 ----------
@@ -106,7 +106,7 @@ class SpectralModel(BaseSpectralModel):
         BaseSpectralModel.__init__(self, peak_width_limits=peak_width_limits,
                                    max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,
                                    peak_threshold=peak_threshold, aperiodic_mode=aperiodic_mode,
-                                   **model_kwargs)
+                                   verbose=verbose, **model_kwargs)
 
 
     @property
