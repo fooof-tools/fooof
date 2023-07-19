@@ -31,7 +31,7 @@ and prints out the parameters of the model fit.
 
 Example output for the report of a ERPparam fit on an individual ERP:
 
-.. image:: raw.githubusercontent.com/voytekresearch/ERPparam/doc/img/ERPparam_report.png
+.. image:: doc/img/ERPparam_report.png
 
 **Defining the model Settings**
 
@@ -72,4 +72,4 @@ We can fit the group of ERPs by doing:
 
 Example output from using FOOOFGroup across a group of power spectra:
 
-.. image:: https://raw.githubusercontent.com/voytekresearch/ERPparam/doc/img/ERPparamGroup_report.png
+.. image:: doc/img/ERPparamGroup_report.png
