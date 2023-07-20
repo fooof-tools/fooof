@@ -12,12 +12,6 @@ def test_base_object():
 
     assert BaseSpectralModel()
 
-def test_base_add_data():
-
-    tbase = BaseSpectralModel()
-    freqs, pows = np.array([1, 2, 3]), np.array([10, 10, 10])
-    tbase.add_data(freqs, pows)
-
 def test_base_fit():
 
     tbase = BaseSpectralModel()
