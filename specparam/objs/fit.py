@@ -358,18 +358,6 @@ class SpectralModel(BaseSpectralModel):
         return deepcopy(self)
 
 
-    def set_debug_mode(self, debug):
-        """Set debug mode, which controls if an error is raised if model fitting is unsuccessful.
-
-        Parameters
-        ----------
-        debug : bool
-            Whether to run in debug mode.
-        """
-
-        self._debug = debug
-
-
     def to_df(self, peak_org):
         """Convert and extract the model results as a pandas object.
 

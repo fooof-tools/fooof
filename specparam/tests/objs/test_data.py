@@ -1,7 +1,5 @@
 """Tests for specparam.objs.data, including the data object and it's methods."""
 
-#from specparam.sim import sim_power_spectrum
-
 from specparam.objs.data import *
 
 ###################################################################################################
