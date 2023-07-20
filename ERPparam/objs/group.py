@@ -215,8 +215,8 @@ class ERPparamGroup(ERPparam):
             self._reset_data_results(True, True, True, True)
             self._reset_group_results()
 
-        #output of prepare data: time, signal, raw_signal, time_range, fs, time-res
-        self.time, self.signals, self.raw_signals, self.time_range,  self.fs, self.time_res = self._prepare_data(time=time, signal=signals, time_range=time_range, signal_dim=2)
+        #output of prepare data: time, signal, time_range, fs, time-res
+        self.time, self.signals, self.time_range, self.fs, self.time_res = self._prepare_data(time=time, signal=signals, time_range=time_range, signal_dim=2)
 
 
     def report(self, time=None, signals=None, time_range=None, n_jobs=1, progress=None):

@@ -129,13 +129,12 @@ class ERPparam():
     # pylint: disable=attribute-defined-outside-init
 
     def __init__(self, signal=None, time=None, time_range=None, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, 
-                 peak_threshold=2.0, min_peak_height=0.0, rectify=False, verbose=True):
+                 peak_threshold=2.0, min_peak_height=0.0, verbose=True):
         
         self.peak_width_limits = peak_width_limits
         self.max_n_peaks = max_n_peaks
         self.min_peak_height = min_peak_height
         self.peak_threshold = peak_threshold
-        self.rectify = rectify
         self.verbose = verbose
         # print('...')
         # print(peak_width_limits)
@@ -282,8 +281,7 @@ class ERPparam():
         self._reset_data_results(clear_time=self.has_data,
                                 clear_signal=self.has_data,
                                 clear_results=self.has_model and clear_results)
-        #time, signal, raw_signal, time_range, fs, time_res
-        self.time, self.signal, self.raw_signal, self.time_range, self.fs, self.time_res = \
+        self.time, self.signal, self.time_range, self.fs, self.time_res = \
             self._prepare_data(time, signal, time_range, signal_dim=1) 
 
 
@@ -1026,7 +1024,7 @@ class ERPparam():
         Returns
         -------
         signal : 1d or 2d array
-            Rectified signal (if user specified)
+            signal (trimmed in time range, if desired)
         time_range : list of [float, float]
             Minimum and maximum values of the time vector.
 
@@ -1084,12 +1082,7 @@ class ERPparam():
                              "This will cause the fitting to yield NaNs. ")
                 raise DataError(error_msg)
             
-        # recitfy signal
-        raw_signal = signal.copy()
-        if self.rectify:
-            signal = np.abs(signal)
-
-        return time, signal, raw_signal, time_range, fs, time_res
+        return time, signal, time_range, fs, time_res
 
 
     def _add_from_dict(self, data):
