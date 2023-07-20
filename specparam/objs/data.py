@@ -2,11 +2,13 @@
 
 import numpy as np
 
+from specparam.sim.gen import gen_freqs
 from specparam.utils.data import trim_spectrum
+from specparam.core.items import OBJ_DESC
 from specparam.core.errors import DataError, InconsistentDataError
-
-from specparam.plts.spectra import plot_spectra
+from specparam.data import SpectrumMetaData
 from specparam.plts.settings import PLT_COLORS
+from specparam.plts.spectra import plot_spectra
 from specparam.plts.utils import check_plot_kwargs
 
 ###################################################################################################
@@ -67,6 +69,34 @@ class BaseData():
             self._prepare_data(freqs, power_spectrum, freq_range, 1)
 
 
+    def add_meta_data(self, meta_data):
+        """Add data information into object from a SpectrumMetaData object.
+
+        Parameters
+        ----------
+        meta_data : SpectrumMetaData
+            A meta data object containing meta data information.
+        """
+
+        for meta_dat in OBJ_DESC['meta_data']:
+            setattr(self, meta_dat, getattr(meta_data, meta_dat))
+
+        self._regenerate_freqs()
+
+
+    def get_meta_data(self):
+        """Return data information from the current object.
+
+        Returns
+        -------
+        SpectrumMetaData
+            Object containing meta data from the current object.
+        """
+
+        return SpectrumMetaData(**{key : getattr(self, key) \
+            for key in OBJ_DESC['meta_data']})
+
+
     def plot(self, plt_log=False, **plt_kwargs):
         """Plot the power spectrum."""
 
@@ -74,6 +104,18 @@ class BaseData():
             plt_kwargs, {'color' : PLT_COLORS['data'], 'linewidth' : 2.0})
         plot_spectra(self.freqs, self.power_spectrum, log_freqs=plt_log,
                      log_powers=False, **data_kwargs)
+
+
+    def set_check_data_mode(self, check_data):
+        """Set check data mode, which controls if an error is raised if NaN or Inf data are added.
+
+        Parameters
+        ----------
+        check_data : bool
+            Whether to run in check data mode.
+        """
+
+        self._check_data = check_data
 
 
     def _reset_data(self, clear_freqs=False, clear_spectrum=False):
@@ -94,6 +136,12 @@ class BaseData():
 
         if clear_spectrum:
             self.power_spectrum = None
+
+
+    def _regenerate_freqs(self):
+        """Regenerate the frequency vector, given the object metadata."""
+
+        self.freqs = gen_freqs(self.freq_range, self.freq_res)
 
 
     def _prepare_data(self, freqs, power_spectrum, freq_range, spectra_dim=1):

@@ -20,9 +20,9 @@ from specparam.core.funcs import infer_ap_func
 from specparam.core.errors import NoModelError
 from specparam.core.strings import gen_settings_str, gen_model_results_str, gen_issue_str
 from specparam.plts.model import plot_model
-from specparam.data import FitResults, ModelSettings, SpectrumMetaData
+from specparam.data import FitResults, ModelSettings
 from specparam.data.conversions import model_to_dataframe
-from specparam.sim.gen import gen_freqs, gen_model
+from specparam.sim.gen import gen_model
 
 ###################################################################################################
 ###################################################################################################
@@ -131,21 +131,6 @@ class SpectralModel(BaseSpectralModel):
         self._check_loaded_settings(settings._asdict())
 
 
-    def add_meta_data(self, meta_data):
-        """Add data information into object from a SpectrumMetaData object.
-
-        Parameters
-        ----------
-        meta_data : SpectrumMetaData
-            A meta data object containing meta data information.
-        """
-
-        for meta_dat in OBJ_DESC['meta_data']:
-            setattr(self, meta_dat, getattr(meta_data, meta_dat))
-
-        self._regenerate_freqs()
-
-
     def add_results(self, results):
         """Add results data into object from a FitResults object.
 
@@ -242,19 +227,6 @@ class SpectralModel(BaseSpectralModel):
 
         return ModelSettings(**{key : getattr(self, key) \
                              for key in OBJ_DESC['settings']})
-
-
-    def get_meta_data(self):
-        """Return data information from the current object.
-
-        Returns
-        -------
-        SpectrumMetaData
-            Object containing meta data from the current object.
-        """
-
-        return SpectrumMetaData(**{key : getattr(self, key) \
-                             for key in OBJ_DESC['meta_data']})
 
 
     def get_params(self, name, col=None):
@@ -398,18 +370,6 @@ class SpectralModel(BaseSpectralModel):
         self._debug = debug
 
 
-    def set_check_data_mode(self, check_data):
-        """Set check data mode, which controls if an error is raised if NaN or Inf data are added.
-
-        Parameters
-        ----------
-        check_data : bool
-            Whether to run in check data mode.
-        """
-
-        self._check_data = check_data
-
-
     def to_df(self, peak_org):
         """Convert and extract the model results as a pandas object.
 
@@ -483,12 +443,6 @@ class SpectralModel(BaseSpectralModel):
         # Reset internal settings so that they are consistent with what was loaded
         #   Note that this will set internal settings to None, if public settings unavailable
         self._reset_internal_settings()
-
-
-    def _regenerate_freqs(self):
-        """Regenerate the frequency vector, given the object metadata."""
-
-        self.freqs = gen_freqs(self.freq_range, self.freq_res)
 
 
     def _regenerate_model(self):
