@@ -14,10 +14,10 @@ the ERP, ERPparam can be used as follows:
 
 .. code-block:: python
 
-    # Import the FOOOF object
+    # Import the ERPparam object
     from ERPparam import ERPparam
 
-    # Initialize FOOOF object
+    # Initialize ERPparam object
     params = ERPparam()
 
     # Define time range within which to model the ERP
@@ -61,7 +61,7 @@ We can fit the group of ERPs by doing:
     # Initialize a ERPparamGroup object, specifying some parameters
     params = ERPparamGroup(peak_width_limits=(0.01, 0.5), peak_threshold=2, min_peak_height=0, max_n_peaks=3)
 
-    # Fit FOOOF model across the matrix of ERPs
+    # Fit ERPparam model across the matrix of ERPs
     params.fit(time, signals)
 
     # Create and save out a report summarizing the results across the group of ERPs
@@ -70,6 +70,6 @@ We can fit the group of ERPs by doing:
     # Save out ERPparamGroup results for further analysis later
     params.save(file_name='group_results', save_results=True)
 
-Example output from using FOOOFGroup across a group of power spectra:
+Example output from using ERPparamGroup across a group of ERPs:
 
 .. image:: doc/img/ERPparamGroup_report.png
