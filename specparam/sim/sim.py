@@ -274,7 +274,7 @@ def sim_spectrogram(n_windows, freq_range, aperiodic_params, periodic_params,
     freqs : 1d array
         Frequency values, in linear spacing.
     spectrogram : 2d array
-        Matrix of power values, in linear spacing, as [n_windows, n_power_spectra].
+        Matrix of power values, in linear spacing, as [n_freqs, n_windows].
     sim_params : list of SimParams
         Definitions of parameters used for each spectrum. Has length of n_spectra.
         Only returned if `return_params` is True.
