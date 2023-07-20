@@ -718,10 +718,13 @@ class ERPparam():
 
             # Find candidate peak - the maximum point of the signal
             max_ind = np.argmax(iter_signal)
+            min_ind = np.argmin(iter_signal)
+            if np.abs(iter_signal[min_ind]) > np.abs(iter_signal[max_ind]):
+                max_ind = min_ind
             max_height = iter_signal[max_ind]
 
             # Stop searching for peaks once height drops below height threshold
-            if max_height <= self.peak_threshold * np.std(iter_signal):
+            if np.abs(max_height) <= self.peak_threshold * np.std(iter_signal):
                 break
 
             # Set the guess parameters for gaussian fitting, specifying the mean and height
@@ -729,7 +732,7 @@ class ERPparam():
             guess_height = max_height
 
             # Halt fitting process if candidate peak drops below minimum height
-            if not guess_height > self.min_peak_height:
+            if not np.abs(guess_height) > self.min_peak_height:
                 break
 
             # Data-driven first guess at standard deviation
@@ -804,7 +807,7 @@ class ERPparam():
         #     ((cf_low_peak1, height_low_peak1, bw_low_peak1, *repeated for n_peaks*),
         #      (cf_high_peak1, height_high_peak1, bw_high_peak, *repeated for n_peaks*))
         #     ^where each value sets the bound on the specified parameter
-        lo_bound = [[peak[0] - 2 * self._cf_bound * peak[2], 0, self._gauss_std_limits[0]]
+        lo_bound = [[peak[0] - 2 * self._cf_bound * peak[2], -np.inf, self._gauss_std_limits[0]]
                     for peak in guess]
         hi_bound = [[peak[0] + 2 * self._cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]
                     for peak in guess]
