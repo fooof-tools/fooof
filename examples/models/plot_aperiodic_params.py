@@ -104,7 +104,7 @@ spearmanr(ap_values[0, :], ap_values[1, :])
 #
 # This can also be seen in this animation showing this effect across different rotation points:
 #
-# ![spectralrotation](https://raw.githubusercontent.com/fooof-tools/Visualizers/main/gifs/specrot.gif "specrot")
+# .. image:: https://raw.githubusercontent.com/fooof-tools/Visualizers/main/gifs/specrot.gif
 #
 # Notably this means that while the offset and exponent can change independently (there can be
 # offset changes over and above exponent changes), the baseline expectation is that these
@@ -144,13 +144,13 @@ fm.aperiodic_params_
 # Knee Frequency
 # ~~~~~~~~~~~~~~
 #
-# You might notice that the knee _parameter_ is not an obvious value. Notably, this parameter
+# You might notice that the knee *parameter* is not an obvious value. Notably, this parameter
 # value as extracted from the model is something of an abstract quantify based on the
 # formalization of the underlying fit function. A more intuitive measure that we may
 # be interested in is the 'knee frequency', which is an estimate of the frequency value
 # at which the knee occurs.
 #
-# The `:func:`~.compute_knee_frequency` function can be used to compute the knee frequency.
+# The :func:`~.compute_knee_frequency` function can be used to compute the knee frequency.
 #
 
 ###################################################################################################
@@ -166,7 +166,7 @@ print('Knee frequency: ', knee_frequency)
 # Another interesting property of the knee parameter is that it has a direct relationship
 # to the auto-correlation function, and from there to the empirical time constant of the data.
 #
-# The `:func:`~.compute_time_constant` function can be used to compute the knee-derived
+# The :func:`~.compute_time_constant` function can be used to compute the knee-derived
 # time constant.
 #
 

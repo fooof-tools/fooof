@@ -54,7 +54,7 @@ In addition, we recommend that reports should include information on:
 Reporting Template & Example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To assist in reporting on using FOOOF, we have created some templates for reporting on spectral parameterization methods. There are also some utilities included in the code to collected the required information.
+To assist in reporting on using FOOOF, we have created some templates for reporting on spectral parameterization methods. There are also some utilities included in the code to collect the required information.
 
 The following box is an example of what a methods report might look like (where all of the *X*'s should be filled in with the relevant information).
 

@@ -57,6 +57,7 @@ print('Current fooof version:', fooof_version)
 # -----------------------------------
 #
 # To assist with reporting information, the module has the following utilities:
+#
 # - the :func:`~.methods_report_info`, which prints out methods reporting information
 # - the :func:`~.methods_report_text`, which prints out a template of methods reporting text
 #
