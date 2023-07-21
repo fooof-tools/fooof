@@ -178,6 +178,8 @@ def docs_get_section(docstring, section, output='extract', end=None):
             'extract' - returns the extracted section from the docstring.
             'remove' - returns the docstring after removing the specified section.
     end : str, optional
+        Indicates the contents of a line that signals the end of the section to select.
+        If not provided, the section is selected until a blank line.
 
     Returns
     -------
