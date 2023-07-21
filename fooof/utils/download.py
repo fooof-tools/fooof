@@ -1,7 +1,6 @@
 """Functions and utilities for downloading example data for fooof."""
 
 import os
-from pathlib import Path
 from urllib.request import urlretrieve
 
 import numpy as np

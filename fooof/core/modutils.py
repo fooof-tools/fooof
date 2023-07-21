@@ -99,10 +99,10 @@ def get_docs_indices(docstring, sections=DOCSTRING_SECTIONS):
         Dictionary in which each key is a section label, and each value is the corresponding index.
     """
 
-    inds = {label : None for label in DOCSTRING_SECTIONS}
+    inds = {label : None for label in sections}
 
     for ind, line in enumerate(docstring.split('\n')):
-        for key, val in inds.items():
+        for key in inds:
             if key in line:
                 inds[key] = ind
 
@@ -132,7 +132,7 @@ def docs_drop_param(docstring):
     ind = docstring.find(sep) + len(sep)
     front, back = docstring[:ind], docstring[ind:]
 
-    for loop in range(2):
+    for _ in range(2):
         back = back[back.find('\n')+1:]
 
     return front + back

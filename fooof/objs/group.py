@@ -544,7 +544,7 @@ class FOOOFGroup(FOOOF):
         """
 
         self.get_fooof(ind=index, regenerate=True).save_report(\
-            file_name, file_path, plt_log, **plot_kwargs)
+            file_name, file_path, plt_log, add_settings, **plot_kwargs)
 
 
     def to_df(self, peak_org):
