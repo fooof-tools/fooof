@@ -8,6 +8,7 @@ from specparam.sim import gen_freqs
 from specparam.core.funcs import gaussian_function
 from specparam.core.modutils import safe_import, check_dependency
 from specparam.plts.settings import PLT_FIGSIZES
+from specparam.plts.templates import plot_yshade
 from specparam.plts.style import style_param_plot, style_plot
 from specparam.plts.utils import check_ax, recursive_plot, savefig, check_plot_kwargs
 
@@ -69,7 +70,8 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None, ax=None, 
 
 @savefig
 @style_plot
-def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None, ax=None, **plot_kwargs):
+def plot_peak_fits(peaks, freq_range=None, average='mean', shade='sem', plot_individual=True,
+                   colors=None, labels=None, ax=None, **plot_kwargs):
     """Plot reconstructions of model peak fits.
 
     Parameters
@@ -79,6 +81,15 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None, ax=None, **
     freq_range : list of [float, float] , optional
         The frequency range to plot the peak fits across, as [f_min, f_max].
         If not provided, defaults to +/- 4 around given peak center frequencies.
+    average : {'mean', 'median'}, optional, default: 'mean'
+        Approach to take to average across components.
+        If set to None, no average is plotted.
+    shade : {'sem', 'std'}, optional, default: 'sem'
+        Approach for shading above/below the average reconstruction
+        If set to None, no yshade is plotted.
+    plot_individual : bool, optional, default: True
+        Whether to plot individual component reconstructions.
+        If False, only the average component reconstruction is plotted.
     colors : str or list of str, optional
         Color(s) to plot data.
     labels : list of str, optional
@@ -118,21 +129,22 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None, ax=None, **
 
         colors = colors[0] if isinstance(colors, list) else colors
 
-        avg_vals = np.zeros(shape=[len(freqs)])
+        all_peak_vals = np.zeros(shape=(len(peaks), len(freqs)))
+        for ind, peak_params in enumerate(peaks):
 
-        for peak_params in peaks:
-
-            # Create & plot the peak model from parameters
+            # Create & collect the peak model from parameters
             peak_vals = gaussian_function(freqs, *peak_params)
-            ax.plot(freqs, peak_vals, color=colors, alpha=0.35, linewidth=1.25)
+            all_peak_vals[ind, :] = peak_vals
 
-            # Collect a running average average peaks
-            avg_vals = np.nansum(np.vstack([avg_vals, peak_vals]), axis=0)
+            if plot_individual:
+                ax.plot(freqs, peak_vals, color=colors, alpha=0.35, linewidth=1.25)
 
         # Plot the average across all components
-        avg = avg_vals / peaks.shape[0]
-        avg_color = 'black' if not colors else colors
-        ax.plot(freqs, avg, color=avg_color, linewidth=3.75, label=labels)
+        if average is not False:
+            avg_color = 'black' if not colors else colors
+            plot_yshade(freqs, all_peak_vals, average=average, shade=shade,
+                        shade_alpha=plot_kwargs.pop('shade_alpha', 0.15),
+                        color=avg_color, linewidth=3.75, label=labels, ax=ax)
 
     # Add axis labels
     ax.set_xlabel('Frequency')
