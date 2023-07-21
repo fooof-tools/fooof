@@ -52,6 +52,7 @@ Functions to manipulate, examine and analyze FOOOF objects, and related utilitie
 
    compare_info
    average_fg
+   average_reconstructions
    combine_fooofs
 
 .. currentmodule:: fooof
