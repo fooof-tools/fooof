@@ -95,7 +95,7 @@ def save_report_fg(fg, file_name, file_path=None, add_settings=True):
 
     # Initialize figure
     _ = plt.figure(figsize=REPORT_FIGSIZE)
-    grid = gridspec.GridSpec(n_rows, 2, wspace=0.4, hspace=0.25, height_ratios=height_ratios)
+    grid = gridspec.GridSpec(n_rows, 2, wspace=0.35, hspace=0.25, height_ratios=height_ratios)
 
     # First / top: text results
     ax0 = plt.subplot(grid[0, :])
@@ -108,15 +108,15 @@ def save_report_fg(fg, file_name, file_path=None, add_settings=True):
 
     # Aperiodic parameters plot
     ax1 = plt.subplot(grid[1, 0])
-    plot_fg_ap(fg, ax1)
+    plot_fg_ap(fg, ax1, custom_styler=None)
 
     # Goodness of fit plot
     ax2 = plt.subplot(grid[1, 1])
-    plot_fg_gf(fg, ax2)
+    plot_fg_gf(fg, ax2, custom_styler=None)
 
     # Peak center frequencies plot
     ax3 = plt.subplot(grid[2, :])
-    plot_fg_peak_cens(fg, ax3)
+    plot_fg_peak_cens(fg, ax3, custom_styler=None)
 
     # Third - Model settings
     if add_settings:
