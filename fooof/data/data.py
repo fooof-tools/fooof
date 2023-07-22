@@ -38,6 +38,25 @@ class FOOOFSettings(namedtuple('FOOOFSettings', ['peak_width_limits', 'max_n_pea
     __slots__ = ()
 
 
+class FOOOFRunModes(namedtuple('FOOOFRunModes', ['_debug', '_check_freqs',
+                                                 '_check_data'])):
+    """Checks performed and errors raised by the model.
+
+    Parameters
+    ----------
+    _debug :  bool
+       Whether to run in debug mode.
+    _check_freqs : bool
+        Whether to run in check freqs mode.
+    _check_data : bool
+        Whether to run in check data mode.
+    Notes
+    -----
+    This object is a data object, based on a NamedTuple, with immutable data attributes.
+    """
+    __slots__ = ()
+
+
 class FOOOFMetaData(namedtuple('FOOOFMetaData', ['freq_range', 'freq_res'])):
     """Metadata information about a power spectrum.
 
