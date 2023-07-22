@@ -575,12 +575,12 @@ class FOOOF():
 
         Returns
         -------
-        FOOOFRunModes
-            Object containing the run_modes from the current object.
+        data: dict
+            Dictionary containing the run_modes from the current object.
         """
 
-        return FOOOFRunModes(**{key : getattr(self, key) \
-                             for key in OBJ_DESC['run_modes']})
+        return {key : getattr(self, key) \
+                    for key in OBJ_DESC['run_modes']}
 
 
     def get_meta_data(self):
