@@ -5,7 +5,7 @@ from functools import partial
 
 import numpy as np
 
-from fooof.core.modutils import docs_get_section, replace_docstring_sections
+from specparam.core.modutils import docs_get_section, replace_docstring_sections
 
 ###################################################################################################
 ###################################################################################################
@@ -178,7 +178,7 @@ def interpolate_spectra(freqs, powers, interp_range, buffer=3):
     --------
     Using simulated spectra, interpolate away line noise peaks:
 
-    >>> from fooof.sim import gen_group_power_spectra
+    >>> from specparam.sim import gen_group_power_spectra
     >>> freqs, powers = gen_group_power_spectra(5, [1, 75], [1, 1], [[10, 0.5, 1.0], [60, 2, 0.1]])
     >>> freqs, powers = interpolate_spectra(freqs, powers, [58, 62])
     """

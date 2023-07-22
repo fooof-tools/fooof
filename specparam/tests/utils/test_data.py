@@ -52,7 +52,7 @@ def test_interpolate_spectrum():
 
 def test_interpolate_spectra():
 
-    freqs, powers = gen_group_power_spectra(\
+    freqs, powers = sim_group_power_spectra(\
         5, [1, 150], [1, 100, 1], [[10, 0.5, 1.0], [60, 1, 0.1], [120, 0.5, 0.1]])
 
     exclude = [[58, 62], [118, 122]]

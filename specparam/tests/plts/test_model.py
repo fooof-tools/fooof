@@ -28,9 +28,9 @@ def test_plot_model_custom(tfm, skip_if_no_mpl):
     # Make sure model has been fit - set custom frequency range
     tfm.fit(custom_freqs, custom_power_spectrum, freq_range=[5, 35])
 
-    plot_fm(tfm, freqs=custom_freqs, power_spectrum=custom_power_spectrum,
-            freq_range=[1, 55], save_fig=True, file_path=TEST_PLOTS_PATH,
-            file_name='test_plot_fm_custom.png')
+    plot_model(tfm, freqs=custom_freqs, power_spectrum=custom_power_spectrum,
+               freq_range=[1, 55], save_fig=True, file_path=TEST_PLOTS_PATH,
+               file_name='test_plot_fm_custom.png')
 
 @plot_test
 def test_plot_model_add_peaks(tfm, skip_if_no_mpl):
