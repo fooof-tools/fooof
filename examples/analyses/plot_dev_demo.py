@@ -46,7 +46,7 @@ from specparam.plts.periodic import plot_peak_fits, plot_peak_params
 from specparam.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 
 # Import functions to examine frequency-by-frequency error of model fits
-from specparam.analysis.error import compute_pointwise_error_model, compute_pointwise_error_group
+from specparam.analysis.error import compute_pointwise_error, compute_pointwise_error_group
 
 # Import helper utility to access data
 from specparam.utils.download import fetch_example_data
@@ -226,7 +226,7 @@ df = fm.to_df(None)
 # It can be useful to plot frequency-by-frequency error of the model fit,
 # to identify where in frequency space the spectrum is (or is not) being fit well.
 # When fitting individual spectrum, this can be accomplished using the
-# `compute_pointwise_error_model` function.
+# `compute_pointwise_error` function.
 #
 # In this case, we can see that error fluctuates around 0.05, which is the same as
 # the mean absolute error for the model (MAE). There are points in the spectrum where
@@ -237,12 +237,12 @@ df = fm.to_df(None)
 ###################################################################################################
 
 # Plot frequency-by-frequency error
-compute_pointwise_error_model(fm, plot_errors=True)
+compute_pointwise_error(fm, plot_errors=True)
 
 ###################################################################################################
 
 # Compute the frequency-by-frequency errors
-errs_fm = compute_pointwise_error_model(fm, plot_errors=False, return_errors=True)
+errs_fm = compute_pointwise_error(fm, plot_errors=False, return_errors=True)
 
 ###################################################################################################
 
