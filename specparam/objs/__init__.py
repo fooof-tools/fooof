@@ -2,4 +2,5 @@
 
 from .fit import SpectralModel
 from .group import SpectralGroupModel
-from .utils import compare_model_objs, average_group, combine_model_objs, fit_models_3d
+from .utils import (compare_model_objs, average_group, average_reconstructions,
+                    combine_model_objs, fit_models_3d)
