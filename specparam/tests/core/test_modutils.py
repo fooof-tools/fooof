@@ -73,6 +73,11 @@ def test_docs_get_section(tdocstring):
     assert 'Parameters' not in out2
     assert 'Returns' in out2
 
+    # Test with end_selection
+    out3 = docs_get_section(tdocstring, 'Parameters', output='extract', end='Returns')
+    assert 'Parameters' in out3
+    assert 'Returns' not in out3
+
 def test_docs_add_section(tdocstring):
 
     tdocstring = tdocstring + \

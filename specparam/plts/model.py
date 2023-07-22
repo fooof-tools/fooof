@@ -25,9 +25,9 @@ plt = safe_import('.pyplot', 'matplotlib')
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_model(model, plot_peaks=None, plot_aperiodic=True, plt_log=False,
-               add_legend=True, ax=None, data_kwargs=None, model_kwargs=None,
-               aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
+def plot_model(model, plot_peaks=None, plot_aperiodic=True, freqs=None, power_spectrum=None,
+               freq_range=None, plt_log=False, add_legend=True, ax=None, data_kwargs=None,
+               model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
     """Plot the power spectrum and model fit results from a model object.
 
     Parameters
@@ -39,6 +39,14 @@ def plot_model(model, plot_peaks=None, plot_aperiodic=True, plt_log=False,
         Can also be a combination of approaches, separated by '-', for example: 'shade-line'.
     plot_aperiodic : boolean, optional, default: True
         Whether to plot the aperiodic component of the model fit.
+    freqs : 1d array, optional
+        Frequency values of the power spectrum to plot, in linear space.
+        If provided, this overrides the values in the model object.
+    power_spectrum : 1d array, optional
+        Power values to plot, in linear space.
+        If provided, this overrides the values in the model object.
+    freq_range : list of [float, float], optional
+        Frequency range to plot, defined in linear space.
     plt_log : boolean, optional, default: False
         Whether to plot the frequency values in log10 spacing.
     add_legend : boolean, optional, default: False
@@ -57,17 +65,22 @@ def plot_model(model, plot_peaks=None, plot_aperiodic=True, plt_log=False,
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
+    # Check inputs for what to plot
+    custom_spectrum = (np.any(freqs) and np.any(power_spectrum))
+
     # Log settings - note that power values in model objects are already logged
     log_freqs = plt_log
     log_powers = False
 
     # Plot the data, if available
-    if model.has_data:
+    if model.has_data or custom_spectrum:
         data_defaults = {'color' : PLT_COLORS['data'], 'linewidth' : 2.0,
                          'label' : 'Original Spectrum' if add_legend else None}
         data_kwargs = check_plot_kwargs(data_kwargs, data_defaults)
-        plot_spectra(model.freqs, model.power_spectrum,
-                     log_freqs, log_powers, ax=ax, **data_kwargs)
+        plot_spectra(freqs if custom_spectrum else model.freqs,
+                     power_spectrum if custom_spectrum else model.power_spectrum,
+                     log_freqs, log_powers if not custom_spectrum else True,
+                     freq_range, ax=ax, **data_kwargs)
 
     # Add the full model fit, and components (if requested)
     if model.has_model:

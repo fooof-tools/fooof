@@ -402,7 +402,7 @@ class SpectralGroupModel(SpectralModel):
         ----------
         file_name : str
             File to load data from.
-        file_path : str, optional
+        file_path : Path or str, optional
             Path to directory to load from. If None, loads from current directory.
         """
 
@@ -532,7 +532,7 @@ class SpectralGroupModel(SpectralModel):
             Index of the model fit to save out.
         file_name : str
             Name to give the saved out file.
-        file_path : str, optional
+        file_path : Path or str, optional
             Path to directory to save to. If None, saves to current directory.
         plt_log : bool, optional, default: False
             Whether or not to plot the frequency axis in log space.
@@ -543,7 +543,7 @@ class SpectralGroupModel(SpectralModel):
         """
 
         self.get_model(ind=index, regenerate=True).save_report(\
-            file_name, file_path, plt_log, **plot_kwargs)
+            file_name, file_path, plt_log, add_settings, **plot_kwargs)
 
 
     def to_df(self, peak_org):

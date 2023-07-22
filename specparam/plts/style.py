@@ -169,7 +169,14 @@ def apply_custom_style(ax, **kwargs):
         ax.legend(prop={'size': kwargs.pop('legend_size', LEGEND_SIZE)},
                   loc=kwargs.pop('legend_loc', LEGEND_LOC))
 
-    plt.tight_layout()
+    # Apply tight layout to the figure object, if matplotlib is new enough
+    #   If available, `.set_layout_engine` should be equivalent to
+    #   `plt.tight_layout()`, but seems to raise fewer warnings...
+    try:
+        fig = plt.gcf()
+        fig.set_layout_engine('tight')
+    except:
+        plt.tight_layout()
 
 
 def apply_style(ax, axis_styler=apply_axis_style, line_styler=apply_line_style,
@@ -192,10 +199,10 @@ def apply_style(ax, axis_styler=apply_axis_style, line_styler=apply_line_style,
     Each of these sub-functions can be replaced by passing in replacement callables.
     """
 
-    axis_styler(ax, **kwargs)
-    line_styler(ax, **kwargs)
-    collection_styler(ax, **kwargs)
-    custom_styler(ax, **kwargs)
+    axis_styler(ax, **kwargs) if axis_styler is not None else None
+    line_styler(ax, **kwargs) if line_styler is not None else None
+    collection_styler(ax, **kwargs) if collection_styler is not None else None
+    custom_styler(ax, **kwargs) if custom_styler is not None else None
 
 
 def style_plot(func, *args, **kwargs):

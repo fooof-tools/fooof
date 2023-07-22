@@ -38,7 +38,7 @@ def fpath(file_path, file_name):
 
     Parameters
     ----------
-    file_path : str or None
+    file_path : Path or str or None
         Path to the directory where the file is located.
     file_name : str
         Name of the file.
@@ -71,7 +71,7 @@ def save_model(model, file_name, file_path=None, append=False,
         Object to save data from.
     file_name : str or FileObject
         File to save data to.
-    file_path : str, optional
+    file_path : Path or str, optional
         Path to directory to save to. If None, saves to current directory.
     append : bool, optional, default: False
         Whether to append to an existing file, if available.
@@ -129,7 +129,7 @@ def save_group(group, file_name, file_path=None, append=False,
         Object to save data from.
     file_name : str or FileObject
         File to save data to.
-    file_path : str, optional
+    file_path : Path or str, optional
         Path to directory to load from. If None, loads from current directory.
     append : bool, optional, default: False
         Whether to append to an existing file, if available.
@@ -175,7 +175,7 @@ def load_json(file_name, file_path):
     ----------
     file_name : str or FileObject
         File to load data from.
-    file_path : str
+    file_path : Path or str
         Path to directory to load from.
 
     Returns
@@ -204,7 +204,7 @@ def load_jsonlines(file_name, file_path):
     ----------
     file_name : str
         File to load data from.
-    file_path : str
+    file_path : Path or str
         Path to directory from load from.
 
     Yields

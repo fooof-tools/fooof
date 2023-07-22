@@ -40,7 +40,7 @@ def plot_group(group, **plot_kwargs):
         raise NoModelError("No model fit results are available, can not proceed.")
 
     fig = plt.figure(figsize=plot_kwargs.pop('figsize', PLT_FIGSIZES['group']))
-    gs = gridspec.GridSpec(2, 2, wspace=0.4, hspace=0.25, height_ratios=[1, 1.2])
+    gs = gridspec.GridSpec(2, 2, wspace=0.35, hspace=0.35, height_ratios=[1, 1.2])
 
     # Apply scatter kwargs to all subplots
     scatter_kwargs = plot_kwargs
@@ -48,15 +48,15 @@ def plot_group(group, **plot_kwargs):
 
     # Aperiodic parameters plot
     ax0 = plt.subplot(gs[0, 0])
-    plot_group_aperiodic(group, ax0, **scatter_kwargs)
+    plot_group_aperiodic(group, ax0, **scatter_kwargs, custom_styler=None)
 
     # Goodness of fit plot
     ax1 = plt.subplot(gs[0, 1])
-    plot_group_goodness(group, ax1, **scatter_kwargs)
+    plot_group_goodness(group, ax1, **scatter_kwargs, custom_styler=None)
 
     # Center frequencies plot
     ax2 = plt.subplot(gs[1, :])
-    plot_group_peak_frequencies(group, ax2, **plot_kwargs)
+    plot_group_peak_frequencies(group, ax2, **plot_kwargs, custom_styler=None)
 
 
 @savefig
