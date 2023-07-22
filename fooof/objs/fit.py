@@ -45,6 +45,8 @@ Run Modes
 _debug : bool
     Whether the object is set in debug mode.
     This should be controlled by using the `set_debug_mode` method.
+_check_freqs: bool
+    Whether to checked added added frequency values for even linear spacing.
 _check_data : bool
     Whether to check added data for NaN or Inf values, and fail out if present.
     This should be controlled by using the `set_check_data_mode` method.
@@ -199,7 +201,7 @@ class FOOOF():
         # Set default debug mode - controls if an error is raised if model fitting is unsuccessful
         self._debug = False
         # Set default data checking modes - controls which checks get run on input data
-        #   check_freqs: check the frequency values, and raises an error for uneven spacing
+        #   check_freqs: checks the frequency values, and raises an error for uneven spacing
         self._check_freqs = True
         #   check_data: checks the power values and raises an error for any NaN / Inf values
         self._check_data = True
@@ -568,6 +570,19 @@ class FOOOF():
                              for key in OBJ_DESC['settings']})
 
 
+    def get_run_modes(self):
+        """Return run modes of the current object.
+
+        Returns
+        -------
+        FOOOFRunModes
+            Object containing the run_modes from the current object.
+        """
+
+        return FOOOFRunModes(**{key : getattr(self, key) \
+                             for key in OBJ_DESC['run_modes']})
+
+
     def get_meta_data(self):
         """Return data information from the current object.
 
@@ -723,6 +738,18 @@ class FOOOF():
         self._debug = debug
 
 
+    def set_check_freqs_mode(self, check_freqs):
+        """Set check freqs mode, which controls if an error is raised for unevenly spaced input frequencies.
+
+        Parameters
+        ----------
+        check_freqs : bool
+            Whether to run in check freqs mode.
+        """
+
+        self._check_freqs = check_freqs
+
+
     def set_check_data_mode(self, check_data):
         """Set check data mode, which controls if an error is raised if NaN or Inf data are added.
 
@@ -732,6 +759,23 @@ class FOOOF():
             Whether to run in check data mode.
         """
 
+        self._check_data = check_data
+
+
+    def set_run_modes(self, debug, check_freqs, check_data):
+        """Simultaneously set all run modes.
+
+        Parameters
+        ----------
+        debug : bool
+            Whether to run in debug mode.
+        check_freqs : bool
+            Whether to run in check freqs mode.
+        check_data : bool
+            Whether to run in check data mode.
+        """
+        self._debug = debug
+        self._check_freqs = check_freqs
         self._check_data = check_data
 
 
