@@ -1,6 +1,7 @@
 """Tests for specparam.core.io."""
 
 import os
+from pathlib import Path
 
 from specparam.core.items import OBJ_DESC
 
@@ -26,6 +27,7 @@ def test_fpath():
 
     assert fpath(None, 'data.json') == 'data.json'
     assert fpath('/path/', 'data.json') == '/path/data.json'
+    assert fpath(Path('/path/'), 'data.json') == '/path/data.json'
 
 def test_get_files():
 

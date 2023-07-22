@@ -10,7 +10,7 @@ def load_model(file_name, file_path=None, regenerate=True):
     ----------
     file_name : str or FileObject
         File to load the data from.
-    file_path : str or None, optional
+    file_path : Path or str, optional
         Path to directory to load from. If None, loads from current directory.
     regenerate : bool, optional, default: True
         Whether to regenerate the model fit from the loaded data, if data is available.
@@ -38,7 +38,7 @@ def load_group(file_name, file_path=None):
     ----------
     file_name : str
         File to load data data.
-    file_path : str, optional
+    file_path : Path or str, optional
         Path to directory to load from. If None, loads from current directory.
 
     Returns

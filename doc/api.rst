@@ -53,6 +53,7 @@ Functions to manipulate, examine, and analyze model objects.
    compare_model_objs
    combine_model_objs
    average_group
+   average_reconstructions
 
 .. currentmodule:: specparam
 
@@ -341,6 +342,7 @@ Utilities for working with data.
 
     trim_spectrum
     interpolate_spectrum
+    interpolate_spectra
     subsample_spectra
 
 Parameter Utilities

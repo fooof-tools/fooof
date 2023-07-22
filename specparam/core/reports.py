@@ -33,7 +33,7 @@ def save_model_report(model, file_name, file_path=None, add_settings=True, **plo
         Object with results from fitting a power spectrum.
     file_name : str
         Name to give the saved out file.
-    file_path : str, optional
+    file_path : Path or str, optional
         Path to directory to save to. If None, saves to current directory.
     add_settings : bool, optional, default: True
         Whether to add a print out of the model settings to the end of the report.
@@ -75,7 +75,7 @@ def save_group_report(group, file_name, file_path=None, add_settings=True):
         Object with results from fitting a group of power spectra.
     file_name : str
         Name to give the saved out file.
-    file_path : str, optional
+    file_path : Path or str, optional
         Path to directory to save to. If None, saves to current directory.
     add_settings : bool, optional, default: True
         Whether to add a print out of the model settings to the end of the report.
@@ -87,7 +87,7 @@ def save_group_report(group, file_name, file_path=None, add_settings=True):
 
     # Initialize figure
     _ = plt.figure(figsize=REPORT_FIGSIZE)
-    grid = gridspec.GridSpec(n_rows, 2, wspace=0.4, hspace=0.25, height_ratios=height_ratios)
+    grid = gridspec.GridSpec(n_rows, 2, wspace=0.35, hspace=0.25, height_ratios=height_ratios)
 
     # First / top: text results
     plot_text(gen_group_results_str(group), 0.5, 0.7, ax=plt.subplot(grid[0, :]))
@@ -96,15 +96,15 @@ def save_group_report(group, file_name, file_path=None, add_settings=True):
 
     # Aperiodic parameters plot
     ax1 = plt.subplot(grid[1, 0])
-    plot_group_aperiodic(group, ax1)
+    plot_group_aperiodic(group, ax1, custom_styler=None)
 
     # Goodness of fit plot
     ax2 = plt.subplot(grid[1, 1])
-    plot_group_goodness(group, ax2)
+    plot_group_goodness(group, ax2, custom_styler=None)
 
     # Peak center frequencies plot
     ax3 = plt.subplot(grid[2, :])
-    plot_group_peak_frequencies(group, ax3)
+    plot_group_peak_frequencies(group, ax3, custom_styler=None)
 
     # Third - Model settings
     if add_settings:

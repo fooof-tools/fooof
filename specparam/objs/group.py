@@ -369,7 +369,7 @@ class SpectralGroupModel(SpectralModel):
         ----------
         file_name : str
             File to load data from.
-        file_path : str, optional
+        file_path : Path or str, optional
             Path to directory to load from. If None, loads from current directory.
         """
 
@@ -494,7 +494,7 @@ class SpectralGroupModel(SpectralModel):
             Index of the model fit to save out.
         file_name : str
             Name to give the saved out file.
-        file_path : str, optional
+        file_path : Path or str, optional
             Path to directory to save to. If None, saves to current directory.
         add_settings : bool, optional, default: True
             Whether to add a print out of the model settings to the end of the report.

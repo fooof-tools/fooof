@@ -424,7 +424,7 @@ def test_check_data():
     tfm.fit()
     assert not tfm.has_model
 
-def test_fooof_to_df(tfm, tbands, skip_if_no_pandas):
+def test_to_df(tfm, tbands, skip_if_no_pandas):
 
     df1 = tfm.to_df(2)
     assert isinstance(df1, pd.Series)

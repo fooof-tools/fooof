@@ -11,9 +11,9 @@ import matplotlib.pyplot as plt
 DEFAULT_COLORS = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
 # Define default figure sizes
-PLT_FIGSIZES = {'spectral' : (10, 8),
+PLT_FIGSIZES = {'spectral' : (8.5, 6.5),
                 'params' : (7, 6),
-                'group' : (12, 10),
+                'group' : (9, 7),
                 'time' : (10, 2)}
 
 # Define defaults for colors for plots, based on what is plotted
@@ -63,9 +63,9 @@ STYLE_ARGS = AXIS_STYLE_ARGS + LINE_STYLE_ARGS + CUSTOM_STYLE_ARGS + STYLERS
 
 ## Define default values for plot aesthetics
 # These are all custom style arguments
-TITLE_FONTSIZE = 20
-LABEL_SIZE = 16
-TICK_LABELSIZE = 16
+TITLE_FONTSIZE = 18
+LABEL_SIZE = 14
+TICK_LABELSIZE = 12
 LEGEND_SIZE = 12
 LEGEND_LOC = 'best'
 

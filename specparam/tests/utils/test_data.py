@@ -89,6 +89,21 @@ def test_interpolate_spectrum():
         mask = np.logical_and(freqs >= f_range[0], freqs <= f_range[1])
         assert powers[mask].sum() > powers_out[mask].sum()
 
+def test_interpolate_spectra():
+
+    freqs, powers = sim_group_power_spectra(\
+        5, [1, 150], [1, 100, 1], [[10, 0.5, 1.0], [60, 1, 0.1], [120, 0.5, 0.1]])
+
+    exclude = [[58, 62], [118, 122]]
+    freqs_out, powers_out = interpolate_spectra(freqs, powers, exclude)
+    assert np.array_equal(freqs, freqs_out)
+    assert np.all(powers)
+    assert powers.shape == powers_out.shape
+
+    for f_range in exclude:
+        mask = np.logical_and(freqs >= f_range[0], freqs <= f_range[1])
+        assert powers[:, mask].sum() > powers_out[:, mask].sum()
+
 def test_subsample_spectra():
 
     # Simulate spectra, each with unique osc peak (for checking)
