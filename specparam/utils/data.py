@@ -1,8 +1,11 @@
 """Utilities for working with data and models."""
 
 from itertools import repeat
+from functools import partial
 
 import numpy as np
+
+from fooof.core.modutils import docs_get_section, replace_docstring_sections
 
 ###################################################################################################
 ###################################################################################################
@@ -136,6 +139,55 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
         powers[interp_mask] = np.power(10, vals)
 
     return freqs, powers
+
+
+def wrap_interpolate_spectrum(powers, freqs, interp_range, buffer):
+    """Wraps interpolate function, organizing inputs & outputs to use `partial`."""
+    return interpolate_spectrum(freqs, powers, interp_range, buffer)[1]
+
+
+@replace_docstring_sections(docs_get_section(interpolate_spectrum.__doc__, 'Notes', end='Examples'))
+def interpolate_spectra(freqs, powers, interp_range, buffer=3):
+    """Interpolate a frequency region across a group of power spectra.
+
+    Parameters
+    ----------
+    freqs : 1d array
+        Frequency values for the power spectrum.
+    powers : 2d array
+        Power values for the power spectra.
+    interp_range : list of float or list of list of float
+        Frequency range to interpolate, as [lowest_freq, highest_freq].
+        If a list of lists, applies each as it's own interpolation range.
+    buffer : int or list of int
+        The number of samples to use on either side of the interpolation
+        range, that are then averaged and used to calculate the interpolation.
+
+    Returns
+    -------
+    freqs : 1d array
+        Frequency values for the power spectrum.
+    powers : 2d array
+        Power values, with interpolation, for the power spectra.
+
+    Notes
+    -----
+    % copied in from interpolate_spectrum
+
+    Examples
+    --------
+    Using simulated spectra, interpolate away line noise peaks:
+
+    >>> from fooof.sim import gen_group_power_spectra
+    >>> freqs, powers = gen_group_power_spectra(5, [1, 75], [1, 1], [[10, 0.5, 1.0], [60, 2, 0.1]])
+    >>> freqs, powers = interpolate_spectra(freqs, powers, [58, 62])
+    """
+
+    tfunc = partial(wrap_interpolate_spectrum, freqs=freqs,
+                    interp_range=interp_range, buffer=buffer)
+    powers = np.apply_along_axis(tfunc, 1, powers)
+
+    return freqs,powers
 
 
 def subsample_spectra(spectra, selection, return_inds=False):

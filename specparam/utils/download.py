@@ -5,6 +5,8 @@ from urllib.request import urlretrieve
 
 import numpy as np
 
+from fooof.core.io import fpath
+
 ###################################################################################################
 ###################################################################################################
 
@@ -15,7 +17,7 @@ def check_data_folder(folder):
 
     Parameters
     ----------
-    folder : str
+    folder : Path or str
         Name of the folder to check and create if missing.
     """
 
@@ -30,11 +32,13 @@ def check_data_file(filename, folder, url=DATA_URL):
     ----------
     filename : str
         Name of the data file to check and download if missing.
-    folder : str
+    folder : Path or str
         Name of the folder to save the datafile to.
+    url : str, optional
+        The URL to download the data file from.
     """
 
-    filepath = os.path.join(folder, filename)
+    filepath = fpath(folder, filename)
 
     if not os.path.isfile(filepath):
         urlretrieve(url + filename, filename=filepath)
@@ -47,7 +51,7 @@ def fetch_example_data(filename, folder='data', url=DATA_URL):
     ----------
     filename : str
         Name of the data file to download.
-    folder : str, optional
+    folder : Path or str, optional
         Name of the folder to save the datafile to.
     url : str, optional
         The URL to download the data file from.
@@ -69,7 +73,7 @@ def load_example_data(filename, folder='data', url=DATA_URL):
     ----------
     filename : str
         Name of the data file to download.
-    folder : str, optional
+    folder : Path or str, optional
         Name of the folder to save the datafile to.
     url : str, optional
         The URL to download the data file from.

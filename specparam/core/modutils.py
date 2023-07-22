@@ -99,10 +99,10 @@ def get_docs_indices(docstring, sections=DOCSTRING_SECTIONS):
         Dictionary in which each key is a section label, and each value is the corresponding index.
     """
 
-    inds = {label : None for label in DOCSTRING_SECTIONS}
+    inds = {label : None for label in sections}
 
     for ind, line in enumerate(docstring.split('\n')):
-        for key, val in inds.items():
+        for key in inds:
             if key in line:
                 inds[key] = ind
 
@@ -132,7 +132,7 @@ def docs_drop_param(docstring):
     ind = docstring.find(sep) + len(sep)
     front, back = docstring[:ind], docstring[ind:]
 
-    for loop in range(2):
+    for _ in range(2):
         back = back[back.find('\n')+1:]
 
     return front + back
@@ -164,7 +164,7 @@ def docs_append_to_section(docstring, section, add):
                         for split in docstring.split('\n\n')])
 
 
-def docs_get_section(docstring, section, output='extract'):
+def docs_get_section(docstring, section, output='extract', end=None):
     """Extract and/or remove a specified section from a docstring.
 
     Parameters
@@ -177,6 +177,9 @@ def docs_get_section(docstring, section, output='extract'):
         Run mode, options:
             'extract' - returns the extracted section from the docstring.
             'remove' - returns the docstring after removing the specified section.
+    end : str, optional
+        Indicates the contents of a line that signals the end of the section to select.
+        If not provided, the section is selected until a blank line.
 
     Returns
     -------
@@ -193,7 +196,12 @@ def docs_get_section(docstring, section, output='extract'):
         # Track whether in the desired section
         if section in line and '--' in docstring_split[ind + 1]:
             in_section = True
-        if in_section and line == '':
+        if end:
+            if in_section and '    ' + end == line:
+                in_section = False
+                # In this approach, an extra newline is caught - so pop it off
+                outs.pop()
+        elif in_section and line == '':
             in_section = False
 
         # Collect desired outputs based on whether extracting or removing section
