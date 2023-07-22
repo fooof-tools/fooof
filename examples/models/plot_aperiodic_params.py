@@ -9,13 +9,13 @@ Exploring properties and topics related to aperiodic parameters.
 
 from scipy.stats import spearmanr
 
-from fooof import FOOOF, FOOOFGroup
-from fooof.plts.spectra import plot_spectra
-from fooof.plts.annotate import plot_annotated_model
-from fooof.plts.aperiodic import plot_aperiodic_params
-from fooof.sim.params import Stepper, param_iter
-from fooof.sim import gen_power_spectrum, gen_group_power_spectra
-from fooof.utils.params import compute_time_constant, compute_knee_frequency
+from specparam import SpectralModel, SpectralGroupModel
+from specparam.plts.spectra import plot_spectra
+from specparam.plts.annotate import plot_annotated_model
+from specparam.plts.aperiodic import plot_aperiodic_params
+from specparam.sim.params import Stepper, param_iter
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
+from specparam.utils.params import compute_time_constant, compute_knee_frequency
 
 ###################################################################################################
 # 'Fixed' Model
@@ -28,12 +28,12 @@ from fooof.utils.params import compute_time_constant, compute_knee_frequency
 ###################################################################################################
 
 # Simulate an example power spectrum
-freqs, powers = gen_power_spectrum([1, 50], [0, 1], [10, 0.25, 2], freq_res=0.25)
+freqs, powers = sim_power_spectrum([1, 50], [0, 1], [10, 0.25, 2], freq_res=0.25)
 
 ###################################################################################################
 
 # Initialize model object and fit power spectrum
-fm = FOOOF(min_peak_height=0.1)
+fm = SpectralModel(min_peak_height=0.1)
 fm.fit(freqs, powers)
 
 ###################################################################################################
@@ -65,7 +65,7 @@ ap_params = param_iter([1, exp_steps])
 ###################################################################################################
 
 # Simulate a group of power spectra
-freqs, powers = gen_group_power_spectra(\
+freqs, powers = sim_group_power_spectra(\
     len(exp_steps), [3, 40], ap_params, [10, 0.25, 1], freq_res=0.25, f_rotation=10)
 
 ###################################################################################################
@@ -76,7 +76,7 @@ plot_spectra(freqs, powers, log_powers=True)
 ###################################################################################################
 
 # Initialize a group mode object and parameterize the power spectra
-fg = FOOOFGroup()
+fg = SpectralGroupModel()
 fg.fit(freqs, powers)
 
 ###################################################################################################
@@ -122,12 +122,12 @@ spearmanr(ap_values[0, :], ap_values[1, :])
 ###################################################################################################
 
 # Generate a power spectrum with a knee
-freqs2, powers2 = gen_power_spectrum([1, 50], [0, 15, 1], [8, 0.125, 0.75], freq_res=0.25)
+freqs2, powers2 = sim_power_spectrum([1, 50], [0, 15, 1], [8, 0.125, 0.75], freq_res=0.25)
 
 ###################################################################################################
 
 # Initialize model object and fit power spectrum
-fm = FOOOF(min_peak_height=0.05, aperiodic_mode='knee')
+fm = SpectralModel(min_peak_height=0.05, aperiodic_mode='knee')
 fm.fit(freqs2, powers2)
 
 ###################################################################################################

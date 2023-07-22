@@ -10,22 +10,22 @@ and periodic components as they are extracted from the data.
 
 # sphinx_gallery_thumbnail_number = 3
 
-# Import FOOOF model objects
-from fooof import FOOOF, FOOOFGroup
+# Import model objects
+from specparam import SpectralModel, SpectralGroupModel
 
 # Import function to plot power spectra
-from fooof.plts.spectra import plot_spectra
+from specparam.plts.spectra import plot_spectra
 
 # Import simulation functions to create some example data
-from fooof.sim import gen_power_spectrum, gen_group_power_spectra
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 
 ###################################################################################################
 
 # Simulate example power spectrum
-freqs, powers = gen_power_spectrum([1, 50], [0, 10, 1], [10, 0.25, 2], freq_res=0.25)
+freqs, powers = sim_power_spectrum([1, 50], [0, 10, 1], [10, 0.25, 2], freq_res=0.25)
 
 # Initialize model object and fit power spectrum
-fm = FOOOF()
+fm = SpectralModel()
 fm.fit(freqs, powers)
 
 ###################################################################################################
@@ -40,7 +40,7 @@ fm.fit(freqs, powers)
 # which are available in the model.
 #
 # Before diving into the isolated data components, let's check the data (`power_spectrum`)
-# and full model fit of a model object (`fooofed_spectrum`).
+# and full model fit of a model object (`modeled_spectrum`).
 #
 
 ###################################################################################################
@@ -51,7 +51,7 @@ plot_spectra(fm.freqs, fm.power_spectrum, color='black')
 ###################################################################################################
 
 # Plot the power spectrum model from the object
-plot_spectra(fm.freqs, fm.fooofed_spectrum_, color='red')
+plot_spectra(fm.freqs, fm.modeled_spectrum_, color='red')
 
 ###################################################################################################
 # Aperiodic Component

@@ -10,19 +10,19 @@ This page is a hands-on example of the reporting and referencing information on 
 
 ###################################################################################################
 
-# Import FOOOF model objects
-from fooof import FOOOF, FOOOFGroup
+# Import model objects
+from specparam import SpectralModel, SpectralGroupModel
 
 # Import simulation functions to create some example data
-from fooof.sim import gen_power_spectrum, gen_group_power_spectra
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 
 # Import utilities to print out information for reporting
-from fooof.utils.reports import methods_report_info, methods_report_text
+from specparam.utils.reports import methods_report_info, methods_report_text
 
 # sphinx_gallery_start_ignore
 # Note: this code gets hidden, but serves to create the text plot for the icon
-from fooof.core.strings import gen_methods_report_str
-from fooof.core.reports import REPORT_FONT
+from specparam.core.strings import gen_methods_report_str
+from specparam.core.reports import REPORT_FONT
 import matplotlib.pyplot as plt
 text = gen_methods_report_str(concise=True)
 text = text[0:142] + '\n' + text[142:]
@@ -49,8 +49,8 @@ _ = ax.set(xticks=[], yticks=[])
 ###################################################################################################
 
 # Check the version of the module
-from fooof import __version__ as fooof_version
-print('Current fooof version:', fooof_version)
+from specparam import __version__ as specparam_version
+print('Current specparam version:', specparam_version)
 
 ###################################################################################################
 # Getting Model Reporting Information
@@ -74,12 +74,12 @@ print('Current fooof version:', fooof_version)
 ###################################################################################################
 
 # Initialize model object
-fooof_obj = FOOOF()
+model = SpectralModel()
 
 ###################################################################################################
 
 # Print out all the methods information for reporting
-methods_report_info(fooof_obj)
+methods_report_info(model)
 
 ###################################################################################################
 #
@@ -87,7 +87,7 @@ methods_report_info(fooof_obj)
 # some of which might look familiar.
 #
 # The settings information, for example, is the same as printed using the
-# # - :meth:`~fooof.FOOOF.print_settings` method.
+# # - :meth:`~specparam.SpectralModel.print_settings` method.
 #
 # Next, let's check out the text version of the methods report.
 #
@@ -95,7 +95,7 @@ methods_report_info(fooof_obj)
 ###################################################################################################
 
 # Generate methods text, with methods information inserted
-methods_report_text(fooof_obj)
+methods_report_text(model)
 
 ###################################################################################################
 # Additional Examples
@@ -110,10 +110,10 @@ methods_report_text(fooof_obj)
 ###################################################################################################
 
 # Simulate an example power spectrum
-freqs, powers = gen_power_spectrum([1, 50], [0, 10, 1], [10, 0.25, 2], freq_res=0.25)
+freqs, powers = sim_power_spectrum([1, 50], [0, 10, 1], [10, 0.25, 2], freq_res=0.25)
 
 # Initialize model object
-fm = FOOOF(min_peak_height=0.1, peak_width_limits=[1, 6], aperiodic_mode='knee')
+fm = SpectralModel(min_peak_height=0.1, peak_width_limits=[1, 6], aperiodic_mode='knee')
 fm.fit(freqs, powers)
 
 ###################################################################################################
@@ -140,18 +140,18 @@ methods_report_text(fm)
 #
 # Note that the reporting functions work with any model object.
 #
-# For example, next we will use them on a :class:`~fooof.FOOOFGroup` object.
+# For example, next we will use them on a :class:`~specparam.SpectralGroupModel` object.
 #
 
 ###################################################################################################
 
 # Simulate an example group of power spectra
-freqs, powers = gen_group_power_spectra(10, [1, 75], [0, 1], [10, 0.25, 2])
+freqs, powers = sim_group_power_spectra(10, [1, 75], [0, 1], [10, 0.25, 2])
 
 ###################################################################################################
 
 # Initialize and fit group model object
-fg = FOOOFGroup(max_n_peaks=4, peak_threshold=1.75)
+fg = SpectralGroupModel(max_n_peaks=4, peak_threshold=1.75)
 fg.fit(freqs, powers)
 
 ###################################################################################################

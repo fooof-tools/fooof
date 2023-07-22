@@ -74,8 +74,8 @@ check the `__version__` from Python, using the following code:
 .. code-block:: python
 
     # Check the version of the tool
-    from fooof import __version__ as fooof_version
-    print('Current fooof version:', fooof_version)
+    from specparam import __version__ as specparam_version
+    print('Current specparam version:', specparam_version)
 
 Generating Methods Reports
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

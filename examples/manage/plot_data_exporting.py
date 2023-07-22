@@ -11,10 +11,10 @@ and requires the optional dependency `pandas` to be installed.
 ###################################################################################################
 
 # Import model objects, and Bands object to define bands of interest
-from fooof import FOOOF, FOOOFGroup, Bands
+from specparam import SpectralModel, SpectralGroupModel, Bands
 
 # Import simulation functions to create some example data
-from fooof.sim import gen_power_spectrum, gen_group_power_spectra
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 
 ###################################################################################################
 # Exporting Results
@@ -25,8 +25,8 @@ from fooof.sim import gen_power_spectrum, gen_group_power_spectra
 #
 # Note that the main use case of exporting models to pandas DataFrames is for
 # analysis across models. If you are just trying to access the model fit results from
-# a fit model, you may want the :meth:`~fooof.FOOOF.get_results` and/or
-# :meth:`~fooof.FOOOF.get_params` methods.
+# a fit model, you may want the :meth:`~specparam.SpectralModel.get_results` and/or
+# :meth:`~specparam.SpectralModel.get_params` methods.
 #
 # Defining Oscillation Bands
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,7 +36,7 @@ from fooof.sim import gen_power_spectrum, gen_group_power_spectra
 #
 # This means that we need to define some kind of strategy to organize the peak
 # parameters across different models. Across these examples, this will include using the
-# :class:`~fooof.Bands` object to define oscillations bands of interest.
+# :class:`~specparam.Bands` object to define oscillations bands of interest.
 #
 
 ###################################################################################################
@@ -45,19 +45,20 @@ from fooof.sim import gen_power_spectrum, gen_group_power_spectra
 bands1 = Bands({'alpha' : [7, 14]})
 
 # Initialize model object
-fm = FOOOF()
+fm = SpectralModel()
 
 ###################################################################################################
 
 # Simulate example power spectrum
-freqs, powers = gen_power_spectrum([1, 50], [0, 10, 1], [10, 0.25, 2], freq_res=0.25)
+freqs, powers = sim_power_spectrum([1, 50], [0, 10, 1], [10, 0.25, 2], freq_res=0.25)
 
 # Fit model to power spectrum
 fm.fit(freqs, powers)
 
 ###################################################################################################
 #
-# The :meth:`~fooof.FOOOF.to_df` method supports exporting model fit results to pandas objects.
+# The :meth:`~specparam.SpectralModel.to_df` method supports exporting model
+# fit results to pandas objects.
 #
 
 ###################################################################################################
@@ -116,21 +117,21 @@ fm.to_df(bands1)
 # In the above, we used the model object to show the basic exporting functionalities.
 #
 # This functionality is more useful when considering multiple model fits together, such
-# as can be done using the :meth:`~fooof.FOOOFGroup.to_df` method from the Group object,
+# as can be done using the :meth:`~specparam.SpectralGroupModel.to_df` method from the Group object,
 # which allows for exporting DataFrames of organized model fit parameters across power spectra.
 #
 # As with the above, keep in mind that for some cases you may want the
-# :meth:`~fooof.FOOOFGroup.get_results` and/or :meth:`~fooof.FOOOFGroup.get_params` methods
-# instead of doing a DataFrame export.
+# :meth:`~specparam.SpectralGroupModel.get_results` and/or
+# :meth:`~specparam.SpectralGroupModel.get_params` methods instead of doing a DataFrame export.
 #
 
 ###################################################################################################
 
 # Simulate an example group of power spectra
-freqs, powers = gen_group_power_spectra(5, [1, 50], [0, 1], [10, 0.25, 2])
+freqs, powers = sim_group_power_spectra(5, [1, 50], [0, 1], [10, 0.25, 2])
 
 # Initialize a group model object and fit power spectra
-fg = FOOOFGroup(verbose=False)
+fg = SpectralGroupModel(verbose=False)
 fg.fit(freqs, powers)
 
 ###################################################################################################
