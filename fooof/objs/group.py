@@ -456,10 +456,9 @@ class FOOOFGroup(FOOOF):
             The FOOOFResults data loaded into a FOOOF object.
         """
 
-        # Initialize a FOOOF object, with same settings & check data mode as current FOOOFGroup
+        # Initialize a FOOOF object, with same settings & run modes as current FOOOFGroup
         fm = FOOOF(*self.get_settings(), verbose=self.verbose)
-        fm.set_check_modes(self._check_freqs, self._check_data)
-        fm.set_debug_mode(self._debug)
+        fm.set_run_modes(*self.get_run_modes().values())
 
         # Add data for specified single power spectrum, if available
         #   The power spectrum is inverted back to linear, as it is re-logged when added to FOOOF
@@ -495,10 +494,9 @@ class FOOOFGroup(FOOOF):
         # Check and convert indices encoding to list of int
         inds = check_inds(inds)
 
-        # Initialize a new FOOOFGroup object, with same settings as current FOOOFGroup
+        # Initialize a new FOOOFGroup object, with same settings and run modes as current FOOOFGroup
         fg = FOOOFGroup(*self.get_settings(), verbose=self.verbose)
-        fg.set_check_modes(self._check_freqs, self._check_data)
-        fg.set_debug_mode(self._debug)
+        fg.set_run_modes(*self.get_run_modes().values())
 
         # Add data for specified power spectra, if available
         #   The power spectra are inverted back to linear, as they are re-logged when added to FOOOF

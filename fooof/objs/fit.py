@@ -201,7 +201,7 @@ class FOOOF():
         # Set default debug mode - controls if an error is raised if model fitting is unsuccessful
         self._debug = False
         # Set default data checking modes - controls which checks get run on input data
-        #   check_freqs: check the frequency values, and raises an error for uneven spacing
+        #   check_freqs: checks the frequency values, and raises an error for uneven spacing
         self._check_freqs = True
         #   check_data: checks the power values and raises an error for any NaN / Inf values
         self._check_data = True
@@ -570,6 +570,19 @@ class FOOOF():
                              for key in OBJ_DESC['settings']})
 
 
+    def get_run_modes(self):
+        """Return run modes of the current object.
+
+        Returns
+        -------
+        data: dict
+            Dictionary containing the run_modes from the current object.
+        """
+
+        return {key : getattr(self, key) \
+                    for key in OBJ_DESC['run_modes']}
+
+
     def get_meta_data(self):
         """Return data information from the current object.
 
@@ -724,7 +737,7 @@ class FOOOF():
 
         self._debug = debug
 
-
+        
     def set_check_modes(self, check_freqs=None, check_data=None):
         """Set check modes, which controls if an error is raised based on check on the inputs.
 
@@ -753,6 +766,23 @@ class FOOOF():
         """
 
         self.set_check_modes(check_data=check_data)
+
+
+    def set_run_modes(self, debug, check_freqs, check_data):
+        """Simultaneously set all run modes.
+
+        Parameters
+        ----------
+        debug : bool
+            Whether to run in debug mode.
+        check_freqs : bool
+            Whether to run in check freqs mode.
+        check_data : bool
+            Whether to run in check data mode.
+        """
+        
+        self.set_debug_mode(debug)
+        self.set_check_modes(check_freqs, check_data)
 
 
     def to_df(self, peak_org):
