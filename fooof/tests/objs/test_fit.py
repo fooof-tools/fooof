@@ -445,6 +445,13 @@ def test_fooof_set_check_modes(tfm):
     assert tfm._check_freqs is True
     assert tfm._check_data is True
 
+def test_set_run_modes():
+
+    tfm = FOOOF(verbose=False)
+    tfm.set_run_modes(False, False, False)
+    for field in OBJ_DESC['run_modes']:
+        assert getattr(tfm, field) is False
+
 def test_fooof_to_df(tfm, tbands, skip_if_no_pandas):
 
     df1 = tfm.to_df(2)

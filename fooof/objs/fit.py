@@ -579,8 +579,7 @@ class FOOOF():
             Dictionary containing the run_modes from the current object.
         """
 
-        return {key : getattr(self, key) \
-                    for key in OBJ_DESC['run_modes']}
+        return {key : getattr(self, key) for key in OBJ_DESC['run_modes']}
 
 
     def get_meta_data(self):
@@ -737,7 +736,7 @@ class FOOOF():
 
         self._debug = debug
 
-        
+
     def set_check_modes(self, check_freqs=None, check_data=None):
         """Set check modes, which controls if an error is raised based on check on the inputs.
 
@@ -780,7 +779,7 @@ class FOOOF():
         check_data : bool
             Whether to run in check data mode.
         """
-        
+
         self.set_debug_mode(debug)
         self.set_check_modes(check_freqs, check_data)
 

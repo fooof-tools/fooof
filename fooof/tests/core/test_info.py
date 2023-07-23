@@ -15,7 +15,6 @@ def test_get_description(tfm):
         for it in va:
             assert it in objs
 
-
 def test_get_peak_indices():
 
     indices = get_peak_indices()
@@ -32,7 +31,6 @@ def test_get_ap_indices():
     assert indices_fixed
     for ind, val in enumerate(['offset', 'exponent']):
         assert indices_fixed[val] == ind
-
 
     indices_knee = get_indices('knee')
 
