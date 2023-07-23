@@ -45,11 +45,11 @@ Run Modes
 _debug : bool
     Whether the object is set in debug mode.
     This should be controlled by using the `set_debug_mode` method.
-_check_freqs: bool
-    Whether to checked added added frequency values for even linear spacing.
-_check_data : bool
-    Whether to check added data for NaN or Inf values, and fail out if present.
-    This should be controlled by using the `set_check_data_mode` method.
+_check_data, _check_freqs : bool
+    Whether to check added inputs for incorrect inputs, failing if present.
+    Frequency data is checked for linear spacing.
+    Power values are checked for data for NaN or Inf values.
+    These modes default to True, and can be controlled with the `set_check_modes` method.
 
 Code Notes
 ----------
@@ -737,19 +737,25 @@ class FOOOF():
 
         self._debug = debug
 
-
-    def set_check_freqs_mode(self, check_freqs):
-        """Set check freqs mode, which controls if an error is raised for unevenly spaced input frequencies.
+        
+    def set_check_modes(self, check_freqs=None, check_data=None):
+        """Set check modes, which controls if an error is raised based on check on the inputs.
 
         Parameters
         ----------
-        check_freqs : bool
-            Whether to run in check freqs mode.
+        check_freqs : bool, optional
+            Whether to run in check freqs mode, which checks the frequency data.
+        check_data : bool, optional
+            Whether to run in check data mode, which checks the power spectrum values data.
         """
 
-        self._check_freqs = check_freqs
+        if check_freqs is not None:
+            self._check_freqs = check_freqs
+        if check_data is not None:
+            self._check_data = check_data
 
 
+    # This kept for backwards compatibility, but to be removed in 2.0 in favor of `set_check_modes`
     def set_check_data_mode(self, check_data):
         """Set check data mode, which controls if an error is raised if NaN or Inf data are added.
 
@@ -759,7 +765,7 @@ class FOOOF():
             Whether to run in check data mode.
         """
 
-        self._check_data = check_data
+        self.set_check_modes(check_data=check_data)
 
 
     def set_run_modes(self, debug, check_freqs, check_data):
@@ -774,9 +780,9 @@ class FOOOF():
         check_data : bool
             Whether to run in check data mode.
         """
-        self._debug = debug
-        self._check_freqs = check_freqs
-        self._check_data = check_data
+        
+        self.set_debug_mode(debug)
+        self.set_check_modes(check_freqs, check_data)
 
 
     def to_df(self, peak_org):
