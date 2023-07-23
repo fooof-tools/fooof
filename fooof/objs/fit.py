@@ -78,7 +78,7 @@ from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
 from fooof.plts.fm import plot_fm
 from fooof.utils.data import trim_spectrum
 from fooof.utils.params import compute_gauss_std
-from fooof.data import FOOOFResults, FOOOFSettings, FOOOFMetaData
+from fooof.data import FOOOFSettings, FOOOFRunModes, FOOOFMetaData, FOOOFResults
 from fooof.data.conversions import model_to_dataframe
 from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 
@@ -575,11 +575,12 @@ class FOOOF():
 
         Returns
         -------
-        data: dict
-            Dictionary containing the run_modes from the current object.
+        FOOOFRunModes
+            Object containing the run modes from the current object.
         """
 
-        return {key : getattr(self, key) for key in OBJ_DESC['run_modes']}
+        return FOOOFRunModes(**{key.strip('_') : getattr(self, key) \
+                             for key in OBJ_DESC['run_modes']})
 
 
     def get_meta_data(self):
