@@ -91,6 +91,7 @@ Objects to store settings, metadata and results for power spectrum models.
    :template: data_object.rst
 
    FOOOFSettings
+   FOOOFRunModes
    FOOOFMetaData
    FOOOFResults
 
