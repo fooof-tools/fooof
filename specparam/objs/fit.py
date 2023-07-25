@@ -575,11 +575,11 @@ class SpectralModel():
 
         Returns
         -------
-        FOOOFRunModes
+        ModelRunModes
             Object containing the run modes from the current object.
         """
 
-        return FOOOFRunModes(**{key.strip('_') : getattr(self, key) \
+        return ModelRunModes(**{key.strip('_') : getattr(self, key) \
                              for key in OBJ_DESC['run_modes']})
 
 

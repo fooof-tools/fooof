@@ -90,8 +90,8 @@ def group_to_dict(fit_results, peak_org):
 
     Parameters
     ----------
-    fit_results : list of FOOOFResults
-        List of FOOOFResults objects.
+    fit_results : list of FitResults
+        List of FitResults objects.
     peak_org : int or Bands
         How to organize peaks.
         If int, extracts the first n peaks.
