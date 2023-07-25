@@ -146,13 +146,16 @@ class Stepper():
             If the given values for defining the iteration range are inconsistent.
         """
 
-        if any(ii < 0 for ii in [start, stop, step]):
-            raise ValueError("Inputs 'start', 'stop', and 'step' should all be positive values.")
+        if any(ii < 0 for ii in [start, stop]):
+            raise ValueError("Inputs 'start' and 'stop' should be positive values.")
 
-        if not start < stop:
-            raise ValueError("Input 'start' should be less than 'stop'.")
+        if (stop - start) * step < 0:
+            raise ValueError("The sign of input 'step' does not align with 'start' / 'stop' values.")
 
-        if not step < (stop - start):
+        if start == stop:
+            raise ValueError("Input 'start' and 'stop' must be different values.")
+
+        if not abs(step) < abs(stop - start):
             raise ValueError("Input 'step' is too large given values for 'start' and 'stop'.")
 
 
