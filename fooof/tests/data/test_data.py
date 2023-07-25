@@ -19,6 +19,14 @@ def test_fooof_settings():
     for field in OBJ_DESC['settings']:
         assert getattr(settings, field)
 
+def test_fooof_run_modes():
+
+    run_modes = FOOOFRunModes(True, True, True)
+    assert run_modes
+
+    for field in OBJ_DESC['run_modes']:
+        assert getattr(run_modes, field.strip('_'))
+
 def test_fooof_meta_data():
 
     meta_data = FOOOFMetaData([1, 50], 0.5)
