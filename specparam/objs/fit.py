@@ -20,7 +20,9 @@ from specparam.core.funcs import infer_ap_func
 from specparam.core.errors import NoModelError
 from specparam.core.strings import gen_settings_str, gen_model_results_str, gen_issue_str
 from specparam.plts.model import plot_model
-from specparam.data import FitResults, ModelSettings
+from specparam.utils.data import trim_spectrum
+from specparam.utils.params import compute_gauss_std
+from specparam.data import FitResults, ModelRunModes, ModelSettings, SpectrumMetaData
 from specparam.data.conversions import model_to_dataframe
 from specparam.sim.gen import gen_model
 
@@ -239,6 +241,32 @@ class SpectralModel(BaseSpectralModel):
                              for key in OBJ_DESC['settings']})
 
 
+    def get_run_modes(self):
+        """Return run modes of the current object.
+
+        Returns
+        -------
+        ModelRunModes
+            Object containing the run modes from the current object.
+        """
+
+        return ModelRunModes(**{key.strip('_') : getattr(self, key) \
+                             for key in OBJ_DESC['run_modes']})
+
+
+    def get_meta_data(self):
+        """Return data information from the current object.
+
+        Returns
+        -------
+        SpectrumMetaData
+            Object containing meta data from the current object.
+        """
+
+        return SpectrumMetaData(**{key : getattr(self, key) \
+                                for key in OBJ_DESC['meta_data']})
+
+
     def get_params(self, name, col=None):
         """Return model fit parameters for specified feature(s).
 
@@ -365,6 +393,52 @@ class SpectralModel(BaseSpectralModel):
         """Return a copy of the current object."""
 
         return deepcopy(self)
+
+
+    def set_debug_mode(self, debug):
+        """Set debug mode, which controls if an error is raised if model fitting is unsuccessful.
+
+        Parameters
+        ----------
+        debug : bool
+            Whether to run in debug mode.
+        """
+
+        self._debug = debug
+
+
+    def set_check_modes(self, check_freqs=None, check_data=None):
+        """Set check modes, which controls if an error is raised based on check on the inputs.
+
+        Parameters
+        ----------
+        check_freqs : bool, optional
+            Whether to run in check freqs mode, which checks the frequency data.
+        check_data : bool, optional
+            Whether to run in check data mode, which checks the power spectrum values data.
+        """
+
+        if check_freqs is not None:
+            self._check_freqs = check_freqs
+        if check_data is not None:
+            self._check_data = check_data
+
+
+    def set_run_modes(self, debug, check_freqs, check_data):
+        """Simultaneously set all run modes.
+
+        Parameters
+        ----------
+        debug : bool
+            Whether to run in debug mode.
+        check_freqs : bool
+            Whether to run in check freqs mode.
+        check_data : bool
+            Whether to run in check data mode.
+        """
+
+        self.set_debug_mode(debug)
+        self.set_check_modes(check_freqs, check_data)
 
 
     def to_df(self, peak_org):
