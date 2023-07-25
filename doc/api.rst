@@ -90,9 +90,10 @@ Objects to store settings, metadata and results for power spectrum models.
    :toctree: generated/
    :template: data_object.rst
 
-   FitResults
-   ModelSettings
    SpectrumMetaData
+   ModelSettings
+   ModelRunModes
+   FitResults
 
 Simulation Parameters
 ~~~~~~~~~~~~~~~~~~~~~

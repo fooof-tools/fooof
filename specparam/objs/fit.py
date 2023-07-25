@@ -45,9 +45,11 @@ Run Modes
 _debug : bool
     Whether the object is set in debug mode.
     This should be controlled by using the `set_debug_mode` method.
-_check_data : bool
-    Whether to check added data for NaN or Inf values, and fail out if present.
-    This should be controlled by using the `set_check_data_mode` method.
+_check_data, _check_freqs : bool
+    Whether to check added inputs for incorrect inputs, failing if present.
+    Frequency data is checked for linear spacing.
+    Power values are checked for data for NaN or Inf values.
+    These modes default to True, and can be controlled with the `set_check_modes` method.
 
 Code Notes
 ----------
@@ -74,9 +76,9 @@ from specparam.core.strings import (gen_settings_str, gen_model_results_str,
 from specparam.plts.model import plot_model
 from specparam.utils.data import trim_spectrum
 from specparam.utils.params import compute_gauss_std
-from specparam.data import FitResults, ModelSettings, SpectrumMetaData
 from specparam.data.utils import get_model_params
 from specparam.data.conversions import model_to_dataframe
+from specparam.data import FitResults, ModelRunModes, ModelSettings, SpectrumMetaData
 from specparam.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 
 ###################################################################################################
@@ -198,7 +200,7 @@ class SpectralModel():
         # Set default debug mode - controls if an error is raised if model fitting is unsuccessful
         self._debug = False
         # Set default data checking modes - controls which checks get run on input data
-        #   check_freqs: check the frequency values, and raises an error for uneven spacing
+        #   check_freqs: checks the frequency values, and raises an error for uneven spacing
         self._check_freqs = True
         #   check_data: checks the power values and raises an error for any NaN / Inf values
         self._check_data = True
@@ -568,6 +570,19 @@ class SpectralModel():
                              for key in OBJ_DESC['settings']})
 
 
+    def get_run_modes(self):
+        """Return run modes of the current object.
+
+        Returns
+        -------
+        ModelRunModes
+            Object containing the run modes from the current object.
+        """
+
+        return ModelRunModes(**{key.strip('_') : getattr(self, key) \
+                             for key in OBJ_DESC['run_modes']})
+
+
     def get_meta_data(self):
         """Return data information from the current object.
 
@@ -698,6 +713,24 @@ class SpectralModel():
         self._debug = debug
 
 
+    def set_check_modes(self, check_freqs=None, check_data=None):
+        """Set check modes, which controls if an error is raised based on check on the inputs.
+
+        Parameters
+        ----------
+        check_freqs : bool, optional
+            Whether to run in check freqs mode, which checks the frequency data.
+        check_data : bool, optional
+            Whether to run in check data mode, which checks the power spectrum values data.
+        """
+
+        if check_freqs is not None:
+            self._check_freqs = check_freqs
+        if check_data is not None:
+            self._check_data = check_data
+
+
+    # This kept for backwards compatibility, but to be removed in 2.0 in favor of `set_check_modes`
     def set_check_data_mode(self, check_data):
         """Set check data mode, which controls if an error is raised if NaN or Inf data are added.
 
@@ -707,7 +740,24 @@ class SpectralModel():
             Whether to run in check data mode.
         """
 
-        self._check_data = check_data
+        self.set_check_modes(check_data=check_data)
+
+
+    def set_run_modes(self, debug, check_freqs, check_data):
+        """Simultaneously set all run modes.
+
+        Parameters
+        ----------
+        debug : bool
+            Whether to run in debug mode.
+        check_freqs : bool
+            Whether to run in check freqs mode.
+        check_data : bool
+            Whether to run in check data mode.
+        """
+
+        self.set_debug_mode(debug)
+        self.set_check_modes(check_freqs, check_data)
 
 
     def to_df(self, peak_org):

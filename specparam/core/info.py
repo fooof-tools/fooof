@@ -17,6 +17,7 @@ def get_description():
 
     - results : parameters for and measures of the model
     - settings : model settings
+    - run_modes: checks performed and errors raised
     - data : input data
     - meta_data : meta data of the inputs
     - arrays : data stored in arrays
@@ -29,6 +30,7 @@ def get_description():
                   'settings' : ['peak_width_limits', 'max_n_peaks',
                                 'min_peak_height', 'peak_threshold',
                                 'aperiodic_mode'],
+                  'run_modes': ['_debug', '_check_freqs', '_check_data'],
                   'data' : ['power_spectrum', 'freq_range', 'freq_res'],
                   'meta_data' : ['freq_range', 'freq_res'],
                   'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',

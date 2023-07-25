@@ -27,6 +27,14 @@ def test_spectrum_meta_data():
     for field in OBJ_DESC['meta_data']:
         assert getattr(meta_data, field)
 
+def test_fooof_run_modes():
+
+    run_modes = ModelRunModes(True, True, True)
+    assert run_modes
+
+    for field in OBJ_DESC['run_modes']:
+        assert getattr(run_modes, field.strip('_'))
+
 def test_fit_results():
 
     results = FitResults([1, 1], [10, 0.5, 1], 0.95, 0.05, [10, 0.5, 0.5])

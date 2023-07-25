@@ -425,7 +425,7 @@ class SpectralGroupModel(SpectralModel):
         # Initialize model object, with same settings, metadata, & check mode as current object
         model = SpectralModel(*self.get_settings(), verbose=self.verbose)
         model.add_meta_data(self.get_meta_data())
-        model.set_check_data_mode(self._check_data)
+        model.set_run_modes(*self.get_run_modes())
 
         # Add data for specified single power spectrum, if available
         if self.has_data:
@@ -456,6 +456,7 @@ class SpectralGroupModel(SpectralModel):
         # Initialize a new model object, with same settings as current object
         group = SpectralGroupModel(*self.get_settings(), verbose=self.verbose)
         group.add_meta_data(self.get_meta_data())
+        group.set_run_modes(*self.get_run_modes())
 
         if inds is not None:
 
