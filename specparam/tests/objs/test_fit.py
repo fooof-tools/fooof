@@ -414,17 +414,24 @@ def test_debug():
     with raises(FitError):
         tfm.fit(*sim_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
-def test_check_data():
-    """Test model fitting with check data mode turned off, including with NaN data."""
+def test_set_check_modes(tfm):
+    """Test changing check_modes using set_check_modes, and that checks get turned off.
+    Note that testing for checks raising errors happens in test_fooof_checks.`"""
 
     tfm = SpectralModel(verbose=False)
 
-    tfm.set_check_data_mode(False)
+    tfm.set_check_modes(False, False)
+    assert tfm._check_freqs is False
     assert tfm._check_data is False
 
-    # Add data, with check data turned off
-    #   In check data mode, adding data with NaN should run
-    freqs = gen_freqs([3, 50], 0.5)
+    # Add bad frequency data, with check freqs turned off
+    freqs = np.array([1, 2, 4])
+    powers = np.array([1, 2, 3])
+    tfm.add_data(freqs, powers)
+    assert tfm.has_data
+
+    # Add bad power values data, with check data turned off
+    freqs = gen_freqs([3, 30], 1)
     powers = np.ones_like(freqs) * np.nan
     tfm.add_data(freqs, powers)
     assert tfm.has_data
@@ -432,6 +439,18 @@ def test_check_data():
     # Model fitting should execute, but return a null model fit, given the NaNs, without failing
     tfm.fit()
     assert not tfm.has_model
+
+    # Reset check modes to true
+    tfm.set_check_modes(True, True)
+    assert tfm._check_freqs is True
+    assert tfm._check_data is True
+
+def test_set_run_modes():
+
+    tfm = SpectralModel(verbose=False)
+    tfm.set_run_modes(False, False, False)
+    for field in OBJ_DESC['run_modes']:
+        assert getattr(tfm, field) is False
 
 def test_to_df(tfm, tbands, skip_if_no_pandas):
 
