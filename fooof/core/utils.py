@@ -8,6 +8,25 @@ import numpy as np
 ###################################################################################################
 ###################################################################################################
 
+def unlog(arr, base=10):
+    """Helper function to unlog an array.
+
+    Parameters
+    ----------
+    arr : ndarray
+        Array.
+    base : float
+        Base of the log to undo.
+
+    Returns
+    -------
+    ndarray
+        Unlogged array.
+    """
+
+    return np.power(base, arr)
+
+
 def group_three(vec):
     """Group an array of values into threes.
 

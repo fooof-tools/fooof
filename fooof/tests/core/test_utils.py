@@ -12,6 +12,13 @@ from fooof.core.utils import *
 ###################################################################################################
 ###################################################################################################
 
+def test_unlog():
+
+    orig = np.array([1, 2, 3, 4])
+    logged = np.log10(orig)
+    unlogged = unlog(logged)
+    assert np.array_equal(orig, unlogged)
+
 def test_group_three():
 
     dat = [0, 1, 2, 3, 4, 5]
