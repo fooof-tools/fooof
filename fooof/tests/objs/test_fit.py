@@ -311,6 +311,17 @@ def test_obj_gets(tfm):
     results = tfm.get_results()
     assert isinstance(results, FOOOFResults)
 
+def test_get_components(tfm):
+
+    # Make sure test object has been fit
+    tfm.fit()
+
+    # Test get data & model components
+    for comp in ['full', 'aperiodic', 'peak']:
+        for space in ['log', 'linear']:
+            assert isinstance(tfm.get_data_component(comp, space), np.ndarray)
+            assert isinstance(tfm.get_model_component(comp, space), np.ndarray)
+
 def test_get_params(tfm):
     """Test the get_params method."""
 
