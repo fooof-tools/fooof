@@ -10,6 +10,25 @@ from specparam.core.modutils import docs_get_section, replace_docstring_sections
 ###################################################################################################
 ###################################################################################################
 
+def get_freq_ind(freqs, freq):
+    """Get the index of the  closest frequency value to a specified input frequency.
+
+    Parameters
+    ----------
+    freqs : 1d array
+        Frequency values.
+    freq : float
+        Frequency value to select closest index to.
+
+    Returns
+    -------
+    int
+        Index of closest value in `freqs` to `freq`.
+    """
+
+    return np.argmin(np.abs(freqs - freq))
+
+
 def trim_spectrum(freqs, power_spectra, f_range):
     """Extract a frequency range from power spectra.
 
