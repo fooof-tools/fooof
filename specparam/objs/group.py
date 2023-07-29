@@ -10,6 +10,10 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
+from specparam.objs.bfit import BaseFit2D
+from specparam.objs.data import BaseData2D
+#from specparam.objs.base import BaseSpectralModel
+
 from specparam.objs import SpectralModel
 from specparam.plts.group import plot_group
 from specparam.core.items import OBJ_DESC
@@ -28,7 +32,8 @@ from specparam.data.conversions import group_to_dataframe
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-class SpectralGroupModel(SpectralModel):
+#class SpectralGroupModel(SpectralModel):
+class SpectralGroupModel(SpectralModel, BaseFit2D, BaseData2D):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -78,42 +83,26 @@ class SpectralGroupModel(SpectralModel):
     """
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    def __init__(self, *args, **kwargs):
-        """Initialize object with desired settings."""
+    # def __init__(self, *args, **kwargs):
+    #     """Initialize object with desired settings."""
 
+    #     SpectralModel.__init__(self, *args, **kwargs)
+
+    #     self.power_spectra = None
+
+    #     self._reset_group_results()
+
+
+    def __init__(self, *args, **kwargs):
+
+        BaseData2D.__init__(self)
+        BaseFit2D.__init__(self,
+                           aperiodic_mode='fixed',
+                           periodic_mode='gaussian')
         SpectralModel.__init__(self, *args, **kwargs)
 
-        self.power_spectra = None
 
-        self._reset_group_results()
-
-
-    def __len__(self):
-        """Define the length of the object as the number of model fit results available."""
-
-        return len(self.group_results)
-
-
-    def __iter__(self):
-        """Allow for iterating across the object by stepping across model fit results."""
-
-        for result in self.group_results:
-            yield result
-
-
-    def __getitem__(self, index):
-        """Allow for indexing into the object to select model fit results."""
-
-        return self.group_results[index]
-
-
-    @property
-    def has_data(self):
-        """Indicator for if the object contains data."""
-
-        return True if np.any(self.power_spectra) else False
-
-
+    # TEMP: put back here to overload properly
     @property
     def has_model(self):
         """Indicator for if the object contains model fits."""
@@ -164,46 +153,6 @@ class SpectralGroupModel(SpectralModel):
         super()._reset_data_results(clear_freqs, clear_spectrum, clear_results)
         if clear_spectra:
             self.power_spectra = None
-
-
-    def _reset_group_results(self, length=0):
-        """Set, or reset, results to be empty.
-
-        Parameters
-        ----------
-        length : int, optional, default: 0
-            Length of list of empty lists to initialize. If 0, creates a single empty list.
-        """
-
-        self.group_results = [[]] * length
-
-
-    def add_data(self, freqs, power_spectra, freq_range=None):
-        """Add data (frequencies and power spectrum values) to the current object.
-
-        Parameters
-        ----------
-        freqs : 1d array
-            Frequency values for the power spectra, in linear space.
-        power_spectra : 2d array, shape=[n_power_spectra, n_freqs]
-            Matrix of power values, in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to restrict power spectra to. If not provided, keeps the entire range.
-
-        Notes
-        -----
-        If called on an object with existing data and/or results
-        these will be cleared by this method call.
-        """
-
-        # If any data is already present, then clear data & results
-        #   This is to ensure object consistency of all data & results
-        if np.any(self.freqs):
-            self._reset_data_results(True, True, True, True)
-            self._reset_group_results()
-
-        self.freqs, self.power_spectra, self.freq_range, self.freq_res = \
-            self._prepare_data(freqs, power_spectra, freq_range, 2)
 
 
     def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):

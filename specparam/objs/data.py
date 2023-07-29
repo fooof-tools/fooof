@@ -106,16 +106,21 @@ class BaseData():
                      log_powers=False, **data_kwargs)
 
 
-    def set_check_data_mode(self, check_data):
-        """Set check data mode, which controls if an error is raised if NaN or Inf data are added.
+    def set_check_modes(self, check_freqs=None, check_data=None):
+        """Set check modes, which controls if an error is raised based on check on the inputs.
 
         Parameters
         ----------
-        check_data : bool
-            Whether to run in check data mode.
+        check_freqs : bool, optional
+            Whether to run in check freqs mode, which checks the frequency data.
+        check_data : bool, optional
+            Whether to run in check data mode, which checks the power spectrum values data.
         """
 
-        self._check_data = check_data
+        if check_freqs is not None:
+            self._check_freqs = check_freqs
+        if check_data is not None:
+            self._check_data = check_data
 
 
     def _reset_data(self, clear_freqs=False, clear_spectrum=False):
@@ -242,3 +247,48 @@ class BaseData():
                 raise DataError(error_msg)
 
         return freqs, power_spectrum, freq_range, freq_res
+
+
+class BaseData2D(BaseData):
+    """   """
+
+    def __init__(self):
+
+        BaseData.__init__(self)
+
+        self.power_spectra = None
+
+
+    @property
+    def has_data(self):
+        """Indicator for if the object contains data."""
+
+        return True if np.any(self.power_spectra) else False
+
+
+    def add_data(self, freqs, power_spectra, freq_range=None):
+        """Add data (frequencies and power spectrum values) to the current object.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the power spectra, in linear space.
+        power_spectra : 2d array, shape=[n_power_spectra, n_freqs]
+            Matrix of power values, in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to restrict power spectra to. If not provided, keeps the entire range.
+
+        Notes
+        -----
+        If called on an object with existing data and/or results
+        these will be cleared by this method call.
+        """
+
+        # If any data is already present, then clear data & results
+        #   This is to ensure object consistency of all data & results
+        if np.any(self.freqs):
+            self._reset_data_results(True, True, True, True)
+            self._reset_group_results()
+
+        self.freqs, self.power_spectra, self.freq_range, self.freq_res = \
+            self._prepare_data(freqs, power_spectra, freq_range, 2)

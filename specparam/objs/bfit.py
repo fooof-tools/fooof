@@ -108,3 +108,50 @@ class BaseFit():
         else:
             error_msg = "Error metric '{}' not understood or not implemented.".format(metric)
             raise ValueError(error_msg)
+
+
+class BaseFit2D(BaseFit):
+
+    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
+
+        BaseFit.__init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True)
+
+        self._reset_group_results()
+
+
+    def __len__(self):
+        """Define the length of the object as the number of model fit results available."""
+
+        return len(self.group_results)
+
+
+    def __iter__(self):
+        """Allow for iterating across the object by stepping across model fit results."""
+
+        for result in self.group_results:
+            yield result
+
+
+    def __getitem__(self, index):
+        """Allow for indexing into the object to select model fit results."""
+
+        return self.group_results[index]
+
+
+    def _reset_group_results(self, length=0):
+        """Set, or reset, results to be empty.
+
+        Parameters
+        ----------
+        length : int, optional, default: 0
+            Length of list of empty lists to initialize. If 0, creates a single empty list.
+        """
+
+        self.group_results = [[]] * length
+
+
+    @property
+    def has_model(self):
+        """Indicator for if the object contains model fits."""
+
+        return True if self.group_results else False

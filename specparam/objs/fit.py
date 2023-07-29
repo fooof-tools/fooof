@@ -9,6 +9,9 @@ from copy import deepcopy
 
 import numpy as np
 
+from specparam.objs.bfit import BaseFit
+from specparam.objs.data import BaseData
+
 from specparam.objs.base import BaseSpectralModel
 from specparam.core.items import OBJ_DESC
 from specparam.core.info import get_indices
@@ -29,7 +32,7 @@ from specparam.sim.gen import gen_model
 ###################################################################################################
 ###################################################################################################
 
-class SpectralModel(BaseSpectralModel):
+class SpectralModel(BaseSpectralModel, BaseFit, BaseData):
     """Model a power spectrum as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -105,6 +108,11 @@ class SpectralModel(BaseSpectralModel):
                  peak_threshold=2.0, aperiodic_mode='fixed', verbose=True, **model_kwargs):
         """Initialize model object."""
 
+
+        BaseData.__init__(self)
+        BaseFit.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode='gaussian',
+                         debug_mode=False, verbose=verbose)
+
         BaseSpectralModel.__init__(self, peak_width_limits=peak_width_limits,
                                    max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,
                                    peak_threshold=peak_threshold, aperiodic_mode=aperiodic_mode,
@@ -132,7 +140,7 @@ class SpectralModel(BaseSpectralModel):
 
         self._check_loaded_settings(settings._asdict())
 
-
+    # This could move to fit (?)
     def add_results(self, results):
         """Add results data into object from a FitResults object.
 
@@ -241,6 +249,7 @@ class SpectralModel(BaseSpectralModel):
                              for key in OBJ_DESC['settings']})
 
 
+    # This to move to fit
     def get_run_modes(self):
         """Return run modes of the current object.
 
@@ -252,19 +261,6 @@ class SpectralModel(BaseSpectralModel):
 
         return ModelRunModes(**{key.strip('_') : getattr(self, key) \
                              for key in OBJ_DESC['run_modes']})
-
-
-    def get_meta_data(self):
-        """Return data information from the current object.
-
-        Returns
-        -------
-        SpectrumMetaData
-            Object containing meta data from the current object.
-        """
-
-        return SpectrumMetaData(**{key : getattr(self, key) \
-                                for key in OBJ_DESC['meta_data']})
 
 
     def get_params(self, name, col=None):
@@ -393,35 +389,6 @@ class SpectralModel(BaseSpectralModel):
         """Return a copy of the current object."""
 
         return deepcopy(self)
-
-
-    def set_debug_mode(self, debug):
-        """Set debug mode, which controls if an error is raised if model fitting is unsuccessful.
-
-        Parameters
-        ----------
-        debug : bool
-            Whether to run in debug mode.
-        """
-
-        self._debug = debug
-
-
-    def set_check_modes(self, check_freqs=None, check_data=None):
-        """Set check modes, which controls if an error is raised based on check on the inputs.
-
-        Parameters
-        ----------
-        check_freqs : bool, optional
-            Whether to run in check freqs mode, which checks the frequency data.
-        check_data : bool, optional
-            Whether to run in check data mode, which checks the power spectrum values data.
-        """
-
-        if check_freqs is not None:
-            self._check_freqs = check_freqs
-        if check_data is not None:
-            self._check_data = check_data
 
 
     def set_run_modes(self, debug, check_freqs, check_data):

@@ -18,7 +18,8 @@ from specparam.sim.gen import gen_aperiodic, gen_periodic
 ###################################################################################################
 ###################################################################################################
 
-class BaseSpectralModel(BaseFit, BaseData):
+#BaseFit, BaseData
+class BaseSpectralModel():
     """Base object defining model & algorithm for spectral parameterization.
 
     Parameters
@@ -78,9 +79,9 @@ class BaseSpectralModel(BaseFit, BaseData):
                  maxfev=5000, error_metric='MAE', debug_mode=False):
         """Initialize base model object"""
 
-        BaseData.__init__(self)
-        BaseFit.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode='gaussian',
-                         debug_mode=debug_mode, verbose=verbose)
+        # BaseData.__init__(self)
+        # BaseFit.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode='gaussian',
+        #                  debug_mode=debug_mode, verbose=verbose)
 
         ## Public settings
         self.peak_width_limits = peak_width_limits
