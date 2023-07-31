@@ -12,7 +12,7 @@ import numpy as np
 
 from specparam.objs.bfit import BaseFit2D
 from specparam.objs.data import BaseData2D
-#from specparam.objs.base import BaseSpectralModel
+from specparam.objs.base import BaseSpectralModel
 
 from specparam.objs import SpectralModel
 from specparam.plts.group import plot_group
@@ -27,6 +27,8 @@ from specparam.core.modutils import (copy_doc_func_to_method, safe_import,
                                      docs_get_section, replace_docstring_sections)
 from specparam.data.conversions import group_to_dataframe
 
+from specparam.data import ModelRunModes
+
 ###################################################################################################
 ###################################################################################################
 
@@ -34,6 +36,7 @@ from specparam.data.conversions import group_to_dataframe
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
 #class SpectralGroupModel(SpectralModel):
 class SpectralGroupModel(SpectralModel, BaseFit2D, BaseData2D):
+#class SpectralGroupModel(BaseSpectralModel, BaseFit2D, BaseData2D):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -99,7 +102,9 @@ class SpectralGroupModel(SpectralModel, BaseFit2D, BaseData2D):
         BaseFit2D.__init__(self,
                            aperiodic_mode='fixed',
                            periodic_mode='gaussian')
+
         SpectralModel.__init__(self, *args, **kwargs)
+        #BaseSpectralModel.__init__(self, *args, **kwargs)
 
 
     # TEMP: put back here to overload properly
@@ -251,12 +256,6 @@ class SpectralGroupModel(SpectralModel, BaseFit2D, BaseData2D):
             model = self.get_model(ind)
             model._reset_data_results(clear_results=True)
             self.group_results[ind] = model.get_results()
-
-
-    def get_results(self):
-        """Return the results run across a group of power spectra."""
-
-        return self.group_results
 
 
     def get_params(self, name, col=None):
@@ -521,10 +520,10 @@ class SpectralGroupModel(SpectralModel, BaseFit2D, BaseData2D):
         super().fit(*args, **kwargs)
 
 
-    def _get_results(self):
-        """Create an alias to SpectralModel.get_results for the group object, for internal use."""
+    # def _get_results(self):
+    #     """Create an alias to SpectralModel.get_results for the group object, for internal use."""
 
-        return super().get_results()
+    #     return super().get_results()
 
     def _check_width_limits(self):
         """Check and warn about bandwidth limits / frequency resolution interaction."""
@@ -533,6 +532,17 @@ class SpectralGroupModel(SpectralModel, BaseFit2D, BaseData2D):
         #   This is to avoid spamming standard output for every spectrum in the group
         if self.power_spectra[0, 0] == self.power_spectrum[0]:
             super()._check_width_limits()
+
+
+    # TEMP: try adding here.
+    def get_run_modes(self):
+
+        return ModelRunModes(**{key.strip('_') : getattr(self, key) \
+                             for key in OBJ_DESC['run_modes']})
+    def set_run_modes(self, debug, check_freqs, check_data):
+
+        self.set_debug_mode(debug)
+        self.set_check_modes(check_freqs, check_data)
 
 ###################################################################################################
 ###################################################################################################

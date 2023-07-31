@@ -2,6 +2,9 @@
 
 import numpy as np
 
+from specparam.data import FitResults, ModelSettings
+from specparam.core.items import OBJ_DESC
+
 ###################################################################################################
 ###################################################################################################
 
@@ -18,6 +21,32 @@ class BaseFit():
 
     def fit(self):
         raise NotImplementedError('The method needs to overloaded with a fit procedure!')
+
+
+    def get_settings(self):
+        """Return user defined settings of the current object.
+
+        Returns
+        -------
+        ModelSettings
+            Object containing the settings from the current object.
+        """
+
+        return ModelSettings(**{key : getattr(self, key) \
+                             for key in OBJ_DESC['settings']})
+
+
+    def get_results(self):
+        """Return model fit parameters and goodness of fit metrics.
+
+        Returns
+        -------
+        FitResults
+            Object containing the model fit results from the current object.
+        """
+
+        return FitResults(**{key.strip('_') : getattr(self, key) \
+            for key in OBJ_DESC['results']})
 
 
     def set_debug_mode(self, debug):
@@ -110,6 +139,20 @@ class BaseFit():
             raise ValueError(error_msg)
 
 
+    def _add_from_dict(self, data):
+        """Add data to object from a dictionary.
+
+        Parameters
+        ----------
+        data : dict
+            Dictionary of data to add to self.
+        """
+
+        # Reconstruct object from loaded data
+        for key in data.keys():
+            setattr(self, key, data[key])
+
+
 class BaseFit2D(BaseFit):
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
@@ -155,3 +198,15 @@ class BaseFit2D(BaseFit):
         """Indicator for if the object contains model fits."""
 
         return True if self.group_results else False
+
+
+    def get_results(self):
+        """Return the results run across a group of power spectra."""
+
+        return self.group_results
+
+
+    def _get_results(self):
+        """Create an alias to SpectralModel.get_results for the group object, for internal use."""
+
+        return super().get_results()

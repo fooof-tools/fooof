@@ -118,6 +118,7 @@ class BaseSpectralModel():
 
         return True if not np.all(np.isnan(self.aperiodic_params_)) else False
 
+
     def add_data(self, freqs, power_spectrum, freq_range=None, clear_results=True):
         """Add data (frequencies, and power spectrum values) to the current object.
 

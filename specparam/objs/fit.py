@@ -5,8 +5,6 @@ Code Notes
 Methods without defined docstrings import docs at runtime, from aliased external functions.
 """
 
-from copy import deepcopy
-
 import numpy as np
 
 from specparam.objs.bfit import BaseFit
@@ -236,19 +234,6 @@ class SpectralModel(BaseSpectralModel, BaseFit, BaseData):
         print(gen_issue_str(concise))
 
 
-    def get_settings(self):
-        """Return user defined settings of the current object.
-
-        Returns
-        -------
-        ModelSettings
-            Object containing the settings from the current object.
-        """
-
-        return ModelSettings(**{key : getattr(self, key) \
-                             for key in OBJ_DESC['settings']})
-
-
     # This to move to fit
     def get_run_modes(self):
         """Return run modes of the current object.
@@ -317,19 +302,6 @@ class SpectralModel(BaseSpectralModel, BaseFit, BaseData):
         return out
 
 
-    def get_results(self):
-        """Return model fit parameters and goodness of fit metrics.
-
-        Returns
-        -------
-        FitResults
-            Object containing the model fit results from the current object.
-        """
-
-        return FitResults(**{key.strip('_') : getattr(self, key) \
-            for key in OBJ_DESC['results']})
-
-
     @copy_doc_func_to_method(plot_model)
     def plot(self, plot_peaks=None, plot_aperiodic=True, freqs=None, power_spectrum=None,
              freq_range=None, plt_log=False, add_legend=True, ax=None, data_kwargs=None,
@@ -385,12 +357,6 @@ class SpectralModel(BaseSpectralModel, BaseFit, BaseData):
                 self._regenerate_model()
 
 
-    def copy(self):
-        """Return a copy of the current object."""
-
-        return deepcopy(self)
-
-
     def set_run_modes(self, debug, check_freqs, check_data):
         """Simultaneously set all run modes.
 
@@ -427,18 +393,18 @@ class SpectralModel(BaseSpectralModel, BaseFit, BaseData):
         return model_to_dataframe(self.get_results(), peak_org)
 
 
-    def _add_from_dict(self, data):
-        """Add data to object from a dictionary.
+    # def _add_from_dict(self, data):
+    #     """Add data to object from a dictionary.
 
-        Parameters
-        ----------
-        data : dict
-            Dictionary of data to add to self.
-        """
+    #     Parameters
+    #     ----------
+    #     data : dict
+    #         Dictionary of data to add to self.
+    #     """
 
-        # Reconstruct object from loaded data
-        for key in data.keys():
-            setattr(self, key, data[key])
+    #     # Reconstruct object from loaded data
+    #     for key in data.keys():
+    #         setattr(self, key, data[key])
 
 
     def _check_loaded_results(self, data):

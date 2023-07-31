@@ -1,5 +1,7 @@
 """   """
 
+from copy import deepcopy
+
 import numpy as np
 
 from specparam.sim.gen import gen_freqs
@@ -95,6 +97,12 @@ class BaseData():
 
         return SpectrumMetaData(**{key : getattr(self, key) \
             for key in OBJ_DESC['meta_data']})
+
+
+    def copy(self):
+        """Return a copy of the current object."""
+
+        return deepcopy(self)
 
 
     def plot(self, plt_log=False, **plt_kwargs):
