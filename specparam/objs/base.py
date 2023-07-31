@@ -64,7 +64,8 @@ class CommonBase():
             setattr(self, key, data[key])
 
 
-class BaseObject(BaseFit, BaseData, CommonBase):
+class BaseObject(CommonBase, BaseFit, BaseData):
+    """Define Base object for fitting models to 1D data."""
 
     def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
 
@@ -112,7 +113,8 @@ class BaseObject(BaseFit, BaseData, CommonBase):
         self._reset_results(clear_results)
 
 
-class BaseObject2D(BaseFit2D, BaseData2D, CommonBase):
+class BaseObject2D(CommonBase, BaseFit2D, BaseData2D):
+    """Define Base object for fitting models to 2D data."""
 
     def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
 

@@ -1,4 +1,4 @@
-"""   """
+"""Define base data objects."""
 
 import numpy as np
 

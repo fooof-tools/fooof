@@ -10,7 +10,6 @@ import numpy as np
 from specparam.objs.base import BaseObject
 from specparam.objs.algorithm import SpectralFitAlgorithm
 
-from specparam.core.items import OBJ_DESC
 from specparam.core.info import get_indices
 from specparam.core.io import save_model, load_json
 from specparam.core.reports import save_model_report
@@ -18,9 +17,6 @@ from specparam.core.modutils import copy_doc_func_to_method
 from specparam.core.errors import NoModelError
 from specparam.core.strings import gen_settings_str, gen_model_results_str, gen_issue_str
 from specparam.plts.model import plot_model
-from specparam.utils.data import trim_spectrum
-from specparam.utils.params import compute_gauss_std
-from specparam.data import FitResults, ModelSettings, SpectrumMetaData
 from specparam.data.conversions import model_to_dataframe
 from specparam.sim.gen import gen_model
 
@@ -104,12 +100,11 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         """Initialize model object."""
 
         BaseObject.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode='gaussian',
-                            debug_mode=False, verbose=verbose)
+                            debug_mode=model_kwargs.pop('debug_mode', False), verbose=verbose)
 
         SpectralFitAlgorithm.__init__(self, peak_width_limits=peak_width_limits,
                                       max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,
-                                      peak_threshold=peak_threshold, aperiodic_mode=aperiodic_mode,
-                                      verbose=verbose, **model_kwargs)
+                                      peak_threshold=peak_threshold, **model_kwargs)
 
 
     def report(self, freqs=None, power_spectrum=None, freq_range=None,

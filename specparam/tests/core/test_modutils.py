@@ -96,34 +96,34 @@ def test_copy_doc_func_to_method(tdocstring):
     def tfunc(): pass
     tfunc.__doc__ = tdocstring
 
-    class tObj():
+    class tobj():
 
         @copy_doc_func_to_method(tfunc)
         def tmethod():
             pass
 
-    assert tObj.tmethod.__doc__
-    assert 'first' not in tObj.tmethod.__doc__
-    assert 'second' in tObj.tmethod.__doc__
+    assert tobj.tmethod.__doc__
+    assert 'first' not in tobj.tmethod.__doc__
+    assert 'second' in tobj.tmethod.__doc__
 
 
 def test_copy_doc_class(tdocstring):
 
-    class tObj1():
+    class tobj1():
         pass
-    tObj1.__doc__ = tdocstring
+    tobj1.__doc__ = tdocstring
 
     new_section = \
     """
     third : stuff
         Words, words, words.
     """
-    @copy_doc_class(tObj1, 'Parameters', new_section)
-    class tObj2():
+    @copy_doc_class(tobj1, 'Parameters', new_section)
+    class tobj2():
         pass
 
-    assert 'third' in tObj2.__doc__
-    assert 'third' not in tObj1.__doc__
+    assert 'third' in tobj2.__doc__
+    assert 'third' not in tobj1.__doc__
 
 def test_replace_docstring_sections(tdocstring):
 

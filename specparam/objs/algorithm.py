@@ -69,16 +69,10 @@ class SpectralFitAlgorithm():
     # pylint: disable=attribute-defined-outside-init
 
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
-                 peak_threshold=2.0, aperiodic_mode='fixed', verbose=True,
-                 ap_percentile_thresh=0.025, ap_guess=(None, 0, None),
+                 peak_threshold=2.0, ap_percentile_thresh=0.025,  ap_guess=(None, 0, None),
                  ap_bounds=((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf)),
-                 cf_bound=1.5, bw_std_edge=1.0, gauss_overlap_thresh=0.75,
-                 maxfev=5000, error_metric='MAE', debug_mode=False):
+                 cf_bound=1.5, bw_std_edge=1.0, gauss_overlap_thresh=0.75, maxfev=5000):
         """Initialize base model object"""
-
-        # BaseData.__init__(self)
-        # BaseFit.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode='gaussian',
-        #                  debug_mode=debug_mode, verbose=verbose)
 
         ## Public settings
         self.peak_width_limits = peak_width_limits
@@ -94,7 +88,6 @@ class SpectralFitAlgorithm():
         self._bw_std_edge = bw_std_edge
         self._gauss_overlap_thresh = gauss_overlap_thresh
         self._maxfev = maxfev
-        self._error_metric = error_metric
 
         ## Set internal settings, based on inputs, and initialize data & results attributes
         self._reset_internal_settings()

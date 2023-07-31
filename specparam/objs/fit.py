@@ -1,4 +1,4 @@
-"""Define base fit model object."""
+"""Define base fit objects."""
 
 import numpy as np
 
@@ -13,13 +13,24 @@ from specparam.core.items import OBJ_DESC
 
 class BaseFit():
     """Define BaseFit object."""
+    # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False,
+                 verbose=True, error_metric='MAE'):
 
+        # Set fit component modes
         self.aperiodic_mode = aperiodic_mode
         self.periodic_mode = periodic_mode
+
+        # Set run modes
         self.set_debug_mode(debug_mode)
         self.verbose = verbose
+
+        # Initialize results attributes
+        self._reset_results(True)
+
+        # Set private run settings
+        self._error_metric = error_metric
 
 
     @property
@@ -163,7 +174,6 @@ class BaseFit():
 
     def _reset_internal_settings(self):
         """"Can be overloaded if any resetting needed for internal settings."""
-        pass
 
 
     def _reset_results(self, clear_results=False):
@@ -313,6 +323,18 @@ class BaseFit2D(BaseFit):
         return [ind for ind, res in enumerate(self.group_results) \
             if np.isnan(res.aperiodic_params[0])] \
             if self.has_model else None
+
+
+    def add_results(self, results):
+        """Add results data into object from a FitResults object.
+
+        Parameters
+        ----------
+        results : list of FitResults
+            List of data object containing the results from fitting a power spectrum models.
+        """
+
+        self.group_results = results
 
 
     def get_results(self):

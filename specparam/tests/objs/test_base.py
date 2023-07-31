@@ -1,20 +1,50 @@
 """Tests for specparam.objs.base, including the base object and it's methods."""
 
-from specparam.sim import sim_power_spectrum
-
-from specparam.objs.algorithm import SpectralFitAlgorithm
+from specparam.core.items import OBJ_DESC
+from specparam.data import ModelRunModes
 
 from specparam.objs.base import *
 
 ###################################################################################################
 ###################################################################################################
 
-def test_base_object():
+## Common Base Object
 
-    class TestBase(SpectralFitAlgorithm, BaseObject):
-        def __init__(self):
-            BaseObject.__init__(self, aperiodic_mode='fixed', periodic_mode='gaussian')
-            SpectralFitAlgorithm.__init__(self)
+def test_common_base():
 
-    tbase = TestBase()
-    tbase.fit(*sim_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
+    tobj = CommonBase()
+    assert isinstance(tobj, CommonBase)
+
+def test_common_base_copy():
+
+    tobj = CommonBase()
+    ntobj = tobj.copy()
+
+    assert ntobj != tobj
+
+## 1D Base Object
+
+def test_base():
+
+    tobj = BaseObject()
+    assert isinstance(tobj, CommonBase)
+    assert isinstance(tobj, BaseObject)
+
+def test_base_run_modes():
+
+    tobj = BaseObject()
+    tobj.set_run_modes(False, False, False)
+    run_modes = tobj.get_run_modes()
+    assert isinstance(run_modes, ModelRunModes)
+
+    for run_mode in OBJ_DESC['run_modes']:
+        assert getattr(tobj, run_mode) is False
+        assert getattr(run_modes, run_mode.strip('_')) is False
+
+## 2D Base Object
+
+def test_base2d():
+
+    tobj2d = BaseObject2D()
+    assert isinstance(tobj2d, CommonBase)
+    assert isinstance(tobj2d, BaseObject2D)

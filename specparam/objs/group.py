@@ -26,8 +26,6 @@ from specparam.core.modutils import (copy_doc_func_to_method, safe_import,
                                      docs_get_section, replace_docstring_sections)
 from specparam.data.conversions import group_to_dataframe
 
-from specparam.data import ModelRunModes
-
 ###################################################################################################
 ###################################################################################################
 
@@ -81,17 +79,20 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
       `group_results` attribute. To access individual parameters of the fit, use
       the `get_params` method.
     """
-    # pylint: disable=attribute-defined-outside-init, arguments-differ
 
     def __init__(self, *args, **kwargs):
 
         BaseObject2D.__init__(self,
-                              aperiodic_mode='fixed',
-                              periodic_mode='gaussian')
+                              aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
+                              periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
+                              debug_mode=kwargs.pop('debug_mode', 'False'),
+                              verbose=kwargs.pop('verbose', 'True'))
+
         SpectralFitAlgorithm.__init__(self, *args, **kwargs)
 
 
-    def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
+    def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1,
+               progress=None, **plot_kwargs):
         """Fit a group of power spectra and display a report, with a plot and printed results.
 
         Parameters
@@ -107,6 +108,8 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
             1 is no parallelization. -1 uses all available cores.
         progress : {None, 'tqdm', 'tqdm.notebook'}, optional
             Which kind of progress bar to use. If None, no progress bar is used.
+        **plot_kwargs
+            Keyword arguments to pass into the plot method.
 
         Notes
         -----
@@ -114,7 +117,7 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
         """
 
         self.fit(freqs, power_spectra, freq_range, n_jobs=n_jobs, progress=progress)
-        self.plot()
+        self.plot(**plot_kwargs)
         self.print_results(False)
 
 
@@ -256,9 +259,9 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
 
 
     @copy_doc_func_to_method(plot_group)
-    def plot(self, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
+    def plot(self, **plot_kwargs):
 
-        plot_group(self, save_fig=save_fig, file_name=file_name, file_path=file_path, **plot_kwargs)
+        plot_group(self, **plot_kwargs)
 
 
     @copy_doc_func_to_method(save_group_report)

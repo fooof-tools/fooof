@@ -7,7 +7,8 @@ import pytest
 import numpy as np
 
 from specparam.core.modutils import safe_import
-from specparam.tests.tutils import get_tfm, get_tfg, get_tbands, get_tresults, get_tdocstring
+from specparam.tests.tutils import (get_tdata, get_tdata2d, get_tfm, get_tfg, get_tbands,
+                                    get_tresults, get_tdocstring)
 from specparam.tests.settings import (BASE_TEST_FILE_PATH, TEST_DATA_PATH,
                                       TEST_REPORTS_PATH, TEST_PLOTS_PATH)
 
@@ -19,7 +20,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 def pytest_configure(config):
     if plt:
         plt.switch_backend('agg')
-    np.random.seed(101)
+    np.random.seed(13)
 
 @pytest.fixture(scope='session', autouse=True)
 def check_dir():
@@ -34,6 +35,14 @@ def check_dir():
     os.mkdir(TEST_DATA_PATH)
     os.mkdir(TEST_REPORTS_PATH)
     os.mkdir(TEST_PLOTS_PATH)
+
+@pytest.fixture(scope='session')
+def tdata():
+    yield get_tdata()
+
+@pytest.fixture(scope='session')
+def tdata2d():
+    yield get_tdata2d()
 
 @pytest.fixture(scope='session')
 def tfm():
