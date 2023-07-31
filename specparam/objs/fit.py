@@ -1,120 +1,40 @@
-"""Model object, which defines the power spectrum model.
-
-Code Notes
-----------
-Methods without defined docstrings import docs at runtime, from aliased external functions.
-"""
+"""Define base fit model object."""
 
 import numpy as np
 
-from specparam.objs.bfit import BaseFit
-from specparam.objs.data import BaseData
-
-from specparam.objs.base import BaseSpectralModel
-from specparam.core.items import OBJ_DESC
-from specparam.core.info import get_indices
-from specparam.core.io import save_model, load_json
-from specparam.core.reports import save_model_report
-from specparam.core.modutils import copy_doc_func_to_method
-from specparam.core.utils import check_array_dim
 from specparam.core.funcs import infer_ap_func
-from specparam.core.errors import NoModelError
-from specparam.core.strings import gen_settings_str, gen_model_results_str, gen_issue_str
-from specparam.plts.model import plot_model
-from specparam.utils.data import trim_spectrum
-from specparam.utils.params import compute_gauss_std
-from specparam.data import FitResults, ModelRunModes, ModelSettings, SpectrumMetaData
-from specparam.data.conversions import model_to_dataframe
-from specparam.sim.gen import gen_model
+from specparam.core.utils import check_array_dim
+
+from specparam.data import FitResults, ModelSettings
+from specparam.core.items import OBJ_DESC
 
 ###################################################################################################
 ###################################################################################################
 
-class SpectralModel(BaseSpectralModel, BaseFit, BaseData):
-    """Model a power spectrum as a combination of aperiodic and periodic components.
+class BaseFit():
+    """Define BaseFit object."""
 
-    WARNING: frequency and power values inputs must be in linear space.
+    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
 
-    Passing in logged frequencies and/or power spectra is not detected,
-    and will silently produce incorrect results.
-
-    Parameters
-    ----------
-    peak_width_limits : tuple of (float, float), optional, default: (0.5, 12.0)
-        Limits on possible peak width, in Hz, as (lower_bound, upper_bound).
-    max_n_peaks : int, optional, default: inf
-        Maximum number of peaks to fit.
-    min_peak_height : float, optional, default: 0
-        Absolute threshold for detecting peaks.
-        This threshold is defined in absolute units of the power spectrum (log power).
-    peak_threshold : float, optional, default: 2.0
-        Relative threshold for detecting peaks.
-        This threshold is defined in relative units of the power spectrum (standard deviation).
-    aperiodic_mode : {'fixed', 'knee'}
-        Which approach to take for fitting the aperiodic component.
-    verbose : bool, optional, default: True
-        Verbosity mode. If True, prints out warnings and general status updates.
-
-    Attributes
-    ----------
-    freqs : 1d array
-        Frequency values for the power spectrum.
-    power_spectrum : 1d array
-        Power values, stored internally in log10 scale.
-    freq_range : list of [float, float]
-        Frequency range of the power spectrum, as [lowest_freq, highest_freq].
-    freq_res : float
-        Frequency resolution of the power spectrum.
-    modeled_spectrum_ : 1d array
-        The full model fit of the power spectrum, in log10 scale.
-    aperiodic_params_ : 1d array
-        Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
-        The knee parameter is only included if aperiodic component is fit with a knee.
-    peak_params_ : 2d array
-        Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
-    gaussian_params_ : 2d array
-        Parameters that define the gaussian fit(s).
-        Each row is a gaussian, as [mean, height, standard deviation].
-    r_squared_ : float
-        R-squared of the fit between the input power spectrum and the full model fit.
-    error_ : float
-        Error of the full model fit.
-    n_peaks_ : int
-        The number of peaks fit in the model.
-    has_data : bool
-        Whether data is loaded to the object.
-    has_model : bool
-        Whether model results are available in the object.
-
-    Notes
-    -----
-    - Commonly used abbreviations used in this module include:
-      CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic
-    - Input power spectra must be provided in linear scale.
-      Internally they are stored in log10 scale, as this is what the model operates upon.
-    - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
-      For example, raw FFT inputs are not appropriate. Where possible and appropriate, use
-      longer time segments for power spectrum calculation to get smoother power spectra,
-      as this will give better model fits.
-    - The gaussian params are those that define the gaussian of the fit, where as the peak
-      params are a modified version, in which the CF of the peak is the mean of the gaussian,
-      the PW of the peak is the height of the gaussian over and above the aperiodic component,
-      and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
-    """
-
-    def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
-                 peak_threshold=2.0, aperiodic_mode='fixed', verbose=True, **model_kwargs):
-        """Initialize model object."""
+        self.aperiodic_mode = aperiodic_mode
+        self.periodic_mode = periodic_mode
+        self.set_debug_mode(debug_mode)
+        self.verbose = verbose
 
 
-        BaseData.__init__(self)
-        BaseFit.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode='gaussian',
-                         debug_mode=False, verbose=verbose)
+    @property
+    def has_model(self):
+        """Indicator for if the object contains a model fit.
 
-        BaseSpectralModel.__init__(self, peak_width_limits=peak_width_limits,
-                                   max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,
-                                   peak_threshold=peak_threshold, aperiodic_mode=aperiodic_mode,
-                                   verbose=verbose, **model_kwargs)
+        Notes
+        -----
+        This check uses the aperiodic params, which are:
+
+        - nan if no model has been fit
+        - necessarily defined, as floats, if model has been fit
+        """
+
+        return True if not np.all(np.isnan(self.aperiodic_params_)) else False
 
 
     @property
@@ -122,6 +42,10 @@ class SpectralModel(BaseSpectralModel, BaseFit, BaseData):
         """How many peaks were fit in the model."""
 
         return self.peak_params_.shape[0] if self.has_model else None
+
+
+    def fit(self):
+        raise NotImplementedError('This method needs to be overloaded with a fit procedure!')
 
 
     def add_settings(self, settings):
@@ -138,7 +62,20 @@ class SpectralModel(BaseSpectralModel, BaseFit, BaseData):
 
         self._check_loaded_settings(settings._asdict())
 
-    # This could move to fit (?)
+
+    def get_settings(self):
+        """Return user defined settings of the current object.
+
+        Returns
+        -------
+        ModelSettings
+            Object containing the settings from the current object.
+        """
+
+        return ModelSettings(**{key : getattr(self, key) \
+                             for key in OBJ_DESC['settings']})
+
+
     def add_results(self, results):
         """Add results data into object from a FitResults object.
 
@@ -157,270 +94,29 @@ class SpectralModel(BaseSpectralModel, BaseFit, BaseData):
         self._check_loaded_results(results._asdict())
 
 
-    def report(self, freqs=None, power_spectrum=None, freq_range=None,
-               plt_log=False, plot_full_range=False, **plot_kwargs):
-        """Run model fit, and display a report, which includes a plot, and printed results.
-
-        Parameters
-        ----------
-        freqs : 1d array, optional
-            Frequency values for the power spectrum.
-        power_spectrum : 1d array, optional
-            Power values, which must be input in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to fit the model to.
-            If not provided, fits across the entire given range.
-        plt_log : bool, optional, default: False
-            Whether or not to plot the frequency axis in log space.
-        plot_full_range : bool, default: False
-            If True, plots the full range of the given power spectrum.
-            Only relevant / effective if `freqs` and `power_spectrum` passed in in this call.
-        **plot_kwargs
-            Keyword arguments to pass into the plot method.
-            Plot options with a name conflict be passed by pre-pending 'plot_'.
-            e.g. `freqs`, `power_spectrum` and `freq_range`.
-
-        Notes
-        -----
-        Data is optional, if data has already been added to the object.
-        """
-
-        self.fit(freqs, power_spectrum, freq_range)
-        self.plot(plt_log=plt_log,
-                  freqs=freqs if plot_full_range else plot_kwargs.pop('plot_freqs', None),
-                  power_spectrum=power_spectrum if \
-                      plot_full_range else plot_kwargs.pop('plot_power_spectrum', None),
-                  freq_range=plot_kwargs.pop('plot_freq_range', None),
-                  **plot_kwargs)
-        self.print_results(concise=False)
-
-
-    def print_settings(self, description=False, concise=False):
-        """Print out the current settings.
-
-        Parameters
-        ----------
-        description : bool, optional, default: False
-            Whether to print out a description with current settings.
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
-        """
-
-        print(gen_settings_str(self, description, concise))
-
-
-    def print_results(self, concise=False):
-        """Print out model fitting results.
-
-        Parameters
-        ----------
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
-        """
-
-        print(gen_model_results_str(self, concise))
-
-
-    @staticmethod
-    def print_report_issue(concise=False):
-        """Prints instructions on how to report bugs and/or problematic fits.
-
-        Parameters
-        ----------
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
-        """
-
-        print(gen_issue_str(concise))
-
-
-    # This to move to fit
-    def get_run_modes(self):
-        """Return run modes of the current object.
+    def get_results(self):
+        """Return model fit parameters and goodness of fit metrics.
 
         Returns
         -------
-        ModelRunModes
-            Object containing the run modes from the current object.
+        FitResults
+            Object containing the model fit results from the current object.
         """
 
-        return ModelRunModes(**{key.strip('_') : getattr(self, key) \
-                             for key in OBJ_DESC['run_modes']})
+        return FitResults(**{key.strip('_') : getattr(self, key) \
+            for key in OBJ_DESC['results']})
 
 
-    def get_params(self, name, col=None):
-        """Return model fit parameters for specified feature(s).
-
-        Parameters
-        ----------
-        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
-            Name of the data field to extract.
-        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
-            Column name / index to extract from selected data, if requested.
-            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
-
-        Returns
-        -------
-        out : float or 1d array
-            Requested data.
-
-        Raises
-        ------
-        NoModelError
-            If there are no model fit parameters available to return.
-
-        Notes
-        -----
-        If there are no fit peak (no peak parameters), this method will return NaN.
-        """
-
-        if not self.has_model:
-            raise NoModelError("No model fit results are available to extract, can not proceed.")
-
-        # If col specified as string, get mapping back to integer
-        if isinstance(col, str):
-            col = get_indices(self.aperiodic_mode)[col]
-
-        # Allow for shortcut alias, without adding `_params`
-        if name in ['aperiodic', 'peak', 'gaussian']:
-            name = name + '_params'
-
-        # Extract the request data field from object
-        out = getattr(self, name + '_')
-
-        # Periodic values can be empty arrays and if so, replace with NaN array
-        if isinstance(out, np.ndarray) and out.size == 0:
-            out = np.array([np.nan, np.nan, np.nan])
-
-        # Select out a specific column, if requested
-        if col is not None:
-
-            # Extract column, & if result is a single value in an array, unpack from array
-            out = out[col] if out.ndim == 1 else out[:, col]
-            out = out[0] if isinstance(out, np.ndarray) and out.size == 1 else out
-
-        return out
-
-
-    @copy_doc_func_to_method(plot_model)
-    def plot(self, plot_peaks=None, plot_aperiodic=True, freqs=None, power_spectrum=None,
-             freq_range=None, plt_log=False, add_legend=True, ax=None, data_kwargs=None,
-             model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
-
-        plot_model(self, plot_peaks=plot_peaks, plot_aperiodic=plot_aperiodic, freqs=freqs,
-                   power_spectrum=power_spectrum, freq_range=freq_range, plt_log=plt_log,
-                   add_legend=add_legend, ax=ax, data_kwargs=data_kwargs, model_kwargs=model_kwargs,
-                   aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs, **plot_kwargs)
-
-
-    @copy_doc_func_to_method(save_model_report)
-    def save_report(self, file_name, file_path=None, plt_log=False,
-                    add_settings=True, **plot_kwargs):
-
-        save_model_report(self, file_name, file_path, plt_log, add_settings, **plot_kwargs)
-
-
-    @copy_doc_func_to_method(save_model)
-    def save(self, file_name, file_path=None, append=False,
-             save_results=False, save_settings=False, save_data=False):
-
-        save_model(self, file_name, file_path, append, save_results, save_settings, save_data)
-
-
-    def load(self, file_name, file_path=None, regenerate=True):
-        """Load in a data file to the current object.
-
-        Parameters
-        ----------
-        file_name : str or FileObject
-            File to load data from.
-        file_path : Path or str, optional
-            Path to directory to load from. If None, loads from current directory.
-        regenerate : bool, optional, default: True
-            Whether to regenerate the model fit from the loaded data, if data is available.
-        """
-
-        # Reset data in object, so old data can't interfere
-        self._reset_data_results(True, True, True)
-
-        # Load JSON file, add to self and check loaded data
-        data = load_json(file_name, file_path)
-        self._add_from_dict(data)
-        self._check_loaded_settings(data)
-        self._check_loaded_results(data)
-
-        # Regenerate model components, based on what is available
-        if regenerate:
-            if self.freq_res:
-                self._regenerate_freqs()
-            if np.all(self.freqs) and np.all(self.aperiodic_params_):
-                self._regenerate_model()
-
-
-    def set_run_modes(self, debug, check_freqs, check_data):
-        """Simultaneously set all run modes.
+    def set_debug_mode(self, debug):
+        """Set debug mode, which controls if an error is raised if model fitting is unsuccessful.
 
         Parameters
         ----------
         debug : bool
             Whether to run in debug mode.
-        check_freqs : bool
-            Whether to run in check freqs mode.
-        check_data : bool
-            Whether to run in check data mode.
         """
 
-        self.set_debug_mode(debug)
-        self.set_check_modes(check_freqs, check_data)
-
-
-    def to_df(self, peak_org):
-        """Convert and extract the model results as a pandas object.
-
-        Parameters
-        ----------
-        peak_org : int or Bands
-            How to organize peaks.
-            If int, extracts the first n peaks.
-            If Bands, extracts peaks based on band definitions.
-
-        Returns
-        -------
-        pd.Series
-            Model results organized into a pandas object.
-        """
-
-        return model_to_dataframe(self.get_results(), peak_org)
-
-
-    # def _add_from_dict(self, data):
-    #     """Add data to object from a dictionary.
-
-    #     Parameters
-    #     ----------
-    #     data : dict
-    #         Dictionary of data to add to self.
-    #     """
-
-    #     # Reconstruct object from loaded data
-    #     for key in data.keys():
-    #         setattr(self, key, data[key])
-
-
-    def _check_loaded_results(self, data):
-        """Check if results have been added and check data.
-
-        Parameters
-        ----------
-        data : dict
-            A dictionary of data that has been added to the object.
-        """
-
-        # If results loaded, check dimensions of peak parameters
-        #   This fixes an issue where they end up the wrong shape if they are empty (no peaks)
-        if set(OBJ_DESC['results']).issubset(set(data.keys())):
-            self.peak_params_ = check_array_dim(self.peak_params_)
-            self.gaussian_params_ = check_array_dim(self.gaussian_params_)
+        self._debug = debug
 
 
     def _check_loaded_settings(self, data):
@@ -449,8 +145,183 @@ class SpectralModel(BaseSpectralModel, BaseFit, BaseData):
         self._reset_internal_settings()
 
 
-    def _regenerate_model(self):
-        """Regenerate model fit from parameters."""
+    def _check_loaded_results(self, data):
+        """Check if results have been added and check data.
 
-        self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(
-            self.freqs, self.aperiodic_params_, self.gaussian_params_, return_components=True)
+        Parameters
+        ----------
+        data : dict
+            A dictionary of data that has been added to the object.
+        """
+
+        # If results loaded, check dimensions of peak parameters
+        #   This fixes an issue where they end up the wrong shape if they are empty (no peaks)
+        if set(OBJ_DESC['results']).issubset(set(data.keys())):
+            self.peak_params_ = check_array_dim(self.peak_params_)
+            self.gaussian_params_ = check_array_dim(self.gaussian_params_)
+
+
+    def _reset_internal_settings(self):
+        """"Can be overloaded if any resetting needed for internal settings."""
+        pass
+
+
+    def _reset_results(self, clear_results=False):
+        """Set, or reset, results attributes to empty.
+
+        Parameters
+        ----------
+        clear_results : bool, optional, default: False
+            Whether to clear model results attributes.
+        """
+
+        if clear_results:
+
+            # Aperiodic parameers
+            self.aperiodic_params_ = np.nan
+
+            # Periodic parameters
+            self.gaussian_params_ = np.nan
+            self.peak_params_ = np.nan
+
+            # Note - for ap / pe params, move to something like `xx_params` and `_xx_params`
+
+            # Goodness of fit measures
+            self.r_squared_ = np.nan
+            self.error_ = np.nan
+            # Note: move to `self.gof` or similar
+
+            # Modeled spectrum components
+            self.modeled_spectrum_ = None
+            self._spectrum_flat = None
+            self._spectrum_peak_rm = None
+            self._ap_fit = None
+            self._peak_fit = None
+
+
+    def _calc_r_squared(self):
+        """Calculate the r-squared goodness of fit of the model, compared to the original data."""
+
+        r_val = np.corrcoef(self.power_spectrum, self.modeled_spectrum_)
+        self.r_squared_ = r_val[0][1] ** 2
+
+
+    def _calc_error(self, metric=None):
+        """Calculate the overall error of the model fit, compared to the original data.
+
+        Parameters
+        ----------
+        metric : {'MAE', 'MSE', 'RMSE'}, optional
+            Which error measure to calculate:
+            * 'MAE' : mean absolute error
+            * 'MSE' : mean squared error
+            * 'RMSE' : root mean squared error
+
+        Raises
+        ------
+        ValueError
+            If the requested error metric is not understood.
+
+        Notes
+        -----
+        Which measure is applied is by default controlled by the `_error_metric` attribute.
+        """
+
+        # If metric is not specified, use the default approach
+        metric = self._error_metric if not metric else metric
+
+        if metric == 'MAE':
+            self.error_ = np.abs(self.power_spectrum - self.modeled_spectrum_).mean()
+
+        elif metric == 'MSE':
+            self.error_ = ((self.power_spectrum - self.modeled_spectrum_) ** 2).mean()
+
+        elif metric == 'RMSE':
+            self.error_ = np.sqrt(((self.power_spectrum - self.modeled_spectrum_) ** 2).mean())
+
+        else:
+            error_msg = "Error metric '{}' not understood or not implemented.".format(metric)
+            raise ValueError(error_msg)
+
+
+class BaseFit2D(BaseFit):
+
+    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
+
+        BaseFit.__init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True)
+
+        self._reset_group_results()
+
+
+    def __len__(self):
+        """Define the length of the object as the number of model fit results available."""
+
+        return len(self.group_results)
+
+
+    def __iter__(self):
+        """Allow for iterating across the object by stepping across model fit results."""
+
+        for result in self.group_results:
+            yield result
+
+
+    def __getitem__(self, index):
+        """Allow for indexing into the object to select model fit results."""
+
+        return self.group_results[index]
+
+
+    def _reset_group_results(self, length=0):
+        """Set, or reset, results to be empty.
+
+        Parameters
+        ----------
+        length : int, optional, default: 0
+            Length of list of empty lists to initialize. If 0, creates a single empty list.
+        """
+
+        self.group_results = [[]] * length
+
+
+    @property
+    def has_model(self):
+        """Indicator for if the object contains model fits."""
+
+        return True if self.group_results else False
+
+
+    @property
+    def n_peaks_(self):
+        """How many peaks were fit for each model."""
+
+        return [res.peak_params.shape[0] for res in self] if self.has_model else None
+
+
+    @property
+    def n_null_(self):
+        """How many model fits are null."""
+
+        return sum([1 for res in self.group_results if np.isnan(res.aperiodic_params[0])]) \
+            if self.has_model else None
+
+
+    @property
+    def null_inds_(self):
+        """The indices for model fits that are null."""
+
+        return [ind for ind, res in enumerate(self.group_results) \
+            if np.isnan(res.aperiodic_params[0])] \
+            if self.has_model else None
+
+
+    def get_results(self):
+        """Return the results run across a group of power spectra."""
+
+        return self.group_results
+
+
+    def _get_results(self):
+        """Create an alias to SpectralModel.get_results for the group object, for internal use."""
+
+        return super().get_results()

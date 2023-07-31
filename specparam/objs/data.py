@@ -1,7 +1,5 @@
 """   """
 
-from copy import deepcopy
-
 import numpy as np
 
 from specparam.sim.gen import gen_freqs
@@ -17,7 +15,7 @@ from specparam.plts.utils import check_plot_kwargs
 ###################################################################################################
 
 class BaseData():
-    """Base object for managing data for spectral parameterization.
+    """Base object for managing data for spectral parameterization - for 1D data.
 
     Parameters
     ----------
@@ -97,12 +95,6 @@ class BaseData():
 
         return SpectrumMetaData(**{key : getattr(self, key) \
             for key in OBJ_DESC['meta_data']})
-
-
-    def copy(self):
-        """Return a copy of the current object."""
-
-        return deepcopy(self)
 
 
     def plot(self, plt_log=False, **plt_kwargs):
@@ -258,7 +250,7 @@ class BaseData():
 
 
 class BaseData2D(BaseData):
-    """   """
+    """Base object for managing data for spectral parameterization - for 2D data."""
 
     def __init__(self):
 
@@ -292,11 +284,32 @@ class BaseData2D(BaseData):
         these will be cleared by this method call.
         """
 
-        # If any data is already present, then clear data & results
-        #   This is to ensure object consistency of all data & results
-        if np.any(self.freqs):
-            self._reset_data_results(True, True, True, True)
-            self._reset_group_results()
-
         self.freqs, self.power_spectra, self.freq_range, self.freq_res = \
             self._prepare_data(freqs, power_spectra, freq_range, 2)
+
+
+    def plot(self, plt_log=False, **plt_kwargs):
+        """Plot the power spectrum."""
+
+        data_kwargs = check_plot_kwargs(\
+            plt_kwargs, {'color' : PLT_COLORS['data'], 'linewidth' : 2.0})
+        plot_spectra(self.freqs, self.power_spectra, log_freqs=plt_log,
+                     log_powers=False, **data_kwargs)
+
+
+    def _reset_data(self, clear_freqs=False, clear_spectrum=False, clear_spectra=False):
+        """Set, or reset, data & results attributes to empty.
+
+        Parameters
+        ----------
+        clear_freqs : bool, optional, default: False
+            Whether to clear frequency attributes.
+        clear_spectrum : bool, optional, default: False
+            Whether to clear power spectrum attribute.
+        clear_spectra : bool, optional, default: False
+            Whether to clear power spectra attribute.
+        """
+
+        super()._reset_data(clear_freqs, clear_spectrum)
+        if clear_spectra:
+            self.power_spectra = None

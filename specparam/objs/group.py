@@ -10,11 +10,10 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
-from specparam.objs.bfit import BaseFit2D
-from specparam.objs.data import BaseData2D
-from specparam.objs.base import BaseSpectralModel
+from specparam.objs.base import BaseObject2D
+from specparam.objs.model import SpectralModel
+from specparam.objs.algorithm import SpectralFitAlgorithm
 
-from specparam.objs import SpectralModel
 from specparam.plts.group import plot_group
 from specparam.core.items import OBJ_DESC
 from specparam.core.info import get_indices
@@ -34,9 +33,7 @@ from specparam.data import ModelRunModes
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-#class SpectralGroupModel(SpectralModel):
-class SpectralGroupModel(SpectralModel, BaseFit2D, BaseData2D):
-#class SpectralGroupModel(BaseSpectralModel, BaseFit2D, BaseData2D):
+class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -86,78 +83,12 @@ class SpectralGroupModel(SpectralModel, BaseFit2D, BaseData2D):
     """
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    # def __init__(self, *args, **kwargs):
-    #     """Initialize object with desired settings."""
-
-    #     SpectralModel.__init__(self, *args, **kwargs)
-
-    #     self.power_spectra = None
-
-    #     self._reset_group_results()
-
-
     def __init__(self, *args, **kwargs):
 
-        BaseData2D.__init__(self)
-        BaseFit2D.__init__(self,
-                           aperiodic_mode='fixed',
-                           periodic_mode='gaussian')
-
-        SpectralModel.__init__(self, *args, **kwargs)
-        #BaseSpectralModel.__init__(self, *args, **kwargs)
-
-
-    # TEMP: put back here to overload properly
-    @property
-    def has_model(self):
-        """Indicator for if the object contains model fits."""
-
-        return True if self.group_results else False
-
-
-    @property
-    def n_peaks_(self):
-        """How many peaks were fit for each model."""
-
-        return [res.peak_params.shape[0] for res in self] if self.has_model else None
-
-
-    @property
-    def n_null_(self):
-        """How many model fits are null."""
-
-        return sum([1 for res in self.group_results if np.isnan(res.aperiodic_params[0])]) \
-            if self.has_model else None
-
-
-    @property
-    def null_inds_(self):
-        """The indices for model fits that are null."""
-
-        return [ind for ind, res in enumerate(self.group_results) \
-            if np.isnan(res.aperiodic_params[0])] \
-            if self.has_model else None
-
-
-    def _reset_data_results(self, clear_freqs=False, clear_spectrum=False,
-                            clear_results=False, clear_spectra=False):
-        """Set, or reset, data & results attributes to empty.
-
-        Parameters
-        ----------
-        clear_freqs : bool, optional, default: False
-            Whether to clear frequency attributes.
-        clear_spectrum : bool, optional, default: False
-            Whether to clear power spectrum attribute.
-        clear_results : bool, optional, default: False
-            Whether to clear model results attributes.
-        clear_spectra : bool, optional, default: False
-            Whether to clear power spectra attribute.
-        """
-
-        super()._reset_data_results(clear_freqs, clear_spectrum, clear_results)
-        if clear_spectra:
-            self.power_spectra = None
+        BaseObject2D.__init__(self,
+                              aperiodic_mode='fixed',
+                              periodic_mode='gaussian')
+        SpectralFitAlgorithm.__init__(self, *args, **kwargs)
 
 
     def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
@@ -520,11 +451,6 @@ class SpectralGroupModel(SpectralModel, BaseFit2D, BaseData2D):
         super().fit(*args, **kwargs)
 
 
-    # def _get_results(self):
-    #     """Create an alias to SpectralModel.get_results for the group object, for internal use."""
-
-    #     return super().get_results()
-
     def _check_width_limits(self):
         """Check and warn about bandwidth limits / frequency resolution interaction."""
 
@@ -532,17 +458,6 @@ class SpectralGroupModel(SpectralModel, BaseFit2D, BaseData2D):
         #   This is to avoid spamming standard output for every spectrum in the group
         if self.power_spectra[0, 0] == self.power_spectrum[0]:
             super()._check_width_limits()
-
-
-    # TEMP: try adding here.
-    def get_run_modes(self):
-
-        return ModelRunModes(**{key.strip('_') : getattr(self, key) \
-                             for key in OBJ_DESC['run_modes']})
-    def set_run_modes(self, debug, check_freqs, check_data):
-
-        self.set_debug_mode(debug)
-        self.set_check_modes(check_freqs, check_data)
 
 ###################################################################################################
 ###################################################################################################
