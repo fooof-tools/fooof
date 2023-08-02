@@ -319,8 +319,8 @@ def test_get_components(tfm):
     # Test get data & model components
     for comp in ['full', 'aperiodic', 'peak']:
         for space in ['log', 'linear']:
-            assert isinstance(tfm.get_data_component(comp, space), np.ndarray)
-            assert isinstance(tfm.get_model_component(comp, space), np.ndarray)
+            assert isinstance(tfm.get_data(comp, space), np.ndarray)
+            assert isinstance(tfm.get_model(comp, space), np.ndarray)
 
 def test_get_params(tfm):
     """Test the get_params method."""

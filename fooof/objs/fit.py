@@ -597,7 +597,7 @@ class FOOOF():
                              for key in OBJ_DESC['meta_data']})
 
 
-    def get_data_component(self, component='full', space='log'):
+    def get_data(self, component='full', space='log'):
         """Get a data component.
 
         Parameters
@@ -620,7 +620,7 @@ class FOOOF():
         Notes
         -----
         The 'space' parameter doesn't just define the spacing of the data component
-        values, but rather defines the space of the additive data definiton such that
+        values, but rather defines the space of the additive data definition such that
         `power_spectrum = aperiodic_component + peak_component`.
         With space set as 'log', this combination holds in log space.
         With space set as 'linear', this combination holds in linear space.
@@ -642,7 +642,7 @@ class FOOOF():
         return output
 
 
-    def get_model_component(self, component='full', space='log'):
+    def get_model(self, component='full', space='log'):
         """Get a model component.
 
         Parameters
@@ -668,7 +668,7 @@ class FOOOF():
         values, but rather defines the space of the additive model such that
         `model = aperiodic_component + peak_component`.
         With space set as 'log', this combination holds in log space.
-        With space set as 'lienar', this combination holds in linear space.
+        With space set as 'linear', this combination holds in linear space.
         """
 
         assert space in ['linear', 'log'], "Input for 'space' invalid."
