@@ -674,12 +674,12 @@ class SpectralModel():
         assert space in ['linear', 'log'], "Input for 'space' invalid."
 
         if component == 'full':
-            output = self.fooofed_spectrum_ if space == 'log' else unlog(self.fooofed_spectrum_)
+            output = self.modeled_spectrum_ if space == 'log' else unlog(self.modeled_spectrum_)
         elif component == 'aperiodic':
             output = self._ap_fit if space == 'log' else unlog(self._ap_fit)
         elif component == 'peak':
             output = self._peak_fit if space == 'log' else \
-                unlog(self.fooofed_spectrum_) - unlog(self._ap_fit)
+                unlog(self.modeled_spectrum_) - unlog(self._ap_fit)
         else:
             raise ValueError('Input for component invalid.')
 
