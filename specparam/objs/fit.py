@@ -148,6 +148,8 @@ class BaseFit():
         With space set as 'linear', this combination holds in linear space.
         """
 
+        if not self.has_model:
+            raise NoModelError("No model fit results are available, can not proceed.")
         assert space in ['linear', 'log'], "Input for 'space' invalid."
 
         if component == 'full':
