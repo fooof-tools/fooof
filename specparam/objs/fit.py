@@ -2,11 +2,53 @@
 
 import numpy as np
 
+<<<<<<< HEAD
 from specparam.core.funcs import infer_ap_func
 from specparam.core.utils import check_array_dim
 
 from specparam.data import FitResults, ModelSettings
 from specparam.core.items import OBJ_DESC
+=======
+<<<<<<< HEAD:specparam/objs/fit.py
+from specparam.core.items import OBJ_DESC
+from specparam.core.info import get_indices
+from specparam.core.io import save_model, load_json
+from specparam.core.reports import save_model_report
+from specparam.core.modutils import copy_doc_func_to_method
+from specparam.core.utils import group_three, check_array_dim
+from specparam.core.funcs import gaussian_function, get_ap_func, infer_ap_func
+from specparam.core.errors import (FitError, NoModelError, DataError,
+                                   NoDataError, InconsistentDataError)
+from specparam.core.strings import (gen_settings_str, gen_model_results_str,
+                                    gen_issue_str, gen_width_warning_str)
+from specparam.plts.model import plot_model
+from specparam.utils.data import trim_spectrum
+from specparam.utils.params import compute_gauss_std
+from specparam.data import FitResults, ModelRunModes, ModelSettings, SpectrumMetaData
+from specparam.data.conversions import model_to_dataframe
+from specparam.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
+=======
+from fooof.core.utils import unlog
+from fooof.core.items import OBJ_DESC
+from fooof.core.info import get_indices
+from fooof.core.io import save_fm, load_json
+from fooof.core.reports import save_report_fm
+from fooof.core.modutils import copy_doc_func_to_method
+from fooof.core.utils import group_three, check_array_dim
+from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
+from fooof.core.errors import (FitError, NoModelError, DataError,
+                               NoDataError, InconsistentDataError)
+from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
+                                gen_issue_str, gen_width_warning_str)
+
+from fooof.plts.fm import plot_fm
+from fooof.utils.data import trim_spectrum
+from fooof.utils.params import compute_gauss_std
+from fooof.data import FOOOFSettings, FOOOFRunModes, FOOOFMetaData, FOOOFResults
+from fooof.data.conversions import model_to_dataframe
+from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
+>>>>>>> main:fooof/objs/fit.py
+>>>>>>> name
 
 ###################################################################################################
 ###################################################################################################
@@ -105,6 +147,369 @@ class BaseFit():
         self._check_loaded_results(results._asdict())
 
 
+<<<<<<< HEAD
+=======
+    def report(self, freqs=None, power_spectrum=None, freq_range=None,
+               plt_log=False, plot_full_range=False, **plot_kwargs):
+        """Run model fit, and display a report, which includes a plot, and printed results.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the power spectrum.
+        power_spectrum : 1d array, optional
+            Power values, which must be input in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to fit the model to.
+            If not provided, fits across the entire given range.
+        plt_log : bool, optional, default: False
+            Whether or not to plot the frequency axis in log space.
+        plot_full_range : bool, default: False
+            If True, plots the full range of the given power spectrum.
+            Only relevant / effective if `freqs` and `power_spectrum` passed in in this call.
+        **plot_kwargs
+            Keyword arguments to pass into the plot method.
+            Plot options with a name conflict be passed by pre-pending 'plot_'.
+            e.g. `freqs`, `power_spectrum` and `freq_range`.
+
+        Notes
+        -----
+        Data is optional, if data has already been added to the object.
+        """
+
+        self.fit(freqs, power_spectrum, freq_range)
+        self.plot(plt_log=plt_log,
+                  freqs=freqs if plot_full_range else plot_kwargs.pop('plot_freqs', None),
+                  power_spectrum=power_spectrum if \
+                      plot_full_range else plot_kwargs.pop('plot_power_spectrum', None),
+                  freq_range=plot_kwargs.pop('plot_freq_range', None),
+                  **plot_kwargs)
+        self.print_results(concise=False)
+
+
+    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
+        """Fit the full power spectrum as a combination of periodic and aperiodic components.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the power spectrum, in linear space.
+        power_spectrum : 1d array, optional
+            Power values, which must be input in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to restrict power spectrum to.
+            If not provided, keeps the entire range.
+
+        Raises
+        ------
+        NoDataError
+            If no data is available to fit.
+        FitError
+            If model fitting fails to fit. Only raised in debug mode.
+
+        Notes
+        -----
+        Data is optional, if data has already been added to the object.
+        """
+
+        # If freqs & power_spectrum provided together, add data to object.
+        if freqs is not None and power_spectrum is not None:
+            self.add_data(freqs, power_spectrum, freq_range)
+        # If power spectrum provided alone, add to object, and use existing frequency data
+        #   Note: be careful passing in power_spectrum data like this:
+        #     It assumes the power_spectrum is already logged, with correct freq_range
+        elif isinstance(power_spectrum, np.ndarray):
+            self.power_spectrum = power_spectrum
+
+        # Check that data is available
+        if not self.has_data:
+            raise NoDataError("No data available to fit, can not proceed.")
+
+        # Check and warn about width limits (if in verbose mode)
+        if self.verbose:
+            self._check_width_limits()
+
+        # In rare cases, the model fails to fit, and so uses try / except
+        try:
+
+            # If not set to fail on NaN or Inf data at add time, check data here
+            #   This serves as a catch all for curve_fits which will fail given NaN or Inf
+            #   Because FitError's are by default caught, this allows fitting to continue
+            if not self._check_data:
+                if np.any(np.isinf(self.power_spectrum)) or np.any(np.isnan(self.power_spectrum)):
+                    raise FitError("Model fitting was skipped because there are NaN or Inf "
+                                   "values in the data, which preclude model fitting.")
+
+            # Fit the aperiodic component
+            self.aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
+            self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
+
+            # Flatten the power spectrum using fit aperiodic fit
+            self._spectrum_flat = self.power_spectrum - self._ap_fit
+
+            # Find peaks, and fit them with gaussians
+            self.gaussian_params_ = self._fit_peaks(np.copy(self._spectrum_flat))
+
+            # Calculate the peak fit
+            #   Note: if no peaks are found, this creates a flat (all zero) peak fit
+            self._peak_fit = gen_periodic(self.freqs, np.ndarray.flatten(self.gaussian_params_))
+
+            # Create peak-removed (but not flattened) power spectrum
+            self._spectrum_peak_rm = self.power_spectrum - self._peak_fit
+
+            # Run final aperiodic fit on peak-removed power spectrum
+            #   This overwrites previous aperiodic fit, and recomputes the flattened spectrum
+            self.aperiodic_params_ = self._simple_ap_fit(self.freqs, self._spectrum_peak_rm)
+            self._ap_fit = gen_aperiodic(self.freqs, self.aperiodic_params_)
+            self._spectrum_flat = self.power_spectrum - self._ap_fit
+
+            # Create full power_spectrum model fit
+            self.modeled_spectrum_ = self._peak_fit + self._ap_fit
+
+            # Convert gaussian definitions to peak parameters
+            self.peak_params_ = self._create_peak_params(self.gaussian_params_)
+
+            # Calculate R^2 and error of the model fit
+            self._calc_r_squared()
+            self._calc_error()
+
+        except FitError:
+
+            # If in debug mode, re-raise the error
+            if self._debug:
+                raise
+
+            # Clear any interim model results that may have run
+            #   Partial model results shouldn't be interpreted in light of overall failure
+            self._reset_data_results(clear_results=True)
+
+            # Print out status
+            if self.verbose:
+                print("Model fitting was unsuccessful.")
+
+
+    def print_settings(self, description=False, concise=False):
+        """Print out the current settings.
+
+        Parameters
+        ----------
+        description : bool, optional, default: False
+            Whether to print out a description with current settings.
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_settings_str(self, description, concise))
+
+
+    def print_results(self, concise=False):
+        """Print out model fitting results.
+
+        Parameters
+        ----------
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_model_results_str(self, concise))
+
+
+    @staticmethod
+    def print_report_issue(concise=False):
+        """Prints instructions on how to report bugs and/or problematic fits.
+
+        Parameters
+        ----------
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_issue_str(concise))
+
+
+    def get_settings(self):
+        """Return user defined settings of the current object.
+
+        Returns
+        -------
+        ModelSettings
+            Object containing the settings from the current object.
+        """
+
+        return ModelSettings(**{key : getattr(self, key) \
+                             for key in OBJ_DESC['settings']})
+
+
+    def get_run_modes(self):
+        """Return run modes of the current object.
+
+        Returns
+        -------
+        ModelRunModes
+            Object containing the run modes from the current object.
+        """
+
+        return ModelRunModes(**{key.strip('_') : getattr(self, key) \
+                             for key in OBJ_DESC['run_modes']})
+
+
+    def get_meta_data(self):
+        """Return data information from the current object.
+
+        Returns
+        -------
+        SpectrumMetaData
+            Object containing meta data from the current object.
+        """
+
+        return SpectrumMetaData(**{key : getattr(self, key) \
+                             for key in OBJ_DESC['meta_data']})
+
+
+    def get_data(self, component='full', space='log'):
+        """Get a data component.
+
+        Parameters
+        ----------
+        component : {'full', 'aperiodic', 'peak'}
+            Which data component to return.
+                'full' - full power spectrum
+                'aperiodic' - isolated aperiodic data component
+                'peak' - isolated peak data component
+        space : {'log', 'linear'}
+            Which space to return the data component in.
+                'log' - returns in log10 space.
+                'linear' - returns in linear space.
+
+        Returns
+        -------
+        output : 1d array
+            Specified data component, in specified spacing.
+
+        Notes
+        -----
+        The 'space' parameter doesn't just define the spacing of the data component
+        values, but rather defines the space of the additive data definition such that
+        `power_spectrum = aperiodic_component + peak_component`.
+        With space set as 'log', this combination holds in log space.
+        With space set as 'linear', this combination holds in linear space.
+        """
+
+        assert space in ['linear', 'log'], "Input for 'space' invalid."
+
+        if component == 'full':
+            output = self.power_spectrum if space == 'log' else unlog(self.power_spectrum)
+        elif component == 'aperiodic':
+            output = self._spectrum_peak_rm if space == 'log' else \
+                unlog(self.power_spectrum) / unlog(self._peak_fit)
+        elif component == 'peak':
+            output = self._spectrum_flat if space == 'log' else \
+                unlog(self.power_spectrum) - unlog(self._ap_fit)
+        else:
+            raise ValueError('Input for component invalid.')
+
+        return output
+
+
+    def get_model(self, component='full', space='log'):
+        """Get a model component.
+
+        Parameters
+        ----------
+        component : {'full', 'aperiodic', 'peak'}
+            Which model component to return.
+                'full' - full model
+                'aperiodic' - isolated aperiodic model component
+                'peak' - isolated peak model component
+        space : {'log', 'linear'}
+            Which space to return the model component in.
+                'log' - returns in log10 space.
+                'linear' - returns in linear space.
+
+        Returns
+        -------
+        output : 1d array
+            Specified model component, in specified spacing.
+
+        Notes
+        -----
+        The 'space' parameter doesn't just define the spacing of the model component
+        values, but rather defines the space of the additive model such that
+        `model = aperiodic_component + peak_component`.
+        With space set as 'log', this combination holds in log space.
+        With space set as 'linear', this combination holds in linear space.
+        """
+
+        assert space in ['linear', 'log'], "Input for 'space' invalid."
+
+        if component == 'full':
+            output = self.fooofed_spectrum_ if space == 'log' else unlog(self.fooofed_spectrum_)
+        elif component == 'aperiodic':
+            output = self._ap_fit if space == 'log' else unlog(self._ap_fit)
+        elif component == 'peak':
+            output = self._peak_fit if space == 'log' else \
+                unlog(self.fooofed_spectrum_) - unlog(self._ap_fit)
+        else:
+            raise ValueError('Input for component invalid.')
+
+        return output
+
+
+    def get_params(self, name, col=None):
+        """Return model fit parameters for specified feature(s).
+
+        Parameters
+        ----------
+        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
+            Name of the data field to extract.
+        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+            Column name / index to extract from selected data, if requested.
+            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+
+        Returns
+        -------
+        out : float or 1d array
+            Requested data.
+
+        Raises
+        ------
+        NoModelError
+            If there are no model fit parameters available to return.
+
+        Notes
+        -----
+        If there are no fit peak (no peak parameters), this method will return NaN.
+        """
+
+        if not self.has_model:
+            raise NoModelError("No model fit results are available to extract, can not proceed.")
+
+        # If col specified as string, get mapping back to integer
+        if isinstance(col, str):
+            col = get_indices(self.aperiodic_mode)[col]
+
+        # Allow for shortcut alias, without adding `_params`
+        if name in ['aperiodic', 'peak', 'gaussian']:
+            name = name + '_params'
+
+        # Extract the request data field from object
+        out = getattr(self, name + '_')
+
+        # Periodic values can be empty arrays and if so, replace with NaN array
+        if isinstance(out, np.ndarray) and out.size == 0:
+            out = np.array([np.nan, np.nan, np.nan])
+
+        # Select out a specific column, if requested
+        if col is not None:
+
+            # Extract column, & if result is a single value in an array, unpack from array
+            out = out[col] if out.ndim == 1 else out[:, col]
+            out = out[0] if isinstance(out, np.ndarray) and out.size == 1 else out
+
+        return out
+
+
+>>>>>>> name
     def get_results(self):
         """Return model fit parameters and goodness of fit metrics.
 

@@ -29,7 +29,43 @@ def test_base_fit_settings():
 
     settings_out = tfit.get_settings()
     assert isinstance(settings, ModelSettings)
+<<<<<<< HEAD
     assert settings_out == settings
+=======
+    meta_data = tfm.get_meta_data()
+    assert isinstance(meta_data, SpectrumMetaData)
+    results = tfm.get_results()
+    assert isinstance(results, FitResults)
+
+def test_get_components(tfm):
+
+    # Make sure test object has been fit
+    tfm.fit()
+
+    # Test get data & model components
+    for comp in ['full', 'aperiodic', 'peak']:
+        for space in ['log', 'linear']:
+            assert isinstance(tfm.get_data(comp, space), np.ndarray)
+            assert isinstance(tfm.get_model(comp, space), np.ndarray)
+
+def test_get_params(tfm):
+    """Test the get_params method."""
+
+    for dname in ['aperiodic_params', 'aperiodic', 'peak_params', 'peak',
+                  'error', 'r_squared', 'gaussian_params', 'gaussian']:
+        assert np.any(tfm.get_params(dname))
+
+        if dname == 'aperiodic_params' or dname == 'aperiodic':
+            for dtype in ['offset', 'exponent']:
+                assert np.any(tfm.get_params(dname, dtype))
+
+        if dname == 'peak_params' or dname == 'peak':
+            for dtype in ['CF', 'PW', 'BW']:
+                assert np.any(tfm.get_params(dname, dtype))
+
+def test_copy():
+    """Test copy model object method."""
+>>>>>>> name
 
 def test_base_fit_results(tresults):
 
