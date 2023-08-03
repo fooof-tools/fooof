@@ -2,53 +2,12 @@
 
 import numpy as np
 
-<<<<<<< HEAD
+from specparam.core.utils import unlog
 from specparam.core.funcs import infer_ap_func
 from specparam.core.utils import check_array_dim
 
 from specparam.data import FitResults, ModelSettings
 from specparam.core.items import OBJ_DESC
-=======
-<<<<<<< HEAD:specparam/objs/fit.py
-from specparam.core.items import OBJ_DESC
-from specparam.core.info import get_indices
-from specparam.core.io import save_model, load_json
-from specparam.core.reports import save_model_report
-from specparam.core.modutils import copy_doc_func_to_method
-from specparam.core.utils import group_three, check_array_dim
-from specparam.core.funcs import gaussian_function, get_ap_func, infer_ap_func
-from specparam.core.errors import (FitError, NoModelError, DataError,
-                                   NoDataError, InconsistentDataError)
-from specparam.core.strings import (gen_settings_str, gen_model_results_str,
-                                    gen_issue_str, gen_width_warning_str)
-from specparam.plts.model import plot_model
-from specparam.utils.data import trim_spectrum
-from specparam.utils.params import compute_gauss_std
-from specparam.data import FitResults, ModelRunModes, ModelSettings, SpectrumMetaData
-from specparam.data.conversions import model_to_dataframe
-from specparam.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
-=======
-from fooof.core.utils import unlog
-from fooof.core.items import OBJ_DESC
-from fooof.core.info import get_indices
-from fooof.core.io import save_fm, load_json
-from fooof.core.reports import save_report_fm
-from fooof.core.modutils import copy_doc_func_to_method
-from fooof.core.utils import group_three, check_array_dim
-from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
-from fooof.core.errors import (FitError, NoModelError, DataError,
-                               NoDataError, InconsistentDataError)
-from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
-                                gen_issue_str, gen_width_warning_str)
-
-from fooof.plts.fm import plot_fm
-from fooof.utils.data import trim_spectrum
-from fooof.utils.params import compute_gauss_std
-from fooof.data import FOOOFSettings, FOOOFRunModes, FOOOFMetaData, FOOOFResults
-from fooof.data.conversions import model_to_dataframe
-from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
->>>>>>> main:fooof/objs/fit.py
->>>>>>> name
 
 ###################################################################################################
 ###################################################################################################
