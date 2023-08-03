@@ -272,6 +272,18 @@ def test_get_params(tfm):
             for dtype in ['CF', 'PW', 'BW']:
                 assert np.any(tfm.get_params(dname, dtype))
 
+def test_get_data(tfm):
+
+    for comp in ['full', 'aperiodic', 'peak']:
+        for space in ['log', 'linear']:
+            assert isinstance(tfm.get_data(comp, space), np.ndarray)
+
+def test_get_model(tfm):
+
+    for comp in ['full', 'aperiodic', 'peak']:
+        for space in ['log', 'linear']:
+            assert isinstance(tfm.get_model(comp, space), np.ndarray)
+
 def test_prints(tfm):
     """Test methods that print (alias and pass through methods).
 

@@ -5,6 +5,7 @@ from copy import deepcopy
 import numpy as np
 
 from specparam.data import ModelRunModes
+from specparam.core.utils import unlog
 from specparam.core.items import OBJ_DESC
 from specparam.objs.fit import BaseFit, BaseFit2D
 from specparam.objs.data import BaseData, BaseData2D
@@ -19,6 +20,51 @@ class CommonBase():
         """Return a copy of the current object."""
 
         return deepcopy(self)
+
+
+    def get_data(self, component='full', space='log'):
+        """Get a data component.
+
+        Parameters
+        ----------
+        component : {'full', 'aperiodic', 'peak'}
+            Which data component to return.
+                'full' - full power spectrum
+                'aperiodic' - isolated aperiodic data component
+                'peak' - isolated peak data component
+        space : {'log', 'linear'}
+            Which space to return the data component in.
+                'log' - returns in log10 space.
+                'linear' - returns in linear space.
+
+        Returns
+        -------
+        output : 1d array
+            Specified data component, in specified spacing.
+
+        Notes
+        -----
+        The 'space' parameter doesn't just define the spacing of the data component
+        values, but rather defines the space of the additive data definition such that
+        `power_spectrum = aperiodic_component + peak_component`.
+        With space set as 'log', this combination holds in log space.
+        With space set as 'linear', this combination holds in linear space.
+        """
+
+        assert space in ['linear', 'log'], "Input for 'space' invalid."
+
+        if component == 'full':
+            output = self.power_spectrum if space == 'log' else unlog(self.power_spectrum)
+        elif component == 'aperiodic':
+            output = self._spectrum_peak_rm if space == 'log' else \
+                unlog(self.power_spectrum) / unlog(self._peak_fit)
+        elif component == 'peak':
+            output = self._spectrum_flat if space == 'log' else \
+                unlog(self.power_spectrum) - unlog(self._ap_fit)
+        else:
+            raise ValueError('Input for component invalid.')
+
+        return output
 
 
     def get_run_modes(self):
