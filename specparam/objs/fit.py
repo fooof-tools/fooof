@@ -63,6 +63,7 @@ import numpy as np
 from numpy.linalg import LinAlgError
 from scipy.optimize import curve_fit
 
+<<<<<<< HEAD:specparam/objs/fit.py
 from specparam.core.items import OBJ_DESC
 from specparam.core.info import get_indices
 from specparam.core.io import save_model, load_json
@@ -80,6 +81,27 @@ from specparam.utils.params import compute_gauss_std
 from specparam.data import FitResults, ModelRunModes, ModelSettings, SpectrumMetaData
 from specparam.data.conversions import model_to_dataframe
 from specparam.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
+=======
+from fooof.core.utils import unlog
+from fooof.core.items import OBJ_DESC
+from fooof.core.info import get_indices
+from fooof.core.io import save_fm, load_json
+from fooof.core.reports import save_report_fm
+from fooof.core.modutils import copy_doc_func_to_method
+from fooof.core.utils import group_three, check_array_dim
+from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
+from fooof.core.errors import (FitError, NoModelError, DataError,
+                               NoDataError, InconsistentDataError)
+from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
+                                gen_issue_str, gen_width_warning_str)
+
+from fooof.plts.fm import plot_fm
+from fooof.utils.data import trim_spectrum
+from fooof.utils.params import compute_gauss_std
+from fooof.data import FOOOFSettings, FOOOFRunModes, FOOOFMetaData, FOOOFResults
+from fooof.data.conversions import model_to_dataframe
+from fooof.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
+>>>>>>> main:fooof/objs/fit.py
 
 ###################################################################################################
 ###################################################################################################
@@ -594,6 +616,95 @@ class SpectralModel():
 
         return SpectrumMetaData(**{key : getattr(self, key) \
                              for key in OBJ_DESC['meta_data']})
+
+
+    def get_data(self, component='full', space='log'):
+        """Get a data component.
+
+        Parameters
+        ----------
+        component : {'full', 'aperiodic', 'peak'}
+            Which data component to return.
+                'full' - full power spectrum
+                'aperiodic' - isolated aperiodic data component
+                'peak' - isolated peak data component
+        space : {'log', 'linear'}
+            Which space to return the data component in.
+                'log' - returns in log10 space.
+                'linear' - returns in linear space.
+
+        Returns
+        -------
+        output : 1d array
+            Specified data component, in specified spacing.
+
+        Notes
+        -----
+        The 'space' parameter doesn't just define the spacing of the data component
+        values, but rather defines the space of the additive data definition such that
+        `power_spectrum = aperiodic_component + peak_component`.
+        With space set as 'log', this combination holds in log space.
+        With space set as 'linear', this combination holds in linear space.
+        """
+
+        assert space in ['linear', 'log'], "Input for 'space' invalid."
+
+        if component == 'full':
+            output = self.power_spectrum if space == 'log' else unlog(self.power_spectrum)
+        elif component == 'aperiodic':
+            output = self._spectrum_peak_rm if space == 'log' else \
+                unlog(self.power_spectrum) / unlog(self._peak_fit)
+        elif component == 'peak':
+            output = self._spectrum_flat if space == 'log' else \
+                unlog(self.power_spectrum) - unlog(self._ap_fit)
+        else:
+            raise ValueError('Input for component invalid.')
+
+        return output
+
+
+    def get_model(self, component='full', space='log'):
+        """Get a model component.
+
+        Parameters
+        ----------
+        component : {'full', 'aperiodic', 'peak'}
+            Which model component to return.
+                'full' - full model
+                'aperiodic' - isolated aperiodic model component
+                'peak' - isolated peak model component
+        space : {'log', 'linear'}
+            Which space to return the model component in.
+                'log' - returns in log10 space.
+                'linear' - returns in linear space.
+
+        Returns
+        -------
+        output : 1d array
+            Specified model component, in specified spacing.
+
+        Notes
+        -----
+        The 'space' parameter doesn't just define the spacing of the model component
+        values, but rather defines the space of the additive model such that
+        `model = aperiodic_component + peak_component`.
+        With space set as 'log', this combination holds in log space.
+        With space set as 'linear', this combination holds in linear space.
+        """
+
+        assert space in ['linear', 'log'], "Input for 'space' invalid."
+
+        if component == 'full':
+            output = self.fooofed_spectrum_ if space == 'log' else unlog(self.fooofed_spectrum_)
+        elif component == 'aperiodic':
+            output = self._ap_fit if space == 'log' else unlog(self._ap_fit)
+        elif component == 'peak':
+            output = self._peak_fit if space == 'log' else \
+                unlog(self.fooofed_spectrum_) - unlog(self._ap_fit)
+        else:
+            raise ValueError('Input for component invalid.')
+
+        return output
 
 
     def get_params(self, name, col=None):
