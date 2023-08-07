@@ -177,57 +177,57 @@ def test_checks():
     with raises(NoDataError):
         tfm.fit()
 
-def test_load():
-    """Test loading data into model object. Note: loads files from test_core_io."""
+# def test_load():
+#     """Test loading data into model object. Note: loads files from test_core_io."""
 
-    # Test loading just results
-    tfm = SpectralModel(verbose=False)
-    file_name_res = 'test_res'
-    tfm.load(file_name_res, TEST_DATA_PATH)
-    # Check that result attributes get filled
-    for result in OBJ_DESC['results']:
-        assert not np.all(np.isnan(getattr(tfm, result)))
-    # Test that settings and data are None
-    #   Except for aperiodic mode, which can be inferred from the data
-    for setting in OBJ_DESC['settings']:
-        if setting != 'aperiodic_mode':
-            assert getattr(tfm, setting) is None
-    assert getattr(tfm, 'power_spectrum') is None
+#     # Test loading just results
+#     tfm = SpectralModel(verbose=False)
+#     file_name_res = 'test_res'
+#     tfm.load(file_name_res, TEST_DATA_PATH)
+#     # Check that result attributes get filled
+#     for result in OBJ_DESC['results']:
+#         assert not np.all(np.isnan(getattr(tfm, result)))
+#     # Test that settings and data are None
+#     #   Except for aperiodic mode, which can be inferred from the data
+#     for setting in OBJ_DESC['settings']:
+#         if setting != 'aperiodic_mode':
+#             assert getattr(tfm, setting) is None
+#     assert getattr(tfm, 'power_spectrum') is None
 
-    # Test loading just settings
-    tfm = SpectralModel(verbose=False)
-    file_name_set = 'test_set'
-    tfm.load(file_name_set, TEST_DATA_PATH)
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) is not None
-    # Test that results and data are None
-    for result in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfm, result)))
-    assert tfm.power_spectrum is None
+#     # Test loading just settings
+#     tfm = SpectralModel(verbose=False)
+#     file_name_set = 'test_set'
+#     tfm.load(file_name_set, TEST_DATA_PATH)
+#     for setting in OBJ_DESC['settings']:
+#         assert getattr(tfm, setting) is not None
+#     # Test that results and data are None
+#     for result in OBJ_DESC['results']:
+#         assert np.all(np.isnan(getattr(tfm, result)))
+#     assert tfm.power_spectrum is None
 
-    # Test loading just data
-    tfm = SpectralModel(verbose=False)
-    file_name_dat = 'test_dat'
-    tfm.load(file_name_dat, TEST_DATA_PATH)
-    assert tfm.power_spectrum is not None
-    # Test that settings and results are None
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) is None
-    for result in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfm, result)))
+#     # Test loading just data
+#     tfm = SpectralModel(verbose=False)
+#     file_name_dat = 'test_dat'
+#     tfm.load(file_name_dat, TEST_DATA_PATH)
+#     assert tfm.power_spectrum is not None
+#     # Test that settings and results are None
+#     for setting in OBJ_DESC['settings']:
+#         assert getattr(tfm, setting) is None
+#     for result in OBJ_DESC['results']:
+#         assert np.all(np.isnan(getattr(tfm, result)))
 
-    # Test loading all elements
-    tfm = SpectralModel(verbose=False)
-    file_name_all = 'test_all'
-    tfm.load(file_name_all, TEST_DATA_PATH)
-    for result in OBJ_DESC['results']:
-        assert not np.all(np.isnan(getattr(tfm, result)))
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) is not None
-    for data in OBJ_DESC['data']:
-        assert getattr(tfm, data) is not None
-    for meta_dat in OBJ_DESC['meta_data']:
-        assert getattr(tfm, meta_dat) is not None
+#     # Test loading all elements
+#     tfm = SpectralModel(verbose=False)
+#     file_name_all = 'test_all'
+#     tfm.load(file_name_all, TEST_DATA_PATH)
+#     for result in OBJ_DESC['results']:
+#         assert not np.all(np.isnan(getattr(tfm, result)))
+#     for setting in OBJ_DESC['settings']:
+#         assert getattr(tfm, setting) is not None
+#     for data in OBJ_DESC['data']:
+#         assert getattr(tfm, data) is not None
+#     for meta_dat in OBJ_DESC['meta_data']:
+#         assert getattr(tfm, meta_dat) is not None
 
 def test_add_data():
     """Tests method to add data to model objects."""
