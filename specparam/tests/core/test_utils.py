@@ -19,13 +19,13 @@ def test_unlog():
     unlogged = unlog(logged)
     assert np.array_equal(orig, unlogged)
 
-def test_group_three():
+def test_groupby():
 
     dat = [0, 1, 2, 3, 4, 5]
-    assert group_three(dat) == [[0, 1, 2], [3, 4, 5]]
+    assert groupby(dat, 3) == [[0, 1, 2], [3, 4, 5]]
 
     with raises(ValueError):
-        group_three([0, 1, 2, 3])
+        groupby([0, 1, 2, 3], 3)
 
 def test_dict_array_to_lst():
 

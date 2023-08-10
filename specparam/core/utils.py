@@ -27,13 +27,15 @@ def unlog(arr, base=10):
     return np.power(base, arr)
 
 
-def group_three(vec):
-    """Group an array of values into threes.
+def groupby(vec, groupby):
+    """Group an array of values by a specified number.
 
     Parameters
     ----------
     vec : list or 1d array
         List or array of items to group by 3. Length of array must be divisible by three.
+    num : int
+        Number to group by.
 
     Returns
     -------
@@ -43,17 +45,17 @@ def group_three(vec):
     Raises
     ------
     ValueError
-        If input data cannot be evenly grouped into threes.
+        If input data cannot be evenly grouped into specified number.
     """
 
-    if len(vec) % 3 != 0:
+    if len(vec) % groupby != 0:
         raise ValueError("Wrong size array to group by three.")
 
-    # Reshape, if an array, as it's faster, otherwise asssume lise
+    # Reshape, if an array, as it's faster, otherwise assume list
     if isinstance(vec, np.ndarray):
-        return np.reshape(vec, (-1, 3))
+        return np.reshape(vec, (-1, groupby))
     else:
-        return [list(vec[ii:ii+3]) for ii in range(0, len(vec), 3)]
+        return [list(vec[ii:ii+groupby]) for ii in range(0, len(vec), groupby)]
 
 
 def nearest_ind(array, value):

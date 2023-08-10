@@ -11,7 +11,7 @@ from pytest import raises
 
 from specparam.core.items import OBJ_DESC
 from specparam.core.errors import FitError
-from specparam.core.utils import group_three
+from specparam.core.utils import groupby
 from specparam.sim import gen_freqs, sim_power_spectrum
 from specparam.data import FitResults
 from specparam.core.modutils import safe_import
@@ -69,7 +69,7 @@ def test_fit_nk():
     assert np.allclose(ap_params, tfm.aperiodic_params_, [0.5, 0.1])
 
     # Check model results - gaussian parameters
-    for ii, gauss in enumerate(group_three(gauss_params)):
+    for ii, gauss in enumerate(groupby(gauss_params, 3)):
         assert np.allclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0])
 
 def test_fit_nk_noise():
@@ -100,7 +100,7 @@ def test_fit_knee():
     assert np.allclose(ap_params, tfm.aperiodic_params_, [1, 2, 0.2])
 
     # Check model results - gaussian parameters
-    for ii, gauss in enumerate(group_three(gauss_params)):
+    for ii, gauss in enumerate(groupby(gauss_params, 3)):
         assert np.allclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0])
 
 def test_fit_measures():
