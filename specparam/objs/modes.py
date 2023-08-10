@@ -1,4 +1,4 @@
-"""   """
+"""Define fitting modes."""
 
 from specparam.core.funcs import *
 
@@ -29,21 +29,6 @@ class Mode():
 ###################################################################################################
 ## APERIODIC MODES
 
-# 'Fixed' model
-# ap_fixed = {
-#     'name' : 'fixed',
-#     'component' : 'aperiodic',
-#     'description' : 'Fit an exponential, with no knee.',
-#     'func' : expo_nk_function,
-#     'params' : ['offset', 'exponent'],
-#     'param_description' : {
-#         'offset' : 'Offset of the aperiodic component.',
-#         'exponent' : 'Exponent of the aperiodic component.'
-#     },
-#     'freq_space' : 'linear',
-#     'powers_space' : 'log10',
-# }
-
 param_desc_fixed = {
     'offset' : 'Offset of the aperiodic component.',
     'exponent' : 'Exponent of the aperiodic component.',
@@ -51,24 +36,6 @@ param_desc_fixed = {
 ap_fixed = Mode('fixed', 'aperiodic', 'Fit an exponential, with no knee.',
                 expo_nk_function, ['offset', 'exponent'], param_desc_fixed,
                 'linear', 'log10')
-
-
-# 'Knee' model
-# ap_knee = {
-#     'name' : 'knee',
-#     'component' : 'aperiodic',
-#     'description' : 'Fit an exponential, with a knee.',
-#     'func' : expo_function,
-#     'params' : ['offset', 'knee', 'exponent'],
-#     'param_description' : {
-#         'offset' : 'Offset of the aperiodic component.',
-#         'knee' : 'Knee of the aperiodic component.',
-#         'exponent' : 'Exponent of the aperiodic component.'
-#     },
-#     'freq_space' : 'linear',
-#     'powers_space' : 'log10',
-# }
-
 
 param_desc_knee = {
     'offset' : 'Offset of the aperiodic component.',
@@ -88,22 +55,6 @@ AP_MODES = {
 
 ###################################################################################################
 ## PERIODIC MODES
-
-# # 'Gaussian' model
-# pe_gaussian = {
-#     'name' : 'gaussian',
-#     'component' : 'periodic',
-#     'description' : 'Gaussian peak fit function.',
-#     'func' : gaussian_function,
-#     'params' : ['cf', 'pw', 'bw'],
-#     'param_description' : {
-#         'cf' : 'Center frequency of the peak.',
-#         'pw' : 'Power of the peak, over and above the aperiodic component.',
-#         'bw' : 'Bandwidth of the peak.',
-#     },
-#     'freq_space' : 'linear',
-#     'powers_space' : 'log10',
-# }
 
 param_desc_gaus = {
     'cf' : 'Center frequency of the peak.',

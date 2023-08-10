@@ -10,7 +10,6 @@ import numpy as np
 from specparam.objs.base import BaseObject
 from specparam.objs.algorithm import SpectralFitAlgorithm
 
-#from specparam.core.info import get_indices
 from specparam.core.io import save_model, load_json
 from specparam.core.reports import save_model_report
 from specparam.core.modutils import copy_doc_func_to_method

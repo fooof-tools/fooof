@@ -232,7 +232,7 @@ class SpectralFitAlgorithm():
         if clear_results:
 
             self.aperiodic_params_ = np.array([np.nan] * \
-                (2 if str(self.aperiodic_mode) == 'fixed' else 3))
+                (2 if self.aperiodic_mode.name == 'fixed' else 3))
             self.gaussian_params_ = np.empty([0, 3])
             self.peak_params_ = np.empty([0, 3])
             self.r_squared_ = np.nan
@@ -273,13 +273,13 @@ class SpectralFitAlgorithm():
         # Get the guess parameters and/or calculate from the data, as needed
         #   Note that these are collected as lists, to concatenate with or without knee later
         off_guess = [power_spectrum[0] if not self._ap_guess[0] else self._ap_guess[0]]
-        kne_guess = [self._ap_guess[1]] if str(self.aperiodic_mode) == 'knee' else []
+        kne_guess = [self._ap_guess[1]] if self.aperiodic_mode.name == 'knee' else []
         exp_guess = [np.abs((self.power_spectrum[-1] - self.power_spectrum[0]) /
                             (np.log10(self.freqs[-1]) - np.log10(self.freqs[0])))
                      if not self._ap_guess[2] else self._ap_guess[2]]
 
         # Get bounds for aperiodic fitting, dropping knee bound if not set to fit knee
-        ap_bounds = self._ap_bounds if str(self.aperiodic_mode) == 'knee' \
+        ap_bounds = self._ap_bounds if self.aperiodic_mode.name == 'knee' \
             else tuple(bound[0::2] for bound in self._ap_bounds)
 
         # Collect together guess parameters
@@ -343,7 +343,7 @@ class SpectralFitAlgorithm():
         spectrum_ignore = power_spectrum[perc_mask]
 
         # Get bounds for aperiodic fitting, dropping knee bound if not set to fit knee
-        ap_bounds = self._ap_bounds if str(self.aperiodic_mode) == 'knee' \
+        ap_bounds = self._ap_bounds if self.aperiodic_mode.name == 'knee' \
             else tuple(bound[0::2] for bound in self._ap_bounds)
 
         # Second aperiodic fit - using results of first fit as guess parameters
