@@ -95,10 +95,11 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
     """
 
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
-                 peak_threshold=2.0, aperiodic_mode='fixed', verbose=True, **model_kwargs):
+                 peak_threshold=2.0, aperiodic_mode='fixed', periodic_mode='gaussian',
+                 verbose=True, **model_kwargs):
         """Initialize model object."""
 
-        BaseObject.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode='gaussian',
+        BaseObject.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
                             debug_mode=model_kwargs.pop('debug_mode', False), verbose=verbose)
 
         SpectralFitAlgorithm.__init__(self, peak_width_limits=peak_width_limits,
