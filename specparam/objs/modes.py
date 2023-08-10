@@ -23,6 +23,10 @@ class Mode():
         return self.name
 
     @property
+    def n_params(self):
+        return len(self.params)
+
+    @property
     def param_indices(self):
         return {label : index for index, label in enumerate(self.params)}
 
@@ -33,9 +37,16 @@ param_desc_fixed = {
     'offset' : 'Offset of the aperiodic component.',
     'exponent' : 'Exponent of the aperiodic component.',
 }
-ap_fixed = Mode('fixed', 'aperiodic', 'Fit an exponential, with no knee.',
-                expo_nk_function, ['offset', 'exponent'], param_desc_fixed,
-                'linear', 'log10')
+ap_fixed = Mode(
+    name='fixed',
+    component='aperiodic',
+    description='Fit an exponential, with no knee.',
+    func=expo_nk_function,
+    params=['offset', 'exponent'],
+    param_description=param_desc_fixed,
+    freq_space='linear',
+    powers_space='log10',
+)
 
 param_desc_knee = {
     'offset' : 'Offset of the aperiodic component.',
@@ -43,9 +54,16 @@ param_desc_knee = {
     'exponent' : 'Exponent of the aperiodic component.',
 }
 
-ap_knee = Mode('knee', 'aperiodic', 'Fit an exponential, with a knee.',
-               expo_function, ['offset', 'knee', 'exponent'], param_desc_knee,
-               'linear', 'log10')
+ap_knee = Mode(
+    name='knee',
+    component='aperiodic',
+    description='Fit an exponential, with a knee.',
+    func=expo_function,
+    params=['offset', 'knee', 'exponent'],
+    param_description=param_desc_knee,
+    freq_space='linear',
+    powers_space='log10',
+)
 
 # Collect available aperiodic modes
 AP_MODES = {
@@ -62,9 +80,16 @@ param_desc_gaus = {
     'bw' : 'Bandwidth of the peak.',
 }
 
-pe_gaussian = Mode('gaussian', 'periodic', 'Gaussian peak fit function.',
-                   gaussian_function, ['cf', 'pw', 'bw'], param_desc_gaus,
-                   'linear', 'log10')
+pe_gaussian = Mode(
+    name='gaussian',
+    component='periodic',
+    description='Gaussian peak fit function.',
+    func=gaussian_function,
+    params=['cf', 'pw', 'bw'],
+    param_description=param_desc_gaus,
+    freq_space='linear',
+    powers_space='log10',
+)
 
 # Collect available periodic modes
 PE_MODES = {
