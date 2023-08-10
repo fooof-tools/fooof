@@ -22,6 +22,10 @@ class Mode():
     def __repr__(self):
         return self.name
 
+    @property
+    def param_indices(self):
+        return {label : index for index, label in enumerate(self.params)}
+
 ###################################################################################################
 ## APERIODIC MODES
 

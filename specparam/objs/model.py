@@ -10,7 +10,7 @@ import numpy as np
 from specparam.objs.base import BaseObject
 from specparam.objs.algorithm import SpectralFitAlgorithm
 
-from specparam.core.info import get_indices
+#from specparam.core.info import get_indices
 from specparam.core.io import save_model, load_json
 from specparam.core.reports import save_model_report
 from specparam.core.modutils import copy_doc_func_to_method
@@ -214,10 +214,6 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         if not self.has_model:
             raise NoModelError("No model fit results are available to extract, can not proceed.")
 
-        # If col specified as string, get mapping back to integer
-        if isinstance(col, str):
-            col = get_indices(self.aperiodic_mode)[col]
-
         # Allow for shortcut alias, without adding `_params`
         if name in ['aperiodic', 'peak', 'gaussian']:
             name = name + '_params'
@@ -228,6 +224,13 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         # Periodic values can be empty arrays and if so, replace with NaN array
         if isinstance(out, np.ndarray) and out.size == 0:
             out = np.array([np.nan, np.nan, np.nan])
+
+        # If col specified as string, get mapping back to integer
+        if isinstance(col, str):
+            if 'aperiodic' in name:
+                col = self.aperiodic_mode.param_indices[col.lower()]
+            else:
+                col = self.periodic_mode.param_indices[col.lower()]
 
         # Select out a specific column, if requested
         if col is not None:
