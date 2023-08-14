@@ -19,6 +19,17 @@ def test_unlog():
     unlogged = unlog(logged)
     assert np.array_equal(orig, unlogged)
 
+
+def test_normalize():
+
+    arr1 = np.array([0, 0.25, 0.5])
+    norm_arr1 = normalize(arr1)
+    assert np.array_equal(norm_arr1, np.array([0.0, 0.5, 1.0]))
+
+    arr2 = np.array([0, 5, 10])
+    norm_arr2 = normalize(arr2)
+    assert np.array_equal(norm_arr2, np.array([0.0, 0.5, 1.0]))
+
 def test_groupby():
 
     dat = [0, 1, 2, 3, 4, 5]

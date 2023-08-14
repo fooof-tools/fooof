@@ -27,6 +27,23 @@ def unlog(arr, base=10):
     return np.power(base, arr)
 
 
+def normalize(data):
+    """Normalize an array of numerical data (to the range of 0-1).
+
+    Parameters
+    ----------
+    data : np.ndarray
+        Array of data to normalize.
+
+    Returns
+    -------
+    np.ndarray
+        Normalized data.
+    """
+
+    return (data - np.min(data)) / (np.max(data) - np.min(data))
+
+
 def groupby(vec, groupby):
     """Group an array of values by a specified number.
 
