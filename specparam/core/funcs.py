@@ -1,11 +1,4 @@
-"""Functions that can be used for model fitting.
-
-NOTES
------
-- Model fitting currently (only) uses the exponential and gaussian functions.
-- Linear & Quadratic functions are from previous versions.
-    - They are left available for easy swapping back in, if desired.
-"""
+"""Functions that can be used for model fitting."""
 
 import numpy as np
 
@@ -13,6 +6,8 @@ from specparam.core.errors import InconsistentDataError
 
 ###################################################################################################
 ###################################################################################################
+
+## PEAK FUNCTIONS
 
 def gaussian_function(xs, *params):
     """Gaussian fitting function.
@@ -40,6 +35,8 @@ def gaussian_function(xs, *params):
 
     return ys
 
+
+## APERIODIC FUNCTIONS
 
 def expo_function(xs, *params):
     """Exponential fitting function, for fitting aperiodic component with a 'knee'.
@@ -146,6 +143,8 @@ def quadratic_function(xs, *params):
 
     return ys
 
+
+## GETTER FUNCTIONS
 
 def get_pe_func(periodic_mode):
     """Select and return specified function for periodic component.
