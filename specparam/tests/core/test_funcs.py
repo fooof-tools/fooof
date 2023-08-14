@@ -26,7 +26,26 @@ def test_gaussian_function():
     # Check distribution matches generated gaussian from scipy
     #  Generated gaussian is normalized for this comparison, height tested separately
     assert max(ys) == hgt
-    assert np.allclose([i/sum(ys) for i in ys], norm.pdf(xs, ctr, wid))
+    assert np.allclose([ii/sum(ys) for ii in ys], norm.pdf(xs, ctr, wid))
+
+def test_skewnorm_function():
+
+    # Check that with no skew, approximate gaussian
+    ctr, hgt, wid, skew = 50, 5, 10, 1
+    xs = np.arange(1, 100)
+    ys_gaus = gaussian_function(xs, ctr, hgt, wid)
+    ys_skew = skewnorm_function(xs, ctr, hgt, wid, skew)
+    np.allclose(ys_gaus, ys_skew, atol=0.001)
+
+    # Check with some skew - right skew (more density after center)
+    skew1 = 2
+    ys_skew1 = skewnorm_function(xs, ctr, hgt, wid, skew1)
+    assert sum(ys_skew1[xs<ctr]) < sum(ys_skew1[xs>ctr])
+
+    # Check with some skew - left skew (more density before center)
+    skew2 = -2
+    ys_skew2 = skewnorm_function(xs, ctr, hgt, wid, skew2)
+    assert sum(ys_skew2[xs<ctr]) > sum(ys_skew2[xs>ctr])
 
 ## Aperiodic functions
 

@@ -1,7 +1,9 @@
 """Functions that can be used for model fitting."""
 
 import numpy as np
+from scipy.special import erf
 
+from specparam.core.utils import normalize
 from specparam.core.errors import InconsistentDataError
 
 ###################################################################################################
@@ -32,6 +34,36 @@ def gaussian_function(xs, *params):
         ctr, hgt, wid = params[ii:ii+3]
 
         ys = ys + hgt * np.exp(-(xs-ctr)**2 / (2*wid**2))
+
+    return ys
+
+
+def skewnorm_function(xs, *params):
+    """Skewed normal distribution fitting function.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define the skewed normal distribution function.
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for skewed normal distribution function.
+    """
+
+    ys = np.zeros_like(xs)
+
+    for ii in range(0, len(params), 4):
+
+        ctr, hgt, wid, skew = params[ii:ii+4]
+
+        ts = (xs - ctr) / wid
+        temp = 2 / wid * (1 / np.sqrt(2 * np.pi) * np.exp(-ts**2 / 2)) * \
+            ((1 + erf(skew * ts / np.sqrt(2))) / 2)
+        ys = ys + hgt * normalize(temp)
 
     return ys
 
