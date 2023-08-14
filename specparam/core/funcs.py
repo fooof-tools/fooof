@@ -35,7 +35,6 @@ def gaussian_function(xs, *params):
 
     return ys
 
-
 ## APERIODIC FUNCTIONS
 
 def expo_function(xs, *params):
@@ -90,6 +89,34 @@ def expo_nk_function(xs, *params):
     offset, exp = params
 
     ys = ys + offset - np.log10(xs**exp)
+
+    return ys
+
+
+def double_expo_function(xs, *params):
+    """Double exponential fitting function, for fitting aperiodic component with two exponents and a knee.
+
+    NOTE: this function requires linear frequency (not log).
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters (offset, exp0, knee, exp1) that define the function:
+        y = 10^offset * (1/((x**exp0) * (knee + x^exp1))
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for exponential function.
+    """
+
+    ys = np.zeros_like(xs)
+
+    offset, exp0, knee, exp1 = params
+
+    ys = ys + offset - np.log10((xs**exp0) * (knee + xs**exp1))
 
     return ys
 
