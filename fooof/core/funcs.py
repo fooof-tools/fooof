@@ -32,9 +32,7 @@ def gaussian_function(xs, *params):
 
     ys = np.zeros_like(xs)
 
-    for ii in range(0, len(params), 3):
-
-        ctr, hgt, wid = params[ii:ii+3]
+    for ctr, hgt, wid in zip(*[iter(params)] * 3):
 
         ys = ys + hgt * np.exp(-(xs-ctr)**2 / (2*wid**2))
 
