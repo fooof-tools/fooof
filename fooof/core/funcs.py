@@ -58,11 +58,8 @@ def expo_function(xs, *params):
         Output values for exponential function.
     """
 
-    ys = np.zeros_like(xs)
-
     offset, knee, exp = params
-
-    ys = ys + offset - np.log10(knee + xs**exp)
+    ys = offset - np.log10(knee + xs**exp)
 
     return ys
 
@@ -86,11 +83,8 @@ def expo_nk_function(xs, *params):
         Output values for exponential function, without a knee.
     """
 
-    ys = np.zeros_like(xs)
-
     offset, exp = params
-
-    ys = ys + offset - np.log10(xs**exp)
+    ys = offset - np.log10(xs**exp)
 
     return ys
 
@@ -111,11 +105,8 @@ def linear_function(xs, *params):
         Output values for linear function.
     """
 
-    ys = np.zeros_like(xs)
-
     offset, slope = params
-
-    ys = ys + offset + (xs*slope)
+    ys = offset + (xs*slope)
 
     return ys
 
@@ -136,11 +127,8 @@ def quadratic_function(xs, *params):
         Output values for quadratic function.
     """
 
-    ys = np.zeros_like(xs)
-
     offset, slope, curve = params
-
-    ys = ys + offset + (xs*slope) + ((xs**2)*curve)
+    ys = offset + (xs*slope) + ((xs**2)*curve)
 
     return ys
 
