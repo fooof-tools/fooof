@@ -946,7 +946,8 @@ class FOOOF():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                                 freqs, power_spectrum, p0=guess,
-                                                maxfev=self._maxfev, bounds=ap_bounds)
+                                                maxfev=self._maxfev, bounds=ap_bounds,
+                                                check_finite=False)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding parameters in "
                          "the simple aperiodic component fit.")
@@ -1003,7 +1004,8 @@ class FOOOF():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                                 freqs_ignore, spectrum_ignore, p0=popt,
-                                                maxfev=self._maxfev, bounds=ap_bounds)
+                                                maxfev=self._maxfev, bounds=ap_bounds,
+                                                check_finite=False)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
                          "parameters in the robust aperiodic fit.")
@@ -1149,7 +1151,8 @@ class FOOOF():
         # Fit the peaks
         try:
             gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._spectrum_flat,
-                                           p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds)
+                                           p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds,
+                                           check_finite=False)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
                          "parameters in the peak component fit.")
