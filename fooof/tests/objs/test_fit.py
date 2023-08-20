@@ -391,7 +391,7 @@ def test_fooof_fit_failure():
 
     ## Induce a runtime error, and check it runs through
     tfm = FOOOF(verbose=False)
-    tfm._maxfev = 5
+    tfm._maxfev = 2
 
     tfm.fit(*gen_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
@@ -417,7 +417,7 @@ def test_fooof_debug():
     """Test FOOOF in debug mode, including with fit failures."""
 
     tfm = FOOOF(verbose=False)
-    tfm._maxfev = 5
+    tfm._maxfev = 2
 
     tfm.set_debug_mode(True)
     assert tfm._debug is True
