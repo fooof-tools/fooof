@@ -201,6 +201,7 @@ class FOOOF():
         # The maximum number of calls to the curve fitting function
         self._maxfev = 5000
         # The tolerance setting for curve fitting (see scipy.curve_fit - ftol / xtol / gtol)
+        #   Here reduce tolerance to speed fitting. Set value to 1e-8 to match curve_fit default
         self._tol = 0.00001
 
         ## RUN MODES
