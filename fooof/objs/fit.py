@@ -71,6 +71,7 @@ from fooof.core.reports import save_report_fm
 from fooof.core.modutils import copy_doc_func_to_method
 from fooof.core.utils import group_three, check_array_dim
 from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
+from fooof.core.jacobians import jacobian_gauss
 from fooof.core.errors import (FitError, NoModelError, DataError,
                                NoDataError, InconsistentDataError)
 from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
@@ -1159,7 +1160,7 @@ class FOOOF():
             gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._spectrum_flat,
                                            p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds,
                                            ftol=self._tol, xtol=self._tol, gtol=self._tol,
-                                           check_finite=False)
+                                           check_finite=False, jac=jacobian_gauss)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
                          "parameters in the peak component fit.")
