@@ -1,6 +1,5 @@
 """Tests for fooof.core.jacobians."""
 
-
 from fooof.core.jacobians import *
 
 ###################################################################################################
