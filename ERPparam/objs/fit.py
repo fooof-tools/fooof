@@ -422,6 +422,9 @@ class ERPparam():
             # Convert gaussian definitions to peak parameters
             self.peak_params_ = self._create_peak_params(self.gaussian_params_)
 
+            # compute rise-decay symmetry
+            self.rd_params_ = self._compute_rise_decay_symmetry(self.peak_params_)
+
             # Calculate R^2 and error of the model fit
             self._calc_r_squared()
             self._calc_error()
@@ -883,6 +886,67 @@ class ERPparam():
             peak_params[ii] = [peak[0], self.signal[ind], peak[2] * 2]
 
         return peak_params
+
+
+    def _get_peak_indices(self, peak_params):
+        """
+        Find the indices of the peak and the half magnitude points.
+        """
+
+        # compute half magnitude
+        half_mag = peak_params[1] / 2
+
+        # get index of peak
+        peak_index = np.argmin(np.abs(self.time - peak_params[0]))
+
+        # find the index closest to the peak that crosses the half magnitude
+        if self.signal[peak_index]>0:
+            start_index = np.argwhere((self.signal[:peak_index] - half_mag)<0)[-1][0]
+            end_index = peak_index + np.argwhere(-(self.signal[peak_index:] - half_mag)>0)[0][0]
+        else: # flip the logic if the peak is negative
+            start_index = np.argwhere((self.signal[:peak_index] - half_mag)>0)[-1][0]
+            end_index = peak_index + np.argwhere(-(self.signal[peak_index:] - half_mag)<0)[0][0]
+
+        return start_index, peak_index, end_index
+
+
+    def _compute_rise_decay_symmetry(self, peak_params):
+        """
+        Compute the rise-decay symmetry of the ERP.
+        
+        Returns
+        -------
+        rd_params : list
+            List of rise-decay symmetry parameters. In order:
+            * duration: time between half-magnitude points
+            * rise time: time between peak and rising half-magnitude point
+            * decay time: time between peak and decaying half-magnitude point
+            * rise-decay symmetry: ratio of rise time to decay time
+
+        """
+
+        # initialize list of rd parameters
+        rd_params = np.empty((len(peak_params), 4))
+
+        for ii, peak in enumerate(peak_params):
+
+            # get peak indices
+            start_index, peak_index, end_index = self._get_peak_indices(peak)
+
+            # calculate rise and decay time intervals
+            t_rise = self.time[peak_index] - self.time[start_index]
+            t_decay = self.time[end_index] - self.time[peak_index]
+
+            # compute duration
+            duration = self.time[end_index] - self.time[start_index]
+
+            # compute rise-decay symmetry
+            rise_decay_symmetry = t_rise / t_decay
+
+            # collect results
+            rd_params[ii] = [duration, t_rise, t_decay, rise_decay_symmetry]
+
+        return rd_params
 
 
     def _drop_peak_cf(self, guess):
