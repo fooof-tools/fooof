@@ -50,10 +50,10 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, freq_r
         Additional plot related keyword arguments.
     """
 
+    # Create the plot & collect plot kwargs of interest
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
-
-    # Create the plot
     plot_kwargs = check_plot_kwargs(plot_kwargs, {'linewidth' : 2.0})
+    grid = plot_kwargs.pop('grid', True)
 
     # Check for frequency range input, and log if x-axis is in log space
     if freq_range is not None:
@@ -82,7 +82,7 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, freq_r
 
     ax.set_xlim(freq_range)
 
-    style_spectrum_plot(ax, log_freqs, log_powers)
+    style_spectrum_plot(ax, log_freqs, log_powers, grid)
 
 
 # Alias `plot_spectrum` to `plot_spectra` for backwards compatibility
@@ -127,7 +127,8 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r',
     add_shades(ax, shades, shade_colors, add_center, plot_kwargs.get('log_freqs', False))
 
     style_spectrum_plot(ax, plot_kwargs.get('log_freqs', False),
-                        plot_kwargs.get('log_powers', False))
+                        plot_kwargs.get('log_powers', False),
+                        plot_kwargs.get('grid', True))
 
 
 # Alias `plot_spectrum_shading` to `plot_spectra_shading` for backwards compatibility
@@ -172,6 +173,7 @@ def plot_spectra_yshade(freqs, power_spectra, shade='std', average='mean', scale
         raise ValueError('Power spectra must be 2d if shade is not given.')
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
+    grid = plot_kwargs.pop('grid', True)
 
     # Set plot data & labels, logging if requested
     plt_freqs = np.log10(freqs) if log_freqs else freqs
@@ -208,4 +210,4 @@ def plot_spectra_yshade(freqs, power_spectra, shade='std', average='mean', scale
     ax.fill_between(plt_freqs, lower_shade, upper_shade,
                     alpha=alpha, color=color, **plot_kwargs)
 
-    style_spectrum_plot(ax, log_freqs, log_powers)
+    style_spectrum_plot(ax, log_freqs, log_powers, grid)

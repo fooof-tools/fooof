@@ -12,7 +12,7 @@ from fooof.plts.settings import (AXIS_STYLE_ARGS, LINE_STYLE_ARGS, COLLECTION_ST
 ###################################################################################################
 ###################################################################################################
 
-def style_spectrum_plot(ax, log_freqs, log_powers):
+def style_spectrum_plot(ax, log_freqs, log_powers, grid=True):
     """Apply style and aesthetics to a power spectrum plot.
 
     Parameters
@@ -23,6 +23,8 @@ def style_spectrum_plot(ax, log_freqs, log_powers):
         Whether the frequency axis is plotted in log space.
     log_powers : bool
         Whether the power axis is plotted in log space.
+    grid : bool, optional, default: True
+        Whether to add grid lines to the plot.
     """
 
     # Get labels, based on log status
@@ -33,7 +35,7 @@ def style_spectrum_plot(ax, log_freqs, log_powers):
     ax.set_xlabel(xlabel, fontsize=20)
     ax.set_ylabel(ylabel, fontsize=20)
     ax.tick_params(axis='both', which='major', labelsize=16)
-    ax.grid(True)
+    ax.grid(grid)
 
     # If labels were provided, add a legend
     if ax.get_legend_handles_labels()[0]:
