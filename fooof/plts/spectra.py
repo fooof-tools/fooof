@@ -130,6 +130,10 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r',
                         plot_kwargs.get('log_powers', False))
 
 
+# Alias `plot_spectrum_shading` to `plot_spectra_shading` for backwards compatibility
+plot_spectrum_shading = plot_spectra_shading
+
+
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
