@@ -15,27 +15,31 @@ from fooof.plts.spectra import *
 @plot_test
 def test_plot_spectra(tfm, tfg, skip_if_no_mpl):
 
-    # Test with 1d inputs - 1d freq array and list of 1d power spectra
+    # Test with 1d inputs - 1d freq array & list of 1d power spectra
     plot_spectra(tfm.freqs, tfm.power_spectrum,
                  save_fig=True, file_path=TEST_PLOTS_PATH, file_name='test_plot_spectra_1d.png')
 
-    # Test with 1d inputs - 1d freq array and list of 1d power spectra
+    # Test with 1d inputs - 1d freq array & list of 1d power spectra
     plot_spectra(tfg.freqs, [tfg.power_spectra[0, :], tfg.power_spectra[1, :]],
-                 save_fig=True, file_path=TEST_PLOTS_PATH, file_name='test_plot_spectra_list_1d.png')
+                 save_fig=True, file_path=TEST_PLOTS_PATH,
+                 file_name='test_plot_spectra_list_1d.png')
 
-    # Test with multiple freq inputs - list of 1d freq array and list of 1d power spectra
-    plot_spectra([tfg.freqs, tfg.freqs], [tfg.power_spectra[0, :], tfg.power_spectra[1, :]],
+    # Test with multiple lists - list of 1d freqs & list of 1d power spectra (different f ranges)
+    plot_spectra([tfg.freqs, tfg.freqs[:-5]],
+                 [tfg.power_spectra[0, :], tfg.power_spectra[1, :-5]],
                  save_fig=True, file_path=TEST_PLOTS_PATH,
                  file_name='test_plot_spectra_lists_1d.png')
 
     # Test with 2d array inputs
     plot_spectra(np.vstack([tfg.freqs, tfg.freqs]),
                  np.vstack([tfg.power_spectra[0, :], tfg.power_spectra[1, :]]),
-                 save_fig=True, file_path=TEST_PLOTS_PATH, file_name='test_plot_spectra_2d.png')
+                 save_fig=True, file_path=TEST_PLOTS_PATH,
+                 file_name='test_plot_spectra_2d.png')
 
     # Test with labels
     plot_spectra(tfg.freqs, [tfg.power_spectra[0, :], tfg.power_spectra[1, :]], labels=['A', 'B'],
-                 save_fig=True, file_path=TEST_PLOTS_PATH, file_name='test_plot_spectra_labels.png')
+                 save_fig=True, file_path=TEST_PLOTS_PATH,
+                 file_name='test_plot_spectra_labels.png')
 
 @plot_test
 def test_plot_spectra_shading(tfm, tfg, skip_if_no_mpl):
