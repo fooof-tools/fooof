@@ -38,10 +38,15 @@ def plot_ERPparam(model, ax=None, y_label=None):
         # plot full model fit
         ax.plot(model.time, model._peak_fit, linestyle='--', color='k', label='Gaussian fit')
     
-        # plot peak indices
+        # plot peak and half-mag points
         ax.scatter(model.time[model.peak_indices_[:,1]], model.signal[model.peak_indices_[:,1]], color='r', label='Peak fit')
         half_mag_indices = np.concatenate((model.peak_indices_[:,0], model.peak_indices_[:,2]))
         ax.scatter(model.time[half_mag_indices], model.signal[half_mag_indices], color='b', label='Half-mag fit')
+
+        # plot triangle between peal and half-mag points
+        for i_peak, indices in enumerate(model.peak_indices_):
+            ind = np.hstack([indices, indices[0]])
+            ax.plot(model.time[ind], model.signal[ind], color='g')
     
     # label
     if y_label is not None:
