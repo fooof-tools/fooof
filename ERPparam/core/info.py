@@ -96,7 +96,7 @@ def get_shape_indices():
     return indices
 
 
-def get_indices(param_type='peak'):
+def get_indices(param_type='peak_params'):
     """Get a mapping from column labels to indices for all parameters.
 
     Parameters
@@ -109,11 +109,11 @@ def get_indices(param_type='peak'):
     """
 
     # Get the indices for the specified parameter type
-    if param_type=='peak':
+    if param_type=='peak_params':
         indices = get_peak_indices()
-    elif type == 'gaussian':
+    elif param_type == 'gaussian_params':
         indices = get_gauss_indices()
-    elif param_type=='shape':
+    elif param_type=='shape_params':
         indices = get_shape_indices()
     else:
         raise ValueError('Unknown parameter type: %s' % param_type)

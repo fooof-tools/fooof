@@ -546,13 +546,13 @@ class ERPparam():
         if not self.has_model:
             raise NoModelError("No model fit results are available to extract, can not proceed.")
 
-        # If col specified as string, get mapping back to integer
-        if isinstance(col, str):
-            col = get_indices(name)[col]
-
         # Allow for shortcut alias, without adding `_params`
         if name in ['peak', 'gaussian', 'shape']:
             name = name + '_params'
+
+        # If col specified as string, get mapping back to integer
+        if isinstance(col, str):
+            col = get_indices(name)[col]            
 
         # Extract the request data field from object
         out = getattr(self, name + '_')
