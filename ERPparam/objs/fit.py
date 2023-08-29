@@ -879,7 +879,7 @@ class ERPparam():
             # find the maximum height of the signal within _gauss_overlap_thresh of the peak
             peak_range = np.where(np.logical_and(self.time >= peak[0] - peak[2] * self._gauss_overlap_thresh,
                                                     self.time <= peak[0] + peak[2] * self._gauss_overlap_thresh))
-            ind = np.argmax(self.signal[peak_range]) + peak_range[0][0]
+            ind = np.argmax(np.abs(self.signal[peak_range])) + peak_range[0][0]
 
             # Collect peak parameter data
             peak_params[ii] = [peak[0], self.signal[ind], peak[2] * 2]
