@@ -111,7 +111,7 @@ def get_indices(param_type='peak'):
     # Get the indices for the specified parameter type
     if param_type=='peak':
         indices = get_peak_indices()
-    elif type == 'gaussian':
+    elif param_type == 'gaussian':
         indices = get_gauss_indices()
     elif param_type=='shape':
         indices = get_shape_indices()
