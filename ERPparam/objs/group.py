@@ -359,16 +359,16 @@ class ERPparamGroup(ERPparam):
         if not self.has_model:
             raise NoModelError("No model fit results are available, can not proceed.")
 
+        # Allow for shortcut alias, without adding `_params`
+        if name in ['peak', 'gaussian', 'shape']:
+            name = name + '_params'
+            
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
             col = get_indices(name)[col]
         elif isinstance(col, int):
             if col not in [0, 1, 2, 3]:
                 raise ValueError("Input value for `col` not valid.")
-
-        # Allow for shortcut alias, without adding `_params`
-        if name in ['peak', 'gaussian', 'shape']:
-            name = name + '_params'
 
         # Pull out the requested data field from the group data
         # As a special case, peak_params are pulled out in a way that appends
