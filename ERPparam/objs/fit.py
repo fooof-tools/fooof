@@ -427,7 +427,7 @@ class ERPparam():
             self.peak_params_ = self._create_peak_params(self.gaussian_params_)
 
             # compute rise-decay symmetry
-            self.shape_params_ = self._compute_shape_params(self.peak_params_)
+            self.shape_params_, self.peak_indices_ = self._compute_shape_params(self.peak_params_)
 
             # Calculate R^2 and error of the model fit
             self._calc_r_squared()
@@ -937,6 +937,7 @@ class ERPparam():
 
         # initialize list of shape parameters
         shape_params = np.empty((len(peak_params), 7))
+        peak_indices = np.empty((len(peak_params), 3))
 
         for ii, peak in enumerate(peak_params):
 
@@ -960,8 +961,12 @@ class ERPparam():
             # collect results
             shape_params[ii] = [fwhm, rise_time, decay_time, rise_decay_symmetry,
                              sharpness, sharpness_rise, sharpness_decay]
+            peak_indices[ii] = [start_index, peak_index, end_index]
 
-        return shape_params
+        # convert peak_indicesto int
+        peak_indices = peak_indices.astype(int)
+
+        return shape_params, peak_indices
 
 
     def _drop_peak_cf(self, guess):
