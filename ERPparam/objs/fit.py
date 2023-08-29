@@ -61,7 +61,7 @@ from ERPparam.core.errors import (FitError, NoModelError, DataError,
 from ERPparam.core.strings import (gen_settings_str, gen_results_fm_str,
                                 gen_issue_str, gen_width_warning_str)
 
-from ERPparam.plts.fm import plot_ERPparam # plot_fm
+from ERPparam.plts.model import plot_ERPparam
 from ERPparam.utils.data import trim_spectrum
 from ERPparam.utils.params import compute_gauss_std
 from ERPparam.data import ERPparamResults, ERPparamSettings, ERPparamMetaData
@@ -424,10 +424,10 @@ class ERPparam():
             self._peak_fit = gen_periodic(self.time, np.ndarray.flatten(self.gaussian_params_))
 
             # Convert gaussian definitions to peak parameters
-            self.peak_params_ = self._create_peak_params(self.gaussian_params_)
+            self.peak_params_  = self._create_peak_params(self.gaussian_params_)
 
             # compute rise-decay symmetry
-            self.shape_params_ = self._compute_shape_params(self.peak_params_)
+            self.shape_params_, self.peak_indices_ = self._compute_shape_params(self.peak_params_)
 
             # Calculate R^2 and error of the model fit
             self._calc_r_squared()
@@ -888,10 +888,10 @@ class ERPparam():
             # find the maximum height of the signal within _gauss_overlap_thresh of the peak
             peak_range = np.where(np.logical_and(self.time >= peak[0] - peak[2] * self._gauss_overlap_thresh,
                                                     self.time <= peak[0] + peak[2] * self._gauss_overlap_thresh))
-            ind = np.argmax(np.abs(self.signal[peak_range])) + peak_range[0][0]
+            peak_index = np.argmax(np.abs(self.signal[peak_range])) + peak_range[0][0]
 
             # Collect peak parameter data
-            peak_params[ii] = [peak[0], self.signal[ind], peak[2] * 2]
+            peak_params[ii] = [self.time[peak_index], self.signal[peak_index], peak[2] * 2]
 
         return peak_params
 
@@ -937,6 +937,7 @@ class ERPparam():
 
         # initialize list of shape parameters
         shape_params = np.empty((len(peak_params), 7))
+        peak_indices = np.empty((len(peak_params), 3))
 
         for ii, peak in enumerate(peak_params):
 
@@ -960,8 +961,12 @@ class ERPparam():
             # collect results
             shape_params[ii] = [fwhm, rise_time, decay_time, rise_decay_symmetry,
                              sharpness, sharpness_rise, sharpness_decay]
+            peak_indices[ii] = [start_index, peak_index, end_index]
 
-        return shape_params
+        # convert peak_indicesto int
+        peak_indices = peak_indices.astype(int)
+
+        return shape_params, peak_indices
 
 
     def _drop_peak_cf(self, guess):
