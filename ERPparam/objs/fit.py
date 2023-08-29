@@ -61,7 +61,7 @@ from ERPparam.core.errors import (FitError, NoModelError, DataError,
 from ERPparam.core.strings import (gen_settings_str, gen_results_fm_str,
                                 gen_issue_str, gen_width_warning_str)
 
-from ERPparam.plts.fm import plot_ERPparam # plot_fm
+from ERPparam.plts.model import plot_ERPparam
 from ERPparam.utils.data import trim_spectrum
 from ERPparam.utils.params import compute_gauss_std
 from ERPparam.data import ERPparamResults, ERPparamSettings, ERPparamMetaData
