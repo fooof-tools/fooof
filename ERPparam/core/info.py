@@ -24,12 +24,12 @@ def get_description():
     - descriptors : descriptors of the object status and model results
     """
 
-    attributes = {'results' : ['gaussian_params_', 'peak_params_', 'r_squared_', 'error_'],
+    attributes = {'results' : ['gaussian_params_', 'peak_params_', 'rd_params_', 'r_squared_', 'error_'],
                   'settings' : ['peak_width_limits', 'max_n_peaks', 'min_peak_height', 
                                 'peak_threshold'],
                   'data' : ['signal', 'time'],
                   'meta_data' : ['time_range', 'fs'],
-                  'arrays' : ['time', 'signal', 'peak_params_', 'gaussian_params_'],
+                  'arrays' : ['time', 'signal', 'peak_params_', 'gaussian_params_','rd_params_'],
                   'model_components' : ['_peak_fit'],
                   'descriptors' : ['has_data', 'has_model', 'n_peaks_']
                   }
@@ -54,8 +54,43 @@ def get_peak_indices():
 
     return indices
 
+def get_gauss_indices():
+    """Get a mapping from column labels to indices for peak parameters.
 
-def get_indices():
+    Returns
+    -------
+    indices : dict
+        Mapping of the column labels and indices for the peak parameters.
+    """
+
+    indices = {
+        'MN' : 0,
+        'HT' : 1,
+        'SD' : 2,
+    }
+
+    return indices
+
+
+def get_rd_indices():
+    """Get a mapping from column labels to indices for peak parameters.
+
+    Returns
+    -------
+    indices : dict
+        Mapping of the column labels and indices for the peak parameters.
+    """
+
+    indices = {
+        'DUR' : 0,
+        'TR' : 1,
+        'TD' : 2,
+        'RD' : 3
+    }
+
+    return indices
+
+def get_indices(type):
     """Get a mapping from column labels to indices for all parameters.
 
     Parameters
@@ -67,8 +102,15 @@ def get_indices():
         Mapping of the column labels and indices for all parameters.
     """
 
-    # Get the periodic indices, and then update dictionary with aperiodic ones
-    indices = get_peak_indices()
+    if type == 'peak':
+        # Get the periodic indices, and then update dictionary with aperiodic ones
+        indices = get_peak_indices()
+    elif type == 'gaussian':
+        # Get the periodic indices, and then update dictionary with aperiodic ones
+        indices = get_gauss_indices()
+    elif type == 'rd':
+        # Get the periodic indices, and then update dictionary with aperiodic ones
+        indices = get_rd_indices()
 
     return indices
 

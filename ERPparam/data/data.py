@@ -55,7 +55,7 @@ class ERPparamMetaData(namedtuple('ERPparamMetaData', ['time_range', 'fs'])):
 
 
 class ERPparamResults(namedtuple('ERPparamResults', ['peak_params', 'r_squared', 'error', 
-                                                     'gaussian_params'])):
+                                                     'gaussian_params','rd_params'])):
     """Model results from parameterizing a power spectrum.
 
     Parameters
@@ -67,8 +67,11 @@ class ERPparamResults(namedtuple('ERPparamResults', ['peak_params', 'r_squared',
     error : float
         Error of the full model fit.
     gaussian_params : 2d array
-        Parameters that define the gaussian fit(s).
+        Parameters that define the gaussian fit( s).
         Each row is a gaussian, as [mean, height, standard deviation].
+    rd_params : 2d array
+        Parameters of rise-decay symmetry
+        Each row is a waveform, as [Duration, Rise time, Decay time, Rise-Decay Symmetry]
 
     Notes
     -----

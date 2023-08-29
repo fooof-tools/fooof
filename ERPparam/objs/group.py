@@ -145,7 +145,7 @@ class ERPparamGroup(ERPparam):
     def n_null_(self):
         """How many model fits are null."""
 
-        return sum([1 for single_tr_erp in self.group_results if np.sum(np.isnan(single_tr_erp.peak_params))]) \
+        return sum([1 for single_tr_erp in self.group_results if (len(single_tr_erp.peak_params)==0)]) \
             if self.has_model else None
 
 
@@ -154,7 +154,7 @@ class ERPparamGroup(ERPparam):
         """The indices for model fits that are null."""
 
         return [ind for ind, single_tr_erp in enumerate(self.group_results) \
-            if np.sum(np.isnan(single_tr_erp.peak_params))] \
+            if (len(single_tr_erp.peak_params)==0)] \
             if self.has_model else None
 
 
@@ -331,11 +331,11 @@ class ERPparamGroup(ERPparam):
 
         Parameters
         ----------
-        name : { 'peak_params', 'gaussian_params', 'error', 'r_squared'}
+        name : { 'peak_params', 'gaussian_params','rd_params', 'error', 'r_squared'}
             Name of the data field to extract across the group.
-        col : {'CT', 'PW', 'BW'} or int, optional
+        col : {'CT', 'PW', 'BW'}, {'MN','HT','SD'}, {'DUR','TR','TD','RD'} or int, optional
             Column name / index to extract from selected data, if requested.
-            Only used for name of {'peak_params', 'gaussian_params'}.
+            Only used for name of {'peak_params', 'gaussian_params', 'rd_params'}.
 
         Returns
         -------
@@ -351,7 +351,7 @@ class ERPparamGroup(ERPparam):
 
         Notes
         -----
-        When extracting peak information ('peak_params' or 'gaussian_params'), an additional column
+        When extracting peak information ('peak_params','rd_params', or 'gaussian_params'), an additional column
         is appended to the returned array, indicating the index of the model that the peak came from.
         """
 
@@ -359,14 +359,19 @@ class ERPparamGroup(ERPparam):
             raise NoModelError("No model fit results are available, can not proceed.")
 
         # Allow for shortcut alias, without adding `_params`
-        if name in ['peak', 'gaussian']:
+        if name in ['peak', 'gaussian', 'rd']:
             name = name + '_params'
 
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
-            col = get_indices()[col]
+            type = None
+            for param_id in ['peak', 'gaussian','rd']:
+                if param_id in name:
+                    type = param_id
+            assert type != None
+            col = get_indices(type)[col]
         elif isinstance(col, int):
-            if col not in [0, 1]:
+            if col not in [0, 1, 2, 3]:
                 raise ValueError("Input value for `col` not valid.")
 
         # Pull out the requested data field from the group data
@@ -376,6 +381,16 @@ class ERPparamGroup(ERPparam):
 
             # Collect peak data, appending the index of the model it comes from
             out = np.vstack([np.insert(getattr(data, name), 3, index, axis=1)
+                             for index, data in enumerate(self.group_results)])
+
+            # This updates index to grab selected column, and the last column
+            #  This last column is the 'index' column (ERPparam object source)
+            if col is not None:
+                col = [col, -1]
+        elif name in ('rd_params'):
+
+            # Collect peak data, appending the index of the model it comes from
+            out = np.vstack([np.insert(getattr(data, name), 4, index, axis=1)
                              for index, data in enumerate(self.group_results)])
 
             # This updates index to grab selected column, and the last column
@@ -537,6 +552,51 @@ class ERPparamGroup(ERPparam):
 
         print(gen_results_fg_str(self, concise))
 
+    def clean_groups(self, rsq_cutoff=None, error_cutoff=None, elim_nans=False):
+        #bw_bounds=None, amp_bounds=None,
+
+        # eliminate trials that failed to fit
+        if elim_nans:
+            nans_idx = self.null_inds_
+        else:
+            nans_idx = []
+        
+        # get the 'unclean' set of Groups
+        if rsq_cutoff != None:
+            get_rsqs = self.get_params('r_squared')
+            dirty_inds_rsq = [i for i in np.where(get_rsqs < rsq_cutoff)[0]]
+        else:
+            dirty_inds_rsq = []
+
+        if error_cutoff != None:
+            get_errs = self.get_params('error')
+            dirty_inds_errs = [i for i in np.where(get_errs > error_cutoff)[0]]
+        else:
+            dirty_inds_errs = []
+
+        dirty_inds = nans_idx + dirty_inds_rsq + dirty_inds_errs
+
+        clean_inds = [i for i in range(len(self.group_results)) if i not in dirty_inds]
+
+        print("Dropping {0} ERP fits".format(str(len(np.unique(dirty_inds)))))
+
+        return_group = self.get_group(inds=clean_inds)
+
+        # if bw_bounds != None:
+        #     get_bws = self.get_params('peak_params', col='BW')
+        #     dirty_inds_bws = [i for i in np.where( ((get_bws < bw_bounds[0])|(get_bws > bw_bounds[1])) )[0]]
+        # else:
+        #     dirty_inds_bws = []
+
+        # if amp_bounds != None:
+        #     get_amps = self.get_params('peak_params', col='PW')
+        #     dirty_inds_amps = [i for i in np.where( ((get_amps < amp_bounds[0])|(get_amps > amp_bounds[1])) )[0]]
+        # else:
+        #     dirty_inds_amps = []   
+
+        # print("Dropping {0} peak fits from {1} ERP fits".format())
+
+        return return_group
 
     def save_model_report(self, index, file_name, file_path=None, 
                           add_settings=True, **plot_kwargs):

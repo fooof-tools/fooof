@@ -516,11 +516,11 @@ class ERPparam():
 
         Parameters
         ----------
-        name : {'peak_params', 'gaussian_params', 'error', 'r_squared'}
+        name : {'peak_params', 'gaussian_params','rd_params', 'error', 'r_squared'}
             Name of the data field to extract.
-        col : {'CT', 'PW', 'BW'} or int, optional
+        col : {'CT', 'PW', 'BW'}, {'MN','HT','SD'}, {'DUR','TR','TD','RD'} or int, optional
             Column name / index to extract from selected data, if requested.
-            Only used for name of {'peak_params', 'gaussian_params'}.
+            Only used for name of {'peak_params', 'gaussian_params', 'rd_params'}.
 
         Returns
         -------
@@ -540,12 +540,18 @@ class ERPparam():
         if not self.has_model:
             raise NoModelError("No model fit results are available to extract, can not proceed.")
 
+
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
-            col = get_indices()[col]
+            type = None
+            for param_id in ['peak', 'gaussian','rd']:
+                if param_id in name:
+                    type = param_id
+            assert type != None
+            col = get_indices(type)[col]
 
         # Allow for shortcut alias, without adding `_params`
-        if name in ['peak', 'gaussian']:
+        if name in ['peak', 'gaussian','rd']:
             name = name + '_params'
 
         # Extract the request data field from object
