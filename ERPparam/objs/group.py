@@ -331,12 +331,13 @@ class ERPparamGroup(ERPparam):
 
         Parameters
         ----------
-        name : { 'peak_params', 'gaussian_params','rd_params', 'error', 'r_squared'}
+        name : { 'peak_params', 'gaussian_params','shape_params', 'error', 'r_squared'}
             Name of the data field to extract across the group.
-        col : {'CT', 'PW', 'BW'}, {'MN','HT','SD'}, {'DUR','TR','TD','RD'} or int, optional
+        col : {'CT', 'PW', 'BW'}, {'MN','HT','SD'}, {fwhm, rise_time, decay_time, symmetry,
+            sharpness, sharpness_rise, sharpness_decay} or int, optional
             Column name / index to extract from selected data, if requested.
-            Only used for name of {'peak_params', 'gaussian_params', 'rd_params'}.
-
+            Only used for name of {'peak_params', 'gaussian_params', 'shape_params}, 
+            respectively.
         Returns
         -------
         out : ndarray
@@ -351,28 +352,23 @@ class ERPparamGroup(ERPparam):
 
         Notes
         -----
-        When extracting peak information ('peak_params','rd_params', or 'gaussian_params'), an additional column
+        When extracting peak information ('peak_params', 'shape_params', or 'gaussian_params'), an additional column
         is appended to the returned array, indicating the index of the model that the peak came from.
         """
 
         if not self.has_model:
             raise NoModelError("No model fit results are available, can not proceed.")
 
-        # Allow for shortcut alias, without adding `_params`
-        if name in ['peak', 'gaussian', 'rd']:
-            name = name + '_params'
-
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
-            type = None
-            for param_id in ['peak', 'gaussian','rd']:
-                if param_id in name:
-                    type = param_id
-            assert type != None
-            col = get_indices(type)[col]
+            col = get_indices(name)[col]
         elif isinstance(col, int):
             if col not in [0, 1, 2, 3]:
                 raise ValueError("Input value for `col` not valid.")
+
+        # Allow for shortcut alias, without adding `_params`
+        if name in ['peak', 'gaussian', 'shape']:
+            name = name + '_params'
 
         # Pull out the requested data field from the group data
         # As a special case, peak_params are pulled out in a way that appends
@@ -387,7 +383,7 @@ class ERPparamGroup(ERPparam):
             #  This last column is the 'index' column (ERPparam object source)
             if col is not None:
                 col = [col, -1]
-        elif name in ('rd_params'):
+        elif name in ('shape_params'):
 
             # Collect peak data, appending the index of the model it comes from
             out = np.vstack([np.insert(getattr(data, name), 4, index, axis=1)
