@@ -885,8 +885,10 @@ class ERPparam():
 
         for ii, peak in enumerate(gaus_params):
 
-            # Gets the index of the signal at the time closest to the CT of the peak
-            ind = np.argmin(np.abs(self.time - peak[0]))
+            # find the maximum height of the signal within _gauss_overlap_thresh of the peak
+            peak_range = np.where(np.logical_and(self.time >= peak[0] - peak[2] * self._gauss_overlap_thresh,
+                                                    self.time <= peak[0] + peak[2] * self._gauss_overlap_thresh))
+            ind = np.argmax(self.signal[peak_range]) + peak_range[0][0]
 
             # Collect peak parameter data
             peak_params[ii] = [peak[0], self.signal[ind], peak[2] * 2]
