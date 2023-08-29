@@ -420,7 +420,7 @@ class ERPparam():
             self._peak_fit = gen_periodic(self.time, np.ndarray.flatten(self.gaussian_params_))
 
             # Convert gaussian definitions to peak parameters
-            self.peak_params_ = self._create_peak_params(self.gaussian_params_)
+            self.peak_params_  = self._create_peak_params(self.gaussian_params_)
 
             # Calculate R^2 and error of the model fit
             self._calc_r_squared()
@@ -879,10 +879,10 @@ class ERPparam():
             # find the maximum height of the signal within _gauss_overlap_thresh of the peak
             peak_range = np.where(np.logical_and(self.time >= peak[0] - peak[2] * self._gauss_overlap_thresh,
                                                     self.time <= peak[0] + peak[2] * self._gauss_overlap_thresh))
-            ind = np.argmax(np.abs(self.signal[peak_range])) + peak_range[0][0]
+            peak_index = np.argmax(np.abs(self.signal[peak_range])) + peak_range[0][0]
 
             # Collect peak parameter data
-            peak_params[ii] = [peak[0], self.signal[ind], peak[2] * 2]
+            peak_params[ii] = [self.time[peak_index], self.signal[peak_index], peak[2] * 2]
 
         return peak_params
 
