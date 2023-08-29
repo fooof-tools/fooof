@@ -23,7 +23,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_ERPparam(self, ax=None, y_label=None):
+def plot_ERPparam(model, ax=None, y_label=None):
     """Plot ERP and model fit results."""
 
     # create figure
@@ -31,12 +31,17 @@ def plot_ERPparam(self, ax=None, y_label=None):
         fig, ax = plt.subplots(1,1, figsize=PLT_FIGSIZES['spectral'])
 
     # plot signal
-    ax.plot(self.time, self.signal, alpha=0.5, label='ERP')
+    ax.plot(model.time, model.signal, alpha=0.5, label='ERP')
 
     # plot fit
-    if self.peak_params_ is not None:
-        ax.plot(self.time, self._peak_fit, linestyle='--', color='k', label='Gaussian fit')
-        ax.scatter(self.peak_params_[:,0], self.peak_params_[:,1], color='r', label='Peak fit')
+    if model.peak_params_ is not None:
+        # plot full model fit
+        ax.plot(model.time, model._peak_fit, linestyle='--', color='k', label='Gaussian fit')
+    
+        # plot peak indices
+        ax.scatter(model.time[model.peak_indices_[:,1]], model.signal[model.peak_indices_[:,1]], color='r', label='Peak fit')
+        half_mag_indices = np.concatenate((model.peak_indices_[:,0], model.peak_indices_[:,2]))
+        ax.scatter(model.time[half_mag_indices], model.signal[half_mag_indices], color='b', label='Half-mag fit')
     
     # label
     if y_label is not None:
@@ -48,4 +53,3 @@ def plot_ERPparam(self, ax=None, y_label=None):
     # style
     style_erp_plot(ax)
     plt.show()
-
