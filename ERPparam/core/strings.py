@@ -290,8 +290,8 @@ def gen_results_fm_str(fm, concise=False):
         # Peak parameters
         '{} peaks were found:'.format(
             len(fm.peak_params_)),
-        *['Time: {:6.2f}, Amp: {:6.3f}, Dur: {:5.2f}'.format(op[0], op[1], op[2]) \
-          for op in fm.peak_params_],
+        *['Time: {:6.2f}, Amp: {:6.2f}, Dur: {:5.2f}, Sym: {:4.2f}, Sharp: {:1.4f}'.format(op[0], op[1], op[2], sp[3], sp[4]) \
+          for op, sp in zip(fm.peak_params_, fm.shape_params_)],
         '',
 
         # Goodness if fit
@@ -339,6 +339,8 @@ def gen_results_fg_str(fg, concise=False):
     errors = fg.get_params('error')
     bws = fg.get_params('peak_params', 'BW')
     pws = fg.get_params('peak_params', 'PW')
+    symmetry = fg.get_params('shape_params', 'symmetry')
+    sharpness = fg.get_params('shape_params', 'sharpness')
 
     # Check if there are any power spectra that failed to fit
     n_failed = fg.n_null_#sum(np.isnan(bws))
@@ -372,6 +374,10 @@ def gen_results_fg_str(fg, concise=False):
                        ]],
         'Bandwidths - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(np.nanmin(bws), np.nanmax(bws), np.nanmean(bws)),
+        'Symmetry - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(np.nanmin(symmetry), np.nanmax(symmetry), np.nanmean(symmetry)),
+        'Sharpness - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(np.nanmin(sharpness), np.nanmax(sharpness), np.nanmean(sharpness)),
         '',
 
         # Peak Parameters

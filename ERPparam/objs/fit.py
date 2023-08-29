@@ -104,6 +104,10 @@ class ERPparam():
     gaussian_params_ : 2d array
         Parameters that define the gaussian fit(s).
         Each row is a gaussian, as [mean, height, standard deviation].
+    shape_params_ : 2d array
+        ERP shape parameters for each peak.
+        Each row is a peak, as [duration, rise-time, decay-time, rise-decay symmetry,
+        FWHM, rising sharpness, decaying sharpness].
     r_squared_ : float
         R-squared of the fit between the input signal and the full model fit.
     error_ : float
@@ -423,7 +427,7 @@ class ERPparam():
             self.peak_params_ = self._create_peak_params(self.gaussian_params_)
 
             # compute rise-decay symmetry
-            self.rd_params_ = self._compute_rise_decay_symmetry(self.peak_params_)
+            self.shape_params_ = self._compute_shape_params(self.peak_params_)
 
             # Calculate R^2 and error of the model fit
             self._calc_r_squared()
@@ -516,11 +520,13 @@ class ERPparam():
 
         Parameters
         ----------
-        name : {'peak_params', 'gaussian_params','rd_params', 'error', 'r_squared'}
+        name : {'peak_params', 'gaussian_params', 'shape_params', 'error', 'r_squared'}
             Name of the data field to extract.
-        col : {'CT', 'PW', 'BW'}, {'MN','HT','SD'}, {'DUR','TR','TD','RD'} or int, optional
+        col : {'CT', 'PW', 'BW'}, {'MN','HT','SD'}, {fwhm, rise_time, decay_time, symmetry,
+            sharpness, sharpness_rise, sharpness_decay} or int, optional
             Column name / index to extract from selected data, if requested.
-            Only used for name of {'peak_params', 'gaussian_params', 'rd_params'}.
+            Only used for name of {'peak_params', 'gaussian_params', 'shape_params}, 
+            respectively.
 
         Returns
         -------
@@ -540,18 +546,12 @@ class ERPparam():
         if not self.has_model:
             raise NoModelError("No model fit results are available to extract, can not proceed.")
 
-
         # If col specified as string, get mapping back to integer
         if isinstance(col, str):
-            type = None
-            for param_id in ['peak', 'gaussian','rd']:
-                if param_id in name:
-                    type = param_id
-            assert type != None
-            col = get_indices(type)[col]
+            col = get_indices(name)[col]
 
         # Allow for shortcut alias, without adding `_params`
-        if name in ['peak', 'gaussian','rd']:
+        if name in ['peak', 'gaussian', 'shape']:
             name = name + '_params'
 
         # Extract the request data field from object
@@ -916,43 +916,50 @@ class ERPparam():
         return start_index, peak_index, end_index
 
 
-    def _compute_rise_decay_symmetry(self, peak_params):
+    def _compute_shape_params(self, peak_params):
         """
-        Compute the rise-decay symmetry of the ERP.
+        Compute the ERP shape parameters.
         
         Returns
         -------
-        rd_params : list
+        shape_params : list
             List of rise-decay symmetry parameters. In order:
-            * duration: time between half-magnitude points
-            * rise time: time between peak and rising half-magnitude point
-            * decay time: time between peak and decaying half-magnitude point
-            * rise-decay symmetry: ratio of rise time to decay time
-
+            * FWHM: full width at half magnitude
+            * rise_time: rise time i.e. time between peak and rising half-magnitude point
+            * decay_time: decay time i.e. time between peak and decaying half-magnitude point
+            * symmetry: ratio of rise time to decay time
+            * sharpness: peak sharpness (normalized to be dimensionless 0-1)
+            * sharpness_rise: ratio of peak half-magnitude and rise time (normalized to be dimensionless 0-1)
+            * sharpness_decay: ratio of peak half-magnitude and decay time (normalized to be dimensionless 0-1)
         """
 
-        # initialize list of rd parameters
-        rd_params = np.empty((len(peak_params), 4))
+        # initialize list of shape parameters
+        shape_params = np.empty((len(peak_params), 7))
 
         for ii, peak in enumerate(peak_params):
 
             # get peak indices
             start_index, peak_index, end_index = self._get_peak_indices(peak)
 
-            # calculate rise and decay time intervals
-            t_rise = self.time[peak_index] - self.time[start_index]
-            t_decay = self.time[end_index] - self.time[peak_index]
-
-            # compute duration
-            duration = self.time[end_index] - self.time[start_index]
+            # compute fwhm, rise-, and decay-time
+            fwhm = self.time[end_index] - self.time[start_index]
+            rise_time = self.time[peak_index] - self.time[start_index]
+            decay_time = self.time[end_index] - self.time[peak_index]
 
             # compute rise-decay symmetry
-            rise_decay_symmetry = t_rise / t_decay
+            rise_decay_symmetry = rise_time / decay_time
+
+            # compute sharpness
+            half_mag = np.abs(peak[1] / 2)
+            sharpness_rise = np.arctan(half_mag / rise_time) * (180 / np.pi) / 90
+            sharpness_decay = np.arctan(half_mag / decay_time) * (180 / np.pi) / 90
+            sharpness = 1 - ((180 - ((np.arctan(half_mag / rise_time) * (180 / np.pi)) + (np.arctan(half_mag / decay_time)) * (180 / np.pi))) / 180)
 
             # collect results
-            rd_params[ii] = [duration, t_rise, t_decay, rise_decay_symmetry]
+            shape_params[ii] = [fwhm, rise_time, decay_time, rise_decay_symmetry,
+                             sharpness, sharpness_rise, sharpness_decay]
 
-        return rd_params
+        return shape_params
 
 
     def _drop_peak_cf(self, guess):
