@@ -355,7 +355,7 @@ class ERPparam():
         if time is not None and signal is not None:
             self.add_data(time, signal)
 
-        self.fit(self.time, self.signal)
+        self.fit(self.time, self.signal, time_range=time_range)
         self.plot(**plot_kwargs)
         self.print_results(concise=False)
 
