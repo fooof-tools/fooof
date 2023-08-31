@@ -7,7 +7,7 @@ from ERPparam.core.errors import NoModelError
 from ERPparam.core.funcs import gaussian_function
 from ERPparam.core.modutils import safe_import, check_dependency
 
-from ERPparam.sim.gen import gen_aperiodic
+#from ERPparam.sim.gen import gen_aperiodic
 from ERPparam.analysis.periodic import get_band_peak_fm
 from ERPparam.utils.params import compute_knee_frequency, compute_fwhm
 
@@ -35,8 +35,8 @@ def plot_annotated_peak_search(fm):
 
     # Recalculate the initial aperiodic fit and flattened spectrum that
     #   is the same as the one that is used in the peak fitting procedure
-    flatspec = fm.power_spectrum - \
-        gen_aperiodic(fm.freqs, fm._robust_ap_fit(fm.freqs, fm.power_spectrum))
+    flatspec = fm.signal #fm.power_spectrum - \
+        #gen_aperiodic(fm.time, fm._robust_ap_fit(fm.time, fm.power_spectrum))
 
     # Calculate ylims of the plot that are scaled to the range of the data
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
@@ -50,15 +50,15 @@ def plot_annotated_peak_search(fm):
         # This forces the creation of a new plotting axes per iteration
         ax = check_ax(None, PLT_FIGSIZES['spectral'])
 
-        plot_spectra(fm.freqs, flatspec, ax=ax, linewidth=2.5,
+        plot_spectra(fm.time, flatspec, ax=ax, linewidth=2.5,
                      label='Flattened Spectrum', color=PLT_COLORS['data'])
-        plot_spectra(fm.freqs, [fm.peak_threshold * np.std(flatspec)]*len(fm.freqs), ax=ax,
+        plot_spectra(fm.time, [fm.peak_threshold * np.std(flatspec)]*len(fm.time), ax=ax,
                      label='Relative Threshold', color='orange', linewidth=2.5, linestyle='dashed')
-        plot_spectra(fm.freqs, [fm.min_peak_height]*len(fm.freqs), ax=ax,
+        plot_spectra(fm.time, [fm.min_peak_height]*len(fm.time), ax=ax,
                      label='Absolute Threshold', color='red', linewidth=2.5, linestyle='dashed')
 
         maxi = np.argmax(flatspec)
-        ax.plot(fm.freqs[maxi], flatspec[maxi], '.',
+        ax.plot(fm.time[maxi], flatspec[maxi], '.',
                 color=PLT_COLORS['periodic'], alpha=0.75, markersize=30)
 
         ax.set_ylim(ylims)
@@ -66,8 +66,8 @@ def plot_annotated_peak_search(fm):
 
         if ind < fm.n_peaks_:
 
-            gauss = gaussian_function(fm.freqs, *gaussian_params[ind, :])
-            plot_spectra(fm.freqs, gauss, ax=ax, label='Gaussian Fit',
+            gauss = gaussian_function(fm.time, *gaussian_params[ind, :])
+            plot_spectra(fm.time, gauss, ax=ax, label='Gaussian Fit',
                          color=PLT_COLORS['periodic'], linestyle=':', linewidth=3.0)
 
             flatspec = flatspec - gauss
@@ -120,12 +120,12 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True,
                          'shade' : {'color' : PLT_COLORS['periodic']},
                          'width' : {'color' : PLT_COLORS['periodic'], 'alpha' : 0.75, 'lw' : lw2}})
 
-    # Get freqs for plotting, and convert to log if needed
-    freqs = fm.freqs if not plt_log else np.log10(fm.freqs)
+    # Get time for plotting, and convert to log if needed
+    time = fm.time if not plt_log else np.log10(fm.time)
 
     ## Buffers: for spacing things out on the plot (scaled by plot values)
-    x_buff1 = max(freqs) * 0.1
-    x_buff2 = max(freqs) * 0.25
+    x_buff1 = max(time) * 0.1
+    x_buff2 = max(time) * 0.25
     y_buff1 = 0.15 * np.ptp(ax.get_ylim())
     shrink = 0.1
 
@@ -139,14 +139,14 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True,
         gauss = get_band_peak_fm(fm, fm.freq_range, attribute='gaussian_params')
 
         peak_ctr, peak_hgt, peak_wid = gauss
-        bw_freqs = [peak_ctr - 0.5 * compute_fwhm(peak_wid),
+        bw_time = [peak_ctr - 0.5 * compute_fwhm(peak_wid),
                     peak_ctr + 0.5 * compute_fwhm(peak_wid)]
 
         if plt_log:
             peak_ctr = np.log10(peak_ctr)
-            bw_freqs = np.log10(bw_freqs)
+            bw_time = np.log10(bw_time)
 
-        peak_top = fm.power_spectrum[nearest_ind(freqs, peak_ctr)]
+        peak_top = fm.power_spectrum[nearest_ind(time, peak_ctr)]
 
         # Annotate Peak CF
         ax.annotate('Center Frequency',
@@ -166,7 +166,7 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True,
                     color=PLT_COLORS['periodic'], fontsize=fontsize)
 
         # Annotate Peak BW
-        bw_buff = (peak_ctr - bw_freqs[0])/2
+        bw_buff = (peak_ctr - bw_time[0])/2
         ax.annotate('Bandwidth',
                     xy=(peak_ctr-bw_buff+bug_buff, peak_top-(0.5*peak_hgt)),
                     xytext=(peak_ctr-bw_buff, peak_top-(1.5*peak_hgt)),
@@ -180,11 +180,11 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True,
         # Annotate Aperiodic Offset
         #   Add a line to indicate offset, without adjusting plot limits below it
         ax.set_autoscaley_on(False)
-        ax.plot([freqs[0], freqs[0]], [ax.get_ylim()[0], fm.fooofed_spectrum_[0]],
+        ax.plot([time[0], time[0]], [ax.get_ylim()[0], fm.fooofed_spectrum_[0]],
                 color=PLT_COLORS['aperiodic'], linewidth=lw2, alpha=0.5)
         ax.annotate('Offset',
-                    xy=(freqs[0]+bug_buff, fm.power_spectrum[0]-y_buff1),
-                    xytext=(freqs[0]-x_buff1, fm.power_spectrum[0]-y_buff1),
+                    xy=(time[0]+bug_buff, fm.power_spectrum[0]-y_buff1),
+                    xytext=(time[0]-x_buff1, fm.power_spectrum[0]-y_buff1),
                     verticalalignment='center',
                     horizontalalignment='center',
                     arrowprops=dict(facecolor=PLT_COLORS['aperiodic'], shrink=shrink),
@@ -197,7 +197,7 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True,
             knee_freq = compute_knee_frequency(fm.get_params('aperiodic', 'knee'),
                                                fm.get_params('aperiodic', 'exponent'))
             knee_freq = np.log10(knee_freq) if plt_log else knee_freq
-            knee_pow = fm.power_spectrum[nearest_ind(freqs, knee_freq)]
+            knee_pow = fm.power_spectrum[nearest_ind(time, knee_freq)]
 
             # Add a dot to the plot indicating the knee frequency
             ax.plot(knee_freq, knee_pow, 'o', color=PLT_COLORS['aperiodic'], ms=ms1*1.5, alpha=0.7)
@@ -210,10 +210,10 @@ def plot_annotated_model(fm, plt_log=False, annotate_peaks=True,
                         color=PLT_COLORS['aperiodic'], fontsize=fontsize)
 
         # Annotate Aperiodic Exponent
-        mid_ind = int(len(freqs)/2)
+        mid_ind = int(len(time)/2)
         ax.annotate('Exponent',
-                    xy=(freqs[mid_ind], fm.power_spectrum[mid_ind]),
-                    xytext=(freqs[mid_ind]-x_buff2, fm.power_spectrum[mid_ind]-y_buff1),
+                    xy=(time[mid_ind], fm.power_spectrum[mid_ind]),
+                    xytext=(time[mid_ind]-x_buff2, fm.power_spectrum[mid_ind]-y_buff1),
                     verticalalignment='center',
                     arrowprops=dict(facecolor=PLT_COLORS['aperiodic'], shrink=shrink),
                     color=PLT_COLORS['aperiodic'], fontsize=fontsize)
