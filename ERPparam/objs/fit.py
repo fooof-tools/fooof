@@ -251,6 +251,7 @@ class ERPparam():
 
             self.gaussian_params_ = np.ones([0,3])*np.nan
             self.peak_params_ = np.ones([0,3])*np.nan
+            self.shape_params_ = np.ones([0,7])*np.nan
             self.r_squared_ = np.nan
             self.error_ = np.nan
 
