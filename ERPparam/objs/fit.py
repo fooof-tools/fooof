@@ -430,6 +430,10 @@ class ERPparam():
             # compute rise-decay symmetry
             self.shape_params_, self.peak_indices_ = self._compute_shape_params(self.peak_params_)
 
+            # drop peaks based on edge proximity (if shape could not be fit)
+            self._drop_peaks_near_edge()
+            self.peak_indices_ = self.peak_indices_.astype(int)
+
             # Calculate R^2 and error of the model fit
             self._calc_r_squared()
             self._calc_error()
@@ -975,9 +979,6 @@ class ERPparam():
                              sharpness, sharpness_rise, sharpness_decay]
             peak_indices[ii] = [start_index, peak_index, end_index]
 
-        # convert peak_indicesto int
-        peak_indices = peak_indices.astype(int)
-
         return shape_params, peak_indices
 
 
@@ -1055,6 +1056,19 @@ class ERPparam():
         guess = np.array([gu for (gu, keep) in zip(guess, keep_peak) if keep])
 
         return guess
+
+
+    def _drop_peaks_near_edge(self):
+        """Check whether to drop peaks based on shape parameter fitting. If a peak is too close to 
+        the edge of the signal, the half-magnitude points cannott be determined, and the shape
+        parameters will be set to NaN.
+        """
+
+        to_drop = np.isnan(self.peak_indices_).any(axis=1)
+        self.gaussian_params_ = self.gaussian_params_[~to_drop]
+        self.peak_params_ = self.peak_params_[~to_drop]
+        self.shape_params_ = self.shape_params_[~to_drop]
+        self.peak_indices_ = self.peak_indices_[~to_drop]
 
 
     def _calc_r_squared(self):
