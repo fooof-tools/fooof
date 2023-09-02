@@ -909,12 +909,17 @@ class ERPparam():
         peak_index = np.argmin(np.abs(self.time - peak_params[0]))
 
         # find the index closest to the peak that crosses the half magnitude
-        if self.signal[peak_index]>0:
-            start_index = np.argwhere((self.signal[:peak_index] - half_mag)<0)[-1][0]
-            end_index = peak_index + np.argwhere(-(self.signal[peak_index:] - half_mag)>0)[0][0]
-        else: # flip the logic if the peak is negative
-            start_index = np.argwhere((self.signal[:peak_index] - half_mag)>0)[-1][0]
-            end_index = peak_index + np.argwhere(-(self.signal[peak_index:] - half_mag)<0)[0][0]
+        try:
+            if self.signal[peak_index]>0:
+                start_index = np.argwhere((self.signal[:peak_index] - half_mag)<0)[-1][0]
+                end_index = peak_index + np.argwhere(-(self.signal[peak_index:] - half_mag)>0)[0][0]
+            else: # flip the logic if the peak is negative
+                start_index = np.argwhere((self.signal[:peak_index] - half_mag)>0)[-1][0]
+                end_index = peak_index + np.argwhere(-(self.signal[peak_index:] - half_mag)<0)[0][0]
+        except IndexError:
+            # if the half magnitude is not crossed, set the start and end indices to NaN
+            start_index = np.nan
+            end_index = np.nan
 
         return start_index, peak_index, end_index
 
@@ -944,6 +949,12 @@ class ERPparam():
 
             # get peak indices
             start_index, peak_index, end_index = self._get_peak_indices(peak)
+
+            # if the peak indices could not be determined, set all shape params to NaN
+            if np.isnan(start_index) or np.isnan(end_index):
+                shape_params[ii] = [np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan]
+                peak_indices[ii] = [np.nan, np.nan, np.nan]
+                continue
 
             # compute fwhm, rise-, and decay-time
             fwhm = self.time[end_index] - self.time[start_index]
