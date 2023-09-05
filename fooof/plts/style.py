@@ -18,8 +18,8 @@ def check_style_options():
     print('Valid style arguments:')
     for label, options in zip(['Axis', 'Line', 'Collection', 'Custom'],
                               [AXIS_STYLE_ARGS, LINE_STYLE_ARGS,
-                              COLLECTION_STYLE_ARGS, CUSTOM_STYLE_ARGS]):
-        print('  ', label, '\t', ', '.join(options))
+                               COLLECTION_STYLE_ARGS, CUSTOM_STYLE_ARGS]):
+        print('    {:10s}    {}'.format(label, ', '.join(options)))
 
 
 def style_spectrum_plot(ax, log_freqs, log_powers, grid=True):
@@ -252,6 +252,11 @@ def style_plot(func, *args, **kwargs):
 
     >>> from fooof.plts.style import check_style_options
     >>> check_style_options()
+    Valid style arguments:
+        Axis          title, xlabel, ylabel, xlim, ylim
+        Line          alpha, lw, linewidth, ls, linestyle, marker, ms, markersize
+        Collection    alpha, edgecolor
+        Custom        title_fontsize, label_size, tick_labelsize, legend_size, legend_loc
     """
 
     @wraps(func)
