@@ -6,6 +6,10 @@ from fooof.plts.style import *
 ###################################################################################################
 ###################################################################################################
 
+def test_check_style_options():
+
+    check_style_options()
+
 def test_style_spectrum_plot(skip_if_no_mpl):
 
     # Create a dummy plot and style it
