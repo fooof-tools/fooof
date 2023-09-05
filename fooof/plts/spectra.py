@@ -47,7 +47,8 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, freq_r
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Additional plot related keyword arguments.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
+        For spectra plots, boolean input `grid` can be used to control if the figure has a grid.
     """
 
     # Create the plot & collect plot kwargs of interest
@@ -110,8 +111,9 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r',
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Additional plot related keyword arguments.
-        This can include additional inputs into :func:`~.plot_spectra`.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
+        For spectra plots, boolean input `grid` can be used to control if the figure has a grid.
+        This can also include additional inputs into :func:`~.plot_spectra`.
 
     Notes
     -----
@@ -166,7 +168,9 @@ def plot_spectra_yshade(freqs, power_spectra, shade='std', average='mean', scale
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Additional plot related keyword arguments.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
+        For spectra plots, boolean input `grid` can be used to control if the figure has a grid.
+        This can also include additional inputs into :func:`~.plot_spectra`.
     """
 
     if (isinstance(shade, str) or isfunction(shade)) and power_spectra.ndim != 2:
