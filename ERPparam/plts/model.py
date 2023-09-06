@@ -52,4 +52,3 @@ def plot_ERPparam(model, ax=None, y_label=None):
 
     # style
     style_erp_plot(ax)
-    plt.show()
