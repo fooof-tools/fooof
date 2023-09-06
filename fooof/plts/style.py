@@ -253,7 +253,7 @@ def style_plot(func, *args, **kwargs):
     >>> from fooof.plts.style import check_style_options
     >>> check_style_options()
     Valid style arguments:
-        Axis          title, xlabel, ylabel, xlim, ylim
+        Axis          title, xlabel, ylabel, xlim, ylim, xticks, yticks, xticklabels, yticklabels
         Line          alpha, lw, linewidth, ls, linestyle, marker, ms, markersize
         Collection    alpha, edgecolor
         Custom        title_fontsize, label_size, tick_labelsize, legend_size, legend_loc
