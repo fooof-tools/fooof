@@ -939,7 +939,7 @@ class ERPparam():
             * FWHM: full width at half magnitude
             * rise_time: rise time i.e. time between peak and rising half-magnitude point
             * decay_time: decay time i.e. time between peak and decaying half-magnitude point
-            * symmetry: ratio of rise time to decay time
+            * symmetry: rise time / FWHM
             * sharpness: peak sharpness (normalized to be dimensionless 0-1)
             * sharpness_rise: ratio of peak half-magnitude and rise time (normalized to be dimensionless 0-1)
             * sharpness_decay: ratio of peak half-magnitude and decay time (normalized to be dimensionless 0-1)
