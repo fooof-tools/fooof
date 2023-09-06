@@ -966,7 +966,7 @@ class ERPparam():
             decay_time = self.time[end_index] - self.time[peak_index]
 
             # compute rise-decay symmetry
-            rise_decay_symmetry = rise_time / decay_time
+            rise_decay_symmetry = rise_time / fwhm
 
             # compute sharpness
             half_mag = np.abs(peak[1] / 2)
