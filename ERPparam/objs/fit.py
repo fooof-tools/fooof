@@ -935,14 +935,14 @@ class ERPparam():
         Returns
         -------
         shape_params : list
-            List of rise-decay symmetry parameters. In order:
+            List of shape parameters. In order:
             * FWHM: full width at half magnitude
             * rise_time: rise time i.e. time between peak and rising half-magnitude point
             * decay_time: decay time i.e. time between peak and decaying half-magnitude point
             * symmetry: rise time / FWHM
             * sharpness: peak sharpness (normalized to be dimensionless 0-1)
-            * sharpness_rise: ratio of peak half-magnitude and rise time (normalized to be dimensionless 0-1)
-            * sharpness_decay: ratio of peak half-magnitude and decay time (normalized to be dimensionless 0-1)
+            * sharpness_rise: sharpness of the rise (normalized to be dimensionless 0-1)
+            * sharpness_decay: sharpness of the decay (normalized to be dimensionless 0-1)
         """
 
         # initialize list of shape parameters
