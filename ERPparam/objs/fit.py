@@ -788,6 +788,7 @@ class ERPparam():
 
         # Check peaks based on edges, and on overlap, dropping any that violate requirements
         guess = self._drop_peak_cf(guess)
+        self.guess = guess
         guess = self._drop_peak_overlap(guess)
 
         # If there are peak guesses, fit the peaks, and sort results
@@ -1030,31 +1031,34 @@ class ERPparam():
         the lowest height guess Gaussian is dropped.
         """
 
-        # Sort the peak guesses sequentially
-        #   This is so adjacent peaks can be compared from right to left
-        guess = sorted(guess, key=lambda x: float(x[0]))
+        print(guess[:,0])
 
-        # Calculate standard deviation bounds for checking amount of overlap
-        #   The bounds are the gaussian peak time +/- gaussian standard deviation
-        bounds = [[peak[0] - peak[2] * self._gauss_overlap_thresh,
-                   peak[0] + peak[2] * self._gauss_overlap_thresh] for peak in guess]
-
-        # Loop through peak bounds, comparing current bound to that of next peak
-        #   If the left peak's upper bound extends pass the right peaks lower bound,
-        #   then drop the Gaussian with the lower height
+        # loop through each peak guess
         drop_inds = []
-        for ind, b_0 in enumerate(bounds[:-1]):
-            b_1 = bounds[ind + 1]
+        for ii in range(len(guess)):
+            # get bounds for gaussian overlap
+            guess_i = guess[ii]
+            bounds = [guess_i[0] - guess_i[2] * self._gauss_overlap_thresh,
+                        guess_i[0] + guess_i[2] * self._gauss_overlap_thresh]
 
-            # Check if bound of current peak extends into next peak
-            if b_0[1] > b_1[0]:
+            # find overlapping peaks
+            in_range = (guess[:,0] > bounds[0]) & (guess[:,0] < bounds[1])
 
-                # If so, get the index of the gaussian with the lowest height (to drop)
-                drop_inds.append([ind, ind + 1][np.argmin([np.abs(guess[ind][1]), np.abs(guess[ind + 1][1])])])
+            # find highest peak and drop others
+            if np.sum(in_range) > 1:
+                indices = np.arange(len(guess))[in_range]
+                amplitudes = np.abs(guess[in_range,1])
+                keeper = indices[np.argmax(amplitudes)]
+                to_drop = [x for x in indices if x!=keeper]
+                drop_inds.append(to_drop)
+                print(f"Peak {ii} overlaps with peaks {indices}, {keeper} marked to keep and {to_drop} will be dropped")
 
-        # Drop any peaks guesses that overlap too much, based on threshold
-        keep_peak = [not ind in drop_inds for ind in range(len(guess))]
-        guess = np.array([gu for (gu, keep) in zip(guess, keep_peak) if keep])
+        # drop peaks
+        if len(drop_inds) > 0:
+            drop_inds = np.unique(np.concatenate(drop_inds))
+            guess = np.delete(guess, drop_inds, axis=0)
+
+        print(f"Final droppers: {drop_inds}")
 
         return guess
 
