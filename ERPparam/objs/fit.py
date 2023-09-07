@@ -749,7 +749,7 @@ class ERPparam():
 
             # Data-driven first guess at standard deviation
             #   Find half height index on each side of the center frequency
-            half_height = 0.5 * max_height
+            half_height = np.abs(0.5 * max_height)
             le_ind = next((val for val in range(max_ind - 1, 0, -1)
                            if iter_signal[val] <= half_height), None)
             ri_ind = next((val for val in range(max_ind + 1, len(iter_signal), 1)
