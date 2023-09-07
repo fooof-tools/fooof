@@ -1031,7 +1031,8 @@ class ERPparam():
         the lowest height guess Gaussian is dropped.
         """
 
-        print(guess[:,0])
+        # sort peaks sequentially
+        guess = guess[guess[:,0].argsort()]
 
         # loop through each peak guess
         drop_inds = []
