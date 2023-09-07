@@ -1049,7 +1049,7 @@ class ERPparam():
             if b_0[1] > b_1[0]:
 
                 # If so, get the index of the gaussian with the lowest height (to drop)
-                drop_inds.append([ind, ind + 1][np.argmin([guess[ind][1], guess[ind + 1][1]])])
+                drop_inds.append([ind, ind + 1][np.argmin([np.abs(guess[ind][1]), np.abs(guess[ind + 1][1])])])
 
         # Drop any peaks guesses that overlap too much, based on threshold
         keep_peak = [not ind in drop_inds for ind in range(len(guess))]
