@@ -34,7 +34,7 @@ def plot_ERPparam(model, ax=None, y_label=None):
     ax.plot(model.time, model.signal, alpha=0.5, label='ERP')
 
     # plot fit
-    if model.peak_params_ is not None:
+    if model._peak_fit is not None:
         # plot full model fit
         ax.plot(model.time, model._peak_fit, linestyle='--', color='k', label='Gaussian fit')
     
