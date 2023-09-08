@@ -140,10 +140,6 @@ class ERPparam():
         self.min_peak_height = min_peak_height
         self.peak_threshold = peak_threshold
         self.verbose = verbose
-        # print('...')
-        # print(peak_width_limits)
-        # print(max_n_peaks)
-        # print('...')
 
         # Threshold for how far a peak has to be from edge to keep.
         #   This is defined in units of gaussian standard deviation
@@ -1060,14 +1056,11 @@ class ERPparam():
                 keeper = indices[np.argmax(amplitudes)]
                 to_drop = [x for x in indices if x!=keeper]
                 drop_inds.append(to_drop)
-                print(f"Peak {ii} overlaps with peaks {indices}, {keeper} marked to keep and {to_drop} will be dropped")
 
         # drop peaks
         if len(drop_inds) > 0:
             drop_inds = np.unique(np.concatenate(drop_inds))
             guess = np.delete(guess, drop_inds, axis=0)
-
-        print(f"Final droppers: {drop_inds}")
 
         return guess
 
@@ -1160,8 +1153,6 @@ class ERPparam():
             If the input data are inconsistent size.
         """
 
-        # print(signal_dim)
-        # print(signal.ndim)
         # Check that data are the right types
         if not isinstance(time, np.ndarray) or not isinstance(signal, np.ndarray):
             raise DataError("Input data must be numpy arrays.")
