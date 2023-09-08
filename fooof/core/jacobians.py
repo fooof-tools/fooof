@@ -30,19 +30,25 @@ def jacobian_gauss(xs, *params):
         Jacobian matrix, with shape [len(xs), n_params].
     """
 
-    jacobians = []
-    for a, b, c in zip(*[iter(params)] * 3):
+    jacobians = np.zeros((len(xs), len(params)))
 
-        sub = b * np.exp((-(((-a + xs)**2) / (2 * c**2))))
+    for i, (a, b, c) in enumerate(zip(*[iter(params)] * 3)):
 
-        jacobian = np.hstack([
-            (sub * (-a + xs) / c**2).reshape(-1, 1),
-            np.exp(-(-a + xs)**2 / (2 * c**2)).reshape(-1, 1),
-            (sub * (-a + xs)**2 / c**3).reshape(-1, 1),
-        ])
-        jacobians.append(jacobian)
+        ax = -a + xs
+        ax2 = ax**2
 
-    return np.hstack(jacobians)
+        c2 = c**2
+        c3 = c**3
+
+        exp = np.exp(-ax2 / (2 * c2))
+        exp_b = exp * b
+
+        ii = i * 3
+        jacobians[:, ii] = (exp_b * ax) / c2
+        jacobians[:, ii+1] = exp
+        jacobians[:, ii+2] = (exp_b * ax2) / c3
+
+    return jacobians
 
 
 ## Aperiodic fit functions
