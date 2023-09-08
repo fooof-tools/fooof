@@ -710,6 +710,7 @@ class ERPparam():
         # generate guesses seperately for positive and negative peaks
         guess_pos = self._generate_guess(iter_signal)
         guess_neg = self._generate_guess(-iter_signal)
+        guess_neg[:, 1] = -guess_neg[:, 1] # flip negative amplitudes
         guess = np.vstack((guess_pos, guess_neg))
 
         # Check peaks based on edges, and on overlap, dropping any that violate requirements
