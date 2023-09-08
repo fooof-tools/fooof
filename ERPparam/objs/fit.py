@@ -707,6 +707,25 @@ class ERPparam():
 
 
     def _fit_peaks(self, iter_signal):
+        # generate guesses seperately for positive and negative peaks
+        guess_pos = self._generate_guess(iter_signal)
+        guess_neg = self._generate_guess(-iter_signal)
+        guess = np.vstack((guess_pos, guess_neg))
+
+        # Check peaks based on edges, and on overlap, dropping any that violate requirements
+        guess = self._drop_peak_cf(guess)
+        guess = self._drop_peak_overlap(guess)
+
+        # If there are peak guesses, fit the peaks, and sort results
+        if len(guess) > 0:
+            gaussian_params = self._fit_peak_guess(guess)
+            gaussian_params = gaussian_params[gaussian_params[:, 0].argsort()]
+        else:
+            gaussian_params = np.empty([0, 3])
+
+        return gaussian_params
+    
+    def _generate_guess(self, iter_signal):
         """Iteratively fit peaks to the signal.
 
         Parameters
@@ -786,19 +805,7 @@ class ERPparam():
             peak_gauss = gaussian_function(self.time, guess_time, guess_height, guess_std)
             iter_signal = iter_signal - peak_gauss
 
-        # Check peaks based on edges, and on overlap, dropping any that violate requirements
-        guess = self._drop_peak_cf(guess)
-        self.guess = guess
-        guess = self._drop_peak_overlap(guess)
-
-        # If there are peak guesses, fit the peaks, and sort results
-        if len(guess) > 0:
-            gaussian_params = self._fit_peak_guess(guess)
-            gaussian_params = gaussian_params[gaussian_params[:, 0].argsort()]
-        else:
-            gaussian_params = np.empty([0, 3])
-
-        return gaussian_params
+        return guess
 
 
     def _fit_peak_guess(self, guess):
