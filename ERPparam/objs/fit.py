@@ -894,10 +894,8 @@ class ERPparam():
 
         for ii, peak in enumerate(gaus_params):
 
-            # find the maximum height of the signal within _gauss_overlap_thresh of the peak
-            peak_range = np.where(np.logical_and(self.time >= peak[0] - peak[2] * self._gauss_overlap_thresh,
-                                                    self.time <= peak[0] + peak[2] * self._gauss_overlap_thresh))
-            peak_index = np.argmax(np.abs(self.signal[peak_range])) + peak_range[0][0]
+            # find the index of the signal the the time closest to the Gaussian center
+            peak_index = np.argmin(np.abs(self.time - peak[0]))
 
             # Collect peak parameter data
             peak_params[ii] = [self.time[peak_index], self.signal[peak_index], peak[2] * 2]
