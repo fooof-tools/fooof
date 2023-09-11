@@ -704,7 +704,10 @@ class ERPparam():
 
     def _fit_peaks(self, iter_signal):
         # generate guesses seperately for positive and negative peaks
-        guess = self._generate_guess(iter_signal)
+        guess_pos = self._generate_guess(iter_signal)
+        guess_neg = self._generate_guess(-iter_signal)
+        guess_neg[:, 1] = -guess_neg[:, 1] # flip negative amplitudes
+        guess = np.vstack((guess_pos, guess_neg))
 
         # If there are peak guesses, check them, fit the peaks, and sort results
         if len(guess) > 0:
