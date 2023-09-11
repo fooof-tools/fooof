@@ -704,18 +704,15 @@ class ERPparam():
 
     def _fit_peaks(self, iter_signal):
         # generate guesses seperately for positive and negative peaks
-        guess_pos = self._generate_guess(iter_signal)
-        guess_neg = self._generate_guess(-iter_signal)
-        guess_neg[:, 1] = -guess_neg[:, 1] # flip negative amplitudes
-        guess = np.vstack((guess_pos, guess_neg))
+        guess = self._generate_guess(iter_signal)
 
-
-
-        # If there are peak guesses, fit the peaks, and sort results
+        # If there are peak guesses, check them, fit the peaks, and sort results
         if len(guess) > 0:
-                    # Check peaks based on edges, and on overlap, dropping any that violate requirements
+            # Check peaks based on edges, and on overlap, dropping any that violate requirements
             guess = self._drop_peak_cf(guess)
             guess = self._drop_peak_overlap(guess)
+
+            # Fit the peaks, and sort results
             gaussian_params = self._fit_peak_guess(guess)
             gaussian_params = gaussian_params[gaussian_params[:, 0].argsort()]
         else:
