@@ -752,7 +752,7 @@ class ERPparam():
                 max_height = iter_signal[min_ind]
 
             # Stop searching for peaks once height drops below height threshold
-            if np.abs(max_height) <= self.peak_threshold * np.std(iter_signal):
+            if np.abs(max_height) <= self.peak_threshold * np.std(self.signal):
                 break
 
             # Set the guess parameters for gaussian fitting, specifying the mean and height
