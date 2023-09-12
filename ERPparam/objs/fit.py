@@ -722,6 +722,10 @@ class ERPparam():
             # drop overlapping peaks, again after fitting
             gaussian_params = self._drop_peak_overlap(gaussian_params)
 
+            # drop peaks below threshold
+            gaussian_params = gaussian_params[np.abs(gaussian_params[:, 1]) >= self.min_peak_height]
+            gaussian_params = gaussian_params[np.abs(gaussian_params[:, 1]) >= (self.peak_threshold * np.std(self.signal))]
+
         # If no peaks were found, return empty array
         else:
             gaussian_params = np.empty([0, 3])
