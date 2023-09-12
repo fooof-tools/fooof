@@ -718,6 +718,11 @@ class ERPparam():
             # Fit the peaks, and sort results
             gaussian_params = self._fit_peak_guess(guess)
             gaussian_params = gaussian_params[gaussian_params[:, 0].argsort()]
+
+            # drop overlapping peaks, again after fitting
+            gaussian_params = self._drop_peak_overlap(gaussian_params)
+
+        # If no peaks were found, return empty array
         else:
             gaussian_params = np.empty([0, 3])
 
