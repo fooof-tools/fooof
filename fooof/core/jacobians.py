@@ -12,7 +12,7 @@ import numpy as np
 ###################################################################################################
 ###################################################################################################
 
-## Periodic fit functions
+## Periodic Jacobian functions
 
 def jacobian_gauss(xs, *params):
     """Create the Jacobian matrix for the Gaussian function.
@@ -51,7 +51,7 @@ def jacobian_gauss(xs, *params):
     return jacobian
 
 
-## Aperiodic fit functions
+## Aperiodic Jacobian functions
 
 def jacobian_expo(xs, *params):
     """Create the Jacobian matrix for the exponential function.
