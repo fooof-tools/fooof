@@ -149,8 +149,6 @@ class ERPparam():
         self._gauss_overlap_thresh = 0.75
         # Parameter bounds for center when fitting gaussians, in terms of +/- std dev
         self._cf_bound = 1.5
-        # Parameter bounds for amplitude when fitting gaussians, in terms of +/- std dev
-        self._pw_bound = 10
         # The maximum number of calls to the curve fitting function
         self._maxfev = 500
         # The error metric to calculate, post model fitting. See `_calc_error` for options
@@ -826,10 +824,9 @@ class ERPparam():
         #     ((cf_low_peak1, height_low_peak1, bw_low_peak1, *repeated for n_peaks*),
         #      (cf_high_peak1, height_high_peak1, bw_high_peak, *repeated for n_peaks*))
         #     ^where each value sets the bound on the specified parameter
-        amplitude_bounds = self._pw_bound * np.std(self.signal)
-        lo_bound = [[peak[0] - 2 * self._cf_bound * peak[2], -amplitude_bounds, self._gauss_std_limits[0]]
+        lo_bound = [[peak[0] - 2 * self._cf_bound * peak[2], -np.inf, self._gauss_std_limits[0]]
                     for peak in guess]
-        hi_bound = [[peak[0] + 2 * self._cf_bound * peak[2], amplitude_bounds, self._gauss_std_limits[1]]
+        hi_bound = [[peak[0] + 2 * self._cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]
                     for peak in guess]
 
         # Check that CT bounds are within time range
