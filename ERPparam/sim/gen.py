@@ -1,4 +1,4 @@
-"""Functions for generating model components and simulated power spectra."""
+"""Functions for generating model components and simulated ERPs."""
 
 import numpy as np
 
@@ -40,22 +40,22 @@ def gen_time_vector(time_range, fs):
     return time
 
 
-def gen_power_spectrum(time_range,  periodic_params, nlv=0.005, fs=1000, return_params=False):
-    """Generate a simulated power spectrum.
+def simulate_erp(time_range,  params, nlv=0.005, fs=1000, return_params=False):
+    """Generate a simulated ERP.
 
     Parameters
     ----------
     time_range : list of [float, float]
         Time range to create time vector across, as [start_time, end_time], inclusive.
-    periodic_params : list of float or generator
-        Parameters for the periodic component of the power spectra.
-        Length of n_peaks * 3.
+    params : list of float or generator
+        Parameters for the ERP components.
+        Length of n_components * 3.
     nlvs : float or list of float or generator, optional, default: 0.005
-        Noise level to add to generated power spectrum.
+        Noise level to add to generated ERP.
     fs : float
         Sampling frequency for desired time vector.
     return_params : bool, optional, default: False
-        Whether to return the parameters for the simulated spectra.
+        Whether to return the parameters for the simulated ERP.
 
     Returns
     -------
@@ -69,35 +69,35 @@ def gen_power_spectrum(time_range,  periodic_params, nlv=0.005, fs=1000, return_
     """
 
     time = gen_time_vector(time_range, fs)
-    signal = gen_signal(time, periodic_params, nlv)
+    signal = gen_signal(time, params, nlv)
 
     if return_params:
-        sim_params = collect_sim_params(periodic_params, nlv)
+        sim_params = collect_sim_params(params, nlv)
         return time, signal, sim_params
     else:
         return time, signal
 
 
 
-def gen_group_power_spectra(n_spectra, time_range, periodic_params, nlvs=0.005,
+def simulate_erps(n_signals, time_range, params, nlvs=0.005,
                             fs=1000, return_params=False):
-    """Generate a group of simulated power spectra.
+    """Generate a group of simulated ERPs.
 
     Parameters
     ----------
-    n_spectra : int
-        The number of power spectra to generate.
+    n_signals : int
+        The number of ERPs to generate.
     time_range : list of [float, float]
         Time range to create time vector across, as [start_time, end_time], inclusive.
-    periodic_params : list of float or generator
-        Parameters for the periodic component of the power spectra.
+    params : list of float or generator
+        Parameters for the ERP components.
         Length of n_peaks * 3.
     nlvs : float or list of float or generator, optional, default: 0.005
-        Noise level to add to generated power spectrum.
+        Noise level to add to generated ERPs.
     fs : float
         Sampling frequency for desired time vector.
     return_params : bool, optional, default: False
-        Whether to return the parameters for the simulated spectra.
+        Whether to return the parameters for the simulated ERPs.
 
     Returns
     -------
@@ -112,15 +112,15 @@ def gen_group_power_spectra(n_spectra, time_range, periodic_params, nlvs=0.005,
 
     # Initialize things
     time = gen_time_vector(time_range, fs)
-    signals = np.zeros([n_spectra, len(time)])
-    sim_params = [None] * n_spectra
+    signals = np.zeros([n_signals, len(time)])
+    sim_params = [None] * n_signals
 
     # Check if inputs are generators, if not, make them into repeat generators
-    pe_params = check_iter(periodic_params, n_spectra)
-    nlvs = check_iter(nlvs, n_spectra)
+    pe_params = check_iter(params, n_signals)
+    nlvs = check_iter(nlvs, n_signals)
 
-    # Simulate power spectra
-    for ind, pe, nlv in zip(range(n_spectra), pe_params, nlvs):
+    # Simulate ERPs
+    for ind, pe, nlv in zip(range(n_signals), pe_params, nlvs):
         signals[ind, :] = gen_signal(time, pe, nlv)
 
         sim_params[ind] = collect_sim_params(pe, nlv)
@@ -131,17 +131,17 @@ def gen_group_power_spectra(n_spectra, time_range, periodic_params, nlvs=0.005,
         return time, signals
 
 
-def gen_periodic(time, periodic_params, periodic_mode='gaussian'):
-    """Generate periodic values.
+def sim_erp(time, params, periodic_mode='gaussian'):
+    """Generate signal values.
 
     Parameters
     ----------
     time : 1d array
         Time vector to create peak values for.
-    periodic_params : list of float
-        Parameters to create the periodic component.
+    params : list of float
+        Parameters to create the component.
     periodic_mode : {'gaussian'}, optional
-        Which kind of periodic component to generate.
+        Which kind of component to generate.
 
     Returns
     -------
@@ -151,13 +151,13 @@ def gen_periodic(time, periodic_params, periodic_mode='gaussian'):
 
     pe_func = get_pe_func(periodic_mode)
 
-    pe_vals = pe_func(time, *periodic_params)
+    pe_vals = pe_func(time, *params)
 
     return pe_vals
 
 
-def gen_noise(time, nlv):
-    """Generate noise values for a simulated power spectrum.
+def sim_noise(time, nlv):
+    """Generate noise values for a simulated ERP.
 
     Parameters
     ----------
@@ -182,15 +182,15 @@ def gen_noise(time, nlv):
     return noise_vals
 
 
-def gen_signal(time, periodic_params, nlv):
+def gen_signal(time, params, nlv):
     """Generate simulated ERP.
 
     Parameters
     ----------
     time : 1d array
-        Time vector to create power values for.
-    periodic_params : list of float
-        Parameters to create the periodic component of the signal.
+        Time vector to create values for.
+    params : list of float
+        Parameters to create the ERP components.
     nlv : float
         Noise level to add to generated signal.
 
@@ -201,8 +201,8 @@ def gen_signal(time, periodic_params, nlv):
 
     """
 
-    pe_vals = gen_periodic(time, periodic_params)
-    noise = gen_noise(time, nlv)
+    pe_vals = sim_erp(time, params)
+    noise = sim_noise(time, nlv)
 
     signal = pe_vals + noise
 

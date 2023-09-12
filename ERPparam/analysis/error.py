@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from ERPparam.sim.gen import gen_periodic
+from ERPparam.sim.gen import sim_erp
 from ERPparam.plts.error import plot_spectral_error
 from ERPparam.core.errors import NoModelError, NoDataError
 
@@ -88,7 +88,7 @@ def compute_pointwise_error_fg(fg, plot_errors=True, return_errors=False, **plt_
 
     for ind, (res, data) in enumerate(zip(fg, fg.signal)):
 
-        model = gen_periodic(fg.time, res.gaussian_params)
+        model = sim_erp(fg.time, res.gaussian_params)
         errors[ind, :] = np.abs(model - data)
 
     mean = np.mean(errors, 0)

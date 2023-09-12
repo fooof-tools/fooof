@@ -9,7 +9,7 @@ import numpy as np
 
 from ERPparam.core.utils import nearest_ind
 from ERPparam.core.modutils import safe_import, check_dependency
-from ERPparam.sim.gen import gen_periodic
+from ERPparam.sim.gen import sim_erp
 from ERPparam.utils.data import trim_spectrum
 from ERPparam.utils.params import compute_fwhm
 from ERPparam.plts.spectra import plot_spectra

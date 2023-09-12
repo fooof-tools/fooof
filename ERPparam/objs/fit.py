@@ -66,7 +66,7 @@ from ERPparam.utils.data import trim_spectrum
 from ERPparam.utils.params import compute_gauss_std
 from ERPparam.data import ERPparamResults, ERPparamSettings, ERPparamMetaData
 from ERPparam.data.conversions import model_to_dataframe
-from ERPparam.sim.gen import gen_time_vector, gen_periodic
+from ERPparam.sim.gen import gen_time_vector, sim_erp
 
 ###################################################################################################
 ###################################################################################################
@@ -420,7 +420,7 @@ class ERPparam():
 
             # Calculate the peak fit
             #   Note: if no peaks are found, this creates a flat (all zero) peak fit
-            self._peak_fit = gen_periodic(self.time, np.ndarray.flatten(self.gaussian_params_))
+            self._peak_fit = sim_erp(self.time, np.ndarray.flatten(self.gaussian_params_))
 
             # Convert gaussian definitions to peak parameters
             self.peak_params_  = self._create_peak_params(self.gaussian_params_)
@@ -707,6 +707,7 @@ class ERPparam():
     def _fit_peaks(self, iter_signal):
         # generate guesses seperately for positive and negative peaks
         guess = self._generate_guess(iter_signal)
+        self.guess_ = guess
 
         # If there are peak guesses, check them, fit the peaks, and sort results
         if len(guess) > 0:
@@ -1260,5 +1261,5 @@ class ERPparam():
     def _regenerate_model(self):
         """Regenerate model fit from parameters."""
 
-        self._peak_fit = gen_periodic(
+        self._peak_fit = sim_erp(
             self.time,  np.ndarray.flatten(self.gaussian_params_))
