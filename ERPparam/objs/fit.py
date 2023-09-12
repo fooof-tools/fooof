@@ -747,11 +747,7 @@ class ERPparam():
 
             # Find candidate peak - the maximum point of the signal
             max_ind = np.argmax(iter_signal)
-            min_ind = np.argmin(iter_signal)
-            if np.abs(iter_signal[max_ind]) > np.abs(iter_signal[min_ind]):
-                max_height = iter_signal[max_ind]
-            else:
-                max_height = iter_signal[min_ind]
+            max_height = iter_signal[max_ind]
 
             # Stop searching for peaks once height drops below height threshold
             if np.abs(max_height) <= self.peak_threshold * np.std(iter_signal):
