@@ -70,11 +70,13 @@ def jacobian_expo(xs, *params):
     """
 
     a, b, c = params
-    jacobian = np.hstack([
-        np.ones([len(xs), 1]),
-        - (1 / (b + xs**c)).reshape(-1, 1),
-        -((xs**c * np.log10(xs)) / (b + xs**c)).reshape(-1, 1),
-    ])
+
+    xs_c = xs**c
+    b_xs_c = xs_c + b
+
+    jacobian = np.ones((len(xs), len(params)))
+    jacobian[:, 1] = -1 / b_xs_c
+    jacobian[:, 2] = -(xs_c * np.log10(xs)) / b_xs_c
 
     return jacobian
 
@@ -95,9 +97,7 @@ def jacobian_expo_nk(xs, *params):
         Jacobian matrix, with shape [len(xs), n_params].
     """
 
-    jacobian = np.hstack([
-        np.ones([len(xs), 1]),
-        (-np.log10(xs) / np.log10(10)).reshape(-1, 1),
-    ])
+    jacobian = np.ones((len(xs), len(params)))
+    jacobian[:, 1] = -np.log10(xs)
 
     return jacobian
