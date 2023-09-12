@@ -24,21 +24,21 @@ def compute_knee_frequency(knee, exponent):
     return knee ** (1./exponent)
 
 
-def compute_time_constant(knee):
-    """Compute the characteristic time constant based on the knee value.
+def compute_time_constant(knee_freq):
+    """Compute the characteristic time constant from the estimated knee frequency.
 
     Parameters
     ----------
-    knee : float
-        Knee parameter value.
+    knee_freq : float
+        Estimated knee frequency.
 
     Returns
     -------
     float
-        Calculated time constant value, tau, given the knee parameter.
+        Calculated time constant value, tau, given the knee frequency.
     """
 
-    return 1. / (2*np.pi*knee)
+    return 1. / (2*np.pi*knee_freq)
 
 
 def compute_fwhm(std):
