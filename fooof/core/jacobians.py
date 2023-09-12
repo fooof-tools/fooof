@@ -3,7 +3,7 @@
 Notes
 -----
 These functions line up with those in `funcs`.
-The parameters in these functions are labelled {a, b, c, ...}, but follow the order in `funcs`.
+The parameters in these functions are labeled {a, b, c, ...}, but follow the order in `funcs`.
 These functions are designed to be passed into `curve_fit` to provide a computed Jacobian.
 """
 
@@ -15,7 +15,7 @@ import numpy as np
 ## Periodic fit functions
 
 def jacobian_gauss(xs, *params):
-    """Create the Jacobian matrix for the Guassian function.
+    """Create the Jacobian matrix for the Gaussian function.
 
     Parameters
     ----------
@@ -30,7 +30,7 @@ def jacobian_gauss(xs, *params):
         Jacobian matrix, with shape [len(xs), n_params].
     """
 
-    jacobians = np.zeros((len(xs), len(params)))
+    jacobian = np.zeros((len(xs), len(params)))
 
     for i, (a, b, c) in enumerate(zip(*[iter(params)] * 3)):
 
@@ -44,11 +44,11 @@ def jacobian_gauss(xs, *params):
         exp_b = exp * b
 
         ii = i * 3
-        jacobians[:, ii] = (exp_b * ax) / c2
-        jacobians[:, ii+1] = exp
-        jacobians[:, ii+2] = (exp_b * ax2) / c3
+        jacobian[:, ii] = (exp_b * ax) / c2
+        jacobian[:, ii+1] = exp
+        jacobian[:, ii+2] = (exp_b * ax2) / c3
 
-    return jacobians
+    return jacobian
 
 
 ## Aperiodic fit functions
