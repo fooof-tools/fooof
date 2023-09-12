@@ -704,8 +704,10 @@ class ERPparam():
 
     def _fit_peaks(self, iter_signal):
         # generate guesses seperately for positive and negative peaks
-        guess = self._generate_guess(iter_signal)
-        self.guess_ = guess
+        guess_pos = self._generate_guess(iter_signal)
+        guess_neg = self._generate_guess(-iter_signal)
+        guess_neg[:, 1] = -guess_neg[:, 1] # flip negative amplitudes
+        guess = np.vstack((guess_pos, guess_neg))
 
         # If there are peak guesses, check them, fit the peaks, and sort results
         if len(guess) > 0:
@@ -745,11 +747,7 @@ class ERPparam():
 
             # Find candidate peak - the maximum point of the signal
             max_ind = np.argmax(iter_signal)
-            min_ind = np.argmin(iter_signal)
-            if np.abs(iter_signal[max_ind]) > np.abs(iter_signal[min_ind]):
-                max_height = iter_signal[max_ind]
-            else:
-                max_height = iter_signal[min_ind]
+            max_height = iter_signal[max_ind]
 
             # Stop searching for peaks once height drops below height threshold
             if np.abs(max_height) <= self.peak_threshold * np.std(self.signal):
