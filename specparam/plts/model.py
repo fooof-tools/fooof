@@ -56,7 +56,7 @@ def plot_model(model, plot_peaks=None, plot_aperiodic=True, freqs=None, power_sp
     data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs : None or dict, optional
         Keyword arguments to pass into the plot call for each plot element.
     **plot_kwargs
-        Keyword arguments to apply to the plot.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
 
     Notes
     -----
@@ -163,7 +163,7 @@ def _add_peaks_shade(model, plt_log, ax, **plot_kwargs):
     ax : matplotlib.Axes
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the ``fill_between``.
+        Keyword arguments to pass into ``fill_between``.
     """
 
     defaults = {'color' : PLT_COLORS['periodic'], 'alpha' : 0.25}
