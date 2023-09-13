@@ -407,7 +407,7 @@ class FOOOF():
             Only relevant / effective if `freqs` and `power_spectrum` passed in in this call.
         **plot_kwargs
             Keyword arguments to pass into the plot method.
-            Plot options with a name conflict be passed by pre-pending 'plot_'.
+            Plot options with a name conflict be passed by pre-pending `plot_`.
             e.g. `freqs`, `power_spectrum` and `freq_range`.
 
         Notes

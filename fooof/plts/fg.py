@@ -33,6 +33,8 @@ def plot_fg(fg, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
         Name to give the saved out file.
     file_path : Path or str, optional
         Path to directory to save to. If None, saves to current directory.
+    **plot_kwargs
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
 
     Raises
     ------
@@ -76,7 +78,7 @@ def plot_fg_ap(fg, ax=None, **plot_kwargs):
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the ``style_plot``.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
     if fg.aperiodic_mode == 'knee':
@@ -101,7 +103,7 @@ def plot_fg_gf(fg, ax=None, **plot_kwargs):
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the ``style_plot``.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
     plot_scatter_2(fg.get_params('error'), 'Error',
@@ -121,7 +123,7 @@ def plot_fg_peak_cens(fg, ax=None, **plot_kwargs):
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the ``style_plot``.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
     plot_hist(fg.get_params('peak_params', 0)[:, 0], 'Center Frequency',
