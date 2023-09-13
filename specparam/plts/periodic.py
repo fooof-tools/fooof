@@ -35,7 +35,7 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None, ax=None, 
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the ``style_plot``.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
@@ -86,7 +86,7 @@ def plot_peak_fits(peaks, freq_range=None, colors=None, labels=None, ax=None, **
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the plot call.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
