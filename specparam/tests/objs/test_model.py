@@ -365,7 +365,7 @@ def test_debug():
 
 def test_set_check_modes():
     """Test changing check_modes using set_check_modes, and that checks get turned off.
-    Note that testing for checks raising errors happens in test_fooof_checks.`"""
+    Note that testing for checks raising errors happens in test_checks.`"""
 
     tfm = SpectralModel(verbose=False)
     tfm.set_check_modes(False, False)

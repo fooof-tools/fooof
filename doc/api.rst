@@ -326,6 +326,27 @@ Annotated plots that describe the model and fitting process.
     plot_annotated_model
     plot_annotated_peak_search
 
+Plot Utilities & Styling
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Plot related utilies for styling and managing plots.
+
+.. currentmodule:: fooof.plts.style
+
+.. autosummary::
+    :toctree: generated/
+
+    check_style_options
+
+.. currentmodule:: fooof.plts.utils
+
+.. autosummary::
+    :toctree: generated/
+
+    check_ax
+    recursive_plot
+    save_figure
+
 Utilities
 ---------
 

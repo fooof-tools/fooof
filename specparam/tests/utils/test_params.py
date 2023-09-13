@@ -11,7 +11,7 @@ def test_compute_knee_frequency():
 
 def test_compute_time_constant():
 
-    assert compute_time_constant(100)
+    assert compute_time_constant(10)
 
 def test_compute_fwhm():
 
