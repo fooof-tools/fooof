@@ -28,7 +28,7 @@ def plot_group(group, **plot_kwargs):
     group : SpectralGroupModel
         Object containing results from fitting a group of power spectra.
     **plot_kwargs
-        Keyword arguments to apply to the plot.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
 
     Raises
     ------
@@ -72,7 +72,7 @@ def plot_group_aperiodic(group, ax=None, **plot_kwargs):
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the ``style_plot``.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
     if group.aperiodic_mode == 'knee':
@@ -97,7 +97,7 @@ def plot_group_goodness(group, ax=None, **plot_kwargs):
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the ``style_plot``.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
     plot_scatter_2(group.get_params('error'), 'Error',
@@ -117,7 +117,7 @@ def plot_group_peak_frequencies(group, ax=None, **plot_kwargs):
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the ``style_plot``.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
     plot_hist(group.get_params('peak_params', 0)[:, 0], 'Center Frequency',

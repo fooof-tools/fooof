@@ -391,7 +391,7 @@ def test_fit_failure():
 
     ## Induce a runtime error, and check it runs through
     tfm = SpectralModel(verbose=False)
-    tfm._maxfev = 5
+    tfm._maxfev = 2
 
     tfm.fit(*sim_power_spectrum([3, 50], [50, 2], [10, 0.5, 2, 20, 0.3, 4]))
 
@@ -417,7 +417,7 @@ def test_debug():
     """Test model object in debug mode, including with fit failures."""
 
     tfm = SpectralModel(verbose=False)
-    tfm._maxfev = 5
+    tfm._maxfev = 2
 
     tfm.set_debug_mode(True)
     assert tfm._debug is True
@@ -427,7 +427,7 @@ def test_debug():
 
 def test_set_check_modes(tfm):
     """Test changing check_modes using set_check_modes, and that checks get turned off.
-    Note that testing for checks raising errors happens in test_fooof_checks.`"""
+    Note that testing for checks raising errors happens in test_checks.`"""
 
     tfm = SpectralModel(verbose=False)
 
