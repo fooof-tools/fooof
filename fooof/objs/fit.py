@@ -71,6 +71,7 @@ from fooof.core.reports import save_report_fm
 from fooof.core.modutils import copy_doc_func_to_method
 from fooof.core.utils import group_three, check_array_dim
 from fooof.core.funcs import gaussian_function, get_ap_func, infer_ap_func
+from fooof.core.jacobians import jacobian_gauss
 from fooof.core.errors import (FitError, NoModelError, DataError,
                                NoDataError, InconsistentDataError)
 from fooof.core.strings import (gen_settings_str, gen_results_fm_str,
@@ -192,11 +193,16 @@ class FOOOF():
         self._gauss_overlap_thresh = 0.75
         # Parameter bounds for center frequency when fitting gaussians, in terms of +/- std dev
         self._cf_bound = 1.5
-        # The maximum number of calls to the curve fitting function
-        self._maxfev = 5000
         # The error metric to calculate, post model fitting. See `_calc_error` for options
         #   Note: this is for checking error post fitting, not an objective function for fitting
         self._error_metric = 'MAE'
+
+        ## PRIVATE CURVE_FIT SETTINGS
+        # The maximum number of calls to the curve fitting function
+        self._maxfev = 5000
+        # The tolerance setting for curve fitting (see scipy.curve_fit - ftol / xtol / gtol)
+        #   Here reduce tolerance to speed fitting. Set value to 1e-8 to match curve_fit default
+        self._tol = 0.00001
 
         ## RUN MODES
         # Set default debug mode - controls if an error is raised if model fitting is unsuccessful
@@ -946,7 +952,9 @@ class FOOOF():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                                 freqs, power_spectrum, p0=guess,
-                                                maxfev=self._maxfev, bounds=ap_bounds)
+                                                maxfev=self._maxfev, bounds=ap_bounds,
+                                                ftol=self._tol, xtol=self._tol, gtol=self._tol,
+                                                check_finite=False)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding parameters in "
                          "the simple aperiodic component fit.")
@@ -1003,7 +1011,9 @@ class FOOOF():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(get_ap_func(self.aperiodic_mode),
                                                 freqs_ignore, spectrum_ignore, p0=popt,
-                                                maxfev=self._maxfev, bounds=ap_bounds)
+                                                maxfev=self._maxfev, bounds=ap_bounds,
+                                                ftol=self._tol, xtol=self._tol, gtol=self._tol,
+                                                check_finite=False)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
                          "parameters in the robust aperiodic fit.")
@@ -1149,7 +1159,9 @@ class FOOOF():
         # Fit the peaks
         try:
             gaussian_params, _ = curve_fit(gaussian_function, self.freqs, self._spectrum_flat,
-                                           p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds)
+                                           p0=guess, maxfev=self._maxfev, bounds=gaus_param_bounds,
+                                           ftol=self._tol, xtol=self._tol, gtol=self._tol,
+                                           check_finite=False, jac=jacobian_gauss)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
                          "parameters in the peak component fit.")
