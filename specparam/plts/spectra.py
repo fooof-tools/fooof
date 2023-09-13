@@ -60,8 +60,8 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, freq_r
         freq_range = np.log10(freq_range) if log_freqs else freq_range
 
     # Make inputs iterable if need to be passed multiple times to plot each spectrum
-    plt_powers = np.reshape(power_spectra, (1, -1)) if np.ndim(power_spectra) == 1 else \
-        power_spectra
+    plt_powers = np.reshape(power_spectra, (1, -1)) if isinstance(freqs, np.ndarray) and \
+        np.ndim(power_spectra) == 1 else power_spectra
     plt_freqs = repeat(freqs) if isinstance(freqs, np.ndarray) and freqs.ndim == 1 else freqs
 
     # Set labels
@@ -129,6 +129,10 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r',
 
     style_spectrum_plot(ax, plot_kwargs.get('log_freqs', False),
                         plot_kwargs.get('log_powers', False))
+
+
+# Alias `plot_spectrum_shading` to `plot_spectra_shading` for backwards compatibility
+plot_spectrum_shading = plot_spectra_shading
 
 
 @savefig
