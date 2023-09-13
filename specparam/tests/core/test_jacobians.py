@@ -1,6 +1,6 @@
-"""Tests for fooof.core.jacobians."""
+"""Tests for specparam.core.jacobians."""
 
-from fooof.core.jacobians import *
+from specparam.core.jacobians import *
 
 ###################################################################################################
 ###################################################################################################
