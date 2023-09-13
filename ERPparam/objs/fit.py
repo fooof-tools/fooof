@@ -708,12 +708,12 @@ class ERPparam():
         guess_neg = self._generate_guess(-iter_signal)
         guess_neg[:, 1] = -guess_neg[:, 1] # flip negative amplitudes
         guess = np.vstack((guess_pos, guess_neg))
+        # Check peaks based on edges, and on overlap, dropping any that violate requirements
+        guess = self._drop_peak_cf(guess)
+        guess = self._drop_peak_overlap(guess)
 
         # If there are peak guesses, check them, fit the peaks, and sort results
         if len(guess) > 0:
-            # Check peaks based on edges, and on overlap, dropping any that violate requirements
-            guess = self._drop_peak_cf(guess)
-            guess = self._drop_peak_overlap(guess)
 
             # Fit the peaks, and sort results
             gaussian_params = self._fit_peak_guess(guess)
@@ -1005,6 +1005,8 @@ class ERPparam():
         guess : 2d array
             Guess parameters for gaussian peak fits. Shape: [n_peaks, 3].
         """
+        if len(guess) == 0:
+            return guess
 
         cf_params = guess[:, 0]
         bw_params = guess[:, 2] * self._bw_std_edge
@@ -1038,6 +1040,9 @@ class ERPparam():
         For any gaussians with an overlap that crosses the threshold,
         the lowest height guess Gaussian is dropped.
         """
+
+        if len(guess) == 0:
+            return guess
 
         # sort peaks sequentially
         guess = guess[guess[:,0].argsort()]
