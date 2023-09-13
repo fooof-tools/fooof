@@ -33,7 +33,7 @@ def plot_spectral_error(freqs, error, shade=None, log_freqs=False, ax=None, **pl
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
-        Keyword arguments to pass into the ``style_plot``.
+        Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
