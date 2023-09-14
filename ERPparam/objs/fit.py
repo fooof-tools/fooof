@@ -250,6 +250,7 @@ class ERPparam():
             self.shape_params_ = np.ones([0,7])*np.nan
             self.r_squared_ = np.nan
             self.error_ = np.nan
+            self.peak_indices_ = np.full(3, np.nan)
 
             self._peak_fit = None
 
@@ -325,6 +326,8 @@ class ERPparam():
 
         self.gaussian_params_ = ERPparam_result.gaussian_params
         self.peak_params_ = ERPparam_result.peak_params
+        self.shape_params_ = ERPparam_result.shape_params
+        self.peak_indices_ = ERPparam_result.peak_indices
         self.r_squared_ = ERPparam_result.r_squared
         self.error_ = ERPparam_result.error
 
