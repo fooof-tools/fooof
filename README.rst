@@ -71,7 +71,7 @@ This documentation includes:
 Dependencies
 ------------
 
-FOOOF is written in Python, and requires Python >= 3.6 to run.
+FOOOF is written in Python and requires Python >= 3.6 to run.
 
 It has the following required dependencies:
 
@@ -202,7 +202,7 @@ and follow the
 Quickstart
 ----------
 
-This module is object oriented, and uses a similar approach as used in scikit-learn.
+This module is object oriented and uses a similar approach as used in scikit-learn.
 
 The algorithm works on frequency representations, that is power spectra in linear space.
 
