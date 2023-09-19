@@ -386,7 +386,7 @@ class ERPparamGroup(ERPparam):
         elif name in ('shape_params'):
 
             # Collect peak data, appending the index of the model it comes from
-            out = np.vstack([np.insert(getattr(data, name), 4, index, axis=1)
+            out = np.vstack([np.insert(getattr(data, name), 7, index, axis=1)
                              for index, data in enumerate(self.group_results)])
 
             # This updates index to grab selected column, and the last column
