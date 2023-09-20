@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>04: Exploring the FOOOF Object &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>04: Exploring the FOOOF Object &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../visualizers.html">Visualizers</a></li>
                 <li><a href="../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -112,10 +115,11 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-04-morefooof-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-04-morefooof-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="exploring-the-fooof-object">
-<span id="sphx-glr-auto-tutorials-plot-04-morefooof-py"></span><h1>04: Exploring the FOOOF Object<a class="headerlink" href="#exploring-the-fooof-object" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="exploring-the-fooof-object">
+<span id="sphx-glr-auto-tutorials-plot-04-morefooof-py"></span><h1>04: Exploring the FOOOF Object<a class="headerlink" href="#exploring-the-fooof-object" title="Permalink to this heading">¶</a></h1>
 <p>Further exploring the FOOOF object, including algorithm settings and available methods.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a>
@@ -128,8 +132,8 @@
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<div class="section" id="description-of-methods-and-attributes">
-<h2>Description of methods and attributes<a class="headerlink" href="#description-of-methods-and-attributes" title="Permalink to this headline">¶</a></h2>
+<section id="description-of-methods-and-attributes">
+<h2>Description of methods and attributes<a class="headerlink" href="#description-of-methods-and-attributes" title="Permalink to this heading">¶</a></h2>
 <p>The <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object contents consist of 4 main components (groups of data / code):</p>
 <ul class="simple">
 <li><ol class="arabic simple">
@@ -159,24 +163,24 @@
 </ul>
 </li>
 </ul>
-<div class="section" id="settings-attributes">
-<h3>1) Settings (attributes)<a class="headerlink" href="#settings-attributes" title="Permalink to this headline">¶</a></h3>
+<section id="settings-attributes">
+<h3>1) Settings (attributes)<a class="headerlink" href="#settings-attributes" title="Permalink to this heading">¶</a></h3>
 <p>There are a number of settings that control the fitting algorithm, that
 can be set by the user when initializing the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object.</p>
 <p>There are some internal settings that are not exposed at initialization.
 These settings are unlikely to need to be accessed by the user, but can be if desired -
 they are all defined and documented in the code in the object’s __init__ (there are no
 other settings, or ‘magic numbers’ in any other parts of the code).</p>
-<div class="section" id="controlling-peak-fits">
-<h4>Controlling Peak Fits<a class="headerlink" href="#controlling-peak-fits" title="Permalink to this headline">¶</a></h4>
+<section id="controlling-peak-fits">
+<h4>Controlling Peak Fits<a class="headerlink" href="#controlling-peak-fits" title="Permalink to this heading">¶</a></h4>
 <p><strong>peak_width_limits (Hz)</strong> default: [0.5, 12]</p>
 <p>Enforced limits on the minimum and maximum widths of extracted peaks, given as a list of
 [minimum bandwidth, maximum bandwidth]. We recommend that the minimum bandwidth be set to
 be at last twice the frequency resolution of the power spectrum, so that single points
 can not be fit as peaks.</p>
-</div>
-<div class="section" id="peak-search-stopping-criteria">
-<h4>Peak Search Stopping Criteria<a class="headerlink" href="#peak-search-stopping-criteria" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="peak-search-stopping-criteria">
+<h4>Peak Search Stopping Criteria<a class="headerlink" href="#peak-search-stopping-criteria" title="Permalink to this heading">¶</a></h4>
 <p>An iterative procedure searches for candidate peaks in the flattened spectrum. Candidate
 peaks are extracted in order of decreasing height, until some stopping criterion is met,
 which is controlled by the following settings:</p>
@@ -185,26 +189,26 @@ which is controlled by the following settings:</p>
 will halt searching for new peaks when this number is reached. Note that peaks are extracted
 iteratively by height (over and above the aperiodic component), and so this approach will
 extract (up to) the <em>n</em> largest peaks.</p>
-<p><strong>peak_threshold (in units of standard deviation)</strong> default: 2.0</p>
+<p><strong>peak_threshold (relative threshold - standard deviation of power spectrum)</strong> default: 2.0</p>
 <p>The threshold, in terms of standard deviation of the aperiodic-removed power
 spectrum, above which a data point must pass to be considered a candidate peak.
 Once a candidate peak drops below this threshold, the peak search is halted (without
 including the most recent candidate).</p>
-<p><strong>min_peak_height (units of power - same as the input spectrum)</strong> default: 0</p>
+<p><strong>min_peak_height (absolute threshold - units of log power)</strong> default: 0</p>
 <p>The minimum height, above the aperiodic fit, that a peak must have to be extracted
-in the initial fit stage. Once a candidate peak drops below this threshold, the peak
-search is halted (without including the most recent candidate). Note that because
-this constraint is enforced during peak search, and prior to final peak fit, returned
-peaks are not guaranteed to surpass this value in height.</p>
+in the initial fit stage. This threshold is defined in units of log power. Once a
+candidate peak drops below this threshold, the peak search is halted (without including
+the most recent candidate). Note that because this constraint is enforced during peak search,
+and prior to final peak fit, returned peaks are not guaranteed to surpass this value in height.</p>
 <p>There are two different height-related halting conditions for the peak searching.
 By default, the relative (standard-deviation based) threshold is defined, whereas the
 absolute threshold is set to zero (this default is because there is no general way to
 set this value without knowing the scale of the data). If both are defined, both are
 used and the peak search will halt when a candidate peak fails to pass either the absolute,
 or relative threshold.</p>
-</div>
-<div class="section" id="aperiodic-mode">
-<h4>Aperiodic Mode<a class="headerlink" href="#aperiodic-mode" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="aperiodic-mode">
+<h4>Aperiodic Mode<a class="headerlink" href="#aperiodic-mode" title="Permalink to this heading">¶</a></h4>
 <p><strong>aperiodic_mode (string)</strong> default=’fixed’</p>
 <p>The fitting approach to use for the aperiodic component.</p>
 <dl class="simple">
@@ -214,9 +218,9 @@ or relative threshold.</p>
 </ul>
 </dd>
 </dl>
-</div>
-<div class="section" id="verbosity">
-<h4>Verbosity<a class="headerlink" href="#verbosity" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="verbosity">
+<h4>Verbosity<a class="headerlink" href="#verbosity" title="Permalink to this heading">¶</a></h4>
 <p><strong>verbose (boolean)</strong> default=’True’</p>
 <p>Whether to print out status updates and warnings.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can check all the user defined settings with check_settings</span>
@@ -224,7 +228,6 @@ or relative threshold.</p>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_settings" title="fooof.FOOOF.print_settings" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">print_settings</span></a><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
 
                                          FOOOF - SETTINGS
@@ -243,9 +246,9 @@ or relative threshold.</p>
 ==================================================================================================
 </pre></div>
 </div>
-</div>
-<div class="section" id="changing-settings">
-<h4>Changing Settings<a class="headerlink" href="#changing-settings" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="changing-settings">
+<h4>Changing Settings<a class="headerlink" href="#changing-settings" title="Permalink to this heading">¶</a></h4>
 <p>Note that if you wish to change settings, then you should re-initialize
 a new <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object with new settings.</p>
 <p>Simply changing the value of the relevant attribute may not appropriately propagate
@@ -256,10 +259,10 @@ the settings properly during fit and returning erroneous results.</p>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="data-attributes">
-<h3>2) Data (attributes)<a class="headerlink" href="#data-attributes" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="data-attributes">
+<h3>2) Data (attributes)<a class="headerlink" href="#data-attributes" title="Permalink to this heading">¶</a></h3>
 <p>The <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object stores the following data attributes:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">freqs</span></code>: the frequency values of the power spectrum</p></li>
@@ -281,10 +284,9 @@ if the current object has data loaded.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if the object has data loaded</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Has data loaded: &#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.has_data" title="fooof.FOOOF.has_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">has_data</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Has data loaded: &#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.has_data" title="fooof.FOOOF.has_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fm</span><span class="o">.</span><span class="n">has_data</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Has data loaded:  True
 </pre></div>
 </div>
@@ -295,7 +297,6 @@ if the current object has data loaded.</p>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Power Values: </span><span class="se">\t\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Frequency Range:         [2.441406250001353, 39.55078125002192]
 Frequency Resolution:    0.48828125000027045
 Frequency Values:        [2.44140625 2.9296875  3.41796875 3.90625    4.39453125]
@@ -307,9 +308,9 @@ Power Values:            [-21.99921865 -21.99669556 -22.02605736 -21.96875308 -2
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="results-attributes">
-<h3>3) Results (attributes)<a class="headerlink" href="#results-attributes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="results-attributes">
+<h3>3) Results (attributes)<a class="headerlink" href="#results-attributes" title="Permalink to this heading">¶</a></h3>
 <p>With our model fit, the results attributes should now hold values.</p>
 <p>Recall that by convention, any attributes that contain model results are
 indicated by a trailing underscore.</p>
@@ -328,10 +329,9 @@ indicated by a trailing underscore.</p>
 <p>The <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object also has an indicator attribute, <code class="docutils literal notranslate"><span class="pre">has_model</span></code>
 which indicates if the current object has model results available.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if the object has model results</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Has model results: &#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.has_model" title="fooof.FOOOF.has_model" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">has_model</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Has model results: &#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.has_model" title="fooof.FOOOF.has_model" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fm</span><span class="o">.</span><span class="n">has_model</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Has model results:  True
 </pre></div>
 </div>
@@ -343,19 +343,18 @@ which indicates if the current object has model results available.</p>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fooofed spectrum: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>aperiodic params:        [-21.44372546   1.07510691]
-peak params:     [[ 9.81511894  0.72768575  3.00442113]
- [13.0427614   0.25957048  2.54345948]
- [18.12826738  0.15093637  4.62563198]]
-r-squared:       0.9922991774125408
-fit error:       0.02937242321270783
-fooofed spectrum:        [-21.86047574 -21.9455885  -22.01750003 -22.07961578 -22.13385218]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>aperiodic params:        [-21.44373535   1.07510111]
+peak params:     [[ 9.81640203  0.72771297  3.00583448]
+ [13.04631978  0.2596321   2.5372394 ]
+ [18.12686014  0.15093619  4.62823406]]
+r-squared:       0.9922996525903673
+fit error:       0.029371515222790138
+fooofed spectrum:        [-21.86048334 -21.94559555 -22.01750639 -22.0796209  -22.13385474]
 </pre></div>
 </div>
-</div>
-<div class="section" id="methods">
-<h3>4) Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="methods">
+<h3>4) Methods<a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h3>
 <p>The <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object contains a number of methods that are either used
 to fit models and access data, and/or offer extra functionality.</p>
 <p>In addition to the exposed methods, there are some internal private methods,
@@ -365,10 +364,9 @@ as they may depend on internal state of the object as defined by other methods,
 and so may not do as expected in isolation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This piece of code is just a way to print out all the public methods with their description</span>
 <span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">it</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;fm.&#39;</span> <span class="o">+</span> <span class="n">it</span> <span class="o">+</span> <span class="s1">&#39;.__doc__&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> \
-    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">)</span> <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;fm.&#39;</span> <span class="o">+</span> <span class="n">it</span><span class="p">))];</span>
+    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">)</span> <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;fm.&#39;</span> <span class="o">+</span> <span class="n">it</span><span class="p">))];</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>add_data
         Add data (frequencies, and power spectrum values) to the current object.
 add_meta_data
@@ -381,12 +379,18 @@ copy
         Return a copy of the current object.
 fit
         Fit the full power spectrum as a combination of periodic and aperiodic components.
+get_data
+        Get a data component.
 get_meta_data
         Return data information from the current object.
+get_model
+        Get a model component.
 get_params
         Return model fit parameters for specified feature(s).
 get_results
         Return model fit parameters and goodness of fit metrics.
+get_run_modes
+        Return run modes of the current object.
 get_settings
         Return user defined settings of the current object.
 load
@@ -405,14 +409,22 @@ save
         Save out data, results and/or settings from a FOOOF object into a JSON file.
 save_report
         Generate and save out a PDF report for a power spectrum model fit.
+set_check_data_mode
+        Set check data mode, which controls if an error is raised if NaN or Inf data are added.
+set_check_modes
+        Set check modes, which controls if an error is raised based on check on the inputs.
 set_debug_mode
-        Set whether debug mode, wherein an error is raised if fitting is unsuccessful.
+        Set debug mode, which controls if an error is raised if model fitting is unsuccessful.
+set_run_modes
+        Simultaneously set all run modes.
+to_df
+        Convert and extract the model results as a pandas object.
 
-[None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+[None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
 </pre></div>
 </div>
-<div class="section" id="saving-data-results">
-<h4>Saving Data &amp; Results<a class="headerlink" href="#saving-data-results" title="Permalink to this headline">¶</a></h4>
+<section id="saving-data-results">
+<h4>Saving Data &amp; Results<a class="headerlink" href="#saving-data-results" title="Permalink to this heading">¶</a></h4>
 <p>There is also functionality for saving out, and loading back in, data and results.</p>
 <p>You have the option to specify which data to save.</p>
 <ul class="simple">
@@ -435,10 +447,9 @@ or append to, or pass in a JSON file object.</p>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">nfm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="plot 04 MoreFOOOF" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_04-MoreFOOOF_001.png" />
-</div>
-<div class="section" id="creating-reports">
-<h4>Creating Reports<a class="headerlink" href="#creating-reports" title="Permalink to this headline">¶</a></h4>
+<img src="../_images/sphx_glr_plot_04-MoreFOOOF_001.png" srcset="../_images/sphx_glr_plot_04-MoreFOOOF_001.png" alt="plot 04 MoreFOOOF" class = "sphx-glr-single-img"/></section>
+<section id="creating-reports">
+<h4>Creating Reports<a class="headerlink" href="#creating-reports" title="Permalink to this heading">¶</a></h4>
 <p>There is also functionality to save out a ‘report’ of a particular model fit.</p>
 <p>This generates and saves a PDF which contains the same output as
 <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_results" title="fooof.FOOOF.print_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print_results()</span></code></a>,
@@ -448,16 +459,22 @@ or append to, or pass in a JSON file object.</p>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.save_report" title="fooof.FOOOF.save_report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">save_report</span></a><span class="p">(</span><span class="s1">&#39;FOOOF_report&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/tom/opt/anaconda3/lib/python3.8/site-packages/fooof/core/reports.py:72: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/fooof/core/reports.py:72: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+</pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">¶</a></h2>
 <p>We have now fully explored the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object, and all it contains.
 Next, we will take a deeper dive into how to choose different modes for fitting
 the aperiodic component of power spectra.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.283 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-04-morefooof-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.891 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-04-morefooof-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/91057e4aeee06f0a0baa05c9f8714658/plot_04-MoreFOOOF.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_04-MoreFOOOF.py</span></code></a></p>
 </div>
@@ -466,8 +483,8 @@ the aperiodic component of power spectra.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -481,8 +498,8 @@ the aperiodic component of power spectra.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

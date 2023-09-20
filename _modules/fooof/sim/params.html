@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fooof.sim.params &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fooof.sim.params &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
 
@@ -26,10 +27,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +57,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +69,7 @@
                 <li><a href="../../../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -126,7 +128,7 @@
 <span class="c1">###################################################################################################</span>
 
 <span class="k">def</span> <span class="nf">collect_sim_params</span><span class="p">(</span><span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">periodic_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Collect simulation parameters into a SimParams object.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Collect simulation parameters into a SimParams object.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -149,7 +151,7 @@
 
 
 <div class="viewcode-block" id="update_sim_ap_params"><a class="viewcode-back" href="../../../generated/fooof.sim.params.update_sim_ap_params.html#fooof.sim.params.update_sim_ap_params">[docs]</a><span class="k">def</span> <span class="nf">update_sim_ap_params</span><span class="p">(</span><span class="n">sim_params</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Update the aperiodic parameter definition in a SimParams object.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the aperiodic parameter definition in a SimParams object.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -196,7 +198,7 @@
 
 
 <div class="viewcode-block" id="Stepper"><a class="viewcode-back" href="../../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper">[docs]</a><span class="k">class</span> <span class="nc">Stepper</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Object for stepping across parameter values.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Object for stepping across parameter values.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -222,7 +224,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Stepper.__init__"><a class="viewcode-back" href="../../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize a Stepper object.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a Stepper object.&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_values</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
 
@@ -246,7 +248,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_check_values</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Checks if provided values are valid.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if provided values are valid.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -259,18 +261,21 @@
 <span class="sd">            If the given values for defining the iteration range are inconsistent.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">ii</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">]):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Inputs &#39;start&#39;, &#39;stop&#39;, and &#39;step&#39; should all be positive values.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">ii</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Inputs &#39;start&#39; and &#39;stop&#39; should be positive values.&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">stop</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input &#39;start&#39; should be less than &#39;stop&#39;.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The sign of input &#39;step&#39; does not align with &#39;start&#39; / &#39;stop&#39; values.&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">step</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="n">stop</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input &#39;start&#39; and &#39;stop&#39; must be different values.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">abs</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input &#39;step&#39; is too large given values for &#39;start&#39; and &#39;stop&#39;.&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="param_iter"><a class="viewcode-back" href="../../../generated/fooof.sim.params.param_iter.html#fooof.sim.params.param_iter">[docs]</a><span class="k">def</span> <span class="nf">param_iter</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a generator to iterate across parameter ranges.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a generator to iterate across parameter ranges.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -327,7 +332,7 @@
 
 
 <div class="viewcode-block" id="param_sampler"><a class="viewcode-back" href="../../../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler">[docs]</a><span class="k">def</span> <span class="nf">param_sampler</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">probs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a generator to sample randomly from possible parameters.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a generator to sample randomly from possible parameters.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -372,7 +377,7 @@
 
 
 <div class="viewcode-block" id="param_jitter"><a class="viewcode-back" href="../../../generated/fooof.sim.params.param_jitter.html#fooof.sim.params.param_jitter">[docs]</a><span class="k">def</span> <span class="nf">param_jitter</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">jitters</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a generator that adds jitter to parameter definitions.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a generator that adds jitter to parameter definitions.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -431,8 +436,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

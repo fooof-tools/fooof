@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plot Power Spectrum Models &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Plot Power Spectrum Models &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -112,10 +115,11 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plots-plot-fooof-models-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plots-plot-fooof-models-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="plot-power-spectrum-models">
-<span id="sphx-glr-auto-examples-plots-plot-fooof-models-py"></span><h1>Plot Power Spectrum Models<a class="headerlink" href="#plot-power-spectrum-models" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="plot-power-spectrum-models">
+<span id="sphx-glr-auto-examples-plots-plot-fooof-models-py"></span><h1>Plot Power Spectrum Models<a class="headerlink" href="#plot-power-spectrum-models" title="Permalink to this heading">¶</a></h1>
 <p>Plotting power spectrum models, directly from FOOOF objects.</p>
 <p>In order to the get a qualitative sense of if the model is fitting well, and what
 the results look like, it can be useful to visualize power spectrum model reconstructions.</p>
@@ -137,8 +141,8 @@ options for tuning these these visualizations.</p>
                                    <span class="p">[[</span><span class="mi">9</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">22</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
 </pre></div>
 </div>
-<div class="section" id="plotting-from-fooof-objects">
-<h2>Plotting From FOOOF Objects<a class="headerlink" href="#plotting-from-fooof-objects" title="Permalink to this headline">¶</a></h2>
+<section id="plotting-from-fooof-objects">
+<h2>Plotting From FOOOF Objects<a class="headerlink" href="#plotting-from-fooof-objects" title="Permalink to this heading">¶</a></h2>
 <p>The FOOOF object has a <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> method that can be used to visualize
 data and models available in the <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object, and add some data to it</span>
@@ -152,18 +156,16 @@ data and models available in the <a class="reference internal" href="../../gener
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="plot fooof models" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_001.png" />
-<p>When the model is available, the <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> call also displays the
+<img src="../../_images/sphx_glr_plot_fooof_models_001.png" srcset="../../_images/sphx_glr_plot_fooof_models_001.png" alt="plot fooof models" class = "sphx-glr-single-img"/><p>When the model is available, the <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> call also displays the
 full model reconstruction, in red.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the model, and plot the reconstruction</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">()</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="plot fooof models" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_002.png" />
-</div>
-<div class="section" id="plotting-aperiodic-components">
-<h2>Plotting Aperiodic Components<a class="headerlink" href="#plotting-aperiodic-components" title="Permalink to this headline">¶</a></h2>
+<img src="../../_images/sphx_glr_plot_fooof_models_002.png" srcset="../../_images/sphx_glr_plot_fooof_models_002.png" alt="plot fooof models" class = "sphx-glr-single-img"/></section>
+<section id="plotting-aperiodic-components">
+<h2>Plotting Aperiodic Components<a class="headerlink" href="#plotting-aperiodic-components" title="Permalink to this heading">¶</a></h2>
 <p>As you can see above, the <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> call by default also plots the
 aperiodic component, in a dashed blue line.</p>
 <p>You can toggle whether to display the aperiodic component with the
@@ -172,10 +174,9 @@ aperiodic component, in a dashed blue line.</p>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plot_aperiodic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot fooof models" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_003.png" />
-</div>
-<div class="section" id="plotting-periodic-components">
-<h2>Plotting Periodic Components<a class="headerlink" href="#plotting-periodic-components" title="Permalink to this headline">¶</a></h2>
+<img src="../../_images/sphx_glr_plot_fooof_models_003.png" srcset="../../_images/sphx_glr_plot_fooof_models_003.png" alt="plot fooof models" class = "sphx-glr-single-img"/></section>
+<section id="plotting-periodic-components">
+<h2>Plotting Periodic Components<a class="headerlink" href="#plotting-periodic-components" title="Permalink to this heading">¶</a></h2>
 <p>By default the peaks are only visualized as parts of the full model fit.</p>
 <p>However, in some cases it can be useful to more explicitly visualize individual peaks,
 including where they are and if and how they overlap.</p>
@@ -195,16 +196,14 @@ of which approach you wish to use to visualize the peaks.</p>
     <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plot_peaks</span><span class="o">=</span><span class="n">peak_plot</span><span class="p">,</span> <span class="n">add_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot fooof models" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_004.png" />
-<p>Note that you can also combine different peak visualizations together.</p>
+<img src="../../_images/sphx_glr_plot_fooof_models_004.png" srcset="../../_images/sphx_glr_plot_fooof_models_004.png" alt="plot fooof models" class = "sphx-glr-single-img"/><p>Note that you can also combine different peak visualizations together.</p>
 <p>This can be done by joining all requested peak visualization approaches, with dashes (-).</p>
 <p>For example, as <cite>plot_peaks=’dot-outline-shade’</cite>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine peak representations</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plot_aperiodic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot_peaks</span><span class="o">=</span><span class="s1">&#39;line-shade-outline&#39;</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot fooof models" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_005.png" />
-<p>Which peak visualization is best depends on how you want to look at peaks,
+<img src="../../_images/sphx_glr_plot_fooof_models_005.png" srcset="../../_images/sphx_glr_plot_fooof_models_005.png" alt="plot fooof models" class = "sphx-glr-single-img"/><p>Which peak visualization is best depends on how you want to look at peaks,
 and what you want to check.</p>
 <p>For example, for investigating possible peak overlaps, the outline approach may be
 the most useful. Or, across broader frequency ranges, it may be easier to visualize
@@ -222,10 +221,9 @@ where peaks were fit with the full-length vertical lines.</p>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plot_peaks</span><span class="o">=</span><span class="s1">&#39;shade-line&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot fooof models" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_006.png" />
-</div>
-<div class="section" id="other-plotting-options">
-<h2>Other Plotting Options<a class="headerlink" href="#other-plotting-options" title="Permalink to this headline">¶</a></h2>
+<img src="../../_images/sphx_glr_plot_fooof_models_006.png" srcset="../../_images/sphx_glr_plot_fooof_models_006.png" alt="plot fooof models" class = "sphx-glr-single-img"/></section>
+<section id="other-plotting-options">
+<h2>Other Plotting Options<a class="headerlink" href="#other-plotting-options" title="Permalink to this heading">¶</a></h2>
 <p>There are also some other optional inputs to the <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> call, including:</p>
 <ul class="simple">
 <li><p><cite>plt_log</cite> : Optional input for plotting the frequency axis in log10 spacing</p></li>
@@ -242,9 +240,8 @@ where peaks were fit with the full-length vertical lines.</p>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">add_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot fooof models" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_fooof_models_007.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.070 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plots-plot-fooof-models-py">
+<img src="../../_images/sphx_glr_plot_fooof_models_007.png" srcset="../../_images/sphx_glr_plot_fooof_models_007.png" alt="plot fooof models" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.394 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plots-plot-fooof-models-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/e20a5bfa6c526d2378b76bd42b8330a7/plot_fooof_models.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_fooof_models.py</span></code></a></p>
 </div>
@@ -253,8 +250,8 @@ where peaks were fit with the full-length vertical lines.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -268,8 +265,8 @@ where peaks were fit with the full-length vertical lines.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

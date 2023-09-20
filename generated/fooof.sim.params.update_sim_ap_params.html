@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fooof.sim.params.update_sim_ap_params &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>fooof.sim.params.update_sim_ap_params &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../visualizers.html">Visualizers</a></li>
                 <li><a href="../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -110,11 +113,11 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-sim-params-update-sim-ap-params">
-<h1>fooof.sim.params.update_sim_ap_params<a class="headerlink" href="#fooof-sim-params-update-sim-ap-params" title="Permalink to this headline">¶</a></h1>
+  <section id="fooof-sim-params-update-sim-ap-params">
+<h1>fooof.sim.params.update_sim_ap_params<a class="headerlink" href="#fooof-sim-params-update-sim-ap-params" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
-<dt id="fooof.sim.params.update_sim_ap_params">
-<code class="sig-prename descclassname">fooof.sim.params.</code><code class="sig-name descname">update_sim_ap_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sim_params</span></em>, <em class="sig-param"><span class="n">delta</span></em>, <em class="sig-param"><span class="n">field</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/sim/params.html#update_sim_ap_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.sim.params.update_sim_ap_params" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.sim.params.update_sim_ap_params">
+<span class="sig-prename descclassname"><span class="pre">fooof.sim.params.</span></span><span class="sig-name descname"><span class="pre">update_sim_ap_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/sim/params.html#update_sim_ap_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.sim.params.update_sim_ap_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the aperiodic parameter definition in a SimParams object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -142,7 +145,7 @@
 </dl>
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<div style='clear:both'></div></section>
 
 
     </div>
@@ -156,8 +159,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

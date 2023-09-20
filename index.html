@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOOOF - fitting oscillations &amp; one over f &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>FOOOF - fitting oscillations &amp; one over f &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="#">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="auto_motivations/index.html">Motivations</a></li>
                 <li><a href="auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="auto_examples/index.html">Examples</a></li>
+                <li><a href="visualizers.html">Visualizers</a></li>
                 <li><a href="reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -110,28 +113,28 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-fitting-oscillations-one-over-f">
-<h1>FOOOF - fitting oscillations &amp; one over f<a class="headerlink" href="#fooof-fitting-oscillations-one-over-f" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://www.repostatus.org/#active"><img alt="ProjectStatus" src="http://www.repostatus.org/badges/latest/active.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/fooof/"><img alt="Version" src="https://img.shields.io/pypi/v/fooof.svg" /></a> <a class="reference external" href="https://travis-ci.com/fooof-tools/fooof"><img alt="BuildStatus" src="https://travis-ci.com/fooof-tools/fooof.svg" /></a> <a class="reference external" href="https://codecov.io/gh/fooof-tools/fooof"><img alt="Coverage" src="https://codecov.io/gh/fooof-tools/fooof/branch/master/graph/badge.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/pypi/l/fooof.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/fooof/"><img alt="PythonVersions" src="https://img.shields.io/pypi/pyversions/fooof.svg" /></a> <a class="reference external" href="https://doi.org/10.1038/s41593-020-00744-x"><img alt="Paper" src="https://img.shields.io/badge/paper-nn10.1038-informational.svg" /></a></p>
+  <section id="fooof-fitting-oscillations-one-over-f">
+<h1>FOOOF - fitting oscillations &amp; one over f<a class="headerlink" href="#fooof-fitting-oscillations-one-over-f" title="Permalink to this heading">¶</a></h1>
+<p><a class="reference external" href="https://www.repostatus.org/#active"><img alt="ProjectStatus" src="http://www.repostatus.org/badges/latest/active.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/fooof/"><img alt="Version" src="https://img.shields.io/pypi/v/fooof.svg" /></a> <a class="reference external" href="https://github.com/fooof-tools/fooof/actions/workflows/build.yml"><img alt="BuildStatus" src="https://github.com/fooof-tools/fooof/actions/workflows/build.yml/badge.svg" /></a> <a class="reference external" href="https://codecov.io/gh/fooof-tools/fooof"><img alt="Coverage" src="https://codecov.io/gh/fooof-tools/fooof/branch/main/graph/badge.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/pypi/l/fooof.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/fooof/"><img alt="PythonVersions" src="https://img.shields.io/pypi/pyversions/fooof.svg" /></a> <a class="reference external" href="https://doi.org/10.1038/s41593-020-00744-x"><img alt="Paper" src="https://img.shields.io/badge/paper-nn10.1038-informational.svg" /></a></p>
 <p>FOOOF is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.</p>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>FOOOF conceives of a model of the power spectrum as a combination of two distinct functional processes:</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<p>The power spectrum model conceives of a model of the power spectrum as a combination of two distinct functional processes:</p>
 <ul class="simple">
 <li><p>An aperiodic component, reflecting 1/f like characteristics, with</p></li>
 <li><p>A variable number of periodic components (putative oscillations), as peaks rising above the aperiodic component</p></li>
 </ul>
 <p>This model driven approach can be used to measure periodic and aperiodic properties of electrophysiological data,
 including EEG, MEG, ECoG and LFP data.</p>
-<p>The benefit of using FOOOF for measuring putative oscillations, is that peaks in the power spectrum are
+<p>The benefit of fitting a model in order to measure putative oscillations, is that peaks in the power spectrum are
 characterized in terms of their specific center frequency, power and bandwidth without requiring predefining
 specific bands of interest and controlling for the aperiodic component.
-FOOOF also gives you a measure of this aperiodic components of the signal, allowing for measuring and
+The model also returns a measure of this aperiodic components of the signal, allowing for measuring and
 comparison of 1/f-like components of the signal within and between subjects.</p>
-</div>
-<div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<p>Documentation for FOOOF is available on the
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">¶</a></h2>
+<p>Documentation is available on the
 <a class="reference external" href="https://fooof-tools.github.io/fooof/index.html">documentation site</a>.</p>
 <p>This documentation includes:</p>
 <ul class="simple">
@@ -148,12 +151,12 @@ answering frequency asked questions</p></li>
 <li><p><a class="reference external" href="https://fooof-tools.github.io/fooof/glossary.html">Glossary</a>:
 which defines all the key terms used in the module</p></li>
 <li><p><a class="reference external" href="https://fooof-tools.github.io/fooof/reference.html">Reference</a>:
-with information for reporting on using and reference the module</p></li>
+with information for how to reference and report on using the module</p></li>
 </ul>
-</div>
-<div class="section" id="dependencies">
-<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>FOOOF is written in Python, and requires Python &gt;= 3.5 to run.</p>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">¶</a></h2>
+<p>FOOOF is written in Python, and requires Python &gt;= 3.6 to run.</p>
 <p>It has the following required dependencies:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/numpy/numpy">numpy</a></p></li>
@@ -163,53 +166,70 @@ with information for reporting on using and reference the module</p></li>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/matplotlib/matplotlib">matplotlib</a> is needed to visualize data and model fits</p></li>
 <li><p><a class="reference external" href="https://github.com/tqdm/tqdm">tqdm</a> is needed to print progress bars when fitting many models</p></li>
+<li><p><a class="reference external" href="https://github.com/pandas-dev/pandas">pandas</a> is needed to for exporting model fit results to dataframes</p></li>
 <li><p><a class="reference external" href="https://github.com/pytest-dev/pytest">pytest</a> is needed to run the test suite locally</p></li>
 </ul>
 <p>We recommend using the <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a> distribution to manage these requirements.</p>
-</div>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>The current major release of FOOOF is the 1.X.X series, which is a breaking change from the prior 0.X.X series.</p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
+<p>The current major release is the 1.X.X series, which is a breaking change from the prior 0.X.X series.</p>
 <p>Check the <a class="reference external" href="https://fooof-tools.github.io/fooof/changelog.html">changelog</a> for notes on updating to the new version.</p>
 <p><strong>Stable Version</strong></p>
 <p>To install the latest stable release, use pip:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install fooof
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>fooof
 </pre></div>
 </div>
-<p>FOOOF can also be installed with conda, from the conda-forge channel:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ conda install -c conda-forge fooof
+<p>The module can also be installed with conda, from the conda-forge channel:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>fooof
 </pre></div>
 </div>
 <p><strong>Development Version</strong></p>
 <p>To get the current development version, first clone this repository:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/fooof-tools/fooof
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/fooof-tools/fooof
 </pre></div>
 </div>
 <p>To install this cloned copy, move into the directory you just cloned, and run:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install .
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
 </pre></div>
 </div>
 <p><strong>Editable Version</strong></p>
 <p>To install an editable version, download the development version as above, and run:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install -e .
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
-</div>
-<div class="section" id="matlab-support">
-<h2>Matlab Support<a class="headerlink" href="#matlab-support" title="Permalink to this headline">¶</a></h2>
-<p>FOOOF is implemented in Python, but there is also Matlab wrapper that allows you to use FOOOF from Matlab.
-The wrapper is available in the <a class="reference external" href="http://github.com/fooof-tools/fooof_mat">fooof_mat</a> repository.</p>
-<p>If you would like to use FOOOF, from Python, within a pipeline that is mostly in Matlab, the
-<a class="reference external" href="https://github.com/fooof-tools/mat_py_mat">mat_py_mat</a>
-repository also has some examples and utilities for doing so.</p>
-</div>
-<div class="section" id="bug-reports">
-<h2>Bug Reports<a class="headerlink" href="#bug-reports" title="Permalink to this headline">¶</a></h2>
-<p>Please use the <a class="reference external" href="https://github.com/fooof-tools/fooof/issues">Github issue tracker</a>
-to file bug reports and/or ask questions about this project.</p>
-</div>
-<div class="section" id="id1">
-<h2>Reference<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="other-language-support">
+<h2>Other Language Support<a class="headerlink" href="#other-language-support" title="Permalink to this heading">¶</a></h2>
+<p>The original implementation of FOOOF, available in this repository, is implemented in Python.</p>
+<p>If you wish to run FOOOF from another language, there are a couple potential options:</p>
+<ul class="simple">
+<li><p>a <cite>wrapper</cite>, which allows for running the Python code from another language</p></li>
+<li><p>a <cite>reimplementation</cite>, which reflects a new implementation of the fooof algorithm in another language</p></li>
+</ul>
+<p>Below are listed some examples of wrappers and/or reimplementations in other languages (non-exhaustive).</p>
+<section id="matlab">
+<h3>Matlab<a class="headerlink" href="#matlab" title="Permalink to this heading">¶</a></h3>
+<p>In Matlab, there is a reimplementation available in common toolboxes:</p>
+<ul class="simple">
+<li><p>The <a class="reference external" href="https://neuroimage.usc.edu/brainstorm/Introduction">Brainstorm</a> toolbox has a reimplementation of fooof (see the <a class="reference external" href="https://neuroimage.usc.edu/brainstorm/Tutorials/Fooof">Brainstorm fooof tutorial</a>)</p></li>
+<li><p>The <a class="reference external" href="https://www.fieldtriptoolbox.org/">Fieldtrip</a> also uses the same reimplementation (see the <a class="reference external" href="https://www.fieldtriptoolbox.org/example/fooof/">Fieldtrip fooof tutorial</a>)</p></li>
+</ul>
+<p>There is also a Matlab wrapper in the <a class="reference external" href="http://github.com/fooof-tools/fooof_mat">fooof_mat</a> repository.</p>
+<p>Note that another option is to use Python FOOOF within a Matlab pipeline, as explored in the
+<a class="reference external" href="https://github.com/fooof-tools/mat_py_mat">mat_py_mat</a> repository.</p>
+</section>
+<section id="other-languages">
+<h3>Other Languages<a class="headerlink" href="#other-languages" title="Permalink to this heading">¶</a></h3>
+<p>Other languages with wrappers include:</p>
+<ul class="simple">
+<li><p>Julia, for which there is a <a class="reference external" href="https://juliahub.com/ui/Packages/PyFOOOF/Ng8hN/0.1.0">fooof wrapper</a></p></li>
+<li><p>R, in which fooof can be run using <a class="reference external" href="https://rstudio.github.io/reticulate/">reticulate</a>, as <a class="reference external" href="https://github.com/fooof-tools/DevelopmentalDemo/tree/main/R">shown here</a></p></li>
+</ul>
+</section>
+</section>
+<section id="id1">
+<h2>Reference<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
 <p>If you use this code in your project, please cite:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Donoghue</span> <span class="n">T</span><span class="p">,</span> <span class="n">Haller</span> <span class="n">M</span><span class="p">,</span> <span class="n">Peterson</span> <span class="n">EJ</span><span class="p">,</span> <span class="n">Varma</span> <span class="n">P</span><span class="p">,</span> <span class="n">Sebastian</span> <span class="n">P</span><span class="p">,</span> <span class="n">Gao</span> <span class="n">R</span><span class="p">,</span> <span class="n">Noto</span> <span class="n">T</span><span class="p">,</span> <span class="n">Lara</span> <span class="n">AH</span><span class="p">,</span> <span class="n">Wallis</span> <span class="n">JD</span><span class="p">,</span>
 <span class="n">Knight</span> <span class="n">RT</span><span class="p">,</span> <span class="n">Shestyuk</span> <span class="n">A</span><span class="p">,</span> <span class="o">&amp;</span> <span class="n">Voytek</span> <span class="n">B</span> <span class="p">(</span><span class="mi">2020</span><span class="p">)</span><span class="o">.</span> <span class="n">Parameterizing</span> <span class="n">neural</span> <span class="n">power</span> <span class="n">spectra</span> <span class="n">into</span> <span class="n">periodic</span>
@@ -222,23 +242,25 @@ to file bug reports and/or ask questions about this project.</p>
 <a class="reference external" href="https://fooof-tools.github.io/fooof/reference.html">reference page</a>.</p>
 <p>Code and analyses from the paper are also available in the
 <a class="reference external" href="https://github.com/fooof-tools/Paper">paper repository</a>.</p>
-</div>
-<div class="section" id="contribute">
-<h2>Contribute<a class="headerlink" href="#contribute" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="contribute">
+<h2>Contribute<a class="headerlink" href="#contribute" title="Permalink to this heading">¶</a></h2>
 <p>This project welcomes and encourages contributions from the community!</p>
-<p>If you have an idea of something to add to FOOOF, please start by opening an
-<a class="reference external" href="https://github.com/fooof-tools/fooof/issues">issue</a>.
-Note that this issue tracker is used for code specific questions and suggestions.
-If you have a question or suggestion related to the model or conceptual ideas, check out the
-<a class="reference external" href="https://github.com/fooof-tools/Development">development</a> page.</p>
-<p>When writing code to add to FOOOF, please follow the
-<a class="reference external" href="https://github.com/fooof-tools/fooof/blob/master/CONTRIBUTING.md">Contribution Guidelines</a>
-, and also make sure to follow our
-<a class="reference external" href="https://github.com/fooof-tools/fooof/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a>.</p>
-</div>
-<div class="section" id="quickstart">
-<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
-<p>FOOOF is object oriented, and uses a similar approach as used in scikit-learn.</p>
+<p>To file bug reports and/or ask questions about this project, please use the
+<a class="reference external" href="https://github.com/fooof-tools/fooof/issues">Github issue tracker</a>.</p>
+<p>To see and get involved in discussions about the module, check out:</p>
+<ul class="simple">
+<li><p>the <a class="reference external" href="https://github.com/fooof-tools/fooof/issues">issues board</a> for topics relating to code updates, bugs, and fixes</p></li>
+<li><p>the <a class="reference external" href="https://github.com/fooof-tools/Development">development page</a> for discussion of potential major updates to the module</p></li>
+</ul>
+<p>When interacting with this project, please use the
+<a class="reference external" href="https://github.com/fooof-tools/fooof/blob/main/CONTRIBUTING.md">contribution guidelines</a>
+and follow the
+<a class="reference external" href="https://github.com/fooof-tools/fooof/blob/main/CODE_OF_CONDUCT.md">code of conduct</a>.</p>
+</section>
+<section id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading">¶</a></h2>
+<p>This module is object oriented, and uses a similar approach as used in scikit-learn.</p>
 <p>The algorithm works on frequency representations, that is power spectra in linear space.</p>
 <p><strong>Fitting a Single Power Spectrum</strong></p>
 <p>With a power spectrum loaded (with ‘freqs’ storing frequency values, and ‘spectrum’ storing
@@ -260,10 +282,9 @@ the power spectrum, both as 1D arrays in linear space) FOOOF can be used as foll
 and prints out the parameters of the model fit for both the aperiodic component, and parameters for
 any identified peaks, reflecting periodic components.</p>
 <p>Example output for the report of a FOOOF fit on an individual power spectrum:</p>
-<img alt="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOF_report.png" src="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOF_report.png" />
+<img alt="https://raw.githubusercontent.com/fooof-tools/fooof/main/doc/img/FOOOF_report.png" src="https://raw.githubusercontent.com/fooof-tools/fooof/main/doc/img/FOOOF_report.png" />
 <p><strong>Defining the model Settings</strong></p>
-<p>FOOOF also has some settings for the algorithm.</p>
-<p>These settings are:</p>
+<p>The settings for the algorithm are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">peak_width_limits</span></code> sets the possible lower- and upper-bounds for the fitted peak widths.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">max_n_peaks</span></code> sets the maximum number of peaks to fit.</p></li>
@@ -295,20 +316,23 @@ We can fit the group of power spectra by doing:</p>
 </pre></div>
 </div>
 <p>Example output from using FOOOFGroup across a group of power spectra:</p>
-<img alt="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOFGroup_report.png" src="https://raw.githubusercontent.com/fooof-tools/fooof/master/doc/img/FOOOFGroup_report.png" />
+<img alt="https://raw.githubusercontent.com/fooof-tools/fooof/main/doc/img/FOOOFGroup_report.png" src="https://raw.githubusercontent.com/fooof-tools/fooof/main/doc/img/FOOOFGroup_report.png" />
 <p><strong>Other Functionality</strong></p>
-<p>FOOOF also has functionality for running the FOOOF model across matrices of multiple power spectra,
-saving and loading results, creating reports from FOOOF outputs, analyzing model outputs,
+<p>The module also includes functionality for fitting the model to matrices of multiple power spectra,
+saving and loading results, creating reports describing model fits, analyzing model outputs,
 plotting models and parameters, and simulating power spectra, all of which is described in the
 <a class="reference external" href="https://fooof-tools.github.io/fooof/">documentation</a>.</p>
-</div>
-<div class="section" id="funding">
-<h2>Funding<a class="headerlink" href="#funding" title="Permalink to this headline">¶</a></h2>
-<p>Supported by NIH award R01 GM134363</p>
-<p><a class="reference external" href="https://www.nigms.nih.gov/">NIGMS</a></p>
+</section>
+<section id="funding">
+<h2>Funding<a class="headerlink" href="#funding" title="Permalink to this heading">¶</a></h2>
+<p>Supported by NIH award R01 GM134363 from the
+<a class="reference external" href="https://www.nigms.nih.gov/">NIGMS</a>.</p>
 <a class="reference internal image-reference" href="https://www.nih.gov/sites/all/themes/nih/images/nih-logo-color.png"><img alt="https://www.nih.gov/sites/all/themes/nih/images/nih-logo-color.png" src="https://www.nih.gov/sites/all/themes/nih/images/nih-logo-color.png" style="width: 400px;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
 </div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -322,8 +346,8 @@ plotting models and parameters, and simulating power spectra, all of which is de
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

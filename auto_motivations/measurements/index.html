@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Measurements &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../faq.html">FAQ</a></li>
+                <li><a href="../../glossary.html">Glossary</a></li>
+                <li><a href="../index.html">Motivations</a></li>
+                <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
+                <li><a href="../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <section id="measurements">
+<span id="sphx-glr-auto-motivations-measurements"></span><h1>Measurements<a class="headerlink" href="#measurements" title="Permalink to this heading">¶</a></h1>
+<p>This section compares how existing approaches relate and compare to parameterizing neural power spectra.</p>
+<p>In particular, these examples investigate how various methods work in the context of conceptualize neural time series as a combination of periodic and aperiodic activity.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Comparing how &#x27;Band-by-Band&#x27; approaches relate to periodic &amp; aperiodic components."><img alt="" src="../../_images/sphx_glr_plot_BandByBand_thumb.png" />
+<p><a class="reference internal" href="plot_BandByBand.html#sphx-glr-auto-motivations-measurements-plot-bandbyband-py"><span class="std std-ref">Band-by-Band</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Band-by-Band</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Exploring how band ratio measures relate to periodic &amp; aperiodic activity."><img alt="" src="../../_images/sphx_glr_plot_BandRatios_thumb.png" />
+<p><a class="reference internal" href="plot_BandRatios.html#sphx-glr-auto-motivations-measurements-plot-bandratios-py"><span class="std std-ref">Band Ratio Measures</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Band Ratio Measures</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Demonstrating how changes in periodic &amp; aperiodic parameters can be conflated."><img alt="" src="../../_images/sphx_glr_plot_PeriodicAperiodicFeatures_thumb.png" />
+<p><a class="reference internal" href="plot_PeriodicAperiodicFeatures.html#sphx-glr-auto-motivations-measurements-plot-periodicaperiodicfeatures-py"><span class="std std-ref">Conflating Periodic &amp; Aperiodic Changes</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Conflating Periodic & Aperiodic Changes</div>
+</div></div><div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

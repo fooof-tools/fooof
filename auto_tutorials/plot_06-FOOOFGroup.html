@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>06: FOOOFGroup &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>06: FOOOFGroup &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../visualizers.html">Visualizers</a></li>
                 <li><a href="../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -112,10 +115,11 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-06-fooofgroup-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-06-fooofgroup-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="fooofgroup">
-<span id="sphx-glr-auto-tutorials-plot-06-fooofgroup-py"></span><h1>06: FOOOFGroup<a class="headerlink" href="#fooofgroup" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="fooofgroup">
+<span id="sphx-glr-auto-tutorials-plot-06-fooofgroup-py"></span><h1>06: FOOOFGroup<a class="headerlink" href="#fooofgroup" title="Permalink to this heading">¶</a></h1>
 <p>Using FOOOFGroup to run fit models across multiple power spectra.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOFGroup object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
@@ -124,8 +128,8 @@
 <span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="kn">import</span> <span class="n">load_fooof_data</span>
 </pre></div>
 </div>
-<div class="section" id="fitting-multiple-spectra">
-<h2>Fitting Multiple Spectra<a class="headerlink" href="#fitting-multiple-spectra" title="Permalink to this headline">¶</a></h2>
+<section id="fitting-multiple-spectra">
+<h2>Fitting Multiple Spectra<a class="headerlink" href="#fitting-multiple-spectra" title="Permalink to this heading">¶</a></h2>
 <p>So far, we have explored using the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object to fit individual power spectra.</p>
 <p>However, many potential analyses will including many power spectra that need to be fit.</p>
 <p>To support this, here we will introduce the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object, which
@@ -143,14 +147,13 @@ corresponding to a 2d array for power spectra.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">spectra</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(100,)
 (25, 100)
 </pre></div>
 </div>
-</div>
-<div class="section" id="id1">
-<h2>FOOOFGroup<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="id1">
+<h2>FOOOFGroup<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
 <p>The <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object is very similar to the FOOOF object (programmatically,
 it inherits from the FOOOF object), and can be used in the same way.</p>
 <p>The main difference is that instead of running across a single power spectrum, it
@@ -176,7 +179,6 @@ accessed in the same way as the <a class="reference internal" href="../generated
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 25 power spectra.
 </pre></div>
 </div>
@@ -184,10 +186,7 @@ accessed in the same way as the <a class="reference internal" href="../generated
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.print_results" title="fooof.FOOOFGroup.print_results" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">print_results</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/rph/Projects/fooof/.env/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
-  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
-==================================================================================================
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
 
                                        FOOOF - GROUP RESULTS
 
@@ -214,34 +213,32 @@ accessed in the same way as the <a class="reference internal" href="../generated
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="Aperiodic Fit, Goodness of Fit, Peaks - Center Frequencies" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_06-FOOOFGroup_001.png" />
-<p>Just as with the FOOOF object, you can call the convenience method
+<img src="../_images/sphx_glr_plot_06-FOOOFGroup_001.png" srcset="../_images/sphx_glr_plot_06-FOOOFGroup_001.png" alt="Aperiodic Fit, Goodness of Fit, Peaks - Center Frequencies" class = "sphx-glr-single-img"/><p>Just as with the FOOOF object, you can call the convenience method
 <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.report" title="fooof.FOOOFGroup.report"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fooof.FOOOFGroup.report()</span></code></a> to run the fitting, and then print the results and plots.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can also save out PDF reports of the FOOOFGroup fits, same as with FOOOF</span>
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.save_report" title="fooof.FOOOFGroup.save_report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">save_report</span></a><span class="p">(</span><span class="s1">&#39;FOOOFGroup_report&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="fooofgroup-results">
-<h2>FOOOFGroup Results<a class="headerlink" href="#fooofgroup-results" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="fooofgroup-results">
+<h2>FOOOFGroup Results<a class="headerlink" href="#fooofgroup-results" title="Permalink to this heading">¶</a></h2>
 <p>FOOOFGroup collects fits across power spectra, and stores them in an attribute
 called <code class="docutils literal notranslate"><span class="pre">group_results</span></code>, which is a list of FOOOFResults objects.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out some of the results stored in &#39;group_results&#39;</span>
 <span class="nb">print</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="o">.</span><span class="n">group_results</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[FOOOFResults(aperiodic_params=array([-21.59315937,   0.66654703]), peak_params=array([[ 9.4088037 ,  1.44223656,  2.1352059 ],
-       [18.44689676,  0.62328342,  2.36122321]]), r_squared=0.9729477046709596, error=0.054108810533413536, gaussian_params=array([[ 9.4088037 ,  1.45321198,  1.06760295],
-       [18.44689676,  0.62588664,  1.18061161]])), FOOOFResults(aperiodic_params=array([-21.6448574 ,   0.78116382]), peak_params=array([[ 9.34931443,  1.59788754,  2.05215068],
-       [11.57383428,  0.44989783,  1.24937297],
-       [18.5393173 ,  0.73999236,  2.37682557]]), r_squared=0.979568926570598, error=0.053265515349270424, gaussian_params=array([[ 9.34931443,  1.6014178 ,  1.02607534],
-       [11.57383428,  0.34781375,  0.62468648],
-       [18.5393173 ,  0.74005425,  1.18841278]]))]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[FOOOFResults(aperiodic_params=array([-21.59318324,   0.66653211]), peak_params=array([[ 9.40884349,  1.44216958,  2.13538999],
+       [18.44690064,  0.62328059,  2.36124644]]), r_squared=0.9729491097839974, error=0.0541107770802548, gaussian_params=array([[ 9.40884349,  1.45314926,  1.067695  ],
+       [18.44690064,  0.62588356,  1.18062322]])), FOOOFResults(aperiodic_params=array([-21.64489242,   0.7811353 ]), peak_params=array([[ 9.35008047,  1.59782972,  2.05333541],
+       [11.57656498,  0.45031416,  1.24525305],
+       [18.53931725,  0.73999232,  2.37682592]]), r_squared=0.9795696094205192, error=0.053276472961016196, gaussian_params=array([[ 9.35008047,  1.60146392,  1.0266677 ],
+       [11.57656498,  0.34739875,  0.62262653],
+       [18.53931725,  0.74005421,  1.18841296]]))]
 </pre></div>
 </div>
-<div class="section" id="get-params">
-<h3>get_params<a class="headerlink" href="#get-params" title="Permalink to this headline">¶</a></h3>
+<section id="get-params">
+<h3>get_params<a class="headerlink" href="#get-params" title="Permalink to this heading">¶</a></h3>
 <p>To collect results from across all model fits, and to select specific parameters
 you can use the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_params()</span></code></a> method.</p>
 <p>This method works the same as in the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object, and lets you extract
@@ -265,16 +262,10 @@ model fits (and used internally as such by the FOOOFGroup object).</p>
 <span class="n">r2s</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;r_squared&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/rph/Projects/fooof/.env/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
-  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
-</pre></div>
-</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The full list of parameters you can extract is available in the documentation of `get_params`</span>
 <span class="nb">print</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Return model fit parameters for specified feature(s).
 
         Parameters
@@ -299,7 +290,8 @@ model fits (and used internally as such by the FOOOFGroup object).</p>
 
         Notes
         -----
-        For further description of the data you can extract, check the FOOOFResults documentation.
+        When extracting peak information (&#39;peak_params&#39; or &#39;gaussian_params&#39;), an additional column
+        is appended to the returned array, indicating the index of the model that the peak came from.
 </pre></div>
 </div>
 <p>More information about the parameters you can extract is also documented in the
@@ -312,7 +304,6 @@ FOOOFResults object.</p>
 <span class="nb">print</span><span class="p">(</span><a href="../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="fooof.data.FOOOFResults" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f_res</span></a><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Model results from parameterizing a power spectrum.
 
     Parameters
@@ -341,12 +332,11 @@ FOOOFResults object.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">exps</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.66654703 0.78116382 0.9759632  0.35626808 0.6622201  0.58348647
- 0.76028338 0.46594578 0.70975764 0.60541613 0.73824336 0.39581643
- 0.70797693 0.63143897 0.78995517 0.5037686  0.83825231 0.62707642
- 0.72882427 0.71863451 0.74302615 0.8814779  0.35305533 0.39947471
- 0.98214347]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.66653211 0.7811353  0.97590104 0.35627239 0.66216147 0.58348651
+ 0.76023714 0.46595496 0.70967041 0.60542054 0.73819675 0.39583901
+ 0.70804225 0.63141845 0.7899675  0.50374908 0.83824913 0.62694516
+ 0.72882273 0.71867153 0.74299792 0.88148146 0.35305513 0.39948362
+ 0.98211792]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check out some of the fit center-frequencies</span>
@@ -355,22 +345,21 @@ FOOOFResults object.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">cfs</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="p">:])</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[ 9.4088037   0.        ]
- [18.44689676  0.        ]
- [ 9.34931443  1.        ]
- [11.57383428  1.        ]
- [18.5393173   1.        ]
- [ 9.48181064  2.        ]
- [11.25615366  2.        ]
- [12.57271798  2.        ]
- [18.67595773  2.        ]
- [10.61406527  3.        ]]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[ 9.40884349  0.        ]
+ [18.44690064  0.        ]
+ [ 9.35008047  1.        ]
+ [11.57656498  1.        ]
+ [18.53931725  1.        ]
+ [ 9.48277656  2.        ]
+ [11.25741436  2.        ]
+ [12.58286713  2.        ]
+ [18.675832    2.        ]
+ [10.61408598  3.        ]]
 </pre></div>
 </div>
-</div>
-<div class="section" id="saving-loading-with-fooofgroup">
-<h3>Saving &amp; Loading with FOOOFGroup<a class="headerlink" href="#saving-loading-with-fooofgroup" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="saving-loading-with-fooofgroup">
+<h3>Saving &amp; Loading with FOOOFGroup<a class="headerlink" href="#saving-loading-with-fooofgroup" title="Permalink to this heading">¶</a></h3>
 <p>FOOOFGroup also support saving and loading, with the same options for saving out
 different things as defined and described for the FOOOF object.</p>
 <p>The only difference in saving FOOOFGroup, is that it saves out a ‘jsonlines’ file,
@@ -389,7 +378,6 @@ a single power spectrum.</p>
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.print_results" title="fooof.FOOOFGroup.print_results" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">nfg</span><span class="o">.</span><span class="n">print_results</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
 
                                        FOOOF - GROUP RESULTS
@@ -413,9 +401,9 @@ a single power spectrum.</p>
 ==================================================================================================
 </pre></div>
 </div>
-</div>
-<div class="section" id="parallel-support">
-<h3>Parallel Support<a class="headerlink" href="#parallel-support" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="parallel-support">
+<h3>Parallel Support<a class="headerlink" href="#parallel-support" title="Permalink to this heading">¶</a></h3>
 <p>FOOOFGroup also has support for running in parallel, which can speed things up, since
 each power spectrum can be fit independently.</p>
 <p>The fit method includes an optional parameter <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>, which if set at 1 (as default),
@@ -431,13 +419,12 @@ numbers of power spectra (less than ~100), across relatively small frequency ran
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 25 power spectra.
 </pre></div>
 </div>
-</div>
-<div class="section" id="progress-bar">
-<h3>Progress Bar<a class="headerlink" href="#progress-bar" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="progress-bar">
+<h3>Progress Bar<a class="headerlink" href="#progress-bar" title="Permalink to this heading">¶</a></h3>
 <p>If you have a large number of spectra to fit with a <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a>, and you
 want to monitor it’s progress, you can also use a progress bar to print out fitting progress.</p>
 <p>Progress bar options are:</p>
@@ -449,20 +436,15 @@ want to monitor it’s progress, you can also use a progress bar to print out fi
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="s1">&#39;tqdm&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup:   0%|          | 0/25 [00:00&lt;?, ?it/s]
-Running FOOOFGroup:  20%|##        | 5/25 [00:00&lt;00:00, 24.60it/s]
-Running FOOOFGroup:  36%|###6      | 9/25 [00:00&lt;00:00, 26.95it/s]
-Running FOOOFGroup:  56%|#####6    | 14/25 [00:00&lt;00:00, 30.82it/s]
-Running FOOOFGroup:  68%|######8   | 17/25 [00:00&lt;00:00, 20.72it/s]
-Running FOOOFGroup:  80%|########  | 20/25 [00:00&lt;00:00, 21.97it/s]
-Running FOOOFGroup:  92%|#########2| 23/25 [00:00&lt;00:00, 23.85it/s]
-Running FOOOFGroup: 100%|##########| 25/25 [00:00&lt;00:00, 26.54it/s]
+Running FOOOFGroup:  40%|####      | 10/25 [00:00&lt;00:00, 96.92it/s]
+Running FOOOFGroup:  80%|########  | 20/25 [00:00&lt;00:00, 96.23it/s]
+Running FOOOFGroup: 100%|##########| 25/25 [00:00&lt;00:00, 92.29it/s]
 </pre></div>
 </div>
-</div>
-<div class="section" id="extracting-individual-fits">
-<h3>Extracting Individual Fits<a class="headerlink" href="#extracting-individual-fits" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="extracting-individual-fits">
+<h3>Extracting Individual Fits<a class="headerlink" href="#extracting-individual-fits" title="Permalink to this heading">¶</a></h3>
 <p>When fitting power spectrum models for a group of power spectra, results are stored
 in FOOOFResults objects, which store (only) the results of the model fit,
 not the full model fits themselves.</p>
@@ -479,9 +461,7 @@ for visualization. To do so, you can use the <a class="reference internal" href=
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="plot 06 FOOOFGroup" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_06-FOOOFGroup_002.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+<img src="../_images/sphx_glr_plot_06-FOOOFGroup_002.png" srcset="../_images/sphx_glr_plot_06-FOOOFGroup_002.png" alt="plot 06 FOOOFGroup" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
 
                                    FOOOF - POWER SPECTRUM MODEL
 
@@ -489,7 +469,7 @@ for visualization. To do so, you can use the <a class="reference internal" href=
                                  Frequency Resolution is 0.49 Hz
 
                             Aperiodic Parameters (offset, exponent):
-                                         -21.1789, 1.0581
+                                         -21.1789, 1.0580
 
                                        6 peaks were found:
                                 CF:   7.18, PW:  0.292, BW:  1.00
@@ -506,15 +486,15 @@ for visualization. To do so, you can use the <a class="reference internal" href=
 ==================================================================================================
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">¶</a></h2>
 <p>Now we have explored fitting power spectrum models and running these fits across multiple
 power spectra. Next we dig deeper into how to choose and tune the algorithm settings,
 and how to troubleshoot if any of the fitting seems to go wrong.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.092 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-06-fooofgroup-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.537 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-06-fooofgroup-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/551841fea6afd1b2a365663bec9e7ef8/plot_06-FOOOFGroup.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_06-FOOOFGroup.py</span></code></a></p>
 </div>
@@ -523,8 +503,8 @@ and how to troubleshoot if any of the fitting seems to go wrong.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -538,8 +518,8 @@ and how to troubleshoot if any of the fitting seems to go wrong.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Band-by-Band &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Band-by-Band &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../index.html">Motivations</a></li>
                 <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -112,10 +115,11 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-motivations-measurements-plot-bandbyband-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-motivations-measurements-plot-bandbyband-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="band-by-band">
-<span id="sphx-glr-auto-motivations-measurements-plot-bandbyband-py"></span><h1>Band-by-Band<a class="headerlink" href="#band-by-band" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="band-by-band">
+<span id="sphx-glr-auto-motivations-measurements-plot-bandbyband-py"></span><h1>Band-by-Band<a class="headerlink" href="#band-by-band" title="Permalink to this heading">¶</a></h1>
 <p>Comparing how ‘Band-by-Band’ approaches relate to periodic &amp; aperiodic components.</p>
 <p>This example is based on a recent project investigating band-by-band analyses as
 often done in the context of development. The paper for that project is available
@@ -136,8 +140,8 @@ often done in the context of development. The paper for that project is availabl
 <span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="fooof.plts.spectra.plot_spectra_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectra_shading</span></a>
 </pre></div>
 </div>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
 <p>A common analysis approach for investigating neural data is to measure and analyze
 changes across multiple frequency bands.</p>
 <p>This is typically done using predefined bands, such as:</p>
@@ -167,8 +171,8 @@ and examine what it looks like if data differs in these hypothesized ways.
 To do so, we will simulate and analyze data with correlated changes in multiple
 distinct frequency bands, as well as data in which there is a shift in the aperiodic
 component.</p>
-<div class="section" id="settings">
-<h3>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h3>
+<section id="settings">
+<h3>Settings<a class="headerlink" href="#settings" title="Permalink to this heading">¶</a></h3>
 <p>First, we can define some settings for this notebook and analysis.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define our frequency bands of interest</span>
 <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;delta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
@@ -192,13 +196,13 @@ component.</p>
                <span class="s2">&quot;with peaks or  </span><span class="si">{: 1.2f}</span><span class="se">\t</span><span class="s2"> with bands.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="helper-functions">
-<h3>Helper Functions<a class="headerlink" href="#helper-functions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="helper-functions">
+<h3>Helper Functions<a class="headerlink" href="#helper-functions" title="Permalink to this heading">¶</a></h3>
 <p>Throughout this notebook we will be computing and analyzing differences between
 power spectra. Here, we will define some helper functions to do so.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compare_exp</span><span class="p">(</span><span class="n">fm1</span><span class="p">,</span> <span class="n">fm2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compare exponent values.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare exponent values.&quot;&quot;&quot;</span>
 
     <span class="n">exp1</span> <span class="o">=</span> <span class="n">fm1</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)</span>
     <span class="n">exp2</span> <span class="o">=</span> <span class="n">fm2</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)</span>
@@ -206,7 +210,7 @@ power spectra. Here, we will define some helper functions to do so.</p>
     <span class="k">return</span> <span class="n">exp1</span> <span class="o">-</span> <span class="n">exp2</span>
 
 <span class="k">def</span> <span class="nf">compare_peak_pw</span><span class="p">(</span><span class="n">fm1</span><span class="p">,</span> <span class="n">fm2</span><span class="p">,</span> <span class="n">band_def</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compare the power of detected peaks.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare the power of detected peaks.&quot;&quot;&quot;</span>
 
     <span class="n">pw1</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fm.html#fooof.analysis.get_band_peak_fm" title="fooof.analysis.get_band_peak_fm" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fm</span></a><span class="p">(</span><span class="n">fm1</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">pw2</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fm.html#fooof.analysis.get_band_peak_fm" title="fooof.analysis.get_band_peak_fm" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fm</span></a><span class="p">(</span><span class="n">fm2</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
@@ -214,7 +218,7 @@ power spectra. Here, we will define some helper functions to do so.</p>
     <span class="k">return</span> <span class="n">pw1</span> <span class="o">-</span> <span class="n">pw2</span>
 
 <span class="k">def</span> <span class="nf">compare_band_pw</span><span class="p">(</span><span class="n">fm1</span><span class="p">,</span> <span class="n">fm2</span><span class="p">,</span> <span class="n">band_def</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compare the power of frequency band ranges.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare the power of frequency band ranges.&quot;&quot;&quot;</span>
 
     <span class="n">pw1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="fooof.utils.trim_spectrum" class="sphx-glr-backref-module-fooof-utils sphx-glr-backref-type-py-function"><span class="n">trim_spectrum</span></a><span class="p">(</span><span class="n">fm1</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm1</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">pw2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="fooof.utils.trim_spectrum" class="sphx-glr-backref-module-fooof-utils sphx-glr-backref-type-py-function"><span class="n">trim_spectrum</span></a><span class="p">(</span><span class="n">fm1</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">fm2</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
@@ -222,10 +226,10 @@ power spectra. Here, we will define some helper functions to do so.</p>
     <span class="k">return</span> <span class="n">pw1</span> <span class="o">-</span> <span class="n">pw2</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="id1">
-<h2>Band-by-Band<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="id1">
+<h2>Band-by-Band<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
 <p>In the ‘band-by-band’ idea of the data, analyses and interpretations focus on analyzing
 activity across a range of frequency bands, and looking for patterns of changes within
 and between these bands.</p>
@@ -253,19 +257,17 @@ simulated as being the same between groups, though in real data these could also
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra differences, representing the &#39;band-by-band&#39; idea</span>
 <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="fooof.plts.spectra.plot_spectra_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectra_shading</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">g1_spectrum_bands</span><span class="p">,</span> <span class="n">g2_spectrum_bands</span><span class="p">],</span>
                      <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                     <span class="n">shades</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands.definitions" title="fooof.Bands.definitions" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span></a><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
+                     <span class="n">shades</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands.definitions" title="fooof.Bands.definitions" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span></a><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
                      <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">f_range</span><span class="p">);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Band-by-Band&#39;</span><span class="p">,</span> <span class="n">t_settings</span><span class="p">);</span>
 </pre></div>
 </div>
-<img alt="Band-by-Band" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandByBand_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Band-by-Band&#39;)
+<img src="../../_images/sphx_glr_plot_BandByBand_001.png" srcset="../../_images/sphx_glr_plot_BandByBand_001.png" alt="Band-by-Band" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Band-by-Band&#39;)
 </pre></div>
 </div>
-<div class="section" id="flatten-the-spectra">
-<h3>Flatten the Spectra<a class="headerlink" href="#flatten-the-spectra" title="Permalink to this headline">¶</a></h3>
+<section id="flatten-the-spectra">
+<h3>Flatten the Spectra<a class="headerlink" href="#flatten-the-spectra" title="Permalink to this heading">¶</a></h3>
 <p>Under the band-by-band idea, controlling for aperiodic activity and flattening
 the spectra should show specific differences in each band.</p>
 <p>It should also find no systematic difference in the aperiodic activity between groups.</p>
@@ -283,26 +285,23 @@ changing in the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra differences</span>
 <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="fooof.plts.spectra.plot_spectra_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectra_shading</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm_bands_g1</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm_bands_g2</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">],</span>
                      <span class="n">log_powers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                     <span class="n">shades</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands.definitions" title="fooof.Bands.definitions" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span></a><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
+                     <span class="n">shades</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands.definitions" title="fooof.Bands.definitions" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span></a><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
                      <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">f_range</span><span class="p">);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Band-by-Band - Flattened&#39;</span><span class="p">,</span> <span class="n">t_settings</span><span class="p">);</span>
 </pre></div>
 </div>
-<img alt="Band-by-Band - Flattened" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandByBand_002.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Band-by-Band - Flattened&#39;)
+<img src="../../_images/sphx_glr_plot_BandByBand_002.png" srcset="../../_images/sphx_glr_plot_BandByBand_002.png" alt="Band-by-Band - Flattened" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Band-by-Band - Flattened&#39;)
 </pre></div>
 </div>
-</div>
-<div class="section" id="compare-spectral-parameters">
-<h3>Compare Spectral Parameters<a class="headerlink" href="#compare-spectral-parameters" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="compare-spectral-parameters">
+<h3>Compare Spectral Parameters<a class="headerlink" href="#compare-spectral-parameters" title="Permalink to this heading">¶</a></h3>
 <p>Next, let’s compare the measured parameters of the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the difference of aperiodic activity between age groups</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">exp_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">compare_exp</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm_bands_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm_bands_g2</span></a><span class="p">)))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The difference of aperiodic exponent is:         -0.07
 </pre></div>
 </div>
@@ -313,7 +312,6 @@ changing in the data.</p>
                              <span class="n">compare_band_pw</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm_bands_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm_bands_g2</span></a><span class="p">,</span> <span class="n">definition</span><span class="p">)))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The difference of delta power is  -0.18 with peaks or  -0.16     with bands.
 The difference of theta power is  -0.05 with peaks or  -0.06     with bands.
 The difference of alpha power is   0.02 with peaks or  -0.00     with bands.
@@ -328,10 +326,10 @@ or the average band power.</p>
 <p>This is as expected, given that we simulated the data to reflect this idea. In the
 simulation we can see that both a band-by-band analysis, and parameterizing neural
 power spectra give the same, and correct result for this case.</p>
-</div>
-</div>
-<div class="section" id="periodic-aperiodic">
-<h2>Periodic &amp; Aperiodic<a class="headerlink" href="#periodic-aperiodic" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="periodic-aperiodic">
+<h2>Periodic &amp; Aperiodic<a class="headerlink" href="#periodic-aperiodic" title="Permalink to this heading">¶</a></h2>
 <p>An alternative hypothesis is that aperiodic activity may vary between groups.</p>
 <p>In the next simulation, we will simulate each group as having same periodic activity,
 in this case, just an alpha peak, with a difference in the aperiodic activity.</p>
@@ -343,19 +341,17 @@ in this case, just an alpha peak, with a difference in the aperiodic activity.</
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra differences</span>
 <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="fooof.plts.spectra.plot_spectra_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectra_shading</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">g1_spectrum_pa</span><span class="p">,</span> <span class="n">g2_spectrum_pa</span><span class="p">],</span>
                      <span class="n">log_freqs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                     <span class="n">shades</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands.definitions" title="fooof.Bands.definitions" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span></a><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
+                     <span class="n">shades</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands.definitions" title="fooof.Bands.definitions" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span></a><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
                      <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">f_range</span><span class="p">);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Periodic &amp; Aperiodic&#39;</span><span class="p">,</span> <span class="n">t_settings</span><span class="p">);</span>
 </pre></div>
 </div>
-<img alt="Periodic &amp; Aperiodic" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandByBand_003.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Periodic &amp; Aperiodic&#39;)
+<img src="../../_images/sphx_glr_plot_BandByBand_003.png" srcset="../../_images/sphx_glr_plot_BandByBand_003.png" alt="Periodic & Aperiodic" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Periodic &amp; Aperiodic&#39;)
 </pre></div>
 </div>
-<div class="section" id="id2">
-<h3>Flatten the Spectra<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<section id="id2">
+<h3>Flatten the Spectra<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
 <p>In the scenario in which there are differences in aperiodic activity, flattening
 the spectra should show no differences in periodic peaks.</p>
 <p>We can again parameterize the spectra to investigate this.</p>
@@ -371,26 +367,23 @@ the spectra should show no differences in periodic peaks.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectra differences</span>
 <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="fooof.plts.spectra.plot_spectra_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectra_shading</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm_pa_g1</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm_pa_g2</span></a><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">],</span>
                      <span class="n">log_powers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                     <span class="n">shades</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands.definitions" title="fooof.Bands.definitions" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span></a><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
+                     <span class="n">shades</span><span class="o">=</span><a href="../../generated/fooof.Bands.html#fooof.Bands.definitions" title="fooof.Bands.definitions" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">bands</span><span class="o">.</span><span class="n">definitions</span></a><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_cols</span><span class="p">,</span>
                      <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">f_range</span><span class="p">);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Periodic &amp; Aperiodic - Flattened&#39;</span><span class="p">,</span> <span class="n">t_settings</span><span class="p">);</span>
 </pre></div>
 </div>
-<img alt="Periodic &amp; Aperiodic - Flattened" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandByBand_004.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Periodic &amp; Aperiodic - Flattened&#39;)
+<img src="../../_images/sphx_glr_plot_BandByBand_004.png" srcset="../../_images/sphx_glr_plot_BandByBand_004.png" alt="Periodic & Aperiodic - Flattened" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Periodic &amp; Aperiodic - Flattened&#39;)
 </pre></div>
 </div>
-</div>
-<div class="section" id="id3">
-<h3>Compare Spectral Parameters<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id3">
+<h3>Compare Spectral Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
 <p>Let’s again compare the measured parameters of the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the difference of aperiodic activity between age groups</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">exp_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">compare_exp</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm_pa_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm_pa_g2</span></a><span class="p">)))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The difference of aperiodic exponent is:         0.25
 </pre></div>
 </div>
@@ -401,7 +394,6 @@ the spectra should show no differences in periodic peaks.</p>
                              <span class="n">compare_band_pw</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm_pa_g1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm_pa_g2</span></a><span class="p">,</span> <span class="n">definition</span><span class="p">)))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The difference of delta power is   nan  with peaks or   0.21     with bands.
 The difference of theta power is   nan  with peaks or   0.11     with bands.
 The difference of alpha power is   0.00 with peaks or   0.05     with bands.
@@ -419,10 +411,10 @@ identified peaks.</p>
 compare, where are a zero value reflects that peaks were detected, but they did not differ.</p>
 <p>In this case, we know that the parameterization approach results in the correct
 interpretation of the changes in the data.</p>
-</div>
-</div>
-<div class="section" id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">¶</a></h2>
 <p>Here we have investigated changes across power spectra, comparing a ‘band-by-band’
 approach to the parameterizing neural power spectra notion of ‘periodic &amp; aperiodic’
 components.</p>
@@ -449,8 +441,8 @@ came from using the parameterization approach, but was not evidence in prior
 work using only a band-by-band approach.
 You can find more on that project
 <a class="reference external" href="https://doi.org/10.1101/839258">here</a>.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.379 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-measurements-plot-bandbyband-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.717 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-measurements-plot-bandbyband-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/25a20a64f0f68c43d76a91f17876de66/plot_BandByBand.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_BandByBand.py</span></code></a></p>
 </div>
@@ -459,8 +451,8 @@ You can find more on that project
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -474,8 +466,8 @@ You can find more on that project
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

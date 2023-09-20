@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Topographical Analyses with MNE &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Topographical Analyses with MNE &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -112,13 +115,14 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-analyses-plot-mne-example-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-analyses-plot-mne-example-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="topographical-analyses-with-mne">
-<span id="sphx-glr-auto-examples-analyses-plot-mne-example-py"></span><h1>Topographical Analyses with MNE<a class="headerlink" href="#topographical-analyses-with-mne" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="topographical-analyses-with-mne">
+<span id="sphx-glr-auto-examples-analyses-plot-mne-example-py"></span><h1>Topographical Analyses with MNE<a class="headerlink" href="#topographical-analyses-with-mne" title="Permalink to this heading">¶</a></h1>
 <p>Parameterizing neural power spectra with MNE, doing a topographical analysis.</p>
 <p>This tutorial requires that you have <a class="reference external" href="https://mne-tools.github.io/">MNE</a>
-installed.</p>
+installed. This tutorial needs mne &gt;= 1.2.</p>
 <p>If you don’t already have MNE, you can follow instructions to get it
 <a class="reference external" href="https://mne-tools.github.io/stable/getting_started.html">here</a>.</p>
 <p>For this example, we will explore how to parameterize power spectra using data loaded
@@ -130,20 +134,17 @@ and managed with MNE, and how to plot topographies of resulting model parameters
 
 <span class="c1"># Import MNE, as well as the MNE sample dataset</span>
 <span class="kn">import</span> <span class="nn">mne</span>
-<span class="kn">from</span> <span class="nn">mne</span> <span class="kn">import</span> <span class="n">io</span>
 <span class="kn">from</span> <span class="nn">mne.datasets</span> <span class="kn">import</span> <span class="n">sample</span>
-<span class="kn">from</span> <span class="nn">mne.viz</span> <span class="kn">import</span> <span class="n">plot_topomap</span>
-<span class="kn">from</span> <span class="nn">mne.time_frequency</span> <span class="kn">import</span> <span class="n">psd_welch</span>
 
 <span class="c1"># FOOOF imports</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
 <span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="kn">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a>
 <span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="kn">import</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a>
-<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a>
 </pre></div>
 </div>
-<div class="section" id="load-check-mne-data">
-<h2>Load &amp; Check MNE Data<a class="headerlink" href="#load-check-mne-data" title="Permalink to this headline">¶</a></h2>
+<section id="load-check-mne-data">
+<h2>Load &amp; Check MNE Data<a class="headerlink" href="#load-check-mne-data" title="Permalink to this heading">¶</a></h2>
 <p>We will use the
 <a class="reference external" href="https://mne.tools/stable/overview/datasets_index.html?#sample">MNE sample dataset</a>
 which is a combined MEG/EEG recording with an audiovisual task.</p>
@@ -152,24 +153,34 @@ and extract the EEG data that we will use for this example.</p>
 <p>Note that if you are running this locally, the following cell will download
 the example dataset, if you do not already have it.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the data path for the MNE example data</span>
-<span class="n">raw_fname</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">data_path</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/MEG/sample/sample_audvis_filt-0-40_raw.fif&#39;</span>
-<span class="n">event_fname</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">data_path</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/MEG/sample/sample_audvis_filt-0-40_raw-eve.fif&#39;</span>
+<span class="n">raw_fname</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">data_path</span><span class="p">()</span> <span class="o">/</span> <span class="s1">&#39;MEG&#39;</span> <span class="o">/</span> <span class="s1">&#39;sample&#39;</span> <span class="o">/</span> <span class="s1">&#39;sample_audvis_filt-0-40_raw.fif&#39;</span>
 
 <span class="c1"># Load the example MNE data</span>
 <span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_fif</span><span class="p">(</span><span class="n">raw_fname</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select EEG channels from the dataset</span>
-<span class="n">raw</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">meg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;bads&#39;</span><span class="p">)</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">pick</span><span class="p">([</span><span class="s1">&#39;eeg&#39;</span><span class="p">],</span> <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;bads&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Removing projector &lt;Projection | PCA-v1, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | PCA-v2, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | PCA-v3, active : False, n_channels : 102&gt;
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the reference to be average reference</span>
 <span class="n">raw</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">set_eeg_reference</span><span class="p">()</span>
 </pre></div>
 </div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>EEG channel type selected for re-referencing
+Applying average reference.
+Applying a custom (&#39;EEG&#39;,) reference.
+Removing existing average EEG reference projection.
+</pre></div>
 </div>
-<div class="section" id="dealing-with-nan-values">
-<h2>Dealing with NaN Values<a class="headerlink" href="#dealing-with-nan-values" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="dealing-with-nan-values">
+<h2>Dealing with NaN Values<a class="headerlink" href="#dealing-with-nan-values" title="Permalink to this heading">¶</a></h2>
 <p>One thing to keep in mind when parameterizing power spectra, and extracting bands of
 interest, is that there is no guarantee that the model will detect peaks in any given range.</p>
 <p>We consider this a pro, since power spectrum model is able to adjudicate whether there is
@@ -179,7 +190,7 @@ analyses that we may want to do.</p>
 <p>To be able to deal with nan-values, we will define a helper function to
 check for NaN values and apply a specified policy for how to deal with them.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_nans</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nan_policy</span><span class="o">=</span><span class="s1">&#39;zero&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check an array for nan values, and replace, based on policy.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check an array for nan values, and replace, based on policy.&quot;&quot;&quot;</span>
 
     <span class="c1"># Find where there are nan values in the data</span>
     <span class="n">nan_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
@@ -195,26 +206,26 @@ check for NaN values and apply a specified policy for how to deal with them.</p>
     <span class="k">return</span> <span class="n">data</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="calculating-power-spectra">
-<h2>Calculating Power Spectra<a class="headerlink" href="#calculating-power-spectra" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="calculating-power-spectra">
+<h2>Calculating Power Spectra<a class="headerlink" href="#calculating-power-spectra" title="Permalink to this heading">¶</a></h2>
 <p>To fit power spectrum models, we need to convert the time-series data we have loaded in
 frequency representations - meaning we have to calculate power spectra.</p>
 <p>To do so, we will leverage the time frequency tools available with MNE,
-in the <cite>time_frequency</cite> module. In particular, we can use the <code class="docutils literal notranslate"><span class="pre">psd_welch</span></code>
-function, that takes in MNE data objects and calculates and returns power spectra.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate power spectra across the the continuous data</span>
-<span class="n">spectra</span><span class="p">,</span> <span class="n">freqs</span> <span class="o">=</span> <span class="n">psd_welch</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">fmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
-                           <span class="n">n_overlap</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">n_fft</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+in the <cite>time_frequency</cite> module. In particular, we can use the <code class="docutils literal notranslate"><span class="pre">compute_psd</span></code>
+method, that takes in MNE data objects and calculates and returns power spectra.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate power spectra across the continuous data</span>
+<span class="n">psd</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">compute_psd</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;welch&quot;</span><span class="p">,</span> <span class="n">fmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+                      <span class="n">n_overlap</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">n_fft</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">spectra</span><span class="p">,</span> <span class="n">freqs</span> <span class="o">=</span> <span class="n">psd</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">return_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Effective window size : 1.998 (s)
 </pre></div>
 </div>
-</div>
-<div class="section" id="fitting-power-spectrum-models">
-<h2>Fitting Power Spectrum Models<a class="headerlink" href="#fitting-power-spectrum-models" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="fitting-power-spectrum-models">
+<h2>Fitting Power Spectrum Models<a class="headerlink" href="#fitting-power-spectrum-models" title="Permalink to this heading">¶</a></h2>
 <p>Now that we have power spectra, we can fit some power spectrum models.</p>
 <p>Since we have multiple power spectra, we will use the <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object, with desired settings</span>
@@ -233,15 +244,9 @@ function, that takes in MNE data objects and calculates and returns power spectr
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="Aperiodic Fit, Goodness of Fit, Peaks - Center Frequencies" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/rph/Projects/fooof/.env/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
-  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
-</pre></div>
-</div>
-</div>
-<div class="section" id="plotting-topographies">
-<h2>Plotting Topographies<a class="headerlink" href="#plotting-topographies" title="Permalink to this headline">¶</a></h2>
+<img src="../../_images/sphx_glr_plot_mne_example_001.png" srcset="../../_images/sphx_glr_plot_mne_example_001.png" alt="Aperiodic Fit, Goodness of Fit, Peaks - Center Frequencies" class = "sphx-glr-single-img"/></section>
+<section id="plotting-topographies">
+<h2>Plotting Topographies<a class="headerlink" href="#plotting-topographies" title="Permalink to this heading">¶</a></h2>
 <p>Now that we have our power spectrum models calculated across all channels,
 let’s start by plotting topographies of some of the resulting model parameters.</p>
 <p>To do so, we can leverage the fact that both MNE and FOOOF objects preserve data order.
@@ -251,8 +256,8 @@ object.</p>
 <p>That means that to plot our topography, we can use the MNE <code class="docutils literal notranslate"><span class="pre">plot_topomap</span></code>
 function, passing in extracted data for power spectrum parameters per channel, and
 using the MNE object to define the corresponding channel locations.</p>
-<div class="section" id="plotting-periodic-topographies">
-<h3>Plotting Periodic Topographies<a class="headerlink" href="#plotting-periodic-topographies" title="Permalink to this headline">¶</a></h3>
+<section id="plotting-periodic-topographies">
+<h3>Plotting Periodic Topographies<a class="headerlink" href="#plotting-periodic-topographies" title="Permalink to this heading">¶</a></h3>
 <p>Lets start start by plotting some periodic model parameters.</p>
 <p>To do so, we will use to <a class="reference internal" href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bands</span></code></a> object to manage some band
 definitions, and some analysis utilities to extracts peaks from bands of interest.</p>
@@ -270,12 +275,10 @@ definitions, and some analysis utilities to extracts peaks from bands of interes
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the topography of alpha power</span>
-<span class="n">plot_topomap</span><span class="p">(</span><span class="n">alpha_pw</span><span class="p">,</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+<span class="n">mne</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">plot_topomap</span><span class="p">(</span><span class="n">alpha_pw</span><span class="p">,</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot mne example" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_002.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x7f64454cc130&gt;, None)
+<img src="../../_images/sphx_glr_plot_mne_example_002.png" srcset="../../_images/sphx_glr_plot_mne_example_002.png" alt="plot mne example" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x7f961350b970&gt;, None)
 </pre></div>
 </div>
 <p>And there we have it, our first topography of parameterized spectra, showing alpha power!</p>
@@ -289,24 +292,13 @@ definitions, and some analysis utilities to extracts peaks from bands of interes
     <span class="n">band_power</span> <span class="o">=</span> <span class="n">check_nans</span><span class="p">(</span><a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <span class="n">band_def</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
 
     <span class="c1"># Create a topomap for the current oscillation band</span>
-    <span class="n">mne</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">plot_topomap</span><span class="p">(</span><span class="n">band_power</span><span class="p">,</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                         <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
+    <span class="n">mne</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">plot_topomap</span><span class="p">(</span><span class="n">band_power</span><span class="p">,</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
 
     <span class="c1"># Set the plot title</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label</span> <span class="o">+</span> <span class="s1">&#39; power&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;fontsize&#39;</span> <span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
 </pre></div>
 </div>
-<img alt="theta power, alpha power, beta power" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_003.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/rph/Projects/fooof/.env/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
-  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
-/home/rph/Projects/fooof/.env/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
-  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
-/home/rph/Projects/fooof/.env/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
-  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
-</pre></div>
-</div>
-<p>You might notice that the topographies of some of the bands look a little ‘patchy’.
+<img src="../../_images/sphx_glr_plot_mne_example_003.png" srcset="../../_images/sphx_glr_plot_mne_example_003.png" alt="theta power, alpha power, beta power" class = "sphx-glr-single-img"/><p>You might notice that the topographies of some of the bands look a little ‘patchy’.
 This is because we are setting any channels for which we did not find a peak as zero
 with our <cite>check_nan</cite> approach. Note this is also a single subject analysis.</p>
 <p>Since we have the power spectrum models for each of our channels, we can also explore
@@ -326,19 +318,9 @@ what these peaks look like in the underlying power spectra.</p>
     <span class="n">axes</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;biggest &#39;</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s1">&#39; peak&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;fontsize&#39;</span> <span class="p">:</span> <span class="mi">16</span><span class="p">})</span>
 </pre></div>
 </div>
-<img alt="biggest theta peak, biggest alpha peak, biggest beta peak" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_004.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/rph/Projects/fooof/.env/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
-  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
-/home/rph/Projects/fooof/.env/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
-  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
-/home/rph/Projects/fooof/.env/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
-  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
-</pre></div>
-</div>
-</div>
-<div class="section" id="plotting-aperiodic-topographies">
-<h3>Plotting Aperiodic Topographies<a class="headerlink" href="#plotting-aperiodic-topographies" title="Permalink to this headline">¶</a></h3>
+<img src="../../_images/sphx_glr_plot_mne_example_004.png" srcset="../../_images/sphx_glr_plot_mne_example_004.png" alt="biggest theta peak, biggest alpha peak, biggest beta peak" class = "sphx-glr-single-img"/></section>
+<section id="plotting-aperiodic-topographies">
+<h3>Plotting Aperiodic Topographies<a class="headerlink" href="#plotting-aperiodic-topographies" title="Permalink to this heading">¶</a></h3>
 <p>Next up, let’s plot the topography of the aperiodic exponent.</p>
 <p>To do so, we can simply extract the aperiodic parameters from our power spectrum models,
 and plot them.</p>
@@ -347,12 +329,10 @@ and plot them.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the topography of aperiodic exponents</span>
-<span class="n">plot_topomap</span><span class="p">(</span><span class="n">exps</span><span class="p">,</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">mne</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">plot_topomap</span><span class="p">(</span><span class="n">exps</span><span class="p">,</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot mne example" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_005.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x7f64452825e0&gt;, None)
+<img src="../../_images/sphx_glr_plot_mne_example_005.png" srcset="../../_images/sphx_glr_plot_mne_example_005.png" alt="plot mne example" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x7f960c7986d0&gt;, None)
 </pre></div>
 </div>
 <p>In the topography above, we can see that there is a fair amount of variation
@@ -362,21 +342,21 @@ spatial structure to it.</p>
 spectra, in this case extracting those with the highest and lower exponent values.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the power spectra between low and high exponent channels</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span>
-              <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Low Exponent&#39;</span><span class="p">)</span>
-<a href="../../generated/fooof.plts.plot_spectrum.html#fooof.plts.plot_spectrum" title="fooof.plts.plot_spectrum" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectrum</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span>
-              <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;High Exponent&#39;</span><span class="p">)</span>
+
+<span class="n">spectra</span> <span class="o">=</span> <span class="p">[</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span>
+           <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">]</span>
+
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Low Exponent&#39;</span><span class="p">,</span> <span class="s1">&#39;High Exponent&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<img alt="plot mne example" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_mne_example_006.png" />
-</div>
-</div>
-<div class="section" id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<img src="../../_images/sphx_glr_plot_mne_example_006.png" srcset="../../_images/sphx_glr_plot_mne_example_006.png" alt="plot mne example" class = "sphx-glr-single-img"/></section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">¶</a></h2>
 <p>In this example, we have seen how to apply power spectrum models to data that is
 managed and processed with MNE.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.796 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-analyses-plot-mne-example-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.370 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-analyses-plot-mne-example-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/208ddf4708879eabf6a6f4aae1ab846a/plot_mne_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_mne_example.py</span></code></a></p>
 </div>
@@ -385,8 +365,8 @@ managed and processed with MNE.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -400,8 +380,8 @@ managed and processed with MNE.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reference and Reporting Information &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Reference and Reporting Information &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="auto_motivations/index.html">Motivations</a></li>
                 <li><a href="auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="auto_examples/index.html">Examples</a></li>
+                <li><a href="visualizers.html">Visualizers</a></li>
                 <li><a href="#">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -110,22 +113,23 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="reference-and-reporting-information">
-<h1>Reference and Reporting Information<a class="headerlink" href="#reference-and-reporting-information" title="Permalink to this headline">¶</a></h1>
+  <section id="reference-and-reporting-information">
+<h1>Reference and Reporting Information<a class="headerlink" href="#reference-and-reporting-information" title="Permalink to this heading">¶</a></h1>
 <p>This page describes how to reference and report on using this method for parameterizing neural power spectra, and related information.</p>
-<div class="section" id="table-of-contents">
-<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">¶</a></h2>
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#reference" id="id1">Reference</a></p></li>
 <li><p><a class="reference internal" href="#example-applications" id="id2">Example Applications</a></p></li>
 <li><p><a class="reference internal" href="#methods-reporting" id="id3">Methods Reporting</a></p></li>
 <li><p><a class="reference internal" href="#reporting-template-example" id="id4">Reporting Template &amp; Example</a></p></li>
-<li><p><a class="reference internal" href="#generating-methods-reports" id="id5">Generating Methods Reports</a></p></li>
+<li><p><a class="reference internal" href="#checking-module-version" id="id5">Checking module version</a></p></li>
+<li><p><a class="reference internal" href="#generating-methods-reports" id="id6">Generating Methods Reports</a></p></li>
 </ul>
 </div>
-<div class="section" id="reference">
-<h3>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
+<section id="reference">
+<h3>Reference<a class="headerlink" href="#reference" title="Permalink to this heading">¶</a></h3>
 <p>If you use this method, and/or want to refer to our approach, examples, and discussion points, please cite the following paper:</p>
 <div class="topic">
 <p class="topic-title">Reference</p>
@@ -134,22 +138,22 @@ Knight RT, Shestyuk A, Voytek B (2020). Parameterizing neural power spectra into
 components. Nature Neuroscience, 23, 1655-1665. DOI: 10.1038/s41593-020-00744-x</p>
 </div>
 <p>Direct link: <a class="reference external" href="https://doi.org/10.1038/s41593-020-00744-x">https://doi.org/10.1038/s41593-020-00744-x</a></p>
-</div>
-<div class="section" id="example-applications">
-<h3>Example Applications<a class="headerlink" href="#example-applications" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="example-applications">
+<h3>Example Applications<a class="headerlink" href="#example-applications" title="Permalink to this heading">¶</a></h3>
 <p>As well as reporting on the method, the full version of the paper includes simulation work as well as example analyses and applications.
 The code for the simulations and applications is indexed and available in the
 <a class="reference external" href="https://github.com/fooof-tools/Paper">Paper repository</a>.</p>
 <p>You can also find the full list of articles that cite the <cite>Parameterizing Neural Power Spectra</cite> paper at this
-<a class="reference external" href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=1591416229268020768,15214833138798132105,12543969463602123647">Google scholar link</a>.</p>
-</div>
-<div class="section" id="methods-reporting">
-<h3>Methods Reporting<a class="headerlink" href="#methods-reporting" title="Permalink to this headline">¶</a></h3>
+<a class="reference external" href="https://scholar.google.com/scholar?cites=1871208307712966933&amp;as_sdt=5,33&amp;sciodt=0,33&amp;hl=en">Google scholar link</a>.</p>
+</section>
+<section id="methods-reporting">
+<h3>Methods Reporting<a class="headerlink" href="#methods-reporting" title="Permalink to this heading">¶</a></h3>
 <p>If you use this module and the power spectrum model in your work, there is some information you should include in the methods section.</p>
 <p>Specifically, we recommend including the following information in the methods section:</p>
 <ul class="simple">
 <li><p>The version number of the module that was used (for example 1.0.0)</p></li>
-<li><p>The settings that were used for the algorithm that were used</p>
+<li><p>The algorithm settings that were used</p>
 <ul>
 <li><p>You should report all public settings, even if default values are used</p></li>
 </ul>
@@ -162,10 +166,10 @@ The code for the simulations and applications is indexed and available in the
 <li><p>How power spectrum were generated, including the length of segments used to calculate spectra</p></li>
 <li><p>If and how model goodness-of-fit measures were assessed</p></li>
 </ul>
-</div>
-<div class="section" id="reporting-template-example">
-<h3>Reporting Template &amp; Example<a class="headerlink" href="#reporting-template-example" title="Permalink to this headline">¶</a></h3>
-<p>To assist in reporting on using FOOOF, we have some templates and examples of methods reports, and some utilities to access the required information from the code.</p>
+</section>
+<section id="reporting-template-example">
+<h3>Reporting Template &amp; Example<a class="headerlink" href="#reporting-template-example" title="Permalink to this heading">¶</a></h3>
+<p>To assist in reporting on using FOOOF, we have created some templates for reporting on spectral parameterization methods. There are also some utilities included in the code to collect the required information.</p>
 <p>The following box is an example of what a methods report might look like (where all of the <em>X</em>’s should be filled in with the relevant information).</p>
 <div class="topic">
 <p class="topic-title">Methods Report Template</p>
@@ -174,9 +178,19 @@ algorithm were set as: peak width limits : <em>XX</em>; max number of peaks : <e
 peak threshold : <em>XX</em>; and aperiodic mode : <em>XX</em>. Power spectra were parameterized across
 the frequency range <em>XX</em> to <em>XX</em> Hz.</p>
 </div>
+</section>
+<section id="checking-module-version">
+<h3>Checking module version<a class="headerlink" href="#checking-module-version" title="Permalink to this heading">¶</a></h3>
+<p>If you are not sure which version of the module you have installed, you can
+check the <cite>__version__</cite> from Python, using the following code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the version of the tool</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">fooof_version</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Current fooof version:&#39;</span><span class="p">,</span> <span class="n">fooof_version</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="section" id="generating-methods-reports">
-<h3>Generating Methods Reports<a class="headerlink" href="#generating-methods-reports" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="generating-methods-reports">
+<h3>Generating Methods Reports<a class="headerlink" href="#generating-methods-reports" title="Permalink to this heading">¶</a></h3>
 <p>As of FOOOF version 1.0.0 there are code utilities to extract all required information for reporting, and for generating methods reports.</p>
 <p>These utilities require a defined FOOOF object, such as <cite>FOOOF</cite> or <cite>FOOOFGroup</cite>, assumed to be called ‘fooof_obj’ in the following examples. This object will be used to extract all the relevant settings and any available meta-data for reporting.</p>
 <p>The <a class="reference internal" href="generated/fooof.utils.reports.methods_report_info.html#fooof.utils.reports.methods_report_info" title="fooof.utils.reports.methods_report_info"><code class="xref py py-func docutils literal notranslate"><span class="pre">methods_report_info()</span></code></a> function can be used to print out the information you need for reporting:</p>
@@ -195,9 +209,9 @@ the frequency range <em>XX</em> to <em>XX</em> Hz.</p>
 <span class="n">methods_report_text</span><span class="p">(</span><span class="n">fooof_obj</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
     </div>
@@ -211,8 +225,8 @@ the frequency range <em>XX</em> to <em>XX</em> Hz.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

@@ -11,7 +11,7 @@ Creating simulated power spectra.
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
 
 # Import plotting functions
-from fooof.plts.spectra import plot_spectrum, plot_spectra
+from fooof.plts.spectra import plot_spectra
 
 ###################################################################################################
 # Creating Simulated Power Spectra
@@ -53,7 +53,7 @@ freqs, powers = gen_power_spectrum(freq_range, aperiodic_params, periodic_params
 ###################################################################################################
 
 # Plot the simulated power spectrum
-plot_spectrum(freqs, powers, log_freqs=True, log_powers=False)
+plot_spectra(freqs, powers, log_freqs=True, log_powers=False)
 
 ###################################################################################################
 # Simulating With Different Parameters
@@ -100,7 +100,7 @@ freqs, powers = gen_power_spectrum(freq_range, aperiodic_params,
 ###################################################################################################
 
 # Plot the new simulated power spectrum
-plot_spectrum(freqs, powers, log_powers=True)
+plot_spectra(freqs, powers, log_powers=True)
 
 ###################################################################################################
 # Simulating a Group of Power Spectra

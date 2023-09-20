@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Failed Model Fits &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Failed Model Fits &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -112,10 +115,11 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-manage-plot-failed-fits-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-manage-plot-failed-fits-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="failed-model-fits">
-<span id="sphx-glr-auto-examples-manage-plot-failed-fits-py"></span><h1>Failed Model Fits<a class="headerlink" href="#failed-model-fits" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="failed-model-fits">
+<span id="sphx-glr-auto-examples-manage-plot-failed-fits-py"></span><h1>Failed Model Fits<a class="headerlink" href="#failed-model-fits" title="Permalink to this heading">¶</a></h1>
 <p>Example of model fit failures and how to debug them.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOFGroup object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
@@ -127,8 +131,8 @@
 <span class="kn">from</span> <span class="nn">fooof.core.errors</span> <span class="kn">import</span> <span class="n">FitError</span>
 </pre></div>
 </div>
-<div class="section" id="model-fit-failures">
-<h2>Model Fit Failures<a class="headerlink" href="#model-fit-failures" title="Permalink to this headline">¶</a></h2>
+<section id="model-fit-failures">
+<h2>Model Fit Failures<a class="headerlink" href="#model-fit-failures" title="Permalink to this heading">¶</a></h2>
 <p>The power spectrum model is not guaranteed to fit - sometimes the fit procedure can fail.</p>
 <p>Model fit failures are rare, and they typically only happen on spectra that are
 particular noisy, and/or are some kind of outlier for which the fitting procedure
@@ -150,7 +154,6 @@ the results as a null model, and the code can continue onwards.</p>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 25 power spectra.
 </pre></div>
 </div>
@@ -164,17 +167,16 @@ attributes that provide information on any null model fits.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">null_inds_</span></code> : the indices of any null model results</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check for failed model fits</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Null models  : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.n_null_" title="fooof.FOOOFGroup.n_null_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">n_null_</span></a><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Indices of Null models : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.null_inds_" title="fooof.FOOOFGroup.null_inds_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">null_inds_</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Null models  : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.n_null_" title="fooof.FOOOFGroup.n_null_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fg</span><span class="o">.</span><span class="n">n_null_</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Indices of Null models : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.null_inds_" title="fooof.FOOOFGroup.null_inds_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fg</span><span class="o">.</span><span class="n">null_inds_</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of Null models  :         0
 Indices of Null models :         []
 </pre></div>
 </div>
-<div class="section" id="inducing-model-fit-failures">
-<h3>Inducing Model Fit Failures<a class="headerlink" href="#inducing-model-fit-failures" title="Permalink to this headline">¶</a></h3>
+<section id="inducing-model-fit-failures">
+<h3>Inducing Model Fit Failures<a class="headerlink" href="#inducing-model-fit-failures" title="Permalink to this heading">¶</a></h3>
 <p>So far, we have no model failures (as is typical).</p>
 <p>For this example, to induce some model fits, we will use a trick to change the number of
 iterations the model uses to fit parameters (<cite>_maxfev</cite>), making it much more likely to fail.</p>
@@ -189,33 +191,25 @@ in simulated data.</p>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 25 power spectra.
-Model fitting was unsuccessful.
-Model fitting was unsuccessful.
-Model fitting was unsuccessful.
-Model fitting was unsuccessful.
-Model fitting was unsuccessful.
-Model fitting was unsuccessful.
 Model fitting was unsuccessful.
 </pre></div>
 </div>
 <p>As we can see, there are now some model fit failures! Note that, as above, it will
 be printed out if there is as model fit failure when in verbose mode.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check how many model fit failures we have failed model fits</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Null models  : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.n_null_" title="fooof.FOOOFGroup.n_null_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">n_null_</span></a><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Indices of Null models : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.null_inds_" title="fooof.FOOOFGroup.null_inds_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">null_inds_</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Null models  : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.n_null_" title="fooof.FOOOFGroup.n_null_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fg</span><span class="o">.</span><span class="n">n_null_</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Indices of Null models : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.null_inds_" title="fooof.FOOOFGroup.null_inds_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fg</span><span class="o">.</span><span class="n">null_inds_</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of Null models  :         7
-Indices of Null models :         [9, 13, 14, 20, 21, 23, 24]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of Null models  :         1
+Indices of Null models :         [2]
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="debug-mode">
-<h2>Debug Mode<a class="headerlink" href="#debug-mode" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="debug-mode">
+<h2>Debug Mode<a class="headerlink" href="#debug-mode" title="Permalink to this heading">¶</a></h2>
 <p>There are multiple possible reasons why a model fit failure can occur, or at least
 multiple possible steps in the algorithm at which the fit failure can occur.</p>
 <p>If you have a small number of fit failures, you can likely just exclude them.</p>
@@ -239,13 +233,12 @@ If you just want to see the error, you can run the fit call without the try/exce
     <span class="nb">print</span><span class="p">(</span><span class="n">fooof_error</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 25 power spectra.
 Model fitting failed due to not finding parameters in the peak component fit.
 </pre></div>
 </div>
-<div class="section" id="debugging-model-fit-errors">
-<h3>Debugging Model Fit Errors<a class="headerlink" href="#debugging-model-fit-errors" title="Permalink to this headline">¶</a></h3>
+<section id="debugging-model-fit-errors">
+<h3>Debugging Model Fit Errors<a class="headerlink" href="#debugging-model-fit-errors" title="Permalink to this heading">¶</a></h3>
 <p>This debug mode should indicate in which step the model is failing, which might indicate
 what aspects of the data to look into, and/or which settings to try and tweak.</p>
 <p>Also, all known model fit failures should be caught by the object, and not raise an
@@ -255,8 +248,8 @@ issue with the model fit.</p>
 <p>If you are unsure about why or how the model is failing to fit, consider
 opening an <a class="reference external" href="https://github.com/fooof-tools/fooof/issues">issue</a> on the project
 repository, and we will try to look into what seems to be happening.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.805 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manage-plot-failed-fits-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.090 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manage-plot-failed-fits-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/db8de8edd3842461f54f58941cd05cc4/plot_failed_fits.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_failed_fits.py</span></code></a></p>
 </div>
@@ -265,9 +258,9 @@ repository, and we will try to look into what seems to be happening.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
     </div>
@@ -281,8 +274,8 @@ repository, and we will try to look into what seems to be happening.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

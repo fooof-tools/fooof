@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fooof.sim.transform &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fooof.sim.transform &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
 
@@ -26,10 +27,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +57,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +69,7 @@
                 <li><a href="../../../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -121,7 +123,7 @@
 <span class="c1">###################################################################################################</span>
 
 <div class="viewcode-block" id="rotate_spectrum"><a class="viewcode-back" href="../../../generated/fooof.sim.transform.rotate_spectrum.html#fooof.sim.transform.rotate_spectrum">[docs]</a><span class="k">def</span> <span class="nf">rotate_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">delta_exponent</span><span class="p">,</span> <span class="n">f_rotation</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Rotate a power spectrum about a frequency point, changing the aperiodic exponent.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotate a power spectrum about a frequency point, changing the aperiodic exponent.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -191,7 +193,7 @@
 
 
 <div class="viewcode-block" id="translate_spectrum"><a class="viewcode-back" href="../../../generated/fooof.sim.transform.translate_spectrum.html#fooof.sim.transform.translate_spectrum">[docs]</a><span class="k">def</span> <span class="nf">translate_spectrum</span><span class="p">(</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">delta_offset</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Translate a spectrum, changing the offset value.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Translate a spectrum, changing the offset value.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -223,7 +225,7 @@
 
 
 <div class="viewcode-block" id="rotate_sim_spectrum"><a class="viewcode-back" href="../../../generated/fooof.sim.transform.rotate_sim_spectrum.html#fooof.sim.transform.rotate_sim_spectrum">[docs]</a><span class="k">def</span> <span class="nf">rotate_sim_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">delta_exponent</span><span class="p">,</span> <span class="n">f_rotation</span><span class="p">,</span> <span class="n">sim_params</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Rotate a simulated power spectrum, updating a SimParams object.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotate a simulated power spectrum, updating a SimParams object.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -274,7 +276,7 @@
 
 
 <div class="viewcode-block" id="translate_sim_spectrum"><a class="viewcode-back" href="../../../generated/fooof.sim.transform.translate_sim_spectrum.html#fooof.sim.transform.translate_sim_spectrum">[docs]</a><span class="k">def</span> <span class="nf">translate_sim_spectrum</span><span class="p">(</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">delta_offset</span><span class="p">,</span> <span class="n">sim_params</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Translate a simulated spectrum, updating a SimParams object.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Translate a simulated spectrum, updating a SimParams object.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -311,7 +313,7 @@
 
 
 <div class="viewcode-block" id="compute_rotation_offset"><a class="viewcode-back" href="../../../generated/fooof.sim.transform.compute_rotation_offset.html#fooof.sim.transform.compute_rotation_offset">[docs]</a><span class="k">def</span> <span class="nf">compute_rotation_offset</span><span class="p">(</span><span class="n">delta_exponent</span><span class="p">,</span> <span class="n">f_rotation</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate the change in offset from a given rotation.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the change in offset from a given rotation.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -336,7 +338,7 @@
 
 
 <div class="viewcode-block" id="compute_rotation_frequency"><a class="viewcode-back" href="../../../generated/fooof.sim.transform.compute_rotation_frequency.html#fooof.sim.transform.compute_rotation_frequency">[docs]</a><span class="k">def</span> <span class="nf">compute_rotation_frequency</span><span class="p">(</span><span class="n">delta_exponent_b</span><span class="p">,</span> <span class="n">f_rotation_b</span><span class="p">,</span> <span class="n">delta_exponent_c</span><span class="p">,</span> <span class="n">f_rotation_c</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate the rotation frequency between two rotated power spectra.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the rotation frequency between two rotated power spectra.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -396,8 +398,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Exporting Model Results &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../faq.html">FAQ</a></li>
+                <li><a href="../../glossary.html">Glossary</a></li>
+                <li><a href="../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
+                <li><a href="../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-manage-plot-data-exporting-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="exporting-model-results">
+<span id="sphx-glr-auto-examples-manage-plot-data-exporting-py"></span><h1>Exporting Model Results<a class="headerlink" href="#exporting-model-results" title="Permalink to this heading">¶</a></h1>
+<p>This example covers utilities for extracting and exporting model fit results.</p>
+<p>Note that the functionality to export to pandas DataFrames was added in version 1.1,
+and requires the optional dependency <cite>pandas</cite> to be installed.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import model objects, and Bands object to define bands of interest</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a>
+
+<span class="c1"># Import simulation functions to create some example data</span>
+<span class="kn">from</span> <span class="nn">fooof.sim</span> <span class="kn">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">,</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a>
+</pre></div>
+</div>
+<section id="exporting-results">
+<h2>Exporting Results<a class="headerlink" href="#exporting-results" title="Permalink to this heading">¶</a></h2>
+<p>In this example we will explore available functionality for extracting model fit results,
+specifically the options available for exporting results to pandas objects.</p>
+<p>Note that the main use case of exporting models to pandas DataFrames is for
+analysis across models. If you are just trying to access the model fit results from
+a fit model, you may want the <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_results" title="fooof.FOOOF.get_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_results()</span></code></a> and/or
+<a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_params()</span></code></a> methods.</p>
+<section id="defining-oscillation-bands">
+<h3>Defining Oscillation Bands<a class="headerlink" href="#defining-oscillation-bands" title="Permalink to this heading">¶</a></h3>
+<p>A difficulty with exporting and collecting model results across model fits is that the
+models may be different sizes - most notably, they may contain different numbers of peaks.</p>
+<p>This means that we need to define some kind of strategy to organize the peak
+parameters across different models. Across these examples, this will include using the
+<a class="reference internal" href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bands</span></code></a> object to define oscillations bands of interest.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize bands object, defining alpha band</span>
+<a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands1</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]})</span>
+
+<span class="c1"># Initialize model object</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate example power spectrum</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">freq_res</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+
+<span class="c1"># Fit model to power spectrum</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.to_df" title="fooof.FOOOF.to_df"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_df()</span></code></a> method supports exporting model fit results to pandas objects.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export results</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.to_df" title="fooof.FOOOF.to_df" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">to_df</span></a><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>offset      -0.895020
+exponent     0.498094
+error        0.014400
+r_squared    0.991467
+dtype: float64
+</pre></div>
+</div>
+<p>In the above, we export the model fit results to a pandas Series.</p>
+<p>Note that we explicitly passed in <cite>None</cite> to the <cite>peak_org</cite> argument, meaning we did not define
+a strategy for managing peaks. Because of this, the export did not include any peak parameters.</p>
+<p>Next, let’s can try exporting again, this time passing in an integer to define the number
+of peaks to extract.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export results - extracting 1 peak</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.to_df" title="fooof.FOOOF.to_df" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">to_df</span></a><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>offset      -0.895020
+exponent     0.498094
+cf_0         9.859858
+pw_0         0.324813
+bw_0         4.929083
+error        0.014400
+r_squared    0.991467
+dtype: float64
+</pre></div>
+</div>
+</section>
+<section id="using-band-definitions">
+<h3>Using Band Definitions<a class="headerlink" href="#using-band-definitions" title="Permalink to this heading">¶</a></h3>
+<p>In the above, we extract the results specifying to extract 1 peak. By default, this approach
+will extract the dominant (highest power) peak.</p>
+<p>Notably, specifying a set number of peaks to extract does allow for combining across peaks
+(in terms of enforcing the same model size), but may not be the ideal way to examine across
+peaks (since the dominant extract peak may vary across model fits).</p>
+<p>Therefore, we may often want to instead define a set of band definitions to organize peaks,
+as can be done by passing a <cite>Bands</cite> object in to the <cite>to_df</cite> method.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export results - extracting peaks based on bands object</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.to_df" title="fooof.FOOOF.to_df" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">to_df</span></a><span class="p">(</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands1</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>offset      -0.895020
+exponent     0.498094
+alpha_cf     9.859858
+alpha_pw     0.324813
+alpha_bw     4.929083
+error        0.014400
+r_squared    0.991467
+dtype: float64
+</pre></div>
+</div>
+<p>Note that there are limitations to using the bands definitions - notably that doing so
+necessarily requires extracting at most 1 peak per band. In doing so, the extraction will
+select the dominant peak per band. However, this may not fully reflect the full model fit
+if there are, for example, multiple peaks fit within a band.</p>
+</section>
+<section id="example-on-group-object">
+<h3>Example on Group Object<a class="headerlink" href="#example-on-group-object" title="Permalink to this heading">¶</a></h3>
+<p>In the above, we used the model object to show the basic exporting functionalities.</p>
+<p>This functionality is more useful when considering multiple model fits together, such
+as can be done using the <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.to_df" title="fooof.FOOOFGroup.to_df"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_df()</span></code></a> method from the Group object,
+which allows for exporting DataFrames of organized model fit parameters across power spectra.</p>
+<p>As with the above, keep in mind that for some cases you may want the
+<a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_results" title="fooof.FOOOFGroup.get_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_results()</span></code></a> and/or <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_params()</span></code></a> methods
+instead of doing a DataFrame export.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an example group of power spectra</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+
+<span class="c1"># Initialize a group model object and fit power spectra</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export results to dataframe, with no peak definition</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.to_df" title="fooof.FOOOFGroup.to_df" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">to_df</span></a><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>offset</th>
+      <th>exponent</th>
+      <th>error</th>
+      <th>r_squared</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-0.000184</td>
+      <td>1.000027</td>
+      <td>0.003670</td>
+      <td>0.999861</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.004464</td>
+      <td>1.002580</td>
+      <td>0.003727</td>
+      <td>0.999864</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.007756</td>
+      <td>1.005423</td>
+      <td>0.003693</td>
+      <td>0.999870</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.003734</td>
+      <td>1.002540</td>
+      <td>0.004251</td>
+      <td>0.999818</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.000517</td>
+      <td>0.999592</td>
+      <td>0.003558</td>
+      <td>0.999874</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export results to dataframe, specifying to export a single peak</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.to_df" title="fooof.FOOOFGroup.to_df" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">to_df</span></a><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>offset</th>
+      <th>exponent</th>
+      <th>cf_0</th>
+      <th>pw_0</th>
+      <th>bw_0</th>
+      <th>error</th>
+      <th>r_squared</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-0.000184</td>
+      <td>1.000027</td>
+      <td>9.998048</td>
+      <td>0.245977</td>
+      <td>4.022607</td>
+      <td>0.003670</td>
+      <td>0.999861</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.004464</td>
+      <td>1.002580</td>
+      <td>10.017275</td>
+      <td>0.246183</td>
+      <td>3.944059</td>
+      <td>0.003727</td>
+      <td>0.999864</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.007756</td>
+      <td>1.005423</td>
+      <td>10.058516</td>
+      <td>0.245149</td>
+      <td>3.850301</td>
+      <td>0.003693</td>
+      <td>0.999870</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.003734</td>
+      <td>1.002540</td>
+      <td>7.638259</td>
+      <td>0.112231</td>
+      <td>2.748640</td>
+      <td>0.004251</td>
+      <td>0.999818</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.000517</td>
+      <td>0.999592</td>
+      <td>10.037965</td>
+      <td>0.246776</td>
+      <td>3.960792</td>
+      <td>0.003558</td>
+      <td>0.999874</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export results to dataframe, using bands definition with defines the alpha band</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.to_df" title="fooof.FOOOFGroup.to_df" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">to_df</span></a><span class="p">(</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands1</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>offset</th>
+      <th>exponent</th>
+      <th>alpha_cf</th>
+      <th>alpha_pw</th>
+      <th>alpha_bw</th>
+      <th>error</th>
+      <th>r_squared</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-0.000184</td>
+      <td>1.000027</td>
+      <td>9.998048</td>
+      <td>0.245977</td>
+      <td>4.022607</td>
+      <td>0.003670</td>
+      <td>0.999861</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.004464</td>
+      <td>1.002580</td>
+      <td>10.017275</td>
+      <td>0.246183</td>
+      <td>3.944059</td>
+      <td>0.003727</td>
+      <td>0.999864</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.007756</td>
+      <td>1.005423</td>
+      <td>10.058516</td>
+      <td>0.245149</td>
+      <td>3.850301</td>
+      <td>0.003693</td>
+      <td>0.999870</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.003734</td>
+      <td>1.002540</td>
+      <td>10.210967</td>
+      <td>0.249334</td>
+      <td>3.663345</td>
+      <td>0.004251</td>
+      <td>0.999818</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.000517</td>
+      <td>0.999592</td>
+      <td>10.037965</td>
+      <td>0.246776</td>
+      <td>3.960792</td>
+      <td>0.003558</td>
+      <td>0.999874</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><p>In the above examples, we showed the same exports on the Group object as we previously
+explored on the single spectrum in the model object.</p>
+<p>Note that we can also define new bands objects to change the peak output organization,
+as demonstrated in the following example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a new bands object, specifying both the alpha and beta band</span>
+<a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands2</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+                <span class="s1">&#39;beta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">]})</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export results to dataframe, using bands object with alpha &amp; beta</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.to_df" title="fooof.FOOOFGroup.to_df" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">to_df</span></a><span class="p">(</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands2</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>offset</th>
+      <th>exponent</th>
+      <th>alpha_cf</th>
+      <th>alpha_pw</th>
+      <th>alpha_bw</th>
+      <th>beta_cf</th>
+      <th>beta_pw</th>
+      <th>beta_bw</th>
+      <th>error</th>
+      <th>r_squared</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-0.000184</td>
+      <td>1.000027</td>
+      <td>9.998048</td>
+      <td>0.245977</td>
+      <td>4.022607</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.003670</td>
+      <td>0.999861</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.004464</td>
+      <td>1.002580</td>
+      <td>10.017275</td>
+      <td>0.246183</td>
+      <td>3.944059</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.003727</td>
+      <td>0.999864</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.007756</td>
+      <td>1.005423</td>
+      <td>10.058516</td>
+      <td>0.245149</td>
+      <td>3.850301</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.003693</td>
+      <td>0.999870</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.003734</td>
+      <td>1.002540</td>
+      <td>10.210967</td>
+      <td>0.249334</td>
+      <td>3.663345</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.004251</td>
+      <td>0.999818</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.000517</td>
+      <td>0.999592</td>
+      <td>10.037965</td>
+      <td>0.246776</td>
+      <td>3.960792</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.003558</td>
+      <td>0.999874</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><p>That covers the pandas export functionality available from the model objects.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.035 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manage-plot-data-exporting-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/95d526fd1c3dba8ce2b3e75487d81703/plot_data_exporting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_data_exporting.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/c8102b67a528eed85b861137f14ade9a/plot_data_exporting.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_data_exporting.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

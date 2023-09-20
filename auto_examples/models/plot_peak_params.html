@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Periodic Parameters &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../faq.html">FAQ</a></li>
+                <li><a href="../../glossary.html">Glossary</a></li>
+                <li><a href="../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
+                <li><a href="../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-models-plot-peak-params-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="periodic-parameters">
+<span id="sphx-glr-auto-examples-models-plot-peak-params-py"></span><h1>Periodic Parameters<a class="headerlink" href="#periodic-parameters" title="Permalink to this heading">¶</a></h1>
+<p>Exploring properties and topics related to peak parameters.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">,</span> <span class="n">FOOOFGroup</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <span class="n">plot_spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.periodic</span> <span class="kn">import</span> <span class="n">plot_peak_params</span>
+<span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="kn">import</span> <a href="../../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.params</span> <span class="kn">import</span> <span class="n">Stepper</span><span class="p">,</span> <span class="n">param_iter</span>
+<span class="kn">from</span> <span class="nn">fooof.sim</span> <span class="kn">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">,</span> <span class="n">gen_group_power_spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.annotate</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model" title="fooof.plts.annotate.plot_annotated_model" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_model</span></a>
+<span class="kn">from</span> <span class="nn">fooof.utils.params</span> <span class="kn">import</span> <span class="n">compute_time_constant</span><span class="p">,</span> <span class="n">compute_knee_frequency</span>
+</pre></div>
+</div>
+<section id="gaussian-peak-model">
+<h2>Gaussian Peak Model<a class="headerlink" href="#gaussian-peak-model" title="Permalink to this heading">¶</a></h2>
+<p>By default, the spectral parameterization model fits Gaussians to any detected peaks.</p>
+<p>These Gaussians are defined by a mean, height, and standard deviation, which we in turn
+interpret as the center frequency (CF), power (PW), and bandwidth (BW) of the putative
+oscillation.</p>
+<p>In this example, we will further explore these peak parameters and some topics and
+limitations related to their use and interpretations.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an example power spectrum</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="n">freq_res</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize model object and fit power spectrum</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot annotated model labelling the peaks</span>
+<a href="../../generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model" title="fooof.plts.annotate.plot_annotated_model" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_model</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">,</span> <span class="n">annotate_peaks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">annotate_aperiodic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_peak_params_001.png" srcset="../../_images/sphx_glr_plot_peak_params_001.png" alt="plot peak params" class = "sphx-glr-single-img"/><p>In the above we can see an example of the fit peak parameters</p>
+</section>
+<section id="overlapping-peaks">
+<h2>Overlapping Peaks<a class="headerlink" href="#overlapping-peaks" title="Permalink to this heading">¶</a></h2>
+<p>Let’s now consider some features of fitting Gaussian peaks, and how this relates to
+the neural data under study. In particular, Gaussian’s are symmetric and while they do
+seem to approximate the peaks we observe in emprical data quite well, not all peaks
+in empirical power spectra are quite symmetric.</p>
+<p>To deal with this, the model sometimes fits overlapping peaks, whereby two or more peaks
+are used by the model to capture the shape of what otherwise looks like a single peak.</p>
+<p>We can explore this in a simplified simulation.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the random seed</span>
+<a href="../../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an example power spectrum created with an asymmetric peak</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">11.25</span><span class="p">,</span> <span class="mf">0.175</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]],</span> <span class="n">freq_res</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize model object and fit power spectrum</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.report" title="fooof.FOOOF.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_peak_params_002.png" srcset="../../_images/sphx_glr_plot_peak_params_002.png" alt="plot peak params" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                   FOOOF - POWER SPECTRUM MODEL
+
+                        The model was run on the frequency range 3 - 40 Hz
+                                 Frequency Resolution is 0.25 Hz
+
+                            Aperiodic Parameters (offset, exponent):
+                                          0.0024, 1.0014
+
+                                       2 peaks were found:
+                                CF:   9.86, PW:  0.295, BW:  1.80
+                                CF:  11.23, PW:  0.310, BW:  1.10
+
+                                     Goodness of fit metrics:
+                                    R^2 of model fit is 0.9998
+                                    Error of the fit is 0.0037
+
+==================================================================================================
+</pre></div>
+</div>
+<p>As we can see in the above model solution, in the data, it looks like there is a single
+oscillatory peak, and yet the model has captured this peak with two Gaussians.</p>
+<p>This example serves to demonstrate two key points. First, not all Gaussians fit in the model
+necessary reflect separate peaks, as some may overlap. Second, when peaks overlap,
+the parameters of each individually may accurately capture a peak in the data, as the
+overall shape of the peak may be captured as the interaction across multiple Gaussians
+(this is most common / notable for the bandwidth measure, whereby the width of the peak is
+best described as the combined width of the two adjacent peaks).</p>
+<p>Note that, by construction, this simulated example was created by simulating two overlapping
+peaks, and so in that sense the model is actually correct in it’s solution. In empirical
+data, we do not know if a power spectrum that looks like this does reflect two underlying
+oscillatory processes, or perhaps a single oscillatory process that happens to be asymmetric
+in the frequency domain.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.438 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-models-plot-peak-params-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/0088e77b22ed06a6b547464299227fa7/plot_peak_params.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_peak_params.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/d3bfa0d1bce89560d1c94a16a3226fd8/plot_peak_params.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_peak_params.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frequently Asked Questions &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Frequently Asked Questions &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="auto_motivations/index.html">Motivations</a></li>
                 <li><a href="auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="auto_examples/index.html">Examples</a></li>
+                <li><a href="visualizers.html">Visualizers</a></li>
                 <li><a href="reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -110,13 +113,13 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="frequently-asked-questions">
-<h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
+  <section id="frequently-asked-questions">
+<h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this heading">¶</a></h1>
 <p>The following are a collection of frequently asked questions and answers about FOOOF.</p>
 <p>These answers focus on the ideas and concepts relating to parameterizing neural power spectra.</p>
 <p>For code related questions, check out the API listing, tutorials, and examples.</p>
-<div class="section" id="table-of-contents">
-<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">¶</a></h2>
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#what-is-fooof" id="id7">What is FOOOF?</a></p></li>
@@ -142,8 +145,8 @@
 <li><p><a class="reference internal" href="#how-do-i-cite-this-method" id="id27">How do I cite this method?</a></p></li>
 </ul>
 </div>
-<div class="section" id="what-is-fooof">
-<h3>What is FOOOF?<a class="headerlink" href="#what-is-fooof" title="Permalink to this headline">¶</a></h3>
+<section id="what-is-fooof">
+<h3>What is FOOOF?<a class="headerlink" href="#what-is-fooof" title="Permalink to this heading">¶</a></h3>
 <p>FOOOF is an open-source Python module for parameterizing neural power spectra.</p>
 <p>The parameterization uses a model-driven approach that assumes that neurophysiological time
 series are comprised of two separable components, reflecting periodic (or oscillatory) and
@@ -157,9 +160,9 @@ components - the periodic and aperiodic components - in power spectra. The final
 of the neural power spectrum, consists of quantifications of each of the two components, as well as
 a combined model fit of the whole power spectrum.</p>
 <p>The full mathematical description of the model is described in the tutorials.</p>
-</div>
-<div class="section" id="what-is-meant-by-aperiodic-activity">
-<h3>What is meant by ‘aperiodic’ activity?<a class="headerlink" href="#what-is-meant-by-aperiodic-activity" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="what-is-meant-by-aperiodic-activity">
+<h3>What is meant by ‘aperiodic’ activity?<a class="headerlink" href="#what-is-meant-by-aperiodic-activity" title="Permalink to this heading">¶</a></h3>
 <p>By ‘aperiodic’ activity we mean non-periodic (or arrhythmic) activity, meaning activity that
 has no characteristic frequency. For a general example, white noise, would be considered to
 be an aperiodic signal.</p>
@@ -167,9 +170,9 @@ be an aperiodic signal.</p>
 whereby power systematically decreases with increasing frequencies. Due to the aperiodic
 component, in a neural power spectrum, there is power at all frequencies, though this does
 not imply there is rhythmic power.</p>
-</div>
-<div class="section" id="what-is-meant-by-periodic-activity">
-<h3>What is meant by ‘periodic’ activity?<a class="headerlink" href="#what-is-meant-by-periodic-activity" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="what-is-meant-by-periodic-activity">
+<h3>What is meant by ‘periodic’ activity?<a class="headerlink" href="#what-is-meant-by-periodic-activity" title="Permalink to this heading">¶</a></h3>
 <p>By ‘periodic’ activity we mean features of the signal that are rhythmic, with activity
 at a characteristic frequency. This kind of activity is typically referred to as
 neural oscillations.</p>
@@ -180,9 +183,9 @@ aperiodic is taken as evidence of frequency specific power, distinct from the ap
 <p>Note that this periodic activity need not be continuous, as oscillatory activity often
 exhibits as ‘bursts’ in the time series, nor sinusoidal, as rhythmic neural activity is
 often non-sinusoidal.</p>
-</div>
-<div class="section" id="why-should-i-parameterize-power-spectra">
-<h3>Why should I parameterize power spectra?<a class="headerlink" href="#why-should-i-parameterize-power-spectra" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="why-should-i-parameterize-power-spectra">
+<h3>Why should I parameterize power spectra?<a class="headerlink" href="#why-should-i-parameterize-power-spectra" title="Permalink to this heading">¶</a></h3>
 <p>Though research often focuses on periodic (rhythmic or oscillatory) components, neurophysiological
 recordings of electrophysiological neural activity contain not only periodic, but also aperiodic
 activity. Since both components of the signal are dynamic, and overlapping, it is important to
@@ -203,9 +206,9 @@ the data are present, and changing, and in what ways.</p>
 <p>For more discussion and examples of the conceptual and methodological factors that
 motivate parameterizing neural power spectra, see the
 <a class="reference external" href="https://fooof-tools.github.io/fooof/auto_motivations/index.html">motivations page</a></p>
-</div>
-<div class="section" id="why-is-it-important-to-measure-aperiodic-activity">
-<h3>Why is it important to measure aperiodic activity?<a class="headerlink" href="#why-is-it-important-to-measure-aperiodic-activity" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="why-is-it-important-to-measure-aperiodic-activity">
+<h3>Why is it important to measure aperiodic activity?<a class="headerlink" href="#why-is-it-important-to-measure-aperiodic-activity" title="Permalink to this heading">¶</a></h3>
 <p>Aperiodic activity has long known to be present in neural data, but has been less of a
 research focus, as compared to periodic activity. Recent work has demonstrated
 that aperiodic activity is dynamic, and systematically varies both within [<a class="reference external" href="https://doi.org/10.1152/jn.00943.2014">1</a>] and between
@@ -221,9 +224,9 @@ changing.</p></li>
 as an interesting signal to investigate. This is motivated by findings that aperiodic activity
 is dynamic, correlates with other features of interest, and is of theoretical interest [<a class="reference external" href="https://doi.org/10.1152/jn.00943.2014">1</a>, <a class="reference external" href="https://doi.org/10.1523/JNEUROSCI.2332-14.2015">2</a>, <a class="reference external" href="https://doi.org/10.1016/j.neuroimage.2017.06.078">3</a>].</p></li>
 </ul>
-</div>
-<div class="section" id="why-call-it-aperiodic-why-not-call-it-1-f-or-noise-etc">
-<h3>Why call it ‘aperiodic’? Why not call it ‘1/f’ or ‘noise’, etc?<a class="headerlink" href="#why-call-it-aperiodic-why-not-call-it-1-f-or-noise-etc" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="why-call-it-aperiodic-why-not-call-it-1-f-or-noise-etc">
+<h3>Why call it ‘aperiodic’? Why not call it ‘1/f’ or ‘noise’, etc?<a class="headerlink" href="#why-call-it-aperiodic-why-not-call-it-1-f-or-noise-etc" title="Permalink to this heading">¶</a></h3>
 <p>What we now call the ‘aperiodic’ component of the signal has variously been called, by us and
 others: ‘1/f’ activity, ‘scale free’ activity, ‘background’ activity, ‘1/f noise’, or
 ‘background noise’, amongst other names.</p>
@@ -252,9 +255,9 @@ that the aperiodic component may be a signal of interest, and not merely ‘nois
 descriptively, non-periodic. We prefer this term, as a neutral descriptor, to avoid
 implying particular theoretical interpretations, and/or what aspects of the signal
 or of interest for any particular investigation.</p>
-</div>
-<div class="section" id="why-are-spectral-peak-used-as-evidence-of-periodic-activity">
-<h3>Why are spectral peak used as evidence of periodic activity?<a class="headerlink" href="#why-are-spectral-peak-used-as-evidence-of-periodic-activity" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="why-are-spectral-peak-used-as-evidence-of-periodic-activity">
+<h3>Why are spectral peak used as evidence of periodic activity?<a class="headerlink" href="#why-are-spectral-peak-used-as-evidence-of-periodic-activity" title="Permalink to this heading">¶</a></h3>
 <p>Due to neural signals containing aperiodic activity, there will always be power within
 any given frequency range. If this aperiodic activity changes, the measured power within
 a predefined frequency range can also change. All this can occur without any truly periodic
@@ -265,9 +268,9 @@ peak in the power spectrum [<a class="reference external" href="https://doi.org/
 above the power of the aperiodic activity. Therefore, to detect periodic activity, and
 to measure whether periodic activity, specifically, is changing, these ‘peaks’ in the
 frequency spectrum can be used.</p>
-</div>
-<div class="section" id="what-if-there-is-no-peak-is-there-no-periodic-activity">
-<h3>What if there is no peak? Is there no periodic activity?<a class="headerlink" href="#what-if-there-is-no-peak-is-there-no-periodic-activity" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="what-if-there-is-no-peak-is-there-no-periodic-activity">
+<h3>What if there is no peak? Is there no periodic activity?<a class="headerlink" href="#what-if-there-is-no-peak-is-there-no-periodic-activity" title="Permalink to this heading">¶</a></h3>
 <p>If, for a given frequency band, no peak is detected in the power spectrum, this is
 consistent with there being no periodic activity at that frequency. Without a detected peak,
 we argue that there is not evidence of periodic activity, at that frequency, over and
@@ -278,9 +281,9 @@ activity.</p>
 imply that there is definitively no periodic activity at that particular frequency. There could
 be very low power periodic activity, and/or periodic activity that is variable through time
 (bursty) such as to not display a prominent peak across the analyzed time period.</p>
-</div>
-<div class="section" id="how-should-peaks-be-interpreted-are-they-equivalent-to-oscillations">
-<h3>How should peaks be interpreted? Are they equivalent to oscillations?<a class="headerlink" href="#how-should-peaks-be-interpreted-are-they-equivalent-to-oscillations" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="how-should-peaks-be-interpreted-are-they-equivalent-to-oscillations">
+<h3>How should peaks be interpreted? Are they equivalent to oscillations?<a class="headerlink" href="#how-should-peaks-be-interpreted-are-they-equivalent-to-oscillations" title="Permalink to this heading">¶</a></h3>
 <p>Peaks, defined as regions of power over and above the aperiodic component, are considered
 to be putative periodic activity. However, there is not necessarily a one-to-one mapping
 between power spectrum peaks, and oscillations in the data.</p>
@@ -302,9 +305,9 @@ this does not necessarily imply there are any 20 Hz rhythmic components in the s
 <p>To investigate potential harmonics arising from asymmetric periodic activity,
 <a class="reference external" href="https://bycycle-tools.github.io/bycycle/">ByCycle</a>
 is a Python tool for analyzing neural oscillations and their waveform shape properties [<a class="reference external" href="https://doi.org/10.1152/jn.00273.2019">5</a>].</p>
-</div>
-<div class="section" id="why-is-parameterizing-neural-power-spectra-different-from-other-methods">
-<h3>Why is parameterizing neural power spectra different from other methods?<a class="headerlink" href="#why-is-parameterizing-neural-power-spectra-different-from-other-methods" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="why-is-parameterizing-neural-power-spectra-different-from-other-methods">
+<h3>Why is parameterizing neural power spectra different from other methods?<a class="headerlink" href="#why-is-parameterizing-neural-power-spectra-different-from-other-methods" title="Permalink to this heading">¶</a></h3>
 <p>There are many existing methods for analyzing periodic activity, and also other methods for
 analyzing aperiodic activity. Most existing methods are designed to measure one or the other
 signal component. Few methods attempt to explicitly separate and quantify both the periodic
@@ -315,9 +318,9 @@ are changing and in what ways.</p>
 <p>More in depth analyses of the properties of the fitting algorithm, and systematic comparisons
 with other methods (through simulations) are are also ongoing, to clarify when and how
 this approach compares to different methods.</p>
-</div>
-<div class="section" id="what-data-modalities-can-be-used-for-parameterizing-neural-power-spectra">
-<h3>What data modalities can be used for parameterizing neural power spectra?<a class="headerlink" href="#what-data-modalities-can-be-used-for-parameterizing-neural-power-spectra" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="what-data-modalities-can-be-used-for-parameterizing-neural-power-spectra">
+<h3>What data modalities can be used for parameterizing neural power spectra?<a class="headerlink" href="#what-data-modalities-can-be-used-for-parameterizing-neural-power-spectra" title="Permalink to this heading">¶</a></h3>
 <p>The power spectrum model can theoretically be applied to power spectra derived from any
 electrophysiological or magnetophysiological signal of neural origin. In practice, this
 covers ‘field’ data, meaning intracranial local field potential (LFP) data,
@@ -331,17 +334,17 @@ Note that data from different modalities, or across different frequency ranges, 
 different algorithm settings.</p>
 <p>More information for checking for if the model fit seems to be appropriate, and for picking
 settings and tuning them to different datasets are all available in the Tutorials.</p>
-</div>
-<div class="section" id="are-there-settings-for-the-fitting-algorithm">
-<h3>Are there settings for the fitting algorithm?<a class="headerlink" href="#are-there-settings-for-the-fitting-algorithm" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="are-there-settings-for-the-fitting-algorithm">
+<h3>Are there settings for the fitting algorithm?<a class="headerlink" href="#are-there-settings-for-the-fitting-algorithm" title="Permalink to this heading">¶</a></h3>
 <p>Yes, there are some settings for the algorithm. The algorithm is initialized with default
 values that are often good enough to get started with fitting, but these settings will often
 need some tuning to optimize fitting on individual datasets.</p>
 <p>A full description of the settings - what they are and how to choose them -
 is covered in the tutorials.</p>
-</div>
-<div class="section" id="how-should-algorithm-settings-be-chosen">
-<h3>How should algorithm settings be chosen?<a class="headerlink" href="#how-should-algorithm-settings-be-chosen" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="how-should-algorithm-settings-be-chosen">
+<h3>How should algorithm settings be chosen?<a class="headerlink" href="#how-should-algorithm-settings-be-chosen" title="Permalink to this heading">¶</a></h3>
 <p>For any given dataset, there is often some tuning of the algorithm settings needed to
 get models to fit well. For any given dataset, settings should therefore be checked, and
 tuned if necessary, though, overall, model fits tend not to be overly sensitive to small
@@ -354,9 +357,9 @@ they can applied to the dataset to be analyzed. Note that in order to be able to
 compare model fits between conditions / tasks / subjects, etc, we recommend using the same
 algorithm settings across the whole dataset.</p>
 <p>Details of what the algorithm settings are, and how to set them are available in the code Tutorials.</p>
-</div>
-<div class="section" id="what-frequency-range-should-the-model-be-fit-on">
-<h3>What frequency range should the model be fit on?<a class="headerlink" href="#what-frequency-range-should-the-model-be-fit-on" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="what-frequency-range-should-the-model-be-fit-on">
+<h3>What frequency range should the model be fit on?<a class="headerlink" href="#what-frequency-range-should-the-model-be-fit-on" title="Permalink to this heading">¶</a></h3>
 <p>The frequency range used to fit a power spectrum model depends on the data and the questions
 of interest. As a general guideline, one typically wants to use relatively broad ranges.
 This best allows for fitting the aperiodic activity, which in turn allows for better
@@ -369,9 +372,9 @@ high frequency activity.</p>
 <p>Picking a frequency range should be considered in the context of choosing the
 aperiodic mode, as whether or not a ‘knee’ should be fit depends in part on the frequency
 range that is being examined. For more information on choosing the aperiodic mode, see the Tutorials.</p>
-</div>
-<div class="section" id="if-i-am-interested-in-a-particular-oscillation-band-should-i-fit-a-small-range">
-<h3>If I am interested in a particular oscillation band, should I fit a small range?<a class="headerlink" href="#if-i-am-interested-in-a-particular-oscillation-band-should-i-fit-a-small-range" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="if-i-am-interested-in-a-particular-oscillation-band-should-i-fit-a-small-range">
+<h3>If I am interested in a particular oscillation band, should I fit a small range?<a class="headerlink" href="#if-i-am-interested-in-a-particular-oscillation-band-should-i-fit-a-small-range" title="Permalink to this heading">¶</a></h3>
 <p>Generally, no - it is better to always try and fit a broad frequency range, rather than to
 fit a small range, even if one is interested in a specific oscillation band.</p>
 <p>This is because if a small frequency range is used, it becomes much more difficult to
@@ -383,9 +386,9 @@ leading to potentially bad fits.</p>
 then we still recommend fitting a broad range (for example, 3-40 Hz), and then extracting the
 alpha oscillations post-hoc. There are utilities in <cite>analysis</cite> module of the package for
 extracting peaks from particular bands, and examples of this on the examples page.</p>
-</div>
-<div class="section" id="what-does-the-aperiodic-component-of-the-signal-reflect">
-<h3>What does the ‘aperiodic’ component of the signal reflect?<a class="headerlink" href="#what-does-the-aperiodic-component-of-the-signal-reflect" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="what-does-the-aperiodic-component-of-the-signal-reflect">
+<h3>What does the ‘aperiodic’ component of the signal reflect?<a class="headerlink" href="#what-does-the-aperiodic-component-of-the-signal-reflect" title="Permalink to this heading">¶</a></h3>
 <p>Basically, we don’t know. Exactly what the ‘aperiodic’ component of the signal is,
 in terms of where it comes from, and what reflects is an open research question.</p>
 <p>Descriptively, we know that aperiodic activity is always there, and is a prominent
@@ -399,9 +402,9 @@ One such model, explores the hypothesis that the aperiodic properties of local f
 potential arise from balanced activity of excitatory (E) and inhibitory (I) synaptic
 currents. In this model, changes in aperiodic properties of the data relate to changes
 in EI balance [<a class="reference external" href="https://doi.org/10.1016/j.neuroimage.2017.06.078">3</a>].</p>
-</div>
-<div class="section" id="does-it-matter-how-power-spectra-are-calculated">
-<h3>Does it matter how power spectra are calculated?<a class="headerlink" href="#does-it-matter-how-power-spectra-are-calculated" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="does-it-matter-how-power-spectra-are-calculated">
+<h3>Does it matter how power spectra are calculated?<a class="headerlink" href="#does-it-matter-how-power-spectra-are-calculated" title="Permalink to this heading">¶</a></h3>
 <p>For the most part, it does not matter exactly how power spectra to be parameterized
 are calculated. The algorithm is agnostic to precise details of calculating power
 spectra, and so different estimation methods should all be fine.</p>
@@ -410,9 +413,9 @@ influence how the parameterization goes. For example, the better the frequency r
 the more precisely the algorithm will be able to estimate center frequencies and bandwidths
 of detected peaks. However, as a trade off, using longer time segments to end up with ‘smoother’
 spectra can also help with getting the algorithm to fit better.</p>
-</div>
-<div class="section" id="can-this-be-applied-to-task-or-trial-based-analyses">
-<h3>Can this be applied to task or trial based analyses?<a class="headerlink" href="#can-this-be-applied-to-task-or-trial-based-analyses" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="can-this-be-applied-to-task-or-trial-based-analyses">
+<h3>Can this be applied to task or trial based analyses?<a class="headerlink" href="#can-this-be-applied-to-task-or-trial-based-analyses" title="Permalink to this heading">¶</a></h3>
 <p>Yes, power spectra can be fit in task based analyses.</p>
 <p>However, one thing to keep in mind is the resolution of the data. The shorter the
 time segments of data used, and/or the fewer data segments averaged over, can lead to
@@ -444,9 +447,9 @@ using segments of at least about 500 ms for this approach.</p></li>
 <p>Ultimately, in theory these two approaches should converge to be equivalent, however,
 in practice there may be some differences. Depending on the data and analysis goals,
 one or the other might be more appropriate.</p>
-</div>
-<div class="section" id="is-there-a-time-resolved-version">
-<h3>Is there a time resolved version?<a class="headerlink" href="#is-there-a-time-resolved-version" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="is-there-a-time-resolved-version">
+<h3>Is there a time resolved version?<a class="headerlink" href="#is-there-a-time-resolved-version" title="Permalink to this heading">¶</a></h3>
 <p>Since it operates on frequency representations (power spectra) the power spectrum model is not,
 by construction, a time resolved method.</p>
 <p>However, similar to other frequency estimation approaches that are used in a time-resolved manner,
@@ -454,23 +457,23 @@ it can, in theory, be applied in a sliding window fashion. This approach could b
 spectral features across time, somewhat analogous to a spectrogram.</p>
 <p>This functionality is not currently available or described in the current module, but is a focus
 off current work. We hope to add information, guidelines, and tooling to do this once this soon.</p>
-</div>
-<div class="section" id="why-is-it-called-fooof">
-<h3>Why is it called FOOOF?<a class="headerlink" href="#why-is-it-called-fooof" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="why-is-it-called-fooof">
+<h3>Why is it called FOOOF?<a class="headerlink" href="#why-is-it-called-fooof" title="Permalink to this heading">¶</a></h3>
 <p>FOOOF stands for “fitting oscillations &amp; one-over f”.</p>
 <p>This was a working title for the project that stuck as the name of the code and the tool.
 We have moved away from referring to the components that FOOOF fits in this way, preferring
 ‘periodic’ and ‘aperiodic’ activity, but the name ‘FOOOF’ stuck around as the name of the tool
 itself.</p>
-</div>
-<div class="section" id="how-do-i-cite-this-method">
-<h3>How do I cite this method?<a class="headerlink" href="#how-do-i-cite-this-method" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="how-do-i-cite-this-method">
+<h3>How do I cite this method?<a class="headerlink" href="#how-do-i-cite-this-method" title="Permalink to this heading">¶</a></h3>
 <p>See the <a class="reference external" href="https://fooof-tools.github.io/fooof/reference.html">reference</a> page
 for notes on how to report on using the algorithm and how to cite it.</p>
-</div>
-</div>
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>[<a class="reference external" href="https://doi.org/10.1152/jn.00943.2014">1</a>] Podvalny et al (2017). A Unifying Principle Underlying the Extracellular Field Potential
 Spectral Responses in the Human Cortex. DOI: 10.1152/jn.00943.2014</p></li>
@@ -493,8 +496,8 @@ of Brain Rhythms. DOI: 10.1016/j.neuron.2013.10.002</p></li>
 <ul class="simple">
 <li><p>[<a class="reference external" href="https://doi.org/10.1016/j.tics.2014.04.003">6</a>] He (2014). Scale-free Brain Activity: Past, Present and Future. DOI: 10.1016/j.tics.2014.04.003</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -508,8 +511,8 @@ of Brain Rhythms. DOI: 10.1016/j.neuron.2013.10.002</p></li>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Changelog &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Code Changelog &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="auto_motivations/index.html">Motivations</a></li>
                 <li><a href="auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="auto_examples/index.html">Examples</a></li>
+                <li><a href="visualizers.html">Visualizers</a></li>
                 <li><a href="reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -110,16 +113,25 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="code-changelog">
-<h1>Code Changelog<a class="headerlink" href="#code-changelog" title="Permalink to this headline">¶</a></h1>
-<p>This page contains the changelog for the FOOOF module and any notes on updating between versions.</p>
-<p>This page primarily notes changes for major version updates. For notes on the specific updates
-for minor releases, see the <a class="reference external" href="https://github.com/fooof-tools/fooof/releases">release page</a>.</p>
-<div class="section" id="id1">
-<h2>1.0.0<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+  <section id="code-changelog">
+<h1>Code Changelog<a class="headerlink" href="#code-changelog" title="Permalink to this heading">¶</a></h1>
+<p>This page contains the changelog for the <cite>specparam</cite> / <cite>fooof</cite> module,
+including release notes and guidance on updating between versions.</p>
+<p>This page primarily notes changes for major version updates.
+For notes on the specific updates for minor releases, see the
+<a class="reference external" href="https://github.com/fooof-tools/fooof/releases">release page</a>.</p>
+<section id="id1">
+<h2>1.1.0<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<p>The 1.1.X release is a minor (non-breaking) update to the 1.X.X release series.
+More detailed information on what is updated in 1.1.0 is on the release page.</p>
+<p>Note that 1.1.0 is the last planned release in the 1.X.X, and under the <cite>fooof</cite> name.
+All future development will be under the new <cite>specparam</cite> module name, starting with
+the upcoming <cite>specparam 2.0.0</cite> release.</p>
+</section>
+<section id="id2">
+<h2>1.0.0<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>Warning: the 1.X.X release series is an API breaking release from the prior versions,
-in the beta series (0.X.X).</p>
-<p>The 1.X.X release series of FOOOF is the current stable version of the module.</p>
+in the beta series (0.X.X). It is a stable release version of the module.</p>
 <p>As compared to the prior series (0.X.X), some names and module organizations have changed.
 This means existing code that uses FOOOF may no longer work as currently written with the
 new version, and may need updating. You should update to the new version when you are ready to
@@ -129,17 +141,17 @@ many new features. The fitting algorithm itself has not changed, and model resul
 with the new version should be roughly equivalent to those with older versions. However,
 there are bug fixes and tweaks such that new model fits are not guaranteed to be the
 identical to prior fits.</p>
-<div class="section" id="code-organization">
-<h3>Code Organization<a class="headerlink" href="#code-organization" title="Permalink to this headline">¶</a></h3>
+<section id="code-organization">
+<h3>Code Organization<a class="headerlink" href="#code-organization" title="Permalink to this heading">¶</a></h3>
 <p>The internal organization of the module has changed with the 1.X.X series.</p>
 <p>These internal organization changes mostly reflect turning internal files into
 sub-modules. Overall, this means that although the main functions and objects can
 still be imported the same as in the 0.X.X series, some items have changed name or moved.</p>
 <p>To see the new names and organization of the module, check the
 <a class="reference external" href="https://fooof-tools.github.io/fooof/api.html">API page</a>.</p>
-</div>
-<div class="section" id="naming-updates">
-<h3>Naming Updates<a class="headerlink" href="#naming-updates" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="naming-updates">
+<h3>Naming Updates<a class="headerlink" href="#naming-updates" title="Permalink to this heading">¶</a></h3>
 <p>There are a series of name changes with the new 1.X.X series.</p>
 <p>These name changes were done to update the module to reflect the current vocabulary
 and conceptual ideas relating to work on parameterizing neural power spectra.</p>
@@ -161,9 +173,9 @@ and conceptual ideas relating to work on parameterizing neural power spectra.</p
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="code-updates">
-<h3>Code Updates<a class="headerlink" href="#code-updates" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="code-updates">
+<h3>Code Updates<a class="headerlink" href="#code-updates" title="Permalink to this heading">¶</a></h3>
 <p>The 1.X.X series adds a large number of code updates &amp; additions, including:</p>
 <ul class="simple">
 <li><p>A big extension of the plotting sub-module</p></li>
@@ -182,9 +194,9 @@ and conceptual ideas relating to work on parameterizing neural power spectra.</p
 <li><p>#121 &amp; #129: code reorganizations &amp; cleanups</p></li>
 <li><p>#122: Updating terminology and names</p></li>
 </ul>
-</div>
-<div class="section" id="documentation-updates">
-<h3>Documentation Updates<a class="headerlink" href="#documentation-updates" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="documentation-updates">
+<h3>Documentation Updates<a class="headerlink" href="#documentation-updates" title="Permalink to this heading">¶</a></h3>
 <p>The 1.X.X series comes with an updated documentation site.</p>
 <p>As well as updating the tutorials, API list, and other existing documentation, there are
 also new materials, including:</p>
@@ -193,9 +205,9 @@ also new materials, including:</p>
 <li><p>a new ‘motivations’ section, exploring why ‘parameterizing neural power spectra’ is a useful idea &amp; method</p></li>
 <li><p>new or updated sections on frequently asked questions, a module glossary, and how to reference the module</p></li>
 </ul>
-</div>
-<div class="section" id="a-note-on-previously-saved-data">
-<h3>A Note on Previously Saved Data<a class="headerlink" href="#a-note-on-previously-saved-data" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="a-note-on-previously-saved-data">
+<h3>A Note on Previously Saved Data<a class="headerlink" href="#a-note-on-previously-saved-data" title="Permalink to this heading">¶</a></h3>
 <p>Note that if you have data saved out from the 0.X.X release series of the module, then the
 code update to the 1.X.X series won’t be able to properly load this data out of the box.</p>
 <p>This is due to the naming changes, and in particular the change from ‘background’ to
@@ -203,17 +215,17 @@ code update to the 1.X.X series won’t be able to properly load this data out o
 the word ‘background’ to ‘aperiodic’, this should update the files so that they can be loaded by
 the 1.X.X version. Note that if you also saved out the algorithm settings, you may need to update
 the name of <cite>min_peak_amplitude</cite> to <cite>min_peak_height</cite> as well.</p>
-</div>
-</div>
-<div class="section" id="x">
-<h2>0.1.X<a class="headerlink" href="#x" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="x">
+<h2>0.1.X<a class="headerlink" href="#x" title="Permalink to this heading">¶</a></h2>
 <p>The 0.1.X series was the initial release series of beta versions of the FOOOF module.</p>
 <p>The old series of releases has a different naming scheme and module organization to the
 current 1.X.X series, and is now deprecated, with no plans to update or maintain this version.</p>
 <p>These releases are described, and can still be accessed, on the
 <a class="reference external" href="https://github.com/fooof-tools/fooof/releases">release page</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -227,8 +239,8 @@ current 1.X.X series, and is now deprecated, with no plans to update or maintain
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

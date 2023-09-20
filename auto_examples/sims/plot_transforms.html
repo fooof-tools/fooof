@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transforming Power Spectra &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Transforming Power Spectra &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -112,10 +115,11 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-sims-plot-transforms-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-sims-plot-transforms-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="transforming-power-spectra">
-<span id="sphx-glr-auto-examples-sims-plot-transforms-py"></span><h1>Transforming Power Spectra<a class="headerlink" href="#transforming-power-spectra" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="transforming-power-spectra">
+<span id="sphx-glr-auto-examples-sims-plot-transforms-py"></span><h1>Transforming Power Spectra<a class="headerlink" href="#transforming-power-spectra" title="Permalink to this heading">¶</a></h1>
 <p>Apply transformations to power spectra.</p>
 <p>One of the goals of parameterizing neural power spectra is to be able to understand
 if and how power spectra may be different and/or be changing across time or context.</p>
@@ -146,8 +150,8 @@ and track how outcome measures relate to changes in the power spectra.</p>
                                            <span class="n">return_params</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="rotating-power-spectra">
-<h2>Rotating Power Spectra<a class="headerlink" href="#rotating-power-spectra" title="Permalink to this headline">¶</a></h2>
+<section id="rotating-power-spectra">
+<h2>Rotating Power Spectra<a class="headerlink" href="#rotating-power-spectra" title="Permalink to this heading">¶</a></h2>
 <p>The <a class="reference internal" href="../../generated/fooof.sim.transform.rotate_spectrum.html#fooof.sim.transform.rotate_spectrum" title="fooof.sim.transform.rotate_spectrum"><code class="xref py py-func docutils literal notranslate"><span class="pre">rotate_spectrum()</span></code></a> function takes in a power spectrum, and
 rotates the power spectrum a specified amount, around a specified frequency point,
 changing the aperiodic exponent of the spectrum.</p>
@@ -163,8 +167,7 @@ changing the aperiodic exponent of the spectrum.</p>
 <a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">powers</span><span class="p">,</span> <span class="n">r_powers</span><span class="p">],</span> <span class="n">log_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot transforms" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_transforms_001.png" />
-<p>Next, we can fit power spectrum models to check if our change in exponent worked as expected.</p>
+<img src="../../_images/sphx_glr_plot_transforms_001.png" srcset="../../_images/sphx_glr_plot_transforms_001.png" alt="plot transforms" class = "sphx-glr-single-img"/><p>Next, we can fit power spectrum models to check if our change in exponent worked as expected.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize FOOOF objects</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm1</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm2</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -180,13 +183,12 @@ changing the aperiodic exponent of the spectrum.</p>
     <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm2</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Original exponent value:         1.00
 Rotated exponent value: 1.25
 </pre></div>
 </div>
-<div class="section" id="rotation-related-offset-changes">
-<h3>Rotation Related Offset Changes<a class="headerlink" href="#rotation-related-offset-changes" title="Permalink to this headline">¶</a></h3>
+<section id="rotation-related-offset-changes">
+<h3>Rotation Related Offset Changes<a class="headerlink" href="#rotation-related-offset-changes" title="Permalink to this heading">¶</a></h3>
 <p>Note that when you rotate a power spectrum, the offset also necessarily changes.</p>
 <p>If you wish to compute the change in offset that occurs due to a change in exponent,
 you can use the <a class="reference internal" href="../../generated/fooof.sim.transform.compute_rotation_offset.html#fooof.sim.transform.compute_rotation_offset" title="fooof.sim.transform.compute_rotation_offset"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_rotation_offset()</span></code></a> function.</p>
@@ -197,14 +199,13 @@ you can use the <a class="reference internal" href="../../generated/fooof.sim.tr
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The induced change in offset is: </span><span class="se">\t</span><span class="s2"> </span><span class="si">{:1.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">off_change</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The induced change in offset is:         0.33
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="translating-power-spectra">
-<h2>Translating Power Spectra<a class="headerlink" href="#translating-power-spectra" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="translating-power-spectra">
+<h2>Translating Power Spectra<a class="headerlink" href="#translating-power-spectra" title="Permalink to this heading">¶</a></h2>
 <p>Another transformation you can apply to power spectra is a translation, which changes
 the offset, effectively moving the whole spectrum up or down.</p>
 <p>Note that changing the offset does not change the exponent.</p>
@@ -219,10 +220,9 @@ the offset, effectively moving the whole spectrum up or down.</p>
 <a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">powers</span><span class="p">,</span> <span class="n">t_powers</span><span class="p">],</span> <span class="n">log_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot transforms" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_transforms_002.png" />
-</div>
-<div class="section" id="transforming-while-tracking-simulation-parameters">
-<h2>Transforming while Tracking Simulation Parameters<a class="headerlink" href="#transforming-while-tracking-simulation-parameters" title="Permalink to this headline">¶</a></h2>
+<img src="../../_images/sphx_glr_plot_transforms_002.png" srcset="../../_images/sphx_glr_plot_transforms_002.png" alt="plot transforms" class = "sphx-glr-single-img"/></section>
+<section id="transforming-while-tracking-simulation-parameters">
+<h2>Transforming while Tracking Simulation Parameters<a class="headerlink" href="#transforming-while-tracking-simulation-parameters" title="Permalink to this heading">¶</a></h2>
 <p>As we’ve seen, transforming power spectra changes their definitions, and sometimes
 more than just the parameter we are manipulating directly.</p>
 <p>If you are transforming simulated spectra, it can be useful to keep track of these changes.</p>
@@ -237,7 +237,6 @@ return a new <a class="reference internal" href="../../generated/fooof.data.SimP
 <span class="nb">print</span><span class="p">(</span><a href="../../generated/fooof.data.SimParams.html#fooof.data.SimParams" title="fooof.data.SimParams" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">r_params</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SimParams(aperiodic_params=[1.3252574989159953, 1.25], periodic_params=[[10, 0.5, 1]], nlv=0.005)
 </pre></div>
 </div>
@@ -248,13 +247,12 @@ return a new <a class="reference internal" href="../../generated/fooof.data.SimP
 <span class="nb">print</span><span class="p">(</span><a href="../../generated/fooof.data.SimParams.html#fooof.data.SimParams" title="fooof.data.SimParams" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t_params</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SimParams(aperiodic_params=[1.5, 1], periodic_params=[[10, 0.5, 1]], nlv=0.005)
 </pre></div>
 </div>
-</div>
-<div class="section" id="relations-between-power-spectra">
-<h2>Relations Between Power Spectra<a class="headerlink" href="#relations-between-power-spectra" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="relations-between-power-spectra">
+<h2>Relations Between Power Spectra<a class="headerlink" href="#relations-between-power-spectra" title="Permalink to this heading">¶</a></h2>
 <p>In some cases, what we care about when transforming power spectra, is the relation
 between multiple transformed power spectra.</p>
 <p>For example, if we start with a power spectrum ‘A’, and compute two transformations
@@ -271,8 +269,8 @@ power spectra.</p>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm2</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="rotate-at-the-same-rotation-frequencies">
-<h3>Rotate at the Same Rotation Frequencies<a class="headerlink" href="#rotate-at-the-same-rotation-frequencies" title="Permalink to this headline">¶</a></h3>
+<section id="rotate-at-the-same-rotation-frequencies">
+<h3>Rotate at the Same Rotation Frequencies<a class="headerlink" href="#rotate-at-the-same-rotation-frequencies" title="Permalink to this heading">¶</a></h3>
 <p>First, let’s consider the case in which we rotate a spectrum by the different delta
 exponents, at the same rotation frequency.</p>
 <p>In this case, each rotation creates the same change in offset between ‘B’ &amp; ‘C’, and
@@ -302,7 +300,6 @@ is computable as the different of delta exponents applied to each spectrum.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exp_diff</span><span class="p">,</span> <span class="n">exp_diff_meas</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Exponent Difference:
   expected:     -0.2500
   actual:       -0.2500
@@ -313,10 +310,9 @@ is computable as the different of delta exponents applied to each spectrum.</p>
              <span class="n">log_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot transforms" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_transforms_003.png" />
-</div>
-<div class="section" id="rotate-at-different-rotation-frequencies">
-<h3>Rotate at Different Rotation Frequencies<a class="headerlink" href="#rotate-at-different-rotation-frequencies" title="Permalink to this headline">¶</a></h3>
+<img src="../../_images/sphx_glr_plot_transforms_003.png" srcset="../../_images/sphx_glr_plot_transforms_003.png" alt="plot transforms" class = "sphx-glr-single-img"/></section>
+<section id="rotate-at-different-rotation-frequencies">
+<h3>Rotate at Different Rotation Frequencies<a class="headerlink" href="#rotate-at-different-rotation-frequencies" title="Permalink to this heading">¶</a></h3>
 <p>Next, let’s consider the case in which we rotate a spectrum by the same delta exponent,
 but do so at different rotation frequencies.</p>
 <p>The resulting power spectra will have the same final exponent value, but there will
@@ -349,7 +345,6 @@ computed as the difference of rotation offset changes between them.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">off_diff</span><span class="p">,</span> <span class="n">off_diff_2</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Offset Difference:
   expected:     -0.1747
   actual:       -0.1747
@@ -360,10 +355,9 @@ computed as the difference of rotation offset changes between them.</p>
              <span class="n">log_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot transforms" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_transforms_004.png" />
-</div>
-<div class="section" id="rotate-different-amounts-at-different-frequencies">
-<h3>Rotate Different Amounts at Different Frequencies<a class="headerlink" href="#rotate-different-amounts-at-different-frequencies" title="Permalink to this headline">¶</a></h3>
+<img src="../../_images/sphx_glr_plot_transforms_004.png" srcset="../../_images/sphx_glr_plot_transforms_004.png" alt="plot transforms" class = "sphx-glr-single-img"/></section>
+<section id="rotate-different-amounts-at-different-frequencies">
+<h3>Rotate Different Amounts at Different Frequencies<a class="headerlink" href="#rotate-different-amounts-at-different-frequencies" title="Permalink to this heading">¶</a></h3>
 <p>Finally, let’s consider the case in which we rotate a spectrum by different delta exponents,
 and do so at different rotation frequencies.</p>
 <p>As before, the changes in offset cancel out, and the total change in exponent is
@@ -393,7 +387,6 @@ relationship between ‘B’ and ‘C’, using the formula for how spectra are 
 <span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f_rotation</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Rotation frequency:     31.2500
 </pre></div>
 </div>
@@ -403,13 +396,11 @@ relationship between ‘B’ and ‘C’, using the formula for how spectra are 
 <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">f_rotation</span><span class="p">))</span>
 </pre></div>
 </div>
-<img alt="plot transforms" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_transforms_005.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.lines.Line2D object at 0x7f645192e550&gt;
+<img src="../../_images/sphx_glr_plot_transforms_005.png" srcset="../../_images/sphx_glr_plot_transforms_005.png" alt="plot transforms" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.lines.Line2D object at 0x7f9627850250&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.359 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-sims-plot-transforms-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.675 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-sims-plot-transforms-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/251590012ec0eb2c00e17dd6ab357fc9/plot_transforms.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_transforms.py</span></code></a></p>
 </div>
@@ -418,9 +409,9 @@ relationship between ‘B’ and ‘C’, using the formula for how spectra are 
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
     </div>
@@ -434,8 +425,8 @@ relationship between ‘B’ and ‘C’, using the formula for how spectra are 
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

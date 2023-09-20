@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>07: Tuning &amp; Troubleshooting &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>07: Tuning &amp; Troubleshooting &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../visualizers.html">Visualizers</a></li>
                 <li><a href="../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -112,10 +115,11 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-07-troubleshooting-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-07-troubleshooting-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="tuning-troubleshooting">
-<span id="sphx-glr-auto-tutorials-plot-07-troubleshooting-py"></span><h1>07: Tuning &amp; Troubleshooting<a class="headerlink" href="#tuning-troubleshooting" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="tuning-troubleshooting">
+<span id="sphx-glr-auto-tutorials-plot-07-troubleshooting-py"></span><h1>07: Tuning &amp; Troubleshooting<a class="headerlink" href="#tuning-troubleshooting" title="Permalink to this heading">¶</a></h1>
 <p>Tips &amp; tricks for choosing algorithm settings, tuning fits, and troubleshooting.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -129,8 +133,8 @@
 <span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="kn">import</span> <a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
 </pre></div>
 </div>
-<div class="section" id="algorithm-settings">
-<h2>Algorithm Settings<a class="headerlink" href="#algorithm-settings" title="Permalink to this headline">¶</a></h2>
+<section id="algorithm-settings">
+<h2>Algorithm Settings<a class="headerlink" href="#algorithm-settings" title="Permalink to this heading">¶</a></h2>
 <p>With default settings, the power spectrum model is relatively minimally constrained. It
 defaults as such since there are not universal settings that work across all different
 recording modalities. Appropriate settings also vary with power spectrum quality (noise,
@@ -154,9 +158,9 @@ should not have a large impact on the fitting.</p>
 (across channels, trials, or subjects), if they are to be meaningfully compared.
 We therefore recommend first testing fitting the model across some representative
 spectra, in order to select settings, which you then keep constant for the full analysis.</p>
-</div>
-<div class="section" id="tuning-the-algorithm">
-<h2>Tuning the Algorithm<a class="headerlink" href="#tuning-the-algorithm" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="tuning-the-algorithm">
+<h2>Tuning the Algorithm<a class="headerlink" href="#tuning-the-algorithm" title="Permalink to this heading">¶</a></h2>
 <p>With default settings, the model fit is fairly liberal at fitting peaks, and so
 most commonly this will lead to overfitting, being overzealous at fitting small
 noisy bumps as peaks.</p>
@@ -166,9 +170,9 @@ and that your data meets the assumptions of the approach you choose (see the tut
 on aperiodic fitting).</p>
 <p>The remainder of this notebook goes through some examples of choosing settings
 for different datasets.</p>
-</div>
-<div class="section" id="interpreting-model-fit-quality-measures">
-<h2>Interpreting Model Fit Quality Measures<a class="headerlink" href="#interpreting-model-fit-quality-measures" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="interpreting-model-fit-quality-measures">
+<h2>Interpreting Model Fit Quality Measures<a class="headerlink" href="#interpreting-model-fit-quality-measures" title="Permalink to this heading">¶</a></h2>
 <p>After model fitting, some goodness of fit metrics are calculated to assist with assessing
 the quality of the model fits. It calculates both the model fit error, as the mean absolute
 error (MAE) between the full model fit (<code class="docutils literal notranslate"><span class="pre">fooofed_spectrum_</span></code>) and the original power spectrum,
@@ -189,9 +193,9 @@ is particularly low. These explorations can be used to pick settings that are su
 for running across a group. There are not universal settings that optimize this, and so
 it is left up to the user to choose settings appropriately to not under- or over-fit
 for a given modality / dataset / application.</p>
-</div>
-<div class="section" id="reducing-overfitting">
-<h2>Reducing Overfitting<a class="headerlink" href="#reducing-overfitting" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="reducing-overfitting">
+<h2>Reducing Overfitting<a class="headerlink" href="#reducing-overfitting" title="Permalink to this heading">¶</a></h2>
 <p>If the model appears to be overfitting (for example, fitting too many peaks to small bumps), try:</p>
 <ul class="simple">
 <li><p>Setting a lower-bound bandwidth-limit, to exclude fitting very narrow peaks, that may be noise</p></li>
@@ -202,9 +206,9 @@ for a given modality / dataset / application.</p>
 </li>
 <li><p>Setting a minimum absolute peak height: <cite>min_peak_height</cite></p></li>
 </ul>
-</div>
-<div class="section" id="simulating-power-spectra">
-<h2>Simulating Power Spectra<a class="headerlink" href="#simulating-power-spectra" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="simulating-power-spectra">
+<h2>Simulating Power Spectra<a class="headerlink" href="#simulating-power-spectra" title="Permalink to this heading">¶</a></h2>
 <p>For this example, we will use simulated data. The FOOOF module includes utilities
 for creating simulated power-spectra. To do so, we can use the <a class="reference internal" href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum"><code class="xref py py-func docutils literal notranslate"><span class="pre">gen_power_spectrum()</span></code></a>
 function to simulate individual power spectra, following the power spectrum model.</p>
@@ -230,9 +234,7 @@ function to simulate individual power spectra, following the power spectrum mode
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.report" title="fooof.FOOOF.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot 07 TroubleShooting" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_07-TroubleShooting_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>FOOOF WARNING: Lower-bound peak width limit is &lt; or ~= the frequency resolution: 0.50 &lt;= 0.50
+<img src="../_images/sphx_glr_plot_07-TroubleShooting_001.png" srcset="../_images/sphx_glr_plot_07-TroubleShooting_001.png" alt="plot 07 TroubleShooting" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>FOOOF WARNING: Lower-bound peak width limit is &lt; or ~= the frequency resolution: 0.50 &lt;= 0.50
         Lower bounds below frequency-resolution have no effect (effective lower bound is the frequency resolution).
         Too low a limit may lead to overfitting noise as small bandwidth peaks.
         We recommend a lower bound of approximately 2x the frequency resolution.
@@ -249,11 +251,11 @@ function to simulate individual power spectra, following the power spectrum mode
 
                                        7 peaks were found:
                                 CF:   9.83, PW:  0.908, BW:  4.90
-                                CF:  19.92, PW:  0.826, BW:  3.60
-                                CF:  22.69, PW:  0.525, BW:  0.50
+                                CF:  19.92, PW:  0.826, BW:  3.59
+                                CF:  22.68, PW:  0.524, BW:  0.52
                                 CF:  31.85, PW:  0.566, BW:  2.22
-                                CF:  38.65, PW:  0.262, BW:  0.59
-                                CF:  39.51, PW:  0.239, BW:  0.53
+                                CF:  38.60, PW:  0.262, BW:  0.56
+                                CF:  39.44, PW:  0.240, BW:  0.60
                                 CF:  49.46, PW:  0.209, BW:  0.50
 
                                      Goodness of fit metrics:
@@ -273,9 +275,7 @@ high, given the amount of noise we in the simulated power spectrum.</p>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.report" title="fooof.FOOOF.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot 07 TroubleShooting" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_07-TroubleShooting_002.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+<img src="../_images/sphx_glr_plot_07-TroubleShooting_002.png" srcset="../_images/sphx_glr_plot_07-TroubleShooting_002.png" alt="plot 07 TroubleShooting" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
 
                                    FOOOF - POWER SPECTRUM MODEL
 
@@ -308,15 +308,14 @@ which is why we compare to the model gaussian parameters here.</p>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="se">\t</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">sy</span><span class="p">,</span> <span class="o">*</span><span class="n">fi</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Ground Truth             Model Parameters
 10.00  1.00  2.50         9.82  0.91  2.43
 20.00  0.80  2.00        20.03  0.82  1.94
 32.00  0.60  1.00        31.85  0.57  1.11
 </pre></div>
 </div>
-<div class="section" id="power-spectra-with-no-peaks">
-<h3>Power Spectra with No Peaks<a class="headerlink" href="#power-spectra-with-no-peaks" title="Permalink to this headline">¶</a></h3>
+<section id="power-spectra-with-no-peaks">
+<h3>Power Spectra with No Peaks<a class="headerlink" href="#power-spectra-with-no-peaks" title="Permalink to this heading">¶</a></h3>
 <p>A known case in which the model can overfit is in power spectra in which no peaks are
 present. In this case, the standard deviation can be very low, and so the relative
 peak height check (<code class="docutils literal notranslate"><span class="pre">min_peak_threshold</span></code>) is very liberal at keeping gaussian fits.</p>
@@ -326,10 +325,10 @@ appropriately fit power spectra as having no peaks, since it uses only a relativ
 threshold if <code class="docutils literal notranslate"><span class="pre">min_peak_height</span></code> is set to zero (which is the default value).
 Setting <code class="docutils literal notranslate"><span class="pre">min_peak_height</span></code> requires checking the scale of your power spectra,
 allowing you to define an absolute threshold for extracting peaks.</p>
-</div>
-</div>
-<div class="section" id="reducing-underfitting">
-<h2>Reducing Underfitting<a class="headerlink" href="#reducing-underfitting" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="reducing-underfitting">
+<h2>Reducing Underfitting<a class="headerlink" href="#reducing-underfitting" title="Permalink to this heading">¶</a></h2>
 <p>If you are finding that the model is underfitting:</p>
 <ul class="simple">
 <li><p>First check and perhaps loosen any restrictions from <code class="docutils literal notranslate"><span class="pre">max_n_peaks</span></code> and <code class="docutils literal notranslate"><span class="pre">min_peak_height</span></code></p></li>
@@ -359,9 +358,7 @@ allowing you to define an absolute threshold for extracting peaks.</p>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.report" title="fooof.FOOOF.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot 07 TroubleShooting" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_07-TroubleShooting_003.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+<img src="../_images/sphx_glr_plot_07-TroubleShooting_003.png" srcset="../_images/sphx_glr_plot_07-TroubleShooting_003.png" alt="plot 07 TroubleShooting" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
 
                                    FOOOF - POWER SPECTRUM MODEL
 
@@ -389,24 +386,23 @@ allowing you to define an absolute threshold for extracting peaks.</p>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="se">\t</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">sy</span><span class="p">,</span> <span class="o">*</span><span class="n">fi</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Ground Truth             Model Parameters
 10.00  1.00  1.00        10.00  0.99  0.97
 20.00  0.30  1.50        19.95  0.31  1.39
 32.00  0.25  1.00        32.04  0.23  0.98
 </pre></div>
 </div>
-</div>
-<div class="section" id="checking-fits-across-a-group">
-<h2>Checking Fits Across a Group<a class="headerlink" href="#checking-fits-across-a-group" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="checking-fits-across-a-group">
+<h2>Checking Fits Across a Group<a class="headerlink" href="#checking-fits-across-a-group" title="Permalink to this heading">¶</a></h2>
 <p>So far we have explored troubleshooting individual model fits. When starting
 a new analysis, or working with a new dataset, we do recommend starting by
 trying some individual fits like this.</p>
 <p>If and when you move to using <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> to fit groups of power spectra,
 there are some slightly different ways to investigate groups of fits,
 which we’ll step through now, using some simulated data.</p>
-<div class="section" id="simulating-a-group-of-power-spectra">
-<h3>Simulating a Group of Power Spectra<a class="headerlink" href="#simulating-a-group-of-power-spectra" title="Permalink to this headline">¶</a></h3>
+<section id="simulating-a-group-of-power-spectra">
+<h3>Simulating a Group of Power Spectra<a class="headerlink" href="#simulating-a-group-of-power-spectra" title="Permalink to this heading">¶</a></h3>
 <p>We will continue using simulated data, this time simulating a group of power spectra.</p>
 <p>To simulate a group of power spectra, we will use the <a class="reference internal" href="../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra"><code class="xref py py-func docutils literal notranslate"><span class="pre">gen_group_power_spectra()</span></code></a>
 in combination with called <a class="reference internal" href="../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler"><code class="xref py py-func docutils literal notranslate"><span class="pre">param_sampler()</span></code></a> that is used to sample across
@@ -435,11 +431,7 @@ possible parameters.</p>
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.report" title="fooof.FOOOFGroup.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectra</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="Aperiodic Fit, Goodness of Fit, Peaks - Center Frequencies" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_07-TroubleShooting_004.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 10 power spectra.
-/home/rph/Projects/fooof/.env/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
-  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
+<img src="../_images/sphx_glr_plot_07-TroubleShooting_004.png" srcset="../_images/sphx_glr_plot_07-TroubleShooting_004.png" alt="Aperiodic Fit, Goodness of Fit, Peaks - Center Frequencies" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 10 power spectra.
 ==================================================================================================
 
                                        FOOOF - GROUP RESULTS
@@ -483,9 +475,7 @@ and select these fits from the <a class="reference internal" href="../generated/
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="plot 07 TroubleShooting" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_07-TroubleShooting_005.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+<img src="../_images/sphx_glr_plot_07-TroubleShooting_005.png" srcset="../_images/sphx_glr_plot_07-TroubleShooting_005.png" alt="plot 07 TroubleShooting" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
 
                                    FOOOF - POWER SPECTRUM MODEL
 
@@ -531,25 +521,30 @@ large number of gaussians.</p>
 </pre></div>
 </div>
 <ul class="sphx-glr-horizontal">
-<li><img alt="plot 07 TroubleShooting" class="sphx-glr-multi-img" src="../_images/sphx_glr_plot_07-TroubleShooting_006.png" />
-</li>
-<li><img alt="plot 07 TroubleShooting" class="sphx-glr-multi-img" src="../_images/sphx_glr_plot_07-TroubleShooting_007.png" />
-</li>
+<li><img src="../_images/sphx_glr_plot_07-TroubleShooting_006.png" srcset="../_images/sphx_glr_plot_07-TroubleShooting_006.png" alt="plot 07 TroubleShooting" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_plot_07-TroubleShooting_007.png" srcset="../_images/sphx_glr_plot_07-TroubleShooting_007.png" alt="plot 07 TroubleShooting" class = "sphx-glr-multi-img"/></li>
 </ul>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/tom/opt/anaconda3/lib/python3.8/site-packages/fooof/core/reports.py:72: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/fooof/core/reports.py:72: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/fooof/core/reports.py:72: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+</pre></div>
+</div>
 <p>Another thing that can be worth keeping an eye on is the average number of fit
 peaks per model. A particularly high value can indicate overfitting.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the average number of fit peaks, per model</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Average number of fit peaks: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.n_peaks_" title="fooof.FOOOFGroup.n_peaks_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">n_peaks_</span></a><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Average number of fit peaks: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.n_peaks_" title="fooof.FOOOFGroup.n_peaks_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fg</span><span class="o">.</span><span class="n">n_peaks_</span></a><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Average number of fit peaks:  4.5
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="reporting-bad-fits">
-<h2>Reporting Bad Fits<a class="headerlink" href="#reporting-bad-fits" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="reporting-bad-fits">
+<h2>Reporting Bad Fits<a class="headerlink" href="#reporting-bad-fits" title="Permalink to this heading">¶</a></h2>
 <p>If, after working through these suggestions, you are still getting bad fits, and/or
 are just not sure what is going on, please get in touch! We will hopefully be able to
 make further recommendations, and this also serves as a way for us to investigate when
@@ -562,7 +557,6 @@ bad fits / bugs back to us, as demonstrated below.</p>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_report_issue" title="fooof.FOOOF.print_report_issue" class="sphx-glr-backref-module-fooof-FOOOF sphx-glr-backref-type-py-method"><span class="n">FOOOF</span><span class="o">.</span><span class="n">print_report_issue</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
 
                                      FOOOF - ISSUE REPORTING
@@ -585,14 +579,14 @@ bad fits / bugs back to us, as demonstrated below.</p>
 ==================================================================================================
 </pre></div>
 </div>
-</div>
-<div class="section" id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">¶</a></h2>
 <p>We have now stepped through the full work-flow of fitting power spectrum models, using
 FOOOF objects, picking settings, and troubleshooting model fits. In the next
 and final tutorial, we will introduce how to start analyzing FOOOF results.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.270 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-07-troubleshooting-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.357 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-07-troubleshooting-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/e1323effd79464d1bc2f041025d82065/plot_07-TroubleShooting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_07-TroubleShooting.py</span></code></a></p>
 </div>
@@ -601,8 +595,8 @@ and final tutorial, we will introduce how to start analyzing FOOOF results.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -616,8 +610,8 @@ and final tutorial, we will introduce how to start analyzing FOOOF results.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

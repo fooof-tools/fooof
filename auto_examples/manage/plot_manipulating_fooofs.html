@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manipulating FOOOF Objects &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Manipulating FOOOF Objects &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -112,10 +115,11 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-manage-plot-manipulating-fooofs-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-manage-plot-manipulating-fooofs-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="manipulating-fooof-objects">
-<span id="sphx-glr-auto-examples-manage-plot-manipulating-fooofs-py"></span><h1>Manipulating FOOOF Objects<a class="headerlink" href="#manipulating-fooof-objects" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="manipulating-fooof-objects">
+<span id="sphx-glr-auto-examples-manage-plot-manipulating-fooofs-py"></span><h1>Manipulating FOOOF Objects<a class="headerlink" href="#manipulating-fooof-objects" title="Permalink to this heading">¶</a></h1>
 <p>Examples with combining, sub-selecting, dropping, and averaging power spectrum models.</p>
 <p>As you fit power spectrum models, you may end up with multiple FOOOF objects, as you fit
 models within and across subjects, conditions, trials, etc. To help manage and organize
@@ -165,8 +169,8 @@ objects.</p>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm3</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers_3</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="combining-fooof-objects">
-<h2>Combining FOOOF Objects<a class="headerlink" href="#combining-fooof-objects" title="Permalink to this headline">¶</a></h2>
+<section id="combining-fooof-objects">
+<h2>Combining FOOOF Objects<a class="headerlink" href="#combining-fooof-objects" title="Permalink to this heading">¶</a></h2>
 <p>Sometimes, when working with models in <a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> or <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a>
 objects, you may want to combine them together, to check some group properties.</p>
 <p>The <a class="reference internal" href="../../generated/fooof.objs.combine_fooofs.html#fooof.objs.combine_fooofs" title="fooof.objs.combine_fooofs"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_fooofs()</span></code></a> function takes a list of FOOOF and/or
@@ -180,12 +184,11 @@ FOOOFGroup objects, and combines all available fits together into a FOOOFGroup o
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of model fits: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of model fits:  3
 </pre></div>
 </div>
-<div class="section" id="note-on-manipulating-fooof-objects">
-<h3>Note on Manipulating FOOOF Objects<a class="headerlink" href="#note-on-manipulating-fooof-objects" title="Permalink to this headline">¶</a></h3>
+<section id="note-on-manipulating-fooof-objects">
+<h3>Note on Manipulating FOOOF Objects<a class="headerlink" href="#note-on-manipulating-fooof-objects" title="Permalink to this heading">¶</a></h3>
 <p>Note that these functions that manipulate FOOOF objects typically do more than just
 copy results data - they also check and manage settings and meta-data of objects.</p>
 <p>For example, combining FOOOF objects returns a new FOOOFGroup object with the same settings.</p>
@@ -197,14 +200,13 @@ you are comparing model results that were fit with equivalent settings.</p>
 <a href="../../generated/fooof.objs.compare_info.html#fooof.objs.compare_info" title="fooof.objs.compare_info" class="sphx-glr-backref-module-fooof-objs sphx-glr-backref-type-py-function"><span class="n">compare_info</span></a><span class="p">([</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm1</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">],</span> <span class="s1">&#39;settings&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="sub-select-from-fooofgroup">
-<h2>Sub-Select from FOOOFGroup<a class="headerlink" href="#sub-select-from-fooofgroup" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="sub-select-from-fooofgroup">
+<h2>Sub-Select from FOOOFGroup<a class="headerlink" href="#sub-select-from-fooofgroup" title="Permalink to this heading">¶</a></h2>
 <p>When you have a <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object, you may also want to sub-select
 a group of models.</p>
 <p>Example use cases for this could be:</p>
@@ -228,15 +230,14 @@ use the <a class="reference internal" href="../../generated/fooof.FOOOFGroup.htm
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of model fits: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">nfg</span></a><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of model fits:  2
 </pre></div>
 </div>
 <p>From here, we could continue to do any analyses of interest on our new
 FOOOFGroup object, which contains only our models of interest.</p>
-</div>
-<div class="section" id="dropping-fits-from-fooofgroup">
-<h2>Dropping Fits from FOOOFGroup<a class="headerlink" href="#dropping-fits-from-fooofgroup" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="dropping-fits-from-fooofgroup">
+<h2>Dropping Fits from FOOOFGroup<a class="headerlink" href="#dropping-fits-from-fooofgroup" title="Permalink to this heading">¶</a></h2>
 <p>Another option is to ‘drop’ model fits from a FOOOFGroup object. You can do this with
 the <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.drop" title="fooof.FOOOFGroup.drop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop()</span></code></a> method from a <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object.</p>
 <p>This can be used, for example, for a quality control step. If you have checked through
@@ -248,8 +249,8 @@ have particularly high error.</p>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.drop" title="fooof.FOOOFGroup.drop" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">drop</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="note-on-dropped-or-failed-fits">
-<h3>Note on Dropped or Failed Fits<a class="headerlink" href="#note-on-dropped-or-failed-fits" title="Permalink to this headline">¶</a></h3>
+<section id="note-on-dropped-or-failed-fits">
+<h3>Note on Dropped or Failed Fits<a class="headerlink" href="#note-on-dropped-or-failed-fits" title="Permalink to this heading">¶</a></h3>
 <p>When models are dropped from <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> objects, they are set as null models.
 They are therefore cleared of results, but not literally dropped, which
 is done to preserve the ordering of the FOOOFGroup, so that the <cite>n-th</cite> model
@@ -257,40 +258,38 @@ doesn’t change if some models are dropped.</p>
 <p>Note that there may in some cases be Null models in a FOOOFGroup without
 explicitly dropping them, if any models failed during the fitting process.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check information on null models (dropped models)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Null models  : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.n_null_" title="fooof.FOOOFGroup.n_null_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">n_null_</span></a><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Indices of Null models : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.null_inds_" title="fooof.FOOOFGroup.null_inds_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">null_inds_</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Null models  : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.n_null_" title="fooof.FOOOFGroup.n_null_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fg</span><span class="o">.</span><span class="n">n_null_</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Indices of Null models : </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.null_inds_" title="fooof.FOOOFGroup.null_inds_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fg</span><span class="o">.</span><span class="n">null_inds_</span></a><span class="p">)</span>
 
 <span class="c1"># Despite the dropped model, the total number of models in the object is the same</span>
 <span class="c1">#   This means that the indices are still the same as before dropping models</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of model fits: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of Null models  :         1
 Indices of Null models :         [2]
 Number of model fits:  3
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Null models are defined as all NaN (not a number)</span>
-<span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.null_inds_" title="fooof.FOOOFGroup.null_inds_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">null_inds_</span></a><span class="p">:</span>
+<span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.null_inds_" title="fooof.FOOOFGroup.null_inds_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fg</span><span class="o">.</span><span class="n">null_inds_</span></a><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>FOOOFResults(aperiodic_params=array([nan, nan]), peak_params=array([], shape=(0, 3), dtype=float64), r_squared=nan, error=nan, gaussian_params=array([], shape=(0, 3), dtype=float64))
 </pre></div>
 </div>
-</div>
-<div class="section" id="note-on-selecting-from-fooof-objects">
-<h3>Note on Selecting From FOOOF Objects<a class="headerlink" href="#note-on-selecting-from-fooof-objects" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="note-on-selecting-from-fooof-objects">
+<h3>Note on Selecting From FOOOF Objects<a class="headerlink" href="#note-on-selecting-from-fooof-objects" title="Permalink to this heading">¶</a></h3>
 <p>Both the <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_group" title="fooof.FOOOFGroup.get_group"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_group()</span></code></a> and <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.drop" title="fooof.FOOOFGroup.drop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">drop()</span></code></a> methods
 take an input of the indices of FOOOF model to select or drop.</p>
 <p>In both cases, the input can be defined in multiple ways, including directly indicating
 the indices as a list of integers, or boolean masks.</p>
-</div>
-</div>
-<div class="section" id="averaging-across-model-fits">
-<h2>Averaging Across Model Fits<a class="headerlink" href="#averaging-across-model-fits" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="averaging-across-model-fits">
+<h2>Averaging Across Model Fits<a class="headerlink" href="#averaging-across-model-fits" title="Permalink to this heading">¶</a></h2>
 <p>Finally, let’s average across the models in our FOOOFGroup object, to examine
 the average model of the data.</p>
 <p>Note that in order to be able to average across individual models, we need to define
@@ -307,14 +306,8 @@ to average across all the peaks across all models.</p>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">afm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="plot manipulating fooofs" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_manipulating_fooofs_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/rph/Projects/fooof/.env/lib/python3.8/site-packages/fooof/objs/group.py:378: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
-  out = np.array([np.insert(getattr(data, name), 3, index, axis=1)
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.116 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manage-plot-manipulating-fooofs-py">
+<img src="../../_images/sphx_glr_plot_manipulating_fooofs_001.png" srcset="../../_images/sphx_glr_plot_manipulating_fooofs_001.png" alt="plot manipulating fooofs" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.189 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manage-plot-manipulating-fooofs-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/df69e7186299ce3b317510052e083eba/plot_manipulating_fooofs.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_manipulating_fooofs.py</span></code></a></p>
 </div>
@@ -323,8 +316,8 @@ to average across all the peaks across all models.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -338,8 +331,8 @@ to average across all the peaks across all models.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

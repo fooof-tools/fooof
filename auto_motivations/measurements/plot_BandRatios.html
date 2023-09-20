@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Band Ratio Measures &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Band Ratio Measures &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -26,10 +29,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +59,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +71,7 @@
                 <li><a href="../index.html">Motivations</a></li>
                 <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -112,13 +116,14 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-motivations-measurements-plot-bandratios-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-motivations-measurements-plot-bandratios-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="band-ratio-measures">
-<span id="sphx-glr-auto-motivations-measurements-plot-bandratios-py"></span><h1>Band Ratio Measures<a class="headerlink" href="#band-ratio-measures" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="band-ratio-measures">
+<span id="sphx-glr-auto-motivations-measurements-plot-bandratios-py"></span><h1>Band Ratio Measures<a class="headerlink" href="#band-ratio-measures" title="Permalink to this heading">¶</a></h1>
 <p>Exploring how band ratio measures relate to periodic &amp; aperiodic activity.</p>
-<div class="section" id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
 <p>Band ratios measures are a relatively common measure, proposed to measure oscillatory,
 or periodic, activity.</p>
 <p>They are typically calculated as:</p>
@@ -126,8 +131,8 @@ or periodic, activity.</p>
 \[BR = \frac{avg(low band power)}{avg(high band power)}\]</div>
 <p>In this notebook we will explore this measure in the context of conceptualizing
 neural power spectra as a combination of aperiodic and periodic activity.</p>
-<div class="section" id="band-ratios-project">
-<h3>Band Ratios Project<a class="headerlink" href="#band-ratios-project" title="Permalink to this headline">¶</a></h3>
+<section id="band-ratios-project">
+<h3>Band Ratios Project<a class="headerlink" href="#band-ratios-project" title="Permalink to this heading">¶</a></h3>
 <p>This example offers a relatively quick demonstration of how band ratios measures
 relate to periodic and aperiodic activity.</p>
 <p>We have completed a full project investigating methodological properties of band
@@ -142,7 +147,7 @@ ratio measures, which is available
 <span class="kn">from</span> <span class="nn">fooof.utils</span> <span class="kn">import</span> <a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="fooof.utils.trim_spectrum" class="sphx-glr-backref-module-fooof-utils sphx-glr-backref-type-py-function"><span class="n">trim_spectrum</span></a>
 <span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="kn">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a>
 <span class="kn">from</span> <span class="nn">fooof.sim.utils</span> <span class="kn">import</span> <a href="../../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
-<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.spectra.plot_spectrum_shading.html#fooof.plts.spectra.plot_spectrum_shading" title="fooof.plts.spectra.plot_spectrum_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectrum_shading</span></a><span class="p">,</span> <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="fooof.plts.spectra.plot_spectra_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectra_shading</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="fooof.plts.spectra.plot_spectra_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectra_shading</span></a>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># General Settings</span>
@@ -157,9 +162,9 @@ ratio measures, which is available
 <span class="n">shade_color</span> <span class="o">=</span> <span class="s1">&#39;#0365C0&#39;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="simulating-data">
-<h3>Simulating Data<a class="headerlink" href="#simulating-data" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="simulating-data">
+<h3>Simulating Data<a class="headerlink" href="#simulating-data" title="Permalink to this heading">¶</a></h3>
 <p>For this example, we will use simulated data. Let’s start by simulating a
 a baseline power spectrum.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulation Settings</span>
@@ -183,9 +188,9 @@ a baseline power spectrum.</p>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap</span><span class="p">,</span> <span class="p">[</span><span class="n">theta</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">],</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="calculating-band-ratios">
-<h3>Calculating Band Ratios<a class="headerlink" href="#calculating-band-ratios" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="calculating-band-ratios">
+<h3>Calculating Band Ratios<a class="headerlink" href="#calculating-band-ratios" title="Permalink to this heading">¶</a></h3>
 <p>Band ratio measures are a ratio of power between defined frequency bands.</p>
 <p>We can now define a function we can use to calculate band ratio measures, and
 apply it to our baseline power spectrum.</p>
@@ -195,7 +200,7 @@ most commonly applied band ratio measure.</p>
 definitions we use, as the general properties demonstrated here generalize
 to different bands and ranges.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_band_ratio</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">low_band</span><span class="p">,</span> <span class="n">high_band</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Helper function to calculate band ratio measures.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function to calculate band ratio measures.&quot;&quot;&quot;</span>
 
     <span class="c1"># Extract frequencies within each specified band</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">low_band</span> <span class="o">=</span> <a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="fooof.utils.trim_spectrum" class="sphx-glr-backref-module-fooof-utils sphx-glr-backref-type-py-function"><span class="n">trim_spectrum</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">low_band</span><span class="p">)</span>
@@ -208,24 +213,22 @@ to different bands and ranges.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectrum, shading the frequency bands used for the ratio</span>
-<a href="../../generated/fooof.plts.spectra.plot_spectrum_shading.html#fooof.plts.spectra.plot_spectrum_shading" title="fooof.plts.spectra.plot_spectrum_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectrum_shading</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">beta</span><span class="p">],</span>
-                      <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_color</span><span class="p">,</span>
-                      <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
+<a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="fooof.plts.spectra.plot_spectra_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectra_shading</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">beta</span><span class="p">],</span>
+                     <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">shade_colors</span><span class="o">=</span><span class="n">shade_color</span><span class="p">,</span>
+                     <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot BandRatios" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandRatios_001.png" />
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate a band ratio measure</span>
+<img src="../../_images/sphx_glr_plot_BandRatios_001.png" srcset="../../_images/sphx_glr_plot_BandRatios_001.png" alt="plot BandRatios" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate a band ratio measure</span>
 <span class="n">tbr</span> <span class="o">=</span> <span class="n">calc_band_ratio</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Calculate theta / beta ratio is :</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:1.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tbr</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Calculate theta / beta ratio is :        5.74
 </pre></div>
 </div>
-</div>
-<div class="section" id="periodic-impacts-on-band-ratio-measures">
-<h3>Periodic Impacts on Band Ratio Measures<a class="headerlink" href="#periodic-impacts-on-band-ratio-measures" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="periodic-impacts-on-band-ratio-measures">
+<h3>Periodic Impacts on Band Ratio Measures<a class="headerlink" href="#periodic-impacts-on-band-ratio-measures" title="Permalink to this heading">¶</a></h3>
 <p>Typical investigations involving band ratios compare differences in band ratio measures
 within and between subjects. The typical interpretation of band ratio measures is that
 they relate to the relative power between two bands.</p>
@@ -235,7 +238,7 @@ power spectrum.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a helper function for updating parameters</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="k">def</span> <span class="nf">upd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a updated copy of an array.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a updated copy of an array.&quot;&quot;&quot;</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="n">out</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
     <span class="k">return</span> <span class="n">out</span>
@@ -269,7 +272,6 @@ power spectrum.</p>
             <span class="n">label</span><span class="p">,</span> <span class="n">tbr</span> <span class="o">-</span> <span class="n">calc_band_ratio</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">beta</span><span class="p">)))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TBR difference from   Theta Power            is          -1.000
 TBR difference from   Theta Bandwidth        is          -1.000
 TBR difference from   Alpha Frequency        is          -1.000
@@ -297,19 +299,18 @@ TBR difference from   Beta Bandwidth         is          -1.000
     <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Turn off empty axes &amp; space out axes</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=.</span><span class="mi">3</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">.3</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">.3</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="p">[</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]]</span>
 </pre></div>
 </div>
-<img alt="Theta Power, Theta Bandwidth, Alpha Frequency, Alpha Bandwidth, Beta Frequency, Beta Power, Beta Bandwidth" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandRatios_002.png" />
-<p>In the simulations above, we systematically manipulated each parameter of each of the
+<img src="../../_images/sphx_glr_plot_BandRatios_002.png" srcset="../../_images/sphx_glr_plot_BandRatios_002.png" alt="Theta Power, Theta Bandwidth, Alpha Frequency, Alpha Bandwidth, Beta Frequency, Beta Power, Beta Bandwidth" class = "sphx-glr-single-img"/><p>In the simulations above, we systematically manipulated each parameter of each of the
 three different band peaks present in our data. For 7 of the 9 possible changes, we can
 do so in a way that creates an identical change in the measured band ratio measure.</p>
 <p>Band ratio measures are therefore not specific to band power differences, but rather
 can reflect multiple different changes across multiple different periodic parameters.</p>
-</div>
-<div class="section" id="aperiodic-impacts-on-band-ratio-measures">
-<h3>Aperiodic Impacts on Band Ratio Measures<a class="headerlink" href="#aperiodic-impacts-on-band-ratio-measures" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="aperiodic-impacts-on-band-ratio-measures">
+<h3>Aperiodic Impacts on Band Ratio Measures<a class="headerlink" href="#aperiodic-impacts-on-band-ratio-measures" title="Permalink to this heading">¶</a></h3>
 <p>Next, we can also examine if changes in aperiodic properties of the data can also
 impact band ratio measures. We will explore changes in the aperiodic exponent, with
 and without overlying peaks.</p>
@@ -329,7 +330,7 @@ next section).</p>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate &amp; plot changes in theta / beta ratios</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">.3</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="p">(</span><span class="n">comparison</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">exp_spectra</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">TBR difference from   </span><span class="si">{:20}</span><span class="s1">   is </span><span class="se">\t</span><span class="s1"> </span><span class="si">{:1.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> \
         <span class="n">calc_band_ratio</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">comparison</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">beta</span><span class="p">)</span> <span class="o">-</span> \
@@ -342,9 +343,7 @@ next section).</p>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">35</span><span class="p">]);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.75</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
-<img alt="Exponent w Peaks, Exponent w/out Peaks" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_BandRatios_003.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TBR difference from   Exponent w Peaks       is          -1.000
+<img src="../../_images/sphx_glr_plot_BandRatios_003.png" srcset="../../_images/sphx_glr_plot_BandRatios_003.png" alt="Exponent w Peaks, Exponent w/out Peaks" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TBR difference from   Exponent w Peaks       is          -1.000
 TBR difference from   Exponent w/out Peaks   is          -1.000
 </pre></div>
 </div>
@@ -353,10 +352,10 @@ band ratio measures from differences in the aperiodic properties of the data. Th
 true even if there are no periodic peaks present at all.</p>
 <p>This shows that band ratio measures are not even specific to periodic activity,
 and can be driven by changes in aperiodic activity.</p>
-</div>
-</div>
-<div class="section" id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">¶</a></h2>
 <p>Band ratio measures are supposed to reflect the relative power of rhythmic neural activity.</p>
 <p>However, here we can see that band ratio measures are actually under-determined
 in that many different changes of both periodic and aperiodic parameters can affect
@@ -368,8 +367,8 @@ in neural data.</p>
 <p>For more investigation into band ratios, their methodological issues, applications to real
 data, and a comparison to parameterizing power spectra, see the full project
 <a class="reference external" href="https://github.com/voytekresearch/BandRatios">here</a>,</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.463 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-measurements-plot-bandratios-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.246 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-measurements-plot-bandratios-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/61f23ee9a2846fc99f182c81be62666c/plot_BandRatios.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_BandRatios.py</span></code></a></p>
 </div>
@@ -378,8 +377,8 @@ data, and a comparison to parameterizing power spectra, see the full project
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -393,8 +392,8 @@ data, and a comparison to parameterizing power spectra, see the full project
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

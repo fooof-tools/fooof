@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fooof.data.data &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fooof.data.data &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
 
@@ -26,10 +27,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +57,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +69,7 @@
                 <li><a href="../../../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -129,7 +131,7 @@
 <div class="viewcode-block" id="FOOOFSettings"><a class="viewcode-back" href="../../../generated/fooof.data.FOOOFSettings.html#fooof.data.FOOOFSettings">[docs]</a><span class="k">class</span> <span class="nc">FOOOFSettings</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;FOOOFSettings&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;peak_width_limits&#39;</span><span class="p">,</span> <span class="s1">&#39;max_n_peaks&#39;</span><span class="p">,</span>
                                                  <span class="s1">&#39;min_peak_height&#39;</span><span class="p">,</span> <span class="s1">&#39;peak_threshold&#39;</span><span class="p">,</span>
                                                  <span class="s1">&#39;aperiodic_mode&#39;</span><span class="p">])):</span>
-    <span class="sd">&quot;&quot;&quot;User defined settings for the fitting algorithm.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;User defined settings for the fitting algorithm.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -151,8 +153,27 @@
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span></div>
 
 
+<div class="viewcode-block" id="FOOOFRunModes"><a class="viewcode-back" href="../../../generated/fooof.data.FOOOFRunModes.html#fooof.data.FOOOFRunModes">[docs]</a><span class="k">class</span> <span class="nc">FOOOFRunModes</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;FOOOFRunModes&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;check_freqs&#39;</span><span class="p">,</span> <span class="s1">&#39;check_data&#39;</span><span class="p">])):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks performed and errors raised by the model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    debug :  bool</span>
+<span class="sd">       Whether to run in debug mode.</span>
+<span class="sd">    check_freqs : bool</span>
+<span class="sd">        Whether to run in check freqs mode.</span>
+<span class="sd">    check_data : bool</span>
+<span class="sd">        Whether to run in check data mode.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This object is a data object, based on a NamedTuple, with immutable data attributes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span></div>
+
+
 <div class="viewcode-block" id="FOOOFMetaData"><a class="viewcode-back" href="../../../generated/fooof.data.FOOOFMetaData.html#fooof.data.FOOOFMetaData">[docs]</a><span class="k">class</span> <span class="nc">FOOOFMetaData</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;FOOOFMetaData&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;freq_range&#39;</span><span class="p">,</span> <span class="s1">&#39;freq_res&#39;</span><span class="p">])):</span>
-    <span class="sd">&quot;&quot;&quot;Metadata information about a power spectrum.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Metadata information about a power spectrum.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -170,7 +191,7 @@
 
 <div class="viewcode-block" id="FOOOFResults"><a class="viewcode-back" href="../../../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults">[docs]</a><span class="k">class</span> <span class="nc">FOOOFResults</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;FOOOFResults&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;peak_params&#39;</span><span class="p">,</span>
                                                <span class="s1">&#39;r_squared&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;gaussian_params&#39;</span><span class="p">])):</span>
-    <span class="sd">&quot;&quot;&quot;Model results from parameterizing a power spectrum.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Model results from parameterizing a power spectrum.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -195,7 +216,7 @@
 
 
 <div class="viewcode-block" id="SimParams"><a class="viewcode-back" href="../../../generated/fooof.data.SimParams.html#fooof.data.SimParams">[docs]</a><span class="k">class</span> <span class="nc">SimParams</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;SimParams&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;periodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;nlv&#39;</span><span class="p">])):</span>
-    <span class="sd">&quot;&quot;&quot;Parameters that define a simulated power spectrum.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters that define a simulated power spectrum.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -224,8 +245,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

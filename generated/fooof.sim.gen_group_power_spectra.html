@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fooof.sim.gen_group_power_spectra &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>fooof.sim.gen_group_power_spectra &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../visualizers.html">Visualizers</a></li>
                 <li><a href="../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -110,11 +113,11 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-sim-gen-group-power-spectra">
-<h1>fooof.sim.gen_group_power_spectra<a class="headerlink" href="#fooof-sim-gen-group-power-spectra" title="Permalink to this headline">¶</a></h1>
+  <section id="fooof-sim-gen-group-power-spectra">
+<h1>fooof.sim.gen_group_power_spectra<a class="headerlink" href="#fooof-sim-gen-group-power-spectra" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
-<dt id="fooof.sim.gen_group_power_spectra">
-<code class="sig-prename descclassname">fooof.sim.</code><code class="sig-name descname">gen_group_power_spectra</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_spectra</span></em>, <em class="sig-param"><span class="n">freq_range</span></em>, <em class="sig-param"><span class="n">aperiodic_params</span></em>, <em class="sig-param"><span class="n">periodic_params</span></em>, <em class="sig-param"><span class="n">nlvs</span><span class="o">=</span><span class="default_value">0.005</span></em>, <em class="sig-param"><span class="n">freq_res</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">f_rotation</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">return_params</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/sim/gen.html#gen_group_power_spectra"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.sim.gen_group_power_spectra" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.sim.gen_group_power_spectra">
+<span class="sig-prename descclassname"><span class="pre">fooof.sim.</span></span><span class="sig-name descname"><span class="pre">gen_group_power_spectra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_spectra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aperiodic_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nlvs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.005</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_res</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/sim/gen.html#gen_group_power_spectra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.sim.gen_group_power_spectra" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a group of simulated power spectra.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -229,46 +232,46 @@ setting ‘f_rotation’ with a knee will lead to an error.</p></li>
 </div>
 </dd></dl>
 
-<div class="section" id="examples-using-fooof-sim-gen-group-power-spectra">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.sim.gen_group_power_spectra</span></code><a class="headerlink" href="#examples-using-fooof-sim-gen-group-power-spectra" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Example of model fit failures and how to debug them."><div class="figure align-default" id="id1">
-<img alt="Failed Model Fits" src="../_images/sphx_glr_plot_failed_fits_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_failed_fits.html#sphx-glr-auto-examples-manage-plot-failed-fits-py"><span class="std std-ref">Failed Model Fits</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Fitting power spectrum models across 3D arrays of power spectra."><div class="figure align-default" id="id2">
-<img alt="Fitting Power Spectrum Models Across 3D Arrays" src="../_images/sphx_glr_plot_fit_fooof_3d_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_fit_fooof_3d.html#sphx-glr-auto-examples-manage-plot-fit-fooof-3d-py"><span class="std std-ref">Fitting Power Spectrum Models Across 3D Arrays</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Check the error of power spectrum models across frequencies."><div class="figure align-default" id="id3">
-<img alt="Frequency-by-Frequency Errors" src="../_images/sphx_glr_plot_freq_by_freq_error_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_freq_by_freq_error.html#sphx-glr-auto-examples-manage-plot-freq-by-freq-error-py"><span class="std std-ref">Frequency-by-Frequency Errors</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Plotting power spectrum model parameters and components."><div class="figure align-default" id="id4">
-<img alt="Plot Model Components" src="../_images/sphx_glr_plot_model_components_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plots/plot_model_components.html#sphx-glr-auto-examples-plots-plot-model-components-py"><span class="std std-ref">Plot Model Components</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Visualizing power spectra."><div class="figure align-default" id="id5">
-<img alt="Plot Power Spectra" src="../_images/sphx_glr_plot_power_spectra_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plots/plot_power_spectra.html#sphx-glr-auto-examples-plots-plot-power-spectra-py"><span class="std std-ref">Plot Power Spectra</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Manage parameters for creating simulated power spectra."><div class="figure align-default" id="id6">
-<img alt="Simulation Parameters" src="../_images/sphx_glr_plot_sim_params_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/sims/plot_sim_params.html#sphx-glr-auto-examples-sims-plot-sim-params-py"><span class="std std-ref">Simulation Parameters</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Creating simulated power spectra."><div class="figure align-default" id="id7">
-<img alt="Simulating Neural Power Spectra" src="../_images/sphx_glr_plot_simulated_power_spectra_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/sims/plot_simulated_power_spectra.html#sphx-glr-auto-examples-sims-plot-simulated-power-spectra-py"><span class="std std-ref">Simulating Neural Power Spectra</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Tips &amp; tricks for choosing algorithm settings, tuning fits, and troubleshooting."><div class="figure align-default" id="id8">
-<img alt="07: Tuning &amp; Troubleshooting" src="../_images/sphx_glr_plot_07-TroubleShooting_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_07-TroubleShooting.html#sphx-glr-auto-tutorials-plot-07-troubleshooting-py"><span class="std std-ref">07: Tuning &amp; Troubleshooting</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting power spectrum models."><div class="figure align-default" id="id9">
-<img alt="08: Further Analysis" src="../_images/sphx_glr_plot_08-FurtherAnalysis_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_08-FurtherAnalysis.html#sphx-glr-auto-tutorials-plot-08-furtheranalysis-py"><span class="std std-ref">08: Further Analysis</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</div>
-</div><div style='clear:both'></div></div>
-</div>
+<section id="examples-using-fooof-sim-gen-group-power-spectra">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.sim.gen_group_power_spectra</span></code><a class="headerlink" href="#examples-using-fooof-sim-gen-group-power-spectra" title="Permalink to this heading">¶</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example covers utilities for extracting and exporting model fit results."><img alt="" src="../_images/sphx_glr_plot_data_exporting_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/manage/plot_data_exporting.html#sphx-glr-auto-examples-manage-plot-data-exporting-py"><span class="std std-ref">Exporting Model Results</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Exporting Model Results</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Example of model fit failures and how to debug them."><img alt="" src="../_images/sphx_glr_plot_failed_fits_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/manage/plot_failed_fits.html#sphx-glr-auto-examples-manage-plot-failed-fits-py"><span class="std std-ref">Failed Model Fits</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Failed Model Fits</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Fitting power spectrum models across 3D arrays of power spectra."><img alt="" src="../_images/sphx_glr_plot_fit_fooof_3d_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/manage/plot_fit_fooof_3d.html#sphx-glr-auto-examples-manage-plot-fit-fooof-3d-py"><span class="std std-ref">Fitting Power Spectrum Models Across 3D Arrays</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Fitting Power Spectrum Models Across 3D Arrays</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Exploring properties and topics related to aperiodic parameters."><img alt="" src="../_images/sphx_glr_plot_aperiodic_params_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/models/plot_aperiodic_params.html#sphx-glr-auto-examples-models-plot-aperiodic-params-py"><span class="std std-ref">Aperiodic Parameters</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Aperiodic Parameters</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Check the error of power spectrum models across frequencies."><img alt="" src="../_images/sphx_glr_plot_freq_by_freq_error_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/models/plot_freq_by_freq_error.html#sphx-glr-auto-examples-models-plot-freq-by-freq-error-py"><span class="std std-ref">Frequency-by-Frequency Errors</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Frequency-by-Frequency Errors</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Plotting power spectrum model parameters and components."><img alt="" src="../_images/sphx_glr_plot_model_components_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/plots/plot_model_components.html#sphx-glr-auto-examples-plots-plot-model-components-py"><span class="std std-ref">Plot Model Components</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Plot Model Components</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Visualizing power spectra."><img alt="" src="../_images/sphx_glr_plot_power_spectra_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/plots/plot_power_spectra.html#sphx-glr-auto-examples-plots-plot-power-spectra-py"><span class="std std-ref">Plot Power Spectra</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Plot Power Spectra</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Manage parameters for creating simulated power spectra."><img alt="" src="../_images/sphx_glr_plot_sim_params_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/sims/plot_sim_params.html#sphx-glr-auto-examples-sims-plot-sim-params-py"><span class="std std-ref">Simulation Parameters</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Simulation Parameters</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Creating simulated power spectra."><img alt="" src="../_images/sphx_glr_plot_simulated_power_spectra_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/sims/plot_simulated_power_spectra.html#sphx-glr-auto-examples-sims-plot-simulated-power-spectra-py"><span class="std std-ref">Simulating Neural Power Spectra</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Simulating Neural Power Spectra</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Tips &amp; tricks for choosing algorithm settings, tuning fits, and troubleshooting."><img alt="" src="../_images/sphx_glr_plot_07-TroubleShooting_thumb.png" />
+<p><a class="reference internal" href="../auto_tutorials/plot_07-TroubleShooting.html#sphx-glr-auto-tutorials-plot-07-troubleshooting-py"><span class="std std-ref">07: Tuning &amp; Troubleshooting</span></a></p>
+  <div class="sphx-glr-thumbnail-title">07: Tuning & Troubleshooting</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting power spectrum models."><img alt="" src="../_images/sphx_glr_plot_08-FurtherAnalysis_thumb.png" />
+<p><a class="reference internal" href="../auto_tutorials/plot_08-FurtherAnalysis.html#sphx-glr-auto-tutorials-plot-08-furtheranalysis-py"><span class="std std-ref">08: Further Analysis</span></a></p>
+  <div class="sphx-glr-thumbnail-title">08: Further Analysis</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This section covers how to access reporting info and reference use of the module."><img alt="" src="../_images/sphx_glr_plot_09-Reporting_thumb.png" />
+<p><a class="reference internal" href="../auto_tutorials/plot_09-Reporting.html#sphx-glr-auto-tutorials-plot-09-reporting-py"><span class="std std-ref">09: Reporting &amp; Referencing</span></a></p>
+  <div class="sphx-glr-thumbnail-title">09: Reporting & Referencing</div>
+</div></div><div style='clear:both'></div></section>
+</section>
 
 
     </div>
@@ -282,8 +285,8 @@ setting ‘f_rotation’ with a knee will lead to an error.</p></li>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

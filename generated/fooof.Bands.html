@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fooof.Bands &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>fooof.Bands &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../visualizers.html">Visualizers</a></li>
                 <li><a href="../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -110,11 +113,11 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-bands">
-<h1>fooof.Bands<a class="headerlink" href="#fooof-bands" title="Permalink to this headline">¶</a></h1>
+  <section id="fooof-bands">
+<h1>fooof.Bands<a class="headerlink" href="#fooof-bands" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
-<dt id="fooof.Bands">
-<em class="property">class </em><code class="sig-prename descclassname">fooof.</code><code class="sig-name descname">Bands</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_bands</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.Bands" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.Bands">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fooof.</span></span><span class="sig-name descname"><span class="pre">Bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.Bands" title="Permalink to this definition">¶</a></dt>
 <dd><p>Frequency band definitions.</p>
 <p class="rubric">Examples</p>
 <p>Define a bands object storing canonical frequency bands:</p>
@@ -130,8 +133,8 @@
 </dd>
 </dl>
 <dl class="py method">
-<dt id="fooof.Bands.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_bands</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.Bands.__init__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.Bands.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.Bands.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize the Bands object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -144,7 +147,7 @@
 </dd></dl>
 
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -162,7 +165,7 @@
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -180,8 +183,8 @@
 </tbody>
 </table>
 <dl class="py method">
-<dt id="fooof.Bands.add_band">
-<code class="sig-name descname">add_band</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">band_definition</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands.add_band"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.Bands.add_band" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.Bands.add_band">
+<span class="sig-name descname"><span class="pre">add_band</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">band_definition</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands.add_band"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.Bands.add_band" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new oscillation band definition.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -195,27 +198,27 @@
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="fooof.Bands.definitions">
-<em class="property">property </em><code class="sig-name descname">definitions</code><a class="headerlink" href="#fooof.Bands.definitions" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="fooof.Bands.definitions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">definitions</span></span><a class="headerlink" href="#fooof.Bands.definitions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Frequency definitions for all the bands defined in the object.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="fooof.Bands.labels">
-<em class="property">property </em><code class="sig-name descname">labels</code><a class="headerlink" href="#fooof.Bands.labels" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="fooof.Bands.labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">labels</span></span><a class="headerlink" href="#fooof.Bands.labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Labels for all the bands defined in the object.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="fooof.Bands.n_bands">
-<em class="property">property </em><code class="sig-name descname">n_bands</code><a class="headerlink" href="#fooof.Bands.n_bands" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="fooof.Bands.n_bands">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_bands</span></span><a class="headerlink" href="#fooof.Bands.n_bands" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of bands defined in the object.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.Bands.remove_band">
-<code class="sig-name descname">remove_band</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands.remove_band"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.Bands.remove_band" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.Bands.remove_band">
+<span class="sig-name descname"><span class="pre">remove_band</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/bands/bands.html#Bands.remove_band"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.Bands.remove_band" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a previously defined oscillation band.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -229,42 +232,40 @@
 
 </dd></dl>
 
-<div class="section" id="examples-using-fooof-bands">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.Bands</span></code><a class="headerlink" href="#examples-using-fooof-bands" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Examples with combining, sub-selecting, dropping, and averaging power spectrum models."><div class="figure align-default" id="id1">
-<img alt="Manipulating FOOOF Objects" src="../_images/sphx_glr_plot_manipulating_fooofs_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_manipulating_fooofs.html#sphx-glr-auto-examples-manage-plot-manipulating-fooofs-py"><span class="std std-ref">Manipulating FOOOF Objects</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Plotting power spectrum model parameters and components."><div class="figure align-default" id="id2">
-<img alt="Plot Model Components" src="../_images/sphx_glr_plot_model_components_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plots/plot_model_components.html#sphx-glr-auto-examples-plots-plot-model-components-py"><span class="std std-ref">Plot Model Components</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Parameterizing neural power spectra with MNE, doing a topographical analysis."><div class="figure align-default" id="id3">
-<img alt="Topographical Analyses with MNE" src="../_images/sphx_glr_plot_mne_example_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/analyses/plot_mne_example.html#sphx-glr-auto-examples-analyses-plot-mne-example-py"><span class="std std-ref">Topographical Analyses with MNE</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting power spectrum models."><div class="figure align-default" id="id4">
-<img alt="08: Further Analysis" src="../_images/sphx_glr_plot_08-FurtherAnalysis_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_08-FurtherAnalysis.html#sphx-glr-auto-tutorials-plot-08-furtheranalysis-py"><span class="std std-ref">08: Further Analysis</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Examining the results of filtering aperiodic signals."><div class="figure align-default" id="id5">
-<img alt="Finding 'Oscillations' With Filters" src="../_images/sphx_glr_plot_IfYouFilterTheyWillCome_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_motivations/concepts/plot_IfYouFilterTheyWillCome.html#sphx-glr-auto-motivations-concepts-plot-ifyoufiltertheywillcome-py"><span class="std std-ref">Finding ‘Oscillations’ With Filters</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Comparing how &#x27;Band-by-Band&#x27; approaches relate to periodic &amp; aperiodic components."><div class="figure align-default" id="id6">
-<img alt="Band-by-Band" src="../_images/sphx_glr_plot_BandByBand_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_motivations/measurements/plot_BandByBand.html#sphx-glr-auto-motivations-measurements-plot-bandbyband-py"><span class="std std-ref">Band-by-Band</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Exploring how band ratio measures relate to periodic &amp; aperiodic activity."><div class="figure align-default" id="id7">
-<img alt="Band Ratio Measures" src="../_images/sphx_glr_plot_BandRatios_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_motivations/measurements/plot_BandRatios.html#sphx-glr-auto-motivations-measurements-plot-bandratios-py"><span class="std std-ref">Band Ratio Measures</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Demonstrating how changes in periodic &amp; aperiodic parameters can be conflated."><div class="figure align-default" id="id8">
-<img alt="Conflating Periodic &amp; Aperiodic Changes" src="../_images/sphx_glr_plot_PeriodicAperiodicFeatures_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_motivations/measurements/plot_PeriodicAperiodicFeatures.html#sphx-glr-auto-motivations-measurements-plot-periodicaperiodicfeatures-py"><span class="std std-ref">Conflating Periodic &amp; Aperiodic Changes</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</div>
-</div></div>
-</div>
+<section id="examples-using-fooof-bands">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.Bands</span></code><a class="headerlink" href="#examples-using-fooof-bands" title="Permalink to this heading">¶</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example covers utilities for extracting and exporting model fit results."><img alt="" src="../_images/sphx_glr_plot_data_exporting_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/manage/plot_data_exporting.html#sphx-glr-auto-examples-manage-plot-data-exporting-py"><span class="std std-ref">Exporting Model Results</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Exporting Model Results</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Examples with combining, sub-selecting, dropping, and averaging power spectrum models."><img alt="" src="../_images/sphx_glr_plot_manipulating_fooofs_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/manage/plot_manipulating_fooofs.html#sphx-glr-auto-examples-manage-plot-manipulating-fooofs-py"><span class="std std-ref">Manipulating FOOOF Objects</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Manipulating FOOOF Objects</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Plotting power spectrum model parameters and components."><img alt="" src="../_images/sphx_glr_plot_model_components_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/plots/plot_model_components.html#sphx-glr-auto-examples-plots-plot-model-components-py"><span class="std std-ref">Plot Model Components</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Plot Model Components</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="An example analysis applied to developmental data, demonstrating best practices."><img alt="" src="../_images/sphx_glr_plot_dev_demo_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/analyses/plot_dev_demo.html#sphx-glr-auto-examples-analyses-plot-dev-demo-py"><span class="std std-ref">Developmental Data Demo</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Developmental Data Demo</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Parameterizing neural power spectra with MNE, doing a topographical analysis."><img alt="" src="../_images/sphx_glr_plot_mne_example_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/analyses/plot_mne_example.html#sphx-glr-auto-examples-analyses-plot-mne-example-py"><span class="std std-ref">Topographical Analyses with MNE</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Topographical Analyses with MNE</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting power spectrum models."><img alt="" src="../_images/sphx_glr_plot_08-FurtherAnalysis_thumb.png" />
+<p><a class="reference internal" href="../auto_tutorials/plot_08-FurtherAnalysis.html#sphx-glr-auto-tutorials-plot-08-furtheranalysis-py"><span class="std std-ref">08: Further Analysis</span></a></p>
+  <div class="sphx-glr-thumbnail-title">08: Further Analysis</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Examining the results of filtering aperiodic signals."><img alt="" src="../_images/sphx_glr_plot_IfYouFilterTheyWillCome_thumb.png" />
+<p><a class="reference internal" href="../auto_motivations/concepts/plot_IfYouFilterTheyWillCome.html#sphx-glr-auto-motivations-concepts-plot-ifyoufiltertheywillcome-py"><span class="std std-ref">Finding ‘Oscillations’ With Filters</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Finding 'Oscillations' With Filters</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Comparing how &#x27;Band-by-Band&#x27; approaches relate to periodic &amp; aperiodic components."><img alt="" src="../_images/sphx_glr_plot_BandByBand_thumb.png" />
+<p><a class="reference internal" href="../auto_motivations/measurements/plot_BandByBand.html#sphx-glr-auto-motivations-measurements-plot-bandbyband-py"><span class="std std-ref">Band-by-Band</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Band-by-Band</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Exploring how band ratio measures relate to periodic &amp; aperiodic activity."><img alt="" src="../_images/sphx_glr_plot_BandRatios_thumb.png" />
+<p><a class="reference internal" href="../auto_motivations/measurements/plot_BandRatios.html#sphx-glr-auto-motivations-measurements-plot-bandratios-py"><span class="std std-ref">Band Ratio Measures</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Band Ratio Measures</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Demonstrating how changes in periodic &amp; aperiodic parameters can be conflated."><img alt="" src="../_images/sphx_glr_plot_PeriodicAperiodicFeatures_thumb.png" />
+<p><a class="reference internal" href="../auto_motivations/measurements/plot_PeriodicAperiodicFeatures.html#sphx-glr-auto-motivations-measurements-plot-periodicaperiodicfeatures-py"><span class="std std-ref">Conflating Periodic &amp; Aperiodic Changes</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Conflating Periodic & Aperiodic Changes</div>
+</div></div></section>
+</section>
 
 
     </div>
@@ -278,8 +279,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

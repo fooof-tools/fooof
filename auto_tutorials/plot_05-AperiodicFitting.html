@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>05: Aperiodic Component Fitting &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>05: Aperiodic Component Fitting &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -26,10 +29,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +59,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +71,7 @@
                 <li><a href="../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../visualizers.html">Visualizers</a></li>
                 <li><a href="../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -112,10 +116,11 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-05-aperiodicfitting-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-05-aperiodicfitting-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="aperiodic-component-fitting">
-<span id="sphx-glr-auto-tutorials-plot-05-aperiodicfitting-py"></span><h1>05: Aperiodic Component Fitting<a class="headerlink" href="#aperiodic-component-fitting" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="aperiodic-component-fitting">
+<span id="sphx-glr-auto-tutorials-plot-05-aperiodicfitting-py"></span><h1>05: Aperiodic Component Fitting<a class="headerlink" href="#aperiodic-component-fitting" title="Permalink to this heading">¶</a></h1>
 <p>Choosing and using different modes for fitting the aperiodic component.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a>
@@ -124,8 +129,8 @@
 <span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="kn">import</span> <span class="n">load_fooof_data</span>
 </pre></div>
 </div>
-<div class="section" id="aperiodic-fitting-approaches">
-<h2>Aperiodic Fitting Approaches<a class="headerlink" href="#aperiodic-fitting-approaches" title="Permalink to this headline">¶</a></h2>
+<section id="aperiodic-fitting-approaches">
+<h2>Aperiodic Fitting Approaches<a class="headerlink" href="#aperiodic-fitting-approaches" title="Permalink to this heading">¶</a></h2>
 <p>There are currently two approaches for fitting the aperiodic component:</p>
 <ul class="simple">
 <li><p>Fitting with just an offset and a exponent, equivalent to a linear fit in log-log space</p>
@@ -149,8 +154,8 @@ have a single 1/f, as assumed by ‘fixed’ mode, as they typically exhibit a �
 the aperiodic component. This indicates that there is not a single 1/f property across
 all frequencies, but rather a ‘bend’ in the aperiodic component. For these cases, fitting
 should be done using an extra parameter to capture this, using the ‘knee’ mode.</p>
-<div class="section" id="fitting-with-an-aperiodic-knee">
-<h3>Fitting with an Aperiodic ‘Knee’<a class="headerlink" href="#fitting-with-an-aperiodic-knee" title="Permalink to this headline">¶</a></h3>
+<section id="fitting-with-an-aperiodic-knee">
+<h3>Fitting with an Aperiodic ‘Knee’<a class="headerlink" href="#fitting-with-an-aperiodic-knee" title="Permalink to this heading">¶</a></h3>
 <p>Let’s explore fitting power spectrum models across a broader frequency range,
 using some local field potential data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load example data files needed for this example</span>
@@ -167,9 +172,7 @@ using some local field potential data.</p>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.report" title="fooof.FOOOF.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">70</span><span class="p">],</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot 05 AperiodicFitting" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_05-AperiodicFitting_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+<img src="../_images/sphx_glr_plot_05-AperiodicFitting_001.png" srcset="../_images/sphx_glr_plot_05-AperiodicFitting_001.png" alt="plot 05 AperiodicFitting" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
 
                                    FOOOF - POWER SPECTRUM MODEL
 
@@ -177,11 +180,11 @@ using some local field potential data.</p>
                                  Frequency Resolution is 1.00 Hz
 
                          Aperiodic Parameters (offset, knee, exponent):
-                                     6.5759, 87.2219, 2.0354
+                                     6.5756, 87.1279, 2.0352
 
                                        2 peaks were found:
                                 CF:   7.98, PW:  0.806, BW:  2.03
-                                CF:  16.32, PW:  0.233, BW:  2.29
+                                CF:  16.32, PW:  0.233, BW:  2.30
 
                                      Goodness of fit metrics:
                                     R^2 of model fit is 0.9925
@@ -190,10 +193,10 @@ using some local field potential data.</p>
 ==================================================================================================
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="a-note-on-interpreting-the-knee-parameter">
-<h2>A note on interpreting the ‘knee’ parameter<a class="headerlink" href="#a-note-on-interpreting-the-knee-parameter" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="a-note-on-interpreting-the-knee-parameter">
+<h2>A note on interpreting the ‘knee’ parameter<a class="headerlink" href="#a-note-on-interpreting-the-knee-parameter" title="Permalink to this heading">¶</a></h2>
 <p>The aperiodic fit has the form:</p>
 <div class="math notranslate nohighlight">
 \[AP = 10^b * \ \frac{1}{(k + F^\chi)}\]</div>
@@ -207,9 +210,9 @@ transitions from horizontal to negatively sloped.</p>
 no longer a simple measure of the aperiodic component as a whole, but instead reflects the
 aperiodic component past the ‘knee’ inflecting point. Because of this, when doing knee fits,
 knee &amp; exponent values should be considered together.</p>
-</div>
-<div class="section" id="example-aperiodic-fitting-gone-wrong">
-<h2>Example: Aperiodic Fitting Gone Wrong<a class="headerlink" href="#example-aperiodic-fitting-gone-wrong" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-aperiodic-fitting-gone-wrong">
+<h2>Example: Aperiodic Fitting Gone Wrong<a class="headerlink" href="#example-aperiodic-fitting-gone-wrong" title="Permalink to this heading">¶</a></h2>
 <p>In the example above, we jumped directly to fitting with a knee.</p>
 <p>Here we will explore what it looks like if we don’t use the appropriate mode for fitting
 the aperiodic component - fitting in ‘fixed’ mode when we should use ‘knee’</p>
@@ -218,9 +221,7 @@ the aperiodic component - fitting in ‘fixed’ mode when we should use ‘knee
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.report" title="fooof.FOOOF.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">70</span><span class="p">],</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot 05 AperiodicFitting" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_05-AperiodicFitting_002.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+<img src="../_images/sphx_glr_plot_05-AperiodicFitting_002.png" srcset="../_images/sphx_glr_plot_05-AperiodicFitting_002.png" alt="plot 05 AperiodicFitting" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
 
                                    FOOOF - POWER SPECTRUM MODEL
 
@@ -228,12 +229,12 @@ the aperiodic component - fitting in ‘fixed’ mode when we should use ‘knee
                                  Frequency Resolution is 1.00 Hz
 
                             Aperiodic Parameters (offset, exponent):
-                                          5.3476, 1.3360
+                                          5.3474, 1.3359
 
                                        3 peaks were found:
                                 CF:   8.01, PW:  1.020, BW:  2.41
                                 CF:  17.02, PW:  0.369, BW:  8.00
-                                CF:  31.05, PW:  0.273, BW:  8.00
+                                CF:  31.02, PW:  0.273, BW:  8.00
 
                                      Goodness of fit metrics:
                                     R^2 of model fit is 0.9847
@@ -248,9 +249,9 @@ in log-log space) is not able to capture the data, which has a curve.</p>
 characterization of the data.</p>
 <p>In this example, the data, over this frequency range, needs to be fit in
 ‘knee’ mode to be able to appropriately characterize the data.</p>
-</div>
-<div class="section" id="choosing-an-aperiodic-fitting-procedure">
-<h2>Choosing an Aperiodic Fitting Procedure<a class="headerlink" href="#choosing-an-aperiodic-fitting-procedure" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="choosing-an-aperiodic-fitting-procedure">
+<h2>Choosing an Aperiodic Fitting Procedure<a class="headerlink" href="#choosing-an-aperiodic-fitting-procedure" title="Permalink to this heading">¶</a></h2>
 <p>It is important to choose the appropriate aperiodic fitting approach for your data.</p>
 <p>If there is a clear knee in the power spectrum, fitting in ‘fixed’ mode will not
 work well. However fitting with a knee may perform sub-optimally in ambiguous cases
@@ -286,14 +287,14 @@ aperiodic component process is relatively clear.</p></li>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">¶</a></h2>
 <p>We have now explored the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object, and different fitting
 approaches for the aperiodic component. Next up, we will be introducing how
 to scale the fitting to apply across multiple power spectra.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.209 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-05-aperiodicfitting-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.442 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-05-aperiodicfitting-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/10cda1893b9860bc237ad963e22b58ac/plot_05-AperiodicFitting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_05-AperiodicFitting.py</span></code></a></p>
 </div>
@@ -302,8 +303,8 @@ to scale the fitting to apply across multiple power spectra.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -317,8 +318,8 @@ to scale the fitting to apply across multiple power spectra.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

@@ -11,8 +11,7 @@ Visualizing power spectra.
 import matplotlib.pyplot as plt
 
 # Import plotting functions
-from fooof.plts.spectra import plot_spectrum, plot_spectra
-from fooof.plts.spectra import plot_spectrum_shading, plot_spectra_shading
+from fooof.plts.spectra import plot_spectra, plot_spectra_shading
 
 # Import simulation utilities for creating test data
 from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
@@ -59,7 +58,7 @@ freqs, powers2 = gen_power_spectrum(freq_range, ap_2, peaks)
 #
 # First we will start with the core plotting function that plots an individual power spectrum.
 #
-# The :func:`~.plot_spectrum` function takes in an array of frequency values and a 1d array of
+# The :func:`~.plot_spectra` function takes in an array of frequency values and a 1d array of
 # of power values, and plots the corresponding power spectrum.
 #
 # This function, as all the functions in the plotting module, takes in optional inputs
@@ -70,7 +69,7 @@ freqs, powers2 = gen_power_spectrum(freq_range, ap_2, peaks)
 ###################################################################################################
 
 # Create a spectrum plot with a single power spectrum
-plot_spectrum(freqs, powers1, log_powers=True)
+plot_spectra(freqs, powers1, log_powers=True)
 
 ###################################################################################################
 # Plotting Multiple Power Spectra
@@ -97,7 +96,7 @@ plot_spectra(freqs, [powers1, powers2], log_freqs=True, log_powers=True, labels=
 # In some cases it may be useful to highlight or shade in particular frequency regions,
 # for example, when examining power in particular frequency regions.
 #
-# The :func:`~.plot_spectrum_shading` function takes in a power spectrum and one or more
+# The :func:`~.plot_spectra_shading` function takes in a power spectrum and one or more
 # shaded regions, and plot the power spectrum with the indicated region shaded.
 #
 # The same can be done for multiple power spectra with :func:`~.plot_spectra_shading`.
@@ -110,7 +109,7 @@ plot_spectra(freqs, [powers1, powers2], log_freqs=True, log_powers=True, labels=
 ###################################################################################################
 
 # Plot a single power spectrum, with a shaded region covering alpha
-plot_spectrum_shading(freqs, powers1, [8, 12], log_powers=True)
+plot_spectra_shading(freqs, powers1, [8, 12], log_powers=True)
 
 ###################################################################################################
 
@@ -157,6 +156,6 @@ freqs_al, powers_al = gen_group_power_spectra(len(cf_steps), freq_range, ap_para
 fig, ax = plt.subplots(figsize=[12, 8])
 plot_spectra_shading(freqs_al, powers_al, [8, 12],
                      log_powers=True, alpha=0.6, ax=ax)
-plot_spectrum(freqs_al10, powers_al10, log_powers=True,
-              color='black', linewidth=3, label='10 Hz Alpha', ax=ax)
+plot_spectra(freqs_al10, powers_al10, log_powers=True,
+             color='black', linewidth=3, label='10 Hz Alpha', ax=ax)
 plt.title('Comparing Alphas', {'fontsize' : 20, 'fontweight' : 'bold'});

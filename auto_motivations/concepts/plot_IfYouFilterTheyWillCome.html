@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finding ‘Oscillations’ With Filters &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Finding ‘Oscillations’ With Filters &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../index.html">Motivations</a></li>
                 <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -112,13 +115,14 @@
       
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-motivations-concepts-plot-ifyoufiltertheywillcome-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-motivations-concepts-plot-ifyoufiltertheywillcome-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="finding-oscillations-with-filters">
-<span id="sphx-glr-auto-motivations-concepts-plot-ifyoufiltertheywillcome-py"></span><h1>Finding ‘Oscillations’ With Filters<a class="headerlink" href="#finding-oscillations-with-filters" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="finding-oscillations-with-filters">
+<span id="sphx-glr-auto-motivations-concepts-plot-ifyoufiltertheywillcome-py"></span><h1>Finding ‘Oscillations’ With Filters<a class="headerlink" href="#finding-oscillations-with-filters" title="Permalink to this heading">¶</a></h1>
 <p>Examining the results of filtering aperiodic signals.</p>
-<div class="section" id="filtering-signals">
-<h2>Filtering Signals<a class="headerlink" href="#filtering-signals" title="Permalink to this headline">¶</a></h2>
+<section id="filtering-signals">
+<h2>Filtering Signals<a class="headerlink" href="#filtering-signals" title="Permalink to this heading">¶</a></h2>
 <p>A common component of many analyses of neural time series is to apply filters,
 typically to try to extract information from frequency bands of interest.</p>
 <p>However, one thing to keep in mind is that signals with aperiodic activity
@@ -140,7 +144,7 @@ them, to explore these ideas.</p>
 <span class="kn">from</span> <span class="nn">neurodsp.sim</span> <span class="kn">import</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.sim_powerlaw.html#neurodsp.sim.sim_powerlaw" title="neurodsp.sim.sim_powerlaw" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">sim_powerlaw</span></a><span class="p">,</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.set_random_seed.html#neurodsp.sim.set_random_seed" title="neurodsp.sim.set_random_seed" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a>
 <span class="kn">from</span> <span class="nn">neurodsp.filt</span> <span class="kn">import</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.filt.filter_signal.html#neurodsp.filt.filter_signal" title="neurodsp.filt.filter_signal" class="sphx-glr-backref-module-neurodsp-filt sphx-glr-backref-type-py-function"><span class="n">filter_signal</span></a>
 <span class="kn">from</span> <span class="nn">neurodsp.plts</span> <span class="kn">import</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a>
-<span class="kn">from</span> <span class="nn">neurodsp.utils</span> <span class="kn">import</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.utils.create_times.html#neurodsp.utils.create_times" title="neurodsp.utils.create_times" class="sphx-glr-backref-module-neurodsp-utils sphx-glr-backref-type-py-function"><span class="n">create_times</span></a>
+<span class="kn">from</span> <span class="nn">neurodsp.utils</span> <span class="kn">import</span> <span class="n">create_times</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define our bands of interest</span>
@@ -152,14 +156,14 @@ them, to explore these ideas.</p>
                <span class="s1">&#39;high_gamma&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">150</span><span class="p">]})</span>
 </pre></div>
 </div>
-<div class="section" id="simulating-data">
-<h3>Simulating Data<a class="headerlink" href="#simulating-data" title="Permalink to this headline">¶</a></h3>
+<section id="simulating-data">
+<h3>Simulating Data<a class="headerlink" href="#simulating-data" title="Permalink to this heading">¶</a></h3>
 <p>We will use simulated data for this example, to create some example aperiodic signals,
 that we can then apply filters to. First, let’s simulate some data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulation settings</span>
 <span class="n">s_rate</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">n_seconds</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">times</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.utils.create_times.html#neurodsp.utils.create_times" title="neurodsp.utils.create_times" class="sphx-glr-backref-module-neurodsp-utils sphx-glr-backref-type-py-function"><span class="n">create_times</span></a><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">create_times</span><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
 
 <span class="c1"># Set random seed, for consistency generating simulated data</span>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.set_random_seed.html#neurodsp.sim.set_random_seed" title="neurodsp.sim.set_random_seed" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
@@ -173,10 +177,9 @@ that we can then apply filters to. First, let’s simulate some data.</p>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot IfYouFilterTheyWillCome" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_001.png" />
-</div>
-<div class="section" id="filtering-aperiodic-signals">
-<h3>Filtering Aperiodic Signals<a class="headerlink" href="#filtering-aperiodic-signals" title="Permalink to this headline">¶</a></h3>
+<img src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_001.png" srcset="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_001.png" alt="plot IfYouFilterTheyWillCome" class = "sphx-glr-single-img"/></section>
+<section id="filtering-aperiodic-signals">
+<h3>Filtering Aperiodic Signals<a class="headerlink" href="#filtering-aperiodic-signals" title="Permalink to this heading">¶</a></h3>
 <p>Now that we have a simulated signal, let’s filter it into each of our frequency bands.</p>
 <p>To do so, we will loop across our band definitions, and plot the filtered version
 of the signal.</p>
@@ -192,7 +195,10 @@ of the signal.</p>
                      <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_seconds</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="delta [2, 4], theta [4, 8], alpha [8, 13], beta [13, 30], low_gamma [30, 50], high_gamma [50, 150]" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_002.png" />
+<img src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_002.png" srcset="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_002.png" alt="delta [2, 4], theta [4, 8], alpha [8, 13], beta [13, 30], low_gamma [30, 50], high_gamma [50, 150]" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/tom/opt/anaconda3/lib/python3.8/site-packages/neurodsp/plts/style.py:101: UserWarning: The figure layout has changed to tight
+  plt.tight_layout()
+</pre></div>
+</div>
 <p>As we can see, filtering a signal with aperiodic activity into arbitrary
 frequency ranges returns filtered signals that look like rhythmic activity.</p>
 <p>Also, because our simulated signal has some random variation, the filtered components
@@ -208,10 +214,10 @@ aperiodic properties of the input signal</p></li>
 Altogether, this can be taken as example that just because time series
 can be represented as and decomposed into sinusoids, this does not indicate
 that these signals, or resulting decompositions, reflect rhythmic activity.</p>
-</div>
-</div>
-<div class="section" id="observing-changes-in-filtered-signals">
-<h2>Observing Changes in Filtered Signals<a class="headerlink" href="#observing-changes-in-filtered-signals" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="observing-changes-in-filtered-signals">
+<h2>Observing Changes in Filtered Signals<a class="headerlink" href="#observing-changes-in-filtered-signals" title="Permalink to this heading">¶</a></h2>
 <p>Next, let’s consider what it looks like if you filter a signal that contains
 changes in the aperiodic activity.</p>
 <p>For this example, we will simulate a signal, with an abrupt change in the aperiodic activity.</p>
@@ -229,8 +235,7 @@ changes in aperiodic activity appear in filtered data.</p>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sig_delta_ap</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot IfYouFilterTheyWillCome" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_003.png" />
-<p>Let’s first filter this signal in a low-frequency range that is typically
+<img src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_003.png" srcset="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_003.png" alt="plot IfYouFilterTheyWillCome" class = "sphx-glr-single-img"/><p>Let’s first filter this signal in a low-frequency range that is typically
 examined for oscillatory activity, using the beta band as an example.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter the signal to the current band definition</span>
 <span class="n">band_sig</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.filt.filter_signal.html#neurodsp.filt.filter_signal" title="neurodsp.filt.filter_signal" class="sphx-glr-backref-module-neurodsp-filt sphx-glr-backref-type-py-function"><span class="n">filter_signal</span></a><span class="p">(</span><span class="n">sig_delta_ap</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="s1">&#39;bandpass&#39;</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
@@ -239,8 +244,7 @@ examined for oscillatory activity, using the beta band as an example.</p>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">band_sig</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_seconds</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
-<img alt="plot IfYouFilterTheyWillCome" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_004.png" />
-<p>In the above, we can see that this shift in the aperiodic component of the data
+<img src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_004.png" srcset="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_004.png" alt="plot IfYouFilterTheyWillCome" class = "sphx-glr-single-img"/><p>In the above, we can see that this shift in the aperiodic component of the data
 exhibits as what looks to be change in beta band activity.</p>
 <p>We can also examine what this kind of shift looks like in high frequency regions that
 are sometimes analyzed, like our ‘high-gamma’ frequency band.</p>
@@ -251,8 +255,7 @@ are sometimes analyzed, like our ‘high-gamma’ frequency band.</p>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">band_sig</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_seconds</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
-<img alt="plot IfYouFilterTheyWillCome" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_005.png" />
-<p>Collectively, we can see that changes in aperiodic properties, that affect
+<img src="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_005.png" srcset="../../_images/sphx_glr_plot_IfYouFilterTheyWillCome_005.png" alt="plot IfYouFilterTheyWillCome" class = "sphx-glr-single-img"/><p>Collectively, we can see that changes in aperiodic properties, that affect
 all frequencies, can look like band-specific changes when time series
 are analyzed using narrow-band filters.</p>
 <p>If individual bands are filtered and analyzed in isolation, without comparison to
@@ -261,17 +264,17 @@ mis-interpret broadband aperiodic changes as oscillatory changes.</p>
 <p>Note that in real data, to what extent such aperiodic shifts occur is something
 of an open question. Within subject changes in aperiodic activity has been observed,
 and so this remains a possibility that should be considered.</p>
-</div>
-<div class="section" id="conclusions">
-<h2>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="conclusions">
+<h2>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this heading">¶</a></h2>
 <p>Here we have seen that filtering signals to narrow band signals can return results
 that reflect periodic activity and dynamics. We therefore suggest that
 narrow band filtered signals should not be presumed to necessarily reflect periodic
 activity. In order to ascertain whether narrow band frequency regions reflect
 periodic and/or aperiodic activity and which aspects are changing in the data,
 additional analyses, such as parameterizing neural power spectra, are recommended.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.824 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-concepts-plot-ifyoufiltertheywillcome-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.700 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-concepts-plot-ifyoufiltertheywillcome-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/00d92849ccba2fdb99841c3319470dde/plot_IfYouFilterTheyWillCome.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_IfYouFilterTheyWillCome.py</span></code></a></p>
 </div>
@@ -280,8 +283,8 @@ additional analyses, such as parameterizing neural power spectra, are recommende
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -295,8 +298,8 @@ additional analyses, such as parameterizing neural power spectra, are recommende
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Exploring Data Components &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../faq.html">FAQ</a></li>
+                <li><a href="../../glossary.html">Glossary</a></li>
+                <li><a href="../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
+                <li><a href="../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-models-plot-data-components-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="exploring-data-components">
+<span id="sphx-glr-auto-examples-models-plot-data-components-py"></span><h1>Exploring Data Components<a class="headerlink" href="#exploring-data-components" title="Permalink to this heading">¶</a></h1>
+<p>This example explores the different data components, exploring the isolated aperiodic
+and periodic components as they are extracted from the data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import FOOOF model objects</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">,</span> <span class="n">FOOOFGroup</span>
+
+<span class="c1"># Import function to plot power spectra</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a>
+
+<span class="c1"># Import simulation functions to create some example data</span>
+<span class="kn">from</span> <span class="nn">fooof.sim</span> <span class="kn">import</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">,</span> <span class="n">gen_group_power_spectra</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate example power spectrum</span>
+<span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">freq_res</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+
+<span class="c1"># Initialize model object and fit power spectrum</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">()</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="data-model-components">
+<h2>Data &amp; Model Components<a class="headerlink" href="#data-model-components" title="Permalink to this heading">¶</a></h2>
+<p>The model fit process includes procedures for isolating aperiodic and periodic components in
+the data, fitting each of these components separately, and then combining the model components
+as the final fit (see the Tutorials for further details on these procedures).</p>
+<p>In doing this process, the model fit procedure computes and stores isolated data components,
+which are available in the model.</p>
+<section id="full-data-model-components">
+<h3>Full Data &amp; Model Components<a class="headerlink" href="#full-data-model-components" title="Permalink to this heading">¶</a></h3>
+<p>Before diving into the isolated data components, let’s check ‘full’ components, including
+the data (<cite>power_spectrum</cite>) and full model fit of a model object (<cite>fooofed_spectrum</cite>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the original power spectrum data from the object</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_data_components_001.png" srcset="../../_images/sphx_glr_plot_data_components_001.png" alt="plot data components" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectrum model from the object</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_data_components_002.png" srcset="../../_images/sphx_glr_plot_data_components_002.png" alt="plot data components" class = "sphx-glr-single-img"/></section>
+</section>
+<section id="isolated-components">
+<h2>Isolated Components<a class="headerlink" href="#isolated-components" title="Permalink to this heading">¶</a></h2>
+<p>As well as the ‘full’ data &amp; model components above, the model fitting procedure includes
+steps that result in isolated periodic and aperiodic components, in both the
+data and model. These isolated components are stored internally in the model.</p>
+<p>To access these components, we can use the following <cite>getter</cite> methods:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_data" title="fooof.FOOOF.get_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_data()</span></code></a>: allows for accessing data components</p></li>
+<li><p><a class="reference internal" href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_model" title="fooof.FOOOF.get_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_model()</span></code></a>: allows for accessing model components</p></li>
+</ul>
+<section id="aperiodic-component">
+<h3>Aperiodic Component<a class="headerlink" href="#aperiodic-component" title="Permalink to this heading">¶</a></h3>
+<p>To fit the aperiodic component, the model fit procedure includes a peak removal process.</p>
+<p>The resulting ‘peak-removed’ data component is stored in the model object, as well as the
+isolated aperiodic component model fit.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the peak removed spectrum data component</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_data" title="fooof.FOOOF.get_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_data</span></a><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_data_components_003.png" srcset="../../_images/sphx_glr_plot_data_components_003.png" alt="plot data components" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the peak removed spectrum, with the model aperiodic fit</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_data" title="fooof.FOOOF.get_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_data</span></a><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">),</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_model" title="fooof.FOOOF.get_model" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_model</span></a><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">)],</span>
+             <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_data_components_004.png" srcset="../../_images/sphx_glr_plot_data_components_004.png" alt="plot data components" class = "sphx-glr-single-img"/></section>
+<section id="periodic-component">
+<h3>Periodic Component<a class="headerlink" href="#periodic-component" title="Permalink to this heading">¶</a></h3>
+<p>To fit the periodic component, the model fit procedure removes the fit peaks from the power
+spectrum.</p>
+<p>The resulting ‘flattened’ data component is stored in the model object, as well as the
+isolated periodic component model fit.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the flattened spectrum data component</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_data" title="fooof.FOOOF.get_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_data</span></a><span class="p">(</span><span class="s1">&#39;peak&#39;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_data_components_005.png" srcset="../../_images/sphx_glr_plot_data_components_005.png" alt="plot data components" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the flattened spectrum data with the model peak fit</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_data" title="fooof.FOOOF.get_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_data</span></a><span class="p">(</span><span class="s1">&#39;peak&#39;</span><span class="p">),</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_model" title="fooof.FOOOF.get_model" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_model</span></a><span class="p">(</span><span class="s1">&#39;peak&#39;</span><span class="p">)],</span>
+             <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_data_components_006.png" srcset="../../_images/sphx_glr_plot_data_components_006.png" alt="plot data components" class = "sphx-glr-single-img"/></section>
+<section id="full-model-fit">
+<h3>Full Model Fit<a class="headerlink" href="#full-model-fit" title="Permalink to this heading">¶</a></h3>
+<p>The full model fit, which we explored earlier, is calculated as the combination of the
+aperiodic and peak fit, which we can check by plotting these combined components.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the full model fit, as the combination of the aperiodic and peak model components</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_model" title="fooof.FOOOF.get_model" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_model</span></a><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">)</span> <span class="o">+</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_model" title="fooof.FOOOF.get_model" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_model</span></a><span class="p">(</span><span class="s1">&#39;peak&#39;</span><span class="p">)],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_data_components_007.png" srcset="../../_images/sphx_glr_plot_data_components_007.png" alt="plot data components" class = "sphx-glr-single-img"/></section>
+</section>
+<section id="linear-vs-log-spacing">
+<h2>Linear vs Log Spacing<a class="headerlink" href="#linear-vs-log-spacing" title="Permalink to this heading">¶</a></h2>
+<p>The above shows data components as they are available on the model object, and used in
+the fitting process - notable, in log10 spacing.</p>
+<p>Some analyses may aim to use these isolated components to compute certain measures of
+interest on the data. However, when doing so, one may often want the linear power
+representations of these components.</p>
+<p>Both the <cite>get_data</cite> and <cite>get_model</cite> methods accept a ‘space’ argument, whereby the user
+can specify whether the return the components in log10 or linear spacing.</p>
+<section id="aperiodic-components-in-linear-space">
+<h3>Aperiodic Components in Linear Space<a class="headerlink" href="#aperiodic-components-in-linear-space" title="Permalink to this heading">¶</a></h3>
+<p>First we can examine the aperiodic data &amp; model components, in linear space.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the peak removed spectrum, with the model aperiodic fit</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_data" title="fooof.FOOOF.get_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_data</span></a><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">),</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_model" title="fooof.FOOOF.get_model" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_model</span></a><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">)],</span>
+             <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_data_components_008.png" srcset="../../_images/sphx_glr_plot_data_components_008.png" alt="plot data components" class = "sphx-glr-single-img"/></section>
+<section id="peak-component-in-linear-space">
+<h3>Peak Component in Linear Space<a class="headerlink" href="#peak-component-in-linear-space" title="Permalink to this heading">¶</a></h3>
+<p>Next, we can examine the peak data &amp; model components, in linear space.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the flattened spectrum data with the model peak fit</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_data" title="fooof.FOOOF.get_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_data</span></a><span class="p">(</span><span class="s1">&#39;peak&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">),</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_model" title="fooof.FOOOF.get_model" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_model</span></a><span class="p">(</span><span class="s1">&#39;peak&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">)],</span>
+             <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_data_components_009.png" srcset="../../_images/sphx_glr_plot_data_components_009.png" alt="plot data components" class = "sphx-glr-single-img"/></section>
+<section id="linear-space-additive-model">
+<h3>Linear Space Additive Model<a class="headerlink" href="#linear-space-additive-model" title="Permalink to this heading">¶</a></h3>
+<p>Note that specifying ‘linear’ does not simply unlog the data components to return them
+in linear space, but instead defines the space of the additive data definition such that
+<cite>power_spectrum = aperiodic_component + peak_component</cite> (for data and/or model).</p>
+<p>We can see this by plotting the linear space data (or model) with the corresponding
+aperiodic and periodic components summed together. Note that if you simply unlog
+the components and sum them, they does not add up to reflecting the full data / model.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the linear data, showing the combination of peak + aperiodic matches the full data</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span>
+             <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_data" title="fooof.FOOOF.get_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_data</span></a><span class="p">(</span><span class="s1">&#39;full&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">),</span>
+              <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_data" title="fooof.FOOOF.get_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_data</span></a><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">)</span> <span class="o">+</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_data" title="fooof.FOOOF.get_data" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_data</span></a><span class="p">(</span><span class="s1">&#39;peak&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">)],</span>
+             <span class="n">linestyle</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;dashed&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">])</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_data_components_010.png" srcset="../../_images/sphx_glr_plot_data_components_010.png" alt="plot data components" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the linear model, showing the combination of peak + aperiodic matches the full model</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span>
+             <span class="p">[</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_model" title="fooof.FOOOF.get_model" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_model</span></a><span class="p">(</span><span class="s1">&#39;full&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">),</span>
+              <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_model" title="fooof.FOOOF.get_model" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_model</span></a><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">)</span> <span class="o">+</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_model" title="fooof.FOOOF.get_model" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_model</span></a><span class="p">(</span><span class="s1">&#39;peak&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">)],</span>
+             <span class="n">linestyle</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;dashed&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">])</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_data_components_011.png" srcset="../../_images/sphx_glr_plot_data_components_011.png" alt="plot data components" class = "sphx-glr-single-img"/></section>
+<section id="notes-on-analyzing-data-model-components">
+<h3>Notes on Analyzing Data &amp; Model Components<a class="headerlink" href="#notes-on-analyzing-data-model-components" title="Permalink to this heading">¶</a></h3>
+<p>The functionality here allows for accessing the model components in log space (as used by
+the model for fitting), as well as recomputing in linear space.</p>
+<p>If you are aiming to analyze these components, it is important to consider which version of
+the data you should analyze for the question at hand, as there are key differences to the
+different representations. Users who wish to do so post-hoc analyses of these data and model
+components should consider the benefits and limitations the different representations.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.303 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-models-plot-data-components-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/465ac0a8386b0d63e3782a905f87cd0c/plot_data_components.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_data_components.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/51b8f06909b098e687b8fc657c46fc0a/plot_data_components.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_data_components.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

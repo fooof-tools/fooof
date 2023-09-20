@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fooof.plts.fm.plot_fm &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>fooof.plts.fm.plot_fm &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../visualizers.html">Visualizers</a></li>
                 <li><a href="../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -110,11 +113,11 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-plts-fm-plot-fm">
-<h1>fooof.plts.fm.plot_fm<a class="headerlink" href="#fooof-plts-fm-plot-fm" title="Permalink to this headline">¶</a></h1>
+  <section id="fooof-plts-fm-plot-fm">
+<h1>fooof.plts.fm.plot_fm<a class="headerlink" href="#fooof-plts-fm-plot-fm" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
-<dt id="fooof.plts.fm.plot_fm">
-<code class="sig-prename descclassname">fooof.plts.fm.</code><code class="sig-name descname">plot_fm</code><span class="sig-paren">(</span><em class="sig-param">fm</em>, <em class="sig-param">plot_peaks=None</em>, <em class="sig-param">plot_aperiodic=True</em>, <em class="sig-param">plt_log=False</em>, <em class="sig-param">add_legend=True</em>, <em class="sig-param">save_fig=False</em>, <em class="sig-param">file_name=None</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">plot_style=&lt;function style_spectrum_plot&gt;</em>, <em class="sig-param">data_kwargs=None</em>, <em class="sig-param">model_kwargs=None</em>, <em class="sig-param">aperiodic_kwargs=None</em>, <em class="sig-param">peak_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/plts/fm.html#plot_fm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.plts.fm.plot_fm" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.plts.fm.plot_fm">
+<span class="sig-prename descclassname"><span class="pre">fooof.plts.fm.</span></span><span class="sig-name descname"><span class="pre">plot_fm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_peaks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_aperiodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_spectrum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plt_log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aperiodic_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">plot_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/plts/fm.html#plot_fm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.plts.fm.plot_fm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the power spectrum and model fit results from a FOOOF object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -122,9 +125,17 @@
 <dt><strong>fm</strong><span class="classifier">FOOOF</span></dt><dd><p>Object containing a power spectrum and (optionally) results from fitting.</p>
 </dd>
 <dt><strong>plot_peaks</strong><span class="classifier">None or {‘shade’, ‘dot’, ‘outline’, ‘line’}, optional</span></dt><dd><p>What kind of approach to take to plot peaks. If None, peaks are not specifically plotted.
-Can also be a combination of approaches, separated by ‘-‘, for example: ‘shade-line’.</p>
+Can also be a combination of approaches, separated by ‘-’, for example: ‘shade-line’.</p>
 </dd>
 <dt><strong>plot_aperiodic</strong><span class="classifier">boolean, optional, default: True</span></dt><dd><p>Whether to plot the aperiodic component of the model fit.</p>
+</dd>
+<dt><strong>freqs</strong><span class="classifier">1d array, optional</span></dt><dd><p>Frequency values of the power spectrum to plot, in linear space.
+If provided, this overrides the values in the model object.</p>
+</dd>
+<dt><strong>power_spectrum</strong><span class="classifier">1d array, optional</span></dt><dd><p>Power values to plot, in linear space.
+If provided, this overrides the values in the model object.</p>
+</dd>
+<dt><strong>freq_range</strong><span class="classifier">list of [float, float], optional</span></dt><dd><p>Frequency range to plot, defined in linear space.</p>
 </dd>
 <dt><strong>plt_log</strong><span class="classifier">boolean, optional, default: False</span></dt><dd><p>Whether to plot the frequency values in log10 spacing.</p>
 </dd>
@@ -134,13 +145,13 @@ Can also be a combination of approaches, separated by ‘-‘, for example: ‘s
 </dd>
 <dt><strong>file_name</strong><span class="classifier">str, optional</span></dt><dd><p>Name to give the saved out file.</p>
 </dd>
-<dt><strong>file_path</strong><span class="classifier">str, optional</span></dt><dd><p>Path to directory to save to. If None, saves to current directory.</p>
+<dt><strong>file_path</strong><span class="classifier">Path or str, optional</span></dt><dd><p>Path to directory to save to. If None, saves to current directory.</p>
 </dd>
 <dt><strong>ax</strong><span class="classifier">matplotlib.Axes, optional</span></dt><dd><p>Figure axes upon which to plot.</p>
 </dd>
-<dt><strong>plot_style</strong><span class="classifier">callable, optional, default: style_spectrum_plot</span></dt><dd><p>A function to call to apply styling &amp; aesthetics to the plot.</p>
-</dd>
 <dt><strong>data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs</strong><span class="classifier">None or dict, optional</span></dt><dd><p>Keyword arguments to pass into the plot call for each plot element.</p>
+</dd>
+<dt><strong>**plot_kwargs</strong></dt><dd><p>Additional plot related keyword arguments, with styling options managed by <code class="docutils literal notranslate"><span class="pre">style_plot</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -150,7 +161,7 @@ Can also be a combination of approaches, separated by ‘-‘, for example: ‘s
 the y-axis (power) is plotted in log spacing by default.</p>
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<div style='clear:both'></div></section>
 
 
     </div>
@@ -164,8 +175,8 @@ the y-axis (power) is plotted in log spacing by default.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

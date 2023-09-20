@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fooof.FOOOFGroup &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>fooof.FOOOFGroup &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../visualizers.html">Visualizers</a></li>
                 <li><a href="../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -110,11 +113,11 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-fooofgroup">
-<h1>fooof.FOOOFGroup<a class="headerlink" href="#fooof-fooofgroup" title="Permalink to this headline">¶</a></h1>
+  <section id="fooof-fooofgroup">
+<h1>fooof.FOOOFGroup<a class="headerlink" href="#fooof-fooofgroup" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
-<dt id="fooof.FOOOFGroup">
-<em class="property">class </em><code class="sig-prename descclassname">fooof.</code><code class="sig-name descname">FOOOFGroup</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fooof.</span></span><span class="sig-name descname"><span class="pre">FOOOFGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Model a group of power spectra as a combination of aperiodic and periodic components.</p>
 <p>WARNING: FOOOF expects frequency and power values in linear space.</p>
 <p>Passing in logged frequencies and/or power spectra is not detected,
@@ -122,13 +125,15 @@ and will silently produce incorrect results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>peak_width_limits</strong><span class="classifier">tuple of (float, float), optional, default: (0.5, 12.0)</span></dt><dd><p>Limits on possible peak width, as (lower_bound, upper_bound).</p>
+<dt><strong>peak_width_limits</strong><span class="classifier">tuple of (float, float), optional, default: (0.5, 12.0)</span></dt><dd><p>Limits on possible peak width, in Hz, as (lower_bound, upper_bound).</p>
 </dd>
-<dt><strong>max_n_peaks</strong><span class="classifier">int, optional, default: inf</span></dt><dd><p>Maximum number of gaussians to be fit in a single spectrum.</p>
+<dt><strong>max_n_peaks</strong><span class="classifier">int, optional, default: inf</span></dt><dd><p>Maximum number of peaks to fit.</p>
 </dd>
-<dt><strong>min_peak_height</strong><span class="classifier">float, optional, default: 0</span></dt><dd><p>Absolute threshold for detecting peaks, in units of the input data.</p>
+<dt><strong>min_peak_height</strong><span class="classifier">float, optional, default: 0</span></dt><dd><p>Absolute threshold for detecting peaks.
+This threshold is defined in absolute units of the power spectrum (log power).</p>
 </dd>
-<dt><strong>peak_threshold</strong><span class="classifier">float, optional, default: 2.0</span></dt><dd><p>Relative threshold for detecting peaks, in units of standard deviation of the input data.</p>
+<dt><strong>peak_threshold</strong><span class="classifier">float, optional, default: 2.0</span></dt><dd><p>Relative threshold for detecting peaks.
+This threshold is defined in relative units of the power spectrum (standard deviation).</p>
 </dd>
 <dt><strong>aperiodic_mode</strong><span class="classifier">{‘fixed’, ‘knee’}</span></dt><dd><p>Which approach to take for fitting the aperiodic component.</p>
 </dd>
@@ -180,21 +185,21 @@ Power values are stored internally in log10 scale.</p>
 </dd>
 <dt><a class="reference internal" href="#fooof.FOOOFGroup.n_peaks_" title="fooof.FOOOFGroup.n_peaks_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_peaks_</span></code></a><span class="classifier">int</span></dt><dd><p>How many peaks were fit for each model.</p>
 </dd>
-<dt><strong>n_failed_fits_</strong><span class="classifier">int</span></dt><dd><p>The number of models that failed to fit.</p>
+<dt><a class="reference internal" href="#fooof.FOOOFGroup.n_null_" title="fooof.FOOOFGroup.n_null_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_null_</span></code></a><span class="classifier">int</span></dt><dd><p>How many model fits are null.</p>
 </dd>
-<dt><strong>failed_fit_inds_</strong><span class="classifier">list of int</span></dt><dd><p>The indices of any models that failed to fit.</p>
+<dt><a class="reference internal" href="#fooof.FOOOFGroup.null_inds_" title="fooof.FOOOFGroup.null_inds_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">null_inds_</span></code></a><span class="classifier">list of int</span></dt><dd><p>The indices for model fits that are null.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.__init__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize object with desired settings.</p>
 </dd></dl>
 
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -221,17 +226,23 @@ Power values are stored internally in log10 scale.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.drop" title="fooof.FOOOFGroup.drop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drop</span></code></a>(inds)</p></td>
 <td><p>Drop one or more model fit results from the object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>([freqs, power_spectra, freq_range, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>([freqs, power_spectra, freq_range, ...])</p></td>
 <td><p>Fit a group of power spectra.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fooof</span></code></a>(ind[, regenerate])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_data" title="fooof.FOOOFGroup.get_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_data</span></code></a>([component, space])</p></td>
+<td><p>Get a data component.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fooof</span></code></a>(ind[, regenerate])</p></td>
 <td><p>Get a FOOOF object for a specified model fit.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_group" title="fooof.FOOOFGroup.get_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_group</span></code></a>(inds)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_group" title="fooof.FOOOFGroup.get_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_group</span></code></a>(inds)</p></td>
 <td><p>Get a FOOOFGroup object with the specified sub-selection of model fits.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_meta_data" title="fooof.FOOOFGroup.get_meta_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_meta_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_meta_data" title="fooof.FOOOFGroup.get_meta_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_meta_data</span></code></a>()</p></td>
 <td><p>Return data information from the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_model" title="fooof.FOOOFGroup.get_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_model</span></code></a>([component, space])</p></td>
+<td><p>Get a model component.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>(name[, col])</p></td>
 <td><p>Return model fit parameters for specified feature(s).</p></td>
@@ -239,40 +250,58 @@ Power values are stored internally in log10 scale.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_results" title="fooof.FOOOFGroup.get_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_results</span></code></a>()</p></td>
 <td><p>Return the results run across a group of power spectra.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_settings" title="fooof.FOOOFGroup.get_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_settings</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_run_modes" title="fooof.FOOOFGroup.get_run_modes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_run_modes</span></code></a>()</p></td>
+<td><p>Return run modes of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.get_settings" title="fooof.FOOOFGroup.get_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_settings</span></code></a>()</p></td>
 <td><p>Return user defined settings of the current object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.load" title="fooof.FOOOFGroup.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(file_name[, file_path])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.load" title="fooof.FOOOFGroup.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(file_name[, file_path])</p></td>
 <td><p>Load FOOOFGroup data from file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>([save_fig, file_name, file_path])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>([save_fig, file_name, file_path])</p></td>
 <td><p>Plot a figure with subplots visualizing the parameters from a FOOOFGroup object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.print_report_issue" title="fooof.FOOOFGroup.print_report_issue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_report_issue</span></code></a>([concise])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.print_report_issue" title="fooof.FOOOFGroup.print_report_issue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_report_issue</span></code></a>([concise])</p></td>
 <td><p>Prints instructions on how to report bugs and/or problematic fits.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.print_results" title="fooof.FOOOFGroup.print_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_results</span></code></a>([concise])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.print_results" title="fooof.FOOOFGroup.print_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_results</span></code></a>([concise])</p></td>
 <td><p>Print out FOOOFGroup results.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.print_settings" title="fooof.FOOOFGroup.print_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_settings</span></code></a>([description, concise])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.print_settings" title="fooof.FOOOFGroup.print_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_settings</span></code></a>([description, concise])</p></td>
 <td><p>Print out the current settings.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.report" title="fooof.FOOOFGroup.report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report</span></code></a>([freqs, power_spectra, freq_range, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.report" title="fooof.FOOOFGroup.report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report</span></code></a>([freqs, power_spectra, freq_range, ...])</p></td>
 <td><p>Fit a group of power spectra and display a report, with a plot and printed results.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.save" title="fooof.FOOOFGroup.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(file_name[, file_path, append, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.save" title="fooof.FOOOFGroup.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(file_name[, file_path, append, ...])</p></td>
 <td><p>Save out results and/or settings from FOOOFGroup object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.save_report" title="fooof.FOOOFGroup.save_report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_report</span></code></a>(file_name[, file_path])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.save_model_report" title="fooof.FOOOFGroup.save_model_report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_model_report</span></code></a>(index, file_name[, ...])</p></td>
+<td><p>&quot;Save out an individual model report for a specified model fit.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.save_report" title="fooof.FOOOFGroup.save_report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_report</span></code></a>(file_name[, file_path, add_settings])</p></td>
 <td><p>Generate and save out a PDF report for a group of power spectrum models.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.set_check_data_mode" title="fooof.FOOOFGroup.set_check_data_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_check_data_mode</span></code></a>(check_data)</p></td>
+<td><p>Set check data mode, which controls if an error is raised if NaN or Inf data are added.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.set_check_modes" title="fooof.FOOOFGroup.set_check_modes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_check_modes</span></code></a>([check_freqs, check_data])</p></td>
+<td><p>Set check modes, which controls if an error is raised based on check on the inputs.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.set_debug_mode" title="fooof.FOOOFGroup.set_debug_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_debug_mode</span></code></a>(debug)</p></td>
-<td><p>Set whether debug mode, wherein an error is raised if fitting is unsuccessful.</p></td>
+<td><p>Set debug mode, which controls if an error is raised if model fitting is unsuccessful.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.set_run_modes" title="fooof.FOOOFGroup.set_run_modes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_run_modes</span></code></a>(debug, check_freqs, check_data)</p></td>
+<td><p>Simultaneously set all run modes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOFGroup.to_df" title="fooof.FOOOFGroup.to_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_df</span></code></a>(peak_org)</p></td>
+<td><p>Convert and extract the model results as a pandas object.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -296,8 +325,8 @@ Power values are stored internally in log10 scale.</p>
 </tbody>
 </table>
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.add_data">
-<code class="sig-name descname">add_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">freqs</span></em>, <em class="sig-param"><span class="n">power_spectra</span></em>, <em class="sig-param"><span class="n">freq_range</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.add_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.add_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.add_data">
+<span class="sig-name descname"><span class="pre">add_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_spectra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.add_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add data (frequencies and power spectrum values) to the current object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -317,8 +346,8 @@ these will be cleared by this method call.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.add_meta_data">
-<code class="sig-name descname">add_meta_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fooof_meta_data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.add_meta_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.add_meta_data">
+<span class="sig-name descname"><span class="pre">add_meta_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fooof_meta_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.add_meta_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add data information into object from a FOOOFMetaData object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -331,8 +360,8 @@ these will be cleared by this method call.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.add_results">
-<code class="sig-name descname">add_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fooof_result</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.add_results" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.add_results">
+<span class="sig-name descname"><span class="pre">add_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fooof_result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.add_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add results data into object from a FOOOFResults object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -345,8 +374,8 @@ these will be cleared by this method call.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.add_settings">
-<code class="sig-name descname">add_settings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fooof_settings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.add_settings" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.add_settings">
+<span class="sig-name descname"><span class="pre">add_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fooof_settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.add_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add settings into object from a FOOOFSettings object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -359,14 +388,14 @@ these will be cleared by this method call.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.copy">
-<code class="sig-name descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.copy" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of the current object.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.drop">
-<code class="sig-name descname">drop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inds</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.drop" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.drop">
+<span class="sig-name descname"><span class="pre">drop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.drop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.drop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Drop one or more model fit results from the object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -382,8 +411,8 @@ If a boolean mask, True indicates indices to drop.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">freqs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">power_spectra</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq_range</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">progress</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.fit" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freqs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_spectra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit a group of power spectra.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -407,8 +436,45 @@ If a boolean mask, True indicates indices to drop.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.get_fooof">
-<code class="sig-name descname">get_fooof</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ind</span></em>, <em class="sig-param"><span class="n">regenerate</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.get_fooof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.get_fooof" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'full'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a data component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>component</strong><span class="classifier">{‘full’, ‘aperiodic’, ‘peak’}</span></dt><dd><dl class="simple">
+<dt>Which data component to return.</dt><dd><p>‘full’ - full power spectrum
+‘aperiodic’ - isolated aperiodic data component
+‘peak’ - isolated peak data component</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>space</strong><span class="classifier">{‘log’, ‘linear’}</span></dt><dd><dl class="simple">
+<dt>Which space to return the data component in.</dt><dd><p>‘log’ - returns in log10 space.
+‘linear’ - returns in linear space.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>output</strong><span class="classifier">1d array</span></dt><dd><p>Specified data component, in specified spacing.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The ‘space’ parameter doesn’t just define the spacing of the data component
+values, but rather defines the space of the additive data definition such that
+<cite>power_spectrum = aperiodic_component + peak_component</cite>.
+With space set as ‘log’, this combination holds in log space.
+With space set as ‘linear’, this combination holds in linear space.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.get_fooof">
+<span class="sig-name descname"><span class="pre">get_fooof</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.get_fooof"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.get_fooof" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a FOOOF object for a specified model fit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -429,8 +495,8 @@ If a boolean mask, True indicates indices to drop.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.get_group">
-<code class="sig-name descname">get_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inds</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.get_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.get_group" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.get_group">
+<span class="sig-name descname"><span class="pre">get_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.get_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.get_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a FOOOFGroup object with the specified sub-selection of model fits.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -450,8 +516,8 @@ If a boolean mask, True indicates indices to select.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.get_meta_data">
-<code class="sig-name descname">get_meta_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_meta_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.get_meta_data">
+<span class="sig-name descname"><span class="pre">get_meta_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_meta_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return data information from the current object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -464,8 +530,45 @@ If a boolean mask, True indicates indices to select.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">col</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.get_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.get_params" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.get_model">
+<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'full'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a model component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>component</strong><span class="classifier">{‘full’, ‘aperiodic’, ‘peak’}</span></dt><dd><dl class="simple">
+<dt>Which model component to return.</dt><dd><p>‘full’ - full model
+‘aperiodic’ - isolated aperiodic model component
+‘peak’ - isolated peak model component</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>space</strong><span class="classifier">{‘log’, ‘linear’}</span></dt><dd><dl class="simple">
+<dt>Which space to return the model component in.</dt><dd><p>‘log’ - returns in log10 space.
+‘linear’ - returns in linear space.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>output</strong><span class="classifier">1d array</span></dt><dd><p>Specified model component, in specified spacing.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The ‘space’ parameter doesn’t just define the spacing of the model component
+values, but rather defines the space of the additive model such that
+<cite>model = aperiodic_component + peak_component</cite>.
+With space set as ‘log’, this combination holds in log space.
+With space set as ‘linear’, this combination holds in linear space.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return model fit parameters for specified feature(s).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -493,18 +596,33 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>For further description of the data you can extract, check the FOOOFResults documentation.</p>
+<p>When extracting peak information (‘peak_params’ or ‘gaussian_params’), an additional column
+is appended to the returned array, indicating the index of the model that the peak came from.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.get_results">
-<code class="sig-name descname">get_results</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.get_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.get_results" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.get_results">
+<span class="sig-name descname"><span class="pre">get_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.get_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.get_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the results run across a group of power spectra.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.get_settings">
-<code class="sig-name descname">get_settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_settings" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.get_run_modes">
+<span class="sig-name descname"><span class="pre">get_run_modes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_run_modes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return run modes of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>FOOOFRunModes</dt><dd><p>Object containing the run modes from the current object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.get_settings">
+<span class="sig-name descname"><span class="pre">get_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.get_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return user defined settings of the current object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -516,55 +634,55 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="fooof.FOOOFGroup.has_data">
-<em class="property">property </em><code class="sig-name descname">has_data</code><a class="headerlink" href="#fooof.FOOOFGroup.has_data" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.has_data">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_data</span></span><a class="headerlink" href="#fooof.FOOOFGroup.has_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicator for if the object contains data.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="fooof.FOOOFGroup.has_model">
-<em class="property">property </em><code class="sig-name descname">has_model</code><a class="headerlink" href="#fooof.FOOOFGroup.has_model" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.has_model">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_model</span></span><a class="headerlink" href="#fooof.FOOOFGroup.has_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicator for if the object contains model fits.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.load">
-<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_name</span></em>, <em class="sig-param"><span class="n">file_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.load" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load FOOOFGroup data from file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>file_name</strong><span class="classifier">str</span></dt><dd><p>File to load data from.</p>
 </dd>
-<dt><strong>file_path</strong><span class="classifier">str, optional</span></dt><dd><p>Path to directory to load from. If None, loads from current directory.</p>
+<dt><strong>file_path</strong><span class="classifier">Path or str, optional</span></dt><dd><p>Path to directory to load from. If None, loads from current directory.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="fooof.FOOOFGroup.n_null_">
-<em class="property">property </em><code class="sig-name descname">n_null_</code><a class="headerlink" href="#fooof.FOOOFGroup.n_null_" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.n_null_">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_null_</span></span><a class="headerlink" href="#fooof.FOOOFGroup.n_null_" title="Permalink to this definition">¶</a></dt>
 <dd><p>How many model fits are null.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="fooof.FOOOFGroup.n_peaks_">
-<em class="property">property </em><code class="sig-name descname">n_peaks_</code><a class="headerlink" href="#fooof.FOOOFGroup.n_peaks_" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.n_peaks_">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_peaks_</span></span><a class="headerlink" href="#fooof.FOOOFGroup.n_peaks_" title="Permalink to this definition">¶</a></dt>
 <dd><p>How many peaks were fit for each model.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="fooof.FOOOFGroup.null_inds_">
-<em class="property">property </em><code class="sig-name descname">null_inds_</code><a class="headerlink" href="#fooof.FOOOFGroup.null_inds_" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.null_inds_">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">null_inds_</span></span><a class="headerlink" href="#fooof.FOOOFGroup.null_inds_" title="Permalink to this definition">¶</a></dt>
 <dd><p>The indices for model fits that are null.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">save_fig</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">file_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">file_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.plot" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">plot_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a figure with subplots visualizing the parameters from a FOOOFGroup object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -573,7 +691,9 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </dd>
 <dt><strong>file_name</strong><span class="classifier">str, optional</span></dt><dd><p>Name to give the saved out file.</p>
 </dd>
-<dt><strong>file_path</strong><span class="classifier">str, optional</span></dt><dd><p>Path to directory to save to. If None, saves to current directory.</p>
+<dt><strong>file_path</strong><span class="classifier">Path or str, optional</span></dt><dd><p>Path to directory to save to. If None, saves to current directory.</p>
+</dd>
+<dt><strong>**plot_kwargs</strong></dt><dd><p>Additional plot related keyword arguments, with styling options managed by <code class="docutils literal notranslate"><span class="pre">style_plot</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -587,8 +707,8 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.print_report_issue">
-<em class="property">static </em><code class="sig-name descname">print_report_issue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">concise</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.print_report_issue" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.print_report_issue">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">print_report_issue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.print_report_issue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints instructions on how to report bugs and/or problematic fits.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -601,8 +721,8 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.print_results">
-<code class="sig-name descname">print_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">concise</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.print_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.print_results" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.print_results">
+<span class="sig-name descname"><span class="pre">print_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.print_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.print_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print out FOOOFGroup results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -615,8 +735,8 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.print_settings">
-<code class="sig-name descname">print_settings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">concise</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.print_settings" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.print_settings">
+<span class="sig-name descname"><span class="pre">print_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.print_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print out the current settings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -631,8 +751,8 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.report">
-<code class="sig-name descname">report</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">freqs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">power_spectra</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq_range</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">progress</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.report" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.report">
+<span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freqs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_spectra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit a group of power spectra and display a report, with a plot and printed results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -656,15 +776,15 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.save">
-<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_name</span></em>, <em class="sig-param"><span class="n">file_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">append</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_results</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_settings</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_data</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.save" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save out results and/or settings from FOOOFGroup object. Saves out to a JSON file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>file_name</strong><span class="classifier">str or FileObject</span></dt><dd><p>File to save data to.</p>
 </dd>
-<dt><strong>file_path</strong><span class="classifier">str, optional</span></dt><dd><p>Path to directory to load from. If None, loads from current directory.</p>
+<dt><strong>file_path</strong><span class="classifier">Path or str, optional</span></dt><dd><p>Path to directory to load from. If None, loads from current directory.</p>
 </dd>
 <dt><strong>append</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to append to an existing file, if available.
 This option is only valid (and only used) if ‘file_name’ is a str.</p>
@@ -687,15 +807,23 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.save_report">
-<code class="sig-name descname">save_report</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_name</span></em>, <em class="sig-param"><span class="n">file_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.save_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.FOOOFGroup.save_report" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate and save out a PDF report for a group of power spectrum models.</p>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.save_model_report">
+<span class="sig-name descname"><span class="pre">save_model_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plt_log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">plot_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.save_model_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.save_model_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>“Save out an individual model report for a specified model fit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
+<dt><strong>index</strong><span class="classifier">int</span></dt><dd><p>Index of the model fit to save out.</p>
+</dd>
 <dt><strong>file_name</strong><span class="classifier">str</span></dt><dd><p>Name to give the saved out file.</p>
 </dd>
-<dt><strong>file_path</strong><span class="classifier">str, optional</span></dt><dd><p>Path to directory to save to. If None, saves to current directory.</p>
+<dt><strong>file_path</strong><span class="classifier">Path or str, optional</span></dt><dd><p>Path to directory to save to. If None, saves to current directory.</p>
+</dd>
+<dt><strong>plt_log</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether or not to plot the frequency axis in log space.</p>
+</dd>
+<dt><strong>add_settings</strong><span class="classifier">bool, optional, default: True</span></dt><dd><p>Whether to add a print out of the model settings to the end of the report.</p>
+</dd>
+<dt><strong>plot_kwargs</strong><span class="classifier">keyword arguments</span></dt><dd><p>Keyword arguments to pass into the plot method.</p>
 </dd>
 </dl>
 </dd>
@@ -703,9 +831,57 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="fooof.FOOOFGroup.set_debug_mode">
-<code class="sig-name descname">set_debug_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">debug</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.set_debug_mode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set whether debug mode, wherein an error is raised if fitting is unsuccessful.</p>
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.save_report">
+<span class="sig-name descname"><span class="pre">save_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.save_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.save_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate and save out a PDF report for a group of power spectrum models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_name</strong><span class="classifier">str</span></dt><dd><p>Name to give the saved out file.</p>
+</dd>
+<dt><strong>file_path</strong><span class="classifier">Path or str, optional</span></dt><dd><p>Path to directory to save to. If None, saves to current directory.</p>
+</dd>
+<dt><strong>add_settings</strong><span class="classifier">bool, optional, default: True</span></dt><dd><p>Whether to add a print out of the model settings to the end of the report.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.set_check_data_mode">
+<span class="sig-name descname"><span class="pre">set_check_data_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">check_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.set_check_data_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set check data mode, which controls if an error is raised if NaN or Inf data are added.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>check_data</strong><span class="classifier">bool</span></dt><dd><p>Whether to run in check data mode.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.set_check_modes">
+<span class="sig-name descname"><span class="pre">set_check_modes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">check_freqs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.set_check_modes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set check modes, which controls if an error is raised based on check on the inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>check_freqs</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to run in check freqs mode, which checks the frequency data.</p>
+</dd>
+<dt><strong>check_data</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to run in check data mode, which checks the power spectrum values data.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.set_debug_mode">
+<span class="sig-name descname"><span class="pre">set_debug_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.set_debug_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set debug mode, which controls if an error is raised if model fitting is unsuccessful.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -716,48 +892,91 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.set_run_modes">
+<span class="sig-name descname"><span class="pre">set_run_modes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_freqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fooof.FOOOFGroup.set_run_modes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simultaneously set all run modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>debug</strong><span class="classifier">bool</span></dt><dd><p>Whether to run in debug mode.</p>
+</dd>
+<dt><strong>check_freqs</strong><span class="classifier">bool</span></dt><dd><p>Whether to run in check freqs mode.</p>
+</dd>
+<dt><strong>check_data</strong><span class="classifier">bool</span></dt><dd><p>Whether to run in check data mode.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
-<div class="section" id="examples-using-fooof-fooofgroup">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.FOOOFGroup</span></code><a class="headerlink" href="#examples-using-fooof-fooofgroup" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Example of model fit failures and how to debug them."><div class="figure align-default" id="id1">
-<img alt="Failed Model Fits" src="../_images/sphx_glr_plot_failed_fits_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_failed_fits.html#sphx-glr-auto-examples-manage-plot-failed-fits-py"><span class="std std-ref">Failed Model Fits</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Fitting power spectrum models across 3D arrays of power spectra."><div class="figure align-default" id="id2">
-<img alt="Fitting Power Spectrum Models Across 3D Arrays" src="../_images/sphx_glr_plot_fit_fooof_3d_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_fit_fooof_3d.html#sphx-glr-auto-examples-manage-plot-fit-fooof-3d-py"><span class="std std-ref">Fitting Power Spectrum Models Across 3D Arrays</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Check the error of power spectrum models across frequencies."><div class="figure align-default" id="id3">
-<img alt="Frequency-by-Frequency Errors" src="../_images/sphx_glr_plot_freq_by_freq_error_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_freq_by_freq_error.html#sphx-glr-auto-examples-manage-plot-freq-by-freq-error-py"><span class="std std-ref">Frequency-by-Frequency Errors</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Examples with combining, sub-selecting, dropping, and averaging power spectrum models."><div class="figure align-default" id="id4">
-<img alt="Manipulating FOOOF Objects" src="../_images/sphx_glr_plot_manipulating_fooofs_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_manipulating_fooofs.html#sphx-glr-auto-examples-manage-plot-manipulating-fooofs-py"><span class="std std-ref">Manipulating FOOOF Objects</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Plotting power spectrum model parameters and components."><div class="figure align-default" id="id5">
-<img alt="Plot Model Components" src="../_images/sphx_glr_plot_model_components_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plots/plot_model_components.html#sphx-glr-auto-examples-plots-plot-model-components-py"><span class="std std-ref">Plot Model Components</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Parameterizing neural power spectra with MNE, doing a topographical analysis."><div class="figure align-default" id="id6">
-<img alt="Topographical Analyses with MNE" src="../_images/sphx_glr_plot_mne_example_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/analyses/plot_mne_example.html#sphx-glr-auto-examples-analyses-plot-mne-example-py"><span class="std std-ref">Topographical Analyses with MNE</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Using FOOOFGroup to run fit models across multiple power spectra."><div class="figure align-default" id="id7">
-<img alt="06: FOOOFGroup" src="../_images/sphx_glr_plot_06-FOOOFGroup_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_06-FOOOFGroup.html#sphx-glr-auto-tutorials-plot-06-fooofgroup-py"><span class="std std-ref">06: FOOOFGroup</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Tips &amp; tricks for choosing algorithm settings, tuning fits, and troubleshooting."><div class="figure align-default" id="id8">
-<img alt="07: Tuning &amp; Troubleshooting" src="../_images/sphx_glr_plot_07-TroubleShooting_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_07-TroubleShooting.html#sphx-glr-auto-tutorials-plot-07-troubleshooting-py"><span class="std std-ref">07: Tuning &amp; Troubleshooting</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting power spectrum models."><div class="figure align-default" id="id9">
-<img alt="08: Further Analysis" src="../_images/sphx_glr_plot_08-FurtherAnalysis_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_tutorials/plot_08-FurtherAnalysis.html#sphx-glr-auto-tutorials-plot-08-furtheranalysis-py"><span class="std std-ref">08: Further Analysis</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</div>
-</div></div>
-</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="fooof.FOOOFGroup.to_df">
+<span class="sig-name descname"><span class="pre">to_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peak_org</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/group.html#FOOOFGroup.to_df"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOFGroup.to_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert and extract the model results as a pandas object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>peak_org</strong><span class="classifier">int or Bands</span></dt><dd><p>How to organize peaks.
+If int, extracts the first n peaks.
+If Bands, extracts peaks based on band definitions.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>pd.DataFrame</dt><dd><p>Model results organized into a pandas object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<section id="examples-using-fooof-fooofgroup">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.FOOOFGroup</span></code><a class="headerlink" href="#examples-using-fooof-fooofgroup" title="Permalink to this heading">¶</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example covers utilities for extracting and exporting model fit results."><img alt="" src="../_images/sphx_glr_plot_data_exporting_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/manage/plot_data_exporting.html#sphx-glr-auto-examples-manage-plot-data-exporting-py"><span class="std std-ref">Exporting Model Results</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Exporting Model Results</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Example of model fit failures and how to debug them."><img alt="" src="../_images/sphx_glr_plot_failed_fits_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/manage/plot_failed_fits.html#sphx-glr-auto-examples-manage-plot-failed-fits-py"><span class="std std-ref">Failed Model Fits</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Failed Model Fits</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Fitting power spectrum models across 3D arrays of power spectra."><img alt="" src="../_images/sphx_glr_plot_fit_fooof_3d_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/manage/plot_fit_fooof_3d.html#sphx-glr-auto-examples-manage-plot-fit-fooof-3d-py"><span class="std std-ref">Fitting Power Spectrum Models Across 3D Arrays</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Fitting Power Spectrum Models Across 3D Arrays</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Examples with combining, sub-selecting, dropping, and averaging power spectrum models."><img alt="" src="../_images/sphx_glr_plot_manipulating_fooofs_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/manage/plot_manipulating_fooofs.html#sphx-glr-auto-examples-manage-plot-manipulating-fooofs-py"><span class="std std-ref">Manipulating FOOOF Objects</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Manipulating FOOOF Objects</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Exploring properties and topics related to aperiodic parameters."><img alt="" src="../_images/sphx_glr_plot_aperiodic_params_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/models/plot_aperiodic_params.html#sphx-glr-auto-examples-models-plot-aperiodic-params-py"><span class="std std-ref">Aperiodic Parameters</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Aperiodic Parameters</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Check the error of power spectrum models across frequencies."><img alt="" src="../_images/sphx_glr_plot_freq_by_freq_error_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/models/plot_freq_by_freq_error.html#sphx-glr-auto-examples-models-plot-freq-by-freq-error-py"><span class="std std-ref">Frequency-by-Frequency Errors</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Frequency-by-Frequency Errors</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Plotting power spectrum model parameters and components."><img alt="" src="../_images/sphx_glr_plot_model_components_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/plots/plot_model_components.html#sphx-glr-auto-examples-plots-plot-model-components-py"><span class="std std-ref">Plot Model Components</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Plot Model Components</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="An example analysis applied to developmental data, demonstrating best practices."><img alt="" src="../_images/sphx_glr_plot_dev_demo_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/analyses/plot_dev_demo.html#sphx-glr-auto-examples-analyses-plot-dev-demo-py"><span class="std std-ref">Developmental Data Demo</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Developmental Data Demo</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Parameterizing neural power spectra with MNE, doing a topographical analysis."><img alt="" src="../_images/sphx_glr_plot_mne_example_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/analyses/plot_mne_example.html#sphx-glr-auto-examples-analyses-plot-mne-example-py"><span class="std std-ref">Topographical Analyses with MNE</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Topographical Analyses with MNE</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Using FOOOFGroup to run fit models across multiple power spectra."><img alt="" src="../_images/sphx_glr_plot_06-FOOOFGroup_thumb.png" />
+<p><a class="reference internal" href="../auto_tutorials/plot_06-FOOOFGroup.html#sphx-glr-auto-tutorials-plot-06-fooofgroup-py"><span class="std std-ref">06: FOOOFGroup</span></a></p>
+  <div class="sphx-glr-thumbnail-title">06: FOOOFGroup</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Tips &amp; tricks for choosing algorithm settings, tuning fits, and troubleshooting."><img alt="" src="../_images/sphx_glr_plot_07-TroubleShooting_thumb.png" />
+<p><a class="reference internal" href="../auto_tutorials/plot_07-TroubleShooting.html#sphx-glr-auto-tutorials-plot-07-troubleshooting-py"><span class="std std-ref">07: Tuning &amp; Troubleshooting</span></a></p>
+  <div class="sphx-glr-thumbnail-title">07: Tuning & Troubleshooting</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Analyze results from fitting power spectrum models."><img alt="" src="../_images/sphx_glr_plot_08-FurtherAnalysis_thumb.png" />
+<p><a class="reference internal" href="../auto_tutorials/plot_08-FurtherAnalysis.html#sphx-glr-auto-tutorials-plot-08-furtheranalysis-py"><span class="std std-ref">08: Further Analysis</span></a></p>
+  <div class="sphx-glr-thumbnail-title">08: Further Analysis</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This section covers how to access reporting info and reference use of the module."><img alt="" src="../_images/sphx_glr_plot_09-Reporting_thumb.png" />
+<p><a class="reference internal" href="../auto_tutorials/plot_09-Reporting.html#sphx-glr-auto-tutorials-plot-09-reporting-py"><span class="std std-ref">09: Reporting &amp; Referencing</span></a></p>
+  <div class="sphx-glr-thumbnail-title">09: Reporting & Referencing</div>
+</div></div></section>
+</section>
 
 
     </div>
@@ -771,8 +990,8 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

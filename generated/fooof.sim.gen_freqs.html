@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fooof.sim.gen_freqs &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>fooof.sim.gen_freqs &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -26,10 +28,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +58,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +70,7 @@
                 <li><a href="../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../auto_examples/index.html">Examples</a></li>
+                <li><a href="../visualizers.html">Visualizers</a></li>
                 <li><a href="../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -110,11 +113,11 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="fooof-sim-gen-freqs">
-<h1>fooof.sim.gen_freqs<a class="headerlink" href="#fooof-sim-gen-freqs" title="Permalink to this headline">¶</a></h1>
+  <section id="fooof-sim-gen-freqs">
+<h1>fooof.sim.gen_freqs<a class="headerlink" href="#fooof-sim-gen-freqs" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
-<dt id="fooof.sim.gen_freqs">
-<code class="sig-prename descclassname">fooof.sim.</code><code class="sig-name descname">gen_freqs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">freq_range</span></em>, <em class="sig-param"><span class="n">freq_res</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/sim/gen.html#gen_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fooof.sim.gen_freqs" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fooof.sim.gen_freqs">
+<span class="sig-prename descclassname"><span class="pre">fooof.sim.</span></span><span class="sig-name descname"><span class="pre">gen_freqs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_res</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/sim/gen.html#gen_freqs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.sim.gen_freqs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a frequency vector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -139,14 +142,13 @@
 </div>
 </dd></dl>
 
-<div class="section" id="examples-using-fooof-sim-gen-freqs">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.sim.gen_freqs</span></code><a class="headerlink" href="#examples-using-fooof-sim-gen-freqs" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Fitting power spectrum models across 3D arrays of power spectra."><div class="figure align-default" id="id1">
-<img alt="Fitting Power Spectrum Models Across 3D Arrays" src="../_images/sphx_glr_plot_fit_fooof_3d_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/manage/plot_fit_fooof_3d.html#sphx-glr-auto-examples-manage-plot-fit-fooof-3d-py"><span class="std std-ref">Fitting Power Spectrum Models Across 3D Arrays</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-</div><div style='clear:both'></div></div>
-</div>
+<section id="examples-using-fooof-sim-gen-freqs">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">fooof.sim.gen_freqs</span></code><a class="headerlink" href="#examples-using-fooof-sim-gen-freqs" title="Permalink to this heading">¶</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Fitting power spectrum models across 3D arrays of power spectra."><img alt="" src="../_images/sphx_glr_plot_fit_fooof_3d_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/manage/plot_fit_fooof_3d.html#sphx-glr-auto-examples-manage-plot-fit-fooof-3d-py"><span class="std std-ref">Fitting Power Spectrum Models Across 3D Arrays</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Fitting Power Spectrum Models Across 3D Arrays</div>
+</div></div><div style='clear:both'></div></section>
+</section>
 
 
     </div>
@@ -160,8 +162,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

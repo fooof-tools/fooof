@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Developmental Data Demo &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172157729-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-172157729-1');
+</script>
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          fooof</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../faq.html">FAQ</a></li>
+                <li><a href="../../glossary.html">Glossary</a></li>
+                <li><a href="../../auto_motivations/index.html">Motivations</a></li>
+                <li><a href="../../auto_tutorials/index.html">Tutorials</a></li>
+                <li><a href="../index.html">Examples</a></li>
+                <li><a href="../../visualizers.html">Visualizers</a></li>
+                <li><a href="../../reference.html">Reference</a></li>
+                <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-analyses-plot-dev-demo-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="developmental-data-demo">
+<span id="sphx-glr-auto-examples-analyses-plot-dev-demo-py"></span><h1>Developmental Data Demo<a class="headerlink" href="#developmental-data-demo" title="Permalink to this heading">¶</a></h1>
+<p>An example analysis applied to developmental data, demonstrating best practices.</p>
+<section id="spectral-parameterization-for-studying-neurodevelopment">
+<h2>Spectral Parameterization for studying neurodevelopment<a class="headerlink" href="#spectral-parameterization-for-studying-neurodevelopment" title="Permalink to this heading">¶</a></h2>
+<p>This example is adapted from the
+<a class="reference external" href="https://github.com/fooof-tools/DevelopmentalDemo/">Developmental Data Demo</a>.</p>
+<p>If you wish to reference this example or use guidelines from it, please cite the associated
+paper <cite>Spectral parameterization for studying neurodevelopment: how and why</cite> by
+Brendan Ostlund, Thomas Donoghue, Berenice Anaya, Kelley E Gunther, Sarah L Karalunas,
+Bradley Voytek, and Koraly E Pérez-Edgar.</p>
+<p>Paper link: <a class="reference external" href="https://doi.org/10.1016/j.dcn.2022.101073">https://doi.org/10.1016/j.dcn.2022.101073</a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import some useful standard library modules</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># Import some general scientific python libraries</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Import the parameterization model objects</span>
+<span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
+
+<span class="c1"># Import useful parameterization related utilities and plot functions</span>
+<span class="kn">from</span> <span class="nn">fooof.bands</span> <span class="kn">import</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a>
+<span class="kn">from</span> <span class="nn">fooof.analysis</span> <span class="kn">import</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a>
+<span class="kn">from</span> <span class="nn">fooof.utils</span> <span class="kn">import</span> <a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="fooof.utils.trim_spectrum" class="sphx-glr-backref-module-fooof-utils sphx-glr-backref-type-py-function"><span class="n">trim_spectrum</span></a>
+<span class="kn">from</span> <span class="nn">fooof.utils.data</span> <span class="kn">import</span> <a href="../../generated/fooof.utils.subsample_spectra.html#fooof.utils.subsample_spectra" title="fooof.utils.subsample_spectra" class="sphx-glr-backref-module-fooof-utils sphx-glr-backref-type-py-function"><span class="n">subsample_spectra</span></a>
+<span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="kn">import</span> <span class="n">gen_aperiodic</span>
+<span class="kn">from</span> <span class="nn">fooof.data</span> <span class="kn">import</span> <a href="../../generated/fooof.data.FOOOFSettings.html#fooof.data.FOOOFSettings" title="fooof.data.FOOOFSettings" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class"><span class="n">FOOOFSettings</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.templates</span> <span class="kn">import</span> <span class="n">plot_hist</span>
+<span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.periodic</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="fooof.plts.periodic.plot_peak_fits" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_fits</span></a><span class="p">,</span> <a href="../../generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="fooof.plts.periodic.plot_peak_params" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_params</span></a>
+<span class="kn">from</span> <span class="nn">fooof.plts.aperiodic</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="fooof.plts.aperiodic.plot_aperiodic_params" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_params</span></a><span class="p">,</span> <a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="fooof.plts.aperiodic.plot_aperiodic_fits" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_fits</span></a>
+
+<span class="c1"># Import functions to examine frequency-by-frequency error of model fits</span>
+<span class="kn">from</span> <span class="nn">fooof.analysis.error</span> <span class="kn">import</span> <a href="../../generated/fooof.analysis.compute_pointwise_error_fm.html#fooof.analysis.compute_pointwise_error_fm" title="fooof.analysis.compute_pointwise_error_fm" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">compute_pointwise_error_fm</span></a><span class="p">,</span> <a href="../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="fooof.analysis.compute_pointwise_error_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">compute_pointwise_error_fg</span></a>
+
+<span class="c1"># Import helper utility to access data</span>
+<span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="kn">import</span> <span class="n">fetch_fooof_data</span>
+</pre></div>
+</div>
+<section id="access-example-data">
+<h3>Access Example Data<a class="headerlink" href="#access-example-data" title="Permalink to this heading">¶</a></h3>
+<p>First, we will download the example data for this example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the URL where the data is available</span>
+<span class="n">data_url</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/fooof-tools/DevelopmentalDemo/main/Data/&#39;</span>
+
+<span class="c1"># Set the data path to load from</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+
+<span class="c1"># Collect the example data</span>
+<span class="n">fetch_fooof_data</span><span class="p">(</span><span class="s1">&#39;freqs.csv&#39;</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">data_url</span><span class="p">)</span>
+<span class="n">fetch_fooof_data</span><span class="p">(</span><span class="s1">&#39;indv.csv&#39;</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">data_url</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fitting-an-individual-power-spectrum">
+<h3>Fitting an Individual Power Spectrum<a class="headerlink" href="#fitting-an-individual-power-spectrum" title="Permalink to this heading">¶</a></h3>
+<p>For the first part of this example, we will start by loading and fitting an individual PSD.</p>
+<p>To do so, we start by loading some CSV files, including:</p>
+<ul class="simple">
+<li><p><cite>freqs.csv</cite>, which contains a vector of frequencies</p></li>
+<li><p><cite>indvPSD.csv</cite>, which contains the power values for an individual power spectrum</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
+<span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s2">&quot;freqs.csv&quot;</span><span class="p">))</span>
+<span class="n">spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s2">&quot;indv.csv&quot;</span><span class="p">))[</span><span class="mi">1</span><span class="p">:</span><span class="mi">101</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Now that we have loaded the data, we can parameterize our power spectrum!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define model settings</span>
+<span class="n">peak_width</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>             <span class="c1"># `peak_width_limit` setting</span>
+<span class="n">n_peaks</span> <span class="o">=</span> <span class="mi">6</span>                     <span class="c1"># `max_n_peaks` setting</span>
+<span class="n">peak_height</span> <span class="o">=</span> <span class="mf">0.10</span>              <span class="c1"># `min_peak_height` setting</span>
+
+<span class="c1"># Define frequency range</span>
+<span class="n">PSD_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a model object for spectral parameterization, with some settings</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="n">peak_width</span><span class="p">,</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="n">n_peaks</span><span class="p">,</span>
+           <span class="n">min_peak_height</span><span class="o">=</span><span class="n">peak_height</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Fit individual PSD over 3-40 Hz range</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.report" title="fooof.FOOOF.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">PSD_range</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_dev_demo_001.png" srcset="../../_images/sphx_glr_plot_dev_demo_001.png" alt="plot dev demo" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                   FOOOF - POWER SPECTRUM MODEL
+
+                        The model was run on the frequency range 3 - 40 Hz
+                                 Frequency Resolution is 0.50 Hz
+
+                            Aperiodic Parameters (offset, exponent):
+                                          2.1629, 1.9838
+
+                                       2 peaks were found:
+                                CF:  10.24, PW:  1.393, BW:  2.38
+                                CF:  19.57, PW:  0.372, BW:  2.19
+
+                                     Goodness of fit metrics:
+                                    R^2 of model fit is 0.9891
+                                    Error of the fit is 0.0583
+
+==================================================================================================
+</pre></div>
+</div>
+<p>As a reminder you can save these reports using the <cite>.save_report()</cite> method, for example,
+by running <cite>fm.save_report(‘INDV_demo’, file_path=output_path)</cite>.</p>
+<p>All of the model fit information is saved to the model object, which we can then access.</p>
+<p>Note that all attributes learned in the model fit process have a trailing underscore.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Access the model fit parameters from the model object</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Aperiodic parameters: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">aperiodic_params_</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Peak parameters: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">peak_params_</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Goodness of fit:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error - &#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">error_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;R^2   - &#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">r_squared_</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of fit peaks: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.n_peaks_" title="fooof.FOOOF.n_peaks_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fm</span><span class="o">.</span><span class="n">n_peaks_</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Aperiodic parameters:
+ [2.16288529 1.98377579]
+
+Peak parameters:
+ [[10.23976304  1.39284749  2.38121129]
+ [19.56659443  0.37192528  2.19390941]]
+
+Goodness of fit:
+Error -  0.05826852822798273
+R^2   -  0.9891333266719852
+
+Number of fit peaks:
+ 2
+</pre></div>
+</div>
+<p>Another way to access model fit parameters is to use the <cite>get_params</cite> method,
+which can be used to access model fit attributes.</p>
+<p>This method can be used to extract periodic and aperiodic parameters.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract aperiodic and periodic parameter</span>
+<span class="n">aps</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">)</span>
+<span class="n">peaks</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract goodness of fit information</span>
+<span class="n">err</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
+<span class="n">r2s</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;r_squared&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract specific parameters</span>
+<span class="n">exp</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)</span>
+<span class="n">cfs</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">,</span> <span class="s1">&#39;CF&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out a custom parameter report</span>
+<span class="n">template</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;With an error level of </span><span class="si">{error:1.2f}</span><span class="s2">, specparam fit an exponent &quot;</span>
+            <span class="s2">&quot;of </span><span class="si">{exponent:1.2f}</span><span class="s2"> and peaks of </span><span class="si">{cfs:s}</span><span class="s2"> Hz.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">err</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="n">exp</span><span class="p">,</span>
+                      <span class="n">cfs</span><span class="o">=</span><span class="s1">&#39; &amp; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">CF</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">CF</span> <span class="ow">in</span> <span class="n">cfs</span><span class="p">]))))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>With an error level of 0.06, specparam fit an exponent of 1.98 and peaks of 10.24 &amp; 19.57 Hz.
+</pre></div>
+</div>
+<p>Next, we will plot the flattened power spectrum.</p>
+<p>It may be useful to plot a flattened power spectrum, with the aperiodic fit removed.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set whether to plot in log-log space</span>
+<span class="n">plt_log</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Do an initial aperiodic fit - a robust fit, that excludes outliers</span>
+<span class="n">init_ap_fit</span> <span class="o">=</span> <span class="n">gen_aperiodic</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">_robust_ap_fit</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span><span class="p">))</span>
+
+<span class="c1"># Recompute the flattened spectrum using the initial aperiodic fit</span>
+<span class="n">init_flat_spec</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">power_spectrum</span> <span class="o">-</span> <span class="n">init_ap_fit</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the flattened the power spectrum</span>
+<a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">init_flat_spec</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Flattened spectrum&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_dev_demo_002.png" srcset="../../_images/sphx_glr_plot_dev_demo_002.png" alt="plot dev demo" class = "sphx-glr-single-img"/><p>The model object also has I/O utilities for saving and reloading data.</p>
+<p>The <cite>.save</cite> method can be used to save out data from the object,
+specifying which information to save.</p>
+<p>For example, you can save results with the following:
+- settings: <cite>fm.save(‘fit_settings’, save_settings=True, file_path=output_path)
+- results: `fm.save(‘fit_results’, save_results=True, file_path=output_path)</cite>
+- data: <cite>fm.save(‘fit_data’, save_data=True, file_path=output_path)</cite></p>
+<p>Another option is to save out data as a .csv rather than the default .json file format.
+You can do this be exporting the results to a dataframe (see other examples for further
+guidance on this topic).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert results to dataframe</span>
+<span class="n">df</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.to_df" title="fooof.FOOOF.to_df" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">to_df</span></a><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The above dataframe can be saved out to a csv using the <cite>to_csv</cite> method.</p>
+</section>
+<section id="checking-model-fit-quality">
+<h3>Checking model fit quality<a class="headerlink" href="#checking-model-fit-quality" title="Permalink to this heading">¶</a></h3>
+<p>It can be useful to plot frequency-by-frequency error of the model fit,
+to identify where in frequency space the spectrum is (or is not) being fit well.
+When fitting individual spectrum, this can be accomplished using the
+<cite>compute_pointwise_error_fm</cite> function.</p>
+<p>In this case, we can see that error fluctuates around 0.05, which is the same as
+the mean absolute error for the model (MAE). There are points in the spectrum where
+the model fit is somewhat poor, particularly &lt; 4 Hz, around 6-9 Hz, and around 14 Hz.
+Further considerations may be necessary for this model fit.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot frequency-by-frequency error</span>
+<a href="../../generated/fooof.analysis.compute_pointwise_error_fm.html#fooof.analysis.compute_pointwise_error_fm" title="fooof.analysis.compute_pointwise_error_fm" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">compute_pointwise_error_fm</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_dev_demo_003.png" srcset="../../_images/sphx_glr_plot_dev_demo_003.png" alt="plot dev demo" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the frequency-by-frequency errors</span>
+<span class="n">errs_fm</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.compute_pointwise_error_fm.html#fooof.analysis.compute_pointwise_error_fm" title="fooof.analysis.compute_pointwise_error_fm" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">compute_pointwise_error_fm</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note that the average of this error is the same as the global error stored</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Average freq-by-freq error:</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:1.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errs_fm</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FOOOF model fit error: </span><span class="se">\t\t</span><span class="s1"> </span><span class="si">{:1.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">error_</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Average freq-by-freq error:      0.058
+FOOOF model fit error:           0.058
+</pre></div>
+</div>
+</section>
+<section id="fitting-a-group-of-power-spectra">
+<h3>Fitting a Group of Power Spectra<a class="headerlink" href="#fitting-a-group-of-power-spectra" title="Permalink to this heading">¶</a></h3>
+<p>In the next example, we will fit a group of power spectra.</p>
+<p>First we need to load the data, including:</p>
+<ul class="simple">
+<li><p><cite>freqs.csv</cite>, which contains a vector of frequencies</p></li>
+<li><p><cite>eopPSDs.csv</cite>, which contains the power values for a group of power spectrum, one for each subject</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Collect the example data</span>
+<span class="n">fetch_fooof_data</span><span class="p">(</span><span class="s1">&#39;freqs.csv&#39;</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">data_url</span><span class="p">)</span>
+<span class="n">fetch_fooof_data</span><span class="p">(</span><span class="s1">&#39;eop.csv&#39;</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">data_url</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load csv files containing frequency and power values</span>
+<span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s2">&quot;freqs.csv&quot;</span><span class="p">))</span>
+<span class="n">spectra</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s2">&quot;eop.csv&quot;</span><span class="p">))[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">101</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the number of subjects</span>
+<span class="n">n_subjs</span> <span class="o">=</span> <span class="n">spectra</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;There are </span><span class="si">{:d}</span><span class="s1"> subjects.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_subjs</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>There are 60 subjects.
+</pre></div>
+</div>
+<p>Now we can parameterize our group of power spectra!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a model object for spectral parameterization, with some settings</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="n">peak_width</span><span class="p">,</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="n">n_peaks</span><span class="p">,</span>
+                <span class="n">min_peak_height</span><span class="o">=</span><span class="n">peak_height</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Fit group PSDs over the 3-40 Hz range</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">PSD_range</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out the group results and plots of fit parameters</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.print_results" title="fooof.FOOOFGroup.print_results" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">print_results</span></a><span class="p">()</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_dev_demo_004.png" srcset="../../_images/sphx_glr_plot_dev_demo_004.png" alt="Aperiodic Fit, Goodness of Fit, Peaks - Center Frequencies" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                       FOOOF - GROUP RESULTS
+
+                             Number of power spectra in the Group: 60
+
+                        The model was run on the frequency range 3 - 40 Hz
+                                 Frequency Resolution is 0.50 Hz
+
+                              Power spectra were fit without a knee.
+
+                                      Aperiodic Fit Values:
+                        Exponents - Min:  0.438, Max:  1.915, Mean: 1.515
+
+                         In total 208 peaks were extracted from the group
+
+                                     Goodness of fit metrics:
+                            R2s -  Min:  0.786, Max:  0.998, Mean: 0.990
+                         Errors -  Min:  0.019, Max:  0.107, Mean: 0.030
+
+==================================================================================================
+</pre></div>
+</div>
+<p>As before, we can also save this report using the <cite>.save_report</cite> method, for example by
+calling: <cite>fg.save_report(‘EOP_demo’, file_path=output_path)</cite>.</p>
+<p>As with the individual model object, the <cite>get_params</cite> method can be
+used to access model fit attributes.</p>
+<p>In addition, here we will use a <cite>Bands</cite> object and the <cite>get_band_peak_fg</cite>
+function to organize fit peaks into canonical band ranges.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract aperiodic and full periodic parameters</span>
+<span class="n">aps</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">)</span>
+<span class="n">per</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;peak_params&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract group fit information</span>
+<span class="n">err</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
+<span class="n">r2s</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;r_squared&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the average number of fit peaks, per model</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Average number of fit peaks: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.n_peaks_" title="fooof.FOOOFGroup.n_peaks_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fg</span><span class="o">.</span><span class="n">n_peaks_</span></a><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Average number of fit peaks:  3.466666666666667
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define canonical frequency bands</span>
+<a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;theta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+               <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">13</span><span class="p">],</span>
+               <span class="s1">&#39;beta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">30</span><span class="p">]})</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract band-limited peaks information</span>
+<span class="n">thetas</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">theta</span><span class="p">)</span>
+<span class="n">alphas</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">betas</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The specparam module also has functions for plotting the fit parameters.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the measured aperiodic parameters</span>
+<a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="fooof.plts.aperiodic.plot_aperiodic_params" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_params</span></a><span class="p">(</span><span class="n">aps</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_dev_demo_005.png" srcset="../../_images/sphx_glr_plot_dev_demo_005.png" alt="plot dev demo" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the parameters for peaks, split up by band</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">all_bands</span> <span class="o">=</span> <span class="p">[</span><span class="n">thetas</span><span class="p">,</span> <span class="n">alphas</span><span class="p">,</span> <span class="n">betas</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">peaks</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">axes</span><span class="p">),</span> <a href="../../generated/fooof.Bands.html#fooof.Bands.labels" title="fooof.Bands.labels" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">bands</span><span class="o">.</span><span class="n">labels</span></a><span class="p">,</span> <span class="n">all_bands</span><span class="p">):</span>
+    <a href="../../generated/fooof.plts.periodic.plot_peak_params.html#fooof.plts.periodic.plot_peak_params" title="fooof.plts.periodic.plot_peak_params" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_params</span></a><span class="p">(</span><span class="n">peaks</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label</span> <span class="o">+</span> <span class="s1">&#39; peaks&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_dev_demo_006.png" srcset="../../_images/sphx_glr_plot_dev_demo_006.png" alt="theta peaks, alpha peaks, beta peaks" class = "sphx-glr-single-img"/><p>We can also plot reconstructions of model components.</p>
+<p>In the following, we plot reconstructed alpha peaks and aperiodic components.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot reconstructions of model components</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<a href="../../generated/fooof.plts.periodic.plot_peak_fits.html#fooof.plts.periodic.plot_peak_fits" title="fooof.plts.periodic.plot_peak_fits" class="sphx-glr-backref-module-fooof-plts-periodic sphx-glr-backref-type-py-function"><span class="n">plot_peak_fits</span></a><span class="p">(</span><span class="n">alphas</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_fits.html#fooof.plts.aperiodic.plot_aperiodic_fits" title="fooof.plts.aperiodic.plot_aperiodic_fits" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_fits</span></a><span class="p">(</span><span class="n">aps</span><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="o">.</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_dev_demo_007.png" srcset="../../_images/sphx_glr_plot_dev_demo_007.png" alt="plot dev demo" class = "sphx-glr-single-img"/></section>
+<section id="tuning-the-specparam-algorithm">
+<h3>Tuning the specparam algorithm<a class="headerlink" href="#tuning-the-specparam-algorithm" title="Permalink to this heading">¶</a></h3>
+<p>There are no strict guidelines about optimal parameters that will be appropriate
+across data sets and recording modalities. We suggest applying a data-driven approach
+to tune model fitting for optimal performance, while taking into account your expectations
+about periodic and aperiodic activity given the data, the question of interest, and prior findings.</p>
+<p>One option is to parameterize a subset of data to evaluate the appropriateness of model
+fit settings prior to fitting each power spectrum in the data set.
+Here, we test parameters on a randomly selected 10% of the data.
+Results are saved out to a <strong>Output</strong> folder for further consideration.</p>
+<p>First, lets randomly sub-sample 10% of the power spectra that we will use to test model settings.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set random seed</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Define settings for &amp; subsample a selection of power spectra</span>
+<span class="n">subsample_frac</span> <span class="o">=</span> <span class="mf">0.10</span>
+<span class="n">spectra_subsample</span> <span class="o">=</span> <a href="../../generated/fooof.utils.subsample_spectra.html#fooof.utils.subsample_spectra" title="fooof.utils.subsample_spectra" class="sphx-glr-backref-module-fooof-utils sphx-glr-backref-type-py-function"><span class="n">subsample_spectra</span></a><span class="p">(</span><span class="n">spectra</span><span class="p">,</span> <span class="n">subsample_frac</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, we first define settings for two models to be fit and compared.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define `peak_width_limit` for each model</span>
+<span class="n">m1_peak_width</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">m2_peak_width</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+
+<span class="c1"># Define `max_n_peaks` for each model</span>
+<span class="n">m1_n_peaks</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">m2_n_peaks</span> <span class="o">=</span> <span class="mi">6</span>
+
+<span class="c1"># Define `min_peak_height` for each model</span>
+<span class="n">m1_peak_height</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">m2_peak_height</span> <span class="o">=</span> <span class="mf">0.10</span>
+</pre></div>
+</div>
+<p>Next, we set frequency ranges for each model.</p>
+<p>To sub-select frequency ranges, we can use the <cite>trim_spectrum</cite> function
+to extract frequency ranges of interest for each model.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define frequency range for each model</span>
+<span class="n">m1_PSD_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">m2_PSD_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+
+<span class="c1"># Sub-select frequency ranges</span>
+<span class="n">m1_freq</span><span class="p">,</span> <span class="n">m1_spectra</span> <span class="o">=</span> <a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="fooof.utils.trim_spectrum" class="sphx-glr-backref-module-fooof-utils sphx-glr-backref-type-py-function"><span class="n">trim_spectrum</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra_subsample</span><span class="p">,</span> <span class="n">m1_PSD_range</span><span class="p">)</span>
+<span class="n">m2_freq</span><span class="p">,</span> <span class="n">m2_spectra</span> <span class="o">=</span> <a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="fooof.utils.trim_spectrum" class="sphx-glr-backref-module-fooof-utils sphx-glr-backref-type-py-function"><span class="n">trim_spectrum</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra_subsample</span><span class="p">,</span> <span class="n">m2_PSD_range</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Fit models, with different settings.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit model object with model 1 settings</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg1</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="n">m1_peak_width</span><span class="p">,</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="n">m1_n_peaks</span><span class="p">,</span>
+                 <span class="n">min_peak_height</span><span class="o">=</span><span class="n">m1_peak_height</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg1</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">m1_freq</span><span class="p">,</span> <span class="n">m1_spectra</span><span class="p">)</span>
+
+<span class="c1"># Create individual reports for model 1 settings (these could be saved and checked)</span>
+<span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg1</span></a><span class="p">)):</span>
+    <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temp_model</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg1</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 6 power spectra.
+</pre></div>
+</div>
+<p>We can do the same with the other set of settings.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit model object with model 2 settings</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg2</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="n">m2_peak_width</span><span class="p">,</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="n">m2_n_peaks</span><span class="p">,</span>
+                 <span class="n">min_peak_height</span><span class="o">=</span><span class="n">m2_peak_height</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg2</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">m2_freq</span><span class="p">,</span> <span class="n">m2_spectra</span><span class="p">)</span>
+
+<span class="c1"># Create individual reports for model 2 settings (these could be saved and checked)</span>
+<span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg2</span></a><span class="p">)):</span>
+    <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">temp_model</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg2</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 6 power spectra.
+</pre></div>
+</div>
+<p>There are also other ways to manage settings, for example, using the <cite>FOOOFSettings</cite> object.</p>
+<p>Here we will redefine group model objects (<cite>FOOOFGroup</cite>),
+again using different settings for each one.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define settings for model 1</span>
+<a href="../../generated/fooof.data.FOOOFSettings.html#fooof.data.FOOOFSettings" title="fooof.data.FOOOFSettings" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">settings1</span></a> <span class="o">=</span> <a href="../../generated/fooof.data.FOOOFSettings.html#fooof.data.FOOOFSettings" title="fooof.data.FOOOFSettings" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class"><span class="n">FOOOFSettings</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="n">m1_peak_width</span><span class="p">,</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="n">m1_n_peaks</span><span class="p">,</span>
+                          <span class="n">min_peak_height</span><span class="o">=</span><span class="n">m1_peak_height</span><span class="p">,</span> <span class="n">peak_threshold</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span>
+                          <span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;fixed&#39;</span><span class="p">)</span>
+
+<span class="c1"># Define settings for model 2</span>
+<a href="../../generated/fooof.data.FOOOFSettings.html#fooof.data.FOOOFSettings" title="fooof.data.FOOOFSettings" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">settings2</span></a> <span class="o">=</span> <a href="../../generated/fooof.data.FOOOFSettings.html#fooof.data.FOOOFSettings" title="fooof.data.FOOOFSettings" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class"><span class="n">FOOOFSettings</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="n">m2_peak_width</span><span class="p">,</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="n">m2_n_peaks</span><span class="p">,</span>
+                          <span class="n">min_peak_height</span><span class="o">=</span><span class="n">m2_peak_height</span><span class="p">,</span> <span class="n">peak_threshold</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span>
+                          <span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;fixed&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize model objects for spectral parameterization, with some settings</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg1</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="o">*</span><a href="../../generated/fooof.data.FOOOFSettings.html#fooof.data.FOOOFSettings" title="fooof.data.FOOOFSettings" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">settings1</span></a><span class="p">)</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg2</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="o">*</span><a href="../../generated/fooof.data.FOOOFSettings.html#fooof.data.FOOOFSettings" title="fooof.data.FOOOFSettings" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">settings2</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, let’s fit models with group model object</p>
+<p>Note that when fitting power spectra, you can can specify a fit range to fit the model to,
+so you don’t have to explicitly trim the spectra.</p>
+<p>Here we will refit the example data, specifying the fit range, and then save the group reports.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit group PSD over the 2-20 Hz and 3-40 Hz ranges, respectively</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg1</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra_subsample</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><span class="n">m1_PSD_range</span><span class="p">)</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg2</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra_subsample</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><span class="n">m2_PSD_range</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 6 power spectra.
+Running FOOOFGroup across 6 power spectra.
+</pre></div>
+</div>
+<p>At this point, it may typically be useful to save out reports from the above
+different model fits (using <cite>.save_report</cite>), such that these different setting regimes
+can be compared.</p>
+<p>After selecting initial model fit settings, and fitting  power spectra from the full sample,
+it is often worthwhile to check the goodness of model fit parameters. Please note,
+the model objects below correspond to the model fit at the top of this script.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot distributions of goodness of fit parameters</span>
+<span class="c1"># This information is presented in the print_reports output as well</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plot_hist</span><span class="p">(</span><span class="n">r2s</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Variance explained (R^2)&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax0</span><span class="p">)</span>
+<span class="n">plot_hist</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Mean absolute error (MAE)&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_dev_demo_008.png" srcset="../../_images/sphx_glr_plot_dev_demo_008.png" alt="plot dev demo" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the index of the worst model fit from the group</span>
+<span class="n">worst_fit_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">))</span>
+
+<span class="c1"># Extract this model fit from the group</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">worst_fit_ind</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check results and visualize the extracted model</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.print_results" title="fooof.FOOOF.print_results" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">print_results</span></a><span class="p">()</span>
+<a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_dev_demo_009.png" srcset="../../_images/sphx_glr_plot_dev_demo_009.png" alt="plot dev demo" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>==================================================================================================
+
+                                   FOOOF - POWER SPECTRUM MODEL
+
+                        The model was run on the frequency range 3 - 40 Hz
+                                 Frequency Resolution is 0.50 Hz
+
+                            Aperiodic Parameters (offset, exponent):
+                                          0.2832, 0.4376
+
+                                       1 peaks were found:
+                                CF:   7.45, PW:  0.413, BW:  7.14
+
+                                     Goodness of fit metrics:
+                                    R^2 of model fit is 0.7857
+                                    Error of the fit is 0.1071
+
+==================================================================================================
+</pre></div>
+</div>
+<p>Now, let’s check for potential under-fitting.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract all fits that are above some error threshold, for further examination.</span>
+<span class="n">underfit_error_threshold</span> <span class="o">=</span> <span class="mf">0.100</span>
+<span class="n">underfit_check</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <a href="../../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="fooof.data.FOOOFResults" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res</span></a> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">):</span>
+    <span class="k">if</span> <a href="../../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="fooof.data.FOOOFResults" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res</span></a><span class="o">.</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">underfit_error_threshold</span><span class="p">:</span>
+        <span class="n">underfit_check</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Loop through the problem fits check the plots</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">underfit_check</span><span class="p">):</span>
+    <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_dev_demo_010.png" srcset="../../_images/sphx_glr_plot_dev_demo_010.png" alt="plot dev demo" class = "sphx-glr-single-img"/><p>Let’s also check for potential over-fitting.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract all fits that are below some error threshold, for further examination.</span>
+<span class="n">overfit_error_threshold</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="n">overfit_check</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <a href="../../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="fooof.data.FOOOFResults" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res</span></a> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">):</span>
+    <span class="k">if</span> <a href="../../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="fooof.data.FOOOFResults" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res</span></a><span class="o">.</span><span class="n">error</span> <span class="o">&lt;</span> <span class="n">overfit_error_threshold</span><span class="p">:</span>
+        <span class="n">overfit_check</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Loop through the problem fits and check the plots</span>
+<span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">overfit_check</span><span class="p">):</span>
+    <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><img src="../../_images/sphx_glr_plot_dev_demo_011.png" srcset="../../_images/sphx_glr_plot_dev_demo_011.png" alt="plot dev demo" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_plot_dev_demo_012.png" srcset="../../_images/sphx_glr_plot_dev_demo_012.png" alt="plot dev demo" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_plot_dev_demo_013.png" srcset="../../_images/sphx_glr_plot_dev_demo_013.png" alt="plot dev demo" class = "sphx-glr-multi-img"/></li>
+</ul>
+<p>The same approach for saving out data is available in the group object,
+using the <cite>save</cite> method, for example:</p>
+<ul class="simple">
+<li><p>settings: <cite>fg.save(‘group_settings’, save_settings=True, file_path=output_path)</cite></p></li>
+<li><p>results: <cite>fg.save(‘group_results’, save_results=True, file_path=output_path)</cite></p></li>
+</ul>
+<p>Another option is to export results to a dataframe (from which CSV files can be saved).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save out aperiodic parameter results</span>
+<span class="n">df</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.to_df" title="fooof.FOOOFGroup.to_df" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">to_df</span></a><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="frequency-by-frequency-errors">
+<h3>Frequency-by-frequency errors<a class="headerlink" href="#frequency-by-frequency-errors" title="Permalink to this heading">¶</a></h3>
+<p>It can be useful to plot frequency-by-frequency error of the model fit,
+to identify  where in frequency space the spectrum is (or is not) being fit well.
+When fitting individual spectrum, this can be accomplished using the
+<cite>compute_pointwise_error_fg</cite> function. When plotting the error, the plot line is
+the mean error per frequency, across fits, and the shading indicates the standard deviation
+of the error, also per frequency.</p>
+<p>In this case, we can see that error fluctuates around 0.03, which is the same as
+the mean absolute error for this group fit. There are points in the spectrum where
+the model fit is somewhat poor, particularly &lt; 4 Hz.
+The code below lets you identify the highest mean error and largest standard deviation
+in error for the group fit. In this case, that occurs at 3 Hz,
+suggesting potential issues with fit at the lower end of the examined frequency range.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot frequency-by-frequency error</span>
+<a href="../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="fooof.analysis.compute_pointwise_error_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">compute_pointwise_error_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_dev_demo_014.png" srcset="../../_images/sphx_glr_plot_dev_demo_014.png" alt="plot dev demo" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return the errors - this returns a 2D matrix of errors for all fits</span>
+<span class="n">errs_fg</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="fooof.analysis.compute_pointwise_error_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">compute_pointwise_error_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Check which frequency has the highest error</span>
+<span class="n">f_max_err</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errs_fg</span><span class="p">,</span> <span class="mi">0</span><span class="p">))]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency with highest mean error: </span><span class="se">\t\t\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">f_max_err</span><span class="p">)</span>
+
+<span class="c1"># Check which frequency has the largest standard deviation of error</span>
+<span class="n">f_max_std</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">errs_fg</span><span class="p">,</span> <span class="mi">0</span><span class="p">))]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency with highest standard deviation of error: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">f_max_std</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Frequency with highest mean error:                       3.0
+Frequency with highest standard deviation of error:      3.0
+</pre></div>
+</div>
+<p>In some cases, it may be necessary to drop poor (or failed) model fits from the group object.
+This can be done using the <cite>fg.drop</cite> function, as shown here.
+In this case, we remove a participant who has a MAE greater than 0.10.
+The error threshold will vary depending on sample characteristics and data quality.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Drop poor model fits based on MAE</span>
+<a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.drop" title="fooof.FOOOFGroup.drop" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">drop</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.10</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="conclusions">
+<h3>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this heading">¶</a></h3>
+<p>For more on this topic, see the
+<a class="reference external" href="https://github.com/fooof-tools/DevelopmentalDemo/">DevelopmentalDemo repository</a>
+and/or the
+<a class="reference external" href="https://doi.org/10.1016/j.dcn.2022.101073">associated paper</a>
+for further information.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.066 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-analyses-plot-dev-demo-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/757ad6996ad8864ea6e92f8318944309/plot_dev_demo.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_dev_demo.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/5c77a4224b4479ec9ae12748b0e58e67/plot_dev_demo.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_dev_demo.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

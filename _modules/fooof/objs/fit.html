@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fooof.objs.fit &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fooof.objs.fit &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
 
@@ -26,10 +27,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +57,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +69,7 @@
                 <li><a href="../../../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -152,9 +154,17 @@
 <span class="sd">    The maximum number of calls to the curve fitting function.</span>
 <span class="sd">_error_metric : str</span>
 <span class="sd">    The error metric to use for post-hoc measures of model fit error.</span>
+
+<span class="sd">Run Modes</span>
+<span class="sd">---------</span>
 <span class="sd">_debug : bool</span>
 <span class="sd">    Whether the object is set in debug mode.</span>
 <span class="sd">    This should be controlled by using the `set_debug_mode` method.</span>
+<span class="sd">_check_data, _check_freqs : bool</span>
+<span class="sd">    Whether to check added inputs for incorrect inputs, failing if present.</span>
+<span class="sd">    Frequency data is checked for linear spacing.</span>
+<span class="sd">    Power values are checked for data for NaN or Inf values.</span>
+<span class="sd">    These modes default to True, and can be controlled with the `set_check_modes` method.</span>
 
 <span class="sd">Code Notes</span>
 <span class="sd">----------</span>
@@ -168,6 +178,7 @@
 <span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">LinAlgError</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
 
+<span class="kn">from</span> <span class="nn">fooof.core.utils</span> <span class="kn">import</span> <span class="n">unlog</span>
 <span class="kn">from</span> <span class="nn">fooof.core.items</span> <span class="kn">import</span> <span class="n">OBJ_DESC</span>
 <span class="kn">from</span> <span class="nn">fooof.core.info</span> <span class="kn">import</span> <span class="n">get_indices</span>
 <span class="kn">from</span> <span class="nn">fooof.core.io</span> <span class="kn">import</span> <span class="n">save_fm</span><span class="p">,</span> <span class="n">load_json</span>
@@ -175,23 +186,24 @@
 <span class="kn">from</span> <span class="nn">fooof.core.modutils</span> <span class="kn">import</span> <span class="n">copy_doc_func_to_method</span>
 <span class="kn">from</span> <span class="nn">fooof.core.utils</span> <span class="kn">import</span> <span class="n">group_three</span><span class="p">,</span> <span class="n">check_array_dim</span>
 <span class="kn">from</span> <span class="nn">fooof.core.funcs</span> <span class="kn">import</span> <span class="n">gaussian_function</span><span class="p">,</span> <span class="n">get_ap_func</span><span class="p">,</span> <span class="n">infer_ap_func</span>
+<span class="kn">from</span> <span class="nn">fooof.core.jacobians</span> <span class="kn">import</span> <span class="n">jacobian_gauss</span>
 <span class="kn">from</span> <span class="nn">fooof.core.errors</span> <span class="kn">import</span> <span class="p">(</span><span class="n">FitError</span><span class="p">,</span> <span class="n">NoModelError</span><span class="p">,</span> <span class="n">DataError</span><span class="p">,</span>
                                <span class="n">NoDataError</span><span class="p">,</span> <span class="n">InconsistentDataError</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">fooof.core.strings</span> <span class="kn">import</span> <span class="p">(</span><span class="n">gen_settings_str</span><span class="p">,</span> <span class="n">gen_results_fm_str</span><span class="p">,</span>
                                 <span class="n">gen_issue_str</span><span class="p">,</span> <span class="n">gen_width_warning_str</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">fooof.plts.fm</span> <span class="kn">import</span> <span class="n">plot_fm</span>
-<span class="kn">from</span> <span class="nn">fooof.plts.style</span> <span class="kn">import</span> <span class="n">style_spectrum_plot</span>
 <span class="kn">from</span> <span class="nn">fooof.utils.data</span> <span class="kn">import</span> <span class="n">trim_spectrum</span>
 <span class="kn">from</span> <span class="nn">fooof.utils.params</span> <span class="kn">import</span> <span class="n">compute_gauss_std</span>
-<span class="kn">from</span> <span class="nn">fooof.data</span> <span class="kn">import</span> <span class="n">FOOOFResults</span><span class="p">,</span> <span class="n">FOOOFSettings</span><span class="p">,</span> <span class="n">FOOOFMetaData</span>
+<span class="kn">from</span> <span class="nn">fooof.data</span> <span class="kn">import</span> <span class="n">FOOOFSettings</span><span class="p">,</span> <span class="n">FOOOFRunModes</span><span class="p">,</span> <span class="n">FOOOFMetaData</span><span class="p">,</span> <span class="n">FOOOFResults</span>
+<span class="kn">from</span> <span class="nn">fooof.data.conversions</span> <span class="kn">import</span> <span class="n">model_to_dataframe</span>
 <span class="kn">from</span> <span class="nn">fooof.sim.gen</span> <span class="kn">import</span> <span class="n">gen_freqs</span><span class="p">,</span> <span class="n">gen_aperiodic</span><span class="p">,</span> <span class="n">gen_periodic</span><span class="p">,</span> <span class="n">gen_model</span>
 
 <span class="c1">###################################################################################################</span>
 <span class="c1">###################################################################################################</span>
 
 <div class="viewcode-block" id="FOOOF"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF">[docs]</a><span class="k">class</span> <span class="nc">FOOOF</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Model a physiological power spectrum as a combination of aperiodic and periodic components.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Model a physiological power spectrum as a combination of aperiodic and periodic components.</span>
 
 <span class="sd">    WARNING: FOOOF expects frequency and power values in linear space.</span>
 
@@ -205,9 +217,11 @@
 <span class="sd">    max_n_peaks : int, optional, default: inf</span>
 <span class="sd">        Maximum number of peaks to fit.</span>
 <span class="sd">    min_peak_height : float, optional, default: 0</span>
-<span class="sd">        Absolute threshold for detecting peaks, in units of the input data.</span>
+<span class="sd">        Absolute threshold for detecting peaks.</span>
+<span class="sd">        This threshold is defined in absolute units of the power spectrum (log power).</span>
 <span class="sd">    peak_threshold : float, optional, default: 2.0</span>
-<span class="sd">        Relative threshold for detecting peaks, in units of standard deviation of the input data.</span>
+<span class="sd">        Relative threshold for detecting peaks.</span>
+<span class="sd">        This threshold is defined in relative units of the power spectrum (standard deviation).</span>
 <span class="sd">    aperiodic_mode : {&#39;fixed&#39;, &#39;knee&#39;}</span>
 <span class="sd">        Which approach to take for fitting the aperiodic component.</span>
 <span class="sd">    verbose : bool, optional, default: True</span>
@@ -263,7 +277,7 @@
 
 <div class="viewcode-block" id="FOOOF.__init__"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peak_width_limits</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">),</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                  <span class="n">peak_threshold</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;fixed&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize object with desired settings.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize object with desired settings.&quot;&quot;&quot;</span>
 
         <span class="c1"># Set input settings</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">peak_width_limits</span> <span class="o">=</span> <span class="n">peak_width_limits</span>
@@ -294,29 +308,41 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_gauss_overlap_thresh</span> <span class="o">=</span> <span class="mf">0.75</span>
         <span class="c1"># Parameter bounds for center frequency when fitting gaussians, in terms of +/- std dev</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cf_bound</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="c1"># The error metric to calculate, post model fitting. See `_calc_error` for options</span>
+        <span class="c1">#   Note: this is for checking error post fitting, not an objective function for fitting</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_metric</span> <span class="o">=</span> <span class="s1">&#39;MAE&#39;</span>
+
+        <span class="c1">## PRIVATE CURVE_FIT SETTINGS</span>
         <span class="c1"># The maximum number of calls to the curve fitting function</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span> <span class="o">=</span> <span class="mi">5000</span>
-        <span class="c1"># The error metric to calculate, post model fitting. See `_calc_error` for options</span>
-        <span class="c1">#   Note: this is used to check error post-hoc, not an objective function for fitting models</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_error_metric</span> <span class="o">=</span> <span class="s1">&#39;MAE&#39;</span>
-        <span class="c1"># Set whether in debug mode, in which an error is raised if a model fit fails</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_debug</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># The tolerance setting for curve fitting (see scipy.curve_fit - ftol / xtol / gtol)</span>
+        <span class="c1">#   Here reduce tolerance to speed fitting. Set value to 1e-8 to match curve_fit default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tol</span> <span class="o">=</span> <span class="mf">0.00001</span>
 
-        <span class="c1"># Set internal settings, based on inputs, &amp; initialize data &amp; results attributes</span>
+        <span class="c1">## RUN MODES</span>
+        <span class="c1"># Set default debug mode - controls if an error is raised if model fitting is unsuccessful</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_debug</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># Set default data checking modes - controls which checks get run on input data</span>
+        <span class="c1">#   check_freqs: checks the frequency values, and raises an error for uneven spacing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_freqs</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1">#   check_data: checks the power values and raises an error for any NaN / Inf values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_data</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Set internal settings, based on inputs, and initialize data &amp; results attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reset_internal_settings</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reset_data_results</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">has_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Indicator for if the object contains data.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Indicator for if the object contains data.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">)</span> <span class="k">else</span> <span class="kc">False</span>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">has_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Indicator for if the object contains a model fit.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Indicator for if the object contains a model fit.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -331,13 +357,13 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">n_peaks_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;How many peaks were fit in the model.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;How many peaks were fit in the model.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_params_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_model</span> <span class="k">else</span> <span class="kc">None</span>
 
 
     <span class="k">def</span> <span class="nf">_reset_internal_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set, or reset, internal settings, based on what is provided in init.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set, or reset, internal settings, based on what is provided in init.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -350,19 +376,15 @@
 
             <span class="c1"># Bandwidth limits are given in 2-sided peak bandwidth</span>
             <span class="c1">#   Convert to gaussian std parameter limits</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_gauss_std_limits</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">bwl</span> <span class="o">/</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">bwl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_width_limits</span><span class="p">])</span>
-            <span class="c1"># Bounds for aperiodic fitting. Drops bounds on knee parameter if not set to fit knee</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_ap_bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_bounds</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">aperiodic_mode</span> <span class="o">==</span> <span class="s1">&#39;knee&#39;</span> \
-                <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">bound</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">bound</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_bounds</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gauss_std_limits</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">bwl</span> <span class="o">/</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">bwl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_width_limits</span><span class="p">)</span>
 
         <span class="c1"># Otherwise, assume settings are unknown (have been cleared) and set to None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_gauss_std_limits</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_ap_bounds</span> <span class="o">=</span> <span class="kc">None</span>
 
 
     <span class="k">def</span> <span class="nf">_reset_data_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clear_freqs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">clear_spectrum</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">clear_results</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set, or reset, data &amp; results attributes to empty.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set, or reset, data &amp; results attributes to empty.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -399,8 +421,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_peak_fit</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-<div class="viewcode-block" id="FOOOF.add_data"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.add_data">[docs]</a>    <span class="k">def</span> <span class="nf">add_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add data (frequencies, and power spectrum values) to the current object.</span>
+<div class="viewcode-block" id="FOOOF.add_data"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.add_data">[docs]</a>    <span class="k">def</span> <span class="nf">add_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear_results</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add data (frequencies, and power spectrum values) to the current object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -411,6 +433,9 @@
 <span class="sd">        freq_range : list of [float, float], optional</span>
 <span class="sd">            Frequency range to restrict power spectrum to.</span>
 <span class="sd">            If not provided, keeps the entire range.</span>
+<span class="sd">        clear_results : bool, optional, default: True</span>
+<span class="sd">            Whether to clear prior results, if any are present in the object.</span>
+<span class="sd">            This should only be set to False if data for the current results are being re-added.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -418,17 +443,19 @@
 <span class="sd">        they will be cleared by this method call.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># If any data is already present, then clear data &amp; results</span>
+        <span class="c1"># If any data is already present, then clear previous data</span>
+        <span class="c1"># Also clear results, if present, unless indicated not to</span>
         <span class="c1">#   This is to ensure object consistency of all data &amp; results</span>
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_reset_data_results</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_data_results</span><span class="p">(</span><span class="n">clear_freqs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">has_data</span><span class="p">,</span>
+                                 <span class="n">clear_spectrum</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">has_data</span><span class="p">,</span>
+                                 <span class="n">clear_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">has_model</span> <span class="ow">and</span> <span class="n">clear_results</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq_range</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq_res</span> <span class="o">=</span> \
-            <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_data</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_data</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FOOOF.add_settings"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.add_settings">[docs]</a>    <span class="k">def</span> <span class="nf">add_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fooof_settings</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add settings into object from a FOOOFSettings object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add settings into object from a FOOOFSettings object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -443,7 +470,7 @@
 
 
 <div class="viewcode-block" id="FOOOF.add_meta_data"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.add_meta_data">[docs]</a>    <span class="k">def</span> <span class="nf">add_meta_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fooof_meta_data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add data information into object from a FOOOFMetaData object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add data information into object from a FOOOFMetaData object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -458,7 +485,7 @@
 
 
 <div class="viewcode-block" id="FOOOF.add_results"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.add_results">[docs]</a>    <span class="k">def</span> <span class="nf">add_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fooof_result</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add results data into object from a FOOOFResults object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add results data into object from a FOOOFResults object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -475,8 +502,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_loaded_results</span><span class="p">(</span><span class="n">fooof_result</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span></div>
 
 
-<div class="viewcode-block" id="FOOOF.report"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.report">[docs]</a>    <span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freqs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Run model fit, and display a report, which includes a plot, and printed results.</span>
+<div class="viewcode-block" id="FOOOF.report"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.report">[docs]</a>    <span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freqs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">plt_log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_full_range</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run model fit, and display a report, which includes a plot, and printed results.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -489,6 +517,13 @@
 <span class="sd">            If not provided, fits across the entire given range.</span>
 <span class="sd">        plt_log : bool, optional, default: False</span>
 <span class="sd">            Whether or not to plot the frequency axis in log space.</span>
+<span class="sd">        plot_full_range : bool, default: False</span>
+<span class="sd">            If True, plots the full range of the given power spectrum.</span>
+<span class="sd">            Only relevant / effective if `freqs` and `power_spectrum` passed in in this call.</span>
+<span class="sd">        **plot_kwargs</span>
+<span class="sd">            Keyword arguments to pass into the plot method.</span>
+<span class="sd">            Plot options with a name conflict be passed by pre-pending `plot_`.</span>
+<span class="sd">            e.g. `freqs`, `power_spectrum` and `freq_range`.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -496,12 +531,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plt_log</span><span class="o">=</span><span class="n">plt_log</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plt_log</span><span class="o">=</span><span class="n">plt_log</span><span class="p">,</span>
+                  <span class="n">freqs</span><span class="o">=</span><span class="n">freqs</span> <span class="k">if</span> <span class="n">plot_full_range</span> <span class="k">else</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;plot_freqs&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                  <span class="n">power_spectrum</span><span class="o">=</span><span class="n">power_spectrum</span> <span class="k">if</span> \
+                      <span class="n">plot_full_range</span> <span class="k">else</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;plot_power_spectrum&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                  <span class="n">freq_range</span><span class="o">=</span><span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;plot_freq_range&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                  <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">print_results</span><span class="p">(</span><span class="n">concise</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FOOOF.fit"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freqs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fit the full power spectrum as a combination of periodic and aperiodic components.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the full power spectrum as a combination of periodic and aperiodic components.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -543,6 +583,14 @@
 
         <span class="c1"># In rare cases, the model fails to fit, and so uses try / except</span>
         <span class="k">try</span><span class="p">:</span>
+
+            <span class="c1"># If not set to fail on NaN or Inf data at add time, check data here</span>
+            <span class="c1">#   This serves as a catch all for curve_fits which will fail given NaN or Inf</span>
+            <span class="c1">#   Because FitError&#39;s are by default caught, this allows fitting to continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">))</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">)):</span>
+                    <span class="k">raise</span> <span class="n">FitError</span><span class="p">(</span><span class="s2">&quot;Model fitting was skipped because there are NaN or Inf &quot;</span>
+                                   <span class="s2">&quot;values in the data, which preclude model fitting.&quot;</span><span class="p">)</span>
 
             <span class="c1"># Fit the aperiodic component</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">aperiodic_params_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_robust_ap_fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">)</span>
@@ -593,7 +641,7 @@
 
 
 <div class="viewcode-block" id="FOOOF.print_settings"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.print_settings">[docs]</a>    <span class="k">def</span> <span class="nf">print_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">concise</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Print out the current settings.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print out the current settings.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -607,7 +655,7 @@
 
 
 <div class="viewcode-block" id="FOOOF.print_results"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">concise</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Print out model fitting results.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print out model fitting results.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -620,7 +668,7 @@
 
 <div class="viewcode-block" id="FOOOF.print_report_issue"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.print_report_issue">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">print_report_issue</span><span class="p">(</span><span class="n">concise</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Prints instructions on how to report bugs and/or problematic fits.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prints instructions on how to report bugs and/or problematic fits.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -632,7 +680,7 @@
 
 
 <div class="viewcode-block" id="FOOOF.get_settings"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.get_settings">[docs]</a>    <span class="k">def</span> <span class="nf">get_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return user defined settings of the current object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return user defined settings of the current object.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -644,8 +692,21 @@
                              <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">OBJ_DESC</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">]})</span></div>
 
 
+<div class="viewcode-block" id="FOOOF.get_run_modes"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.get_run_modes">[docs]</a>    <span class="k">def</span> <span class="nf">get_run_modes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return run modes of the current object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        FOOOFRunModes</span>
+<span class="sd">            Object containing the run modes from the current object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">FOOOFRunModes</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> \
+                             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">OBJ_DESC</span><span class="p">[</span><span class="s1">&#39;run_modes&#39;</span><span class="p">]})</span></div>
+
+
 <div class="viewcode-block" id="FOOOF.get_meta_data"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.get_meta_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_meta_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return data information from the current object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return data information from the current object.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -657,8 +718,101 @@
                              <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">OBJ_DESC</span><span class="p">[</span><span class="s1">&#39;meta_data&#39;</span><span class="p">]})</span></div>
 
 
+<div class="viewcode-block" id="FOOOF.get_data"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.get_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a data component.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        component : {&#39;full&#39;, &#39;aperiodic&#39;, &#39;peak&#39;}</span>
+<span class="sd">            Which data component to return.</span>
+<span class="sd">                &#39;full&#39; - full power spectrum</span>
+<span class="sd">                &#39;aperiodic&#39; - isolated aperiodic data component</span>
+<span class="sd">                &#39;peak&#39; - isolated peak data component</span>
+<span class="sd">        space : {&#39;log&#39;, &#39;linear&#39;}</span>
+<span class="sd">            Which space to return the data component in.</span>
+<span class="sd">                &#39;log&#39; - returns in log10 space.</span>
+<span class="sd">                &#39;linear&#39; - returns in linear space.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        output : 1d array</span>
+<span class="sd">            Specified data component, in specified spacing.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The &#39;space&#39; parameter doesn&#39;t just define the spacing of the data component</span>
+<span class="sd">        values, but rather defines the space of the additive data definition such that</span>
+<span class="sd">        `power_spectrum = aperiodic_component + peak_component`.</span>
+<span class="sd">        With space set as &#39;log&#39;, this combination holds in log space.</span>
+<span class="sd">        With space set as &#39;linear&#39;, this combination holds in linear space.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoDataError</span><span class="p">(</span><span class="s2">&quot;No data available to fit, can not proceed.&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">space</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">],</span> <span class="s2">&quot;Input for &#39;space&#39; invalid.&quot;</span>
+
+        <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;full&#39;</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span> <span class="k">if</span> <span class="n">space</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span> <span class="k">else</span> <span class="n">unlog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;aperiodic&#39;</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spectrum_peak_rm</span> <span class="k">if</span> <span class="n">space</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span> <span class="k">else</span> \
+                <span class="n">unlog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">)</span> <span class="o">/</span> <span class="n">unlog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_peak_fit</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;peak&#39;</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spectrum_flat</span> <span class="k">if</span> <span class="n">space</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span> <span class="k">else</span> \
+                <span class="n">unlog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">)</span> <span class="o">-</span> <span class="n">unlog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ap_fit</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input for component invalid.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output</span></div>
+
+
+<div class="viewcode-block" id="FOOOF.get_model"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.get_model">[docs]</a>    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a model component.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        component : {&#39;full&#39;, &#39;aperiodic&#39;, &#39;peak&#39;}</span>
+<span class="sd">            Which model component to return.</span>
+<span class="sd">                &#39;full&#39; - full model</span>
+<span class="sd">                &#39;aperiodic&#39; - isolated aperiodic model component</span>
+<span class="sd">                &#39;peak&#39; - isolated peak model component</span>
+<span class="sd">        space : {&#39;log&#39;, &#39;linear&#39;}</span>
+<span class="sd">            Which space to return the model component in.</span>
+<span class="sd">                &#39;log&#39; - returns in log10 space.</span>
+<span class="sd">                &#39;linear&#39; - returns in linear space.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        output : 1d array</span>
+<span class="sd">            Specified model component, in specified spacing.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The &#39;space&#39; parameter doesn&#39;t just define the spacing of the model component</span>
+<span class="sd">        values, but rather defines the space of the additive model such that</span>
+<span class="sd">        `model = aperiodic_component + peak_component`.</span>
+<span class="sd">        With space set as &#39;log&#39;, this combination holds in log space.</span>
+<span class="sd">        With space set as &#39;linear&#39;, this combination holds in linear space.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_model</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoModelError</span><span class="p">(</span><span class="s2">&quot;No model fit results are available, can not proceed.&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">space</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">],</span> <span class="s2">&quot;Input for &#39;space&#39; invalid.&quot;</span>
+
+        <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;full&#39;</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fooofed_spectrum_</span> <span class="k">if</span> <span class="n">space</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span> <span class="k">else</span> <span class="n">unlog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;aperiodic&#39;</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_fit</span> <span class="k">if</span> <span class="n">space</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span> <span class="k">else</span> <span class="n">unlog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ap_fit</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;peak&#39;</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peak_fit</span> <span class="k">if</span> <span class="n">space</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span> <span class="k">else</span> \
+                <span class="n">unlog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">)</span> <span class="o">-</span> <span class="n">unlog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ap_fit</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input for component invalid.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output</span></div>
+
+
 <div class="viewcode-block" id="FOOOF.get_params"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.get_params">[docs]</a>    <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return model fit parameters for specified feature(s).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return model fit parameters for specified feature(s).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -680,9 +834,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        For further description of the data you can extract, check the FOOOFResults documentation.</span>
-
-<span class="sd">        If there is no data on periodic features, this method will return NaN.</span>
+<span class="sd">        If there are no fit peak (no peak parameters), this method will return NaN.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_model</span><span class="p">:</span>
@@ -714,7 +866,7 @@
 
 
 <div class="viewcode-block" id="FOOOF.get_results"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.get_results">[docs]</a>    <span class="k">def</span> <span class="nf">get_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return model fit parameters and goodness of fit metrics.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return model fit parameters and goodness of fit metrics.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -727,20 +879,23 @@
 
 
 <div class="viewcode-block" id="FOOOF.plot"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.plot">[docs]</a>    <span class="nd">@copy_doc_func_to_method</span><span class="p">(</span><span class="n">plot_fm</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_peaks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_aperiodic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">add_legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-             <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="n">style_spectrum_plot</span><span class="p">,</span>
-             <span class="n">data_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aperiodic_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">peak_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_peaks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_aperiodic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">freqs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">freq_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">aperiodic_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">peak_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">):</span>
 
-        <span class="n">plot_fm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_peaks</span><span class="p">,</span> <span class="n">plot_aperiodic</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">add_legend</span><span class="p">,</span>
-                <span class="n">save_fig</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">plot_style</span><span class="p">,</span>
-                <span class="n">data_kwargs</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="p">,</span> <span class="n">aperiodic_kwargs</span><span class="p">,</span> <span class="n">peak_kwargs</span><span class="p">)</span></div>
+        <span class="n">plot_fm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_peaks</span><span class="o">=</span><span class="n">plot_peaks</span><span class="p">,</span> <span class="n">plot_aperiodic</span><span class="o">=</span><span class="n">plot_aperiodic</span><span class="p">,</span> <span class="n">freqs</span><span class="o">=</span><span class="n">freqs</span><span class="p">,</span>
+                <span class="n">power_spectrum</span><span class="o">=</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="o">=</span><span class="n">freq_range</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="n">plt_log</span><span class="p">,</span>
+                <span class="n">add_legend</span><span class="o">=</span><span class="n">add_legend</span><span class="p">,</span> <span class="n">save_fig</span><span class="o">=</span><span class="n">save_fig</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span>
+                <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">data_kwargs</span><span class="o">=</span><span class="n">data_kwargs</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="o">=</span><span class="n">model_kwargs</span><span class="p">,</span>
+                <span class="n">aperiodic_kwargs</span><span class="o">=</span><span class="n">aperiodic_kwargs</span><span class="p">,</span> <span class="n">peak_kwargs</span><span class="o">=</span><span class="n">peak_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FOOOF.save_report"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.save_report">[docs]</a>    <span class="nd">@copy_doc_func_to_method</span><span class="p">(</span><span class="n">save_report_fm</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">save_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">save_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">add_settings</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">):</span>
 
-        <span class="n">save_report_fm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">)</span></div>
+        <span class="n">save_report_fm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">plt_log</span><span class="p">,</span> <span class="n">add_settings</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FOOOF.save"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.save">[docs]</a>    <span class="nd">@copy_doc_func_to_method</span><span class="p">(</span><span class="n">save_fm</span><span class="p">)</span>
@@ -751,13 +906,13 @@
 
 
 <div class="viewcode-block" id="FOOOF.load"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Load in a FOOOF formatted JSON file to the current object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load in a FOOOF formatted JSON file to the current object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        file_name : str or FileObject</span>
 <span class="sd">            File to load data from.</span>
-<span class="sd">        file_path : str or None, optional</span>
+<span class="sd">        file_path : Path or str, optional</span>
 <span class="sd">            Path to directory to load from. If None, loads from current directory.</span>
 <span class="sd">        regenerate : bool, optional, default: True</span>
 <span class="sd">            Whether to regenerate the model fit from the loaded data, if data is available.</span>
@@ -781,13 +936,13 @@
 
 
 <div class="viewcode-block" id="FOOOF.copy"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a copy of the current object.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a copy of the current object.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FOOOF.set_debug_mode"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.set_debug_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_debug_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set whether debug mode, wherein an error is raised if fitting is unsuccessful.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set debug mode, which controls if an error is raised if model fitting is unsuccessful.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -798,8 +953,74 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug</span> <span class="o">=</span> <span class="n">debug</span></div>
 
 
+<div class="viewcode-block" id="FOOOF.set_check_modes"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.set_check_modes">[docs]</a>    <span class="k">def</span> <span class="nf">set_check_modes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">check_freqs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check_data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set check modes, which controls if an error is raised based on check on the inputs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        check_freqs : bool, optional</span>
+<span class="sd">            Whether to run in check freqs mode, which checks the frequency data.</span>
+<span class="sd">        check_data : bool, optional</span>
+<span class="sd">            Whether to run in check data mode, which checks the power spectrum values data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">check_freqs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_check_freqs</span> <span class="o">=</span> <span class="n">check_freqs</span>
+        <span class="k">if</span> <span class="n">check_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_check_data</span> <span class="o">=</span> <span class="n">check_data</span></div>
+
+
+    <span class="c1"># This kept for backwards compatibility, but to be removed in 2.0 in favor of `set_check_modes`</span>
+<div class="viewcode-block" id="FOOOF.set_check_data_mode"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.set_check_data_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_check_data_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">check_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set check data mode, which controls if an error is raised if NaN or Inf data are added.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        check_data : bool</span>
+<span class="sd">            Whether to run in check data mode.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_check_modes</span><span class="p">(</span><span class="n">check_data</span><span class="o">=</span><span class="n">check_data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FOOOF.set_run_modes"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.set_run_modes">[docs]</a>    <span class="k">def</span> <span class="nf">set_run_modes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="p">,</span> <span class="n">check_freqs</span><span class="p">,</span> <span class="n">check_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Simultaneously set all run modes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        debug : bool</span>
+<span class="sd">            Whether to run in debug mode.</span>
+<span class="sd">        check_freqs : bool</span>
+<span class="sd">            Whether to run in check freqs mode.</span>
+<span class="sd">        check_data : bool</span>
+<span class="sd">            Whether to run in check data mode.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_debug_mode</span><span class="p">(</span><span class="n">debug</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_check_modes</span><span class="p">(</span><span class="n">check_freqs</span><span class="p">,</span> <span class="n">check_data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FOOOF.to_df"><a class="viewcode-back" href="../../../generated/fooof.FOOOF.html#fooof.FOOOF.to_df">[docs]</a>    <span class="k">def</span> <span class="nf">to_df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peak_org</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert and extract the model results as a pandas object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        peak_org : int or Bands</span>
+<span class="sd">            How to organize peaks.</span>
+<span class="sd">            If int, extracts the first n peaks.</span>
+<span class="sd">            If Bands, extracts peaks based on band definitions.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pd.Series</span>
+<span class="sd">            Model results organized into a pandas object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">model_to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_results</span><span class="p">(),</span> <span class="n">peak_org</span><span class="p">)</span></div>
+
+
     <span class="k">def</span> <span class="nf">_check_width_limits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check and warn about peak width limits / frequency resolution interaction.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check and warn about peak width limits / frequency resolution interaction.&quot;&quot;&quot;</span>
 
         <span class="c1"># Check peak width limits against frequency resolution and warn if too close</span>
         <span class="k">if</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq_res</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_width_limits</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
@@ -807,7 +1028,7 @@
 
 
     <span class="k">def</span> <span class="nf">_simple_ap_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fit the aperiodic component of the power spectrum.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the aperiodic component of the power spectrum.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -826,12 +1047,16 @@
         <span class="c1">#   Note that these are collected as lists, to concatenate with or without knee later</span>
         <span class="n">off_guess</span> <span class="o">=</span> <span class="p">[</span><span class="n">power_spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_guess</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_guess</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
         <span class="n">kne_guess</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_ap_guess</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">aperiodic_mode</span> <span class="o">==</span> <span class="s1">&#39;knee&#39;</span> <span class="k">else</span> <span class="p">[]</span>
-        <span class="n">exp_guess</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span>
-                            <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">exp_guess</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span>
+                            <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
                      <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_guess</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_guess</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
 
+        <span class="c1"># Get bounds for aperiodic fitting, dropping knee bound if not set to fit knee</span>
+        <span class="n">ap_bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_bounds</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">aperiodic_mode</span> <span class="o">==</span> <span class="s1">&#39;knee&#39;</span> \
+            <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">bound</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">bound</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_bounds</span><span class="p">)</span>
+
         <span class="c1"># Collect together guess parameters</span>
-        <span class="n">guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">off_guess</span> <span class="o">+</span> <span class="n">kne_guess</span> <span class="o">+</span> <span class="n">exp_guess</span><span class="p">])</span>
+        <span class="n">guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">off_guess</span> <span class="o">+</span> <span class="n">kne_guess</span> <span class="o">+</span> <span class="n">exp_guess</span><span class="p">)</span>
 
         <span class="c1"># Ignore warnings that are raised in curve_fit</span>
         <span class="c1">#   A runtime warning can occur while exploring parameters in curve fitting</span>
@@ -842,16 +1067,19 @@
                 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
                 <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">get_ap_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aperiodic_mode</span><span class="p">),</span>
                                                 <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="n">guess</span><span class="p">,</span>
-                                                <span class="n">maxfev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ap_bounds</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">FitError</span><span class="p">(</span><span class="s2">&quot;Model fitting failed due to not finding parameters in &quot;</span>
-                           <span class="s2">&quot;the simple aperiodic component fit.&quot;</span><span class="p">)</span>
+                                                <span class="n">maxfev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">ap_bounds</span><span class="p">,</span>
+                                                <span class="n">ftol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span> <span class="n">gtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span>
+                                                <span class="n">check_finite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">excp</span><span class="p">:</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Model fitting failed due to not finding parameters in &quot;</span>
+                         <span class="s2">&quot;the simple aperiodic component fit.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FitError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">excp</span>
 
         <span class="k">return</span> <span class="n">aperiodic_params</span>
 
 
     <span class="k">def</span> <span class="nf">_robust_ap_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fit the aperiodic component of the power spectrum robustly, ignoring outliers.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the aperiodic component of the power spectrum robustly, ignoring outliers.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -887,6 +1115,10 @@
         <span class="n">freqs_ignore</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[</span><span class="n">perc_mask</span><span class="p">]</span>
         <span class="n">spectrum_ignore</span> <span class="o">=</span> <span class="n">power_spectrum</span><span class="p">[</span><span class="n">perc_mask</span><span class="p">]</span>
 
+        <span class="c1"># Get bounds for aperiodic fitting, dropping knee bound if not set to fit knee</span>
+        <span class="n">ap_bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_bounds</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">aperiodic_mode</span> <span class="o">==</span> <span class="s1">&#39;knee&#39;</span> \
+            <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">bound</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">bound</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_bounds</span><span class="p">)</span>
+
         <span class="c1"># Second aperiodic fit - using results of first fit as guess parameters</span>
         <span class="c1">#  See note in _simple_ap_fit about warnings</span>
         <span class="k">try</span><span class="p">:</span>
@@ -894,18 +1126,23 @@
                 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
                 <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">get_ap_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aperiodic_mode</span><span class="p">),</span>
                                                 <span class="n">freqs_ignore</span><span class="p">,</span> <span class="n">spectrum_ignore</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="n">popt</span><span class="p">,</span>
-                                                <span class="n">maxfev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ap_bounds</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">FitError</span><span class="p">(</span><span class="s2">&quot;Model fitting failed due to not finding &quot;</span>
-                           <span class="s2">&quot;parameters in the robust aperiodic fit.&quot;</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">FitError</span><span class="p">(</span><span class="s2">&quot;Model fitting failed due to sub-sampling in the robust aperiodic fit.&quot;</span><span class="p">)</span>
+                                                <span class="n">maxfev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">ap_bounds</span><span class="p">,</span>
+                                                <span class="n">ftol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span> <span class="n">gtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span>
+                                                <span class="n">check_finite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">excp</span><span class="p">:</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Model fitting failed due to not finding &quot;</span>
+                         <span class="s2">&quot;parameters in the robust aperiodic fit.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FitError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">excp</span>
+        <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">excp</span><span class="p">:</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Model fitting failed due to sub-sampling &quot;</span>
+                         <span class="s2">&quot;in the robust aperiodic fit.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FitError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">excp</span>
 
         <span class="k">return</span> <span class="n">aperiodic_params</span>
 
 
     <span class="k">def</span> <span class="nf">_fit_peaks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flat_iter</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Iteratively fit peaks to flattened spectrum.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iteratively fit peaks to flattened spectrum.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -964,7 +1201,7 @@
                 <span class="n">guess_std</span> <span class="o">=</span> <span class="n">compute_gauss_std</span><span class="p">(</span><span class="n">fwhm</span><span class="p">)</span>
 
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="c1"># This procedure can fail (extremely rarely), if both le &amp; ri ind&#39;s end up as None</span>
+                <span class="c1"># This procedure can fail (very rarely), if both left &amp; right inds end up as None</span>
                 <span class="c1">#   In this case, default the guess to the average of the peak width limits</span>
                 <span class="n">guess_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">peak_width_limits</span><span class="p">)</span>
 
@@ -995,7 +1232,7 @@
 
 
     <span class="k">def</span> <span class="nf">_fit_peak_guess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guess</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fits a group of peak guesses with a fit function.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fits a group of peak guesses with a fit function.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1028,8 +1265,8 @@
 
         <span class="c1"># Unpacks the embedded lists into flat tuples</span>
         <span class="c1">#   This is what the fit function requires as input</span>
-        <span class="n">gaus_param_bounds</span> <span class="o">=</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">([</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">lo_bound</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]),</span>
-                             <span class="nb">tuple</span><span class="p">([</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">hi_bound</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]))</span>
+        <span class="n">gaus_param_bounds</span> <span class="o">=</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">lo_bound</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">),</span>
+                             <span class="nb">tuple</span><span class="p">(</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">hi_bound</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">))</span>
 
         <span class="c1"># Flatten guess, for use with curve fit</span>
         <span class="n">guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">guess</span><span class="p">)</span>
@@ -1037,14 +1274,18 @@
         <span class="c1"># Fit the peaks</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">gaussian_params</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">gaussian_function</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span>
-                                           <span class="n">p0</span><span class="o">=</span><span class="n">guess</span><span class="p">,</span> <span class="n">maxfev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">gaus_param_bounds</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">FitError</span><span class="p">(</span><span class="s2">&quot;Model fitting failed due to not finding &quot;</span>
-                           <span class="s2">&quot;parameters in the peak component fit.&quot;</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">LinAlgError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">FitError</span><span class="p">(</span><span class="s2">&quot;Model fitting failed due to a LinAlgError during peak fitting. &quot;</span>
-                           <span class="s2">&quot;This can happen with settings that are too liberal, leading, &quot;</span>
-                           <span class="s2">&quot;to a large number of guess peaks that cannot be fit together.&quot;</span><span class="p">)</span>
+                                           <span class="n">p0</span><span class="o">=</span><span class="n">guess</span><span class="p">,</span> <span class="n">maxfev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">gaus_param_bounds</span><span class="p">,</span>
+                                           <span class="n">ftol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span> <span class="n">gtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span>
+                                           <span class="n">check_finite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">jacobian_gauss</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">excp</span><span class="p">:</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Model fitting failed due to not finding &quot;</span>
+                         <span class="s2">&quot;parameters in the peak component fit.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FitError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">excp</span>
+        <span class="k">except</span> <span class="n">LinAlgError</span> <span class="k">as</span> <span class="n">excp</span><span class="p">:</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Model fitting failed due to a LinAlgError during peak fitting. &quot;</span>
+                         <span class="s2">&quot;This can happen with settings that are too liberal, leading, &quot;</span>
+                         <span class="s2">&quot;to a large number of guess peaks that cannot be fit together.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FitError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">excp</span>
 
         <span class="c1"># Re-organize params into 2d matrix</span>
         <span class="n">gaussian_params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">group_three</span><span class="p">(</span><span class="n">gaussian_params</span><span class="p">))</span>
@@ -1053,7 +1294,7 @@
 
 
     <span class="k">def</span> <span class="nf">_create_peak_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaus_params</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Copies over the gaussian params to peak outputs, updating as appropriate.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Copies over the gaussian params to peak outputs, updating as appropriate.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1080,24 +1321,22 @@
 <span class="sd">        with `freqs`, `fooofed_spectrum_` and `_ap_fit` all required to be available.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">peak_params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+        <span class="n">peak_params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">gaus_params</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">peak</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gaus_params</span><span class="p">):</span>
 
             <span class="c1"># Gets the index of the power_spectrum at the frequency closest to the CF of the peak</span>
-            <span class="n">ind</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ii</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">-</span> <span class="n">peak</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freqs</span> <span class="o">-</span> <span class="n">peak</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
             <span class="c1"># Collect peak parameter data</span>
-            <span class="n">peak_params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">peak_params</span><span class="p">,</span>
-                                     <span class="p">[</span><span class="n">peak</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                                      <span class="bp">self</span><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_fit</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span>
-                                      <span class="n">peak</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]))</span>
+            <span class="n">peak_params</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">peak</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_fit</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span>
+                               <span class="n">peak</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">peak_params</span>
 
 
     <span class="k">def</span> <span class="nf">_drop_peak_cf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guess</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check whether to drop peaks based on center&#39;s proximity to the edge of the spectrum.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check whether to drop peaks based on center&#39;s proximity to the edge of the spectrum.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1110,8 +1349,8 @@
 <span class="sd">            Guess parameters for gaussian peak fits. Shape: [n_peaks, 3].</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">cf_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">guess</span><span class="p">]</span>
-        <span class="n">bw_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bw_std_edge</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">guess</span><span class="p">]</span>
+        <span class="n">cf_params</span> <span class="o">=</span> <span class="n">guess</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">bw_params</span> <span class="o">=</span> <span class="n">guess</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bw_std_edge</span>
 
         <span class="c1"># Check if peaks within drop threshold from the edge of the frequency range</span>
         <span class="n">keep_peak</span> <span class="o">=</span> \
@@ -1125,7 +1364,7 @@
 
 
     <span class="k">def</span> <span class="nf">_drop_peak_overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guess</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Checks whether to drop gaussians based on amount of overlap.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks whether to drop gaussians based on amount of overlap.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1140,21 +1379,21 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        For any gaussians with an overlap that crosses the threshold,</span>
-<span class="sd">        the lowest height guess guassian is dropped.</span>
+<span class="sd">        the lowest height guess Gaussian is dropped.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># Sort the peak guesses by increasing frequency, so adjacenent peaks can</span>
-        <span class="c1">#   be compared from right to left.</span>
+        <span class="c1"># Sort the peak guesses by increasing frequency</span>
+        <span class="c1">#   This is so adjacent peaks can be compared from right to left</span>
         <span class="n">guess</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">guess</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
         <span class="c1"># Calculate standard deviation bounds for checking amount of overlap</span>
-        <span class="c1">#   The bounds are the gaussian frequncy +/- gaussian standard deviation</span>
+        <span class="c1">#   The bounds are the gaussian frequency +/- gaussian standard deviation</span>
         <span class="n">bounds</span> <span class="o">=</span> <span class="p">[[</span><span class="n">peak</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">peak</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gauss_overlap_thresh</span><span class="p">,</span>
                    <span class="n">peak</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">peak</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gauss_overlap_thresh</span><span class="p">]</span> <span class="k">for</span> <span class="n">peak</span> <span class="ow">in</span> <span class="n">guess</span><span class="p">]</span>
 
         <span class="c1"># Loop through peak bounds, comparing current bound to that of next peak</span>
         <span class="c1">#   If the left peak&#39;s upper bound extends pass the right peaks lower bound,</span>
-        <span class="c1">#   Then drop the guassian with the lower height.</span>
+        <span class="c1">#   then drop the Gaussian with the lower height</span>
         <span class="n">drop_inds</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">b_0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bounds</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">b_1</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
@@ -1173,19 +1412,22 @@
 
 
     <span class="k">def</span> <span class="nf">_calc_r_squared</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the r-squared goodness of fit of the model, compared to the original data.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the r-squared goodness of fit of the model, compared to the original data.&quot;&quot;&quot;</span>
 
         <span class="n">r_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">r_squared_</span> <span class="o">=</span> <span class="n">r_val</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
 
 
     <span class="k">def</span> <span class="nf">_calc_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the overall error of the model fit, compared to the original data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the overall error of the model fit, compared to the original data.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        metric : {&#39;MAE&#39;, &#39;MSE&#39;, &#39;RMSE&#39;}, optional</span>
-<span class="sd">            Which error measure to calculate.</span>
+<span class="sd">            Which error measure to calculate:</span>
+<span class="sd">            * &#39;MAE&#39; : mean absolute error</span>
+<span class="sd">            * &#39;MSE&#39; : mean squared error</span>
+<span class="sd">            * &#39;RMSE&#39; : root mean squared error</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -1210,13 +1452,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">error_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="bp">self</span><span class="o">.</span><span class="n">power_spectrum</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error metric &#39;</span><span class="si">{}</span><span class="s2">&#39; not understood or not implemented.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;Error metric &#39;</span><span class="si">{}</span><span class="s2">&#39; not understood or not implemented.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
 
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_prepare_data</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">spectra_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Prepare input data for adding to current object.</span>
+    <span class="k">def</span> <span class="nf">_prepare_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">spectra_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepare input data for adding to current object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1229,8 +1470,6 @@
 <span class="sd">            Frequency range to restrict power spectrum to. If None, keeps the entire range.</span>
 <span class="sd">        spectra_dim : int, optional, default: 1</span>
 <span class="sd">            Dimensionality that the power spectra should have.</span>
-<span class="sd">        verbose : bool, optional</span>
-<span class="sd">            Whether to be verbose in printing out warnings.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1285,7 +1524,7 @@
         <span class="c1">#   Aperiodic fit gets an inf if freq of 0 is included, which leads to an error</span>
         <span class="k">if</span> <span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
             <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span> <span class="o">=</span> <span class="n">trim_spectrum</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="p">[</span><span class="n">freqs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">freqs</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span>
-            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">FOOOF WARNING: Skipping frequency == 0, &quot;</span>
                       <span class="s2">&quot;as this causes a problem with fitting.&quot;</span><span class="p">)</span>
 
@@ -1296,18 +1535,28 @@
         <span class="c1"># Log power values</span>
         <span class="n">power_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">power_spectrum</span><span class="p">)</span>
 
-        <span class="c1"># Check if there are any infs / nans, and raise an error if so</span>
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">power_spectrum</span><span class="p">))</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">power_spectrum</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span><span class="s2">&quot;The input power spectra data, after logging, contains NaNs or Infs. &quot;</span>
-                            <span class="s2">&quot;This will cause the fitting to fail. &quot;</span>
-                            <span class="s2">&quot;One reason this can happen is if inputs are already logged. &quot;</span>
-                            <span class="s2">&quot;Inputs data should be in linear spacing, not log.&quot;</span><span class="p">)</span>
+        <span class="c1">## Data checks - run checks on inputs based on check modes</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_freqs</span><span class="p">:</span>
+            <span class="c1"># Check if the frequency data is unevenly spaced, and raise an error if so</span>
+            <span class="n">freq_diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">freq_diffs</span><span class="p">,</span> <span class="n">freq_res</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span><span class="s2">&quot;The input frequency values are not evenly spaced. &quot;</span>
+                                <span class="s2">&quot;The model expects equidistant frequency values in linear space.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_data</span><span class="p">:</span>
+            <span class="c1"># Check if there are any infs / nans, and raise an error if so</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">power_spectrum</span><span class="p">))</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">power_spectrum</span><span class="p">)):</span>
+                <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;The input power spectra data, after logging, contains NaNs or Infs. &quot;</span>
+                             <span class="s2">&quot;This will cause the fitting to fail. &quot;</span>
+                             <span class="s2">&quot;One reason this can happen is if inputs are already logged. &quot;</span>
+                             <span class="s2">&quot;Inputs data should be in linear spacing, not log.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">,</span> <span class="n">freq_res</span>
 
 
     <span class="k">def</span> <span class="nf">_add_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add data to object from a dictionary.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add data to object from a dictionary.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1321,7 +1570,7 @@
 
 
     <span class="k">def</span> <span class="nf">_check_loaded_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check if results have been added and check data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if results have been added and check data.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1337,7 +1586,7 @@
 
 
     <span class="k">def</span> <span class="nf">_check_loaded_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check if settings added, and update the object as needed.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if settings added, and update the object as needed.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1363,13 +1612,13 @@
 
 
     <span class="k">def</span> <span class="nf">_regenerate_freqs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Regenerate the frequency vector, given the object metadata.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Regenerate the frequency vector, given the object metadata.&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">freqs</span> <span class="o">=</span> <span class="n">gen_freqs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freq_range</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq_res</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">_regenerate_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Regenerate model fit from parameters.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Regenerate model fit from parameters.&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">fooofed_spectrum_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peak_fit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ap_fit</span> <span class="o">=</span> <span class="n">gen_model</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aperiodic_params_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gaussian_params_</span><span class="p">,</span> <span class="n">return_components</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
@@ -1386,8 +1635,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

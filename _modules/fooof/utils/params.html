@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fooof.utils.params &#8212; fooof 1.0.0 documentation</title>
-    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fooof.utils.params &#8212; fooof 1.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
 
@@ -26,10 +27,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -56,7 +57,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,6 +69,7 @@
                 <li><a href="../../../auto_motivations/index.html">Motivations</a></li>
                 <li><a href="../../../auto_tutorials/index.html">Tutorials</a></li>
                 <li><a href="../../../auto_examples/index.html">Examples</a></li>
+                <li><a href="../../../visualizers.html">Visualizers</a></li>
                 <li><a href="../../../reference.html">Reference</a></li>
                 <li><a href="https://github.com/fooof-tools/fooof">GitHub</a></li>
             
@@ -119,7 +121,7 @@
 <span class="c1">###################################################################################################</span>
 
 <div class="viewcode-block" id="compute_knee_frequency"><a class="viewcode-back" href="../../../generated/fooof.utils.params.compute_knee_frequency.html#fooof.utils.params.compute_knee_frequency">[docs]</a><span class="k">def</span> <span class="nf">compute_knee_frequency</span><span class="p">(</span><span class="n">knee</span><span class="p">,</span> <span class="n">exponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the frequency value of the knee given the aperiodic parameter values.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the frequency value of the knee given the aperiodic parameter values.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -132,30 +134,59 @@
 <span class="sd">    -------</span>
 <span class="sd">    float</span>
 <span class="sd">        Frequency value, in Hz, of the knee occurs.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The knee frequency is an estimate of the frequency in spectrum at which the spectrum</span>
+<span class="sd">    moves from the plateau region to the exponential decay.</span>
+
+<span class="sd">    This approach for estimating the knee frequency comes from [1]_ (see [2]_ for code).</span>
+
+<span class="sd">    Note that this provides an estimate of the knee frequency, but is not, in the general case,</span>
+<span class="sd">    a precisely defined value. In particular, this conversion is based on the case of a Lorentzian</span>
+<span class="sd">    with exponent = 2, and for other exponent values provides a non-exact approximation.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Gao, R., van den Brink, R. L., Pfeffer, T., &amp; Voytek, B. (2020). Neuronal timescales</span>
+<span class="sd">           are functionally dynamic and shaped by cortical microarchitecture. Elife, 9, e61277.</span>
+<span class="sd">           https://doi.org/10.7554/eLife.61277</span>
+<span class="sd">    .. [2] https://github.com/rdgao/field-echos/blob/master/echo_utils.py#L64</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">knee</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">exponent</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">knee</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="n">exponent</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">compute_time_constant</span><span class="p">(</span><span class="n">knee</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the characteristic time constant based on the knee value.</span>
+<span class="k">def</span> <span class="nf">compute_time_constant</span><span class="p">(</span><span class="n">knee_freq</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the characteristic time constant from the estimated knee frequency.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    knee : float</span>
-<span class="sd">        Knee parameter value.</span>
+<span class="sd">    knee_freq : float</span>
+<span class="sd">        Estimated knee frequency.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    float</span>
-<span class="sd">        Calculated time constant value, tau, given the knee parameter.</span>
+<span class="sd">        Calculated time constant value, tau, given the knee frequency.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This approach for estimating the time constant comes from [1]_ (see [2]_ for code).</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Gao, R., van den Brink, R. L., Pfeffer, T., &amp; Voytek, B. (2020). Neuronal timescales</span>
+<span class="sd">           are functionally dynamic and shaped by cortical microarchitecture. Elife, 9, e61277.</span>
+<span class="sd">           https://doi.org/10.7554/eLife.61277</span>
+<span class="sd">    .. [2] https://github.com/rdgao/field-echos/blob/master/echo_utils.py#L65</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">knee</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">knee_freq</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">compute_fwhm</span><span class="p">(</span><span class="n">std</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the full-width half-max, given the gaussian standard deviation.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the full-width half-max, given the gaussian standard deviation.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -172,7 +203,7 @@
 
 
 <span class="k">def</span> <span class="nf">compute_gauss_std</span><span class="p">(</span><span class="n">fwhm</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the gaussian standard deviation, given the full-width half-max.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the gaussian standard deviation, given the full-width half-max.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -199,8 +230,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018-2021, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.2.<br/>
+        &copy; Copyright 2018-2023, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>
