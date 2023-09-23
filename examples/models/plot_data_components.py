@@ -10,22 +10,22 @@ and periodic components as they are extracted from the data.
 
 # sphinx_gallery_thumbnail_number = 3
 
-# Import FOOOF model objects
-from fooof import FOOOF, FOOOFGroup
+# Import model objects
+from specparam import SpectralModel, SpectralGroupModel
 
 # Import function to plot power spectra
-from fooof.plts.spectra import plot_spectra
+from specparam.plts.spectra import plot_spectra
 
 # Import simulation functions to create some example data
-from fooof.sim import gen_power_spectrum, gen_group_power_spectra
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 
 ###################################################################################################
 
 # Simulate example power spectrum
-freqs, powers = gen_power_spectrum([1, 50], [0, 10, 1], [10, 0.25, 2], freq_res=0.25)
+freqs, powers = sim_power_spectrum([1, 50], [0, 10, 1], [10, 0.25, 2], freq_res=0.25)
 
 # Initialize model object and fit power spectrum
-fm = FOOOF()
+fm = SpectralModel()
 fm.fit(freqs, powers)
 
 ###################################################################################################
@@ -44,8 +44,8 @@ fm.fit(freqs, powers)
 # Full Data & Model Components
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Before diving into the isolated data components, let's check 'full' components, including
-# the data (`power_spectrum`) and full model fit of a model object (`fooofed_spectrum`).
+# Before diving into the isolated data components, let's check the data (`power_spectrum`)
+# and full model fit of a model object (`modeled_spectrum`).
 #
 
 ###################################################################################################
@@ -56,7 +56,7 @@ plot_spectra(fm.freqs, fm.power_spectrum, color='black')
 ###################################################################################################
 
 # Plot the power spectrum model from the object
-plot_spectra(fm.freqs, fm.fooofed_spectrum_, color='red')
+plot_spectra(fm.freqs, fm.modeled_spectrum_, color='red')
 
 ###################################################################################################
 # Isolated Components
@@ -68,8 +68,8 @@ plot_spectra(fm.freqs, fm.fooofed_spectrum_, color='red')
 #
 # To access these components, we can use the following `getter` methods:
 #
-# - :meth:`~fooof.FOOOF.get_data`: allows for accessing data components
-# - :meth:`~fooof.FOOOF.get_model`: allows for accessing model components
+# - :meth:`~specparam.SpectralModel.get_data`: allows for accessing data components
+# - :meth:`~specparam.SpectralModel.get_model`: allows for accessing model components
 #
 
 ###################################################################################################
@@ -141,8 +141,7 @@ plot_spectra(fm.freqs, [fm.get_model('aperiodic') + fm.get_model('peak')], color
 #
 # Both the `get_data` and `get_model` methods accept a 'space' argument, whereby the user
 # can specify whether the return the components in log10 or linear spacing.
-
-
+#
 
 ###################################################################################################
 # Aperiodic Components in Linear Space

@@ -12,14 +12,14 @@ Check the error of power spectrum models across frequencies.
 # Import numpy for some utility functions
 import numpy as np
 
-# Import the FOOOF and FOOOFGroup objects
-from fooof import FOOOF, FOOOFGroup
+# Import model objects
+from specparam import SpectralModel, SpectralGroupModel
 
 # Import simulation utilities to create some test data
-from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 
 # Import functions to examine frequency-by-frequency error of model fits
-from fooof.analysis.error import compute_pointwise_error_fm, compute_pointwise_error_fg
+from specparam.analysis.error import compute_pointwise_error, compute_pointwise_error_group
 
 ###################################################################################################
 # Frequency-by-Frequency Error
@@ -44,8 +44,8 @@ from fooof.analysis.error import compute_pointwise_error_fm, compute_pointwise_e
 # First we will start by examining frequency-by-frequency error of an individual model fit,
 # using simulated data.
 #
-# The function for analyzing error from a FOOOF object is
-# :func:`~.compute_pointwise_error_fm`.
+# The function for analyzing error from a model object is
+# :func:`~.compute_pointwise_error`.
 # To start with, we will indicate to this function to plot the frequency-by-frequency
 # error of our model fit.
 #
@@ -53,12 +53,12 @@ from fooof.analysis.error import compute_pointwise_error_fm, compute_pointwise_e
 ###################################################################################################
 
 # Simulate an example power spectrum
-freqs, powers = gen_power_spectrum([3, 50], [1, 1], [10, 0.25, 0.5])
+freqs, powers = sim_power_spectrum([3, 50], [1, 1], [10, 0.25, 0.5])
 
 ###################################################################################################
 
-# Initialize a FOOOF object to fit with
-fm = FOOOF(verbose=False)
+# Initialize a model object
+fm = SpectralModel(verbose=False)
 
 # Parameterize our power spectrum
 fm.fit(freqs, powers)
@@ -66,7 +66,7 @@ fm.fit(freqs, powers)
 ###################################################################################################
 
 # Calculate the error per frequency of the model
-compute_pointwise_error_fm(fm, plot_errors=True)
+compute_pointwise_error(fm, plot_errors=True)
 
 ###################################################################################################
 #
@@ -79,13 +79,13 @@ compute_pointwise_error_fm(fm, plot_errors=True)
 ###################################################################################################
 
 # We can also use this function to return the frequency-by-frequency error
-errs_fm = compute_pointwise_error_fm(fm, plot_errors=False, return_errors=True)
+errs_fm = compute_pointwise_error(fm, plot_errors=False, return_errors=True)
 
 ###################################################################################################
 
 # Note that the average of this error is the same as the global error stored
 print('Average freq-by-freq error:\t {:1.3f}'.format(np.mean(errs_fm)))
-print('FOOOF model fit error: \t\t {:1.3f}'.format(fm.error_))
+print('Model fit error: \t\t {:1.3f}'.format(fm.error_))
 
 ###################################################################################################
 # Checking the Error Across Groups of Model Fits
@@ -94,18 +94,18 @@ print('FOOOF model fit error: \t\t {:1.3f}'.format(fm.error_))
 # Next, lets move on to calculating frequency-by-frequency error across groups of fits,
 # again using some simulated data.
 #
-# To analyze error from a FOOOFGroup object, use :func:`~.compute_pointwise_error_fg`.
+# To analyze error from a SpectralGroupModel object, use :func:`~.compute_pointwise_error_group`.
 #
 
 ###################################################################################################
 
 # Simulate a group of power spectra
-freqs, powers = gen_group_power_spectra(10, [3, 50], [1, 1], [10, 0.3, 1], nlvs=0.1)
+freqs, powers = sim_group_power_spectra(10, [3, 50], [1, 1], [10, 0.3, 1], nlvs=0.1)
 
 ###################################################################################################
 
-# Initialize a FOOOFGroup object to fit
-fg = FOOOFGroup(min_peak_height=0.25, verbose=False)
+# Initialize a SpectralGroupModel object to fit
+fg = SpectralGroupModel(min_peak_height=0.25, verbose=False)
 
 ###################################################################################################
 
@@ -123,12 +123,12 @@ fg.fit(freqs, powers)
 ###################################################################################################
 
 # Plot the group frequency-by-frequency error
-compute_pointwise_error_fg(fg, plot_errors=True)
+compute_pointwise_error_group(fg, plot_errors=True)
 
 ###################################################################################################
 
 # Return the errors - this returns a 2D matrix of errors for all fits
-errs_fg = compute_pointwise_error_fg(fg, False, True)
+errs_fg = compute_pointwise_error_group(fg, False, True)
 
 ###################################################################################################
 
@@ -155,7 +155,7 @@ print('Frequency with highest standard deviation of error: \t', f_max_std)
 #
 # As a final example, let's examine a case in which the model is not working well,
 # and see how the errors look. In particular, we will simulate some new power spectra,
-# with a knee parameter, and refit with the same FOOOFGroup object, in 'fixed' aperiodic
+# with a knee parameter, and refit with the same SpectralGroupModel object, in 'fixed' aperiodic
 # mode, and then analyze the frequency-by-frequency errors, as before. In this scenario,
 # we are fitting data with the wrong model form, and so we expect there to be some issues
 # with the fit, and we can use the frequency-by-frequency error to investigate if and how
@@ -165,7 +165,7 @@ print('Frequency with highest standard deviation of error: \t', f_max_std)
 ###################################################################################################
 
 # Simulate a group of power spectra, with a knee
-freqs, powers = gen_group_power_spectra(10, [1, 50], [0, 10, 2],
+freqs, powers = sim_group_power_spectra(10, [1, 50], [0, 10, 2],
                                         [10, 0.3, 1], nlvs=0.01)
 
 # Parameterize our new group of power spectra
@@ -174,7 +174,7 @@ fg.fit(freqs, powers)
 ###################################################################################################
 
 # Plot the group frequency-by-frequency error
-compute_pointwise_error_fg(fg, plot_errors=True)
+compute_pointwise_error_group(fg, plot_errors=True)
 
 ###################################################################################################
 #

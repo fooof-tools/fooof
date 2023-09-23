@@ -16,7 +16,7 @@ jobs:
     #   When ready to drop 3.6, can revert from 'ubuntu-20.04' -> 'ubuntu-latest'
     runs-on: ubuntu-20.04
     env:
-      MODULE_NAME: fooof
+      MODULE_NAME: specparam
     strategy:
       matrix:
         python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]

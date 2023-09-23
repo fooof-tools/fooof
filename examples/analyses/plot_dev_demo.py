@@ -31,25 +31,25 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Import the parameterization model objects
-from fooof import FOOOF, FOOOFGroup
+from specparam import SpectralModel, SpectralGroupModel
 
 # Import useful parameterization related utilities and plot functions
-from fooof.bands import Bands
-from fooof.analysis import get_band_peak_fg
-from fooof.utils import trim_spectrum
-from fooof.utils.data import subsample_spectra
-from fooof.sim.gen import gen_aperiodic
-from fooof.data import FOOOFSettings
-from fooof.plts.templates import plot_hist
-from fooof.plts.spectra import plot_spectra
-from fooof.plts.periodic import plot_peak_fits, plot_peak_params
-from fooof.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
+from specparam.bands import Bands
+from specparam.analysis import get_band_peak_group
+from specparam.utils import trim_spectrum
+from specparam.utils.data import subsample_spectra
+from specparam.sim.gen import gen_aperiodic
+from specparam.data import ModelSettings
+from specparam.plts.templates import plot_hist
+from specparam.plts.spectra import plot_spectra
+from specparam.plts.periodic import plot_peak_fits, plot_peak_params
+from specparam.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 
 # Import functions to examine frequency-by-frequency error of model fits
-from fooof.analysis.error import compute_pointwise_error_fm, compute_pointwise_error_fg
+from specparam.analysis.error import compute_pointwise_error, compute_pointwise_error_group
 
 # Import helper utility to access data
-from fooof.utils.download import fetch_fooof_data
+from specparam.utils.download import fetch_example_data
 
 ###################################################################################################
 # Access Example Data
@@ -67,8 +67,8 @@ data_url = 'https://raw.githubusercontent.com/fooof-tools/DevelopmentalDemo/main
 data_path = Path('data')
 
 # Collect the example data
-fetch_fooof_data('freqs.csv', data_path, data_url)
-fetch_fooof_data('indv.csv', data_path, data_url)
+fetch_example_data('freqs.csv', data_path, data_url)
+fetch_example_data('indv.csv', data_path, data_url)
 
 ###################################################################################################
 # Fitting an Individual Power Spectrum
@@ -106,8 +106,8 @@ PSD_range = [3, 40]
 ###################################################################################################
 
 # Initialize a model object for spectral parameterization, with some settings
-fm = FOOOF(peak_width_limits=peak_width, max_n_peaks=n_peaks,
-           min_peak_height=peak_height, verbose=False)
+fm = SpectralModel(peak_width_limits=peak_width, max_n_peaks=n_peaks,
+                   min_peak_height=peak_height, verbose=False)
 
 # Fit individual PSD over 3-40 Hz range
 fm.report(freqs, spectrum, PSD_range)
@@ -226,7 +226,7 @@ df = fm.to_df(None)
 # It can be useful to plot frequency-by-frequency error of the model fit,
 # to identify where in frequency space the spectrum is (or is not) being fit well.
 # When fitting individual spectrum, this can be accomplished using the
-# `compute_pointwise_error_fm` function.
+# `compute_pointwise_error` function.
 #
 # In this case, we can see that error fluctuates around 0.05, which is the same as
 # the mean absolute error for the model (MAE). There are points in the spectrum where
@@ -237,18 +237,18 @@ df = fm.to_df(None)
 ###################################################################################################
 
 # Plot frequency-by-frequency error
-compute_pointwise_error_fm(fm, plot_errors=True)
+compute_pointwise_error(fm, plot_errors=True)
 
 ###################################################################################################
 
 # Compute the frequency-by-frequency errors
-errs_fm = compute_pointwise_error_fm(fm, plot_errors=False, return_errors=True)
+errs_fm = compute_pointwise_error(fm, plot_errors=False, return_errors=True)
 
 ###################################################################################################
 
 # Note that the average of this error is the same as the global error stored
 print('Average freq-by-freq error:\t {:1.3f}'.format(np.mean(errs_fm)))
-print('FOOOF model fit error: \t\t {:1.3f}'.format(fm.error_))
+print('Total model fit error: \t\t {:1.3f}'.format(fm.error_))
 
 ###################################################################################################
 # Fitting a Group of Power Spectra
@@ -265,8 +265,8 @@ print('FOOOF model fit error: \t\t {:1.3f}'.format(fm.error_))
 ###################################################################################################
 
 # Collect the example data
-fetch_fooof_data('freqs.csv', data_path, data_url)
-fetch_fooof_data('eop.csv', data_path, data_url)
+fetch_example_data('freqs.csv', data_path, data_url)
+fetch_example_data('eop.csv', data_path, data_url)
 
 ###################################################################################################
 
@@ -288,8 +288,8 @@ print('There are {:d} subjects.'.format(n_subjs))
 ###################################################################################################
 
 # Initialize a model object for spectral parameterization, with some settings
-fg = FOOOFGroup(peak_width_limits=peak_width, max_n_peaks=n_peaks,
-                min_peak_height=peak_height, verbose=False)
+fg = SpectralGroupModel(peak_width_limits=peak_width, max_n_peaks=n_peaks,
+                        min_peak_height=peak_height, verbose=False)
 
 # Fit group PSDs over the 3-40 Hz range
 fg.fit(freqs, spectra, PSD_range)
@@ -311,7 +311,7 @@ fg.plot()
 # As with the individual model object, the `get_params` method can be
 # used to access model fit attributes.
 #
-# In addition, here we will use a `Bands` object and the `get_band_peak_fg`
+# In addition, here we will use a `Bands` object and the `get_band_peak_group`
 # function to organize fit peaks into canonical band ranges.
 #
 
@@ -342,9 +342,9 @@ bands = Bands({'theta' : [4, 8],
 ###################################################################################################
 
 # Extract band-limited peaks information
-thetas = get_band_peak_fg(fg, bands.theta)
-alphas = get_band_peak_fg(fg, bands.alpha)
-betas = get_band_peak_fg(fg, bands.beta)
+thetas = get_band_peak_group(fg, bands.theta)
+alphas = get_band_peak_group(fg, bands.alpha)
+betas = get_band_peak_group(fg, bands.beta)
 
 ###################################################################################################
 #
@@ -451,13 +451,13 @@ m2_freq, m2_spectra = trim_spectrum(freqs, spectra_subsample, m2_PSD_range)
 ###################################################################################################
 
 # Fit model object with model 1 settings
-fg1 = FOOOFGroup(peak_width_limits=m1_peak_width, max_n_peaks=m1_n_peaks,
-                 min_peak_height=m1_peak_height)
+fg1 = SpectralGroupModel(peak_width_limits=m1_peak_width, max_n_peaks=m1_n_peaks,
+                         min_peak_height=m1_peak_height)
 fg1.fit(m1_freq, m1_spectra)
 
 # Create individual reports for model 1 settings (these could be saved and checked)
 for ind in range(len(fg1)):
-    temp_model = fg1.get_fooof(ind, regenerate=True)
+    temp_model = fg1.get_model(ind, regenerate=True)
 
 ###################################################################################################
 #
@@ -467,39 +467,39 @@ for ind in range(len(fg1)):
 ###################################################################################################
 
 # Fit model object with model 2 settings
-fg2 = FOOOFGroup(peak_width_limits=m2_peak_width, max_n_peaks=m2_n_peaks,
-                 min_peak_height=m2_peak_height)
+fg2 = SpectralGroupModel(peak_width_limits=m2_peak_width, max_n_peaks=m2_n_peaks,
+                         min_peak_height=m2_peak_height)
 fg2.fit(m2_freq, m2_spectra)
 
 # Create individual reports for model 2 settings (these could be saved and checked)
 for ind in range(len(fg2)):
-    temp_model = fg2.get_fooof(ind, regenerate=True)
+    temp_model = fg2.get_model(ind, regenerate=True)
 
 ###################################################################################################
 #
-# There are also other ways to manage settings, for example, using the `FOOOFSettings` object.
+# There are also other ways to manage settings, for example, using the `ModelSettings` object.
 #
-# Here we will redefine group model objects (`FOOOFGroup`),
+# Here we will redefine group model objects (`SpectralGroupModel`),
 # again using different settings for each one.
 #
 
 ###################################################################################################
 
 # Define settings for model 1
-settings1 = FOOOFSettings(peak_width_limits=m1_peak_width, max_n_peaks=m1_n_peaks,
+settings1 = ModelSettings(peak_width_limits=m1_peak_width, max_n_peaks=m1_n_peaks,
                           min_peak_height=m1_peak_height, peak_threshold=2.,
                           aperiodic_mode='fixed')
 
 # Define settings for model 2
-settings2 = FOOOFSettings(peak_width_limits=m2_peak_width, max_n_peaks=m2_n_peaks,
+settings2 = ModelSettings(peak_width_limits=m2_peak_width, max_n_peaks=m2_n_peaks,
                           min_peak_height=m2_peak_height, peak_threshold=2.,
                           aperiodic_mode='fixed')
 
 ###################################################################################################
 
 # Initialize model objects for spectral parameterization, with some settings
-fg1 = FOOOFGroup(*settings1)
-fg2 = FOOOFGroup(*settings2)
+fg1 = SpectralGroupModel(*settings1)
+fg2 = SpectralGroupModel(*settings2)
 
 ###################################################################################################
 #
@@ -545,7 +545,7 @@ plot_hist(err, label='Mean absolute error (MAE)', ax=ax1)
 worst_fit_ind = np.argmax(fg.get_params('error'))
 
 # Extract this model fit from the group
-fm = fg.get_fooof(worst_fit_ind, regenerate=True)
+fm = fg.get_model(worst_fit_ind, regenerate=True)
 
 ###################################################################################################
 
@@ -565,7 +565,7 @@ underfit_error_threshold = 0.100
 underfit_check = []
 for ind, res in enumerate(fg):
     if res.error > underfit_error_threshold:
-        underfit_check.append(fg.get_fooof(ind, regenerate=True))
+        underfit_check.append(fg.get_model(ind, regenerate=True))
 
 ###################################################################################################
 
@@ -585,7 +585,7 @@ overfit_error_threshold = 0.02
 overfit_check = []
 for ind, res in enumerate(fg):
     if res.error < overfit_error_threshold:
-        overfit_check.append(fg.get_fooof(ind, regenerate=True))
+        overfit_check.append(fg.get_model(ind, regenerate=True))
 
 ###################################################################################################
 
@@ -619,7 +619,7 @@ df = fg.to_df(2)
 # It can be useful to plot frequency-by-frequency error of the model fit,
 # to identify  where in frequency space the spectrum is (or is not) being fit well.
 # When fitting individual spectrum, this can be accomplished using the
-# `compute_pointwise_error_fg` function. When plotting the error, the plot line is
+# `compute_pointwise_error_group` function. When plotting the error, the plot line is
 # the mean error per frequency, across fits, and the shading indicates the standard deviation
 # of the error, also per frequency.
 #
@@ -634,12 +634,12 @@ df = fg.to_df(2)
 ###################################################################################################
 
 # Plot frequency-by-frequency error
-compute_pointwise_error_fg(fg, plot_errors=True)
+compute_pointwise_error_group(fg, plot_errors=True)
 
 ###################################################################################################
 
 # Return the errors - this returns a 2D matrix of errors for all fits
-errs_fg = compute_pointwise_error_fg(fg, plot_errors=False, return_errors=True)
+errs_fg = compute_pointwise_error_group(fg, plot_errors=False, return_errors=True)
 
 # Check which frequency has the highest error
 f_max_err = fg.freqs[np.argmax(np.mean(errs_fg, 0))]

@@ -5,10 +5,6 @@ A glossary of terms used in the module, with a description of how they are used,
 
 .. glossary::
 
-    FOOOF
-        FOOOF stands for 'fitting oscillations & one-over f'.
-        We use `FOOOF` to refer to either the current module, or to `FOOOF` objects.
-
     Field Data
         'Field data' is used as a catch-all for the relevant types of data that the power spectrum model can be applied to. This includes recordings of electrophysiological or magnetophysiological 'fields', meaning recording modalities such as electroencephalography (EEG), magnetoencephalography (MEG), electrocorticography (ECoG), and local field potential (LFP) data.
 
@@ -19,8 +15,8 @@ A glossary of terms used in the module, with a description of how they are used,
         A power spectrum is a model that describes neural power spectra.
         This module implements a particular power spectrum model, whereby we conceptualize and describe mathematically a model that considers power spectra as a combination of periodic and aperiodic components, each of which can be described by a set of model parameters.
 
-    FOOOF Objects
-        This module is object-oriented, whereby the algorithm to parameterize neural power spectra is implemented in Python objects. We refer to those objects as 'FOOOF objects'.
+    Model Objects
+        This module is object-oriented, whereby the algorithm to parameterize neural power spectra is implemented in Python objects. We refer to those objects as 'model objects'.
 
     Component
         By 'component' we mean a part, or aspect, of the data.
@@ -70,5 +66,5 @@ A glossary of terms used in the module, with a description of how they are used,
         The KNE is an aperiodic parameter, as part of the aperiodic component of the data.
 
     Exponent (EXP)
-        The exponent of the aperiodic fit, which is :math:`\chi` in the :math:`1/f^\chi` formulation. FOOOF uses and fits exponential functions for the aperiodic fit, whereby :math:`\chi` is equivalent to the slope of a linear fit in log-log space (with a sign flip).
+        The exponent of the aperiodic fit, which is :math:`\chi` in the :math:`1/f^\chi` formulation. Exponential functions are used for the aperiodic fit, whereby :math:`\chi` is equivalent to the slope of a linear fit in log-log space (with a sign flip).
         The EXP is an aperiodic parameter, as part of the aperiodic component of the data.

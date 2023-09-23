@@ -7,20 +7,20 @@ Plotting power spectrum model parameters and components.
 
 ###################################################################################################
 
-# Import the FOOOFGroup object
-from fooof import FOOOFGroup
+# Import the SpectralGroupModel object
+from specparam import SpectralGroupModel
 
 # Import utilities to manage frequency band definitions
-from fooof.bands import Bands
-from fooof.analysis import get_band_peak_fg
+from specparam.bands import Bands
+from specparam.analysis import get_band_peak_group
 
 # Import simulation utilities for making example data
-from fooof.sim.gen import gen_group_power_spectra
-from fooof.sim.params import param_jitter
+from specparam.sim import sim_group_power_spectra
+from specparam.sim.params import param_jitter
 
 # Import plotting function for model parameters and components
-from fooof.plts.periodic import plot_peak_fits, plot_peak_params
-from fooof.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
+from specparam.plts.periodic import plot_peak_fits, plot_peak_params
+from specparam.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 
 ###################################################################################################
 # Experiment Set Up & Simulate Data
@@ -60,21 +60,21 @@ g2_peaks = param_jitter([9, 1, 0.5], [0.25, 0.1, 0.3])
 ###################################################################################################
 
 # Simulate some test data, as two groups of power spectra
-freqs, powers1 = gen_group_power_spectra(n_subjs, freq_range, g1_aps, g1_peaks)
-freqs, powers2 = gen_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
+freqs, powers1 = sim_group_power_spectra(n_subjs, freq_range, g1_aps, g1_peaks)
+freqs, powers2 = sim_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
 
 ###################################################################################################
 # Fit Power Spectrum Models
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Now that we have our simulated data, we can fit our power spectrum models, using FOOOFGroup.
+# Now that we have our simulated data, we can fit our power spectrum models, using SpectralGroupModel.
 #
 
 ###################################################################################################
 
-# Initialize a FOOOFGroup object for each group
-fg1 = FOOOFGroup(verbose=False)
-fg2 = FOOOFGroup(verbose=False)
+# Initialize a SpectralGroupModel object for each group
+fg1 = SpectralGroupModel(verbose=False)
+fg2 = SpectralGroupModel(verbose=False)
 
 ###################################################################################################
 
@@ -124,8 +124,8 @@ bands = Bands({'theta' : [4, 8],
 ###################################################################################################
 
 # Extract alpha peaks from each group
-g1_alphas = get_band_peak_fg(fg1, bands.alpha)
-g2_alphas = get_band_peak_fg(fg2, bands.alpha)
+g1_alphas = get_band_peak_group(fg1, bands.alpha)
+g2_alphas = get_band_peak_group(fg2, bands.alpha)
 
 ###################################################################################################
 # Plotting Peak Parameters

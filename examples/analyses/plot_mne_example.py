@@ -25,11 +25,11 @@ from matplotlib import cm, colors, colorbar
 import mne
 from mne.datasets import sample
 
-# FOOOF imports
-from fooof import FOOOFGroup
-from fooof.bands import Bands
-from fooof.analysis import get_band_peak_fg
-from fooof.plts.spectra import plot_spectra
+# Spectral parameterization imports
+from specparam import SpectralGroupModel
+from specparam.bands import Bands
+from specparam.analysis import get_band_peak_group
+from specparam.plts.spectra import plot_spectra
 
 ###################################################################################################
 # Load & Check MNE Data
@@ -123,13 +123,13 @@ spectra, freqs = psd.get_data(return_freqs=True)
 #
 # Now that we have power spectra, we can fit some power spectrum models.
 #
-# Since we have multiple power spectra, we will use the :class:`~fooof.FOOOFGroup` object.
+# Since we have multiple power spectra, we will use the :class:`~specparam.SpectralGroupModel` object.
 #
 
 ###################################################################################################
 
-# Initialize a FOOOFGroup object, with desired settings
-fg = FOOOFGroup(peak_width_limits=[1, 6], min_peak_height=0.15,
+# Initialize a SpectralGroupModel object, with desired settings
+fg = SpectralGroupModel(peak_width_limits=[1, 6], min_peak_height=0.15,
                 peak_threshold=2., max_n_peaks=6, verbose=False)
 
 # Define the frequency range to fit
@@ -152,9 +152,9 @@ fg.plot()
 # Now that we have our power spectrum models calculated across all channels,
 # let's start by plotting topographies of some of the resulting model parameters.
 #
-# To do so, we can leverage the fact that both MNE and FOOOF objects preserve data order.
+# To do so, we can leverage the fact that both MNE and specparam objects preserve data order.
 # So, when we calculated power spectra, our output spectra kept the channel order
-# that is described in the MNE data object, and so did our :class:`~fooof.FOOOFGroup`
+# that is described in the MNE data object, and so did our :class:`~specparam.SpectralGroupModel`
 # object.
 #
 # That means that to plot our topography, we can use the MNE ``plot_topomap``
@@ -182,7 +182,7 @@ bands = Bands({'theta': [3, 7],
 ###################################################################################################
 
 # Extract alpha peaks
-alphas = get_band_peak_fg(fg, bands.alpha)
+alphas = get_band_peak_group(fg, bands.alpha)
 
 # Extract the power values from the detected peaks
 alpha_pw = alphas[:, 1]
@@ -208,7 +208,7 @@ fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 for ind, (label, band_def) in enumerate(bands):
 
     # Get the power values across channels for the current band
-    band_power = check_nans(get_band_peak_fg(fg, band_def)[:, 1])
+    band_power = check_nans(get_band_peak_group(fg, band_def)[:, 1])
 
     # Create a topomap for the current oscillation band
     mne.viz.plot_topomap(band_power, raw.info, cmap=cm.viridis, contours=0, axes=axes[ind])
@@ -237,10 +237,10 @@ fig, axes = plt.subplots(1, 3, figsize=(15, 6))
 for ind, (label, band_def) in enumerate(bands):
 
     # Get the power values across channels for the current band
-    band_power = check_nans(get_band_peak_fg(fg, band_def)[:, 1])
+    band_power = check_nans(get_band_peak_group(fg, band_def)[:, 1])
 
     # Extracted and plot the power spectrum model with the most band power
-    fg.get_fooof(np.argmax(band_power)).plot(ax=axes[ind], add_legend=False)
+    fg.get_model(np.argmax(band_power)).plot(ax=axes[ind], add_legend=False)
 
     # Set some plot aesthetics & plot title
     axes[ind].yaxis.set_ticklabels([])
@@ -281,8 +281,8 @@ mne.viz.plot_topomap(exps, raw.info, cmap=cm.viridis, contours=0, size=4)
 # Compare the power spectra between low and high exponent channels
 fig, ax = plt.subplots(figsize=(8, 6))
 
-spectra = [fg.get_fooof(np.argmin(exps)).power_spectrum,
-           fg.get_fooof(np.argmax(exps)).power_spectrum]
+spectra = [fg.get_model(np.argmin(exps)).power_spectrum,
+           fg.get_model(np.argmax(exps)).power_spectrum]
 
 plot_spectra(fg.freqs, spectra, ax=ax, labels=['Low Exponent', 'High Exponent'])
 

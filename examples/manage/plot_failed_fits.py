@@ -7,14 +7,14 @@ Example of model fit failures and how to debug them.
 
 ###################################################################################################
 
-# Import the FOOOFGroup object
-from fooof import FOOOFGroup
+# Import the SpectralGroupModel object
+from specparam import SpectralGroupModel
 
 # Import simulation code to create test power spectra
-from fooof.sim.gen import gen_group_power_spectra
+from specparam.sim import sim_group_power_spectra
 
 # Import FitError, which we will use to help debug model fit errors
-from fooof.core.errors import FitError
+from specparam.core.errors import FitError
 
 ###################################################################################################
 # Model Fit Failures
@@ -36,13 +36,13 @@ from fooof.core.errors import FitError
 ###################################################################################################
 
 # Simulate some example power spectra to use for the example
-freqs, powers = gen_group_power_spectra(25, [1, 50], [1, 1], [10, 0.25, 3],
+freqs, powers = sim_group_power_spectra(25, [1, 50], [1, 1], [10, 0.25, 3],
                                         nlvs=0.1, freq_res=0.25)
 
 ###################################################################################################
 
-# Initialize a FOOOFGroup object, with some desired settings
-fg = FOOOFGroup(min_peak_height=0.1, max_n_peaks=6)
+# Initialize a SpectralGroupModel object, with some desired settings
+fg = SpectralGroupModel(min_peak_height=0.1, max_n_peaks=6)
 
 ###################################################################################################
 
@@ -54,7 +54,7 @@ fg.fit(freqs, powers)
 # If there are failed fits, these are stored as null models.
 #
 # Let's check if there were any null models, from model failures, in the models
-# that we have fit so far. To do so, the :class:`~fooof.FOOOFGroup` object has some
+# that we have fit so far. To do so, the :class:`~specparam.SpectralGroupModel` object has some
 # attributes that provide information on any null model fits.
 #
 # These attributes are:
@@ -118,7 +118,7 @@ print('Indices of Null models : \t', fg.null_inds_)
 # model is failing, you can use the debug mode to get a bit more information about
 # where the model is failing.
 #
-# The debug mode will stop the FOOOF object catching and continuing any model
+# The debug mode will stop the model object catching and continuing any model
 # fit errors, allowing you to see where the error is happening, and get more
 # information about where it is failing.
 #
@@ -129,7 +129,7 @@ print('Indices of Null models : \t', fg.null_inds_)
 
 ###################################################################################################
 
-# Set FOOOFGroup into debug mode
+# Set SpectralGroupModel into debug mode
 fg.set_debug_mode(True)
 
 ###################################################################################################
@@ -137,8 +137,8 @@ fg.set_debug_mode(True)
 # Refit in debug mode, in which failed fits will raise an error
 try:
     fg.fit(freqs, powers)
-except FitError as fooof_error:
-    print(fooof_error)
+except FitError as error:
+    print(error)
 
 ###################################################################################################
 # Debugging Model Fit Errors

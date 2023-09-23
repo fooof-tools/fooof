@@ -52,7 +52,7 @@ from neurodsp.plts import plot_time_series, plot_power_spectra
 
 ###################################################################################################
 
-# Set random seed, for consistency generating simulated data
+# Set random seed, for consistency creating simulated data
 sim.set_random_seed(21)
 
 # Simulation Settings
@@ -144,14 +144,14 @@ plot_power_spectra(freqs, powers)
 # White Noise
 # ^^^^^^^^^^^
 #
-# A 'white noise' signal is one that is generated with uncorrelated samples drawn from
+# A 'white noise' signal is one that is created with uncorrelated samples drawn from
 # a random distribution. Since each element of the signal is sampled randomly,
 # there is no consistent rhythmic structure in the signal.
 #
 
 ###################################################################################################
 
-# Generate a white noise time series signal
+# Simulate a white noise time series signal
 white_sig = np.random.normal(0, 1, n_points)
 
 ###################################################################################################
@@ -196,7 +196,7 @@ plot_power_spectra(freqs, powers)
 
 ###################################################################################################
 
-# Generate a pink noise signal
+# Simulate a pink noise signal
 pink_sig = sim.sim_powerlaw(n_seconds, s_rate, exponent=-1)
 
 ###################################################################################################
@@ -247,7 +247,7 @@ plot_power_spectra(freqs, powers)
 
 ###################################################################################################
 
-# Generate an oscillating signal
+# Simulate an oscillating signal
 osc_sig = sim.sim_oscillation(n_seconds, s_rate, freq=10)
 
 ###################################################################################################
@@ -298,7 +298,7 @@ components = {
     'sim_powerlaw' : {'exponent' : -1}
 }
 
-# Generate a combined signal
+# Simulate a combined signal
 combined_sig = sim.sim_combined(n_seconds, s_rate, components)
 
 ###################################################################################################

@@ -1,15 +1,15 @@
-"""Create the images for the FOOOF documentation."""
+"""Create the images for the documentation site."""
 
 import shutil
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-from fooof import FOOOF, FOOOFGroup
-from fooof.sim.gen import gen_power_spectrum
-from fooof.plts.utils import check_ax
-from fooof.plts.spectra import plot_spectrum
-from fooof.utils.download import load_fooof_data
+from specparam import SpectralModel, SpectralGroupModel
+from specparam.sim.gen import gen_power_spectrum
+from specparam.plts.utils import check_ax
+from specparam.plts.spectra import plot_spectrum
+from specparam.utils.download import load_example_data
 
 ###################################################################################################
 ###################################################################################################
@@ -19,28 +19,30 @@ def main():
     ## Individual Model Plot
 
     # Download examples data files needed for this example
-    freqs = load_fooof_data('freqs.npy', folder='data')
-    spectrum = load_fooof_data('spectrum.npy', folder='data')
+    freqs = load_example_data('freqs.npy', folder='data')
+    spectrum = load_example_data('spectrum.npy', folder='data')
 
     # Initialize and fit an example power spectrum model
-    fm = FOOOF(peak_width_limits=[1, 6], max_n_peaks=6, min_peak_height=0.2, verbose=False)
+    fm = SpectralModel(peak_width_limits=[1, 6], max_n_peaks=6,
+                       min_peak_height=0.2, verbose=False)
     fm.fit(freqs, spectrum, [3, 40])
 
     # Save out the report
-    fm.save_report('FOOOF_report.png', 'img')
+    fm.save_report('report.png', 'img')
 
     ## Group Plot
 
     # Download examples data files needed for this example
-    freqs = load_fooof_data('group_freqs.npy', folder='data')
-    spectra = load_fooof_data('group_powers.npy', folder='data')
+    freqs = load_example_data('group_freqs.npy', folder='data')
+    spectra = load_example_data('group_powers.npy', folder='data')
 
     # Initialize and fit a group of example power spectrum models
-    fg = FOOOFGroup(peak_width_limits=[1, 6], max_n_peaks=6, min_peak_height=0.2, verbose=False)
+    fg = SpectralGroupModel(peak_width_limits=[1, 6], max_n_peaks=6,
+                            min_peak_height=0.2, verbose=False)
     fg.fit(freqs, spectra, [3, 30])
 
     # Save out the report
-    fg.save_report('FOOOFGroup_report.png', 'img')
+    fg.save_report('group_report.png', 'img')
 
     ## Make the icon plot
 

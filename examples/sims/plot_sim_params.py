@@ -8,13 +8,13 @@ Manage parameters for creating simulated power spectra.
 ###################################################################################################
 
 # Import simulation functions for creating spectra
-from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 
 # Import simulation utilities for managing parameters
-from fooof.sim.params import param_sampler, param_iter, param_jitter, Stepper
+from specparam.sim.params import param_sampler, param_iter, param_jitter, Stepper
 
 # Import plotting functions to visualize spectra
-from fooof.plts.spectra import plot_spectra
+from specparam.plts.spectra import plot_spectra
 
 ###################################################################################################
 # Simulation Parameters
@@ -49,7 +49,7 @@ nlv = 0.02
 ###################################################################################################
 
 # Simulate a group of power spectra
-freqs, powers, sim_params = gen_group_power_spectra(n_spectra, freq_range, ap_params,
+freqs, powers, sim_params = sim_group_power_spectra(n_spectra, freq_range, ap_params,
                                                     pe_params, nlv, return_params=True)
 
 ###################################################################################################
@@ -62,7 +62,7 @@ for sim_param in sim_params:
 
 # You can also use a SimParams object to regenerate a particular power spectrum
 cur_params = sim_params[0]
-freqs, powers = gen_power_spectrum(freq_range, *cur_params)
+freqs, powers = sim_power_spectrum(freq_range, *cur_params)
 
 ###################################################################################################
 # Managing Parameters
@@ -98,12 +98,12 @@ pe_opts = param_sampler([[10, 0.5, 1], [[10, 0.5, 1], [20, 0.25, 2]]],
 
 ###################################################################################################
 
-# Generate some power spectra, using param_sampler
-freqs, powers = gen_group_power_spectra(10, freq_range, ap_opts, pe_opts)
+# Simualte some power spectra, using param_sampler
+freqs, powers = sim_group_power_spectra(10, freq_range, ap_opts, pe_opts)
 
 ###################################################################################################
 
-# Plot some of the spectra that were generated
+# Plot some of the spectra that were simulated
 plot_spectra(freqs, powers[0:4, :], log_powers=True)
 
 ###################################################################################################
@@ -133,12 +133,12 @@ pe_params = param_iter([cf_steps, 0.4, 1])
 
 ###################################################################################################
 
-# Generate some power spectra, using param_iter
-freqs, powers = gen_group_power_spectra(len(cf_steps), freq_range, ap_params, pe_params)
+# Simulate some power spectra, using param_iter
+freqs, powers = sim_group_power_spectra(len(cf_steps), freq_range, ap_params, pe_params)
 
 ###################################################################################################
 
-# Plot the generated spectra
+# Plot the simulated spectra
 plot_spectra(freqs, powers, log_freqs=True, log_powers=True)
 
 ###################################################################################################
@@ -161,16 +161,16 @@ pe_params = [10, 0.2, 1, 22, 0.1, 3]
 
 ###################################################################################################
 
-# Generate some power spectra, using param_jitter
-freqs, powers = gen_group_power_spectra(5, freq_range, ap_params, pe_params)
+# Simulate some power spectra, using param_jitter
+freqs, powers = sim_group_power_spectra(5, freq_range, ap_params, pe_params)
 
 ###################################################################################################
 
-# Plot the generated spectra
+# Plot the simulated spectra
 plot_spectra(freqs, powers, log_freqs=True, log_powers=True)
 
 ###################################################################################################
 #
-# We can see that in the generated spectra above, there is some jitter
+# We can see that in the simulated spectra above, there is some jitter
 # to the simulated aperiodic exponent values.
 #

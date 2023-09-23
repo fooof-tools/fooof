@@ -7,14 +7,14 @@ Exploring properties and topics related to peak parameters.
 
 ###################################################################################################
 
-from fooof import FOOOF, FOOOFGroup
-from fooof.plts.spectra import plot_spectra
-from fooof.plts.periodic import plot_peak_params
-from fooof.sim.utils import set_random_seed
-from fooof.sim.params import Stepper, param_iter
-from fooof.sim import gen_power_spectrum, gen_group_power_spectra
-from fooof.plts.annotate import plot_annotated_model
-from fooof.utils.params import compute_time_constant, compute_knee_frequency
+from specparam import SpectralModel
+from specparam.plts.spectra import plot_spectra
+from specparam.plts.periodic import plot_peak_params
+from specparam.sim.utils import set_random_seed
+from specparam.sim.params import Stepper, param_iter
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
+from specparam.plts.annotate import plot_annotated_model
+from specparam.utils.params import compute_time_constant, compute_knee_frequency
 
 ###################################################################################################
 # Gaussian Peak Model
@@ -33,12 +33,12 @@ from fooof.utils.params import compute_time_constant, compute_knee_frequency
 ###################################################################################################
 
 # Simulate an example power spectrum
-freqs, powers = gen_power_spectrum([3, 40], [0, 1], [10, 0.3, 1.], freq_res=0.25)
+freqs, powers = sim_power_spectrum([3, 40], [0, 1], [10, 0.3, 1.], freq_res=0.25)
 
 ###################################################################################################
 
 # Initialize model object and fit power spectrum
-fm = FOOOF(min_peak_height=0.1)
+fm = SpectralModel(min_peak_height=0.1)
 fm.fit(freqs, powers)
 
 ###################################################################################################
@@ -74,12 +74,12 @@ set_random_seed(10)
 ###################################################################################################
 
 # Simulate an example power spectrum created with an asymmetric peak
-freqs, powers = gen_power_spectrum([3, 40], [0, 1], [[10, 0.3, 1.], [11.25, 0.175, 0.5]], freq_res=0.25)
+freqs, powers = sim_power_spectrum([3, 40], [0, 1], [[10, 0.3, 1.], [11.25, 0.175, 0.5]], freq_res=0.25)
 
 ###################################################################################################
 
 # Initialize model object and fit power spectrum
-fm = FOOOF(min_peak_height=0.1)
+fm = SpectralModel(min_peak_height=0.1)
 fm.report(freqs, powers)
 
 ###################################################################################################

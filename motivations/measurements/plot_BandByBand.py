@@ -15,16 +15,16 @@ often done in the context of development. The paper for that project is availabl
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Import the FOOOF object
-from fooof import FOOOF
+# Import the model object
+from specparam import SpectralModel
 
 # Import simulation, utility, and plotting tools
-from fooof.bands import Bands
-from fooof.utils import trim_spectrum
-from fooof.analysis import get_band_peak_fm
-from fooof.sim.gen import gen_power_spectrum
-from fooof.sim.utils import set_random_seed
-from fooof.plts.spectra import plot_spectra_shading
+from specparam.bands import Bands
+from specparam.utils import trim_spectrum
+from specparam.analysis import get_band_peak
+from specparam.sim import sim_power_spectrum
+from specparam.sim.utils import set_random_seed
+from specparam.plts.spectra import plot_spectra_shading
 
 ###################################################################################################
 # Overview
@@ -115,8 +115,8 @@ def compare_exp(fm1, fm2):
 def compare_peak_pw(fm1, fm2, band_def):
     """Compare the power of detected peaks."""
 
-    pw1 = get_band_peak_fm(fm1, band_def)[1]
-    pw2 = get_band_peak_fm(fm2, band_def)[1]
+    pw1 = get_band_peak(fm1, band_def)[1]
+    pw2 = get_band_peak(fm2, band_def)[1]
 
     return pw1 - pw2
 
@@ -153,14 +153,14 @@ ap_params = [1, 1]
 pe_g1 = [[2, 0.25, 1], [6, 0.2, 1], [10, 0.5, 1.5], [20, 0.2, 3], [40, 0.25, 3.5]]
 pe_g2 = [[2, 0.5, 1], [6, 0.3, 1], [10, 0.5, 1.5], [20, 0.15, 3], [40, 0.15, 3.5]]
 
-# Set random seed, for consistency generating simulated data
+# Set random seed, for consistency creating simulated data
 set_random_seed(21)
 
 ###################################################################################################
 
 # Simulate example power spectra for each group
-freqs, g1_spectrum_bands = gen_power_spectrum(f_range, ap_params, pe_g1, nlv)
-freqs, g2_spectrum_bands = gen_power_spectrum(f_range, ap_params, pe_g2, nlv)
+freqs, g1_spectrum_bands = sim_power_spectrum(f_range, ap_params, pe_g1, nlv)
+freqs, g2_spectrum_bands = sim_power_spectrum(f_range, ap_params, pe_g2, nlv)
 
 ###################################################################################################
 
@@ -187,9 +187,9 @@ plt.title('Band-by-Band', t_settings);
 
 ###################################################################################################
 
-# Initialize FOOOF objects
-fm_bands_g1 = FOOOF(verbose=False)
-fm_bands_g2 = FOOOF(verbose=False)
+# Initialize model objects
+fm_bands_g1 = SpectralModel(verbose=False)
+fm_bands_g2 = SpectralModel(verbose=False)
 
 # Fit power spectrum models
 fm_bands_g1.fit(freqs, g1_spectrum_bands)
@@ -250,8 +250,8 @@ for label, definition in bands:
 ###################################################################################################
 
 # Simulate spectra for each group, with aperiodic differences
-freqs, g1_spectrum_pa = gen_power_spectrum(f_range, [1.0, 1.25], [10, 0.5, 1.5], nlv)
-freqs, g2_spectrum_pa = gen_power_spectrum(f_range, [0.7, 1.00], [10, 0.5, 1.5], nlv)
+freqs, g1_spectrum_pa = sim_power_spectrum(f_range, [1.0, 1.25], [10, 0.5, 1.5], nlv)
+freqs, g2_spectrum_pa = sim_power_spectrum(f_range, [0.7, 1.00], [10, 0.5, 1.5], nlv)
 
 ###################################################################################################
 
@@ -275,9 +275,9 @@ plt.title('Periodic & Aperiodic', t_settings);
 
 ###################################################################################################
 
-# Initialize FOOOF objects
-fm_pa_g1 = FOOOF(verbose=False)
-fm_pa_g2 = FOOOF(verbose=False)
+# Initialize model objects
+fm_pa_g1 = SpectralModel(verbose=False)
+fm_pa_g2 = SpectralModel(verbose=False)
 
 # Fit power spectrum models
 fm_pa_g1.fit(freqs, g1_spectrum_pa)

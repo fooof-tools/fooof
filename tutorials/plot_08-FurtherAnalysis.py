@@ -29,22 +29,22 @@ Analyze results from fitting power spectrum models.
 # General imports
 import numpy as np
 
-# Import the FOOOF and FOOOFGroup objects
-from fooof import FOOOF, FOOOFGroup
+# Import the model objects
+from specparam import SpectralModel, SpectralGroupModel
 
 # Import the Bands object, which is used to define frequency bands
-from fooof.bands import Bands
+from specparam.bands import Bands
 
 # Import simulation code and utilities
-from fooof.sim.params import param_sampler
-from fooof.sim.gen import gen_group_power_spectra
-from fooof.sim.utils import set_random_seed
+from specparam.sim import sim_group_power_spectra
+from specparam.sim.params import param_sampler
+from specparam.sim.utils import set_random_seed
 
 # Import some analysis functions
-from fooof.analysis import get_band_peak_fm, get_band_peak_fg
+from specparam.analysis import get_band_peak, get_band_peak_group
 
 # Import a utility to download and load example data
-from fooof.utils.download import load_fooof_data
+from specparam.utils.download import load_example_data
 
 ###################################################################################################
 # Load and Fit Example Data
@@ -56,13 +56,13 @@ from fooof.utils.download import load_fooof_data
 ###################################################################################################
 
 # Load example data files needed for this example
-freqs = load_fooof_data('freqs.npy', folder='data')
-spectrum = load_fooof_data('spectrum.npy', folder='data')
+freqs = load_example_data('freqs.npy', folder='data')
+spectrum = load_example_data('spectrum.npy', folder='data')
 
 ###################################################################################################
 
 # Fit a power spectrum model
-fm = FOOOF(peak_width_limits=[2, 8])
+fm = SpectralModel(peak_width_limits=[2, 8])
 fm.fit(freqs, spectrum, [3, 30])
 
 ###################################################################################################
@@ -74,19 +74,19 @@ fm.fit(freqs, spectrum, [3, 30])
 
 ###################################################################################################
 
-# Set random seed, for consistency generating simulated data
+# Set random seed, for consistency creating simulated data
 set_random_seed(21)
 
-# Generate some simulated power spectra
-freqs, spectra = gen_group_power_spectra(n_spectra=10,
+# Create some simulated power spectra
+freqs, spectra = sim_group_power_spectra(n_spectra=10,
                                          freq_range=[3, 40],
                                          aperiodic_params=param_sampler([[20, 2], [35, 1.5]]),
                                          periodic_params=param_sampler([[], [10, 0.5, 2]]))
 
 ###################################################################################################
 
-# Initialize a FOOOFGroup object with some settings
-fg = FOOOFGroup(peak_width_limits=[1, 8], min_peak_height=0.05,
+# Initialize a group model object with some settings
+fg = SpectralGroupModel(peak_width_limits=[1, 8], min_peak_height=0.05,
                 max_n_peaks=6, verbose=False)
 
 # Fit power spectrum models across the group of simulated power spectra
@@ -96,7 +96,7 @@ fg.fit(freqs, spectra)
 # Analysis Utilities
 # ------------------
 #
-# The FOOOF module includes some analysis functions.
+# The `specparam` module includes some analysis functions.
 #
 # Note that these utilities are generally relatively simple utilities that assist in
 # accessing and investigating the model parameters.
@@ -129,11 +129,11 @@ bands = Bands({'theta' : [4, 8],
                'beta' : [15, 30]})
 
 ###################################################################################################
-# Extracting peaks from FOOOF Objects
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Extracting peaks from SpectralModel Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The :func:`~.get_band_peak_fm` function takes in a
-# :class:`~.FOOOF` object and extracts peak(s) from a requested frequency range.
+# The :func:`~.get_band_peak` function takes in a
+# :class:`~.SpectralModel` object and extracts peak(s) from a requested frequency range.
 #
 # You can optionally specify:
 #
@@ -146,25 +146,25 @@ bands = Bands({'theta' : [4, 8],
 ###################################################################################################
 
 # Extract any alpha band peaks from the power spectrum model
-alpha = get_band_peak_fm(fm, bands.alpha)
+alpha = get_band_peak(fm, bands.alpha)
 print(alpha)
 
 ###################################################################################################
-# Extracting peaks from FOOOFGroup Objects
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Extracting peaks from SpectralGroupModel Objects
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Similarly, the :func:`~.get_band_peak_fg` function can be used
-# to select peaks from specified frequency ranges, from :class:`~fooof.FOOOFGroup` objects.
+# Similarly, the :func:`~.get_band_peak_group` function can be used
+# to select peaks from specified frequency ranges, from :class:`~specparam.SpectralGroupModel` objects.
 #
 # Note that you can also apply a threshold to extract group peaks but, as discussed below,
 # this approach will always only extract at most one peak per individual model fit from
-# the FOOOFGroup object.
+# the SpectralGroupModel object.
 #
 
 ###################################################################################################
 
 # Get all alpha peaks from a group of power spectrum models
-alphas = get_band_peak_fg(fg, bands.alpha)
+alphas = get_band_peak_group(fg, bands.alpha)
 
 # Check out some of the alpha parameters
 print(alphas[0:5, :])
@@ -174,10 +174,10 @@ print(alphas[0:5, :])
 # When selecting peaks from a group of model fits, we want to retain information about
 # which model each peak comes from.
 #
-# To do so, the output of :func:`~.get_band_peak_fg` is organized such that each row
+# To do so, the output of :func:`~.get_band_peak_group` is organized such that each row
 # corresponds to a specific model fit. This means that returned array has the shape
 # [n_models, 3], and so the index of each row corresponds to the index of the model
-# from the FOOOFGroup object.
+# from the SpectralGroupModel object.
 #
 # For this to work, at most 1 peak is extracted for each model fit within the specified band.
 # If more than 1 peak are found within the band, the peak with the highest power is extracted.
@@ -196,7 +196,7 @@ print('Alpha BW : {:1.2f}'.format(np.nanmean(alphas[:, 2])))
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # If you want to do more customized extraction of peaks, for example, extracting all peaks
-# in a frequency band from each model in a FOOOFGroup object, you may need to use the
+# in a frequency band from each model in a SpectralGroupModel object, you may need to use the
 # underlying functions that operate on arrays of peak parameters. To explore these functions,
 # check the listings in the API page.
 #
@@ -222,12 +222,12 @@ print('Alpha BW : {:1.2f}'.format(np.nanmean(alphas[:, 2])))
 # ---------------------------------
 #
 # Typically, for analyzing the aperiodic component of the data, aperiodic parameters
-# just need to be extracted from FOOOF objects and fit into analyses of interest.
+# just need to be extracted from specparam objects and fit into analyses of interest.
 #
 
 ###################################################################################################
 
-# Plot from the FOOOFGroup, to visualize the parameters
+# Plot from the group object, to visualize the parameters
 fg.plot()
 
 ###################################################################################################

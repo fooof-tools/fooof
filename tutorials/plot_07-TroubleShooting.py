@@ -10,13 +10,13 @@ Tips & tricks for choosing algorithm settings, tuning fits, and troubleshooting.
 # General imports
 import numpy as np
 
-# Import the FOOOF and FOOOFGroup objects
-from fooof import FOOOF, FOOOFGroup
+# Import the model objects
+from specparam import SpectralModel, SpectralGroupModel
 
 # Import some utilities for creating simulated power-spectra
-from fooof.sim.params import param_sampler
-from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
-from fooof.sim.utils import set_random_seed
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
+from specparam.sim.params import param_sampler
+from specparam.sim.utils import set_random_seed
 
 ####################################################################################################
 # Algorithm Settings
@@ -74,7 +74,7 @@ from fooof.sim.utils import set_random_seed
 #
 # After model fitting, some goodness of fit metrics are calculated to assist with assessing
 # the quality of the model fits. It calculates both the model fit error, as the mean absolute
-# error (MAE) between the full model fit (``fooofed_spectrum_``) and the original power spectrum,
+# error (MAE) between the full model fit (``modeled_spectrum_``) and the original power spectrum,
 # as well as the R-squared correspondence between the original spectrum and the full model.
 #
 # These scores can be used to assess how the model is performing. However interpreting these
@@ -115,34 +115,34 @@ from fooof.sim.utils import set_random_seed
 # Simulating Power Spectra
 # ------------------------
 #
-# For this example, we will use simulated data. The FOOOF module includes utilities
-# for creating simulated power-spectra. To do so, we can use the :func:`~.gen_power_spectrum`
+# For this example, we will use simulated data. The `specparam` module includes utilities
+# for creating simulated power-spectra. To do so, we can use the :func:`~.sim_power_spectrum`
 # function to simulate individual power spectra, following the power spectrum model.
 #
-# First, we will start by generating a noisy simulated power spectrum
+# First, we will start by simulating a noisy power spectrum.
 #
 
 ###################################################################################################
 
-# Set the frequency range to generate the power spectrum
+# Set the frequency range to simualate the power spectrum
 f_range = [1, 50]
 # Set aperiodic component parameters, as [offset, exponent]
 ap_params = [20, 2]
 # Gaussian peak parameters
 gauss_params = [[10, 1.0, 2.5], [20, 0.8, 2], [32, 0.6, 1]]
-# Set the level of noise to generate the power spectrum with
+# Set the level of noise to simulate the power spectrum with
 nlv = 0.1
 
-# Set random seed, for consistency generating simulated data
+# Set random seed, for consistency creating simulated data
 set_random_seed(21)
 
 # Create a simulated power spectrum
-freqs, spectrum = gen_power_spectrum(f_range, ap_params, gauss_params, nlv)
+freqs, spectrum = sim_power_spectrum(f_range, ap_params, gauss_params, nlv)
 
 ###################################################################################################
 
 # Fit an (unconstrained) model, liable to overfit
-fm = FOOOF()
+fm = SpectralModel()
 fm.report(freqs, spectrum)
 
 ###################################################################################################
@@ -159,7 +159,7 @@ fm.report(freqs, spectrum)
 ###################################################################################################
 
 # Update settings to fit a more constrained model, to reduce overfitting
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.4)
+fm = SpectralModel(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.4)
 fm.report(freqs, spectrum)
 
 ###################################################################################################
@@ -212,22 +212,22 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 
 ###################################################################################################
 
-# Set the frequency range to generate the power spectrum
+# Set the frequency range to simulate the power spectrum
 f_range = [1, 50]
 # Define aperiodic parameters, as [offset, exponent]
 ap_params = [20, 2]
 # Define peak parameters, each peak defined as [CF, PW, BW]
 gauss_params = [[10, 1.0, 1.0], [20, 0.3, 1.5], [32, 0.25, 1]]
-# Set the level of noise to generate the power spectrum with
+# Set the level of noise to simulate the power spectrum with
 nlv = 0.025
 
 # Create a simulated power spectrum
-freqs, spectrum = gen_power_spectrum([1, 50], ap_params, gauss_params, nlv=nlv)
+freqs, spectrum = sim_power_spectrum([1, 50], ap_params, gauss_params, nlv=nlv)
 
 ###################################################################################################
 
 # Update settings to make sure they are sensitive to smaller peaks in smoother power spectra
-fm = FOOOF(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.2)
+fm = SpectralModel(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.2)
 fm.report(freqs, spectrum)
 
 ###################################################################################################
@@ -245,7 +245,7 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 # a new analysis, or working with a new dataset, we do recommend starting by
 # trying some individual fits like this.
 #
-# If and when you move to using :class:`~fooof.FOOOFGroup` to fit groups of power spectra,
+# If and when you move to using :class:`~specparam.SpectralGroupModel` to fit groups of power spectra,
 # there are some slightly different ways to investigate groups of fits,
 # which we'll step through now, using some simulated data.
 #
@@ -256,7 +256,7 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 #
 # We will continue using simulated data, this time simulating a group of power spectra.
 #
-# To simulate a group of power spectra, we will use the :func:`~.gen_group_power_spectra`
+# To simulate a group of power spectra, we will use the :func:`~.sim_group_power_spectra`
 # in combination with called :func:`~.param_sampler` that is used to sample across
 # possible parameters.
 #
@@ -276,13 +276,13 @@ ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
 gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
 # Simulate a group of power spectra
-freqs, power_spectra = gen_group_power_spectra(n_spectra, sim_freq_range,
+freqs, power_spectra = sim_group_power_spectra(n_spectra, sim_freq_range,
                                                ap_opts, gauss_opts, nlv)
 
 ###################################################################################################
 
-# Initialize a FOOOFGroup object
-fg = FOOOFGroup(peak_width_limits=[1, 6])
+# Initialize a group model object
+fg = SpectralGroupModel(peak_width_limits=[1, 6])
 
 ###################################################################################################
 
@@ -291,7 +291,7 @@ fg.report(freqs, power_spectra)
 
 ###################################################################################################
 #
-# In the :class:`~fooof.FOOOFGroup` report we can get a sense of the overall performance
+# In the :class:`~specparam.SpectralGroupModel` report we can get a sense of the overall performance
 # by looking at the information about the goodness of fit metrics, and also things like
 # the distribution of peaks.
 #
@@ -300,7 +300,7 @@ fg.report(freqs, power_spectra)
 #
 # To do so, we will typically still want to visualize some example fits, to see
 # what is happening. To do so, next we will find which fits have the most error,
-# and select these fits from the :class:`~fooof.FOOOFGroup` object to visualize.
+# and select these fits from the :class:`~specparam.SpectralGroupModel` object to visualize.
 #
 
 ###################################################################################################
@@ -309,7 +309,7 @@ fg.report(freqs, power_spectra)
 worst_fit_ind = np.argmax(fg.get_params('error'))
 
 # Extract this model fit from the group
-fm = fg.get_fooof(worst_fit_ind, regenerate=True)
+fm = fg.get_model(worst_fit_ind, regenerate=True)
 
 ###################################################################################################
 
@@ -319,7 +319,7 @@ fm.plot()
 
 ###################################################################################################
 #
-# You can also loop through all the results in a :class:`~fooof.FOOOFGroup`, extracting
+# You can also loop through all the results in a :class:`~specparam.SpectralGroupModel`, extracting
 # all fits that meet some criterion that makes them worth checking.
 #
 # This might be checking for fits above some error threshold, as below, but note
@@ -336,10 +336,10 @@ error_threshold = 0.010
 to_check = []
 for ind, res in enumerate(fg):
     if res.error > error_threshold:
-        to_check.append(fg.get_fooof(ind, regenerate=True))
+        to_check.append(fg.get_model(ind, regenerate=True))
 
 # A more condensed version of the procedure above can be written like this:
-#to_check = [fg.get_fooof(ind, True) for ind, res in enumerate(fg) if res.error > error_threshold]
+#to_check = [fg.get_model(ind, True) for ind, res in enumerate(fg) if res.error > error_threshold]
 
 ###################################################################################################
 
@@ -377,14 +377,14 @@ print('Average number of fit peaks: ', np.mean(fg.n_peaks_))
 ###################################################################################################
 
 # Print out instructions to report bad fits
-#  Note you can also call this from FOOOFGroup, and from instances (ex: `fm.print_report_issue()`)
-FOOOF.print_report_issue()
+#  Note you can also call this from SpectralGroupModel, and from instances (ex: `fm.print_report_issue()`)
+SpectralModel.print_report_issue()
 
 ###################################################################################################
 # Conclusion
 # ----------
 #
 # We have now stepped through the full work-flow of fitting power spectrum models, using
-# FOOOF objects, picking settings, and troubleshooting model fits. In the next
-# and final tutorial, we will introduce how to start analyzing FOOOF results.
+# model objects, picking settings, and troubleshooting model fits. In the next
+# and final tutorial, we will introduce how to start analyzing model results.
 #

@@ -21,12 +21,12 @@ from sphinx_gallery.sorting import FileNameSortKey, ExplicitOrder
 # -- Project information -----------------------------------------------------
 
 # Set project information
-project = 'fooof'
+project = 'specparam'
 copyright = '2018-{}, VoytekLab'.format(date.today().year)
 author = 'Thomas Donoghue'
 
 # Get and set the current version number
-from fooof import __version__
+from specparam import __version__
 version = __version__
 release = version
 
@@ -137,8 +137,8 @@ sphinx_gallery_conf = {
     'within_subsection_order': FileNameSortKey,
     'default_thumb_file': 'img/spectrum.png',
     'backreferences_dir': 'generated',   # Where to drop linking files between examples & API
-    'doc_module': ('fooof',),
-    'reference_url': {'fooof': None},
+    'doc_module': ('specparam',),
+    'reference_url': {'specparam': None},
     'remove_config_comments': True,
 }
 

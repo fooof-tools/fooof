@@ -18,24 +18,24 @@ and track how outcome measures relate to changes in the power spectra.
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Import the FOOOF object
-from fooof import FOOOF
+# Import the model object
+from specparam import SpectralModel
 
 # Import simulation utilities to create example data
-from fooof.sim.gen import gen_power_spectrum
+from specparam.sim import sim_power_spectrum
 
 # Import functions that can transform power spectra
-from fooof.sim.transform import (rotate_spectrum, translate_spectrum,
+from specparam.sim.transform import (rotate_spectrum, translate_spectrum,
                                  rotate_sim_spectrum, translate_sim_spectrum,
                                  compute_rotation_offset, compute_rotation_frequency)
 
 # Import plot function to visualize power spectra
-from fooof.plts.spectra import plot_spectra
+from specparam.plts.spectra import plot_spectra
 
 ###################################################################################################
 
-# Generate a simulated power spectrum
-freqs, powers, params = gen_power_spectrum([3, 40], [1, 1], [10, 0.5, 1],
+# Simulate a power spectrum
+freqs, powers, params = sim_power_spectrum([3, 40], [1, 1], [10, 0.5, 1],
                                            return_params=True)
 
 ###################################################################################################
@@ -68,9 +68,9 @@ plot_spectra(freqs, [powers, r_powers], log_freqs=True, log_powers=True)
 
 ###################################################################################################
 
-# Initialize FOOOF objects
-fm1 = FOOOF(verbose=False)
-fm2 = FOOOF(verbose=False)
+# Initialize model objects
+fm1 = SpectralModel(verbose=False)
+fm2 = SpectralModel(verbose=False)
 
 # Fit power spectrum models to the original, and rotated, spectrum
 fm1.fit(freqs, powers)
@@ -171,14 +171,14 @@ print(t_params)
 
 ###################################################################################################
 
-# Create a baseline power spectrum
-freqs, powers = gen_power_spectrum([3, 50], [0, 1.5], [10, 0.3, 0.5], nlv=0)
+# Simulate a baseline power spectrum
+freqs, powers = sim_power_spectrum([3, 50], [0, 1.5], [10, 0.3, 0.5], nlv=0)
 
 ###################################################################################################
 
 # Initialize some power spectrum models for checking our transformations
-fm1 = FOOOF(verbose=False)
-fm2 = FOOOF(verbose=False)
+fm1 = SpectralModel(verbose=False)
+fm2 = SpectralModel(verbose=False)
 
 ###################################################################################################
 # Rotate at the Same Rotation Frequencies

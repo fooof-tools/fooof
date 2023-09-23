@@ -5,7 +5,7 @@ sphinx_bootstrap_theme
 numpydoc
 sphinx-copybutton
 
-# Optional fooof dependencies that are required for documentation
+# Optional dependencies that are required for documentation
 matplotlib
 tqdm
 

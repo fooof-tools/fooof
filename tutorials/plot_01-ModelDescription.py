@@ -16,7 +16,7 @@ A description of and introduction to the power spectrum model.
 #
 # Keep in mind as you go, that if you want more information that describes, motivates, and
 # justifies our modeling approach, you can also check out the associated
-# `paper <https://www.biorxiv.org/content/early/2018/04/11/299859>`_,
+# `paper <https://doi.org/10.1038/s41593-020-00744-x>`_,
 # and/or the
 # `motivations <https://fooof-tools.github.io/fooof/auto_tutorials/index.html>`_
 # section of the site.
@@ -38,28 +38,28 @@ A description of and introduction to the power spectrum model.
 # sphinx_gallery_thumbnail_number = 5
 
 # Import required code for visualizing example models
-from fooof import FOOOF
-from fooof.sim.gen import gen_power_spectrum
-from fooof.sim.utils import set_random_seed
-from fooof.plts.spectra import plot_spectra
-from fooof.plts.annotate import plot_annotated_model
+from specparam import SpectralModel
+from specparam.sim import sim_power_spectrum
+from specparam.sim.utils import set_random_seed
+from specparam.plts.spectra import plot_spectra
+from specparam.plts.annotate import plot_annotated_model
 
 ###################################################################################################
 
-# Set random seed, for consistency generating simulated data
+# Set random seed, for consistency simulating data
 set_random_seed(21)
 
 # Simulate example power spectra
-freqs1, powers1 = gen_power_spectrum([3, 40], [1, 1],
+freqs1, powers1 = sim_power_spectrum([3, 40], [1, 1],
                                      [[10, 0.2, 1.25], [30, 0.15, 2]])
-freqs2, powers2 = gen_power_spectrum([1, 150], [1, 125, 1.25],
+freqs2, powers2 = sim_power_spectrum([1, 150], [1, 125, 1.25],
                                      [[8, 0.15, 1.], [30, 0.1, 2]])
 
 ###################################################################################################
 
 # Initialize power spectrum model objects and fit the power spectra
-fm1 = FOOOF(min_peak_height=0.05, verbose=False)
-fm2 = FOOOF(min_peak_height=0.05, aperiodic_mode='knee', verbose=False)
+fm1 = SpectralModel(min_peak_height=0.05, verbose=False)
+fm2 = SpectralModel(min_peak_height=0.05, aperiodic_mode='knee', verbose=False)
 fm1.fit(freqs1, powers1)
 fm2.fit(freqs2, powers2)
 
@@ -395,7 +395,7 @@ plot_annotated_model(fm2, plt_log=True)
 #   `center frequency`, `power` and `bandwidth` of putative periodic activity
 #
 # For more technical details on the model formulation and fitting process, check out the
-# `paper <https://www.biorxiv.org/content/early/2018/04/11/299859>`_.
+# `paper <https://doi.org/10.1038/s41593-020-00744-x>`_.
 #
 # In the next tutorial, we will start to use this model.
 #

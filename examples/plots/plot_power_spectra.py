@@ -11,11 +11,11 @@ Visualizing power spectra.
 import matplotlib.pyplot as plt
 
 # Import plotting functions
-from fooof.plts.spectra import plot_spectra, plot_spectra_shading
+from specparam.plts.spectra import plot_spectra, plot_spectra_shading
 
 # Import simulation utilities for creating test data
-from fooof.sim.gen import gen_power_spectrum, gen_group_power_spectra
-from fooof.sim.params import param_iter, Stepper
+from specparam.sim import sim_power_spectrum, sim_group_power_spectra
+from specparam.sim.params import param_iter, Stepper
 
 ###################################################################################################
 # Plotting Power Spectra
@@ -24,8 +24,8 @@ from fooof.sim.params import param_iter, Stepper
 # The module also includes a plotting sub-module that includes several plotting
 # options for visualizing power spectra.
 #
-# These plot functions overlap with what is accessible directly through the FOOOF objects,
-# as the :meth:`~fooof.FOOOF.plot` method. There are extra functions in the module, and
+# These plot functions overlap with what is accessible directly through the model objects,
+# as the :meth:`~specparam.SpectralModel.plot` method. There are extra functions in the module, and
 # extra functionality available in the plotting module.
 #
 # Note that the plots in the module are all built using matplotlib. They all allow for
@@ -49,8 +49,8 @@ ap_2 = [0.25, 1]
 peaks = [[6, 0.2, 1], [10, 0.3, 1], [25, 0.15, 3]]
 
 # Simulate two example power spectra
-freqs, powers1 = gen_power_spectrum(freq_range, ap_1, peaks)
-freqs, powers2 = gen_power_spectrum(freq_range, ap_2, peaks)
+freqs, powers1 = sim_power_spectrum(freq_range, ap_1, peaks)
+freqs, powers2 = sim_power_spectrum(freq_range, ap_2, peaks)
 
 ###################################################################################################
 # Plotting Individual Power Spectra
@@ -86,7 +86,7 @@ plot_spectra(freqs, powers1, log_powers=True)
 ###################################################################################################
 
 # Plot multiple spectra on the same plot, in log-log space, specifying some labels
-labels = ['PSD-1', 'PSD-2']
+labels = ['SpectralModel-1', 'SpectralModel-2']
 plot_spectra(freqs, [powers1, powers2], log_freqs=True, log_powers=True, labels=labels)
 
 ###################################################################################################
@@ -142,12 +142,12 @@ freq_range = [3, 30]
 ap_params = [1, 1]
 
 # Simulate a single 10 Hz centered alpha
-freqs_al10, powers_al10 = gen_power_spectrum(freq_range, ap_params,
+freqs_al10, powers_al10 = sim_power_spectrum(freq_range, ap_params,
                                              [10, 0.25, 1], nlv=0)
 
 # Simulate spectra stepping across alpha center frequency
 cf_steps = Stepper(8, 12.5, 0.5)
-freqs_al, powers_al = gen_group_power_spectra(len(cf_steps), freq_range, ap_params,
+freqs_al, powers_al = sim_group_power_spectra(len(cf_steps), freq_range, ap_params,
                                               param_iter([cf_steps, 0.25, 1]))
 
 ###################################################################################################

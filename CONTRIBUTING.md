@@ -1,6 +1,6 @@
 # Contributing Guidelines
 
-Thank you for your interest in contributing to `fooof`!
+Thank you for your interest in contributing to `specparam`!
 
 We welcome all contributions to the project that extend or improve code and/or documentation!
 
@@ -55,7 +55,7 @@ and see if there is anything you would be interested in helping with. If so, joi
 
 All contributions must be within the scope of the module.
 
-`fooof` is a module for parameterizing neural power spectra. This includes model fitting, management and analysis of resulting parameters, and utilities to visualize power spectra and model results. This module also includes functionality to simulate power spectra based on the model.
+`specparam` is a module for parameterizing neural power spectra. This includes model fitting, management and analysis of resulting parameters, and utilities to visualize power spectra and model results. This module also includes functionality to simulate power spectra based on the model.
 
 Procedures and utilities that do not deal with operating upon power spectra or on model outputs will most likely be considered out of scope. Notably, this model does not include doing spectral estimation or time-domain analysis. For approaches such as these, the [neurodsp](https://github.com/neurodsp-tools/neurodsp/) module may be a more appropriate target.
 
@@ -120,8 +120,8 @@ All code contributed to the module should follow these conventions:
         * If a new approach is added, a new tutorial or example may be appropriate
     * To build and check the documentation locally:
         * Install the requirements for the docsite (`pip install -r requirements-doc.txt`)
-        * Move to the `fooof/doc` directory (`cd doc`)
+        * Move to the `specparam/doc` directory (`cd doc`)
         * Run `make html` to create a local copy of the documentation website
-        * The documentation can then be opened in a web browser by opening the file `fooof/doc/_build/html/index.html`
+        * The documentation can then be opened in a web browser by opening the file `specparam/doc/_build/html/index.html`
 
 For more guidelines on how to write well formated and organized code, check out the [Python API Checklist](http://python.apichecklist.com).

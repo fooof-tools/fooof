@@ -30,7 +30,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import the Bands object, for managing frequency band definitions
-from fooof.bands import Bands
+from specparam.bands import Bands
 
 # Imports from NeuroDSP to simulate & plot time series
 from neurodsp.sim import sim_powerlaw, set_random_seed
@@ -63,7 +63,7 @@ s_rate = 1000
 n_seconds = 4
 times = create_times(n_seconds, s_rate)
 
-# Set random seed, for consistency generating simulated data
+# Set random seed, for consistency creating simulated data
 set_random_seed(21)
 
 ###################################################################################################
