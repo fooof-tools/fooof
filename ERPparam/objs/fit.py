@@ -97,6 +97,10 @@ class ERPparam():
         Evoked response, voltage values.
     time_range : list of [float, float]
         Time range of the signal to be fit, as [earliest_time, latest_time].
+    baseline: list of [float, float]
+        Time range of the signal from which to estimate the noise threshold at which iterative peak fitting stops (typically a pre-stimulus window).
+        Input as [earliest_time, latest_time].
+        If unspecified, the whole time window before time 0 will be used. If that cannot be found, the whole length of signal will be used.
     fs : float
         Sampling frequency.
     peak_params_ : 2d array
@@ -132,7 +136,7 @@ class ERPparam():
     """
     # pylint: disable=attribute-defined-outside-init
 
-    def __init__(self, signal=None, time=None, time_range=None, peak_width_limits=(0.01, 10), max_n_peaks=np.inf, 
+    def __init__(self, signal=None, time=None, time_range=None, baseline=None, peak_width_limits=(0.01, 10), max_n_peaks=np.inf, 
                  peak_threshold=2.0, min_peak_height=0.0, verbose=True):
         
         self.peak_width_limits = peak_width_limits
@@ -170,7 +174,7 @@ class ERPparam():
 
         # If user inputs data upon initialization, then populate these, but AFTER we've run _reset_data_results()
         if time is not None and signal is not None:
-            self.add_data(time, signal, time_range)
+            self.add_data(time, signal, time_range, baseline)
 
 
     @property
@@ -255,7 +259,7 @@ class ERPparam():
             self._peak_fit = None
 
 
-    def add_data(self, time, signal, time_range=None, clear_results=True):
+    def add_data(self, time, signal, time_range=None, baseline=None, clear_results=True):
         """Add data (time, and signal values) to the current object.
 
         Parameters
@@ -283,8 +287,8 @@ class ERPparam():
         self._reset_data_results(clear_time=self.has_data,
                                 clear_signal=self.has_data,
                                 clear_results=self.has_model and clear_results)
-        self.time, self.signal, self.time_range, self.fs, self.time_res = \
-            self._prepare_data(time, signal, time_range, signal_dim=1) 
+        self.time, self.signal, self.time_range, self.baseline_signal, self.baseline, self.uncropped_signal, self.uncropped_time, self.fs, self.time_res = \
+            self._prepare_data(time, signal, time_range, baseline, signal_dim=1) 
 
 
     def add_settings(self, ERPparam_settings):
@@ -334,7 +338,7 @@ class ERPparam():
         self._check_loaded_results(ERPparam_result._asdict())
 
 
-    def report(self, time=None, signal=None, time_range=None, **plot_kwargs):
+    def report(self, time=None, signal=None, time_range=None, baseline=None, **plot_kwargs):
         """Run model fit, and display a report, which includes a plot, 
         and printed results.
 
@@ -347,6 +351,10 @@ class ERPparam():
         time_range : list of [float, float], optional
             Desired time range to fit the model to.
             If not provided, fits across the entire given range.
+        baseline : list of [float, float], optional
+            Time range to use as noise floor for iterative fitting.
+            If not provided, the prestimulus window is used. If that cannot be identified,
+            the whole signal is used.
         **plot_kwargs
             Keyword arguments to pass into the plot method.
 
@@ -355,16 +363,12 @@ class ERPparam():
         Data is optional, if data has already been added to the object.
         """
 
-        # If time & signal provided together, add data to object.
-        if time is not None and signal is not None:
-            self.add_data(time, signal)
-
-        self.fit(self.time, self.signal, time_range=time_range)
+        self.fit(time, signal, time_range=time_range, baseline=baseline)
         self.plot(**plot_kwargs)
         self.print_results(concise=False)
 
 
-    def fit(self, time=None, signal=None, time_range=None):
+    def fit(self, time=None, signal=None, time_range=None, baseline=None):
         """Fit the signal as a combination of periodic components (Gaussian peaks).
 
         Parameters
@@ -375,7 +379,11 @@ class ERPparam():
             voltage values, which must be input.
         time_range : list of [float, float], optional
             Time range to restrict signal to. If not provided, keeps the entire range.
-
+        baseline: list of [float, float]
+            Time range of the signal from which to estimate the noise threshold at which iterative peak fitting stops (typically a pre-stimulus window).
+            Input as [earliest_time, latest_time].
+            If unspecified, the whole time window before time 0 will be used. If that cannot be found, the whole length of signal will be used.
+            
         Raises
         ------
         NoDataError
@@ -390,7 +398,7 @@ class ERPparam():
 
         # If time & signal provided together, add data to object.
         if time is not None and signal is not None:
-            self.add_data(time, signal, time_range)
+            self.add_data(time, signal, time_range, baseline)
 
         # If signal provided alone, add to object
         #   Note: be careful passing in power_spectrum data like this:
@@ -762,7 +770,8 @@ class ERPparam():
             max_height = iter_signal[max_ind]
 
             # Stop searching for peaks once height drops below height threshold
-            if np.abs(max_height) <= self.peak_threshold * np.std(self.signal):
+            # where height threshold is set by the baseline period
+            if np.abs(max_height) <= self.peak_threshold * np.std(self.baseline_signal):
                 break
 
             # Set the guess parameters for gaussian fitting, specifying the mean and height
@@ -1135,7 +1144,7 @@ class ERPparam():
             raise ValueError(msg)
 
 
-    def _prepare_data(self, time, signal, time_range=None, signal_dim=1):
+    def _prepare_data(self, time, signal, time_range=None, baseline=None, signal_dim=1):
         """Prepare input data for adding to current object.
 
         Parameters
@@ -1185,6 +1194,21 @@ class ERPparam():
         if signal.dtype != 'float64':
             signal = signal.astype('float64')
 
+        # get the baseline period, if the user did not specify one
+        if baseline == None:
+            # if the user did not specify a baseline window, take all timepoints
+            # before zero to be the baseline
+            if len(time[time<0]) > 1:
+                baseline = [time.min(), 0]
+            # if the time vector doesn't have a clear pre-stimulus window, use the length of the whole
+            # signal as the baseline
+            else: 
+                baseline = [time.min(), time.max()]
+        _, baseline_signal = trim_spectrum(time, signal, baseline)
+
+        # get the uncropped signal, for later plotting 
+        uncropped_signal = signal
+        uncropped_time = time
         # Check time range, trim the signal range if requested
         if time_range:
             time, signal = trim_spectrum(time, signal, time_range)
@@ -1209,7 +1233,7 @@ class ERPparam():
                              "This will cause the fitting to yield NaNs. ")
                 raise DataError(error_msg)
             
-        return time, signal, time_range, fs, time_res
+        return time, signal, time_range, baseline_signal, baseline, uncropped_signal, uncropped_time, fs, time_res
 
 
     def _add_from_dict(self, data):
