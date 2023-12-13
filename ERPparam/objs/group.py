@@ -191,7 +191,7 @@ class ERPparamGroup(ERPparam):
         self.group_results = [[]] * length
 
 
-    def _add_data(self, time, signals, time_range):
+    def _add_data(self, time, signals, time_range, baseline):
         """Add data (frequencies and power spectrum values) to the current object.
 
         Parameters
@@ -215,8 +215,9 @@ class ERPparamGroup(ERPparam):
             self._reset_data_results(True, True, True, True)
             self._reset_group_results()
 
-        #output of prepare data: time, signal, time_range, fs, time-res
-        self.time, self.signals, self.time_range, self.fs, self.time_res = self._prepare_data(time=time, signal=signals, time_range=time_range, signal_dim=2)
+        #output of prepare data: time, signal, time_range, baseline_signal, baseline, uncropped signal, uncropped time, fs, time-res
+        self.time, self.signals, self.time_range, self.baseline_signal, self.baseline, self.uncropped_signals, self.uncropped_time, self.fs, self.time_res \
+            = self._prepare_data(time=time, signal=signals, time_range=time_range, baseline=baseline, signal_dim=2)
 
 
     def report(self, time=None, signals=None, time_range=None, n_jobs=1, progress=None):
@@ -247,7 +248,7 @@ class ERPparamGroup(ERPparam):
         self.print_results(False)
 
 
-    def fit(self,  time=None, signals=None, time_range=None, n_jobs=1, progress=None):
+    def fit(self,  time=None, signals=None, time_range=None, baseline=None, n_jobs=1, progress=None):
         """Fit a group of power spectra.
 
         Parameters
@@ -270,7 +271,7 @@ class ERPparamGroup(ERPparam):
         """
         # If times & power spectra provided together, add data to object
         if time is not None and signals is not None:
-            self._add_data(time, signals, time_range)
+            self._add_data(time, signals, time_range, baseline)
 
         # If 'verbose', print out a marker of what is being run
         if self.verbose and not progress:
@@ -489,7 +490,7 @@ class ERPparamGroup(ERPparam):
         # Add data for specified single power spectrum, if available
         #   The power spectrum is inverted back to linear, as it is re-logged when added to ERPparam
         if self.has_data:
-            fm.add_data(self.time, self.signals[ind])
+            fm.add_data(self.uncropped_time, self.uncropped_signals[ind], self.time_range, self.baseline)
         # If no power spectrum data available, copy over data information & regenerate times
         else:
             fm.add_meta_data(self.get_meta_data())
@@ -523,15 +524,14 @@ class ERPparamGroup(ERPparam):
         # Initialize a new ERPparamGroup object, with same settings as current ERPparamGroup
         fg = ERPparamGroup(**self.get_settings(), verbose=self.verbose)
 
-        # Add data for specified power spectra, if available
-        #   The power spectra are inverted back to linear, as they are re-logged when added to ERPparam
+        # Add data for specified ERPs, if available
         if self.has_data:
-            fg._add_data(self.time, self.signals[inds, :], self.time_range)
-        # If no power spectrum data available, copy over data information & regenerate times
+            fg._add_data(self.uncropped_time, self.uncropped_signals[inds, :], self.time_range, self.baseline)
+        # If no data available, copy over data information & regenerate times
         else:
             fg.add_meta_data(self.get_meta_data())
 
-        # Add results for specified power spectra
+        # Add results for specified ERPs
         fg.group_results = [self.group_results[ind] for ind in inds]
 
         return fg
