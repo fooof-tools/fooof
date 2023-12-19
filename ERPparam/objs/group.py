@@ -285,7 +285,6 @@ class ERPparamGroup(ERPparam):
             self._reset_group_results(len(self.signals))
             for ind, signal in \
                 _progress(enumerate(signals), progress, len(self)):
-                print(time.shape, signal.shape)
                 self._fit(time=time, signal=signal, time_range=time_range)
                 self.group_results[ind] = self._get_results()
 
