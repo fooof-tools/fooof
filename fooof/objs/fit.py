@@ -1109,7 +1109,7 @@ class FOOOF():
         
         # compute adjusted r-squared
         n = len(self.power_spectrum) # number of data points
-        k = len(self.peak_params_) * 3 + 2 # number of parameters
+        k = len(self.peak_params_) * 3 + len(self.aperiodic_params_) # number of parameters
         self.adj_r_squared_ = 1 - (1 - self.r_squared_) * (n - 1) / (n - k - 1)
 
 
