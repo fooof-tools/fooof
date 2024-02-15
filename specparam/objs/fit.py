@@ -5,7 +5,7 @@ import numpy as np
 from specparam.core.utils import unlog
 from specparam.core.funcs import infer_ap_func
 from specparam.core.utils import check_array_dim
-
+from specparam.objs.modes import AP_MODES, PE_MODES
 from specparam.data import FitResults, ModelSettings
 from specparam.core.items import OBJ_DESC
 
@@ -20,8 +20,14 @@ class BaseFit():
                  verbose=True, error_metric='MAE'):
 
         # Set fit component modes
-        self.aperiodic_mode = aperiodic_mode
-        self.periodic_mode = periodic_mode
+        if isinstance(aperiodic_mode, str):
+            self.aperiodic_mode = AP_MODES[aperiodic_mode]
+        else:
+            self.aperiodic_mode = aperiodic_mode
+        if isinstance(periodic_mode, str):
+            self.periodic_mode = PE_MODES[periodic_mode]
+        else:
+            self.periodic_mode = periodic_mode
 
         # Set run modes
         self.set_debug_mode(debug_mode)
