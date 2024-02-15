@@ -26,7 +26,9 @@ Spectral Parameterization
 .. _Paper: https://doi.org/10.1038/s41593-020-00744-x
 
 
-Spectral parameterization is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
+Spectral parameterization (`specparam`, formerly `fooof`) is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
+
+WARNING: this Github repository has been updated to a major update / breaking change from the current release of the `fooof` module, and is no longer consistent with the `fooof` version of the code.
 
 Overview
 --------
