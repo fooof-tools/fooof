@@ -64,7 +64,7 @@ tests:
 # Run test coverage
 coverage:
 	@printf "\n\nRUN TESTS: \n"
-	@coverage run --source $(MODULE) -m py.test
+	@coverage run --source $(MODULE) -m pytest
 	@printf "\n\nCHECK COVERAGE: \n"
 	@coverage report --omit="*/tests*"
 
