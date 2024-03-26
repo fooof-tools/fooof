@@ -15,11 +15,15 @@ from specparam.core.modutils import docs_get_section, replace_docstring_sections
 AVG_FUNCS = {
     'mean' : np.mean,
     'median' : np.median,
+    'nanmean' : np.nanmean,
+    'nanmedian' : np.nanmedian,
 }
 
 DISPERSION_FUNCS = {
     'var' : np.var,
+    'nanvar' : np.nanvar,
     'std' : np.std,
+    'nanstd' : np.nanstd,
     'sem' : sem,
 }
 

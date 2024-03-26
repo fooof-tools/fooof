@@ -289,7 +289,7 @@ def plot_params_over_time(times, params, labels=None, title=None, colors=None,
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_param_over_time_yshade(times, param, average='mean', shade='std', scale=1.,
+def plot_param_over_time_yshade(times, param, average='nanmean', shade='nanstd', scale=1.,
                                 color=None, ax=None, **plot_kwargs):
     """Plot parameter over time with y-axis shading.
 
