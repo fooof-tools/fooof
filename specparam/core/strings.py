@@ -4,7 +4,7 @@ import numpy as np
 
 from specparam.core.errors import NoModelError
 from specparam.data.utils import get_periodic_labels
-from specparam.utils.data import compute_presence
+from specparam.utils.data import compute_arr_desc, compute_presence
 from specparam.version import __version__ as MODULE_VERSION
 
 ###################################################################################################
@@ -384,10 +384,10 @@ def gen_group_results_str(group, concise=False):
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
-                        .format(np.nanmin(kns), np.nanmax(kns), np.nanmean(kns)),
+                        .format(*compute_arr_desc(kns)),
                        ] if group.aperiodic_mode == 'knee'],
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(exps), np.nanmax(exps), np.nanmean(exps)),
+        .format(*compute_arr_desc(exps)),
         '',
 
         # Peak Parameters
@@ -398,9 +398,9 @@ def gen_group_results_str(group, concise=False):
         # Goodness if fit
         'Goodness of fit metrics:',
         '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(r2s), np.nanmax(r2s), np.nanmean(r2s)),
+        .format(*compute_arr_desc(r2s)),
         'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(errors), np.nanmax(errors), np.nanmean(errors)),
+        .format(*compute_arr_desc(errors)),
         '',
 
         # Footer
@@ -469,14 +469,11 @@ def gen_time_results_str(time_model, concise=False):
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
-                        .format(np.nanmin(time_model.time_results['knee'] if has_knee else 0),
-                                np.nanmax(time_model.time_results['knee'] if has_knee else 0),
-                                np.nanmean(time_model.time_results['knee'] if has_knee else 0)),
+                        .format(*compute_arr_desc(time_model.time_results['knee']) \
+                            if has_knee else [0, 0, 0]),
                        ] if has_knee],
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(time_model.time_results['exponent']),
-                np.nanmax(time_model.time_results['exponent']),
-                np.nanmean(time_model.time_results['exponent'])),
+        .format(*compute_arr_desc(time_model.time_results['exponent'])),
         '',
 
         # Periodic parameters
@@ -486,21 +483,16 @@ def gen_time_results_str(time_model, concise=False):
             np.nanmean(time_model.time_results[pe_labels['cf'][ind]]),
             np.nanmean(time_model.time_results[pe_labels['pw'][ind]]),
             np.nanmean(time_model.time_results[pe_labels['bw'][ind]]),
-            100 * sum(~np.isnan(time_model.time_results[pe_labels['cf'][ind]])) \
-                / len(time_model.time_results[pe_labels['cf'][ind]])) \
+            compute_presence(time_model.time_results[pe_labels['cf'][ind]]))
                 for ind, label in enumerate(band_labels)],
         '',
 
         # Goodness if fit
         'Goodness of fit (mean values across windows):',
         '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(time_model.time_results['r_squared']),
-                np.nanmax(time_model.time_results['r_squared']),
-                np.nanmean(time_model.time_results['r_squared'])),
+        .format(*compute_arr_desc(time_model.time_results['r_squared'])),
         'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(time_model.time_results['error']),
-                np.nanmax(time_model.time_results['error']),
-                np.nanmean(time_model.time_results['error'])),
+        .format(*compute_arr_desc(time_model.time_results['error'])),
         '',
 
         # Footer
@@ -567,17 +559,11 @@ def gen_event_results_str(event_model, concise=False):
         '',
         'Aperiodic params (values across events):',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
-                        .format(np.nanmin(np.mean(event_model.event_time_results['knee'], 1) \
-                                    if has_knee else 0),
-                                np.nanmax(np.mean(event_model.event_time_results['knee'], 1) \
-                                    if has_knee else 0),
-                                np.nanmean(np.mean(event_model.event_time_results['knee'], 1) \
-                                    if has_knee else 0)),
+                        .format(*compute_arr_desc(np.mean(event_model.event_time_results['knee'], 1) \
+                            if has_knee else [0, 0, 0])),
                        ] if has_knee],
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(np.mean(event_model.event_time_results['exponent'], 1)),
-                np.nanmax(np.mean(event_model.event_time_results['exponent'], 1)),
-                np.nanmean(np.mean(event_model.event_time_results['exponent'], 1))),
+        .format(*compute_arr_desc(np.mean(event_model.event_time_results['exponent'], 1))),
         '',
 
         # Periodic parameters
@@ -587,21 +573,18 @@ def gen_event_results_str(event_model, concise=False):
             np.nanmean(event_model.event_time_results[pe_labels['cf'][ind]]),
             np.nanmean(event_model.event_time_results[pe_labels['pw'][ind]]),
             np.nanmean(event_model.event_time_results[pe_labels['bw'][ind]]),
-            100 * sum(sum(~np.isnan(event_model.event_time_results[pe_labels['cf'][ind]]))) \
-                / event_model.event_time_results[pe_labels['cf'][ind]].size)
+            compute_presence(event_model.event_time_results[pe_labels['cf'][ind]],
+                             average=True, output='percent'))
                 for ind, label in enumerate(band_labels)],
         '',
 
         # Goodness if fit
         'Goodness of fit (values across events):',
         '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(np.mean(event_model.event_time_results['r_squared'], 1)),
-                np.nanmax(np.mean(event_model.event_time_results['r_squared'], 1)),
-                np.nanmean(np.mean(event_model.event_time_results['r_squared'], 1))),
+        .format(*compute_arr_desc(np.mean(event_model.event_time_results['r_squared'], 1))),
+
         'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(np.mean(event_model.event_time_results['error'], 1)),
-                np.nanmax(np.mean(event_model.event_time_results['error'], 1)),
-                np.nanmean(np.mean(event_model.event_time_results['error'], 1))),
+        .format(*compute_arr_desc(np.mean(event_model.event_time_results['error'], 1))),
         '',
 
         # Footer
