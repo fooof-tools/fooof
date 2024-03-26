@@ -84,6 +84,46 @@ def compute_dispersion(data, dispersion='std'):
     return dispersion_data
 
 
+def compute_presence(data, average=False, output='ratio'):
+    """Compute data presence (as number of non-NaN values) from an array of data.
+
+    Parameters
+    ----------
+    data : 1d or 2d array
+        Data array to check presence of.
+    average : bool, optional, default: False
+        Whether to average across . Only used for 2d array inputs.
+        If False, for 2d array, the output is an array matching the length of the 0th dimension of the input.
+        If True, for 2d arrays, the output is a single value averaged across the whole array.
+    output : {'ratio', 'percent'}
+        Representation for the output:
+            'ratio' - ratio value, between 0.0, 1.0.
+            'percent' - percent value, betweeon 0-100%.
+
+    Returns
+    -------
+    presence : float or array of float
+        The computed presence in the given array.
+    """
+
+    assert output in ['ratio', 'percent'], 'Setting for output type not understood.'
+
+    if data.ndim == 1:
+        presence = sum(~np.isnan(data)) / len(data)
+
+    elif data.ndim == 2:
+        if average:
+            presence = compute_presence(data.flatten())
+        else:
+            n_events, n_windows = data.shape
+            presence = np.sum(~np.isnan(data), 0) / (np.ones(n_windows) * n_events)
+
+    if output == 'percent':
+        presence *= 100
+
+    return presence
+
+
 def trim_spectrum(freqs, power_spectra, f_range):
     """Extract a frequency range from power spectra.
 

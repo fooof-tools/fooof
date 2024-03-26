@@ -48,6 +48,23 @@ def test_compute_dispersion():
     assert isinstance(out4, np.ndarray)
     assert np.array_equal(out4, out2)
 
+def test_compute_presence():
+
+    data1_full = np.array([0, 1, 2, 3, 4])
+    data1_nan = np.array([0, np.nan, 2, 3, np.nan])
+    assert compute_presence(data1_full) == 1.0
+    assert compute_presence(data1_nan) == 0.6
+    assert compute_presence(data1_nan, output='percent') == 60.0
+
+    data2_full = np.array([[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]])
+    data2_nan = np.array([[0, np.nan, 2, 3, np.nan], [np.nan, 6, 7, 8, np.nan]])
+    assert np.array_equal(compute_presence(data2_full), np.array([1.0, 1.0, 1.0, 1.0, 1.0]))
+    assert np.array_equal(compute_presence(data2_nan), np.array([0.5, 0.5, 1.0, 1.0, 0.0]))
+    assert np.array_equal(compute_presence(data2_nan, output='percent'),
+                          np.array([50.0, 50.0, 100.0, 100.0, 0.0]))
+    assert compute_presence(data2_full, average=True) == 1.0
+    assert compute_presence(data2_nan, average=True) == 0.6
+
 def test_trim_spectrum():
 
     f_in = np.array([0., 1., 2., 3., 4., 5.])
