@@ -208,7 +208,7 @@ def gen_methods_report_str(concise=False):
         '',
 
         # Methods report information
-        'To report on using spectral parameterization, you should report (at minimum):',
+        'Reports using spectral parameterization should include (at minimum):',
         '',
         '- the code version that was used',
         '- the algorithm settings that were used',
