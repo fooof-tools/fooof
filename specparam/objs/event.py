@@ -325,8 +325,9 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
         Parameters
         ----------
-        event_inds, window_inds : array_like of int or array_like of bool
+        event_inds, window_inds : array_like of int or array_like of bool or None
             Indices to extract from the object, for event and time windows.
+            If None, selects all available indices.
         output_type : {'time', 'group'}, optional
             Type of model object to extract:
                 'event' : SpectralTimeEventObject
@@ -383,6 +384,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
             self._reset_data_results(clear_spectra=True)
 
         return output
+
 
     def print_results(self, concise=False):
         """Print out SpectralTimeEventModel results.
