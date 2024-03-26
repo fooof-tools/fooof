@@ -11,9 +11,14 @@ def test_get_band_peak(tfm):
 
     assert np.all(get_band_peak(tfm, (8, 12)))
 
-def test_get_band_peak_group(tfg):
+def test_get_band_peak_group(tfg, tft):
 
     assert np.all(get_band_peak_group(tfg, (8, 12)))
+    assert np.all(get_band_peak_group(tft, (8, 12)))
+
+def test_get_band_peak_event(tfe):
+
+    assert np.all(get_band_peak_event(tfe, (8, 12)))
 
 def test_get_band_peak_group_arr():
 

@@ -166,6 +166,7 @@ The following functions take in model objects directly, which is the typical use
 
     get_band_peak
     get_band_peak_group
+    get_band_peak_event
 
 **Array Inputs**
 
