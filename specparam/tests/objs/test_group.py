@@ -219,7 +219,7 @@ def test_save_model_report(tfg):
     file_name = 'test_group_model_report'
     tfg.save_model_report(0, file_name, TEST_REPORTS_PATH)
 
-    assert os.path.exists(os.path.join(TEST_REPORTS_PATH, file_name + '.pdf'))
+    assert os.path.exists(TEST_REPORTS_PATH / (file_name + '.pdf'))
 
 def test_get_results(tfg):
     """Check get results method."""
