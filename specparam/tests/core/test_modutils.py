@@ -39,6 +39,20 @@ def test_docs_drop_param(tdocstring):
     assert 'first' not in out
     assert 'second' in out
 
+def test_docs_replace_param(tdocstring):
+
+    new_param = 'updated : other\n        This description has been dropped in.'
+
+    ndocstring = docs_replace_param(tdocstring, 'first', new_param)
+    assert 'updated' in ndocstring
+    assert 'first' not in ndocstring
+    assert 'second' in ndocstring
+
+    ndocstring = docs_replace_param(tdocstring, 'second', new_param)
+    assert 'updated' in ndocstring
+    assert 'first' in ndocstring
+    assert 'second' not in ndocstring
+
 def test_docs_append_to_section(tdocstring):
 
     section = 'Parameters'
