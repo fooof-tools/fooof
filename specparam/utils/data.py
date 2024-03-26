@@ -120,6 +120,31 @@ def compute_presence(data, average=False, output='ratio'):
     return presence
 
 
+def compute_arr_desc(data):
+    """Compute descriptive measures of an array of data.
+
+    Parameters
+    ----------
+    data : array
+        Array of numeric data.
+
+    Returns
+    -------
+    min_val : float
+        Minimum value of the array.
+    max_val : float
+        Maximum value of the array.
+    mean_val : float
+        Mean value of the array.
+    """
+
+    min_val = np.nanmin(data)
+    max_val = np.nanmax(data)
+    mean_val = np.nanmean(data)
+
+    return min_val, max_val, mean_val
+
+
 def trim_spectrum(freqs, power_spectra, f_range):
     """Extract a frequency range from power spectra.
 

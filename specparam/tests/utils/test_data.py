@@ -65,6 +65,18 @@ def test_compute_presence():
     assert compute_presence(data2_full, average=True) == 1.0
     assert compute_presence(data2_nan, average=True) == 0.6
 
+def test_compute_arr_desc():
+
+    data1_full = np.array([1., 2., 3., 4., 5.])
+    minv, maxv, meanv = compute_arr_desc(data1_full)
+    for val in [minv, maxv, meanv]:
+        assert isinstance(val, float)
+
+    data1_nan = np.array([np.nan, 2., 3., np.nan, 5.])
+    minv, maxv, meanv = compute_arr_desc(data1_nan)
+    for val in [minv, maxv, meanv]:
+        assert isinstance(val, float)
+
 def test_trim_spectrum():
 
     f_in = np.array([0., 1., 2., 3., 4., 5.])
