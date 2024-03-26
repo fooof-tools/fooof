@@ -96,6 +96,13 @@ class SpectralTimeModel(SpectralGroupModel):
             if self.has_model else None
 
 
+    @property
+    def n_time_windows(self):
+        """How many time windows are included in the model object."""
+
+        return self.spectrogram.shape[1] if self.has_data else 0
+
+
     def _reset_time_results(self):
         """Set, or reset, time results to be empty."""
 

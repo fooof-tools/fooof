@@ -54,12 +54,14 @@ def plot_event_model(event_model, **plot_kwargs):
                                figsize=plot_kwargs.pop('figsize', [10, 4 + 4 * n_bands]))
     axes = cycle(axes)
 
+    xlim = [0, time_model.n_time_windows]
+
     # 01: aperiodic params
     alabels = ['offset', 'knee', 'exponent'] if has_knee else ['offset', 'exponent']
     for alabel in alabels:
         plot_param_over_time_yshade(\
             None, event_model.event_time_results[alabel],
-            label=alabel, drop_xticks=True, add_xlabel=False,
+            label=alabel, drop_xticks=True, add_xlabel=False, xlim=xlim,
             title='Aperiodic Parameters' if alabel == 'offset' else None,
             color=PARAM_COLORS[alabel], ax=next(axes))
     next(axes).axis('off')
@@ -69,7 +71,7 @@ def plot_event_model(event_model, **plot_kwargs):
         for plabel in ['cf', 'pw', 'bw']:
             plot_param_over_time_yshade(\
                 None, event_model.event_time_results[pe_labels[plabel][band_ind]],
-                label=plabel.upper(), drop_xticks=True, add_xlabel=False,
+                label=plabel.upper(), drop_xticks=True, add_xlabel=False, xlim=xlim,
                 title='Periodic Parameters - ' + band_labels[band_ind] if plabel == 'cf' else None,
                 color=PARAM_COLORS[plabel], ax=next(axes))
         next(axes).axis('off')
@@ -81,4 +83,4 @@ def plot_event_model(event_model, **plot_kwargs):
             drop_xticks=False if glabel == 'r_squared' else True,
             add_xlabel=True if glabel == 'r_squared' else False,
             title='Goodness of Fit' if glabel == 'error' else None,
-            color=PARAM_COLORS[glabel], ax=next(axes))
+            color=PARAM_COLORS[glabel],  xlim=xlim, ax=next(axes))

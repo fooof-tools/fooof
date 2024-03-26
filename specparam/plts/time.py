@@ -52,6 +52,8 @@ def plot_time_model(time_model, **plot_kwargs):
                                figsize=plot_kwargs.pop('figsize', [10, 4 + 2 * n_bands]))
     axes = cycle(axes)
 
+    xlim = [0, time_model.n_time_windows]
+
     # 01: aperiodic parameters
     ap_params = [time_model.time_results['offset'],
                  time_model.time_results['exponent']]
@@ -63,7 +65,7 @@ def plot_time_model(time_model, **plot_kwargs):
         ap_labels.insert(1, 'Knee')
         ap_colors.insert(1, PARAM_COLORS['knee'])
 
-    plot_params_over_time(None, ap_params, labels=ap_labels, add_xlabel=False,
+    plot_params_over_time(None, ap_params, labels=ap_labels, add_xlabel=False, xlim=xlim,
                           colors=ap_colors, title='Aperiodic Parameters', ax=next(axes))
 
     # 02: periodic parameters
@@ -73,7 +75,7 @@ def plot_time_model(time_model, **plot_kwargs):
             [time_model.time_results[pe_labels['cf'][band_ind]],
              time_model.time_results[pe_labels['pw'][band_ind]],
              time_model.time_results[pe_labels['bw'][band_ind]]],
-            labels=['CF', 'PW', 'BW'], add_xlabel=False,
+            labels=['CF', 'PW', 'BW'], add_xlabel=False, xlim=xlim,
             colors=[PARAM_COLORS['cf'], PARAM_COLORS['pw'], PARAM_COLORS['bw']],
             title='Periodic Parameters - ' + band_labels[band_ind], ax=next(axes))
 
@@ -81,6 +83,6 @@ def plot_time_model(time_model, **plot_kwargs):
     plot_params_over_time(None,
                           [time_model.time_results['error'],
                            time_model.time_results['r_squared']],
-                          labels=['Error', 'R-squared'],
+                          labels=['Error', 'R-squared'], xlim=xlim,
                           colors=[PARAM_COLORS['error'], PARAM_COLORS['r_squared']],
                           title='Goodness of Fit', ax=next(axes))

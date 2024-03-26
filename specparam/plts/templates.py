@@ -190,7 +190,7 @@ def plot_yshade(x_vals, y_vals, average='mean', shade='std', scale=1., color=Non
 
 @check_dependency(plt, 'matplotlib')
 def plot_param_over_time(times, param, label=None, title=None, add_legend=True, add_xlabel=True,
-                         drop_xticks=False, ax=None, **plot_kwargs):
+                         xlim=None, drop_xticks=False, ax=None, **plot_kwargs):
     """Plot a parameter over time.
 
     Parameters
@@ -227,6 +227,9 @@ def plot_param_over_time(times, param, label=None, title=None, add_legend=True, 
 
     if drop_xticks:
         ax.set_xticks([], [])
+
+    if xlim:
+        ax.set_xlim(xlim)
 
     if label and add_legend:
         ax.legend(loc='upper left', framealpha=plot_kwargs.pop('legend_framealpha', 0.9))
