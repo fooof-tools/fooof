@@ -11,7 +11,7 @@ from multiprocessing import Pool, cpu_count
 import numpy as np
 
 from specparam.objs import SpectralModel
-from specparam.plts.group import plot_group
+from specparam.plts.group import plot_group_model
 from specparam.core.items import OBJ_DESC
 from specparam.core.utils import check_inds
 from specparam.core.errors import NoModelError
@@ -343,10 +343,11 @@ class SpectralGroupModel(SpectralModel):
         return get_group_params(self.group_results, name, col)
 
 
-    @copy_doc_func_to_method(plot_group)
+    @copy_doc_func_to_method(plot_group_model)
     def plot(self, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
 
-        plot_group(self, save_fig=save_fig, file_name=file_name, file_path=file_path, **plot_kwargs)
+        plot_group_model(self, save_fig=save_fig, file_name=file_name,
+                         file_path=file_path, **plot_kwargs)
 
 
     @copy_doc_func_to_method(save_group_report)
