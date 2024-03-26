@@ -224,7 +224,7 @@ def save_event(event, file_name, file_path=None, append=False,
 
     fg = event.get_group(None, None, 'group')
     if save_settings and not save_results and not save_data:
-        fg.save(file_name, file_path, save_settings=True)
+        fg.save(file_name, file_path, append=append, save_settings=True)
     else:
         ndigits = len(str(len(event)))
         for ind, gres in enumerate(event.event_group_results):
@@ -232,7 +232,7 @@ def save_event(event, file_name, file_path=None, append=False,
             if save_data:
                 fg.power_spectra = event.spectrograms[ind, :, :].T
             fg.save(file_name + '_{:0{ndigits}d}'.format(ind, ndigits=ndigits),
-                    file_path=file_path, save_results=save_results,
+                    file_path=file_path, append=append, save_results=save_results,
                     save_settings=save_settings, save_data=save_data)
 
 

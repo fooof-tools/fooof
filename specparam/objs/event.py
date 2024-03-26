@@ -7,6 +7,7 @@ from multiprocessing import Pool, cpu_count
 import numpy as np
 
 from specparam.objs import SpectralModel, SpectralTimeModel
+from specparam.objs.group import _progress
 from specparam.plts.event import plot_event_model
 from specparam.data.conversions import event_group_to_dict, event_group_to_dataframe, dict_to_df
 from specparam.data.utils import get_group_params, get_results_by_row, flatten_results_dict
@@ -92,14 +93,14 @@ class SpectralTimeEventModel(SpectralTimeModel):
     def has_data(self):
         """Redefine has_data marker to reflect the spectrograms attribute."""
 
-        return True if np.any(self.spectrograms) else False
+        return bool(np.any(self.spectrograms))
 
 
     @property
     def has_model(self):
         """Redefine has_model marker to reflect the event results."""
 
-        return True if self.event_group_results else False
+        return bool(self.event_group_results)
 
 
     @property
@@ -112,14 +113,14 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
     @property
     def n_events(self):
-        # ToDo: double check if we want this - I think is never used internally?
+        """How many events are included in the model object."""
 
         return len(self)
 
 
     @property
     def n_time_windows(self):
-        # ToDo: double check if we want this - I think is never used internally?
+        """How many time windows are included in the model object."""
 
         return self.spectrograms[0].shape[1] if self.has_data else 0
 
@@ -226,7 +227,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
         """
 
         # ToDo: here because of circular import - updates / refactors should fix & move
-        from specparam.objs.group import _progress
+        #from specparam.objs.group import _progress
 
         if spectrograms is not None:
             self.add_data(freqs, spectrograms, freq_range)
@@ -360,7 +361,8 @@ class SpectralTimeEventModel(SpectralTimeModel):
                 # Add results for specified power spectra - event group results
                 temp = [self.event_group_results[ei][wi] for ei in einds for wi in winds]
                 step = int(len(temp) / len(einds))
-                output.event_group_results = [temp[ind:ind+step] for ind in range(0, len(temp), step)]
+                output.event_group_results = \
+                    [temp[ind:ind+step] for ind in range(0, len(temp), step)]
 
                 # Add results for specified power spectra - event time results
                 output.event_time_results = \
