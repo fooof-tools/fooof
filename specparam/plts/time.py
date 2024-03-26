@@ -52,7 +52,7 @@ def plot_time_model(time_model, **plot_kwargs):
                                figsize=plot_kwargs.pop('figsize', [10, 4 + 2 * n_bands]))
     axes = cycle(axes)
 
-    xlim = [0, time_model.n_time_windows]
+    xlim = [0, time_model.n_time_windows - 1]
 
     # 01: aperiodic parameters
     ap_params = [time_model.time_results['offset'],

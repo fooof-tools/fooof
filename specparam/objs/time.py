@@ -33,6 +33,7 @@ def transpose_arg1(func):
 
     return decorated
 
+
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
 class SpectralTimeModel(SpectralGroupModel):
