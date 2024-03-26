@@ -226,9 +226,6 @@ class SpectralTimeEventModel(SpectralTimeModel):
         Data is optional, if data has already been added to the object.
         """
 
-        # ToDo: here because of circular import - updates / refactors should fix & move
-        #from specparam.objs.group import _progress
-
         if spectrograms is not None:
             self.add_data(freqs, spectrograms, freq_range)
 
@@ -274,7 +271,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
         null_model = SpectralModel(*self.get_settings()).get_results()
 
         drop_inds = drop_inds if isinstance(drop_inds, dict) else \
-            {eind : winds for eind, winds in zip(check_inds(drop_inds), repeat(window_inds))}
+            dict(zip(check_inds(drop_inds), repeat(window_inds)))
 
         for eind, winds in drop_inds.items():
 

@@ -3,7 +3,8 @@
 import numpy as np
 
 from specparam.core.utils import check_iter, check_flat
-from specparam.core.modutils import docs_get_section, replace_docstring_sections
+from specparam.core.modutils import (docs_get_section, replace_docstring_sections,
+                                     docs_replace_param)
 from specparam.sim.params import collect_sim_params
 from specparam.sim.gen import gen_freqs, gen_power_vals, gen_rotated_power_vals
 from specparam.sim.transform import compute_rotation_offset
@@ -259,8 +260,11 @@ def sim_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
     else:
         return freqs, powers
 
-# ToDo: need an update to docstring to replace `n_spectra` with `n_windows`
-@replace_docstring_sections(docs_get_section(sim_group_power_spectra.__doc__, 'Parameters'))
+
+@replace_docstring_sections(\
+    docs_replace_param(docs_get_section(\
+        sim_group_power_spectra.__doc__, 'Parameters'),
+        'n_spectra', 'n_windows : int\n        The number of time windows to generate.'))
 def sim_spectrogram(n_windows, freq_range, aperiodic_params, periodic_params,
                     nlvs=0.005, freq_res=0.5, f_rotation=None, return_params=False):
     """Simulate spectrogram.
