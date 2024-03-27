@@ -179,12 +179,12 @@ def save_event_report(event_model, file_name, file_path=None, add_settings=True)
     has_knee = 'knee' in event_model.event_time_results.keys()
 
     # Initialize figure, defining number of axes based on model + what is to be plotted
-    n_rows = 1 + (4 if has_knee else 3) + (n_bands * 4) + 2 + (1 if add_settings else 0)
+    n_rows = 1 + (4 if has_knee else 3) + (n_bands * 5) + 2 + (1 if add_settings else 0)
     height_ratios = [2.75] + [1] * (3 if has_knee else 2) + \
-        [0.25, 1, 1, 1] * n_bands + [0.25] + [1, 1] + ([1.5] if add_settings else [])
+        [0.25, 1, 1, 1, 1] * n_bands + [0.25] + [1, 1] + ([1.5] if add_settings else [])
     _, axes = plt.subplots(n_rows, 1,
                            gridspec_kw={'hspace' : 0.1, 'height_ratios' : height_ratios},
-                           figsize=(REPORT_FIGSIZE[0], REPORT_FIGSIZE[1] + 6))
+                           figsize=(REPORT_FIGSIZE[0], REPORT_FIGSIZE[1] + 7))
 
     # First / top: text results
     plot_text(gen_event_results_str(event_model), 0.5, 0.7, ax=axes[0])

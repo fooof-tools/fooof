@@ -30,6 +30,7 @@ PARAM_COLORS = {
     'cf' : '#acc918',
     'pw' : '#28a103',
     'bw' : '#0fd197',
+    'presence' : '#095407',
     'error' : '#940000',
     'r_squared' : '#ab7171',
 }
