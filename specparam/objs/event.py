@@ -229,6 +229,11 @@ class SpectralTimeEventModel(SpectralTimeModel):
         if spectrograms is not None:
             self.add_data(freqs, spectrograms, freq_range)
 
+        # If 'verbose', print out a marker of what is being run
+        if self.verbose and not progress:
+            print('Fitting model across {} events of {} windows.'.format(\
+                len(self.spectrograms), self.n_time_windows))
+
         if n_jobs == 1:
             self._reset_event_results(len(self.spectrograms))
             for ind, spectrogram in _progress(enumerate(self.spectrograms), progress, len(self)):
@@ -544,6 +549,17 @@ class SpectralTimeEventModel(SpectralTimeModel):
         """
 
         self.event_time_results = event_group_to_dict(self.event_group_results, peak_org)
+
+
+    def _check_width_limits(self):
+        """Check and warn about bandwidth limits / frequency resolution interaction."""
+
+        # Only check & warn on first spectrogram
+        #   This is to avoid spamming standard output for every spectrogram in the set
+        if np.all(self.spectrograms[0] == self.spectrogram):
+        #if self.power_spectra[0, 0] == self.power_spectrum[0]:
+            super()._check_width_limits()
+
 
 
 def _par_fit(spectrogram, model):
