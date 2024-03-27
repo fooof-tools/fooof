@@ -2,19 +2,38 @@
 
 from collections import OrderedDict
 
+import matplotlib.pyplot as plt
+
 ###################################################################################################
 ###################################################################################################
+
+# Define list of default plot colors
+DEFAULT_COLORS = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
 # Define default figure sizes
 PLT_FIGSIZES = {'spectral' : (8.5, 6.5),
                 'params' : (7, 6),
-                'group' : (9, 7)}
+                'group' : (9, 7),
+                'time' : (10, 2)}
 
 # Define defaults for colors for plots, based on what is plotted
 PLT_COLORS = {'data' : 'black',
               'periodic' : 'green',
               'aperiodic' : 'blue',
               'model' : 'red'}
+
+# Define defaults for colors for parameters
+PARAM_COLORS = {
+    'offset' : '#19b6e6',
+    'knee' : '#5f0e99',
+    'exponent' : '#5325e8',
+    'cf' : '#acc918',
+    'pw' : '#28a103',
+    'bw' : '#0fd197',
+    'presence' : '#095407',
+    'error' : '#940000',
+    'r_squared' : '#ab7171',
+}
 
 # Levels for scaling alpha with the number of points in scatter plots
 PLT_ALPHA_LEVELS = OrderedDict({0 : 0.50,
@@ -56,3 +75,8 @@ LABEL_SIZE = 14
 TICK_LABELSIZE = 12
 LEGEND_SIZE = 12
 LEGEND_LOC = 'best'
+
+# Define default for plot text font
+PLT_TEXT_FONT = {'family': 'monospace',
+                 'weight': 'normal',
+                 'size': 16}

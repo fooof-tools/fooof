@@ -28,7 +28,7 @@ Spectral Parameterization
 
 Spectral parameterization (`specparam`, formerly `fooof`) is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
 
-WARNING: this Github repository has been updated to a major update / breaking change from the current release of the `fooof` module, and is no longer consistent with the `fooof` version of the code.
+WARNING: this Github repository has been updated to a major update / breaking change from previous releases, which were under the `fooof` name, and now contains major breaking update for the new `specparam` version of the code. The new version is not fully released, though a test version is available (see installation instructions below).
 
 Overview
 --------
@@ -47,11 +47,39 @@ specific bands of interest and controlling for the aperiodic component.
 The model also returns a measure of this aperiodic components of the signal, allowing for measuring and
 comparison of 1/f-like components of the signal within and between subjects.
 
+specparam (upcoming version)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We are currently in the process of a major update to this tool, that includes a name changes (fooof -> specparam), and full rewrite of the code. This means that the new version will be incompatible with prior versions (in terms of the code having different names, and previous code no longer running as written), though note that the exact same procedures will be available (spectra can be fit in a way expected to give the same results), as well many new features.
+
+The new version is called `specparam` (spectral parameterization). There is a release candidate available for testing (see installation instructions).
+
+fooof (stable version)
+~~~~~~~~~~~~~~~~~~~~~~
+
+The fooof naming scheme, with most recent stable version 1.1 is the current main release, and is fully functional and stable, including everything that was introduced under the fooof name.
+
+Which version should I use?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The previous release version, fooof, is fully functional, and projects that are already using it might as well stick with that, unless any of the new functionality in specparam is particularly important. For projects that are just starting, the new specparam version may be of interest if some of the new features are of interest (e.g. time-resolved estimations), though note that as release candidates, the release are not guaranteed to be stable (future updates may make breaking changes). Note that for the same model and settings, fooof and specparam should be exactly equivalent, so in terms of outputs there should be no difference in choosing one or the other.
+
 Documentation
 -------------
 
+The `specparam` package includes a full set of code documentation.
+
+specparam (upcoming version)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To see the documentation for the candidate 2.0 release, see
+`here <https://specparam-tools.github.io/>`_.
+
+fooof (stable version)
+~~~~~~~~~~~~~~~~~~~~~~
+
 Documentation is available on the
-`documentation site <https://fooof-tools.github.io/fooof/index.html>`_.
+`documentation site <https://fooof-tools.github.io/>`_.
 
 This documentation includes:
 
@@ -73,7 +101,7 @@ This documentation includes:
 Dependencies
 ------------
 
-SpecParam is written in Python, and requires Python >= 3.6 to run.
+`specparam` is written in Python, and requires Python >= 3.7 to run.
 
 It has the following required dependencies:
 
@@ -91,6 +119,26 @@ We recommend using the `Anaconda <https://www.anaconda.com/distribution/>`_ dist
 
 Installation
 ------------
+
+specparam / fooof can be installed using pip.
+
+specparam (test version)
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+To install the current release candidate version for the new 2.0 version, you can do:
+
+.. code-block:: shell
+
+    $ pip install specparam
+
+The above will install the most recent release candidate.
+
+NOTE: specparam is currently available as a 'release candidate', meaning it is not finalized and fully released yet.
+This means it may not yet have all features that the ultimate 2.0 version will include, and things are not strictly
+guaranteed to stay the same (there may be further breaking changes in the ultimate 2.0 release).
+
+fooof (stable version)
+~~~~~~~~~~~~~~~~~~~~~~
 
 The current major release is the 1.X.X series, which is a breaking change from the prior 0.X.X series.
 
@@ -142,7 +190,7 @@ If you wish to run specparam from another language, there are a couple potential
 - a `wrapper`, which allows for running the Python code from another language
 - a `reimplementation`, which reflects a new implementation of the specparam algorithm in another language
 
-Below are listed some examples of wrappers and/or reimplementations in other languages (non-exhaustive).
+Below are listed some examples of wrappers and/or re-implementations in other languages (non-exhaustive).
 
 Matlab
 ~~~~~~

@@ -22,14 +22,9 @@ from specparam.utils.reports import methods_report_info, methods_report_text
 # sphinx_gallery_start_ignore
 # Note: this code gets hidden, but serves to create the text plot for the icon
 from specparam.core.strings import gen_methods_report_str
-from specparam.core.reports import REPORT_FONT
-import matplotlib.pyplot as plt
-text = gen_methods_report_str(concise=True)
-text = text[0:142] + '\n' + text[142:]
-_, ax = plt.subplots(figsize=(8, 3))
-ax.text(0.5, 0.5, text, REPORT_FONT, ha='center', va='center')
-ax.set_frame_on(False)
-_ = ax.set(xticks=[], yticks=[])
+from specparam.plts.templates import plot_text
+text = gen_methods_report_str()
+plot_text(text, 0.5, 0.5, figsize=(12, 3))
 # sphinx_gallery_end_ignore
 
 ###################################################################################################

@@ -85,3 +85,14 @@ def test_sim_group_power_spectra_return_params():
     assert array_equal(sp.aperiodic_params, aps)
     assert array_equal(sp.periodic_params, [pes])
     assert sp.nlv == nlv
+
+def test_sim_spectrogram():
+
+    n_windows = 3
+
+    xs, ys = sim_spectrogram(n_windows, *default_group_params())
+
+    assert np.all(xs)
+    assert np.all(ys)
+    assert ys.ndim == 2
+    assert ys.shape[1] == n_windows

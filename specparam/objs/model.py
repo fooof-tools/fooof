@@ -214,29 +214,7 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         if not self.has_model:
             raise NoModelError("No model fit results are available to extract, can not proceed.")
 
-        # If col specified as string, get mapping back to integer
-        if isinstance(col, str):
-            col = get_indices(self.aperiodic_mode)[col]
-
-        # Allow for shortcut alias, without adding `_params`
-        if name in ['aperiodic', 'peak', 'gaussian']:
-            name = name + '_params'
-
-        # Extract the request data field from object
-        out = getattr(self, name + '_')
-
-        # Periodic values can be empty arrays and if so, replace with NaN array
-        if isinstance(out, np.ndarray) and out.size == 0:
-            out = np.array([np.nan, np.nan, np.nan])
-
-        # Select out a specific column, if requested
-        if col is not None:
-
-            # Extract column, & if result is a single value in an array, unpack from array
-            out = out[col] if out.ndim == 1 else out[:, col]
-            out = out[0] if isinstance(out, np.ndarray) and out.size == 1 else out
-
-        return out
+        return get_model_params(self.get_results(), name, col)
 
 
     @copy_doc_func_to_method(plot_model)
