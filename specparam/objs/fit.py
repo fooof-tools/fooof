@@ -65,7 +65,6 @@ from scipy.optimize import curve_fit
 
 from specparam.core.utils import unlog
 from specparam.core.items import OBJ_DESC
-from specparam.core.info import get_indices
 from specparam.core.io import save_model, load_json
 from specparam.core.reports import save_model_report
 from specparam.core.modutils import copy_doc_func_to_method
@@ -79,8 +78,9 @@ from specparam.core.strings import (gen_settings_str, gen_model_results_str,
 from specparam.plts.model import plot_model
 from specparam.utils.data import trim_spectrum
 from specparam.utils.params import compute_gauss_std
-from specparam.data import FitResults, ModelRunModes, ModelSettings, SpectrumMetaData
+from specparam.data.utils import get_model_params
 from specparam.data.conversions import model_to_dataframe
+from specparam.data import FitResults, ModelRunModes, ModelSettings, SpectrumMetaData
 from specparam.sim.gen import gen_freqs, gen_aperiodic, gen_periodic, gen_model
 
 ###################################################################################################
@@ -725,29 +725,7 @@ class SpectralModel():
         if not self.has_model:
             raise NoModelError("No model fit results are available to extract, can not proceed.")
 
-        # If col specified as string, get mapping back to integer
-        if isinstance(col, str):
-            col = get_indices(self.aperiodic_mode)[col]
-
-        # Allow for shortcut alias, without adding `_params`
-        if name in ['aperiodic', 'peak', 'gaussian']:
-            name = name + '_params'
-
-        # Extract the request data field from object
-        out = getattr(self, name + '_')
-
-        # Periodic values can be empty arrays and if so, replace with NaN array
-        if isinstance(out, np.ndarray) and out.size == 0:
-            out = np.array([np.nan, np.nan, np.nan])
-
-        # Select out a specific column, if requested
-        if col is not None:
-
-            # Extract column, & if result is a single value in an array, unpack from array
-            out = out[col] if out.ndim == 1 else out[:, col]
-            out = out[0] if isinstance(out, np.ndarray) and out.size == 1 else out
-
-        return out
+        return get_model_params(self.get_results(), name, col)
 
 
     def get_results(self):
@@ -775,10 +753,9 @@ class SpectralModel():
 
 
     @copy_doc_func_to_method(save_model_report)
-    def save_report(self, file_name, file_path=None, plt_log=False,
-                    add_settings=True, **plot_kwargs):
+    def save_report(self, file_name, file_path=None, add_settings=True, **plot_kwargs):
 
-        save_model_report(self, file_name, file_path, plt_log, add_settings, **plot_kwargs)
+        save_model_report(self, file_name, file_path, add_settings, **plot_kwargs)
 
 
     @copy_doc_func_to_method(save_model)
@@ -1384,7 +1361,8 @@ class SpectralModel():
             raise DataError("Inputs are not the right dimensions.")
 
         # Check that data sizes are compatible
-        if freqs.shape[-1] != power_spectrum.shape[-1]:
+        if (spectra_dim < 3 and freqs.shape[-1] != power_spectrum.shape[-1]) or \
+            spectra_dim == 3 and freqs.shape[-1] != power_spectrum.shape[1]:
             raise InconsistentDataError("The input frequencies and power spectra "
                                         "are not consistent size.")
 

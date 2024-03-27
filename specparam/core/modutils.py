@@ -1,7 +1,8 @@
 """Utility functions & decorators for the module."""
 
-from importlib import import_module
+from copy import deepcopy
 from functools import wraps
+from importlib import import_module
 
 ###################################################################################################
 ###################################################################################################
@@ -136,6 +137,42 @@ def docs_drop_param(docstring):
         back = back[back.find('\n')+1:]
 
     return front + back
+
+
+def docs_replace_param(docstring, replace, new_param):
+    """Replace a parameter description in a docstring.
+
+    Parameters
+    ----------
+    docstring : str
+        Docstring to replace parameter description within.
+    replace : str
+        The name of the parameter to switch out.
+    new_param : str
+        The new parameter description to replace into the docstring.
+        This should be a string structured to be copied directly into the docstring.
+
+    Returns
+    -------
+    new_docstring : str
+        Update docstring, with parameter switched out.
+    """
+
+    # Take a copy to make sure to avoid any potential aliasing
+    docstring = deepcopy(docstring)
+
+    # Find the index where the param to replace is
+    p_ind = docstring.find(replace)
+
+    # Find the second newline (end of to-replace param)
+    ti = docstring[p_ind:].find('\n')
+    n_ind = docstring[p_ind + ti + 1:].find('\n')
+    end_ind = p_ind + ti + 1 + n_ind
+
+    # Reconstitute docstring, replacing specified parameter
+    new_docstring = docstring[:p_ind] + new_param + docstring[end_ind:]
+
+    return new_docstring
 
 
 def docs_append_to_section(docstring, section, add):

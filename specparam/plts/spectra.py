@@ -9,9 +9,9 @@ from inspect import isfunction
 from itertools import repeat, cycle
 
 import numpy as np
-from scipy.stats import sem
 
 from specparam.core.modutils import safe_import, check_dependency
+from specparam.plts.templates import plot_yshade
 from specparam.plts.settings import PLT_FIGSIZES
 from specparam.plts.style import style_spectrum_plot, style_plot
 from specparam.plts.utils import check_ax, add_shades, savefig, check_plot_kwargs
@@ -141,7 +141,7 @@ plot_spectrum_shading = plot_spectra_shading
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_spectra_yshade(freqs, power_spectra, shade='std', average='mean', scale=1,
+def plot_spectra_yshade(freqs, power_spectra, average='mean', shade='std', scale=1,
                         log_freqs=False, log_powers=False, color=None, label=None,
                         ax=None, **plot_kwargs):
     """Plot standard deviation or error as a shaded region around the mean spectrum.
@@ -152,10 +152,10 @@ def plot_spectra_yshade(freqs, power_spectra, shade='std', average='mean', scale
         Frequency values, to be plotted on the x-axis.
     power_spectra : 1d or 2d array
         Power values, to be plotted on the y-axis. ``shade`` must be provided if 1d.
-    shade : 'std', 'sem', 1d array or callable, optional, default: 'std'
-        Approach for shading above/below the mean spectrum.
     average : 'mean', 'median' or callable, optional, default: 'mean'
         Averaging approach for the average spectrum to plot. Only used if power_spectra is 2d.
+    shade : 'std', 'sem', 1d array or callable, optional, default: 'std'
+        Approach for shading above/below the mean spectrum.
     scale : int, optional, default: 1
         Factor to multiply the plotted shade by.
     log_freqs : bool, optional, default: False
@@ -180,39 +180,46 @@ def plot_spectra_yshade(freqs, power_spectra, shade='std', average='mean', scale
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
     grid = plot_kwargs.pop('grid', True)
 
-    # Set plot data & labels, logging if requested
     plt_freqs = np.log10(freqs) if log_freqs else freqs
     plt_powers = np.log10(power_spectra) if log_powers else power_spectra
 
-    # Organize mean spectrum to plot
-    avg_funcs = {'mean' : np.mean, 'median' : np.median}
-
-    if isinstance(average, str) and plt_powers.ndim == 2:
-        avg_powers = avg_funcs[average](plt_powers, axis=0)
-    elif isfunction(average) and plt_powers.ndim == 2:
-        avg_powers = average(plt_powers)
-    else:
-        avg_powers = plt_powers
-
-    # Plot average power spectrum
-    ax.plot(plt_freqs, avg_powers, linewidth=2.0, color=color, label=label)
-
-    # Organize shading to plot
-    shade_funcs = {'std' : np.std, 'sem' : sem}
-
-    if isinstance(shade, str):
-        shade_vals = scale * shade_funcs[shade](plt_powers, axis=0)
-    elif isfunction(shade):
-        shade_vals = scale * shade(plt_powers)
-    else:
-        shade_vals = scale * shade
-
-    upper_shade = avg_powers + shade_vals
-    lower_shade = avg_powers - shade_vals
-
-    # Plot +/- yshading around spectrum
-    alpha = plot_kwargs.pop('alpha', 0.25)
-    ax.fill_between(plt_freqs, lower_shade, upper_shade,
-                    alpha=alpha, color=color, **plot_kwargs)
+    plot_yshade(plt_freqs, plt_powers, average=average, shade=shade, scale=scale,
+                color=color, label=label, plot_function=plot_spectra,
+                ax=ax, **plot_kwargs)
 
     style_spectrum_plot(ax, log_freqs, log_powers, grid)
+
+
+@savefig
+@style_plot
+@check_dependency(plt, 'matplotlib')
+def plot_spectrogram(freqs, powers, times=None, **plot_kwargs):
+    """Plot a spectrogram.
+
+    Parameters
+    ----------
+    freqs : 1d array
+        Frequency values.
+    powers : 2d array
+        Power values for the spectrogram, organized as [n_frequencies, n_time_windows].
+    times : 1d array, optional
+        Time values for the time windows.
+    **plot_kwargs
+        Keyword arguments to pass into the ``style_plot``.
+    """
+
+    _, ax = plt.subplots(figsize=(12, 6))
+
+    n_freqs, n_times = powers.shape
+
+    ax.imshow(powers, origin='lower', **plot_kwargs)
+
+    ax.set(yticks=np.arange(0, n_freqs, 1)[freqs % 5 == 0],
+           yticklabels=freqs[freqs % 5 == 0])
+
+    if times is not None:
+        ax.set(xticks=np.arange(0, n_times, 1)[times % 10 == 0],
+               xticklabels=times[times % 10 == 0])
+
+    ax.set_xlabel('Time Windows' if times is None else 'Time (s)')
+    ax.set_ylabel('Frequency')

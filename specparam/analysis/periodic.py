@@ -30,7 +30,7 @@ def get_band_peak(model, band, select_highest=True, threshold=None,
 
     Returns
     -------
-    1d or 2d array
+    peaks : 1d or 2d array
         Peak data. Each row is a peak, as [CF, PW, BW].
 
     Examples
@@ -67,7 +67,7 @@ def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribut
 
     Returns
     -------
-    2d array
+    peaks : 2d array
         Peak data. Each row is a peak, as [CF, PW, BW].
         Each row represents an individual model from the input object.
 
@@ -99,6 +99,40 @@ def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribut
 
     return get_band_peak_group_arr(group.get_params(attribute), band, len(group),
                                    threshold, thresh_param)
+
+
+def get_band_peak_event(event, band, threshold=None, thresh_param='PW', attribute='peak_params'):
+    """Extract peaks from a band of interest from an event model object.
+
+    Parameters
+    ----------
+    event : SpectralTimeEventModel
+        Object to extract peak data from.
+    band : tuple of (float, float)
+        Frequency range for the band of interest.
+        Defined as: (lower_frequency_bound, upper_frequency_bound).
+    select_highest : bool, optional, default: True
+        Whether to return single peak (if True) or all peaks within the range found (if False).
+        If True, returns the highest power peak within the search range.
+    threshold : float, optional
+        A minimum threshold value to apply.
+    thresh_param : {'PW', 'BW'}
+        Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
+    attribute : {'peak_params', 'gaussian_params'}
+        Which attribute of peak data to extract data from.
+
+    Returns
+    -------
+    peaks : 3d array
+        Array of peak data, organized as [n_events, n_time_windows, n_peak_params].
+    """
+
+    peaks = np.zeros([event.n_events, event.n_time_windows, 3])
+    for ind in range(event.n_events):
+        peaks[ind, :, :] = get_band_peak_group(\
+            event.get_group(ind, None, 'group'), band, threshold, thresh_param, attribute)
+
+    return peaks
 
 
 def get_band_peak_group_arr(peak_params, band, n_fits, threshold=None, thresh_param='PW'):

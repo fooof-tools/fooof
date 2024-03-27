@@ -11,9 +11,8 @@ from multiprocessing import Pool, cpu_count
 import numpy as np
 
 from specparam.objs import SpectralModel
-from specparam.plts.group import plot_group
+from specparam.plts.group import plot_group_model
 from specparam.core.items import OBJ_DESC
-from specparam.core.info import get_indices
 from specparam.core.utils import check_inds
 from specparam.core.errors import NoModelError
 from specparam.core.reports import save_group_report
@@ -22,6 +21,7 @@ from specparam.core.io import save_group, load_jsonlines
 from specparam.core.modutils import (copy_doc_func_to_method, safe_import,
                                      docs_get_section, replace_docstring_sections)
 from specparam.data.conversions import group_to_dataframe
+from specparam.data.utils import get_group_params
 
 ###################################################################################################
 ###################################################################################################
@@ -94,17 +94,17 @@ class SpectralGroupModel(SpectralModel):
         return len(self.group_results)
 
 
-    def __iter__(self):
-        """Allow for iterating across the object by stepping across model fit results."""
-
-        for result in self.group_results:
-            yield result
-
-
     def __getitem__(self, index):
         """Allow for indexing into the object to select model fit results."""
 
         return self.group_results[index]
+
+
+    def __iter__(self):
+        """Allow for iterating across the object by stepping across model fit results."""
+
+        for ind in range(len(self)):
+            yield self[ind]
 
 
     @property
@@ -291,17 +291,15 @@ class SpectralGroupModel(SpectralModel):
         ----------
         inds : int or array_like of int or array_like of bool
             Indices to drop model fit results for.
-            If a boolean mask, True indicates indices to drop.
 
         Notes
         -----
         This method sets the model fits as null, and preserves the shape of the model fits.
         """
 
+        null_model = SpectralModel(*self.get_settings()).get_results()
         for ind in check_inds(inds):
-            model = self.get_model(ind)
-            model._reset_data_results(clear_results=True)
-            self.group_results[ind] = model.get_results()
+            self.group_results[ind] = null_model
 
 
     def get_results(self):
@@ -342,44 +340,14 @@ class SpectralGroupModel(SpectralModel):
         if not self.has_model:
             raise NoModelError("No model fit results are available, can not proceed.")
 
-        # Allow for shortcut alias, without adding `_params`
-        if name in ['aperiodic', 'peak', 'gaussian']:
-            name = name + '_params'
-
-        # If col specified as string, get mapping back to integer
-        if isinstance(col, str):
-            col = get_indices(self.aperiodic_mode)[col]
-        elif isinstance(col, int):
-            if col not in [0, 1, 2]:
-                raise ValueError("Input value for `col` not valid.")
-
-        # Pull out the requested data field from the group data
-        # As a special case, peak_params are pulled out in a way that appends
-        #  an extra column, indicating which model each peak comes from
-        if name in ('peak_params', 'gaussian_params'):
-
-            # Collect peak data, appending the index of the model it comes from
-            out = np.vstack([np.insert(getattr(data, name), 3, index, axis=1)
-                             for index, data in enumerate(self.group_results)])
-
-            # This updates index to grab selected column, and the last column
-            #   This last column is the 'index' column (model object source)
-            if col is not None:
-                col = [col, -1]
-        else:
-            out = np.array([getattr(data, name) for data in self.group_results])
-
-        # Select out a specific column, if requested
-        if col is not None:
-            out = out[:, col]
-
-        return out
+        return get_group_params(self.group_results, name, col)
 
 
-    @copy_doc_func_to_method(plot_group)
+    @copy_doc_func_to_method(plot_group_model)
     def plot(self, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
 
-        plot_group(self, save_fig=save_fig, file_name=file_name, file_path=file_path, **plot_kwargs)
+        plot_group_model(self, save_fig=save_fig, file_name=file_name,
+                         file_path=file_path, **plot_kwargs)
 
 
     @copy_doc_func_to_method(save_group_report)
@@ -455,17 +423,14 @@ class SpectralGroupModel(SpectralModel):
             The FitResults data loaded into a model object.
         """
 
-        # Initialize a model object, with same settings & check data mode as current object
+        # Initialize model object, with same settings, metadata, & check mode as current object
         model = SpectralModel(*self.get_settings(), verbose=self.verbose)
+        model.add_meta_data(self.get_meta_data())
         model.set_run_modes(*self.get_run_modes())
 
         # Add data for specified single power spectrum, if available
-        #   The power spectrum is inverted back to linear, as it is re-logged when added to object
         if self.has_data:
-            model.add_data(self.freqs, np.power(10, self.power_spectra[ind]))
-        # If no power spectrum data available, copy over data information & regenerate freqs
-        else:
-            model.add_meta_data(self.get_meta_data())
+            model.power_spectrum = self.power_spectra[ind]
 
         # Add results for specified power spectrum, regenerating full fit if requested
         model.add_results(self.group_results[ind])
@@ -482,7 +447,6 @@ class SpectralGroupModel(SpectralModel):
         ----------
         inds : array_like of int or array_like of bool
             Indices to extract from the object.
-            If a boolean mask, True indicates indices to select.
 
         Returns
         -------
@@ -490,23 +454,22 @@ class SpectralGroupModel(SpectralModel):
             The requested selection of results data loaded into a new group model object.
         """
 
-        # Check and convert indices encoding to list of int
-        inds = check_inds(inds)
-
         # Initialize a new model object, with same settings as current object
         group = SpectralGroupModel(*self.get_settings(), verbose=self.verbose)
+        group.add_meta_data(self.get_meta_data())
         group.set_run_modes(*self.get_run_modes())
 
-        # Add data for specified power spectra, if available
-        #   Power spectra are inverted back to linear, as they are re-logged when added to object
-        if self.has_data:
-            group.add_data(self.freqs, np.power(10, self.power_spectra[inds, :]))
-        # If no power spectrum data available, copy over data information & regenerate freqs
-        else:
-            group.add_meta_data(self.get_meta_data())
+        if inds is not None:
 
-        # Add results for specified power spectra
-        group.group_results = [self.group_results[ind] for ind in inds]
+            # Check and convert indices encoding to list of int
+            inds = check_inds(inds)
+
+            # Add data for specified power spectra, if available
+            if self.has_data:
+                group.power_spectra = self.power_spectra[inds, :]
+
+            # Add results for specified power spectra
+            group.group_results = [self.group_results[ind] for ind in inds]
 
         return group
 
@@ -523,7 +486,7 @@ class SpectralGroupModel(SpectralModel):
         print(gen_group_results_str(self, concise))
 
 
-    def save_model_report(self, index, file_name, file_path=None, plt_log=False,
+    def save_model_report(self, index, file_name, file_path=None,
                           add_settings=True, **plot_kwargs):
         """"Save out an individual model report for a specified model fit.
 
@@ -535,8 +498,6 @@ class SpectralGroupModel(SpectralModel):
             Name to give the saved out file.
         file_path : Path or str, optional
             Path to directory to save to. If None, saves to current directory.
-        plt_log : bool, optional, default: False
-            Whether or not to plot the frequency axis in log space.
         add_settings : bool, optional, default: True
             Whether to add a print out of the model settings to the end of the report.
         plot_kwargs : keyword arguments
@@ -544,7 +505,7 @@ class SpectralGroupModel(SpectralModel):
         """
 
         self.get_model(ind=index, regenerate=True).save_report(\
-            file_name, file_path, plt_log, add_settings, **plot_kwargs)
+            file_name, file_path, add_settings, **plot_kwargs)
 
 
     def to_df(self, peak_org):

@@ -283,6 +283,6 @@ fm.plot()
 # ----------
 #
 # Now we have explored fitting power spectrum models and running these fits across multiple
-# power spectra. Next we dig deeper into how to choose and tune the algorithm settings,
-# and how to troubleshoot if any of the fitting seems to go wrong.
+# power spectra. Next we will explore how to fit power spectra across time windows, and
+# across different events.
 #
