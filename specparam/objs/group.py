@@ -10,7 +10,9 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
-from specparam.objs import SpectralModel
+from specparam.objs.base import BaseObject2D
+from specparam.objs.model import SpectralModel
+from specparam.objs.algorithm import SpectralFitAlgorithm
 from specparam.plts.group import plot_group_model
 from specparam.core.items import OBJ_DESC
 from specparam.core.utils import check_inds
@@ -28,7 +30,7 @@ from specparam.data.utils import get_group_params
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-class SpectralGroupModel(SpectralModel):
+class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -76,137 +78,20 @@ class SpectralGroupModel(SpectralModel):
       `group_results` attribute. To access individual parameters of the fit, use
       the `get_params` method.
     """
-    # pylint: disable=attribute-defined-outside-init, arguments-differ
 
     def __init__(self, *args, **kwargs):
-        """Initialize object with desired settings."""
 
-        SpectralModel.__init__(self, *args, **kwargs)
+        BaseObject2D.__init__(self,
+                              aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
+                              periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
+                              debug_mode=kwargs.pop('debug_mode', 'False'),
+                              verbose=kwargs.pop('verbose', 'True'))
 
-        self.power_spectra = None
-
-        self._reset_group_results()
-
-
-    def __len__(self):
-        """Define the length of the object as the number of model fit results available."""
-
-        return len(self.group_results)
+        SpectralFitAlgorithm.__init__(self, *args, **kwargs)
 
 
-    def __getitem__(self, index):
-        """Allow for indexing into the object to select model fit results."""
-
-        return self.group_results[index]
-
-
-    def __iter__(self):
-        """Allow for iterating across the object by stepping across model fit results."""
-
-        for ind in range(len(self)):
-            yield self[ind]
-
-
-    @property
-    def has_data(self):
-        """Indicator for if the object contains data."""
-
-        return True if np.any(self.power_spectra) else False
-
-
-    @property
-    def has_model(self):
-        """Indicator for if the object contains model fits."""
-
-        return True if self.group_results else False
-
-
-    @property
-    def n_peaks_(self):
-        """How many peaks were fit for each model."""
-
-        return [res.peak_params.shape[0] for res in self] if self.has_model else None
-
-
-    @property
-    def n_null_(self):
-        """How many model fits are null."""
-
-        return sum([1 for res in self.group_results if np.isnan(res.aperiodic_params[0])]) \
-            if self.has_model else None
-
-
-    @property
-    def null_inds_(self):
-        """The indices for model fits that are null."""
-
-        return [ind for ind, res in enumerate(self.group_results) \
-            if np.isnan(res.aperiodic_params[0])] \
-            if self.has_model else None
-
-
-    def _reset_data_results(self, clear_freqs=False, clear_spectrum=False,
-                            clear_results=False, clear_spectra=False):
-        """Set, or reset, data & results attributes to empty.
-
-        Parameters
-        ----------
-        clear_freqs : bool, optional, default: False
-            Whether to clear frequency attributes.
-        clear_spectrum : bool, optional, default: False
-            Whether to clear power spectrum attribute.
-        clear_results : bool, optional, default: False
-            Whether to clear model results attributes.
-        clear_spectra : bool, optional, default: False
-            Whether to clear power spectra attribute.
-        """
-
-        super()._reset_data_results(clear_freqs, clear_spectrum, clear_results)
-        if clear_spectra:
-            self.power_spectra = None
-
-
-    def _reset_group_results(self, length=0):
-        """Set, or reset, results to be empty.
-
-        Parameters
-        ----------
-        length : int, optional, default: 0
-            Length of list of empty lists to initialize. If 0, creates a single empty list.
-        """
-
-        self.group_results = [[]] * length
-
-
-    def add_data(self, freqs, power_spectra, freq_range=None):
-        """Add data (frequencies and power spectrum values) to the current object.
-
-        Parameters
-        ----------
-        freqs : 1d array
-            Frequency values for the power spectra, in linear space.
-        power_spectra : 2d array, shape=[n_power_spectra, n_freqs]
-            Matrix of power values, in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to restrict power spectra to. If not provided, keeps the entire range.
-
-        Notes
-        -----
-        If called on an object with existing data and/or results
-        these will be cleared by this method call.
-        """
-
-        # If any data is already present, then clear data & results
-        #   This is to ensure object consistency of all data & results
-        if np.any(self.freqs):
-            self._reset_data_results(True, True, True, True)
-            self._reset_group_results()
-
-        self.freqs, self.power_spectra, self.freq_range, self.freq_res = \
-            self._prepare_data(freqs, power_spectra, freq_range, 2)
-
-
-    def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
+    def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1,
+               progress=None, **plot_kwargs):
         """Fit a group of power spectra and display a report, with a plot and printed results.
 
         Parameters
@@ -222,6 +107,8 @@ class SpectralGroupModel(SpectralModel):
             1 is no parallelization. -1 uses all available cores.
         progress : {None, 'tqdm', 'tqdm.notebook'}, optional
             Which kind of progress bar to use. If None, no progress bar is used.
+        **plot_kwargs
+            Keyword arguments to pass into the plot method.
 
         Notes
         -----
@@ -229,7 +116,7 @@ class SpectralGroupModel(SpectralModel):
         """
 
         self.fit(freqs, power_spectra, freq_range, n_jobs=n_jobs, progress=progress)
-        self.plot()
+        self.plot(**plot_kwargs)
         self.print_results(False)
 
 
@@ -302,12 +189,6 @@ class SpectralGroupModel(SpectralModel):
             self.group_results[ind] = null_model
 
 
-    def get_results(self):
-        """Return the results run across a group of power spectra."""
-
-        return self.group_results
-
-
     def get_params(self, name, col=None):
         """Return model fit parameters for specified feature(s).
 
@@ -344,10 +225,9 @@ class SpectralGroupModel(SpectralModel):
 
 
     @copy_doc_func_to_method(plot_group_model)
-    def plot(self, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
+    def plot(self, **plot_kwargs):
 
-        plot_group_model(self, save_fig=save_fig, file_name=file_name,
-                         file_path=file_path, **plot_kwargs)
+        plot_group_model(self, **plot_kwargs)
 
 
     @copy_doc_func_to_method(save_group_report)
@@ -532,11 +412,6 @@ class SpectralGroupModel(SpectralModel):
 
         super().fit(*args, **kwargs)
 
-
-    def _get_results(self):
-        """Create an alias to SpectralModel.get_results for the group object, for internal use."""
-
-        return super().get_results()
 
     def _check_width_limits(self):
         """Check and warn about bandwidth limits / frequency resolution interaction."""
