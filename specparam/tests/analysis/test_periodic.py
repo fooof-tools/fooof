@@ -11,11 +11,16 @@ def test_get_band_peak(tfm):
 
     assert np.all(get_band_peak(tfm, (8, 12)))
 
-def test_get_band_peak_group(tfg):
+def test_get_band_peak_group(tfg, tft):
 
     assert np.all(get_band_peak_group(tfg, (8, 12)))
+    assert np.all(get_band_peak_group(tft, (8, 12)))
 
-def test_get_band_peak_group():
+def test_get_band_peak_event(tfe):
+
+    assert np.all(get_band_peak_event(tfe, (8, 12)))
+
+def test_get_band_peak_group_arr():
 
     data = np.array([[10, 1, 1.8, 0], [13, 1, 2, 2], [14, 2, 4, 2]])
 
@@ -27,7 +32,7 @@ def test_get_band_peak_group():
     assert out2.shape == (3, 3)
     assert np.array_equal(out2[2, :], [14, 2, 4])
 
-def test_get_band_peak():
+def test_get_band_peak_arr():
 
     data = np.array([[10, 1, 1.8], [14, 2, 4]])
 

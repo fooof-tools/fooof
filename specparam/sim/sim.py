@@ -3,6 +3,8 @@
 import numpy as np
 
 from specparam.core.utils import check_iter, check_flat
+from specparam.core.modutils import (docs_get_section, replace_docstring_sections,
+                                     docs_replace_param)
 from specparam.sim.params import collect_sim_params
 from specparam.sim.gen import gen_freqs, gen_power_vals, gen_rotated_power_vals
 from specparam.sim.transform import compute_rotation_offset
@@ -257,3 +259,41 @@ def sim_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
         return freqs, powers, sim_params
     else:
         return freqs, powers
+
+
+@replace_docstring_sections(\
+    docs_replace_param(docs_get_section(\
+        sim_group_power_spectra.__doc__, 'Parameters'),
+        'n_spectra', 'n_windows : int\n        The number of time windows to generate.'))
+def sim_spectrogram(n_windows, freq_range, aperiodic_params, periodic_params,
+                    nlvs=0.005, freq_res=0.5, f_rotation=None, return_params=False):
+    """Simulate spectrogram.
+
+    Parameters
+    ----------
+    % copied in from `sim_group_power_spectra`
+
+    Returns
+    -------
+    freqs : 1d array
+        Frequency values, in linear spacing.
+    spectrogram : 2d array
+        Matrix of power values, in linear spacing, as [n_freqs, n_windows].
+    sim_params : list of SimParams
+        Definitions of parameters used for each spectrum. Has length of n_spectra.
+        Only returned if `return_params` is True.
+
+    Notes
+    -----
+    This function simulates spectra for the spectrogram using `sim_group_power_spectra`.
+    See `sim_group_power_spectra` for details on the parameters.
+    """
+
+    outputs = sim_group_power_spectra(n_windows, freq_range, aperiodic_params,
+                                      periodic_params, nlvs, freq_res,
+                                      f_rotation, return_params)
+
+    outputs = list(outputs)
+    outputs[1] = outputs[1].T
+
+    return outputs

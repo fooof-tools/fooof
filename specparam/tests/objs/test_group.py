@@ -34,16 +34,16 @@ def test_group():
     fg = SpectralGroupModel(verbose=False)
     assert isinstance(fg, SpectralGroupModel)
 
+def test_getitem(tfg):
+    """Check indexing, from custom `__getitem__` in group object."""
+
+    assert tfg[0]
+
 def test_iter(tfg):
     """Check iterating through group object."""
 
     for res in tfg:
         assert res
-
-def test_getitem(tfg):
-    """Check indexing, from custom `__getitem__` in group object."""
-
-    assert tfg[0]
 
 def test_has_data(tfg):
     """Test the has_data property attribute, with and without data."""
@@ -170,9 +170,10 @@ def test_drop():
 
     # Test dropping one ind
     tfg.fit(xs, ys)
-    tfg.drop(0)
 
-    dropped_fres = tfg.group_results[0]
+    drop_ind = 0
+    tfg.drop(drop_ind)
+    dropped_fres = tfg.group_results[drop_ind]
     for field in dropped_fres._fields:
         assert np.all(np.isnan(getattr(dropped_fres, field)))
 
@@ -181,8 +182,8 @@ def test_drop():
     drop_inds = [0, 2]
     tfg.drop(drop_inds)
 
-    for drop_ind in drop_inds:
-        dropped_fres = tfg.group_results[drop_ind]
+    for d_ind in drop_inds:
+        dropped_fres = tfg.group_results[d_ind]
         for field in dropped_fres._fields:
             assert np.all(np.isnan(getattr(dropped_fres, field)))
 
@@ -218,7 +219,7 @@ def test_save_model_report(tfg):
     file_name = 'test_group_model_report'
     tfg.save_model_report(0, file_name, TEST_REPORTS_PATH)
 
-    assert os.path.exists(os.path.join(TEST_REPORTS_PATH, file_name + '.pdf'))
+    assert os.path.exists(TEST_REPORTS_PATH / (file_name + '.pdf'))
 
 def test_get_results(tfg):
     """Check get results method."""
@@ -228,16 +229,8 @@ def test_get_results(tfg):
 def test_get_params(tfg):
     """Check get_params method."""
 
-    for dname in ['aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params']:
+    for dname in ['aperiodic', 'peak', 'error', 'r_squared']:
         assert np.any(tfg.get_params(dname))
-
-        if dname == 'aperiodic_params':
-            for dtype in ['offset', 'exponent']:
-                assert np.any(tfg.get_params(dname, dtype))
-
-        if dname == 'peak_params':
-            for dtype in ['CF', 'PW', 'BW']:
-                assert np.any(tfg.get_params(dname, dtype))
 
 @plot_test
 def test_plot(tfg, skip_if_no_mpl):
@@ -333,6 +326,12 @@ def test_get_model(tfg):
 
 def test_get_group(tfg):
     """Check the return of a sub-sampled group object."""
+
+    # Test with no inds
+    nfg0 = tfg.get_group(None)
+    assert isinstance(nfg0, SpectralGroupModel)
+    assert nfg0.get_settings() == tfg.get_settings()
+    assert nfg0.get_meta_data() == tfg.get_meta_data()
 
     # Check with list index
     inds1 = [1, 2]

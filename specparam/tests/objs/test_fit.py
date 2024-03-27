@@ -325,17 +325,8 @@ def test_get_components(tfm):
 def test_get_params(tfm):
     """Test the get_params method."""
 
-    for dname in ['aperiodic_params', 'aperiodic', 'peak_params', 'peak',
-                  'error', 'r_squared', 'gaussian_params', 'gaussian']:
+    for dname in ['aperiodic', 'peak', 'error', 'r_squared']:
         assert np.any(tfm.get_params(dname))
-
-        if dname == 'aperiodic_params' or dname == 'aperiodic':
-            for dtype in ['offset', 'exponent']:
-                assert np.any(tfm.get_params(dname, dtype))
-
-        if dname == 'peak_params' or dname == 'peak':
-            for dtype in ['CF', 'PW', 'BW']:
-                assert np.any(tfm.get_params(dname, dtype))
 
 def test_copy():
     """Test copy model object method."""

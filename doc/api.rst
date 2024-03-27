@@ -40,6 +40,17 @@ The SpectralGroupModel object allows for parameterizing groups of power spectra.
 
    SpectralGroupModel
 
+Time & Event Objects
+~~~~~~~~~~~~~~~~~~~~
+
+The time & event objects allows for parameterizing power spectra organized across time and/or events.
+
+.. autosummary::
+   :toctree: generated/
+
+   SpectralTimeModel
+   SpectralTimeEventModel
+
 Object Utilities
 ~~~~~~~~~~~~~~~~
 
@@ -155,6 +166,7 @@ The following functions take in model objects directly, which is the typical use
 
     get_band_peak
     get_band_peak_group
+    get_band_peak_event
 
 **Array Inputs**
 
@@ -178,7 +190,7 @@ Code & utilities for simulating power spectra.
 Generate Power Spectra
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Functions for simulating neural power spectra.
+Functions for simulating neural power spectra and spectrograms.
 
 .. currentmodule:: specparam.sim
 
@@ -187,6 +199,7 @@ Functions for simulating neural power spectra.
 
     sim_power_spectrum
     sim_group_power_spectra
+    sim_spectrogram
 
 Manage Parameters
 ~~~~~~~~~~~~~~~~~
@@ -242,7 +255,7 @@ Visualizations.
 Plot Power Spectra
 ~~~~~~~~~~~~~~~~~~
 
-Plots for visualizing power spectra.
+Plots for visualizing power spectra and spectrograms.
 
 .. currentmodule:: specparam.plts
 
@@ -250,6 +263,7 @@ Plots for visualizing power spectra.
     :toctree: generated/
 
     plot_spectra
+    plot_spectrogram
 
 Plots for plotting power spectra with shaded regions.
 
@@ -311,7 +325,21 @@ Note that these are the same plotting functions that can be called from the mode
 .. autosummary::
     :toctree: generated/
 
-    plot_group
+    plot_group_model
+
+.. currentmodule:: specparam.plts.time
+
+.. autosummary::
+    :toctree: generated/
+
+    plot_time_model
+
+.. currentmodule:: specparam.plts.event
+
+.. autosummary::
+    :toctree: generated/
+
+    plot_event_model
 
 Annotated Plots
 ~~~~~~~~~~~~~~~
@@ -388,7 +416,9 @@ Input / Output (IO)
     :toctree: generated/
 
     load_model
-    load_group
+    load_group_model
+    load_time_model
+    load_event_model
 
 Methods Reports
 ~~~~~~~~~~~~~~~
