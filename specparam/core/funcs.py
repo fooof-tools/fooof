@@ -38,6 +38,29 @@ def gaussian_function(xs, *params):
 
     return ys
 
+def lorentzian_function(xs, *params):
+    """Lorentzian fitting function.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define a lorentzian function.
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for lorentzian function.
+    """
+    
+    ys = np.zeros_like(xs)
+
+    for ctr, hgt, wid in zip(*[iter(params)] * 3):
+
+        ys = hgt*wid**2/((xs-ctr)**2+wid**2)
+
+    return ys
 
 def expo_function(xs, *params):
     """Exponential fitting function, for fitting aperiodic component with a 'knee'.
@@ -138,7 +161,7 @@ def get_pe_func(periodic_mode):
 
     Parameters
     ----------
-    periodic_mode : {'gaussian'}
+    periodic_mode : {'gaussian','lorentzian'}
         Which periodic fitting function to return.
 
     Returns
@@ -155,6 +178,10 @@ def get_pe_func(periodic_mode):
 
     if periodic_mode == 'gaussian':
         pe_func = gaussian_function
+
+    elif periodic_mode == 'lorentzian':
+        pe_func = lorentzian_function
+
     else:
         raise ValueError("Requested periodic mode not understood.")
 
