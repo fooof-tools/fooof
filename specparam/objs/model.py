@@ -17,6 +17,7 @@ from specparam.core.modutils import copy_doc_func_to_method
 from specparam.core.errors import NoModelError
 from specparam.core.strings import gen_settings_str, gen_model_results_str, gen_issue_str
 from specparam.plts.model import plot_model
+from specparam.data.utils import get_model_params
 from specparam.data.conversions import model_to_dataframe
 from specparam.sim.gen import gen_model
 
@@ -229,10 +230,9 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
 
 
     @copy_doc_func_to_method(save_model_report)
-    def save_report(self, file_name, file_path=None, plt_log=False,
-                    add_settings=True, **plot_kwargs):
+    def save_report(self, file_name, file_path=None, add_settings=True, **plot_kwargs):
 
-        save_model_report(self, file_name, file_path, plt_log, add_settings, **plot_kwargs)
+        save_model_report(self, file_name, file_path, add_settings, **plot_kwargs)
 
 
     @copy_doc_func_to_method(save_model)
