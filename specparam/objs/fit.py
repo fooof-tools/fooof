@@ -1,13 +1,16 @@
 """Define base fit objects."""
 
+from functools import partial
+from multiprocessing import Pool, cpu_count
+
 import numpy as np
 
 from specparam.core.utils import unlog
 from specparam.core.funcs import infer_ap_func
 from specparam.core.utils import check_array_dim
-
 from specparam.data import FitResults, ModelSettings
 from specparam.core.items import OBJ_DESC
+from specparam.core.modutils import safe_import
 
 ###################################################################################################
 ###################################################################################################
@@ -56,8 +59,32 @@ class BaseFit():
         return self.peak_params_.shape[0] if self.has_model else None
 
 
-    def fit(self):
-        raise NotImplementedError('This method needs to be overloaded with a fit procedure!')
+    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
+        """Fit a power spectrum as a combination of periodic and aperiodic components.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the power spectrum, in linear space.
+        power_spectrum : 1d array, optional
+            Power values, which must be input in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to restrict power spectrum to.
+            If not provided, keeps the entire range.
+
+        Raises
+        ------
+        NoDataError
+            If no data is available to fit.
+        FitError
+            If model fitting fails to fit. Only raised in debug mode.
+
+        Notes
+        -----
+        Data is optional, if data has already been added to the object.
+        """
+
+        return self._fit(freqs=freqs, power_spectrum=power_spectrum, freq_range=freq_range)
 
 
     def add_settings(self, settings):
@@ -396,3 +423,126 @@ class BaseFit2D(BaseFit):
         """Create an alias to SpectralModel.get_results for the group object, for internal use."""
 
         return super().get_results()
+
+
+    def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
+        """Fit a group of power spectra.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the power_spectra, in linear space.
+        power_spectra : 2d array, shape: [n_power_spectra, n_freqs], optional
+            Matrix of power spectrum values, in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to fit the model to. If not provided, fits the entire given range.
+        n_jobs : int, optional, default: 1
+            Number of jobs to run in parallel.
+            1 is no parallelization. -1 uses all available cores.
+        progress : {None, 'tqdm', 'tqdm.notebook'}, optional
+            Which kind of progress bar to use. If None, no progress bar is used.
+
+        Notes
+        -----
+        Data is optional, if data has already been added to the object.
+        """
+
+        # If freqs & power spectra provided together, add data to object
+        if freqs is not None and power_spectra is not None:
+            self.add_data(freqs, power_spectra, freq_range)
+
+        # If 'verbose', print out a marker of what is being run
+        if self.verbose and not progress:
+            print('Fitting model across {} power spectra.'.format(len(self.power_spectra)))
+
+        # Run linearly
+        if n_jobs == 1:
+            self._reset_group_results(len(self.power_spectra))
+            for ind, power_spectrum in \
+                _progress(enumerate(self.power_spectra), progress, len(self)):
+                self._fit(power_spectrum=power_spectrum)
+                self.group_results[ind] = self._get_results()
+
+        # Run in parallel
+        else:
+            self._reset_group_results()
+            n_jobs = cpu_count() if n_jobs == -1 else n_jobs
+            with Pool(processes=n_jobs) as pool:
+                self.group_results = list(_progress(pool.imap(partial(_par_fit, group=self),
+                                                              self.power_spectra),
+                                                    progress, len(self.power_spectra)))
+
+        # Clear the individual power spectrum and fit results of the current fit
+        self._reset_data_results(clear_spectrum=True, clear_results=True)
+
+###################################################################################################
+## Helper functions for running fitting in parallel
+
+def _par_fit(power_spectrum, group):
+    """Helper function for running in parallel."""
+
+    group._fit(power_spectrum=power_spectrum)
+
+    return group._get_results()
+
+
+def _progress(iterable, progress, n_to_run):
+    """Add a progress bar to an iterable to be processed.
+
+    Parameters
+    ----------
+    iterable : list or iterable
+        Iterable object to potentially apply progress tracking to.
+    progress : {None, 'tqdm', 'tqdm.notebook'}
+        Which kind of progress bar to use. If None, no progress bar is used.
+    n_to_run : int
+        Number of jobs to complete.
+
+    Returns
+    -------
+    pbar : iterable or tqdm object
+        Iterable object, with tqdm progress functionality, if requested.
+
+    Raises
+    ------
+    ValueError
+        If the input for `progress` is not understood.
+
+    Notes
+    -----
+    The explicit `n_to_run` input is required as tqdm requires this in the parallel case.
+    The `tqdm` object that is potentially returned acts the same as the underlying iterable,
+    with the addition of printing out progress every time items are requested.
+    """
+
+    # Check progress specifier is okay
+    tqdm_options = ['tqdm', 'tqdm.notebook']
+    if progress is not None and progress not in tqdm_options:
+        raise ValueError("Progress bar option not understood.")
+
+    # Set the display text for the progress bar
+    pbar_desc = 'Running group fits.'
+
+    # Use a tqdm, progress bar, if requested
+    if progress:
+
+        # Try loading the tqdm module
+        tqdm = safe_import(progress)
+
+        if not tqdm:
+
+            # If tqdm isn't available, proceed without a progress bar
+            print(("A progress bar requiring the 'tqdm' module was requested, "
+                   "but 'tqdm' is not installed. \nProceeding without using a progress bar."))
+            pbar = iterable
+
+        else:
+
+            # If tqdm loaded, apply the progress bar to the iterable
+            pbar = tqdm.tqdm(iterable, desc=pbar_desc, total=n_to_run, dynamic_ncols=True)
+
+    # If progress is None, return the original iterable without a progress bar applied
+    else:
+        pbar = iterable
+
+    return pbar
