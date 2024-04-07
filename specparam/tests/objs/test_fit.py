@@ -63,5 +63,29 @@ def test_base_fit2d_results(tresults):
     tfit2d.add_results(results)
     assert tfit2d.has_model
     results_out = tfit2d.get_results()
-    assert isinstance(results, list)
+    assert isinstance(results_out, list)
     assert results_out == results
+
+## 2DT fit object
+
+def test_base_fit2dt():
+
+    tfit2dt1 = BaseFit2DT(None, None)
+    assert isinstance(tfit2dt1, BaseFit)
+    assert isinstance(tfit2dt1, BaseFit2D)
+    assert isinstance(tfit2dt1, BaseFit2DT)
+
+    tfit2dt2 = BaseFit2DT(aperiodic_mode='fixed', periodic_mode='gaussian')
+    assert isinstance(tfit2dt2, BaseFit2DT)
+
+def test_base_fit2d_results(tresults):
+
+    tfit2dt = BaseFit2DT(None, None)
+
+    results = [tresults, tresults]
+    tfit2dt.add_results(results)
+    tfit2dt.convert_results(None)
+
+    assert tfit2dt.has_model
+    results_out = tfit2dt.get_results()
+    assert isinstance(results_out, dict)
