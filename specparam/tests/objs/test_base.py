@@ -48,3 +48,13 @@ def test_base2d():
     tobj2d = BaseObject2D()
     assert isinstance(tobj2d, CommonBase)
     assert isinstance(tobj2d, BaseObject2D)
+    assert isinstance(tobj2d, BaseFit2D)
+    assert isinstance(tobj2d, BaseObject2D)
+
+## 2DT Base Object
+
+    tobj2dt = BaseObject2DT()
+    assert isinstance(tobj2dt, CommonBase)
+    assert isinstance(tobj2dt, BaseObject2DT)
+    assert isinstance(tobj2dt, BaseFit2DT)
+    assert isinstance(tobj2dt, BaseObject2DT)

@@ -7,8 +7,8 @@ import numpy as np
 from specparam.data import ModelRunModes
 from specparam.core.utils import unlog
 from specparam.core.items import OBJ_DESC
-from specparam.objs.fit import BaseFit, BaseFit2D
-from specparam.objs.data import BaseData, BaseData2D
+from specparam.objs.fit import BaseFit, BaseFit2D, BaseFit2DT
+from specparam.objs.data import BaseData, BaseData2D, BaseData2DT
 
 ###################################################################################################
 ###################################################################################################
@@ -220,3 +220,14 @@ class BaseObject2D(CommonBase, BaseFit2D, BaseData2D):
 
         self._reset_data(clear_freqs, clear_spectrum, clear_spectra)
         self._reset_results(clear_results)
+
+
+class BaseObject2DT(BaseObject2D, BaseFit2DT, BaseData2DT):
+    """Define Base object for fitting models to 2D data - tranpose version."""
+
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+
+        BaseObject2D.__init__(self)
+        BaseData2DT.__init__(self)
+        BaseFit2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
+                           debug_mode=debug_mode, verbose=verbose)
