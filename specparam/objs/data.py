@@ -313,3 +313,70 @@ class BaseData2D(BaseData):
         super()._reset_data(clear_freqs, clear_spectrum)
         if clear_spectra:
             self.power_spectra = None
+
+
+# FIGURE OUT WHERE TO PUT
+
+from functools import wraps
+
+def transpose_arg1(func):
+    """Decorator function to transpose the 1th argument input to a function."""
+
+    @wraps(func)
+    def decorated(*args, **kwargs):
+
+        if len(args) >= 2:
+            args = list(args)
+            args[2] = args[2].T if isinstance(args[2], np.ndarray) else args[2]
+        if 'spectrogram' in kwargs:
+            kwargs['spectrogram'] = kwargs['spectrogram'].T
+
+        return func(*args, **kwargs)
+
+    return decorated
+
+
+class BaseData2DT(BaseData2D):
+    """Base object for managing data for spectral parameterization - for 2D transposed data."""
+
+    def __init__(self):
+
+        BaseData2D.__init__(self)
+
+
+    @property
+    def spectrogram(self):
+        """Data attribute view on the power spectra, transposed to spectrogram orientation."""
+
+        return self.power_spectra.T
+
+
+    @property
+    def n_time_windows(self):
+        """How many time windows are included in the model object."""
+
+        return self.spectrogram.shape[1] if self.has_data else 0
+
+
+    @transpose_arg1
+    def add_data(self, freqs, spectrogram, freq_range=None):
+        """Add data (frequencies and spectrogram values) to the current object.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the spectrogram, in linear space.
+        spectrogram : 2d array, shape=[n_freqs, n_time_windows]
+            Matrix of power values, in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to restrict spectrogram to. If not provided, keeps the entire range.
+
+        Notes
+        -----
+        If called on an object with existing data and/or results
+        these will be cleared by this method call.
+        """
+
+        if np.any(self.freqs):
+            self._reset_time_results()
+        super().add_data(freqs, spectrogram, freq_range)
