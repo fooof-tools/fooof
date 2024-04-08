@@ -5,18 +5,12 @@ Notes
 Methods without defined docstrings import docs at runtime, from aliased external functions.
 """
 
-import numpy as np
-
 from specparam.objs.base import BaseObject2D
 from specparam.objs.model import SpectralModel
 from specparam.objs.algorithm import SpectralFitAlgorithm
 from specparam.plts.group import plot_group_model
-from specparam.core.items import OBJ_DESC
-from specparam.core.utils import check_inds
-from specparam.core.errors import NoModelError
 from specparam.core.reports import save_group_report
 from specparam.core.strings import gen_group_results_str
-from specparam.core.io import save_group, load_jsonlines
 from specparam.core.modutils import (copy_doc_func_to_method,
                                      docs_get_section, replace_docstring_sections)
 from specparam.data.conversions import group_to_dataframe

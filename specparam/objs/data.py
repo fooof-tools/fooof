@@ -1,5 +1,7 @@
 """Define base data objects."""
 
+from functools import wraps
+
 import numpy as np
 
 from specparam.sim.gen import gen_freqs
@@ -314,10 +316,6 @@ class BaseData2D(BaseData):
         if clear_spectra:
             self.power_spectra = None
 
-
-# FIGURE OUT WHERE TO PUT
-
-from functools import wraps
 
 def transpose_arg1(func):
     """Decorator function to transpose the 1th argument input to a function."""

@@ -7,7 +7,7 @@ from multiprocessing import Pool, cpu_count
 import numpy as np
 
 from specparam.objs import SpectralModel, SpectralTimeModel
-from specparam.objs.group import _progress
+from specparam.objs.fit import _progress
 from specparam.plts.event import plot_event_model
 from specparam.data.conversions import event_group_to_dict, event_group_to_dataframe, dict_to_df
 from specparam.data.utils import get_group_params, get_results_by_row, flatten_results_dict

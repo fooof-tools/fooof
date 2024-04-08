@@ -1,19 +1,14 @@
 """Time model object and associated code for fitting the model to spectrograms."""
 
-import numpy as np
-
-from specparam.objs import SpectralModel, SpectralGroupModel
+from specparam.objs import SpectralModel
+from specparam.objs.base import BaseObject2DT
+from specparam.objs.algorithm import SpectralFitAlgorithm
+from specparam.data.conversions import group_to_dataframe, dict_to_df
 from specparam.plts.time import plot_time_model
-from specparam.data.conversions import group_to_dict, group_to_dataframe, dict_to_df
-from specparam.data.utils import get_results_by_ind
-from specparam.core.utils import check_inds
 from specparam.core.reports import save_time_report
 from specparam.core.modutils import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
 from specparam.core.strings import gen_time_results_str
-
-from specparam.objs.base import BaseObject2DT
-from specparam.objs.algorithm import SpectralFitAlgorithm
 
 ###################################################################################################
 ###################################################################################################

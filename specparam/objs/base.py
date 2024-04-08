@@ -7,12 +7,12 @@ import numpy as np
 from specparam.data import ModelRunModes
 from specparam.core.utils import unlog
 from specparam.core.items import OBJ_DESC
-from specparam.objs.fit import BaseFit, BaseFit2D, BaseFit2DT
-from specparam.objs.data import BaseData, BaseData2D, BaseData2DT
-
+from specparam.core.errors import NoDataError
 from specparam.core.io import save_model, load_json
 from specparam.core.io import save_group, load_jsonlines
 from specparam.core.modutils import copy_doc_func_to_method
+from specparam.objs.fit import BaseFit, BaseFit2D, BaseFit2DT
+from specparam.objs.data import BaseData, BaseData2D, BaseData2DT
 
 ###################################################################################################
 ###################################################################################################

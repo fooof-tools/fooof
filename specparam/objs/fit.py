@@ -7,6 +7,7 @@ import numpy as np
 
 from specparam.core.utils import unlog
 from specparam.core.funcs import infer_ap_func
+from specparam.core.errors import NoModelError
 from specparam.core.utils import check_inds, check_array_dim
 from specparam.data import FitResults, ModelSettings
 from specparam.data.conversions import group_to_dict
