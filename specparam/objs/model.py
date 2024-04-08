@@ -185,7 +185,6 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         print(gen_issue_str(concise))
 
 
-
     def get_params(self, name, col=None):
         """Return model fit parameters for specified feature(s).
 
@@ -233,43 +232,6 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
     def save_report(self, file_name, file_path=None, add_settings=True, **plot_kwargs):
 
         save_model_report(self, file_name, file_path, add_settings, **plot_kwargs)
-
-
-    @copy_doc_func_to_method(save_model)
-    def save(self, file_name, file_path=None, append=False,
-             save_results=False, save_settings=False, save_data=False):
-
-        save_model(self, file_name, file_path, append, save_results, save_settings, save_data)
-
-
-    def load(self, file_name, file_path=None, regenerate=True):
-        """Load in a data file to the current object.
-
-        Parameters
-        ----------
-        file_name : str or FileObject
-            File to load data from.
-        file_path : Path or str, optional
-            Path to directory to load from. If None, loads from current directory.
-        regenerate : bool, optional, default: True
-            Whether to regenerate the model fit from the loaded data, if data is available.
-        """
-
-        # Reset data in object, so old data can't interfere
-        self._reset_data_results(True, True, True)
-
-        # Load JSON file, add to self and check loaded data
-        data = load_json(file_name, file_path)
-        self._add_from_dict(data)
-        self._check_loaded_settings(data)
-        self._check_loaded_results(data)
-
-        # Regenerate model components, based on what is available
-        if regenerate:
-            if self.freq_res:
-                self._regenerate_freqs()
-            if np.all(self.freqs) and np.all(self.aperiodic_params_):
-                self._regenerate_model()
 
 
     def to_df(self, peak_org):
