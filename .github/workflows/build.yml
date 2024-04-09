@@ -6,20 +6,16 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
 
 jobs:
   build:
 
-    # Tag ubuntu version to 20.04, in order to support python 3.6
-    #   See issue: https://github.com/actions/setup-python/issues/544
-    #   When ready to drop 3.6, can revert from 'ubuntu-20.04' -> 'ubuntu-latest'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       MODULE_NAME: specparam
     strategy:
       matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
     - uses: actions/checkout@v3

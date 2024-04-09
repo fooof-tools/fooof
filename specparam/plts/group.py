@@ -20,7 +20,7 @@ gridspec = safe_import('.gridspec', 'matplotlib')
 
 @savefig
 @check_dependency(plt, 'matplotlib')
-def plot_group(group, **plot_kwargs):
+def plot_group_model(group, **plot_kwargs):
     """Plot a figure with subplots visualizing the parameters from a group model object.
 
     Parameters

@@ -9,13 +9,12 @@ import numpy as np
 
 from specparam.objs.base import BaseObject
 from specparam.objs.algorithm import SpectralFitAlgorithm
-
-from specparam.core.io import save_model, load_json
 from specparam.core.reports import save_model_report
 from specparam.core.modutils import copy_doc_func_to_method
 from specparam.core.errors import NoModelError
 from specparam.core.strings import gen_settings_str, gen_model_results_str, gen_issue_str
 from specparam.plts.model import plot_model
+from specparam.data.utils import get_model_params
 from specparam.data.conversions import model_to_dataframe
 from specparam.sim.gen import gen_model
 
@@ -184,7 +183,6 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         print(gen_issue_str(concise))
 
 
-
     def get_params(self, name, col=None):
         """Return model fit parameters for specified feature(s).
 
@@ -214,32 +212,7 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         if not self.has_model:
             raise NoModelError("No model fit results are available to extract, can not proceed.")
 
-        # Allow for shortcut alias, without adding `_params`
-        if name in ['aperiodic', 'peak', 'gaussian']:
-            name = name + '_params'
-
-        # Extract the request data field from object
-        out = getattr(self, name + '_')
-
-        # Periodic values can be empty arrays and if so, replace with NaN array
-        if isinstance(out, np.ndarray) and out.size == 0:
-            out = np.array([np.nan, np.nan, np.nan])
-
-        # If col specified as string, get mapping back to integer
-        if isinstance(col, str):
-            if 'aperiodic' in name:
-                col = self.aperiodic_mode.param_indices[col.lower()]
-            else:
-                col = self.periodic_mode.param_indices[col.lower()]
-
-        # Select out a specific column, if requested
-        if col is not None:
-
-            # Extract column, & if result is a single value in an array, unpack from array
-            out = out[col] if out.ndim == 1 else out[:, col]
-            out = out[0] if isinstance(out, np.ndarray) and out.size == 1 else out
-
-        return out
+        return get_model_params(self.get_results(), name, col)
 
 
     @copy_doc_func_to_method(plot_model)
@@ -254,47 +227,9 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
 
 
     @copy_doc_func_to_method(save_model_report)
-    def save_report(self, file_name, file_path=None, plt_log=False,
-                    add_settings=True, **plot_kwargs):
+    def save_report(self, file_name, file_path=None, add_settings=True, **plot_kwargs):
 
-        save_model_report(self, file_name, file_path, plt_log, add_settings, **plot_kwargs)
-
-
-    @copy_doc_func_to_method(save_model)
-    def save(self, file_name, file_path=None, append=False,
-             save_results=False, save_settings=False, save_data=False):
-
-        save_model(self, file_name, file_path, append, save_results, save_settings, save_data)
-
-
-    def load(self, file_name, file_path=None, regenerate=True):
-        """Load in a data file to the current object.
-
-        Parameters
-        ----------
-        file_name : str or FileObject
-            File to load data from.
-        file_path : Path or str, optional
-            Path to directory to load from. If None, loads from current directory.
-        regenerate : bool, optional, default: True
-            Whether to regenerate the model fit from the loaded data, if data is available.
-        """
-
-        # Reset data in object, so old data can't interfere
-        self._reset_data_results(True, True, True)
-
-        # Load JSON file, add to self and check loaded data
-        data = load_json(file_name, file_path)
-        self._add_from_dict(data)
-        self._check_loaded_settings(data)
-        self._check_loaded_results(data)
-
-        # Regenerate model components, based on what is available
-        if regenerate:
-            if self.freq_res:
-                self._regenerate_freqs()
-            if np.all(self.freqs) and np.all(self.aperiodic_params_):
-                self._regenerate_model()
+        save_model_report(self, file_name, file_path, add_settings, **plot_kwargs)
 
 
     def to_df(self, peak_org):

@@ -61,7 +61,7 @@ from specparam.objs import fit_models_3d, combine_model_objs
 from specparam.sim import sim_group_power_spectra
 from specparam.sim.utils import create_freqs
 from specparam.sim.params import param_sampler
-from specparam.utils.io import load_group
+from specparam.utils.io import load_group_model
 
 ###################################################################################################
 # Example Set-Up
@@ -229,7 +229,7 @@ for ind, fg in enumerate(fgs):
 ###################################################################################################
 
 # Reload our list of SpectralGroupModels
-fgs = [load_group(file_name, file_path='results') \
+fgs = [load_group_model(file_name, file_path='results') \
     for file_name in os.listdir('results')]
 
 ###################################################################################################

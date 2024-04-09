@@ -1,5 +1,7 @@
 """Define base data objects."""
 
+from functools import wraps
+
 import numpy as np
 
 from specparam.sim.gen import gen_freqs
@@ -149,16 +151,16 @@ class BaseData():
         self.freqs = gen_freqs(self.freq_range, self.freq_res)
 
 
-    def _prepare_data(self, freqs, power_spectrum, freq_range, spectra_dim=1):
+    def _prepare_data(self, freqs, powers, freq_range, spectra_dim=1):
         """Prepare input data for adding to current object.
 
         Parameters
         ----------
         freqs : 1d array
-            Frequency values for the power_spectrum, in linear space.
-        power_spectrum : 1d or 2d array
+            Frequency values for `powers`, in linear space.
+        powers : 1d or 2d or 3d array
             Power values, which must be input in linear space.
-            1d vector, or 2d as [n_power_spectra, n_freqs].
+            1d vector, or 2d as [n_spectra, n_freqs], or 3d as [n_events, n_spectra, n_freqs].
         freq_range : list of [float, float]
             Frequency range to restrict power spectrum to.
             If None, keeps the entire range.
@@ -168,10 +170,10 @@ class BaseData():
         Returns
         -------
         freqs : 1d array
-            Frequency values for the power_spectrum, in linear space.
-        power_spectrum : 1d or 2d array
+            Frequency values for `powers`, in linear space.
+        powers : 1d or 2d or 3d array
             Power spectrum values, in log10 scale.
-            1d vector, or 2d as [n_power_specta, n_freqs].
+            1d vector, or 2d as [n_spectra, n_freqs], or 3d as [n_events, n_spectra, n_freqs].
         freq_range : list of [float, float]
             Minimum and maximum values of the frequency vector.
         freq_res : float
@@ -186,20 +188,21 @@ class BaseData():
         """
 
         # Check that data are the right types
-        if not isinstance(freqs, np.ndarray) or not isinstance(power_spectrum, np.ndarray):
+        if not isinstance(freqs, np.ndarray) or not isinstance(powers, np.ndarray):
             raise DataError("Input data must be numpy arrays.")
 
         # Check that data have the right dimensionality
-        if freqs.ndim != 1 or (power_spectrum.ndim != spectra_dim):
+        if freqs.ndim != 1 or (powers.ndim != spectra_dim):
             raise DataError("Inputs are not the right dimensions.")
 
         # Check that data sizes are compatible
-        if freqs.shape[-1] != power_spectrum.shape[-1]:
+        if (spectra_dim < 3 and freqs.shape[-1] != powers.shape[-1]) or \
+            spectra_dim == 3 and freqs.shape[-1] != powers.shape[1]:
             raise InconsistentDataError("The input frequencies and power spectra "
                                         "are not consistent size.")
 
         # Check if power values are complex
-        if np.iscomplexobj(power_spectrum):
+        if np.iscomplexobj(powers):
             raise DataError("Input power spectra are complex values. "
                             "Model fitting does not currently support complex inputs.")
 
@@ -207,17 +210,17 @@ class BaseData():
         #   If they end up as float32, or less, scipy curve_fit fails (sometimes implicitly)
         if freqs.dtype != 'float64':
             freqs = freqs.astype('float64')
-        if power_spectrum.dtype != 'float64':
-            power_spectrum = power_spectrum.astype('float64')
+        if powers.dtype != 'float64':
+            powers = powers.astype('float64')
 
-        # Check frequency range, trim the power_spectrum range if requested
+        # Check frequency range, trim the power values range if requested
         if freq_range:
-            freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, freq_range)
+            freqs, powers = trim_spectrum(freqs, powers, freq_range)
 
         # Check if freqs start at 0 and move up one value if so
         #   Aperiodic fit gets an inf if freq of 0 is included, which leads to an error
         if freqs[0] == 0.0:
-            freqs, power_spectrum = trim_spectrum(freqs, power_spectrum, [freqs[1], freqs.max()])
+            freqs, powers = trim_spectrum(freqs, powers, [freqs[1], freqs.max()])
             if self.verbose:
                 print("\nFITTING WARNING: Skipping frequency == 0, "
                       "as this causes a problem with fitting.")
@@ -227,7 +230,7 @@ class BaseData():
         freq_res = freqs[1] - freqs[0]
 
         # Log power values
-        power_spectrum = np.log10(power_spectrum)
+        powers = np.log10(powers)
 
         ## Data checks - run checks on inputs based on check modes
 
@@ -239,14 +242,14 @@ class BaseData():
                                 "The model expects equidistant frequency values in linear space.")
         if self._check_data:
             # Check if there are any infs / nans, and raise an error if so
-            if np.any(np.isinf(power_spectrum)) or np.any(np.isnan(power_spectrum)):
+            if np.any(np.isinf(powers)) or np.any(np.isnan(powers)):
                 error_msg = ("The input power spectra data, after logging, contains NaNs or Infs. "
                              "This will cause the fitting to fail. "
                              "One reason this can happen is if inputs are already logged. "
                              "Input data should be in linear spacing, not log.")
                 raise DataError(error_msg)
 
-        return freqs, power_spectrum, freq_range, freq_res
+        return freqs, powers, freq_range, freq_res
 
 
 class BaseData2D(BaseData):
@@ -313,3 +316,127 @@ class BaseData2D(BaseData):
         super()._reset_data(clear_freqs, clear_spectrum)
         if clear_spectra:
             self.power_spectra = None
+
+
+def transpose_arg1(func):
+    """Decorator function to transpose the 1th argument input to a function."""
+
+    @wraps(func)
+    def decorated(*args, **kwargs):
+
+        if len(args) >= 2:
+            args = list(args)
+            args[2] = args[2].T if isinstance(args[2], np.ndarray) else args[2]
+        if 'spectrogram' in kwargs:
+            kwargs['spectrogram'] = kwargs['spectrogram'].T
+
+        return func(*args, **kwargs)
+
+    return decorated
+
+
+class BaseData2DT(BaseData2D):
+    """Base object for managing data for spectral parameterization - for 2D transposed data."""
+
+    def __init__(self):
+
+        BaseData2D.__init__(self)
+
+
+    @property
+    def spectrogram(self):
+        """Data attribute view on the power spectra, transposed to spectrogram orientation."""
+
+        return self.power_spectra.T
+
+
+    @property
+    def n_time_windows(self):
+        """How many time windows are included in the model object."""
+
+        return self.spectrogram.shape[1] if self.has_data else 0
+
+
+    @transpose_arg1
+    def add_data(self, freqs, spectrogram, freq_range=None):
+        """Add data (frequencies and spectrogram values) to the current object.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the spectrogram, in linear space.
+        spectrogram : 2d array, shape=[n_freqs, n_time_windows]
+            Matrix of power values, in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to restrict spectrogram to. If not provided, keeps the entire range.
+
+        Notes
+        -----
+        If called on an object with existing data and/or results
+        these will be cleared by this method call.
+        """
+
+        if np.any(self.freqs):
+            self._reset_time_results()
+        super().add_data(freqs, spectrogram, freq_range)
+
+
+class BaseData3D(BaseData2DT):
+    """Base object for managing data for spectral parameterization - for 3D data."""
+
+    def __init__(self):
+
+        BaseData2DT.__init__(self)
+
+        self.spectrograms = None
+
+
+    @property
+    def has_data(self):
+        """Redefine has_data marker to reflect the spectrograms attribute."""
+
+        return bool(np.any(self.spectrograms))
+
+
+    @property
+    def n_time_windows(self):
+        """How many time windows are included in the model object."""
+
+        return self.spectrograms[0].shape[1] if self.has_data else 0
+
+
+    @property
+    def n_events(self):
+        """How many events are included in the model object."""
+
+        return len(self.spectrograms)
+
+
+    def add_data(self, freqs, spectrograms, freq_range=None):
+        """Add data (frequencies and spectrograms) to the current object.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the power spectra, in linear space.
+        spectrograms : 3d array or list of 2d array
+            Matrix of power values, in linear space.
+            If a list of 2d arrays, each should be have the same shape of [n_freqs, n_time_windows].
+            If a 3d array, should have shape [n_events, n_freqs, n_time_windows].
+        freq_range : list of [float, float], optional
+            Frequency range to restrict power spectra to. If not provided, keeps the entire range.
+        """
+
+        # If given a list of spectrograms, convert to 3d array
+        if isinstance(spectrograms, list):
+            spectrograms = np.array(spectrograms)
+
+        # If is a 3d array, add to object as spectrograms
+        if spectrograms.ndim == 3:
+
+            self.freqs, self.spectrograms, self.freq_range, self.freq_res = \
+                self._prepare_data(freqs, spectrograms, freq_range, 3)
+
+        # Otherwise, pass through 2d array to underlying object method
+        else:
+            super().add_data(freqs, spectrograms, freq_range)

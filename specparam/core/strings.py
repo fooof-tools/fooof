@@ -3,6 +3,8 @@
 import numpy as np
 
 from specparam.core.errors import NoModelError
+from specparam.data.utils import get_periodic_labels
+from specparam.utils.data import compute_arr_desc, compute_presence
 from specparam.version import __version__ as MODULE_VERSION
 
 ###################################################################################################
@@ -207,7 +209,7 @@ def gen_methods_report_str(concise=False):
         '',
 
         # Methods report information
-        'To report on using spectral parameterization, you should report (at minimum):',
+        'Reports using spectral parameterization should include (at minimum):',
         '',
         '- the code version that was used',
         '- the algorithm settings that were used',
@@ -382,10 +384,11 @@ def gen_group_results_str(group, concise=False):
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
-                        .format(np.nanmin(kns), np.nanmax(kns), np.nanmean(kns)),
-                       ] if str(group.aperiodic_mode) == 'knee'],
+                        .format(*compute_arr_desc(kns)),
+                       ] if group.aperiodic_mode == 'knee'],
+
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(exps), np.nanmax(exps), np.nanmean(exps)),
+        .format(*compute_arr_desc(exps)),
         '',
 
         # Peak Parameters
@@ -396,9 +399,193 @@ def gen_group_results_str(group, concise=False):
         # Goodness if fit
         'Goodness of fit metrics:',
         '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(r2s), np.nanmax(r2s), np.nanmean(r2s)),
+        .format(*compute_arr_desc(r2s)),
         'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(np.nanmin(errors), np.nanmax(errors), np.nanmean(errors)),
+        .format(*compute_arr_desc(errors)),
+        '',
+
+        # Footer
+        '='
+    ]
+
+    output = _format(str_lst, concise)
+
+    return output
+
+
+def gen_time_results_str(time_model, concise=False):
+    """Generate a string representation of time fit results.
+
+    Parameters
+    ----------
+    time_model : SpectralTimeModel
+        Object to access results from.
+    concise : bool, optional, default: False
+        Whether to print the report in concise mode.
+
+    Returns
+    -------
+    output : str
+        Formatted string of results.
+
+    Raises
+    ------
+    NoModelError
+        If no model fit data is available to report.
+    """
+
+    if not time_model.has_model:
+        raise NoModelError("No model fit results are available, can not proceed.")
+
+    # Get parameter information needed for printing
+    pe_labels = get_periodic_labels(time_model.time_results)
+    band_labels = [\
+        pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
+        for band_ind in range(len(pe_labels['cf']))]
+    has_knee = time_model.aperiodic_mode == 'knee'
+
+    str_lst = [
+
+        # Header
+        '=',
+        '',
+        'TIME RESULTS',
+        '',
+
+        # Group information
+        'Number of time windows fit: {}'.format(len(time_model.group_results)),
+        *[el for el in ['{} power spectra failed to fit'.format(time_model.n_null_)] \
+            if time_model.n_null_],
+        '',
+
+        # Frequency range and resolution
+        'The model was run on the frequency range {} - {} Hz'.format(
+            int(np.floor(time_model.freq_range[0])), int(np.ceil(time_model.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(time_model.freq_res),
+        '',
+
+        # Aperiodic parameters - knee fit status, and quick exponent description
+        'Power spectra were fit {} a knee.'.format(\
+            'with' if time_model.aperiodic_mode == 'knee' else 'without'),
+        '',
+        'Aperiodic Fit Values:',
+        *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
+                        .format(*compute_arr_desc(time_model.time_results['knee']) \
+                            if has_knee else [0, 0, 0]),
+                       ] if has_knee],
+        'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(*compute_arr_desc(time_model.time_results['exponent'])),
+        '',
+
+        # Periodic parameters
+        'Periodic params (mean values across windows):',
+        *['{:>6s} - CF: {:5.2f}, PW: {:5.2f}, BW: {:5.2f}, Presence: {:3.1f}%'.format(
+            label,
+            np.nanmean(time_model.time_results[pe_labels['cf'][ind]]),
+            np.nanmean(time_model.time_results[pe_labels['pw'][ind]]),
+            np.nanmean(time_model.time_results[pe_labels['bw'][ind]]),
+            compute_presence(time_model.time_results[pe_labels['cf'][ind]]))
+                for ind, label in enumerate(band_labels)],
+        '',
+
+        # Goodness if fit
+        'Goodness of fit (mean values across windows):',
+        '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(*compute_arr_desc(time_model.time_results['r_squared'])),
+        'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(*compute_arr_desc(time_model.time_results['error'])),
+        '',
+
+        # Footer
+        '='
+    ]
+
+    output = _format(str_lst, concise)
+
+    return output
+
+
+def gen_event_results_str(event_model, concise=False):
+    """Generate a string representation of event fit results.
+
+    Parameters
+    ----------
+    event_model : SpectralTimeEventModel
+        Object to access results from.
+    concise : bool, optional, default: False
+        Whether to print the report in concise mode.
+
+    Returns
+    -------
+    output : str
+        Formatted string of results.
+
+    Raises
+    ------
+    NoModelError
+        If no model fit data is available to report.
+    """
+
+    if not event_model.has_model:
+        raise NoModelError("No model fit results are available, can not proceed.")
+
+    # Extract all the relevant data for printing
+    pe_labels = get_periodic_labels(event_model.event_time_results)
+    band_labels = [\
+        pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
+        for band_ind in range(len(pe_labels['cf']))]
+    has_knee = event_model.aperiodic_mode == 'knee'
+
+    str_lst = [
+
+        # Header
+        '=',
+        '',
+        'EVENT RESULTS',
+        '',
+
+        # Group information
+        'Number of events fit: {}'.format(len(event_model.event_group_results)),
+        '',
+
+        # Frequency range and resolution
+        'The model was run on the frequency range {} - {} Hz'.format(
+            int(np.floor(event_model.freq_range[0])), int(np.ceil(event_model.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(event_model.freq_res),
+        '',
+
+        # Aperiodic parameters - knee fit status, and quick exponent description
+        'Power spectra were fit {} a knee.'.format(\
+            'with' if event_model.aperiodic_mode == 'knee' else 'without'),
+        '',
+        'Aperiodic params (values across events):',
+        *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
+                        .format(*compute_arr_desc(np.mean(event_model.event_time_results['knee'], 1) \
+                            if has_knee else [0, 0, 0])),
+                       ] if has_knee],
+        'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(*compute_arr_desc(np.mean(event_model.event_time_results['exponent'], 1))),
+        '',
+
+        # Periodic parameters
+        'Periodic params (mean values across events):',
+        *['{:>6s} - CF: {:5.2f}, PW: {:5.2f}, BW: {:5.2f}, Presence: {:3.1f}%'.format(
+            label,
+            np.nanmean(event_model.event_time_results[pe_labels['cf'][ind]]),
+            np.nanmean(event_model.event_time_results[pe_labels['pw'][ind]]),
+            np.nanmean(event_model.event_time_results[pe_labels['bw'][ind]]),
+            compute_presence(event_model.event_time_results[pe_labels['cf'][ind]],
+                             average=True, output='percent'))
+                for ind, label in enumerate(band_labels)],
+        '',
+
+        # Goodness if fit
+        'Goodness of fit (values across events):',
+        '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(*compute_arr_desc(np.mean(event_model.event_time_results['r_squared'], 1))),
+
+        'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
+        .format(*compute_arr_desc(np.mean(event_model.event_time_results['error'], 1))),
         '',
 
         # Footer

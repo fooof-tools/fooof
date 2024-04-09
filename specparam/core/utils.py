@@ -232,18 +232,19 @@ def check_flat(lst):
     return lst
 
 
-def check_inds(inds):
+def check_inds(inds, length=None):
     """Check various ways to indicate indices and convert to a consistent format.
 
     Parameters
     ----------
-    inds : int or array_like of int or array_like of bool
+    inds : int or slice or range or array_like of int or array_like of bool or None
         Indices, indicated in multiple possible ways.
+        If None, converted to slice object representing all inds.
 
     Returns
     -------
-    array of int
-        Indices, indicated
+    array of int or slice or range
+        Indices.
 
     Notes
     -----
@@ -252,16 +253,23 @@ def check_inds(inds):
     This function works only on indices defined for 1 dimension.
     """
 
+    # If inds is None, replace with slice object to get all indices
+    if inds is None:
+        inds = slice(None, None)
     # Typecasting: if a single int, convert to an array
     if isinstance(inds, int):
         inds = np.array([inds])
-    # Typecasting: if a list or range, convert to an array
-    elif isinstance(inds, (list, range)):
+    # Typecasting: if a list, convert to an array
+    if isinstance(inds, (list)):
         inds = np.array(inds)
-
     # Conversion: if array is boolean, get integer indices of True
-    if inds.dtype == bool:
+    if isinstance(inds, np.ndarray) and inds.dtype == bool:
         inds = np.where(inds)[0]
+    # If slice type, check for converting length
+    if isinstance(inds, slice):
+        if not inds.stop and length:
+            inds = range(inds.start if inds.start else 0,
+                         length, inds.step if inds.step else 1)
 
     return inds
 

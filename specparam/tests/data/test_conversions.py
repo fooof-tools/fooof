@@ -52,7 +52,7 @@ def test_group_to_dict(tresults, tbands):
     out = group_to_dict(fit_results, peak_org=tbands)
     assert isinstance(out, dict)
 
-def test_group_to_dataframe(tresults,  tbands, skip_if_no_pandas):
+def test_group_to_dataframe(tresults, tbands, skip_if_no_pandas):
 
     fit_results = [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]
 
@@ -62,3 +62,38 @@ def test_group_to_dataframe(tresults,  tbands, skip_if_no_pandas):
 
     out = group_to_dataframe(fit_results, peak_org=tbands)
     assert isinstance(out, pd.DataFrame)
+
+def test_event_group_to_dict(tresults, tbands):
+
+    fit_results = [[deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)],
+                   [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]]
+
+    for peak_org in [1, 2, 3]:
+        out = event_group_to_dict(fit_results, peak_org=peak_org)
+        assert isinstance(out, dict)
+
+    out = event_group_to_dict(fit_results, peak_org=tbands)
+    assert isinstance(out, dict)
+
+def test_event_group_to_dataframe(tresults, tbands, skip_if_no_pandas):
+
+    fit_results = [[deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)],
+                   [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]]
+
+    for peak_org in [1, 2, 3]:
+        out = event_group_to_dataframe(fit_results, peak_org=peak_org)
+        assert isinstance(out, pd.DataFrame)
+
+    out = event_group_to_dataframe(fit_results, peak_org=tbands)
+    assert isinstance(out, pd.DataFrame)
+
+def test_dict_to_df(skip_if_no_pandas):
+
+    tdict = {
+        'offset' : [0, 1, 0, 1],
+        'exponent' : [1, 2, 2, 1],
+    }
+
+    tdf = dict_to_df(tdict)
+    assert isinstance(tdf, pd.DataFrame)
+    assert list(tdict.keys()) == list(tdf.columns)

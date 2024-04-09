@@ -150,7 +150,7 @@ class Stepper():
             raise ValueError("Inputs 'start' and 'stop' should be positive values.")
 
         if (stop - start) * step < 0:
-            raise ValueError("The sign of input 'step' does not align with 'start' / 'stop' values.")
+            raise ValueError("The sign of 'step' does not align with 'start' / 'stop' values.")
 
         if start == stop:
             raise ValueError("Input 'start' and 'stop' must be different values.")
