@@ -93,3 +93,23 @@ def test_base_data2dt_add_data():
     assert tdata2dt.has_data
     assert np.all(tdata2dt.spectrogram)
     assert tdata2dt.n_time_windows
+
+## 3D Data Object
+
+def test_base_data3d():
+
+    tdata3d = BaseData3D()
+    assert tdata3d
+    assert isinstance(tdata3d, BaseData)
+    assert isinstance(tdata3d, BaseData2D)
+    assert isinstance(tdata3d, BaseData2DT)
+    assert isinstance(tdata3d, BaseData3D)
+
+def test_base_data3d_add_data():
+
+    tdata3d = BaseData3D()
+    freqs, pows = np.array([1, 2, 3]), np.array([[10, 10, 10], [20, 20, 20]]).T
+    tdata3d.add_data(freqs, np.array([pows, pows]))
+    assert tdata3d.has_data
+    assert np.all(tdata3d.spectrograms)
+    assert tdata3d.n_events
