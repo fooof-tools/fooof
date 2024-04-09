@@ -89,3 +89,28 @@ def test_base_fit2d_results(tresults):
     assert tfit2dt.has_model
     results_out = tfit2dt.get_results()
     assert isinstance(results_out, dict)
+
+## 3D fit object
+
+def test_base_fit3d():
+
+    tfit3d1 = BaseFit3D(None, None)
+    assert isinstance(tfit3d1, BaseFit)
+    assert isinstance(tfit3d1, BaseFit2D)
+    assert isinstance(tfit3d1, BaseFit2DT)
+    assert isinstance(tfit3d1, BaseFit3D)
+
+    tfit3d2 = BaseFit3D(aperiodic_mode='fixed', periodic_mode='gaussian')
+    assert isinstance(tfit3d2, BaseFit3D)
+
+def test_base_fit3d_results(tresults):
+
+    tfit3d = BaseFit3D(None, None)
+
+    eresults = [[tresults, tresults], [tresults, tresults]]
+    tfit3d.add_results(eresults)
+    tfit3d.convert_results(None)
+
+    assert tfit3d.has_model
+    results_out = tfit3d.get_results()
+    assert isinstance(results_out, dict)
