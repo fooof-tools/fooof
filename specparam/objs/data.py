@@ -10,7 +10,7 @@ from specparam.core.items import OBJ_DESC
 from specparam.core.errors import DataError, InconsistentDataError
 from specparam.data import SpectrumMetaData
 from specparam.plts.settings import PLT_COLORS
-from specparam.plts.spectra import plot_spectra
+from specparam.plts.spectra import plot_spectra, plot_spectrogram
 from specparam.plts.utils import check_plot_kwargs
 
 ###################################################################################################
@@ -381,6 +381,12 @@ class BaseData2DT(BaseData2D):
         super().add_data(freqs, spectrogram, freq_range)
 
 
+    def plot(self, **plt_kwargs):
+        """Plot the spectrogram."""
+
+        plot_spectrogram(self.freqs, self.spectrogram, **plot_kwargs)
+
+
 class BaseData3D(BaseData2DT):
     """Base object for managing data for spectral parameterization - for 3D data."""
 
@@ -440,3 +446,9 @@ class BaseData3D(BaseData2DT):
         # Otherwise, pass through 2d array to underlying object method
         else:
             super().add_data(freqs, spectrograms, freq_range)
+
+
+    def plot(self, event_ind):
+        """Plot a selected spectrogram."""
+
+        plot_spectrogram(self.freqs, self.spectrograms[event_ind, :, :], **plot_kwargs)

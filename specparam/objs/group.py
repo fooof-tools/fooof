@@ -74,8 +74,8 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
         BaseObject2D.__init__(self,
                               aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
                               periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
-                              debug_mode=kwargs.pop('debug_mode', 'False'),
-                              verbose=kwargs.pop('verbose', 'True'))
+                              debug_mode=kwargs.pop('debug_mode', False),
+                              verbose=kwargs.pop('verbose', True))
 
         SpectralFitAlgorithm.__init__(self, *args, **kwargs)
 
