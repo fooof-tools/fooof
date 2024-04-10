@@ -425,9 +425,8 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
             self.convert_results(peak_org)
 
 
-    # TO CHECK - DOES THIS GO HERE?
-    def _reset_data_results(self, clear_freqs=False, clear_spectrum=False,
-                            clear_results=False, clear_spectra=False):
+    def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False,
+                            clear_spectra=False, clear_spectrograms=False):
         """Set, or reset, data & results attributes to empty.
 
         Parameters
@@ -440,6 +439,8 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
             Whether to clear model results attributes.
         clear_spectra : bool, optional, default: False
             Whether to clear power spectra attribute.
+        clear_spectrograms : bool, optional, default: False
+            Whether to clear spectrograms attribute.
         """
 
         self._reset_data(clear_freqs, clear_spectrum, clear_spectra)

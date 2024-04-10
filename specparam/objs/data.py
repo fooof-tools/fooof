@@ -126,7 +126,7 @@ class BaseData():
 
 
     def _reset_data(self, clear_freqs=False, clear_spectrum=False):
-        """Set, or reset, data & results attributes to empty.
+        """Set, or reset, data attributes to empty.
 
         Parameters
         ----------
@@ -301,7 +301,7 @@ class BaseData2D(BaseData):
 
 
     def _reset_data(self, clear_freqs=False, clear_spectrum=False, clear_spectra=False):
-        """Set, or reset, data & results attributes to empty.
+        """Set, or reset, data attributes to empty.
 
         Parameters
         ----------
@@ -452,3 +452,24 @@ class BaseData3D(BaseData2DT):
         """Plot a selected spectrogram."""
 
         plot_spectrogram(self.freqs, self.spectrograms[event_ind, :, :], **plot_kwargs)
+
+
+    def _reset_data(self, clear_freqs=False, clear_spectrum=False,
+                    clear_spectra=False, clear_spectrograms=False):
+        """Set, or reset, data attributes to empty.
+
+        Parameters
+        ----------
+        clear_freqs : bool, optional, default: False
+            Whether to clear frequency attributes.
+        clear_spectrum : bool, optional, default: False
+            Whether to clear power spectrum attribute.
+        clear_spectra : bool, optional, default: False
+            Whether to clear power spectra attribute.
+        clear_spectrograms : bool, optional, default: False
+            Whether to clear spectrograms attribute.
+        """
+
+        super()._reset_data(clear_freqs, clear_spectrum, clear_spectra)
+        if clear_spectrograms:
+            self.spectrograms = None

@@ -194,7 +194,7 @@ class SpectralFitAlgorithm():
             self._gauss_std_limits = None
 
 
-    # Note: this currently overrides basefit - but once modes are used, this can be dropped (I think)
+    # ToCheck: this currently overrides basefit - but once modes are used, this can be dropped (I think)
     def _reset_results(self, clear_results=False):
         """Set, or reset, results attributes to empty.
 
