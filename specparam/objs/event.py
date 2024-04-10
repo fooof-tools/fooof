@@ -68,8 +68,8 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
         BaseObject3D.__init__(self,
                               aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
                               periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
-                              debug_mode=kwargs.pop('debug_mode', 'False'),
-                              verbose=kwargs.pop('verbose', 'True'))
+                              debug_mode=kwargs.pop('debug_mode', False),
+                              verbose=kwargs.pop('verbose', True))
 
         SpectralFitAlgorithm.__init__(self, *args, **kwargs)
 
@@ -222,8 +222,7 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
     def _check_width_limits(self):
         """Check and warn about bandwidth limits / frequency resolution interaction."""
 
-        # Only check & warn on first spectrogram
+        # Only check & warn on first spectrum
         #   This is to avoid spamming standard output for every spectrogram in the set
-        if np.all(self.spectrograms[0] == self.spectrogram):
-        #if self.power_spectra[0, 0] == self.power_spectrum[0]:
+        if np.all(self.power_spectrum == self.spectrograms[0, :, 0]):
             super()._check_width_limits()

@@ -339,7 +339,8 @@ class BaseResults2D(BaseResults):
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
 
-        BaseResults.__init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True)
+        BaseResults.__init__(self, aperiodic_mode, periodic_mode,
+                             debug_mode=debug_mode, verbose=verbose)
 
         self._reset_group_results()
 
@@ -615,7 +616,8 @@ class BaseResults2DT(BaseResults2D):
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
 
-        BaseResults2D.__init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True)
+        BaseResults2D.__init__(self, aperiodic_mode, periodic_mode,
+                               debug_mode=debug_mode, verbose=verbose)
 
         self._reset_time_results()
 
@@ -756,7 +758,8 @@ class BaseResults3D(BaseResults2DT):
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
 
-        BaseResults2DT.__init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True)
+        BaseResults2DT.__init__(self, aperiodic_mode, periodic_mode,
+                                debug_mode=debug_mode, verbose=verbose)
 
         self._reset_event_results()
 
