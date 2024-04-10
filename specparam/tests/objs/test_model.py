@@ -182,7 +182,7 @@ def test_load():
 
     # Test loading just results
     tfm = SpectralModel(verbose=False)
-    file_name_res = 'test_res'
+    file_name_res = 'test_model_res'
     tfm.load(file_name_res, TEST_DATA_PATH)
     # Check that result attributes get filled
     for result in OBJ_DESC['results']:
@@ -196,7 +196,7 @@ def test_load():
 
     # Test loading just settings
     tfm = SpectralModel(verbose=False)
-    file_name_set = 'test_set'
+    file_name_set = 'test_model_set'
     tfm.load(file_name_set, TEST_DATA_PATH)
     for setting in OBJ_DESC['settings']:
         assert getattr(tfm, setting) is not None
@@ -207,7 +207,7 @@ def test_load():
 
     # Test loading just data
     tfm = SpectralModel(verbose=False)
-    file_name_dat = 'test_dat'
+    file_name_dat = 'test_model_dat'
     tfm.load(file_name_dat, TEST_DATA_PATH)
     assert tfm.power_spectrum is not None
     # Test that settings and results are None
@@ -218,7 +218,7 @@ def test_load():
 
     # Test loading all elements
     tfm = SpectralModel(verbose=False)
-    file_name_all = 'test_all'
+    file_name_all = 'test_model_all'
     tfm.load(file_name_all, TEST_DATA_PATH)
     for result in OBJ_DESC['results']:
         assert not np.all(np.isnan(getattr(tfm, result)))
