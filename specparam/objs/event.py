@@ -9,7 +9,7 @@ import numpy as np
 from specparam.objs import SpectralModel
 from specparam.objs.base import BaseObject3D
 from specparam.objs.algorithm import SpectralFitAlgorithm
-from specparam.objs.fit import _progress
+from specparam.objs.results import _progress
 from specparam.plts.event import plot_event_model
 from specparam.data.conversions import event_group_to_dict, event_group_to_dataframe, dict_to_df
 from specparam.data.utils import get_group_params, get_results_by_row, flatten_results_dict

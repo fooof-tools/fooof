@@ -19,8 +19,8 @@ from specparam.core.modutils import safe_import
 ###################################################################################################
 ###################################################################################################
 
-class BaseFit():
-    """Base object for managing fit procedures."""
+class BaseResults():
+    """Base object for managing results."""
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False,
@@ -334,12 +334,12 @@ class BaseFit():
             raise ValueError(error_msg)
 
 
-class BaseFit2D(BaseFit):
-    """Base object for managing fit procedures - 2D version."""
+class BaseResults2D(BaseResults):
+    """Base object for managing results - 2D version."""
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
 
-        BaseFit.__init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True)
+        BaseResults.__init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True)
 
         self._reset_group_results()
 
@@ -610,12 +610,12 @@ class BaseFit2D(BaseFit):
         return group
 
 
-class BaseFit2DT(BaseFit2D):
-    """Base object for managing fit procedures - 2D transpose version."""
+class BaseResults2DT(BaseResults2D):
+    """Base object for managing results - 2D transpose version."""
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
 
-        BaseFit2D.__init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True)
+        BaseResults2D.__init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True)
 
         self._reset_time_results()
 
@@ -751,12 +751,12 @@ class BaseFit2DT(BaseFit2D):
         self.time_results = group_to_dict(self.group_results, peak_org)
 
 
-class BaseFit3D(BaseFit2DT):
-    """Base object for managing fit procedures - 3D version."""
+class BaseResults3D(BaseResults2DT):
+    """Base object for managing results - 3D version."""
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
 
-        BaseFit2DT.__init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True)
+        BaseResults2DT.__init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True)
 
         self._reset_event_results()
 
