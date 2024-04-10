@@ -11,7 +11,6 @@ from specparam.core.errors import NoDataError
 from specparam.core.io import (save_model, save_group, save_event,
                                load_json, load_jsonlines, get_files)
 from specparam.core.modutils import copy_doc_func_to_method
-from specparam.plts.event import plot_event_model
 from specparam.objs.results import BaseResults, BaseResults2D, BaseResults2DT, BaseResults3D
 from specparam.objs.data import BaseData, BaseData2D, BaseData2DT, BaseData3D
 
@@ -443,5 +442,5 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
             Whether to clear spectrograms attribute.
         """
 
-        self._reset_data(clear_freqs, clear_spectrum, clear_spectra)
+        self._reset_data(clear_freqs, clear_spectrum, clear_spectra, clear_spectrograms)
         self._reset_results(clear_results)

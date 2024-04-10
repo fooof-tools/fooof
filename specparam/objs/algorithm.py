@@ -45,8 +45,9 @@ class SpectralFitAlgorithm():
     _maxfev : int
         The maximum number of calls to the curve fitting function.
     _error_metric : str
-        The error metric to use for post-hoc measures of model fit error. See `_calc_error` for options.
+        The error metric to use for post-hoc measures of model fit error.
         Note: this is for checking error post fitting, not an objective function for fitting.
+        See `_calc_error` for options.
     _debug : bool
         Run mode: whether the object is set in debug mode.
         If in debug mode, an error is raised if model fitting is unsuccessful.
@@ -55,7 +56,7 @@ class SpectralFitAlgorithm():
     Attributes
     ----------
     _gauss_std_limits : list of [float, float]
-        Settings attribute: peak width limits, converted to use for gaussian standard deviation parameter.
+        Settings attribute: peak width limits, to use for gaussian standard deviation parameter.
         This attribute is computed based on `peak_width_limits` and should not be updated directly.
     _spectrum_flat : 1d array
         Data attribute: flattened power spectrum, with the aperiodic component removed.
@@ -194,7 +195,8 @@ class SpectralFitAlgorithm():
             self._gauss_std_limits = None
 
 
-    # ToCheck: this currently overrides basefit - but once modes are used, this can be dropped (I think)
+    # ToCheck: this currently overrides basefit
+    #   Once modes are used, this can be dropped (I think)
     def _reset_results(self, clear_results=False):
         """Set, or reset, results attributes to empty.
 
