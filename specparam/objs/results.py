@@ -10,6 +10,7 @@ from specparam.core.utils import unlog
 from specparam.core.funcs import infer_ap_func
 from specparam.core.errors import NoModelError
 from specparam.core.utils import check_inds, check_array_dim
+from specparam.objs.modes import AP_MODES, PE_MODES
 from specparam.data import FitResults, ModelSettings
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import get_group_params, get_results_by_ind, get_results_by_row
@@ -27,8 +28,14 @@ class BaseResults():
                  verbose=True, error_metric='MAE'):
 
         # Set fit component modes
-        self.aperiodic_mode = aperiodic_mode
-        self.periodic_mode = periodic_mode
+        if isinstance(aperiodic_mode, str):
+            self.aperiodic_mode = AP_MODES[aperiodic_mode]
+        else:
+            self.aperiodic_mode = aperiodic_mode
+        if isinstance(periodic_mode, str):
+            self.periodic_mode = PE_MODES[periodic_mode]
+        else:
+            self.periodic_mode = periodic_mode
 
         # Set run modes
         self.set_debug_mode(debug_mode)

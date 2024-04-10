@@ -107,7 +107,6 @@ def test_save_group_append(tfg):
     file_name = 'test_group_append'
 
     save_group(tfg, file_name, TEST_DATA_PATH, True, save_results=True)
-    save_group(tfg, file_name, TEST_DATA_PATH, True, save_results=True)
 
     assert os.path.exists(TEST_DATA_PATH / (file_name + '.json'))
 

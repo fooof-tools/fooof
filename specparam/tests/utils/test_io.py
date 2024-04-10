@@ -3,6 +3,7 @@
 import numpy as np
 
 from specparam.core.items import OBJ_DESC
+
 from specparam.objs import (SpectralModel, SpectralGroupModel,
                             SpectralTimeModel, SpectralTimeEventModel)
 
