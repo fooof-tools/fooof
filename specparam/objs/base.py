@@ -145,7 +145,7 @@ class BaseObject(CommonBase, BaseResults, BaseData):
         # Clear results, if present, unless indicated not to
         self._reset_results(clear_results=self.has_model and clear_results)
 
-        super().add_data(freqs, power_spectrum, freq_range=None)
+        super().add_data(freqs, power_spectrum, freq_range=freq_range)
 
 
     @copy_doc_func_to_method(save_model)
