@@ -8,6 +8,94 @@ This page primarily notes changes for major version updates.
 For notes on the specific updates for minor releases, see the
 `release page <https://github.com/fooof-tools/fooof/releases>`_.
 
+2.0.0 (in development)
+----------------------
+
+WARNING: the specparam 2.0 release is not yet a a stable release, and may still change!
+
+Note that the new `specparam 2.0` version includes a significant refactoring or the internals of the module, and broad changes to the naming of entities (including classes, functions, methods, etc) across the module. As such, this update is a major, breaking change to the module (see below for updates). See below for notes on the major updates, and relationships to previous versions of the module.
+
+Key Updates
+~~~~~~~~~~~
+
+The `specparam` 2.0 version contains the following notable feature updates:
+
+- an extension of the module to support time-resolved and event-related analyses
+
+  - these analyses are now supported by the ``SpectralTimeModel`` and ``SpectralTimeEventModel`` objects
+
+- an update to procedures for functions that are fit to power spectra
+
+  - these updates allow for flexibly using and defining different fit functions [WIP]
+
+- an update to procedures for defining and applying spectral fitting algorithms
+
+  - these updates allow for choosing, tuning, and changing the fitting algorithm that is applied [WIP]
+
+- extensions and updates to the module
+
+  - this includes updates to parameter management, goodness-of-fit evaluations, visualizations, and more
+
+The above notes the major changes and updates to the module - for further details on the changes, see the
+`release page <https://github.com/fooof-tools/fooof/releases>`_.
+
+Relationship to fooof
+~~~~~~~~~~~~~~~~~~~~~
+
+As compared to the fooof releases, the specparam module is an extension of the spectral parameterization approach, including the same functionality as the original module, with significant extensions. This means that, for example, if choosing the same fit functions and algorithms in specparam 2.0 as are used in fooof 1.X, the results should be functionally identical.
+
+Notably, there are no changes to the default settings and models in specparam 2.0, such that fitting a spectral model with the default settings in specparam should provide the same as doing the equivalent in fooof 1.X.
+
+Naming Updates
+~~~~~~~~~~~~~~
+
+The following functions, objects, and attributes have changed name in the new version:
+
+Model Objects:
+
+- FOOOF -> SpectralModel
+- FOOOFGroup -> SpectralGroupModel
+
+Model Object methods & attributes:
+
+- FOOOF.fooofed_spectrum\_ -> FOOOF.modeled_spectrum\_
+- FOOOFGroup.get_fooof -> SpectralGroupModel.get_model
+
+Data objects:
+
+- FOOOFResults -> FitResults
+- FOOOFSettings -> ModelSettings
+- FOOOFMetaData -> SpectrumMetaData
+
+Functions:
+
+- combine_fooofs -> combine_model_objs
+- compare_info -> compare_model_objs
+- average_fg -> average_group
+- fit_fooof_3d -> fit_models_3d
+
+- get_band_peak_fm -> get_band_peak
+- get_band_peak_fg -> get_band_peak_group
+- get_band_peak -> get_band_peak_arr
+- get_band_peak_group -> get_band_peak_group_arr
+
+- compute_pointwise_error_fm -> compute_pointwise_error
+- compute_pointwise_error_fg -> compute_pointwise_error_group
+- compute_pointwise_error -> compute_pointwise_error_arr
+
+- save_fm -> save_model
+- save_fg -> save_group
+
+- fetch_fooof_data -> fetch_example_data
+- load_fooof_data -> load_example_data
+
+- gen_power_spectrum -> sim_power_spectrum
+- gen_group_power_spectra -> sim_group_power_spectra
+
+Function inputs:
+
+- fooof_obj -> model_obj
+
 1.1.0
 -----
 
