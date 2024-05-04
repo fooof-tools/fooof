@@ -58,7 +58,7 @@ Model Objects:
 
 Model Object methods & attributes:
 
-- FOOOF.fooofed_spectrum\_ -> FOOOF.modeled_spectrum\_
+- FOOOF.fooofed_spectrum\_ -> SpectralModel.modeled_spectrum\_
 - FOOOFGroup.get_fooof -> SpectralGroupModel.get_model
 
 Data objects:
