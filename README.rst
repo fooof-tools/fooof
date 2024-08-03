@@ -2,29 +2,35 @@
 Spectral Parameterization
 =========================
 
-|ProjectStatus|_ |Version|_ |BuildStatus|_ |Coverage|_ |License|_ |PythonVersions|_ |Paper|_
+|ProjectStatus| |Version| |BuildStatus| |Coverage| |License| |PythonVersions| |Publication|
 
 .. |ProjectStatus| image:: http://www.repostatus.org/badges/latest/active.svg
-.. _ProjectStatus: https://www.repostatus.org/#active
+   :target: https://www.repostatus.org/#active
+   :alt: project status
 
 .. |Version| image:: https://img.shields.io/pypi/v/fooof.svg
-.. _Version: https://pypi.python.org/pypi/fooof/
+   :target: https://pypi.python.org/pypi/fooof/
+   :alt: version
 
 .. |BuildStatus| image:: https://github.com/fooof-tools/fooof/actions/workflows/build.yml/badge.svg
-.. _BuildStatus: https://github.com/fooof-tools/fooof/actions/workflows/build.yml
+   :target: https://github.com/fooof-tools/fooof/actions/workflows/build.yml
+   :alt: build status
 
 .. |Coverage| image:: https://codecov.io/gh/fooof-tools/fooof/branch/main/graph/badge.svg
-.. _Coverage: https://codecov.io/gh/fooof-tools/fooof
+   :target: https://codecov.io/gh/fooof-tools/fooof
+   :alt: coverage
 
 .. |License| image:: https://img.shields.io/pypi/l/fooof.svg
-.. _License: https://opensource.org/licenses/Apache-2.0
+   :target: https://opensource.org/licenses/Apache-2.0
+   :alt: license
 
 .. |PythonVersions| image:: https://img.shields.io/pypi/pyversions/fooof.svg
-.. _PythonVersions: https://pypi.python.org/pypi/fooof/
+   :target: https://pypi.python.org/pypi/fooof/
+   :alt: python versions
 
-.. |Paper| image:: https://img.shields.io/badge/paper-nn10.1038-informational.svg
-.. _Paper: https://doi.org/10.1038/s41593-020-00744-x
-
+.. |Publication| image:: https://img.shields.io/badge/paper-nn10.1038-informational.svg
+   :target: https://doi.org/10.1038/s41593-020-00744-x
+   :alt: publication
 
 Spectral parameterization (`specparam`, formerly `fooof`) is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
 
