@@ -28,9 +28,9 @@ def test_event_model():
     fe = SpectralTimeEventModel(verbose=False)
     assert isinstance(fe, SpectralTimeEventModel)
 
-def test_event_getitem(tft):
+def test_event_getitem(tfe):
 
-    assert tft[0]
+    assert tfe[0]
 
 def test_event_iter(tfe):
 
