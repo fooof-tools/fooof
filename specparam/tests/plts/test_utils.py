@@ -34,6 +34,10 @@ def test_add_shades(skip_if_no_mpl):
     add_shades(check_ax(None), [4, 8])
 
 @plot_test
+def test_add_shades_multi(skip_if_no_mpl):
+    add_shades(check_ax(None), [[4, 8], [8, 12], [12, 25]], colors=['b', 'c', 'y'], alpha=0.3)
+
+@plot_test
 def test_recursive_plot(skip_if_no_mpl):
 
     def test_plot(data, ax=None, c=None): ax.plot(data, c=c)
