@@ -58,7 +58,7 @@ def lorentzian_function(xs, *params):
 
     for ctr, hgt, wid in zip(*[iter(params)] * 3):
 
-        ys = hgt*wid**2/((xs-ctr)**2+wid**2)
+        ys = ys + hgt*wid**2/((xs-ctr)**2+wid**2)
 
     return ys
 
