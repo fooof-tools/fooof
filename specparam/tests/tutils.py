@@ -8,6 +8,7 @@ from specparam.bands import Bands
 from specparam.data import FitResults
 from specparam.objs import (SpectralModel, SpectralGroupModel,
                             SpectralTimeModel, SpectralTimeEventModel)
+from specparam.objs.data import BaseData, BaseData2D
 from specparam.core.modutils import safe_import
 from specparam.sim.params import param_sampler
 from specparam.sim.sim import sim_power_spectrum, sim_group_power_spectra, sim_spectrogram
@@ -17,17 +18,26 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 ###################################################################################################
 
+def get_tdata():
+
+    tdata = BaseData()
+    tdata.add_data(*sim_power_spectrum(*default_spectrum_params()))
+
+    return tdata
+
+def get_tdata2d():
+
+    n_spectra = 3
+    tdata2d = BaseData2D()
+    tdata2d.add_data(*sim_group_power_spectra(n_spectra, *default_group_params()))
+
+    return tdata2d
+
 def get_tfm():
     """Get a model object, with a fit power spectrum, for testing."""
 
-    freq_range = [3, 50]
-    ap_params = [50, 2]
-    gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
-
-    xs, ys = sim_power_spectrum(freq_range, ap_params, gaussian_params)
-
     tfm = SpectralModel(verbose=False)
-    tfm.fit(xs, ys)
+    tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
     return tfm
 
@@ -35,10 +45,8 @@ def get_tfg():
     """Get a group object, with some fit power spectra, for testing."""
 
     n_spectra = 3
-    xs, ys = sim_group_power_spectra(n_spectra, *default_group_params())
-
     tfg = SpectralGroupModel(verbose=False)
-    tfg.fit(xs, ys)
+    tfg.fit(*sim_group_power_spectra(n_spectra, *default_group_params()))
 
     return tfg
 
@@ -100,6 +108,14 @@ def get_tdocstring():
     """
 
     return docstring
+
+def default_spectrum_params():
+
+    freq_range = [3, 50]
+    ap_params = [1, 1]
+    gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
+
+    return freq_range, ap_params, gaussian_params
 
 def default_group_params():
     """Create default parameters for simulating a test group of power spectra."""

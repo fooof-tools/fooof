@@ -1,7 +1,5 @@
 """Test functions for specparam.utils.params."""
 
-import numpy as np
-
 from specparam.utils.params import *
 
 ###################################################################################################
