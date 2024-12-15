@@ -160,7 +160,7 @@ class SpectralModel():
     # pylint: disable=attribute-defined-outside-init
 
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
-                 peak_threshold=2.0, aperiodic_mode='fixed', verbose=True):
+                 peak_threshold=2.0, periodic_mode:str='gaussian', aperiodic_mode='fixed', verbose=True):
         """Initialize model object."""
 
         # Set input settings
@@ -169,6 +169,7 @@ class SpectralModel():
         self.min_peak_height = min_peak_height
         self.peak_threshold = peak_threshold
         self.aperiodic_mode = aperiodic_mode
+        self.periodic_mode = periodic_mode
         self.verbose = verbose
 
         ## PRIVATE SETTINGS
