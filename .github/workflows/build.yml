@@ -13,7 +13,7 @@ jobs:
     # Tag ubuntu version to 22.04, in order to support python 3.7
     #   See issue: https://github.com/actions/runner-images/issues/10893
     #   When ready to drop 3.7, can update from 'ubuntu-22.04' -> 'ubuntu-latest'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     env:
       MODULE_NAME: specparam
     strategy:
