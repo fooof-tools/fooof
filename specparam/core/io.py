@@ -236,6 +236,125 @@ def save_event(event, file_name, file_path=None, append=False,
                     save_settings=save_settings, save_data=save_data)
 
 
+def load_model(file_name, file_path=None, regenerate=True, model=None):
+    """Load a SpectralModel object.
+
+    Parameters
+    ----------
+    Parameters
+    ----------
+    file_name : str
+        File(s) to load data from.
+    file_path : str, optional
+        Path to directory to load from. If None, loads from current directory.
+    regenerate : bool, optional, default: True
+        Whether to regenerate the model fit from the loaded data, if data is available.
+    model : SpectralModel
+        xx
+
+    Returns
+    -------
+    model : SpectralModel
+        Loaded model object with data from file.
+    """
+
+    # Check for model object, import (avoid circular) and initialize if not
+    if not model:
+        from specparam.objs import SpectralModel
+        model = SpectralModel()
+
+    model.load(file_name, file_path, regenerate)
+
+    return model
+
+
+def load_group(file_name, file_path=None, group=None):
+    """Load a SpectralGroupModel object.
+
+    Parameters
+    ----------
+    file_name : str
+        File(s) to load data from.
+    file_path : str, optional
+        Path to directory to load from. If None, loads from current directory.
+    group : SpectralGroupModel
+        xx
+
+    Returns
+    -------
+    group : SpectralGroupModel
+        Loaded model object with data from file.
+    """
+
+    # Check for model object, import (avoid circular) and initialize if not
+    if not group:
+        from specparam.objs import SpectralGroupModel
+        group = SpectralGroupModel()
+
+    group.load(file_name, file_path)
+
+    return group
+
+
+def load_time(file_name, file_path=None, peak_org=None, time=None):
+    """Load a SpectralTimeModel object.
+
+    Parameters
+    ----------
+    file_name : str
+        File(s) to load data from.
+    file_path : str, optional
+        Path to directory to load from. If None, loads from current directory.
+    peak_org : int or Bands, optional
+        How to organize peaks.
+        If int, extracts the first n peaks.
+        If Bands, extracts peaks based on band definitions.
+
+    Returns
+    -------
+    time : SpectralTimeModel
+        Loaded model object with data from file.
+    """
+
+    # Check for model object, import (avoid circular) and initialize if not
+    if not time:
+        from specparam.objs import SpectralTimeModel
+        time = SpectralTimeModel()
+
+    time.load(file_name, file_path, peak_org)
+
+    return time
+
+def load_event(file_name, file_path=None, peak_org=None, event=None):
+    """Load a SpectralTimeEventModel object.
+
+    Parameters
+    ----------
+    file_name : str
+        File(s) to load data from.
+    file_path : str, optional
+        Path to directory to load from. If None, loads from current directory.
+    peak_org : int or Bands, optional
+        How to organize peaks.
+        If int, extracts the first n peaks.
+        If Bands, extracts peaks based on band definitions.
+
+    Returns
+    -------
+    event : SpectralTimeEventModel
+        Loaded model object with data from file.
+    """
+
+    # Check for model object, import (avoid circular) and initialize if not
+    if not event:
+        from specparam.objs import SpectralTimeEventModel
+        event = SpectralTimeEventModel()
+
+    event.load(file_name, file_path, peak_org)
+
+    return event
+
+
 def load_json(file_name, file_path):
     """Load json file.
 
