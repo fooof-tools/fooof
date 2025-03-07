@@ -2,15 +2,9 @@
 sphinx
 sphinx-gallery
 sphinx_bootstrap_theme
-numpydoc
 sphinx-copybutton
+numpydoc
 
-# Optional dependencies that are required for documentation
-matplotlib
-tqdm
-
-# Requirements for running the examples
-mne > 1.2
-
-# Requirements for running the motivations
+# Requirements for running the tutorials / examples / motivations
 neurodsp >= 2.0.0
+mne > 1.2
