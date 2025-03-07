@@ -359,14 +359,14 @@ Plot Utilities & Styling
 
 Plot related utilies for styling and managing plots.
 
-.. currentmodule:: fooof.plts.style
+.. currentmodule:: specparam.plts.style
 
 .. autosummary::
     :toctree: generated/
 
     check_style_options
 
-.. currentmodule:: fooof.plts.utils
+.. currentmodule:: specparam.plts.utils
 
 .. autosummary::
     :toctree: generated/
