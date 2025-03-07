@@ -4,12 +4,12 @@ Spectral Parameterization
 
 |ProjectStatus| |Version| |BuildStatus| |Coverage| |License| |PythonVersions| |Publication|
 
-.. |ProjectStatus| image:: http://www.repostatus.org/badges/latest/active.svg
+.. |ProjectStatus| image:: https://www.repostatus.org/badges/latest/active.svg
    :target: https://www.repostatus.org/#active
    :alt: project status
 
 .. |Version| image:: https://img.shields.io/pypi/v/fooof.svg
-   :target: https://pypi.python.org/pypi/fooof/
+   :target: https://pypi.org/project/fooof/
    :alt: version
 
 .. |BuildStatus| image:: https://github.com/fooof-tools/fooof/actions/workflows/build.yml/badge.svg
@@ -21,11 +21,11 @@ Spectral Parameterization
    :alt: coverage
 
 .. |License| image:: https://img.shields.io/pypi/l/fooof.svg
-   :target: https://opensource.org/licenses/Apache-2.0
+   :target: https://opensource.org/license/apache-2-0
    :alt: license
 
 .. |PythonVersions| image:: https://img.shields.io/pypi/pyversions/fooof.svg
-   :target: https://pypi.python.org/pypi/fooof/
+   :target: https://pypi.org/project/fooof/
    :alt: python versions
 
 .. |Publication| image:: https://img.shields.io/badge/paper-nn10.1038-informational.svg
@@ -121,8 +121,6 @@ There are also optional dependencies, which are not required for model fitting i
 - `pandas <https://github.com/pandas-dev/pandas>`_ is needed for exporting model fit results to dataframes
 - `pytest <https://github.com/pytest-dev/pytest>`_ is needed to run the test suite locally
 
-We recommend using the `Anaconda <https://www.anaconda.com/distribution/>`_ distribution to manage these requirements.
-
 Installation
 ------------
 
@@ -205,7 +203,7 @@ In Matlab, there is a reimplementation available in common toolboxes:
 - The `Brainstorm <https://neuroimage.usc.edu/brainstorm/Introduction>`_ toolbox has a reimplementation of specparam (see the `Brainstorm fooof tutorial <https://neuroimage.usc.edu/brainstorm/Tutorials/Fooof>`_)
 - The `Fieldtrip <https://www.fieldtriptoolbox.org/>`_ toolbox also uses the same reimplementation (see the `Fieldtrip fooof tutorial <https://www.fieldtriptoolbox.org/example/fooof/>`_)
 
-There is also a Matlab wrapper in the `fooof_mat <http://github.com/fooof-tools/fooof_mat>`_ repository.
+There is also a Matlab wrapper in the `fooof_mat <https://github.com/fooof-tools/fooof_mat>`_ repository.
 
 Note that another option is to use Python FOOOF within a Matlab pipeline, as explored in the
 `mat_py_mat <https://github.com/fooof-tools/mat_py_mat>`_ repository.
