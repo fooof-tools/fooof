@@ -119,6 +119,12 @@ html_theme_options = {
 html_copy_source = False
 html_show_sourcelink = False
 
+# Add link to custom css
+html_static_path = ["_static"]
+
+# Add function for stylesheets path
+def setup(app):
+   app.add_css_file("my-styles.css")
 
 # -- Extension configuration -------------------------------------------------
 
