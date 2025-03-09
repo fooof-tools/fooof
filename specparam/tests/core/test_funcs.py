@@ -26,6 +26,15 @@ def test_gaussian_function():
     assert max(ys) == hgt
     assert np.allclose([i/sum(ys) for i in ys], norm.pdf(xs, ctr, wid))
 
+def test_cauchy_function():
+
+    ctr, hgt, wid = 50, 5, 10
+
+    xs = np.arange(1, 100)
+    ys = cauchy_function(xs, ctr, hgt, wid)
+
+    assert np.all(ys)
+
 def test_expo_function():
 
     off, knee, exp = 10, 5, 2
