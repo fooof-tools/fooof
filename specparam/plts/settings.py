@@ -2,13 +2,15 @@
 
 from collections import OrderedDict
 
-import matplotlib.pyplot as plt
+from specparam.core.modutils import safe_import
+
+plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
 
 # Define list of default plot colors
-DEFAULT_COLORS = plt.rcParams['axes.prop_cycle'].by_key()['color']
+DEFAULT_COLORS = plt.rcParams['axes.prop_cycle'].by_key()['color'] if plt else None
 
 # Define default figure sizes
 PLT_FIGSIZES = {'spectral' : (8.5, 6.5),

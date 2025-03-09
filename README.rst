@@ -2,29 +2,35 @@
 Spectral Parameterization
 =========================
 
-|ProjectStatus|_ |Version|_ |BuildStatus|_ |Coverage|_ |License|_ |PythonVersions|_ |Paper|_
+|ProjectStatus| |Version| |BuildStatus| |Coverage| |License| |PythonVersions| |Publication|
 
-.. |ProjectStatus| image:: http://www.repostatus.org/badges/latest/active.svg
-.. _ProjectStatus: https://www.repostatus.org/#active
+.. |ProjectStatus| image:: https://www.repostatus.org/badges/latest/active.svg
+   :target: https://www.repostatus.org/#active
+   :alt: project status
 
 .. |Version| image:: https://img.shields.io/pypi/v/fooof.svg
-.. _Version: https://pypi.python.org/pypi/fooof/
+   :target: https://pypi.org/project/fooof/
+   :alt: version
 
 .. |BuildStatus| image:: https://github.com/fooof-tools/fooof/actions/workflows/build.yml/badge.svg
-.. _BuildStatus: https://github.com/fooof-tools/fooof/actions/workflows/build.yml
+   :target: https://github.com/fooof-tools/fooof/actions/workflows/build.yml
+   :alt: build status
 
 .. |Coverage| image:: https://codecov.io/gh/fooof-tools/fooof/branch/main/graph/badge.svg
-.. _Coverage: https://codecov.io/gh/fooof-tools/fooof
+   :target: https://codecov.io/gh/fooof-tools/fooof
+   :alt: coverage
 
 .. |License| image:: https://img.shields.io/pypi/l/fooof.svg
-.. _License: https://opensource.org/licenses/Apache-2.0
+   :target: https://opensource.org/license/apache-2-0
+   :alt: license
 
 .. |PythonVersions| image:: https://img.shields.io/pypi/pyversions/fooof.svg
-.. _PythonVersions: https://pypi.python.org/pypi/fooof/
+   :target: https://pypi.org/project/fooof/
+   :alt: python versions
 
-.. |Paper| image:: https://img.shields.io/badge/paper-nn10.1038-informational.svg
-.. _Paper: https://doi.org/10.1038/s41593-020-00744-x
-
+.. |Publication| image:: https://img.shields.io/badge/paper-nn10.1038-informational.svg
+   :target: https://doi.org/10.1038/s41593-020-00744-x
+   :alt: publication
 
 Spectral parameterization (`specparam`, formerly `fooof`) is a fast, efficient, and physiologically-informed tool to parameterize neural power spectra.
 
@@ -115,8 +121,6 @@ There are also optional dependencies, which are not required for model fitting i
 - `pandas <https://github.com/pandas-dev/pandas>`_ is needed for exporting model fit results to dataframes
 - `pytest <https://github.com/pytest-dev/pytest>`_ is needed to run the test suite locally
 
-We recommend using the `Anaconda <https://www.anaconda.com/distribution/>`_ distribution to manage these requirements.
-
 Installation
 ------------
 
@@ -199,7 +203,7 @@ In Matlab, there is a reimplementation available in common toolboxes:
 - The `Brainstorm <https://neuroimage.usc.edu/brainstorm/Introduction>`_ toolbox has a reimplementation of specparam (see the `Brainstorm fooof tutorial <https://neuroimage.usc.edu/brainstorm/Tutorials/Fooof>`_)
 - The `Fieldtrip <https://www.fieldtriptoolbox.org/>`_ toolbox also uses the same reimplementation (see the `Fieldtrip fooof tutorial <https://www.fieldtriptoolbox.org/example/fooof/>`_)
 
-There is also a Matlab wrapper in the `fooof_mat <http://github.com/fooof-tools/fooof_mat>`_ repository.
+There is also a Matlab wrapper in the `fooof_mat <https://github.com/fooof-tools/fooof_mat>`_ repository.
 
 Note that another option is to use Python FOOOF within a Matlab pipeline, as explored in the
 `mat_py_mat <https://github.com/fooof-tools/mat_py_mat>`_ repository.
