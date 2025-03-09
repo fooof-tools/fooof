@@ -191,7 +191,7 @@ def gen_rotated_power_vals(freqs, aperiodic_params, periodic_params, nlv, f_rota
     return powers
 
 
-def gen_model(freqs, aperiodic_params, periodic_params, return_components=False):
+def gen_model(freqs, aperiodic_params, periodic_params, return_components=False, periodic_mode:str='gaussian'):
     """Generate a power spectrum model for a given parameter definition.
 
     Parameters
@@ -225,7 +225,7 @@ def gen_model(freqs, aperiodic_params, periodic_params, return_components=False)
     """
 
     ap_fit = gen_aperiodic(freqs, aperiodic_params)
-    pe_fit = gen_periodic(freqs, np.ndarray.flatten(periodic_params))
+    pe_fit = gen_periodic(freqs, np.ndarray.flatten(periodic_params), periodic_mode=periodic_mode)
     full_model = pe_fit + ap_fit
 
     if return_components:
