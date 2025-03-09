@@ -11,7 +11,6 @@ from specparam.core.errors import NoDataError
 from specparam.core.io import (save_model, save_group, save_event,
                                load_json, load_jsonlines, get_files)
 from specparam.core.modutils import copy_doc_func_to_method
-from specparam.plts.event import plot_event_model
 from specparam.objs.results import BaseResults, BaseResults2D, BaseResults2DT, BaseResults3D
 from specparam.objs.data import BaseData, BaseData2D, BaseData2DT, BaseData3D
 
@@ -146,7 +145,7 @@ class BaseObject(CommonBase, BaseResults, BaseData):
         # Clear results, if present, unless indicated not to
         self._reset_results(clear_results=self.has_model and clear_results)
 
-        super().add_data(freqs, power_spectrum, freq_range=None)
+        super().add_data(freqs, power_spectrum, freq_range=freq_range)
 
 
     @copy_doc_func_to_method(save_model)
@@ -425,9 +424,8 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
             self.convert_results(peak_org)
 
 
-    # TO CHECK - DOES THIS GO HERE?
-    def _reset_data_results(self, clear_freqs=False, clear_spectrum=False,
-                            clear_results=False, clear_spectra=False):
+    def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False,
+                            clear_spectra=False, clear_spectrograms=False):
         """Set, or reset, data & results attributes to empty.
 
         Parameters
@@ -440,7 +438,9 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
             Whether to clear model results attributes.
         clear_spectra : bool, optional, default: False
             Whether to clear power spectra attribute.
+        clear_spectrograms : bool, optional, default: False
+            Whether to clear spectrograms attribute.
         """
 
-        self._reset_data(clear_freqs, clear_spectrum, clear_spectra)
+        self._reset_data(clear_freqs, clear_spectrum, clear_spectra, clear_spectrograms)
         self._reset_results(clear_results)

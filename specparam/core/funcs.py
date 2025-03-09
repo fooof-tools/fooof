@@ -65,6 +65,32 @@ def skewnorm_function(xs, *params):
 
     return ys
 
+
+def cauchy_function(xs, *params):
+    """Cauchy fitting function.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define a cauchy function.
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for cauchy function.
+    """
+
+    ys = np.zeros_like(xs)
+
+    for ctr, hgt, wid in zip(*[iter(params)] * 3):
+
+        ys = ys + hgt*wid**2/((xs-ctr)**2+wid**2)
+
+    return ys
+
+
 ## APERIODIC FUNCTIONS
 
 def expo_function(xs, *params):
@@ -196,7 +222,7 @@ def get_pe_func(periodic_mode):
 
     Parameters
     ----------
-    periodic_mode : {'gaussian'}
+    periodic_mode : {'gaussian', 'cauchy'}
         Which periodic fitting function to return.
 
     Returns
@@ -213,6 +239,8 @@ def get_pe_func(periodic_mode):
 
     if periodic_mode == 'gaussian':
         pe_func = gaussian_function
+    elif periodic_mode == 'cauchy':
+        pe_func = cauchy_function
     else:
         raise ValueError("Requested periodic mode not understood.")
 

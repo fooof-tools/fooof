@@ -484,7 +484,7 @@ def gen_time_results_str(time_model, concise=False):
             np.nanmean(time_model.time_results[pe_labels['cf'][ind]]),
             np.nanmean(time_model.time_results[pe_labels['pw'][ind]]),
             np.nanmean(time_model.time_results[pe_labels['bw'][ind]]),
-            compute_presence(time_model.time_results[pe_labels['cf'][ind]]))
+            compute_presence(time_model.time_results[pe_labels['cf'][ind]], output='percent'))
                 for ind, label in enumerate(band_labels)],
         '',
 

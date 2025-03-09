@@ -1,24 +1,17 @@
 """Event model object and associated code for fitting the model to spectrograms across events."""
 
-from itertools import repeat
-from functools import partial
-from multiprocessing import Pool, cpu_count
-
 import numpy as np
 
 from specparam.objs import SpectralModel
 from specparam.objs.base import BaseObject3D
 from specparam.objs.algorithm import SpectralFitAlgorithm
-from specparam.objs.results import _progress
 from specparam.plts.event import plot_event_model
-from specparam.data.conversions import event_group_to_dict, event_group_to_dataframe, dict_to_df
-from specparam.data.utils import get_group_params, get_results_by_row, flatten_results_dict
+from specparam.data.conversions import event_group_to_dataframe, dict_to_df
+from specparam.data.utils import flatten_results_dict
 from specparam.core.modutils import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
 from specparam.core.reports import save_event_report
 from specparam.core.strings import gen_event_results_str
-from specparam.core.utils import check_inds
-from specparam.core.io import get_files, save_event
 
 ###################################################################################################
 ###################################################################################################
@@ -105,7 +98,7 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
         Data is optional, if data has already been added to the object.
         """
 
-        self.fit(freqs, spectrograms, freq_range, peak_org, n_jobs=n_jobs, progress=progress)
+        self.fit(freqs, spectrograms, freq_range, peak_org, n_jobs, progress)
         self.plot()
         self.print_results()
 

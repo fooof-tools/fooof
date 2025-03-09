@@ -561,7 +561,7 @@ class BaseResults2D(BaseResults):
             The FitResults data loaded into a model object.
         """
 
-        # TEMP IMPORT
+        # Local import - avoid circular
         from specparam.objs.model import SpectralModel
 
         # Initialize model object, with same settings, metadata, & check mode as current object
@@ -595,7 +595,7 @@ class BaseResults2D(BaseResults):
             The requested selection of results data loaded into a new group model object.
         """
 
-        # TEMP IMPORT
+        # Local import - avoid circular
         from specparam.objs.group import SpectralGroupModel
 
         # Initialize a new model object, with same settings as current object
@@ -697,12 +697,9 @@ class BaseResults2DT(BaseResults2D):
             The requested selection of results data loaded into a new model object.
         """
 
-        # TEMP IMPORT
-        from specparam.objs.time import SpectralTimeModel
-
         if output_type == 'time':
 
-            # TEMP IMPORT
+            # Local import - avoid circular
             from specparam.objs.time import SpectralTimeModel
 
             # Initialize a new model object, with same settings as current object
@@ -881,7 +878,7 @@ class BaseResults3D(BaseResults2DT):
         This method sets the model fits as null, and preserves the shape of the model fits.
         """
 
-        # TEMP IMPORT
+        # Local import - avoid circular
         from specparam.objs.model import SpectralModel
 
         null_model = SpectralModel(**self.get_settings()._asdict()).get_results()
@@ -973,7 +970,7 @@ class BaseResults3D(BaseResults2DT):
             The requested selection of results data loaded into a new model object.
         """
 
-        # TEMP IMPORT
+        # Local import - avoid circular
         from specparam.objs.event import SpectralTimeEventModel
 
         # Check and convert indices encoding to list of int

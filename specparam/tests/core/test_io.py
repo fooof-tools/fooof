@@ -41,9 +41,9 @@ def test_save_model_str(tfm):
     """Check saving model object data, with file specifiers as strings."""
 
     # Test saving out each set of save elements
-    file_name_res = 'test_res'
-    file_name_set = 'test_set'
-    file_name_dat = 'test_dat'
+    file_name_res = 'test_model_res'
+    file_name_set = 'test_model_set'
+    file_name_dat = 'test_model_dat'
 
     save_model(tfm, file_name_res, TEST_DATA_PATH, False, True, False, False)
     save_model(tfm, file_name_set, TEST_DATA_PATH, False, False, True, False)
@@ -54,14 +54,14 @@ def test_save_model_str(tfm):
     assert os.path.exists(TEST_DATA_PATH / (file_name_dat + '.json'))
 
     # Test saving out all save elements
-    file_name_all = 'test_all'
+    file_name_all = 'test_model_all'
     save_model(tfm, file_name_all, TEST_DATA_PATH, False, True, True, True)
     assert os.path.exists(TEST_DATA_PATH / (file_name_all + '.json'))
 
 def test_save_model_append(tfm):
     """Check saving fm data, appending to a file."""
 
-    file_name = 'test_append'
+    file_name = 'test_model_append'
 
     save_model(tfm, file_name, TEST_DATA_PATH, True, True, True, True)
     save_model(tfm, file_name, TEST_DATA_PATH, True, True, True, True)
@@ -71,7 +71,7 @@ def test_save_model_append(tfm):
 def test_save_model_fobj(tfm):
     """Check saving fm data, with file object file specifier."""
 
-    file_name = 'test_fileobj'
+    file_name = 'test_model_fileobj'
 
     # Save, using file-object: three successive lines with three possible save settings
     with open(TEST_DATA_PATH / (file_name + '.json'), 'w') as f_obj:
@@ -162,12 +162,32 @@ def test_save_event(tfe):
     for ind in range(len(tfe)):
         assert os.path.exists(TEST_DATA_PATH / (file_name_all + '_' + str(ind) + '.json'))
 
+def test_load_model():
+
+    tmodel = load_model('test_model_all', TEST_DATA_PATH)
+    assert tmodel
+
+def test_load_group():
+
+    tgroup = load_group('test_group_all', TEST_DATA_PATH)
+    assert tgroup
+
+def test_load_time():
+
+    ttime = load_time('test_time_all', TEST_DATA_PATH)
+    assert ttime
+
+def test_load_event():
+
+    tevent = load_event('test_event_all', TEST_DATA_PATH)
+    assert tevent
+
 def test_load_json_str():
     """Test loading JSON file, with str file specifier.
     Loads files from test_save_model_str.
     """
 
-    file_name = 'test_all'
+    file_name = 'test_model_all'
 
     data = load_json(file_name, TEST_DATA_PATH)
 
@@ -178,7 +198,7 @@ def test_load_json_fobj():
     Loads files from test_save_model_str.
     """
 
-    file_name = 'test_all'
+    file_name = 'test_model_all'
 
     with open(TEST_DATA_PATH / (file_name + '.json'), 'r') as f_obj:
         data = load_json(f_obj, '')
@@ -200,7 +220,7 @@ def test_load_file_contents():
     Note that is this test fails, it likely stems from an issue from saving.
     """
 
-    file_name = 'test_all'
+    file_name = 'test_model_all'
     loaded_data = load_json(file_name, TEST_DATA_PATH)
 
     # Check settings

@@ -47,6 +47,15 @@ def test_skewnorm_function():
     ys_skew2 = skewnorm_function(xs, ctr, hgt, wid, skew2)
     assert sum(ys_skew2[xs<ctr]) > sum(ys_skew2[xs>ctr])
 
+def test_cauchy_function():
+
+    ctr, hgt, wid = 50, 5, 10
+
+    xs = np.arange(1, 100)
+    ys = cauchy_function(xs, ctr, hgt, wid)
+
+    assert np.all(ys)
+
 ## Aperiodic functions
 
 def test_expo_function():

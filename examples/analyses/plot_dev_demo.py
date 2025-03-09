@@ -498,8 +498,8 @@ settings2 = ModelSettings(peak_width_limits=m2_peak_width, max_n_peaks=m2_n_peak
 ###################################################################################################
 
 # Initialize model objects for spectral parameterization, with some settings
-fg1 = SpectralGroupModel(*settings1)
-fg2 = SpectralGroupModel(*settings2)
+fg1 = SpectralGroupModel(**settings1._asdict())
+fg2 = SpectralGroupModel(**settings2._asdict())
 
 ###################################################################################################
 #
