@@ -38,6 +38,7 @@ def gaussian_function(xs, *params):
 
     return ys
 
+
 def lorentzian_function(xs, *params):
     """Lorentzian fitting function.
 
@@ -53,7 +54,7 @@ def lorentzian_function(xs, *params):
     ys : 1d array
         Output values for lorentzian function.
     """
-    
+
     ys = np.zeros_like(xs)
 
     for ctr, hgt, wid in zip(*[iter(params)] * 3):
@@ -61,6 +62,7 @@ def lorentzian_function(xs, *params):
         ys = ys + hgt*wid**2/((xs-ctr)**2+wid**2)
 
     return ys
+
 
 def expo_function(xs, *params):
     """Exponential fitting function, for fitting aperiodic component with a 'knee'.
