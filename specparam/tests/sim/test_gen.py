@@ -1,7 +1,6 @@
 """Test functions for specparam.sim.gen"""
 
 import numpy as np
-from numpy import array_equal
 
 from specparam.sim.gen import *
 

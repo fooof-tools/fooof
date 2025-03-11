@@ -35,7 +35,7 @@ def get_model_params(fit_results, name, col=None):
     if name in ['aperiodic', 'peak', 'gaussian']:
         name = name + '_params'
 
-    # Extract the request data field from object
+    # Extract the requested data field from object
     out = getattr(fit_results, name)
 
     # Periodic values can be empty arrays and if so, replace with NaN array
