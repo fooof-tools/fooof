@@ -8,6 +8,8 @@ from scipy.optimize import curve_fit
 
 from specparam.core.utils import groupby
 from specparam.core.strings import gen_width_warning_str
+from specparam.core.funcs import gaussian_function, get_ap_func
+from specparam.core.jacobians import jacobian_gauss
 from specparam.core.errors import NoDataError, FitError
 from specparam.utils.params import compute_gauss_std
 
@@ -42,6 +44,10 @@ class SpectralFitAlgorithm():
         This is defined in units of gaussian standard deviation.
     _maxfev : int
         The maximum number of calls to the curve fitting function.
+    _tol : float
+        The tolerance setting for curve fitting (see scipy.curve_fit - ftol / xtol / gtol).
+        The default value reduce tolerance to speed fitting (as compared to curve_fit's default).
+        Set value to 1e-8 to match curve_fit default
     _error_metric : str
         The error metric to use for post-hoc measures of model fit error.
         Note: this is for checking error post fitting, not an objective function for fitting.
@@ -70,7 +76,8 @@ class SpectralFitAlgorithm():
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
                  peak_threshold=2.0, ap_percentile_thresh=0.025,  ap_guess=(None, 0, None),
                  ap_bounds=((-np.inf, -np.inf, -np.inf), (np.inf, np.inf, np.inf)),
-                 cf_bound=1.5, bw_std_edge=1.0, gauss_overlap_thresh=0.75, maxfev=5000):
+                 cf_bound=1.5, bw_std_edge=1.0, gauss_overlap_thresh=0.75,
+                 maxfev=5000, tol=0.00001):
         """Initialize base model object"""
 
         ## Public settings
@@ -79,14 +86,17 @@ class SpectralFitAlgorithm():
         self.min_peak_height = min_peak_height
         self.peak_threshold = peak_threshold
 
-        ## PRIVATE SETTINGS
+        ## Private settings: model parameters related settings
         self._ap_percentile_thresh = ap_percentile_thresh
         self._ap_guess = ap_guess
         self._ap_bounds = ap_bounds
         self._cf_bound = cf_bound
         self._bw_std_edge = bw_std_edge
         self._gauss_overlap_thresh = gauss_overlap_thresh
+
+        ## Private setting: curve_fit relates settings
         self._maxfev = maxfev
+        self._tol = tol
 
         ## Set internal settings, based on inputs, and initialize data & results attributes
         self._reset_internal_settings()
@@ -291,8 +301,10 @@ class SpectralFitAlgorithm():
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(self.aperiodic_mode.func,
-                                                freqs, power_spectrum, p0=ap_guess,
-                                                maxfev=self._maxfev, bounds=ap_bounds)
+                                                freqs, power_spectrum, p0=guess,
+                                                maxfev=self._maxfev, bounds=ap_bounds,
+                                                ftol=self._tol, xtol=self._tol, gtol=self._tol,
+                                                check_finite=False)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding parameters in "
                          "the simple aperiodic component fit.")
@@ -350,7 +362,9 @@ class SpectralFitAlgorithm():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(self.aperiodic_mode.func,
                                                 freqs_ignore, spectrum_ignore, p0=popt,
-                                                maxfev=self._maxfev, bounds=ap_bounds)
+                                                maxfev=self._maxfev, bounds=ap_bounds,
+                                                ftol=self._tol, xtol=self._tol, gtol=self._tol,
+                                                check_finite=False)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
                          "parameters in the robust aperiodic fit.")
@@ -514,7 +528,12 @@ class SpectralFitAlgorithm():
                                            self.freqs, self._spectrum_flat,
                                            p0=guess, maxfev=self._maxfev,
                                            #bounds=gaus_param_bounds  ##TEMP
+                                           bounds=gaus_param_bounds,
+                                           ftol=self._tol, xtol=self._tol, gtol=self._tol,
+                                           check_finite=False,
+                                           #jac=jacobian_gauss ## TEMP
                                            )
+
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
                          "parameters in the peak component fit.")
