@@ -1,6 +1,6 @@
 """Objects sub-module, for model objects and functions that operate on model objects."""
 
-from .fit import SpectralModel
+from .model import SpectralModel
 from .group import SpectralGroupModel
 from .time import SpectralTimeModel
 from .event import SpectralTimeEventModel

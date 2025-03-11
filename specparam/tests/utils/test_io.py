@@ -15,7 +15,7 @@ from specparam.utils.io import *
 
 def test_load_model():
 
-    file_name = 'test_all'
+    file_name = 'test_model_all'
 
     tfm = load_model(file_name, TEST_DATA_PATH)
 
