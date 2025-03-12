@@ -11,6 +11,40 @@ from specparam.core.utils import dict_lst_to_array
 ###################################################################################################
 ###################################################################################################
 
+def save_json(data, file_name, file_path=None, append=False):
+    """Save out to a JSON or JSONlines file.
+
+    Parameters
+    ----------
+    data : dict
+        Data to save out.
+    file_name : str or FileObject
+        File to save data to.
+    file_path : Path or str, optional
+        Path to directory to load from. If None, saves to current directory.
+    append : bool, optional, default: False
+        Whether to append to an existing file, if available.
+        This option is only valid (and only used) if 'file_name' is a str.
+    """
+
+    if isinstance(file_name, str):
+
+        # Save out, appending to existing file if set to, or not (creates new JSON file)
+        full_path = create_file_path(file_name, file_path, 'json')
+        with open(full_path, 'a' if append else 'w') as outfile:
+            json.dump(data, outfile)
+            if append:
+                outfile.write('\n')
+
+    # Save out - append to given file object (appends to a JSONlines file)
+    elif isinstance(file_name, io.IOBase):
+        json.dump(data, file_name)
+        file_name.write('\n')
+
+    else:
+        raise ValueError("Save file not understood.")
+
+
 def load_json(file_name, file_path):
     """Load json file.
 
