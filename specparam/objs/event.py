@@ -10,8 +10,8 @@ from specparam.data.conversions import event_group_to_dataframe, dict_to_df
 from specparam.data.utils import flatten_results_dict
 from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
-from specparam.core.reports import save_event_report
-from specparam.core.strings import gen_event_results_str
+from specparam.reports.save import save_event_report
+from specparam.reports.strings import gen_event_results_str
 
 ###################################################################################################
 ###################################################################################################

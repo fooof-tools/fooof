@@ -1,10 +1,10 @@
-"""Tests for specparam.core.reports."""
+"""Tests for specparam.reports.save."""
 
 import os
 
 from specparam.tests.tsettings import TEST_REPORTS_PATH
 
-from specparam.core.reports import *
+from specparam.reports.save import *
 
 ###################################################################################################
 ###################################################################################################
