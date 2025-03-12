@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from specparam.core.utils import group_three, check_flat
+from specparam.core.utils import groupby, check_flat
 from specparam.core.info import get_indices
 from specparam.core.funcs import infer_ap_func
 from specparam.modutils.errors import InconsistentDataError
@@ -31,7 +31,7 @@ def collect_sim_params(aperiodic_params, periodic_params, nlv):
     """
 
     return SimParams(aperiodic_params.copy(),
-                     sorted(group_three(check_flat(periodic_params))),
+                     sorted(groupby(check_flat(periodic_params), 3)),
                      nlv)
 
 

@@ -6,7 +6,7 @@ import numpy as np
 from numpy.linalg import LinAlgError
 from scipy.optimize import curve_fit
 
-from specparam.core.utils import group_three
+from specparam.core.utils import groupby
 from specparam.core.funcs import gaussian_function, get_ap_func
 from specparam.core.jacobians import jacobian_gauss
 from specparam.reports.strings import gen_width_warning_str
@@ -501,7 +501,7 @@ class SpectralFitAlgorithm():
             raise FitError(error_msg) from excp
 
         # Re-organize params into 2d matrix
-        gaussian_params = np.array(group_three(gaussian_params))
+        gaussian_params = np.array(groupby(gaussian_params, 3))
 
         return gaussian_params
 
