@@ -3,7 +3,7 @@
 import numpy as np
 
 from specparam.core.utils import check_iter, check_flat
-from specparam.core.modutils import (docs_get_section, replace_docstring_sections,
+from specparam.modutils.docs import (docs_get_section, replace_docstring_sections,
                                      docs_replace_param)
 from specparam.sim.params import collect_sim_params
 from specparam.sim.gen import gen_freqs, gen_power_vals, gen_rotated_power_vals

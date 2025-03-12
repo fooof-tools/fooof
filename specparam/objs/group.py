@@ -11,7 +11,7 @@ from specparam.objs.algorithm import SpectralFitAlgorithm
 from specparam.plts.group import plot_group_model
 from specparam.core.reports import save_group_report
 from specparam.core.strings import gen_group_results_str
-from specparam.core.modutils import (copy_doc_func_to_method,
+from specparam.modutils.docs import (copy_doc_func_to_method,
                                      docs_get_section, replace_docstring_sections)
 from specparam.data.conversions import group_to_dataframe
 

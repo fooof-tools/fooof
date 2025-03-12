@@ -3,7 +3,7 @@
 from pytest import raises
 
 from specparam import SpectralTimeEventModel
-from specparam.core.errors import NoModelError
+from specparam.modutils.errors import NoModelError
 
 from specparam.tests.tutils import plot_test
 from specparam.tests.tsettings import TEST_PLOTS_PATH

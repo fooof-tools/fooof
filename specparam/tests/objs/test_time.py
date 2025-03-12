@@ -9,7 +9,7 @@ They serve rather as 'smoke tests', for if anything fails completely.
 import numpy as np
 
 from specparam.sim import sim_spectrogram
-from specparam.core.modutils import safe_import
+from specparam.modutils.dependencies import safe_import
 
 pd = safe_import('pandas')
 

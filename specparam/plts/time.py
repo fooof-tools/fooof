@@ -11,8 +11,8 @@ from specparam.data.utils import get_periodic_labels, get_band_labels
 from specparam.plts.utils import savefig
 from specparam.plts.templates import plot_params_over_time
 from specparam.plts.settings import PARAM_COLORS
-from specparam.core.errors import NoModelError
-from specparam.core.modutils import safe_import, check_dependency
+from specparam.modutils.errors import NoModelError
+from specparam.modutils.dependencies import safe_import, check_dependency
 
 plt = safe_import('.pyplot', 'matplotlib')
 

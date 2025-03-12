@@ -5,7 +5,7 @@ import numpy as np
 from specparam.core.utils import group_three, check_flat
 from specparam.core.info import get_indices
 from specparam.core.funcs import infer_ap_func
-from specparam.core.errors import InconsistentDataError
+from specparam.modutils.errors import InconsistentDataError
 
 from specparam.data import SimParams
 

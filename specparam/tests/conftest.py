@@ -6,7 +6,7 @@ import pytest
 
 import numpy as np
 
-from specparam.core.modutils import safe_import
+from specparam.modutils.dependencies import safe_import
 
 from specparam.tests.tdata import (get_tdata, get_tdata2d, get_tfm, get_tfg, get_tft, get_tfe,
                                    get_tbands, get_tresults, get_tdocstring)

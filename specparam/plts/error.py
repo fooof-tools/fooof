@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from specparam.core.modutils import safe_import, check_dependency
+from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.plts.spectra import plot_spectra
 from specparam.plts.settings import PLT_FIGSIZES
 from specparam.plts.style import style_spectrum_plot, style_plot

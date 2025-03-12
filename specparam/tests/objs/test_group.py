@@ -13,7 +13,7 @@ from numpy.testing import assert_equal
 
 from specparam.data import FitResults
 from specparam.core.items import OBJ_DESC
-from specparam.core.modutils import safe_import
+from specparam.modutils.dependencies import safe_import
 from specparam.sim import sim_group_power_spectra
 
 pd = safe_import('pandas')
