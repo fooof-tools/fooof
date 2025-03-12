@@ -9,7 +9,7 @@ import numpy as np
 from specparam.core.utils import unlog, check_inds, check_array_dim
 from specparam.modes.items import OBJ_DESC
 from specparam.modes.funcs import infer_ap_func
-from specparam.objs.modes import AP_MODES, PE_MODES
+from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import
 from specparam.data import FitResults, ModelSettings
