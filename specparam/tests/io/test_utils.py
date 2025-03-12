@@ -1,5 +1,7 @@
 """Tests for specparam.io.utils"""
 
+from pathlib import Path
+
 from specparam.io.utils import *
 
 ###################################################################################################

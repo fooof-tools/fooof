@@ -3,6 +3,7 @@
 import io
 import json
 
+from specparam.io.utils import fname, fpath
 from specparam.core.items import OBJ_DESC
 from specparam.core.utils import dict_array_to_lst, dict_select_keys
 

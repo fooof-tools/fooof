@@ -1,9 +1,11 @@
 """File I/O for specific file types."""
 
+import io
 import json
 from json import JSONDecodeError
 
-from specparam.io.utils import fpath, fname
+from specparam.io.utils import fname, fpath
+from specparam.core.items import OBJ_DESC
 from specparam.core.utils import dict_lst_to_array
 
 ###################################################################################################

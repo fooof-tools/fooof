@@ -39,3 +39,23 @@ def test_load_jsonlines():
 
     for data in load_jsonlines(res_file_name, TEST_DATA_PATH):
         assert data
+
+def test_load_file_contents():
+    """Check that loaded files contain the contents they should.
+    Note that if this test fails, it likely stems from an issue from saving.
+    """
+
+    file_name = 'test_model_all'
+    loaded_data = load_json(file_name, TEST_DATA_PATH)
+
+    # Check settings
+    for setting in OBJ_DESC['settings']:
+        assert setting in loaded_data.keys()
+
+    # Check results
+    for result in OBJ_DESC['results']:
+        assert result in loaded_data.keys()
+
+    # Check results
+    for datum in OBJ_DESC['data']:
+        assert datum in loaded_data.keys()
