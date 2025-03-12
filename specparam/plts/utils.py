@@ -12,7 +12,7 @@ from functools import wraps
 
 import numpy as np
 
-from specparam.core.io import fname, fpath
+from specparam.io.utils import fname, fpath
 from specparam.core.modutils import safe_import
 from specparam.core.utils import resolve_aliases
 from specparam.plts.settings import PLT_ALPHA_LEVELS, PLT_ALIASES

@@ -7,7 +7,7 @@ from specparam.core.items import OBJ_DESC
 
 from specparam.tests.settings import TEST_DATA_PATH
 
-from specparam.core.io import *
+from specparam.io.models import *
 
 ###################################################################################################
 ###################################################################################################

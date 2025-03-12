@@ -1,6 +1,6 @@
 """Generate reports from model objects."""
 
-from specparam.core.io import fname, fpath
+from specparam.io.utils import fname, fpath
 from specparam.core.modutils import safe_import, check_dependency
 from specparam.core.strings import (gen_settings_str, gen_model_results_str,
                                     gen_group_results_str, gen_time_results_str,

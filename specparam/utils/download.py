@@ -5,7 +5,7 @@ from urllib.request import urlretrieve
 
 import numpy as np
 
-from specparam.core.io import fpath
+from specparam.io.utils import fpath
 
 ###################################################################################################
 ###################################################################################################
