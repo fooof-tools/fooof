@@ -1,5 +1,7 @@
 """Tests for specparam.io.files."""
 
+import os
+
 from specparam.tests.tsettings import TEST_DATA_PATH
 
 from specparam.io.files import *
@@ -7,12 +9,39 @@ from specparam.io.files import *
 ###################################################################################################
 ###################################################################################################
 
+def test_save_json_str():
+
+    data = {'a' : 1, 'b' : 2}
+    file_name = 'test_json_str'
+    save_json(data, file_name, TEST_DATA_PATH)
+
+    assert os.path.exists(TEST_DATA_PATH / (file_name + '.json'))
+
+def test_save_json_str_append():
+
+    data1 = {'a' : 1, 'b' : 2}
+    data2 = {'a' : 3, 'b' : 4}
+    file_name = 'test_json_str_app'
+    save_json(data1, file_name, TEST_DATA_PATH)
+    save_json(data2, file_name, TEST_DATA_PATH, append=True)
+
+    assert os.path.exists(TEST_DATA_PATH / (file_name + '.json'))
+
+def test_save_json_fobj():
+
+    data = {'a' : 1, 'b' : 2}
+    file_name = 'test_json_fobj'
+    with open(TEST_DATA_PATH / (file_name + '.json'), 'w') as f_obj:
+        save_json(data, f_obj, TEST_DATA_PATH)
+
+    assert os.path.exists(TEST_DATA_PATH / (file_name + '.json'))
+
 def test_load_json_str():
     """Test loading JSON file, with str file specifier.
-    Loads files from test_save_model_str.
+    Loads files from test_save_json_str.
     """
 
-    file_name = 'test_model_all'
+    file_name = 'test_json_str'
 
     data = load_json(file_name, TEST_DATA_PATH)
 
@@ -20,10 +49,10 @@ def test_load_json_str():
 
 def test_load_json_fobj():
     """Test loading JSON file, with file object file specifier.
-    Loads files from test_save_model_str.
+    Loads files from test_save_json_str.
     """
 
-    file_name = 'test_model_all'
+    file_name = 'test_json_str'
 
     with open(TEST_DATA_PATH / (file_name + '.json'), 'r') as f_obj:
         data = load_json(f_obj, '')
@@ -32,10 +61,10 @@ def test_load_json_fobj():
 
 def test_load_jsonlines():
     """Test loading JSONlines file.
-    Loads files from test_save_group.
+    Loads files from test_save_json_str_append.
     """
 
-    res_file_name = 'test_group_res'
+    res_file_name = 'test_json_str_app'
 
     for data in load_jsonlines(res_file_name, TEST_DATA_PATH):
         assert data
