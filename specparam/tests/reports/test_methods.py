@@ -1,6 +1,6 @@
-"""Test functions for specparam.utils.reports"""
+"""Test functions for specparam.reports.methods"""
 
-from specparam.utils.reports import *
+from specparam.reports.methods import *
 
 ###################################################################################################
 ###################################################################################################
