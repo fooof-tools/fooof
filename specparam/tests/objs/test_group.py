@@ -12,7 +12,7 @@ import numpy as np
 from numpy.testing import assert_equal
 
 from specparam.data import FitResults
-from specparam.core.items import OBJ_DESC
+from specparam.modes.items import OBJ_DESC
 from specparam.modutils.dependencies import safe_import
 from specparam.sim import sim_group_power_spectra
 

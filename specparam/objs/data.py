@@ -6,7 +6,7 @@ import numpy as np
 
 from specparam.sim.gen import gen_freqs
 from specparam.utils.data import trim_spectrum
-from specparam.core.items import OBJ_DESC
+from specparam.modes.items import OBJ_DESC
 from specparam.modutils.errors import DataError, InconsistentDataError
 from specparam.data import SpectrumMetaData
 from specparam.plts.settings import PLT_COLORS

@@ -1,4 +1,4 @@
-"""Tests for specparam.core.funcs."""
+"""Tests for specparam.modes.funcs."""
 
 from pytest import raises
 
@@ -7,7 +7,7 @@ from scipy.stats import norm, linregress
 
 from specparam.modutils.errors import InconsistentDataError
 
-from specparam.core.funcs import *
+from specparam.modes.funcs import *
 
 ###################################################################################################
 ###################################################################################################

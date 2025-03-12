@@ -1,6 +1,6 @@
 """Define fitting modes."""
 
-from specparam.core.funcs import *
+from specparam.modes.funcs import *
 
 ###################################################################################################
 ## MODES OUTLINE

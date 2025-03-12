@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from specparam.core.funcs import get_ap_func, get_pe_func, infer_ap_func
+from specparam.modes.funcs import get_ap_func, get_pe_func, infer_ap_func
 
 from specparam.sim.transform import rotate_spectrum
 

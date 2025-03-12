@@ -5,7 +5,7 @@ from itertools import cycle
 import numpy as np
 
 from specparam.sim import gen_freqs
-from specparam.core.funcs import gaussian_function
+from specparam.modes.funcs import gaussian_function
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.plts.settings import PLT_FIGSIZES
 from specparam.plts.templates import plot_yshade

@@ -1,6 +1,6 @@
-"""Tests for specparam.core.info."""
+"""Tests for specparam.modes.info."""
 
-from specparam.core.info import *
+from specparam.modes.info import *
 
 ###################################################################################################
 ###################################################################################################

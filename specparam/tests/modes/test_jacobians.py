@@ -1,6 +1,6 @@
-"""Tests for specparam.core.jacobians."""
+"""Tests for specparam.modes.jacobians."""
 
-from specparam.core.jacobians import *
+from specparam.modes.jacobians import *
 
 ###################################################################################################
 ###################################################################################################

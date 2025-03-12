@@ -6,7 +6,7 @@ import numpy as np
 
 from specparam.data import ModelRunModes
 from specparam.core.utils import unlog
-from specparam.core.items import OBJ_DESC
+from specparam.modes.items import OBJ_DESC
 from specparam.io.utils import get_files
 from specparam.io.files import load_json, load_jsonlines
 from specparam.io.models import save_model, save_group, save_event

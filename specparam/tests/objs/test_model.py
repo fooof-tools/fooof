@@ -9,7 +9,7 @@ They serve rather as 'smoke tests', for if anything fails completely.
 import numpy as np
 from pytest import raises
 
-from specparam.core.items import OBJ_DESC
+from specparam.modes.items import OBJ_DESC
 from specparam.core.utils import groupby
 from specparam.modutils.errors import FitError
 from specparam.sim import gen_freqs, sim_power_spectrum

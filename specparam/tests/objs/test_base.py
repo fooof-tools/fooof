@@ -1,6 +1,6 @@
 """Tests for specparam.objs.base, including the base object and it's methods."""
 
-from specparam.core.items import OBJ_DESC
+from specparam.modes.items import OBJ_DESC
 from specparam.data import ModelRunModes
 
 from specparam.objs.base import *

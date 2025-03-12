@@ -7,8 +7,8 @@ from numpy.linalg import LinAlgError
 from scipy.optimize import curve_fit
 
 from specparam.core.utils import groupby
-from specparam.core.funcs import gaussian_function, get_ap_func
-from specparam.core.jacobians import jacobian_gauss
+from specparam.modes.funcs import gaussian_function, get_ap_func
+from specparam.modes.jacobians import jacobian_gauss
 from specparam.reports.strings import gen_width_warning_str
 from specparam.modutils.errors import NoDataError, FitError
 from specparam.utils.params import compute_gauss_std

@@ -7,7 +7,7 @@
 
 # import numpy as np
 
-# from specparam.core.items import OBJ_DESC
+# from specparam.modes.items import OBJ_DESC
 # from specparam.io.files import load_json
 # from specparam.objs import (SpectralModel, SpectralGroupModel,
 #                             SpectralTimeModel, SpectralTimeEventModel)
