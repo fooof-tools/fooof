@@ -301,7 +301,7 @@ class SpectralFitAlgorithm():
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(self.aperiodic_mode.func,
-                                                freqs, power_spectrum, p0=guess,
+                                                freqs, power_spectrum, p0=ap_guess,
                                                 maxfev=self._maxfev, bounds=ap_bounds,
                                                 ftol=self._tol, xtol=self._tol, gtol=self._tol,
                                                 check_finite=False)
