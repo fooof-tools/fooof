@@ -6,7 +6,7 @@ from specparam.core.items import OBJ_DESC
 from specparam.objs import (SpectralModel, SpectralGroupModel,
                             SpectralTimeModel, SpectralTimeEventModel)
 
-from specparam.tests.settings import TEST_DATA_PATH
+from specparam.tests.tsettings import TEST_DATA_PATH
 
 from specparam.utils.io import *
 

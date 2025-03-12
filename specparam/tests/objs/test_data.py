@@ -2,7 +2,7 @@
 
 from specparam.data import SpectrumMetaData
 
-from specparam.tests.tutils import get_tdata, plot_test
+from specparam.tests.tutils import plot_test
 
 from specparam.objs.data import *
 

@@ -1,10 +1,10 @@
 """Generate reports from model objects."""
 
 from specparam.io.utils import fname, fpath
-from specparam.core.modutils import safe_import, check_dependency
 from specparam.core.strings import (gen_settings_str, gen_model_results_str,
                                     gen_group_results_str, gen_time_results_str,
                                     gen_event_results_str)
+from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.data.utils import get_periodic_labels
 from specparam.plts.templates import plot_text
 from specparam.plts.group import (plot_group_aperiodic, plot_group_goodness,

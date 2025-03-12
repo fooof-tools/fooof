@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from specparam.core.modutils import safe_import
+from specparam.modutils.dependencies import safe_import
 
 from specparam.tests.tutils import plot_test
 

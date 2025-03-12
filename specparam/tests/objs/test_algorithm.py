@@ -3,7 +3,7 @@
 from specparam.objs.base import BaseObject
 from specparam.sim import sim_power_spectrum
 
-from specparam.tests.tutils import default_spectrum_params
+from specparam.tests.tdata import default_spectrum_params
 
 from specparam.objs.algorithm import *
 
