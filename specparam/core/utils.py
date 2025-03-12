@@ -33,14 +33,14 @@ def groupby(vec, groupby):
     Parameters
     ----------
     vec : list or 1d array
-        List or array of items to group by 3. Length of array must be divisible by three.
+        List or array of items to group. Length must be divisible by `num`.
     num : int
         Number to group by.
 
     Returns
     -------
     array or list of list
-        Array or list of lists, each with three items. Output type will match input type.
+        Array or list of lists, each with `num` items. Output type will match input type.
 
     Raises
     ------
@@ -49,7 +49,7 @@ def groupby(vec, groupby):
     """
 
     if len(vec) % groupby != 0:
-        raise ValueError("Wrong size array to group by three.")
+        raise ValueError("Wrong size array to group by specified number.")
 
     # Reshape, if an array, as it's faster, otherwise assume list
     if isinstance(vec, np.ndarray):
