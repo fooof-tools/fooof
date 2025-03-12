@@ -99,14 +99,10 @@ def save_group(group, file_name, file_path=None, append=False,
     if not save_results and not save_settings and not save_data:
         raise ValueError("No data specified for saving.")
 
-    # Save to string specified file, do not append
-    if isinstance(file_name, str) and not append:
-        with open(create_file_path(file_name, file_path, 'json'), 'w') as f_obj:
-            _save_group(group, f_obj, save_results, save_settings, save_data)
-
-    # Save to string specified file, appending
-    elif isinstance(file_name, str) and append:
-        with open(create_file_path(file_name, file_path, 'json'), 'a') as f_obj:
+    # Save to string specified file, specifying whether to append or not
+    if isinstance(file_name, str):
+        full_path = create_file_path(file_name, file_path, 'json')
+        with open(full_path, 'a' if append else 'w') as f_obj:
             _save_group(group, f_obj, save_results, save_settings, save_data)
 
     # Save to file-object specified file
@@ -173,7 +169,7 @@ def load_model(file_name, file_path=None, regenerate=True, model=None):
     regenerate : bool, optional, default: True
         Whether to regenerate the model fit from the loaded data, if data is available.
     model : SpectralModel
-        xx
+        Loaded model object with data from file.
 
     Returns
     -------
@@ -201,7 +197,7 @@ def load_group(file_name, file_path=None, group=None):
     file_path : str, optional
         Path to directory to load from. If None, loads from current directory.
     group : SpectralGroupModel
-        xx
+        Loaded model object with data from file.
 
     Returns
     -------
