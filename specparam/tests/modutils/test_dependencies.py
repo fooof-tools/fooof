@@ -1,5 +1,7 @@
 """Tests for specparam.modutils.dependencies."""
 
+from pytest import raises
+
 from specparam.modutils.dependencies import *
 
 ###################################################################################################

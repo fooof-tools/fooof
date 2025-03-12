@@ -14,7 +14,7 @@ from specparam.core.errors import FitError
 from specparam.core.utils import group_three
 from specparam.sim import gen_freqs, sim_power_spectrum
 from specparam.data import FitResults
-from specparam.core.modutils import safe_import
+from specparam.modutils.dependencies import safe_import
 from specparam.core.errors import DataError, NoDataError, InconsistentDataError
 
 pd = safe_import('pandas')

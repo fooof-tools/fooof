@@ -3,8 +3,6 @@
 Note: the decorators for copying documentation are not currently tested.
 """
 
-from pytest import raises
-
 from specparam.modutils.docs import *
 
 ###################################################################################################

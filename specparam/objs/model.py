@@ -10,9 +10,9 @@ import numpy as np
 from specparam.objs.base import BaseObject
 from specparam.objs.algorithm import SpectralFitAlgorithm
 from specparam.core.reports import save_model_report
-from specparam.core.modutils import copy_doc_func_to_method
 from specparam.core.errors import NoModelError
 from specparam.core.strings import gen_settings_str, gen_model_results_str, gen_issue_str
+from specparam.modutils.docs import copy_doc_func_to_method
 from specparam.plts.model import plot_model
 from specparam.data.utils import get_model_params
 from specparam.data.conversions import model_to_dataframe

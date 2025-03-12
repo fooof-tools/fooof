@@ -10,7 +10,7 @@ from specparam.core.items import OBJ_DESC
 from specparam.core.errors import NoDataError
 from specparam.core.io import (save_model, save_group, save_event,
                                load_json, load_jsonlines, get_files)
-from specparam.core.modutils import copy_doc_func_to_method
+from specparam.modutils.docs import copy_doc_func_to_method
 from specparam.objs.results import BaseResults, BaseResults2D, BaseResults2DT, BaseResults3D
 from specparam.objs.data import BaseData, BaseData2D, BaseData2DT, BaseData3D
 

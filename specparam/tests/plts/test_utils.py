@@ -2,7 +2,7 @@
 
 import os
 
-from specparam.core.modutils import safe_import
+from specparam.modutils.dependencies import safe_import
 
 from specparam.tests.tutils import plot_test
 from specparam.tests.settings import TEST_PLOTS_PATH

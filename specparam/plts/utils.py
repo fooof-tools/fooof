@@ -13,8 +13,8 @@ from functools import wraps
 import numpy as np
 
 from specparam.core.io import fname, fpath
-from specparam.core.modutils import safe_import
 from specparam.core.utils import resolve_aliases
+from specparam.modutils.dependencies import safe_import
 from specparam.plts.settings import PLT_ALPHA_LEVELS, PLT_ALIASES
 
 plt = safe_import('.pyplot', 'matplotlib')
