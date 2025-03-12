@@ -5,6 +5,8 @@ Note: load tests load files created from save functions, so failures may reflect
 
 import os
 
+import numpy as np
+
 from specparam.core.items import OBJ_DESC
 from specparam.io.files import load_json
 from specparam.objs import (SpectralModel, SpectralGroupModel,
@@ -195,7 +197,7 @@ def test_load_time(tbands):
     assert isinstance(tft, SpectralTimeModel)
 
     # Load with bands definition
-    tft2 = load_time_model(file_name, TEST_DATA_PATH, tbands)
+    tft2 = load_time(file_name, TEST_DATA_PATH, tbands)
     assert isinstance(tft2, SpectralTimeModel)
     assert tft2.time_results
 
