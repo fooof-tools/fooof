@@ -146,3 +146,13 @@ def test_resolve_aliases():
     # Test resolving aliases with no aliased values present
     kwargs4 = {'alpha' : 10, 'beta' : 20}
     assert resolve_aliases(kwargs4, aliases) == {'alpha' : 10, 'beta' : 20}
+
+def test_normalize():
+
+    arr1 = np.array([0, 0.25, 0.5])
+    norm_arr1 = normalize(arr1)
+    assert np.array_equal(norm_arr1, np.array([0.0, 0.5, 1.0]))
+
+    arr2 = np.array([0, 5, 10])
+    norm_arr2 = normalize(arr2)
+    assert np.array_equal(norm_arr2, np.array([0.0, 0.5, 1.0]))

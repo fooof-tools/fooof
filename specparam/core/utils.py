@@ -291,3 +291,20 @@ def resolve_aliases(kwargs, aliases):
             out_kwargs[key] = val
 
     return out_kwargs
+
+
+def normalize(data):
+    """Normalize an array of numerical data (to the range of 0-1).
+
+    Parameters
+    ----------
+    data : np.ndarray
+        Array of data to normalize.
+
+    Returns
+    -------
+    np.ndarray
+        Normalized data.
+    """
+
+    return (data - np.min(data)) / (np.max(data) - np.min(data))
