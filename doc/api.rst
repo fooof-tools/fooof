@@ -375,6 +375,21 @@ Plot related utilies for styling and managing plots.
     recursive_plot
     save_figure
 
+Input / Output (IO)
+-------------------
+
+Save & load related functionality.
+
+.. currentmodule:: specparam.io.models
+
+.. autosummary::
+    :toctree: generated/
+
+    load_model
+    load_group
+    load_time
+    load_event
+
 Utilities
 ---------
 
@@ -406,19 +421,6 @@ Utilities for working with parameters
     :toctree: generated/
 
     compute_knee_frequency
-
-Input / Output (IO)
-~~~~~~~~~~~~~~~~~~~
-
-.. currentmodule:: specparam.utils.io
-
-.. autosummary::
-    :toctree: generated/
-
-    load_model
-    load_group_model
-    load_time_model
-    load_event_model
 
 Methods Reports
 ~~~~~~~~~~~~~~~
