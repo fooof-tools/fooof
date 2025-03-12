@@ -7,8 +7,8 @@ from specparam.objs.base import BaseObject2DT
 from specparam.objs.algorithm import SpectralFitAlgorithm
 from specparam.data.conversions import group_to_dataframe, dict_to_df
 from specparam.plts.time import plot_time_model
-from specparam.core.reports import save_time_report
-from specparam.core.strings import gen_time_results_str
+from specparam.reports.save import save_time_report
+from specparam.reports.strings import gen_time_results_str
 from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
 

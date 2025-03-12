@@ -1,7 +1,7 @@
-"""Tests for specparam.core.strings."""
+"""Tests for specparam.reports.strings."""
 
-from specparam.core.strings import *
-from specparam.core.strings import _format, _no_model_str
+from specparam.reports.strings import *
+from specparam.reports.strings import _format, _no_model_str
 
 ###################################################################################################
 ###################################################################################################
