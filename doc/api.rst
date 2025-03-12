@@ -390,6 +390,24 @@ Save & load related functionality.
     load_time
     load_event
 
+Reports
+-------
+
+Utilities related to creating reports.
+
+Methods Reports
+~~~~~~~~~~~~~~~
+
+Utilities for creating draft methods sections.
+
+.. currentmodule:: specparam.reports.methods
+
+.. autosummary::
+    :toctree: generated/
+
+    methods_report_info
+    methods_report_text
+
 Utilities
 ---------
 
@@ -421,16 +439,3 @@ Utilities for working with parameters
     :toctree: generated/
 
     compute_knee_frequency
-
-Methods Reports
-~~~~~~~~~~~~~~~
-
-Utilities to creating methods reports.
-
-.. currentmodule:: specparam.utils.reports
-
-.. autosummary::
-    :toctree: generated/
-
-    methods_report_info
-    methods_report_text
