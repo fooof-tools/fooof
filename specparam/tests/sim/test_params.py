@@ -4,7 +4,7 @@ from pytest import raises
 
 from numpy import array_equal
 
-from specparam.core.errors import InconsistentDataError
+from specparam.modutils.errors import InconsistentDataError
 
 from specparam.sim.params import *
 

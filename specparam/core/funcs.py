@@ -9,7 +9,7 @@ NOTES
 
 import numpy as np
 
-from specparam.core.errors import InconsistentDataError
+from specparam.modutils.errors import InconsistentDataError
 
 ###################################################################################################
 ###################################################################################################

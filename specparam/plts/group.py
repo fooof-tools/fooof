@@ -5,7 +5,7 @@ Notes
 This file contains plotting functions that take as input a group model object.
 """
 
-from specparam.core.errors import NoModelError
+from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.plts.settings import PLT_FIGSIZES
 from specparam.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
