@@ -1,4 +1,7 @@
-"""Tests for specparam.io.models."""
+"""Tests for specparam.io.models.
+
+Note: load tests load files created from save functions, so failures may reflect saving issues.
+"""
 
 import os
 
@@ -13,9 +16,7 @@ from specparam.io.models import *
 ###################################################################################################
 
 def test_save_model_str(tfm):
-    """Check saving model object data, with file specifiers as strings."""
 
-    # Test saving out each set of save elements
     file_name_res = 'test_model_res'
     file_name_set = 'test_model_set'
     file_name_dat = 'test_model_dat'
@@ -34,7 +35,6 @@ def test_save_model_str(tfm):
     assert os.path.exists(TEST_DATA_PATH / (file_name_all + '.json'))
 
 def test_save_model_append(tfm):
-    """Check saving fm data, appending to a file."""
 
     file_name = 'test_model_append'
 
@@ -44,7 +44,6 @@ def test_save_model_append(tfm):
     assert os.path.exists(TEST_DATA_PATH / (file_name + '.json'))
 
 def test_save_model_fobj(tfm):
-    """Check saving fm data, with file object file specifier."""
 
     file_name = 'test_model_fileobj'
 
@@ -57,7 +56,6 @@ def test_save_model_fobj(tfm):
     assert os.path.exists(TEST_DATA_PATH / (file_name + '.json'))
 
 def test_save_group(tfg):
-    """Check saving fg data."""
 
     res_file_name = 'test_group_res'
     set_file_name = 'test_group_set'
@@ -77,7 +75,6 @@ def test_save_group(tfg):
     assert os.path.exists(TEST_DATA_PATH / (file_name_all + '.json'))
 
 def test_save_group_append(tfg):
-    """Check saving fg data, appending to file."""
 
     file_name = 'test_group_append'
 
@@ -87,7 +84,6 @@ def test_save_group_append(tfg):
     assert os.path.exists(TEST_DATA_PATH / (file_name + '.json'))
 
 def test_save_group_fobj(tfg):
-    """Check saving fg data, with file object file specifier."""
 
     file_name = 'test_fileobj'
 
@@ -97,7 +93,6 @@ def test_save_group_fobj(tfg):
     assert os.path.exists(TEST_DATA_PATH / (file_name + '.json'))
 
 def test_save_time(tft):
-    """Check saving ft data."""
 
     res_file_name = 'test_time_res'
     set_file_name = 'test_time_set'
@@ -117,7 +112,6 @@ def test_save_time(tft):
     assert os.path.exists(TEST_DATA_PATH / (file_name_all + '.json'))
 
 def test_save_event(tfe):
-    """Check saving fe data."""
 
     res_file_name = 'test_event_res'
     set_file_name = 'test_event_set'
@@ -140,40 +134,47 @@ def test_save_event(tfe):
 
 def test_load_model():
 
-    tmodel = load_model('test_model_all', TEST_DATA_PATH)
+    # Loads file saved from `test_save_model_str`
+    file_name = 'test_model_all'
+
+    tmodel = load_model(file_name, TEST_DATA_PATH)
     assert tmodel
 
 def test_load_group():
 
-    tgroup = load_group('test_group_all', TEST_DATA_PATH)
+    # Loads file saved from `test_save_group`
+    file_name = 'test_group_all'
+
+    tgroup = load_group(file_name, TEST_DATA_PATH)
     assert tgroup
 
 def test_load_time():
 
-    ttime = load_time('test_time_all', TEST_DATA_PATH)
+    # Loads file saved from `test_save_time`
+    file_name = 'test_time_all'
+
+    ttime = load_time(file_name, TEST_DATA_PATH)
     assert ttime
 
 def test_load_event():
 
-    tevent = load_event('test_event_all', TEST_DATA_PATH)
+    # Loads file saved from `test_save_event`
+    file_name = 'test_event_all'
+
+    tevent = load_event(file_name, TEST_DATA_PATH)
     assert tevent
 
 def test_load_file_contents():
-    """Check that loaded files contain the contents they should.
-    Note that if this test fails, it likely stems from an issue from saving.
-    """
+    """Check that loaded model files contain the contents they should."""
 
+    # Loads file saved from `test_save_model_str`
     file_name = 'test_model_all'
+
     loaded_data = load_json(file_name, TEST_DATA_PATH)
 
-    # Check settings
     for setting in OBJ_DESC['settings']:
         assert setting in loaded_data.keys()
-
-    # Check results
     for result in OBJ_DESC['results']:
         assert result in loaded_data.keys()
-
-    # Check results
     for datum in OBJ_DESC['data']:
         assert datum in loaded_data.keys()

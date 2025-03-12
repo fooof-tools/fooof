@@ -1,4 +1,7 @@
-"""Tests for specparam.io.files."""
+"""Tests for specparam.io.files.
+
+Note: load tests load files created from save functions, so failures may reflect saving issues.
+"""
 
 import os
 
@@ -37,10 +40,8 @@ def test_save_json_fobj():
     assert os.path.exists(TEST_DATA_PATH / (file_name + '.json'))
 
 def test_load_json_str():
-    """Test loading JSON file, with str file specifier.
-    Loads files from test_save_json_str.
-    """
 
+    # Loads file saved from `test_save_json_str`
     file_name = 'test_json_str'
 
     data = load_json(file_name, TEST_DATA_PATH)
@@ -48,10 +49,8 @@ def test_load_json_str():
     assert data
 
 def test_load_json_fobj():
-    """Test loading JSON file, with file object file specifier.
-    Loads files from test_save_json_str.
-    """
 
+    # Loads file saved from `test_save_json_str`
     file_name = 'test_json_str'
 
     with open(TEST_DATA_PATH / (file_name + '.json'), 'r') as f_obj:
@@ -60,10 +59,8 @@ def test_load_json_fobj():
     assert data
 
 def test_load_jsonlines():
-    """Test loading JSONlines file.
-    Loads files from test_save_json_str_append.
-    """
 
+    # Loads file saved from `test_save_json_str_append`
     res_file_name = 'test_json_str_app'
 
     for data in load_jsonlines(res_file_name, TEST_DATA_PATH):
