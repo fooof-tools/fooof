@@ -1,91 +1,14 @@
-"""File I/O."""
+"""File I/O for model objects."""
 
 import io
-import os
-import json
-from json import JSONDecodeError
 
+from specparam.io.files import save_json
+from specparam.io.utils import create_file_path
 from specparam.core.items import OBJ_DESC
-from specparam.core.utils import dict_array_to_lst, dict_select_keys, dict_lst_to_array
+from specparam.core.utils import dict_array_to_lst, dict_select_keys
 
 ###################################################################################################
 ###################################################################################################
-
-def fname(file_name, extension):
-    """Check a filename, adding an extension if not already specified.
-
-    Parameters
-    ----------
-    file_name : str
-        String that specifies a file name.
-    extension : str
-        String of the extension (without a period) to be added if one isn't already present.
-
-    Outputs
-    -------
-    file_name : str
-        String that specifies a file name.
-    """
-
-    if len(file_name.split('.')) == 1:
-        file_name = file_name + '.' + extension
-
-    return file_name
-
-
-def fpath(file_path, file_name):
-    """Build the full file path from file name and directory.
-
-    Parameters
-    ----------
-    file_path : Path or str or None
-        Path to the directory where the file is located.
-    file_name : str
-        Name of the file.
-
-    Returns
-    -------
-    full_path : str
-        Full file path to the file, including directory, if provided.
-
-    Notes
-    -----
-    This function is mainly used to deal with the case in which file_path is None.
-    """
-
-    if not file_path:
-        full_path = file_name
-    else:
-        full_path = os.path.join(file_path, file_name)
-
-    return full_path
-
-
-def get_files(file_path, select=None):
-    """Get a list of files from a directory.
-
-    Parameters
-    ----------
-    file_path : Path or str
-        Name of the folder to get the list of files from.
-    select : str, optional
-        A search string to use to select files.
-
-    Returns
-    -------
-    list of str
-        A list of files.
-    """
-
-    # Get list of available files, and drop hidden files
-    files = os.listdir(file_path)
-    files = [file for file in files if file[0] != '.']
-
-    if select:
-        files = [file for file in files if select in file]
-
-    return files
-
 
 def save_model(model, file_name, file_path=None, append=False,
                save_results=False, save_settings=False, save_data=False):
@@ -125,24 +48,8 @@ def save_model(model, file_name, file_path=None, append=False,
                (OBJ_DESC['data'] if save_data else []))
     obj_dict = dict_select_keys(obj_dict, keep)
 
-    # Save out - create new file, (creates a JSON file)
-    if isinstance(file_name, str) and not append:
-        with open(fpath(file_path, fname(file_name, 'json')), 'w') as outfile:
-            json.dump(obj_dict, outfile)
-
-    # Save out - append to file_name (appends to a JSONlines file)
-    elif isinstance(file_name, str) and append:
-        with open(fpath(file_path, fname(file_name, 'json')), 'a') as outfile:
-            json.dump(obj_dict, outfile)
-            outfile.write('\n')
-
-    # Save out - append to given file object (appends to a JSONlines file)
-    elif isinstance(file_name, io.IOBase):
-        json.dump(obj_dict, file_name)
-        file_name.write('\n')
-
-    else:
-        raise ValueError("Save file not understood.")
+    # Save out to json file
+    save_json(obj_dict, file_name, file_path, append)
 
 
 def save_group(group, file_name, file_path=None, append=False,
@@ -176,14 +83,10 @@ def save_group(group, file_name, file_path=None, append=False,
     if not save_results and not save_settings and not save_data:
         raise ValueError("No data specified for saving.")
 
-    # Save to string specified file, do not append
-    if isinstance(file_name, str) and not append:
-        with open(fpath(file_path, fname(file_name, 'json')), 'w') as f_obj:
-            _save_group(group, f_obj, save_results, save_settings, save_data)
-
-    # Save to string specified file, appending
-    elif isinstance(file_name, str) and append:
-        with open(fpath(file_path, fname(file_name, 'json')), 'a') as f_obj:
+    # Save to string specified file, specifying whether to append or not
+    if isinstance(file_name, str):
+        full_path = create_file_path(file_name, file_path, 'json')
+        with open(full_path, 'a' if append else 'w') as f_obj:
             _save_group(group, f_obj, save_results, save_settings, save_data)
 
     # Save to file-object specified file
@@ -241,8 +144,6 @@ def load_model(file_name, file_path=None, regenerate=True, model=None):
 
     Parameters
     ----------
-    Parameters
-    ----------
     file_name : str
         File(s) to load data from.
     file_path : str, optional
@@ -250,7 +151,7 @@ def load_model(file_name, file_path=None, regenerate=True, model=None):
     regenerate : bool, optional, default: True
         Whether to regenerate the model fit from the loaded data, if data is available.
     model : SpectralModel
-        xx
+        Loaded model object with data from file.
 
     Returns
     -------
@@ -278,7 +179,7 @@ def load_group(file_name, file_path=None, group=None):
     file_path : str, optional
         Path to directory to load from. If None, loads from current directory.
     group : SpectralGroupModel
-        xx
+        Loaded model object with data from file.
 
     Returns
     -------
@@ -325,6 +226,7 @@ def load_time(file_name, file_path=None, peak_org=None, time=None):
 
     return time
 
+
 def load_event(file_name, file_path=None, peak_org=None, event=None):
     """Load a SpectralTimeEventModel object.
 
@@ -353,64 +255,6 @@ def load_event(file_name, file_path=None, peak_org=None, event=None):
     event.load(file_name, file_path, peak_org)
 
     return event
-
-
-def load_json(file_name, file_path):
-    """Load json file.
-
-    Parameters
-    ----------
-    file_name : str or FileObject
-        File to load data from.
-    file_path : Path or str
-        Path to directory to load from.
-
-    Returns
-    -------
-    data : dict
-        Dictionary of data loaded from file.
-    """
-
-    # Load data from file
-    if isinstance(file_name, str):
-        with open(fpath(file_path, fname(file_name, 'json')), 'r') as infile:
-            data = json.load(infile)
-    elif isinstance(file_name, io.IOBase):
-        data = json.loads(file_name.readline())
-
-    # Get dictionary of available attributes, and convert specified lists back into arrays
-    data = dict_lst_to_array(data, OBJ_DESC['arrays'])
-
-    return data
-
-
-def load_jsonlines(file_name, file_path):
-    """Load a json-lines file, yielding data line by line.
-
-    Parameters
-    ----------
-    file_name : str
-        File to load data from.
-    file_path : Path or str
-        Path to directory from load from.
-
-    Yields
-    ------
-    dict
-        Dictionary of data loaded from file.
-    """
-
-    with open(fpath(file_path, fname(file_name, 'json')), 'r') as f_obj:
-
-        while True:
-
-            # Load each line, as JSON file
-            try:
-                yield load_json(f_obj, '')
-
-            # Break off when get a JSON error - end of the file
-            except JSONDecodeError:
-                break
 
 
 def _save_group(group, f_obj, save_results, save_settings, save_data):
