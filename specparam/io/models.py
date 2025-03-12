@@ -1,8 +1,8 @@
 """File I/O for model objects."""
 
 import io
-import json
 
+from specparam.io.files import save_json
 from specparam.io.utils import create_file_path
 from specparam.core.items import OBJ_DESC
 from specparam.core.utils import dict_array_to_lst, dict_select_keys
@@ -48,24 +48,8 @@ def save_model(model, file_name, file_path=None, append=False,
                (OBJ_DESC['data'] if save_data else []))
     obj_dict = dict_select_keys(obj_dict, keep)
 
-    # Save out - create new file, (creates a JSON file)
-    if isinstance(file_name, str) and not append:
-        with open(create_file_path(file_name, file_path, 'json'), 'w') as outfile:
-            json.dump(obj_dict, outfile)
-
-    # Save out - append to file_name (appends to a JSONlines file)
-    elif isinstance(file_name, str) and append:
-        with open(create_file_path(file_name, file_path, 'json'), 'a') as outfile:
-            json.dump(obj_dict, outfile)
-            outfile.write('\n')
-
-    # Save out - append to given file object (appends to a JSONlines file)
-    elif isinstance(file_name, io.IOBase):
-        json.dump(obj_dict, file_name)
-        file_name.write('\n')
-
-    else:
-        raise ValueError("Save file not understood.")
+    # Save out to json file
+    save_json(obj_dict, file_name, file_path, append)
 
 
 def save_group(group, file_name, file_path=None, append=False,
@@ -158,8 +142,6 @@ def save_event(event, file_name, file_path=None, append=False,
 def load_model(file_name, file_path=None, regenerate=True, model=None):
     """Load a SpectralModel object.
 
-    Parameters
-    ----------
     Parameters
     ----------
     file_name : str
