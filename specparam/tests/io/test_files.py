@@ -1,6 +1,6 @@
 """Tests for specparam.io.files."""
 
-from specparam.tests.settings import TEST_DATA_PATH
+from specparam.tests.tsettings import TEST_DATA_PATH
 
 from specparam.io.files import *
 

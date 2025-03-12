@@ -5,6 +5,29 @@ import os
 ###################################################################################################
 ###################################################################################################
 
+def create_file_path(file_name, file_path, extension):
+    """Create the full file path to a file.
+
+    Parameters
+    ----------
+    file_name : str
+        String that specifies a file name.
+    file_path : Path or str or None
+        Path to the directory where the file is located.
+    extension : str
+        String of the extension (without a period) to be added if one isn't already present.
+
+    Returns
+    -------
+    file_path
+        Full file path to the file, including directory and file extension.
+    """
+
+    file_path = fpath(file_path, fname(file_name, extension))
+
+    return file_path
+
+
 def fname(file_name, extension):
     """Check a filename, adding an extension if not already specified.
 
