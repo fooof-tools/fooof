@@ -12,7 +12,7 @@ from functools import wraps
 
 import numpy as np
 
-from specparam.io.utils import fname, fpath
+from specparam.io.utils import create_file_path
 from specparam.core.utils import resolve_aliases
 from specparam.modutils.dependencies import safe_import
 from specparam.plts.settings import PLT_ALPHA_LEVELS, PLT_ALIASES
@@ -226,8 +226,7 @@ def save_figure(file_name, file_path=None, close=False, **save_kwargs):
         Additional arguments to pass into the save function.
     """
 
-    full_path = fpath(file_path, fname(file_name, 'png'))
-    plt.savefig(full_path, **save_kwargs)
+    plt.savefig(create_file_path(file_name, file_path, 'png'), **save_kwargs)
 
     if close:
         plt.close()

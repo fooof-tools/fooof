@@ -3,7 +3,7 @@
 import io
 import json
 
-from specparam.io.utils import fname, fpath
+from specparam.io.utils import create_file_path
 from specparam.core.items import OBJ_DESC
 from specparam.core.utils import dict_array_to_lst, dict_select_keys
 
@@ -50,12 +50,12 @@ def save_model(model, file_name, file_path=None, append=False,
 
     # Save out - create new file, (creates a JSON file)
     if isinstance(file_name, str) and not append:
-        with open(fpath(file_path, fname(file_name, 'json')), 'w') as outfile:
+        with open(create_file_path(file_name, file_path, 'json'), 'w') as outfile:
             json.dump(obj_dict, outfile)
 
     # Save out - append to file_name (appends to a JSONlines file)
     elif isinstance(file_name, str) and append:
-        with open(fpath(file_path, fname(file_name, 'json')), 'a') as outfile:
+        with open(create_file_path(file_name, file_path, 'json'), 'a') as outfile:
             json.dump(obj_dict, outfile)
             outfile.write('\n')
 
@@ -101,12 +101,12 @@ def save_group(group, file_name, file_path=None, append=False,
 
     # Save to string specified file, do not append
     if isinstance(file_name, str) and not append:
-        with open(fpath(file_path, fname(file_name, 'json')), 'w') as f_obj:
+        with open(create_file_path(file_name, file_path, 'json'), 'w') as f_obj:
             _save_group(group, f_obj, save_results, save_settings, save_data)
 
     # Save to string specified file, appending
     elif isinstance(file_name, str) and append:
-        with open(fpath(file_path, fname(file_name, 'json')), 'a') as f_obj:
+        with open(create_file_path(file_name, file_path, 'json'), 'a') as f_obj:
             _save_group(group, f_obj, save_results, save_settings, save_data)
 
     # Save to file-object specified file
