@@ -33,7 +33,7 @@ def groupby(vec, groupby):
     Parameters
     ----------
     vec : list or 1d array
-        List or array of items to group.
+        List or array of items to group. Length must be divisible by `num`.
     num : int
         Number to group by.
 
@@ -51,7 +51,7 @@ def groupby(vec, groupby):
     if len(vec) % groupby != 0:
         raise ValueError("Wrong size array to group by specified number.")
 
-    # Reshape, if an array, as it's faster, otherwise asssume lise
+    # Reshape, if an array, as it's faster, otherwise assume list
     if isinstance(vec, np.ndarray):
         return np.reshape(vec, (-1, groupby))
     else:
