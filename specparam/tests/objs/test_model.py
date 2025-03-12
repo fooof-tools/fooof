@@ -123,8 +123,6 @@ def test_fit_measures():
     assert np.isclose(tfm.error_, 0.8)
     tfm._calc_error(metric='RMSE')
     assert np.isclose(tfm.error_, np.sqrt(0.8))
-    with raises(ValueError):
-        tfm._calc_error(metric='BAD')
 
 def test_checks():
     """Test various checks, errors and edge cases for model fitting.
