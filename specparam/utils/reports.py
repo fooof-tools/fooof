@@ -29,6 +29,7 @@ def methods_report_info(model_obj=None, concise=False):
         print(gen_settings_str(model_obj, concise=concise))
         print(gen_freq_range_str(model_obj, concise=concise))
 
+
 def methods_report_text(model_obj=None):
     """Prints out a text template of methods reporting information.
 

@@ -4,7 +4,7 @@ import numpy as np
 from scipy.special import erf
 
 from specparam.core.utils import normalize
-from specparam.core.errors import InconsistentDataError
+from specparam.modutils.errors import InconsistentDataError
 
 ###################################################################################################
 ###################################################################################################

@@ -10,17 +10,18 @@ import numpy as np
 from pytest import raises
 
 from specparam.core.items import OBJ_DESC
-from specparam.core.errors import FitError
 from specparam.core.utils import groupby
+from specparam.modutils.errors import FitError
 from specparam.sim import gen_freqs, sim_power_spectrum
 from specparam.data import FitResults
-from specparam.core.modutils import safe_import
-from specparam.core.errors import DataError, NoDataError, InconsistentDataError
+from specparam.modutils.dependencies import safe_import
+from specparam.modutils.errors import DataError, NoDataError, InconsistentDataError
 
 pd = safe_import('pandas')
 
-from specparam.tests.settings import TEST_DATA_PATH
-from specparam.tests.tutils import default_spectrum_params, get_tfm, plot_test
+from specparam.tests.tsettings import TEST_DATA_PATH
+from specparam.tests.tdata import default_spectrum_params, get_tfm
+from specparam.tests.tutils import plot_test
 
 from specparam.objs.model import *
 
@@ -123,8 +124,6 @@ def test_fit_measures():
     assert np.isclose(tfm.error_, 0.8)
     tfm._calc_error(metric='RMSE')
     assert np.isclose(tfm.error_, np.sqrt(0.8))
-    with raises(ValueError):
-        tfm._calc_error(metric='BAD')
 
 def test_checks():
     """Test various checks, errors and edge cases for model fitting.

@@ -10,7 +10,7 @@ from specparam.core.utils import groupby
 from specparam.core.strings import gen_width_warning_str
 from specparam.core.funcs import gaussian_function, get_ap_func
 from specparam.core.jacobians import jacobian_gauss
-from specparam.core.errors import NoDataError, FitError
+from specparam.modutils.errors import NoDataError, FitError
 from specparam.utils.params import compute_gauss_std
 
 ###################################################################################################

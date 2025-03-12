@@ -7,10 +7,11 @@ import numpy as np
 from specparam.data import ModelRunModes
 from specparam.core.utils import unlog
 from specparam.core.items import OBJ_DESC
-from specparam.core.errors import NoDataError
-from specparam.core.io import (save_model, save_group, save_event,
-                               load_json, load_jsonlines, get_files)
-from specparam.core.modutils import copy_doc_func_to_method
+from specparam.io.utils import get_files
+from specparam.io.files import load_json, load_jsonlines
+from specparam.io.models import save_model, save_group, save_event
+from specparam.modutils.errors import NoDataError
+from specparam.modutils.docs import copy_doc_func_to_method
 from specparam.objs.results import BaseResults, BaseResults2D, BaseResults2DT, BaseResults3D
 from specparam.objs.data import BaseData, BaseData2D, BaseData2DT, BaseData3D
 

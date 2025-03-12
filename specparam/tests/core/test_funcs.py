@@ -5,7 +5,7 @@ from pytest import raises
 import numpy as np
 from scipy.stats import norm, linregress
 
-from specparam.core.errors import InconsistentDataError
+from specparam.modutils.errors import InconsistentDataError
 
 from specparam.core.funcs import *
 

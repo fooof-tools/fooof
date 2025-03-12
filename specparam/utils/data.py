@@ -7,7 +7,7 @@ from inspect import isfunction
 import numpy as np
 from scipy.stats import sem
 
-from specparam.core.modutils import docs_get_section, replace_docstring_sections
+from specparam.modutils.docs import docs_get_section, replace_docstring_sections
 
 ###################################################################################################
 ###################################################################################################
@@ -29,6 +29,25 @@ DISPERSION_FUNCS = {
 
 ###################################################################################################
 ###################################################################################################
+
+def get_freq_ind(freqs, freq):
+    """Get the index of the  closest frequency value to a specified input frequency.
+
+    Parameters
+    ----------
+    freqs : 1d array
+        Frequency values.
+    freq : float
+        Frequency value to select closest index to.
+
+    Returns
+    -------
+    int
+        Index of closest value in `freqs` to `freq`.
+    """
+
+    return np.argmin(np.abs(freqs - freq))
+
 
 def compute_average(data, average='mean'):
     """Compute the average across an array of data.

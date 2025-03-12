@@ -7,15 +7,16 @@ from multiprocessing import Pool, cpu_count
 import numpy as np
 
 from specparam.core.utils import unlog
+from specparam.core.items import OBJ_DESC
 from specparam.core.funcs import infer_ap_func
-from specparam.core.errors import NoModelError
 from specparam.core.utils import check_inds, check_array_dim
 from specparam.objs.modes import AP_MODES, PE_MODES
+from specparam.modutils.errors import NoModelError
+from specparam.modutils.dependencies import safe_import
 from specparam.data import FitResults, ModelSettings
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import get_group_params, get_results_by_ind, get_results_by_row
-from specparam.core.items import OBJ_DESC
-from specparam.core.modutils import safe_import
+from specparam.utils.gof import compute_r_squared, compute_error
 
 ###################################################################################################
 ###################################################################################################
@@ -299,8 +300,7 @@ class BaseResults():
     def _calc_r_squared(self):
         """Calculate the r-squared goodness of fit of the model, compared to the original data."""
 
-        r_val = np.corrcoef(self.power_spectrum, self.modeled_spectrum_)
-        self.r_squared_ = r_val[0][1] ** 2
+        self.r_squared_ = compute_r_squared(self.power_spectrum, self.modeled_spectrum_)
 
 
     def _calc_error(self, metric=None):
@@ -324,21 +324,8 @@ class BaseResults():
         Which measure is applied is by default controlled by the `_error_metric` attribute.
         """
 
-        # If metric is not specified, use the default approach
-        metric = self._error_metric if not metric else metric
-
-        if metric == 'MAE':
-            self.error_ = np.abs(self.power_spectrum - self.modeled_spectrum_).mean()
-
-        elif metric == 'MSE':
-            self.error_ = ((self.power_spectrum - self.modeled_spectrum_) ** 2).mean()
-
-        elif metric == 'RMSE':
-            self.error_ = np.sqrt(((self.power_spectrum - self.modeled_spectrum_) ** 2).mean())
-
-        else:
-            error_msg = "Error metric '{}' not understood or not implemented.".format(metric)
-            raise ValueError(error_msg)
+        self.error_ = compute_error(self.power_spectrum, self.modeled_spectrum_,
+                                    self._error_metric if not metric else metric)
 
 
 class BaseResults2D(BaseResults):

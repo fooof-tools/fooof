@@ -4,7 +4,7 @@ from copy import deepcopy
 
 import numpy as np
 
-from specparam.core.modutils import safe_import
+from specparam.modutils.dependencies import safe_import
 pd = safe_import('pandas')
 
 from specparam.data.conversions import *

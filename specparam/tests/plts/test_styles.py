@@ -1,6 +1,7 @@
 """Tests for specparam.plts.styles."""
 
 from specparam.tests.tutils import plot_test
+
 from specparam.plts.style import *
 
 ###################################################################################################
@@ -13,7 +14,7 @@ def test_check_style_options():
 def test_style_spectrum_plot(skip_if_no_mpl):
 
     # Create a dummy plot and style it
-    from specparam.core.modutils import safe_import
+    from specparam.modutils.dependencies import safe_import
     plt = safe_import('.pyplot', 'matplotlib')
     _, ax = plt.subplots()
     style_spectrum_plot(ax, False, False)
