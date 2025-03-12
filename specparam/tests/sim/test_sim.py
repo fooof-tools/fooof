@@ -3,7 +3,7 @@
 import numpy as np
 from numpy import array_equal
 
-from specparam.tests.tutils import default_group_params
+from specparam.tests.tdata import default_group_params
 
 from specparam.sim.sim import *
 

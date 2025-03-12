@@ -6,7 +6,7 @@ from specparam import SpectralTimeEventModel
 from specparam.modutils.errors import NoModelError
 
 from specparam.tests.tutils import plot_test
-from specparam.tests.settings import TEST_PLOTS_PATH
+from specparam.tests.tsettings import TEST_PLOTS_PATH
 
 from specparam.plts.event import *
 

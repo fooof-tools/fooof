@@ -13,8 +13,9 @@ from specparam.modutils.dependencies import safe_import
 
 pd = safe_import('pandas')
 
-from specparam.tests.settings import TEST_DATA_PATH
-from specparam.tests.tutils import default_group_params, plot_test
+from specparam.tests.tsettings import TEST_DATA_PATH
+from specparam.tests.tdata import default_group_params
+from specparam.tests.tutils import plot_test
 
 from specparam.objs.event import *
 

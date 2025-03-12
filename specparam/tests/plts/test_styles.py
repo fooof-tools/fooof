@@ -1,6 +1,7 @@
 """Tests for specparam.plts.styles."""
 
 from specparam.tests.tutils import plot_test
+
 from specparam.plts.style import *
 
 ###################################################################################################

@@ -19,8 +19,9 @@ from specparam.modutils.errors import DataError, NoDataError, InconsistentDataEr
 
 pd = safe_import('pandas')
 
-from specparam.tests.settings import TEST_DATA_PATH
-from specparam.tests.tutils import default_spectrum_params, get_tfm, plot_test
+from specparam.tests.tsettings import TEST_DATA_PATH
+from specparam.tests.tdata import default_spectrum_params, get_tfm
+from specparam.tests.tutils import plot_test
 
 from specparam.objs.model import *
 
