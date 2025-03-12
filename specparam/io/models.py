@@ -1,4 +1,4 @@
-"""File I/O."""
+"""File I/O for model objects."""
 
 import io
 import json
