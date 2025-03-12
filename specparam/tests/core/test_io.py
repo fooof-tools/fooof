@@ -5,7 +5,7 @@ from pathlib import Path
 
 from specparam.core.items import OBJ_DESC
 
-from specparam.tests.settings import TEST_DATA_PATH
+from specparam.tests.tsettings import TEST_DATA_PATH
 
 from specparam.core.io import *
 

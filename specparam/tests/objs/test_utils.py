@@ -9,7 +9,7 @@ from specparam.objs.utils import compare_model_objs
 from specparam.sim import sim_group_power_spectra
 from specparam.core.errors import NoModelError, IncompatibleSettingsError
 
-from specparam.tests.tutils import default_group_params
+from specparam.tests.tdata import default_group_params
 
 from specparam.objs.utils import *
 
