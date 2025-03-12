@@ -1,10 +1,10 @@
 """Generate reports from model objects."""
 
-from specparam.core.io import fname, fpath
-from specparam.core.modutils import safe_import, check_dependency
+from specparam.io.utils import create_file_path
 from specparam.core.strings import (gen_settings_str, gen_model_results_str,
                                     gen_group_results_str, gen_time_results_str,
                                     gen_event_results_str)
+from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.data.utils import get_periodic_labels
 from specparam.plts.templates import plot_text
 from specparam.plts.group import (plot_group_aperiodic, plot_group_goodness,
@@ -61,7 +61,7 @@ def save_model_report(model, file_name, file_path=None, add_settings=True, **plo
         plot_text(gen_settings_str(model, False), 0.5, 0.1, ax=plt.subplot(grid[2]))
 
     # Save out the report
-    plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+    plt.savefig(create_file_path(file_name, file_path, SAVE_FORMAT))
     plt.close()
 
 
@@ -111,7 +111,7 @@ def save_group_report(group, file_name, file_path=None, add_settings=True):
         plot_text(gen_settings_str(group, False), 0.5, 0.1, ax=plt.subplot(grid[3, :]))
 
     # Save out the report
-    plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+    plt.savefig(create_file_path(file_name, file_path, SAVE_FORMAT))
     plt.close()
 
 
@@ -153,7 +153,7 @@ def save_time_report(time_model, file_name, file_path=None, add_settings=True):
         plot_text(gen_settings_str(time_model, False), 0.5, 0.1, ax=axes[-1])
 
     # Save out the report
-    plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+    plt.savefig(create_file_path(file_name, file_path, SAVE_FORMAT))
     plt.close()
 
 
@@ -197,5 +197,5 @@ def save_event_report(event_model, file_name, file_path=None, add_settings=True)
         plot_text(gen_settings_str(event_model, False), 0.5, 0.1, ax=axes[-1])
 
     # Save out the report
-    plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+    plt.savefig(create_file_path(file_name, file_path, SAVE_FORMAT))
     plt.close()

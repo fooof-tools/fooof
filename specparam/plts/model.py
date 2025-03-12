@@ -8,7 +8,7 @@ This file contains plotting functions that take as input a model object.
 import numpy as np
 
 from specparam.core.utils import nearest_ind
-from specparam.core.modutils import safe_import, check_dependency
+from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.sim.gen import gen_periodic
 from specparam.utils.data import trim_spectrum
 from specparam.utils.params import compute_fwhm

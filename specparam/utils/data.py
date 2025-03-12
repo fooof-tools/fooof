@@ -7,7 +7,7 @@ from inspect import isfunction
 import numpy as np
 from scipy.stats import sem
 
-from specparam.core.modutils import docs_get_section, replace_docstring_sections
+from specparam.modutils.docs import docs_get_section, replace_docstring_sections
 
 ###################################################################################################
 ###################################################################################################

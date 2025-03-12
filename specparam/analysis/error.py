@@ -4,7 +4,7 @@ import numpy as np
 
 from specparam.sim.gen import gen_model
 from specparam.plts.error import plot_spectral_error
-from specparam.core.errors import NoModelError, NoDataError
+from specparam.modutils.errors import NoModelError, NoDataError
 
 ###################################################################################################
 ###################################################################################################

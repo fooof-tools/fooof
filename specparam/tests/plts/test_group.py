@@ -3,10 +3,10 @@
 from pytest import raises
 
 from specparam import SpectralGroupModel
-from specparam.core.errors import NoModelError
+from specparam.modutils.errors import NoModelError
 
 from specparam.tests.tutils import plot_test
-from specparam.tests.settings import TEST_PLOTS_PATH
+from specparam.tests.tsettings import TEST_PLOTS_PATH
 
 from specparam.plts.group import *
 

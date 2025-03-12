@@ -2,7 +2,7 @@
 
 import os
 
-from specparam.tests.settings import TEST_REPORTS_PATH
+from specparam.tests.tsettings import TEST_REPORTS_PATH
 
 from specparam.core.reports import *
 

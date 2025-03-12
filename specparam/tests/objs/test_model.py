@@ -10,17 +10,18 @@ import numpy as np
 from pytest import raises
 
 from specparam.core.items import OBJ_DESC
-from specparam.core.errors import FitError
 from specparam.core.utils import group_three
+from specparam.modutils.errors import FitError
 from specparam.sim import gen_freqs, sim_power_spectrum
 from specparam.data import FitResults
-from specparam.core.modutils import safe_import
-from specparam.core.errors import DataError, NoDataError, InconsistentDataError
+from specparam.modutils.dependencies import safe_import
+from specparam.modutils.errors import DataError, NoDataError, InconsistentDataError
 
 pd = safe_import('pandas')
 
-from specparam.tests.settings import TEST_DATA_PATH
-from specparam.tests.tutils import default_spectrum_params, get_tfm, plot_test
+from specparam.tests.tsettings import TEST_DATA_PATH
+from specparam.tests.tdata import default_spectrum_params, get_tfm
+from specparam.tests.tutils import plot_test
 
 from specparam.objs.model import *
 

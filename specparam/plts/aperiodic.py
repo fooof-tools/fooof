@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from specparam.sim.gen import gen_freqs, gen_aperiodic
-from specparam.core.modutils import safe_import, check_dependency
+from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.plts.settings import PLT_FIGSIZES
 from specparam.plts.templates import plot_yshade
 from specparam.plts.style import style_param_plot, style_plot
