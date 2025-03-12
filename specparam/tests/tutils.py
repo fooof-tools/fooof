@@ -2,7 +2,7 @@
 
 from functools import wraps
 
-from specparam.core.modutils import safe_import
+from specparam.modutils.dependencies import safe_import
 
 plt = safe_import('.pyplot', 'matplotlib')
 
