@@ -9,6 +9,13 @@ from specparam.utils.data import *
 ###################################################################################################
 ###################################################################################################
 
+def test_get_freq_ind():
+
+    freqs = np.array([1, 2, 3, 4, 5])
+
+    assert get_freq_ind(freqs, 2.2) == 1
+    assert get_freq_ind(freqs, 3.7) == 3
+
 def test_compute_average():
 
     data = np.array([[0., 1., 2., 3., 4., 5.],
