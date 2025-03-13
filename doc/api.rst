@@ -117,49 +117,16 @@ Object to store information about simulated data.
 
    SimParams
 
-Analyze Model Results
----------------------
+Periodic Components
+~~~~~~~~~~~~~~~~~~~
 
-Functions to analyze power spectrum models and the results parameters / components.
-
-Analyze Model Errors
-~~~~~~~~~~~~~~~~~~~~
-
-Functions for analyzing the error of model fits.
-
-**Object Inputs**
-
-The following functions take in model objects directly.
-
-.. currentmodule:: specparam.analysis
-
-.. autosummary::
-    :toctree: generated/
-
-    compute_pointwise_error
-    compute_pointwise_error_group
-
-**Array Inputs**
-
-The following functions operate on arrays of models and data, which may be useful for more custom work-flows.
-
-.. currentmodule:: specparam.analysis.error
-
-.. autosummary::
-    :toctree: generated/
-
-    compute_pointwise_error_arr
-
-Analyze Periodic Components
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Functions for analyzing the periodic components of model fits.
+Functions for accessing the periodic components of model fits.
 
 **Object Inputs**
 
 The following functions take in model objects directly, which is the typical use case.
 
-.. currentmodule:: specparam.analysis
+.. currentmodule:: specparam.data.periodic
 
 .. autosummary::
     :toctree: generated/
@@ -172,7 +139,7 @@ The following functions take in model objects directly, which is the typical use
 
 The following functions operate on arrays of peak parameters, which may be useful for more custom work-flows.
 
-.. currentmodule:: specparam.analysis.periodic
+.. currentmodule:: specparam.data.periodic
 
 .. autosummary::
     :toctree: generated/
@@ -181,6 +148,52 @@ The following functions operate on arrays of peak parameters, which may be usefu
     get_band_peak_group_arr
     get_highest_peak
     threshold_peaks
+
+Measures
+--------
+
+Functionality to analyze power spectrum models and the results parameters / components.
+
+Model Errors
+~~~~~~~~~~~~
+
+Functions for analyzing the error of model fits.
+
+**Object Inputs**
+
+The following functions take in model objects directly.
+
+.. currentmodule:: specparam.measures.error
+
+.. autosummary::
+    :toctree: generated/
+
+    compute_pointwise_error
+    compute_pointwise_error_group
+
+**Array Inputs**
+
+The following functions operate on arrays of models and data, which may be useful for more custom work-flows.
+
+.. currentmodule:: specparam.measures.error
+
+.. autosummary::
+    :toctree: generated/
+
+    compute_pointwise_error_arr
+
+Parameters
+~~~~~~~~~~
+
+Measures & utilities for working with and converting parameters.
+
+.. currentmodule:: specparam.measures.params
+
+.. autosummary::
+    :toctree: generated/
+
+    compute_knee_frequency
+    compute_time_constant
 
 Simulation Code
 ---------------
@@ -413,12 +426,12 @@ Utilities
 
 Utility functions and objects.
 
-Data Utilities
+Spectral Utilities
 ~~~~~~~~~~~~~~
 
-Utilities for working with data.
+Utilities for working with spectral data.
 
-.. currentmodule:: specparam.utils
+.. currentmodule:: specparam.utils.spectral
 
 .. autosummary::
     :toctree: generated/
@@ -427,15 +440,3 @@ Utilities for working with data.
     interpolate_spectrum
     interpolate_spectra
     subsample_spectra
-
-Parameter Utilities
-~~~~~~~~~~~~~~~~~~~
-
-Utilities for working with parameters
-
-.. currentmodule:: specparam.utils.params
-
-.. autosummary::
-    :toctree: generated/
-
-    compute_knee_frequency

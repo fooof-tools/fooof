@@ -4,7 +4,8 @@ import numpy as np
 
 from specparam.modutils.errors import NoModelError
 from specparam.data.utils import get_periodic_labels
-from specparam.utils.data import compute_arr_desc, compute_presence
+from specparam.utils.array import compute_arr_desc
+from specparam.measures.properties import compute_presence
 from specparam.version import __version__ as MODULE_VERSION
 
 ###################################################################################################

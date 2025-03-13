@@ -6,7 +6,7 @@ from specparam import Bands
 from specparam.core.funcs import infer_ap_func
 from specparam.core.info import get_ap_indices, get_peak_indices
 from specparam.modutils.dependencies import safe_import, check_dependency
-from specparam.analysis.periodic import get_band_peak_arr
+from specparam.data.periodic import get_band_peak_arr
 from specparam.data.utils import flatten_results_dict
 
 pd = safe_import('pandas')

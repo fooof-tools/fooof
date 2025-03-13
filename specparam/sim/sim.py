@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from specparam.core.utils import check_iter, check_flat
+from specparam.utils.checks import check_iter, check_flat
 from specparam.modutils.docs import (docs_get_section, replace_docstring_sections,
                                      docs_replace_param)
 from specparam.sim.params import collect_sim_params

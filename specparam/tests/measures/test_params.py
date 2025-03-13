@@ -1,6 +1,6 @@
-"""Test functions for specparam.utils.params."""
+"""Test functions for specparam.measures.params."""
 
-from specparam.utils.params import *
+from specparam.measures.params import *
 
 ###################################################################################################
 ###################################################################################################

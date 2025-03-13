@@ -2,7 +2,8 @@
 
 import numpy as np
 
-from specparam.core.utils import groupby, check_flat
+from specparam.utils.select import groupby
+from specparam.utils.checks import check_flat
 from specparam.core.info import get_indices
 from specparam.core.funcs import infer_ap_func
 from specparam.modutils.errors import InconsistentDataError

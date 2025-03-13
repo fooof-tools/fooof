@@ -6,16 +6,16 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
-from specparam.core.utils import unlog
 from specparam.core.items import OBJ_DESC
 from specparam.core.funcs import infer_ap_func
-from specparam.core.utils import check_inds, check_array_dim
+from specparam.utils.array import unlog
+from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import
 from specparam.data import FitResults, ModelSettings
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import get_group_params, get_results_by_ind, get_results_by_row
-from specparam.utils.gof import compute_r_squared, compute_error
+from specparam.measures.gof import compute_r_squared, compute_error
 
 ###################################################################################################
 ###################################################################################################
