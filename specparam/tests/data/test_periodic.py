@@ -1,8 +1,8 @@
-"""Test functions for specparam.analysis.periodic."""
+"""Test functions for specparam.data.periodic."""
 
 import numpy as np
 
-from specparam.analysis.periodic import *
+from specparam.data.periodic import *
 
 ###################################################################################################
 ###################################################################################################

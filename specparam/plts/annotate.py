@@ -6,7 +6,7 @@ from specparam.utils.select import nearest_ind
 from specparam.core.funcs import gaussian_function
 from specparam.modutils.errors import NoModelError
 from specparam.sim.gen import gen_aperiodic
-from specparam.analysis.periodic import get_band_peak
+from specparam.data.periodic import get_band_peak
 from specparam.utils.params import compute_knee_frequency, compute_fwhm
 from specparam.modutils.dependencies import safe_import, check_dependency
 
