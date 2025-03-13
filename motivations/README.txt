@@ -3,7 +3,7 @@
 Motivations
 ===========
 
-This section explores conceptual and methodological ideas that motivate parameterizing neural power spectra. 
+This section explores conceptual and methodological ideas that motivate parameterizing neural power spectra.
 
 Using code examples, topics are organized into:
 
