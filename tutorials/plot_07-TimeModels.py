@@ -1,5 +1,5 @@
 """
-06: Fitting Models over Time
+07: Fitting Models over Time
 ============================
 
 Use extensions of the model object to fit power spectra across time.

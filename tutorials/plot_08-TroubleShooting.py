@@ -1,5 +1,5 @@
 """
-07: Tuning & Troubleshooting
+08: Tuning & Troubleshooting
 ============================
 
 Tips & tricks for choosing algorithm settings, tuning fits, and troubleshooting.
