@@ -154,7 +154,8 @@ print(alpha)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Similarly, the :func:`~.get_band_peak_group` function can be used
-# to select peaks from specified frequency ranges, from :class:`~specparam.SpectralGroupModel` objects.
+# to select peaks from specified frequency ranges, from
+# :class:`~specparam.SpectralGroupModel` objects.
 #
 # Note that you can also apply a threshold to extract group peaks but, as discussed below,
 # this approach will always only extract at most one peak per individual model fit from
