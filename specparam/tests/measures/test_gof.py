@@ -1,8 +1,8 @@
-"""Test functions for specparam.utils.gof."""
+"""Test functions for specparam.measures.gof."""
 
 import numpy as np
 
-from specparam.utils.gof import *
+from specparam.measures.gof import *
 
 ###################################################################################################
 ###################################################################################################

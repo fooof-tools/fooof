@@ -1,5 +1,7 @@
 """Goodness of fit related functions & utilities."""
 
+from inspect import isfunction
+
 import numpy as np
 
 ###################################################################################################
@@ -96,7 +98,6 @@ def compute_mean_squared_error(power_spectrum, modeled_spectrum):
     -------
     error : float
         Computed MSE.
-
     """
 
     error = ((power_spectrum - modeled_spectrum) ** 2).mean()
@@ -154,6 +155,6 @@ def compute_error(power_spectrum, modeled_spectrum, error_metric='mae'):
     if isinstance(error_metric, str):
         error = ERROR_FUNCS[error_metric.lower()](power_spectrum, modeled_spectrum)
     elif isfunction(error_metric):
-        error = error_metric(data)
+        error = error_metric(power_spectrum, modeled_spectrum)
 
     return error

@@ -3,7 +3,7 @@
 import numpy as np
 from scipy.special import erf
 
-from specparam.core.utils import normalize
+from specparam.utils.array import normalize
 from specparam.modutils.errors import InconsistentDataError
 
 ###################################################################################################

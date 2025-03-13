@@ -5,7 +5,7 @@ from copy import deepcopy
 import numpy as np
 
 from specparam.data import ModelRunModes
-from specparam.core.utils import unlog
+from specparam.utils.array import unlog
 from specparam.modes.items import OBJ_DESC
 from specparam.io.utils import get_files
 from specparam.io.files import load_json, load_jsonlines

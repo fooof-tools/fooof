@@ -2,12 +2,12 @@
 
 import numpy as np
 
-from specparam.core.utils import groupby, check_flat
+from specparam.data import SimParams
+from specparam.utils.select import groupby
+from specparam.utils.checks import check_flat
 from specparam.modes.info import get_indices
 from specparam.modes.funcs import infer_ap_func
 from specparam.modutils.errors import InconsistentDataError
-
-from specparam.data import SimParams
 
 ###################################################################################################
 ###################################################################################################

@@ -6,7 +6,7 @@ from json import JSONDecodeError
 
 from specparam.io.utils import create_file_path
 from specparam.modes.items import OBJ_DESC
-from specparam.core.utils import dict_lst_to_array
+from specparam.utils.convert import dict_lst_to_array
 
 ###################################################################################################
 ###################################################################################################

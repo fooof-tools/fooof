@@ -10,7 +10,7 @@ import numpy as np
 from pytest import raises
 
 from specparam.modes.items import OBJ_DESC
-from specparam.core.utils import groupby
+from specparam.utils.select import groupby
 from specparam.modutils.errors import FitError
 from specparam.sim import gen_freqs, sim_power_spectrum
 from specparam.data import FitResults

@@ -1,6 +1,6 @@
-"""Test functions for specparam.analysis.error."""
+"""Test functions for specparam.measures.error."""
 
-from specparam.analysis.error import *
+from specparam.measures.error import *
 
 ###################################################################################################
 ###################################################################################################
