@@ -38,7 +38,7 @@ from neurodsp.spectral import compute_spectrum
 # approach simply gets rid of the peaks, interpolating the data to maintain the 1/f
 # character of the data, allowing for subsequent fitting.
 #
-# The :func:`~specparam.utils.spectral.interpolate_spectrum` function allows for doing simple
+# The :func:`~.interpolate_spectrum` function allows for doing simple
 # interpolation. Given a narrow frequency region, this function interpolates the spectrum,
 # such that the 'peak' of the line noise is removed.
 #
@@ -92,7 +92,7 @@ fm1.report(freqs_int1, powers_int1)
 # frequency ranges, there may be multiple peaks that need to be interpolated.
 #
 # This can be done by passing in multiple interpolation regions to
-# :func:`~specparam.utils.spectral.interpolate_spectrum`, which we will do in the next example.
+# :func:`~.interpolate_spectrum`, which we will do in the next example.
 #
 
 ###################################################################################################

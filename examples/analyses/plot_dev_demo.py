@@ -258,7 +258,7 @@ print('Total model fit error: \t\t {:1.3f}'.format(fm.error_))
 # First we need to load the data, including:
 #
 # - `freqs.csv`, which contains a vector of frequencies
-# - `eopPSDs.csv`, which contains the power values for a group of power spectrum, one for each subject
+# - `eopPSDs.csv`, which contains the power values for a group of power spectra (one per subject)
 #
 
 ###################################################################################################
@@ -383,17 +383,17 @@ plot_aperiodic_fits(aps, fg.freq_range, ax=axes[1])
 # Tuning the specparam algorithm
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# There are no strict guidelines about optimal parameters that will be appropriate
-# across data sets and recording modalities. We suggest applying a data-driven approach
-# to tune model fitting for optimal performance, while taking into account your expectations
-# about periodic and aperiodic activity given the data, the question of interest, and prior findings.
+# There are no strict guidelines about optimal parameters that will be appropriate across data
+# sets and recording modalities. We suggest applying a data-driven approach to tune model fitting
+# for optimal performance, while taking into account your expectations about periodic and aperiodic
+# activity given the data, the question of interest, and prior findings.
 #
 # One option is to parameterize a subset of data to evaluate the appropriateness of model
 # fit settings prior to fitting each power spectrum in the data set.
 # Here, we test parameters on a randomly selected 10% of the data.
 # Results are saved out to a **Output** folder for further consideration.
 #
-# First, lets randomly sub-sample 10% of the power spectra that we will use to test model settings.
+# First, lets randomly sub-sample 10% of the power spectra to use to test model settings.
 #
 
 ###################################################################################################

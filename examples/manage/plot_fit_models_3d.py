@@ -9,9 +9,10 @@ Fitting power spectrum models across 3D arrays of power spectra.
 # Running Across 3D
 # -----------------
 #
-# Most of the materials so far have explored using the :class:`~specparam.SpectralModel` object to fit
-# individual power spectra, and the :class:`~specparam.SpectralGroupModel` object for fitting groups of
-# power spectra, where a group of spectra is organized as a 2D array of power spectra.
+# Most of the materials so far have explored using the :class:`~specparam.SpectralModel` object
+# to fit individual power spectra, and the :class:`~specparam.SpectralGroupModel` object for
+# fitting groups of power spectra, where a group of spectra is organized as a 2D array of
+# power spectra.
 #
 # In this example, we'll go one step further, and step through how to analyze data
 # organized into 3D arrays.
@@ -39,7 +40,8 @@ Fitting power spectrum models across 3D arrays of power spectra.
 #
 # A reminder that no matter how the data is organized, it's always the exact same model
 # that is fit. All other objects or organizations use the same code to do the fitting.
-# For example, the SpectralGroupModel object inherits from SpectralModel, and calls the same underlying fit function.
+# For example, the SpectralGroupModel object inherits from SpectralModel, and calls the
+# same underlying fit function.
 #
 # As we'll see, we can fit 3D arrays of spectra by distributing SpectralGroupModel objects
 # across the data, which also uses the same underlying code.
@@ -142,8 +144,8 @@ print('Number of conditions, channels & frequencies: \t{}, {}, {}'.format(\
 # Internally, this function uses the :class:`~specparam.SpectralGroupModel` object to
 # fit models across the power spectra.
 #
-# This function then returns a list of :class:`~specparam.SpectralGroupModel` objects, which
-# collectively store all the model fit results.
+# This function then returns a list of :class:`~specparam.SpectralGroupModel` objects,
+# which collectively store all the model fit results.
 #
 
 ###################################################################################################
@@ -166,7 +168,8 @@ print(fgs)
 # Note that the length of the returned list of objects should be equivalent to
 # the outermost dimensionality of the input data.
 #
-# In our example setup, this corresponds to `n_conditions` :class:`~specparam.SpectralGroupModel` objects.
+# In our example setup, this corresponds to `n_conditions`
+# :class:`~specparam.SpectralGroupModel` objects.
 #
 
 ###################################################################################################
@@ -180,9 +183,9 @@ print('Number of conditions: \t{}'.format(n_conditions))
 #
 # Once you have fit the power spectrum models, you want to analyze the results in some way!
 #
-# Since you have a collection of :class:`~specparam.SpectralModel` objects, you can analyze these the same
-# way as you would look into any other model objects. You can check out the other examples
-# and tutorials for more information on how to do this.
+# Since you have a collection of :class:`~specparam.SpectralModel` objects, you can analyze
+# these the same way as you would look into any other model objects. You can check out the
+# other examples and tutorials for more information on how to do this.
 #
 # A general strategy for analyzing model fit results as they get returned from
 # :func:`~.fit_models_3d` is to loop across all the objects in the
@@ -204,11 +207,12 @@ for ind, fg in enumerate(fgs):
 # Managing Model Objects
 # ~~~~~~~~~~~~~~~~~~~~~~
 #
-# When running analyses like this, you may start to have many :class:`~specparam.SpectralModel` objects.
+# When running analyses like this, you may start to have many :class:`~specparam.SpectralModel`
+# objects.
 #
 # For example, you may want to save them out, reload them as needed, and analyze
-# results from each :class:`~specparam.SpectralModel` or :class:`~specparam.SpectralGroupModel` object.
-# You may also manipulate the objects by, for example, combining model results
+# results from each :class:`~specparam.SpectralModel` or :class:`~specparam.SpectralGroupModel`
+# object. You may also manipulate the objects by, for example, combining model results
 # across objects to check overall model fit properties.
 #
 # Here, we will continue with a quick example of saving, loading and then combining

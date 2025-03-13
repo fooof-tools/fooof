@@ -123,7 +123,8 @@ spectra, freqs = psd.get_data(return_freqs=True)
 #
 # Now that we have power spectra, we can fit some power spectrum models.
 #
-# Since we have multiple power spectra, we will use the :class:`~specparam.SpectralGroupModel` object.
+# Since we have multiple power spectra, we will use the
+# :class:`~specparam.SpectralGroupModel` object.
 #
 
 ###################################################################################################

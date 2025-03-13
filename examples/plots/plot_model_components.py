@@ -67,7 +67,8 @@ freqs, powers2 = sim_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
 # Fit Power Spectrum Models
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Now that we have our simulated data, we can fit our power spectrum models, using SpectralGroupModel.
+# Now that we have our simulated data, we can fit our power spectrum models,
+# using SpectralGroupModel.
 #
 
 ###################################################################################################
