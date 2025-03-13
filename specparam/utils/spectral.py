@@ -34,7 +34,6 @@ def trim_spectrum(freqs, power_spectra, f_range):
     This function extracts frequency ranges >= f_low and <= f_high.
     It does not round to below or above f_low and f_high, respectively.
 
-
     Examples
     --------
     Using a simulated spectrum, extract a frequency range:

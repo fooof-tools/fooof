@@ -90,8 +90,8 @@ def compute_presence(data, average=False, output='ratio'):
         Data array to check presence of.
     average : bool, optional, default: False
         Whether to average across elements. Only used for 2d array inputs.
-        If False, for 2d array, the output is an array matching the length of the 0th dimension of the input.
-        If True, for 2d arrays, the output is a single value averaged across the whole array.
+        If False, for 2d array, output is an array with length of the 0th dimension of the input.
+        If True, for 2d arrays, output is a single value averaged across the whole array.
     output : {'ratio', 'percent'}
         Representation for the output:
             'ratio' - ratio value, between 0.0, 1.0.

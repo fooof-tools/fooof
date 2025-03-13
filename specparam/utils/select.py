@@ -5,7 +5,7 @@ import numpy as np
 ###################################################################################################
 ###################################################################################################
 
-def groupby(vec, groupby):
+def groupby(vec, num):
     """Group an array of values by a specified number.
 
     Parameters
@@ -26,14 +26,14 @@ def groupby(vec, groupby):
         If input data cannot be evenly grouped into specified number.
     """
 
-    if len(vec) % groupby != 0:
+    if len(vec) % num != 0:
         raise ValueError("Wrong size array to group by specified number.")
 
     # Reshape, if an array, as it's faster, otherwise assume list
     if isinstance(vec, np.ndarray):
-        return np.reshape(vec, (-1, groupby))
+        return np.reshape(vec, (-1, num))
     else:
-        return [list(vec[ii:ii+groupby]) for ii in range(0, len(vec), groupby)]
+        return [list(vec[ii:ii+num]) for ii in range(0, len(vec), num)]
 
 
 def nearest_ind(array, value):
