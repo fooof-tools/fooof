@@ -35,9 +35,8 @@ from specparam import SpectralModel, SpectralGroupModel
 
 # Import useful parameterization related utilities and plot functions
 from specparam.bands import Bands
-from specparam.analysis import get_band_peak_group
-from specparam.utils import trim_spectrum
-from specparam.utils.data import subsample_spectra
+from specparam.data.periodic import get_band_peak_group
+from specparam.utils.spectral import trim_spectrum, subsample_spectra
 from specparam.sim.gen import gen_aperiodic
 from specparam.data import ModelSettings
 from specparam.plts.templates import plot_hist
@@ -46,7 +45,7 @@ from specparam.plts.periodic import plot_peak_fits, plot_peak_params
 from specparam.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 
 # Import functions to examine frequency-by-frequency error of model fits
-from specparam.analysis.error import compute_pointwise_error, compute_pointwise_error_group
+from specparam.measures.error import compute_pointwise_error, compute_pointwise_error_group
 
 # Import helper utility to access data
 from specparam.utils.download import fetch_example_data

@@ -14,7 +14,7 @@ from specparam.sim.utils import set_random_seed
 from specparam.sim.params import Stepper, param_iter
 from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 from specparam.plts.annotate import plot_annotated_model
-from specparam.utils.params import compute_time_constant, compute_knee_frequency
+from specparam.measures.params import compute_time_constant, compute_knee_frequency
 
 ###################################################################################################
 # Gaussian Peak Model

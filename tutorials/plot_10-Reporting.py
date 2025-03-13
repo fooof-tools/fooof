@@ -17,11 +17,11 @@ from specparam import SpectralModel, SpectralGroupModel
 from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 
 # Import utilities to print out information for reporting
-from specparam.utils.reports import methods_report_info, methods_report_text
+from specparam.reports.methods import methods_report_info, methods_report_text
 
 # sphinx_gallery_start_ignore
 # Note: this code gets hidden, but serves to create the text plot for the icon
-from specparam.core.strings import gen_methods_report_str
+from specparam.reports.strings import gen_methods_report_str
 from specparam.plts.templates import plot_text
 text = gen_methods_report_str()
 plot_text(text, 0.5, 0.5, figsize=(12, 3))

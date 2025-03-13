@@ -14,7 +14,7 @@ from specparam import SpectralGroupModel
 from specparam.sim import sim_group_power_spectra
 
 # Import FitError, which we will use to help debug model fit errors
-from specparam.core.errors import FitError
+from specparam.modutils.errors import FitError
 
 ###################################################################################################
 # Model Fit Failures
