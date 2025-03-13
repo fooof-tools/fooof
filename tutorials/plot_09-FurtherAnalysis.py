@@ -256,7 +256,7 @@ print(exps)
 #
 # To further explore some of these specific analyses, and explore other
 # utilities that may be useful, check out the
-# `examples <https://fooof-tools.github.io/fooof/auto_examples/index.html>`_
+# `examples <https://specparam-tools.github.io/auto_examples/index.html>`_
 # page.
 #
 

@@ -261,7 +261,7 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 # possible parameters.
 #
 # For more and descriptions and example of how the simulations work, check out the
-# `examples <https://fooof-tools.github.io/fooof/auto_examples/index.html>`_ section.
+# `examples <https://specparam-tools.github.io/auto_examples/index.html>`_ section.
 #
 
 ###################################################################################################

@@ -5,7 +5,7 @@
 This section covers how to access reporting info and reference use of the module.
 
 This page is a hands-on example of the reporting and referencing information on the
-`Reference page <https://fooof-tools.github.io/fooof/reference.html>`_.
+`Reference page <https://specparam-tools.github.io/reference.html>`_.
 """
 
 ###################################################################################################
