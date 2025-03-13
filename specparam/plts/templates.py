@@ -10,8 +10,8 @@ from itertools import repeat, cycle
 
 import numpy as np
 
-from specparam.utils.measures import compute_average, compute_dispersion
 from specparam.modutils.dependencies import safe_import, check_dependency
+from specparam.measures.properties import compute_average, compute_dispersion
 from specparam.plts.utils import check_ax, set_alpha
 from specparam.plts.settings import (PLT_FIGSIZES, DEFAULT_COLORS, PLT_TEXT_FONT,
                                      TITLE_FONTSIZE, LABEL_SIZE, TICK_LABELSIZE)

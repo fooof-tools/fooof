@@ -7,13 +7,13 @@ This file contains plotting functions that take as input an event model object.
 
 from itertools import cycle
 
+from specparam.modutils.errors import NoModelError
+from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.data.utils import get_periodic_labels, get_band_labels
-from specparam.utils.measures import compute_presence
+from specparam.measures.properties import compute_presence
 from specparam.plts.utils import savefig
 from specparam.plts.templates import plot_param_over_time_yshade
 from specparam.plts.settings import PARAM_COLORS
-from specparam.modutils.errors import NoModelError
-from specparam.modutils.dependencies import safe_import, check_dependency
 
 plt = safe_import('.pyplot', 'matplotlib')
 

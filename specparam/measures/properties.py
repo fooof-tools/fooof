@@ -1,4 +1,4 @@
-"""Compute measures of interest."""
+"""Compute properties of data."""
 
 from inspect import isfunction
 

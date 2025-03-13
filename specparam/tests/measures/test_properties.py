@@ -1,8 +1,8 @@
-"""Tests for specparam.utils.measures."""
+"""Tests for specparam.measures.properties."""
 
 import numpy as np
 
-from specparam.utils.measures import *
+from specparam.measures.properties import *
 
 ###################################################################################################
 ###################################################################################################
