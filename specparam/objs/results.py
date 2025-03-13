@@ -15,7 +15,7 @@ from specparam.modutils.dependencies import safe_import
 from specparam.data import FitResults, ModelSettings
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import get_group_params, get_results_by_ind, get_results_by_row
-from specparam.utils.gof import compute_r_squared, compute_error
+from specparam.measures.gof import compute_r_squared, compute_error
 
 ###################################################################################################
 ###################################################################################################
