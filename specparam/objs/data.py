@@ -5,7 +5,7 @@ from functools import wraps
 import numpy as np
 
 from specparam.sim.gen import gen_freqs
-from specparam.utils.data import trim_spectrum
+from specparam.utils.spectral import trim_spectrum
 from specparam.core.items import OBJ_DESC
 from specparam.modutils.errors import DataError, InconsistentDataError
 from specparam.data import SpectrumMetaData

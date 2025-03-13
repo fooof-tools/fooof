@@ -6,10 +6,10 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
-from specparam.core.utils import unlog
 from specparam.core.items import OBJ_DESC
 from specparam.core.funcs import infer_ap_func
-from specparam.core.utils import check_inds, check_array_dim
+from specparam.utils.array import unlog
+from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import
 from specparam.data import FitResults, ModelSettings

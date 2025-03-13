@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from specparam.core.utils import nearest_ind
+from specparam.utils.select import nearest_ind
 from specparam.core.funcs import gaussian_function
 from specparam.modutils.errors import NoModelError
 from specparam.sim.gen import gen_aperiodic
