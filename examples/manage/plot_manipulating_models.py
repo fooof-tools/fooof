@@ -56,7 +56,9 @@ freqs, powers_3 = sim_power_spectrum(freq_range, [0, 1.5], [11, 0.3, 2.5],
 ###################################################################################################
 
 # Initialize a set of model objects
-fm1, fm2, fm3 = SpectralModel(max_n_peaks=4), SpectralModel(max_n_peaks=4), SpectralModel(max_n_peaks=4)
+fm1 = SpectralModel(max_n_peaks=4)
+fm2 = SpectralModel(max_n_peaks=4)
+fm3 = SpectralModel(max_n_peaks=4)
 
 # Fit power spectrum models
 fm1.fit(freqs, powers_1)
@@ -67,11 +69,13 @@ fm3.fit(freqs, powers_3)
 # Combining Model Objects
 # -----------------------
 #
-# Sometimes, when working with models in :class:`~specparam.SpectralModel` or :class:`~specparam.SpectralGroupModel`
-# objects, you may want to combine them together, to check some group properties.
+# Sometimes, when working with models in :class:`~specparam.SpectralModel`
+# or :class:`~specparam.SpectralGroupModel` objects, you may want to combine them together,
+# to check some group properties.
 #
 # The :func:`~.combine_model_objs` function takes a list of SpectralModel and/or
-# SpectralGroupModel objects, and combines all available fits together into a SpectralGroupModel object.
+# SpectralGroupModel objects, and combines all available fits together into
+# a SpectralGroupModel object.
 #
 # Let's now combine our individual model fits into a SpectralGroupModel object.
 #
@@ -92,7 +96,8 @@ print('Number of model fits: ', len(fg))
 # Note that these functions that manipulate model objects typically do more than just
 # copy results data - they also check and manage settings and meta-data of objects.
 #
-# For example, combining SpectralModel objects returns a new SpectralGroupModel object with the same settings.
+# For example, combining SpectralModel objects returns a new SpectralGroupModel object
+# with the same settings.
 #
 # We can see this by using the :func:`~.compare_model_objs` function to compare
 # the settings between SpectralModel objects.
@@ -118,9 +123,9 @@ compare_model_objs([fm1, fg], 'settings')
 # - you want to sub-select models that meet some kind of goodness-of-fit criterion
 # - you want to examine a subset of model reflect, for example, particular channels or trials
 #
-# To do so, we can use the :func:`~specparam.SpectralGroupModel.get_group` method of the SpectralGroupModel object.
-# This method takes in an input specifying which indices to sub-select, and returns a
-# new SpectralGroupModel object, containing only the requested model fits.
+# To do so, we can use the :func:`~specparam.SpectralGroupModel.get_group` method of the
+# SpectralGroupModel object. This method takes in an input specifying which indices to sub-select,
+# and returns a new SpectralGroupModel object, containing only the requested model fits.
 #
 # Note that if you want to sub-select a single model you can
 # use the :meth:`~specparam.SpectralGroupModel.get_model` method.
@@ -149,7 +154,8 @@ print('Number of model fits: ', len(nfg))
 # -------------------------------------
 #
 # Another option is to 'drop' model fits from a SpectralGroupModel object. You can do this with
-# the :meth:`~specparam.SpectralGroupModel.drop` method from a :class:`~specparam.SpectralGroupModel` object.
+# the :meth:`~specparam.SpectralGroupModel.drop` method from a
+# :class:`~specparam.SpectralGroupModel` object.
 #
 # This can be used, for example, for a quality control step. If you have checked through
 # the object, and noticed some outlier model fits, you may want to exclude them from
@@ -168,9 +174,9 @@ fg.drop(fg.get_params('error') > 0.01)
 # Note on Dropped or Failed Fits
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# When models are dropped from :class:`~specparam.SpectralGroupModel` objects, they are set as null models.
-# They are therefore cleared of results, but not literally dropped, which
-# is done to preserve the ordering of the SpectralGroupModel, so that the `n-th` model
+# When models are dropped from :class:`~specparam.SpectralGroupModel` objects,
+# they are set as null models. They are therefore cleared of results, but not literally dropped,
+# which is done to preserve the ordering of the SpectralGroupModel, so that the `n-th` model
 # doesn't change if some models are dropped.
 #
 # Note that there may in some cases be Null models in a SpectralGroupModel without
@@ -197,8 +203,9 @@ for ind in fg.null_inds_:
 # Note on Selecting from SpectralModel Objects
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Both the :meth:`~specparam.SpectralGroupModel.get_group` and :meth:`~specparam.SpectralGroupModel.drop` methods
-# take an input of the indices of the model(s) to select or drop.
+# Both the :meth:`~specparam.SpectralGroupModel.get_group` and
+# :meth:`~specparam.SpectralGroupModel.drop` methods take an input of the indices of the
+# model(s) to select or drop.
 #
 # In both cases, the input can be defined in multiple ways, including directly indicating
 # the indices as a list of integers, or boolean masks.

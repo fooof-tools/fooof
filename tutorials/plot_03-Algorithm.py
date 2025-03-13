@@ -66,9 +66,9 @@ fm = SpectralModel(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15
 
 ###################################################################################################
 #
-# Note that data can be added to a SpectralModel object independent of fitting the model, using the
-# :meth:`~specparam.SpectralModel.add_data` method. Model objects can also be used to plot data,
-# prior to fitting any models.
+# Note that data can be added to a SpectralModel object independent of fitting the model, using
+# the :meth:`~specparam.SpectralModel.add_data` method. Model objects can also be used to plot
+# data, prior to fitting any models.
 #
 
 ###################################################################################################
@@ -259,8 +259,8 @@ fm.plot(plt_log)
 # Addendum: Data & Model Component Attributes
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# As you may have noticed through this tutorial, the :class:`~specparam.SpectralModel` object keeps
-# track of some versions of the original data as well as individual model components fits,
+# As you may have noticed through this tutorial, the :class:`~specparam.SpectralModel` object
+# keeps track of some versions of the original data as well as individual model components fits,
 # as well as the final model fit, the ultimate outcome of the fitting procedure.
 #
 # These attributes in the SpectralModel object are kept at the end of the fitting procedure.

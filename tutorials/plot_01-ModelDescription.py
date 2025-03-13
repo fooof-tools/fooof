@@ -18,7 +18,7 @@ A description of and introduction to the power spectrum model.
 # justifies our modeling approach, you can also check out the associated
 # `paper <https://doi.org/10.1038/s41593-020-00744-x>`_,
 # and/or the
-# `motivations <https://fooof-tools.github.io/fooof/auto_tutorials/index.html>`_
+# `motivations <https://specparam-tools.github.io/auto_tutorials/index.html>`_
 # section of the site.
 #
 

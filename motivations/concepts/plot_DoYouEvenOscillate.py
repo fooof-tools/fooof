@@ -3,6 +3,10 @@ Rhythmicity of Time Series
 ==========================
 
 Exploring the rhythmicity of time series and their frequency representations.
+
+This example uses the
+`neurodsp <https://neurodsp-tools.github.io/>`_
+module for time series simulations & analyses.
 """
 
 ###################################################################################################
@@ -44,8 +48,10 @@ Exploring the rhythmicity of time series and their frequency representations.
 # Import numpy
 import numpy as np
 
-# Use NeuroDSP for time series simulations & analyses
-from neurodsp import sim
+# Import simulation functions from neurodsp to simulate time series
+from neurodsp.sim import sim_powerlaw, sim_oscillation, sim_combined, set_random_seed
+
+# Import additional utilities from neurodsp
 from neurodsp.utils import create_times
 from neurodsp.spectral import compute_spectrum_welch
 from neurodsp.plts import plot_time_series, plot_power_spectra
@@ -53,7 +59,7 @@ from neurodsp.plts import plot_time_series, plot_power_spectra
 ###################################################################################################
 
 # Set random seed, for consistency creating simulated data
-sim.set_random_seed(21)
+set_random_seed(21)
 
 # Simulation Settings
 n_seconds = 2
@@ -197,7 +203,7 @@ plot_power_spectra(freqs, powers)
 ###################################################################################################
 
 # Simulate a pink noise signal
-pink_sig = sim.sim_powerlaw(n_seconds, s_rate, exponent=-1)
+pink_sig = sim_powerlaw(n_seconds, s_rate, exponent=-1)
 
 ###################################################################################################
 
@@ -248,7 +254,7 @@ plot_power_spectra(freqs, powers)
 ###################################################################################################
 
 # Simulate an oscillating signal
-osc_sig = sim.sim_oscillation(n_seconds, s_rate, freq=10)
+osc_sig = sim_oscillation(n_seconds, s_rate, freq=10)
 
 ###################################################################################################
 
@@ -299,7 +305,7 @@ components = {
 }
 
 # Simulate a combined signal
-combined_sig = sim.sim_combined(n_seconds, s_rate, components)
+combined_sig = sim_combined(n_seconds, s_rate, components)
 
 ###################################################################################################
 

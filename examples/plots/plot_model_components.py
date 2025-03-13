@@ -12,7 +12,7 @@ from specparam import SpectralGroupModel
 
 # Import utilities to manage frequency band definitions
 from specparam.bands import Bands
-from specparam.analysis import get_band_peak_group
+from specparam.data.periodic import get_band_peak_group
 
 # Import simulation utilities for making example data
 from specparam.sim import sim_group_power_spectra
@@ -67,7 +67,8 @@ freqs, powers2 = sim_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
 # Fit Power Spectrum Models
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Now that we have our simulated data, we can fit our power spectrum models, using SpectralGroupModel.
+# Now that we have our simulated data, we can fit our power spectrum models,
+# using SpectralGroupModel.
 #
 
 ###################################################################################################

@@ -1,5 +1,5 @@
 """
-08: Further Analysis
+09: Further Analysis
 ====================
 
 Analyze results from fitting power spectrum models.
@@ -40,8 +40,8 @@ from specparam.sim import sim_group_power_spectra
 from specparam.sim.params import param_sampler
 from specparam.sim.utils import set_random_seed
 
-# Import some analysis functions
-from specparam.analysis import get_band_peak, get_band_peak_group
+# Import some functions to interact with peak fitting results
+from specparam.data.periodic import get_band_peak, get_band_peak_group
 
 # Import a utility to download and load example data
 from specparam.utils.download import load_example_data
@@ -154,7 +154,8 @@ print(alpha)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Similarly, the :func:`~.get_band_peak_group` function can be used
-# to select peaks from specified frequency ranges, from :class:`~specparam.SpectralGroupModel` objects.
+# to select peaks from specified frequency ranges, from
+# :class:`~specparam.SpectralGroupModel` objects.
 #
 # Note that you can also apply a threshold to extract group peaks but, as discussed below,
 # this approach will always only extract at most one peak per individual model fit from
@@ -256,7 +257,7 @@ print(exps)
 #
 # To further explore some of these specific analyses, and explore other
 # utilities that may be useful, check out the
-# `examples <https://fooof-tools.github.io/fooof/auto_examples/index.html>`_
+# `examples <https://specparam-tools.github.io/auto_examples/index.html>`_
 # page.
 #
 

@@ -1,5 +1,5 @@
 """
-07: Tuning & Troubleshooting
+08: Tuning & Troubleshooting
 ============================
 
 Tips & tricks for choosing algorithm settings, tuning fits, and troubleshooting.
@@ -245,8 +245,8 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 # a new analysis, or working with a new dataset, we do recommend starting by
 # trying some individual fits like this.
 #
-# If and when you move to using :class:`~specparam.SpectralGroupModel` to fit groups of power spectra,
-# there are some slightly different ways to investigate groups of fits,
+# If and when you move to using :class:`~specparam.SpectralGroupModel` to fit groups of
+# power spectra, there are some slightly different ways to investigate groups of fits,
 # which we'll step through now, using some simulated data.
 #
 
@@ -261,7 +261,7 @@ for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
 # possible parameters.
 #
 # For more and descriptions and example of how the simulations work, check out the
-# `examples <https://fooof-tools.github.io/fooof/auto_examples/index.html>`_ section.
+# `examples <https://specparam-tools.github.io/auto_examples/index.html>`_ section.
 #
 
 ###################################################################################################
@@ -291,9 +291,9 @@ fg.report(freqs, power_spectra)
 
 ###################################################################################################
 #
-# In the :class:`~specparam.SpectralGroupModel` report we can get a sense of the overall performance
-# by looking at the information about the goodness of fit metrics, and also things like
-# the distribution of peaks.
+# In the :class:`~specparam.SpectralGroupModel` report we can get a sense of the overall
+# performance by looking at the information about the goodness of fit metrics, and also things
+# like the distribution of peaks.
 #
 # However, while these metrics can help identify if fits are, on average, going well (or not)
 # they don't necessarily indicate the source of any problems.
@@ -319,8 +319,8 @@ fm.plot()
 
 ###################################################################################################
 #
-# You can also loop through all the results in a :class:`~specparam.SpectralGroupModel`, extracting
-# all fits that meet some criterion that makes them worth checking.
+# You can also loop through all the results in a :class:`~specparam.SpectralGroupModel`,
+# extracting all fits that meet some criterion that makes them worth checking.
 #
 # This might be checking for fits above some error threshold, as below, but note
 # that you may also want to do a similar procedure to examine fits with the lowest
@@ -377,8 +377,14 @@ print('Average number of fit peaks: ', np.mean(fg.n_peaks_))
 ###################################################################################################
 
 # Print out instructions to report bad fits
-#  Note you can also call this from SpectralGroupModel, and from instances (ex: `fm.print_report_issue()`)
 SpectralModel.print_report_issue()
+
+###################################################################################################
+#
+# Note that you can also call this method from SpectralGroupModel
+# (ex: `SpectralGroupModel.print_report_issue()`) as well as from instances of these objects
+# (ex: `fm.print_report_issue()`, `fg.print_report_issue()`)
+#
 
 ###################################################################################################
 # Conclusion

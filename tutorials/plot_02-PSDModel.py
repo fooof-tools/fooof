@@ -23,8 +23,8 @@ spectrum = load_example_data('spectrum.npy', folder='data')
 # Model Object
 # ------------
 #
-# At the core of the module is the :class:`~specparam.SpectralModel` object, which holds relevant data
-# and settings as attributes, and contains methods to run the algorithm to parameterize
+# At the core of the module is the :class:`~specparam.SpectralModel` object, which holds relevant
+# data and settings as attributes, and contains methods to run the algorithm to parameterize
 # neural power spectra.
 #
 # The organization and use of the model object is similar to scikit-learn:
@@ -38,9 +38,9 @@ spectrum = load_example_data('spectrum.npy', folder='data')
 # Calculating Power Spectra
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The :class:`~specparam.SpectralModel` object fits models to power spectra. The module itself does not
-# compute power spectra. Computing power spectra needs to be done prior to using
-# the specparam module.
+# The :class:`~specparam.SpectralModel` object fits models to power spectra.
+# The module itself does not compute power spectra. Computing power spectra needs
+# to be done prior to using the specparam module.
 #
 # The model is broadly agnostic to exactly how power spectra are computed. Common
 # methods, such as Welch's method, can be used to compute the spectrum.
@@ -156,8 +156,8 @@ print(template.format(error=err, exponent=exp,
 
 ###################################################################################################
 #
-# For a full description of how you can access data with :meth:`~specparam.SpectralModel.get_params`,
-# check the method's documentation.
+# For a full description of how you can access data with
+# :meth:`~specparam.SpectralModel.get_params`, check the method's documentation.
 #
 # As a reminder, you can access the documentation for a function using '?' in a
 # Jupyter notebook (ex: `fm.get_params?`), or more generally with the `help` function

@@ -32,10 +32,10 @@ from specparam.plts.spectra import plot_spectra
 #
 #   - each peak is defined with three parameters, as [center frequency, height, width]
 #
-# The :func:`~.sim_power_spectrum` function takes these parameters as input to
-# create and return a simulated power spectrum. Note that the parameters that define the peaks
-# are labeled as gaussian parameters, as these parameters define the simulated gaussians
-# directly, and are not the modified peak parameters that the model outputs.
+# The :func:`~.sim_power_spectrum` function takes these parameters as input to create and
+# return a simulated power spectrum. Note that the parameters that define the peaks are labeled
+# as gaussian parameters, as these parameters define the simulated gaussians directly, and are
+# not the modified peak parameters that the model outputs.
 #
 
 ###################################################################################################

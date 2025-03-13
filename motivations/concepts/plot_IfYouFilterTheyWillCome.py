@@ -3,6 +3,10 @@ Finding 'Oscillations' With Filters
 ===================================
 
 Examining the results of filtering aperiodic signals.
+
+This example uses the
+`neurodsp <https://neurodsp-tools.github.io/>`_
+module for time series simulations & analyses.
 """
 
 ###################################################################################################

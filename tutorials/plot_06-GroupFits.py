@@ -17,12 +17,13 @@ from specparam.utils.download import load_example_data
 # Fitting Multiple Spectra
 # ------------------------
 #
-# So far, we have explored using the :class:`~specparam.SpectralModel` object to fit individual power spectra.
+# So far, we have explored using the :class:`~specparam.SpectralModel` object to fit
+# individual power spectra.
 #
 # However, many potential analyses will including many power spectra that need to be fit.
 #
-# To support this, here we will introduce the :class:`~specparam.SpectralGroupModel` object, which
-# applies the model fitting procedure across multiple power spectra.
+# To support this, here we will introduce the :class:`~specparam.SpectralGroupModel` object,
+# which applies the model fitting procedure across multiple power spectra.
 #
 
 ###################################################################################################
@@ -49,8 +50,8 @@ print(spectra.shape)
 # SpectralGroupModel
 # ------------------
 #
-# The :class:`~specparam.SpectralGroupModel` object is very similar to the SpectralModel object (programmatically,
-# it inherits from the SpectralModel object), and can be used in the same way.
+# The :class:`~specparam.SpectralGroupModel` object is very similar to the SpectralModel object
+# (programmatically, it inherits from the SpectralModel object), and can be used in the same way.
 #
 # The main difference is that instead of running across a single power spectrum, it
 # operates across 2D matrices containing multiple power spectra.
@@ -61,8 +62,8 @@ print(spectra.shape)
 # be spectra from across channels, or across trials, or across subjects, or
 # whatever organization makes sense for the analysis at hand.
 #
-# The main differences with the :class:`~specparam.SpectralGroupModel` object, are that it uses a
-# `power_spectra` attribute, which stores the matrix of power-spectra to be fit,
+# The main differences with the :class:`~specparam.SpectralGroupModel` object, are that it uses
+# a `power_spectra` attribute, which stores the matrix of power-spectra to be fit,
 # and collects fit results into a `group_results` attribute.
 #
 # Otherwise, :class:`~specparam.SpectralGroupModel` supports all the same functionality,
@@ -96,7 +97,8 @@ fg.plot()
 ###################################################################################################
 #
 # Just as with the SpectralModel object, you can call the convenience method
-# :meth:`specparam.SpectralGroupModel.report` to run the fitting, and then print the results and plots.
+# :meth:`specparam.SpectralGroupModel.report` to run the fitting, and then print
+# the results and plots.
 #
 
 ###################################################################################################
@@ -124,15 +126,16 @@ print(fg.group_results[0:2])
 # To collect results from across all model fits, and to select specific parameters
 # you can use the :func:`~specparam.SpectralGroupModel.get_params` method.
 #
-# This method works the same as in the :class:`~specparam.SpectralModel` object, and lets you extract
-# specific results by specifying a field, as a string, and (optionally) a specific column
-# to extract.
+# This method works the same as in the :class:`~specparam.SpectralModel` object, and lets
+# you extract specific results by specifying a field, as a string, and (optionally) a
+# specific column to extract.
 #
-# Since the :class:`~specparam.SpectralGroupModel` object collects results from across multiple model fits,
-# you should always use :func:`~specparam.SpectralGroupModel.get_params` to access model parameters.
-# The results attributes introduced with the SpectralModel object (such as `aperiodic_params_` or
-# `peak_params_`) do not store results across the group, as they are defined for individual
-# model fits (and used internally as such by the SpectralGroupModel object).
+# Since the :class:`~specparam.SpectralGroupModel` object collects results from across multiple
+# model fits, you should always use :func:`~specparam.SpectralGroupModel.get_params` to access
+# model parameters. The results attributes introduced with the SpectralModel object
+# (such as `aperiodic_params_` or `peak_params_`) do not store results across the group,
+# as they are defined for individual model fits (and used internally as such by the
+# SpectralGroupModel object).
 #
 
 ###################################################################################################
@@ -163,7 +166,7 @@ print(fg.get_params.__doc__)
 ###################################################################################################
 
 # Grab a particular FitResults data object
-#  Note that as a shortcut, you can index the SpectralGroupModel object directly to access 'group_results'
+#   Note: you can also index the SpectralGroupModel object directly to access 'group_results'
 f_res = fg[0]
 
 # Check the documentation for the FitResults, which has descriptions of the parameters
@@ -239,8 +242,9 @@ fg.fit(freqs, spectra, n_jobs=-1)
 # Progress Bar
 # ~~~~~~~~~~~~
 #
-# If you have a large number of spectra to fit with a :class:`~specparam.SpectralGroupModel`, and you
-# want to monitor it's progress, you can also use a progress bar to print out fitting progress.
+# If you have a large number of spectra to fit with a :class:`~specparam.SpectralGroupModel`,
+# and you want to monitor it's progress, you can also use a progress bar to print out
+# fitting progress.
 #
 # Progress bar options are:
 #
@@ -262,8 +266,9 @@ fg.fit(freqs, spectra, progress='tqdm')
 # not the full model fits themselves.
 #
 # To examine individual model fits, :class:`~specparam.SpectralGroupModel` can regenerate
-# :class:`~specparam.SpectralModel` objects for individual power spectra, with the full model available
-# for visualization. To do so, you can use the :meth:`~specparam.SpectralGroupModel.get_model` method.
+# :class:`~specparam.SpectralModel` objects for individual power spectra, with the full
+# model available for visualization.
+# To do so, you can use the :meth:`~specparam.SpectralGroupModel.get_model` method.
 #
 
 ###################################################################################################

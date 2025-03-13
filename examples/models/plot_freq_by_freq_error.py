@@ -19,7 +19,7 @@ from specparam import SpectralModel, SpectralGroupModel
 from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 
 # Import functions to examine frequency-by-frequency error of model fits
-from specparam.analysis.error import compute_pointwise_error, compute_pointwise_error_group
+from specparam.measures.error import compute_pointwise_error, compute_pointwise_error_group
 
 ###################################################################################################
 # Frequency-by-Frequency Error
@@ -44,8 +44,7 @@ from specparam.analysis.error import compute_pointwise_error, compute_pointwise_
 # First we will start by examining frequency-by-frequency error of an individual model fit,
 # using simulated data.
 #
-# The function for analyzing error from a model object is
-# :func:`~.compute_pointwise_error`.
+# The function for analyzing error from a model object is :func:`~.compute_pointwise_error`.
 # To start with, we will indicate to this function to plot the frequency-by-frequency
 # error of our model fit.
 #

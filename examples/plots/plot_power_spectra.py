@@ -25,8 +25,8 @@ from specparam.sim.params import param_iter, Stepper
 # options for visualizing power spectra.
 #
 # These plot functions overlap with what is accessible directly through the model objects,
-# as the :meth:`~specparam.SpectralModel.plot` method. There are extra functions in the module, and
-# extra functionality available in the plotting module.
+# as the :meth:`~specparam.SpectralModel.plot` method. There are extra functions in the module,
+# and extra functionality available in the plotting module.
 #
 # Note that the plots in the module are all built using matplotlib. They all allow for
 # passing in extra matplotlib parameters for tuning the plot aesthetics, and can also be

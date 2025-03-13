@@ -116,8 +116,8 @@ fm.to_df(bands1)
 #
 # In the above, we used the model object to show the basic exporting functionalities.
 #
-# This functionality is more useful when considering multiple model fits together, such
-# as can be done using the :meth:`~specparam.SpectralGroupModel.to_df` method from the Group object,
+# This functionality is more useful when considering multiple model fits together, such as can
+# be done using the :meth:`~specparam.SpectralGroupModel.to_df` method from the Group  object,
 # which allows for exporting DataFrames of organized model fit parameters across power spectra.
 #
 # As with the above, keep in mind that for some cases you may want the

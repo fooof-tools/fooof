@@ -145,8 +145,8 @@ plot_spectra(freqs, powers, log_freqs=True, log_powers=True)
 # param_jitter
 # ~~~~~~~~~~~~
 #
-# The :func:`~.param_jitter` function can be used to create iterators that
-# apply some 'jitter' to the defined parameter values.
+# The :func:`~.param_jitter` function can be used to create iterators that add some 'jitter'
+# to the defined parameter values.
 #
 
 ###################################################################################################
@@ -171,6 +171,6 @@ plot_spectra(freqs, powers, log_freqs=True, log_powers=True)
 
 ###################################################################################################
 #
-# We can see that in the simulated spectra above, there is some jitter
-# to the simulated aperiodic exponent values.
+# We can see that in the simulated spectra above, there is some jitter to the simulated
+# aperiodic exponent values.
 #
