@@ -3,6 +3,10 @@
 =======================
 
 Exploring the idea of oscillations as peaks of power.
+
+This example uses the
+`neurodsp <https://neurodsp-tools.github.io/>`_
+module for time series simulations & analyses.
 """
 
 ###################################################################################################

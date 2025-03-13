@@ -28,7 +28,7 @@ from mne.datasets import sample
 # Spectral parameterization imports
 from specparam import SpectralGroupModel
 from specparam.bands import Bands
-from specparam.analysis import get_band_peak_group
+from specparam.data.periodic import get_band_peak_group
 from specparam.plts.spectra import plot_spectra
 
 ###################################################################################################
@@ -123,7 +123,8 @@ spectra, freqs = psd.get_data(return_freqs=True)
 #
 # Now that we have power spectra, we can fit some power spectrum models.
 #
-# Since we have multiple power spectra, we will use the :class:`~specparam.SpectralGroupModel` object.
+# Since we have multiple power spectra, we will use the
+# :class:`~specparam.SpectralGroupModel` object.
 #
 
 ###################################################################################################

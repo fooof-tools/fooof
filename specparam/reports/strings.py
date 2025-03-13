@@ -69,7 +69,7 @@ def gen_version_str(concise=False):
         # Header
         '=',
         '',
-        'SpecParam - VERSION',
+        'specparam - VERSION',
         '',
 
         # Version information
@@ -123,7 +123,7 @@ def gen_settings_str(model_obj, description=False, concise=False):
         # Header
         '=',
         '',
-        'SpecParam - SETTINGS',
+        'specparam - SETTINGS',
         '',
 
         # Settings - include descriptions if requested
@@ -170,7 +170,7 @@ def gen_freq_range_str(model_obj, concise=False):
         # Header
         '=',
         '',
-        'SpecParam - FIT RANGE',
+        'specparam - FIT RANGE',
         '',
 
         # Frequency range information information
@@ -206,7 +206,7 @@ def gen_methods_report_str(concise=False):
         # Header
         '=',
         '',
-        'SpecParam - REPORTING',
+        'specparam - REPORTING',
         '',
 
         # Methods report information
@@ -617,11 +617,11 @@ def gen_issue_str(concise=False):
         # Header
         '=',
         '',
-        'SpecParam - ISSUE REPORTING',
+        'specparam - ISSUE REPORTING',
         '',
 
         # Reporting bugs
-        'Please report any bugs or unexpected errors on Github.',
+        'Please report any bugs or unexpected errors on Github:',
         'https://github.com/fooof-tools/fooof/issues',
         '',
 

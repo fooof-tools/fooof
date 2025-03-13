@@ -12,7 +12,7 @@ This example covers strategies for dealing with line noise.
 # Import the spectral parameterization object and utilities
 from specparam import SpectralModel
 from specparam.plts import plot_spectra
-from specparam.utils import trim_spectrum, interpolate_spectrum
+from specparam.utils.spectral import trim_spectrum, interpolate_spectrum
 
 # Import simulation functions to create some example data
 from specparam.sim import sim_power_spectrum
@@ -38,7 +38,7 @@ from neurodsp.spectral import compute_spectrum
 # approach simply gets rid of the peaks, interpolating the data to maintain the 1/f
 # character of the data, allowing for subsequent fitting.
 #
-# The :func:`~specparam.utils.interpolate_spectrum` function allows for doing simple
+# The :func:`~.interpolate_spectrum` function allows for doing simple
 # interpolation. Given a narrow frequency region, this function interpolates the spectrum,
 # such that the 'peak' of the line noise is removed.
 #
@@ -92,7 +92,7 @@ fm1.report(freqs_int1, powers_int1)
 # frequency ranges, there may be multiple peaks that need to be interpolated.
 #
 # This can be done by passing in multiple interpolation regions to
-# :func:`~specparam.utils.interpolate_spectrum`, which we will do in the next example.
+# :func:`~.interpolate_spectrum`, which we will do in the next example.
 #
 
 ###################################################################################################

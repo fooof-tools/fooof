@@ -20,8 +20,8 @@ Model Objects
 
 Objects that manage data and fit the model to parameterize neural power spectra.
 
-Base Object
-~~~~~~~~~~~
+Model Object
+~~~~~~~~~~~~
 
 The SpectralModel object is the base object for the model, and can be used to fit individual power spectra.
 
@@ -398,6 +398,9 @@ Save & load related functionality.
 .. autosummary::
     :toctree: generated/
 
+    save_model
+    save_group
+    save_event
     load_model
     load_group
     load_time
@@ -427,7 +430,7 @@ Utilities
 Utility functions and objects.
 
 Spectral Utilities
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 
 Utilities for working with spectral data.
 
@@ -440,3 +443,17 @@ Utilities for working with spectral data.
     interpolate_spectrum
     interpolate_spectra
     subsample_spectra
+
+Array Utilities
+~~~~~~~~~~~~~~~
+
+Utilities that can be applied to arrays.
+
+.. currentmodule:: specparam.utils.array
+
+.. autosummary::
+    :toctree: generated/
+
+    normalize
+    unlog
+    compute_arr_desc

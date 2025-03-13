@@ -15,7 +15,7 @@ from specparam.plts.annotate import plot_annotated_model
 from specparam.plts.aperiodic import plot_aperiodic_params
 from specparam.sim.params import Stepper, param_iter
 from specparam.sim import sim_power_spectrum, sim_group_power_spectra
-from specparam.utils.params import compute_time_constant, compute_knee_frequency
+from specparam.measures.params import compute_time_constant, compute_knee_frequency
 
 ###################################################################################################
 # 'Fixed' Model

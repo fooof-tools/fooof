@@ -8,8 +8,8 @@ In order to the get a qualitative sense of if the model is fitting well, and wha
 the results look like, it can be useful to visualize power spectrum model reconstructions.
 
 This example dives deeper into plotting model reconstructions, using the
-:meth:`~specparam.SpectralModel.plot` method from a :class:`~specparam.SpectralModel` object, and explores
-options for tuning these these visualizations.
+:meth:`~specparam.SpectralModel.plot` method from a :class:`~specparam.SpectralModel` object,
+and explores options for tuning these these visualizations.
 """
 
 ###################################################################################################
@@ -35,8 +35,8 @@ freqs, powers = sim_power_spectrum([3, 50], [1, 1],
 # Plotting from model objects
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The model object has a :meth:`~specparam.SpectralModel.plot` method that can be used to visualize
-# data and models available in the :class:`~specparam.SpectralModel` object.
+# The model object has a :meth:`~specparam.SpectralModel.plot` method that can be used to
+# visualize data and models available in the :class:`~specparam.SpectralModel` object.
 #
 
 ###################################################################################################
@@ -72,8 +72,8 @@ fm.plot()
 # Plotting Aperiodic Components
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# As you can see above, the :meth:`~specparam.SpectralModel.plot` call by default also plots the
-# aperiodic component, in a dashed blue line.
+# As you can see above, the :meth:`~specparam.SpectralModel.plot` call by default also plots
+# the aperiodic component, in a dashed blue line.
 #
 # You can toggle whether to display the aperiodic component with the
 # ``plot_aperiodic`` parameter.
@@ -155,7 +155,8 @@ fm.plot(plot_peaks='shade-line')
 # Other Plotting Options
 # ~~~~~~~~~~~~~~~~~~~~~~
 #
-# There are also some other optional inputs to the :meth:`~specparam.SpectralModel.plot` call, including:
+# There are also some other optional inputs to the :meth:`~specparam.SpectralModel.plot` call,
+# including:
 #
 # - `plt_log` : Optional input for plotting the frequency axis in log10 spacing
 # - `add_legend` : Optional input to toggle whether to add a legend

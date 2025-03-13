@@ -22,7 +22,8 @@ fm = SpectralModel()
 # Description of methods and attributes
 # -------------------------------------
 #
-# The :class:`~specparam.SpectralModel` object contents consist of 4 main components (groups of data / code):
+# The :class:`~specparam.SpectralModel` object contents consist of 4 main components
+# (groups of data / code):
 #
 # - 1) settings attributes, that control the algorithm fitting
 # - 2) data attributes, that contain and describe the data
