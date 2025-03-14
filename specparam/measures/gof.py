@@ -76,7 +76,7 @@ def compute_mean_abs_error(power_spectrum, modeled_spectrum):
     Returns
     -------
     error : float
-        Computed MAE.
+        Computed mean absolute error.
     """
 
     error = np.abs(power_spectrum - modeled_spectrum).mean()
@@ -97,7 +97,7 @@ def compute_mean_squared_error(power_spectrum, modeled_spectrum):
     Returns
     -------
     error : float
-        Computed MSE.
+        Computed mean squared error.
     """
 
     error = ((power_spectrum - modeled_spectrum) ** 2).mean()
@@ -118,7 +118,7 @@ def compute_root_mean_squared_error(power_spectrum, modeled_spectrum):
     Returns
     -------
     error : float
-        Computed rMSE.
+        Computed root mean squared error.
     """
 
     error = np.sqrt(((power_spectrum - modeled_spectrum) ** 2).mean())
@@ -127,7 +127,7 @@ def compute_root_mean_squared_error(power_spectrum, modeled_spectrum):
 
 
 def compute_median_abs_error(power_spectrum, modeled_spectrum):
-    """Calculate the median absolute error between original data and a model fit of that data.
+    """Calculate the median absolute error.
 
     Parameters
     ----------
