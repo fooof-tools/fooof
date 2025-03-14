@@ -70,14 +70,15 @@ def plot_event_model(event_model, **plot_kwargs):
     # 02: periodic params
     for band_ind in range(n_bands):
         for plabel in ['cf', 'pw', 'bw']:
-            plot_param_over_time_yshade(\
-                None, event_model.event_time_results[pe_labels[plabel][band_ind]],
+            plot_param_over_time_yshade(None, \
+                event_model.event_time_results[pe_labels[plabel][band_ind]],
                 label=plabel.upper(), drop_xticks=True, add_xlabel=False, xlim=xlim,
                 title='Periodic Parameters - ' + band_labels[band_ind] if plabel == 'cf' else None,
                 color=PARAM_COLORS[plabel], ax=next(axes))
-        plot_param_over_time_yshade(\
-            None, compute_presence(event_model.event_time_results[pe_labels[plabel][band_ind]]),
-            label='Presence', drop_xticks=True, add_xlabel=False, xlim=xlim,
+        plot_param_over_time_yshade(None, \
+            compute_presence(event_model.event_time_results[pe_labels[plabel][band_ind]],
+                             output='percent'),
+            label='Presence (%)', drop_xticks=True, add_xlabel=False, xlim=xlim,
             color=PARAM_COLORS['presence'], ax=next(axes))
         next(axes).axis('off')
 
