@@ -75,6 +75,9 @@ def get_ap_indices(aperiodic_mode):
         Mapping of the column labels and indices for the aperiodic parameters.
     """
 
+    # TEMP / TEST:
+    aperiodic_mode = str(aperiodic_mode)
+
     if aperiodic_mode == 'fixed':
         labels = ('offset', 'exponent')
     elif aperiodic_mode == 'knee':
@@ -100,6 +103,9 @@ def get_indices(aperiodic_mode):
     indices : dict
         Mapping of the column labels and indices for all parameters.
     """
+
+    # TEMP / TEST:
+    aperiodic_mode = str(aperiodic_mode)
 
     # Get the periodic indices, and then update dictionary with aperiodic ones
     indices = get_peak_indices()

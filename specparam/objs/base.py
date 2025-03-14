@@ -6,7 +6,7 @@ import numpy as np
 
 from specparam.data import ModelRunModes
 from specparam.utils.array import unlog
-from specparam.core.items import OBJ_DESC
+from specparam.modes.items import OBJ_DESC
 from specparam.io.utils import get_files
 from specparam.io.files import load_json, load_jsonlines
 from specparam.io.models import save_model, save_group, save_event
@@ -320,8 +320,9 @@ class BaseObject2DT(BaseObject2D, BaseResults2DT, BaseData2DT):
 
     def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
 
-        BaseObject2D.__init__(self)
         BaseData2DT.__init__(self)
+        BaseObject2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
+                              debug_mode=debug_mode, verbose=verbose)
         BaseResults2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
                                debug_mode=debug_mode, verbose=verbose)
 
@@ -353,8 +354,9 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
 
     def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
 
-        BaseObject2DT.__init__(self)
         BaseData3D.__init__(self)
+        BaseObject2DT.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
+                               debug_mode=debug_mode, verbose=verbose)
         BaseResults3D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
                                debug_mode=debug_mode, verbose=verbose)
 

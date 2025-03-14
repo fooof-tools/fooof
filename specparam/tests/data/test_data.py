@@ -4,7 +4,7 @@ For testing the data objects, the testing approach is to check that the object
 has the expected fields, given what is defined in the object description.
 """
 
-from specparam.core.items import OBJ_DESC
+from specparam.modes.items import OBJ_DESC
 
 from specparam.data.data import *
 

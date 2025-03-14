@@ -2,12 +2,12 @@
 
 import numpy as np
 
-from specparam.utils.select import nearest_ind
-from specparam.core.funcs import gaussian_function
-from specparam.modutils.errors import NoModelError
 from specparam.sim.gen import gen_aperiodic
+from specparam.utils.select import nearest_ind
 from specparam.data.periodic import get_band_peak
+from specparam.modes.funcs import gaussian_function
 from specparam.measures.params import compute_knee_frequency, compute_fwhm
+from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.plts.spectra import plot_spectra
 from specparam.plts.utils import check_ax, savefig

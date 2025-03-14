@@ -6,8 +6,9 @@ from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
-from specparam.core.items import OBJ_DESC
-from specparam.core.funcs import infer_ap_func
+from specparam.modes.items import OBJ_DESC
+from specparam.modes.funcs import infer_ap_func
+from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
@@ -28,8 +29,14 @@ class BaseResults():
                  verbose=True, error_metric='MAE'):
 
         # Set fit component modes
-        self.aperiodic_mode = aperiodic_mode
-        self.periodic_mode = periodic_mode
+        if isinstance(aperiodic_mode, str):
+            self.aperiodic_mode = AP_MODES[aperiodic_mode]
+        else:
+            self.aperiodic_mode = aperiodic_mode
+        if isinstance(periodic_mode, str):
+            self.periodic_mode = PE_MODES[periodic_mode]
+        else:
+            self.periodic_mode = periodic_mode
 
         # Set run modes
         self.set_debug_mode(debug_mode)

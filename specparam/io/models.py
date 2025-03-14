@@ -9,7 +9,7 @@ import io
 
 from specparam.io.files import save_json
 from specparam.io.utils import create_file_path
-from specparam.core.items import OBJ_DESC
+from specparam.modes.items import OBJ_DESC
 from specparam.utils.select import dict_select_keys
 from specparam.utils.convert import dict_array_to_lst
 

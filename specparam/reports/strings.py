@@ -301,7 +301,7 @@ def gen_model_results_str(model, concise=False):
 
         # Aperiodic parameters
         ('Aperiodic Parameters (offset, ' + \
-         ('knee, ' if model.aperiodic_mode == 'knee' else '') + \
+         ('knee, ' if str(model.aperiodic_mode) == 'knee' else '') + \
          'exponent): '),
         ', '.join(['{:2.4f}'] * len(model.aperiodic_params_)).format(*model.aperiodic_params_),
         '',
@@ -358,7 +358,7 @@ def gen_group_results_str(group, concise=False):
     errors = group.get_params('error')
     exps = group.get_params('aperiodic_params', 'exponent')
     kns = group.get_params('aperiodic_params', 'knee') \
-        if group.aperiodic_mode == 'knee' else np.array([0])
+        if str(group.aperiodic_mode) == 'knee' else np.array([0])
 
     str_lst = [
 
@@ -381,12 +381,13 @@ def gen_group_results_str(group, concise=False):
 
         # Aperiodic parameters - knee fit status, and quick exponent description
         'Power spectra were fit {} a knee.'.format(\
-            'with' if group.aperiodic_mode == 'knee' else 'without'),
+            'with' if str(group.aperiodic_mode) == 'knee' else 'without'),
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
                         .format(*compute_arr_desc(kns)),
                        ] if group.aperiodic_mode == 'knee'],
+
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(*compute_arr_desc(exps)),
         '',
