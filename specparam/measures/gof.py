@@ -76,7 +76,7 @@ def compute_mean_abs_error(power_spectrum, modeled_spectrum):
     Returns
     -------
     error : float
-        Computed MAE.
+        Computed mean absolute error.
     """
 
     error = np.abs(power_spectrum - modeled_spectrum).mean()
@@ -97,7 +97,7 @@ def compute_mean_squared_error(power_spectrum, modeled_spectrum):
     Returns
     -------
     error : float
-        Computed MSE.
+        Computed mean squared error.
     """
 
     error = ((power_spectrum - modeled_spectrum) ** 2).mean()
@@ -118,10 +118,31 @@ def compute_root_mean_squared_error(power_spectrum, modeled_spectrum):
     Returns
     -------
     error : float
-        Computed rMSE.
+        Computed root mean squared error.
     """
 
     error = np.sqrt(((power_spectrum - modeled_spectrum) ** 2).mean())
+
+    return error
+
+
+def compute_median_abs_error(power_spectrum, modeled_spectrum):
+    """Calculate the median absolute error.
+
+    Parameters
+    ----------
+    power_spectrum : 1d array
+        Real data power spectrum.
+    modeled_spectrum : 1d array
+        Modelled power spectrum.
+
+    Returns
+    -------
+    error : float
+        Computed median absolute error.
+    """
+
+    error = np.median(np.abs(modeled_spectrum - power_spectrum), axis=0)
 
     return error
 
@@ -131,6 +152,7 @@ ERROR_FUNCS = {
     'mae' : compute_mean_abs_error,
     'mse' : compute_mean_squared_error,
     'rmse' : compute_root_mean_squared_error,
+    'medae' : compute_median_abs_error,
 }
 
 
@@ -143,7 +165,7 @@ def compute_error(power_spectrum, modeled_spectrum, error_metric='mae'):
         Real data power spectrum.
     modeled_spectrum : 1d array
         Modelled power spectrum.
-    error_metric : {'mae', 'mse', 'rsme'} or callable
+    error_metric : {'mae', 'mse', 'rsme', 'medae'} or callable
         Which approach to take to compute the error.
 
     Returns
