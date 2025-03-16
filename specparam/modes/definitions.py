@@ -2,7 +2,7 @@
 
 from specparam.modes.mode import Mode
 from specparam.modes.funcs import (expo_function, expo_nk_function, double_expo_function,
-                                   gaussian_function, skewnorm_function)
+                                   gaussian_function, skewnorm_function, cauchy_function)
 from specparam.modes.jacobians import jacobian_gauss
 
 ###################################################################################################
@@ -66,6 +66,7 @@ ap_doublexp = Mode(
     powers_space='log10',
 )
 
+
 # Collect available aperiodic modes
 AP_MODES = {
     'fixed' : ap_fixed,
@@ -116,8 +117,30 @@ pe_skewnorm = Mode(
     powers_space='log10',
 )
 
+
+# Cauchy
+param_desc_cauchy = {
+    'cf' : 'Center frequency of the peak.',
+    'pw' : 'Power of the peak, over and above the aperiodic component.',
+    'bw' : 'Bandwidth of the peak.',
+}
+
+pe_cauchy = Mode(
+    name='cauchy',
+    component='periodic',
+    description='Cauchy peak fit function.',
+    func=cauchy_function,
+    jacobian=None,
+    params=['cf', 'pw', 'bw'],
+    param_description=param_desc_cauchy,
+    freq_space='linear',
+    powers_space='log10',
+)
+
+
 # Collect available periodic modes
 PE_MODES = {
     'gaussian' : pe_gaussian,
     'skewed_gaussian' : pe_skewnorm,
+    'cauchy' : pe_cauchy,
 }
