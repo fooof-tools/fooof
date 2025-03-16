@@ -216,6 +216,22 @@ class BaseResults():
         self._debug = debug
 
 
+    def _check_loaded_modes(self, data):
+        """Check if fit modes added, and update the object as needed.
+
+        Parameters
+        ----------
+        data : dict
+            A dictionary of data that has been added to the object.
+        """
+
+        # If fit mode information in loaded, reload mode definitions
+        self.aperiodic_mode = AP_MODES[data['aperiodic_mode']] \
+            if 'aperiodic_mode' in data else None
+        self.periodic_mode = PE_MODES[data['periodic_mode']] \
+            if 'periodic_mode' in data else None
+
+
     def _check_loaded_settings(self, data):
         """Check if settings added, and update the object as needed.
 
@@ -232,10 +248,6 @@ class BaseResults():
             # Reset all public settings to None
             for setting in OBJ_DESC['settings']:
                 setattr(self, setting, None)
-
-            # If aperiodic params available, infer whether knee fitting was used,
-            if not np.all(np.isnan(self.aperiodic_params_)):
-                self.aperiodic_mode = infer_ap_func(self.aperiodic_params_)
 
         # Reset internal settings so that they are consistent with what was loaded
         #   Note that this will set internal settings to None, if public settings unavailable

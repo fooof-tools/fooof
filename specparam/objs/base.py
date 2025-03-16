@@ -7,6 +7,7 @@ import numpy as np
 from specparam.data import ModelRunModes
 from specparam.utils.array import unlog
 from specparam.modes.items import OBJ_DESC
+from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.io.utils import get_files
 from specparam.io.files import load_json, load_jsonlines
 from specparam.io.models import save_model, save_group, save_event
@@ -172,9 +173,12 @@ class BaseObject(CommonBase, BaseResults, BaseData):
         # Reset data in object, so old data can't interfere
         self._reset_data_results(True, True, True)
 
-        # Load JSON file, add to self and check loaded data
+        # Load JSON file
         data = load_json(file_name, file_path)
+
+        # Add loaded data to object and check loaded data
         self._add_from_dict(data)
+        self._check_loaded_modes(data)
         self._check_loaded_settings(data)
         self._check_loaded_results(data)
 
@@ -272,6 +276,7 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
 
             # If settings are loaded, check and update based on the first line
             if ind == 0:
+                self._check_loaded_modes(data)
                 self._check_loaded_settings(data)
 
             # If power spectra data is part of loaded data, collect to add to object
