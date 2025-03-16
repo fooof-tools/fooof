@@ -1,4 +1,4 @@
-"""Define base fit objects."""
+"""Define base results objects."""
 
 from itertools import repeat
 from functools import partial

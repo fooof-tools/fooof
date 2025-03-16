@@ -191,7 +191,7 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
                     color=PLT_COLORS['aperiodic'], fontsize=fontsize)
 
         # Annotate Aperiodic Knee
-        if model.aperiodic_mode == 'knee':
+        if model.aperiodic_mode.name == 'knee':
 
             # Find the knee frequency point to annotate
             knee_freq = compute_knee_frequency(model.get_params('aperiodic', 'knee'),
