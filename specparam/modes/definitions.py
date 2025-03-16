@@ -1,6 +1,6 @@
 """Define fitting modes"""
 
-from specparam.objs.modes import Mode
+from specparam.modes.mode import Mode
 from specparam.modes.funcs import (expo_function, expo_nk_function, double_expo_function,
                                    gaussian_function, skewnorm_function)
 
@@ -22,6 +22,7 @@ ap_fixed = Mode(
     freq_space='linear',
     powers_space='log10',
 )
+
 
 # Knee
 param_desc_knee = {
@@ -88,6 +89,7 @@ pe_gaussian = Mode(
     freq_space='linear',
     powers_space='log10',
 )
+
 
 # Skewed Gaussian
 param_desc_skew = {
