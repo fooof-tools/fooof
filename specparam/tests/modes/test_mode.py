@@ -13,7 +13,8 @@ def test_mode():
     param_description = {'a' : 1, 'b' : 2}
 
     tmode = Mode(name='tmode', component='periodic', description='test_desc',
-                 func=tfit, params=params, param_description=param_description,
+                 func=tfit, jacobian=None,
+                 params=params, param_description=param_description,
                  freq_space='linear', powers_space='linear')
     assert tmode
     assert tmode.n_params == len(params)

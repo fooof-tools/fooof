@@ -3,6 +3,7 @@
 from specparam.modes.mode import Mode
 from specparam.modes.funcs import (expo_function, expo_nk_function, double_expo_function,
                                    gaussian_function, skewnorm_function)
+from specparam.modes.jacobians import jacobian_gauss
 
 ###################################################################################################
 ## APERIODIC MODES
@@ -17,6 +18,7 @@ ap_fixed = Mode(
     component='aperiodic',
     description='Fit an exponential, with no knee.',
     func=expo_nk_function,
+    jacobian=None,
     params=['offset', 'exponent'],
     param_description=param_desc_fixed,
     freq_space='linear',
@@ -36,6 +38,7 @@ ap_knee = Mode(
     component='aperiodic',
     description='Fit an exponential, with a knee.',
     func=expo_function,
+    jacobian=None,
     params=['offset', 'knee', 'exponent'],
     param_description=param_desc_knee,
     freq_space='linear',
@@ -56,6 +59,7 @@ ap_doublexp = Mode(
     component='aperiodic',
     description='Fit an function with 2 exponents and a knee.',
     func=double_expo_function,
+    jacobian=None,
     params=['offset', 'exponent0', 'knee', 'exponent1'],
     param_description=param_desc,
     freq_space='linear',
@@ -84,6 +88,7 @@ pe_gaussian = Mode(
     component='periodic',
     description='Gaussian peak fit function.',
     func=gaussian_function,
+    jacobian=jacobian_gauss,
     params=['cf', 'pw', 'bw'],
     param_description=param_desc_gaus,
     freq_space='linear',
@@ -104,6 +109,7 @@ pe_skewnorm = Mode(
     component='periodic',
     description='Skewed Gaussian peak fit function.',
     func=skewnorm_function,
+    jacobian=None,
     params=['cf', 'pw', 'bw', 'skew'],
     param_description=param_desc_skew,
     freq_space='linear',

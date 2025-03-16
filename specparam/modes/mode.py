@@ -16,6 +16,8 @@ class Mode():
         Description of the mode.
     func : callable
         Function that defines the fit function for the mode.
+    jacobian : callable, optional
+        Function for computing Jacobian matrix corresponding to `func`.
     params : list of str
         Name of output parameter(s).
     param_description : dict
@@ -27,16 +29,20 @@ class Mode():
         Required spacing of the power values for this mode.
     """
 
-    def __init__(self, name, component, description, func, params, param_description,
-                 freq_space, powers_space):
+    def __init__(self, name, component, description, func, jacobian,
+                 params, param_description, freq_space, powers_space):
         """Initialize a mode."""
 
         self.name = name
         self.component = component
         self.description = description
+
         self.func = func
+        self.jacobian = jacobian
+
         self.params = params
         self.param_description = param_description
+
         self.freq_space = freq_space
         self.powers_space = powers_space
 
