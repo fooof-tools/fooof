@@ -53,6 +53,18 @@ class Mode():
         return self.name
 
 
+    def __eq__(self, other):
+        """Define equality comparison between objects as equivalent dictionary representations.
+
+        Parameters
+        ----------
+        other : Mode
+            Other Mode object to compare to.
+        """
+
+        return self.__dict__ == other.__dict__
+
+
     @property
     def n_params(self):
         """Define property attribute for the number of parameters."""
