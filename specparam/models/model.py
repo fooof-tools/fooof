@@ -10,7 +10,8 @@ import numpy as np
 from specparam.objs.base import BaseObject
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.reports.save import save_model_report
-from specparam.reports.strings import gen_settings_str, gen_model_results_str, gen_issue_str
+from specparam.reports.strings import (gen_modes_str, gen_settings_str,
+                                       gen_model_results_str, gen_issue_str)
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.docs import copy_doc_func_to_method
 from specparam.plts.model import plot_model
@@ -142,6 +143,20 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
                   freq_range=plot_kwargs.pop('plot_freq_range', None),
                   **plot_kwargs)
         self.print_results(concise=False)
+
+
+    def print_modes(self, description=False, concise=False):
+        """Print out the current fit modes.
+
+        Parameters
+        ----------
+        description : bool, optional, default: False
+            Whether to print out a description with current fit modes.
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_modes_str(self, description, concise))
 
 
     def print_settings(self, description=False, concise=False):
