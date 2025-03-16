@@ -19,7 +19,7 @@ from specparam.io.models import *
 ###################################################################################################
 ###################################################################################################
 
-def test_save_model_str(tfm):
+def test_save_model(tfm):
 
     file_name_res = 'test_model_res'
     file_name_set = 'test_model_set'
