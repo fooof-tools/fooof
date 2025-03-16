@@ -1,4 +1,4 @@
-"""Tests for specparam.objs.model, including the model object and it's methods.
+"""Tests for specparam.models.model, including the model object and it's methods.
 
 NOTES
 -----
@@ -23,7 +23,7 @@ from specparam.tests.tsettings import TEST_DATA_PATH
 from specparam.tests.tdata import default_spectrum_params, get_tfm
 from specparam.tests.tutils import plot_test
 
-from specparam.objs.model import *
+from specparam.models.model import *
 
 ###################################################################################################
 ###################################################################################################

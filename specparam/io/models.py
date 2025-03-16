@@ -163,7 +163,7 @@ def load_model(file_name, file_path=None, regenerate=True):
         Loaded model object with data from file.
     """
 
-    from specparam.objs import SpectralModel
+    from specparam import SpectralModel
     model = SpectralModel()
     model.load(file_name, file_path, regenerate)
 
@@ -186,7 +186,7 @@ def load_group(file_name, file_path=None):
         Loaded model object with data from file.
     """
 
-    from specparam.objs import SpectralGroupModel
+    from specparam import SpectralGroupModel
     group = SpectralGroupModel()
     group.load(file_name, file_path)
 
@@ -213,7 +213,7 @@ def load_time(file_name, file_path=None, peak_org=None):
         Loaded model object with data from file.
     """
 
-    from specparam.objs import SpectralTimeModel
+    from specparam import SpectralTimeModel
     time = SpectralTimeModel()
     time.load(file_name, file_path, peak_org)
 
@@ -240,7 +240,7 @@ def load_event(file_name, file_path=None, peak_org=None, event=None):
         Loaded model object with data from file.
     """
 
-    from specparam.objs import SpectralTimeEventModel
+    from specparam import SpectralTimeEventModel
     event = SpectralTimeEventModel()
     event.load(file_name, file_path, peak_org)
 

@@ -1,4 +1,4 @@
-"""Tests for the specparam.objs.event, including the event model object and it's methods.
+"""Tests for the specparam.models.event, including the event model object and it's methods.
 
 NOTES
 -----
@@ -17,7 +17,7 @@ from specparam.tests.tsettings import TEST_DATA_PATH
 from specparam.tests.tdata import default_group_params
 from specparam.tests.tutils import plot_test
 
-from specparam.objs.event import *
+from specparam.models.event import *
 
 ###################################################################################################
 ###################################################################################################

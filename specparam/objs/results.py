@@ -439,7 +439,7 @@ class BaseResults2D(BaseResults):
         """
 
         # Temp import - consider refactoring
-        from specparam.objs.model import SpectralModel
+        from specparam import SpectralModel
 
         null_model = SpectralModel(**self.get_settings()._asdict()).get_results()
         for ind in check_inds(inds):
@@ -549,7 +549,7 @@ class BaseResults2D(BaseResults):
         """
 
         # Local import - avoid circular
-        from specparam.objs.model import SpectralModel
+        from specparam import SpectralModel
 
         # Initialize model object, with same settings, metadata, & check mode as current object
         model = SpectralModel(**self.get_settings()._asdict(), verbose=self.verbose)
@@ -583,7 +583,7 @@ class BaseResults2D(BaseResults):
         """
 
         # Local import - avoid circular
-        from specparam.objs.group import SpectralGroupModel
+        from specparam import SpectralGroupModel
 
         # Initialize a new model object, with same settings as current object
         group = SpectralGroupModel(**self.get_settings()._asdict(), verbose=self.verbose)
@@ -687,7 +687,7 @@ class BaseResults2DT(BaseResults2D):
         if output_type == 'time':
 
             # Local import - avoid circular
-            from specparam.objs.time import SpectralTimeModel
+            from specparam import SpectralTimeModel
 
             # Initialize a new model object, with same settings as current object
             output = SpectralTimeModel(**self.get_settings()._asdict(), verbose=self.verbose)
@@ -866,7 +866,7 @@ class BaseResults3D(BaseResults2DT):
         """
 
         # Local import - avoid circular
-        from specparam.objs.model import SpectralModel
+        from specparam import SpectralModel
 
         null_model = SpectralModel(**self.get_settings()._asdict()).get_results()
 
@@ -958,7 +958,7 @@ class BaseResults3D(BaseResults2DT):
         """
 
         # Local import - avoid circular
-        from specparam.objs.event import SpectralTimeEventModel
+        from specparam import SpectralTimeEventModel
 
         # Check and convert indices encoding to list of int
         einds = check_inds(event_inds, self.n_events)

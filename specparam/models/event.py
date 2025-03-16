@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from specparam.objs import SpectralModel
+from specparam.models import SpectralModel
 from specparam.objs.base import BaseObject3D
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.plts.event import plot_event_model

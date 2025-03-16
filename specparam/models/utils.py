@@ -4,7 +4,7 @@ import numpy as np
 
 from specparam.sim import gen_freqs
 from specparam.data import FitResults
-from specparam.objs import SpectralModel, SpectralGroupModel
+from specparam.models import SpectralModel, SpectralGroupModel
 from specparam.data.periodic import get_band_peak_group
 from specparam.modutils.errors import NoModelError, IncompatibleSettingsError
 

@@ -5,8 +5,8 @@ Notes
 Methods without defined docstrings import docs at runtime, from aliased external functions.
 """
 
+from specparam.models import SpectralModel
 from specparam.objs.base import BaseObject2D
-from specparam.objs.model import SpectralModel
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.plts.group import plot_group_model
 from specparam.reports.save import save_group_report

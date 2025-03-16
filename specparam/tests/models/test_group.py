@@ -1,4 +1,4 @@
-"""Tests for the specparam.objs.group, including the group model object and it's methods.
+"""Tests for the specparam.models.group, including the group model object and it's methods.
 
 NOTES
 -----
@@ -22,7 +22,7 @@ from specparam.tests.tsettings import TEST_DATA_PATH, TEST_REPORTS_PATH
 from specparam.tests.tdata import default_group_params
 from specparam.tests.tutils import plot_test
 
-from specparam.objs.group import *
+from specparam.models.group import *
 
 ###################################################################################################
 ###################################################################################################
