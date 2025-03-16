@@ -242,7 +242,7 @@ class SpectralFitAlgorithm():
 
 
     def _get_ap_guess(self, freqs, power_spectrum):
-        """   """
+        """Get the guess parameters for the aperiodic fit."""
 
         # Get the guess parameters and/or calculate from the data, as needed
         #   Note that these are collected as lists, to concatenate with or without knee later
@@ -263,7 +263,7 @@ class SpectralFitAlgorithm():
 
 
     def _get_ap_bounds(self):
-        """   """
+        """Get the bounds for the aperiodic fit."""
 
         # Get bounds for aperiodic fitting, dropping knee bound if not set to fit knee
         ap_bounds = self._ap_bounds if self.aperiodic_mode.name == 'knee' \
@@ -477,7 +477,7 @@ class SpectralFitAlgorithm():
 
 
     def _get_pe_bounds(self, guess):
-        """   """
+        """Get the bound for the peak fit."""
 
         # Set the bounds for CF, enforce positive height value, and set bandwidth limits
         #   Note that 'guess' is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std
@@ -519,21 +519,16 @@ class SpectralFitAlgorithm():
             Parameters for gaussian fits to peaks, as gaussian parameters.
         """
 
-        gaus_param_bounds = self._get_pe_bounds(guess)
-
-        # Flatten guess, for use with curve fit
-        guess = np.ndarray.flatten(guess)
-
         # Fit the peaks
         try:
             gaussian_params, _ = curve_fit(self.periodic_mode.func,
                                            self.freqs, self._spectrum_flat,
-                                           p0=guess, maxfev=self._maxfev,
-                                           #bounds=gaus_param_bounds  ##TEMP
-                                           bounds=gaus_param_bounds,
+                                           p0=np.ndarray.flatten(guess),
+                                           maxfev=self._maxfev,
+                                           bounds=self._get_pe_bounds(guess),
                                            ftol=self._tol, xtol=self._tol, gtol=self._tol,
                                            check_finite=False,
-                                           #jac=jacobian_gauss ## TEMP
+                                           jac=self.periodic_mode.jacobian,
                                            )
 
         except RuntimeError as excp:
