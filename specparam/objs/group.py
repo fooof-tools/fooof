@@ -7,7 +7,7 @@ Methods without defined docstrings import docs at runtime, from aliased external
 
 from specparam.objs.base import BaseObject2D
 from specparam.objs.model import SpectralModel
-from specparam.objs.algorithm import SpectralFitAlgorithm
+from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.plts.group import plot_group_model
 from specparam.reports.save import save_group_report
 from specparam.reports.strings import gen_group_results_str

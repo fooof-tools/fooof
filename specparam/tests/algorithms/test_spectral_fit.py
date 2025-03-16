@@ -1,11 +1,11 @@
-"""Tests for specparam.objs.algorthm, including the base object and it's methods."""
+"""Tests for specparam.algorthms.spectral_fit."""
 
 from specparam.objs.base import BaseObject
 from specparam.sim import sim_power_spectrum
 
 from specparam.tests.tdata import default_spectrum_params
 
-from specparam.objs.algorithm import *
+from specparam.algorithms.spectral_fit import *
 
 ###################################################################################################
 ###################################################################################################

@@ -4,7 +4,7 @@ import numpy as np
 
 from specparam.objs import SpectralModel
 from specparam.objs.base import BaseObject3D
-from specparam.objs.algorithm import SpectralFitAlgorithm
+from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.plts.event import plot_event_model
 from specparam.data.conversions import event_group_to_dataframe, dict_to_df
 from specparam.data.utils import flatten_results_dict

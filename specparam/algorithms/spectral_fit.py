@@ -1,4 +1,4 @@
-"""Define spectral fitting algorithm object."""
+"""Define original spectral fitting algorithm object."""
 
 import warnings
 

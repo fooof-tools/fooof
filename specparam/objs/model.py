@@ -8,7 +8,7 @@ Methods without defined docstrings import docs at runtime, from aliased external
 import numpy as np
 
 from specparam.objs.base import BaseObject
-from specparam.objs.algorithm import SpectralFitAlgorithm
+from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import gen_settings_str, gen_model_results_str, gen_issue_str
 from specparam.modutils.errors import NoModelError

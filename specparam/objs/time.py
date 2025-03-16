@@ -4,7 +4,7 @@ import numpy as np
 
 from specparam.objs import SpectralModel
 from specparam.objs.base import BaseObject2DT
-from specparam.objs.algorithm import SpectralFitAlgorithm
+from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.data.conversions import group_to_dataframe, dict_to_df
 from specparam.plts.time import plot_time_model
 from specparam.reports.save import save_time_report
