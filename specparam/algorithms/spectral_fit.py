@@ -219,9 +219,16 @@ class SpectralFitAlgorithm():
 
         if clear_results:
 
-            self.aperiodic_params_ = np.array([np.nan] * self.aperiodic_mode.n_params)
-            self.gaussian_params_ = np.empty([0, self.periodic_mode.n_params])
-            self.peak_params_ = np.empty([0, self.periodic_mode.n_params])
+            if self.aperiodic_mode:
+                self.aperiodic_params_ = np.array([np.nan] * self.aperiodic_mode.n_params)
+            else:
+                self.aperiodic_params_ = np.nan
+            if self.periodic_mode:
+                self.gaussian_params_ = np.empty([0, self.periodic_mode.n_params])
+                self.peak_params_ = np.empty([0, self.periodic_mode.n_params])
+            else:
+                self.gaussian_params_ = np.nan
+                self.peak_params_ = np.nan
             self.r_squared_ = np.nan
             self.error_ = np.nan
 
