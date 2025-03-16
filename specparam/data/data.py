@@ -13,9 +13,25 @@ from collections import namedtuple
 ###################################################################################################
 ###################################################################################################
 
+class ModelModes(namedtuple('ModelModes', ['aperiodic_mode', 'periodic_mode'])):
+    """User defined fit modes for model fitting.
+
+    Parameters
+    ----------
+    aperiodic_mode : {'fixed', 'knee'}
+        Which approach to use for fitting the aperiodic component.
+    periodic_mode : {'gaussian', 'skewed_gaussian', 'cauchy'}
+        Which approach to use for fitting the periodic component.
+
+    Notes
+    -----
+    This object is a data object, based on a NamedTuple, with immutable data attributes.
+    """
+    __slots__ = ()
+
+
 class ModelSettings(namedtuple('ModelSettings', ['peak_width_limits', 'max_n_peaks',
-                                                 'min_peak_height', 'peak_threshold',
-                                                 'aperiodic_mode'])):
+                                                 'min_peak_height', 'peak_threshold'])):
     """User defined settings for the fitting algorithm.
 
     Parameters
@@ -28,8 +44,6 @@ class ModelSettings(namedtuple('ModelSettings', ['peak_width_limits', 'max_n_pea
         Absolute threshold for detecting peaks, in units of the input data.
     peak_threshold : float
         Relative threshold for detecting peaks, in units of standard deviation of the input data.
-    aperiodic_mode : {'fixed', 'knee'}
-        Which approach to take for fitting the aperiodic component.
 
     Notes
     -----

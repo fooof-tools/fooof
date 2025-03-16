@@ -17,6 +17,7 @@ def get_description():
 
     - results : parameters for and measures of the model
     - settings : model settings
+    - modes : fit modes
     - run_modes: checks performed and errors raised
     - data : input data
     - meta_data : meta data of the inputs
@@ -25,20 +26,21 @@ def get_description():
     - descriptors : descriptors of the object status and model results
     """
 
-    attributes = {'results' : ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
-                               'r_squared_', 'error_'],
-                  'settings' : ['peak_width_limits', 'max_n_peaks',
-                                'min_peak_height', 'peak_threshold',
-                                'aperiodic_mode'],
-                  'run_modes': ['_debug', '_check_freqs', '_check_data'],
-                  'data' : ['power_spectrum', 'freq_range', 'freq_res'],
-                  'meta_data' : ['freq_range', 'freq_res'],
-                  'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',
-                              'peak_params_', 'gaussian_params_'],
-                  'model_components' : ['modeled_spectrum_', '_spectrum_flat',
-                                        '_spectrum_peak_rm', '_ap_fit', '_peak_fit'],
-                  'descriptors' : ['has_data', 'has_model', 'n_peaks_']
-                  }
+    attributes = {
+        'results' : ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
+                     'r_squared_', 'error_'],
+        'settings' : ['peak_width_limits', 'max_n_peaks',
+                      'min_peak_height', 'peak_threshold'],
+        'modes' : ['aperiodic_mode', 'periodic_mode'],
+        'run_modes': ['_debug', '_check_freqs', '_check_data'],
+        'data' : ['power_spectrum', 'freq_range', 'freq_res'],
+        'meta_data' : ['freq_range', 'freq_res'],
+        'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',
+                    'peak_params_', 'gaussian_params_'],
+        'model_components' : ['modeled_spectrum_', '_spectrum_flat',
+                              '_spectrum_peak_rm', '_ap_fit', '_peak_fit'],
+        'descriptors' : ['has_data', 'has_model', 'n_peaks_']
+    }
 
     return attributes
 

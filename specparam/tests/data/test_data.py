@@ -13,7 +13,7 @@ from specparam.data.data import *
 
 def test_model_settings():
 
-    settings = ModelSettings([1, 8], 8, 0.25, 2, 'fixed')
+    settings = ModelSettings([1, 8], 8, 0.25, 2)
     assert settings
 
     for field in OBJ_DESC['settings']:

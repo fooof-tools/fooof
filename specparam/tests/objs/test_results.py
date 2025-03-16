@@ -22,7 +22,7 @@ def test_base_results_settings():
 
     tres = BaseResults(None, None)
 
-    settings = ModelSettings([1, 4], 6, 0, 2, 'fixed')
+    settings = ModelSettings([1, 4], 6, 0, 2)
     tres.add_settings(settings)
     for setting in OBJ_DESC['settings']:
         assert getattr(tres, setting) == getattr(settings, setting)
