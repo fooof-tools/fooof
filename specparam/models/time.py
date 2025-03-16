@@ -27,7 +27,7 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
 
     Parameters
     ----------
-    %copied in from SpectralModel object
+    % copied in from SpectralModel object
 
     Attributes
     ----------
@@ -45,7 +45,7 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
 
     Notes
     -----
-    %copied in from SpectralModel object
+    % copied in from SpectralModel object
     - The time object inherits from the group model, which in turn inherits from the
       model object. As such it also has data attributes defined on the model object,
       as well as additional attributes that are added to the group object (see notes

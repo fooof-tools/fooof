@@ -28,7 +28,7 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
 
     Parameters
     ----------
-    %copied in from SpectralModel object
+    % copied in from SpectralModel object
 
     Attributes
     ----------
@@ -49,7 +49,7 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
 
     Notes
     -----
-    %copied in from SpectralModel object
+    % copied in from SpectralModel object
     - The event object inherits from the time model, which in turn inherits from the
       group object, etc. As such it also has data attributes defined on the underlying
       objects (see notes and attribute lists in inherited objects for details).

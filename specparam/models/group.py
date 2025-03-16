@@ -30,7 +30,7 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
 
     Parameters
     ----------
-    %copied in from SpectralModel object
+    % copied in from SpectralModel object
 
     Attributes
     ----------
@@ -58,7 +58,7 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
 
     Notes
     -----
-    %copied in from SpectralModel object
+    % copied in from SpectralModel object
     - The group object inherits from the model object. As such it also has data
       attributes (`power_spectrum` & `modeled_spectrum_`), and parameter attributes
       (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)
