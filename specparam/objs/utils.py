@@ -8,20 +8,6 @@ from specparam.modutils.dependencies import safe_import
 ###################################################################################################
 ## PARALLEL
 
-def run_parallel_group(model, data, n_jobs, progress):
-    """Wrapper function for running in parallel - group model."""
-
-    pfunc = partial(_par_fit_group, group=model)
-    return run_parallel(pfunc, data, n_jobs, progress)
-
-
-def run_parallel_event(model, data, n_jobs, progress):
-    """Wrapper function for running in parallel - event model."""
-
-    pfunc = partial(_par_fit_event, model=model)
-    return run_parallel(pfunc, data, n_jobs, progress)
-
-
 def run_parallel(pfunc, data, n_jobs, progress):
     """Run model fitting in parallel.
 
@@ -39,7 +25,8 @@ def run_parallel(pfunc, data, n_jobs, progress):
 
     Returns
     -------
-
+    results : list
+        Results from running model fitting in parallel.
     """
 
     n_jobs = cpu_count() if n_jobs == -1 else n_jobs
@@ -48,6 +35,14 @@ def run_parallel(pfunc, data, n_jobs, progress):
 
     return results
 
+## GROUP
+
+def run_parallel_group(model, data, n_jobs, progress):
+    """Wrapper function for running in parallel - group model."""
+
+    pfunc = partial(_par_fit_group, group=model)
+    return run_parallel(pfunc, data, n_jobs, progress)
+
 
 def _par_fit_group(power_spectrum, group):
     """Function to partialize for running in parallel - group."""
@@ -55,6 +50,14 @@ def _par_fit_group(power_spectrum, group):
     group._fit(power_spectrum=power_spectrum)
 
     return group._get_results()
+
+## EVENT
+
+def run_parallel_event(model, data, n_jobs, progress):
+    """Wrapper function for running in parallel - event model."""
+
+    pfunc = partial(_par_fit_event, model=model)
+    return run_parallel(pfunc, data, n_jobs, progress)
 
 
 def _par_fit_event(spectrogram, model):
