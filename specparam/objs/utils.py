@@ -41,13 +41,15 @@ def run_parallel_group(model, data, n_jobs, progress):
     """Wrapper function for running in parallel - group model."""
 
     pfunc = partial(_par_fit_group, group=model)
+
     return run_parallel(pfunc, data, n_jobs, progress)
 
 
 def _par_fit_group(power_spectrum, group):
     """Function to partialize for running in parallel - group."""
 
-    group._fit(power_spectrum=power_spectrum)
+    group._pass_through_spectrum(power_spectrum)
+    group._fit()
 
     return group._get_results()
 
@@ -57,6 +59,7 @@ def run_parallel_event(model, data, n_jobs, progress):
     """Wrapper function for running in parallel - event model."""
 
     pfunc = partial(_par_fit_event, model=model)
+
     return run_parallel(pfunc, data, n_jobs, progress)
 
 

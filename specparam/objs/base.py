@@ -11,7 +11,7 @@ from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.io.utils import get_files
 from specparam.io.files import load_json, load_jsonlines
 from specparam.io.models import save_model, save_group, save_event
-from specparam.modutils.errors import NoDataError
+from specparam.modutils.errors import NoDataError, FitError
 from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
 from specparam.objs.results import BaseResults, BaseResults2D, BaseResults2DT, BaseResults3D
@@ -28,6 +28,72 @@ class CommonBase():
         """Return a copy of the current object."""
 
         return deepcopy(self)
+
+
+    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
+        """Fit a power spectrum as a combination of periodic and aperiodic components.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the power spectrum, in linear space.
+        power_spectrum : 1d array, optional
+            Power values, which must be input in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to restrict power spectrum to.
+            If not provided, keeps the entire range.
+
+        Raises
+        ------
+        NoDataError
+            If no data is available to fit.
+        FitError
+            If model fitting fails to fit. Only raised in debug mode.
+
+        Notes
+        -----
+        Data is optional, if data has already been added to the object.
+        """
+
+        # If freqs & power_spectrum provided together, add data to object.
+        if freqs is not None and power_spectrum is not None:
+            self.add_data(freqs, power_spectrum, freq_range)
+
+        # Check that data is available
+        if not self.has_data:
+            raise NoDataError("No data available to fit, can not proceed.")
+
+        # In rare cases, the model fails to fit, and so uses try / except
+        try:
+
+            # If not set to fail on NaN or Inf data at add time, check data here
+            #   This serves as a catch all for curve_fits which will fail given NaN or Inf
+            #   Because FitError's are by default caught, this allows fitting to continue
+            if not self._check_data:
+                if np.any(np.isinf(self.power_spectrum)) or np.any(np.isnan(self.power_spectrum)):
+                    raise FitError("Model fitting was skipped because there are NaN or Inf "
+                                   "values in the data, which preclude model fitting.")
+
+            # Call the fit function from the algorithm object
+            self._fit()
+
+            # Compute goodness of fit & error measures
+            self._calc_r_squared()
+            self._calc_error()
+
+        except FitError:
+
+            # If in debug mode, re-raise the error
+            if self._debug:
+                raise
+
+            # Clear any interim model results that may have run
+            #   Partial model results shouldn't be interpreted in light of overall failure
+            self._reset_results(clear_results=True)
+
+            # Print out status
+            if self.verbose:
+                print("Model fitting was unsuccessful.")
 
 
     def get_data(self, component='full', space='log'):
@@ -152,34 +218,6 @@ class BaseObject(CommonBase, BaseResults, BaseData):
         self._reset_results(clear_results=self.has_model and clear_results)
 
         super().add_data(freqs, power_spectrum, freq_range=freq_range)
-
-
-    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
-        """Fit a power spectrum as a combination of periodic and aperiodic components.
-
-        Parameters
-        ----------
-        freqs : 1d array, optional
-            Frequency values for the power spectrum, in linear space.
-        power_spectrum : 1d array, optional
-            Power values, which must be input in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to restrict power spectrum to.
-            If not provided, keeps the entire range.
-
-        Raises
-        ------
-        NoDataError
-            If no data is available to fit.
-        FitError
-            If model fitting fails to fit. Only raised in debug mode.
-
-        Notes
-        -----
-        Data is optional, if data has already been added to the object.
-        """
-
-        self._fit(freqs=freqs, power_spectrum=power_spectrum, freq_range=freq_range)
 
 
     @copy_doc_func_to_method(save_model)
@@ -315,7 +353,8 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
             self._reset_group_results(len(self.power_spectra))
             for ind, power_spectrum in \
                 pbar(enumerate(self.power_spectra), progress, len(self)):
-                self._fit(power_spectrum=power_spectrum)
+                self._pass_through_spectrum(power_spectrum)
+                super().fit()
                 self.group_results[ind] = self._get_results()
 
         # Run in parallel
@@ -377,6 +416,20 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
 
         # Reset peripheral data from last loaded result, keeping freqs info
         self._reset_data_results(clear_spectrum=True, clear_results=True)
+
+
+    def _pass_through_spectrum(self, power_spectrum):
+        """Pass through a power spectrum to add to object.
+
+        Notes
+        -----
+        Passing through a spectrum like this assumes there is an existing & consistent frequency
+        definition to use and that the power_spectrum is already logged, with correct freq_range.
+        This should only be done internally for passing through individual spectra that
+        have already undergone data checking during data adding.
+        """
+
+        self.power_spectrum = power_spectrum
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False,
