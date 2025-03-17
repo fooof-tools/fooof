@@ -1,8 +1,6 @@
 """Define base results objects."""
 
 from itertools import repeat
-from functools import partial
-from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
@@ -12,7 +10,6 @@ from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
-from specparam.modutils.dependencies import safe_import
 from specparam.data import FitResults, ModelSettings
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import get_group_params, get_results_by_ind, get_results_by_row
@@ -430,57 +427,6 @@ class BaseResults2D(BaseResults):
             self.group_results[ind] = null_model
 
 
-    def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
-        """Fit a group of power spectra.
-
-        Parameters
-        ----------
-        freqs : 1d array, optional
-            Frequency values for the power_spectra, in linear space.
-        power_spectra : 2d array, shape: [n_power_spectra, n_freqs], optional
-            Matrix of power spectrum values, in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to fit the model to. If not provided, fits the entire given range.
-        n_jobs : int, optional, default: 1
-            Number of jobs to run in parallel.
-            1 is no parallelization. -1 uses all available cores.
-        progress : {None, 'tqdm', 'tqdm.notebook'}, optional
-            Which kind of progress bar to use. If None, no progress bar is used.
-
-        Notes
-        -----
-        Data is optional, if data has already been added to the object.
-        """
-
-        # If freqs & power spectra provided together, add data to object
-        if freqs is not None and power_spectra is not None:
-            self.add_data(freqs, power_spectra, freq_range)
-
-        # If 'verbose', print out a marker of what is being run
-        if self.verbose and not progress:
-            print('Fitting model across {} power spectra.'.format(len(self.power_spectra)))
-
-        # Run linearly
-        if n_jobs == 1:
-            self._reset_group_results(len(self.power_spectra))
-            for ind, power_spectrum in \
-                _progress(enumerate(self.power_spectra), progress, len(self)):
-                self._fit(power_spectrum=power_spectrum)
-                self.group_results[ind] = self._get_results()
-
-        # Run in parallel
-        else:
-            self._reset_group_results()
-            n_jobs = cpu_count() if n_jobs == -1 else n_jobs
-            with Pool(processes=n_jobs) as pool:
-                self.group_results = list(_progress(pool.imap(partial(_par_fit_group, group=self),
-                                                              self.power_spectra),
-                                                    progress, len(self.power_spectra)))
-
-        # Clear the individual power spectrum and fit results of the current fit
-        self._reset_data_results(clear_spectrum=True, clear_results=True)
-
-
     def get_params(self, name, col=None):
         """Return model fit parameters for specified feature(s).
 
@@ -612,38 +558,6 @@ class BaseResults2DT(BaseResults2D):
         self.time_results = {}
 
 
-    def fit(self, freqs=None, spectrogram=None, freq_range=None, peak_org=None,
-            n_jobs=1, progress=None):
-        """Fit a spectrogram.
-
-        Parameters
-        ----------
-        freqs : 1d array, optional
-            Frequency values for the spectrogram, in linear space.
-        spectrogram : 2d array, shape: [n_freqs, n_time_windows], optional
-            Spectrogram of power spectrum values, in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to fit the model to. If not provided, fits the entire given range.
-        peak_org : int or Bands
-            How to organize peaks.
-            If int, extracts the first n peaks.
-            If Bands, extracts peaks based on band definitions.
-        n_jobs : int, optional, default: 1
-            Number of jobs to run in parallel.
-            1 is no parallelization. -1 uses all available cores.
-        progress : {None, 'tqdm', 'tqdm.notebook'}, optional
-            Which kind of progress bar to use. If None, no progress bar is used.
-
-        Notes
-        -----
-        Data is optional, if data has already been added to the object.
-        """
-
-        super().fit(freqs, spectrogram, freq_range, n_jobs, progress)
-        if peak_org is not False:
-            self.convert_results(peak_org)
-
-
     def get_results(self):
         """Return the results run across a spectrogram."""
 
@@ -771,64 +685,6 @@ class BaseResults3D(BaseResults2DT):
 
         return np.array([[res.peak_params.shape[0] for res in gres] \
             if self.has_model else None for gres in self.event_group_results])
-
-
-    def fit(self, freqs=None, spectrograms=None, freq_range=None, peak_org=None,
-            n_jobs=1, progress=None):
-        """Fit a set of events.
-
-        Parameters
-        ----------
-        freqs : 1d array, optional
-            Frequency values for the power_spectra, in linear space.
-        spectrograms : 3d array or list of 2d array
-            Matrix of power values, in linear space.
-            If a list of 2d arrays, each should be have the same shape of [n_freqs, n_time_windows].
-            If a 3d array, should have shape [n_events, n_freqs, n_time_windows].
-        freq_range : list of [float, float], optional
-            Frequency range to fit the model to. If not provided, fits the entire given range.
-        peak_org : int or Bands
-            How to organize peaks.
-            If int, extracts the first n peaks.
-            If Bands, extracts peaks based on band definitions.
-        n_jobs : int, optional, default: 1
-            Number of jobs to run in parallel.
-            1 is no parallelization. -1 uses all available cores.
-        progress : {None, 'tqdm', 'tqdm.notebook'}, optional
-            Which kind of progress bar to use. If None, no progress bar is used.
-
-        Notes
-        -----
-        Data is optional, if data has already been added to the object.
-        """
-
-        if spectrograms is not None:
-            self.add_data(freqs, spectrograms, freq_range)
-
-        # If 'verbose', print out a marker of what is being run
-        if self.verbose and not progress:
-            print('Fitting model across {} events of {} windows.'.format(\
-                len(self.spectrograms), self.n_time_windows))
-
-        if n_jobs == 1:
-            self._reset_event_results(len(self.spectrograms))
-            for ind, spectrogram in _progress(enumerate(self.spectrograms), progress, len(self)):
-                self.power_spectra = spectrogram.T
-                super().fit(peak_org=False)
-                self.event_group_results[ind] = self.group_results
-                self._reset_group_results()
-                self._reset_data_results(clear_spectra=True)
-
-        else:
-            fg = self.get_group(None, None, 'group')
-            n_jobs = cpu_count() if n_jobs == -1 else n_jobs
-            with Pool(processes=n_jobs) as pool:
-                self.event_group_results = \
-                    list(_progress(pool.imap(partial(_par_fit_event, model=fg), self.spectrograms),
-                                   progress, len(self.spectrograms)))
-
-        if peak_org is not False:
-            self.convert_results(peak_org)
 
 
     def drop(self, drop_inds=None, window_inds=None):
@@ -1002,84 +858,3 @@ class BaseResults3D(BaseResults2DT):
         """
 
         self.event_time_results = event_group_to_dict(self.event_group_results, peak_org)
-
-###################################################################################################
-## Helper functions for running fitting in parallel
-
-def _par_fit_group(power_spectrum, group):
-    """Helper function for running in parallel."""
-
-    group._fit(power_spectrum=power_spectrum)
-
-    return group._get_results()
-
-
-def _par_fit_event(spectrogram, model):
-    """Helper function for running in parallel."""
-
-    model.power_spectra = spectrogram.T
-    model.fit()
-
-    return model.get_results()
-
-
-def _progress(iterable, progress, n_to_run):
-    """Add a progress bar to an iterable to be processed.
-
-    Parameters
-    ----------
-    iterable : list or iterable
-        Iterable object to potentially apply progress tracking to.
-    progress : {None, 'tqdm', 'tqdm.notebook'}
-        Which kind of progress bar to use. If None, no progress bar is used.
-    n_to_run : int
-        Number of jobs to complete.
-
-    Returns
-    -------
-    pbar : iterable or tqdm object
-        Iterable object, with tqdm progress functionality, if requested.
-
-    Raises
-    ------
-    ValueError
-        If the input for `progress` is not understood.
-
-    Notes
-    -----
-    The explicit `n_to_run` input is required as tqdm requires this in the parallel case.
-    The `tqdm` object that is potentially returned acts the same as the underlying iterable,
-    with the addition of printing out progress every time items are requested.
-    """
-
-    # Check progress specifier is okay
-    tqdm_options = ['tqdm', 'tqdm.notebook']
-    if progress is not None and progress not in tqdm_options:
-        raise ValueError("Progress bar option not understood.")
-
-    # Set the display text for the progress bar
-    pbar_desc = 'Running group fits.'
-
-    # Use a tqdm, progress bar, if requested
-    if progress:
-
-        # Try loading the tqdm module
-        tqdm = safe_import(progress)
-
-        if not tqdm:
-
-            # If tqdm isn't available, proceed without a progress bar
-            print(("A progress bar requiring the 'tqdm' module was requested, "
-                   "but 'tqdm' is not installed. \nProceeding without using a progress bar."))
-            pbar = iterable
-
-        else:
-
-            # If tqdm loaded, apply the progress bar to the iterable
-            pbar = tqdm.tqdm(iterable, desc=pbar_desc, total=n_to_run, dynamic_ncols=True)
-
-    # If progress is None, return the original iterable without a progress bar applied
-    else:
-        pbar = iterable
-
-    return pbar
