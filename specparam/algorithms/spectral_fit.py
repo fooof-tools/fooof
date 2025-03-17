@@ -48,6 +48,8 @@ class SpectralFitAlgorithm():
         The tolerance setting for curve fitting (see scipy.curve_fit - ftol / xtol / gtol).
         The default value reduce tolerance to speed fitting (as compared to curve_fit's default).
         Set value to 1e-8 to match curve_fit default
+
+    # TODO: MOVE:
     _error_metric : str
         The error metric to use for post-hoc measures of model fit error.
         Note: this is for checking error post fitting, not an objective function for fitting.

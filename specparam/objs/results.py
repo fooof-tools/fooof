@@ -13,7 +13,8 @@ from specparam.modutils.errors import NoModelError
 from specparam.data import FitResults, ModelSettings
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import get_group_params, get_results_by_ind, get_results_by_row
-from specparam.measures.gof import compute_r_squared, compute_error
+from specparam.measures.gof import compute_gof
+from specparam.measures.error import compute_error
 
 ###################################################################################################
 ###################################################################################################
@@ -23,7 +24,7 @@ class BaseResults():
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False,
-                 verbose=True, error_metric='MAE'):
+                 verbose=True, error_metric='MAE', gof_metric='r_squared'):
 
         # Set fit component modes
         if isinstance(aperiodic_mode, str):
@@ -44,6 +45,7 @@ class BaseResults():
 
         # Set private run settings
         self._error_metric = error_metric
+        self._gof_metric = gof_metric
 
 
     @property
@@ -278,27 +280,34 @@ class BaseResults():
             self._peak_fit = None
 
 
-    def _calc_r_squared(self):
-        """Calculate the r-squared goodness of fit of the model, compared to the original data."""
+    def _compute_model_gof(self, metric=None):
+        """Calculate the r-squared goodness of fit of the model, compared to the original data.
 
-        self.r_squared_ = compute_r_squared(self.power_spectrum, self.modeled_spectrum_)
+        Parameters
+        ----------
+        metric : {'r_squared', 'adj_r_squared'}, optional
+            Which goodness of fit measure to compute:
+            * 'r_squared' : R-squared
+            * 'adj_r_squared' : Adjusted R-squared
+
+        Notes
+        -----
+        Which measure is applied is by default controlled by the `_gof_metric` attribute.
+        """
+
+        self.r_squared_ = compute_gof(self.power_spectrum, self.modeled_spectrum_)
 
 
-    def _calc_error(self, metric=None):
+    def _compute_model_error(self, metric=None):
         """Calculate the overall error of the model fit, compared to the original data.
 
         Parameters
         ----------
         metric : {'MAE', 'MSE', 'RMSE'}, optional
-            Which error measure to calculate:
+            Which error measure to compute:
             * 'MAE' : mean absolute error
             * 'MSE' : mean squared error
             * 'RMSE' : root mean squared error
-
-        Raises
-        ------
-        ValueError
-            If the requested error metric is not understood.
 
         Notes
         -----

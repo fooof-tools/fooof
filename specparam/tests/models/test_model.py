@@ -114,15 +114,15 @@ def test_fit_measures():
     tfm.modeled_spectrum_ = np.array([1, 2, 5, 4, 5])
 
     # Check default goodness of fit and error measures
-    tfm._calc_r_squared()
+    tfm._compute_model_gof()
     assert np.isclose(tfm.r_squared_, 0.75757575)
-    tfm._calc_error()
+    tfm._compute_model_error()
     assert np.isclose(tfm.error_, 0.4)
 
     # Check with alternative error fit approach
-    tfm._calc_error(metric='MSE')
+    tfm._compute_model_error(metric='MSE')
     assert np.isclose(tfm.error_, 0.8)
-    tfm._calc_error(metric='RMSE')
+    tfm._compute_model_error(metric='RMSE')
     assert np.isclose(tfm.error_, np.sqrt(0.8))
 
 def test_checks():

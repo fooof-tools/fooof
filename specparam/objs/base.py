@@ -78,8 +78,8 @@ class CommonBase():
             self._fit()
 
             # Compute goodness of fit & error measures
-            self._calc_r_squared()
-            self._calc_error()
+            self._compute_model_gof()
+            self._compute_model_error()
 
         except FitError:
 
