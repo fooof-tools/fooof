@@ -71,34 +71,6 @@ class BaseResults():
         return self.peak_params_.shape[0] if self.has_model else None
 
 
-    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
-        """Fit a power spectrum as a combination of periodic and aperiodic components.
-
-        Parameters
-        ----------
-        freqs : 1d array, optional
-            Frequency values for the power spectrum, in linear space.
-        power_spectrum : 1d array, optional
-            Power values, which must be input in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to restrict power spectrum to.
-            If not provided, keeps the entire range.
-
-        Raises
-        ------
-        NoDataError
-            If no data is available to fit.
-        FitError
-            If model fitting fails to fit. Only raised in debug mode.
-
-        Notes
-        -----
-        Data is optional, if data has already been added to the object.
-        """
-
-        return self._fit(freqs=freqs, power_spectrum=power_spectrum, freq_range=freq_range)
-
-
     def add_settings(self, settings):
         """Add settings into object from a ModelSettings object.
 

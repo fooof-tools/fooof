@@ -153,6 +153,34 @@ class BaseObject(CommonBase, BaseResults, BaseData):
         super().add_data(freqs, power_spectrum, freq_range=freq_range)
 
 
+    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
+        """Fit a power spectrum as a combination of periodic and aperiodic components.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the power spectrum, in linear space.
+        power_spectrum : 1d array, optional
+            Power values, which must be input in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to restrict power spectrum to.
+            If not provided, keeps the entire range.
+
+        Raises
+        ------
+        NoDataError
+            If no data is available to fit.
+        FitError
+            If model fitting fails to fit. Only raised in debug mode.
+
+        Notes
+        -----
+        Data is optional, if data has already been added to the object.
+        """
+
+        self._fit(freqs=freqs, power_spectrum=power_spectrum, freq_range=freq_range)
+
+
     @copy_doc_func_to_method(save_model)
     def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
