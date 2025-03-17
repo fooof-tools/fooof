@@ -6,14 +6,12 @@ import numpy as np
 from numpy.linalg import LinAlgError
 from scipy.optimize import curve_fit
 
-from specparam.modes.funcs import gaussian_function, get_ap_func
-from specparam.modes.jacobians import jacobian_gauss
+from specparam.modes.funcs import gaussian_function
 from specparam.reports.strings import gen_width_warning_str
-from specparam.modutils.errors import NoDataError, FitError
+from specparam.modutils.errors import FitError
 from specparam.utils.select import groupby
 from specparam.reports.strings import gen_width_warning_str
 from specparam.measures.params import compute_gauss_std
-from specparam.sim.gen import gen_aperiodic, gen_periodic
 
 ###################################################################################################
 ###################################################################################################
@@ -105,84 +103,42 @@ class SpectralFitAlgorithm():
         self._reset_data_results(True, True, True)
 
 
-    def _fit(self, freqs=None, power_spectrum=None, freq_range=None):
+    def _fit(self):
         """Define the full fitting algorithm."""
-
-        # If freqs & power_spectrum provided together, add data to object.
-        if freqs is not None and power_spectrum is not None:
-            self.add_data(freqs, power_spectrum, freq_range)
-        # If power spectrum provided alone, add to object, and use existing frequency data
-        #   Note: be careful passing in power_spectrum data like this:
-        #     It assumes the power_spectrum is already logged, with correct freq_range
-        elif isinstance(power_spectrum, np.ndarray):
-            self.power_spectrum = power_spectrum
-
-        # Check that data is available
-        if not self.has_data:
-            raise NoDataError("No data available to fit, can not proceed.")
 
         # Check and warn about width limits (if in verbose mode)
         if self.verbose:
             self._check_width_limits()
 
-        # In rare cases, the model fails to fit, and so uses try / except
-        try:
+        # Fit the aperiodic component
+        self.aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
+        self._ap_fit = self.aperiodic_mode.func(self.freqs, *self.aperiodic_params_)
 
-            # If not set to fail on NaN or Inf data at add time, check data here
-            #   This serves as a catch all for curve_fits which will fail given NaN or Inf
-            #   Because FitError's are by default caught, this allows fitting to continue
-            if not self._check_data:
-                if np.any(np.isinf(self.power_spectrum)) or np.any(np.isnan(self.power_spectrum)):
-                    raise FitError("Model fitting was skipped because there are NaN or Inf "
-                                   "values in the data, which preclude model fitting.")
+        # Flatten the power spectrum using fit aperiodic fit
+        self._spectrum_flat = self.power_spectrum - self._ap_fit
 
-            # Fit the aperiodic component
-            self.aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
-            self._ap_fit = self.aperiodic_mode.func(self.freqs, *self.aperiodic_params_)
+        # Find peaks, and fit them with gaussians
+        self.gaussian_params_ = self._fit_peaks(np.copy(self._spectrum_flat))
 
-            # Flatten the power spectrum using fit aperiodic fit
-            self._spectrum_flat = self.power_spectrum - self._ap_fit
+        # Calculate the peak fit
+        #   Note: if no peaks are found, this creates a flat (all zero) peak fit
+        self._peak_fit = self.periodic_mode.func(\
+            self.freqs, *np.ndarray.flatten(self.gaussian_params_))
 
-            # Find peaks, and fit them with gaussians
-            self.gaussian_params_ = self._fit_peaks(np.copy(self._spectrum_flat))
+        # Create peak-removed (but not flattened) power spectrum
+        self._spectrum_peak_rm = self.power_spectrum - self._peak_fit
 
-            # Calculate the peak fit
-            #   Note: if no peaks are found, this creates a flat (all zero) peak fit
-            self._peak_fit = self.periodic_mode.func(\
-                self.freqs, *np.ndarray.flatten(self.gaussian_params_))
+        # Run final aperiodic fit on peak-removed power spectrum
+        #   This overwrites previous aperiodic fit, and recomputes the flattened spectrum
+        self.aperiodic_params_ = self._simple_ap_fit(self.freqs, self._spectrum_peak_rm)
+        self._ap_fit = self.aperiodic_mode.func(self.freqs, *self.aperiodic_params_)
+        self._spectrum_flat = self.power_spectrum - self._ap_fit
 
-            # Create peak-removed (but not flattened) power spectrum
-            self._spectrum_peak_rm = self.power_spectrum - self._peak_fit
+        # Create full power_spectrum model fit
+        self.modeled_spectrum_ = self._peak_fit + self._ap_fit
 
-            # Run final aperiodic fit on peak-removed power spectrum
-            #   This overwrites previous aperiodic fit, and recomputes the flattened spectrum
-            self.aperiodic_params_ = self._simple_ap_fit(self.freqs, self._spectrum_peak_rm)
-            self._ap_fit = self.aperiodic_mode.func(self.freqs, *self.aperiodic_params_)
-            self._spectrum_flat = self.power_spectrum - self._ap_fit
-
-            # Create full power_spectrum model fit
-            self.modeled_spectrum_ = self._peak_fit + self._ap_fit
-
-            # Convert gaussian definitions to peak parameters
-            self.peak_params_ = self._create_peak_params(self.gaussian_params_)
-
-            # Calculate R^2 and error of the model fit
-            self._calc_r_squared()
-            self._calc_error()
-
-        except FitError:
-
-            # If in debug mode, re-raise the error
-            if self._debug:
-                raise
-
-            # Clear any interim model results that may have run
-            #   Partial model results shouldn't be interpreted in light of overall failure
-            self._reset_results(clear_results=True)
-
-            # Print out status
-            if self.verbose:
-                print("Model fitting was unsuccessful.")
+        # Convert gaussian definitions to peak parameters
+        self.peak_params_ = self._create_peak_params(self.gaussian_params_)
 
 
     def _reset_internal_settings(self):
@@ -535,8 +491,7 @@ class SpectralFitAlgorithm():
                                            bounds=self._get_pe_bounds(guess),
                                            ftol=self._tol, xtol=self._tol, gtol=self._tol,
                                            check_finite=False,
-                                           jac=self.periodic_mode.jacobian,
-                                           )
+                                           jac=self.periodic_mode.jacobian)
 
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
