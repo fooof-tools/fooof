@@ -1,7 +1,6 @@
 """Define common base objects."""
 
 from copy import deepcopy
-from functools import partial # TEMP?
 
 import numpy as np
 
@@ -17,9 +16,7 @@ from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
 from specparam.objs.results import BaseResults, BaseResults2D, BaseResults2DT, BaseResults3D
 from specparam.objs.data import BaseData, BaseData2D, BaseData2DT, BaseData3D
-
-
-from specparam.objs.par import run_par_pool, _par_fit_group, _par_fit_event, _progress
+from specparam.objs.utils import run_parallel_group, run_parallel_event, pbar
 
 ###################################################################################################
 ###################################################################################################
@@ -317,18 +314,14 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
         if n_jobs == 1:
             self._reset_group_results(len(self.power_spectra))
             for ind, power_spectrum in \
-                _progress(enumerate(self.power_spectra), progress, len(self)):
+                pbar(enumerate(self.power_spectra), progress, len(self)):
                 self._fit(power_spectrum=power_spectrum)
                 self.group_results[ind] = self._get_results()
 
         # Run in parallel
         else:
             self._reset_group_results()
-            n_jobs = cpu_count() if n_jobs == -1 else n_jobs
-            with Pool(processes=n_jobs) as pool:
-                self.group_results = list(_progress(pool.imap(partial(_par_fit_group, group=self),
-                                                              self.power_spectra),
-                                                    progress, len(self.power_spectra)))
+            self.group_results = run_parallel_group(self, self.power_spectra, n_jobs, progress)
 
         # Clear the individual power spectrum and fit results of the current fit
         self._reset_data_results(clear_spectrum=True, clear_results=True)
@@ -552,7 +545,7 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
 
         if n_jobs == 1:
             self._reset_event_results(len(self.spectrograms))
-            for ind, spectrogram in _progress(enumerate(self.spectrograms), progress, len(self)):
+            for ind, spectrogram in pbar(enumerate(self.spectrograms), progress, len(self)):
                 self.power_spectra = spectrogram.T
                 super().fit(peak_org=False)
                 self.event_group_results[ind] = self.group_results
@@ -561,11 +554,7 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
 
         else:
             fg = self.get_group(None, None, 'group')
-            n_jobs = cpu_count() if n_jobs == -1 else n_jobs
-            with Pool(processes=n_jobs) as pool:
-                self.event_group_results = \
-                    list(_progress(pool.imap(partial(_par_fit_event, model=fg), self.spectrograms),
-                                   progress, len(self.spectrograms)))
+            self.event_group_results = run_parallel_event(fg, self.spectrograms, n_jobs, progress)
 
         if peak_org is not False:
             self.convert_results(peak_org)
