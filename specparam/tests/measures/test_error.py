@@ -1,34 +1,34 @@
 """Test functions for specparam.measures.error."""
 
+import numpy as np
+
 from specparam.measures.error import *
 
 ###################################################################################################
 ###################################################################################################
 
-def test_compute_pointwise_error(tfm):
+def test_compute_mean_abs_error(tfm):
 
-    errs = compute_pointwise_error(tfm, False, True)
-    assert np.all(errs)
+    error = compute_mean_abs_error(tfm.power_spectrum, tfm.modeled_spectrum_)
+    assert isinstance(error, float)
 
-def test_compute_pointwise_error_plt(tfm, skip_if_no_mpl):
-    """Run a separate test to run with plot pass-through."""
+def test_compute_mean_squared_error(tfm):
 
-    compute_pointwise_error(tfm, True, False)
+    error = compute_mean_squared_error(tfm.power_spectrum, tfm.modeled_spectrum_)
+    assert isinstance(error, float)
 
-def test_compute_pointwise_error_group(tfg):
+def test_compute_root_mean_squared_error(tfm):
 
-    errs = compute_pointwise_error_group(tfg, False, True)
-    assert np.all(errs)
+    error = compute_root_mean_squared_error(tfm.power_spectrum, tfm.modeled_spectrum_)
+    assert isinstance(error, float)
 
-def test_compute_pointwise_error_group_plt(tfg, skip_if_no_mpl):
-    """Run a separate test to run with plot pass-through."""
+def test_compute_median_abs_error(tfm):
 
-    compute_pointwise_error_group(tfg, True, False)
+    error = compute_median_abs_error(tfm.power_spectrum, tfm.modeled_spectrum_)
+    assert isinstance(error, float)
 
-def test_compute_pointwise_error_arr():
+def test_compute_error(tfm):
 
-    d1 = np.ones(5) * 2
-    d2 = np.ones(5)
-
-    errs = compute_pointwise_error_arr(d1, d2)
-    assert np.array_equal(errs, np.array([1, 1, 1, 1, 1]))
+    for metric in ['mae', 'mse', 'rmse', 'medae']:
+        error = compute_error(tfm.power_spectrum, tfm.modeled_spectrum_)
+        assert isinstance(error, float)
