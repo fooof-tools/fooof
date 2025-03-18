@@ -170,7 +170,7 @@ class CommonBase():
         """
 
         self.set_debug(debug)
-        self.set_check_modes(check_freqs, check_data)
+        self.set_checks(check_freqs, check_data)
 
 
     def _add_from_dict(self, data):

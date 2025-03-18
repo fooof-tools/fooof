@@ -211,8 +211,9 @@ def combine_model_objs(model_objs):
     if len(group) == temp_power_spectra.shape[0]:
         group.power_spectra = temp_power_spectra
 
-    # Set the check data mode, as True if any of the inputs have it on, False otherwise
-    group.set_check_modes(\
+    # Set the status for freqs & data checking
+    #  Check states gets set as True if any of the inputs have it on, False otherwise
+    group.set_checks(\
         check_freqs=any(getattr(m_obj, '_check_freqs') for m_obj in model_objs),
         check_data=any(getattr(m_obj, '_check_data') for m_obj in model_objs))
 

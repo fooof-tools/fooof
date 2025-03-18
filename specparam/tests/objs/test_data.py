@@ -39,13 +39,13 @@ def test_base_data_meta_data():
     assert isinstance(meta_data_out, SpectrumMetaData)
     assert meta_data_out == meta_data
 
-def test_base_data_set_check_modes(tdata):
+def test_base_data_set_checks(tdata):
 
-    tdata.set_check_modes(False, False)
+    tdata.set_checks(False, False)
     assert tdata._check_freqs is False
     assert tdata._check_data is False
 
-    tdata.set_check_modes(True, True)
+    tdata.set_checks(True, True)
     assert tdata._check_freqs is True
     assert tdata._check_data is True
 

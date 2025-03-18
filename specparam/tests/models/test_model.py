@@ -362,12 +362,12 @@ def test_debug():
     with raises(FitError):
         tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
-def test_set_check_modes():
-    """Test changing check_modes using set_check_modes, and that checks get turned off.
+def test_set_checks():
+    """Test changing checks using set_checks, and that checks get turned off.
     Note that testing for checks raising errors happens in test_checks.`"""
 
     tfm = SpectralModel(verbose=False)
-    tfm.set_check_modes(False, False)
+    tfm.set_checks(False, False)
 
     # Add bad frequency data, with check freqs turned off
     freqs = np.array([1, 2, 4])
@@ -385,8 +385,8 @@ def test_set_check_modes():
     tfm.fit()
     assert not tfm.has_model
 
-    # Reset check modes to true
-    tfm.set_check_modes(True, True)
+    # Reset checks to true
+    tfm.set_checks(True, True)
     assert tfm._check_freqs is True
     assert tfm._check_data is True
 

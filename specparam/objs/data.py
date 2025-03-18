@@ -22,21 +22,21 @@ class BaseData():
     Parameters
     ----------
     _check_freqs : bool
-        Run mode: whether to check the frequency values.
+        Whether to check the frequency values.
         If True, checks the frequency values, and raises an error for uneven spacing.
     _check_data : bool
-        Run mode: whether to check the power spectrum values.
+        Whether to check the power spectrum values.
         If True, checks the power values and raises an error for any NaN / Inf values.
     """
 
-    def __init__(self, check_freqs_mode=True, check_data_mode=True):
+    def __init__(self, check_freqs=True, check_data=True):
         """Initialize BaseData object."""
 
         self._reset_data(True, True)
 
         # Define data check run modes
-        self._check_freqs = check_freqs_mode
-        self._check_data = check_data_mode
+        self._check_freqs = check_freqs
+        self._check_data = check_data
 
 
     @property
@@ -109,15 +109,15 @@ class BaseData():
                      log_powers=False, **data_kwargs)
 
 
-    def set_check_modes(self, check_freqs=None, check_data=None):
-        """Set check modes, which controls if an error is raised based on check on the inputs.
+    def set_checks(self, check_freqs=None, check_data=None):
+        """Set check statuses, which control if an error is raised based on check on the inputs.
 
         Parameters
         ----------
         check_freqs : bool, optional
-            Whether to run in check freqs mode, which checks the frequency data.
+            Whether to check the frequency data.
         check_data : bool, optional
-            Whether to run in check data mode, which checks the power spectrum values data.
+            Whether to check the power spectrum data.
         """
 
         if check_freqs is not None:

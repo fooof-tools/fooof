@@ -58,11 +58,11 @@ class ModelRunModes(namedtuple('ModelRunModes', ['debug', 'check_freqs', 'check_
     Parameters
     ----------
     debug :  bool
-       Whether to run in debug mode.
+       Whether to run in debug state, raising an error if encountered during fitting.
     check_freqs : bool
-        Whether to run in check freqs mode.
+        Whether to check freqs.
     check_data : bool
-        Whether to run in check data mode.
+        Whether to check data.
 
     Notes
     -----

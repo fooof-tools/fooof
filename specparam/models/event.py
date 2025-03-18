@@ -146,7 +146,7 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
             The FitResults data loaded into a model object.
         """
 
-        # Initialize model object, with same settings, metadata, & check mode as current object
+        # Initialize model object, with same settings, metadata, & check states as current object
         model = SpectralModel(**self.get_settings()._asdict(), verbose=self.verbose)
         model.add_meta_data(self.get_meta_data())
         model.set_run_modes(*self.get_run_modes())
