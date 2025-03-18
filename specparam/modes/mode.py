@@ -1,7 +1,14 @@
 """Modes object."""
 
+from specparam.utils.checks import check_input_options
+
 ###################################################################################################
 ###################################################################################################
+
+# Set valid options for Mode parameters
+VALID_COMPONENTS = ['periodic', 'aperiodic']
+VALID_SPACINGS = ['linear', 'log10']
+
 
 class Mode():
     """Defines a fit mode.
@@ -34,17 +41,19 @@ class Mode():
         """Initialize a mode."""
 
         self.name = name
-        self.component = component
+        self.component = check_input_options(component, VALID_COMPONENTS, 'component')
         self.description = description
 
         self.func = func
         self.jacobian = jacobian
 
+        if len(params) != len(param_description) or params != list(param_description.keys()):
+            raise ValueError('Inpurt params & descriptions do not match.')
         self.params = params
         self.param_description = param_description
 
-        self.freq_space = freq_space
-        self.powers_space = powers_space
+        self.freq_space = check_input_options(freq_space, VALID_SPACINGS, 'freq_space')
+        self.powers_space = check_input_options(powers_space, VALID_SPACINGS, 'powers_space')
 
 
     def __repr__(self):
