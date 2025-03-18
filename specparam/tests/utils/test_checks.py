@@ -1,5 +1,7 @@
 """Tests for specparam.utils.checks."""
 
+from pytest import raises
+
 from collections.abc import Iterable
 from itertools import repeat
 
@@ -9,6 +11,17 @@ from specparam.utils.checks import *
 
 ###################################################################################################
 ###################################################################################################
+
+def test_check_input_options():
+
+    value = 'a'
+    options = ['a', 'b', 'c']
+
+    out1 = check_input_options(value, options, 'tinput')
+    assert out1 == value
+
+    with raises(ValueError):
+        out2 = check_input_options('d', options, 'tinput')
 
 def test_check_array_dim():
 
