@@ -83,9 +83,9 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         The error metric to use for post-hoc measures of model fit error.
         Note: this is for checking error post fitting, not an objective function for fitting.
     _debug : bool
-        Run mode: whether the object is set in debug mode.
+        Whether the object is set in debug mode.
         If in debug mode, an error is raised if model fitting is unsuccessful.
-        This should be controlled by using the `set_debug_mode` method.
+        This should be controlled by using the `set_debug` method.
 
     Notes
     -----
@@ -109,7 +109,7 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         """Initialize model object."""
 
         BaseObject.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                            debug_mode=model_kwargs.pop('debug_mode', False), verbose=verbose)
+                            debug=model_kwargs.pop('debug', False), verbose=verbose)
 
         SpectralFitAlgorithm.__init__(self, peak_width_limits=peak_width_limits,
                                       max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,

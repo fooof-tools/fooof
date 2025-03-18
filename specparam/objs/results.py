@@ -23,7 +23,7 @@ class BaseResults():
     """Base object for managing results."""
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False,
+    def __init__(self, aperiodic_mode, periodic_mode, debug=False,
                  verbose=True, error_metric='MAE', gof_metric='r_squared'):
         """Initialize BaseResults object."""
 
@@ -38,7 +38,7 @@ class BaseResults():
             self.periodic_mode = periodic_mode
 
         # Set run modes
-        self.set_debug_mode(debug_mode)
+        self.set_debug(debug)
         self.verbose = verbose
 
         # Initialize results attributes
@@ -176,13 +176,13 @@ class BaseResults():
         return output
 
 
-    def set_debug_mode(self, debug):
-        """Set debug mode, which controls if an error is raised if model fitting is unsuccessful.
+    def set_debug(self, debug):
+        """Set debug state, which controls if an error is raised if model fitting is unsuccessful.
 
         Parameters
         ----------
         debug : bool
-            Whether to run in debug mode.
+            Whether to run in debug state.
         """
 
         self._debug = debug
@@ -322,11 +322,10 @@ class BaseResults():
 class BaseResults2D(BaseResults):
     """Base object for managing results - 2D version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode, periodic_mode, debug=False, verbose=True):
         """Initialize BaseResults2D object."""
 
-        BaseResults.__init__(self, aperiodic_mode, periodic_mode,
-                             debug_mode=debug_mode, verbose=verbose)
+        BaseResults.__init__(self, aperiodic_mode, periodic_mode, debug=debug, verbose=verbose)
 
         self._reset_group_results()
 
@@ -549,11 +548,10 @@ class BaseResults2D(BaseResults):
 class BaseResults2DT(BaseResults2D):
     """Base object for managing results - 2D transpose version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode, periodic_mode, debug=False, verbose=True):
         """Initialize BaseResults2DT object."""
 
-        BaseResults2D.__init__(self, aperiodic_mode, periodic_mode,
-                               debug_mode=debug_mode, verbose=verbose)
+        BaseResults2D.__init__(self, aperiodic_mode, periodic_mode, debug=debug, verbose=verbose)
 
         self._reset_time_results()
 
@@ -657,11 +655,10 @@ class BaseResults2DT(BaseResults2D):
 class BaseResults3D(BaseResults2DT):
     """Base object for managing results - 3D version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode, periodic_mode, debug=False, verbose=True):
         """Initialize BaseResults3D object."""
 
-        BaseResults2DT.__init__(self, aperiodic_mode, periodic_mode,
-                                debug_mode=debug_mode, verbose=verbose)
+        BaseResults2DT.__init__(self, aperiodic_mode, periodic_mode, debug=debug, verbose=verbose)
 
         self._reset_event_results()
 

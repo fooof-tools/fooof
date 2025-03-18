@@ -351,12 +351,12 @@ def test_fit_failure():
         assert np.all(np.isnan(getattr(tfm, result)))
 
 def test_debug():
-    """Test model object in debug mode, including with fit failures."""
+    """Test model object in debug state, including with fit failures."""
 
     tfm = SpectralModel(verbose=False)
     tfm._maxfev = 2
 
-    tfm.set_debug_mode(True)
+    tfm.set_debug(True)
     assert tfm._debug is True
 
     with raises(FitError):

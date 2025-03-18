@@ -62,7 +62,7 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
         BaseObject2DT.__init__(self,
                                aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
                                periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
-                               debug_mode=kwargs.pop('debug_mode', False),
+                               debug=kwargs.pop('debug', False),
                                verbose=kwargs.pop('verbose', True))
 
         SpectralFitAlgorithm.__init__(self, *args, **kwargs)

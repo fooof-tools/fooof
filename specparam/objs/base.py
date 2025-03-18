@@ -162,14 +162,14 @@ class CommonBase():
         Parameters
         ----------
         debug : bool
-            Whether to run in debug mode.
+            Whether to run in debug state.
         check_freqs : bool
             Whether to run in check freqs mode.
         check_data : bool
             Whether to run in check data mode.
         """
 
-        self.set_debug_mode(debug)
+        self.set_debug(debug)
         self.set_check_modes(check_freqs, check_data)
 
 
@@ -189,13 +189,13 @@ class CommonBase():
 class BaseObject(CommonBase, BaseResults, BaseData):
     """Define Base object for fitting models to 1D data."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug=False, verbose=True):
         """Initialize BaseObject object."""
 
         CommonBase.__init__(self)
         BaseData.__init__(self)
         BaseResults.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                             debug_mode=debug_mode, verbose=verbose)
+                             debug=debug, verbose=verbose)
 
 
     @replace_docstring_sections([docs_get_section(BaseData.add_data.__doc__, 'Parameters'),
@@ -281,13 +281,13 @@ class BaseObject(CommonBase, BaseResults, BaseData):
 class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
     """Define Base object for fitting models to 2D data."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug=False, verbose=True):
         """Initialize BaseObject2D object."""
 
         CommonBase.__init__(self)
         BaseData2D.__init__(self)
         BaseResults2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                               debug_mode=debug_mode, verbose=verbose)
+                               debug=debug, verbose=verbose)
 
 
     def add_data(self, freqs, power_spectra, freq_range=None, clear_results=True):
@@ -457,14 +457,14 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
 class BaseObject2DT(BaseObject2D, BaseResults2DT, BaseData2DT):
     """Define Base object for fitting models to 2D data - tranpose version."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug=False, verbose=True):
         """Initialize BaseObject2DT object."""
 
         BaseData2DT.__init__(self)
         BaseObject2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                              debug_mode=debug_mode, verbose=verbose)
+                              debug=debug, verbose=verbose)
         BaseResults2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                               debug_mode=debug_mode, verbose=verbose)
+                               debug=debug, verbose=verbose)
 
 
     def fit(self, freqs=None, spectrogram=None, freq_range=None, peak_org=None,
@@ -524,14 +524,14 @@ class BaseObject2DT(BaseObject2D, BaseResults2DT, BaseData2DT):
 class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
     """Define Base object for fitting models to 3D data."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug=False, verbose=True):
         """Initialize BaseObject3D object."""
 
         BaseData3D.__init__(self)
         BaseObject2DT.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                               debug_mode=debug_mode, verbose=verbose)
+                               debug=debug, verbose=verbose)
         BaseResults3D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                               debug_mode=debug_mode, verbose=verbose)
+                               debug=debug, verbose=verbose)
 
 
     def add_data(self, freqs, spectrograms, freq_range=None, clear_results=True):
