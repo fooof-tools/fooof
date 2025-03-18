@@ -27,13 +27,13 @@ def test_spectrum_meta_data():
     for field in OBJ_DESC['meta_data']:
         assert getattr(meta_data, field)
 
-def test_model_run_modes():
+def test_model_checks():
 
-    run_modes = ModelRunModes(True, True, True)
-    assert run_modes
+    checks = ModelChecks(True, True)
+    assert checks
 
-    for field in OBJ_DESC['run_modes']:
-        assert getattr(run_modes, field.strip('_'))
+    for field in OBJ_DESC['checks']:
+        assert getattr(checks, field.strip('_'))
 
 def test_fit_results():
 

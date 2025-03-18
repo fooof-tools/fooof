@@ -4,7 +4,6 @@ from copy import deepcopy
 
 import numpy as np
 
-from specparam.data import ModelRunModes
 from specparam.utils.array import unlog
 from specparam.modes.items import OBJ_DESC
 from specparam.modes.definitions import AP_MODES, PE_MODES
@@ -141,36 +140,6 @@ class CommonBase():
             raise ValueError('Input for component invalid.')
 
         return output
-
-
-    def get_run_modes(self):
-        """Return run modes of the current object.
-
-        Returns
-        -------
-        ModelRunModes
-            Object containing the run modes from the current object.
-        """
-
-        return ModelRunModes(**{key.strip('_') : getattr(self, key) \
-                             for key in OBJ_DESC['run_modes']})
-
-
-    def set_run_modes(self, debug, check_freqs, check_data):
-        """Simultaneously set all run modes.
-
-        Parameters
-        ----------
-        debug : bool
-            Whether to run in debug state.
-        check_freqs : bool
-            Whether to run in check freqs mode.
-        check_data : bool
-            Whether to run in check data mode.
-        """
-
-        self.set_debug(debug)
-        self.set_checks(check_freqs, check_data)
 
 
     def _add_from_dict(self, data):

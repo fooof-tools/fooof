@@ -99,6 +99,12 @@ class BaseResults():
                              for key in OBJ_DESC['settings']})
 
 
+    def get_debug(self):
+        """Return object debug status."""
+
+        return self._debug
+
+
     def add_results(self, results):
         """Add results data into object from a FitResults object.
 
@@ -494,7 +500,8 @@ class BaseResults2D(BaseResults):
         # Initialize model object, with same settings, metadata, & check mode as current object
         model = SpectralModel(**self.get_settings()._asdict(), verbose=self.verbose)
         model.add_meta_data(self.get_meta_data())
-        model.set_run_modes(*self.get_run_modes())
+        model.set_checks(*self.get_checks())
+        model.set_debug(self.get_debug())
 
         # Add data for specified single power spectrum, if available
         if self.has_data:
@@ -528,7 +535,8 @@ class BaseResults2D(BaseResults):
         # Initialize a new model object, with same settings as current object
         group = SpectralGroupModel(**self.get_settings()._asdict(), verbose=self.verbose)
         group.add_meta_data(self.get_meta_data())
-        group.set_run_modes(*self.get_run_modes())
+        group.set_checks(*self.get_checks())
+        group.set_debug(self.get_debug())
 
         if inds is not None:
 

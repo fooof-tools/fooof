@@ -6,7 +6,7 @@ import numpy as np
 
 from specparam.sim.gen import gen_freqs
 from specparam.modes.items import OBJ_DESC
-from specparam.data import SpectrumMetaData
+from specparam.data import SpectrumMetaData, ModelChecks
 from specparam.utils.spectral import trim_spectrum
 from specparam.modutils.errors import DataError, InconsistentDataError
 from specparam.plts.settings import PLT_COLORS
@@ -85,6 +85,19 @@ class BaseData():
             setattr(self, meta_dat, getattr(meta_data, meta_dat))
 
         self._regenerate_freqs()
+
+
+    def get_checks(self):
+        """Return check statuses of the current object.
+
+        Returns
+        -------
+        ModelChecks
+            Object containing the run modes from the current object.
+        """
+
+        return ModelChecks(**{key.strip('_') : getattr(self, key) \
+                           for key in OBJ_DESC['checks']})
 
 
     def get_meta_data(self):

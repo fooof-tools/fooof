@@ -149,7 +149,8 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
         # Initialize model object, with same settings, metadata, & check states as current object
         model = SpectralModel(**self.get_settings()._asdict(), verbose=self.verbose)
         model.add_meta_data(self.get_meta_data())
-        model.set_run_modes(*self.get_run_modes())
+        model.set_checks(*self.get_checks())
+        model.set_debug(self.get_debug())
 
         # Add data for specified single power spectrum, if available
         if self.has_data:

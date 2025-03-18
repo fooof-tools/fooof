@@ -52,13 +52,11 @@ class ModelSettings(namedtuple('ModelSettings', ['peak_width_limits', 'max_n_pea
     __slots__ = ()
 
 
-class ModelRunModes(namedtuple('ModelRunModes', ['debug', 'check_freqs', 'check_data'])):
+class ModelChecks(namedtuple('ModelChecks', ['check_freqs', 'check_data'])):
     """Checks performed and errors raised by the model.
 
     Parameters
     ----------
-    debug :  bool
-       Whether to run in debug state, raising an error if encountered during fitting.
     check_freqs : bool
         Whether to check freqs.
     check_data : bool

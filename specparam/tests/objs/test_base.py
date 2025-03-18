@@ -1,7 +1,6 @@
 """Tests for specparam.objs.base, including the base object and it's methods."""
 
 from specparam.modes.items import OBJ_DESC
-from specparam.data import ModelRunModes
 
 from specparam.objs.base import *
 
@@ -29,17 +28,6 @@ def test_base():
     tobj = BaseObject()
     assert isinstance(tobj, CommonBase)
     assert isinstance(tobj, BaseObject)
-
-def test_base_run_modes():
-
-    tobj = BaseObject()
-    tobj.set_run_modes(False, False, False)
-    run_modes = tobj.get_run_modes()
-    assert isinstance(run_modes, ModelRunModes)
-
-    for run_mode in OBJ_DESC['run_modes']:
-        assert getattr(tobj, run_mode) is False
-        assert getattr(run_modes, run_mode.strip('_')) is False
 
 ## 2D Base Object
 
