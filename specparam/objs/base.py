@@ -190,6 +190,7 @@ class BaseObject(CommonBase, BaseResults, BaseData):
     """Define Base object for fitting models to 1D data."""
 
     def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+        """Initialize BaseObject object."""
 
         CommonBase.__init__(self)
         BaseData.__init__(self)
@@ -281,6 +282,7 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
     """Define Base object for fitting models to 2D data."""
 
     def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+        """Initialize BaseObject2D object."""
 
         CommonBase.__init__(self)
         BaseData2D.__init__(self)
@@ -456,6 +458,7 @@ class BaseObject2DT(BaseObject2D, BaseResults2DT, BaseData2DT):
     """Define Base object for fitting models to 2D data - tranpose version."""
 
     def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+        """Initialize BaseObject2DT object."""
 
         BaseData2DT.__init__(self)
         BaseObject2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
@@ -522,6 +525,7 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
     """Define Base object for fitting models to 3D data."""
 
     def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+        """Initialize BaseObject3D object."""
 
         BaseData3D.__init__(self)
         BaseObject2DT.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,

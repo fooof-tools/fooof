@@ -30,6 +30,7 @@ class BaseData():
     """
 
     def __init__(self, check_freqs_mode=True, check_data_mode=True):
+        """Initialize BaseData object."""
 
         self._reset_data(True, True)
 
@@ -256,6 +257,7 @@ class BaseData2D(BaseData):
     """Base object for managing data for spectral parameterization - for 2D data."""
 
     def __init__(self):
+        """Initialize BaseData2D object."""
 
         BaseData.__init__(self)
 
@@ -339,6 +341,7 @@ class BaseData2DT(BaseData2D):
     """Base object for managing data for spectral parameterization - for 2D transposed data."""
 
     def __init__(self):
+        """Initialize BaseData2DT object."""
 
         BaseData2D.__init__(self)
 
@@ -391,6 +394,7 @@ class BaseData3D(BaseData2DT):
     """Base object for managing data for spectral parameterization - for 3D data."""
 
     def __init__(self):
+        """Initialize BaseData3D object."""
 
         BaseData2DT.__init__(self)
 

@@ -77,6 +77,15 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         Whether data is loaded to the object.
     has_model : bool
         Whether model results are available in the object.
+    _gof_metric : str
+        The goodness of fit metric to use for post-hoc measures of model fit.
+    _error_metric : str
+        The error metric to use for post-hoc measures of model fit error.
+        Note: this is for checking error post fitting, not an objective function for fitting.
+    _debug : bool
+        Run mode: whether the object is set in debug mode.
+        If in debug mode, an error is raised if model fitting is unsuccessful.
+        This should be controlled by using the `set_debug_mode` method.
 
     Notes
     -----

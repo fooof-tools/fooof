@@ -25,6 +25,7 @@ class BaseResults():
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False,
                  verbose=True, error_metric='MAE', gof_metric='r_squared'):
+        """Initialize BaseResults object."""
 
         # Set fit component modes
         if isinstance(aperiodic_mode, str):
@@ -322,6 +323,7 @@ class BaseResults2D(BaseResults):
     """Base object for managing results - 2D version."""
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
+        """Initialize BaseResults2D object."""
 
         BaseResults.__init__(self, aperiodic_mode, periodic_mode,
                              debug_mode=debug_mode, verbose=verbose)
@@ -548,6 +550,7 @@ class BaseResults2DT(BaseResults2D):
     """Base object for managing results - 2D transpose version."""
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
+        """Initialize BaseResults2DT object."""
 
         BaseResults2D.__init__(self, aperiodic_mode, periodic_mode,
                                debug_mode=debug_mode, verbose=verbose)
@@ -655,6 +658,7 @@ class BaseResults3D(BaseResults2DT):
     """Base object for managing results - 3D version."""
 
     def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
+        """Initialize BaseResults3D object."""
 
         BaseResults2DT.__init__(self, aperiodic_mode, periodic_mode,
                                 debug_mode=debug_mode, verbose=verbose)
