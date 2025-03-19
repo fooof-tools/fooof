@@ -25,7 +25,10 @@ def test_algorithm_definition():
 
     tname = 'test_algo'
     tdescription = 'Test algorithm description'
-    tsettings = {'a' : 'a desc', 'b' : 'b desc'}
+    tsettings = {
+        'a' : {'type' : 'a type desc', 'description' : 'a desc'},
+        'b' : {'type' : 'b type desc', 'description' : 'b desc'},
+    }
 
     algo_def = AlgorithmDefinition(name=tname, description=tdescription, settings=tsettings)
     assert algo_def
@@ -37,7 +40,10 @@ def test_algorithm():
 
     tname = 'test_algo'
     tdescription = 'Test algorithm description'
-    tsettings = {'a' : 'a desc', 'b' : 'b desc'}
+    tsettings = {
+        'a' : {'type' : 'a type desc', 'description' : 'a desc'},
+        'b' : {'type' : 'b type desc', 'description' : 'b desc'},
+    }
 
     algo = Algorithm(name=tname, description=tdescription, settings=tsettings)
     assert algo

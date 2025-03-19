@@ -92,8 +92,8 @@ class AlgorithmDefinition():
         Name of the fitting algorithm.
     description : str
         Description of the fitting algorithm.
-    settings : dict
-        Name and description of settings for the fitting algorithm.
+    settings : SettingsDefinition
+        Definition of settings for the fitting algorithm.
     """
 
     def __init__(self, name, description, settings):
