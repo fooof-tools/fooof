@@ -1,5 +1,8 @@
 """Tests for specparam.modes.mode."""
 
+from collections import OrderedDict
+
+from specparam.modes.params import ParamDefinition
 from specparam.modes.mode import *
 
 ###################################################################################################
@@ -9,13 +12,14 @@ def test_mode():
 
     def tfit(xs, *params):
         return xs
-    params = ['a', 'b']
-    param_description = {'a' : 1, 'b' : 2}
+
+    params = ParamDefinition(OrderedDict({
+        'a' : 'a desc',
+        'b' : 'b desc',
+    }))
 
     tmode = Mode(name='tmode', component='periodic', description='test_desc',
-                 func=tfit, jacobian=None,
-                 params=params, param_description=param_description,
+                 func=tfit, jacobian=None, params=params,
                  freq_space='linear', powers_space='linear')
     assert tmode
-    assert tmode.n_params == len(params)
-    assert isinstance(tmode.param_indices, dict)
+    assert tmode.n_params == params.n_params

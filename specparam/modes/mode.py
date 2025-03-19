@@ -25,11 +25,8 @@ class Mode():
         Function that defines the fit function for the mode.
     jacobian : callable, optional
         Function for computing Jacobian matrix corresponding to `func`.
-    params : list of str
-        Name of output parameter(s).
-    param_description : dict
-        Descriptions of the parameters.
-        Should have same length and keys as `params`.
+    params : ParamDefinition
+        Parameter definition.
     freq_space : {'linear', 'log10'}
         Required spacing of the frequency values for this mode.
     powers_space : {'linear', 'log10'}
@@ -37,7 +34,7 @@ class Mode():
     """
 
     def __init__(self, name, component, description, func, jacobian,
-                 params, param_description, freq_space, powers_space):
+                 params, freq_space, powers_space):
         """Initialize a mode."""
 
         self.name = name
@@ -47,10 +44,7 @@ class Mode():
         self.func = func
         self.jacobian = jacobian
 
-        if len(params) != len(param_description) or params != list(param_description.keys()):
-            raise ValueError('Inpurt params & descriptions do not match.')
         self.params = params
-        self.param_description = param_description
 
         self.freq_space = check_input_options(freq_space, VALID_SPACINGS, 'freq_space')
         self.powers_space = check_input_options(powers_space, VALID_SPACINGS, 'powers_space')
@@ -76,13 +70,6 @@ class Mode():
 
     @property
     def n_params(self):
-        """Define property attribute for the number of parameters."""
+        """Define property attribute to access the number of parameters."""
 
-        return len(self.params)
-
-
-    @property
-    def param_indices(self):
-        """Define property attribute for the indices of the parameters."""
-
-        return {label : index for index, label in enumerate(self.params)}
+        return self.params.n_params
