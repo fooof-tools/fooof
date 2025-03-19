@@ -10,8 +10,6 @@ from specparam.algorithms.spectral_fit import *
 ###################################################################################################
 ###################################################################################################
 
-## Algorithm Object
-
 def test_algorithm_inherit():
 
     class TestAlgo(SpectralFitAlgorithm, BaseObject):

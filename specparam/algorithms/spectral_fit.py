@@ -12,11 +12,12 @@ from specparam.modutils.errors import FitError
 from specparam.utils.select import groupby
 from specparam.reports.strings import gen_width_warning_str
 from specparam.measures.params import compute_gauss_std
+from specparam.algorithms.algorithm import Algorithm
 
 ###################################################################################################
 ###################################################################################################
 
-class SpectralFitAlgorithm():
+class SpectralFitAlgorithm(Algorithm):
     """Base object defining model & algorithm for spectral parameterization.
 
     Parameters
@@ -71,6 +72,12 @@ class SpectralFitAlgorithm():
                  cf_bound=1.5, bw_std_edge=1.0, gauss_overlap_thresh=0.75,
                  maxfev=5000, tol=0.00001):
         """Initialize base model object"""
+
+        super().__init__(
+            name='spectral fit algorithm',
+            description='Original parameterizing neural power spectra algorithm.',
+            settings={},
+        )
 
         ## Public settings
         self.peak_width_limits = peak_width_limits
