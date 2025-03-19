@@ -12,7 +12,7 @@ from specparam.modutils.errors import FitError
 from specparam.utils.select import groupby
 from specparam.reports.strings import gen_width_warning_str
 from specparam.measures.params import compute_gauss_std
-from specparam.algorithms.algorithm import Algorithm
+from specparam.algorithms.algorithm import SettingsDefinition, Algorithm
 
 ###################################################################################################
 ###################################################################################################
@@ -101,7 +101,7 @@ class SpectralFitAlgorithm(Algorithm):
         super().__init__(
             name='spectral fit algorithm',
             description='Original parameterizing neural power spectra algorithm.',
-            settings={},
+            settings=SettingsDefinition(SPECTRAL_FIT_SETTINGS),
         )
 
         ## Public settings
