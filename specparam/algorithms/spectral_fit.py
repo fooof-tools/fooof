@@ -17,6 +17,30 @@ from specparam.algorithms.algorithm import Algorithm
 ###################################################################################################
 ###################################################################################################
 
+SPECTRAL_FIT_SETTINGS = {
+    'peak_width_limits' : {
+        'type' : 'tuple of (float, float), optional, default: (0.5, 12.0)',
+        'description' : 'Limits on possible peak width, in Hz, as (lower_bound, upper_bound).',
+        },
+    'max_n_peaks' : {
+        'type' : 'int, optional, default: inf',
+        'description' : 'Maximum number of peaks to fit.',
+        },
+    'min_peak_height' : {
+        'type' : 'float, optional, default: 0',
+        'description' : \
+            'Absolute threshold for detecting peaks.' \
+            'This threshold is defined in absolute units of the power spectrum (log power).',
+        },
+    'peak_threshold' : {
+        'type' : 'float, optional, default: 2.0',
+        'description' : \
+            'Relative threshold for detecting peaks.' \
+            'This threshold is defined in relative units of the power spectrum (standard deviation).',
+        },
+}
+
+
 class SpectralFitAlgorithm(Algorithm):
     """Base object defining model & algorithm for spectral parameterization.
 
@@ -73,6 +97,7 @@ class SpectralFitAlgorithm(Algorithm):
                  maxfev=5000, tol=0.00001):
         """Initialize base model object"""
 
+        # Initialize base algorithm object with algorithm metadata
         super().__init__(
             name='spectral fit algorithm',
             description='Original parameterizing neural power spectra algorithm.',
