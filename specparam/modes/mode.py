@@ -46,8 +46,10 @@ class Mode():
 
         self.params = params
 
-        self.freq_space = check_input_options(freq_space, VALID_SPACINGS, 'freq_space')
-        self.powers_space = check_input_options(powers_space, VALID_SPACINGS, 'powers_space')
+        self.spacing = {
+            'frequency' : check_input_options(freq_space, VALID_SPACINGS, 'freq_space'),
+            'powers' : check_input_options(powers_space, VALID_SPACINGS, 'powers_space'),
+        }
 
 
     def __repr__(self):

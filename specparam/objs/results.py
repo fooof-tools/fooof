@@ -36,7 +36,7 @@ class BaseResults():
         else:
             self.periodic_mode = periodic_mode
 
-        # Set run modes
+        # Set run approaches
         self.set_debug(debug)
         self.verbose = verbose
 
