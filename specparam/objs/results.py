@@ -262,19 +262,25 @@ class BaseResults():
 
         if clear_results:
 
-            # Aperiodic parameers
-            self.aperiodic_params_ = np.nan
+            # TEMP / Note - for ap / pe params, move to something like `xx_params` and `_xx_params` (?)
+
+            # Aperiodic parameters
+            if self.aperiodic_mode:
+                self.aperiodic_params_ = np.array([np.nan] * self.aperiodic_mode.n_params)
+            else:
+                self.aperiodic_params_ = np.nan
 
             # Periodic parameters
-            self.gaussian_params_ = np.nan
-            self.peak_params_ = np.nan
+            if self.periodic_mode:
+                self.gaussian_params_ = np.empty([0, self.periodic_mode.n_params])
+                self.peak_params_ = np.empty([0, self.periodic_mode.n_params])
+            else:
+                self.gaussian_params_ = np.nan
+                self.peak_params_ = np.nan
 
-            # Note - for ap / pe params, move to something like `xx_params` and `_xx_params`
-
-            # Goodness of fit measures
+            # Goodness of fit measures -- TEMP / Note: move to `self.gof` or similar (?)
             self.r_squared_ = np.nan
             self.error_ = np.nan
-            # Note: move to `self.gof` or similar
 
             # Data components
             self._spectrum_flat = None

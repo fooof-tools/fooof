@@ -154,40 +154,6 @@ class SpectralFitAlgorithm():
             self._gauss_std_limits = None
 
 
-    # ToCheck: this currently overrides basefit
-    #   Once modes are used, this can be dropped (I think)
-    def _reset_results(self, clear_results=False):
-        """Set, or reset, results attributes to empty.
-
-        Parameters
-        ----------
-        clear_results : bool, optional, default: False
-            Whether to clear model results attributes.
-        """
-
-        if clear_results:
-
-            if self.aperiodic_mode:
-                self.aperiodic_params_ = np.array([np.nan] * self.aperiodic_mode.n_params)
-            else:
-                self.aperiodic_params_ = np.nan
-            if self.periodic_mode:
-                self.gaussian_params_ = np.empty([0, self.periodic_mode.n_params])
-                self.peak_params_ = np.empty([0, self.periodic_mode.n_params])
-            else:
-                self.gaussian_params_ = np.nan
-                self.peak_params_ = np.nan
-            self.r_squared_ = np.nan
-            self.error_ = np.nan
-
-            self.modeled_spectrum_ = None
-
-            self._spectrum_flat = None
-            self._spectrum_peak_rm = None
-            self._ap_fit = None
-            self._peak_fit = None
-
-
     def _check_width_limits(self):
         """Check and warn about peak width limits / frequency resolution interaction."""
 

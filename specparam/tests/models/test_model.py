@@ -13,6 +13,7 @@ from specparam.modes.items import OBJ_DESC
 from specparam.utils.select import groupby
 from specparam.modutils.errors import FitError
 from specparam.sim import gen_freqs, sim_power_spectrum
+from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.data import FitResults
 from specparam.modutils.dependencies import safe_import
 from specparam.modutils.errors import DataError, NoDataError, InconsistentDataError
@@ -31,7 +32,12 @@ from specparam.models.model import *
 def test_model_object():
     """Check model object initializes properly."""
 
-    assert SpectralModel(verbose=False)
+    assert SpectralModel()
+
+    # Check initialization across all possibile mode combinations
+    for ap_mode in AP_MODES:
+        for pe_mode in PE_MODES:
+            assert SpectralModel(aperiodic_mode=ap_mode, periodic_mode=pe_mode, verbose=False)
 
 def test_has_data(tfm):
     """Test the has_data property attribute, with and without model fits."""
