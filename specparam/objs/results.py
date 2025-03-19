@@ -5,7 +5,6 @@ from itertools import repeat
 import numpy as np
 
 from specparam.modes.items import OBJ_DESC
-from specparam.modes.funcs import infer_ap_func
 from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
