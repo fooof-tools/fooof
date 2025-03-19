@@ -62,8 +62,8 @@ class SettingsDefinition():
         """
 
         setting_str = '' + \
-            name + ' : ' + self.types[name] + '\n' \
-            '    ' + self.descriptions[name]
+            '    ' + name + ' : ' + self.types[name] + '\n' \
+            '        ' + self.descriptions[name]
 
         return setting_str
 
@@ -78,6 +78,7 @@ class SettingsDefinition():
         """
 
         pieces = [self.make_setting_str(name) for name in self.names]
+        pieces = ['    Parameters', '    ----------'] + pieces
         docstring = '\n'.join(pieces)
 
         return docstring

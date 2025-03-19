@@ -17,7 +17,7 @@ from specparam.algorithms.algorithm import SettingsDefinition, Algorithm
 ###################################################################################################
 ###################################################################################################
 
-SPECTRAL_FIT_SETTINGS = {
+SPECTRAL_FIT_SETTINGS = SettingsDefinition({
     'peak_width_limits' : {
         'type' : 'tuple of (float, float), optional, default: (0.5, 12.0)',
         'description' : 'Limits on possible peak width, in Hz, as (lower_bound, upper_bound).',
@@ -29,16 +29,16 @@ SPECTRAL_FIT_SETTINGS = {
     'min_peak_height' : {
         'type' : 'float, optional, default: 0',
         'description' : \
-            'Absolute threshold for detecting peaks.' \
+            'Absolute threshold for detecting peaks.\n        ' \
             'This threshold is defined in absolute units of the power spectrum (log power).',
         },
     'peak_threshold' : {
         'type' : 'float, optional, default: 2.0',
         'description' : \
-            'Relative threshold for detecting peaks.' \
+            'Relative threshold for detecting peaks.\n        ' \
             'This threshold is defined in relative units of the power spectrum (standard deviation).',
         },
-}
+})
 
 
 class SpectralFitAlgorithm(Algorithm):
@@ -46,7 +46,7 @@ class SpectralFitAlgorithm(Algorithm):
 
     Parameters
     ----------
-    % public settings described in `SpectralModel`
+    % public settings described in Spectral Fit Algorithm Settings
     _ap_percentile_thresh : float
         Percentile threshold, to select points from a flat spectrum for an initial aperiodic fit
         Points are selected at a low percentile value to restrict to non-peak points.
@@ -101,7 +101,7 @@ class SpectralFitAlgorithm(Algorithm):
         super().__init__(
             name='spectral fit algorithm',
             description='Original parameterizing neural power spectra algorithm.',
-            settings=SettingsDefinition(SPECTRAL_FIT_SETTINGS),
+            settings=SPECTRAL_FIT_SETTINGS,
         )
 
         ## Public settings

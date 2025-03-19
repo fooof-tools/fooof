@@ -8,12 +8,12 @@ Methods without defined docstrings import docs at runtime, from aliased external
 import numpy as np
 
 from specparam.objs.base import BaseObject
-from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
+from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import (gen_modes_str, gen_settings_str,
                                        gen_model_results_str, gen_issue_str)
 from specparam.modutils.errors import NoModelError
-from specparam.modutils.docs import copy_doc_func_to_method
+from specparam.modutils.docs import copy_doc_func_to_method, replace_docstring_sections
 from specparam.plts.model import plot_model
 from specparam.data.utils import get_model_params
 from specparam.data.conversions import model_to_dataframe
@@ -22,6 +22,7 @@ from specparam.sim.gen import gen_model
 ###################################################################################################
 ###################################################################################################
 
+@replace_docstring_sections([SPECTRAL_FIT_SETTINGS.make_docstring()])
 class SpectralModel(SpectralFitAlgorithm, BaseObject):
     """Model a power spectrum as a combination of aperiodic and periodic components.
 
@@ -32,20 +33,15 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
 
     Parameters
     ----------
-    peak_width_limits : tuple of (float, float), optional, default: (0.5, 12.0)
-        Limits on possible peak width, in Hz, as (lower_bound, upper_bound).
-    max_n_peaks : int, optional, default: inf
-        Maximum number of peaks to fit.
-    min_peak_height : float, optional, default: 0
-        Absolute threshold for detecting peaks.
-        This threshold is defined in absolute units of the power spectrum (log power).
-    peak_threshold : float, optional, default: 2.0
-        Relative threshold for detecting peaks.
-        This threshold is defined in relative units of the power spectrum (standard deviation).
+    % copied in from Spectral Fit Algorithm Settings
     aperiodic_mode : {'fixed', 'knee'}
         Which approach to take for fitting the aperiodic component.
+    periodic_mode : {'gaussian', 'skewed_gaussian', 'cauchy'}
+        Which approach to take for fitting the periodic component.
     verbose : bool, optional, default: True
         Verbosity mode. If True, prints out warnings and general status updates.
+    **model_kwargs
+        Additional model fitting related keyword arguments.
 
     Attributes
     ----------
@@ -60,12 +56,12 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
     modeled_spectrum_ : 1d array
         The full model fit of the power spectrum, in log10 scale.
     aperiodic_params_ : 1d array
-        Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
+        Fitted parameter values that define the aperiodic fit. As [Offset, (Knee), Exponent].
         The knee parameter is only included if aperiodic component is fit with a knee.
     peak_params_ : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
     gaussian_params_ : 2d array
-        Parameters that define the gaussian fit(s).
+        Fitted parameter values that define the gaussian fit(s).
         Each row is a gaussian, as [mean, height, standard deviation].
     r_squared_ : float
         R-squared of the fit between the input power spectrum and the full model fit.
