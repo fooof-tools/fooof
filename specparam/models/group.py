@@ -175,10 +175,14 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
         return group_to_dataframe(self.get_results(), peak_org)
 
 
-    def _check_width_limits(self):
-        """Check and warn about bandwidth limits / frequency resolution interaction."""
+    def _fit_prechecks(self):
+        """Overloads fit prechecks.
 
-        # Only check & warn on first power spectrum
-        #   This is to avoid spamming standard output for every spectrum in the group
+        Notes
+        -----
+        This overloads fit prechecks to only run once (on the first spectrum), to avoid
+        checking and reporting on every spectrum and repeatedly re-raising the same warning.
+        """
+
         if self.power_spectra[0, 0] == self.power_spectrum[0]:
-            super()._check_width_limits()
+            super()._fit_prechecks()

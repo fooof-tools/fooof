@@ -127,14 +127,26 @@ class SpectralFitAlgorithm(Algorithm):
         self._reset_data_results(True, True, True)
 
 
+    def _fit_prechecks(self):
+        """Prechecks to run before the fit function.
+
+        Notes
+        -----
+        Checks peak width limits and raises a warning if lower limit is too
+        low given the frequency resolution of the data.
+        """
+
+        if 1.5 * self.freq_res >= self.peak_width_limits[0]:
+            print(gen_width_warning_str(self.freq_res, self.peak_width_limits[0]))
+
+
     def _fit(self):
         """Define the full fitting algorithm."""
 
         ## PRE-CHECKS
 
-        # Check and warn about width limits (if in verbose mode)
         if self.verbose:
-            self._check_width_limits()
+            self._fit_prechecks()
 
         ## FIT PROCEDURES
 
@@ -187,14 +199,6 @@ class SpectralFitAlgorithm(Algorithm):
         # Otherwise, assume settings are unknown (have been cleared) and set to None
         else:
             self._gauss_std_limits = None
-
-
-    def _check_width_limits(self):
-        """Check and warn about peak width limits / frequency resolution interaction."""
-
-        # Check peak width limits against frequency resolution and warn if too close
-        if 1.5 * self.freq_res >= self.peak_width_limits[0]:
-            print(gen_width_warning_str(self.freq_res, self.peak_width_limits[0]))
 
 
     ## TO GENERALIZE FOR MODES

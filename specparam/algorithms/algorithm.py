@@ -129,6 +129,11 @@ class Algorithm():
         self.algorithm = AlgorithmDefinition(name, description, settings)
 
 
+    def _fit_prechecks():
+        """Prechecks to run before the fit function - if are some, overload this function."""
+        pass
+
+
     def _fit():
         """Required fit function, to be overloaded."""
         pass
