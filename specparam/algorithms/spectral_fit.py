@@ -130,19 +130,21 @@ class SpectralFitAlgorithm(Algorithm):
     def _fit(self):
         """Define the full fitting algorithm."""
 
+        ## PRE-CHECKS
+
         # Check and warn about width limits (if in verbose mode)
         if self.verbose:
             self._check_width_limits()
 
-        # Fit the aperiodic component
-        self.aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
-        self._ap_fit = self.aperiodic_mode.func(self.freqs, *self.aperiodic_params_)
+        ## FIT PROCEDURES
 
-        # Flatten the power spectrum using fit aperiodic fit
-        self._spectrum_flat = self.power_spectrum - self._ap_fit
+        # Take an initial fit of the aperiodic component
+        temp_aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
+        temp_ap_fit = self.aperiodic_mode.func(self.freqs, *temp_aperiodic_params_)
 
-        # Find peaks, and fit them with gaussians
-        self.gaussian_params_ = self._fit_peaks(np.copy(self._spectrum_flat))
+        # Find peaks from the flattened power spectrum, and fit them with gaussians
+        temp_spectrum_flat = self.power_spectrum - temp_ap_fit
+        self.gaussian_params_ = self._fit_peaks(temp_spectrum_flat)
 
         # Calculate the peak fit
         #   Note: if no peaks are found, this creates a flat (all zero) peak fit
@@ -153,13 +155,14 @@ class SpectralFitAlgorithm(Algorithm):
         self._spectrum_peak_rm = self.power_spectrum - self._peak_fit
 
         # Run final aperiodic fit on peak-removed power spectrum
-        #   This overwrites previous aperiodic fit, and recomputes the flattened spectrum
         self.aperiodic_params_ = self._simple_ap_fit(self.freqs, self._spectrum_peak_rm)
         self._ap_fit = self.aperiodic_mode.func(self.freqs, *self.aperiodic_params_)
-        self._spectrum_flat = self.power_spectrum - self._ap_fit
 
-        # Create full power_spectrum model fit
+        # Create remaining model components: flatspec & full power_spectrum model fit
+        self._spectrum_flat = self.power_spectrum - self._ap_fit
         self.modeled_spectrum_ = self._peak_fit + self._ap_fit
+
+        ## PARAMETER UPDATES
 
         # Convert gaussian definitions to peak parameters
         self.peak_params_ = self._create_peak_params(self.gaussian_params_)
@@ -194,6 +197,7 @@ class SpectralFitAlgorithm(Algorithm):
             print(gen_width_warning_str(self.freq_res, self.peak_width_limits[0]))
 
 
+    ## TO GENERALIZE FOR MODES
     def _get_ap_guess(self, freqs, power_spectrum):
         """Get the guess parameters for the aperiodic fit."""
 
@@ -215,6 +219,7 @@ class SpectralFitAlgorithm(Algorithm):
         return ap_guess
 
 
+    ## TO GENERALIZE FOR MODES
     def _get_ap_bounds(self):
         """Get the bounds for the aperiodic fit."""
 
@@ -255,11 +260,10 @@ class SpectralFitAlgorithm(Algorithm):
         try:
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
-                aperiodic_params, _ = curve_fit(self.aperiodic_mode.func,
-                                                freqs, power_spectrum, p0=ap_guess,
-                                                maxfev=self._maxfev, bounds=ap_bounds,
-                                                ftol=self._tol, xtol=self._tol, gtol=self._tol,
-                                                check_finite=False)
+                aperiodic_params, _ = curve_fit(self.aperiodic_mode.func, freqs, power_spectrum,
+                                                p0=ap_guess, bounds=ap_bounds,
+                                                maxfev=self._maxfev, check_finite=False,
+                                                ftol=self._tol, xtol=self._tol, gtol=self._tol)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding parameters in "
                          "the simple aperiodic component fit.")
@@ -316,10 +320,10 @@ class SpectralFitAlgorithm(Algorithm):
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(self.aperiodic_mode.func,
-                                                freqs_ignore, spectrum_ignore, p0=popt,
-                                                maxfev=self._maxfev, bounds=ap_bounds,
-                                                ftol=self._tol, xtol=self._tol, gtol=self._tol,
-                                                check_finite=False)
+                                                freqs_ignore, spectrum_ignore,
+                                                p0=popt, bounds=ap_bounds,
+                                                maxfev=self._maxfev, check_finite=False,
+                                                ftol=self._tol, xtol=self._tol, gtol=self._tol)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
                          "parameters in the robust aperiodic fit.")
@@ -332,12 +336,12 @@ class SpectralFitAlgorithm(Algorithm):
         return aperiodic_params
 
 
-    def _fit_peaks(self, flat_iter):
+    def _fit_peaks(self, flatspec):
         """Iteratively fit peaks to flattened spectrum.
 
         Parameters
         ----------
-        flat_iter : 1d array
+        flatspec : 1d array
             Flattened power spectrum values.
 
         Returns
@@ -346,6 +350,9 @@ class SpectralFitAlgorithm(Algorithm):
             Parameters that define the gaussian fit(s).
             Each row is a gaussian, as [mean, height, standard deviation].
         """
+
+        # Take a copy of the flattened spectrum to iterate across
+        flat_iter = np.copy(flatspec)
 
         # Initialize matrix of guess parameters for gaussian fitting
         guess = np.empty([0, self.periodic_mode.n_params])
@@ -421,7 +428,7 @@ class SpectralFitAlgorithm(Algorithm):
 
         # If there are peak guesses, fit the peaks, and sort results
         if len(guess) > 0:
-            gaussian_params = self._fit_peak_guess(guess)
+            gaussian_params = self._fit_peak_guess(flatspec, guess)
             gaussian_params = gaussian_params[gaussian_params[:, 0].argsort()]
         else:
             gaussian_params = np.empty([0, self.periodic_mode.n_params])
@@ -429,6 +436,7 @@ class SpectralFitAlgorithm(Algorithm):
         return gaussian_params
 
 
+    ## TO GENERALIZE FOR MODES
     def _get_pe_bounds(self, guess):
         """Get the bound for the peak fit."""
 
@@ -458,11 +466,13 @@ class SpectralFitAlgorithm(Algorithm):
         return gaus_param_bounds
 
 
-    def _fit_peak_guess(self, guess):
+    def _fit_peak_guess(self, flatspec, guess):
         """Fits a group of peak guesses with a fit function.
 
         Parameters
         ----------
+        flatspec : 1d array
+            Flattened power spectrum values.
         guess : 2d array, shape=[n_peaks, 3]
             Guess parameters for gaussian fits to peaks, as gaussian parameters.
 
@@ -475,13 +485,12 @@ class SpectralFitAlgorithm(Algorithm):
         # Fit the peaks
         try:
             gaussian_params, _ = curve_fit(self.periodic_mode.func,
-                                           self.freqs, self._spectrum_flat,
+                                           self.freqs, flatspec,
                                            p0=np.ndarray.flatten(guess),
-                                           maxfev=self._maxfev,
                                            bounds=self._get_pe_bounds(guess),
-                                           ftol=self._tol, xtol=self._tol, gtol=self._tol,
-                                           check_finite=False,
-                                           jac=self.periodic_mode.jacobian)
+                                           jac=self.periodic_mode.jacobian,
+                                           maxfev=self._maxfev, check_finite=False,
+                                           ftol=self._tol, xtol=self._tol, gtol=self._tol)
 
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
@@ -499,6 +508,7 @@ class SpectralFitAlgorithm(Algorithm):
         return gaussian_params
 
 
+    ## TO GENERALIZE FOR MODES
     def _drop_peak_cf(self, guess):
         """Check whether to drop peaks based on center's proximity to the edge of the spectrum.
 
@@ -575,6 +585,7 @@ class SpectralFitAlgorithm(Algorithm):
         return guess
 
 
+    ## TO GENERALIZE FOR MODES
     def _create_peak_params(self, gaus_params):
         """Copies over the gaussian params to peak outputs, updating as appropriate.
 
