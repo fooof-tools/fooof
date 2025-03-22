@@ -105,7 +105,7 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         """Initialize model object."""
 
         BaseObject.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                            debug=model_kwargs.pop('debug', False), verbose=verbose)
+                            verbose=verbose)
 
         SpectralFitAlgorithm.__init__(self, peak_width_limits=peak_width_limits,
                                       max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,

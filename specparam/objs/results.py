@@ -22,8 +22,7 @@ class BaseResults():
     """Base object for managing results."""
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug=False,
-                 verbose=True, error_metric='MAE', gof_metric='r_squared'):
+    def __init__(self, aperiodic_mode, periodic_mode, error_metric='MAE', gof_metric='r_squared'):
         """Initialize BaseResults object."""
 
         # Set fit component modes
@@ -35,10 +34,6 @@ class BaseResults():
             self.periodic_mode = PE_MODES[periodic_mode]
         else:
             self.periodic_mode = periodic_mode
-
-        # Set run approaches
-        self.set_debug(debug)
-        self.verbose = verbose
 
         # Initialize results attributes
         self._reset_results(True)
@@ -68,12 +63,6 @@ class BaseResults():
         """How many peaks were fit in the model."""
 
         return self.peak_params_.shape[0] if self.has_model else None
-
-
-    def get_debug(self):
-        """Return object debug status."""
-
-        return self._debug
 
 
     def add_results(self, results):
@@ -151,18 +140,6 @@ class BaseResults():
             raise ValueError('Input for component invalid.')
 
         return output
-
-
-    def set_debug(self, debug):
-        """Set debug state, which controls if an error is raised if model fitting is unsuccessful.
-
-        Parameters
-        ----------
-        debug : bool
-            Whether to run in debug state.
-        """
-
-        self._debug = debug
 
 
     def _check_loaded_modes(self, data):
@@ -279,10 +256,10 @@ class BaseResults():
 class BaseResults2D(BaseResults):
     """Base object for managing results - 2D version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug=False, verbose=True):
+    def __init__(self, aperiodic_mode, periodic_mode):
         """Initialize BaseResults2D object."""
 
-        BaseResults.__init__(self, aperiodic_mode, periodic_mode, debug=debug, verbose=verbose)
+        BaseResults.__init__(self, aperiodic_mode, periodic_mode)
 
         self._reset_group_results()
 
@@ -507,10 +484,10 @@ class BaseResults2D(BaseResults):
 class BaseResults2DT(BaseResults2D):
     """Base object for managing results - 2D transpose version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug=False, verbose=True):
+    def __init__(self, aperiodic_mode, periodic_mode):
         """Initialize BaseResults2DT object."""
 
-        BaseResults2D.__init__(self, aperiodic_mode, periodic_mode, debug=debug, verbose=verbose)
+        BaseResults2D.__init__(self, aperiodic_mode, periodic_mode)
 
         self._reset_time_results()
 
@@ -614,10 +591,10 @@ class BaseResults2DT(BaseResults2D):
 class BaseResults3D(BaseResults2DT):
     """Base object for managing results - 3D version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug=False, verbose=True):
+    def __init__(self, aperiodic_mode, periodic_mode):
         """Initialize BaseResults3D object."""
 
-        BaseResults2DT.__init__(self, aperiodic_mode, periodic_mode, debug=debug, verbose=verbose)
+        BaseResults2DT.__init__(self, aperiodic_mode, periodic_mode)
 
         self._reset_event_results()
 

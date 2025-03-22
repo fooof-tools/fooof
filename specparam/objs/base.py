@@ -23,6 +23,12 @@ from specparam.objs.utils import run_parallel_group, run_parallel_event, pbar
 class CommonBase():
     """Define CommonBase object."""
 
+    def __init__(self, verbose):
+        """Initialize object."""
+
+        self.verbose = verbose
+
+
     def copy(self):
         """Return a copy of the current object."""
 
@@ -158,13 +164,12 @@ class CommonBase():
 class BaseObject(CommonBase, BaseResults, BaseData):
     """Define Base object for fitting models to 1D data."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug=False, verbose=True):
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, verbose=False):
         """Initialize BaseObject object."""
 
-        CommonBase.__init__(self)
+        CommonBase.__init__(self, verbose=verbose)
         BaseData.__init__(self)
-        BaseResults.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                             debug=debug, verbose=verbose)
+        BaseResults.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode)
 
 
     @replace_docstring_sections([docs_get_section(BaseData.add_data.__doc__, 'Parameters'),
@@ -250,13 +255,12 @@ class BaseObject(CommonBase, BaseResults, BaseData):
 class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
     """Define Base object for fitting models to 2D data."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug=False, verbose=True):
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, verbose=True):
         """Initialize BaseObject2D object."""
 
-        CommonBase.__init__(self)
+        CommonBase.__init__(self, verbose=verbose)
         BaseData2D.__init__(self)
-        BaseResults2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                               debug=debug, verbose=verbose)
+        BaseResults2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode)
 
 
     def add_data(self, freqs, power_spectra, freq_range=None, clear_results=True):
@@ -426,14 +430,13 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
 class BaseObject2DT(BaseObject2D, BaseResults2DT, BaseData2DT):
     """Define Base object for fitting models to 2D data - tranpose version."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug=False, verbose=True):
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, verbose=True):
         """Initialize BaseObject2DT object."""
 
         BaseData2DT.__init__(self)
-        BaseObject2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                              debug=debug, verbose=verbose)
-        BaseResults2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                               debug=debug, verbose=verbose)
+        BaseObject2D.__init__(self, aperiodic_mode=aperiodic_mode,
+                              periodic_mode=periodic_mode, verbose=verbose)
+        BaseResults2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode)
 
 
     def fit(self, freqs=None, spectrogram=None, freq_range=None, peak_org=None,
@@ -493,14 +496,13 @@ class BaseObject2DT(BaseObject2D, BaseResults2DT, BaseData2DT):
 class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
     """Define Base object for fitting models to 3D data."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug=False, verbose=True):
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, verbose=True):
         """Initialize BaseObject3D object."""
 
         BaseData3D.__init__(self)
-        BaseObject2DT.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                               debug=debug, verbose=verbose)
-        BaseResults3D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                               debug=debug, verbose=verbose)
+        BaseObject2DT.__init__(self, aperiodic_mode=aperiodic_mode,
+                               periodic_mode=periodic_mode, verbose=verbose)
+        BaseResults3D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode)
 
 
     def add_data(self, freqs, spectrograms, freq_range=None, clear_results=True):

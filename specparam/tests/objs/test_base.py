@@ -11,12 +11,12 @@ from specparam.objs.base import *
 
 def test_common_base():
 
-    tobj = CommonBase()
+    tobj = CommonBase(verbose=False)
     assert isinstance(tobj, CommonBase)
 
 def test_common_base_copy():
 
-    tobj = CommonBase()
+    tobj = CommonBase(verbose=False)
     ntobj = tobj.copy()
 
     assert ntobj != tobj

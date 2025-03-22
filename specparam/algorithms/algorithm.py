@@ -46,10 +46,12 @@ class Algorithm():
         Algorithm information.
     """
 
-    def __init__(self, name, description, settings):
+    def __init__(self, name, description, settings, debug=False):
         """Initialize Algorithm object."""
 
         self.algorithm = AlgorithmDefinition(name, description, settings)
+
+        self.set_debug(debug)
 
 
     def _fit_prechecks():
@@ -89,6 +91,23 @@ class Algorithm():
         return ModelSettings(**{key : getattr(self, key) \
                              for key in OBJ_DESC['settings']})
 
+
+    def get_debug(self):
+        """Return object debug status."""
+
+        return self._debug
+
+
+    def set_debug(self, debug):
+        """Set debug state, which controls if an error is raised if model fitting is unsuccessful.
+
+        Parameters
+        ----------
+        debug : bool
+            Whether to run in debug state.
+        """
+
+        self._debug = debug
 
 
     def _check_loaded_settings(self, data):
