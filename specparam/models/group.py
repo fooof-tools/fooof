@@ -5,6 +5,7 @@ Notes
 Methods without defined docstrings import docs at runtime, from aliased external functions.
 """
 
+from specparam.modes.modes import Modes
 from specparam.models import SpectralModel
 from specparam.objs.base import BaseObject2D
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
@@ -71,10 +72,10 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
 
     def __init__(self, *args, **kwargs):
 
-        BaseObject2D.__init__(self,
-                              aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
-                              periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
-                              verbose=kwargs.pop('verbose', True))
+        self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
+                           periodic=kwargs.pop('periodic_mode', 'gaussian'))
+
+        BaseObject2D.__init__(self, verbose=kwargs.pop('verbose', True))
 
         SpectralFitAlgorithm.__init__(self, *args, **kwargs)
 

@@ -32,7 +32,6 @@ def get_description():
                      'r_squared_', 'error_'],
         'settings' : ['peak_width_limits', 'max_n_peaks',
                       'min_peak_height', 'peak_threshold'],
-        'modes' : ['aperiodic_mode', 'periodic_mode'],
         'checks' : ['_check_freqs', '_check_data'],
         'debug' : ['_debug'],
         'data' : ['power_spectrum', 'freq_range', 'freq_res'],

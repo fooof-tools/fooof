@@ -7,6 +7,7 @@ Methods without defined docstrings import docs at runtime, from aliased external
 
 import numpy as np
 
+from specparam.modes.modes import Modes
 from specparam.objs.base import BaseObject
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS
 from specparam.reports.save import save_model_report
@@ -104,8 +105,9 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
                  verbose=True, **model_kwargs):
         """Initialize model object."""
 
-        BaseObject.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                            verbose=verbose)
+        self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode)
+
+        BaseObject.__init__(self, verbose=verbose)
 
         SpectralFitAlgorithm.__init__(self, peak_width_limits=peak_width_limits,
                                       max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,

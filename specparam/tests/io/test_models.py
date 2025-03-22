@@ -10,6 +10,7 @@ import numpy as np
 from specparam import (SpectralModel, SpectralGroupModel,
                        SpectralTimeModel, SpectralTimeEventModel)
 from specparam.modes.items import OBJ_DESC
+from specparam.modes.modes import Modes
 from specparam.io.files import load_json
 
 from specparam.tests.tsettings import TEST_DATA_PATH
@@ -160,6 +161,7 @@ def test_load_model():
     assert isinstance(tfm, SpectralModel)
 
     # Check that all elements get loaded
+    assert isinstance(tfm.modes, Modes)
     for result in OBJ_DESC['results']:
         assert not np.all(np.isnan(getattr(tfm, result)))
     for setting in OBJ_DESC['settings']:

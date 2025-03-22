@@ -11,15 +11,12 @@ from specparam.objs.results import *
 
 def test_base_results():
 
-    tres1 = BaseResults(None, None)
+    tres1 = BaseResults()
     assert isinstance(tres1, BaseResults)
-
-    tres2 = BaseResults(aperiodic_mode='fixed', periodic_mode='gaussian')
-    assert isinstance(tres2, BaseResults)
 
 def test_base_results_results(tresults):
 
-    tres = BaseResults(None, None)
+    tres = BaseResults()
 
     tres.add_results(tresults)
     assert tres.has_model
@@ -34,16 +31,13 @@ def test_base_results_results(tresults):
 
 def test_base_results2d():
 
-    tres2d1 = BaseResults2D(None, None)
+    tres2d1 = BaseResults2D()
     assert isinstance(tres2d1, BaseResults)
     assert isinstance(tres2d1, BaseResults2D)
 
-    tres2d2 = BaseResults2D(aperiodic_mode='fixed', periodic_mode='gaussian')
-    assert isinstance(tres2d2, BaseResults2D)
-
 def test_base_results2d_results(tresults):
 
-    tres2d = BaseResults2D(None, None)
+    tres2d = BaseResults2D()
 
     results = [tresults, tresults]
     tres2d.add_results(results)
@@ -56,17 +50,14 @@ def test_base_results2d_results(tresults):
 
 def test_base_results2dt():
 
-    tres2dt1 = BaseResults2DT(None, None)
+    tres2dt1 = BaseResults2DT()
     assert isinstance(tres2dt1, BaseResults)
     assert isinstance(tres2dt1, BaseResults2D)
     assert isinstance(tres2dt1, BaseResults2DT)
 
-    tres2dt2 = BaseResults2DT(aperiodic_mode='fixed', periodic_mode='gaussian')
-    assert isinstance(tres2dt2, BaseResults2DT)
-
 def test_base_results2d_results(tresults):
 
-    tres2dt = BaseResults2DT(None, None)
+    tres2dt = BaseResults2DT()
 
     results = [tresults, tresults]
     tres2dt.add_results(results)
@@ -80,18 +71,15 @@ def test_base_results2d_results(tresults):
 
 def test_base_results3d():
 
-    tres3d1 = BaseResults3D(None, None)
+    tres3d1 = BaseResults3D()
     assert isinstance(tres3d1, BaseResults)
     assert isinstance(tres3d1, BaseResults2D)
     assert isinstance(tres3d1, BaseResults2DT)
     assert isinstance(tres3d1, BaseResults3D)
 
-    tres3d2 = BaseResults3D(aperiodic_mode='fixed', periodic_mode='gaussian')
-    assert isinstance(tres3d2, BaseResults3D)
-
 def test_base_results3d_results(tresults):
 
-    tres3d = BaseResults3D(None, None)
+    tres3d = BaseResults3D()
 
     eresults = [[tresults, tresults], [tresults, tresults]]
     tres3d.add_results(eresults)

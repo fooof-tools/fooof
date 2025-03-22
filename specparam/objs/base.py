@@ -5,6 +5,7 @@ from copy import deepcopy
 import numpy as np
 
 from specparam.utils.array import unlog
+from specparam.modes.modes import Modes
 from specparam.modes.items import OBJ_DESC
 from specparam.io.utils import get_files
 from specparam.io.files import load_json, load_jsonlines
@@ -160,15 +161,32 @@ class CommonBase():
             setattr(self, key, data[key])
 
 
+    def _check_loaded_modes(self, data):
+        """Check if fit modes added, and update the object as needed.
+
+        Parameters
+        ----------
+        data : dict
+            A dictionary of data that has been added to the object.
+        """
+
+        # TEMP / ToDo: not quite clear if this is the right place
+        #   And/or - might want a clearer process to 'reset' Modes
+
+        if 'aperiodic_mode' in data and 'periodic_mode' in data:
+            self.modes = Modes(aperiodic=data['aperiodic_mode'],
+                               periodic=data['periodic_mode'])
+
+
 class BaseObject(CommonBase, BaseResults, BaseData):
     """Define Base object for fitting models to 1D data."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, verbose=False):
+    def __init__(self, verbose=False):
         """Initialize BaseObject object."""
 
         CommonBase.__init__(self, verbose=verbose)
         BaseData.__init__(self)
-        BaseResults.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode)
+        BaseResults.__init__(self)
 
 
     @replace_docstring_sections([docs_get_section(BaseData.add_data.__doc__, 'Parameters'),
@@ -254,12 +272,12 @@ class BaseObject(CommonBase, BaseResults, BaseData):
 class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
     """Define Base object for fitting models to 2D data."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, verbose=True):
+    def __init__(self, verbose=True):
         """Initialize BaseObject2D object."""
 
         CommonBase.__init__(self, verbose=verbose)
         BaseData2D.__init__(self)
-        BaseResults2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode)
+        BaseResults2D.__init__(self)
 
 
     def add_data(self, freqs, power_spectra, freq_range=None, clear_results=True):
@@ -429,13 +447,12 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
 class BaseObject2DT(BaseObject2D, BaseResults2DT, BaseData2DT):
     """Define Base object for fitting models to 2D data - tranpose version."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, verbose=True):
+    def __init__(self, verbose=True):
         """Initialize BaseObject2DT object."""
 
         BaseData2DT.__init__(self)
-        BaseObject2D.__init__(self, aperiodic_mode=aperiodic_mode,
-                              periodic_mode=periodic_mode, verbose=verbose)
-        BaseResults2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode)
+        BaseObject2D.__init__(self, verbose=verbose)
+        BaseResults2D.__init__(self)
 
 
     def fit(self, freqs=None, spectrogram=None, freq_range=None, peak_org=None,
@@ -495,13 +512,14 @@ class BaseObject2DT(BaseObject2D, BaseResults2DT, BaseData2DT):
 class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
     """Define Base object for fitting models to 3D data."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, verbose=True):
+    def __init__(self,
+                 #aperiodic_mode=None, periodic_mode=None,
+                 verbose=True):
         """Initialize BaseObject3D object."""
 
         BaseData3D.__init__(self)
-        BaseObject2DT.__init__(self, aperiodic_mode=aperiodic_mode,
-                               periodic_mode=periodic_mode, verbose=verbose)
-        BaseResults3D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode)
+        BaseObject2DT.__init__(self, verbose=verbose)
+        BaseResults3D.__init__(self)
 
 
     def add_data(self, freqs, spectrograms, freq_range=None, clear_results=True):

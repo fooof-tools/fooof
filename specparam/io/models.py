@@ -48,13 +48,14 @@ def save_model(model, file_name, file_path=None, append=False,
     obj_dict = dict_array_to_lst(model.__dict__)
 
     # Convert modes object to their saveable string name
-    obj_dict['aperiodic_mode'] = obj_dict['aperiodic_mode'].name
-    obj_dict['periodic_mode'] = obj_dict['periodic_mode'].name
+    obj_dict['aperiodic_mode'] = obj_dict['modes'].aperiodic.name
+    obj_dict['periodic_mode'] = obj_dict['modes'].periodic.name
+    mode_labels = ['aperiodic_mode', 'periodic_mode']
 
     # Set and select which variables to keep. Use a set to drop any potential overlap
     #   Note that results also saves frequency information to be able to recreate freq vector
     keep = set((OBJ_DESC['results'] + OBJ_DESC['meta_data'] if save_results else []) + \
-               (OBJ_DESC['settings'] + OBJ_DESC['modes'] if save_settings else []) + \
+               (OBJ_DESC['settings'] + mode_labels if save_settings else []) + \
                (OBJ_DESC['data'] if save_data else []))
     obj_dict = dict_select_keys(obj_dict, keep)
 

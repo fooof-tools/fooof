@@ -22,18 +22,8 @@ class BaseResults():
     """Base object for managing results."""
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    def __init__(self, aperiodic_mode, periodic_mode, error_metric='MAE', gof_metric='r_squared'):
+    def __init__(self, error_metric='MAE', gof_metric='r_squared'):
         """Initialize BaseResults object."""
-
-        # Set fit component modes
-        if isinstance(aperiodic_mode, str):
-            self.aperiodic_mode = AP_MODES[aperiodic_mode]
-        else:
-            self.aperiodic_mode = aperiodic_mode
-        if isinstance(periodic_mode, str):
-            self.periodic_mode = PE_MODES[periodic_mode]
-        else:
-            self.periodic_mode = periodic_mode
 
         # Initialize results attributes
         self._reset_results(True)
@@ -142,22 +132,6 @@ class BaseResults():
         return output
 
 
-    def _check_loaded_modes(self, data):
-        """Check if fit modes added, and update the object as needed.
-
-        Parameters
-        ----------
-        data : dict
-            A dictionary of data that has been added to the object.
-        """
-
-        # If fit mode information in loaded, reload mode definitions
-        self.aperiodic_mode = AP_MODES[data['aperiodic_mode']] \
-            if 'aperiodic_mode' in data else None
-        self.periodic_mode = PE_MODES[data['periodic_mode']] \
-            if 'periodic_mode' in data else None
-
-
     def _check_loaded_results(self, data):
         """Check if results have been added and check data.
 
@@ -185,19 +159,18 @@ class BaseResults():
 
         if clear_results:
 
-            # TEMP / Note - for ap / pe params, move to something
-            #   like `xx_params` and `_xx_params` (?)
-
             # Aperiodic parameters
-            if self.aperiodic_mode:
-                self.aperiodic_params_ = np.array([np.nan] * self.aperiodic_mode.n_params)
+            #   TEMP / ToDo: check for attribute - probably update this process
+            if getattr(self, 'modes', None):
+                self.aperiodic_params_ = np.array([np.nan] * self.modes.aperiodic.n_params)
             else:
                 self.aperiodic_params_ = np.nan
 
             # Periodic parameters
-            if self.periodic_mode:
-                self.gaussian_params_ = np.empty([0, self.periodic_mode.n_params])
-                self.peak_params_ = np.empty([0, self.periodic_mode.n_params])
+            #   TEMP / ToDo: check for attribute - probably update this process
+            if getattr(self, 'modes', None):
+                self.gaussian_params_ = np.empty([0, self.modes.periodic.n_params])
+                self.peak_params_ = np.empty([0, self.modes.periodic.n_params])
             else:
                 self.gaussian_params_ = np.nan
                 self.peak_params_ = np.nan
@@ -258,10 +231,10 @@ class BaseResults():
 class BaseResults2D(BaseResults):
     """Base object for managing results - 2D version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode):
+    def __init__(self):
         """Initialize BaseResults2D object."""
 
-        BaseResults.__init__(self, aperiodic_mode, periodic_mode)
+        BaseResults.__init__(self)
 
         self._reset_group_results()
 
@@ -486,10 +459,10 @@ class BaseResults2D(BaseResults):
 class BaseResults2DT(BaseResults2D):
     """Base object for managing results - 2D transpose version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode):
+    def __init__(self):
         """Initialize BaseResults2DT object."""
 
-        BaseResults2D.__init__(self, aperiodic_mode, periodic_mode)
+        BaseResults2D.__init__(self)
 
         self._reset_time_results()
 
@@ -593,10 +566,10 @@ class BaseResults2DT(BaseResults2D):
 class BaseResults3D(BaseResults2DT):
     """Base object for managing results - 3D version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode):
+    def __init__(self):
         """Initialize BaseResults3D object."""
 
-        BaseResults2DT.__init__(self, aperiodic_mode, periodic_mode)
+        BaseResults2DT.__init__(self)
 
         self._reset_event_results()
 

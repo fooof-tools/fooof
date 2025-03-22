@@ -36,7 +36,7 @@ def plot_annotated_peak_search(model):
     flatspec = model.power_spectrum - \
         gen_aperiodic(model.freqs,
                       model._robust_ap_fit(model.freqs, model.power_spectrum),
-                      model.aperiodic_mode.name)
+                      model.modes.aperiodic.name)
 
     # Calculate ylims of the plot that are scaled to the range of the data
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
@@ -193,7 +193,7 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
                     color=PLT_COLORS['aperiodic'], fontsize=fontsize)
 
         # Annotate Aperiodic Knee
-        if model.aperiodic_mode.name == 'knee':
+        if model.modes.aperiodic.name == 'knee':
 
             # Find the knee frequency point to annotate
             knee_freq = compute_knee_frequency(model.get_params('aperiodic', 'knee'),
