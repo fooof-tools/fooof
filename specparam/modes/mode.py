@@ -1,4 +1,4 @@
-"""Modes object."""
+"""Mode object."""
 
 from specparam.utils.checks import check_input_options
 
