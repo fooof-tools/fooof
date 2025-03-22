@@ -211,7 +211,7 @@ def gen_freq_range_str(model_obj, concise=False):
     If fit range is not available, will print out 'XX' for missing values.
     """
 
-    freq_range = model_obj.freq_range if model_obj.has_data else ('XX', 'XX')
+    freq_range = model_obj.data.freq_range if model_obj.data.has_data else ('XX', 'XX')
 
     str_lst = [
 
@@ -299,7 +299,7 @@ def gen_methods_text_str(model_obj=None):
     )
 
     if model_obj:
-        freq_range = model_obj.freq_range if model_obj.has_data else ('XX', 'XX')
+        freq_range = model_obj.data.freq_range if model_obj.data.has_data else ('XX', 'XX')
     else:
         freq_range = ('XX', 'XX')
 
@@ -346,8 +346,8 @@ def gen_model_results_str(model, concise=False):
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(model.freq_range[0])), int(np.ceil(model.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(model.freq_res),
+            int(np.floor(model.data.freq_range[0])), int(np.ceil(model.data.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(model.data.freq_res),
         '',
 
         # Aperiodic parameters
@@ -426,8 +426,8 @@ def gen_group_results_str(group, concise=False):
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(group.freq_range[0])), int(np.ceil(group.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(group.freq_res),
+            int(np.floor(group.data.freq_range[0])), int(np.ceil(group.data.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(group.data.freq_res),
         '',
 
         # Aperiodic parameters - knee fit status, and quick exponent description
@@ -512,8 +512,8 @@ def gen_time_results_str(time_model, concise=False):
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(time_model.freq_range[0])), int(np.ceil(time_model.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(time_model.freq_res),
+            int(np.floor(time_model.data.freq_range[0])), int(np.ceil(time_model.data.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(time_model.data.freq_res),
         '',
 
         # Aperiodic parameters - knee fit status, and quick exponent description
@@ -602,8 +602,8 @@ def gen_event_results_str(event_model, concise=False):
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(event_model.freq_range[0])), int(np.ceil(event_model.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(event_model.freq_res),
+            int(np.floor(event_model.data.freq_range[0])), int(np.ceil(event_model.data.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(event_model.data.freq_res),
         '',
 
         # Aperiodic parameters - knee fit status, and quick exponent description

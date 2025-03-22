@@ -112,7 +112,7 @@ def test_event_load(tbands):
     # Test loading data
     tfe = SpectralTimeEventModel(verbose=False)
     tfe.load(file_name_dat, TEST_DATA_PATH)
-    assert np.all(tfe.spectrograms)
+    assert np.all(tfe.data.spectrograms)
 
 def test_event_get_model(tfe):
 
@@ -141,7 +141,7 @@ def test_event_get_group(tfe):
 
     ntfe1 = tfe.get_group(einds, winds)
     assert ntfe1
-    assert ntfe1.spectrograms.shape == (len(einds), len(tfe.freqs), len(winds))
+    assert ntfe1.spectrograms.shape == (len(einds), len(tfe.data.freqs), len(winds))
     tkey = list(ntfe1.event_time_results.keys())[0]
     assert ntfe1.event_time_results[tkey].shape == (len(einds), len(winds))
     assert len(ntfe1.event_group_results), len(ntfe1.event_group_results[0]) == (len(einds, len(winds)))
@@ -154,7 +154,7 @@ def test_event_get_group(tfe):
     ntft1 = tfe.get_group(einds, winds, 'time')
     assert not isinstance(ntft1, SpectralTimeEventModel)
     assert ntft1.group_results
-    assert len(ntft1.group_results) == len(ntft1.power_spectra) == n_out
+    assert len(ntft1.group_results) == len(ntft1.data.power_spectra) == n_out
 
     ntfg0 = tfe.get_group(None, None, 'group')
     assert not isinstance(ntfg0, SpectralTimeEventModel)
@@ -163,7 +163,7 @@ def test_event_get_group(tfe):
     ntfg1 = tfe.get_group(einds, winds, 'group')
     assert not isinstance(ntfg1, SpectralTimeEventModel)
     assert ntfg1.group_results
-    assert len(ntfg1.group_results) == len(ntfg1.power_spectra) == n_out
+    assert len(ntfg1.group_results) == len(ntfg1.data.power_spectra) == n_out
 
 def test_event_drop():
 

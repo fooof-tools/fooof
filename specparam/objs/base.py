@@ -65,7 +65,7 @@ class CommonBase():
             self.add_data(freqs, power_spectrum, freq_range)
 
         # Check that data is available
-        if not self.has_data:
+        if not self.data.has_data:
             raise NoDataError("No data available to fit, can not proceed.")
 
         # In rare cases, the model fails to fit, and so uses try / except
@@ -74,8 +74,8 @@ class CommonBase():
             # If not set to fail on NaN or Inf data at add time, check data here
             #   This serves as a catch all for curve_fits which will fail given NaN or Inf
             #   Because FitError's are by default caught, this allows fitting to continue
-            if not self._check_data:
-                if np.any(np.isinf(self.power_spectrum)) or np.any(np.isnan(self.power_spectrum)):
+            if not self.data._check_data:
+                if np.any(np.isinf(self.data.power_spectrum)) or np.any(np.isnan(self.data.power_spectrum)):
                     raise FitError("Model fitting was skipped because there are NaN or Inf "
                                    "values in the data, which preclude model fitting.")
 
@@ -130,18 +130,18 @@ class CommonBase():
         With space set as 'linear', this combination holds in linear space.
         """
 
-        if not self.has_data:
+        if not self.data.has_data:
             raise NoDataError("No data available to fit, can not proceed.")
         assert space in ['linear', 'log'], "Input for 'space' invalid."
 
         if component == 'full':
-            output = self.power_spectrum if space == 'log' else unlog(self.power_spectrum)
+            output = self.data.power_spectrum if space == 'log' else unlog(self.data.power_spectrum)
         elif component == 'aperiodic':
             output = self._spectrum_peak_rm if space == 'log' else \
-                unlog(self.power_spectrum) / unlog(self._peak_fit)
+                unlog(self.data.power_spectrum) / unlog(self._peak_fit)
         elif component == 'peak':
             output = self._spectrum_flat if space == 'log' else \
-                unlog(self.power_spectrum) - unlog(self._ap_fit)
+                unlog(self.data.power_spectrum) - unlog(self._ap_fit)
         else:
             raise ValueError('Input for component invalid.')
 
@@ -158,7 +158,10 @@ class CommonBase():
         """
 
         for key in data.keys():
-            setattr(self, key, data[key])
+            if getattr(self, key, False) is not False:
+                setattr(self, key, data[key])
+            elif getattr(self.data, key, False) is not False:
+                setattr(self.data, key, data[key])
 
 
     def _check_loaded_modes(self, data):
@@ -178,14 +181,16 @@ class CommonBase():
                                periodic=data['periodic_mode'])
 
 
-class BaseObject(CommonBase, BaseResults, BaseData):
+class BaseObject(CommonBase, BaseResults):
     """Define Base object for fitting models to 1D data."""
 
     def __init__(self, verbose=False):
         """Initialize BaseObject object."""
 
         CommonBase.__init__(self, verbose=verbose)
-        BaseData.__init__(self)
+
+        self.data = BaseData()
+
         BaseResults.__init__(self)
 
 
@@ -209,7 +214,7 @@ class BaseObject(CommonBase, BaseResults, BaseData):
         # Clear results, if present, unless indicated not to
         self._reset_results(clear_results=self.has_model and clear_results)
 
-        super().add_data(freqs, power_spectrum, freq_range=freq_range)
+        self.data.add_data(freqs, power_spectrum, freq_range=freq_range)
 
 
     @copy_doc_func_to_method(save_model)
@@ -246,9 +251,9 @@ class BaseObject(CommonBase, BaseResults, BaseData):
 
         # Regenerate model components, based on what is available
         if regenerate:
-            if self.freq_res:
-                self._regenerate_freqs()
-            if np.all(self.freqs) and np.all(self.aperiodic_params_):
+            if self.data.freq_res:
+                self.data._regenerate_freqs()
+            if np.all(self.data.freqs) and np.all(self.aperiodic_params_):
                 self._regenerate_model()
 
 
@@ -265,18 +270,20 @@ class BaseObject(CommonBase, BaseResults, BaseData):
             Whether to clear model results attributes.
         """
 
-        self._reset_data(clear_freqs, clear_spectrum)
+        self.data._reset_data(clear_freqs, clear_spectrum)
         self._reset_results(clear_results)
 
 
-class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
+class BaseObject2D(CommonBase, BaseResults2D):
     """Define Base object for fitting models to 2D data."""
 
     def __init__(self, verbose=True):
         """Initialize BaseObject2D object."""
 
         CommonBase.__init__(self, verbose=verbose)
-        BaseData2D.__init__(self)
+
+        self.data = BaseData2D()
+
         BaseResults2D.__init__(self)
 
 
@@ -303,11 +310,11 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
 
         # If any data is already present, then clear data & results
         #   This is to ensure object consistency of all data & results
-        if clear_results and np.any(self.freqs):
+        if clear_results and np.any(self.data.freqs):
             self._reset_data_results(True, True, True, True)
             self._reset_group_results()
 
-        super().add_data(freqs, power_spectra, freq_range=freq_range)
+        self.data.add_data(freqs, power_spectra, freq_range=freq_range)
 
 
     def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
@@ -338,13 +345,13 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
 
         # If 'verbose', print out a marker of what is being run
         if self.verbose and not progress:
-            print('Fitting model across {} power spectra.'.format(len(self.power_spectra)))
+            print('Fitting model across {} power spectra.'.format(len(self.data.power_spectra)))
 
         # Run linearly
         if n_jobs == 1:
-            self._reset_group_results(len(self.power_spectra))
+            self._reset_group_results(len(self.data.power_spectra))
             for ind, power_spectrum in \
-                pbar(enumerate(self.power_spectra), progress, len(self)):
+                pbar(enumerate(self.data.power_spectra), progress, len(self)):
                 self._pass_through_spectrum(power_spectrum)
                 super().fit()
                 self.group_results[ind] = self._get_results()
@@ -352,7 +359,7 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
         # Run in parallel
         else:
             self._reset_group_results()
-            self.group_results = run_parallel_group(self, self.power_spectra, n_jobs, progress)
+            self.group_results = run_parallel_group(self, self.data.power_spectra, n_jobs, progress)
 
         # Clear the individual power spectrum and fit results of the current fit
         self._reset_data_results(clear_spectrum=True, clear_results=True)
@@ -382,6 +389,10 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
         power_spectra = []
         for ind, data in enumerate(load_jsonlines(file_name, file_path)):
 
+            # If power spectra data is part of loaded data, collect to add to object
+            if 'power_spectrum' in data.keys():
+                power_spectra.append(data.pop('power_spectrum'))
+
             self._add_from_dict(data)
 
             # If settings are loaded, check and update based on the first line
@@ -389,22 +400,18 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
                 self._check_loaded_modes(data)
                 self._check_loaded_settings(data)
 
-            # If power spectra data is part of loaded data, collect to add to object
-            if 'power_spectrum' in data.keys():
-                power_spectra.append(data['power_spectrum'])
-
             # If results part of current data added, check and update object results
             if set(OBJ_DESC['results']).issubset(set(data.keys())):
                 self._check_loaded_results(data)
                 self.group_results.append(self._get_results())
 
         # Reconstruct frequency vector, if information is available to do so
-        if self.freq_range:
-            self._regenerate_freqs()
+        if self.data.freq_range:
+            self.data._regenerate_freqs()
 
         # Add power spectra data, if they were loaded
         if power_spectra:
-            self.power_spectra = np.array(power_spectra)
+            self.data.power_spectra = np.array(power_spectra)
 
         # Reset peripheral data from last loaded result, keeping freqs info
         self._reset_data_results(clear_spectrum=True, clear_results=True)
@@ -421,7 +428,7 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
         have already undergone data checking during data adding.
         """
 
-        self.power_spectrum = power_spectrum
+        self.data.power_spectrum = power_spectrum
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False,
@@ -440,18 +447,20 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
             Whether to clear power spectra attribute.
         """
 
-        self._reset_data(clear_freqs, clear_spectrum, clear_spectra)
+        self.data._reset_data(clear_freqs, clear_spectrum, clear_spectra)
         self._reset_results(clear_results)
 
 
-class BaseObject2DT(BaseObject2D, BaseResults2DT, BaseData2DT):
+class BaseObject2DT(BaseObject2D, BaseResults2DT):
     """Define Base object for fitting models to 2D data - tranpose version."""
 
     def __init__(self, verbose=True):
         """Initialize BaseObject2DT object."""
 
-        BaseData2DT.__init__(self)
         BaseObject2D.__init__(self, verbose=verbose)
+
+        self.data = BaseData2DT()
+
         BaseResults2D.__init__(self)
 
 
@@ -509,16 +518,16 @@ class BaseObject2DT(BaseObject2D, BaseResults2DT, BaseData2DT):
             self.convert_results(peak_org)
 
 
-class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
+class BaseObject3D(BaseObject2DT, BaseResults3D):
     """Define Base object for fitting models to 3D data."""
 
-    def __init__(self,
-                 #aperiodic_mode=None, periodic_mode=None,
-                 verbose=True):
+    def __init__(self, verbose=True):
         """Initialize BaseObject3D object."""
 
-        BaseData3D.__init__(self)
         BaseObject2DT.__init__(self, verbose=verbose)
+
+        self.data = BaseData3D()
+
         BaseResults3D.__init__(self)
 
 
@@ -548,7 +557,7 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
         if clear_results:
             self._reset_event_results()
 
-        super().add_data(freqs, spectrograms, freq_range=freq_range)
+        self.data.add_data(freqs, spectrograms, freq_range=freq_range)
 
 
     def fit(self, freqs=None, spectrograms=None, freq_range=None, peak_org=None,
@@ -586,12 +595,12 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
         # If 'verbose', print out a marker of what is being run
         if self.verbose and not progress:
             print('Fitting model across {} events of {} windows.'.format(\
-                len(self.spectrograms), self.n_time_windows))
+                len(self.data.spectrograms), self.data.n_time_windows))
 
         if n_jobs == 1:
-            self._reset_event_results(len(self.spectrograms))
-            for ind, spectrogram in pbar(enumerate(self.spectrograms), progress, len(self)):
-                self.power_spectra = spectrogram.T
+            self._reset_event_results(len(self.data.spectrograms))
+            for ind, spectrogram in pbar(enumerate(self.data.spectrograms), progress, len(self)):
+                self.data.power_spectra = spectrogram.T
                 super().fit(peak_org=False)
                 self.event_group_results[ind] = self.group_results
                 self._reset_group_results()
@@ -599,7 +608,7 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
 
         else:
             fg = self.get_group(None, None, 'group')
-            self.event_group_results = run_parallel_event(fg, self.spectrograms, n_jobs, progress)
+            self.event_group_results = run_parallel_event(fg, self.data.spectrograms, n_jobs, progress)
 
         if peak_org is not False:
             self.convert_results(peak_org)
@@ -633,9 +642,9 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
             super().load(file, file_path, peak_org=False)
             if self.group_results:
                 self.add_results(self.group_results, append=True)
-            if np.all(self.power_spectra):
-                spectrograms.append(self.spectrogram)
-        self.spectrograms = np.array(spectrograms) if spectrograms else None
+            if np.all(self.data.power_spectra):
+                spectrograms.append(self.data.spectrogram)
+        self.data.spectrograms = np.array(spectrograms) if spectrograms else None
 
         self._reset_group_results()
         if peak_org is not False and self.event_group_results:
@@ -660,5 +669,5 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
             Whether to clear spectrograms attribute.
         """
 
-        self._reset_data(clear_freqs, clear_spectrum, clear_spectra, clear_spectrograms)
+        self.data._reset_data(clear_freqs, clear_spectrum, clear_spectra, clear_spectrograms)
         self._reset_results(clear_results)

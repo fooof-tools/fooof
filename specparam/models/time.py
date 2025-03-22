@@ -169,5 +169,5 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
         checking and reporting on every spectrum and repeatedly re-raising the same warning.
         """
 
-        if np.all(self.power_spectrum == self.spectrogram[:, 0]):
+        if np.all(self.data.power_spectrum == self.data.spectrogram[:, 0]):
             super()._fit_prechecks()

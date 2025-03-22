@@ -45,7 +45,10 @@ def save_model(model, file_name, file_path=None, append=False,
     """
 
     # Convert object to dictionary & convert all arrays to lists, for JSON serializing
+    #   This 'flattens' the object, getting all relevant attributes in the same dictionary
     obj_dict = dict_array_to_lst(model.__dict__)
+    data_dict = dict_array_to_lst(model.data.__dict__)
+    obj_dict = {**obj_dict, **data_dict}
 
     # Convert modes object to their saveable string name
     obj_dict['aperiodic_mode'] = obj_dict['modes'].aperiodic.name
@@ -144,7 +147,7 @@ def save_event(event, file_name, file_path=None, append=False,
         for ind, gres in enumerate(event.event_group_results):
             fg.group_results = gres
             if save_data:
-                fg.power_spectra = event.spectrograms[ind, :, :].T
+                fg.data.power_spectra = event.data.spectrograms[ind, :, :].T
             fg.save(file_name + '_{:0{ndigits}d}'.format(ind, ndigits=ndigits),
                     file_path=file_path, append=append, save_results=save_results,
                     save_settings=save_settings, save_data=save_data)

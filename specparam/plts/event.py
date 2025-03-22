@@ -55,7 +55,7 @@ def plot_event_model(event_model, **plot_kwargs):
                                figsize=plot_kwargs.pop('figsize', [10, 4 + 5 * n_bands]))
     axes = cycle(axes)
 
-    xlim = [0, event_model.n_time_windows - 1]
+    xlim = [0, event_model.data.n_time_windows - 1]
 
     # 01: aperiodic params
     alabels = ['offset', 'knee', 'exponent'] if has_knee else ['offset', 'exponent']

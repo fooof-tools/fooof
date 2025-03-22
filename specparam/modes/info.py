@@ -28,18 +28,28 @@ def get_description():
     """
 
     attributes = {
+
+        # Results
         'results' : ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
                      'r_squared_', 'error_'],
-        'settings' : ['peak_width_limits', 'max_n_peaks',
-                      'min_peak_height', 'peak_threshold'],
-        'checks' : ['_check_freqs', '_check_data'],
-        'debug' : ['_debug'],
-        'data' : ['power_spectrum', 'freq_range', 'freq_res'],
-        'meta_data' : ['freq_range', 'freq_res'],
-        'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',
-                    'peak_params_', 'gaussian_params_'],
         'model_components' : ['modeled_spectrum_', '_spectrum_flat',
                               '_spectrum_peak_rm', '_ap_fit', '_peak_fit'],
+
+        # Algorithm
+        'settings' : ['peak_width_limits', 'max_n_peaks',
+                      'min_peak_height', 'peak_threshold'],
+        'debug' : ['_debug'],
+
+        # Data
+        'checks' : ['_check_freqs', '_check_data'],
+        'data' : ['power_spectrum', 'freq_range', 'freq_res'],
+        'meta_data' : ['freq_range', 'freq_res'],
+
+        # General - data types
+        'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',
+                    'peak_params_', 'gaussian_params_'],
+
+        # Mixed
         'descriptors' : ['has_data', 'has_model', 'n_peaks_']
     }
 
@@ -117,20 +127,21 @@ def get_indices(aperiodic_mode):
     return indices
 
 
-def get_info(model_obj, aspect):
-    """Get a selection of information from a model objects.
+# TEMP: TO DROP?
+# def get_info(model_obj, aspect):
+#     """Get a selection of information from a model objects.
 
-    Parameters
-    ----------
-    model_obj : SpectralModel or SpectralGroupModel
-        Object to get attributes from.
-    aspect : {'settings', 'meta_data', 'results'}
-        Which set of attributes to compare the objects across.
+#     Parameters
+#     ----------
+#     model_obj : SpectralModel or SpectralGroupModel
+#         Object to get attributes from.
+#     aspect : {'settings', 'meta_data', 'results'}
+#         Which set of attributes to compare the objects across.
 
-    Returns
-    -------
-    dict
-        The set of specified info from the model object.
-    """
+#     Returns
+#     -------
+#     dict
+#         The set of specified info from the model object.
+#     """
 
-    return {key : getattr(model_obj, key) for key in get_description()[aspect]}
+#     return {key : getattr(model_obj, key) for key in get_description()[aspect]}

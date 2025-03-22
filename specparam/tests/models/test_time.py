@@ -96,7 +96,7 @@ def test_time_load(tbands):
     # Test loading data
     tft = SpectralTimeModel(verbose=False)
     tft.load(file_name_dat, TEST_DATA_PATH)
-    assert np.all(tft.power_spectra)
+    assert np.all(tft.data.power_spectra)
 
 def test_time_drop():
 
@@ -123,7 +123,7 @@ def test_time_get_group(tft):
     assert isinstance(nft, SpectralTimeModel)
     assert len(nft.group_results) == len(inds)
     assert len(nft.time_results[list(nft.time_results.keys())[0]]) == len(inds)
-    assert nft.spectrogram.shape[-1] == len(inds)
+    assert nft.data.spectrogram.shape[-1] == len(inds)
 
     nfg = tft.get_group(inds, 'group')
     assert not isinstance(nfg, SpectralTimeModel)

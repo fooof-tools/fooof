@@ -143,18 +143,18 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
         Returns
         -------
         model : SpectralModel
-            The FitResults data loaded into a model object.
+            The data and fit results loaded into a model object.
         """
 
         # Initialize model object, with same settings, metadata, & check states as current object
         model = SpectralModel(**self.get_settings()._asdict(), verbose=self.verbose)
-        model.add_meta_data(self.get_meta_data())
-        model.set_checks(*self.get_checks())
+        model.data.add_meta_data(self.data.get_meta_data())
+        model.data.set_checks(*self.data.get_checks())
         model.set_debug(self.get_debug())
 
         # Add data for specified single power spectrum, if available
-        if self.has_data:
-            model.power_spectrum = self.spectrograms[event_ind][:, window_ind]
+        if self.data.has_data:
+            model.data.power_spectrum = self.data.spectrograms[event_ind][:, window_ind]
 
         # Add results for specified power spectrum, regenerating full fit if requested
         model.add_results(self.event_group_results[event_ind][window_ind])
@@ -222,5 +222,5 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
         checking and reporting on every spectrum and repeatedly re-raising the same warning.
         """
 
-        if np.all(self.power_spectrum == self.spectrograms[0, :, 0]):
+        if np.all(self.data.power_spectrum == self.data.spectrograms[0, :, 0]):
             super()._fit_prechecks()

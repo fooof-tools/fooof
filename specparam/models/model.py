@@ -277,4 +277,4 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         """Regenerate model fit from parameters."""
 
         self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(
-            self.freqs, self.aperiodic_params_, self.gaussian_params_, return_components=True)
+            self.data.freqs, self.aperiodic_params_, self.gaussian_params_, return_components=True)

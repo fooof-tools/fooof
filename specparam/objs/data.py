@@ -43,7 +43,7 @@ class BaseData():
     def has_data(self):
         """Indicator for if the object contains data."""
 
-        return np.any(self.power_spectrum)
+        return bool(np.any(self.power_spectrum))
 
 
     def add_data(self, freqs, power_spectrum, freq_range=None):
@@ -281,7 +281,7 @@ class BaseData2D(BaseData):
     def has_data(self):
         """Indicator for if the object contains data."""
 
-        return np.any(self.power_spectra)
+        return bool(np.any(self.power_spectra))
 
 
     def add_data(self, freqs, power_spectra, freq_range=None):

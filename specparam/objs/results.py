@@ -204,7 +204,7 @@ class BaseResults():
         Which measure is applied is by default controlled by the `_gof_metric` attribute.
         """
 
-        self.r_squared_ = compute_gof(self.power_spectrum, self.modeled_spectrum_,
+        self.r_squared_ = compute_gof(self.data.power_spectrum, self.modeled_spectrum_,
                                       self._gof_metric if not metric else metric)
 
 
@@ -224,7 +224,7 @@ class BaseResults():
         Which measure is applied is by default controlled by the `_error_metric` attribute.
         """
 
-        self.error_ = compute_error(self.power_spectrum, self.modeled_spectrum_,
+        self.error_ = compute_error(self.data.power_spectrum, self.modeled_spectrum_,
                                     self._error_metric if not metric else metric)
 
 
@@ -394,7 +394,7 @@ class BaseResults2D(BaseResults):
         Returns
         -------
         model : SpectralModel
-            The FitResults data loaded into a model object.
+            The data and fit results loaded into a model object.
         """
 
         # Local import - avoid circular
@@ -402,13 +402,13 @@ class BaseResults2D(BaseResults):
 
         # Initialize model object, with same settings, metadata, & check mode as current object
         model = SpectralModel(**self.get_settings()._asdict(), verbose=self.verbose)
-        model.add_meta_data(self.get_meta_data())
-        model.set_checks(*self.get_checks())
+        model.data.add_meta_data(self.data.get_meta_data())
+        model.data.set_checks(*self.data.get_checks())
         model.set_debug(self.get_debug())
 
         # Add data for specified single power spectrum, if available
-        if self.has_data:
-            model.power_spectrum = self.power_spectra[ind]
+        if self.data.has_data:
+            model.data.power_spectrum = self.data.power_spectra[ind]
 
         # Add results for specified power spectrum, regenerating full fit if requested
         model.add_results(self.group_results[ind])
@@ -437,8 +437,8 @@ class BaseResults2D(BaseResults):
 
         # Initialize a new model object, with same settings as current object
         group = SpectralGroupModel(**self.get_settings()._asdict(), verbose=self.verbose)
-        group.add_meta_data(self.get_meta_data())
-        group.set_checks(*self.get_checks())
+        group.data.add_meta_data(self.data.get_meta_data())
+        group.data.set_checks(*self.data.get_checks())
         group.set_debug(self.get_debug())
 
         if inds is not None:
@@ -447,8 +447,8 @@ class BaseResults2D(BaseResults):
             inds = check_inds(inds)
 
             # Add data for specified power spectra, if available
-            if self.has_data:
-                group.power_spectra = self.power_spectra[inds, :]
+            if self.data.has_data:
+                group.data.power_spectra = self.data.power_spectra[inds, :]
 
             # Add results for specified power spectra
             group.group_results = [self.group_results[ind] for ind in inds]
@@ -510,7 +510,7 @@ class BaseResults2DT(BaseResults2D):
 
             # Initialize a new model object, with same settings as current object
             output = SpectralTimeModel(**self.get_settings()._asdict(), verbose=self.verbose)
-            output.add_meta_data(self.get_meta_data())
+            output.data.add_meta_data(self.data.get_meta_data())
 
             if inds is not None:
 
@@ -518,8 +518,8 @@ class BaseResults2DT(BaseResults2D):
                 inds = check_inds(inds)
 
                 # Add data for specified power spectra, if available
-                if self.has_data:
-                    output.power_spectra = self.power_spectra[inds, :]
+                if self.data.has_data:
+                    output.data.power_spectra = self.data.power_spectra[inds, :]
 
                 # Add results for specified power spectra
                 output.group_results = [self.group_results[ind] for ind in inds]
@@ -722,20 +722,20 @@ class BaseResults3D(BaseResults2DT):
         from specparam import SpectralTimeEventModel
 
         # Check and convert indices encoding to list of int
-        einds = check_inds(event_inds, self.n_events)
-        winds = check_inds(window_inds, self.n_time_windows)
+        einds = check_inds(event_inds, self.data.n_events)
+        winds = check_inds(window_inds, self.data.n_time_windows)
 
         if output_type == 'event':
 
             # Initialize a new model object, with same settings as current object
             output = SpectralTimeEventModel(**self.get_settings()._asdict(), verbose=self.verbose)
-            output.add_meta_data(self.get_meta_data())
+            output.data.add_meta_data(self.data.get_meta_data())
 
             if event_inds is not None or window_inds is not None:
 
                 # Add data for specified power spectra, if available
-                if self.has_data:
-                    output.spectrograms = self.spectrograms[einds, :, :][:, :, winds]
+                if self.data.has_data:
+                    output.spectrograms = self.data.spectrograms[einds, :, :][:, :, winds]
 
                 # Add results for specified power spectra - event group results
                 temp = [self.event_group_results[ei][wi] for ei in einds for wi in winds]
@@ -755,8 +755,8 @@ class BaseResults3D(BaseResults2DT):
                 # Move specified results & data to `group_results` & `power_spectra` for export
                 self.group_results = \
                     [self.event_group_results[ei][wi] for ei in einds for wi in winds]
-                if self.has_data:
-                    self.power_spectra = np.hstack(self.spectrograms[einds, :, :][:, :, winds]).T
+                if self.data.has_data:
+                    self.data.power_spectra = np.hstack(self.data.spectrograms[einds, :, :][:, :, winds]).T
 
             new_inds = range(0, len(self.group_results)) if self.group_results else None
             output = super().get_group(new_inds, output_type)

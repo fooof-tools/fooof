@@ -136,8 +136,8 @@ class SpectralFitAlgorithm(Algorithm):
         low given the frequency resolution of the data.
         """
 
-        if 1.5 * self.freq_res >= self.peak_width_limits[0]:
-            print(gen_width_warning_str(self.freq_res, self.peak_width_limits[0]))
+        if 1.5 * self.data.freq_res >= self.peak_width_limits[0]:
+            print(gen_width_warning_str(self.data.freq_res, self.peak_width_limits[0]))
 
 
     def _fit(self):
@@ -151,27 +151,27 @@ class SpectralFitAlgorithm(Algorithm):
         ## FIT PROCEDURES
 
         # Take an initial fit of the aperiodic component
-        temp_aperiodic_params_ = self._robust_ap_fit(self.freqs, self.power_spectrum)
-        temp_ap_fit = self.modes.aperiodic.func(self.freqs, *temp_aperiodic_params_)
+        temp_aperiodic_params_ = self._robust_ap_fit(self.data.freqs, self.data.power_spectrum)
+        temp_ap_fit = self.modes.aperiodic.func(self.data.freqs, *temp_aperiodic_params_)
 
         # Find peaks from the flattened power spectrum, and fit them with gaussians
-        temp_spectrum_flat = self.power_spectrum - temp_ap_fit
+        temp_spectrum_flat = self.data.power_spectrum - temp_ap_fit
         self.gaussian_params_ = self._fit_peaks(temp_spectrum_flat)
 
         # Calculate the peak fit
         #   Note: if no peaks are found, this creates a flat (all zero) peak fit
         self._peak_fit = self.modes.periodic.func(\
-            self.freqs, *np.ndarray.flatten(self.gaussian_params_))
+            self.data.freqs, *np.ndarray.flatten(self.gaussian_params_))
 
         # Create peak-removed (but not flattened) power spectrum
-        self._spectrum_peak_rm = self.power_spectrum - self._peak_fit
+        self._spectrum_peak_rm = self.data.power_spectrum - self._peak_fit
 
         # Run final aperiodic fit on peak-removed power spectrum
-        self.aperiodic_params_ = self._simple_ap_fit(self.freqs, self._spectrum_peak_rm)
-        self._ap_fit = self.modes.aperiodic.func(self.freqs, *self.aperiodic_params_)
+        self.aperiodic_params_ = self._simple_ap_fit(self.data.freqs, self._spectrum_peak_rm)
+        self._ap_fit = self.modes.aperiodic.func(self.data.freqs, *self.aperiodic_params_)
 
         # Create remaining model components: flatspec & full power_spectrum model fit
-        self._spectrum_flat = self.power_spectrum - self._ap_fit
+        self._spectrum_flat = self.data.power_spectrum - self._ap_fit
         self.modeled_spectrum_ = self._peak_fit + self._ap_fit
 
         ## PARAMETER UPDATES
@@ -384,7 +384,7 @@ class SpectralFitAlgorithm(Algorithm):
                 break
 
             # Set the guess parameters for gaussian fitting, specifying the mean and height
-            guess_freq = self.freqs[max_ind]
+            guess_freq = self.data.freqs[max_ind]
             guess_height = max_height
 
             # Halt fitting process if candidate peak drops below minimum height
@@ -409,7 +409,7 @@ class SpectralFitAlgorithm(Algorithm):
 
                 # Use the shortest side to estimate full-width, half max (converted to Hz)
                 #   and use this to estimate that guess for gaussian standard deviation
-                fwhm = short_side * 2 * self.freq_res
+                fwhm = short_side * 2 * self.data.freq_res
                 guess_std = compute_gauss_std(fwhm)
 
             except ValueError:
@@ -433,7 +433,7 @@ class SpectralFitAlgorithm(Algorithm):
                 current_guess_params = (guess_freq, guess_height, guess_std, guess_skew)
 
             guess = np.vstack((guess, current_guess_params))
-            peak_gauss = self.modes.periodic.func(self.freqs, *current_guess_params)
+            peak_gauss = self.modes.periodic.func(self.data.freqs, *current_guess_params)
             flat_iter = flat_iter - peak_gauss
 
         # Check peaks based on edges, and on overlap, dropping any that violate requirements
@@ -467,10 +467,10 @@ class SpectralFitAlgorithm(Algorithm):
 
         # Check that CF bounds are within frequency range
         #   If they are  not, update them to be restricted to frequency range
-        lo_bound = [bound if bound[0] > self.freq_range[0] else \
-            [self.freq_range[0], *bound[1:]] for bound in lo_bound]
-        hi_bound = [bound if bound[0] < self.freq_range[1] else \
-            [self.freq_range[1], *bound[1:]] for bound in hi_bound]
+        lo_bound = [bound if bound[0] > self.data.freq_range[0] else \
+            [self.data.freq_range[0], *bound[1:]] for bound in lo_bound]
+        hi_bound = [bound if bound[0] < self.data.freq_range[1] else \
+            [self.data.freq_range[1], *bound[1:]] for bound in hi_bound]
 
         # Unpacks the embedded lists into flat tuples
         #   This is what the fit function requires as input
@@ -499,7 +499,7 @@ class SpectralFitAlgorithm(Algorithm):
         # Fit the peaks
         try:
             pe_params, _ = curve_fit(self.modes.periodic.func,
-                                     self.freqs, flatspec,
+                                     self.data.freqs, flatspec,
                                      p0=np.ndarray.flatten(guess),
                                      bounds=self._get_pe_bounds(guess),
                                      jac=self.modes.periodic.jacobian,
@@ -542,8 +542,8 @@ class SpectralFitAlgorithm(Algorithm):
 
         # Check if peaks within drop threshold from the edge of the frequency range
         keep_peak = \
-            (np.abs(np.subtract(cf_params, self.freq_range[0])) > bw_params) & \
-            (np.abs(np.subtract(cf_params, self.freq_range[1])) > bw_params)
+            (np.abs(np.subtract(cf_params, self.data.freq_range[0])) > bw_params) & \
+            (np.abs(np.subtract(cf_params, self.data.freq_range[1])) > bw_params)
 
         # Drop peaks that fail the center frequency edge criterion
         guess = np.array([gu for (gu, keep) in zip(guess, keep_peak) if keep])
@@ -632,7 +632,7 @@ class SpectralFitAlgorithm(Algorithm):
         for ii, peak in enumerate(gaus_params):
 
             # Gets the index of the power_spectrum at the frequency closest to the CF of the peak
-            ind = np.argmin(np.abs(self.freqs - peak[0]))
+            ind = np.argmin(np.abs(self.data.freqs - peak[0]))
 
             # Collect peak parameter data
             if self.modes.periodic.name == 'gaussian':  ## TEMP

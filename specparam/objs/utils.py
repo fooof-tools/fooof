@@ -66,7 +66,7 @@ def run_parallel_event(model, data, n_jobs, progress):
 def _par_fit_event(spectrogram, model):
     """Function to partialize for running in parallel - event."""
 
-    model.power_spectra = spectrogram.T
+    model.data.power_spectra = spectrogram.T
     model.fit()
 
     return model.get_results()

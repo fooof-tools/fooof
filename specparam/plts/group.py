@@ -121,4 +121,4 @@ def plot_group_peak_frequencies(group, ax=None, **plot_kwargs):
     """
 
     plot_hist(group.get_params('peak_params', 0)[:, 0], 'Center Frequency',
-              'Peaks - Center Frequencies', x_lims=group.freq_range, ax=ax)
+              'Peaks - Center Frequencies', x_lims=group.data.freq_range, ax=ax)

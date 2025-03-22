@@ -167,9 +167,9 @@ def test_load_model():
     for setting in OBJ_DESC['settings']:
         assert getattr(tfm, setting) is not None
     for data in OBJ_DESC['data']:
-        assert getattr(tfm, data) is not None
+        assert getattr(tfm.data, data) is not None
     for meta_dat in OBJ_DESC['meta_data']:
-        assert getattr(tfm, meta_dat) is not None
+        assert getattr(tfm.data, meta_dat) is not None
 
 def test_load_group():
 
@@ -184,9 +184,9 @@ def test_load_group():
     assert len(tfg.group_results) > 0
     for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is not None
-    assert tfg.power_spectra is not None
+    assert tfg.data.power_spectra is not None
     for meta_dat in OBJ_DESC['meta_data']:
-        assert getattr(tfg, meta_dat) is not None
+        assert getattr(tfg.data, meta_dat) is not None
 
 def test_load_time(tbands):
 

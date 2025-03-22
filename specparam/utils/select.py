@@ -55,6 +55,7 @@ def nearest_ind(array, value):
     return np.argmin(np.abs(array - value))
 
 
+# TEMP: TO DROP?
 # def get_freq_ind(freqs, freq):
 #     """Get the index of the  closest frequency value to a specified input frequency.
 

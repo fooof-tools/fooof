@@ -29,11 +29,10 @@ def compare_model_objs(model_objs, aspect):
 
     # Check specified aspect of the objects are the same across instances
     for m_obj_1, m_obj_2 in zip(model_objs[:-1], model_objs[1:]):
-        if getattr(m_obj_1, 'get_' + aspect)() != getattr(m_obj_2, 'get_' + aspect)():
-            consistent = False
-            break
-    else:
-        consistent = True
+        if aspect == 'settings':
+            consistent = m_obj_1.get_settings() == m_obj_2.get_settings()
+        if aspect == 'meta_data':
+            consistent = m_obj_1.data.get_meta_data() == m_obj_2.data.get_meta_data()
 
     return consistent
 
@@ -103,7 +102,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
     # Create the new model object, with settings, data info & results
     model = SpectralModel()
     model.add_settings(group.get_settings())
-    model.add_meta_data(group.get_meta_data())
+    model.data.add_meta_data(group.data.get_meta_data())
     model.add_results(results)
 
     # Generate the average model from the parameters
@@ -139,13 +138,13 @@ def average_reconstructions(group, avg_method='mean'):
     if avg_method not in avg_funcs.keys():
         raise ValueError("Requested average method not understood.")
 
-    models = np.zeros(shape=group.power_spectra.shape)
+    models = np.zeros(shape=group.data.power_spectra.shape)
     for ind in range(len(group)):
         models[ind, :] = group.get_model(ind, regenerate=True).modeled_spectrum_
 
     avg_model = avg_funcs[avg_method](models, 0)
 
-    return group.freqs, avg_model
+    return group.data.freqs, avg_model
 
 
 def combine_model_objs(model_objs):
@@ -188,7 +187,7 @@ def combine_model_objs(model_objs):
 
     # Use a temporary store to collect spectra, as we'll only add it if it is consistently present
     #   We check how many frequencies by accessing meta data, in case of no frequency vector
-    meta_data = model_objs[0].get_meta_data()
+    meta_data = model_objs[0].data.get_meta_data()
     n_freqs = len(gen_freqs(meta_data.freq_range, meta_data.freq_res))
     temp_power_spectra = np.empty([0, n_freqs])
 
@@ -198,27 +197,27 @@ def combine_model_objs(model_objs):
         # Add group object
         if isinstance(m_obj, SpectralGroupModel):
             group.group_results.extend(m_obj.group_results)
-            if m_obj.power_spectra is not None:
-                temp_power_spectra = np.vstack([temp_power_spectra, m_obj.power_spectra])
+            if m_obj.data.power_spectra is not None:
+                temp_power_spectra = np.vstack([temp_power_spectra, m_obj.data.power_spectra])
 
         # Add model object
         else:
             group.group_results.append(m_obj.get_results())
-            if m_obj.power_spectrum is not None:
-                temp_power_spectra = np.vstack([temp_power_spectra, m_obj.power_spectrum])
+            if m_obj.data.power_spectrum is not None:
+                temp_power_spectra = np.vstack([temp_power_spectra, m_obj.data.power_spectrum])
 
     # If the number of collected power spectra is consistent, then add them to object
     if len(group) == temp_power_spectra.shape[0]:
-        group.power_spectra = temp_power_spectra
+        group.data.power_spectra = temp_power_spectra
 
     # Set the status for freqs & data checking
     #  Check states gets set as True if any of the inputs have it on, False otherwise
-    group.set_checks(\
-        check_freqs=any(getattr(m_obj, '_check_freqs') for m_obj in model_objs),
-        check_data=any(getattr(m_obj, '_check_data') for m_obj in model_objs))
+    group.data.set_checks(\
+        check_freqs=any(getattr(m_obj.data, '_check_freqs') for m_obj in model_objs),
+        check_data=any(getattr(m_obj.data, '_check_data') for m_obj in model_objs))
 
     # Add data information information
-    group.add_meta_data(model_objs[0].get_meta_data())
+    group.data.add_meta_data(model_objs[0].data.get_meta_data())
 
     return group
 

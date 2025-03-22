@@ -127,8 +127,8 @@ def get_band_peak_event(event, band, threshold=None, thresh_param='PW', attribut
         Array of peak data, organized as [n_events, n_time_windows, n_peak_params].
     """
 
-    peaks = np.zeros([event.n_events, event.n_time_windows, 3])
-    for ind in range(event.n_events):
+    peaks = np.zeros([event.data.n_events, event.data.n_time_windows, 3])
+    for ind in range(event.data.n_events):
         peaks[ind, :, :] = get_band_peak_group(\
             event.get_group(ind, None, 'group'), band, threshold, thresh_param, attribute)
 

@@ -37,15 +37,15 @@ def compute_pointwise_error(model, plot_errors=True, return_errors=False, **plt_
         If there are no model results available to calculate model error from.
     """
 
-    if not model.has_data:
+    if not model.data.has_data:
         raise NoDataError("Data must be available in the object to calculate errors.")
     if not model.has_model:
         raise NoModelError("No model is available to use, can not proceed.")
 
-    errors = compute_pointwise_error_arr(model.modeled_spectrum_, model.power_spectrum)
+    errors = compute_pointwise_error_arr(model.modeled_spectrum_, model.data.power_spectrum)
 
     if plot_errors:
-        plot_spectral_error(model.freqs, errors, **plt_kwargs)
+        plot_spectral_error(model.data.freqs, errors, **plt_kwargs)
 
     if return_errors:
         return errors
@@ -79,23 +79,23 @@ def compute_pointwise_error_group(group, plot_errors=True, return_errors=False, 
         If there are no model results available to calculate model errors from.
     """
 
-    if not np.any(group.power_spectra):
+    if not group.data.has_data:
         raise NoDataError("Data must be available in the object to calculate errors.")
     if not group.has_model:
         raise NoModelError("No model is available to use, can not proceed.")
 
-    errors = np.zeros_like(group.power_spectra)
+    errors = np.zeros_like(group.data.power_spectra)
 
-    for ind, (res, data) in enumerate(zip(group, group.power_spectra)):
+    for ind, (res, data) in enumerate(zip(group, group.data.power_spectra)):
 
-        model = gen_model(group.freqs, res.aperiodic_params, res.gaussian_params)
+        model = gen_model(group.data.freqs, res.aperiodic_params, res.gaussian_params)
         errors[ind, :] = np.abs(model - data)
 
     mean = np.mean(errors, 0)
     standard_dev = np.std(errors, 0)
 
     if plot_errors:
-        plot_spectral_error(group.freqs, mean, standard_dev, **plt_kwargs)
+        plot_spectral_error(group.data.freqs, mean, standard_dev, **plt_kwargs)
 
     if return_errors:
         return errors

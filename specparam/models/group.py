@@ -184,5 +184,5 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
         checking and reporting on every spectrum and repeatedly re-raising the same warning.
         """
 
-        if self.power_spectra[0, 0] == self.power_spectrum[0]:
+        if self.data.power_spectra[0, 0] == self.data.power_spectrum[0]:
             super()._fit_prechecks()

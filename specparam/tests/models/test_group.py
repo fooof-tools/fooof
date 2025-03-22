@@ -52,7 +52,7 @@ def test_has_data(tfg):
     assert tfg.has_model
 
     ntfg = SpectralGroupModel()
-    assert not ntfg.has_data
+    assert not ntfg.data.has_data
 
 def test_has_model(tfg):
     """Test the has_model property attribute, with and without model fits."""
@@ -254,7 +254,7 @@ def test_load():
     # Test that settings and data are None
     for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is None
-    assert tfg.power_spectra is None
+    assert tfg.data.power_spectra is None
 
     # Test loading just settings
     tfg = SpectralGroupModel(verbose=False)
@@ -264,12 +264,12 @@ def test_load():
     # Test that results and data are None
     for result in OBJ_DESC['results']:
         assert np.all(np.isnan(getattr(tfg, result)))
-    assert tfg.power_spectra is None
+    assert tfg.data.power_spectra is None
 
     # Test loading just data
     tfg = SpectralGroupModel(verbose=False)
     tfg.load(file_name_dat, TEST_DATA_PATH)
-    assert tfg.power_spectra is not None
+    assert tfg.data.has_data
     # Test that settings and results are None
     for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is None
@@ -283,9 +283,9 @@ def test_load():
     assert len(tfg.group_results) > 0
     for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is not None
-    assert tfg.power_spectra is not None
+    assert tfg.data.has_data
     for meta_dat in OBJ_DESC['meta_data']:
-        assert getattr(tfg, meta_dat) is not None
+        assert getattr(tfg.data, meta_dat) is not None
 
 def test_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
@@ -322,7 +322,7 @@ def test_get_model(tfg):
     assert tfm2
     # Check that data info is copied over properly
     for meta_dat in OBJ_DESC['meta_data']:
-        assert getattr(tfm2, meta_dat)
+        assert getattr(tfm2.data, meta_dat)
 
 def test_get_group(tfg):
     """Check the return of a sub-sampled group object."""
@@ -331,7 +331,7 @@ def test_get_group(tfg):
     nfg0 = tfg.get_group(None)
     assert isinstance(nfg0, SpectralGroupModel)
     assert nfg0.get_settings() == tfg.get_settings()
-    assert nfg0.get_meta_data() == tfg.get_meta_data()
+    assert nfg0.data.get_meta_data() == tfg.data.get_meta_data()
 
     # Check with list index
     inds1 = [1, 2]
@@ -350,12 +350,12 @@ def test_get_group(tfg):
 
     # Check that data info is copied over properly
     for meta_dat in OBJ_DESC['meta_data']:
-        assert getattr(nfg1, meta_dat)
-        assert getattr(nfg2, meta_dat)
+        assert getattr(nfg1.data, meta_dat)
+        assert getattr(nfg2.data, meta_dat)
 
     # Check that the correct data is extracted
-    assert_equal(tfg.power_spectra[inds1, :], nfg1.power_spectra)
-    assert_equal(tfg.power_spectra[inds2, :], nfg2.power_spectra)
+    assert_equal(tfg.data.power_spectra[inds1, :], nfg1.data.power_spectra)
+    assert_equal(tfg.data.power_spectra[inds2, :], nfg2.data.power_spectra)
 
     # Check that the correct results are extracted
     assert [tfg.group_results[ind] for ind in inds1] == nfg1.group_results
