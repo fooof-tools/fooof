@@ -8,6 +8,37 @@ import numpy as np
 ###################################################################################################
 ###################################################################################################
 
+def check_input_options(value, options, parameter):
+    """Check whether an input is one of a valid set of options.
+
+    Parameters
+    ----------
+    value : obj
+        Input value to check.
+    options : list
+        Set of possible options for `value`.
+    parameter : str
+        Name of the parameter that is being checked.
+        Used for printing out the error message if the check fails.
+
+    Returns
+    -------
+    value
+        Input value, if it passed the check.
+
+    Raises
+    ------
+    ValueError
+        If the input value fails the check.
+    """
+
+    if value not in options:
+        msg = 'Input `{}` for `{}` invalid.'.format(value, parameter)
+        raise ValueError(msg)
+
+    return value
+
+
 def check_array_dim(arr):
     """Check if an array has 2D shape, and replace with an empty 2d array if not.
 

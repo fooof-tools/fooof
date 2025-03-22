@@ -1,4 +1,4 @@
-"""Tests for specparam.objs.model, including the model object and it's methods.
+"""Tests for specparam.models.model, including the model object and it's methods.
 
 NOTES
 -----
@@ -9,10 +9,11 @@ They serve rather as 'smoke tests', for if anything fails completely.
 import numpy as np
 from pytest import raises
 
-from specparam.core.items import OBJ_DESC
+from specparam.modes.items import OBJ_DESC
 from specparam.utils.select import groupby
 from specparam.modutils.errors import FitError
 from specparam.sim import gen_freqs, sim_power_spectrum
+from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.data import FitResults
 from specparam.modutils.dependencies import safe_import
 from specparam.modutils.errors import DataError, NoDataError, InconsistentDataError
@@ -23,7 +24,7 @@ from specparam.tests.tsettings import TEST_DATA_PATH
 from specparam.tests.tdata import default_spectrum_params, get_tfm
 from specparam.tests.tutils import plot_test
 
-from specparam.objs.model import *
+from specparam.models.model import *
 
 ###################################################################################################
 ###################################################################################################
@@ -31,7 +32,12 @@ from specparam.objs.model import *
 def test_model_object():
     """Check model object initializes properly."""
 
-    assert SpectralModel(verbose=False)
+    assert SpectralModel()
+
+    # Check initialization across all possibile mode combinations
+    for ap_mode in AP_MODES:
+        for pe_mode in PE_MODES:
+            assert SpectralModel(aperiodic_mode=ap_mode, periodic_mode=pe_mode, verbose=False)
 
 def test_has_data(tfm):
     """Test the has_data property attribute, with and without model fits."""
@@ -114,15 +120,15 @@ def test_fit_measures():
     tfm.modeled_spectrum_ = np.array([1, 2, 5, 4, 5])
 
     # Check default goodness of fit and error measures
-    tfm._calc_r_squared()
+    tfm._compute_model_gof()
     assert np.isclose(tfm.r_squared_, 0.75757575)
-    tfm._calc_error()
+    tfm._compute_model_error()
     assert np.isclose(tfm.error_, 0.4)
 
     # Check with alternative error fit approach
-    tfm._calc_error(metric='MSE')
+    tfm._compute_model_error(metric='MSE')
     assert np.isclose(tfm.error_, 0.8)
-    tfm._calc_error(metric='RMSE')
+    tfm._compute_model_error(metric='RMSE')
     assert np.isclose(tfm.error_, np.sqrt(0.8))
 
 def test_checks():
@@ -177,7 +183,8 @@ def test_checks():
         tfm.fit()
 
 def test_load():
-    """Test loading data into model object. Note: loads files from test_core_io."""
+    """Test loading data into model object.
+    Note: loads files from test_save_model in specparam/tests/io/test_models.py."""
 
     # Test loading just results
     tfm = SpectralModel(verbose=False)
@@ -187,10 +194,8 @@ def test_load():
     for result in OBJ_DESC['results']:
         assert not np.all(np.isnan(getattr(tfm, result)))
     # Test that settings and data are None
-    #   Except for aperiodic mode, which can be inferred from the data
     for setting in OBJ_DESC['settings']:
-        if setting != 'aperiodic_mode':
-            assert getattr(tfm, setting) is None
+        assert getattr(tfm, setting) is None
     assert getattr(tfm, 'power_spectrum') is None
 
     # Test loading just settings
@@ -286,9 +291,10 @@ def test_get_model(tfm):
 def test_prints(tfm):
     """Test methods that print (alias and pass through methods).
 
-    Checks: print_settings, print_results, print_report_issue.
+    Checks: print_modes, print_settings, print_results, print_report_issue.
     """
 
+    tfm.print_modes()
     tfm.print_settings()
     tfm.print_results()
     tfm.print_report_issue()
@@ -351,23 +357,23 @@ def test_fit_failure():
         assert np.all(np.isnan(getattr(tfm, result)))
 
 def test_debug():
-    """Test model object in debug mode, including with fit failures."""
+    """Test model object in debug state, including with fit failures."""
 
     tfm = SpectralModel(verbose=False)
     tfm._maxfev = 2
 
-    tfm.set_debug_mode(True)
+    tfm.set_debug(True)
     assert tfm._debug is True
 
     with raises(FitError):
         tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
-def test_set_check_modes():
-    """Test changing check_modes using set_check_modes, and that checks get turned off.
+def test_set_checks():
+    """Test changing checks using set_checks, and that checks get turned off.
     Note that testing for checks raising errors happens in test_checks.`"""
 
     tfm = SpectralModel(verbose=False)
-    tfm.set_check_modes(False, False)
+    tfm.set_checks(False, False)
 
     # Add bad frequency data, with check freqs turned off
     freqs = np.array([1, 2, 4])
@@ -385,8 +391,8 @@ def test_set_check_modes():
     tfm.fit()
     assert not tfm.has_model
 
-    # Reset check modes to true
-    tfm.set_check_modes(True, True)
+    # Reset checks to true
+    tfm.set_checks(True, True)
     assert tfm._check_freqs is True
     assert tfm._check_data is True
 

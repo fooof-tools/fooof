@@ -7,10 +7,10 @@ import os
 
 import numpy as np
 
-from specparam.core.items import OBJ_DESC
+from specparam import (SpectralModel, SpectralGroupModel,
+                       SpectralTimeModel, SpectralTimeEventModel)
+from specparam.modes.items import OBJ_DESC
 from specparam.io.files import load_json
-from specparam.objs import (SpectralModel, SpectralGroupModel,
-                            SpectralTimeModel, SpectralTimeEventModel)
 
 from specparam.tests.tsettings import TEST_DATA_PATH
 
@@ -19,7 +19,7 @@ from specparam.io.models import *
 ###################################################################################################
 ###################################################################################################
 
-def test_save_model_str(tfm):
+def test_save_model(tfm):
 
     file_name_res = 'test_model_res'
     file_name_set = 'test_model_set'
@@ -82,7 +82,6 @@ def test_save_group_append(tfg):
 
     file_name = 'test_group_append'
 
-    save_group(tfg, file_name, TEST_DATA_PATH, True, save_results=True)
     save_group(tfg, file_name, TEST_DATA_PATH, True, save_results=True)
 
     assert os.path.exists(TEST_DATA_PATH / (file_name + '.json'))

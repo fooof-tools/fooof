@@ -1,3 +1,3 @@
 """Data sub-module."""
 
-from .data import ModelSettings, ModelRunModes, SpectrumMetaData, FitResults, SimParams
+from .data import ModelSettings, ModelChecks, SpectrumMetaData, FitResults, SimParams

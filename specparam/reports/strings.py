@@ -86,6 +86,57 @@ def gen_version_str(concise=False):
     return output
 
 
+def gen_modes_str(model_obj, description=False, concise=False):
+    """Generate a string representation of fit modes.
+
+    Parameters
+    ----------
+    model_obj : SpectralModel or SpectralGroupModel or ModelModes
+        Object to access fit modes from.
+    description : bool, optional, default: False
+        Whether to also print out a description of the fit modes.
+    concise : bool, optional, default: False
+        Whether to print the report in concise mode.
+
+    Returns
+    -------
+    output : str
+        Formatted string of fit modes.
+    """
+
+    desc = {
+        'aperiodic_mode' : 'The approach taken for fitting the aperiodic component.',
+        'periodic_mode'  : 'The approach taken for fitting the periodic component.',
+    }
+
+    # Clear description for printing, if not requested
+    if not description:
+        desc = {k : '' for k, v in desc.items()}
+
+    # Create output string
+    str_lst = [
+
+        # Header
+        '=',
+        '',
+        'specparam - MODES',
+        '',
+
+        # Settings - include descriptions if requested
+        *[el for el in ['Periodic Mode : {}'.format(model_obj.periodic_mode.name),
+                        '{}'.format(desc['aperiodic_mode']),
+                        'Aperiodic Mode : {}'.format(model_obj.aperiodic_mode.name),
+                        '{}'.format(desc['aperiodic_mode'])] if el != ''],
+
+        # Footer
+        '',
+        '='
+    ]
+
+    output = _format(str_lst, concise)
+
+    return output
+
 def gen_settings_str(model_obj, description=False, concise=False):
     """Generate a string representation of current fit settings.
 
@@ -93,7 +144,7 @@ def gen_settings_str(model_obj, description=False, concise=False):
     ----------
     model_obj : SpectralModel or SpectralGroupModel or ModelSettings
         Object to access settings from.
-    description : bool, optional, default: True
+    description : bool, optional, default: False
         Whether to also print out a description of the settings.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
@@ -110,7 +161,6 @@ def gen_settings_str(model_obj, description=False, concise=False):
         'max_n_peaks'       : 'Maximum number of peaks that can be extracted.',
         'min_peak_height'   : 'Minimum absolute height of a peak, above the aperiodic component.',
         'peak_threshold'    : 'Relative threshold for minimum height required for detecting peaks.',
-        'aperiodic_mode'    : 'The approach taken for fitting the aperiodic component.'
         }
 
     # Clear description for printing, if not requested
@@ -134,9 +184,7 @@ def gen_settings_str(model_obj, description=False, concise=False):
                         'Minimum Peak Height : {}'.format(model_obj.min_peak_height),
                         '{}'.format(desc['min_peak_height']),
                         'Peak Threshold: {}'.format(model_obj.peak_threshold),
-                        '{}'.format(desc['peak_threshold']),
-                        'Aperiodic Mode : {}'.format(model_obj.aperiodic_mode),
-                        '{}'.format(desc['aperiodic_mode'])] if el != ''],
+                        '{}'.format(desc['peak_threshold'])] if el != ''],
 
         # Footer
         '',
@@ -213,6 +261,7 @@ def gen_methods_report_str(concise=False):
         'Reports using spectral parameterization should include (at minimum):',
         '',
         '- the code version that was used',
+        '- the fit modes that were used',
         '- the algorithm settings that were used',
         '- the frequency range that was fit',
 
@@ -238,12 +287,13 @@ def gen_methods_text_str(model_obj=None):
 
     template = (
         "The periodic & aperiodic spectral parameterization algorithm (version {}) "
-        "was used to parameterize neural power spectra. Settings for the algorithm were set as: "
+        "was used to parameterize neural power spectra. "
+        "The model was fit with {} aperiodic mode and {} periodic mode. "
+        "Settings for the algorithm were set as: "
         "peak width limits : {}; "
         "max number of peaks : {}; "
         "minimum peak height : {}; "
-        "peak threshold : {}; "
-        "and aperiodic mode : '{}'. "
+        "peak threshold : {}; ."
         "Power spectra were parameterized across the frequency range "
         "{} to {} Hz."
     )
@@ -254,11 +304,12 @@ def gen_methods_text_str(model_obj=None):
         freq_range = ('XX', 'XX')
 
     methods_str = template.format(MODULE_VERSION,
+                                  model_obj.aperiodic_mode.name if model_obj else 'XX',
+                                  model_obj.periodic_mode.name if model_obj else 'XX',
                                   model_obj.peak_width_limits if model_obj else 'XX',
                                   model_obj.max_n_peaks if model_obj else 'XX',
                                   model_obj.min_peak_height if model_obj else 'XX',
                                   model_obj.peak_threshold if model_obj else 'XX',
-                                  model_obj.aperiodic_mode if model_obj else 'XX',
                                   *freq_range)
 
     return methods_str
@@ -301,7 +352,7 @@ def gen_model_results_str(model, concise=False):
 
         # Aperiodic parameters
         ('Aperiodic Parameters (offset, ' + \
-         ('knee, ' if model.aperiodic_mode == 'knee' else '') + \
+         ('knee, ' if model.aperiodic_mode.name == 'knee' else '') + \
          'exponent): '),
         ', '.join(['{:2.4f}'] * len(model.aperiodic_params_)).format(*model.aperiodic_params_),
         '',
@@ -358,7 +409,7 @@ def gen_group_results_str(group, concise=False):
     errors = group.get_params('error')
     exps = group.get_params('aperiodic_params', 'exponent')
     kns = group.get_params('aperiodic_params', 'knee') \
-        if group.aperiodic_mode == 'knee' else np.array([0])
+        if str(group.aperiodic_mode) == 'knee' else np.array([0])
 
     str_lst = [
 
@@ -381,12 +432,13 @@ def gen_group_results_str(group, concise=False):
 
         # Aperiodic parameters - knee fit status, and quick exponent description
         'Power spectra were fit {} a knee.'.format(\
-            'with' if group.aperiodic_mode == 'knee' else 'without'),
+            'with' if str(group.aperiodic_mode) == 'knee' else 'without'),
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
                         .format(*compute_arr_desc(kns)),
-                       ] if group.aperiodic_mode == 'knee'],
+                       ] if group.aperiodic_mode.name == 'knee'],
+
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(*compute_arr_desc(exps)),
         '',
@@ -442,7 +494,7 @@ def gen_time_results_str(time_model, concise=False):
     band_labels = [\
         pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
         for band_ind in range(len(pe_labels['cf']))]
-    has_knee = time_model.aperiodic_mode == 'knee'
+    has_knee = time_model.aperiodic_mode.name == 'knee'
 
     str_lst = [
 
@@ -466,7 +518,7 @@ def gen_time_results_str(time_model, concise=False):
 
         # Aperiodic parameters - knee fit status, and quick exponent description
         'Power spectra were fit {} a knee.'.format(\
-            'with' if time_model.aperiodic_mode == 'knee' else 'without'),
+            'with' if time_model.aperiodic_mode.name == 'knee' else 'without'),
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
@@ -534,7 +586,7 @@ def gen_event_results_str(event_model, concise=False):
     band_labels = [\
         pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
         for band_ind in range(len(pe_labels['cf']))]
-    has_knee = event_model.aperiodic_mode == 'knee'
+    has_knee = event_model.aperiodic_mode.name == 'knee'
 
     str_lst = [
 
@@ -556,7 +608,7 @@ def gen_event_results_str(event_model, concise=False):
 
         # Aperiodic parameters - knee fit status, and quick exponent description
         'Power spectra were fit {} a knee.'.format(\
-            'with' if event_model.aperiodic_mode == 'knee' else 'without'),
+            'with' if event_model.aperiodic_mode.name == 'knee' else 'without'),
         '',
         'Aperiodic params (values across events):',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'

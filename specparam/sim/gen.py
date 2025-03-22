@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from specparam.core.funcs import get_ap_func, get_pe_func, infer_ap_func
+from specparam.modes.funcs import get_ap_func, get_pe_func, infer_ap_func
 
 from specparam.sim.transform import rotate_spectrum
 
@@ -50,7 +50,6 @@ def gen_aperiodic(freqs, aperiodic_params, aperiodic_mode=None):
         Parameters that define the aperiodic component.
     aperiodic_mode : {'fixed', 'knee'}, optional
         Which kind of aperiodic component to generate.
-        If not provided, is inferred from the parameters.
 
     Returns
     -------

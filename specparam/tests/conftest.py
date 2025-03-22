@@ -47,6 +47,11 @@ def skip_if_no_mpl():
         pytest.skip('Matplotlib not available: skipping test.')
 
 @pytest.fixture(scope='session')
+def skip_if_no_tqdm():
+    if not safe_import('tqdm'):
+        pytest.skip('tqdm not available: skipping test.')
+
+@pytest.fixture(scope='session')
 def skip_if_no_pandas():
     if not safe_import('pandas'):
         pytest.skip('Pandas not available: skipping test.')

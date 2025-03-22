@@ -1,21 +1,19 @@
-"""Define base fit objects."""
+"""Define base results objects."""
 
 from itertools import repeat
-from functools import partial
-from multiprocessing import Pool, cpu_count
 
 import numpy as np
 
-from specparam.core.items import OBJ_DESC
-from specparam.core.funcs import infer_ap_func
+from specparam.modes.items import OBJ_DESC
+from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
-from specparam.modutils.dependencies import safe_import
 from specparam.data import FitResults, ModelSettings
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import get_group_params, get_results_by_ind, get_results_by_row
-from specparam.measures.gof import compute_r_squared, compute_error
+from specparam.measures.gof import compute_gof
+from specparam.measures.error import compute_error
 
 ###################################################################################################
 ###################################################################################################
@@ -24,15 +22,22 @@ class BaseResults():
     """Base object for managing results."""
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False,
-                 verbose=True, error_metric='MAE'):
+    def __init__(self, aperiodic_mode, periodic_mode, debug=False,
+                 verbose=True, error_metric='MAE', gof_metric='r_squared'):
+        """Initialize BaseResults object."""
 
         # Set fit component modes
-        self.aperiodic_mode = aperiodic_mode
-        self.periodic_mode = periodic_mode
+        if isinstance(aperiodic_mode, str):
+            self.aperiodic_mode = AP_MODES[aperiodic_mode]
+        else:
+            self.aperiodic_mode = aperiodic_mode
+        if isinstance(periodic_mode, str):
+            self.periodic_mode = PE_MODES[periodic_mode]
+        else:
+            self.periodic_mode = periodic_mode
 
-        # Set run modes
-        self.set_debug_mode(debug_mode)
+        # Set run approaches
+        self.set_debug(debug)
         self.verbose = verbose
 
         # Initialize results attributes
@@ -40,6 +45,7 @@ class BaseResults():
 
         # Set private run settings
         self._error_metric = error_metric
+        self._gof_metric = gof_metric
 
 
     @property
@@ -62,34 +68,6 @@ class BaseResults():
         """How many peaks were fit in the model."""
 
         return self.peak_params_.shape[0] if self.has_model else None
-
-
-    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
-        """Fit a power spectrum as a combination of periodic and aperiodic components.
-
-        Parameters
-        ----------
-        freqs : 1d array, optional
-            Frequency values for the power spectrum, in linear space.
-        power_spectrum : 1d array, optional
-            Power values, which must be input in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to restrict power spectrum to.
-            If not provided, keeps the entire range.
-
-        Raises
-        ------
-        NoDataError
-            If no data is available to fit.
-        FitError
-            If model fitting fails to fit. Only raised in debug mode.
-
-        Notes
-        -----
-        Data is optional, if data has already been added to the object.
-        """
-
-        return self._fit(freqs=freqs, power_spectrum=power_spectrum, freq_range=freq_range)
 
 
     def add_settings(self, settings):
@@ -118,6 +96,12 @@ class BaseResults():
 
         return ModelSettings(**{key : getattr(self, key) \
                              for key in OBJ_DESC['settings']})
+
+
+    def get_debug(self):
+        """Return object debug status."""
+
+        return self._debug
 
 
     def add_results(self, results):
@@ -197,16 +181,32 @@ class BaseResults():
         return output
 
 
-    def set_debug_mode(self, debug):
-        """Set debug mode, which controls if an error is raised if model fitting is unsuccessful.
+    def set_debug(self, debug):
+        """Set debug state, which controls if an error is raised if model fitting is unsuccessful.
 
         Parameters
         ----------
         debug : bool
-            Whether to run in debug mode.
+            Whether to run in debug state.
         """
 
         self._debug = debug
+
+
+    def _check_loaded_modes(self, data):
+        """Check if fit modes added, and update the object as needed.
+
+        Parameters
+        ----------
+        data : dict
+            A dictionary of data that has been added to the object.
+        """
+
+        # If fit mode information in loaded, reload mode definitions
+        self.aperiodic_mode = AP_MODES[data['aperiodic_mode']] \
+            if 'aperiodic_mode' in data else None
+        self.periodic_mode = PE_MODES[data['periodic_mode']] \
+            if 'periodic_mode' in data else None
 
 
     def _check_loaded_settings(self, data):
@@ -225,10 +225,6 @@ class BaseResults():
             # Reset all public settings to None
             for setting in OBJ_DESC['settings']:
                 setattr(self, setting, None)
-
-            # If aperiodic params available, infer whether knee fitting was used,
-            if not np.all(np.isnan(self.aperiodic_params_)):
-                self.aperiodic_mode = infer_ap_func(self.aperiodic_params_)
 
         # Reset internal settings so that they are consistent with what was loaded
         #   Note that this will set internal settings to None, if public settings unavailable
@@ -266,19 +262,25 @@ class BaseResults():
 
         if clear_results:
 
-            # Aperiodic parameers
-            self.aperiodic_params_ = np.nan
+            # TEMP / Note - for ap / pe params, move to something like `xx_params` and `_xx_params` (?)
+
+            # Aperiodic parameters
+            if self.aperiodic_mode:
+                self.aperiodic_params_ = np.array([np.nan] * self.aperiodic_mode.n_params)
+            else:
+                self.aperiodic_params_ = np.nan
 
             # Periodic parameters
-            self.gaussian_params_ = np.nan
-            self.peak_params_ = np.nan
+            if self.periodic_mode:
+                self.gaussian_params_ = np.empty([0, self.periodic_mode.n_params])
+                self.peak_params_ = np.empty([0, self.periodic_mode.n_params])
+            else:
+                self.gaussian_params_ = np.nan
+                self.peak_params_ = np.nan
 
-            # Note - for ap / pe params, move to something like `xx_params` and `_xx_params`
-
-            # Goodness of fit measures
+            # Goodness of fit measures -- TEMP / Note: move to `self.gof` or similar (?)
             self.r_squared_ = np.nan
             self.error_ = np.nan
-            # Note: move to `self.gof` or similar
 
             # Data components
             self._spectrum_flat = None
@@ -290,27 +292,34 @@ class BaseResults():
             self._peak_fit = None
 
 
-    def _calc_r_squared(self):
-        """Calculate the r-squared goodness of fit of the model, compared to the original data."""
+    def _compute_model_gof(self, metric=None):
+        """Calculate the r-squared goodness of fit of the model, compared to the original data.
 
-        self.r_squared_ = compute_r_squared(self.power_spectrum, self.modeled_spectrum_)
+        Parameters
+        ----------
+        metric : {'r_squared', 'adj_r_squared'}, optional
+            Which goodness of fit measure to compute:
+            * 'r_squared' : R-squared
+            * 'adj_r_squared' : Adjusted R-squared
+
+        Notes
+        -----
+        Which measure is applied is by default controlled by the `_gof_metric` attribute.
+        """
+
+        self.r_squared_ = compute_gof(self.power_spectrum, self.modeled_spectrum_)
 
 
-    def _calc_error(self, metric=None):
+    def _compute_model_error(self, metric=None):
         """Calculate the overall error of the model fit, compared to the original data.
 
         Parameters
         ----------
         metric : {'MAE', 'MSE', 'RMSE'}, optional
-            Which error measure to calculate:
+            Which error measure to compute:
             * 'MAE' : mean absolute error
             * 'MSE' : mean squared error
             * 'RMSE' : root mean squared error
-
-        Raises
-        ------
-        ValueError
-            If the requested error metric is not understood.
 
         Notes
         -----
@@ -324,10 +333,10 @@ class BaseResults():
 class BaseResults2D(BaseResults):
     """Base object for managing results - 2D version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode, periodic_mode, debug=False, verbose=True):
+        """Initialize BaseResults2D object."""
 
-        BaseResults.__init__(self, aperiodic_mode, periodic_mode,
-                             debug_mode=debug_mode, verbose=verbose)
+        BaseResults.__init__(self, aperiodic_mode, periodic_mode, debug=debug, verbose=verbose)
 
         self._reset_group_results()
 
@@ -432,62 +441,11 @@ class BaseResults2D(BaseResults):
         """
 
         # Temp import - consider refactoring
-        from specparam.objs.model import SpectralModel
+        from specparam import SpectralModel
 
         null_model = SpectralModel(**self.get_settings()._asdict()).get_results()
         for ind in check_inds(inds):
             self.group_results[ind] = null_model
-
-
-    def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
-        """Fit a group of power spectra.
-
-        Parameters
-        ----------
-        freqs : 1d array, optional
-            Frequency values for the power_spectra, in linear space.
-        power_spectra : 2d array, shape: [n_power_spectra, n_freqs], optional
-            Matrix of power spectrum values, in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to fit the model to. If not provided, fits the entire given range.
-        n_jobs : int, optional, default: 1
-            Number of jobs to run in parallel.
-            1 is no parallelization. -1 uses all available cores.
-        progress : {None, 'tqdm', 'tqdm.notebook'}, optional
-            Which kind of progress bar to use. If None, no progress bar is used.
-
-        Notes
-        -----
-        Data is optional, if data has already been added to the object.
-        """
-
-        # If freqs & power spectra provided together, add data to object
-        if freqs is not None and power_spectra is not None:
-            self.add_data(freqs, power_spectra, freq_range)
-
-        # If 'verbose', print out a marker of what is being run
-        if self.verbose and not progress:
-            print('Fitting model across {} power spectra.'.format(len(self.power_spectra)))
-
-        # Run linearly
-        if n_jobs == 1:
-            self._reset_group_results(len(self.power_spectra))
-            for ind, power_spectrum in \
-                _progress(enumerate(self.power_spectra), progress, len(self)):
-                self._fit(power_spectrum=power_spectrum)
-                self.group_results[ind] = self._get_results()
-
-        # Run in parallel
-        else:
-            self._reset_group_results()
-            n_jobs = cpu_count() if n_jobs == -1 else n_jobs
-            with Pool(processes=n_jobs) as pool:
-                self.group_results = list(_progress(pool.imap(partial(_par_fit_group, group=self),
-                                                              self.power_spectra),
-                                                    progress, len(self.power_spectra)))
-
-        # Clear the individual power spectrum and fit results of the current fit
-        self._reset_data_results(clear_spectrum=True, clear_results=True)
 
 
     def get_params(self, name, col=None):
@@ -542,12 +500,13 @@ class BaseResults2D(BaseResults):
         """
 
         # Local import - avoid circular
-        from specparam.objs.model import SpectralModel
+        from specparam import SpectralModel
 
         # Initialize model object, with same settings, metadata, & check mode as current object
         model = SpectralModel(**self.get_settings()._asdict(), verbose=self.verbose)
         model.add_meta_data(self.get_meta_data())
-        model.set_run_modes(*self.get_run_modes())
+        model.set_checks(*self.get_checks())
+        model.set_debug(self.get_debug())
 
         # Add data for specified single power spectrum, if available
         if self.has_data:
@@ -576,12 +535,13 @@ class BaseResults2D(BaseResults):
         """
 
         # Local import - avoid circular
-        from specparam.objs.group import SpectralGroupModel
+        from specparam import SpectralGroupModel
 
         # Initialize a new model object, with same settings as current object
         group = SpectralGroupModel(**self.get_settings()._asdict(), verbose=self.verbose)
         group.add_meta_data(self.get_meta_data())
-        group.set_run_modes(*self.get_run_modes())
+        group.set_checks(*self.get_checks())
+        group.set_debug(self.get_debug())
 
         if inds is not None:
 
@@ -601,10 +561,10 @@ class BaseResults2D(BaseResults):
 class BaseResults2DT(BaseResults2D):
     """Base object for managing results - 2D transpose version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode, periodic_mode, debug=False, verbose=True):
+        """Initialize BaseResults2DT object."""
 
-        BaseResults2D.__init__(self, aperiodic_mode, periodic_mode,
-                               debug_mode=debug_mode, verbose=verbose)
+        BaseResults2D.__init__(self, aperiodic_mode, periodic_mode, debug=debug, verbose=verbose)
 
         self._reset_time_results()
 
@@ -619,38 +579,6 @@ class BaseResults2DT(BaseResults2D):
         """Set, or reset, time results to be empty."""
 
         self.time_results = {}
-
-
-    def fit(self, freqs=None, spectrogram=None, freq_range=None, peak_org=None,
-            n_jobs=1, progress=None):
-        """Fit a spectrogram.
-
-        Parameters
-        ----------
-        freqs : 1d array, optional
-            Frequency values for the spectrogram, in linear space.
-        spectrogram : 2d array, shape: [n_freqs, n_time_windows], optional
-            Spectrogram of power spectrum values, in linear space.
-        freq_range : list of [float, float], optional
-            Frequency range to fit the model to. If not provided, fits the entire given range.
-        peak_org : int or Bands
-            How to organize peaks.
-            If int, extracts the first n peaks.
-            If Bands, extracts peaks based on band definitions.
-        n_jobs : int, optional, default: 1
-            Number of jobs to run in parallel.
-            1 is no parallelization. -1 uses all available cores.
-        progress : {None, 'tqdm', 'tqdm.notebook'}, optional
-            Which kind of progress bar to use. If None, no progress bar is used.
-
-        Notes
-        -----
-        Data is optional, if data has already been added to the object.
-        """
-
-        super().fit(freqs, spectrogram, freq_range, n_jobs, progress)
-        if peak_org is not False:
-            self.convert_results(peak_org)
 
 
     def get_results(self):
@@ -680,7 +608,7 @@ class BaseResults2DT(BaseResults2D):
         if output_type == 'time':
 
             # Local import - avoid circular
-            from specparam.objs.time import SpectralTimeModel
+            from specparam import SpectralTimeModel
 
             # Initialize a new model object, with same settings as current object
             output = SpectralTimeModel(**self.get_settings()._asdict(), verbose=self.verbose)
@@ -740,10 +668,10 @@ class BaseResults2DT(BaseResults2D):
 class BaseResults3D(BaseResults2DT):
     """Base object for managing results - 3D version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode, periodic_mode, debug=False, verbose=True):
+        """Initialize BaseResults3D object."""
 
-        BaseResults2DT.__init__(self, aperiodic_mode, periodic_mode,
-                                debug_mode=debug_mode, verbose=verbose)
+        BaseResults2DT.__init__(self, aperiodic_mode, periodic_mode, debug=debug, verbose=verbose)
 
         self._reset_event_results()
 
@@ -782,64 +710,6 @@ class BaseResults3D(BaseResults2DT):
             if self.has_model else None for gres in self.event_group_results])
 
 
-    def fit(self, freqs=None, spectrograms=None, freq_range=None, peak_org=None,
-            n_jobs=1, progress=None):
-        """Fit a set of events.
-
-        Parameters
-        ----------
-        freqs : 1d array, optional
-            Frequency values for the power_spectra, in linear space.
-        spectrograms : 3d array or list of 2d array
-            Matrix of power values, in linear space.
-            If a list of 2d arrays, each should be have the same shape of [n_freqs, n_time_windows].
-            If a 3d array, should have shape [n_events, n_freqs, n_time_windows].
-        freq_range : list of [float, float], optional
-            Frequency range to fit the model to. If not provided, fits the entire given range.
-        peak_org : int or Bands
-            How to organize peaks.
-            If int, extracts the first n peaks.
-            If Bands, extracts peaks based on band definitions.
-        n_jobs : int, optional, default: 1
-            Number of jobs to run in parallel.
-            1 is no parallelization. -1 uses all available cores.
-        progress : {None, 'tqdm', 'tqdm.notebook'}, optional
-            Which kind of progress bar to use. If None, no progress bar is used.
-
-        Notes
-        -----
-        Data is optional, if data has already been added to the object.
-        """
-
-        if spectrograms is not None:
-            self.add_data(freqs, spectrograms, freq_range)
-
-        # If 'verbose', print out a marker of what is being run
-        if self.verbose and not progress:
-            print('Fitting model across {} events of {} windows.'.format(\
-                len(self.spectrograms), self.n_time_windows))
-
-        if n_jobs == 1:
-            self._reset_event_results(len(self.spectrograms))
-            for ind, spectrogram in _progress(enumerate(self.spectrograms), progress, len(self)):
-                self.power_spectra = spectrogram.T
-                super().fit(peak_org=False)
-                self.event_group_results[ind] = self.group_results
-                self._reset_group_results()
-                self._reset_data_results(clear_spectra=True)
-
-        else:
-            fg = self.get_group(None, None, 'group')
-            n_jobs = cpu_count() if n_jobs == -1 else n_jobs
-            with Pool(processes=n_jobs) as pool:
-                self.event_group_results = \
-                    list(_progress(pool.imap(partial(_par_fit_event, model=fg), self.spectrograms),
-                                   progress, len(self.spectrograms)))
-
-        if peak_org is not False:
-            self.convert_results(peak_org)
-
-
     def drop(self, drop_inds=None, window_inds=None):
         """Drop one or more model fit results from the object.
 
@@ -859,7 +729,7 @@ class BaseResults3D(BaseResults2DT):
         """
 
         # Local import - avoid circular
-        from specparam.objs.model import SpectralModel
+        from specparam import SpectralModel
 
         null_model = SpectralModel(**self.get_settings()._asdict()).get_results()
 
@@ -951,7 +821,7 @@ class BaseResults3D(BaseResults2DT):
         """
 
         # Local import - avoid circular
-        from specparam.objs.event import SpectralTimeEventModel
+        from specparam import SpectralTimeEventModel
 
         # Check and convert indices encoding to list of int
         einds = check_inds(event_inds, self.n_events)
@@ -1011,84 +881,3 @@ class BaseResults3D(BaseResults2DT):
         """
 
         self.event_time_results = event_group_to_dict(self.event_group_results, peak_org)
-
-###################################################################################################
-## Helper functions for running fitting in parallel
-
-def _par_fit_group(power_spectrum, group):
-    """Helper function for running in parallel."""
-
-    group._fit(power_spectrum=power_spectrum)
-
-    return group._get_results()
-
-
-def _par_fit_event(spectrogram, model):
-    """Helper function for running in parallel."""
-
-    model.power_spectra = spectrogram.T
-    model.fit()
-
-    return model.get_results()
-
-
-def _progress(iterable, progress, n_to_run):
-    """Add a progress bar to an iterable to be processed.
-
-    Parameters
-    ----------
-    iterable : list or iterable
-        Iterable object to potentially apply progress tracking to.
-    progress : {None, 'tqdm', 'tqdm.notebook'}
-        Which kind of progress bar to use. If None, no progress bar is used.
-    n_to_run : int
-        Number of jobs to complete.
-
-    Returns
-    -------
-    pbar : iterable or tqdm object
-        Iterable object, with tqdm progress functionality, if requested.
-
-    Raises
-    ------
-    ValueError
-        If the input for `progress` is not understood.
-
-    Notes
-    -----
-    The explicit `n_to_run` input is required as tqdm requires this in the parallel case.
-    The `tqdm` object that is potentially returned acts the same as the underlying iterable,
-    with the addition of printing out progress every time items are requested.
-    """
-
-    # Check progress specifier is okay
-    tqdm_options = ['tqdm', 'tqdm.notebook']
-    if progress is not None and progress not in tqdm_options:
-        raise ValueError("Progress bar option not understood.")
-
-    # Set the display text for the progress bar
-    pbar_desc = 'Running group fits.'
-
-    # Use a tqdm, progress bar, if requested
-    if progress:
-
-        # Try loading the tqdm module
-        tqdm = safe_import(progress)
-
-        if not tqdm:
-
-            # If tqdm isn't available, proceed without a progress bar
-            print(("A progress bar requiring the 'tqdm' module was requested, "
-                   "but 'tqdm' is not installed. \nProceeding without using a progress bar."))
-            pbar = iterable
-
-        else:
-
-            # If tqdm loaded, apply the progress bar to the iterable
-            pbar = tqdm.tqdm(iterable, desc=pbar_desc, total=n_to_run, dynamic_ncols=True)
-
-    # If progress is None, return the original iterable without a progress bar applied
-    else:
-        pbar = iterable
-
-    return pbar

@@ -1,6 +1,6 @@
 """Instantiated objects that can be used as 'helper items' for working with model objects."""
 
-from specparam.core.info import get_description, get_peak_indices
+from specparam.modes.info import get_description, get_peak_indices
 
 ###################################################################################################
 ###################################################################################################

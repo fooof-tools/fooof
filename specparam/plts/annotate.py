@@ -2,12 +2,12 @@
 
 import numpy as np
 
-from specparam.utils.select import nearest_ind
-from specparam.core.funcs import gaussian_function
-from specparam.modutils.errors import NoModelError
 from specparam.sim.gen import gen_aperiodic
+from specparam.utils.select import nearest_ind
 from specparam.data.periodic import get_band_peak
+from specparam.modes.funcs import gaussian_function
 from specparam.measures.params import compute_knee_frequency, compute_fwhm
+from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.plts.spectra import plot_spectra
 from specparam.plts.utils import check_ax, savefig
@@ -34,7 +34,9 @@ def plot_annotated_peak_search(model):
     # Recalculate the initial aperiodic fit and flattened spectrum that
     #   is the same as the one that is used in the peak fitting procedure
     flatspec = model.power_spectrum - \
-        gen_aperiodic(model.freqs, model._robust_ap_fit(model.freqs, model.power_spectrum))
+        gen_aperiodic(model.freqs,
+                      model._robust_ap_fit(model.freqs, model.power_spectrum),
+                      model.aperiodic_mode.name)
 
     # Calculate ylims of the plot that are scaled to the range of the data
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
@@ -191,7 +193,7 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
                     color=PLT_COLORS['aperiodic'], fontsize=fontsize)
 
         # Annotate Aperiodic Knee
-        if model.aperiodic_mode == 'knee':
+        if model.aperiodic_mode.name == 'knee':
 
             # Find the knee frequency point to annotate
             knee_freq = compute_knee_frequency(model.get_params('aperiodic', 'knee'),

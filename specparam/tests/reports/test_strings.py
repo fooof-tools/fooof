@@ -14,6 +14,10 @@ def test_gen_version_str():
 
     assert gen_version_str()
 
+def test_gen_modes_str(tfm):
+
+    assert gen_modes_str(tfm)
+
 def test_gen_settings_str(tfm):
 
     assert gen_settings_str(tfm)

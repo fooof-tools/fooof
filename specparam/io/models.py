@@ -9,7 +9,7 @@ import io
 
 from specparam.io.files import save_json
 from specparam.io.utils import create_file_path
-from specparam.core.items import OBJ_DESC
+from specparam.modes.items import OBJ_DESC
 from specparam.utils.select import dict_select_keys
 from specparam.utils.convert import dict_array_to_lst
 
@@ -47,10 +47,14 @@ def save_model(model, file_name, file_path=None, append=False,
     # Convert object to dictionary & convert all arrays to lists, for JSON serializing
     obj_dict = dict_array_to_lst(model.__dict__)
 
+    # Convert modes object to their saveable string name
+    obj_dict['aperiodic_mode'] = obj_dict['aperiodic_mode'].name
+    obj_dict['periodic_mode'] = obj_dict['periodic_mode'].name
+
     # Set and select which variables to keep. Use a set to drop any potential overlap
     #   Note that results also saves frequency information to be able to recreate freq vector
     keep = set((OBJ_DESC['results'] + OBJ_DESC['meta_data'] if save_results else []) + \
-               (OBJ_DESC['settings'] if save_settings else []) + \
+               (OBJ_DESC['settings'] + OBJ_DESC['modes'] if save_settings else []) + \
                (OBJ_DESC['data'] if save_data else []))
     obj_dict = dict_select_keys(obj_dict, keep)
 
@@ -163,7 +167,7 @@ def load_model(file_name, file_path=None, regenerate=True):
         Loaded model object with data from file.
     """
 
-    from specparam.objs import SpectralModel
+    from specparam import SpectralModel
     model = SpectralModel()
     model.load(file_name, file_path, regenerate)
 
@@ -186,7 +190,7 @@ def load_group(file_name, file_path=None):
         Loaded model object with data from file.
     """
 
-    from specparam.objs import SpectralGroupModel
+    from specparam import SpectralGroupModel
     group = SpectralGroupModel()
     group.load(file_name, file_path)
 
@@ -213,7 +217,7 @@ def load_time(file_name, file_path=None, peak_org=None):
         Loaded model object with data from file.
     """
 
-    from specparam.objs import SpectralTimeModel
+    from specparam import SpectralTimeModel
     time = SpectralTimeModel()
     time.load(file_name, file_path, peak_org)
 
@@ -240,7 +244,7 @@ def load_event(file_name, file_path=None, peak_org=None, event=None):
         Loaded model object with data from file.
     """
 
-    from specparam.objs import SpectralTimeEventModel
+    from specparam import SpectralTimeEventModel
     event = SpectralTimeEventModel()
     event.load(file_name, file_path, peak_org)
 

@@ -5,9 +5,9 @@ Notes
 Methods without defined docstrings import docs at runtime, from aliased external functions.
 """
 
+from specparam.models import SpectralModel
 from specparam.objs.base import BaseObject2D
-from specparam.objs.model import SpectralModel
-from specparam.objs.algorithm import SpectralFitAlgorithm
+from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.plts.group import plot_group_model
 from specparam.reports.save import save_group_report
 from specparam.reports.strings import gen_group_results_str
@@ -30,7 +30,7 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
 
     Parameters
     ----------
-    %copied in from SpectralModel object
+    % copied in from SpectralModel object
 
     Attributes
     ----------
@@ -58,7 +58,7 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
 
     Notes
     -----
-    %copied in from SpectralModel object
+    % copied in from SpectralModel object
     - The group object inherits from the model object. As such it also has data
       attributes (`power_spectrum` & `modeled_spectrum_`), and parameter attributes
       (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)
@@ -74,7 +74,7 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
         BaseObject2D.__init__(self,
                               aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
                               periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
-                              debug_mode=kwargs.pop('debug_mode', False),
+                              debug=kwargs.pop('debug', False),
                               verbose=kwargs.pop('verbose', True))
 
         SpectralFitAlgorithm.__init__(self, *args, **kwargs)
@@ -175,10 +175,14 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
         return group_to_dataframe(self.get_results(), peak_org)
 
 
-    def _check_width_limits(self):
-        """Check and warn about bandwidth limits / frequency resolution interaction."""
+    def _fit_prechecks(self):
+        """Overloads fit prechecks.
 
-        # Only check & warn on first power spectrum
-        #   This is to avoid spamming standard output for every spectrum in the group
+        Notes
+        -----
+        This overloads fit prechecks to only run once (on the first spectrum), to avoid
+        checking and reporting on every spectrum and repeatedly re-raising the same warning.
+        """
+
         if self.power_spectra[0, 0] == self.power_spectrum[0]:
-            super()._check_width_limits()
+            super()._fit_prechecks()

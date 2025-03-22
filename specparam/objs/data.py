@@ -5,10 +5,10 @@ from functools import wraps
 import numpy as np
 
 from specparam.sim.gen import gen_freqs
+from specparam.modes.items import OBJ_DESC
+from specparam.data import SpectrumMetaData, ModelChecks
 from specparam.utils.spectral import trim_spectrum
-from specparam.core.items import OBJ_DESC
 from specparam.modutils.errors import DataError, InconsistentDataError
-from specparam.data import SpectrumMetaData
 from specparam.plts.settings import PLT_COLORS
 from specparam.plts.spectra import plot_spectra, plot_spectrogram
 from specparam.plts.utils import check_plot_kwargs
@@ -22,20 +22,21 @@ class BaseData():
     Parameters
     ----------
     _check_freqs : bool
-        Run mode: whether to check the frequency values.
+        Whether to check the frequency values.
         If True, checks the frequency values, and raises an error for uneven spacing.
     _check_data : bool
-        Run mode: whether to check the power spectrum values.
+        Whether to check the power spectrum values.
         If True, checks the power values and raises an error for any NaN / Inf values.
     """
 
-    def __init__(self, check_freqs_mode=True, check_data_mode=True):
+    def __init__(self, check_freqs=True, check_data=True):
+        """Initialize BaseData object."""
 
         self._reset_data(True, True)
 
         # Define data check run modes
-        self._check_freqs = check_freqs_mode
-        self._check_data = check_data_mode
+        self._check_freqs = check_freqs
+        self._check_data = check_data
 
 
     @property
@@ -86,6 +87,19 @@ class BaseData():
         self._regenerate_freqs()
 
 
+    def get_checks(self):
+        """Return check statuses of the current object.
+
+        Returns
+        -------
+        ModelChecks
+            Object containing the run modes from the current object.
+        """
+
+        return ModelChecks(**{key.strip('_') : getattr(self, key) \
+                           for key in OBJ_DESC['checks']})
+
+
     def get_meta_data(self):
         """Return data information from the current object.
 
@@ -108,15 +122,15 @@ class BaseData():
                      log_powers=False, **data_kwargs)
 
 
-    def set_check_modes(self, check_freqs=None, check_data=None):
-        """Set check modes, which controls if an error is raised based on check on the inputs.
+    def set_checks(self, check_freqs=None, check_data=None):
+        """Set check statuses, which control if an error is raised based on check on the inputs.
 
         Parameters
         ----------
         check_freqs : bool, optional
-            Whether to run in check freqs mode, which checks the frequency data.
+            Whether to check the frequency data.
         check_data : bool, optional
-            Whether to run in check data mode, which checks the power spectrum values data.
+            Whether to check the power spectrum data.
         """
 
         if check_freqs is not None:
@@ -256,6 +270,7 @@ class BaseData2D(BaseData):
     """Base object for managing data for spectral parameterization - for 2D data."""
 
     def __init__(self):
+        """Initialize BaseData2D object."""
 
         BaseData.__init__(self)
 
@@ -339,6 +354,7 @@ class BaseData2DT(BaseData2D):
     """Base object for managing data for spectral parameterization - for 2D transposed data."""
 
     def __init__(self):
+        """Initialize BaseData2DT object."""
 
         BaseData2D.__init__(self)
 
@@ -391,6 +407,7 @@ class BaseData3D(BaseData2DT):
     """Base object for managing data for spectral parameterization - for 3D data."""
 
     def __init__(self):
+        """Initialize BaseData3D object."""
 
         BaseData2DT.__init__(self)
 

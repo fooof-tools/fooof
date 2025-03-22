@@ -1,18 +1,15 @@
-"""Functions that can be used for model fitting.
-
-NOTES
------
-- Model fitting currently (only) uses the exponential and gaussian functions.
-- Linear & Quadratic functions are from previous versions.
-    - They are left available for easy swapping back in, if desired.
-"""
+"""Functions that can be used for model fitting."""
 
 import numpy as np
+from scipy.special import erf
 
+from specparam.utils.array import normalize
 from specparam.modutils.errors import InconsistentDataError
 
 ###################################################################################################
 ###################################################################################################
+
+## PEAK FUNCTIONS
 
 def gaussian_function(xs, *params):
     """Gaussian fitting function.
@@ -35,6 +32,36 @@ def gaussian_function(xs, *params):
     for ctr, hgt, wid in zip(*[iter(params)] * 3):
 
         ys = ys + hgt * np.exp(-(xs-ctr)**2 / (2*wid**2))
+
+    return ys
+
+
+def skewnorm_function(xs, *params):
+    """Skewed normal distribution fitting function.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define the skewed normal distribution function.
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for skewed normal distribution function.
+    """
+
+    ys = np.zeros_like(xs)
+
+    for ii in range(0, len(params), 4):
+
+        ctr, hgt, wid, skew = params[ii:ii+4]
+
+        ts = (xs - ctr) / wid
+        temp = 2 / wid * (1 / np.sqrt(2 * np.pi) * np.exp(-ts**2 / 2)) * \
+            ((1 + erf(skew * ts / np.sqrt(2))) / 2)
+        ys = ys + hgt * normalize(temp)
 
     return ys
 
@@ -63,6 +90,8 @@ def cauchy_function(xs, *params):
 
     return ys
 
+
+## APERIODIC FUNCTIONS
 
 def expo_function(xs, *params):
     """Exponential fitting function, for fitting aperiodic component with a 'knee'.
@@ -114,6 +143,34 @@ def expo_nk_function(xs, *params):
     return ys
 
 
+def double_expo_function(xs, *params):
+    """Double exponential fitting function, for fitting aperiodic component with two exponents and a knee.
+
+    NOTE: this function requires linear frequency (not log).
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters (offset, exp0, knee, exp1) that define the function:
+        y = 10^offset * (1/((x**exp0) * (knee + x^exp1))
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for exponential function.
+    """
+
+    ys = np.zeros_like(xs)
+
+    offset, exp0, knee, exp1 = params
+
+    ys = ys + offset - np.log10((xs**exp0) * (knee + xs**exp1))
+
+    return ys
+
+
 def linear_function(xs, *params):
     """Linear fitting function.
 
@@ -158,6 +215,8 @@ def quadratic_function(xs, *params):
     return ys
 
 
+## GETTER FUNCTIONS
+
 def get_pe_func(periodic_mode):
     """Select and return specified function for periodic component.
 
@@ -180,10 +239,8 @@ def get_pe_func(periodic_mode):
 
     if periodic_mode == 'gaussian':
         pe_func = gaussian_function
-
     elif periodic_mode == 'cauchy':
         pe_func = cauchy_function
-
     else:
         raise ValueError("Requested periodic mode not understood.")
 

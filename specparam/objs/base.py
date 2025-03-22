@@ -4,16 +4,18 @@ from copy import deepcopy
 
 import numpy as np
 
-from specparam.data import ModelRunModes
 from specparam.utils.array import unlog
-from specparam.core.items import OBJ_DESC
+from specparam.modes.items import OBJ_DESC
+from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.io.utils import get_files
 from specparam.io.files import load_json, load_jsonlines
 from specparam.io.models import save_model, save_group, save_event
-from specparam.modutils.errors import NoDataError
-from specparam.modutils.docs import copy_doc_func_to_method
+from specparam.modutils.errors import NoDataError, FitError
+from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
+                                     replace_docstring_sections)
 from specparam.objs.results import BaseResults, BaseResults2D, BaseResults2DT, BaseResults3D
 from specparam.objs.data import BaseData, BaseData2D, BaseData2DT, BaseData3D
+from specparam.objs.utils import run_parallel_group, run_parallel_event, pbar
 
 ###################################################################################################
 ###################################################################################################
@@ -25,6 +27,72 @@ class CommonBase():
         """Return a copy of the current object."""
 
         return deepcopy(self)
+
+
+    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
+        """Fit a power spectrum as a combination of periodic and aperiodic components.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the power spectrum, in linear space.
+        power_spectrum : 1d array, optional
+            Power values, which must be input in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to restrict power spectrum to.
+            If not provided, keeps the entire range.
+
+        Raises
+        ------
+        NoDataError
+            If no data is available to fit.
+        FitError
+            If model fitting fails to fit. Only raised in debug mode.
+
+        Notes
+        -----
+        Data is optional, if data has already been added to the object.
+        """
+
+        # If freqs & power_spectrum provided together, add data to object.
+        if freqs is not None and power_spectrum is not None:
+            self.add_data(freqs, power_spectrum, freq_range)
+
+        # Check that data is available
+        if not self.has_data:
+            raise NoDataError("No data available to fit, can not proceed.")
+
+        # In rare cases, the model fails to fit, and so uses try / except
+        try:
+
+            # If not set to fail on NaN or Inf data at add time, check data here
+            #   This serves as a catch all for curve_fits which will fail given NaN or Inf
+            #   Because FitError's are by default caught, this allows fitting to continue
+            if not self._check_data:
+                if np.any(np.isinf(self.power_spectrum)) or np.any(np.isnan(self.power_spectrum)):
+                    raise FitError("Model fitting was skipped because there are NaN or Inf "
+                                   "values in the data, which preclude model fitting.")
+
+            # Call the fit function from the algorithm object
+            self._fit()
+
+            # Compute goodness of fit & error measures
+            self._compute_model_gof()
+            self._compute_model_error()
+
+        except FitError:
+
+            # If in debug mode, re-raise the error
+            if self._debug:
+                raise
+
+            # Clear any interim model results that may have run
+            #   Partial model results shouldn't be interpreted in light of overall failure
+            self._reset_results(clear_results=True)
+
+            # Print out status
+            if self.verbose:
+                print("Model fitting was unsuccessful.")
 
 
     def get_data(self, component='full', space='log'):
@@ -74,36 +142,6 @@ class CommonBase():
         return output
 
 
-    def get_run_modes(self):
-        """Return run modes of the current object.
-
-        Returns
-        -------
-        ModelRunModes
-            Object containing the run modes from the current object.
-        """
-
-        return ModelRunModes(**{key.strip('_') : getattr(self, key) \
-                             for key in OBJ_DESC['run_modes']})
-
-
-    def set_run_modes(self, debug, check_freqs, check_data):
-        """Simultaneously set all run modes.
-
-        Parameters
-        ----------
-        debug : bool
-            Whether to run in debug mode.
-        check_freqs : bool
-            Whether to run in check freqs mode.
-        check_data : bool
-            Whether to run in check data mode.
-        """
-
-        self.set_debug_mode(debug)
-        self.set_check_modes(check_freqs, check_data)
-
-
     def _add_from_dict(self, data):
         """Add data to object from a dictionary.
 
@@ -120,14 +158,17 @@ class CommonBase():
 class BaseObject(CommonBase, BaseResults, BaseData):
     """Define Base object for fitting models to 1D data."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug=False, verbose=True):
+        """Initialize BaseObject object."""
 
         CommonBase.__init__(self)
         BaseData.__init__(self)
         BaseResults.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                             debug_mode=debug_mode, verbose=verbose)
+                             debug=debug, verbose=verbose)
 
 
+    @replace_docstring_sections([docs_get_section(BaseData.add_data.__doc__, 'Parameters'),
+                                 docs_get_section(BaseData.add_data.__doc__, 'Notes')])
     def add_data(self, freqs, power_spectrum, freq_range=None, clear_results=True):
         """Add data (frequencies, and power spectrum values) to the current object.
 
@@ -172,9 +213,12 @@ class BaseObject(CommonBase, BaseResults, BaseData):
         # Reset data in object, so old data can't interfere
         self._reset_data_results(True, True, True)
 
-        # Load JSON file, add to self and check loaded data
+        # Load JSON file
         data = load_json(file_name, file_path)
+
+        # Add loaded data to object and check loaded data
         self._add_from_dict(data)
+        self._check_loaded_modes(data)
         self._check_loaded_settings(data)
         self._check_loaded_results(data)
 
@@ -206,12 +250,13 @@ class BaseObject(CommonBase, BaseResults, BaseData):
 class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
     """Define Base object for fitting models to 2D data."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug=False, verbose=True):
+        """Initialize BaseObject2D object."""
 
         CommonBase.__init__(self)
         BaseData2D.__init__(self)
         BaseResults2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                               debug_mode=debug_mode, verbose=verbose)
+                               debug=debug, verbose=verbose)
 
 
     def add_data(self, freqs, power_spectra, freq_range=None, clear_results=True):
@@ -244,6 +289,54 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
         super().add_data(freqs, power_spectra, freq_range=freq_range)
 
 
+    def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
+        """Fit a group of power spectra.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the power_spectra, in linear space.
+        power_spectra : 2d array, shape: [n_power_spectra, n_freqs], optional
+            Matrix of power spectrum values, in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to fit the model to. If not provided, fits the entire given range.
+        n_jobs : int, optional, default: 1
+            Number of jobs to run in parallel.
+            1 is no parallelization. -1 uses all available cores.
+        progress : {None, 'tqdm', 'tqdm.notebook'}, optional
+            Which kind of progress bar to use. If None, no progress bar is used.
+
+        Notes
+        -----
+        Data is optional, if data has already been added to the object.
+        """
+
+        # If freqs & power spectra provided together, add data to object
+        if freqs is not None and power_spectra is not None:
+            self.add_data(freqs, power_spectra, freq_range)
+
+        # If 'verbose', print out a marker of what is being run
+        if self.verbose and not progress:
+            print('Fitting model across {} power spectra.'.format(len(self.power_spectra)))
+
+        # Run linearly
+        if n_jobs == 1:
+            self._reset_group_results(len(self.power_spectra))
+            for ind, power_spectrum in \
+                pbar(enumerate(self.power_spectra), progress, len(self)):
+                self._pass_through_spectrum(power_spectrum)
+                super().fit()
+                self.group_results[ind] = self._get_results()
+
+        # Run in parallel
+        else:
+            self._reset_group_results()
+            self.group_results = run_parallel_group(self, self.power_spectra, n_jobs, progress)
+
+        # Clear the individual power spectrum and fit results of the current fit
+        self._reset_data_results(clear_spectrum=True, clear_results=True)
+
+
     @copy_doc_func_to_method(save_group)
     def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
@@ -272,6 +365,7 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
 
             # If settings are loaded, check and update based on the first line
             if ind == 0:
+                self._check_loaded_modes(data)
                 self._check_loaded_settings(data)
 
             # If power spectra data is part of loaded data, collect to add to object
@@ -293,6 +387,20 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
 
         # Reset peripheral data from last loaded result, keeping freqs info
         self._reset_data_results(clear_spectrum=True, clear_results=True)
+
+
+    def _pass_through_spectrum(self, power_spectrum):
+        """Pass through a power spectrum to add to object.
+
+        Notes
+        -----
+        Passing through a spectrum like this assumes there is an existing & consistent frequency
+        definition to use and that the power_spectrum is already logged, with correct freq_range.
+        This should only be done internally for passing through individual spectra that
+        have already undergone data checking during data adding.
+        """
+
+        self.power_spectrum = power_spectrum
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False,
@@ -318,12 +426,46 @@ class BaseObject2D(CommonBase, BaseResults2D, BaseData2D):
 class BaseObject2DT(BaseObject2D, BaseResults2DT, BaseData2DT):
     """Define Base object for fitting models to 2D data - tranpose version."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug=False, verbose=True):
+        """Initialize BaseObject2DT object."""
 
-        BaseObject2D.__init__(self)
         BaseData2DT.__init__(self)
+        BaseObject2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
+                              debug=debug, verbose=verbose)
         BaseResults2D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                               debug_mode=debug_mode, verbose=verbose)
+                               debug=debug, verbose=verbose)
+
+
+    def fit(self, freqs=None, spectrogram=None, freq_range=None, peak_org=None,
+            n_jobs=1, progress=None):
+        """Fit a spectrogram.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the spectrogram, in linear space.
+        spectrogram : 2d array, shape: [n_freqs, n_time_windows], optional
+            Spectrogram of power spectrum values, in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to fit the model to. If not provided, fits the entire given range.
+        peak_org : int or Bands
+            How to organize peaks.
+            If int, extracts the first n peaks.
+            If Bands, extracts peaks based on band definitions.
+        n_jobs : int, optional, default: 1
+            Number of jobs to run in parallel.
+            1 is no parallelization. -1 uses all available cores.
+        progress : {None, 'tqdm', 'tqdm.notebook'}, optional
+            Which kind of progress bar to use. If None, no progress bar is used.
+
+        Notes
+        -----
+        Data is optional, if data has already been added to the object.
+        """
+
+        super().fit(freqs, spectrogram, freq_range, n_jobs, progress)
+        if peak_org is not False:
+            self.convert_results(peak_org)
 
 
     def load(self, file_name, file_path=None, peak_org=None):
@@ -351,12 +493,14 @@ class BaseObject2DT(BaseObject2D, BaseResults2DT, BaseData2DT):
 class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
     """Define Base object for fitting models to 3D data."""
 
-    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug_mode=False, verbose=True):
+    def __init__(self, aperiodic_mode=None, periodic_mode=None, debug=False, verbose=True):
+        """Initialize BaseObject3D object."""
 
-        BaseObject2DT.__init__(self)
         BaseData3D.__init__(self)
+        BaseObject2DT.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
+                               debug=debug, verbose=verbose)
         BaseResults3D.__init__(self, aperiodic_mode=aperiodic_mode, periodic_mode=periodic_mode,
-                               debug_mode=debug_mode, verbose=verbose)
+                               debug=debug, verbose=verbose)
 
 
     def add_data(self, freqs, spectrograms, freq_range=None, clear_results=True):
@@ -386,6 +530,60 @@ class BaseObject3D(BaseObject2DT, BaseResults3D, BaseData3D):
             self._reset_event_results()
 
         super().add_data(freqs, spectrograms, freq_range=freq_range)
+
+
+    def fit(self, freqs=None, spectrograms=None, freq_range=None, peak_org=None,
+            n_jobs=1, progress=None):
+        """Fit a set of events.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the power_spectra, in linear space.
+        spectrograms : 3d array or list of 2d array
+            Matrix of power values, in linear space.
+            If a list of 2d arrays, each should be have the same shape of [n_freqs, n_time_windows].
+            If a 3d array, should have shape [n_events, n_freqs, n_time_windows].
+        freq_range : list of [float, float], optional
+            Frequency range to fit the model to. If not provided, fits the entire given range.
+        peak_org : int or Bands
+            How to organize peaks.
+            If int, extracts the first n peaks.
+            If Bands, extracts peaks based on band definitions.
+        n_jobs : int, optional, default: 1
+            Number of jobs to run in parallel.
+            1 is no parallelization. -1 uses all available cores.
+        progress : {None, 'tqdm', 'tqdm.notebook'}, optional
+            Which kind of progress bar to use. If None, no progress bar is used.
+
+        Notes
+        -----
+        Data is optional, if data has already been added to the object.
+        """
+
+        if spectrograms is not None:
+            self.add_data(freqs, spectrograms, freq_range)
+
+        # If 'verbose', print out a marker of what is being run
+        if self.verbose and not progress:
+            print('Fitting model across {} events of {} windows.'.format(\
+                len(self.spectrograms), self.n_time_windows))
+
+        if n_jobs == 1:
+            self._reset_event_results(len(self.spectrograms))
+            for ind, spectrogram in pbar(enumerate(self.spectrograms), progress, len(self)):
+                self.power_spectra = spectrogram.T
+                super().fit(peak_org=False)
+                self.event_group_results[ind] = self.group_results
+                self._reset_group_results()
+                self._reset_data_results(clear_spectra=True)
+
+        else:
+            fg = self.get_group(None, None, 'group')
+            self.event_group_results = run_parallel_event(fg, self.spectrograms, n_jobs, progress)
+
+        if peak_org is not False:
+            self.convert_results(peak_org)
 
 
     @copy_doc_func_to_method(save_event)

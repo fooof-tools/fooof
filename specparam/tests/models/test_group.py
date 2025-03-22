@@ -1,4 +1,4 @@
-"""Tests for the specparam.objs.group, including the group model object and it's methods.
+"""Tests for the specparam.models.group, including the group model object and it's methods.
 
 NOTES
 -----
@@ -12,7 +12,7 @@ import numpy as np
 from numpy.testing import assert_equal
 
 from specparam.data import FitResults
-from specparam.core.items import OBJ_DESC
+from specparam.modes.items import OBJ_DESC
 from specparam.modutils.dependencies import safe_import
 from specparam.sim import sim_group_power_spectra
 
@@ -22,7 +22,7 @@ from specparam.tests.tsettings import TEST_DATA_PATH, TEST_REPORTS_PATH
 from specparam.tests.tdata import default_group_params
 from specparam.tests.tutils import plot_test
 
-from specparam.objs.group import *
+from specparam.models.group import *
 
 ###################################################################################################
 ###################################################################################################
@@ -240,7 +240,8 @@ def test_plot(tfg, skip_if_no_mpl):
     tfg.plot()
 
 def test_load():
-    """Test load into group object. Note: loads files from test_core_io."""
+    """Test load into group object.
+    Note: loads files from test_save_group in specparam/tests/io/test_models.py."""
 
     file_name_res = 'test_group_res'
     file_name_set = 'test_group_set'
@@ -251,10 +252,8 @@ def test_load():
     tfg.load(file_name_res, TEST_DATA_PATH)
     assert len(tfg.group_results) > 0
     # Test that settings and data are None
-    #   Except for aperiodic mode, which can be inferred from the data
     for setting in OBJ_DESC['settings']:
-        if setting != 'aperiodic_mode':
-            assert getattr(tfg, setting) is None
+        assert getattr(tfg, setting) is None
     assert tfg.power_spectra is None
 
     # Test loading just settings

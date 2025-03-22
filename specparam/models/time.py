@@ -2,9 +2,9 @@
 
 import numpy as np
 
-from specparam.objs import SpectralModel
+from specparam.models import SpectralModel
 from specparam.objs.base import BaseObject2DT
-from specparam.objs.algorithm import SpectralFitAlgorithm
+from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.data.conversions import group_to_dataframe, dict_to_df
 from specparam.plts.time import plot_time_model
 from specparam.reports.save import save_time_report
@@ -27,7 +27,7 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
 
     Parameters
     ----------
-    %copied in from SpectralModel object
+    % copied in from SpectralModel object
 
     Attributes
     ----------
@@ -45,7 +45,7 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
 
     Notes
     -----
-    %copied in from SpectralModel object
+    % copied in from SpectralModel object
     - The time object inherits from the group model, which in turn inherits from the
       model object. As such it also has data attributes defined on the model object,
       as well as additional attributes that are added to the group object (see notes
@@ -62,7 +62,7 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
         BaseObject2DT.__init__(self,
                                aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
                                periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
-                               debug_mode=kwargs.pop('debug_mode', False),
+                               debug=kwargs.pop('debug', False),
                                verbose=kwargs.pop('verbose', True))
 
         SpectralFitAlgorithm.__init__(self, *args, **kwargs)
@@ -160,10 +160,14 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
         return df
 
 
-    def _check_width_limits(self):
-        """Check and warn about bandwidth limits / frequency resolution interaction."""
+    def _fit_prechecks(self):
+        """Overloads fit prechecks.
 
-        # Only check & warn on first power spectrum
-        #   This is to avoid spamming standard output for every spectrum in the group
+        Notes
+        -----
+        This overloads fit prechecks to only run once (on the first spectrum), to avoid
+        checking and reporting on every spectrum and repeatedly re-raising the same warning.
+        """
+
         if np.all(self.power_spectrum == self.spectrogram[:, 0]):
-            super()._check_width_limits()
+            super()._fit_prechecks()

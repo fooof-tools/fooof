@@ -1,16 +1,15 @@
-"""Tests for specparam.objs.algorthm, including the base object and it's methods."""
+"""Tests for specparam.algorthms.spectral_fit."""
 
 from specparam.objs.base import BaseObject
 from specparam.sim import sim_power_spectrum
+from specparam.algorithms.algorithm import AlgorithmDefinition
 
 from specparam.tests.tdata import default_spectrum_params
 
-from specparam.objs.algorithm import *
+from specparam.algorithms.spectral_fit import *
 
 ###################################################################################################
 ###################################################################################################
-
-## Algorithm Object
 
 def test_algorithm_inherit():
 
@@ -20,4 +19,5 @@ def test_algorithm_inherit():
             SpectralFitAlgorithm.__init__(self)
 
     talgo = TestAlgo()
+    assert isinstance(talgo.algorithm, AlgorithmDefinition)
     talgo.fit(*sim_power_spectrum(*default_spectrum_params()))
