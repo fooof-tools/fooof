@@ -123,9 +123,9 @@ def gen_modes_str(model_obj, description=False, concise=False):
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Periodic Mode : {}'.format(model_obj.periodic_mode.name),
+        *[el for el in ['Periodic Mode : {}'.format(model_obj.modes.periodic.name),
                         '{}'.format(desc['aperiodic_mode']),
-                        'Aperiodic Mode : {}'.format(model_obj.aperiodic_mode.name),
+                        'Aperiodic Mode : {}'.format(model_obj.modes.aperiodic.name),
                         '{}'.format(desc['aperiodic_mode'])] if el != ''],
 
         # Footer
@@ -304,8 +304,8 @@ def gen_methods_text_str(model_obj=None):
         freq_range = ('XX', 'XX')
 
     methods_str = template.format(MODULE_VERSION,
-                                  model_obj.aperiodic_mode.name if model_obj else 'XX',
-                                  model_obj.periodic_mode.name if model_obj else 'XX',
+                                  model_obj.modes.aperiodic.name if model_obj else 'XX',
+                                  model_obj.modes.periodic.name if model_obj else 'XX',
                                   model_obj.peak_width_limits if model_obj else 'XX',
                                   model_obj.max_n_peaks if model_obj else 'XX',
                                   model_obj.min_peak_height if model_obj else 'XX',
@@ -352,7 +352,7 @@ def gen_model_results_str(model, concise=False):
 
         # Aperiodic parameters
         ('Aperiodic Parameters (offset, ' + \
-         ('knee, ' if model.aperiodic_mode.name == 'knee' else '') + \
+         ('knee, ' if model.modes.aperiodic.name == 'knee' else '') + \
          'exponent): '),
         ', '.join(['{:2.4f}'] * len(model.aperiodic_params_)).format(*model.aperiodic_params_),
         '',
@@ -409,7 +409,7 @@ def gen_group_results_str(group, concise=False):
     errors = group.get_params('error')
     exps = group.get_params('aperiodic_params', 'exponent')
     kns = group.get_params('aperiodic_params', 'knee') \
-        if str(group.aperiodic_mode) == 'knee' else np.array([0])
+        if group.modes.aperiodic.name == 'knee' else np.array([0])
 
     str_lst = [
 
@@ -432,12 +432,12 @@ def gen_group_results_str(group, concise=False):
 
         # Aperiodic parameters - knee fit status, and quick exponent description
         'Power spectra were fit {} a knee.'.format(\
-            'with' if str(group.aperiodic_mode) == 'knee' else 'without'),
+            'with' if group.modes.aperiodic.name == 'knee' else 'without'),
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
                         .format(*compute_arr_desc(kns)),
-                       ] if group.aperiodic_mode.name == 'knee'],
+                       ] if group.modes.aperiodic.name == 'knee'],
 
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(*compute_arr_desc(exps)),
@@ -494,7 +494,7 @@ def gen_time_results_str(time_model, concise=False):
     band_labels = [\
         pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
         for band_ind in range(len(pe_labels['cf']))]
-    has_knee = time_model.aperiodic_mode.name == 'knee'
+    has_knee = time_model.modes.aperiodic.name == 'knee'
 
     str_lst = [
 
@@ -518,7 +518,7 @@ def gen_time_results_str(time_model, concise=False):
 
         # Aperiodic parameters - knee fit status, and quick exponent description
         'Power spectra were fit {} a knee.'.format(\
-            'with' if time_model.aperiodic_mode.name == 'knee' else 'without'),
+            'with' if time_model.modes.aperiodic.name == 'knee' else 'without'),
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
@@ -586,7 +586,7 @@ def gen_event_results_str(event_model, concise=False):
     band_labels = [\
         pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
         for band_ind in range(len(pe_labels['cf']))]
-    has_knee = event_model.aperiodic_mode.name == 'knee'
+    has_knee = event_model.modes.aperiodic.name == 'knee'
 
     str_lst = [
 
@@ -608,7 +608,7 @@ def gen_event_results_str(event_model, concise=False):
 
         # Aperiodic parameters - knee fit status, and quick exponent description
         'Power spectra were fit {} a knee.'.format(\
-            'with' if event_model.aperiodic_mode.name == 'knee' else 'without'),
+            'with' if event_model.modes.aperiodic.name == 'knee' else 'without'),
         '',
         'Aperiodic params (values across events):',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'

@@ -1,4 +1,4 @@
-"""Modes object."""
+"""Mode object."""
 
 from specparam.utils.checks import check_input_options
 
@@ -55,7 +55,7 @@ class Mode():
     def __repr__(self):
         """Return representation of this object as the name."""
 
-        return self.name
+        return 'MODE: ' + self.component + '-' + self.name
 
 
     def __eq__(self, other):

@@ -94,7 +94,7 @@ def cauchy_function(xs, *params):
 ## APERIODIC FUNCTIONS
 
 def expo_function(xs, *params):
-    """Exponential fitting function, for fitting aperiodic component with a 'knee'.
+    """Exponential function, for fitting aperiodic component with a 'knee'.
 
     NOTE: this function requires linear frequency (not log).
 
@@ -119,7 +119,7 @@ def expo_function(xs, *params):
 
 
 def expo_nk_function(xs, *params):
-    """Exponential fitting function, for fitting aperiodic component without a 'knee'.
+    """Exponential function, for fitting aperiodic component without a 'knee'.
 
     NOTE: this function requires linear frequency (not log).
 
@@ -144,7 +144,7 @@ def expo_nk_function(xs, *params):
 
 
 def double_expo_function(xs, *params):
-    """Double exponential fitting function, for fitting aperiodic component with two exponents and a knee.
+    """Double exponential function, for fitting aperiodic component with two exponents and a knee.
 
     NOTE: this function requires linear frequency (not log).
 

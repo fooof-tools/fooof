@@ -9,7 +9,7 @@ from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
-from specparam.data import FitResults, ModelSettings
+from specparam.data import FitResults
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import get_group_params, get_results_by_ind, get_results_by_row
 from specparam.measures.gof import compute_gof
@@ -22,23 +22,8 @@ class BaseResults():
     """Base object for managing results."""
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug=False,
-                 verbose=True, error_metric='MAE', gof_metric='r_squared'):
+    def __init__(self, error_metric='MAE', gof_metric='r_squared'):
         """Initialize BaseResults object."""
-
-        # Set fit component modes
-        if isinstance(aperiodic_mode, str):
-            self.aperiodic_mode = AP_MODES[aperiodic_mode]
-        else:
-            self.aperiodic_mode = aperiodic_mode
-        if isinstance(periodic_mode, str):
-            self.periodic_mode = PE_MODES[periodic_mode]
-        else:
-            self.periodic_mode = periodic_mode
-
-        # Set run approaches
-        self.set_debug(debug)
-        self.verbose = verbose
 
         # Initialize results attributes
         self._reset_results(True)
@@ -60,7 +45,7 @@ class BaseResults():
         - necessarily defined, as floats, if model has been fit
         """
 
-        return True if not np.all(np.isnan(self.aperiodic_params_)) else False
+        return not np.all(np.isnan(self.aperiodic_params_))
 
 
     @property
@@ -68,40 +53,6 @@ class BaseResults():
         """How many peaks were fit in the model."""
 
         return self.peak_params_.shape[0] if self.has_model else None
-
-
-    def add_settings(self, settings):
-        """Add settings into object from a ModelSettings object.
-
-        Parameters
-        ----------
-        settings : ModelSettings
-            A data object containing the settings for a power spectrum model.
-        """
-
-        for setting in OBJ_DESC['settings']:
-            setattr(self, setting, getattr(settings, setting))
-
-        self._check_loaded_settings(settings._asdict())
-
-
-    def get_settings(self):
-        """Return user defined settings of the current object.
-
-        Returns
-        -------
-        ModelSettings
-            Object containing the settings from the current object.
-        """
-
-        return ModelSettings(**{key : getattr(self, key) \
-                             for key in OBJ_DESC['settings']})
-
-
-    def get_debug(self):
-        """Return object debug status."""
-
-        return self._debug
 
 
     def add_results(self, results):
@@ -181,56 +132,6 @@ class BaseResults():
         return output
 
 
-    def set_debug(self, debug):
-        """Set debug state, which controls if an error is raised if model fitting is unsuccessful.
-
-        Parameters
-        ----------
-        debug : bool
-            Whether to run in debug state.
-        """
-
-        self._debug = debug
-
-
-    def _check_loaded_modes(self, data):
-        """Check if fit modes added, and update the object as needed.
-
-        Parameters
-        ----------
-        data : dict
-            A dictionary of data that has been added to the object.
-        """
-
-        # If fit mode information in loaded, reload mode definitions
-        self.aperiodic_mode = AP_MODES[data['aperiodic_mode']] \
-            if 'aperiodic_mode' in data else None
-        self.periodic_mode = PE_MODES[data['periodic_mode']] \
-            if 'periodic_mode' in data else None
-
-
-    def _check_loaded_settings(self, data):
-        """Check if settings added, and update the object as needed.
-
-        Parameters
-        ----------
-        data : dict
-            A dictionary of data that has been added to the object.
-        """
-
-        # If settings not loaded from file, clear from object, so that default
-        # settings, which are potentially wrong for loaded data, aren't kept
-        if not set(OBJ_DESC['settings']).issubset(set(data.keys())):
-
-            # Reset all public settings to None
-            for setting in OBJ_DESC['settings']:
-                setattr(self, setting, None)
-
-        # Reset internal settings so that they are consistent with what was loaded
-        #   Note that this will set internal settings to None, if public settings unavailable
-        self._reset_internal_settings()
-
-
     def _check_loaded_results(self, data):
         """Check if results have been added and check data.
 
@@ -247,10 +148,6 @@ class BaseResults():
             self.gaussian_params_ = check_array_dim(self.gaussian_params_)
 
 
-    def _reset_internal_settings(self):
-        """"Can be overloaded if any resetting needed for internal settings."""
-
-
     def _reset_results(self, clear_results=False):
         """Set, or reset, results attributes to empty.
 
@@ -262,18 +159,18 @@ class BaseResults():
 
         if clear_results:
 
-            # TEMP / Note - for ap / pe params, move to something like `xx_params` and `_xx_params` (?)
-
             # Aperiodic parameters
-            if self.aperiodic_mode:
-                self.aperiodic_params_ = np.array([np.nan] * self.aperiodic_mode.n_params)
+            #   TEMP / ToDo: check for attribute - probably update this process
+            if getattr(self, 'modes', None):
+                self.aperiodic_params_ = np.array([np.nan] * self.modes.aperiodic.n_params)
             else:
                 self.aperiodic_params_ = np.nan
 
             # Periodic parameters
-            if self.periodic_mode:
-                self.gaussian_params_ = np.empty([0, self.periodic_mode.n_params])
-                self.peak_params_ = np.empty([0, self.periodic_mode.n_params])
+            #   TEMP / ToDo: check for attribute - probably update this process
+            if getattr(self, 'modes', None):
+                self.gaussian_params_ = np.empty([0, self.modes.periodic.n_params])
+                self.peak_params_ = np.empty([0, self.modes.periodic.n_params])
             else:
                 self.gaussian_params_ = np.nan
                 self.peak_params_ = np.nan
@@ -307,7 +204,8 @@ class BaseResults():
         Which measure is applied is by default controlled by the `_gof_metric` attribute.
         """
 
-        self.r_squared_ = compute_gof(self.power_spectrum, self.modeled_spectrum_)
+        self.r_squared_ = compute_gof(self.power_spectrum, self.modeled_spectrum_,
+                                      self._gof_metric if not metric else metric)
 
 
     def _compute_model_error(self, metric=None):
@@ -333,10 +231,10 @@ class BaseResults():
 class BaseResults2D(BaseResults):
     """Base object for managing results - 2D version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug=False, verbose=True):
+    def __init__(self):
         """Initialize BaseResults2D object."""
 
-        BaseResults.__init__(self, aperiodic_mode, periodic_mode, debug=debug, verbose=verbose)
+        BaseResults.__init__(self)
 
         self._reset_group_results()
 
@@ -382,7 +280,7 @@ class BaseResults2D(BaseResults):
     def has_model(self):
         """Indicator for if the object contains model fits."""
 
-        return True if self.group_results else False
+        return bool(self.group_results)
 
 
     @property
@@ -561,10 +459,10 @@ class BaseResults2D(BaseResults):
 class BaseResults2DT(BaseResults2D):
     """Base object for managing results - 2D transpose version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug=False, verbose=True):
+    def __init__(self):
         """Initialize BaseResults2DT object."""
 
-        BaseResults2D.__init__(self, aperiodic_mode, periodic_mode, debug=debug, verbose=verbose)
+        BaseResults2D.__init__(self)
 
         self._reset_time_results()
 
@@ -668,10 +566,10 @@ class BaseResults2DT(BaseResults2D):
 class BaseResults3D(BaseResults2DT):
     """Base object for managing results - 3D version."""
 
-    def __init__(self, aperiodic_mode, periodic_mode, debug=False, verbose=True):
+    def __init__(self):
         """Initialize BaseResults3D object."""
 
-        BaseResults2DT.__init__(self, aperiodic_mode, periodic_mode, debug=debug, verbose=verbose)
+        BaseResults2DT.__init__(self)
 
         self._reset_event_results()
 
