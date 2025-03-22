@@ -20,32 +20,33 @@ class Modes():
     def __init__(self, aperiodic, periodic):
         """Initialize modes."""
 
-        self.aperiodic = self._check_mode(aperiodic, AP_MODES)
-        self.periodic = self._check_mode(periodic, PE_MODES)
+        self.aperiodic = check_mode_definition(aperiodic, AP_MODES)
+        self.periodic = check_mode_definition(periodic, PE_MODES)
 
 
-    def _check_mode(self, mode, options):
-        """Check a mode specification.
 
-        Parameters
-        ----------
-        mode : str or Mode
-            Fit mode. If str, should be a label corresponding to an entry in `options`.
-        options : dict
-            Available modes.
+def check_mode_definition(mode, options):
+    """Check a mode specification.
 
-        Raises
-        ------
-        ValueError
-            If the mode definition is not found / understood.
-        """
+    Parameters
+    ----------
+    mode : str or Mode
+        Fit mode. If str, should be a label corresponding to an entry in `options`.
+    options : dict
+        Available modes.
 
-        if isinstance(mode, str):
-            assert mode in list(options.keys()), 'Specific Mode not found.'
-            mode = options[mode]
-        elif isinstance(mode, Mode):
-            mode = mode
-        else:
-            raise ValueError('Mode input not understood.')
+    Raises
+    ------
+    ValueError
+        If the mode definition is not found / understood.
+    """
 
-        return mode
+    if isinstance(mode, str):
+        assert mode in list(options.keys()), 'Specific Mode not found.'
+        mode = options[mode]
+    elif isinstance(mode, Mode):
+        mode = mode
+    else:
+        raise ValueError('Mode input not understood.')
+
+    return mode
