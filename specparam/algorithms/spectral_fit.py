@@ -123,7 +123,9 @@ class SpectralFitAlgorithm(Algorithm):
 
         ## Set internal settings, based on inputs, and initialize data & results attributes
         self._reset_internal_settings()
-        self._reset_data_results(True, True, True)
+
+        # TEMP: is this still needed?
+        #self._reset_data_results(True, True, True)
 
 
     def _fit_prechecks(self):

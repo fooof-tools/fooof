@@ -9,7 +9,7 @@ from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
-from specparam.data import FitResults, ModelSettings
+from specparam.data import FitResults
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import get_group_params, get_results_by_ind, get_results_by_row
 from specparam.measures.gof import compute_gof
@@ -68,34 +68,6 @@ class BaseResults():
         """How many peaks were fit in the model."""
 
         return self.peak_params_.shape[0] if self.has_model else None
-
-
-    def add_settings(self, settings):
-        """Add settings into object from a ModelSettings object.
-
-        Parameters
-        ----------
-        settings : ModelSettings
-            A data object containing the settings for a power spectrum model.
-        """
-
-        for setting in OBJ_DESC['settings']:
-            setattr(self, setting, getattr(settings, setting))
-
-        self._check_loaded_settings(settings._asdict())
-
-
-    def get_settings(self):
-        """Return user defined settings of the current object.
-
-        Returns
-        -------
-        ModelSettings
-            Object containing the settings from the current object.
-        """
-
-        return ModelSettings(**{key : getattr(self, key) \
-                             for key in OBJ_DESC['settings']})
 
 
     def get_debug(self):
@@ -209,28 +181,6 @@ class BaseResults():
             if 'periodic_mode' in data else None
 
 
-    def _check_loaded_settings(self, data):
-        """Check if settings added, and update the object as needed.
-
-        Parameters
-        ----------
-        data : dict
-            A dictionary of data that has been added to the object.
-        """
-
-        # If settings not loaded from file, clear from object, so that default
-        # settings, which are potentially wrong for loaded data, aren't kept
-        if not set(OBJ_DESC['settings']).issubset(set(data.keys())):
-
-            # Reset all public settings to None
-            for setting in OBJ_DESC['settings']:
-                setattr(self, setting, None)
-
-        # Reset internal settings so that they are consistent with what was loaded
-        #   Note that this will set internal settings to None, if public settings unavailable
-        self._reset_internal_settings()
-
-
     def _check_loaded_results(self, data):
         """Check if results have been added and check data.
 
@@ -245,10 +195,6 @@ class BaseResults():
         if set(OBJ_DESC['results']).issubset(set(data.keys())):
             self.peak_params_ = check_array_dim(self.peak_params_)
             self.gaussian_params_ = check_array_dim(self.gaussian_params_)
-
-
-    def _reset_internal_settings(self):
-        """"Can be overloaded if any resetting needed for internal settings."""
 
 
     def _reset_results(self, clear_results=False):

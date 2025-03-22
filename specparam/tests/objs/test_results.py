@@ -1,7 +1,6 @@
 """Tests for specparam.objs.results, including the data object and it's methods."""
 
 from specparam.modes.items import OBJ_DESC
-from specparam.data import ModelSettings
 
 from specparam.objs.results import *
 
@@ -17,19 +16,6 @@ def test_base_results():
 
     tres2 = BaseResults(aperiodic_mode='fixed', periodic_mode='gaussian')
     assert isinstance(tres2, BaseResults)
-
-def test_base_results_settings():
-
-    tres = BaseResults(None, None)
-
-    settings = ModelSettings([1, 4], 6, 0, 2)
-    tres.add_settings(settings)
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tres, setting) == getattr(settings, setting)
-
-    settings_out = tres.get_settings()
-    assert isinstance(settings, ModelSettings)
-    assert settings_out == settings
 
 def test_base_results_results(tresults):
 
