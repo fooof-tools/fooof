@@ -2,7 +2,6 @@
 
 from specparam.data import ModelSettings
 from specparam.modes.items import OBJ_DESC
-from specparam.algorithms.settings import SettingsDefinition
 
 ###################################################################################################
 ###################################################################################################
@@ -54,14 +53,12 @@ class Algorithm():
         self.set_debug(debug)
 
 
-    def _fit_prechecks():
+    def _fit_prechecks(self):
         """Prechecks to run before the fit function - if are some, overload this function."""
-        pass
 
 
-    def _fit():
+    def _fit(self):
         """Required fit function, to be overloaded."""
-        pass
 
 
     def add_settings(self, settings):

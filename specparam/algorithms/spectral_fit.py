@@ -6,13 +6,12 @@ import numpy as np
 from numpy.linalg import LinAlgError
 from scipy.optimize import curve_fit
 
-from specparam.modes.funcs import gaussian_function
-from specparam.reports.strings import gen_width_warning_str
 from specparam.modutils.errors import FitError
 from specparam.utils.select import groupby
 from specparam.reports.strings import gen_width_warning_str
 from specparam.measures.params import compute_gauss_std
-from specparam.algorithms.algorithm import SettingsDefinition, Algorithm
+from specparam.algorithms.algorithm import Algorithm
+from specparam.algorithms.settings import SettingsDefinition
 
 ###################################################################################################
 ###################################################################################################
@@ -36,7 +35,7 @@ SPECTRAL_FIT_SETTINGS = SettingsDefinition({
         'type' : 'float, optional, default: 2.0',
         'description' : \
             'Relative threshold for detecting peaks.\n        ' \
-            'This threshold is defined in relative units of the power spectrum (standard deviation).',
+            'Threshold is defined in relative units of the power spectrum (standard deviation).',
         },
 })
 

@@ -55,7 +55,7 @@ class BaseResults():
         - necessarily defined, as floats, if model has been fit
         """
 
-        return True if not np.all(np.isnan(self.aperiodic_params_)) else False
+        return not np.all(np.isnan(self.aperiodic_params_))
 
 
     @property
@@ -185,7 +185,8 @@ class BaseResults():
 
         if clear_results:
 
-            # TEMP / Note - for ap / pe params, move to something like `xx_params` and `_xx_params` (?)
+            # TEMP / Note - for ap / pe params, move to something
+            #   like `xx_params` and `_xx_params` (?)
 
             # Aperiodic parameters
             if self.aperiodic_mode:
@@ -230,7 +231,8 @@ class BaseResults():
         Which measure is applied is by default controlled by the `_gof_metric` attribute.
         """
 
-        self.r_squared_ = compute_gof(self.power_spectrum, self.modeled_spectrum_)
+        self.r_squared_ = compute_gof(self.power_spectrum, self.modeled_spectrum_,
+                                      self._gof_metric if not metric else metric)
 
 
     def _compute_model_error(self, metric=None):
@@ -305,7 +307,7 @@ class BaseResults2D(BaseResults):
     def has_model(self):
         """Indicator for if the object contains model fits."""
 
-        return True if self.group_results else False
+        return bool(self.group_results)
 
 
     @property

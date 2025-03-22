@@ -6,7 +6,6 @@ import numpy as np
 
 from specparam.utils.array import unlog
 from specparam.modes.items import OBJ_DESC
-from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.io.utils import get_files
 from specparam.io.files import load_json, load_jsonlines
 from specparam.io.models import save_model, save_group, save_event

@@ -34,7 +34,7 @@ class BaseData():
 
         self._reset_data(True, True)
 
-        # Define data check run modes
+        # Define data check run statuses
         self._check_freqs = check_freqs
         self._check_data = check_data
 
@@ -43,7 +43,7 @@ class BaseData():
     def has_data(self):
         """Indicator for if the object contains data."""
 
-        return True if np.any(self.power_spectrum) else False
+        return np.any(self.power_spectrum)
 
 
     def add_data(self, freqs, power_spectrum, freq_range=None):
@@ -93,7 +93,7 @@ class BaseData():
         Returns
         -------
         ModelChecks
-            Object containing the run modes from the current object.
+            Object containing the check statuses from the current object.
         """
 
         return ModelChecks(**{key.strip('_') : getattr(self, key) \
@@ -246,7 +246,7 @@ class BaseData():
         # Log power values
         powers = np.log10(powers)
 
-        ## Data checks - run checks on inputs based on check modes
+        ## Data checks - run checks on inputs based on check statuses
 
         if self._check_freqs:
             # Check if the frequency data is unevenly spaced, and raise an error if so
@@ -281,7 +281,7 @@ class BaseData2D(BaseData):
     def has_data(self):
         """Indicator for if the object contains data."""
 
-        return True if np.any(self.power_spectra) else False
+        return np.any(self.power_spectra)
 
 
     def add_data(self, freqs, power_spectra, freq_range=None):

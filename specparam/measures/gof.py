@@ -79,7 +79,7 @@ def compute_gof(power_spectrum, modeled_spectrum, gof_metric='r_squared'):
 
     if isinstance(gof_metric, str):
         gof = GOF_FUNCS[gof_metric.lower()](power_spectrum, modeled_spectrum)
-    elif isfunction(error_metric):
+    elif isfunction(gof_metric):
         gof = gof_metric(power_spectrum, modeled_spectrum)
 
     return gof
