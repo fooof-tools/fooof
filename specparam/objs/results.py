@@ -12,8 +12,6 @@ from specparam.modutils.errors import NoModelError
 from specparam.data import FitResults
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import get_group_params, get_results_by_ind, get_results_by_row
-from specparam.measures.gof import compute_gof
-from specparam.measures.error import compute_error
 from specparam.sim.gen import gen_model
 
 ###################################################################################################
@@ -23,17 +21,13 @@ class BaseResults():
     """Base object for managing results."""
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    def __init__(self, error_metric='MAE', gof_metric='r_squared', modes=None):
+    def __init__(self, modes=None):
         """Initialize BaseResults object."""
 
         self.modes = modes
 
         # Initialize results attributes
         self._reset_results(True)
-
-        # Set private run settings
-        self._error_metric = error_metric
-        self._gof_metric = gof_metric
 
 
     @property
@@ -202,49 +196,6 @@ class BaseResults():
         self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(
             freqs, self.aperiodic_params_,
             self.gaussian_params_, return_components=True)
-
-
-    def _compute_model_gof(self, metric=None):
-        """Calculate the r-squared goodness of fit of the model, compared to the original data.
-
-        Parameters
-        ----------
-        metric : {'r_squared', 'adj_r_squared'}, optional
-            Which goodness of fit measure to compute:
-            * 'r_squared' : R-squared
-            * 'adj_r_squared' : Adjusted R-squared
-
-        Notes
-        -----
-        Which measure is applied is by default controlled by the `_gof_metric` attribute.
-        """
-
-        ## TEMP
-        self.r_squared_ = 1.0
-        #self.r_squared_ = compute_gof(self.data.power_spectrum, self.modeled_spectrum_,
-        #                              self._gof_metric if not metric else metric)
-
-
-    def _compute_model_error(self, metric=None):
-        """Calculate the overall error of the model fit, compared to the original data.
-
-        Parameters
-        ----------
-        metric : {'MAE', 'MSE', 'RMSE'}, optional
-            Which error measure to compute:
-            * 'MAE' : mean absolute error
-            * 'MSE' : mean squared error
-            * 'RMSE' : root mean squared error
-
-        Notes
-        -----
-        Which measure is applied is by default controlled by the `_error_metric` attribute.
-        """
-
-        ## TEMP
-        self.error_ = 1.0
-        #self.error_ = compute_error(self.data.power_spectrum, self.modeled_spectrum_,
-        #                            self._error_metric if not metric else metric)
 
 
 class BaseResults2D(BaseResults):
