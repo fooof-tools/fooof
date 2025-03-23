@@ -29,21 +29,24 @@ def get_description():
 
     attributes = {
 
-        # Results
-        'results' : ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
-                     'r_squared_', 'error_'],
-        'model_components' : ['modeled_spectrum_', '_spectrum_flat',
-                              '_spectrum_peak_rm', '_ap_fit', '_peak_fit'],
+        # Data
+        'checks' : ['_check_freqs', '_check_data'],
+        'data' : ['power_spectrum', 'freq_range', 'freq_res'],
+        'meta_data' : ['freq_range', 'freq_res'],
 
         # Algorithm
         'settings' : ['peak_width_limits', 'max_n_peaks',
                       'min_peak_height', 'peak_threshold'],
         'debug' : ['_debug'],
 
-        # Data
-        'checks' : ['_check_freqs', '_check_data'],
-        'data' : ['power_spectrum', 'freq_range', 'freq_res'],
-        'meta_data' : ['freq_range', 'freq_res'],
+        # Results
+        'results' : ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
+                     'r_squared_', 'error_'],
+        'model_components' : ['modeled_spectrum_', '_spectrum_flat',
+                              '_spectrum_peak_rm', '_ap_fit', '_peak_fit'],
+
+        # Metrics
+        # 'metrics' : ['r_squared_', 'error_']
 
         # General - data types
         'arrays' : ['freqs', 'power_spectrum', 'aperiodic_params_',

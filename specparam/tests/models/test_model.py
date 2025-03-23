@@ -117,21 +117,19 @@ def test_fit_measures():
 
     # Hack fake data with known properties: total error magnitude 2
     tfm.data.power_spectrum = np.array([1, 2, 3, 4, 5])
-    tfm.modeled_spectrum_ = np.array([1, 2, 5, 4, 5])
+    tfm.results.modeled_spectrum_ = np.array([1, 2, 5, 4, 5])
 
-    # TEMP - TURN OFF
     # Check default goodness of fit and error measures
-    tfm.results._compute_model_gof()
-    #assert np.isclose(tfm.results.r_squared_, 0.75757575)
-    tfm.results._compute_model_error()
-    #assert np.isclose(tfm.results.error_, 0.4)
+    tfm.metrics.compute_metrics(tfm.data, tfm.results)
+    assert np.isclose(tfm.metrics['error-mae'].output, 0.4)
+    assert np.isclose(tfm.metrics['gof-r_squared'].output, 0.75757575)
 
-    # TEMP - TURN OFF
-    # Check with alternative error fit approach
-    tfm.results._compute_model_error(metric='MSE')
-    #assert np.isclose(tfm.results.error_, 0.8)
-    tfm.results._compute_model_error(metric='RMSE')
-    #assert np.isclose(tfm.results.error_, np.sqrt(0.8))
+    # # TODO: fix / turn back on when adding update metric functionality
+    # # Check with alternative error fit metrics
+    # tfm.results._compute_model_error(metric='MSE')
+    # assert np.isclose(tfm.results.error_, 0.8)
+    # tfm.results._compute_model_error(metric='RMSE')
+    # assert np.isclose(tfm.results.error_, np.sqrt(0.8))
 
 def test_checks():
     """Test various checks, errors and edge cases for model fitting.
