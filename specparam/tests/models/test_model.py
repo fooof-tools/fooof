@@ -284,12 +284,11 @@ def test_get_data(tfm):
         for space in ['log', 'linear']:
             assert isinstance(tfm.get_data(comp, space), np.ndarray)
 
-## TEMP - TURN OFF
-# def test_get_model(tfm):
+def test_get_component(tfm):
 
-#     for comp in ['full', 'aperiodic', 'peak']:
-#         for space in ['log', 'linear']:
-#             assert isinstance(tfm.get_model(comp, space), np.ndarray)
+    for comp in ['full', 'aperiodic', 'peak']:
+        for space in ['log', 'linear']:
+            assert isinstance(tfm.results.get_component(comp, space), np.ndarray)
 
 def test_prints(tfm):
     """Test methods that print (alias and pass through methods).

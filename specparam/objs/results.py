@@ -89,51 +89,50 @@ class BaseResults():
             for key in OBJ_DESC['results']})
 
 
-    # # TEMP - TURN OFF TO RENAME
-    # def get_model(self, component='full', space='log'):
-    #     """Get a model component.
+    def get_component(self, component='full', space='log'):
+        """Get a model component.
 
-    #     Parameters
-    #     ----------
-    #     component : {'full', 'aperiodic', 'peak'}
-    #         Which model component to return.
-    #             'full' - full model
-    #             'aperiodic' - isolated aperiodic model component
-    #             'peak' - isolated peak model component
-    #     space : {'log', 'linear'}
-    #         Which space to return the model component in.
-    #             'log' - returns in log10 space.
-    #             'linear' - returns in linear space.
+        Parameters
+        ----------
+        component : {'full', 'aperiodic', 'peak'}
+            Which model component to return.
+                'full' - full model
+                'aperiodic' - isolated aperiodic model component
+                'peak' - isolated peak model component
+        space : {'log', 'linear'}
+            Which space to return the model component in.
+                'log' - returns in log10 space.
+                'linear' - returns in linear space.
 
-    #     Returns
-    #     -------
-    #     output : 1d array
-    #         Specified model component, in specified spacing.
+        Returns
+        -------
+        output : 1d array
+            Specified model component, in specified spacing.
 
-    #     Notes
-    #     -----
-    #     The 'space' parameter doesn't just define the spacing of the model component
-    #     values, but rather defines the space of the additive model such that
-    #     `model = aperiodic_component + peak_component`.
-    #     With space set as 'log', this combination holds in log space.
-    #     With space set as 'linear', this combination holds in linear space.
-    #     """
+        Notes
+        -----
+        The 'space' parameter doesn't just define the spacing of the model component
+        values, but rather defines the space of the additive model such that
+        `model = aperiodic_component + peak_component`.
+        With space set as 'log', this combination holds in log space.
+        With space set as 'linear', this combination holds in linear space.
+        """
 
-    #     if not self.has_model:
-    #         raise NoModelError("No model fit results are available, can not proceed.")
-    #     assert space in ['linear', 'log'], "Input for 'space' invalid."
+        if not self.has_model:
+            raise NoModelError("No model fit results are available, can not proceed.")
+        assert space in ['linear', 'log'], "Input for 'space' invalid."
 
-    #     if component == 'full':
-    #         output = self.modeled_spectrum_ if space == 'log' else unlog(self.modeled_spectrum_)
-    #     elif component == 'aperiodic':
-    #         output = self._ap_fit if space == 'log' else unlog(self._ap_fit)
-    #     elif component == 'peak':
-    #         output = self._peak_fit if space == 'log' else \
-    #             unlog(self.modeled_spectrum_) - unlog(self._ap_fit)
-    #     else:
-    #         raise ValueError('Input for component invalid.')
+        if component == 'full':
+            output = self.modeled_spectrum_ if space == 'log' else unlog(self.modeled_spectrum_)
+        elif component == 'aperiodic':
+            output = self._ap_fit if space == 'log' else unlog(self._ap_fit)
+        elif component == 'peak':
+            output = self._peak_fit if space == 'log' else \
+                unlog(self.modeled_spectrum_) - unlog(self._ap_fit)
+        else:
+            raise ValueError('Input for component invalid.')
 
-    #     return output
+        return output
 
 
     def _check_loaded_results(self, data):
