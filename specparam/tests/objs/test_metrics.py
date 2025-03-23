@@ -17,6 +17,11 @@ def test_metric(tfm):
     metric.compute_metric(tfm.data, tfm.results)
     assert isinstance(metric.output, float)
 
+def test_metrics_null():
+
+    metrics = Metrics()
+    assert isinstance(metrics, Metrics)
+
 def test_metrics_obj(tfm):
 
     er_metric = Metric('error', 'mae', compute_mean_abs_error)

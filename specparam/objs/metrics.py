@@ -38,10 +38,18 @@ class Metric():
         return self.measure + '_' + self.metric
 
 
-    def compute_metric(self, data, results, **kwargs):
-        """   """
+    def compute_metric(self, data, results):
+        """Compute metric.
 
-        self.output = self.func(data.power_spectrum, results.modeled_spectrum_, **kwargs)
+        Parameters
+        ----------
+        data : Data
+            Model data.
+        results : Results
+            Model results.
+        """
+
+        self.output = self.func(data.power_spectrum, results.modeled_spectrum_)
 
 
 class Metrics():
@@ -53,12 +61,12 @@ class Metrics():
         Metric(s) to add to the object.
     """
 
-    def __init__(self, metrics):
+    def __init__(self, metrics=None):
         """Initialize metrics."""
 
         self.metrics = []
-        for metric in metrics:
-            self.add_metric(metric)
+        if metrics:
+            self.add_metrics(metrics)
 
 
     def add_metric(self, metric):
@@ -75,6 +83,19 @@ class Metrics():
             metric = Metric(**metric)
 
         self.metrics.append(metric)
+
+
+    def add_metrics(self, metrics):
+        """Add metric(s) to object
+
+        Parameters
+        ----------
+        metrics : list of Metric or list of dict
+            Metric(s) to add to the object.
+        """
+
+        for metric in metrics:
+            self.add_metric(metric)
 
 
     def compute_metrics(self, data, results):
@@ -104,3 +125,14 @@ class Metrics():
         """Define alias for ouputs of all currently defined metrics."""
 
         return {metric.label : metric.output for metric in self.metrics}
+
+
+    # TEMP: CHECK IF THIS IS HOW TO MANAGE THIS
+    def set_defaults(self):
+        """Set default metrics."""
+
+        from specparam.measures.error import compute_mean_abs_error
+        from specparam.measures.gof import compute_r_squared
+
+        self.add_metrics([Metric('error', 'mae', compute_mean_abs_error),
+                          Metric('gof', 'r_squared', compute_r_squared)])
