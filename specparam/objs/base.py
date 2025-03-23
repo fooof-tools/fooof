@@ -91,6 +91,10 @@ class CommonBase():
             # Compute post-fit metrics
             self.metrics.compute_metrics(self.data, self.results)
 
+            # TEMP: alias metric results into updated management
+            self.results.error_ = self.metrics['error-mae'].output
+            self.results.r_squared_ = self.metrics['gof-r_squared'].output
+
         except FitError:
 
             # If in debug mode, re-raise the error
