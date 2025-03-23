@@ -171,6 +171,12 @@ def test_load_model():
     for meta_dat in OBJ_DESC['meta_data']:
         assert getattr(tfm.data, meta_dat) is not None
 
+    # Check directory matches (loading didn't add any unexpected attributes)
+    cfm = SpectralModel()
+    assert dir(cfm) == dir(tfm)
+    assert dir(cfm.data) == dir(tfm.data)
+    assert dir(cfm.results) == dir(tfm.results)
+
 def test_load_group():
 
     # Loads file saved from `test_save_group`
@@ -188,6 +194,12 @@ def test_load_group():
     for meta_dat in OBJ_DESC['meta_data']:
         assert getattr(tfg.data, meta_dat) is not None
 
+    # Check directory matches (loading didn't add any unexpected attributes)
+    cfg = SpectralGroupModel()
+    assert dir(cfg) == dir(tfg)
+    assert dir(cfg.data) == dir(tfg.data)
+    assert dir(cfg.results) == dir(tfg.results)
+
 def test_load_time(tbands):
 
     # Loads file saved from `test_save_time`
@@ -201,6 +213,12 @@ def test_load_time(tbands):
     tft2 = load_time(file_name, TEST_DATA_PATH, tbands)
     assert isinstance(tft2, SpectralTimeModel)
     assert tft2.results.time_results
+
+    # Check directory matches (loading didn't add any unexpected attributes)
+    cft = SpectralTimeModel()
+    assert dir(cft) == dir(tft2)
+    assert dir(cft.data) == dir(tft2.data)
+    assert dir(cft.results) == dir(tft2.results)
 
 def test_load_event(tbands):
 
@@ -217,3 +235,9 @@ def test_load_event(tbands):
     assert isinstance(tfe2, SpectralTimeEventModel)
     assert tfe2.results.event_time_results
     assert len(tfe2.results) > 1
+
+    # Check directory matches (loading didn't add any unexpected attributes)
+    cfe = SpectralTimeEventModel()
+    assert dir(cfe) == dir(tfe2)
+    assert dir(cfe.data) == dir(tfe2.data)
+    assert dir(cfe.results) == dir(tfe2.results)
