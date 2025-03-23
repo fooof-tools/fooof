@@ -42,10 +42,10 @@ def plot_annotated_peak_search(model):
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
 
     # Sort parameters by peak height
-    gaussian_params = model.gaussian_params_[model.gaussian_params_[:, 1].argsort()][::-1]
+    gaussian_params = model.results.gaussian_params_[model.results.gaussian_params_[:, 1].argsort()][::-1]
 
     # Loop through the iterative search for each peak
-    for ind in range(model.n_peaks_ + 1):
+    for ind in range(model.results.n_peaks_ + 1):
 
         # This forces the creation of a new plotting axes per iteration
         ax = check_ax(None, PLT_FIGSIZES['spectral'])
@@ -64,7 +64,7 @@ def plot_annotated_peak_search(model):
         ax.set_ylim(ylims)
         ax.set_title('Iteration #' + str(ind+1), fontsize=16)
 
-        if ind < model.n_peaks_:
+        if ind < model.results.n_peaks_:
 
             gauss = gaussian_function(model.data.freqs, *gaussian_params[ind, :])
             plot_spectra(model.data.freqs, gauss, ax=ax, label='Gaussian Fit',
@@ -101,7 +101,7 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
     """
 
     # Check that model is available
-    if not model.has_model:
+    if not model.results.has_model:
         raise NoModelError("No model is available to plot, can not proceed.")
 
     # Settings
@@ -135,7 +135,7 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
     #   See: https://github.com/matplotlib/matplotlib/issues/12820. Fixed in 3.2.1.
     bug_buff = 0.000001
 
-    if annotate_peaks and model.n_peaks_:
+    if annotate_peaks and model.results.n_peaks_:
 
         # Extract largest peak, to annotate, grabbing gaussian params
         gauss = get_band_peak(model, model.data.freq_range, attribute='gaussian_params')
@@ -182,7 +182,7 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
         # Annotate Aperiodic Offset
         #   Add a line to indicate offset, without adjusting plot limits below it
         ax.set_autoscaley_on(False)
-        ax.plot([freqs[0], freqs[0]], [ax.get_ylim()[0], model.modeled_spectrum_[0]],
+        ax.plot([freqs[0], freqs[0]], [ax.get_ylim()[0], model.results.modeled_spectrum_[0]],
                 color=PLT_COLORS['aperiodic'], linewidth=lw2, alpha=0.5)
         ax.annotate('Offset',
                     xy=(freqs[0]+bug_buff, model.data.power_spectrum[0]-y_buff1),

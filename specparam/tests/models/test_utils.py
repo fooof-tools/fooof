@@ -61,48 +61,48 @@ def test_combine_model_objs(tfm, tfg):
     # Check combining 2 model objects
     nfg1 = combine_model_objs([tfm, tfm2])
     assert nfg1
-    assert len(nfg1) == 2
+    assert len(nfg1.results) == 2
     assert compare_model_objs([nfg1, tfm], 'settings')
-    assert nfg1.group_results[0] == tfm.get_results()
-    assert nfg1.group_results[-1] == tfm2.get_results()
+    assert nfg1.results.group_results[0] == tfm.results.get_results()
+    assert nfg1.results.group_results[-1] == tfm2.results.get_results()
 
     # Check combining 3 model objects
     nfg2 = combine_model_objs([tfm, tfm2, tfm3])
     assert nfg2
-    assert len(nfg2) == 3
+    assert len(nfg2.results) == 3
     assert compare_model_objs([nfg2, tfm], 'settings')
-    assert nfg2.group_results[0] == tfm.get_results()
-    assert nfg2.group_results[-1] == tfm3.get_results()
+    assert nfg2.results.group_results[0] == tfm.results.get_results()
+    assert nfg2.results.group_results[-1] == tfm3.results.get_results()
 
     # Check combining 2 group objects
     nfg3 = combine_model_objs([tfg, tfg2])
     assert nfg3
-    assert len(nfg3) == len(tfg) + len(tfg2)
+    assert len(nfg3.results) == len(tfg.results) + len(tfg2.results)
     assert compare_model_objs([nfg3, tfg, tfg2], 'settings')
-    assert nfg3.group_results[0] == tfg.group_results[0]
-    assert nfg3.group_results[-1] == tfg2.group_results[-1]
+    assert nfg3.results.group_results[0] == tfg.results.group_results[0]
+    assert nfg3.results.group_results[-1] == tfg2.results.group_results[-1]
 
     # Check combining 3 group objects
     nfg4 = combine_model_objs([tfg, tfg2, tfg3])
     assert nfg4
-    assert len(nfg4) == len(tfg) + len(tfg2) + len(tfg3)
+    assert len(nfg4.results) == len(tfg.results) + len(tfg2.results) + len(tfg3.results)
     assert compare_model_objs([nfg4, tfg, tfg2, tfg3], 'settings')
-    assert nfg4.group_results[0] == tfg.group_results[0]
-    assert nfg4.group_results[-1] == tfg3.group_results[-1]
+    assert nfg4.results.group_results[0] == tfg.results.group_results[0]
+    assert nfg4.results.group_results[-1] == tfg3.results.group_results[-1]
 
     # Check combining a mixture of model & group objects
     nfg5 = combine_model_objs([tfg, tfm, tfg2, tfm2])
     assert nfg5
-    assert len(nfg5) == len(tfg) + 1 + len(tfg2) + 1
+    assert len(nfg5.results) == len(tfg.results) + 1 + len(tfg2.results) + 1
     assert compare_model_objs([nfg5, tfg, tfm, tfg2, tfm2], 'settings')
-    assert nfg5.group_results[0] == tfg.group_results[0]
-    assert nfg5.group_results[-1] == tfm2.get_results()
+    assert nfg5.results.group_results[0] == tfg.results.group_results[0]
+    assert nfg5.results.group_results[-1] == tfm2.results.get_results()
 
     # Check combining objects with no data
     tfm2._reset_data_results(False, True, True)
     tfg2._reset_data_results(False, True, True, True)
     nfg6 = combine_model_objs([tfm2, tfg2])
-    assert len(nfg6) == 1 + len(tfg2)
+    assert len(nfg6.results) == 1 + len(tfg2.results)
     assert nfg6.data.power_spectra is None
 
 def test_combine_errors(tfm, tfg):
@@ -138,5 +138,5 @@ def test_fit_models_3d(tfg):
     assert len(fgs) == n_groups == spectra_shape[0]
     for fg in fgs:
         assert fg
-        assert len(fg) == n_spectra
+        assert len(fg.results) == n_spectra
         assert fg.data.power_spectra.shape == spectra_shape[1:]

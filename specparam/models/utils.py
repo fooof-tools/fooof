@@ -64,7 +64,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
         If there are no model fit results available to average across.
     """
 
-    if not group.has_model:
+    if not group.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     avg_funcs = {'mean' : np.nanmean, 'median' : np.nanmedian}
@@ -72,7 +72,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
         raise ValueError("Requested average method not understood.")
 
     # Aperiodic parameters: extract & average
-    ap_params = avg_funcs[avg_method](group.get_params('aperiodic_params'), 0)
+    ap_params = avg_funcs[avg_method](group.results.get_params('aperiodic_params'), 0)
 
     # Periodic parameters: extract & average
     peak_params = []
@@ -93,8 +93,8 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
     gauss_params = np.array(gauss_params)
 
     # Goodness of fit measures: extract & average
-    r2 = avg_funcs[avg_method](group.get_params('r_squared'))
-    error = avg_funcs[avg_method](group.get_params('error'))
+    r2 = avg_funcs[avg_method](group.results.get_params('r_squared'))
+    error = avg_funcs[avg_method](group.results.get_params('error'))
 
     # Collect all results together, to be added to the model object
     results = FitResults(ap_params, peak_params, r2, error, gauss_params)
@@ -103,11 +103,11 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
     model = SpectralModel()
     model.add_settings(group.get_settings())
     model.data.add_meta_data(group.data.get_meta_data())
-    model.add_results(results)
+    model.results.add_results(results)
 
     # Generate the average model from the parameters
     if regenerate:
-        model._regenerate_model()
+        model.results._regenerate_model(group.data.freqs)
 
     return model
 
@@ -131,7 +131,7 @@ def average_reconstructions(group, avg_method='mean'):
         Note that power values are in log10 space.
     """
 
-    if not group.has_model:
+    if not group.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     avg_funcs = {'mean' : np.nanmean, 'median' : np.nanmedian}
@@ -139,8 +139,8 @@ def average_reconstructions(group, avg_method='mean'):
         raise ValueError("Requested average method not understood.")
 
     models = np.zeros(shape=group.data.power_spectra.shape)
-    for ind in range(len(group)):
-        models[ind, :] = group.get_model(ind, regenerate=True).modeled_spectrum_
+    for ind in range(len(group.results)):
+        models[ind, :] = group.get_model(ind, regenerate=True).results.modeled_spectrum_
 
     avg_model = avg_funcs[avg_method](models, 0)
 
@@ -196,18 +196,18 @@ def combine_model_objs(model_objs):
 
         # Add group object
         if isinstance(m_obj, SpectralGroupModel):
-            group.group_results.extend(m_obj.group_results)
+            group.results.group_results.extend(m_obj.results.group_results)
             if m_obj.data.power_spectra is not None:
                 temp_power_spectra = np.vstack([temp_power_spectra, m_obj.data.power_spectra])
 
         # Add model object
         else:
-            group.group_results.append(m_obj.get_results())
+            group.results.group_results.append(m_obj.results.get_results())
             if m_obj.data.power_spectrum is not None:
                 temp_power_spectra = np.vstack([temp_power_spectra, m_obj.data.power_spectrum])
 
     # If the number of collected power spectra is consistent, then add them to object
-    if len(group) == temp_power_spectra.shape[0]:
+    if len(group.results) == temp_power_spectra.shape[0]:
         group.data.power_spectra = temp_power_spectra
 
     # Set the status for freqs & data checking

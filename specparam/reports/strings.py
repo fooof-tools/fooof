@@ -137,6 +137,7 @@ def gen_modes_str(model_obj, description=False, concise=False):
 
     return output
 
+
 def gen_settings_str(model_obj, description=False, concise=False):
     """Generate a string representation of current fit settings.
 
@@ -332,7 +333,7 @@ def gen_model_results_str(model, concise=False):
     """
 
     # Returns a null report if no results are available
-    if np.all(np.isnan(model.aperiodic_params_)):
+    if np.all(np.isnan(model.results.aperiodic_params_)):
         return _no_model_str(concise)
 
     # Create the formatted strings for printing
@@ -354,20 +355,20 @@ def gen_model_results_str(model, concise=False):
         ('Aperiodic Parameters (offset, ' + \
          ('knee, ' if model.modes.aperiodic.name == 'knee' else '') + \
          'exponent): '),
-        ', '.join(['{:2.4f}'] * len(model.aperiodic_params_)).format(*model.aperiodic_params_),
+        ', '.join(['{:2.4f}'] * len(model.results.aperiodic_params_)).format(*model.results.aperiodic_params_),
         '',
 
         # Peak parameters
         '{} peaks were found:'.format(
-            len(model.peak_params_)),
+            len(model.results.peak_params_)),
         *['CF: {:6.2f}, PW: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]) \
-          for op in model.peak_params_],
+          for op in model.results.peak_params_],
         '',
 
         # Goodness if fit
         'Goodness of fit metrics:',
-        'R^2 of model fit is {:5.4f}'.format(model.r_squared_),
-        'Error of the fit is {:5.4f}'.format(model.error_),
+        'R^2 of model fit is {:5.4f}'.format(model.results.r_squared_),
+        'Error of the fit is {:5.4f}'.format(model.results.error_),
         '',
 
         # Footer
@@ -400,15 +401,15 @@ def gen_group_results_str(group, concise=False):
         If no model fit data is available to report.
     """
 
-    if not group.has_model:
+    if not group.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     # Extract all the relevant data for printing
-    n_peaks = len(group.get_params('peak_params'))
-    r2s = group.get_params('r_squared')
-    errors = group.get_params('error')
-    exps = group.get_params('aperiodic_params', 'exponent')
-    kns = group.get_params('aperiodic_params', 'knee') \
+    n_peaks = len(group.results.get_params('peak_params'))
+    r2s = group.results.get_params('r_squared')
+    errors = group.results.get_params('error')
+    exps = group.results.get_params('aperiodic_params', 'exponent')
+    kns = group.results.get_params('aperiodic_params', 'knee') \
         if group.modes.aperiodic.name == 'knee' else np.array([0])
 
     str_lst = [
@@ -420,8 +421,8 @@ def gen_group_results_str(group, concise=False):
         '',
 
         # Group information
-        'Number of power spectra in the Group: {}'.format(len(group.group_results)),
-        *[el for el in ['{} power spectra failed to fit'.format(group.n_null_)] if group.n_null_],
+        'Number of power spectra in the Group: {}'.format(len(group.results.group_results)),
+        *[el for el in ['{} power spectra failed to fit'.format(group.results.n_null_)] if group.results.n_null_],
         '',
 
         # Frequency range and resolution
@@ -486,11 +487,11 @@ def gen_time_results_str(time_model, concise=False):
         If no model fit data is available to report.
     """
 
-    if not time_model.has_model:
+    if not time_model.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     # Get parameter information needed for printing
-    pe_labels = get_periodic_labels(time_model.time_results)
+    pe_labels = get_periodic_labels(time_model.results.time_results)
     band_labels = [\
         pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
         for band_ind in range(len(pe_labels['cf']))]
@@ -505,9 +506,9 @@ def gen_time_results_str(time_model, concise=False):
         '',
 
         # Group information
-        'Number of time windows fit: {}'.format(len(time_model.group_results)),
-        *[el for el in ['{} power spectra failed to fit'.format(time_model.n_null_)] \
-            if time_model.n_null_],
+        'Number of time windows fit: {}'.format(len(time_model.results.group_results)),
+        *[el for el in ['{} power spectra failed to fit'.format(time_model.results.n_null_)] \
+            if time_model.results.n_null_],
         '',
 
         # Frequency range and resolution
@@ -522,30 +523,30 @@ def gen_time_results_str(time_model, concise=False):
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
-                        .format(*compute_arr_desc(time_model.time_results['knee']) \
+                        .format(*compute_arr_desc(time_model.results.time_results['knee']) \
                             if has_knee else [0, 0, 0]),
                        ] if has_knee],
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(time_model.time_results['exponent'])),
+        .format(*compute_arr_desc(time_model.results.time_results['exponent'])),
         '',
 
         # Periodic parameters
         'Periodic params (mean values across windows):',
         *['{:>6s} - CF: {:5.2f}, PW: {:5.2f}, BW: {:5.2f}, Presence: {:3.1f}%'.format(
             label,
-            np.nanmean(time_model.time_results[pe_labels['cf'][ind]]),
-            np.nanmean(time_model.time_results[pe_labels['pw'][ind]]),
-            np.nanmean(time_model.time_results[pe_labels['bw'][ind]]),
-            compute_presence(time_model.time_results[pe_labels['cf'][ind]], output='percent'))
+            np.nanmean(time_model.results.time_results[pe_labels['cf'][ind]]),
+            np.nanmean(time_model.results.time_results[pe_labels['pw'][ind]]),
+            np.nanmean(time_model.results.time_results[pe_labels['bw'][ind]]),
+            compute_presence(time_model.results.time_results[pe_labels['cf'][ind]], output='percent'))
                 for ind, label in enumerate(band_labels)],
         '',
 
         # Goodness if fit
         'Goodness of fit (mean values across windows):',
         '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(time_model.time_results['r_squared'])),
+        .format(*compute_arr_desc(time_model.results.time_results['r_squared'])),
         'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(time_model.time_results['error'])),
+        .format(*compute_arr_desc(time_model.results.time_results['error'])),
         '',
 
         # Footer
@@ -578,11 +579,11 @@ def gen_event_results_str(event_model, concise=False):
         If no model fit data is available to report.
     """
 
-    if not event_model.has_model:
+    if not event_model.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     # Extract all the relevant data for printing
-    pe_labels = get_periodic_labels(event_model.event_time_results)
+    pe_labels = get_periodic_labels(event_model.results.event_time_results)
     band_labels = [\
         pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
         for band_ind in range(len(pe_labels['cf']))]
@@ -597,7 +598,7 @@ def gen_event_results_str(event_model, concise=False):
         '',
 
         # Group information
-        'Number of events fit: {}'.format(len(event_model.event_group_results)),
+        'Number of events fit: {}'.format(len(event_model.results.event_group_results)),
         '',
 
         # Frequency range and resolution
@@ -612,21 +613,21 @@ def gen_event_results_str(event_model, concise=False):
         '',
         'Aperiodic params (values across events):',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
-                        .format(*compute_arr_desc(np.mean(event_model.event_time_results['knee'], 1) \
+                        .format(*compute_arr_desc(np.mean(event_model.results.event_time_results['knee'], 1) \
                             if has_knee else [0, 0, 0])),
                        ] if has_knee],
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(np.mean(event_model.event_time_results['exponent'], 1))),
+        .format(*compute_arr_desc(np.mean(event_model.results.event_time_results['exponent'], 1))),
         '',
 
         # Periodic parameters
         'Periodic params (mean values across events):',
         *['{:>6s} - CF: {:5.2f}, PW: {:5.2f}, BW: {:5.2f}, Presence: {:3.1f}%'.format(
             label,
-            np.nanmean(event_model.event_time_results[pe_labels['cf'][ind]]),
-            np.nanmean(event_model.event_time_results[pe_labels['pw'][ind]]),
-            np.nanmean(event_model.event_time_results[pe_labels['bw'][ind]]),
-            compute_presence(event_model.event_time_results[pe_labels['cf'][ind]],
+            np.nanmean(event_model.results.event_time_results[pe_labels['cf'][ind]]),
+            np.nanmean(event_model.results.event_time_results[pe_labels['pw'][ind]]),
+            np.nanmean(event_model.results.event_time_results[pe_labels['bw'][ind]]),
+            compute_presence(event_model.results.event_time_results[pe_labels['cf'][ind]],
                              average=True, output='percent'))
                 for ind, label in enumerate(band_labels)],
         '',
@@ -634,10 +635,10 @@ def gen_event_results_str(event_model, concise=False):
         # Goodness if fit
         'Goodness of fit (values across events):',
         '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(np.mean(event_model.event_time_results['r_squared'], 1))),
+        .format(*compute_arr_desc(np.mean(event_model.results.event_time_results['r_squared'], 1))),
 
         'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(np.mean(event_model.event_time_results['error'], 1))),
+        .format(*compute_arr_desc(np.mean(event_model.results.event_time_results['error'], 1))),
         '',
 
         # Footer

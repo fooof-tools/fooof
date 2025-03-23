@@ -18,7 +18,6 @@ from specparam.modutils.docs import copy_doc_func_to_method, replace_docstring_s
 from specparam.plts.model import plot_model
 from specparam.data.utils import get_model_params
 from specparam.data.conversions import model_to_dataframe
-from specparam.sim.gen import gen_model
 
 ###################################################################################################
 ###################################################################################################
@@ -107,7 +106,7 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
 
         self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode)
 
-        BaseObject.__init__(self, verbose=verbose)
+        BaseObject.__init__(self, modes=self.modes, verbose=verbose)
 
         SpectralFitAlgorithm.__init__(self, peak_width_limits=peak_width_limits,
                                       max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,
@@ -231,10 +230,10 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
         If there are no fit peak (no peak parameters), this method will return NaN.
         """
 
-        if not self.has_model:
+        if not self.results.has_model:
             raise NoModelError("No model fit results are available to extract, can not proceed.")
 
-        return get_model_params(self.get_results(), name, col)
+        return get_model_params(self.results.get_results(), name, col)
 
 
     @copy_doc_func_to_method(plot_model)
@@ -270,11 +269,4 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
             Model results organized into a pandas object.
         """
 
-        return model_to_dataframe(self.get_results(), peak_org)
-
-
-    def _regenerate_model(self):
-        """Regenerate model fit from parameters."""
-
-        self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(
-            self.data.freqs, self.aperiodic_params_, self.gaussian_params_, return_components=True)
+        return model_to_dataframe(self.results.get_results(), peak_org)

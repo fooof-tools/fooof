@@ -126,14 +126,14 @@ def test_save_event(tfe):
     save_event(tfe, file_name=dat_file_name, file_path=TEST_DATA_PATH, save_data=True)
 
     assert os.path.exists(TEST_DATA_PATH / (set_file_name + '.json'))
-    for ind in range(len(tfe)):
+    for ind in range(len(tfe.results)):
         assert os.path.exists(TEST_DATA_PATH / (res_file_name + '_' + str(ind) + '.json'))
         assert os.path.exists(TEST_DATA_PATH / (dat_file_name + '_' + str(ind) + '.json'))
 
     # Test saving out all save elements
     file_name_all = 'test_event_all'
     save_event(tfe, file_name_all, TEST_DATA_PATH, False, True, True, True)
-    for ind in range(len(tfe)):
+    for ind in range(len(tfe.results)):
         assert os.path.exists(TEST_DATA_PATH / (file_name_all + '_' + str(ind) + '.json'))
 
 def test_load_file_contents():
@@ -163,7 +163,7 @@ def test_load_model():
     # Check that all elements get loaded
     assert isinstance(tfm.modes, Modes)
     for result in OBJ_DESC['results']:
-        assert not np.all(np.isnan(getattr(tfm, result)))
+        assert not np.all(np.isnan(getattr(tfm.results, result)))
     for setting in OBJ_DESC['settings']:
         assert getattr(tfm, setting) is not None
     for data in OBJ_DESC['data']:
@@ -181,7 +181,7 @@ def test_load_group():
     assert isinstance(tfg, SpectralGroupModel)
 
     # Check that all elements get loaded
-    assert len(tfg.group_results) > 0
+    assert len(tfg.results.group_results) > 0
     for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is not None
     assert tfg.data.power_spectra is not None
@@ -200,7 +200,7 @@ def test_load_time(tbands):
     # Load with bands definition
     tft2 = load_time(file_name, TEST_DATA_PATH, tbands)
     assert isinstance(tft2, SpectralTimeModel)
-    assert tft2.time_results
+    assert tft2.results.time_results
 
 def test_load_event(tbands):
 
@@ -210,10 +210,10 @@ def test_load_event(tbands):
     # Load without bands definition
     tfe = load_event(file_name, TEST_DATA_PATH)
     assert isinstance(tfe, SpectralTimeEventModel)
-    assert len(tfe) > 1
+    assert len(tfe.results) > 1
 
     # Load with bands definition
     tfe2 = load_event(file_name, TEST_DATA_PATH, tbands)
     assert isinstance(tfe2, SpectralTimeEventModel)
-    assert tfe2.event_time_results
-    assert len(tfe2) > 1
+    assert tfe2.results.event_time_results
+    assert len(tfe2.results) > 1

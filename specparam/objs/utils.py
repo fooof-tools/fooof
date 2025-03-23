@@ -51,7 +51,7 @@ def _par_fit_group(power_spectrum, group):
     group._pass_through_spectrum(power_spectrum)
     group._fit()
 
-    return group._get_results()
+    return group.results._get_results()
 
 ## EVENT
 
@@ -69,7 +69,7 @@ def _par_fit_event(spectrogram, model):
     model.data.power_spectra = spectrogram.T
     model.fit()
 
-    return model.get_results()
+    return model.results.get_results()
 
 ###################################################################################################
 ## PROGRESS BARS

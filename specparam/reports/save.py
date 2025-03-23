@@ -132,7 +132,7 @@ def save_time_report(time_model, file_name, file_path=None, add_settings=True):
     """
 
     # Check model object for number of bands, to decide report size
-    pe_labels = get_periodic_labels(time_model.time_results)
+    pe_labels = get_periodic_labels(time_model.results.time_results)
     n_bands = len(pe_labels['cf'])
 
     # Initialize figure, defining number of axes based on model + what is to be plotted
@@ -174,9 +174,9 @@ def save_event_report(event_model, file_name, file_path=None, add_settings=True)
     """
 
     # Check model object for number of bands & aperiodic mode, to decide report size
-    pe_labels = get_periodic_labels(event_model.event_time_results)
+    pe_labels = get_periodic_labels(event_model.results.event_time_results)
     n_bands = len(pe_labels['cf'])
-    has_knee = 'knee' in event_model.event_time_results.keys()
+    has_knee = 'knee' in event_model.results.event_time_results.keys()
 
     # Initialize figure, defining number of axes based on model + what is to be plotted
     n_rows = 1 + (4 if has_knee else 3) + (n_bands * 5) + 2 + (1 if add_settings else 0)

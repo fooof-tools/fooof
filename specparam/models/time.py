@@ -63,11 +63,11 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
         self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
                            periodic=kwargs.pop('periodic_mode', 'gaussian'))
 
-        BaseObject2DT.__init__(self, verbose=kwargs.pop('verbose', True))
+        BaseObject2DT.__init__(self, modes=self.modes, verbose=kwargs.pop('verbose', True))
 
         SpectralFitAlgorithm.__init__(self, *args, **kwargs)
 
-        self._reset_time_results()
+        self.results._reset_time_results()
 
 
     def report(self, freqs=None, spectrogram=None, freq_range=None,
@@ -153,9 +153,9 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
         """
 
         if peak_org is not None:
-            df = group_to_dataframe(self.group_results, peak_org)
+            df = group_to_dataframe(self.results.group_results, peak_org)
         else:
-            df = dict_to_df(self.get_results())
+            df = dict_to_df(self.results.get_results())
 
         return df
 

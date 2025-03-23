@@ -83,11 +83,11 @@ def plot_model(model, plot_peaks=None, plot_aperiodic=True, freqs=None, power_sp
                      freq_range, ax=ax, **data_kwargs)
 
     # Add the full model fit, and components (if requested)
-    if model.has_model:
+    if model.results.has_model:
         model_defaults = {'color' : PLT_COLORS['model'], 'linewidth' : 3.0, 'alpha' : 0.5,
                           'label' : 'Full Model Fit' if add_legend else None}
         model_kwargs = check_plot_kwargs(model_kwargs, model_defaults)
-        plot_spectra(model.data.freqs, model.modeled_spectrum_,
+        plot_spectra(model.data.freqs, model.results.modeled_spectrum_,
                      log_freqs, log_powers, ax=ax, **model_kwargs)
 
         # Plot the aperiodic component of the model fit
@@ -96,7 +96,7 @@ def plot_model(model, plot_peaks=None, plot_aperiodic=True, freqs=None, power_sp
                                   'alpha' : 0.5, 'linestyle' : 'dashed',
                                   'label' : 'Aperiodic Fit' if add_legend else None}
             aperiodic_kwargs = check_plot_kwargs(aperiodic_kwargs, aperiodic_defaults)
-            plot_spectra(model.data.freqs, model._ap_fit,
+            plot_spectra(model.data.freqs, model.results._ap_fit,
                          log_freqs, log_powers, ax=ax, **aperiodic_kwargs)
 
         # Plot the periodic components of the model fit
@@ -169,12 +169,12 @@ def _add_peaks_shade(model, plt_log, ax, **plot_kwargs):
     defaults = {'color' : PLT_COLORS['periodic'], 'alpha' : 0.25}
     plot_kwargs = check_plot_kwargs(plot_kwargs, defaults)
 
-    for peak in model.gaussian_params_:
+    for peak in model.results.gaussian_params_:
 
         peak_freqs = np.log10(model.data.freqs) if plt_log else model.data.freqs
-        peak_line = model._ap_fit + gen_periodic(model.data.freqs, peak)
+        peak_line = model.results._ap_fit + gen_periodic(model.data.freqs, peak)
 
-        ax.fill_between(peak_freqs, peak_line, model._ap_fit, **plot_kwargs)
+        ax.fill_between(peak_freqs, peak_line, model.results._ap_fit, **plot_kwargs)
 
 
 def _add_peaks_dot(model, plt_log, ax, **plot_kwargs):
@@ -195,9 +195,9 @@ def _add_peaks_dot(model, plt_log, ax, **plot_kwargs):
     defaults = {'color' : PLT_COLORS['periodic'], 'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6}
     plot_kwargs = check_plot_kwargs(plot_kwargs, defaults)
 
-    for peak in model.peak_params_:
+    for peak in model.results.peak_params_:
 
-        ap_point = np.interp(peak[0], model.data.freqs, model._ap_fit)
+        ap_point = np.interp(peak[0], model.data.freqs, model.results._ap_fit)
         freq_point = np.log10(peak[0]) if plt_log else peak[0]
 
         # Add the line from the aperiodic fit up the tip of the peak
@@ -225,13 +225,13 @@ def _add_peaks_outline(model, plt_log, ax, **plot_kwargs):
     defaults = {'color' : PLT_COLORS['periodic'], 'alpha' : 0.7, 'lw' : 1.5}
     plot_kwargs = check_plot_kwargs(plot_kwargs, defaults)
 
-    for peak in model.gaussian_params_:
+    for peak in model.results.gaussian_params_:
 
         # Define the frequency range around each peak to plot - peak bandwidth +/- 3
         peak_range = [peak[0] - peak[2]*3, peak[0] + peak[2]*3]
 
         # Generate a peak reconstruction for each peak, and trim to desired range
-        peak_line = model._ap_fit + gen_periodic(model.data.freqs, peak)
+        peak_line = model.results._ap_fit + gen_periodic(model.data.freqs, peak)
         peak_freqs, peak_line = trim_spectrum(model.data.freqs, peak_line, peak_range)
 
         # Plot the peak outline
@@ -259,7 +259,7 @@ def _add_peaks_line(model, plt_log, ax, **plot_kwargs):
 
     ylims = ax.get_ylim()
 
-    for peak in model.peak_params_:
+    for peak in model.results.peak_params_:
 
         freq_point = np.log10(peak[0]) if plt_log else peak[0]
         ax.plot([freq_point, freq_point], ylims, '-', **plot_kwargs)
@@ -289,7 +289,7 @@ def _add_peaks_width(model, plt_log, ax, **plot_kwargs):
     defaults = {'color' : PLT_COLORS['periodic'], 'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6}
     plot_kwargs = check_plot_kwargs(plot_kwargs, defaults)
 
-    for peak in model.gaussian_params_:
+    for peak in model.results.gaussian_params_:
 
         peak_top = model.data.power_spectrum[nearest_ind(model.data.freqs, peak[0])]
         bw_freqs = [peak[0] - 0.5 * compute_fwhm(peak[2]),

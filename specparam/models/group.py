@@ -75,7 +75,7 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
         self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
                            periodic=kwargs.pop('periodic_mode', 'gaussian'))
 
-        BaseObject2D.__init__(self, verbose=kwargs.pop('verbose', True))
+        BaseObject2D.__init__(self, modes=self.modes, verbose=kwargs.pop('verbose', True))
 
         SpectralFitAlgorithm.__init__(self, *args, **kwargs)
 
@@ -172,7 +172,7 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
             Model results organized into a pandas object.
         """
 
-        return group_to_dataframe(self.get_results(), peak_org)
+        return group_to_dataframe(self.results.get_results(), peak_org)
 
 
     def _fit_prechecks(self):

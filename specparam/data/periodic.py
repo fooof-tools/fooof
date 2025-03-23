@@ -44,7 +44,7 @@ def get_band_peak(model, band, select_highest=True, threshold=None,
     >>> betas = get_band_peak(model, [13, 30], select_highest=False)  # doctest:+SKIP
     """
 
-    return get_band_peak_arr(getattr(model, attribute + '_'), band,
+    return get_band_peak_arr(getattr(model.results, attribute + '_'), band,
                              select_highest, threshold, thresh_param)
 
 
@@ -97,7 +97,7 @@ def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribut
     >>> betas = get_band_peak_group(group, [13, 30], threshold=0.1)  # doctest:+SKIP
     """
 
-    return get_band_peak_group_arr(group.get_params(attribute), band, len(group),
+    return get_band_peak_group_arr(group.results.get_params(attribute), band, len(group.results),
                                    threshold, thresh_param)
 
 

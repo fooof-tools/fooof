@@ -62,11 +62,11 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
         self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
                            periodic=kwargs.pop('periodic_mode', 'gaussian'))
 
-        BaseObject3D.__init__(self, verbose=kwargs.pop('verbose', True))
+        BaseObject3D.__init__(self, modes=self.modes, verbose=kwargs.pop('verbose', True))
 
         SpectralFitAlgorithm.__init__(self, *args, **kwargs)
 
-        self._reset_event_results()
+        self.results._reset_event_results()
 
 
     def report(self, freqs=None, spectrograms=None, freq_range=None,
@@ -157,9 +157,9 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
             model.data.power_spectrum = self.data.spectrograms[event_ind][:, window_ind]
 
         # Add results for specified power spectrum, regenerating full fit if requested
-        model.add_results(self.event_group_results[event_ind][window_ind])
+        model.results.add_results(self.results.event_group_results[event_ind][window_ind])
         if regenerate:
-            model._regenerate_model()
+            model.results._regenerate_model(self.data.freqs)
 
         return model
 
@@ -206,9 +206,9 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
         """
 
         if peak_org is not None:
-            df = event_group_to_dataframe(self.event_group_results, peak_org)
+            df = event_group_to_dataframe(self.results.event_group_results, peak_org)
         else:
-            df = dict_to_df(flatten_results_dict(self.get_results()))
+            df = dict_to_df(flatten_results_dict(self.results.get_results()))
 
         return df
 

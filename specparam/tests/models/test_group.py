@@ -38,18 +38,18 @@ def test_group():
 def test_getitem(tfg):
     """Check indexing, from custom `__getitem__` in group object."""
 
-    assert tfg[0]
+    assert tfg.results[0]
 
 def test_iter(tfg):
     """Check iterating through group object."""
 
-    for res in tfg:
+    for res in tfg.results:
         assert res
 
 def test_has_data(tfg):
     """Test the has_data property attribute, with and without data."""
 
-    assert tfg.has_model
+    assert tfg.results.has_model
 
     ntfg = SpectralGroupModel()
     assert not ntfg.data.has_data
@@ -57,27 +57,27 @@ def test_has_data(tfg):
 def test_has_model(tfg):
     """Test the has_model property attribute, with and without model fits."""
 
-    assert tfg.has_model
+    assert tfg.results.has_model
 
     ntfg = SpectralGroupModel()
-    assert not ntfg.has_model
+    assert not ntfg.results.has_model
 
 def test_n_peaks(tfg):
     """Test the n_peaks property attribute."""
 
-    assert tfg.n_peaks_
+    assert tfg.results.n_peaks_
 
 def test_n_null(tfg):
     """Test the n_null_ property attribute."""
 
     # Since there should have been no failed fits, this should return 0
-    assert tfg.n_null_ == 0
+    assert tfg.results.n_null_ == 0
 
 def test_null_inds(tfg):
     """Test the null_inds_ property attribute."""
 
     # Since there should be no failed fits, this should return an empty list
-    assert tfg.null_inds_ == []
+    assert tfg.results.null_inds_ == []
 
 def test_fit_nk():
     """Test group fit, no knee."""
@@ -87,7 +87,7 @@ def test_fit_nk():
 
     tfg = SpectralGroupModel(verbose=False)
     tfg.fit(xs, ys)
-    out = tfg.get_results()
+    out = tfg.results.get_results()
 
     assert out
     assert len(out) == n_spectra
@@ -104,7 +104,7 @@ def test_fit_nk_noise():
     tfg.fit(xs, ys)
 
     # No accuracy checking here - just checking that it ran
-    assert tfg.has_model
+    assert tfg.results.has_model
 
 def test_fit_knee():
     """Test group fit, with a knee."""
@@ -119,7 +119,7 @@ def test_fit_knee():
     tfg.fit(xs, ys)
 
     # No accuracy checking here - just checking that it ran
-    assert tfg.has_model
+    assert tfg.results.has_model
 
 def test_fit_progress(tfg):
     """Test running group fitting, with a progress bar."""
@@ -142,24 +142,24 @@ def test_fg_fail():
     ntfg.fit(fs, ps)
 
     # Check that results are all
-    for res in ntfg.get_results():
+    for res in ntfg.results.get_results():
         assert res
 
     # Test that get_params works with failed model fits
-    outs1 = ntfg.get_params('aperiodic_params')
-    outs2 = ntfg.get_params('aperiodic_params', 'exponent')
-    outs3 = ntfg.get_params('peak_params')
-    outs4 = ntfg.get_params('peak_params', 0)
-    outs5 = ntfg.get_params('gaussian_params', 2)
+    outs1 = ntfg.results.get_params('aperiodic_params')
+    outs2 = ntfg.results.get_params('aperiodic_params', 'exponent')
+    outs3 = ntfg.results.get_params('peak_params')
+    outs4 = ntfg.results.get_params('peak_params', 0)
+    outs5 = ntfg.results.get_params('gaussian_params', 2)
 
     # Test shortcut labels
-    outs6 = ntfg.get_params('aperiodic')
-    outs6 = ntfg.get_params('peak', 'CF')
+    outs6 = ntfg.results.get_params('aperiodic')
+    outs6 = ntfg.results.get_params('peak', 'CF')
 
     # Test the property attributes related to null model fits
     #   This checks that they do the right thing when there are null fits (failed fits)
-    assert ntfg.n_null_ > 0
-    assert ntfg.null_inds_
+    assert ntfg.results.n_null_ > 0
+    assert ntfg.results.null_inds_
 
 def test_drop():
     """Test function to drop results from group object."""
@@ -173,24 +173,24 @@ def test_drop():
     tfg.fit(xs, ys)
 
     drop_ind = 0
-    tfg.drop(drop_ind)
-    dropped_fres = tfg.group_results[drop_ind]
+    tfg.results.drop(drop_ind)
+    dropped_fres = tfg.results.group_results[drop_ind]
     for field in dropped_fres._fields:
         assert np.all(np.isnan(getattr(dropped_fres, field)))
 
     # Test dropping multiple inds
     tfg.fit(xs, ys)
     drop_inds = [0, 2]
-    tfg.drop(drop_inds)
+    tfg.results.drop(drop_inds)
 
     for d_ind in drop_inds:
-        dropped_fres = tfg.group_results[d_ind]
+        dropped_fres = tfg.results.group_results[d_ind]
         for field in dropped_fres._fields:
             assert np.all(np.isnan(getattr(dropped_fres, field)))
 
     # Test that a group object that has had inds dropped still works with `get_params`
-    cfs = tfg.get_params('peak_params', 1)
-    exps = tfg.get_params('aperiodic_params', 'exponent')
+    cfs = tfg.results.get_params('peak_params', 1)
+    exps = tfg.results.get_params('aperiodic_params', 'exponent')
     assert np.all(np.isnan(exps[drop_inds]))
     assert np.all(np.invert(np.isnan(np.delete(exps, drop_inds))))
 
@@ -202,7 +202,7 @@ def test_fit_par():
 
     tfg = SpectralGroupModel(verbose=False)
     tfg.fit(xs, ys, n_jobs=2)
-    out = tfg.get_results()
+    out = tfg.results.get_results()
 
     assert out
     assert len(out) == n_spectra
@@ -225,13 +225,13 @@ def test_save_model_report(tfg):
 def test_get_results(tfg):
     """Check get results method."""
 
-    assert tfg.get_results()
+    assert tfg.results.get_results()
 
 def test_get_params(tfg):
     """Check get_params method."""
 
     for dname in ['aperiodic', 'peak', 'error', 'r_squared']:
-        assert np.any(tfg.get_params(dname))
+        assert np.any(tfg.results.get_params(dname))
 
 @plot_test
 def test_plot(tfg, skip_if_no_mpl):
@@ -250,7 +250,7 @@ def test_load():
     # Test loading just results
     tfg = SpectralGroupModel(verbose=False)
     tfg.load(file_name_res, TEST_DATA_PATH)
-    assert len(tfg.group_results) > 0
+    assert len(tfg.results.group_results) > 0
     # Test that settings and data are None
     for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is None
@@ -263,7 +263,7 @@ def test_load():
         assert getattr(tfg, setting) is not None
     # Test that results and data are None
     for result in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfg, result)))
+        assert np.all(np.isnan(getattr(tfg.results, result)))
     assert tfg.data.power_spectra is None
 
     # Test loading just data
@@ -274,13 +274,13 @@ def test_load():
     for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is None
     for result in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfg, result)))
+        assert np.all(np.isnan(getattr(tfg.results, result)))
 
     # Test loading all elements
     tfg = SpectralGroupModel(verbose=False)
     file_name_all = 'test_group_all'
     tfg.load(file_name_all, TEST_DATA_PATH)
-    assert len(tfg.group_results) > 0
+    assert len(tfg.results.group_results) > 0
     for setting in OBJ_DESC['settings']:
         assert getattr(tfg, setting) is not None
     assert tfg.data.has_data
@@ -313,7 +313,7 @@ def test_get_model(tfg):
     assert tfm1
     # Check that regenerated model is created
     for result in OBJ_DESC['results']:
-        assert np.all(getattr(tfm1, result))
+        assert np.all(getattr(tfm1.results, result))
 
     # Test when object has no data (clear a copy of tfg)
     new_tfg = tfg.copy()
@@ -358,8 +358,8 @@ def test_get_group(tfg):
     assert_equal(tfg.data.power_spectra[inds2, :], nfg2.data.power_spectra)
 
     # Check that the correct results are extracted
-    assert [tfg.group_results[ind] for ind in inds1] == nfg1.group_results
-    assert [tfg.group_results[ind] for ind in inds2] == nfg2.group_results
+    assert [tfg.results.group_results[ind] for ind in inds1] == nfg1.results.group_results
+    assert [tfg.results.group_results[ind] for ind in inds2] == nfg2.results.group_results
 
 def test_fg_to_df(tfg, tbands, skip_if_no_pandas):
 

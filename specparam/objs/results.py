@@ -14,6 +14,7 @@ from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import get_group_params, get_results_by_ind, get_results_by_row
 from specparam.measures.gof import compute_gof
 from specparam.measures.error import compute_error
+from specparam.sim.gen import gen_model
 
 ###################################################################################################
 ###################################################################################################
@@ -22,8 +23,10 @@ class BaseResults():
     """Base object for managing results."""
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    def __init__(self, error_metric='MAE', gof_metric='r_squared'):
+    def __init__(self, error_metric='MAE', gof_metric='r_squared', modes=None):
         """Initialize BaseResults object."""
+
+        self.modes = modes
 
         # Initialize results attributes
         self._reset_results(True)
@@ -86,50 +89,51 @@ class BaseResults():
             for key in OBJ_DESC['results']})
 
 
-    def get_model(self, component='full', space='log'):
-        """Get a model component.
+    # # TEMP - TURN OFF TO RENAME
+    # def get_model(self, component='full', space='log'):
+    #     """Get a model component.
 
-        Parameters
-        ----------
-        component : {'full', 'aperiodic', 'peak'}
-            Which model component to return.
-                'full' - full model
-                'aperiodic' - isolated aperiodic model component
-                'peak' - isolated peak model component
-        space : {'log', 'linear'}
-            Which space to return the model component in.
-                'log' - returns in log10 space.
-                'linear' - returns in linear space.
+    #     Parameters
+    #     ----------
+    #     component : {'full', 'aperiodic', 'peak'}
+    #         Which model component to return.
+    #             'full' - full model
+    #             'aperiodic' - isolated aperiodic model component
+    #             'peak' - isolated peak model component
+    #     space : {'log', 'linear'}
+    #         Which space to return the model component in.
+    #             'log' - returns in log10 space.
+    #             'linear' - returns in linear space.
 
-        Returns
-        -------
-        output : 1d array
-            Specified model component, in specified spacing.
+    #     Returns
+    #     -------
+    #     output : 1d array
+    #         Specified model component, in specified spacing.
 
-        Notes
-        -----
-        The 'space' parameter doesn't just define the spacing of the model component
-        values, but rather defines the space of the additive model such that
-        `model = aperiodic_component + peak_component`.
-        With space set as 'log', this combination holds in log space.
-        With space set as 'linear', this combination holds in linear space.
-        """
+    #     Notes
+    #     -----
+    #     The 'space' parameter doesn't just define the spacing of the model component
+    #     values, but rather defines the space of the additive model such that
+    #     `model = aperiodic_component + peak_component`.
+    #     With space set as 'log', this combination holds in log space.
+    #     With space set as 'linear', this combination holds in linear space.
+    #     """
 
-        if not self.has_model:
-            raise NoModelError("No model fit results are available, can not proceed.")
-        assert space in ['linear', 'log'], "Input for 'space' invalid."
+    #     if not self.has_model:
+    #         raise NoModelError("No model fit results are available, can not proceed.")
+    #     assert space in ['linear', 'log'], "Input for 'space' invalid."
 
-        if component == 'full':
-            output = self.modeled_spectrum_ if space == 'log' else unlog(self.modeled_spectrum_)
-        elif component == 'aperiodic':
-            output = self._ap_fit if space == 'log' else unlog(self._ap_fit)
-        elif component == 'peak':
-            output = self._peak_fit if space == 'log' else \
-                unlog(self.modeled_spectrum_) - unlog(self._ap_fit)
-        else:
-            raise ValueError('Input for component invalid.')
+    #     if component == 'full':
+    #         output = self.modeled_spectrum_ if space == 'log' else unlog(self.modeled_spectrum_)
+    #     elif component == 'aperiodic':
+    #         output = self._ap_fit if space == 'log' else unlog(self._ap_fit)
+    #     elif component == 'peak':
+    #         output = self._peak_fit if space == 'log' else \
+    #             unlog(self.modeled_spectrum_) - unlog(self._ap_fit)
+    #     else:
+    #         raise ValueError('Input for component invalid.')
 
-        return output
+    #     return output
 
 
     def _check_loaded_results(self, data):
@@ -160,15 +164,13 @@ class BaseResults():
         if clear_results:
 
             # Aperiodic parameters
-            #   TEMP / ToDo: check for attribute - probably update this process
-            if getattr(self, 'modes', None):
+            if self.modes:
                 self.aperiodic_params_ = np.array([np.nan] * self.modes.aperiodic.n_params)
             else:
                 self.aperiodic_params_ = np.nan
 
             # Periodic parameters
-            #   TEMP / ToDo: check for attribute - probably update this process
-            if getattr(self, 'modes', None):
+            if self.modes:
                 self.gaussian_params_ = np.empty([0, self.modes.periodic.n_params])
                 self.peak_params_ = np.empty([0, self.modes.periodic.n_params])
             else:
@@ -189,6 +191,20 @@ class BaseResults():
             self._peak_fit = None
 
 
+    def _regenerate_model(self, freqs):
+        """Regenerate model fit from parameters.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values for the power_spectrum, in linear scale.
+        """
+
+        self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(
+            freqs, self.aperiodic_params_,
+            self.gaussian_params_, return_components=True)
+
+
     def _compute_model_gof(self, metric=None):
         """Calculate the r-squared goodness of fit of the model, compared to the original data.
 
@@ -204,8 +220,10 @@ class BaseResults():
         Which measure is applied is by default controlled by the `_gof_metric` attribute.
         """
 
-        self.r_squared_ = compute_gof(self.data.power_spectrum, self.modeled_spectrum_,
-                                      self._gof_metric if not metric else metric)
+        ## TEMP
+        self.r_squared_ = 1.0
+        #self.r_squared_ = compute_gof(self.data.power_spectrum, self.modeled_spectrum_,
+        #                              self._gof_metric if not metric else metric)
 
 
     def _compute_model_error(self, metric=None):
@@ -224,17 +242,19 @@ class BaseResults():
         Which measure is applied is by default controlled by the `_error_metric` attribute.
         """
 
-        self.error_ = compute_error(self.data.power_spectrum, self.modeled_spectrum_,
-                                    self._error_metric if not metric else metric)
+        ## TEMP
+        self.error_ = 1.0
+        #self.error_ = compute_error(self.data.power_spectrum, self.modeled_spectrum_,
+        #                            self._error_metric if not metric else metric)
 
 
 class BaseResults2D(BaseResults):
     """Base object for managing results - 2D version."""
 
-    def __init__(self):
+    def __init__(self, modes=None):
         """Initialize BaseResults2D object."""
 
-        BaseResults.__init__(self)
+        BaseResults.__init__(self, modes=modes)
 
         self._reset_group_results()
 
@@ -338,10 +358,11 @@ class BaseResults2D(BaseResults):
         This method sets the model fits as null, and preserves the shape of the model fits.
         """
 
-        # Temp import - consider refactoring
+        # Local import - avoid circular
         from specparam import SpectralModel
 
-        null_model = SpectralModel(**self.get_settings()._asdict()).get_results()
+        null_model = SpectralModel(aperiodic_mode=self.modes.aperiodic.name,
+                                   periodic_mode=self.modes.periodic.name).results.get_results()
         for ind in check_inds(inds):
             self.group_results[ind] = null_model
 
@@ -381,88 +402,13 @@ class BaseResults2D(BaseResults):
         return get_group_params(self.group_results, name, col)
 
 
-    def get_model(self, ind, regenerate=True):
-        """Get a model fit object for a specified index.
-
-        Parameters
-        ----------
-        ind : int
-            The index of the model from `group_results` to access.
-        regenerate : bool, optional, default: False
-            Whether to regenerate the model fits for the requested model.
-
-        Returns
-        -------
-        model : SpectralModel
-            The data and fit results loaded into a model object.
-        """
-
-        # Local import - avoid circular
-        from specparam import SpectralModel
-
-        # Initialize model object, with same settings, metadata, & check mode as current object
-        model = SpectralModel(**self.get_settings()._asdict(), verbose=self.verbose)
-        model.data.add_meta_data(self.data.get_meta_data())
-        model.data.set_checks(*self.data.get_checks())
-        model.set_debug(self.get_debug())
-
-        # Add data for specified single power spectrum, if available
-        if self.data.has_data:
-            model.data.power_spectrum = self.data.power_spectra[ind]
-
-        # Add results for specified power spectrum, regenerating full fit if requested
-        model.add_results(self.group_results[ind])
-        if regenerate:
-            model._regenerate_model()
-
-        return model
-
-
-    def get_group(self, inds):
-        """Get a Group model object with the specified sub-selection of model fits.
-
-        Parameters
-        ----------
-        inds : array_like of int or array_like of bool
-            Indices to extract from the object.
-
-        Returns
-        -------
-        group : SpectralGroupModel
-            The requested selection of results data loaded into a new group model object.
-        """
-
-        # Local import - avoid circular
-        from specparam import SpectralGroupModel
-
-        # Initialize a new model object, with same settings as current object
-        group = SpectralGroupModel(**self.get_settings()._asdict(), verbose=self.verbose)
-        group.data.add_meta_data(self.data.get_meta_data())
-        group.data.set_checks(*self.data.get_checks())
-        group.set_debug(self.get_debug())
-
-        if inds is not None:
-
-            # Check and convert indices encoding to list of int
-            inds = check_inds(inds)
-
-            # Add data for specified power spectra, if available
-            if self.data.has_data:
-                group.data.power_spectra = self.data.power_spectra[inds, :]
-
-            # Add results for specified power spectra
-            group.group_results = [self.group_results[ind] for ind in inds]
-
-        return group
-
-
 class BaseResults2DT(BaseResults2D):
     """Base object for managing results - 2D transpose version."""
 
-    def __init__(self):
+    def __init__(self, modes=None):
         """Initialize BaseResults2DT object."""
 
-        BaseResults2D.__init__(self)
+        BaseResults2D.__init__(self, modes=modes)
 
         self._reset_time_results()
 
@@ -483,52 +429,6 @@ class BaseResults2DT(BaseResults2D):
         """Return the results run across a spectrogram."""
 
         return self.time_results
-
-
-    def get_group(self, inds, output_type='time'):
-        """Get a new model object with the specified sub-selection of model fits.
-
-        Parameters
-        ----------
-        inds : array_like of int or array_like of bool
-            Indices to extract from the object.
-        output_type : {'time', 'group'}, optional
-            Type of model object to extract:
-                'time' : SpectralTimeObject
-                'group' : SpectralGroupObject
-
-        Returns
-        -------
-        output : SpectralTimeModel or SpectralGroupModel
-            The requested selection of results data loaded into a new model object.
-        """
-
-        if output_type == 'time':
-
-            # Local import - avoid circular
-            from specparam import SpectralTimeModel
-
-            # Initialize a new model object, with same settings as current object
-            output = SpectralTimeModel(**self.get_settings()._asdict(), verbose=self.verbose)
-            output.data.add_meta_data(self.data.get_meta_data())
-
-            if inds is not None:
-
-                # Check and convert indices encoding to list of int
-                inds = check_inds(inds)
-
-                # Add data for specified power spectra, if available
-                if self.data.has_data:
-                    output.data.power_spectra = self.data.power_spectra[inds, :]
-
-                # Add results for specified power spectra
-                output.group_results = [self.group_results[ind] for ind in inds]
-                output.time_results = get_results_by_ind(self.time_results, inds)
-
-        if output_type == 'group':
-            output = super().get_group(inds)
-
-        return output
 
 
     def drop(self, inds):
@@ -566,10 +466,10 @@ class BaseResults2DT(BaseResults2D):
 class BaseResults3D(BaseResults2DT):
     """Base object for managing results - 3D version."""
 
-    def __init__(self):
+    def __init__(self, modes=None):
         """Initialize BaseResults3D object."""
 
-        BaseResults2DT.__init__(self)
+        BaseResults2DT.__init__(self, modes=modes)
 
         self._reset_event_results()
 
@@ -629,7 +529,8 @@ class BaseResults3D(BaseResults2DT):
         # Local import - avoid circular
         from specparam import SpectralModel
 
-        null_model = SpectralModel(**self.get_settings()._asdict()).get_results()
+        null_model = SpectralModel(aperiodic_mode=self.modes.aperiodic.name,
+                                   periodic_mode=self.modes.periodic.name).results.get_results()
 
         drop_inds = drop_inds if isinstance(drop_inds, dict) else \
             dict(zip(check_inds(drop_inds), repeat(window_inds)))
@@ -696,75 +597,6 @@ class BaseResults3D(BaseResults2DT):
         """
 
         return [get_group_params(gres, name, col) for gres in self.event_group_results]
-
-
-    def get_group(self, event_inds, window_inds, output_type='event'):
-        """Get a new model object with the specified sub-selection of model fits.
-
-        Parameters
-        ----------
-        event_inds, window_inds : array_like of int or array_like of bool or None
-            Indices to extract from the object, for event and time windows.
-            If None, selects all available indices.
-        output_type : {'time', 'group'}, optional
-            Type of model object to extract:
-                'event' : SpectralTimeEventObject
-                'time' : SpectralTimeObject
-                'group' : SpectralGroupObject
-
-        Returns
-        -------
-        output : SpectralTimeEventModel
-            The requested selection of results data loaded into a new model object.
-        """
-
-        # Local import - avoid circular
-        from specparam import SpectralTimeEventModel
-
-        # Check and convert indices encoding to list of int
-        einds = check_inds(event_inds, self.data.n_events)
-        winds = check_inds(window_inds, self.data.n_time_windows)
-
-        if output_type == 'event':
-
-            # Initialize a new model object, with same settings as current object
-            output = SpectralTimeEventModel(**self.get_settings()._asdict(), verbose=self.verbose)
-            output.data.add_meta_data(self.data.get_meta_data())
-
-            if event_inds is not None or window_inds is not None:
-
-                # Add data for specified power spectra, if available
-                if self.data.has_data:
-                    output.spectrograms = self.data.spectrograms[einds, :, :][:, :, winds]
-
-                # Add results for specified power spectra - event group results
-                temp = [self.event_group_results[ei][wi] for ei in einds for wi in winds]
-                step = int(len(temp) / len(einds))
-                output.event_group_results = \
-                    [temp[ind:ind+step] for ind in range(0, len(temp), step)]
-
-                # Add results for specified power spectra - event time results
-                output.event_time_results = \
-                    {key : self.event_time_results[key][event_inds][:, window_inds] \
-                    for key in self.event_time_results}
-
-        elif output_type in ['time', 'group']:
-
-            if event_inds is not None or window_inds is not None:
-
-                # Move specified results & data to `group_results` & `power_spectra` for export
-                self.group_results = \
-                    [self.event_group_results[ei][wi] for ei in einds for wi in winds]
-                if self.data.has_data:
-                    self.data.power_spectra = np.hstack(self.data.spectrograms[einds, :, :][:, :, winds]).T
-
-            new_inds = range(0, len(self.group_results)) if self.group_results else None
-            output = super().get_group(new_inds, output_type)
-
-            self._reset_group_results()
-            self._reset_data_results(clear_spectra=True)
-
-        return output
 
 
     def convert_results(self, peak_org):
