@@ -35,7 +35,7 @@ class Metric():
     def label(self):
         """Define label property."""
 
-        return self.measure + '_' + self.metric
+        return self.measure + '-' + self.metric
 
 
     def compute_metric(self, data, results):
@@ -67,6 +67,22 @@ class Metrics():
         self.metrics = []
         if metrics:
             self.add_metrics(metrics)
+
+
+    def __getitem__(self, label):
+        """Index into the object based on metric label.
+
+        Parameters
+        ----------
+        label : str
+            Label of the metric to access.
+        """
+
+        for ind, clabel in enumerate(self.labels):
+            if label == clabel:
+                return self.metrics[ind]
+
+        raise ValueError('Requested label not found.')
 
 
     def add_metric(self, metric):

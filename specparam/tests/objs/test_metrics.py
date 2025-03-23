@@ -1,5 +1,7 @@
 """Tests for specparam.objs.metrics."""
 
+from pytest import raises
+
 from specparam.measures.error import compute_mean_abs_error
 from specparam.measures.gof import compute_r_squared
 
@@ -32,6 +34,12 @@ def test_metrics_obj(tfm):
 
     metrics.compute_metrics(tfm.data, tfm.results)
     assert isinstance(metrics.outputs, dict)
+
+    # Check indexing
+    met_out = metrics['error-mae']
+    assert isinstance(met_out, Metric)
+    with raises(ValueError):
+        metrics['bad-label']
 
 def test_metrics_dict(tfm):
 
