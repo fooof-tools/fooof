@@ -18,6 +18,7 @@ from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
 from specparam.objs.results import BaseResults, BaseResults2D, BaseResults2DT, BaseResults3D
 from specparam.objs.data import BaseData, BaseData2D, BaseData2DT, BaseData3D
 from specparam.objs.utils import run_parallel_group, run_parallel_event, pbar
+from specparam.objs.metrics import Metrics
 
 ###################################################################################################
 ###################################################################################################
@@ -27,6 +28,9 @@ class CommonBase():
 
     def __init__(self, verbose):
         """Initialize object."""
+
+        self.metrics = Metrics()
+        self.metrics.set_defaults()
 
         self.verbose = verbose
 
@@ -84,10 +88,8 @@ class CommonBase():
             # Call the fit function from the algorithm object
             self._fit()
 
-            ## ToDo: move
-            # Compute goodness of fit & error measures
-            self.results._compute_model_gof()
-            self.results._compute_model_error()
+            # Compute post-fit metrics
+            self.metrics.compute_metrics(self.data, self.results)
 
         except FitError:
 
