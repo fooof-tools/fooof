@@ -361,8 +361,7 @@ class BaseResults2D(BaseResults):
         # Local import - avoid circular
         from specparam import SpectralModel
 
-        null_model = SpectralModel(aperiodic_mode=self.modes.aperiodic.name,
-                                   periodic_mode=self.modes.periodic.name).results.get_results()
+        null_model = SpectralModel(**self.modes.get_modes()).results.get_results()
         for ind in check_inds(inds):
             self.group_results[ind] = null_model
 
@@ -529,8 +528,7 @@ class BaseResults3D(BaseResults2DT):
         # Local import - avoid circular
         from specparam import SpectralModel
 
-        null_model = SpectralModel(aperiodic_mode=self.modes.aperiodic.name,
-                                   periodic_mode=self.modes.periodic.name).results.get_results()
+        null_model = SpectralModel(**self.modes.get_modes()).results.get_results()
 
         drop_inds = drop_inds if isinstance(drop_inds, dict) else \
             dict(zip(check_inds(drop_inds), repeat(window_inds)))
