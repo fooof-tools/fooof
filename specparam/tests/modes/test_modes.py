@@ -13,6 +13,17 @@ def test_modes():
     assert isinstance(modes.aperiodic, Mode)
     assert isinstance(modes.periodic, Mode)
 
+def test_modes_get_modes():
+
+    ap_mode_name = 'fixed'
+    pe_mode_name = 'gaussian'
+
+    modes = Modes(aperiodic=ap_mode_name, periodic=pe_mode_name)
+    mode_names = modes.get_modes()
+    assert isinstance(mode_names, dict)
+    assert mode_names['aperiodic_mode'] == ap_mode_name
+    assert mode_names['periodic_mode'] == pe_mode_name
+
 def test_check_mode_definition():
 
     for ap_mode in AP_MODES.keys():

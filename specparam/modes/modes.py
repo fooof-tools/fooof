@@ -24,6 +24,23 @@ class Modes():
         self.periodic = check_mode_definition(periodic, PE_MODES)
 
 
+    def get_modes(self):
+        """Get the modes names.
+
+        Returns
+        -------
+        modes_def : dict
+            Modes definition.
+            Keys are '{aperiodic, periodic}_mode' and values are mode names (strings).
+        """
+
+        modes_def = {
+            'aperiodic_mode' : self.aperiodic.name,
+            'periodic_mode' : self.periodic.name,
+        }
+
+        return modes_def
+
 
 def check_mode_definition(mode, options):
     """Check a mode specification.
