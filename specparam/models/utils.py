@@ -4,12 +4,47 @@ import numpy as np
 
 from specparam.sim import gen_freqs
 from specparam.data import FitResults
-from specparam.models import SpectralModel, SpectralGroupModel
+from specparam.models import (SpectralModel, SpectralGroupModel,
+                              SpectralTimeModel, SpectralTimeEventModel)
 from specparam.data.periodic import get_band_peak_group
 from specparam.modutils.errors import NoModelError, IncompatibleSettingsError
 
 ###################################################################################################
 ###################################################################################################
+
+# Collect dictionary of all available models
+MODELS = {
+    'model' : SpectralModel,
+    'group' : SpectralGroupModel,
+    'time' : SpectralTimeModel,
+    'event' : SpectralTimeEventModel,
+}
+
+def initialize_model_from_source(source, target):
+    """Initialize a model object based on a source model object.
+
+    Parameters
+    ----------
+    source : SpectralModel or Spectral*Model
+        Model object to initialize from.
+    target : {'model', 'group', 'time', 'event'}
+        Type of model object to initialize.
+
+    Returns
+    -------
+    model : Spectral*Model
+        Model object, of type `target`, initialized from source.
+    """
+
+    model = MODELS[target](**source.algorithm.get_settings()._asdict(), verbose=source.verbose)
+    model.data.add_meta_data(source.data.get_meta_data())
+    model.data.set_checks(*source.data.get_checks())
+    model.algorithm.set_debug(source.algorithm.get_debug())
+
+    ## ToDo?: add modes copying here?
+
+    return model
+
 
 def compare_model_objs(model_objs, aspect):
     """Compare multiple model, checking for consistent attributes.
