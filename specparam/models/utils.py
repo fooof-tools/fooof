@@ -37,12 +37,12 @@ def initialize_model_from_source(source, target):
         Model object, of type `target`, initialized from source.
     """
 
-    model = MODELS[target](**source.algorithm.get_settings()._asdict(), verbose=source.verbose)
+    model = MODELS[target](**source.modes.get_modes()._asdict(),
+                           **source.algorithm.get_settings()._asdict(),
+                           verbose=source.verbose)
     model.data.add_meta_data(source.data.get_meta_data())
     model.data.set_checks(*source.data.get_checks())
     model.algorithm.set_debug(source.algorithm.get_debug())
-
-    ## ToDo?: add modes copying here?
 
     return model
 

@@ -22,6 +22,7 @@ def test_initialize_model_from_source(tfm, tfg):
             out = initialize_model_from_source(source, target)
             assert out.algorithm.get_settings() == source.algorithm.get_settings()
             assert out.data.get_meta_data() == source.data.get_meta_data()
+            assert out.modes.get_modes() == source.modes.get_modes()
             assert not out.data.has_data
             assert not out.results.has_model
 
