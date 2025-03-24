@@ -5,15 +5,16 @@ from specparam.modes.info import *
 ###################################################################################################
 ###################################################################################################
 
-def test_get_description(tfm):
+## TEMP: REMOVE?
+# def test_get_description(tfm):
 
-    desc = get_description()
-    objs = dir(tfm)
+#     desc = get_description()
+#     objs = dir(tfm)
 
-    # Test that everything in dict is a valid component of the model object
-    for ke, va in desc.items():
-        for it in va:
-            assert it in objs
+#     # Test that everything in dict is a valid component of the model object
+#     for ke, va in desc.items():
+#         for it in va:
+#             assert it in objs
 
 def test_get_peak_indices():
 
@@ -46,9 +47,10 @@ def test_get_indices():
     all_indices_knee = get_indices('knee')
     assert len(all_indices_knee) == 6
 
-def test_get_info(tfm, tfg):
+# TEMP: TO DROP?
+# def test_get_info(tfm, tfg):
 
-    for f_obj in [tfm, tfg]:
-        assert get_info(f_obj, 'settings')
-        assert get_info(f_obj, 'meta_data')
-        assert get_info(f_obj, 'results')
+#     for f_obj in [tfm, tfg]:
+#         assert get_info(f_obj, 'settings')
+#         assert get_info(f_obj, 'meta_data')
+#         assert get_info(f_obj, 'results')

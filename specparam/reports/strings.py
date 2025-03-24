@@ -86,12 +86,12 @@ def gen_version_str(concise=False):
     return output
 
 
-def gen_modes_str(model_obj, description=False, concise=False):
+def gen_modes_str(model, description=False, concise=False):
     """Generate a string representation of fit modes.
 
     Parameters
     ----------
-    model_obj : SpectralModel or SpectralGroupModel or ModelModes
+    model : SpectralModel or Spectral*Model or ModelModes
         Object to access fit modes from.
     description : bool, optional, default: False
         Whether to also print out a description of the fit modes.
@@ -123,9 +123,9 @@ def gen_modes_str(model_obj, description=False, concise=False):
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Periodic Mode : {}'.format(model_obj.periodic_mode.name),
+        *[el for el in ['Periodic Mode : {}'.format(model.modes.periodic.name),
                         '{}'.format(desc['aperiodic_mode']),
-                        'Aperiodic Mode : {}'.format(model_obj.aperiodic_mode.name),
+                        'Aperiodic Mode : {}'.format(model.modes.aperiodic.name),
                         '{}'.format(desc['aperiodic_mode'])] if el != ''],
 
         # Footer
@@ -137,12 +137,13 @@ def gen_modes_str(model_obj, description=False, concise=False):
 
     return output
 
-def gen_settings_str(model_obj, description=False, concise=False):
+
+def gen_settings_str(model, description=False, concise=False):
     """Generate a string representation of current fit settings.
 
     Parameters
     ----------
-    model_obj : SpectralModel or SpectralGroupModel or ModelSettings
+    model : SpectralModel or Spectral*Model or ModelSettings
         Object to access settings from.
     description : bool, optional, default: False
         Whether to also print out a description of the settings.
@@ -159,9 +160,9 @@ def gen_settings_str(model_obj, description=False, concise=False):
     desc = {
         'peak_width_limits' : 'Limits for minimum and maximum peak widths, in Hz.',
         'max_n_peaks'       : 'Maximum number of peaks that can be extracted.',
-        'min_peak_height'   : 'Minimum absolute height of a peak, above the aperiodic component.',
+        'min_peak_height'   : 'Minimum absolute height of a peak above the aperiodic component.',
         'peak_threshold'    : 'Relative threshold for minimum height required for detecting peaks.',
-        }
+    }
 
     # Clear description for printing, if not requested
     if not description:
@@ -177,13 +178,13 @@ def gen_settings_str(model_obj, description=False, concise=False):
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Peak Width Limits : {}'.format(model_obj.peak_width_limits),
+        *[el for el in ['Peak Width Limits : {}'.format(model.algorithm.peak_width_limits),
                         '{}'.format(desc['peak_width_limits']),
-                        'Max Number of Peaks : {}'.format(model_obj.max_n_peaks),
+                        'Max Number of Peaks : {}'.format(model.algorithm.max_n_peaks),
                         '{}'.format(desc['max_n_peaks']),
-                        'Minimum Peak Height : {}'.format(model_obj.min_peak_height),
+                        'Minimum Peak Height : {}'.format(model.algorithm.min_peak_height),
                         '{}'.format(desc['min_peak_height']),
-                        'Peak Threshold: {}'.format(model_obj.peak_threshold),
+                        'Peak Threshold: {}'.format(model.algorithm.peak_threshold),
                         '{}'.format(desc['peak_threshold'])] if el != ''],
 
         # Footer
@@ -196,12 +197,12 @@ def gen_settings_str(model_obj, description=False, concise=False):
     return output
 
 
-def gen_freq_range_str(model_obj, concise=False):
+def gen_freq_range_str(model, concise=False):
     """Generate a string representation of the fit range that was used for the model.
 
     Parameters
     ----------
-    model_obj : SpectralModel or SpectralGroupModel
+    model : SpectralModel or Spectral*Model
         Object to access settings from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
@@ -211,7 +212,7 @@ def gen_freq_range_str(model_obj, concise=False):
     If fit range is not available, will print out 'XX' for missing values.
     """
 
-    freq_range = model_obj.freq_range if model_obj.has_data else ('XX', 'XX')
+    freq_range = model.data.freq_range if model.data.has_data else ('XX', 'XX')
 
     str_lst = [
 
@@ -275,12 +276,12 @@ def gen_methods_report_str(concise=False):
     return output
 
 
-def gen_methods_text_str(model_obj=None):
+def gen_methods_text_str(model=None):
     """Generate a string representation of a template methods report.
 
     Parameters
     ----------
-    model_obj : SpectralModel or SpectralGroupModel, optional
+    model : SpectralModel or Spectral*Model, optional
         A model object with settings information available.
         If None, the text is returned as a template, without values.
     """
@@ -298,18 +299,18 @@ def gen_methods_text_str(model_obj=None):
         "{} to {} Hz."
     )
 
-    if model_obj:
-        freq_range = model_obj.freq_range if model_obj.has_data else ('XX', 'XX')
+    if model:
+        freq_range = model.data.freq_range if model.data.has_data else ('XX', 'XX')
     else:
         freq_range = ('XX', 'XX')
 
     methods_str = template.format(MODULE_VERSION,
-                                  model_obj.aperiodic_mode.name if model_obj else 'XX',
-                                  model_obj.periodic_mode.name if model_obj else 'XX',
-                                  model_obj.peak_width_limits if model_obj else 'XX',
-                                  model_obj.max_n_peaks if model_obj else 'XX',
-                                  model_obj.min_peak_height if model_obj else 'XX',
-                                  model_obj.peak_threshold if model_obj else 'XX',
+                                  model.modes.aperiodic.name if model else 'XX',
+                                  model.modes.periodic.name if model else 'XX',
+                                  model.algorithm.peak_width_limits if model else 'XX',
+                                  model.algorithm.max_n_peaks if model else 'XX',
+                                  model.algorithm.min_peak_height if model else 'XX',
+                                  model.algorithm.peak_threshold if model else 'XX',
                                   *freq_range)
 
     return methods_str
@@ -332,7 +333,7 @@ def gen_model_results_str(model, concise=False):
     """
 
     # Returns a null report if no results are available
-    if np.all(np.isnan(model.aperiodic_params_)):
+    if np.all(np.isnan(model.results.aperiodic_params_)):
         return _no_model_str(concise)
 
     # Create the formatted strings for printing
@@ -346,28 +347,29 @@ def gen_model_results_str(model, concise=False):
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(model.freq_range[0])), int(np.ceil(model.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(model.freq_res),
+            int(np.floor(model.data.freq_range[0])), int(np.ceil(model.data.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(model.data.freq_res),
         '',
 
         # Aperiodic parameters
         ('Aperiodic Parameters (offset, ' + \
-         ('knee, ' if model.aperiodic_mode.name == 'knee' else '') + \
+         ('knee, ' if model.modes.aperiodic.name == 'knee' else '') + \
          'exponent): '),
-        ', '.join(['{:2.4f}'] * len(model.aperiodic_params_)).format(*model.aperiodic_params_),
+        ', '.join(['{:2.4f}'] * \
+            len(model.results.aperiodic_params_)).format(*model.results.aperiodic_params_),
         '',
 
         # Peak parameters
         '{} peaks were found:'.format(
-            len(model.peak_params_)),
+            len(model.results.peak_params_)),
         *['CF: {:6.2f}, PW: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]) \
-          for op in model.peak_params_],
+          for op in model.results.peak_params_],
         '',
 
         # Goodness if fit
         'Goodness of fit metrics:',
-        'R^2 of model fit is {:5.4f}'.format(model.r_squared_),
-        'Error of the fit is {:5.4f}'.format(model.error_),
+        'R^2 of model fit is {:5.4f}'.format(model.results.r_squared_),
+        'Error of the fit is {:5.4f}'.format(model.results.error_),
         '',
 
         # Footer
@@ -400,16 +402,16 @@ def gen_group_results_str(group, concise=False):
         If no model fit data is available to report.
     """
 
-    if not group.has_model:
+    if not group.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     # Extract all the relevant data for printing
-    n_peaks = len(group.get_params('peak_params'))
-    r2s = group.get_params('r_squared')
-    errors = group.get_params('error')
-    exps = group.get_params('aperiodic_params', 'exponent')
-    kns = group.get_params('aperiodic_params', 'knee') \
-        if str(group.aperiodic_mode) == 'knee' else np.array([0])
+    n_peaks = len(group.results.get_params('peak_params'))
+    r2s = group.results.get_params('r_squared')
+    errors = group.results.get_params('error')
+    exps = group.results.get_params('aperiodic_params', 'exponent')
+    kns = group.results.get_params('aperiodic_params', 'knee') \
+        if group.modes.aperiodic.name == 'knee' else np.array([0])
 
     str_lst = [
 
@@ -420,24 +422,25 @@ def gen_group_results_str(group, concise=False):
         '',
 
         # Group information
-        'Number of power spectra in the Group: {}'.format(len(group.group_results)),
-        *[el for el in ['{} power spectra failed to fit'.format(group.n_null_)] if group.n_null_],
+        'Number of power spectra in the Group: {}'.format(len(group.results.group_results)),
+        *[el for el in ['{} power spectra failed to fit'.format(\
+            group.results.n_null_)] if group.results.n_null_],
         '',
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(group.freq_range[0])), int(np.ceil(group.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(group.freq_res),
+            int(np.floor(group.data.freq_range[0])), int(np.ceil(group.data.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(group.data.freq_res),
         '',
 
         # Aperiodic parameters - knee fit status, and quick exponent description
         'Power spectra were fit {} a knee.'.format(\
-            'with' if str(group.aperiodic_mode) == 'knee' else 'without'),
+            'with' if group.modes.aperiodic.name == 'knee' else 'without'),
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
                         .format(*compute_arr_desc(kns)),
-                       ] if group.aperiodic_mode.name == 'knee'],
+                       ] if group.modes.aperiodic.name == 'knee'],
 
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(*compute_arr_desc(exps)),
@@ -465,12 +468,12 @@ def gen_group_results_str(group, concise=False):
     return output
 
 
-def gen_time_results_str(time_model, concise=False):
+def gen_time_results_str(time, concise=False):
     """Generate a string representation of time fit results.
 
     Parameters
     ----------
-    time_model : SpectralTimeModel
+    time : SpectralTimeModel
         Object to access results from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
@@ -486,15 +489,15 @@ def gen_time_results_str(time_model, concise=False):
         If no model fit data is available to report.
     """
 
-    if not time_model.has_model:
+    if not time.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     # Get parameter information needed for printing
-    pe_labels = get_periodic_labels(time_model.time_results)
+    pe_labels = get_periodic_labels(time.results.time_results)
     band_labels = [\
         pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
         for band_ind in range(len(pe_labels['cf']))]
-    has_knee = time_model.aperiodic_mode.name == 'knee'
+    has_knee = time.modes.aperiodic.name == 'knee'
 
     str_lst = [
 
@@ -505,47 +508,48 @@ def gen_time_results_str(time_model, concise=False):
         '',
 
         # Group information
-        'Number of time windows fit: {}'.format(len(time_model.group_results)),
-        *[el for el in ['{} power spectra failed to fit'.format(time_model.n_null_)] \
-            if time_model.n_null_],
+        'Number of time windows fit: {}'.format(len(time.results.group_results)),
+        *[el for el in ['{} power spectra failed to fit'.format(time.results.n_null_)] \
+            if time.results.n_null_],
         '',
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(time_model.freq_range[0])), int(np.ceil(time_model.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(time_model.freq_res),
+            int(np.floor(time.data.freq_range[0])),
+            int(np.ceil(time.data.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(time.data.freq_res),
         '',
 
         # Aperiodic parameters - knee fit status, and quick exponent description
         'Power spectra were fit {} a knee.'.format(\
-            'with' if time_model.aperiodic_mode.name == 'knee' else 'without'),
+            'with' if time.modes.aperiodic.name == 'knee' else 'without'),
         '',
         'Aperiodic Fit Values:',
         *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
-                        .format(*compute_arr_desc(time_model.time_results['knee']) \
+                        .format(*compute_arr_desc(time.results.time_results['knee']) \
                             if has_knee else [0, 0, 0]),
                        ] if has_knee],
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(time_model.time_results['exponent'])),
+        .format(*compute_arr_desc(time.results.time_results['exponent'])),
         '',
 
         # Periodic parameters
         'Periodic params (mean values across windows):',
         *['{:>6s} - CF: {:5.2f}, PW: {:5.2f}, BW: {:5.2f}, Presence: {:3.1f}%'.format(
             label,
-            np.nanmean(time_model.time_results[pe_labels['cf'][ind]]),
-            np.nanmean(time_model.time_results[pe_labels['pw'][ind]]),
-            np.nanmean(time_model.time_results[pe_labels['bw'][ind]]),
-            compute_presence(time_model.time_results[pe_labels['cf'][ind]], output='percent'))
+            np.nanmean(time.results.time_results[pe_labels['cf'][ind]]),
+            np.nanmean(time.results.time_results[pe_labels['pw'][ind]]),
+            np.nanmean(time.results.time_results[pe_labels['bw'][ind]]),
+            compute_presence(time.results.time_results[pe_labels['cf'][ind]], output='percent'))
                 for ind, label in enumerate(band_labels)],
         '',
 
         # Goodness if fit
         'Goodness of fit (mean values across windows):',
         '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(time_model.time_results['r_squared'])),
+        .format(*compute_arr_desc(time.results.time_results['r_squared'])),
         'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(time_model.time_results['error'])),
+        .format(*compute_arr_desc(time.results.time_results['error'])),
         '',
 
         # Footer
@@ -557,12 +561,12 @@ def gen_time_results_str(time_model, concise=False):
     return output
 
 
-def gen_event_results_str(event_model, concise=False):
+def gen_event_results_str(event, concise=False):
     """Generate a string representation of event fit results.
 
     Parameters
     ----------
-    event_model : SpectralTimeEventModel
+    event : SpectralTimeEventModel
         Object to access results from.
     concise : bool, optional, default: False
         Whether to print the report in concise mode.
@@ -578,15 +582,15 @@ def gen_event_results_str(event_model, concise=False):
         If no model fit data is available to report.
     """
 
-    if not event_model.has_model:
+    if not event.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     # Extract all the relevant data for printing
-    pe_labels = get_periodic_labels(event_model.event_time_results)
+    pe_labels = get_periodic_labels(event.results.event_time_results)
     band_labels = [\
         pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
         for band_ind in range(len(pe_labels['cf']))]
-    has_knee = event_model.aperiodic_mode.name == 'knee'
+    has_knee = event.modes.aperiodic.name == 'knee'
 
     str_lst = [
 
@@ -597,36 +601,37 @@ def gen_event_results_str(event_model, concise=False):
         '',
 
         # Group information
-        'Number of events fit: {}'.format(len(event_model.event_group_results)),
+        'Number of events fit: {}'.format(len(event.results.event_group_results)),
         '',
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(event_model.freq_range[0])), int(np.ceil(event_model.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(event_model.freq_res),
+            int(np.floor(event.data.freq_range[0])),
+            int(np.ceil(event.data.freq_range[1]))),
+        'Frequency Resolution is {:1.2f} Hz'.format(event.data.freq_res),
         '',
 
         # Aperiodic parameters - knee fit status, and quick exponent description
         'Power spectra were fit {} a knee.'.format(\
-            'with' if event_model.aperiodic_mode.name == 'knee' else 'without'),
+            'with' if event.modes.aperiodic.name == 'knee' else 'without'),
         '',
         'Aperiodic params (values across events):',
-        *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
-                        .format(*compute_arr_desc(np.mean(event_model.event_time_results['knee'], 1) \
+        *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'.format(\
+            *compute_arr_desc(np.mean(event.results.event_time_results['knee'], 1) \
                             if has_knee else [0, 0, 0])),
                        ] if has_knee],
         'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(np.mean(event_model.event_time_results['exponent'], 1))),
+        .format(*compute_arr_desc(np.mean(event.results.event_time_results['exponent'], 1))),
         '',
 
         # Periodic parameters
         'Periodic params (mean values across events):',
         *['{:>6s} - CF: {:5.2f}, PW: {:5.2f}, BW: {:5.2f}, Presence: {:3.1f}%'.format(
             label,
-            np.nanmean(event_model.event_time_results[pe_labels['cf'][ind]]),
-            np.nanmean(event_model.event_time_results[pe_labels['pw'][ind]]),
-            np.nanmean(event_model.event_time_results[pe_labels['bw'][ind]]),
-            compute_presence(event_model.event_time_results[pe_labels['cf'][ind]],
+            np.nanmean(event.results.event_time_results[pe_labels['cf'][ind]]),
+            np.nanmean(event.results.event_time_results[pe_labels['pw'][ind]]),
+            np.nanmean(event.results.event_time_results[pe_labels['bw'][ind]]),
+            compute_presence(event.results.event_time_results[pe_labels['cf'][ind]],
                              average=True, output='percent'))
                 for ind, label in enumerate(band_labels)],
         '',
@@ -634,10 +639,10 @@ def gen_event_results_str(event_model, concise=False):
         # Goodness if fit
         'Goodness of fit (values across events):',
         '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(np.mean(event_model.event_time_results['r_squared'], 1))),
+        .format(*compute_arr_desc(np.mean(event.results.event_time_results['r_squared'], 1))),
 
         'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(np.mean(event_model.event_time_results['error'], 1))),
+        .format(*compute_arr_desc(np.mean(event.results.event_time_results['error'], 1))),
         '',
 
         # Footer

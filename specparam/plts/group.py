@@ -36,7 +36,7 @@ def plot_group_model(group, **plot_kwargs):
         If the model object does not have model fit data available to plot.
     """
 
-    if not group.has_model:
+    if not group.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     fig = plt.figure(figsize=plot_kwargs.pop('figsize', PLT_FIGSIZES['group']))
@@ -75,12 +75,12 @@ def plot_group_aperiodic(group, ax=None, **plot_kwargs):
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    if group.aperiodic_mode.name == 'knee':
-        plot_scatter_2(group.get_params('aperiodic_params', 'exponent'), 'Exponent',
-                       group.get_params('aperiodic_params', 'knee'), 'Knee',
+    if group.modes.aperiodic.name == 'knee':
+        plot_scatter_2(group.results.get_params('aperiodic_params', 'exponent'), 'Exponent',
+                       group.results.get_params('aperiodic_params', 'knee'), 'Knee',
                        'Aperiodic Fit', ax=ax)
     else:
-        plot_scatter_1(group.get_params('aperiodic_params', 'exponent'), 'Exponent',
+        plot_scatter_1(group.results.get_params('aperiodic_params', 'exponent'), 'Exponent',
                        'Aperiodic Fit', ax=ax)
 
 
@@ -100,8 +100,8 @@ def plot_group_goodness(group, ax=None, **plot_kwargs):
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    plot_scatter_2(group.get_params('error'), 'Error',
-                   group.get_params('r_squared'), 'R^2', 'Goodness of Fit', ax=ax)
+    plot_scatter_2(group.results.get_params('error'), 'Error',
+                   group.results.get_params('r_squared'), 'R^2', 'Goodness of Fit', ax=ax)
 
 
 @savefig
@@ -120,5 +120,5 @@ def plot_group_peak_frequencies(group, ax=None, **plot_kwargs):
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    plot_hist(group.get_params('peak_params', 0)[:, 0], 'Center Frequency',
-              'Peaks - Center Frequencies', x_lims=group.freq_range, ax=ax)
+    plot_hist(group.results.get_params('peak_params', 0)[:, 0], 'Center Frequency',
+              'Peaks - Center Frequencies', x_lims=group.data.freq_range, ax=ax)

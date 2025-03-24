@@ -2,6 +2,7 @@
 
 import numpy as np
 
+from specparam.modes.modes import Modes
 from specparam.models import SpectralModel
 from specparam.objs.base import BaseObject2DT
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
@@ -17,7 +18,7 @@ from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
+class SpectralTimeModel(BaseObject2DT):
     """Model a spectrogram as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -59,15 +60,15 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
     def __init__(self, *args, **kwargs):
         """Initialize object with desired settings."""
 
-        BaseObject2DT.__init__(self,
-                               aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
-                               periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
-                               debug=kwargs.pop('debug', False),
-                               verbose=kwargs.pop('verbose', True))
+        self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
+                           periodic=kwargs.pop('periodic_mode', 'gaussian'))
 
-        SpectralFitAlgorithm.__init__(self, *args, **kwargs)
+        BaseObject2DT.__init__(self, modes=self.modes, verbose=kwargs.pop('verbose', True))
 
-        self._reset_time_results()
+        self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
+            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
+
+        self.results._reset_time_results()
 
 
     def report(self, freqs=None, spectrogram=None, freq_range=None,
@@ -153,9 +154,9 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
         """
 
         if peak_org is not None:
-            df = group_to_dataframe(self.group_results, peak_org)
+            df = group_to_dataframe(self.results.group_results, peak_org)
         else:
-            df = dict_to_df(self.get_results())
+            df = dict_to_df(self.results.get_results())
 
         return df
 
@@ -169,5 +170,5 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
         checking and reporting on every spectrum and repeatedly re-raising the same warning.
         """
 
-        if np.all(self.power_spectrum == self.spectrogram[:, 0]):
+        if np.all(self.data.power_spectrum == self.data.spectrogram[:, 0]):
             super()._fit_prechecks()

@@ -49,9 +49,9 @@ def _par_fit_group(power_spectrum, group):
     """Function to partialize for running in parallel - group."""
 
     group._pass_through_spectrum(power_spectrum)
-    group._fit()
+    group.algorithm._fit()
 
-    return group._get_results()
+    return group.results._get_results()
 
 ## EVENT
 
@@ -66,10 +66,10 @@ def run_parallel_event(model, data, n_jobs, progress):
 def _par_fit_event(spectrogram, model):
     """Function to partialize for running in parallel - event."""
 
-    model.power_spectra = spectrogram.T
+    model.data.power_spectra = spectrogram.T
     model.fit()
 
-    return model.get_results()
+    return model.results.get_results()
 
 ###################################################################################################
 ## PROGRESS BARS

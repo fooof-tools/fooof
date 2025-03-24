@@ -5,6 +5,7 @@ Notes
 Methods without defined docstrings import docs at runtime, from aliased external functions.
 """
 
+from specparam.modes.modes import Modes
 from specparam.models import SpectralModel
 from specparam.objs.base import BaseObject2D
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
@@ -20,7 +21,7 @@ from specparam.data.conversions import group_to_dataframe
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
+class SpectralGroupModel(BaseObject2D):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -71,13 +72,13 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
 
     def __init__(self, *args, **kwargs):
 
-        BaseObject2D.__init__(self,
-                              aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
-                              periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
-                              debug=kwargs.pop('debug', False),
-                              verbose=kwargs.pop('verbose', True))
+        self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
+                           periodic=kwargs.pop('periodic_mode', 'gaussian'))
 
-        SpectralFitAlgorithm.__init__(self, *args, **kwargs)
+        BaseObject2D.__init__(self, modes=self.modes, verbose=kwargs.pop('verbose', True))
+
+        self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
+            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
 
 
     def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1,
@@ -172,7 +173,7 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
             Model results organized into a pandas object.
         """
 
-        return group_to_dataframe(self.get_results(), peak_org)
+        return group_to_dataframe(self.results.get_results(), peak_org)
 
 
     def _fit_prechecks(self):
@@ -184,5 +185,5 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
         checking and reporting on every spectrum and repeatedly re-raising the same warning.
         """
 
-        if self.power_spectra[0, 0] == self.power_spectrum[0]:
+        if self.data.power_spectra[0, 0] == self.data.power_spectrum[0]:
             super()._fit_prechecks()

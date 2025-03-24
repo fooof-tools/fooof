@@ -4,12 +4,48 @@ import numpy as np
 
 from specparam.sim import gen_freqs
 from specparam.data import FitResults
-from specparam.models import SpectralModel, SpectralGroupModel
+from specparam.models import (SpectralModel, SpectralGroupModel,
+                              SpectralTimeModel, SpectralTimeEventModel)
 from specparam.data.periodic import get_band_peak_group
 from specparam.modutils.errors import NoModelError, IncompatibleSettingsError
 
 ###################################################################################################
 ###################################################################################################
+
+# Collect dictionary of all available models
+MODELS = {
+    'model' : SpectralModel,
+    'group' : SpectralGroupModel,
+    'time' : SpectralTimeModel,
+    'event' : SpectralTimeEventModel,
+}
+
+
+def initialize_model_from_source(source, target):
+    """Initialize a model object based on a source model object.
+
+    Parameters
+    ----------
+    source : SpectralModel or Spectral*Model
+        Model object to initialize from.
+    target : {'model', 'group', 'time', 'event'}
+        Type of model object to initialize.
+
+    Returns
+    -------
+    model : Spectral*Model
+        Model object, of type `target`, initialized from source.
+    """
+
+    model = MODELS[target](**source.modes.get_modes()._asdict(),
+                           **source.algorithm.get_settings()._asdict(),
+                           verbose=source.verbose)
+    model.data.add_meta_data(source.data.get_meta_data())
+    model.data.set_checks(*source.data.get_checks())
+    model.algorithm.set_debug(source.algorithm.get_debug())
+
+    return model
+
 
 def compare_model_objs(model_objs, aspect):
     """Compare multiple model, checking for consistent attributes.
@@ -29,11 +65,10 @@ def compare_model_objs(model_objs, aspect):
 
     # Check specified aspect of the objects are the same across instances
     for m_obj_1, m_obj_2 in zip(model_objs[:-1], model_objs[1:]):
-        if getattr(m_obj_1, 'get_' + aspect)() != getattr(m_obj_2, 'get_' + aspect)():
-            consistent = False
-            break
-    else:
-        consistent = True
+        if aspect == 'settings':
+            consistent = m_obj_1.algorithm.get_settings() == m_obj_2.algorithm.get_settings()
+        if aspect == 'meta_data':
+            consistent = m_obj_1.data.get_meta_data() == m_obj_2.data.get_meta_data()
 
     return consistent
 
@@ -65,7 +100,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
         If there are no model fit results available to average across.
     """
 
-    if not group.has_model:
+    if not group.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     avg_funcs = {'mean' : np.nanmean, 'median' : np.nanmedian}
@@ -73,7 +108,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
         raise ValueError("Requested average method not understood.")
 
     # Aperiodic parameters: extract & average
-    ap_params = avg_funcs[avg_method](group.get_params('aperiodic_params'), 0)
+    ap_params = avg_funcs[avg_method](group.results.get_params('aperiodic_params'), 0)
 
     # Periodic parameters: extract & average
     peak_params = []
@@ -94,21 +129,19 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
     gauss_params = np.array(gauss_params)
 
     # Goodness of fit measures: extract & average
-    r2 = avg_funcs[avg_method](group.get_params('r_squared'))
-    error = avg_funcs[avg_method](group.get_params('error'))
+    r2 = avg_funcs[avg_method](group.results.get_params('r_squared'))
+    error = avg_funcs[avg_method](group.results.get_params('error'))
 
     # Collect all results together, to be added to the model object
     results = FitResults(ap_params, peak_params, r2, error, gauss_params)
 
     # Create the new model object, with settings, data info & results
-    model = SpectralModel()
-    model.add_settings(group.get_settings())
-    model.add_meta_data(group.get_meta_data())
-    model.add_results(results)
+    model = group.get_model()
+    model.results.add_results(results)
 
     # Generate the average model from the parameters
     if regenerate:
-        model._regenerate_model()
+        model.results._regenerate_model(group.data.freqs)
 
     return model
 
@@ -132,20 +165,20 @@ def average_reconstructions(group, avg_method='mean'):
         Note that power values are in log10 space.
     """
 
-    if not group.has_model:
+    if not group.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     avg_funcs = {'mean' : np.nanmean, 'median' : np.nanmedian}
     if avg_method not in avg_funcs.keys():
         raise ValueError("Requested average method not understood.")
 
-    models = np.zeros(shape=group.power_spectra.shape)
-    for ind in range(len(group)):
-        models[ind, :] = group.get_model(ind, regenerate=True).modeled_spectrum_
+    models = np.zeros(shape=group.data.power_spectra.shape)
+    for ind in range(len(group.results)):
+        models[ind, :] = group.get_model(ind, regenerate=True).results.modeled_spectrum_
 
     avg_model = avg_funcs[avg_method](models, 0)
 
-    return group.freqs, avg_model
+    return group.data.freqs, avg_model
 
 
 def combine_model_objs(model_objs):
@@ -184,11 +217,12 @@ def combine_model_objs(model_objs):
                                         "or meta data, and so cannot be combined.")
 
     # Initialize group model object, with settings derived from input objects
-    group = SpectralGroupModel(*model_objs[0].get_settings(), verbose=model_objs[0].verbose)
+    group = SpectralGroupModel(*model_objs[0].algorithm.get_settings(),
+                               verbose=model_objs[0].verbose)
 
     # Use a temporary store to collect spectra, as we'll only add it if it is consistently present
     #   We check how many frequencies by accessing meta data, in case of no frequency vector
-    meta_data = model_objs[0].get_meta_data()
+    meta_data = model_objs[0].data.get_meta_data()
     n_freqs = len(gen_freqs(meta_data.freq_range, meta_data.freq_res))
     temp_power_spectra = np.empty([0, n_freqs])
 
@@ -197,28 +231,28 @@ def combine_model_objs(model_objs):
 
         # Add group object
         if isinstance(m_obj, SpectralGroupModel):
-            group.group_results.extend(m_obj.group_results)
-            if m_obj.power_spectra is not None:
-                temp_power_spectra = np.vstack([temp_power_spectra, m_obj.power_spectra])
+            group.results.group_results.extend(m_obj.results.group_results)
+            if m_obj.data.power_spectra is not None:
+                temp_power_spectra = np.vstack([temp_power_spectra, m_obj.data.power_spectra])
 
         # Add model object
         else:
-            group.group_results.append(m_obj.get_results())
-            if m_obj.power_spectrum is not None:
-                temp_power_spectra = np.vstack([temp_power_spectra, m_obj.power_spectrum])
+            group.results.group_results.append(m_obj.results.get_results())
+            if m_obj.data.power_spectrum is not None:
+                temp_power_spectra = np.vstack([temp_power_spectra, m_obj.data.power_spectrum])
 
     # If the number of collected power spectra is consistent, then add them to object
-    if len(group) == temp_power_spectra.shape[0]:
-        group.power_spectra = temp_power_spectra
+    if len(group.results) == temp_power_spectra.shape[0]:
+        group.data.power_spectra = temp_power_spectra
 
     # Set the status for freqs & data checking
     #  Check states gets set as True if any of the inputs have it on, False otherwise
-    group.set_checks(\
-        check_freqs=any(getattr(m_obj, '_check_freqs') for m_obj in model_objs),
-        check_data=any(getattr(m_obj, '_check_data') for m_obj in model_objs))
+    group.data.set_checks(\
+        check_freqs=any(getattr(m_obj.data, '_check_freqs') for m_obj in model_objs),
+        check_data=any(getattr(m_obj.data, '_check_data') for m_obj in model_objs))
 
     # Add data information information
-    group.add_meta_data(model_objs[0].get_meta_data())
+    group.data.add_meta_data(model_objs[0].data.get_meta_data())
 
     return group
 

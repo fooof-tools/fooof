@@ -2,6 +2,7 @@
 
 import numpy as np
 
+from specparam.modes.modes import Modes
 from specparam.models import SpectralModel
 from specparam.objs.base import BaseObject3D
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
@@ -18,7 +19,7 @@ from specparam.reports.strings import gen_event_results_str
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
+class SpectralTimeEventModel(BaseObject3D):
     """Model a set of event as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -58,15 +59,15 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
     def __init__(self, *args, **kwargs):
         """Initialize object with desired settings."""
 
-        BaseObject3D.__init__(self,
-                              aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
-                              periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
-                              debug=kwargs.pop('debug', False),
-                              verbose=kwargs.pop('verbose', True))
+        self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
+                           periodic=kwargs.pop('periodic_mode', 'gaussian'))
 
-        SpectralFitAlgorithm.__init__(self, *args, **kwargs)
+        BaseObject3D.__init__(self, modes=self.modes, verbose=kwargs.pop('verbose', True))
 
-        self._reset_event_results()
+        self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
+            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
+
+        self.results._reset_event_results()
 
 
     def report(self, freqs=None, spectrograms=None, freq_range=None,
@@ -128,14 +129,14 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
         save_event_report(self, file_name, file_path, add_settings)
 
 
-    def get_model(self, event_ind, window_ind, regenerate=True):
+    def get_model(self, event_ind=None, window_ind=None, regenerate=True):
         """Get a model fit object for a specified index.
 
         Parameters
         ----------
-        event_ind : int
+        event_ind : int, optional
             Index for which event to extract from.
-        window_ind : int
+        window_ind : int, optional
             Index for which time window to extract from.
         regenerate : bool, optional, default: False
             Whether to regenerate the model fits for the requested model.
@@ -143,23 +144,20 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
         Returns
         -------
         model : SpectralModel
-            The FitResults data loaded into a model object.
+            The data and fit results loaded into a model object.
         """
 
         # Initialize model object, with same settings, metadata, & check states as current object
-        model = SpectralModel(**self.get_settings()._asdict(), verbose=self.verbose)
-        model.add_meta_data(self.get_meta_data())
-        model.set_checks(*self.get_checks())
-        model.set_debug(self.get_debug())
+        model = super().get_model()
 
         # Add data for specified single power spectrum, if available
-        if self.has_data:
-            model.power_spectrum = self.spectrograms[event_ind][:, window_ind]
+        if self.data.has_data:
+            model.data.power_spectrum = self.data.spectrograms[event_ind][:, window_ind]
 
         # Add results for specified power spectrum, regenerating full fit if requested
-        model.add_results(self.event_group_results[event_ind][window_ind])
+        model.results.add_results(self.results.event_group_results[event_ind][window_ind])
         if regenerate:
-            model._regenerate_model()
+            model.results._regenerate_model(self.data.freqs)
 
         return model
 
@@ -206,9 +204,9 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
         """
 
         if peak_org is not None:
-            df = event_group_to_dataframe(self.event_group_results, peak_org)
+            df = event_group_to_dataframe(self.results.event_group_results, peak_org)
         else:
-            df = dict_to_df(flatten_results_dict(self.get_results()))
+            df = dict_to_df(flatten_results_dict(self.results.get_results()))
 
         return df
 
@@ -222,5 +220,5 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
         checking and reporting on every spectrum and repeatedly re-raising the same warning.
         """
 
-        if np.all(self.power_spectrum == self.spectrograms[0, :, 0]):
+        if np.all(self.data.power_spectrum == self.data.spectrograms[0, :, 0]):
             super()._fit_prechecks()

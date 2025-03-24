@@ -10,6 +10,7 @@ import numpy as np
 from specparam import (SpectralModel, SpectralGroupModel,
                        SpectralTimeModel, SpectralTimeEventModel)
 from specparam.modes.items import OBJ_DESC
+from specparam.modes.modes import Modes
 from specparam.io.files import load_json
 
 from specparam.tests.tsettings import TEST_DATA_PATH
@@ -125,14 +126,14 @@ def test_save_event(tfe):
     save_event(tfe, file_name=dat_file_name, file_path=TEST_DATA_PATH, save_data=True)
 
     assert os.path.exists(TEST_DATA_PATH / (set_file_name + '.json'))
-    for ind in range(len(tfe)):
+    for ind in range(len(tfe.results)):
         assert os.path.exists(TEST_DATA_PATH / (res_file_name + '_' + str(ind) + '.json'))
         assert os.path.exists(TEST_DATA_PATH / (dat_file_name + '_' + str(ind) + '.json'))
 
     # Test saving out all save elements
     file_name_all = 'test_event_all'
     save_event(tfe, file_name_all, TEST_DATA_PATH, False, True, True, True)
-    for ind in range(len(tfe)):
+    for ind in range(len(tfe.results)):
         assert os.path.exists(TEST_DATA_PATH / (file_name_all + '_' + str(ind) + '.json'))
 
 def test_load_file_contents():
@@ -160,14 +161,21 @@ def test_load_model():
     assert isinstance(tfm, SpectralModel)
 
     # Check that all elements get loaded
+    assert isinstance(tfm.modes, Modes)
     for result in OBJ_DESC['results']:
-        assert not np.all(np.isnan(getattr(tfm, result)))
+        assert not np.all(np.isnan(getattr(tfm.results, result)))
     for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) is not None
+        assert getattr(tfm.algorithm, setting) is not None
     for data in OBJ_DESC['data']:
-        assert getattr(tfm, data) is not None
+        assert getattr(tfm.data, data) is not None
     for meta_dat in OBJ_DESC['meta_data']:
-        assert getattr(tfm, meta_dat) is not None
+        assert getattr(tfm.data, meta_dat) is not None
+
+    # Check directory matches (loading didn't add any unexpected attributes)
+    cfm = SpectralModel()
+    assert dir(cfm) == dir(tfm)
+    assert dir(cfm.data) == dir(tfm.data)
+    assert dir(cfm.results) == dir(tfm.results)
 
 def test_load_group():
 
@@ -179,12 +187,18 @@ def test_load_group():
     assert isinstance(tfg, SpectralGroupModel)
 
     # Check that all elements get loaded
-    assert len(tfg.group_results) > 0
+    assert len(tfg.results.group_results) > 0
     for setting in OBJ_DESC['settings']:
-        assert getattr(tfg, setting) is not None
-    assert tfg.power_spectra is not None
+        assert getattr(tfg.algorithm, setting) is not None
+    assert tfg.data.power_spectra is not None
     for meta_dat in OBJ_DESC['meta_data']:
-        assert getattr(tfg, meta_dat) is not None
+        assert getattr(tfg.data, meta_dat) is not None
+
+    # Check directory matches (loading didn't add any unexpected attributes)
+    cfg = SpectralGroupModel()
+    assert dir(cfg) == dir(tfg)
+    assert dir(cfg.data) == dir(tfg.data)
+    assert dir(cfg.results) == dir(tfg.results)
 
 def test_load_time(tbands):
 
@@ -198,7 +212,13 @@ def test_load_time(tbands):
     # Load with bands definition
     tft2 = load_time(file_name, TEST_DATA_PATH, tbands)
     assert isinstance(tft2, SpectralTimeModel)
-    assert tft2.time_results
+    assert tft2.results.time_results
+
+    # Check directory matches (loading didn't add any unexpected attributes)
+    cft = SpectralTimeModel()
+    assert dir(cft) == dir(tft2)
+    assert dir(cft.data) == dir(tft2.data)
+    assert dir(cft.results) == dir(tft2.results)
 
 def test_load_event(tbands):
 
@@ -208,10 +228,16 @@ def test_load_event(tbands):
     # Load without bands definition
     tfe = load_event(file_name, TEST_DATA_PATH)
     assert isinstance(tfe, SpectralTimeEventModel)
-    assert len(tfe) > 1
+    assert len(tfe.results) > 1
 
     # Load with bands definition
     tfe2 = load_event(file_name, TEST_DATA_PATH, tbands)
     assert isinstance(tfe2, SpectralTimeEventModel)
-    assert tfe2.event_time_results
-    assert len(tfe2) > 1
+    assert tfe2.results.event_time_results
+    assert len(tfe2.results) > 1
+
+    # Check directory matches (loading didn't add any unexpected attributes)
+    cfe = SpectralTimeEventModel()
+    assert dir(cfe) == dir(tfe2)
+    assert dir(cfe.data) == dir(tfe2.data)
+    assert dir(cfe.results) == dir(tfe2.results)

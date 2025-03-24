@@ -45,16 +45,22 @@ def save_model(model, file_name, file_path=None, append=False,
     """
 
     # Convert object to dictionary & convert all arrays to lists, for JSON serializing
+    #   This 'flattens' the object, getting all relevant attributes in the same dictionary
     obj_dict = dict_array_to_lst(model.__dict__)
+    data_dict = dict_array_to_lst(model.data.__dict__)
+    results_dict = dict_array_to_lst(model.results.__dict__)
+    algo_dict = dict_array_to_lst(model.algorithm.__dict__)
+    obj_dict = {**obj_dict, **data_dict, **results_dict, **algo_dict}
 
     # Convert modes object to their saveable string name
-    obj_dict['aperiodic_mode'] = obj_dict['aperiodic_mode'].name
-    obj_dict['periodic_mode'] = obj_dict['periodic_mode'].name
+    obj_dict['aperiodic_mode'] = obj_dict['modes'].aperiodic.name
+    obj_dict['periodic_mode'] = obj_dict['modes'].periodic.name
+    mode_labels = ['aperiodic_mode', 'periodic_mode']
 
     # Set and select which variables to keep. Use a set to drop any potential overlap
     #   Note that results also saves frequency information to be able to recreate freq vector
     keep = set((OBJ_DESC['results'] + OBJ_DESC['meta_data'] if save_results else []) + \
-               (OBJ_DESC['settings'] + OBJ_DESC['modes'] if save_settings else []) + \
+               (OBJ_DESC['settings'] + mode_labels if save_settings else []) + \
                (OBJ_DESC['data'] if save_data else []))
     obj_dict = dict_select_keys(obj_dict, keep)
 
@@ -139,11 +145,11 @@ def save_event(event, file_name, file_path=None, append=False,
     if save_settings and not save_results and not save_data:
         fg.save(file_name, file_path, append=append, save_settings=True)
     else:
-        ndigits = len(str(len(event)))
-        for ind, gres in enumerate(event.event_group_results):
-            fg.group_results = gres
+        ndigits = len(str(len(event.results)))
+        for ind, gres in enumerate(event.results.event_group_results):
+            fg.results.group_results = gres
             if save_data:
-                fg.power_spectra = event.spectrograms[ind, :, :].T
+                fg.data.power_spectra = event.data.spectrograms[ind, :, :].T
             fg.save(file_name + '_{:0{ndigits}d}'.format(ind, ndigits=ndigits),
                     file_path=file_path, append=append, save_results=save_results,
                     save_settings=save_settings, save_data=save_data)
@@ -274,7 +280,7 @@ def _save_group(group, f_obj, save_results, save_settings, save_data):
 
     # For results & data, loop across all data and/or models, and save each out to a new line
     if save_results or save_data:
-        for ind in range(len(group.group_results)):
+        for ind in range(len(group.results.group_results)):
             model = group.get_model(ind, regenerate=False)
             save_model(model, file_name=f_obj, file_path=None, append=False,
                        save_results=save_results, save_data=save_data)
