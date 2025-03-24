@@ -81,7 +81,8 @@ class CommonBase():
             #   This serves as a catch all for curve_fits which will fail given NaN or Inf
             #   Because FitError's are by default caught, this allows fitting to continue
             if not self.data._check_data:
-                if np.any(np.isinf(self.data.power_spectrum)) or np.any(np.isnan(self.data.power_spectrum)):
+                if np.any(np.isinf(self.data.power_spectrum)) or \
+                    np.any(np.isnan(self.data.power_spectrum)):
                     raise FitError("Model fitting was skipped because there are NaN or Inf "
                                    "values in the data, which preclude model fitting.")
 
@@ -144,7 +145,8 @@ class CommonBase():
         assert space in ['linear', 'log'], "Input for 'space' invalid."
 
         if component == 'full':
-            output = self.data.power_spectrum if space == 'log' else unlog(self.data.power_spectrum)
+            output = self.data.power_spectrum if space == 'log' \
+                else unlog(self.data.power_spectrum)
         elif component == 'aperiodic':
             output = self.results._spectrum_peak_rm if space == 'log' else \
                 unlog(self.data.power_spectrum) / unlog(self.results._peak_fit)
@@ -368,7 +370,8 @@ class BaseObject2D(CommonBase):
         # Run in parallel
         else:
             self.results._reset_group_results()
-            self.results.group_results = run_parallel_group(self, self.data.power_spectra, n_jobs, progress)
+            self.results.group_results = run_parallel_group(\
+                self, self.data.power_spectra, n_jobs, progress)
 
         # Clear the individual power spectrum and fit results of the current fit
         self._reset_data_results(clear_spectrum=True, clear_results=True)
@@ -481,7 +484,8 @@ class BaseObject2D(CommonBase):
         from specparam import SpectralGroupModel
 
         # Initialize a new model object, with same settings as current object
-        group = SpectralGroupModel(**self.algorithm.get_settings()._asdict(), verbose=self.verbose)
+        group = SpectralGroupModel(**self.algorithm.get_settings()._asdict(),
+                                   verbose=self.verbose)
         group.data.add_meta_data(self.data.get_meta_data())
         group.data.set_checks(*self.data.get_checks())
         group.algorithm.set_debug(self.algorithm.get_debug())
@@ -625,7 +629,8 @@ class BaseObject2DT(BaseObject2D):
             from specparam import SpectralTimeModel
 
             # Initialize a new model object, with same settings as current object
-            output = SpectralTimeModel(**self.algorithm.get_settings()._asdict(), verbose=self.verbose)
+            output = SpectralTimeModel(**self.algorithm.get_settings()._asdict(),
+                                       verbose=self.verbose)
             output.data.add_meta_data(self.data.get_meta_data())
 
             if inds is not None:
@@ -668,8 +673,8 @@ class BaseObject3D(BaseObject2DT):
             Frequency values for the power spectra, in linear space.
         spectrograms : 3d array or list of 2d array
             Matrix of power values, in linear space.
-            If a list of 2d arrays, each should be have the same shape of [n_freqs, n_time_windows].
-            If a 3d array, should have shape [n_events, n_freqs, n_time_windows].
+            If list of 2d arrays, each should be have the same shape of [n_freqs, n_time_windows].
+            If 3d array, should have shape [n_events, n_freqs, n_time_windows].
         freq_range : list of [float, float], optional
             Frequency range to restrict power spectra to. If not provided, keeps the entire range.
         clear_results : bool, optional, default: True
@@ -698,8 +703,8 @@ class BaseObject3D(BaseObject2DT):
             Frequency values for the power_spectra, in linear space.
         spectrograms : 3d array or list of 2d array
             Matrix of power values, in linear space.
-            If a list of 2d arrays, each should be have the same shape of [n_freqs, n_time_windows].
-            If a 3d array, should have shape [n_events, n_freqs, n_time_windows].
+            If list of 2d arrays, each should be have the same shape of [n_freqs, n_time_windows].
+            If 3d array, should have shape [n_events, n_freqs, n_time_windows].
         freq_range : list of [float, float], optional
             Frequency range to fit the model to. If not provided, fits the entire given range.
         peak_org : int or Bands
@@ -727,7 +732,8 @@ class BaseObject3D(BaseObject2DT):
 
         if n_jobs == 1:
             self.results._reset_event_results(len(self.data.spectrograms))
-            for ind, spectrogram in pbar(enumerate(self.data.spectrograms), progress, len(self.results)):
+            for ind, spectrogram in \
+                pbar(enumerate(self.data.spectrograms), progress, len(self.results)):
                 self.data.power_spectra = spectrogram.T
                 super().fit(peak_org=False)
                 self.results.event_group_results[ind] = self.results.group_results
@@ -736,7 +742,8 @@ class BaseObject3D(BaseObject2DT):
 
         else:
             fg = self.get_group(None, None, 'group')
-            self.results.event_group_results = run_parallel_event(fg, self.data.spectrograms, n_jobs, progress)
+            self.results.event_group_results = run_parallel_event(\
+                fg, self.data.spectrograms, n_jobs, progress)
 
         if peak_org is not False:
             self.results.convert_results(peak_org)
@@ -809,7 +816,8 @@ class BaseObject3D(BaseObject2DT):
         if output_type == 'event':
 
             # Initialize a new model object, with same settings as current object
-            output = SpectralTimeEventModel(**self.algorithm.get_settings()._asdict(), verbose=self.verbose)
+            output = SpectralTimeEventModel(**self.algorithm.get_settings()._asdict(),
+                                            verbose=self.verbose)
             output.data.add_meta_data(self.data.get_meta_data())
 
             if event_inds is not None or window_inds is not None:
@@ -837,9 +845,11 @@ class BaseObject3D(BaseObject2DT):
                 self.results.group_results = \
                     [self.results.event_group_results[ei][wi] for ei in einds for wi in winds]
                 if self.data.has_data:
-                    self.data.power_spectra = np.hstack(self.data.spectrograms[einds, :, :][:, :, winds]).T
+                    self.data.power_spectra = \
+                        np.hstack(self.data.spectrograms[einds, :, :][:, :, winds]).T
 
-            new_inds = range(0, len(self.results.group_results)) if self.results.group_results else None
+            new_inds = range(0, len(self.results.group_results)) if \
+                self.results.group_results else None
             output = super().get_group(new_inds, output_type)
 
             # Clear the data that was moved for export

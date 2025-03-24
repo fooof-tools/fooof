@@ -50,12 +50,15 @@ def plot_annotated_peak_search(model):
         # This forces the creation of a new plotting axes per iteration
         ax = check_ax(None, PLT_FIGSIZES['spectral'])
 
-        plot_spectra(model.data.freqs, flatspec, ax=ax, linewidth=2.5,
-                     label='Flattened Spectrum', color=PLT_COLORS['data'])
-        plot_spectra(model.data.freqs, [model.algorithm.peak_threshold * np.std(flatspec)]*len(model.data.freqs), ax=ax,
-                     label='Relative Threshold', color='orange', linewidth=2.5, linestyle='dashed')
-        plot_spectra(model.data.freqs, [model.algorithm.min_peak_height]*len(model.data.freqs), ax=ax,
-                     label='Absolute Threshold', color='red', linewidth=2.5, linestyle='dashed')
+        plot_spectra(model.data.freqs, flatspec, linewidth=2.5,
+                     label='Flattened Spectrum', color=PLT_COLORS['data'], ax=ax)
+        plot_spectra(model.data.freqs,
+                     [model.algorithm.peak_threshold * np.std(flatspec)] * len(model.data.freqs),
+                     label='Relative Threshold', color='orange', linewidth=2.5,
+                     linestyle='dashed', ax=ax)
+        plot_spectra(model.data.freqs, [model.algorithm.min_peak_height]*len(model.data.freqs),
+                     label='Absolute Threshold', color='red', linewidth=2.5,
+                     linestyle='dashed', ax=ax)
 
         maxi = np.argmax(flatspec)
         ax.plot(model.data.freqs[maxi], flatspec[maxi], '.',

@@ -174,8 +174,10 @@ class SpectralFitAlgorithm(Algorithm):
         self.results._spectrum_peak_rm = self.data.power_spectrum - self.results._peak_fit
 
         # Run final aperiodic fit on peak-removed power spectrum
-        self.results.aperiodic_params_ = self._simple_ap_fit(self.data.freqs, self.results._spectrum_peak_rm)
-        self.results._ap_fit = self.modes.aperiodic.func(self.data.freqs, *self.results.aperiodic_params_)
+        self.results.aperiodic_params_ = self._simple_ap_fit(\
+            self.data.freqs, self.results._spectrum_peak_rm)
+        self.results._ap_fit = self.modes.aperiodic.func(\
+            self.data.freqs, *self.results.aperiodic_params_)
 
         # Create remaining model components: flatspec & full power_spectrum model fit
         self.results._spectrum_flat = self.data.power_spectrum - self.results._ap_fit
@@ -643,12 +645,14 @@ class SpectralFitAlgorithm(Algorithm):
 
             # Collect peak parameter data
             if self.modes.periodic.name == 'gaussian':  ## TEMP
-                peak_params[ii] = [peak[0], self.results.modeled_spectrum_[ind] - self.results._ap_fit[ind],
+                peak_params[ii] = [peak[0],
+                                   self.results.modeled_spectrum_[ind] - self.results._ap_fit[ind],
                                    peak[2] * 2]
 
             ## TEMP:
             if self.modes.periodic.name == 'skewnorm':
-                peak_params[ii] = [peak[0], self.results.modeled_spectrum_[ind] - self.results._ap_fit[ind],
+                peak_params[ii] = [peak[0],
+                                   self.results.modeled_spectrum_[ind] - self.results._ap_fit[ind],
                                    peak[2] * 2, peak[3]]
 
         return peak_params

@@ -160,9 +160,9 @@ def gen_settings_str(model_obj, description=False, concise=False):
     desc = {
         'peak_width_limits' : 'Limits for minimum and maximum peak widths, in Hz.',
         'max_n_peaks'       : 'Maximum number of peaks that can be extracted.',
-        'min_peak_height'   : 'Minimum absolute height of a peak, above the aperiodic component.',
+        'min_peak_height'   : 'Minimum absolute height of a peak above the aperiodic component.',
         'peak_threshold'    : 'Relative threshold for minimum height required for detecting peaks.',
-        }
+    }
 
     # Clear description for printing, if not requested
     if not description:
@@ -355,7 +355,8 @@ def gen_model_results_str(model, concise=False):
         ('Aperiodic Parameters (offset, ' + \
          ('knee, ' if model.modes.aperiodic.name == 'knee' else '') + \
          'exponent): '),
-        ', '.join(['{:2.4f}'] * len(model.results.aperiodic_params_)).format(*model.results.aperiodic_params_),
+        ', '.join(['{:2.4f}'] * \
+            len(model.results.aperiodic_params_)).format(*model.results.aperiodic_params_),
         '',
 
         # Peak parameters
@@ -422,7 +423,8 @@ def gen_group_results_str(group, concise=False):
 
         # Group information
         'Number of power spectra in the Group: {}'.format(len(group.results.group_results)),
-        *[el for el in ['{} power spectra failed to fit'.format(group.results.n_null_)] if group.results.n_null_],
+        *[el for el in ['{} power spectra failed to fit'.format(\
+            group.results.n_null_)] if group.results.n_null_],
         '',
 
         # Frequency range and resolution
@@ -513,7 +515,8 @@ def gen_time_results_str(time_model, concise=False):
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(time_model.data.freq_range[0])), int(np.ceil(time_model.data.freq_range[1]))),
+            int(np.floor(time_model.data.freq_range[0])),
+            int(np.ceil(time_model.data.freq_range[1]))),
         'Frequency Resolution is {:1.2f} Hz'.format(time_model.data.freq_res),
         '',
 
@@ -603,7 +606,8 @@ def gen_event_results_str(event_model, concise=False):
 
         # Frequency range and resolution
         'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(event_model.data.freq_range[0])), int(np.ceil(event_model.data.freq_range[1]))),
+            int(np.floor(event_model.data.freq_range[0])),
+            int(np.ceil(event_model.data.freq_range[1]))),
         'Frequency Resolution is {:1.2f} Hz'.format(event_model.data.freq_res),
         '',
 
