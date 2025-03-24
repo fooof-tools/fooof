@@ -1,5 +1,7 @@
 """Modes object."""
 
+from specparam.data import ModelModes
+from specparam.modes.items import OBJ_DESC
 from specparam.modes.mode import Mode
 from specparam.modes.definitions import AP_MODES, PE_MODES
 
@@ -25,21 +27,15 @@ class Modes():
 
 
     def get_modes(self):
-        """Get the modes names.
+        """Get the modes definition.
 
         Returns
         -------
-        modes_def : dict
+        modes_def : ModelModes
             Modes definition.
-            Keys are '{aperiodic, periodic}_mode' and values are mode names (strings).
         """
 
-        modes_def = {
-            'aperiodic_mode' : self.aperiodic.name,
-            'periodic_mode' : self.periodic.name,
-        }
-
-        return modes_def
+        return ModelModes(aperiodic_mode=self.aperiodic.name, periodic_mode=self.periodic.name)
 
 
 def check_mode_definition(mode, options):

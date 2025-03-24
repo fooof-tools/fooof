@@ -34,6 +34,9 @@ def get_description():
         'data' : ['power_spectrum', 'freq_range', 'freq_res'],
         'meta_data' : ['freq_range', 'freq_res'],
 
+        # Modes
+        #'modes' : ['aperiodic_mode', 'periodic_mode'],
+
         # Algorithm
         'settings' : ['peak_width_limits', 'max_n_peaks',
                       'min_peak_height', 'peak_threshold'],
