@@ -446,14 +446,11 @@ class BaseObject2D(CommonBase):
             The data and fit results loaded into a model object.
         """
 
-        # Local import - avoid circular
-        from specparam import SpectralModel
+        # Local import - avoid circularity
+        from specparam.models.utils import initialize_model_from_source
 
         # Initialize model object, with same settings, metadata, & check mode as current object
-        model = SpectralModel(**self.algorithm.get_settings()._asdict(), verbose=self.verbose)
-        model.data.add_meta_data(self.data.get_meta_data())
-        model.data.set_checks(*self.data.get_checks())
-        model.algorithm.set_debug(self.algorithm.get_debug())
+        model = initialize_model_from_source(self, 'model')
 
         # Add data for specified single power spectrum, if available
         if ind is not None and self.data.has_data:
@@ -482,15 +479,11 @@ class BaseObject2D(CommonBase):
             The requested selection of results data loaded into a new group model object.
         """
 
-        # Local import - avoid circular
-        from specparam import SpectralGroupModel
+        # Local import - avoid circularity
+        from specparam.models.utils import initialize_model_from_source
 
         # Initialize a new model object, with same settings as current object
-        group = SpectralGroupModel(**self.algorithm.get_settings()._asdict(),
-                                   verbose=self.verbose)
-        group.data.add_meta_data(self.data.get_meta_data())
-        group.data.set_checks(*self.data.get_checks())
-        group.algorithm.set_debug(self.algorithm.get_debug())
+        group = initialize_model_from_source(self, 'group')
 
         if inds is not None:
 
@@ -627,13 +620,11 @@ class BaseObject2DT(BaseObject2D):
 
         if output_type == 'time':
 
-            # Local import - avoid circular
-            from specparam import SpectralTimeModel
+            # Local import - avoid circularity
+            from specparam.models.utils import initialize_model_from_source
 
             # Initialize a new model object, with same settings as current object
-            output = SpectralTimeModel(**self.algorithm.get_settings()._asdict(),
-                                       verbose=self.verbose)
-            output.data.add_meta_data(self.data.get_meta_data())
+            output = initialize_model_from_source(self, 'time')
 
             if inds is not None:
 
@@ -808,19 +799,17 @@ class BaseObject3D(BaseObject2DT):
             The requested selection of results data loaded into a new model object.
         """
 
-        # Local import - avoid circular
-        from specparam import SpectralTimeEventModel
-
         # Check and convert indices encoding to list of int
         einds = check_inds(event_inds, self.data.n_events)
         winds = check_inds(window_inds, self.data.n_time_windows)
 
         if output_type == 'event':
 
+            # Local import - avoid circularity
+            from specparam.models.utils import initialize_model_from_source
+
             # Initialize a new model object, with same settings as current object
-            output = SpectralTimeEventModel(**self.algorithm.get_settings()._asdict(),
-                                            verbose=self.verbose)
-            output.data.add_meta_data(self.data.get_meta_data())
+            output = initialize_model_from_source(self, 'event')
 
             if event_inds is not None or window_inds is not None:
 

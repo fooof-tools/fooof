@@ -19,7 +19,7 @@ def test_initialize_model_from_source(tfm, tfg):
 
     for source in [tfm, tfg]:
         for target in ['model', 'group', 'time', 'event']:
-            out = initialize_model_from(source, target)
+            out = initialize_model_from_source(source, target)
             assert out.algorithm.get_settings() == source.algorithm.get_settings()
             assert out.data.get_meta_data() == source.data.get_meta_data()
             assert not out.data.has_data

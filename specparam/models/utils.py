@@ -20,6 +20,7 @@ MODELS = {
     'event' : SpectralTimeEventModel,
 }
 
+
 def initialize_model_from_source(source, target):
     """Initialize a model object based on a source model object.
 
