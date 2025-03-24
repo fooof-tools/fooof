@@ -49,7 +49,7 @@ def _par_fit_group(power_spectrum, group):
     """Function to partialize for running in parallel - group."""
 
     group._pass_through_spectrum(power_spectrum)
-    group._fit()
+    group.algorithm._fit()
 
     return group.results._get_results()
 

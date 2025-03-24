@@ -18,7 +18,7 @@ from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
+class SpectralTimeModel(BaseObject2DT):
     """Model a spectrogram as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -65,7 +65,8 @@ class SpectralTimeModel(SpectralFitAlgorithm, BaseObject2DT):
 
         BaseObject2DT.__init__(self, modes=self.modes, verbose=kwargs.pop('verbose', True))
 
-        SpectralFitAlgorithm.__init__(self, *args, **kwargs)
+        self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
+            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
 
         self.results._reset_time_results()
 

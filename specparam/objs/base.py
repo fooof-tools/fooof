@@ -86,7 +86,7 @@ class CommonBase():
                                    "values in the data, which preclude model fitting.")
 
             # Call the fit function from the algorithm object
-            self._fit()
+            self.algorithm._fit()
 
             # Compute post-fit metrics
             self.metrics.compute_metrics(self.data, self.results)
@@ -98,7 +98,7 @@ class CommonBase():
         except FitError:
 
             # If in debug mode, re-raise the error
-            if self._debug:
+            if self.algorithm._debug:
                 raise
 
             # Clear any interim model results that may have run
@@ -256,7 +256,7 @@ class BaseObject(CommonBase):
         # Add loaded data to object and check loaded data
         self._add_from_dict(data)
         self._check_loaded_modes(data)
-        self._check_loaded_settings(data)
+        self.algorithm._check_loaded_settings(data)
         self.results._check_loaded_results(data)
 
         # Regenerate model components, based on what is available
@@ -407,7 +407,7 @@ class BaseObject2D(CommonBase):
             # If settings are loaded, check and update based on the first line
             if ind == 0:
                 self._check_loaded_modes(data)
-                self._check_loaded_settings(data)
+                self.algorithm._check_loaded_settings(data)
 
             # If results part of current data added, check and update object results
             if set(OBJ_DESC['results']).issubset(set(data.keys())):
@@ -446,10 +446,10 @@ class BaseObject2D(CommonBase):
         from specparam import SpectralModel
 
         # Initialize model object, with same settings, metadata, & check mode as current object
-        model = SpectralModel(**self.get_settings()._asdict(), verbose=self.verbose)
+        model = SpectralModel(**self.algorithm.get_settings()._asdict(), verbose=self.verbose)
         model.data.add_meta_data(self.data.get_meta_data())
         model.data.set_checks(*self.data.get_checks())
-        model.set_debug(self.get_debug())
+        model.algorithm.set_debug(self.algorithm.get_debug())
 
         # Add data for specified single power spectrum, if available
         if self.data.has_data:
@@ -481,10 +481,10 @@ class BaseObject2D(CommonBase):
         from specparam import SpectralGroupModel
 
         # Initialize a new model object, with same settings as current object
-        group = SpectralGroupModel(**self.get_settings()._asdict(), verbose=self.verbose)
+        group = SpectralGroupModel(**self.algorithm.get_settings()._asdict(), verbose=self.verbose)
         group.data.add_meta_data(self.data.get_meta_data())
         group.data.set_checks(*self.data.get_checks())
-        group.set_debug(self.get_debug())
+        group.algorithm.set_debug(self.algorithm.get_debug())
 
         if inds is not None:
 
@@ -625,7 +625,7 @@ class BaseObject2DT(BaseObject2D):
             from specparam import SpectralTimeModel
 
             # Initialize a new model object, with same settings as current object
-            output = SpectralTimeModel(**self.get_settings()._asdict(), verbose=self.verbose)
+            output = SpectralTimeModel(**self.algorithm.get_settings()._asdict(), verbose=self.verbose)
             output.data.add_meta_data(self.data.get_meta_data())
 
             if inds is not None:
@@ -809,7 +809,7 @@ class BaseObject3D(BaseObject2DT):
         if output_type == 'event':
 
             # Initialize a new model object, with same settings as current object
-            output = SpectralTimeEventModel(**self.get_settings()._asdict(), verbose=self.verbose)
+            output = SpectralTimeEventModel(**self.algorithm.get_settings()._asdict(), verbose=self.verbose)
             output.data.add_meta_data(self.data.get_meta_data())
 
             if event_inds is not None or window_inds is not None:

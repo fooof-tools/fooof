@@ -195,7 +195,7 @@ def test_load():
         assert not np.all(np.isnan(getattr(tfm.results, result)))
     # Test that settings and data are None
     for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) is None
+        assert getattr(tfm.algorithm, setting) is None
     assert tfm.data.power_spectrum is None
 
     # Test loading just settings
@@ -203,7 +203,7 @@ def test_load():
     file_name_set = 'test_model_set'
     tfm.load(file_name_set, TEST_DATA_PATH)
     for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) is not None
+        assert getattr(tfm.algorithm, setting) is not None
     # Test that results and data are None
     for result in OBJ_DESC['results']:
         assert np.all(np.isnan(getattr(tfm.results, result)))
@@ -216,7 +216,7 @@ def test_load():
     assert tfm.data.power_spectrum is not None
     # Test that settings and results are None
     for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) is None
+        assert getattr(tfm.algorithm, setting) is None
     for result in OBJ_DESC['results']:
         assert np.all(np.isnan(getattr(tfm.results, result)))
 
@@ -227,7 +227,7 @@ def test_load():
     for result in OBJ_DESC['results']:
         assert not np.all(np.isnan(getattr(tfm.results, result)))
     for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) is not None
+        assert getattr(tfm.algorithm, setting) is not None
     for data in OBJ_DESC['data']:
         assert getattr(tfm.data, data) is not None
     for meta_dat in OBJ_DESC['meta_data']:
@@ -312,7 +312,7 @@ def test_resets():
     tfm = get_tfm()
 
     tfm._reset_data_results(True, True, True)
-    tfm._reset_internal_settings()
+    tfm.algorithm._reset_internal_settings()
 
     for field in OBJ_DESC['data']:
         assert getattr(tfm.data, field) is None
@@ -335,7 +335,7 @@ def test_fit_failure():
 
     ## Induce a runtime error, and check it runs through
     tfm = SpectralModel(verbose=False)
-    tfm._maxfev = 2
+    tfm.algorithm._maxfev = 2
 
     tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
@@ -348,7 +348,7 @@ def test_fit_failure():
     tfm = SpectralModel(verbose=False)
     def raise_runtime_error(*args, **kwargs):
         raise FitError('Test-MonkeyPatch')
-    tfm._fit_peaks = raise_runtime_error
+    tfm.algorithm._fit_peaks = raise_runtime_error
 
     # Run a model fit - this should raise an error, but continue in try/except
     tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
@@ -361,10 +361,10 @@ def test_debug():
     """Test model object in debug state, including with fit failures."""
 
     tfm = SpectralModel(verbose=False)
-    tfm._maxfev = 2
+    tfm.algorithm._maxfev = 2
 
-    tfm.set_debug(True)
-    assert tfm._debug is True
+    tfm.algorithm.set_debug(True)
+    assert tfm.algorithm._debug is True
 
     with raises(FitError):
         tfm.fit(*sim_power_spectrum(*default_spectrum_params()))

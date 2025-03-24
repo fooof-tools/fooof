@@ -91,7 +91,7 @@ def test_time_load(tbands):
     # Test loading settings
     tft = SpectralTimeModel(verbose=False)
     tft.load(file_name_set, TEST_DATA_PATH)
-    assert tft.get_settings()
+    assert tft.algorithm.get_settings()
 
     # Test loading data
     tft = SpectralTimeModel(verbose=False)

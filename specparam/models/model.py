@@ -23,7 +23,7 @@ from specparam.data.conversions import model_to_dataframe
 ###################################################################################################
 
 @replace_docstring_sections([SPECTRAL_FIT_SETTINGS.make_docstring()])
-class SpectralModel(SpectralFitAlgorithm, BaseObject):
+class SpectralModel(BaseObject):
     """Model a power spectrum as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -108,9 +108,11 @@ class SpectralModel(SpectralFitAlgorithm, BaseObject):
 
         BaseObject.__init__(self, modes=self.modes, verbose=verbose)
 
-        SpectralFitAlgorithm.__init__(self, peak_width_limits=peak_width_limits,
-                                      max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,
-                                      peak_threshold=peak_threshold, **model_kwargs)
+        self.algorithm = SpectralFitAlgorithm(peak_width_limits=peak_width_limits,
+            max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,
+            peak_threshold=peak_threshold,
+            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose,
+            **model_kwargs)
 
 
     def report(self, freqs=None, power_spectrum=None, freq_range=None,

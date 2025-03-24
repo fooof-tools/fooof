@@ -19,7 +19,7 @@ from specparam.reports.strings import gen_event_results_str
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
+class SpectralTimeEventModel(BaseObject3D):
     """Model a set of event as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -64,7 +64,8 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
 
         BaseObject3D.__init__(self, modes=self.modes, verbose=kwargs.pop('verbose', True))
 
-        SpectralFitAlgorithm.__init__(self, *args, **kwargs)
+        self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
+            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
 
         self.results._reset_event_results()
 
@@ -147,10 +148,10 @@ class SpectralTimeEventModel(SpectralFitAlgorithm, BaseObject3D):
         """
 
         # Initialize model object, with same settings, metadata, & check states as current object
-        model = SpectralModel(**self.get_settings()._asdict(), verbose=self.verbose)
+        model = SpectralModel(**self.algorithm.get_settings()._asdict(), verbose=self.verbose)
         model.data.add_meta_data(self.data.get_meta_data())
         model.data.set_checks(*self.data.get_checks())
-        model.set_debug(self.get_debug())
+        model.algorithm.set_debug(self.algorithm.get_debug())
 
         # Add data for specified single power spectrum, if available
         if self.data.has_data:

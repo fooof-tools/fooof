@@ -21,7 +21,7 @@ from specparam.data.conversions import group_to_dataframe
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
+class SpectralGroupModel(BaseObject2D):
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -77,7 +77,8 @@ class SpectralGroupModel(SpectralFitAlgorithm, BaseObject2D):
 
         BaseObject2D.__init__(self, modes=self.modes, verbose=kwargs.pop('verbose', True))
 
-        SpectralFitAlgorithm.__init__(self, *args, **kwargs)
+        self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
+            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
 
 
     def report(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1,

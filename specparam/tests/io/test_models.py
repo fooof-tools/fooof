@@ -165,7 +165,7 @@ def test_load_model():
     for result in OBJ_DESC['results']:
         assert not np.all(np.isnan(getattr(tfm.results, result)))
     for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) is not None
+        assert getattr(tfm.algorithm, setting) is not None
     for data in OBJ_DESC['data']:
         assert getattr(tfm.data, data) is not None
     for meta_dat in OBJ_DESC['meta_data']:
@@ -189,7 +189,7 @@ def test_load_group():
     # Check that all elements get loaded
     assert len(tfg.results.group_results) > 0
     for setting in OBJ_DESC['settings']:
-        assert getattr(tfg, setting) is not None
+        assert getattr(tfg.algorithm, setting) is not None
     assert tfg.data.power_spectra is not None
     for meta_dat in OBJ_DESC['meta_data']:
         assert getattr(tfg.data, meta_dat) is not None

@@ -35,7 +35,7 @@ def plot_annotated_peak_search(model):
     #   is the same as the one that is used in the peak fitting procedure
     flatspec = model.data.power_spectrum - \
         gen_aperiodic(model.data.freqs,
-                      model._robust_ap_fit(model.data.freqs, model.data.power_spectrum),
+                      model.algorithm._robust_ap_fit(model.data.freqs, model.data.power_spectrum),
                       model.modes.aperiodic.name)
 
     # Calculate ylims of the plot that are scaled to the range of the data
@@ -52,9 +52,9 @@ def plot_annotated_peak_search(model):
 
         plot_spectra(model.data.freqs, flatspec, ax=ax, linewidth=2.5,
                      label='Flattened Spectrum', color=PLT_COLORS['data'])
-        plot_spectra(model.data.freqs, [model.peak_threshold * np.std(flatspec)]*len(model.data.freqs), ax=ax,
+        plot_spectra(model.data.freqs, [model.algorithm.peak_threshold * np.std(flatspec)]*len(model.data.freqs), ax=ax,
                      label='Relative Threshold', color='orange', linewidth=2.5, linestyle='dashed')
-        plot_spectra(model.data.freqs, [model.min_peak_height]*len(model.data.freqs), ax=ax,
+        plot_spectra(model.data.freqs, [model.algorithm.min_peak_height]*len(model.data.freqs), ax=ax,
                      label='Absolute Threshold', color='red', linewidth=2.5, linestyle='dashed')
 
         maxi = np.argmax(flatspec)

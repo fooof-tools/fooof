@@ -108,7 +108,7 @@ def test_event_load(tbands):
     # Test loading settings
     tfe = SpectralTimeEventModel(verbose=False)
     tfe.load(file_name_set, TEST_DATA_PATH)
-    assert tfe.get_settings()
+    assert tfe.algorithm.get_settings()
 
     # Test loading data
     tfe = SpectralTimeEventModel(verbose=False)

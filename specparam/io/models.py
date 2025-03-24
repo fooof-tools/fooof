@@ -49,7 +49,8 @@ def save_model(model, file_name, file_path=None, append=False,
     obj_dict = dict_array_to_lst(model.__dict__)
     data_dict = dict_array_to_lst(model.data.__dict__)
     results_dict = dict_array_to_lst(model.results.__dict__)
-    obj_dict = {**obj_dict, **data_dict, **results_dict}
+    algo_dict = dict_array_to_lst(model.algorithm.__dict__)
+    obj_dict = {**obj_dict, **data_dict, **results_dict, **algo_dict}
 
     # Convert modes object to their saveable string name
     obj_dict['aperiodic_mode'] = obj_dict['modes'].aperiodic.name

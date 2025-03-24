@@ -30,7 +30,7 @@ def compare_model_objs(model_objs, aspect):
     # Check specified aspect of the objects are the same across instances
     for m_obj_1, m_obj_2 in zip(model_objs[:-1], model_objs[1:]):
         if aspect == 'settings':
-            consistent = m_obj_1.get_settings() == m_obj_2.get_settings()
+            consistent = m_obj_1.algorithm.get_settings() == m_obj_2.algorithm.get_settings()
         if aspect == 'meta_data':
             consistent = m_obj_1.data.get_meta_data() == m_obj_2.data.get_meta_data()
 
@@ -101,7 +101,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
 
     # Create the new model object, with settings, data info & results
     model = SpectralModel()
-    model.add_settings(group.get_settings())
+    model.algorithm.add_settings(group.algorithm.get_settings())
     model.data.add_meta_data(group.data.get_meta_data())
     model.results.add_results(results)
 
@@ -183,7 +183,8 @@ def combine_model_objs(model_objs):
                                         "or meta data, and so cannot be combined.")
 
     # Initialize group model object, with settings derived from input objects
-    group = SpectralGroupModel(*model_objs[0].get_settings(), verbose=model_objs[0].verbose)
+    group = SpectralGroupModel(*model_objs[0].algorithm.get_settings(),
+                               verbose=model_objs[0].verbose)
 
     # Use a temporary store to collect spectra, as we'll only add it if it is consistently present
     #   We check how many frequencies by accessing meta data, in case of no frequency vector

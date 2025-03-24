@@ -178,13 +178,13 @@ def gen_settings_str(model_obj, description=False, concise=False):
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Peak Width Limits : {}'.format(model_obj.peak_width_limits),
+        *[el for el in ['Peak Width Limits : {}'.format(model_obj.algorithm.peak_width_limits),
                         '{}'.format(desc['peak_width_limits']),
-                        'Max Number of Peaks : {}'.format(model_obj.max_n_peaks),
+                        'Max Number of Peaks : {}'.format(model_obj.algorithm.max_n_peaks),
                         '{}'.format(desc['max_n_peaks']),
-                        'Minimum Peak Height : {}'.format(model_obj.min_peak_height),
+                        'Minimum Peak Height : {}'.format(model_obj.algorithm.min_peak_height),
                         '{}'.format(desc['min_peak_height']),
-                        'Peak Threshold: {}'.format(model_obj.peak_threshold),
+                        'Peak Threshold: {}'.format(model_obj.algorithm.peak_threshold),
                         '{}'.format(desc['peak_threshold'])] if el != ''],
 
         # Footer
@@ -307,10 +307,10 @@ def gen_methods_text_str(model_obj=None):
     methods_str = template.format(MODULE_VERSION,
                                   model_obj.modes.aperiodic.name if model_obj else 'XX',
                                   model_obj.modes.periodic.name if model_obj else 'XX',
-                                  model_obj.peak_width_limits if model_obj else 'XX',
-                                  model_obj.max_n_peaks if model_obj else 'XX',
-                                  model_obj.min_peak_height if model_obj else 'XX',
-                                  model_obj.peak_threshold if model_obj else 'XX',
+                                  model_obj.algorithm.peak_width_limits if model_obj else 'XX',
+                                  model_obj.algorithm.max_n_peaks if model_obj else 'XX',
+                                  model_obj.algorithm.min_peak_height if model_obj else 'XX',
+                                  model_obj.algorithm.peak_threshold if model_obj else 'XX',
                                   *freq_range)
 
     return methods_str
