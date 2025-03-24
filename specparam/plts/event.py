@@ -22,12 +22,12 @@ plt = safe_import('.pyplot', 'matplotlib')
 
 @savefig
 @check_dependency(plt, 'matplotlib')
-def plot_event_model(event_model, **plot_kwargs):
+def plot_event_model(event, **plot_kwargs):
     """Plot a figure with subplots visualizing the parameters from a SpectralTimeEventModel object.
 
     Parameters
     ----------
-    event_model : SpectralTimeEventModel
+    event : SpectralTimeEventModel
         Object containing results from fitting power spectra across events.
     **plot_kwargs
         Keyword arguments to apply to the plot.
@@ -38,14 +38,14 @@ def plot_event_model(event_model, **plot_kwargs):
         If the model object does not have model fit data available to plot.
     """
 
-    if not event_model.results.has_model:
+    if not event.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
-    pe_labels = get_periodic_labels(event_model.results.event_time_results)
+    pe_labels = get_periodic_labels(event.results.event_time_results)
     band_labels = get_band_labels(pe_labels)
     n_bands = len(pe_labels['cf'])
 
-    has_knee = 'knee' in event_model.results.event_time_results.keys()
+    has_knee = 'knee' in event.results.event_time_results.keys()
     height_ratios = [1] * (3 if has_knee else 2) + [0.25, 1, 1, 1, 1] * n_bands + [0.25] + [1, 1]
 
     axes = plot_kwargs.pop('axes', None)
@@ -55,13 +55,13 @@ def plot_event_model(event_model, **plot_kwargs):
                                figsize=plot_kwargs.pop('figsize', [10, 4 + 5 * n_bands]))
     axes = cycle(axes)
 
-    xlim = [0, event_model.data.n_time_windows - 1]
+    xlim = [0, event.data.n_time_windows - 1]
 
     # 01: aperiodic params
     alabels = ['offset', 'knee', 'exponent'] if has_knee else ['offset', 'exponent']
     for alabel in alabels:
         plot_param_over_time_yshade(\
-            None, event_model.results.event_time_results[alabel],
+            None, event.results.event_time_results[alabel],
             label=alabel, drop_xticks=True, add_xlabel=False, xlim=xlim,
             title='Aperiodic Parameters' if alabel == 'offset' else None,
             color=PARAM_COLORS[alabel], ax=next(axes))
@@ -71,12 +71,12 @@ def plot_event_model(event_model, **plot_kwargs):
     for band_ind in range(n_bands):
         for plabel in ['cf', 'pw', 'bw']:
             plot_param_over_time_yshade(None, \
-                event_model.results.event_time_results[pe_labels[plabel][band_ind]],
+                event.results.event_time_results[pe_labels[plabel][band_ind]],
                 label=plabel.upper(), drop_xticks=True, add_xlabel=False, xlim=xlim,
                 title='Periodic Parameters - ' + band_labels[band_ind] if plabel == 'cf' else None,
                 color=PARAM_COLORS[plabel], ax=next(axes))
         plot_param_over_time_yshade(None, \
-            compute_presence(event_model.results.event_time_results[pe_labels[plabel][band_ind]],
+            compute_presence(event.results.event_time_results[pe_labels[plabel][band_ind]],
                              output='percent'),
             label='Presence (%)', drop_xticks=True, add_xlabel=False, xlim=xlim,
             color=PARAM_COLORS['presence'], ax=next(axes))
@@ -85,7 +85,7 @@ def plot_event_model(event_model, **plot_kwargs):
     # 03: goodness of fit
     for glabel in ['error', 'r_squared']:
         plot_param_over_time_yshade(\
-            None, event_model.results.event_time_results[glabel], label=glabel,
+            None, event.results.event_time_results[glabel], label=glabel,
             drop_xticks=False if glabel == 'r_squared' else True,
             add_xlabel=True if glabel == 'r_squared' else False,
             title='Goodness of Fit' if glabel == 'error' else None,

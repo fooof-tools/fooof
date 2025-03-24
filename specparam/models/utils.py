@@ -100,9 +100,7 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
     results = FitResults(ap_params, peak_params, r2, error, gauss_params)
 
     # Create the new model object, with settings, data info & results
-    model = SpectralModel()
-    model.algorithm.add_settings(group.algorithm.get_settings())
-    model.data.add_meta_data(group.data.get_meta_data())
+    model = group.get_model()
     model.results.add_results(results)
 
     # Generate the average model from the parameters

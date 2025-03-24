@@ -301,6 +301,16 @@ def test_report(skip_if_no_mpl):
 def test_get_model(tfg):
     """Check return of an individual model fit from a group object."""
 
+    # Test with no ind (no data / results)
+    tfm = tfg.get_model()
+    assert tfm
+    # Check that settings are copied over properly, but data and results are empty
+    for setting in OBJ_DESC['settings']:
+        assert getattr(tfg.algorithm, setting) == getattr(tfm.algorithm, setting)
+    for result in OBJ_DESC['results']:
+        assert np.all(np.isnan(getattr(tfm.results, result)))
+    assert not tfm.data.power_spectrum
+
     # Check without regenerating
     tfm0 = tfg.get_model(0, False)
     assert tfm0

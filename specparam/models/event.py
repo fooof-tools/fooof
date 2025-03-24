@@ -129,14 +129,14 @@ class SpectralTimeEventModel(BaseObject3D):
         save_event_report(self, file_name, file_path, add_settings)
 
 
-    def get_model(self, event_ind, window_ind, regenerate=True):
+    def get_model(self, event_ind=None, window_ind=None, regenerate=True):
         """Get a model fit object for a specified index.
 
         Parameters
         ----------
-        event_ind : int
+        event_ind : int, optional
             Index for which event to extract from.
-        window_ind : int
+        window_ind : int, optional
             Index for which time window to extract from.
         regenerate : bool, optional, default: False
             Whether to regenerate the model fits for the requested model.
@@ -148,10 +148,7 @@ class SpectralTimeEventModel(BaseObject3D):
         """
 
         # Initialize model object, with same settings, metadata, & check states as current object
-        model = SpectralModel(**self.algorithm.get_settings()._asdict(), verbose=self.verbose)
-        model.data.add_meta_data(self.data.get_meta_data())
-        model.data.set_checks(*self.data.get_checks())
-        model.algorithm.set_debug(self.algorithm.get_debug())
+        model = super().get_model()
 
         # Add data for specified single power spectrum, if available
         if self.data.has_data:

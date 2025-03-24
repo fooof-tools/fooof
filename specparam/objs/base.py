@@ -429,13 +429,14 @@ class BaseObject2D(CommonBase):
         self._reset_data_results(clear_spectrum=True, clear_results=True)
 
 
-    def get_model(self, ind, regenerate=True):
+    def get_model(self, ind=None, regenerate=True):
         """Get a model fit object for a specified index.
 
         Parameters
         ----------
-        ind : int
+        ind : int, optional
             The index of the model from `group_results` to access.
+            If None, return a Model object with initialized settings, with no data or results.
         regenerate : bool, optional, default: False
             Whether to regenerate the model fits for the requested model.
 
@@ -455,13 +456,14 @@ class BaseObject2D(CommonBase):
         model.algorithm.set_debug(self.algorithm.get_debug())
 
         # Add data for specified single power spectrum, if available
-        if self.data.has_data:
+        if ind is not None and self.data.has_data:
             model.data.power_spectrum = self.data.power_spectra[ind]
 
         # Add results for specified power spectrum, regenerating full fit if requested
-        model.results.add_results(self.results.group_results[ind])
-        if regenerate:
-            model.results._regenerate_model(self.data.freqs)
+        if ind:
+            model.results.add_results(self.results.group_results[ind])
+            if regenerate:
+                model.results._regenerate_model(self.data.freqs)
 
         return model
 
