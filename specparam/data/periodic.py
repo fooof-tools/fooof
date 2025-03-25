@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from specparam.modes.items import PEAK_INDS
+from specparam.modes.info import get_peak_indices
 
 ###################################################################################################
 ###################################################################################################
@@ -285,7 +285,7 @@ def threshold_peaks(peak_params, threshold, param='PW'):
         return np.array([np.nan, np.nan, np.nan])
 
     # Otherwise, apply a mask to apply the requested threshold
-    thresh_mask = peak_params[:, PEAK_INDS[param]] > threshold
+    thresh_mask = peak_params[:, get_peak_indices()[param]] > threshold
     thresholded_peaks = peak_params[thresh_mask]
 
     return thresholded_peaks
