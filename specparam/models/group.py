@@ -7,13 +7,11 @@ Methods without defined docstrings import docs at runtime, from aliased external
 
 import numpy as np
 
-from specparam.modes.modes import Modes
 from specparam.modes.items import OBJ_DESC
 from specparam.models import SpectralModel
 from specparam.objs.data import BaseData2D
 from specparam.objs.results import BaseResults2D
 from specparam.objs.utils import run_parallel_group, pbar
-from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.plts.group import plot_group_model
 from specparam.io.models import save_group
 from specparam.io.files import load_jsonlines

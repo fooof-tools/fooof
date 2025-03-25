@@ -42,7 +42,8 @@ def plot_annotated_peak_search(model):
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
 
     # Sort parameters by peak height
-    gaussian_params = model.results.gaussian_params_[model.results.gaussian_params_[:, 1].argsort()][::-1]
+    gaussian_params = model.results.gaussian_params_[\
+        model.results.gaussian_params_[:, 1].argsort()][::-1]
 
     # Loop through the iterative search for each peak
     for ind in range(model.results.n_peaks_ + 1):

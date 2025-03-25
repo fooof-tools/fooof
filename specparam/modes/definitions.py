@@ -1,4 +1,4 @@
-"""Define fitting modes"""
+"""Define fitting modes."""
 
 from collections import OrderedDict
 

@@ -2,11 +2,9 @@
 
 import numpy as np
 
-from specparam.modes.modes import Modes
 from specparam.models import SpectralModel, SpectralGroupModel
 from specparam.objs.results import BaseResults2DT
 from specparam.objs.data import BaseData2DT
-from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.data.conversions import group_to_dataframe, dict_to_df
 from specparam.data.utils import get_results_by_ind
 from specparam.plts.time import plot_time_model

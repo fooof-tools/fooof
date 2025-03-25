@@ -1,7 +1,6 @@
 """Modes object."""
 
 from specparam.data import ModelModes
-from specparam.modes.items import OBJ_DESC
 from specparam.modes.mode import Mode
 from specparam.modes.definitions import AP_MODES, PE_MODES
 

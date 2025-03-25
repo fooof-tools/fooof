@@ -7,7 +7,6 @@ Methods without defined docstrings import docs at runtime, from aliased external
 
 import numpy as np
 
-from specparam.modes.modes import Modes
 from specparam.models.base import BaseModel
 from specparam.objs.data import BaseData
 from specparam.objs.results import BaseResults
@@ -121,7 +120,7 @@ class SpectralModel(BaseModel):
             max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,
             peak_threshold=peak_threshold,
             modes=self.modes, data=self.data, results=self.results,
-            debug=False, verbose=self.verbose,
+            debug=debug, verbose=self.verbose,
             **model_kwargs)
 
 

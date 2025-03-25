@@ -2,11 +2,9 @@
 
 import numpy as np
 
-from specparam.modes.modes import Modes
 from specparam.models import SpectralModel, SpectralTimeModel
 from specparam.objs.results import BaseResults3D
 from specparam.objs.data import BaseData3D
-from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.plts.event import plot_event_model
 from specparam.data.conversions import event_group_to_dataframe, dict_to_df
 from specparam.data.utils import flatten_results_dict
@@ -424,22 +422,22 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False,
-                                clear_spectra=False, clear_spectrograms=False):
-            """Set, or reset, data & results attributes to empty.
+                            clear_spectra=False, clear_spectrograms=False):
+        """Set, or reset, data & results attributes to empty.
 
-            Parameters
-            ----------
-            clear_freqs : bool, optional, default: False
-                Whether to clear frequency attributes.
-            clear_spectrum : bool, optional, default: False
-                Whether to clear power spectrum attribute.
-            clear_results : bool, optional, default: False
-                Whether to clear model results attributes.
-            clear_spectra : bool, optional, default: False
-                Whether to clear power spectra attribute.
-            clear_spectrograms : bool, optional, default: False
-                Whether to clear spectrograms attribute.
-            """
+        Parameters
+        ----------
+        clear_freqs : bool, optional, default: False
+            Whether to clear frequency attributes.
+        clear_spectrum : bool, optional, default: False
+            Whether to clear power spectrum attribute.
+        clear_results : bool, optional, default: False
+            Whether to clear model results attributes.
+        clear_spectra : bool, optional, default: False
+            Whether to clear power spectra attribute.
+        clear_spectrograms : bool, optional, default: False
+            Whether to clear spectrograms attribute.
+        """
 
-            self.data._reset_data(clear_freqs, clear_spectrum, clear_spectra, clear_spectrograms)
-            self.results._reset_results(clear_results)
+        self.data._reset_data(clear_freqs, clear_spectrum, clear_spectra, clear_spectrograms)
+        self.results._reset_results(clear_results)
