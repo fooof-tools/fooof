@@ -93,7 +93,7 @@ class SpectralFitAlgorithm(Algorithm):
                  peak_threshold=2.0, ap_percentile_thresh=0.025, ap_guess=None, ap_bounds=None,
                  cf_bound=1.5, bw_std_edge=1.0, gauss_overlap_thresh=0.75,
                  maxfev=5000, tol=0.00001,
-                 data=None, modes=None, results=None, verbose=False):
+                 modes=None, data=None, results=None, debug=False, verbose=False):
         """Initialize base model object"""
 
         # Initialize base algorithm object with algorithm metadata
@@ -101,13 +101,9 @@ class SpectralFitAlgorithm(Algorithm):
             name='spectral fit algorithm',
             description='Original parameterizing neural power spectra algorithm.',
             settings=SPECTRAL_FIT_SETTINGS,
+            modes=modes, data=data, results=results,
+            debug=debug, verbose=verbose,
         )
-
-        ## TEMP:
-        self.data = data
-        self.modes = modes
-        self.results = results
-        self.verbose = verbose
 
         ## Public settings
         self.peak_width_limits = peak_width_limits
@@ -129,9 +125,6 @@ class SpectralFitAlgorithm(Algorithm):
 
         ## Set internal settings, based on inputs, and initialize data & results attributes
         self._reset_internal_settings()
-
-        # TEMP: is this still needed?
-        #self._reset_data_results(True, True, True)
 
 
     def _fit_prechecks(self):

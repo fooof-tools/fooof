@@ -45,12 +45,20 @@ class Algorithm():
         Algorithm information.
     """
 
-    def __init__(self, name, description, settings, debug=False):
+    def __init__(self, name, description, settings,
+                 modes=None, data=None, results=None,
+                 debug=False, verbose=False):
         """Initialize Algorithm object."""
 
         self.definition = AlgorithmDefinition(name, description, settings)
 
+        self.modes = None
+        self.data = None
+        self.results = None
+        self._reset_subobjects(modes, data, results)
+
         self.set_debug(debug)
+        self.verbose = verbose
 
 
     def _fit_prechecks(self):
@@ -131,3 +139,19 @@ class Algorithm():
 
     def _reset_internal_settings(self):
         """"Can be overloaded if any resetting needed for internal settings."""
+
+
+    def _reset_subobjects(self, modes=None, data=None, results=None):
+        """
+
+        Parameters
+        ----------
+
+        """
+
+        if modes is not None:
+            self.modes = modes
+        if data is not None:
+            self.data = data
+        if results is not None:
+            self.results = results
