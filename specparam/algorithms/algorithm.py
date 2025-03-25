@@ -1,4 +1,4 @@
-"""Define object to manage algoirthm implementations."""
+"""Define object to manage algorithm implementations."""
 
 from specparam.data import ModelSettings
 from specparam.modes.items import OBJ_DESC
@@ -62,7 +62,7 @@ class Algorithm():
 
 
     def _fit_prechecks(self):
-        """Prechecks to run before the fit function - if are some, overload this function."""
+        """Pre-checks to run before the fit function - if are some, overload this function."""
 
 
     def _fit(self):
@@ -142,11 +142,16 @@ class Algorithm():
 
 
     def _reset_subobjects(self, modes=None, data=None, results=None):
-        """
+        """Reset links to sub-objects (mode / data / results).
 
         Parameters
         ----------
-
+        modes : Modes
+            Model modes object.
+        data : BaseData*
+            Model data object.
+        results : BaseResults*
+            Model results object.
         """
 
         if modes is not None:
