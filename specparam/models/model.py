@@ -14,7 +14,7 @@ from specparam.objs.results import BaseResults
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import gen_model_results_str
-from specparam.modutils.errors import NoModelError
+from specparam.modutils.errors import NoModelError, NoDataError, FitError
 from specparam.modutils.docs import (copy_doc_func_to_method, replace_docstring_sections,
                                      docs_get_section)
 from specparam.io.files import load_json
@@ -144,6 +144,76 @@ class SpectralModel(BaseModel):
         self.results._reset_results(self.results.has_model and clear_results)
 
         self.data.add_data(freqs, power_spectrum, freq_range=freq_range)
+
+
+    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
+        """Fit a power spectrum as a combination of periodic and aperiodic components.
+
+        Parameters
+        ----------
+        freqs : 1d array, optional
+            Frequency values for the power spectrum, in linear space.
+        power_spectrum : 1d array, optional
+            Power values, which must be input in linear space.
+        freq_range : list of [float, float], optional
+            Frequency range to restrict power spectrum to.
+            If not provided, keeps the entire range.
+
+        Raises
+        ------
+        NoDataError
+            If no data is available to fit.
+        FitError
+            If model fitting fails to fit. Only raised in debug mode.
+
+        Notes
+        -----
+        Data is optional, if data has already been added to the object.
+        """
+
+        # If freqs & power_spectrum provided together, add data to object.
+        if freqs is not None and power_spectrum is not None:
+            self.add_data(freqs, power_spectrum, freq_range)
+
+        # Check that data is available
+        if not self.data.has_data:
+            raise NoDataError("No data available to fit, can not proceed.")
+
+        # In rare cases, the model fails to fit, and so uses try / except
+        try:
+
+            # If not set to fail on NaN or Inf data at add time, check data here
+            #   This serves as a catch all for curve_fits which will fail given NaN or Inf
+            #   Because FitError's are by default caught, this allows fitting to continue
+            if not self.data._check_data:
+                if np.any(np.isinf(self.data.power_spectrum)) or \
+                    np.any(np.isnan(self.data.power_spectrum)):
+                    raise FitError("Model fitting was skipped because there are NaN or Inf "
+                                   "values in the data, which preclude model fitting.")
+
+            # Call the fit function from the algorithm object
+            self.algorithm._fit()
+
+            # Compute post-fit metrics
+            self.metrics.compute_metrics(self.data, self.results)
+
+            # TEMP: alias metric results into updated management
+            self.results.error_ = self.metrics['error-mae'].output
+            self.results.r_squared_ = self.metrics['gof-r_squared'].output
+
+        except FitError:
+
+            # If in debug mode, re-raise the error
+            if self.algorithm._debug:
+                raise
+
+            # Clear any interim model results that may have run
+            #   Partial model results shouldn't be interpreted in light of overall failure
+            self.results._reset_results(True)
+
+            # Print out status
+            if self.verbose:
+                print("Model fitting was unsuccessful.")
 
 
     def report(self, freqs=None, power_spectrum=None, freq_range=None,

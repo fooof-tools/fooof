@@ -65,12 +65,8 @@ class SpectralTimeModel(SpectralGroupModel):
 
         SpectralGroupModel.__init__(self, *args, **kwargs)
 
-        # CommonBase.__init__(self, verbose=kwargs.pop('verbose', True))
-
         self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
                            periodic=kwargs.pop('periodic_mode', 'gaussian'))
-
-        #BaseObject2DT.__init__(self, verbose=kwargs.pop('verbose', True))
 
         self.data = BaseData2DT()
 

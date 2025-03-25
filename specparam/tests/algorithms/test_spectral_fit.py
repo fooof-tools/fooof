@@ -1,5 +1,6 @@
 """Tests for specparam.algorthms.spectral_fit."""
 
+from specparam import SpectralModel
 from specparam.modes.modes import Modes
 from specparam.models.base import BaseModel
 from specparam.objs.data import BaseData
@@ -14,7 +15,7 @@ from specparam.algorithms.spectral_fit import *
 ###################################################################################################
 ###################################################################################################
 
-def test_algorithm_inherit():
+def test_algorithm_inherit(tfm):
 
     class TestAlgo(BaseModel):
         def __init__(self):
@@ -25,6 +26,7 @@ def test_algorithm_inherit():
             self.results = BaseResults(modes=self.modes)
             self.algorithm = SpectralFitAlgorithm(\
                 data=self.data, results=self.results, modes=self.modes)
+            self.fit = tfm.fit
 
     talgo = TestAlgo()
     assert isinstance(talgo.algorithm, Algorithm)
