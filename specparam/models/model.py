@@ -8,23 +8,28 @@ Methods without defined docstrings import docs at runtime, from aliased external
 import numpy as np
 
 from specparam.modes.modes import Modes
-from specparam.objs.base import BaseObject
+from specparam.objs.base import CommonBase
 from specparam.objs.data import BaseData
 from specparam.objs.results import BaseResults
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import gen_model_results_str
 from specparam.modutils.errors import NoModelError
-from specparam.modutils.docs import copy_doc_func_to_method, replace_docstring_sections
+from specparam.modutils.docs import (copy_doc_func_to_method, replace_docstring_sections,
+                                     docs_get_section)
 from specparam.plts.model import plot_model
 from specparam.data.utils import get_model_params
 from specparam.data.conversions import model_to_dataframe
+
+from specparam.io.models import save_model
+from specparam.io.files import load_json
+
 
 ###################################################################################################
 ###################################################################################################
 
 @replace_docstring_sections([SPECTRAL_FIT_SETTINGS.make_docstring()])
-class SpectralModel(BaseObject):
+class SpectralModel(CommonBase):
     """Model a power spectrum as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -105,18 +110,42 @@ class SpectralModel(BaseObject):
                  verbose=True, **model_kwargs):
         """Initialize model object."""
 
+        CommonBase.__init__(self, verbose=verbose)
+
         self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode)
 
         self.data = BaseData()
-        self.results = BaseResults(modes=self.modes)
 
-        BaseObject.__init__(self, verbose=verbose)
+        self.results = BaseResults(modes=self.modes)
 
         self.algorithm = SpectralFitAlgorithm(peak_width_limits=peak_width_limits,
             max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,
             peak_threshold=peak_threshold,
             data=self.data, modes=self.modes, results=self.results, verbose=self.verbose,
             **model_kwargs)
+
+
+    @replace_docstring_sections([docs_get_section(BaseData.add_data.__doc__, 'Parameters'),
+                                 docs_get_section(BaseData.add_data.__doc__, 'Notes')])
+    def add_data(self, freqs, power_spectrum, freq_range=None, clear_results=True):
+        """Add data (frequencies, and power spectrum values) to the current object.
+
+        Parameters
+        ----------
+        % copied in from Data object
+        clear_results : bool, optional, default: True
+            Whether to clear prior results, if any are present in the object.
+            This should only be set to False if data for the current results are being re-added.
+
+        Notes
+        -----
+        % copied in from Data object
+        """
+
+        # Clear results, if present, unless indicated not to
+        self.results._reset_results(self.results.has_model and clear_results)
+
+        self.data.add_data(freqs, power_spectrum, freq_range=freq_range)
 
 
     def report(self, freqs=None, power_spectrum=None, freq_range=None,
@@ -212,6 +241,46 @@ class SpectralModel(BaseObject):
                    aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs, **plot_kwargs)
 
 
+    @copy_doc_func_to_method(save_model)
+    def save(self, file_name, file_path=None, append=False,
+             save_results=False, save_settings=False, save_data=False):
+
+        save_model(self, file_name, file_path, append, save_results, save_settings, save_data)
+
+
+    def load(self, file_name, file_path=None, regenerate=True):
+        """Load in a data file to the current object.
+
+        Parameters
+        ----------
+        file_name : str or FileObject
+            File to load data from.
+        file_path : Path or str, optional
+            Path to directory to load from. If None, loads from current directory.
+        regenerate : bool, optional, default: True
+            Whether to regenerate the model fit from the loaded data, if data is available.
+        """
+
+        # Reset data in object, so old data can't interfere
+        self._reset_data_results(True, True, True)
+
+        # Load JSON file
+        data = load_json(file_name, file_path)
+
+        # Add loaded data to object and check loaded data
+        self._add_from_dict(data)
+        self._check_loaded_modes(data)
+        self.algorithm._check_loaded_settings(data)
+        self.results._check_loaded_results(data)
+
+        # Regenerate model components, based on what is available
+        if regenerate:
+            if self.data.freq_res:
+                self.data._regenerate_freqs()
+            if np.all(self.data.freqs) and np.all(self.results.aperiodic_params_):
+                self.results._regenerate_model(self.data.freqs)
+
+
     @copy_doc_func_to_method(save_model_report)
     def save_report(self, file_name, file_path=None, add_settings=True, **plot_kwargs):
 
@@ -235,3 +304,20 @@ class SpectralModel(BaseObject):
         """
 
         return model_to_dataframe(self.results.get_results(), peak_org)
+
+
+    def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False):
+        """Set, or reset, data & results attributes to empty.
+
+        Parameters
+        ----------
+        clear_freqs : bool, optional, default: False
+            Whether to clear frequency attributes.
+        clear_spectrum : bool, optional, default: False
+            Whether to clear power spectrum attribute.
+        clear_results : bool, optional, default: False
+            Whether to clear model results attributes.
+        """
+
+        self.data._reset_data(clear_freqs, clear_spectrum)
+        self.results._reset_results(clear_results)

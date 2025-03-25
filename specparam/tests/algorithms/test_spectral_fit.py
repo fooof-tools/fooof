@@ -1,7 +1,7 @@
 """Tests for specparam.algorthms.spectral_fit."""
 
 from specparam.modes.modes import Modes
-from specparam.objs.base import BaseObject
+from specparam.objs.base import CommonBase
 from specparam.objs.data import BaseData
 from specparam.objs.results import BaseResults
 from specparam.sim import sim_power_spectrum
@@ -16,12 +16,13 @@ from specparam.algorithms.spectral_fit import *
 
 def test_algorithm_inherit():
 
-    class TestAlgo(SpectralFitAlgorithm, BaseObject):
+    class TestAlgo(SpectralFitAlgorithm, CommonBase):
         def __init__(self):
+            CommonBase.__init__(self, verbose=False)
             self.modes = Modes(aperiodic='fixed', periodic='gaussian')
             self.data = BaseData()
+            self.add_data = self.data.add_data
             self.results = BaseResults(modes=self.modes)
-            BaseObject.__init__(self)
             self.algorithm = SpectralFitAlgorithm(\
                 data=self.data, results=self.results, modes=self.modes)
 
