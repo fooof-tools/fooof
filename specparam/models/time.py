@@ -5,6 +5,8 @@ import numpy as np
 from specparam.modes.modes import Modes
 from specparam.models import SpectralModel
 from specparam.objs.base import BaseObject2DT
+from specparam.objs.results import BaseResults2DT
+from specparam.objs.data import BaseData2DT
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.data.conversions import group_to_dataframe, dict_to_df
 from specparam.plts.time import plot_time_model
@@ -63,7 +65,10 @@ class SpectralTimeModel(BaseObject2DT):
         self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
                            periodic=kwargs.pop('periodic_mode', 'gaussian'))
 
-        BaseObject2DT.__init__(self, modes=self.modes, verbose=kwargs.pop('verbose', True))
+        self.data = BaseData2DT()
+        self.results = BaseResults2DT(modes=self.modes)
+
+        BaseObject2DT.__init__(self, verbose=kwargs.pop('verbose', True))
 
         self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
             data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)

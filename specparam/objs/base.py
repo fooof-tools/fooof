@@ -15,8 +15,7 @@ from specparam.io.models import save_model, save_group, save_event
 from specparam.modutils.errors import NoDataError, FitError
 from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
-from specparam.objs.results import BaseResults, BaseResults2D, BaseResults2DT, BaseResults3D
-from specparam.objs.data import BaseData, BaseData2D, BaseData2DT, BaseData3D
+from specparam.objs.data import BaseData
 from specparam.objs.utils import run_parallel_group, run_parallel_event, pbar
 from specparam.objs.metrics import Metrics
 
@@ -197,13 +196,10 @@ class CommonBase():
 class BaseObject(CommonBase):
     """Define Base object for fitting models to 1D data."""
 
-    def __init__(self, modes=None, verbose=False):
+    def __init__(self, verbose=False):
         """Initialize BaseObject object."""
 
         CommonBase.__init__(self, verbose=verbose)
-
-        self.data = BaseData()
-        self.results = BaseResults(modes=modes)
 
 
     @replace_docstring_sections([docs_get_section(BaseData.add_data.__doc__, 'Parameters'),
@@ -289,13 +285,10 @@ class BaseObject(CommonBase):
 class BaseObject2D(CommonBase):
     """Define Base object for fitting models to 2D data."""
 
-    def __init__(self, modes=None, verbose=True):
+    def __init__(self, verbose=True):
         """Initialize BaseObject2D object."""
 
         CommonBase.__init__(self, verbose=verbose)
-
-        self.data = BaseData2D()
-        self.results = BaseResults2D(modes=modes)
 
 
     def add_data(self, freqs, power_spectra, freq_range=None, clear_results=True):
@@ -537,13 +530,10 @@ class BaseObject2D(CommonBase):
 class BaseObject2DT(BaseObject2D):
     """Define Base object for fitting models to 2D data - tranpose version."""
 
-    def __init__(self, modes=None, verbose=True):
+    def __init__(self, verbose=True):
         """Initialize BaseObject2DT object."""
 
-        BaseObject2D.__init__(self, modes=modes, verbose=verbose)
-
-        self.data = BaseData2DT()
-        self.results = BaseResults2DT(modes=modes)
+        BaseObject2D.__init__(self, verbose=verbose)
 
 
     def fit(self, freqs=None, spectrogram=None, freq_range=None, peak_org=None,
@@ -648,13 +638,10 @@ class BaseObject2DT(BaseObject2D):
 class BaseObject3D(BaseObject2DT):
     """Define Base object for fitting models to 3D data."""
 
-    def __init__(self, modes=None, verbose=True):
+    def __init__(self, verbose=True):
         """Initialize BaseObject3D object."""
 
-        BaseObject2DT.__init__(self, modes=modes, verbose=verbose)
-
-        self.data = BaseData3D()
-        self.results = BaseResults3D(modes=modes)
+        BaseObject2DT.__init__(self, verbose=verbose)
 
 
     def add_data(self, freqs, spectrograms, freq_range=None, clear_results=True):

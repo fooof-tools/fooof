@@ -2,6 +2,8 @@
 
 from specparam.modes.modes import Modes
 from specparam.objs.base import BaseObject
+from specparam.objs.data import BaseData
+from specparam.objs.results import BaseResults
 from specparam.sim import sim_power_spectrum
 from specparam.algorithms.algorithm import Algorithm, AlgorithmDefinition
 
@@ -17,6 +19,8 @@ def test_algorithm_inherit():
     class TestAlgo(SpectralFitAlgorithm, BaseObject):
         def __init__(self):
             self.modes = Modes(aperiodic='fixed', periodic='gaussian')
+            self.data = BaseData()
+            self.results = BaseResults(modes=self.modes)
             BaseObject.__init__(self)
             self.algorithm = SpectralFitAlgorithm(\
                 data=self.data, results=self.results, modes=self.modes)

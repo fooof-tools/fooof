@@ -9,6 +9,8 @@ import numpy as np
 
 from specparam.modes.modes import Modes
 from specparam.objs.base import BaseObject
+from specparam.objs.data import BaseData
+from specparam.objs.results import BaseResults
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import (gen_modes_str, gen_settings_str,
@@ -106,7 +108,10 @@ class SpectralModel(BaseObject):
 
         self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode)
 
-        BaseObject.__init__(self, modes=self.modes, verbose=verbose)
+        self.data = BaseData()
+        self.results = BaseResults(modes=self.modes)
+
+        BaseObject.__init__(self, verbose=verbose)
 
         self.algorithm = SpectralFitAlgorithm(peak_width_limits=peak_width_limits,
             max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,

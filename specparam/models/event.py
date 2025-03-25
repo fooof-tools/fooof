@@ -5,6 +5,8 @@ import numpy as np
 from specparam.modes.modes import Modes
 from specparam.models import SpectralModel
 from specparam.objs.base import BaseObject3D
+from specparam.objs.results import BaseResults3D
+from specparam.objs.data import BaseData3D
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.plts.event import plot_event_model
 from specparam.data.conversions import event_group_to_dataframe, dict_to_df
@@ -62,7 +64,10 @@ class SpectralTimeEventModel(BaseObject3D):
         self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
                            periodic=kwargs.pop('periodic_mode', 'gaussian'))
 
-        BaseObject3D.__init__(self, modes=self.modes, verbose=kwargs.pop('verbose', True))
+        self.data = BaseData3D()
+        self.results = BaseResults3D(modes=self.modes)
+
+        BaseObject3D.__init__(self, verbose=kwargs.pop('verbose', True))
 
         self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
             data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)

@@ -8,6 +8,8 @@ Methods without defined docstrings import docs at runtime, from aliased external
 from specparam.modes.modes import Modes
 from specparam.models import SpectralModel
 from specparam.objs.base import BaseObject2D
+from specparam.objs.results import BaseResults2D
+from specparam.objs.data import BaseData2D
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
 from specparam.plts.group import plot_group_model
 from specparam.reports.save import save_group_report
@@ -75,7 +77,10 @@ class SpectralGroupModel(BaseObject2D):
         self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
                            periodic=kwargs.pop('periodic_mode', 'gaussian'))
 
-        BaseObject2D.__init__(self, modes=self.modes, verbose=kwargs.pop('verbose', True))
+        self.data = BaseData2D()
+        self.results = BaseResults2D(modes=self.modes)
+
+        BaseObject2D.__init__(self, verbose=kwargs.pop('verbose', True))
 
         self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
             data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
