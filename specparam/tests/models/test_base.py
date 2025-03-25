@@ -7,12 +7,12 @@ from specparam.models.base import *
 
 def test_base_model():
 
-    tbase = BaseModel(verbose=False)
+    tbase = BaseModel(aperiodic_mode='fixed', periodic_mode='gaussian', verbose=False)
     assert isinstance(tbase, BaseModel)
 
 def test_common_base_copy():
 
-    tbase = BaseModel(verbose=False)
+    tbase = BaseModel(aperiodic_mode='fixed', periodic_mode='gaussian', verbose=False)
     ntbase = tbase.copy()
 
     assert ntbase != tbase

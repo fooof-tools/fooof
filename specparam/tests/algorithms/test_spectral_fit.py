@@ -1,7 +1,6 @@
 """Tests for specparam.algorthms.spectral_fit."""
 
 from specparam import SpectralModel
-from specparam.modes.modes import Modes
 from specparam.models.base import BaseModel
 from specparam.objs.data import BaseData
 from specparam.objs.results import BaseResults
@@ -19,8 +18,8 @@ def test_algorithm_inherit(tfm):
 
     class TestAlgo(BaseModel):
         def __init__(self):
-            BaseModel.__init__(self, verbose=False)
-            self.modes = Modes(aperiodic='fixed', periodic='gaussian')
+            BaseModel.__init__(self, aperiodic_mode='fixed',
+                               periodic_mode='gaussian', verbose=False)
             self.data = BaseData()
             self.add_data = self.data.add_data
             self.results = BaseResults(modes=self.modes)

@@ -80,18 +80,19 @@ class SpectralGroupModel(SpectralModel):
     """
 
     def __init__(self, *args, **kwargs):
+        """Initialize group model object."""
 
-        SpectralModel.__init__(self, *args, **kwargs)
-
-        self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
-                           periodic=kwargs.pop('periodic_mode', 'gaussian'))
+        SpectralModel.__init__(self, *args,
+                               aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
+                               periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
+                               verbose=kwargs.pop('verbose', True),
+                               **kwargs)
 
         self.data = BaseData2D()
-
         self.results = BaseResults2D(modes=self.modes)
 
         self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
-            data=self.data, modes=self.modes, results=self.results)#, verbose=self.verbose)
+            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
 
 
     def add_data(self, freqs, power_spectra, freq_range=None, clear_results=True):

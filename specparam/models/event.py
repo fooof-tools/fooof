@@ -63,19 +63,19 @@ class SpectralTimeEventModel(SpectralTimeModel):
     """
 
     def __init__(self, *args, **kwargs):
-        """Initialize object with desired settings."""
+        """Initialize event model object."""
 
-        SpectralTimeModel.__init__(self, *args, **kwargs)
-
-        self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
-                           periodic=kwargs.pop('periodic_mode', 'gaussian'))
+        SpectralTimeModel.__init__(self, *args,
+                                   aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
+                                   periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
+                                   verbose=kwargs.pop('verbose', True),
+                                   **kwargs)
 
         self.data = BaseData3D()
-
         self.results = BaseResults3D(modes=self.modes)
 
         self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
-            data=self.data, modes=self.modes, results=self.results)#, verbose=self.verbose)
+            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
 
 
     def add_data(self, freqs, spectrograms, freq_range=None, clear_results=True):

@@ -14,8 +14,10 @@ from specparam.reports.strings import gen_modes_str, gen_settings_str, gen_issue
 class BaseModel():
     """Define BaseModel object."""
 
-    def __init__(self, verbose):
+    def __init__(self, aperiodic_mode, periodic_mode, verbose):
         """Initialize object."""
+
+        self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode)
 
         self.metrics = Metrics()
         self.metrics.set_defaults()

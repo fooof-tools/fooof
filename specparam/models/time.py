@@ -61,19 +61,19 @@ class SpectralTimeModel(SpectralGroupModel):
     """
 
     def __init__(self, *args, **kwargs):
-        """Initialize object with desired settings."""
+        """Initialize time model object."""
 
-        SpectralGroupModel.__init__(self, *args, **kwargs)
-
-        self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
-                           periodic=kwargs.pop('periodic_mode', 'gaussian'))
+        SpectralGroupModel.__init__(self, *args,
+                                    aperiodic_mode=kwargs.pop('aperiodic_mode', 'fixed'),
+                                    periodic_mode=kwargs.pop('periodic_mode', 'gaussian'),
+                                    verbose=kwargs.pop('verbose', True),
+                                    **kwargs)
 
         self.data = BaseData2DT()
-
         self.results = BaseResults2DT(modes=self.modes)
 
         self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
-            data=self.data, modes=self.modes, results=self.results)#, verbose=self.verbose)
+            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
 
 
     def fit(self, freqs=None, spectrogram=None, freq_range=None, peak_org=None,

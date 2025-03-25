@@ -108,12 +108,12 @@ class SpectralModel(BaseModel):
                  verbose=True, **model_kwargs):
         """Initialize model object."""
 
-        BaseModel.__init__(self, verbose=verbose)
-
-        self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode)
+        BaseModel.__init__(self,
+                           aperiodic_mode=aperiodic_mode,
+                           periodic_mode=periodic_mode,
+                           verbose=verbose)
 
         self.data = BaseData()
-
         self.results = BaseResults(modes=self.modes)
 
         self.algorithm = SpectralFitAlgorithm(peak_width_limits=peak_width_limits,
