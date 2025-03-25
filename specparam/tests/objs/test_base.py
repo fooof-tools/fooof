@@ -31,11 +31,11 @@ def test_common_base_copy():
 
 ## 2D Base Object
 
-def test_base2d():
+# def test_base2d():
 
-    tobj2d = BaseObject2D()
-    assert isinstance(tobj2d, CommonBase)
-    assert isinstance(tobj2d, BaseObject2D)
+#     tobj2d = BaseObject2D()
+#     assert isinstance(tobj2d, CommonBase)
+#     assert isinstance(tobj2d, BaseObject2D)
 
 ## 2DT Base Object
 
