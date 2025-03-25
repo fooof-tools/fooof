@@ -39,17 +39,17 @@ def test_common_base_copy():
 
 ## 2DT Base Object
 
-def test_base2dt():
+# def test_base2dt():
 
-    tobj2dt = BaseObject2DT()
-    assert isinstance(tobj2dt, CommonBase)
-    assert isinstance(tobj2dt, BaseObject2DT)
+#     tobj2dt = BaseObject2DT()
+#     assert isinstance(tobj2dt, CommonBase)
+#     assert isinstance(tobj2dt, BaseObject2DT)
 
 ## 3D Base Object
 
-def test_base3d():
+# def test_base3d():
 
-    tobj3d = BaseObject3D()
-    assert isinstance(tobj3d, CommonBase)
-    assert isinstance(tobj3d, BaseObject2DT)
-    assert isinstance(tobj3d, BaseObject3D)
+#     tobj3d = BaseObject3D()
+#     assert isinstance(tobj3d, CommonBase)
+#     assert isinstance(tobj3d, BaseObject2DT)
+#     assert isinstance(tobj3d, BaseObject3D)

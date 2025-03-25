@@ -30,7 +30,9 @@ from specparam.utils.checks import check_inds
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-class SpectralGroupModel(CommonBase):
+#class SpectralGroupModel(CommonBase):
+class SpectralGroupModel(SpectralModel):
+
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -81,7 +83,8 @@ class SpectralGroupModel(CommonBase):
 
     def __init__(self, *args, **kwargs):
 
-        CommonBase.__init__(self, verbose=kwargs.pop('verbose', True))
+        #CommonBase.__init__(self, verbose=kwargs.pop('verbose', True))
+        SpectralModel.__init__(self, *args, **kwargs)
 
         self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),
                            periodic=kwargs.pop('periodic_mode', 'gaussian'))
@@ -91,7 +94,7 @@ class SpectralGroupModel(CommonBase):
         self.results = BaseResults2D(modes=self.modes)
 
         self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
-            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
+            data=self.data, modes=self.modes, results=self.results)#, verbose=self.verbose)
 
 
     def add_data(self, freqs, power_spectra, freq_range=None, clear_results=True):
