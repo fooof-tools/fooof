@@ -34,7 +34,7 @@ def test_algorithm():
 
     algo = Algorithm(name=tname, description=tdescription, settings=tsettings)
     assert algo
-    assert isinstance(algo.algorithm, AlgorithmDefinition)
+    assert isinstance(algo.definition, AlgorithmDefinition)
 
 def test_algorithm_settings():
 

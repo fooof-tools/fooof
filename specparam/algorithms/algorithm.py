@@ -48,7 +48,7 @@ class Algorithm():
     def __init__(self, name, description, settings, debug=False):
         """Initialize Algorithm object."""
 
-        self.algorithm = AlgorithmDefinition(name, description, settings)
+        self.definition = AlgorithmDefinition(name, description, settings)
 
         self.set_debug(debug)
 

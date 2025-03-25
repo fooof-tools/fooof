@@ -29,5 +29,5 @@ def test_algorithm_inherit(tfm):
 
     talgo = TestAlgo()
     assert isinstance(talgo.algorithm, Algorithm)
-    assert isinstance(talgo.algorithm.algorithm, AlgorithmDefinition)
+    assert isinstance(talgo.algorithm.definition, AlgorithmDefinition)
     talgo.fit(*sim_power_spectrum(*default_spectrum_params()))
