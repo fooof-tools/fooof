@@ -228,9 +228,9 @@ def test_load(tfm):
         assert not np.all(np.isnan(getattr(ntfm.results, result)))
     for setting in tfm.algorithm.definition.settings.names:
         assert getattr(ntfm.algorithm, setting) is not None
-    for data in OBJ_DESC['data']:
+    for data in tfm.data._fields:
         assert getattr(ntfm.data, data) is not None
-    for meta_dat in OBJ_DESC['meta_data']:
+    for meta_dat in tfm.data._meta_fields:
         assert getattr(ntfm.data, meta_dat) is not None
 
 def test_add_data():
@@ -314,7 +314,7 @@ def test_resets():
     tfm._reset_data_results(True, True, True)
     tfm.algorithm._reset_internal_settings()
 
-    for field in OBJ_DESC['data']:
+    for field in tfm.data._fields:
         assert getattr(tfm.data, field) is None
     for field in OBJ_DESC['model_components']:
         assert getattr(tfm.results, field) is None

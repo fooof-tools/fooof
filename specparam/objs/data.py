@@ -5,7 +5,6 @@ from functools import wraps
 import numpy as np
 
 from specparam.sim.gen import gen_freqs
-from specparam.modes.items import OBJ_DESC
 from specparam.data import SpectrumMetaData, ModelChecks
 from specparam.utils.spectral import trim_spectrum
 from specparam.modutils.errors import DataError, InconsistentDataError
@@ -15,6 +14,11 @@ from specparam.plts.utils import check_plot_kwargs
 
 ###################################################################################################
 ###################################################################################################
+
+# Define set of data fields
+DATA_FIELDS = ['power_spectrum', 'freq_range', 'freq_res']
+META_DATA_FIELDS = ['freq_range', 'freq_res']
+
 
 class BaseData():
     """Base object for managing data for spectral parameterization - for 1D data.
@@ -33,6 +37,8 @@ class BaseData():
         """Initialize BaseData object."""
 
         self._reset_data(True, True)
+        self._fields = DATA_FIELDS
+        self._meta_fields = META_DATA_FIELDS
 
         # Define data check run statuses
         self._check_freqs = check_freqs
@@ -81,7 +87,7 @@ class BaseData():
             A meta data object containing meta data information.
         """
 
-        for meta_dat in OBJ_DESC['meta_data']:
+        for meta_dat in self._meta_fields:
             setattr(self, meta_dat, getattr(meta_data, meta_dat))
 
         self._regenerate_freqs()
@@ -96,8 +102,7 @@ class BaseData():
             Object containing the check statuses from the current object.
         """
 
-        return ModelChecks(**{key.strip('_') : getattr(self, key) \
-                           for key in OBJ_DESC['checks']})
+        return ModelChecks(**{key : getattr(self, '_' + key) for key in ModelChecks._fields})
 
 
     def get_meta_data(self):
@@ -109,8 +114,7 @@ class BaseData():
             Object containing meta data from the current object.
         """
 
-        return SpectrumMetaData(**{key : getattr(self, key) \
-            for key in OBJ_DESC['meta_data']})
+        return SpectrumMetaData(**{key : getattr(self, key) for key in self._meta_fields})
 
 
     def plot(self, plt_log=False, **plt_kwargs):

@@ -9,7 +9,6 @@ import numpy as np
 
 from specparam import (SpectralModel, SpectralGroupModel,
                        SpectralTimeModel, SpectralTimeEventModel)
-from specparam.modes.items import OBJ_DESC
 from specparam.modes.modes import Modes
 from specparam.io.files import load_json
 
@@ -148,7 +147,7 @@ def test_load_file_contents(tfm):
         assert setting in loaded_data.keys()
     for result in tfm.results._fields:
         assert result in loaded_data.keys()
-    for datum in OBJ_DESC['data']:
+    for datum in tfm.data._fields:
         assert datum in loaded_data.keys()
 
 def test_load_model(tfm):
@@ -164,9 +163,9 @@ def test_load_model(tfm):
         assert not np.all(np.isnan(getattr(ntfm.results, result)))
     for setting in ntfm.algorithm.definition.settings.names:
         assert getattr(ntfm.algorithm, setting) is not None
-    for data in OBJ_DESC['data']:
+    for data in tfm.data._fields:
         assert getattr(ntfm.data, data) is not None
-    for meta_dat in OBJ_DESC['meta_data']:
+    for meta_dat in tfm.data._meta_fields:
         assert getattr(ntfm.data, meta_dat) is not None
 
     # Check directory matches (loading didn't add any unexpected attributes)
@@ -187,7 +186,7 @@ def test_load_group(tfg):
     for setting in tfg.algorithm.definition.settings.names:
         assert getattr(ntfg.algorithm, setting) is not None
     assert ntfg.data.power_spectra is not None
-    for meta_dat in OBJ_DESC['meta_data']:
+    for meta_dat in tfg.data._meta_fields:
         assert getattr(ntfg.data, meta_dat) is not None
 
     # Check directory matches (loading didn't add any unexpected attributes)

@@ -9,7 +9,6 @@ import io
 
 from specparam.io.files import save_json
 from specparam.io.utils import create_file_path
-from specparam.modes.items import OBJ_DESC
 from specparam.utils.select import dict_select_keys
 from specparam.utils.convert import dict_array_to_lst
 
@@ -59,12 +58,10 @@ def save_model(model, file_name, file_path=None, append=False,
 
     # Set and select which variables to keep. Use a set to drop any potential overlap
     #   Note that results also saves frequency information to be able to recreate freq vector
-    keep = set((model.results._fields + OBJ_DESC['meta_data'] if save_results else []) + \
+    keep = set((model.results._fields + model.data._meta_fields if save_results else []) + \
                (model.algorithm.definition.settings.names + mode_labels if save_settings else []) + \
-               (OBJ_DESC['data'] if save_data else []))
+               (model.data._fields if save_data else []))
     obj_dict = dict_select_keys(obj_dict, keep)
-
-
 
     # Save out to json file
     save_json(obj_dict, file_name, file_path, append)

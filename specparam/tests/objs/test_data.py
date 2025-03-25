@@ -31,7 +31,7 @@ def test_base_data_meta_data():
     # Test adding meta data
     meta_data = SpectrumMetaData([3, 40], 0.5)
     tdata.add_meta_data(meta_data)
-    for mlabel in OBJ_DESC['meta_data']:
+    for mlabel in tdata._meta_fields:
         assert getattr(tdata, mlabel) == getattr(meta_data, mlabel)
 
     # Test getting meta data
