@@ -23,8 +23,8 @@ from specparam.reports.strings import gen_modes_str, gen_settings_str, gen_issue
 ###################################################################################################
 ###################################################################################################
 
-class CommonBase():
-    """Define CommonBase object."""
+class BaseModel():
+    """Define BaseModel object."""
 
     def __init__(self, verbose):
         """Initialize object."""

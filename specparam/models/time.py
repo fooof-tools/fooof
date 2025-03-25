@@ -4,7 +4,6 @@ import numpy as np
 
 from specparam.modes.modes import Modes
 from specparam.models import SpectralModel, SpectralGroupModel
-from specparam.objs.base import CommonBase #BaseObject2DT
 from specparam.objs.results import BaseResults2DT
 from specparam.objs.data import BaseData2DT
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
@@ -22,7 +21,6 @@ from specparam.utils.checks import check_inds
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-#class SpectralTimeModel(CommonBase):
 class SpectralTimeModel(SpectralGroupModel):
     """Model a spectrogram as a combination of aperiodic and periodic components.
 

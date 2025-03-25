@@ -4,7 +4,6 @@ import numpy as np
 
 from specparam.modes.modes import Modes
 from specparam.models import SpectralModel, SpectralTimeModel
-#from specparam.objs.base import BaseObject3D
 from specparam.objs.results import BaseResults3D
 from specparam.objs.data import BaseData3D
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm
@@ -26,7 +25,6 @@ from specparam.utils.checks import check_inds
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-#class SpectralTimeEventModel(BaseObject3D):
 class SpectralTimeEventModel(SpectralTimeModel):
     """Model a set of event as a combination of aperiodic and periodic components.
 
@@ -76,12 +74,8 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
         self.results = BaseResults3D(modes=self.modes)
 
-        #BaseObject3D.__init__(self, verbose=kwargs.pop('verbose', True))
-
         self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
             data=self.data, modes=self.modes, results=self.results)#, verbose=self.verbose)
-
-        #self.results._reset_event_results()
 
 
     def add_data(self, freqs, spectrograms, freq_range=None, clear_results=True):

@@ -10,7 +10,6 @@ import numpy as np
 from specparam.modes.modes import Modes
 from specparam.modes.items import OBJ_DESC
 from specparam.models import SpectralModel
-from specparam.objs.base import CommonBase
 from specparam.objs.data import BaseData2D
 from specparam.objs.results import BaseResults2D
 from specparam.objs.utils import run_parallel_group, pbar
@@ -30,7 +29,6 @@ from specparam.utils.checks import check_inds
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
-#class SpectralGroupModel(CommonBase):
 class SpectralGroupModel(SpectralModel):
 
     """Model a group of power spectra as a combination of aperiodic and periodic components.
@@ -83,7 +81,6 @@ class SpectralGroupModel(SpectralModel):
 
     def __init__(self, *args, **kwargs):
 
-        #CommonBase.__init__(self, verbose=kwargs.pop('verbose', True))
         SpectralModel.__init__(self, *args, **kwargs)
 
         self.modes = Modes(aperiodic=kwargs.pop('aperiodic_mode', 'fixed'),

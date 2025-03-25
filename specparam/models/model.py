@@ -8,7 +8,7 @@ Methods without defined docstrings import docs at runtime, from aliased external
 import numpy as np
 
 from specparam.modes.modes import Modes
-from specparam.objs.base import CommonBase
+from specparam.models.base import BaseModel
 from specparam.objs.data import BaseData
 from specparam.objs.results import BaseResults
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS
@@ -17,19 +17,17 @@ from specparam.reports.strings import gen_model_results_str
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.docs import (copy_doc_func_to_method, replace_docstring_sections,
                                      docs_get_section)
+from specparam.io.files import load_json
+from specparam.io.models import save_model
 from specparam.plts.model import plot_model
 from specparam.data.utils import get_model_params
 from specparam.data.conversions import model_to_dataframe
-
-from specparam.io.models import save_model
-from specparam.io.files import load_json
-
 
 ###################################################################################################
 ###################################################################################################
 
 @replace_docstring_sections([SPECTRAL_FIT_SETTINGS.make_docstring()])
-class SpectralModel(CommonBase):
+class SpectralModel(BaseModel):
     """Model a power spectrum as a combination of aperiodic and periodic components.
 
     WARNING: frequency and power values inputs must be in linear space.
@@ -110,7 +108,7 @@ class SpectralModel(CommonBase):
                  verbose=True, **model_kwargs):
         """Initialize model object."""
 
-        CommonBase.__init__(self, verbose=verbose)
+        BaseModel.__init__(self, verbose=verbose)
 
         self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode)
 
