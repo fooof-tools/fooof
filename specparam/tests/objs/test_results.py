@@ -20,7 +20,7 @@ def test_base_results_results(tresults):
 
     tres.add_results(tresults)
     assert tres.has_model
-    for result in OBJ_DESC['results']:
+    for result in tres._fields:
         assert np.array_equal(getattr(tres, result), getattr(tresults, result.strip('_')))
 
     results_out = tres.get_results()

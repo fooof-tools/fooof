@@ -191,7 +191,7 @@ def test_load(tfm):
     file_name_res = 'test_model_res'
     ntfm.load(file_name_res, TEST_DATA_PATH)
     # Check that result attributes get filled
-    for result in OBJ_DESC['results']:
+    for result in tfm.results._fields:
         assert not np.all(np.isnan(getattr(ntfm.results, result)))
     # Test that settings and data are None
     for setting in tfm.algorithm.definition.settings.names:
@@ -205,7 +205,7 @@ def test_load(tfm):
     for setting in tfm.algorithm.definition.settings.names:
         assert getattr(ntfm.algorithm, setting) is not None
     # Test that results and data are None
-    for result in OBJ_DESC['results']:
+    for result in tfm.results._fields:
         assert np.all(np.isnan(getattr(ntfm.results, result)))
     assert ntfm.data.power_spectrum is None
 
@@ -217,14 +217,14 @@ def test_load(tfm):
     # Test that settings and results are None
     for setting in tfm.algorithm.definition.settings.names:
         assert getattr(ntfm.algorithm, setting) is None
-    for result in OBJ_DESC['results']:
+    for result in tfm.results._fields:
         assert np.all(np.isnan(getattr(ntfm.results, result)))
 
     # Test loading all elements
     ntfm = SpectralModel(verbose=False)
     file_name_all = 'test_model_all'
     ntfm.load(file_name_all, TEST_DATA_PATH)
-    for result in OBJ_DESC['results']:
+    for result in tfm.results._fields:
         assert not np.all(np.isnan(getattr(ntfm.results, result)))
     for setting in tfm.algorithm.definition.settings.names:
         assert getattr(ntfm.algorithm, setting) is not None
@@ -318,7 +318,7 @@ def test_resets():
         assert getattr(tfm.data, field) is None
     for field in OBJ_DESC['model_components']:
         assert getattr(tfm.results, field) is None
-    for field in OBJ_DESC['results']:
+    for field in tfm.results._fields:
         assert np.all(np.isnan(getattr(tfm.results, field)))
     assert tfm.data.freqs is None and tfm.results.modeled_spectrum_ is None
 
@@ -340,7 +340,7 @@ def test_fit_failure():
     tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
     # Check after failing out of fit, all results are reset
-    for result in OBJ_DESC['results']:
+    for result in tfm.results._fields:
         assert np.all(np.isnan(getattr(tfm.results, result)))
 
     ## Monkey patch to check errors in general
@@ -354,7 +354,7 @@ def test_fit_failure():
     tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
     # Check after failing out of fit, all results are reset
-    for result in OBJ_DESC['results']:
+    for result in tfm.results._fields:
         assert np.all(np.isnan(getattr(tfm.results, result)))
 
 def test_debug():

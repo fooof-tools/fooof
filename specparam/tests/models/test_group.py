@@ -262,7 +262,7 @@ def test_load(tfg):
     for setting in tfg.algorithm.definition.settings.names:
         assert getattr(ntfg.algorithm, setting) is not None
     # Test that results and data are None
-    for result in OBJ_DESC['results']:
+    for result in tfg.results._fields:
         assert np.all(np.isnan(getattr(ntfg.results, result)))
     assert ntfg.data.power_spectra is None
 
@@ -273,7 +273,7 @@ def test_load(tfg):
     # Test that settings and results are None
     for setting in tfg.algorithm.definition.settings.names:
         assert getattr(ntfg.algorithm, setting) is None
-    for result in OBJ_DESC['results']:
+    for result in tfg.results._fields:
         assert np.all(np.isnan(getattr(ntfg.results, result)))
 
     # Test loading all elements
@@ -307,7 +307,7 @@ def test_get_model(tfg):
     # Check that settings are copied over properly, but data and results are empty
     for setting in tfg.algorithm.definition.settings.names:
         assert getattr(tfg.algorithm, setting) == getattr(tfm.algorithm, setting)
-    for result in OBJ_DESC['results']:
+    for result in tfg.results._fields:
         assert np.all(np.isnan(getattr(tfm.results, result)))
     assert not tfm.data.power_spectrum
 
@@ -322,7 +322,7 @@ def test_get_model(tfg):
     tfm1 = tfg.get_model(1, True)
     assert tfm1
     # Check that regenerated model is created
-    for result in OBJ_DESC['results']:
+    for result in tfg.results._fields:
         assert np.all(getattr(tfm1.results, result))
 
     # Test when object has no data (clear a copy of tfg)

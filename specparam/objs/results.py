@@ -4,7 +4,7 @@ from itertools import repeat
 
 import numpy as np
 
-from specparam.modes.items import OBJ_DESC
+#from specparam.modes.items import OBJ_DESC
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
@@ -15,6 +15,11 @@ from specparam.sim.gen import gen_model
 
 ###################################################################################################
 ###################################################################################################
+
+# Define set of results fields
+RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
+                  'r_squared_', 'error_']
+
 
 class BaseResults():
     """Base object for managing results."""
@@ -27,6 +32,7 @@ class BaseResults():
 
         # Initialize results attributes
         self._reset_results(True)
+        self._fields = RESULTS_FIELDS
 
 
     @property
@@ -78,8 +84,7 @@ class BaseResults():
             Object containing the model fit results from the current object.
         """
 
-        return FitResults(**{key.strip('_') : getattr(self, key) \
-            for key in OBJ_DESC['results']})
+        return FitResults(**{key.strip('_') : getattr(self, key) for key in self._fields})
 
 
     def get_component(self, component='full', space='log'):
@@ -139,7 +144,7 @@ class BaseResults():
 
         # If results loaded, check dimensions of peak parameters
         #   This fixes an issue where they end up the wrong shape if they are empty (no peaks)
-        if set(OBJ_DESC['results']).issubset(set(data.keys())):
+        if set(self._fields).issubset(set(data.keys())):
             self.peak_params_ = check_array_dim(self.peak_params_)
             self.gaussian_params_ = check_array_dim(self.gaussian_params_)
 

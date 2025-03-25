@@ -146,7 +146,7 @@ def test_load_file_contents(tfm):
 
     for setting in tfm.algorithm.definition.settings.names:
         assert setting in loaded_data.keys()
-    for result in OBJ_DESC['results']:
+    for result in tfm.results._fields:
         assert result in loaded_data.keys()
     for datum in OBJ_DESC['data']:
         assert datum in loaded_data.keys()
@@ -160,7 +160,7 @@ def test_load_model(tfm):
 
     # Check that all elements get loaded
     assert isinstance(ntfm.modes, Modes)
-    for result in OBJ_DESC['results']:
+    for result in tfm.results._fields:
         assert not np.all(np.isnan(getattr(ntfm.results, result)))
     for setting in ntfm.algorithm.definition.settings.names:
         assert getattr(ntfm.algorithm, setting) is not None
