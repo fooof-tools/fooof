@@ -1,7 +1,7 @@
 """Define object to manage algorithm implementations."""
 
 from specparam.data import ModelSettings
-from specparam.modes.items import OBJ_DESC
+from specparam.algorithms.settings import SettingsDefinition
 
 ###################################################################################################
 ###################################################################################################
@@ -24,6 +24,8 @@ class AlgorithmDefinition():
 
         self.name = name
         self.description = description
+        if not isinstance(settings, SettingsDefinition):
+            settings = SettingsDefinition(settings)
         self.settings = settings
 
 
@@ -78,7 +80,7 @@ class Algorithm():
             A data object containing the settings for a power spectrum model.
         """
 
-        for setting in OBJ_DESC['settings']:
+        for setting in settings._fields:
             setattr(self, setting, getattr(settings, setting))
 
         self._check_loaded_settings(settings._asdict())
@@ -93,8 +95,8 @@ class Algorithm():
             Object containing the settings from the current object.
         """
 
-        return ModelSettings(**{key : getattr(self, key) \
-                             for key in OBJ_DESC['settings']})
+        return self.definition.settings.make_model_settings()(\
+            **{key : getattr(self, key) for key in self.definition.settings.names})
 
 
     def get_debug(self):
@@ -126,10 +128,10 @@ class Algorithm():
 
         # If settings not loaded from file, clear from object, so that default
         # settings, which are potentially wrong for loaded data, aren't kept
-        if not set(OBJ_DESC['settings']).issubset(set(data.keys())):
+        if not set(self.definition.settings.names).issubset(set(data.keys())):
 
             # Reset all public settings to None
-            for setting in OBJ_DESC['settings']:
+            for setting in self.definition.settings.names:
                 setattr(self, setting, None)
 
         # Reset internal settings so that they are consistent with what was loaded

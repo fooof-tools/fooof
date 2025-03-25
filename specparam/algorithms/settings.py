@@ -1,5 +1,7 @@
 """Define an algorithm settings object and related functionality."""
 
+from collections import namedtuple
+
 ###################################################################################################
 ###################################################################################################
 
@@ -82,3 +84,13 @@ class SettingsDefinition():
         docstring = '\n'.join(pieces)
 
         return docstring
+
+
+    def make_model_settings(self):
+        """Create a custom ModelSettings object for the current object's settings definition."""
+
+        class ModelSettings(namedtuple('ModelSettings', self.names)):
+            __slots__ = ()
+        ModelSettings.__doc__ = self.make_docstring()
+
+        return ModelSettings
