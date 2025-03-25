@@ -9,7 +9,6 @@ They serve rather as 'smoke tests', for if anything fails completely.
 import numpy as np
 from pytest import raises
 
-from specparam.modes.items import OBJ_DESC
 from specparam.utils.select import groupby
 from specparam.modutils.errors import FitError
 from specparam.sim import gen_freqs, sim_power_spectrum
@@ -316,7 +315,9 @@ def test_resets():
 
     for field in tfm.data._fields:
         assert getattr(tfm.data, field) is None
-    for field in OBJ_DESC['model_components']:
+    model_components = ['modeled_spectrum_', '_spectrum_flat',
+                        '_spectrum_peak_rm', '_ap_fit', '_peak_fit']
+    for field in model_components:
         assert getattr(tfm.results, field) is None
     for field in tfm.results._fields:
         assert np.all(np.isnan(getattr(tfm.results, field)))

@@ -12,7 +12,6 @@ import numpy as np
 from numpy.testing import assert_equal
 
 from specparam.data import FitResults
-from specparam.modes.items import OBJ_DESC
 from specparam.modutils.dependencies import safe_import
 from specparam.sim import sim_group_power_spectra
 
@@ -284,7 +283,7 @@ def test_load(tfg):
     for setting in tfg.algorithm.definition.settings.names:
         assert getattr(ntfg.algorithm, setting) is not None
     assert ntfg.data.has_data
-    for meta_dat in OBJ_DESC['meta_data']:
+    for meta_dat in tfg.data._meta_fields:
         assert getattr(ntfg.data, meta_dat) is not None
 
 def test_report(skip_if_no_mpl):
@@ -331,7 +330,7 @@ def test_get_model(tfg):
     tfm2 = new_tfg.get_model(0, True)
     assert tfm2
     # Check that data info is copied over properly
-    for meta_dat in OBJ_DESC['meta_data']:
+    for meta_dat in tfg.data._meta_fields:
         assert getattr(tfm2.data, meta_dat)
 
 def test_get_group(tfg):
@@ -359,7 +358,7 @@ def test_get_group(tfg):
         assert getattr(tfg.algorithm, setting) == getattr(nfg2.algorithm, setting)
 
     # Check that data info is copied over properly
-    for meta_dat in OBJ_DESC['meta_data']:
+    for meta_dat in tfg.data._meta_fields:
         assert getattr(nfg1.data, meta_dat)
         assert getattr(nfg2.data, meta_dat)
 

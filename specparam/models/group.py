@@ -7,7 +7,6 @@ Methods without defined docstrings import docs at runtime, from aliased external
 
 import numpy as np
 
-from specparam.modes.items import OBJ_DESC
 from specparam.models import SpectralModel
 from specparam.objs.data import BaseData2D
 from specparam.objs.results import BaseResults2D

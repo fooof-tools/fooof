@@ -1,7 +1,5 @@
 """Tests for specparam.objs.results, including the data object and it's methods."""
 
-from specparam.modes.items import OBJ_DESC
-
 from specparam.objs.results import *
 
 ###################################################################################################
