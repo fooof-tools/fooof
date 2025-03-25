@@ -90,9 +90,7 @@ class SpectralGroupModel(SpectralModel):
 
         self.data = BaseData2D()
         self.results = BaseResults2D(modes=self.modes)
-
-        self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
-            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
+        self.algorithm._reset_subobjects(data=self.data, results=self.results)
 
 
     def add_data(self, freqs, power_spectra, freq_range=None, clear_results=True):

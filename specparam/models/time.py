@@ -71,9 +71,7 @@ class SpectralTimeModel(SpectralGroupModel):
 
         self.data = BaseData2DT()
         self.results = BaseResults2DT(modes=self.modes)
-
-        self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
-            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
+        self.algorithm._reset_subobjects(data=self.data, results=self.results)
 
 
     def fit(self, freqs=None, spectrogram=None, freq_range=None, peak_org=None,

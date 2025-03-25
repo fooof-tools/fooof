@@ -73,9 +73,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
         self.data = BaseData3D()
         self.results = BaseResults3D(modes=self.modes)
-
-        self.algorithm = SpectralFitAlgorithm(*args, **kwargs,
-            data=self.data, modes=self.modes, results=self.results, verbose=self.verbose)
+        self.algorithm._reset_subobjects(data=self.data, results=self.results)
 
 
     def add_data(self, freqs, spectrograms, freq_range=None, clear_results=True):
