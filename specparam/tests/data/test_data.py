@@ -1,10 +1,4 @@
-"""Tests for the specparam.data.data.
-
-For testing the data objects, the testing approach is to check that the object
-has the expected fields, given what is defined in the object description.
-"""
-
-from specparam.modes.items import OBJ_DESC
+"""Tests for the specparam.data.data."""
 
 from specparam.data.data import *
 
@@ -16,7 +10,7 @@ def test_model_settings():
     settings = ModelSettings([1, 8], 8, 0.25, 2)
     assert settings
 
-    for field in OBJ_DESC['settings']:
+    for field in ModelSettings._fields:
         assert getattr(settings, field)
 
 def test_spectrum_meta_data():
@@ -24,7 +18,7 @@ def test_spectrum_meta_data():
     meta_data = SpectrumMetaData([1, 50], 0.5)
     assert meta_data
 
-    for field in OBJ_DESC['meta_data']:
+    for field in SpectrumMetaData._fields:
         assert getattr(meta_data, field)
 
 def test_model_checks():
@@ -32,7 +26,7 @@ def test_model_checks():
     checks = ModelChecks(True, True)
     assert checks
 
-    for field in OBJ_DESC['checks']:
+    for field in ModelChecks._fields:
         assert getattr(checks, field.strip('_'))
 
 def test_fit_results():
@@ -40,8 +34,7 @@ def test_fit_results():
     results = FitResults([1, 1], [10, 0.5, 1], 0.95, 0.05, [10, 0.5, 0.5])
     assert results
 
-    results_fields = OBJ_DESC['results']
-    for field in results_fields:
+    for field in FitResults._fields:
         assert getattr(results, field.strip('_'))
 
 def test_sim_params():
@@ -49,5 +42,5 @@ def test_sim_params():
     sim_params = SimParams([1, 1], [10, 1, 1], 0.05)
     assert sim_params
 
-    for field in ['aperiodic_params', 'periodic_params', 'nlv']:
+    for field in SimParams._fields:
         assert getattr(sim_params, field)
