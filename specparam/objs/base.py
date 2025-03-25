@@ -18,6 +18,7 @@ from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
 from specparam.objs.data import BaseData
 from specparam.objs.utils import run_parallel_group, run_parallel_event, pbar
 from specparam.objs.metrics import Metrics
+from specparam.reports.strings import gen_modes_str, gen_settings_str, gen_issue_str
 
 ###################################################################################################
 ###################################################################################################
@@ -156,6 +157,47 @@ class CommonBase():
             raise ValueError('Input for component invalid.')
 
         return output
+
+
+    def print_modes(self, description=False, concise=False):
+        """Print out the current fit modes.
+
+        Parameters
+        ----------
+        description : bool, optional, default: False
+            Whether to print out a description with current fit modes.
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_modes_str(self, description, concise))
+
+
+    def print_settings(self, description=False, concise=False):
+        """Print out the current settings.
+
+        Parameters
+        ----------
+        description : bool, optional, default: False
+            Whether to print out a description with current settings.
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_settings_str(self, description, concise))
+
+
+    @staticmethod
+    def print_report_issue(concise=False):
+        """Prints instructions on how to report bugs and/or problematic fits.
+
+        Parameters
+        ----------
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_issue_str(concise))
 
 
     def _add_from_dict(self, data):

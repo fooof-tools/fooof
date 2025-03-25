@@ -13,8 +13,7 @@ from specparam.objs.data import BaseData
 from specparam.objs.results import BaseResults
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS
 from specparam.reports.save import save_model_report
-from specparam.reports.strings import (gen_modes_str, gen_settings_str,
-                                       gen_model_results_str, gen_issue_str)
+from specparam.reports.strings import gen_model_results_str
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.docs import copy_doc_func_to_method, replace_docstring_sections
 from specparam.plts.model import plot_model
@@ -158,34 +157,6 @@ class SpectralModel(BaseObject):
         self.print_results(concise=False)
 
 
-    def print_modes(self, description=False, concise=False):
-        """Print out the current fit modes.
-
-        Parameters
-        ----------
-        description : bool, optional, default: False
-            Whether to print out a description with current fit modes.
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
-        """
-
-        print(gen_modes_str(self, description, concise))
-
-
-    def print_settings(self, description=False, concise=False):
-        """Print out the current settings.
-
-        Parameters
-        ----------
-        description : bool, optional, default: False
-            Whether to print out a description with current settings.
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
-        """
-
-        print(gen_settings_str(self, description, concise))
-
-
     def print_results(self, concise=False):
         """Print out model fitting results.
 
@@ -196,19 +167,6 @@ class SpectralModel(BaseObject):
         """
 
         print(gen_model_results_str(self, concise))
-
-
-    @staticmethod
-    def print_report_issue(concise=False):
-        """Prints instructions on how to report bugs and/or problematic fits.
-
-        Parameters
-        ----------
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
-        """
-
-        print(gen_issue_str(concise))
 
 
     def get_params(self, name, col=None):

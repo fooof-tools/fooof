@@ -333,7 +333,7 @@ def gen_model_results_str(model, concise=False):
     """
 
     # Returns a null report if no results are available
-    if np.all(np.isnan(model.results.aperiodic_params_)):
+    if not model.results.has_model:
         return _no_model_str(concise)
 
     # Create the formatted strings for printing
@@ -403,7 +403,7 @@ def gen_group_results_str(group, concise=False):
     """
 
     if not group.results.has_model:
-        raise NoModelError("No model fit results are available, can not proceed.")
+        return _no_model_str(concise)
 
     # Extract all the relevant data for printing
     n_peaks = len(group.results.get_params('peak_params'))
@@ -490,7 +490,7 @@ def gen_time_results_str(time, concise=False):
     """
 
     if not time.results.has_model:
-        raise NoModelError("No model fit results are available, can not proceed.")
+        return _no_model_str(concise)
 
     # Get parameter information needed for printing
     pe_labels = get_periodic_labels(time.results.time_results)
@@ -583,7 +583,7 @@ def gen_event_results_str(event, concise=False):
     """
 
     if not event.results.has_model:
-        raise NoModelError("No model fit results are available, can not proceed.")
+        return _no_model_str(concise)
 
     # Extract all the relevant data for printing
     pe_labels = get_periodic_labels(event.results.event_time_results)
