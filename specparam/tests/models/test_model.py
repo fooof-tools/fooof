@@ -182,56 +182,56 @@ def test_checks():
     with raises(NoDataError):
         tfm.fit()
 
-def test_load():
+def test_load(tfm):
     """Test loading data into model object.
     Note: loads files from test_save_model in specparam/tests/io/test_models.py."""
 
     # Test loading just results
-    tfm = SpectralModel(verbose=False)
+    ntfm = SpectralModel(verbose=False)
     file_name_res = 'test_model_res'
-    tfm.load(file_name_res, TEST_DATA_PATH)
+    ntfm.load(file_name_res, TEST_DATA_PATH)
     # Check that result attributes get filled
     for result in OBJ_DESC['results']:
-        assert not np.all(np.isnan(getattr(tfm.results, result)))
+        assert not np.all(np.isnan(getattr(ntfm.results, result)))
     # Test that settings and data are None
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfm.algorithm, setting) is None
-    assert tfm.data.power_spectrum is None
+    for setting in tfm.algorithm.definition.settings.names:
+        assert getattr(ntfm.algorithm, setting) is None
+    assert ntfm.data.power_spectrum is None
 
     # Test loading just settings
-    tfm = SpectralModel(verbose=False)
+    ntfm = SpectralModel(verbose=False)
     file_name_set = 'test_model_set'
-    tfm.load(file_name_set, TEST_DATA_PATH)
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfm.algorithm, setting) is not None
+    ntfm.load(file_name_set, TEST_DATA_PATH)
+    for setting in tfm.algorithm.definition.settings.names:
+        assert getattr(ntfm.algorithm, setting) is not None
     # Test that results and data are None
     for result in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfm.results, result)))
-    assert tfm.data.power_spectrum is None
+        assert np.all(np.isnan(getattr(ntfm.results, result)))
+    assert ntfm.data.power_spectrum is None
 
     # Test loading just data
-    tfm = SpectralModel(verbose=False)
+    ntfm = SpectralModel(verbose=False)
     file_name_dat = 'test_model_dat'
-    tfm.load(file_name_dat, TEST_DATA_PATH)
-    assert tfm.data.power_spectrum is not None
+    ntfm.load(file_name_dat, TEST_DATA_PATH)
+    assert ntfm.data.power_spectrum is not None
     # Test that settings and results are None
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfm.algorithm, setting) is None
+    for setting in tfm.algorithm.definition.settings.names:
+        assert getattr(ntfm.algorithm, setting) is None
     for result in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfm.results, result)))
+        assert np.all(np.isnan(getattr(ntfm.results, result)))
 
     # Test loading all elements
-    tfm = SpectralModel(verbose=False)
+    ntfm = SpectralModel(verbose=False)
     file_name_all = 'test_model_all'
-    tfm.load(file_name_all, TEST_DATA_PATH)
+    ntfm.load(file_name_all, TEST_DATA_PATH)
     for result in OBJ_DESC['results']:
-        assert not np.all(np.isnan(getattr(tfm.results, result)))
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfm.algorithm, setting) is not None
+        assert not np.all(np.isnan(getattr(ntfm.results, result)))
+    for setting in tfm.algorithm.definition.settings.names:
+        assert getattr(ntfm.algorithm, setting) is not None
     for data in OBJ_DESC['data']:
-        assert getattr(tfm.data, data) is not None
+        assert getattr(ntfm.data, data) is not None
     for meta_dat in OBJ_DESC['meta_data']:
-        assert getattr(tfm.data, meta_dat) is not None
+        assert getattr(ntfm.data, meta_dat) is not None
 
 def test_add_data():
     """Tests method to add data to model objects."""

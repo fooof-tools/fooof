@@ -239,7 +239,7 @@ def test_plot(tfg, skip_if_no_mpl):
 
     tfg.plot()
 
-def test_load():
+def test_load(tfg):
     """Test load into group object.
     Note: loads files from test_save_group in specparam/tests/io/test_models.py."""
 
@@ -248,44 +248,44 @@ def test_load():
     file_name_dat = 'test_group_dat'
 
     # Test loading just results
-    tfg = SpectralGroupModel(verbose=False)
-    tfg.load(file_name_res, TEST_DATA_PATH)
-    assert len(tfg.results.group_results) > 0
+    ntfg = SpectralGroupModel(verbose=False)
+    ntfg.load(file_name_res, TEST_DATA_PATH)
+    assert len(ntfg.results.group_results) > 0
     # Test that settings and data are None
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfg.algorithm, setting) is None
-    assert tfg.data.power_spectra is None
+    for setting in tfg.algorithm.definition.settings.names:
+        assert getattr(ntfg.algorithm, setting) is None
+    assert ntfg.data.power_spectra is None
 
     # Test loading just settings
-    tfg = SpectralGroupModel(verbose=False)
-    tfg.load(file_name_set, TEST_DATA_PATH)
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfg.algorithm, setting) is not None
+    ntfg = SpectralGroupModel(verbose=False)
+    ntfg.load(file_name_set, TEST_DATA_PATH)
+    for setting in tfg.algorithm.definition.settings.names:
+        assert getattr(ntfg.algorithm, setting) is not None
     # Test that results and data are None
     for result in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfg.results, result)))
-    assert tfg.data.power_spectra is None
+        assert np.all(np.isnan(getattr(ntfg.results, result)))
+    assert ntfg.data.power_spectra is None
 
     # Test loading just data
-    tfg = SpectralGroupModel(verbose=False)
-    tfg.load(file_name_dat, TEST_DATA_PATH)
-    assert tfg.data.has_data
+    ntfg = SpectralGroupModel(verbose=False)
+    ntfg.load(file_name_dat, TEST_DATA_PATH)
+    assert ntfg.data.has_data
     # Test that settings and results are None
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfg.algorithm, setting) is None
+    for setting in tfg.algorithm.definition.settings.names:
+        assert getattr(ntfg.algorithm, setting) is None
     for result in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfg.results, result)))
+        assert np.all(np.isnan(getattr(ntfg.results, result)))
 
     # Test loading all elements
-    tfg = SpectralGroupModel(verbose=False)
+    ntfg = SpectralGroupModel(verbose=False)
     file_name_all = 'test_group_all'
-    tfg.load(file_name_all, TEST_DATA_PATH)
-    assert len(tfg.results.group_results) > 0
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfg.algorithm, setting) is not None
-    assert tfg.data.has_data
+    ntfg.load(file_name_all, TEST_DATA_PATH)
+    assert len(ntfg.results.group_results) > 0
+    for setting in tfg.algorithm.definition.settings.names:
+        assert getattr(ntfg.algorithm, setting) is not None
+    assert ntfg.data.has_data
     for meta_dat in OBJ_DESC['meta_data']:
-        assert getattr(tfg.data, meta_dat) is not None
+        assert getattr(ntfg.data, meta_dat) is not None
 
 def test_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
@@ -305,7 +305,7 @@ def test_get_model(tfg):
     tfm = tfg.get_model()
     assert tfm
     # Check that settings are copied over properly, but data and results are empty
-    for setting in OBJ_DESC['settings']:
+    for setting in tfg.algorithm.definition.settings.names:
         assert getattr(tfg.algorithm, setting) == getattr(tfm.algorithm, setting)
     for result in OBJ_DESC['results']:
         assert np.all(np.isnan(getattr(tfm.results, result)))
@@ -315,7 +315,7 @@ def test_get_model(tfg):
     tfm0 = tfg.get_model(0, False)
     assert tfm0
     # Check that settings are copied over properly
-    for setting in OBJ_DESC['settings']:
+    for setting in tfg.algorithm.definition.settings.names:
         assert getattr(tfg.algorithm, setting) == getattr(tfm0.algorithm, setting)
 
     # Check with regenerating
@@ -354,7 +354,7 @@ def test_get_group(tfg):
     assert isinstance(nfg2, SpectralGroupModel)
 
     # Check that settings are copied over properly
-    for setting in OBJ_DESC['settings']:
+    for setting in tfg.algorithm.definition.settings.names:
         assert getattr(tfg.algorithm, setting) == getattr(nfg1.algorithm, setting)
         assert getattr(tfg.algorithm, setting) == getattr(nfg2.algorithm, setting)
 
