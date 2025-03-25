@@ -233,37 +233,3 @@ class CommonBase():
         if 'aperiodic_mode' in data and 'periodic_mode' in data:
             self.modes = Modes(aperiodic=data['aperiodic_mode'],
                                periodic=data['periodic_mode'])
-
-
-
-# class CommonBase2D(CommonBase):
-
-#     def __init__(self):
-#         pass
-
-
-# class BaseObject2D(CommonBase):
-#     """Define Base object for fitting models to 2D data."""
-
-#     def __init__(self, verbose=True):
-#         """Initialize BaseObject2D object."""
-
-#         CommonBase.__init__(self, verbose=verbose)
-
-
-# class BaseObject2DT(BaseObject2D):
-#     """Define Base object for fitting models to 2D data - tranpose version."""
-
-#     def __init__(self, verbose=True):
-#         """Initialize BaseObject2DT object."""
-
-#         BaseObject2D.__init__(self, verbose=verbose)
-
-
-# class BaseObject3D(BaseObject2DT):
-#     """Define Base object for fitting models to 3D data."""
-
-#     def __init__(self, verbose=True):
-#         """Initialize BaseObject3D object."""
-
-#         BaseObject2DT.__init__(self, verbose=verbose)
