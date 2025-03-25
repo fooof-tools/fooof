@@ -72,23 +72,3 @@ def get_indices(aperiodic_mode):
     indices.update(get_ap_indices(aperiodic_mode))
 
     return indices
-
-
-# TEMP: TO DROP?
-# def get_info(model_obj, aspect):
-#     """Get a selection of information from a model objects.
-
-#     Parameters
-#     ----------
-#     model_obj : SpectralModel or SpectralGroupModel
-#         Object to get attributes from.
-#     aspect : {'settings', 'meta_data', 'results'}
-#         Which set of attributes to compare the objects across.
-
-#     Returns
-#     -------
-#     dict
-#         The set of specified info from the model object.
-#     """
-
-#     return {key : getattr(model_obj, key) for key in get_description()[aspect]}

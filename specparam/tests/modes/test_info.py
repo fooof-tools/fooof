@@ -35,11 +35,3 @@ def test_get_indices():
 
     all_indices_knee = get_indices('knee')
     assert len(all_indices_knee) == 6
-
-# TEMP: TO DROP?
-# def test_get_info(tfm, tfg):
-
-#     for f_obj in [tfm, tfg]:
-#         assert get_info(f_obj, 'settings')
-#         assert get_info(f_obj, 'meta_data')
-#         assert get_info(f_obj, 'results')
