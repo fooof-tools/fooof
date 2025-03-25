@@ -120,8 +120,8 @@ def test_fit_measures():
 
     # Check default goodness of fit and error measures
     tfm.metrics.compute_metrics(tfm.data, tfm.results)
-    assert np.isclose(tfm.metrics['error-mae'].output, 0.4)
-    assert np.isclose(tfm.metrics['gof-r_squared'].output, 0.75757575)
+    assert np.isclose(tfm.metrics.results['error_mae'], 0.4)
+    assert np.isclose(tfm.metrics.results['gof_rsquared'], 0.75757575)
 
     # # TODO: fix / turn back on when adding update metric functionality
     # # Check with alternative error fit metrics

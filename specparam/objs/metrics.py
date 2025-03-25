@@ -1,5 +1,7 @@
 """Metrics object."""
 
+from collections import namedtuple
+
 ###################################################################################################
 ###################################################################################################
 
@@ -22,7 +24,7 @@ class Metric():
         self.measure = measure
         self.metric = metric
         self.func = func
-        self.output = None
+        self.result = None
 
 
     def __repr__(self):
@@ -35,7 +37,7 @@ class Metric():
     def label(self):
         """Define label property."""
 
-        return self.measure + '-' + self.metric
+        return self.measure + '_' + self.metric
 
 
     def compute_metric(self, data, results):
@@ -49,7 +51,7 @@ class Metric():
             Model results.
         """
 
-        self.output = self.func(data.power_spectrum, results.modeled_spectrum_)
+        self.result = self.func(data.power_spectrum, results.modeled_spectrum_)
 
 
 class Metrics():
@@ -137,10 +139,24 @@ class Metrics():
 
 
     @property
-    def outputs(self):
+    def results(self):
         """Define alias for ouputs of all currently defined metrics."""
 
-        return {metric.label : metric.output for metric in self.metrics}
+        return {metric.label : metric.result for metric in self.metrics}
+
+
+    def add_results(self, results):
+        """Add computed metric results.
+
+        Parameters
+        ----------
+        results : dict
+            Metric results.
+            Keys should match metric labels, with each value being a metric result.
+        """
+
+        for key, value in results.items():
+            self[key].result = value
 
 
     # TEMP: CHECK IF THIS IS HOW TO MANAGE THIS
@@ -151,4 +167,4 @@ class Metrics():
         from specparam.measures.gof import compute_r_squared
 
         self.add_metrics([Metric('error', 'mae', compute_mean_abs_error),
-                          Metric('gof', 'r_squared', compute_r_squared)])
+                          Metric('gof', 'rsquared', compute_r_squared)])
