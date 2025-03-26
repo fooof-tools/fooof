@@ -350,8 +350,8 @@ def gen_model_results_str(model, concise=False):
         '',
 
         # Peak parameters
-        'Peak Parameters (\'{}\' mode - {} peaks found)'.format(\
-            model.modes.periodic.name, len(model.results.peak_params_)),
+        'Peak Parameters (\'{}\' mode) {} peaks found'.format(\
+            model.modes.periodic.name, model.results.n_peaks_),
         *[peak_str.format(*op) for op in model.results.peak_params_],
         '',
 
@@ -394,14 +394,6 @@ def gen_group_results_str(group, concise=False):
     if not group.results.has_model:
         return _no_model_str(concise)
 
-    # Extract all the relevant data for printing
-    n_peaks = len(group.results.get_params('peak_params'))
-    r2s = group.results.get_params('r_squared')
-    errors = group.results.get_params('error')
-    exps = group.results.get_params('aperiodic_params', 'exponent')
-    kns = group.results.get_params('aperiodic_params', 'knee') \
-        if group.modes.aperiodic.name == 'knee' else np.array([0])
-
     str_lst = [
 
         # Header
@@ -422,30 +414,25 @@ def gen_group_results_str(group, concise=False):
         'Frequency Resolution is {:1.2f} Hz'.format(group.data.freq_res),
         '',
 
-        # Aperiodic parameters - knee fit status, and quick exponent description
-        'Power spectra were fit {} a knee.'.format(\
-            'with' if group.modes.aperiodic.name == 'knee' else 'without'),
-        '',
-        'Aperiodic Fit Values:',
-        *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'
-                        .format(*compute_arr_desc(kns)),
-                       ] if group.modes.aperiodic.name == 'knee'],
-
-        'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(exps)),
+        # Aperiodic parameters
+        'Aperiodic Parameters (\'{}\' mode)'.format(group.modes.aperiodic.name),
+        *[el for el in [\
+            '{:8s} - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'.format(label, \
+                *compute_arr_desc(group.results.get_params('aperiodic_params', label))) \
+                    for label in group.modes.aperiodic.params.labels]],
         '',
 
         # Peak Parameters
-        'In total {} peaks were extracted from the group'
-        .format(n_peaks),
+        'Peak Parameters (\'{}\' mode) {} total peaks found'.format(\
+            group.modes.periodic.name, sum(group.results.n_peaks_)),
         '',
 
         # Goodness if fit
         'Goodness of fit metrics:',
         '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(r2s)),
+        .format(*compute_arr_desc(group.results.get_params('r_squared'))),
         'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(errors)),
+        .format(*compute_arr_desc(group.results.get_params('error'))),
         '',
 
         # Footer
