@@ -321,6 +321,10 @@ def gen_model_results_str(model, concise=False):
     if not model.results.has_model:
         return _no_model_str(concise)
 
+    # Set up string for peak parameters
+    peak_str = ', '.join(['{:s}:'.format(el.upper()) + \
+        ' {:6.2f}' for el in model.modes.periodic.params.labels])
+
     # Create the formatted strings for printing
     str_lst = [
 
@@ -330,25 +334,25 @@ def gen_model_results_str(model, concise=False):
         'POWER SPECTRUM MODEL',
         '',
 
-        # Frequency range and resolution
-        'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(model.data.freq_range[0])), int(np.ceil(model.data.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(model.data.freq_res),
+        # Fit algorithm & data overview
+        'The model was fit with the {} algorithm'.format(model.algorithm.name),
+        'Data: frequency range {} - {} Hz & '.format(
+            int(np.floor(model.data.freq_range[0])),
+            int(np.ceil(model.data.freq_range[1]))) + \
+        'frequency resolution: {:1.2f} Hz'.format(model.data.freq_res),
         '',
 
         # Aperiodic parameters
-        ('Aperiodic Parameters (offset, ' + \
-         ('knee, ' if model.modes.aperiodic.name == 'knee' else '') + \
-         'exponent): '),
+        'Aperiodic Parameters (\'{}\' mode)'.format(model.modes.aperiodic.name),
+        '(' + ', '.join(model.modes.aperiodic.params.labels) + ')',
         ', '.join(['{:2.4f}'] * \
             len(model.results.aperiodic_params_)).format(*model.results.aperiodic_params_),
         '',
 
         # Peak parameters
-        '{} peaks were found:'.format(
-            len(model.results.peak_params_)),
-        *['CF: {:6.2f}, PW: {:6.3f}, BW: {:5.2f}'.format(op[0], op[1], op[2]) \
-          for op in model.results.peak_params_],
+        'Peak Parameters (\'{}\' mode - {} peaks found)'.format(\
+            model.modes.periodic.name, len(model.results.peak_params_)),
+        *[peak_str.format(*op) for op in model.results.peak_params_],
         '',
 
         # Goodness if fit

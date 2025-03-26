@@ -98,7 +98,7 @@ class SpectralFitAlgorithm(Algorithm):
 
         # Initialize base algorithm object with algorithm metadata
         super().__init__(
-            name='spectral fit algorithm',
+            name='spectral fit',
             description='Original parameterizing neural power spectra algorithm.',
             settings=SPECTRAL_FIT_SETTINGS,
             modes=modes, data=data, results=results,
