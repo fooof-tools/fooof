@@ -156,41 +156,25 @@ def gen_settings_str(model, description=False, concise=False):
         Formatted string of current settings.
     """
 
-    # Parameter descriptions to print out, if requested
-    desc = {
-        'peak_width_limits' : 'Limits for minimum and maximum peak widths, in Hz.',
-        'max_n_peaks'       : 'Maximum number of peaks that can be extracted.',
-        'min_peak_height'   : 'Minimum absolute height of a peak above the aperiodic component.',
-        'peak_threshold'    : 'Relative threshold for minimum height required for detecting peaks.',
-    }
-
-    # Clear description for printing, if not requested
-    if not description:
-        desc = {k : '' for k, v in desc.items()}
-
-    # Create output string
+    # Create output string - header
     str_lst = [
-
-        # Header
         '=',
         '',
         'specparam - SETTINGS',
         '',
+    ]
 
-        # Settings - include descriptions if requested
-        *[el for el in ['Peak Width Limits : {}'.format(model.algorithm.peak_width_limits),
-                        '{}'.format(desc['peak_width_limits']),
-                        'Max Number of Peaks : {}'.format(model.algorithm.max_n_peaks),
-                        '{}'.format(desc['max_n_peaks']),
-                        'Minimum Peak Height : {}'.format(model.algorithm.min_peak_height),
-                        '{}'.format(desc['min_peak_height']),
-                        'Peak Threshold: {}'.format(model.algorithm.peak_threshold),
-                        '{}'.format(desc['peak_threshold'])] if el != ''],
+    # Loop through algorithm settings, and add information
+    for name in model.algorithm.settings.names:
+        str_lst.append(name + ' : ' + str(getattr(model.algorithm, name)))
+        if description:
+            str_lst.append(model.algorithm.settings.descriptions[name].split('\n ')[0])
 
-        # Footer
+    # Add footer to string
+    str_lst.extend([
         '',
         '='
-    ]
+    ])
 
     output = _format(str_lst, concise)
 
@@ -276,6 +260,7 @@ def gen_methods_report_str(concise=False):
     return output
 
 
+# TO UPDATE
 def gen_methods_text_str(model=None):
     """Generate a string representation of a template methods report.
 
