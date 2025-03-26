@@ -24,10 +24,11 @@ class BaseResults():
     """Base object for managing results."""
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    def __init__(self, modes=None):
+    def __init__(self, modes=None, bands=None):
         """Initialize BaseResults object."""
 
         self.modes = modes
+        self.bands = bands
 
         # Initialize results attributes
         self._reset_results(True)
@@ -204,10 +205,10 @@ class BaseResults():
 class BaseResults2D(BaseResults):
     """Base object for managing results - 2D version."""
 
-    def __init__(self, modes=None):
+    def __init__(self, modes=None, bands=None):
         """Initialize BaseResults2D object."""
 
-        BaseResults.__init__(self, modes=modes)
+        BaseResults.__init__(self, modes=modes, bands=bands)
 
         self._reset_group_results()
 
@@ -357,10 +358,10 @@ class BaseResults2D(BaseResults):
 class BaseResults2DT(BaseResults2D):
     """Base object for managing results - 2D transpose version."""
 
-    def __init__(self, modes=None):
+    def __init__(self, modes=None, bands=None):
         """Initialize BaseResults2DT object."""
 
-        BaseResults2D.__init__(self, modes=modes)
+        BaseResults2D.__init__(self, modes=modes, bands=None)
 
         self._reset_time_results()
 
@@ -401,16 +402,22 @@ class BaseResults2DT(BaseResults2D):
             self.time_results[key][inds] = np.nan
 
 
-    def convert_results(self, peak_org):
+    def convert_results(self, peak_org=None):
         """Convert the model results to be organized across time windows.
 
         Parameters
         ----------
-        peak_org : int or Bands
+        peak_org : int or Bands, optional
             How to organize peaks.
             If int, extracts the first n peaks.
             If Bands, extracts peaks based on band definitions.
+            If not provided, uses band definition available in object.
         """
+
+        if peak_org:
+            self.bands = peak_org
+        else:
+            peak_org = self.bands
 
         self.time_results = group_to_dict(self.group_results, peak_org)
 
@@ -418,10 +425,10 @@ class BaseResults2DT(BaseResults2D):
 class BaseResults3D(BaseResults2DT):
     """Base object for managing results - 3D version."""
 
-    def __init__(self, modes=None):
+    def __init__(self, modes=None, bands=None):
         """Initialize BaseResults3D object."""
 
-        BaseResults2DT.__init__(self, modes=modes)
+        BaseResults2DT.__init__(self, modes=modes, bands=bands)
 
         self._reset_event_results()
 
@@ -550,15 +557,21 @@ class BaseResults3D(BaseResults2DT):
         return [get_group_params(gres, name, col) for gres in self.event_group_results]
 
 
-    def convert_results(self, peak_org):
+    def convert_results(self, peak_org=None):
         """Convert the event results to be organized across events and time windows.
 
         Parameters
         ----------
-        peak_org : int or Bands
+        peak_org : int or Bands, optional
             How to organize peaks.
             If int, extracts the first n peaks.
             If Bands, extracts peaks based on band definitions.
+            If not provided, uses band definition available in object.
         """
+
+        if peak_org:
+            self.bands = peak_org
+        else:
+            peak_org = self.bands
 
         self.event_time_results = event_group_to_dict(self.event_group_results, peak_org)
