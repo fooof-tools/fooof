@@ -444,6 +444,20 @@ def gen_group_results_str(group, concise=False):
     return output
 
 
+# TEMP HELPER FUNCTION
+def _compute_avg_over_time(time_results, subselect=None):
+    """Compute average across time_results array."""
+
+    if subselect:
+        time_results = {key : vals for key, vals in time_results.items() if subselect in key}
+
+    out = {}
+    for label in time_results.keys():
+        out[label] = np.nanmean(time_results[label])
+
+    return out
+
+
 def gen_time_results_str(time, concise=False):
     """Generate a string representation of time fit results.
 
@@ -473,7 +487,11 @@ def gen_time_results_str(time, concise=False):
     band_labels = [\
         pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
         for band_ind in range(len(pe_labels['cf']))]
-    has_knee = time.modes.aperiodic.name == 'knee'
+
+    # Set up string for peak parameters
+    peak_str = '{:>8s} - ' + ', '.join(['{:s}:'.format(el.upper()) + \
+        ' {:6.2f}' for el in time.modes.periodic.params.labels]) + \
+        ', Presence: {:3.1f}%'
 
     str_lst = [
 
@@ -484,7 +502,7 @@ def gen_time_results_str(time, concise=False):
         '',
 
         # Group information
-        'Number of time windows fit: {}'.format(len(time.results.group_results)),
+        'Number of time windows fit: {}'.format(time.data.n_time_windows),
         *[el for el in ['{} power spectra failed to fit'.format(time.results.n_null_)] \
             if time.results.n_null_],
         '',
@@ -496,28 +514,22 @@ def gen_time_results_str(time, concise=False):
         'Frequency Resolution is {:1.2f} Hz'.format(time.data.freq_res),
         '',
 
-        # Aperiodic parameters - knee fit status, and quick exponent description
-        'Power spectra were fit {} a knee.'.format(\
-            'with' if time.modes.aperiodic.name == 'knee' else 'without'),
-        '',
-        'Aperiodic Fit Values:',
-        *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'
-                        .format(*compute_arr_desc(time.results.time_results['knee']) \
-                            if has_knee else [0, 0, 0]),
-                       ] if has_knee],
-        'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(time.results.time_results['exponent'])),
+        # Aperiodic parameters
+        'Aperiodic Parameters (\'{}\' mode)'.format(time.modes.aperiodic.name),
+        *[el for el in [\
+            '{:8s} - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'.format(label, \
+                *compute_arr_desc(time.results.time_results[label])) \
+                    for label in time.modes.aperiodic.params.labels]],
         '',
 
-        # Periodic parameters
-        'Periodic params (mean values across windows):',
-        *['{:>6s} - CF: {:5.2f}, PW: {:5.2f}, BW: {:5.2f}, Presence: {:3.1f}%'.format(
-            label,
-            np.nanmean(time.results.time_results[pe_labels['cf'][ind]]),
-            np.nanmean(time.results.time_results[pe_labels['pw'][ind]]),
-            np.nanmean(time.results.time_results[pe_labels['bw'][ind]]),
-            compute_presence(time.results.time_results[pe_labels['cf'][ind]], output='percent'))
-                for ind, label in enumerate(band_labels)],
+        # Peak Parameters
+        'Peak Parameters (\'{}\' mode) - mean values across windows'.format(\
+            time.modes.periodic.name),
+        *[peak_str.format(*[band_label] + \
+            list(_compute_avg_over_time(time.results.time_results, band_label).values()) + \
+            [compute_presence(time.results.time_results[\
+                band_label + '_' + time.modes.periodic.params.labels[0]], output='percent')]) \
+            for band_label in band_labels],
         '',
 
         # Goodness if fit
