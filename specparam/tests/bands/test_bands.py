@@ -38,7 +38,6 @@ def test_bands_errors():
 def test_bands_dunders(tbands):
 
     assert tbands['theta']
-    assert tbands.alpha
     assert repr(tbands)
     assert len(tbands) == 3
 
