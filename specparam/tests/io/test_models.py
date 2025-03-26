@@ -143,7 +143,7 @@ def test_load_file_contents(tfm):
 
     loaded_data = load_json(file_name, TEST_DATA_PATH)
 
-    for setting in tfm.algorithm.definition.settings.names:
+    for setting in tfm.algorithm.settings.names:
         assert setting in loaded_data.keys()
     for result in tfm.results._fields:
         assert result in loaded_data.keys()
@@ -161,7 +161,7 @@ def test_load_model(tfm):
     assert isinstance(ntfm.modes, Modes)
     for result in tfm.results._fields:
         assert not np.all(np.isnan(getattr(ntfm.results, result)))
-    for setting in ntfm.algorithm.definition.settings.names:
+    for setting in ntfm.algorithm.settings.names:
         assert getattr(ntfm.algorithm, setting) is not None
     for data in tfm.data._fields:
         assert getattr(ntfm.data, data) is not None
@@ -183,7 +183,7 @@ def test_load_group(tfg):
 
     # Check that all elements get loaded
     assert len(ntfg.results.group_results) > 0
-    for setting in tfg.algorithm.definition.settings.names:
+    for setting in tfg.algorithm.settings.names:
         assert getattr(ntfg.algorithm, setting) is not None
     assert ntfg.data.power_spectra is not None
     for meta_dat in tfg.data._meta_fields:

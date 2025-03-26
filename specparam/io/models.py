@@ -59,7 +59,7 @@ def save_model(model, file_name, file_path=None, append=False,
     # Set and select which variables to keep. Use a set to drop any potential overlap
     #   Note that results also saves frequency information to be able to recreate freq vector
     keep = set((model.results._fields + model.data._meta_fields if save_results else []) + \
-               (model.algorithm.definition.settings.names + mode_labels if save_settings else []) + \
+               (model.algorithm.settings.names + mode_labels if save_settings else []) + \
                (model.data._fields if save_data else []))
     obj_dict = dict_select_keys(obj_dict, keep)
 

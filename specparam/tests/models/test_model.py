@@ -193,7 +193,7 @@ def test_load(tfm):
     for result in tfm.results._fields:
         assert not np.all(np.isnan(getattr(ntfm.results, result)))
     # Test that settings and data are None
-    for setting in tfm.algorithm.definition.settings.names:
+    for setting in tfm.algorithm.settings.names:
         assert getattr(ntfm.algorithm, setting) is None
     assert ntfm.data.power_spectrum is None
 
@@ -201,7 +201,7 @@ def test_load(tfm):
     ntfm = SpectralModel(verbose=False)
     file_name_set = 'test_model_set'
     ntfm.load(file_name_set, TEST_DATA_PATH)
-    for setting in tfm.algorithm.definition.settings.names:
+    for setting in tfm.algorithm.settings.names:
         assert getattr(ntfm.algorithm, setting) is not None
     # Test that results and data are None
     for result in tfm.results._fields:
@@ -214,7 +214,7 @@ def test_load(tfm):
     ntfm.load(file_name_dat, TEST_DATA_PATH)
     assert ntfm.data.power_spectrum is not None
     # Test that settings and results are None
-    for setting in tfm.algorithm.definition.settings.names:
+    for setting in tfm.algorithm.settings.names:
         assert getattr(ntfm.algorithm, setting) is None
     for result in tfm.results._fields:
         assert np.all(np.isnan(getattr(ntfm.results, result)))
@@ -225,7 +225,7 @@ def test_load(tfm):
     ntfm.load(file_name_all, TEST_DATA_PATH)
     for result in tfm.results._fields:
         assert not np.all(np.isnan(getattr(ntfm.results, result)))
-    for setting in tfm.algorithm.definition.settings.names:
+    for setting in tfm.algorithm.settings.names:
         assert getattr(ntfm.algorithm, setting) is not None
     for data in tfm.data._fields:
         assert getattr(ntfm.data, data) is not None

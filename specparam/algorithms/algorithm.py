@@ -6,29 +6,6 @@ from specparam.algorithms.settings import SettingsDefinition
 ###################################################################################################
 ###################################################################################################
 
-class AlgorithmDefinition():
-    """Defines an algorithm definition description.
-
-    Parameters
-    ----------
-    name : str
-        Name of the fitting algorithm.
-    description : str
-        Description of the fitting algorithm.
-    settings : SettingsDefinition
-        Definition of settings for the fitting algorithm.
-    """
-
-    def __init__(self, name, description, settings):
-        """Initialize AlgorithmDefinition object."""
-
-        self.name = name
-        self.description = description
-        if not isinstance(settings, SettingsDefinition):
-            settings = SettingsDefinition(settings)
-        self.settings = settings
-
-
 class Algorithm():
     """Template object for defining a fit algorithm.
 
@@ -40,11 +17,6 @@ class Algorithm():
         Description of the fitting algorithm.
     settings : dict
         Name and description of settings for the fitting algorithm.
-
-    Attributes
-    ----------
-    algorithm : AlgorithmDefinition
-        Algorithm information.
     """
 
     def __init__(self, name, description, settings,
@@ -52,7 +24,11 @@ class Algorithm():
                  debug=False, verbose=False):
         """Initialize Algorithm object."""
 
-        self.definition = AlgorithmDefinition(name, description, settings)
+        self.name = name
+        self.description = description
+        if not isinstance(settings, SettingsDefinition):
+            settings = SettingsDefinition(settings)
+        self.settings = settings
 
         self.modes = None
         self.data = None
@@ -95,8 +71,8 @@ class Algorithm():
             Object containing the settings from the current object.
         """
 
-        return self.definition.settings.make_model_settings()(\
-            **{key : getattr(self, key) for key in self.definition.settings.names})
+        return self.settings.make_model_settings()(\
+            **{key : getattr(self, key) for key in self.settings.names})
 
 
     def get_debug(self):
@@ -128,10 +104,10 @@ class Algorithm():
 
         # If settings not loaded from file, clear from object, so that default
         # settings, which are potentially wrong for loaded data, aren't kept
-        if not set(self.definition.settings.names).issubset(set(data.keys())):
+        if not set(self.settings.names).issubset(set(data.keys())):
 
             # Reset all public settings to None
-            for setting in self.definition.settings.names:
+            for setting in self.settings.names:
                 setattr(self, setting, None)
 
         # Reset internal settings so that they are consistent with what was loaded

@@ -251,14 +251,14 @@ def test_load(tfg):
     ntfg.load(file_name_res, TEST_DATA_PATH)
     assert len(ntfg.results.group_results) > 0
     # Test that settings and data are None
-    for setting in tfg.algorithm.definition.settings.names:
+    for setting in tfg.algorithm.settings.names:
         assert getattr(ntfg.algorithm, setting) is None
     assert ntfg.data.power_spectra is None
 
     # Test loading just settings
     ntfg = SpectralGroupModel(verbose=False)
     ntfg.load(file_name_set, TEST_DATA_PATH)
-    for setting in tfg.algorithm.definition.settings.names:
+    for setting in tfg.algorithm.settings.names:
         assert getattr(ntfg.algorithm, setting) is not None
     # Test that results and data are None
     for result in tfg.results._fields:
@@ -270,7 +270,7 @@ def test_load(tfg):
     ntfg.load(file_name_dat, TEST_DATA_PATH)
     assert ntfg.data.has_data
     # Test that settings and results are None
-    for setting in tfg.algorithm.definition.settings.names:
+    for setting in tfg.algorithm.settings.names:
         assert getattr(ntfg.algorithm, setting) is None
     for result in tfg.results._fields:
         assert np.all(np.isnan(getattr(ntfg.results, result)))
@@ -280,7 +280,7 @@ def test_load(tfg):
     file_name_all = 'test_group_all'
     ntfg.load(file_name_all, TEST_DATA_PATH)
     assert len(ntfg.results.group_results) > 0
-    for setting in tfg.algorithm.definition.settings.names:
+    for setting in tfg.algorithm.settings.names:
         assert getattr(ntfg.algorithm, setting) is not None
     assert ntfg.data.has_data
     for meta_dat in tfg.data._meta_fields:
@@ -304,7 +304,7 @@ def test_get_model(tfg):
     tfm = tfg.get_model()
     assert tfm
     # Check that settings are copied over properly, but data and results are empty
-    for setting in tfg.algorithm.definition.settings.names:
+    for setting in tfg.algorithm.settings.names:
         assert getattr(tfg.algorithm, setting) == getattr(tfm.algorithm, setting)
     for result in tfg.results._fields:
         assert np.all(np.isnan(getattr(tfm.results, result)))
@@ -314,7 +314,7 @@ def test_get_model(tfg):
     tfm0 = tfg.get_model(0, False)
     assert tfm0
     # Check that settings are copied over properly
-    for setting in tfg.algorithm.definition.settings.names:
+    for setting in tfg.algorithm.settings.names:
         assert getattr(tfg.algorithm, setting) == getattr(tfm0.algorithm, setting)
 
     # Check with regenerating
@@ -353,7 +353,7 @@ def test_get_group(tfg):
     assert isinstance(nfg2, SpectralGroupModel)
 
     # Check that settings are copied over properly
-    for setting in tfg.algorithm.definition.settings.names:
+    for setting in tfg.algorithm.settings.names:
         assert getattr(tfg.algorithm, setting) == getattr(nfg1.algorithm, setting)
         assert getattr(tfg.algorithm, setting) == getattr(nfg2.algorithm, setting)
 
