@@ -445,15 +445,15 @@ def gen_group_results_str(group, concise=False):
 
 
 # TEMP HELPER FUNCTION
-def _compute_avg_over_time(time_results, subselect=None):
-    """Compute average across time_results array."""
+def _compute_avg_over_time(results, subselect=None):
+    """Compute average across results over time array."""
 
     if subselect:
-        time_results = {key : vals for key, vals in time_results.items() if subselect in key}
+        results = {key : vals for key, vals in results.items() if subselect in key}
 
     out = {}
-    for label in time_results.keys():
-        out[label] = np.nanmean(time_results[label])
+    for label in results.keys():
+        out[label] = np.nanmean(results[label])
 
     return out
 
@@ -578,7 +578,11 @@ def gen_event_results_str(event, concise=False):
     band_labels = [\
         pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
         for band_ind in range(len(pe_labels['cf']))]
-    has_knee = event.modes.aperiodic.name == 'knee'
+
+    # Set up string for peak parameters
+    peak_str = '{:>8s} - ' + ', '.join(['{:s}:'.format(el.upper()) + \
+        ' {:5.2f}' for el in event.modes.periodic.params.labels]) + \
+        ', Presence: {:3.1f}%'
 
     str_lst = [
 
@@ -599,36 +603,29 @@ def gen_event_results_str(event, concise=False):
         'Frequency Resolution is {:1.2f} Hz'.format(event.data.freq_res),
         '',
 
-        # Aperiodic parameters - knee fit status, and quick exponent description
-        'Power spectra were fit {} a knee.'.format(\
-            'with' if event.modes.aperiodic.name == 'knee' else 'without'),
-        '',
-        'Aperiodic params (values across events):',
-        *[el for el in ['    Knees - Min: {:6.2f}, Max: {:6.2f}, Mean: {:6.2f}'.format(\
-            *compute_arr_desc(np.mean(event.results.event_time_results['knee'], 1) \
-                            if has_knee else [0, 0, 0])),
-                       ] if has_knee],
-        'Exponents - Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(np.mean(event.results.event_time_results['exponent'], 1))),
+        # Aperiodic parameters
+        'Aperiodic Parameters (\'{}\' mode)'.format(event.modes.aperiodic.name),
+        *[el for el in [\
+            '{:8s} - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'.format(label, \
+                *compute_arr_desc(np.mean(event.results.event_time_results[label]))) \
+                    for label in event.modes.aperiodic.params.labels]],
         '',
 
-        # Periodic parameters
-        'Periodic params (mean values across events):',
-        *['{:>6s} - CF: {:5.2f}, PW: {:5.2f}, BW: {:5.2f}, Presence: {:3.1f}%'.format(
-            label,
-            np.nanmean(event.results.event_time_results[pe_labels['cf'][ind]]),
-            np.nanmean(event.results.event_time_results[pe_labels['pw'][ind]]),
-            np.nanmean(event.results.event_time_results[pe_labels['bw'][ind]]),
-            compute_presence(event.results.event_time_results[pe_labels['cf'][ind]],
-                             average=True, output='percent'))
-                for ind, label in enumerate(band_labels)],
+        # Peak Parameters
+        'Peak Parameters (\'{}\' mode) - mean values across windows'.format(\
+            event.modes.periodic.name),
+        *[peak_str.format(*[band_label] + \
+            list(_compute_avg_over_time(event.results.event_time_results, band_label).values()) + \
+            [compute_presence(event.results.event_time_results[\
+                band_label + '_' + event.modes.periodic.params.labels[0]],
+                average=True, output='percent')]) \
+            for band_label in band_labels],
         '',
 
         # Goodness if fit
         'Goodness of fit (values across events):',
         '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(*compute_arr_desc(np.mean(event.results.event_time_results['r_squared'], 1))),
-
         'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
         .format(*compute_arr_desc(np.mean(event.results.event_time_results['error'], 1))),
         '',
