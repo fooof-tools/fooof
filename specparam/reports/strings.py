@@ -3,7 +3,6 @@
 import numpy as np
 
 from specparam.modutils.errors import NoModelError
-from specparam.data.utils import get_periodic_labels
 from specparam.utils.array import compute_arr_desc
 from specparam.measures.properties import compute_presence
 from specparam.version import __version__ as MODULE_VERSION
@@ -482,12 +481,6 @@ def gen_time_results_str(time, concise=False):
     if not time.results.has_model:
         return _no_model_str(concise)
 
-    # Get parameter information needed for printing
-    pe_labels = get_periodic_labels(time.results.time_results)
-    band_labels = [\
-        pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
-        for band_ind in range(len(pe_labels['cf']))]
-
     # Set up string for peak parameters
     peak_str = '{:>8s} - ' + ', '.join(['{:s}:'.format(el.upper()) + \
         ' {:6.2f}' for el in time.modes.periodic.params.labels]) + \
@@ -529,7 +522,7 @@ def gen_time_results_str(time, concise=False):
             list(_compute_avg_over_time(time.results.time_results, band_label).values()) + \
             [compute_presence(time.results.time_results[\
                 band_label + '_' + time.modes.periodic.params.labels[0]], output='percent')]) \
-            for band_label in band_labels],
+            for band_label in time.results.bands.labels],
         '',
 
         # Goodness if fit
@@ -573,12 +566,6 @@ def gen_event_results_str(event, concise=False):
     if not event.results.has_model:
         return _no_model_str(concise)
 
-    # Extract all the relevant data for printing
-    pe_labels = get_periodic_labels(event.results.event_time_results)
-    band_labels = [\
-        pe_labels['cf'][band_ind].split('_')[-1 if pe_labels['cf'][-2:] == 'cf' else 0] \
-        for band_ind in range(len(pe_labels['cf']))]
-
     # Set up string for peak parameters
     peak_str = '{:>8s} - ' + ', '.join(['{:s}:'.format(el.upper()) + \
         ' {:5.2f}' for el in event.modes.periodic.params.labels]) + \
@@ -619,7 +606,7 @@ def gen_event_results_str(event, concise=False):
             [compute_presence(event.results.event_time_results[\
                 band_label + '_' + event.modes.periodic.params.labels[0]],
                 average=True, output='percent')]) \
-            for band_label in band_labels],
+            for band_label in event.results.bands.labels],
         '',
 
         # Goodness if fit

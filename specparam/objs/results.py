@@ -4,6 +4,7 @@ from itertools import repeat
 
 import numpy as np
 
+from specparam.bands import Bands
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
@@ -28,7 +29,7 @@ class BaseResults():
         """Initialize BaseResults object."""
 
         self.modes = modes
-        self.bands = bands
+        self.bands = bands if bands else Bands()
 
         # Initialize results attributes
         self._reset_results(True)
