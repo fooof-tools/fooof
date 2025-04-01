@@ -85,7 +85,7 @@ class SpectralFitAlgorithm(Algorithm):
     _ap_fit : 1d array
         Model attribute: values of the isolated aperiodic fit.
     _peak_fit : 1d array
-        Model attribue: values of the isolated peak fit.
+        Model attribute: values of the isolated peak fit.
     """
     # pylint: disable=attribute-defined-outside-init
 
@@ -101,9 +101,7 @@ class SpectralFitAlgorithm(Algorithm):
             name='spectral fit',
             description='Original parameterizing neural power spectra algorithm.',
             settings=SPECTRAL_FIT_SETTINGS, format='spectrum',
-            modes=modes, data=data, results=results,
-            debug=debug, verbose=verbose,
-        )
+            modes=modes, data=data, results=results, debug=debug)
 
         ## Public settings
         self.peak_width_limits = peak_width_limits
@@ -119,7 +117,7 @@ class SpectralFitAlgorithm(Algorithm):
         self._bw_std_edge = bw_std_edge
         self._gauss_overlap_thresh = gauss_overlap_thresh
 
-        ## Private setting: curve_fit relates settings
+        ## Private setting: curve_fit related settings
         self._maxfev = maxfev
         self._tol = tol
 
@@ -127,7 +125,7 @@ class SpectralFitAlgorithm(Algorithm):
         self._reset_internal_settings()
 
 
-    def _fit_prechecks(self):
+    def _fit_prechecks(self, verbose=True):
         """Prechecks to run before the fit function.
 
         Notes
@@ -136,17 +134,13 @@ class SpectralFitAlgorithm(Algorithm):
         low given the frequency resolution of the data.
         """
 
-        if 1.5 * self.data.freq_res >= self.peak_width_limits[0]:
-            print(gen_width_warning_str(self.data.freq_res, self.peak_width_limits[0]))
+        if verbose:
+            if 1.5 * self.data.freq_res >= self.peak_width_limits[0]:
+                print(gen_width_warning_str(self.data.freq_res, self.peak_width_limits[0]))
 
 
     def _fit(self):
         """Define the full fitting algorithm."""
-
-        ## PRE-CHECKS
-
-        if self.verbose:
-            self._fit_prechecks()
 
         ## FIT PROCEDURES
 

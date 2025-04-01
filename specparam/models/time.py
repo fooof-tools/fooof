@@ -73,7 +73,7 @@ class SpectralTimeModel(SpectralGroupModel):
 
 
     def fit(self, freqs=None, spectrogram=None, freq_range=None, peak_org=None,
-            n_jobs=1, progress=None):
+            n_jobs=1, progress=None, prechecks=True):
         """Fit a spectrogram.
 
         Parameters
@@ -93,13 +93,22 @@ class SpectralTimeModel(SpectralGroupModel):
             1 is no parallelization. -1 uses all available cores.
         progress : {None, 'tqdm', 'tqdm.notebook'}, optional
             Which kind of progress bar to use. If None, no progress bar is used.
+        prechecks : bool, optional, default: True
+            Whether to run model fitting pre-checks.
 
         Notes
         -----
         Data is optional, if data has already been added to the object.
         """
 
-        super().fit(freqs, spectrogram, freq_range, n_jobs, progress)
+        if freqs is not None and spectrogram is not None:
+            super().add_data(freqs, spectrogram, freq_range)
+
+        if prechecks:
+            self.algorithm._fit_prechecks(self.verbose)
+
+        super().fit(n_jobs=n_jobs, progress=progress, prechecks=False)
+
         if peak_org is not False:
             self.results.convert_results(peak_org)
 
@@ -259,16 +268,3 @@ class SpectralTimeModel(SpectralGroupModel):
             df = dict_to_df(self.results.get_results())
 
         return df
-
-
-    def _fit_prechecks(self):
-        """Overloads fit prechecks.
-
-        Notes
-        -----
-        This overloads fit prechecks to only run once (on the first spectrum), to avoid
-        checking and reporting on every spectrum and repeatedly re-raising the same warning.
-        """
-
-        if np.all(self.data.power_spectrum == self.data.spectrogram[:, 0]):
-            super()._fit_prechecks()

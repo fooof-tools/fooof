@@ -147,7 +147,7 @@ class SpectralModel(BaseModel):
         self.data.add_data(freqs, power_spectrum, freq_range=freq_range)
 
 
-    def fit(self, freqs=None, power_spectrum=None, freq_range=None):
+    def fit(self, freqs=None, power_spectrum=None, freq_range=None, prechecks=True):
         """Fit a power spectrum as a combination of periodic and aperiodic components.
 
         Parameters
@@ -159,6 +159,8 @@ class SpectralModel(BaseModel):
         freq_range : list of [float, float], optional
             Frequency range to restrict power spectrum to.
             If not provided, keeps the entire range.
+        prechecks : bool, optional, default: True
+            Whether to run model fitting pre-checks.
 
         Raises
         ------
@@ -179,6 +181,9 @@ class SpectralModel(BaseModel):
         # Check that data is available
         if not self.data.has_data:
             raise NoDataError("No data available to fit, can not proceed.")
+
+        if prechecks:
+            self.algorithm._fit_prechecks(self.verbose)
 
         # In rare cases, the model fails to fit, and so uses try / except
         try:

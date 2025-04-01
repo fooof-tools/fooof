@@ -120,7 +120,8 @@ class SpectralGroupModel(SpectralModel):
         self.data.add_data(freqs, power_spectra, freq_range=freq_range)
 
 
-    def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1, progress=None):
+    def fit(self, freqs=None, power_spectra=None, freq_range=None, n_jobs=1,
+            progress=None, prechecks=True):
         """Fit a group of power spectra.
 
         Parameters
@@ -136,6 +137,8 @@ class SpectralGroupModel(SpectralModel):
             1 is no parallelization. -1 uses all available cores.
         progress : {None, 'tqdm', 'tqdm.notebook'}, optional
             Which kind of progress bar to use. If None, no progress bar is used.
+        prechecks : bool, optional, default: True
+            Whether to run model fitting pre-checks.
 
         Notes
         -----
@@ -145,6 +148,10 @@ class SpectralGroupModel(SpectralModel):
         # If freqs & power spectra provided together, add data to object
         if freqs is not None and power_spectra is not None:
             self.add_data(freqs, power_spectra, freq_range)
+
+        # Run pre-checks
+        if prechecks:
+            self.algorithm._fit_prechecks(self.verbose)
 
         # If 'verbose', print out a marker of what is being run
         if self.verbose and not progress:
@@ -156,7 +163,7 @@ class SpectralGroupModel(SpectralModel):
             for ind, power_spectrum in \
                 pbar(enumerate(self.data.power_spectra), progress, len(self.results)):
                 self._pass_through_spectrum(power_spectrum)
-                super().fit()
+                super().fit(prechecks=False)
                 self.results.group_results[ind] = self.results._get_results()
 
         # Run in parallel
@@ -385,19 +392,6 @@ class SpectralGroupModel(SpectralModel):
         """
 
         return group_to_dataframe(self.results.get_results(), peak_org)
-
-
-    def _fit_prechecks(self):
-        """Overloads fit prechecks.
-
-        Notes
-        -----
-        This overloads fit prechecks to only run once (on the first spectrum), to avoid
-        checking and reporting on every spectrum and repeatedly re-raising the same warning.
-        """
-
-        if self.data.power_spectra[0, 0] == self.data.power_spectrum[0]:
-            super()._fit_prechecks()
 
 
     def _pass_through_spectrum(self, power_spectrum):

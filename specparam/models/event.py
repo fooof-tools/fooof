@@ -104,7 +104,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
 
     def fit(self, freqs=None, spectrograms=None, freq_range=None, peak_org=None,
-            n_jobs=1, progress=None):
+            n_jobs=1, progress=None, prechecks=True):
         """Fit a set of events.
 
         Parameters
@@ -126,6 +126,8 @@ class SpectralTimeEventModel(SpectralTimeModel):
             1 is no parallelization. -1 uses all available cores.
         progress : {None, 'tqdm', 'tqdm.notebook'}, optional
             Which kind of progress bar to use. If None, no progress bar is used.
+        prechecks : bool, optional, default: True
+            Whether to run model fitting pre-checks.
 
         Notes
         -----
@@ -134,6 +136,9 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
         if spectrograms is not None:
             self.add_data(freqs, spectrograms, freq_range)
+
+        if prechecks:
+            self.algorithm._fit_prechecks(self.verbose)
 
         # If 'verbose', print out a marker of what is being run
         if self.verbose and not progress:
@@ -145,7 +150,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
             for ind, spectrogram in \
                 pbar(enumerate(self.data.spectrograms), progress, len(self.results)):
                 self.data.power_spectra = spectrogram.T
-                super().fit(peak_org=False)
+                super().fit(peak_org=False, prechecks=False)
                 self.results.event_group_results[ind] = self.results.group_results
                 self.results._reset_group_results()
                 self._reset_data_results(clear_spectra=True)
@@ -406,19 +411,6 @@ class SpectralTimeEventModel(SpectralTimeModel):
             df = dict_to_df(flatten_results_dict(self.results.get_results()))
 
         return df
-
-
-    def _fit_prechecks(self):
-        """Overloads fit prechecks.
-
-        Notes
-        -----
-        This overloads fit prechecks to only run once (on the first spectrum), to avoid
-        checking and reporting on every spectrum and repeatedly re-raising the same warning.
-        """
-
-        if np.all(self.data.power_spectrum == self.data.spectrograms[0, :, 0]):
-            super()._fit_prechecks()
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False,
