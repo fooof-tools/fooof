@@ -17,7 +17,7 @@ def test_algorithm():
         'b' : {'type' : 'b type desc', 'description' : 'b desc'},
     })
 
-    algo = Algorithm(name=tname, description=tdescription, settings=tsettings)
+    algo = Algorithm(name=tname, description=tdescription, settings=tsettings, format='spectrum')
     assert algo
     assert algo.name == tname
     assert algo.description == tdescription
@@ -33,7 +33,7 @@ def test_algorithm_settings():
         'b' : {'type' : 'b type desc', 'description' : 'b desc'},
     })
 
-    talgo = Algorithm(name=tname, description=tdescription, settings=tsettings)
+    talgo = Algorithm(name=tname, description=tdescription, settings=tsettings, format='spectrum')
 
     model_settings = talgo.settings.make_model_settings()
     settings = model_settings(a=1, b=2)

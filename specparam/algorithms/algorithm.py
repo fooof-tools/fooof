@@ -1,10 +1,13 @@
 """Define object to manage algorithm implementations."""
 
 from specparam.data import ModelSettings
+from specparam.utils.checks import check_input_options
 from specparam.algorithms.settings import SettingsDefinition
 
 ###################################################################################################
 ###################################################################################################
+
+FORMATS = ['spectrum', 'spectra', 'spectrogram', 'spectrograms']
 
 class Algorithm():
     """Template object for defining a fit algorithm.
@@ -17,18 +20,23 @@ class Algorithm():
         Description of the fitting algorithm.
     settings : dict
         Name and description of settings for the fitting algorithm.
+    format : {'spectrum', 'spectra', 'spectrogram', 'spectrograms'}
+        Set base format of data model can be applied to.
     """
 
-    def __init__(self, name, description, settings,
-                 modes=None, data=None, results=None,
-                 debug=False, verbose=False):
+    def __init__(self, name, description, settings, format,
+                 modes=None, data=None, results=None, debug=False, verbose=False):
         """Initialize Algorithm object."""
 
         self.name = name
         self.description = description
+
         if not isinstance(settings, SettingsDefinition):
             settings = SettingsDefinition(settings)
         self.settings = settings
+
+        check_input_options(format, FORMATS, 'format')
+        self.format = format
 
         self.modes = None
         self.data = None

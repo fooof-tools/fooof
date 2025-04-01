@@ -100,7 +100,7 @@ class SpectralFitAlgorithm(Algorithm):
         super().__init__(
             name='spectral fit',
             description='Original parameterizing neural power spectra algorithm.',
-            settings=SPECTRAL_FIT_SETTINGS,
+            settings=SPECTRAL_FIT_SETTINGS, format='spectrum',
             modes=modes, data=data, results=results,
             debug=debug, verbose=verbose,
         )
