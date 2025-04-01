@@ -19,6 +19,53 @@ SCV = 70
 ###################################################################################################
 ###################################################################################################
 
+def gen_issue_str(concise=False):
+    """Generate a string representation of instructions to report an issue.
+
+    Parameters
+    ----------
+    concise : bool, optional, default: False
+        Whether to print the report in a concise mode, or not.
+
+    Returns
+    -------
+    output : str
+        Formatted string of how to provide feedback.
+    """
+
+    str_lst = [
+
+        # Header
+        '=',
+        '',
+        'specparam - ISSUE REPORTING',
+        '',
+
+        # Reporting bugs
+        'Please report any bugs or unexpected errors on Github:',
+        'https://github.com/fooof-tools/fooof/issues',
+        '',
+
+        # Reporting a weird fit
+        'If model fitting gives you any weird / bad fits, please let us know!',
+        'To do so, you can send us a fit report, and an associated data file, ',
+        '',
+        'With a model object (model), after fitting, run the following commands:',
+        "model.create_report('bad_fit_report')",
+        "model.save('bad_fit_data', True, True, True)",
+        '',
+        'You can attach the generated files to a Github issue.',
+        '',
+
+        # Footer
+        '='
+    ]
+
+    output = _format(str_lst, concise)
+
+    return output
+
+
 def gen_width_warning_str(freq_res, bwl):
     """Generate a string representation of the warning about peak width limits.
 
@@ -334,11 +381,8 @@ def gen_model_results_str(model, concise=False):
         '',
 
         # Fit algorithm & data overview
-        'The model was fit with the {} algorithm'.format(model.algorithm.name),
-        'Data: frequency range {} - {} Hz & '.format(
-            int(np.floor(model.data.freq_range[0])),
-            int(np.ceil(model.data.freq_range[1]))) + \
-        'frequency resolution: {:1.2f} Hz'.format(model.data.freq_res),
+        _report_str_algo(model),
+        _report_str_model(model),
         '',
 
         # Aperiodic parameters
@@ -398,7 +442,7 @@ def gen_group_results_str(group, concise=False):
         # Header
         '=',
         '',
-        'GROUP RESULTS',
+        'POWER SPECTRUM GROUP MODEL RESULTS',
         '',
 
         # Group information
@@ -407,10 +451,12 @@ def gen_group_results_str(group, concise=False):
             group.results.n_null_)] if group.results.n_null_],
         '',
 
-        # Frequency range and resolution
-        'The model was run on the frequency range {} - {} Hz'.format(
-            int(np.floor(group.data.freq_range[0])), int(np.ceil(group.data.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(group.data.freq_res),
+        # Fit algorithm & data overview
+        'The model was fit with the \'{}\' algorithm'.format(group.algorithm.name),
+        'Data: frequency range {} - {} Hz'.format(
+            int(np.floor(group.data.freq_range[0])),
+            int(np.ceil(group.data.freq_range[1]))) + \
+        'with frequency resolution of {:1.2f} Hz'.format(group.data.freq_res),
         '',
 
         # Aperiodic parameters
@@ -500,11 +546,12 @@ def gen_time_results_str(time, concise=False):
             if time.results.n_null_],
         '',
 
-        # Frequency range and resolution
-        'The model was run on the frequency range {} - {} Hz'.format(
+        # Fit algorithm & data overview
+        'The model was fit with the \'{}\' algorithm'.format(time.algorithm.name),
+        'Data: frequency range {} - {} Hz'.format(
             int(np.floor(time.data.freq_range[0])),
-            int(np.ceil(time.data.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(time.data.freq_res),
+            int(np.ceil(time.data.freq_range[1]))) + \
+        'with frequency resolution of {:1.2f} Hz'.format(time.data.freq_res),
         '',
 
         # Aperiodic parameters
@@ -583,11 +630,12 @@ def gen_event_results_str(event, concise=False):
         'Number of events fit: {}'.format(len(event.results.event_group_results)),
         '',
 
-        # Frequency range and resolution
-        'The model was run on the frequency range {} - {} Hz'.format(
+        # Fit algorithm & data overview
+        'The model was fit with the \'{}\' algorithm'.format(event.algorithm.name),
+        'Data: frequency range {} - {} Hz'.format(
             int(np.floor(event.data.freq_range[0])),
-            int(np.ceil(event.data.freq_range[1]))),
-        'Frequency Resolution is {:1.2f} Hz'.format(event.data.freq_res),
+            int(np.ceil(event.data.freq_range[1]))) + \
+        'with frequency resolution of {:1.2f} Hz'.format(event.data.freq_res),
         '',
 
         # Aperiodic parameters
@@ -626,52 +674,28 @@ def gen_event_results_str(event, concise=False):
     return output
 
 
-def gen_issue_str(concise=False):
-    """Generate a string representation of instructions to report an issue.
+## HELPER SUB-FUNCTIONS FOR MODEL REPORT STRINGS
 
-    Parameters
-    ----------
-    concise : bool, optional, default: False
-        Whether to print the report in a concise mode, or not.
+def _report_str_algo(model):
+    """Create report string section to report on algorithm."""
 
-    Returns
-    -------
-    output : str
-        Formatted string of how to provide feedback.
-    """
-
-    str_lst = [
-
-        # Header
-        '=',
-        '',
-        'specparam - ISSUE REPORTING',
-        '',
-
-        # Reporting bugs
-        'Please report any bugs or unexpected errors on Github:',
-        'https://github.com/fooof-tools/fooof/issues',
-        '',
-
-        # Reporting a weird fit
-        'If model fitting gives you any weird / bad fits, please let us know!',
-        'To do so, you can send us a fit report, and an associated data file, ',
-        '',
-        'With a model object (model), after fitting, run the following commands:',
-        "model.create_report('bad_fit_report')",
-        "model.save('bad_fit_data', True, True, True)",
-        '',
-        'You can attach the generated files to a Github issue.',
-        '',
-
-        # Footer
-        '='
-    ]
-
-    output = _format(str_lst, concise)
+    output = 'The model was fit with the \'{}\' algorithm'.format(model.algorithm.name)
 
     return output
 
+def _report_str_model(model):
+    """Create report string section to report on data."""
+
+    output = \
+        'Data: frequency range {}-{} Hz '.format(
+            int(np.floor(model.data.freq_range[0])),
+            int(np.ceil(model.data.freq_range[1]))) + \
+        'with frequency resolution of {:1.2f} Hz'.format(model.data.freq_res)
+
+    return output
+
+
+## UTILITIES
 
 def _format(str_lst, concise):
     """Format a string for printing.
