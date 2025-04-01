@@ -26,7 +26,7 @@ class Algorithm():
     """
 
     def __init__(self, name, description, settings, format,
-                 modes=None, data=None, results=None, debug=False, verbose=False):
+                 modes=None, data=None, results=None, debug=False):
         """Initialize Algorithm object."""
 
         self.name = name
@@ -45,7 +45,6 @@ class Algorithm():
         self._reset_subobjects(modes, data, results)
 
         self.set_debug(debug)
-        self.verbose = verbose
 
 
     def _fit_prechecks(self):
