@@ -442,21 +442,13 @@ def gen_group_results_str(group, concise=False):
         # Header
         '=',
         '',
-        'POWER SPECTRUM GROUP MODEL RESULTS',
-        '',
-
-        # Group information
-        'Number of power spectra in the Group: {}'.format(len(group.results.group_results)),
-        *[el for el in ['{} power spectra failed to fit'.format(\
-            group.results.n_null_)] if group.results.n_null_],
+        'GROUP SPECTRAL MODEL RESULTS ({} spectra)'.format(len(group.results.group_results)),
+        *_report_str_n_null(group),
         '',
 
         # Fit algorithm & data overview
-        'The model was fit with the \'{}\' algorithm'.format(group.algorithm.name),
-        'Data: frequency range {} - {} Hz'.format(
-            int(np.floor(group.data.freq_range[0])),
-            int(np.ceil(group.data.freq_range[1]))) + \
-        'with frequency resolution of {:1.2f} Hz'.format(group.data.freq_res),
+        _report_str_algo(group),
+        _report_str_model(group),
         '',
 
         # Aperiodic parameters
@@ -537,21 +529,13 @@ def gen_time_results_str(time, concise=False):
         # Header
         '=',
         '',
-        'TIME RESULTS',
-        '',
-
-        # Group information
-        'Number of time windows fit: {}'.format(time.data.n_time_windows),
-        *[el for el in ['{} power spectra failed to fit'.format(time.results.n_null_)] \
-            if time.results.n_null_],
+        'TIME SPECTRAL MODEL RESULTS ({} time windows)'.format(time.data.n_time_windows),
+        *_report_str_n_null(time),
         '',
 
         # Fit algorithm & data overview
-        'The model was fit with the \'{}\' algorithm'.format(time.algorithm.name),
-        'Data: frequency range {} - {} Hz'.format(
-            int(np.floor(time.data.freq_range[0])),
-            int(np.ceil(time.data.freq_range[1]))) + \
-        'with frequency resolution of {:1.2f} Hz'.format(time.data.freq_res),
+        _report_str_algo(time),
+        _report_str_model(time),
         '',
 
         # Aperiodic parameters
@@ -623,19 +607,14 @@ def gen_event_results_str(event, concise=False):
         # Header
         '=',
         '',
-        'EVENT RESULTS',
-        '',
-
-        # Group information
-        'Number of events fit: {}'.format(len(event.results.event_group_results)),
+        'EVENT SPECTRAL MODEL RESULTS ({} events with {} time windows)'.format(\
+            event.data.n_events, event.data.n_time_windows),
+        *_report_str_n_null(event),
         '',
 
         # Fit algorithm & data overview
-        'The model was fit with the \'{}\' algorithm'.format(event.algorithm.name),
-        'Data: frequency range {} - {} Hz'.format(
-            int(np.floor(event.data.freq_range[0])),
-            int(np.ceil(event.data.freq_range[1]))) + \
-        'with frequency resolution of {:1.2f} Hz'.format(event.data.freq_res),
+        _report_str_algo(event),
+        _report_str_model(event),
         '',
 
         # Aperiodic parameters
@@ -683,14 +662,47 @@ def _report_str_algo(model):
 
     return output
 
+
 def _report_str_model(model):
     """Create report string section to report on data."""
 
     output = \
-        'Data: frequency range {}-{} Hz '.format(
+        'Model was fit to the {}-{} Hz frequency range '.format(
             int(np.floor(model.data.freq_range[0])),
             int(np.ceil(model.data.freq_range[1]))) + \
-        'with frequency resolution of {:1.2f} Hz'.format(model.data.freq_res)
+        'with {:1.2f} Hz resolution'.format(model.data.freq_res)
+
+    return output
+
+
+def _report_str_n_null(model):
+    """Create report string section to on number of failed fit / null models."""
+
+    output = \
+            [el for el in ['{} power spectra failed to fit'.format(\
+            model.results.n_null_)] if model.results.n_null_]
+
+    return output
+
+
+def _no_model_str(concise=False):
+    """Creates a null report, for use if the model fit failed, or is unavailable.
+
+    Parameters
+    ----------
+    concise : bool, optional, default: False
+        Whether to print the report in a concise mode, or not.
+    """
+
+    str_lst = [
+        '=',
+        '',
+        'Model fit has not been run, or fitting was unsuccessful.',
+        '',
+        '='
+    ]
+
+    output = _format(str_lst, concise)
 
     return output
 
@@ -725,27 +737,5 @@ def _format(str_lst, concise):
 
     # Convert list to a single string representation, centering each line
     output = '\n'.join([string.center(center_val) for string in str_lst])
-
-    return output
-
-
-def _no_model_str(concise=False):
-    """Creates a null report, for use if the model fit failed, or is unavailable.
-
-    Parameters
-    ----------
-    concise : bool, optional, default: False
-        Whether to print the report in a concise mode, or not.
-    """
-
-    str_lst = [
-        '=',
-        '',
-        'Model fit has not been run, or fitting was unsuccessful.',
-        '',
-        '='
-    ]
-
-    output = _format(str_lst, concise)
 
     return output
