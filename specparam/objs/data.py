@@ -7,6 +7,7 @@ import numpy as np
 from specparam.sim.gen import gen_freqs
 from specparam.data import SpectrumMetaData, ModelChecks
 from specparam.utils.spectral import trim_spectrum
+from specparam.utils.checks import check_input_options
 from specparam.modutils.errors import DataError, InconsistentDataError
 from specparam.plts.settings import PLT_COLORS
 from specparam.plts.spectra import plot_spectra, plot_spectrogram
@@ -18,6 +19,7 @@ from specparam.plts.utils import check_plot_kwargs
 # Define set of data fields
 DATA_FIELDS = ['power_spectrum', 'freq_range', 'freq_res']
 META_DATA_FIELDS = ['freq_range', 'freq_res']
+FORMATS = ['power']
 
 
 class BaseData():
@@ -25,15 +27,17 @@ class BaseData():
 
     Parameters
     ----------
-    _check_freqs : bool
+    check_freqs : bool
         Whether to check the frequency values.
         If True, checks the frequency values, and raises an error for uneven spacing.
-    _check_data : bool
+    check_data : bool
         Whether to check the power spectrum values.
         If True, checks the power values and raises an error for any NaN / Inf values.
+    format : {'power'}
+        The representation format of the data.
     """
 
-    def __init__(self, check_freqs=True, check_data=True):
+    def __init__(self, check_freqs=True, check_data=True, format='power'):
         """Initialize BaseData object."""
 
         self._reset_data(True, True)
@@ -43,6 +47,9 @@ class BaseData():
         # Define data check run statuses
         self._check_freqs = check_freqs
         self._check_data = check_data
+
+        check_input_options(format, FORMATS, 'format')
+        self.format = format
 
 
     @property

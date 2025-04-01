@@ -9,6 +9,7 @@ from specparam.algorithms.settings import SettingsDefinition
 
 FORMATS = ['spectrum', 'spectra', 'spectrogram', 'spectrograms']
 
+
 class Algorithm():
     """Template object for defining a fit algorithm.
 
