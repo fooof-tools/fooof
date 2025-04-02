@@ -123,8 +123,8 @@ def compare_peak_pw(fm1, fm2, band_def):
 def compare_band_pw(fm1, fm2, band_def):
     """Compare the power of frequency band ranges."""
 
-    pw1 = np.mean(trim_spectrum(fm1.freqs, fm1.power_spectrum, band_def)[1])
-    pw2 = np.mean(trim_spectrum(fm1.freqs, fm2.power_spectrum, band_def)[1])
+    pw1 = np.mean(trim_spectrum(fm1.data.freqs, fm1.data.power_spectrum, band_def)[1])
+    pw2 = np.mean(trim_spectrum(fm1.data.freqs, fm2.data.power_spectrum, band_def)[1])
 
     return pw1 - pw2
 
@@ -198,7 +198,8 @@ fm_bands_g2.fit(freqs, g2_spectrum_bands)
 ###################################################################################################
 
 # Plot the power spectra differences
-plot_spectra_shading(freqs, [fm_bands_g1._spectrum_flat, fm_bands_g2._spectrum_flat],
+plot_spectra_shading(freqs,
+                     [fm_bands_g1.results._spectrum_flat, fm_bands_g2.results._spectrum_flat],
                      log_powers=False, linewidth=3,
                      shades=bands.definitions, shade_colors=shade_cols,
                      labels=labels)
@@ -286,7 +287,8 @@ fm_pa_g2.fit(freqs, g2_spectrum_pa)
 ###################################################################################################
 
 # Plot the power spectra differences
-plot_spectra_shading(freqs, [fm_pa_g1._spectrum_flat, fm_pa_g2._spectrum_flat],
+plot_spectra_shading(freqs,
+                     [fm_pa_g1.results._spectrum_flat, fm_pa_g2.results._spectrum_flat],
                      log_powers=False, linewidth=3,
                      shades=bands.definitions, shade_colors=shade_cols,
                      labels=labels)

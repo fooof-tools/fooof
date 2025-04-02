@@ -138,7 +138,7 @@ for ax, (title, powers) in zip(axes.reshape(-1), all_powers.items()):
 
     # Create spectrum plot, with alpha band of interest shaded in
     plot_spectra_shading(freqs, [powers_base, powers],
-                         bands.alpha, shade_colors=shade_color,
+                         bands['alpha'], shade_colors=shade_color,
                          log_freqs=log_freqs, log_powers=log_powers, ax=ax)
 
     # Add the title, and do some plot styling
@@ -173,14 +173,14 @@ def calc_avg_power(freqs, powers, freq_range):
 ###################################################################################################
 
 # Calculate the amount of alpha power in the baseline power spectrum
-base_alpha = calc_avg_power(freqs, powers_base, bands.alpha)
+base_alpha = calc_avg_power(freqs, powers_base, bands['alpha'])
 
 ###################################################################################################
 
 # Calculate the different in alpha power for each of our comparison pairs
 for title, powers in all_powers.items():
     print('{:20s}\t {:1.4f}'.format(\
-        title, calc_avg_power(freqs, powers, bands.alpha) - base_alpha))
+        title, calc_avg_power(freqs, powers, bands['alpha']) - base_alpha))
 
 ###################################################################################################
 #
@@ -240,7 +240,7 @@ for ax, (title, powers) in zip(axes.reshape(-1), all_powers_na.items()):
 
     # Create spectrum plot, with alpha band of interest shaded in
     plot_spectra_shading(freqs, [powers_noa_base, powers],
-                         bands.alpha, shade_colors=shade_color,
+                         bands['alpha'], shade_colors=shade_color,
                          log_freqs=log_freqs, log_powers=log_powers, ax=ax)
 
     # Add the title, and do some plot styling

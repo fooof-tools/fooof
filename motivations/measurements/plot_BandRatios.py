@@ -125,14 +125,14 @@ def calc_band_ratio(freqs, powers, low_band, high_band):
 ###################################################################################################
 
 # Plot the power spectrum, shading the frequency bands used for the ratio
-plot_spectra_shading(freqs, powers, [bands.theta, bands.beta],
+plot_spectra_shading(freqs, powers, [bands['theta'], bands['beta']],
                      color='black', shade_colors=shade_color,
                      log_powers=True, linewidth=3.5)
 
 ###################################################################################################
 
 # Calculate a band ratio measure
-tbr = calc_band_ratio(freqs, powers, bands.theta, bands.beta)
+tbr = calc_band_ratio(freqs, powers, bands['theta'], bands['beta'])
 print('Calculate theta / beta ratio is :\t {:1.2f}'.format(tbr))
 
 ###################################################################################################
@@ -186,7 +186,7 @@ spectra = {
 for label, spectrum in spectra.items():
     if spectrum is not None:
         print('TBR difference from   {:20}   is \t {:1.3f}'.format(\
-            label, tbr - calc_band_ratio(freqs, spectrum, bands.theta, bands.beta)))
+            label, tbr - calc_band_ratio(freqs, spectrum, bands['theta'], bands['beta'])))
 
 ###################################################################################################
 
@@ -199,7 +199,7 @@ for ax, (label, spectrum) in zip(axes.flatten(), spectra.items()):
     if spectrum is None: continue
 
     plot_spectra_shading(freqs, [powers, spectrum],
-                         [bands.theta, bands.beta], shade_colors=shade_color,
+                         [bands['theta'], bands['beta']], shade_colors=shade_color,
                          log_freqs=False, log_powers=True, ax=ax)
 
     ax.set_title(label, **title_settings)
@@ -253,10 +253,10 @@ fig, axes = plt.subplots(1, 2, figsize=(15, 6))
 fig.subplots_adjust(wspace=.3)
 for ax, (label, (comparison, spectrum)) in zip(axes, exp_spectra.items()):
     print('\tTBR difference from   {:20}   is \t {:1.3f}'.format(label, \
-        calc_band_ratio(freqs, comparison, bands.theta, bands.beta) - \
-        calc_band_ratio(freqs, spectrum, bands.theta, bands.beta)))
+        calc_band_ratio(freqs, comparison, bands['theta'], bands['beta']) - \
+        calc_band_ratio(freqs, spectrum, bands['theta'], bands['beta'])))
     plot_spectra_shading(freqs, [comparison, spectrum],
-                         [bands.theta, bands.beta],
+                         [bands['theta'], bands['beta']],
                          shade_colors=shade_color,
                          log_freqs=False, log_powers=True, ax=ax)
     ax.set_title(label, **title_settings)
