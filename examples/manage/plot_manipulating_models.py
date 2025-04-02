@@ -29,7 +29,7 @@ from specparam import SpectralModel
 from specparam.bands import Bands
 
 # Import utility functions for working with model objects
-from specparam.objs.utils import average_group, combine_model_objs, compare_model_objs
+from specparam.models.utils import average_group, combine_model_objs, compare_model_objs
 
 # Import simulation functions to create our example data
 from specparam.sim import sim_power_spectrum
@@ -87,7 +87,7 @@ fg = combine_model_objs([fm1, fm2, fm3])
 
 # Check the number of models in the object
 #   Note that the length of a SpectralGroupModel object is defined as the number of model fits
-print('Number of model fits: ', len(fg))
+print('Number of model fits: ', len(fg.results))
 
 ###################################################################################################
 # Note on Manipulating Model Objects
@@ -141,7 +141,7 @@ inds = [0, 1]
 nfg = fg.get_group(inds)
 
 # Check how many models our new SpectralGroupModel object contains
-print('Number of model fits: ', len(nfg))
+print('Number of model fits: ', len(nfg.results))
 
 ###################################################################################################
 #
@@ -154,7 +154,7 @@ print('Number of model fits: ', len(nfg))
 # -------------------------------------
 #
 # Another option is to 'drop' model fits from a SpectralGroupModel object. You can do this with
-# the :meth:`~specparam.SpectralGroupModel.drop` method from a
+# the :meth:`~specparam.SpectralGroupModel.results.drop` method from a
 # :class:`~specparam.SpectralGroupModel` object.
 #
 # This can be used, for example, for a quality control step. If you have checked through
@@ -168,7 +168,7 @@ print('Number of model fits: ', len(nfg))
 ###################################################################################################
 
 # Drop all model fits above an error threshold
-fg.drop(fg.get_params('error') > 0.01)
+fg.results.drop(fg.get_params('error') > 0.01)
 
 ###################################################################################################
 # Note on Dropped or Failed Fits
@@ -186,25 +186,25 @@ fg.drop(fg.get_params('error') > 0.01)
 ###################################################################################################
 
 # Check information on null models (dropped models)
-print('Number of Null models  : \t', fg.n_null_)
-print('Indices of Null models : \t', fg.null_inds_)
+print('Number of Null models  : \t', fg.results.n_null_)
+print('Indices of Null models : \t', fg.results.null_inds_)
 
 # Despite the dropped model, the total number of models in the object is the same
 #   This means that the indices are still the same as before dropping models
-print('Number of model fits: ', len(fg))
+print('Number of model fits: ', len(fg.results))
 
 ###################################################################################################
 
 # Null models are defined as all NaN (not a number)
-for ind in fg.null_inds_:
-    print(fg[ind])
+for ind in fg.results.null_inds_:
+    print(fg.results[ind])
 
 ###################################################################################################
 # Note on Selecting from SpectralModel Objects
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Both the :meth:`~specparam.SpectralGroupModel.get_group` and
-# :meth:`~specparam.SpectralGroupModel.drop` methods take an input of the indices of the
+# :meth:`~specparam.SpectralGroupModel.results.drop` methods take an input of the indices of the
 # model(s) to select or drop.
 #
 # In both cases, the input can be defined in multiple ways, including directly indicating

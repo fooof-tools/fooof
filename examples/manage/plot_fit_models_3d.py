@@ -57,7 +57,7 @@ import numpy as np
 from specparam import SpectralGroupModel
 
 # Import utilities for working with model objects
-from specparam.objs import fit_models_3d, combine_model_objs
+from specparam.models import fit_models_3d, combine_model_objs
 
 # Import simulation & IO utilities to help with the example
 from specparam.sim import sim_group_power_spectra

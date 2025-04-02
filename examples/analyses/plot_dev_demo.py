@@ -45,7 +45,7 @@ from specparam.plts.periodic import plot_peak_fits, plot_peak_params
 from specparam.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 
 # Import functions to examine frequency-by-frequency error of model fits
-from specparam.measures.error import compute_pointwise_error, compute_pointwise_error_group
+from specparam.measures.pointwise import compute_pointwise_error, compute_pointwise_error_group
 
 # Import helper utility to access data
 from specparam.utils.download import fetch_example_data
@@ -127,12 +127,12 @@ fm.report(freqs, spectrum, PSD_range)
 ###################################################################################################
 
 # Access the model fit parameters from the model object
-print('Aperiodic parameters: \n', fm.aperiodic_params_, '\n')
-print('Peak parameters: \n', fm.peak_params_, '\n')
+print('Aperiodic parameters: \n', fm.results.aperiodic_params_, '\n')
+print('Peak parameters: \n', fm.results.peak_params_, '\n')
 print('Goodness of fit:')
-print('Error - ', fm.error_)
-print('R^2   - ', fm.r_squared_, '\n')
-print('Number of fit peaks: \n', fm.n_peaks_)
+print('Error - ', fm.results.error_)
+print('R^2   - ', fm.results.r_squared_, '\n')
+print('Number of fit peaks: \n', fm.results.n_peaks_)
 
 ###################################################################################################
 #
@@ -181,15 +181,16 @@ print(template.format(error=err, exponent=exp,
 plt_log = False
 
 # Do an initial aperiodic fit - a robust fit, that excludes outliers
-init_ap_fit = gen_aperiodic(fm.freqs, fm._robust_ap_fit(fm.freqs, fm.power_spectrum))
+init_ap_fit = gen_aperiodic(\
+    fm.data.freqs, fm.algorithm._robust_ap_fit(fm.data.freqs, fm.data.power_spectrum))
 
 # Recompute the flattened spectrum using the initial aperiodic fit
-init_flat_spec = fm.power_spectrum - init_ap_fit
+init_flat_spec = fm.data.power_spectrum - init_ap_fit
 
 ###################################################################################################
 
 # Plot the flattened the power spectrum
-plot_spectra(fm.freqs, init_flat_spec, plt_log, label='Flattened spectrum', color='black')
+plot_spectra(fm.data.freqs, init_flat_spec, plt_log, label='Flattened spectrum', color='black')
 
 ###################################################################################################
 #
@@ -247,7 +248,7 @@ errs_fm = compute_pointwise_error(fm, plot_errors=False, return_errors=True)
 
 # Note that the average of this error is the same as the global error stored
 print('Average freq-by-freq error:\t {:1.3f}'.format(np.mean(errs_fm)))
-print('Total model fit error: \t\t {:1.3f}'.format(fm.error_))
+print('Total model fit error: \t\t {:1.3f}'.format(fm.results.error_))
 
 ###################################################################################################
 # Fitting a Group of Power Spectra
@@ -329,7 +330,7 @@ r2s = fg.get_params('r_squared')
 ###################################################################################################
 
 # Check the average number of fit peaks, per model
-print('Average number of fit peaks: ', np.mean(fg.n_peaks_))
+print('Average number of fit peaks: ', np.mean(fg.results.n_peaks_))
 
 ###################################################################################################
 
@@ -341,9 +342,9 @@ bands = Bands({'theta' : [4, 8],
 ###################################################################################################
 
 # Extract band-limited peaks information
-thetas = get_band_peak_group(fg, bands.theta)
-alphas = get_band_peak_group(fg, bands.alpha)
-betas = get_band_peak_group(fg, bands.beta)
+thetas = get_band_peak_group(fg, bands['theta'])
+alphas = get_band_peak_group(fg, bands['alpha'])
+betas = get_band_peak_group(fg, bands['beta'])
 
 ###################################################################################################
 #
@@ -377,7 +378,7 @@ plt.subplots_adjust(hspace=0.4)
 # Plot reconstructions of model components
 _, axes = plt.subplots(1, 2, figsize=(14, 6))
 plot_peak_fits(alphas, ax=axes[0])
-plot_aperiodic_fits(aps, fg.freq_range, ax=axes[1])
+plot_aperiodic_fits(aps, fg.data.freq_range, ax=axes[1])
 
 ###################################################################################################
 # Tuning the specparam algorithm
@@ -424,6 +425,9 @@ m2_n_peaks = 6
 m1_peak_height = 0.05
 m2_peak_height = 0.10
 
+# Define `` for both models
+peak_threshold = 2.0
+
 ###################################################################################################
 #
 # Next, we set frequency ranges for each model.
@@ -455,7 +459,7 @@ fg1 = SpectralGroupModel(peak_width_limits=m1_peak_width, max_n_peaks=m1_n_peaks
 fg1.fit(m1_freq, m1_spectra)
 
 # Create individual reports for model 1 settings (these could be saved and checked)
-for ind in range(len(fg1)):
+for ind in range(len(fg1.results)):
     temp_model = fg1.get_model(ind, regenerate=True)
 
 ###################################################################################################
@@ -471,7 +475,7 @@ fg2 = SpectralGroupModel(peak_width_limits=m2_peak_width, max_n_peaks=m2_n_peaks
 fg2.fit(m2_freq, m2_spectra)
 
 # Create individual reports for model 2 settings (these could be saved and checked)
-for ind in range(len(fg2)):
+for ind in range(len(fg2.results)):
     temp_model = fg2.get_model(ind, regenerate=True)
 
 ###################################################################################################
@@ -486,19 +490,20 @@ for ind in range(len(fg2)):
 
 # Define settings for model 1
 settings1 = ModelSettings(peak_width_limits=m1_peak_width, max_n_peaks=m1_n_peaks,
-                          min_peak_height=m1_peak_height, peak_threshold=2.,
-                          aperiodic_mode='fixed')
+                          min_peak_height=m1_peak_height, peak_threshold=peak_threshold)
 
 # Define settings for model 2
 settings2 = ModelSettings(peak_width_limits=m2_peak_width, max_n_peaks=m2_n_peaks,
-                          min_peak_height=m2_peak_height, peak_threshold=2.,
-                          aperiodic_mode='fixed')
+                          min_peak_height=m2_peak_height, peak_threshold=peak_threshold)
+
+# Define aperiodic mode to use
+aperiodic_mode = 'fixed'
 
 ###################################################################################################
 
 # Initialize model objects for spectral parameterization, with some settings
-fg1 = SpectralGroupModel(**settings1._asdict())
-fg2 = SpectralGroupModel(**settings2._asdict())
+fg1 = SpectralGroupModel(**settings1._asdict(), aperiodic_mode=aperiodic_mode)
+fg2 = SpectralGroupModel(**settings2._asdict(), aperiodic_mode=aperiodic_mode)
 
 ###################################################################################################
 #
@@ -562,7 +567,7 @@ fm.plot()
 # Extract all fits that are above some error threshold, for further examination.
 underfit_error_threshold = 0.100
 underfit_check = []
-for ind, res in enumerate(fg):
+for ind, res in enumerate(fg.results):
     if res.error > underfit_error_threshold:
         underfit_check.append(fg.get_model(ind, regenerate=True))
 
@@ -582,7 +587,7 @@ for ind, fm in enumerate(underfit_check):
 # Extract all fits that are below some error threshold, for further examination.
 overfit_error_threshold = 0.02
 overfit_check = []
-for ind, res in enumerate(fg):
+for ind, res in enumerate(fg.results):
     if res.error < overfit_error_threshold:
         overfit_check.append(fg.get_model(ind, regenerate=True))
 
@@ -641,17 +646,17 @@ compute_pointwise_error_group(fg, plot_errors=True)
 errs_fg = compute_pointwise_error_group(fg, plot_errors=False, return_errors=True)
 
 # Check which frequency has the highest error
-f_max_err = fg.freqs[np.argmax(np.mean(errs_fg, 0))]
+f_max_err = fg.data.freqs[np.argmax(np.mean(errs_fg, 0))]
 print('Frequency with highest mean error: \t\t\t', f_max_err)
 
 # Check which frequency has the largest standard deviation of error
-f_max_std = fg.freqs[np.argmax(np.std(errs_fg, 0))]
+f_max_std = fg.data.freqs[np.argmax(np.std(errs_fg, 0))]
 print('Frequency with highest standard deviation of error: \t', f_max_std)
 
 ###################################################################################################
 #
 # In some cases, it may be necessary to drop poor (or failed) model fits from the group object.
-# This can be done using the `fg.drop` function, as shown here.
+# This can be done using the `fg.results.drop` function, as shown here.
 # In this case, we remove a participant who has a MAE greater than 0.10.
 # The error threshold will vary depending on sample characteristics and data quality.
 #
@@ -659,7 +664,7 @@ print('Frequency with highest standard deviation of error: \t', f_max_std)
 ###################################################################################################
 
 # Drop poor model fits based on MAE
-fg.drop(fg.get_params('error') > 0.10)
+fg.results.drop(fg.get_params('error') > 0.10)
 
 ###################################################################################################
 # Conclusions

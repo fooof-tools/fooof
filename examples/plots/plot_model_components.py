@@ -125,8 +125,8 @@ bands = Bands({'theta' : [4, 8],
 ###################################################################################################
 
 # Extract alpha peaks from each group
-g1_alphas = get_band_peak_group(fg1, bands.alpha)
-g2_alphas = get_band_peak_group(fg2, bands.alpha)
+g1_alphas = get_band_peak_group(fg1, bands['alpha'])
+g2_alphas = get_band_peak_group(fg2, bands['alpha'])
 
 ###################################################################################################
 # Plotting Peak Parameters
@@ -143,12 +143,12 @@ g2_alphas = get_band_peak_group(fg2, bands.alpha)
 ###################################################################################################
 
 # Explore the peak parameters of Group 1's alphas
-plot_peak_params(g1_alphas, freq_range=bands.alpha)
+plot_peak_params(g1_alphas, freq_range=bands['alpha'])
 
 ###################################################################################################
 
 # Compare the peak parameters of alpha peaks between groups
-plot_peak_params([g1_alphas, g2_alphas], freq_range=bands.alpha,
+plot_peak_params([g1_alphas, g2_alphas], freq_range=bands['alpha'],
                  labels=labels, colors=colors)
 
 ###################################################################################################
@@ -167,8 +167,7 @@ plot_peak_fits(g1_alphas)
 ###################################################################################################
 
 # Compare the peak fits of alpha peaks between groups
-plot_peak_fits([g1_alphas, g2_alphas],
-               labels=labels, colors=colors)
+plot_peak_fits([g1_alphas, g2_alphas], labels=labels, colors=colors)
 
 ###################################################################################################
 # Aperiodic Components

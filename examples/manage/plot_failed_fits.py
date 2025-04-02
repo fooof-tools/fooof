@@ -66,8 +66,8 @@ fg.fit(freqs, powers)
 ###################################################################################################
 
 # Check for failed model fits
-print('Number of Null models  : \t', fg.n_null_)
-print('Indices of Null models : \t', fg.null_inds_)
+print('Number of Null models  : \t', fg.results.n_null_)
+print('Indices of Null models : \t', fg.results.null_inds_)
 
 ###################################################################################################
 # Inducing Model Fit Failures
@@ -102,8 +102,8 @@ fg.fit(freqs, powers)
 ###################################################################################################
 
 # Check how many model fit failures we have failed model fits
-print('Number of Null models  : \t', fg.n_null_)
-print('Indices of Null models : \t', fg.null_inds_)
+print('Number of Null models  : \t', fg.results.n_null_)
+print('Indices of Null models : \t', fg.results.null_inds_)
 
 ###################################################################################################
 # Debug Mode
@@ -130,7 +130,7 @@ print('Indices of Null models : \t', fg.null_inds_)
 ###################################################################################################
 
 # Set SpectralGroupModel into debug mode
-fg.set_debug_mode(True)
+fg.algorithm.set_debug(True)
 
 ###################################################################################################
 

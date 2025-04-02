@@ -183,7 +183,7 @@ bands = Bands({'theta': [3, 7],
 ###################################################################################################
 
 # Extract alpha peaks
-alphas = get_band_peak_group(fg, bands.alpha)
+alphas = get_band_peak_group(fg, bands['alpha'])
 
 # Extract the power values from the detected peaks
 alpha_pw = alphas[:, 1]
@@ -282,10 +282,10 @@ mne.viz.plot_topomap(exps, raw.info, cmap=cm.viridis, contours=0, size=4)
 # Compare the power spectra between low and high exponent channels
 fig, ax = plt.subplots(figsize=(8, 6))
 
-spectra = [fg.get_model(np.argmin(exps)).power_spectrum,
-           fg.get_model(np.argmax(exps)).power_spectrum]
+spectra = [fg.get_model(np.argmin(exps)).data.power_spectrum,
+           fg.get_model(np.argmax(exps)).data.power_spectrum]
 
-plot_spectra(fg.freqs, spectra, ax=ax, labels=['Low Exponent', 'High Exponent'])
+plot_spectra(fg.data.freqs, spectra, ax=ax, labels=['Low Exponent', 'High Exponent'])
 
 ###################################################################################################
 # Conclusion

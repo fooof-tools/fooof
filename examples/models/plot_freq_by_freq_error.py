@@ -19,7 +19,7 @@ from specparam import SpectralModel, SpectralGroupModel
 from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 
 # Import functions to examine frequency-by-frequency error of model fits
-from specparam.measures.error import compute_pointwise_error, compute_pointwise_error_group
+from specparam.measures.pointwise import compute_pointwise_error, compute_pointwise_error_group
 
 ###################################################################################################
 # Frequency-by-Frequency Error
@@ -84,7 +84,7 @@ errs_fm = compute_pointwise_error(fm, plot_errors=False, return_errors=True)
 
 # Note that the average of this error is the same as the global error stored
 print('Average freq-by-freq error:\t {:1.3f}'.format(np.mean(errs_fm)))
-print('Model fit error: \t\t {:1.3f}'.format(fm.error_))
+print('Model fit error: \t\t {:1.3f}'.format(fm.results.error_))
 
 ###################################################################################################
 # Checking the Error Across Groups of Model Fits
@@ -132,8 +132,8 @@ errs_fg = compute_pointwise_error_group(fg, False, True)
 ###################################################################################################
 
 # We can check which frequency has highest error, or standard deviation of error
-f_max_err = fg.freqs[np.argmax(np.mean(errs_fg, 0))]
-f_max_std = fg.freqs[np.argmax(np.std(errs_fg, 0))]
+f_max_err = fg.data.freqs[np.argmax(np.mean(errs_fg, 0))]
+f_max_std = fg.data.freqs[np.argmax(np.std(errs_fg, 0))]
 
 # Print out frequency of maximal error
 print('Frequency with highest mean error: \t\t\t', f_max_err)
