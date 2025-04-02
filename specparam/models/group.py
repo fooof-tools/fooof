@@ -264,6 +264,12 @@ class SpectralGroupModel(SpectralModel):
         self._reset_data_results(clear_spectrum=True, clear_results=True)
 
 
+    @copy_doc_func_to_method(BaseResults2D.get_params)
+    def get_params(self, name, col=None):
+
+        return self.results.get_params(name, col)
+
+
     def get_model(self, ind=None, regenerate=True):
         """Get a model fit object for a specified index.
 

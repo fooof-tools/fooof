@@ -322,6 +322,12 @@ class SpectralModel(BaseModel):
                 self.results._regenerate_model(self.data.freqs)
 
 
+    @copy_doc_func_to_method(BaseResults.get_params)
+    def get_params(self, name, col=None):
+
+        return self.results.get_params(name, col)
+
+
     @copy_doc_func_to_method(save_model_report)
     def save_report(self, file_name, file_path=None, add_settings=True, **plot_kwargs):
 
