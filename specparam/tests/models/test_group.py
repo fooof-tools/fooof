@@ -229,8 +229,17 @@ def test_get_results(tfg):
 def test_get_params(tfg):
     """Check get_params method."""
 
-    for dname in ['aperiodic', 'peak', 'error', 'r_squared']:
-        assert np.any(tfg.results.get_params(dname))
+    for dname in ['aperiodic_params', 'aperiodic', 'peak_params', 'peak',
+                  'error', 'r_squared', 'gaussian_params', 'gaussian']:
+        assert np.any(tfg.get_params(dname))
+
+        if dname == 'aperiodic_params' or dname == 'aperiodic':
+            for dtype in ['offset', 'exponent']:
+                assert np.any(tfg.get_params(dname, dtype))
+
+        if dname == 'peak_params' or dname == 'peak':
+            for dtype in ['CF', 'PW', 'BW']:
+                assert np.any(tfg.get_params(dname, dtype))
 
 @plot_test
 def test_plot(tfg, skip_if_no_mpl):

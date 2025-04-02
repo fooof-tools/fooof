@@ -10,7 +10,8 @@ from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
 from specparam.data import FitResults
 from specparam.data.conversions import group_to_dict, event_group_to_dict
-from specparam.data.utils import get_group_params, get_results_by_ind, get_results_by_row
+from specparam.data.utils import (get_model_params, get_group_params,
+                                  get_results_by_ind, get_results_by_row)
 from specparam.sim.gen import gen_model
 
 ###################################################################################################
@@ -132,6 +133,38 @@ class BaseResults():
             raise ValueError('Input for component invalid.')
 
         return output
+
+
+    def get_params(self, name, col=None):
+        """Return model fit parameters for specified feature(s).
+
+        Parameters
+        ----------
+        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
+            Name of the data field to extract.
+        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+            Column name / index to extract from selected data, if requested.
+            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+
+        Returns
+        -------
+        out : float or 1d array
+            Requested data.
+
+        Raises
+        ------
+        NoModelError
+            If there are no model fit parameters available to return.
+
+        Notes
+        -----
+        If there are no fit peak (no peak parameters), this method will return NaN.
+        """
+
+        if not self.has_model:
+            raise NoModelError("No model fit results are available to extract, can not proceed.")
+
+        return get_model_params(self.get_results(), name, col)
 
 
     def _check_loaded_results(self, data):

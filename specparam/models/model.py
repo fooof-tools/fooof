@@ -13,13 +13,12 @@ from specparam.objs.results import BaseResults
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import gen_model_results_str
-from specparam.modutils.errors import NoModelError, NoDataError, FitError
+from specparam.modutils.errors import NoDataError, FitError
 from specparam.modutils.docs import (copy_doc_func_to_method, replace_docstring_sections,
                                      docs_get_section)
 from specparam.io.files import load_json
 from specparam.io.models import save_model
 from specparam.plts.model import plot_model
-from specparam.data.utils import get_model_params
 from specparam.data.conversions import model_to_dataframe
 
 ###################################################################################################
@@ -270,38 +269,6 @@ class SpectralModel(BaseModel):
         """
 
         print(gen_model_results_str(self, concise))
-
-
-    def get_params(self, name, col=None):
-        """Return model fit parameters for specified feature(s).
-
-        Parameters
-        ----------
-        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
-            Name of the data field to extract.
-        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
-            Column name / index to extract from selected data, if requested.
-            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
-
-        Returns
-        -------
-        out : float or 1d array
-            Requested data.
-
-        Raises
-        ------
-        NoModelError
-            If there are no model fit parameters available to return.
-
-        Notes
-        -----
-        If there are no fit peak (no peak parameters), this method will return NaN.
-        """
-
-        if not self.results.has_model:
-            raise NoModelError("No model fit results are available to extract, can not proceed.")
-
-        return get_model_params(self.results.get_results(), name, col)
 
 
     @copy_doc_func_to_method(plot_model)
