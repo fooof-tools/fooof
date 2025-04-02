@@ -117,7 +117,7 @@ fg.save_report('group_report')
 ###################################################################################################
 
 # Check out some of the results stored in 'group_results'
-print(fg.group_results[0:2])
+print(fg.results.group_results[0:2])
 
 ###################################################################################################
 # get_params
@@ -167,7 +167,7 @@ print(fg.get_params.__doc__)
 
 # Grab a particular FitResults data object
 #   Note: you can also index the SpectralGroupModel object directly to access 'group_results'
-f_res = fg[0]
+f_res = fg.results[0]
 
 # Check the documentation for the FitResults, which has descriptions of the parameters
 print(f_res.__doc__)

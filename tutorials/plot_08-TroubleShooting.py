@@ -176,7 +176,7 @@ fm.report(freqs, spectrum)
 
 # Compare ground truth simulated parameters to model fit results
 print('Ground Truth \t\t Model Parameters')
-for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
+for sy, fi in zip(np.array(gauss_params), fm.results.gaussian_params_):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*sy, *fi))
 
 ###################################################################################################
@@ -234,7 +234,7 @@ fm.report(freqs, spectrum)
 
 # Check reconstructed parameters compared to the simulated parameters
 print('Ground Truth \t\t Model Parameters')
-for sy, fi in zip(np.array(gauss_params), fm.gaussian_params_):
+for sy, fi in zip(np.array(gauss_params), fm.results.gaussian_params_):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*sy, *fi))
 
 ###################################################################################################
@@ -334,7 +334,7 @@ fm.plot()
 #  You could also do a similar analysis for particularly low errors
 error_threshold = 0.010
 to_check = []
-for ind, res in enumerate(fg):
+for ind, res in enumerate(fg.results):
     if res.error > error_threshold:
         to_check.append(fg.get_model(ind, regenerate=True))
 
@@ -357,7 +357,7 @@ for ind, fm in enumerate(to_check):
 ###################################################################################################
 
 # Check the average number of fit peaks, per model
-print('Average number of fit peaks: ', np.mean(fg.n_peaks_))
+print('Average number of fit peaks: ', np.mean(fg.results.n_peaks_))
 
 ###################################################################################################
 # Reporting Bad Fits
