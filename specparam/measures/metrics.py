@@ -12,9 +12,9 @@ METRICS = {
 
     # Available error metrics
     'error_mae' : Metric('error', 'mae', compute_mean_abs_error),
-    'error_mse' : Metric('error', 'mae', compute_mean_squared_error),
-    'error_rmse' : Metric('error', 'mae', compute_root_mean_squared_error),
-    'error_medae' : Metric('error', 'mae', compute_median_abs_error),
+    'error_mse' : Metric('error', 'mse', compute_mean_squared_error),
+    'error_rmse' : Metric('error', 'rmse', compute_root_mean_squared_error),
+    'error_medae' : Metric('error', 'medae', compute_median_abs_error),
 
     # Available GOF / r-squared metrics
     'gof_rsquared' : Metric('gof', 'rsquared', compute_r_squared),
