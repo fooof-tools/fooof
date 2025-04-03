@@ -59,6 +59,15 @@ class BaseResults():
         return self.peak_params_.shape[0] if self.has_model else None
 
 
+    @property
+    def n_params_(self):
+        """The total number of parameters fit in the model."""
+
+        n_peak_params = self.modes.periodic.n_params * self.n_peaks_
+
+        return n_peak_params + self.modes.aperiodic.n_params if self.has_model else None
+
+
     def add_results(self, results):
         """Add results data into object from a FitResults object.
 

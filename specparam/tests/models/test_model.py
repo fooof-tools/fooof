@@ -55,9 +55,12 @@ def test_has_model(tfm):
     assert not ntfm.results.has_model
 
 def test_n_peaks(tfm):
-    """Test the n_peaks property attribute."""
 
     assert tfm.results.n_peaks_
+
+def test_n_params(tfm):
+
+    assert tfm.results.n_params_
 
 def test_fit_nk():
     """Test fit, no knee."""
