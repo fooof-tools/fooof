@@ -6,6 +6,7 @@ import numpy as np
 
 from specparam.bands import Bands
 from specparam.objs.metrics import Metrics
+from specparam.measures.metrics import METRICS
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
@@ -32,9 +33,14 @@ class BaseResults():
 
         self.modes = modes
 
-        #self.metrics = metrics
-        self.metrics = Metrics()
-        self.metrics.set_defaults()
+        if isinstance(metrics, Metrics):
+            self.metrics = metrics
+        elif isinstance(metrics, list):
+            self.metrics = Metrics(\
+                [METRICS[metric] if isinstance(metric, str) else metric for metric in metrics])
+        else:
+            self.metrics = Metrics()
+            self.metrics.set_defaults()
 
         self.bands = bands if bands else Bands()
 

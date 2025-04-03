@@ -8,7 +8,7 @@ from specparam.measures.gof import compute_r_squared, compute_adj_r_squared
 ###################################################################################################
 ###################################################################################################
 
-METRICS_LIBRARY = {
+METRICS = {
 
     # Available error metrics
     'error_mae' : Metric('error', 'mae', compute_mean_abs_error),
