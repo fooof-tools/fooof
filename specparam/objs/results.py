@@ -23,6 +23,8 @@ from specparam.sim.gen import gen_model
 RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
                   'r_squared_', 'error_']
 
+DEFAULT_METRICS = ['error_mae', 'gof_rsquared']
+
 
 class BaseResults():
     """Base object for managing results."""
@@ -39,8 +41,7 @@ class BaseResults():
             self.metrics = Metrics(\
                 [METRICS[metric] if isinstance(metric, str) else metric for metric in metrics])
         else:
-            self.metrics = Metrics()
-            self.metrics.set_defaults()
+            self.metrics = Metrics([METRICS[metric] for metric in DEFAULT_METRICS])
 
         self.bands = bands if bands else Bands()
 

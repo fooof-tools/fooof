@@ -166,14 +166,3 @@ class Metrics():
 
         for key, value in results.items():
             self[key].result = value
-
-
-    # TEMP: CHECK IF THIS IS HOW TO MANAGE THIS
-    def set_defaults(self):
-        """Set default metrics."""
-
-        from specparam.measures.error import compute_mean_abs_error
-        from specparam.measures.gof import compute_r_squared
-
-        self.add_metrics([Metric('error', 'mae', compute_mean_abs_error),
-                          Metric('gof', 'rsquared', compute_r_squared)])

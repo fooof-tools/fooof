@@ -18,6 +18,6 @@ METRICS = {
 
     # Available GOF / r-squared metrics
     'gof_rsquared' : Metric('gof', 'rsquared', compute_r_squared),
-    'gof_arsquared2' : Metric('gof', 'rsquared', compute_adj_r_squared,
-                              {'results' : 'n_params_'}),
+    'gof_adjrsquared' : Metric('gof', 'rsquared', compute_adj_r_squared,
+                               {'results' : 'n_params_'}),
 }
