@@ -261,10 +261,10 @@ class BaseResults():
 class BaseResults2D(BaseResults):
     """Base object for managing results - 2D version."""
 
-    def __init__(self, modes=None, bands=None):
+    def __init__(self, modes=None, metrics=None, bands=None):
         """Initialize BaseResults2D object."""
 
-        BaseResults.__init__(self, modes=modes, bands=bands)
+        BaseResults.__init__(self, modes=modes, metrics=metrics, bands=bands)
 
         self._reset_group_results()
 
@@ -414,10 +414,10 @@ class BaseResults2D(BaseResults):
 class BaseResults2DT(BaseResults2D):
     """Base object for managing results - 2D transpose version."""
 
-    def __init__(self, modes=None, bands=None):
+    def __init__(self, modes=None, metrics=None, bands=None):
         """Initialize BaseResults2DT object."""
 
-        BaseResults2D.__init__(self, modes=modes, bands=None)
+        BaseResults2D.__init__(self, modes=modes, metrics=metrics, bands=bands)
 
         self._reset_time_results()
 
@@ -481,10 +481,10 @@ class BaseResults2DT(BaseResults2D):
 class BaseResults3D(BaseResults2DT):
     """Base object for managing results - 3D version."""
 
-    def __init__(self, modes=None, bands=None):
+    def __init__(self, modes=None, metrics=None, bands=None):
         """Initialize BaseResults3D object."""
 
-        BaseResults2DT.__init__(self, modes=modes, bands=bands)
+        BaseResults2DT.__init__(self, modes=modes, metrics=metrics, bands=bands)
 
         self._reset_event_results()
 

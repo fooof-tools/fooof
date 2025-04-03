@@ -86,7 +86,7 @@ class SpectralGroupModel(SpectralModel):
                                **kwargs)
 
         self.data = BaseData2D()
-        self.results = BaseResults2D(modes=self.modes)
+        self.results = BaseResults2D(modes=self.modes, metrics=kwargs.pop('metrics', None))
         self.algorithm._reset_subobjects(data=self.data, results=self.results)
 
 

@@ -75,11 +75,6 @@ class SpectralModel(BaseModel):
         Whether data is loaded to the object.
     has_model : bool
         Whether model results are available in the object.
-    _gof_metric : str
-        The goodness of fit metric to use for post-hoc measures of model fit.
-    _error_metric : str
-        The error metric to use for post-hoc measures of model fit error.
-        Note: this is for checking error post fitting, not an objective function for fitting.
     _debug : bool
         Whether the object is set in debug mode.
         If in debug mode, an error is raised if model fitting is unsuccessful.
@@ -103,7 +98,7 @@ class SpectralModel(BaseModel):
 
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
                  peak_threshold=2.0, aperiodic_mode='fixed', periodic_mode='gaussian',
-                 debug=False, verbose=True, **model_kwargs):
+                 metrics=None, debug=False, verbose=True, **model_kwargs):
         """Initialize model object."""
 
         BaseModel.__init__(self,
@@ -112,7 +107,7 @@ class SpectralModel(BaseModel):
                            verbose=verbose)
 
         self.data = BaseData()
-        self.results = BaseResults(modes=self.modes)
+        self.results = BaseResults(modes=self.modes, metrics=metrics)
 
         self.algorithm = SpectralFitAlgorithm(
             peak_width_limits=peak_width_limits,
