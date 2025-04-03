@@ -16,15 +16,20 @@ class Metric():
         The specific measure, e.g. 'r_squared'.
     func : callable
         The function that computes the metric.
+    kwargs : dictionary
+        Additional keyword argument to compute the metric.
+        Each key should be 'data' or 'results', specifying where to access the attribute from.
+        Each value should be the name of the attribute to access and pass to compute the metric.
     """
 
-    def __init__(self, measure, metric, func):
+    def __init__(self, measure, metric, func, kwargs=None):
         """Initialize metric."""
 
         self.measure = measure
         self.metric = metric
         self.func = func
         self.result = None
+        self.kwargs = {} if not kwargs else kwargs
 
 
     def __repr__(self):
@@ -51,7 +56,11 @@ class Metric():
             Model results.
         """
 
-        self.result = self.func(data.power_spectrum, results.modeled_spectrum_)
+        # Select any specified additional keyword arguments from kwargs definition
+        kwargs = {val.strip('_') : getattr({'results' : results, 'data' : data}[key], val) \
+            for key, val in self.kwargs.items()}
+
+        self.result = self.func(data.power_spectrum, results.modeled_spectrum_, **kwargs)
 
 
 class Metrics():

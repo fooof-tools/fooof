@@ -3,7 +3,7 @@
 from pytest import raises
 
 from specparam.measures.error import compute_mean_abs_error
-from specparam.measures.gof import compute_r_squared
+from specparam.measures.gof import compute_r_squared, compute_adj_r_squared
 
 from specparam.objs.metrics import *
 
@@ -13,6 +13,15 @@ from specparam.objs.metrics import *
 def test_metric(tfm):
 
     metric = Metric('error', 'mae', compute_mean_abs_error)
+    assert isinstance(metric, Metric)
+    assert isinstance(metric.label, str)
+
+    metric.compute_metric(tfm.data, tfm.results)
+    assert isinstance(metric.result, float)
+
+def test_metric_kwargs(tfm):
+
+    metric = Metric('gof', 'ar2', compute_adj_r_squared, {'results' : 'n_params_'})
     assert isinstance(metric, Metric)
     assert isinstance(metric.label, str)
 
@@ -58,3 +67,15 @@ def test_metrics_dict(tfm):
     for label in metrics.labels:
         assert metrics.results[label] == res[label]
     assert metrics.results == res
+
+def test_metrics_kwargs(tfm):
+
+    er_met_def = {'measure' : 'error', 'metric' : 'mae', 'func' : compute_mean_abs_error}
+    ar2_met_def = {'measure' : 'gof', 'metric' : 'arsquared',
+                   'func' : compute_adj_r_squared, 'additional_kwargs' : {'results' : 'n_params_'}}
+
+    metrics = Metrics([er_met_def, ar2_met_def])
+    assert isinstance(metrics, Metrics)
+
+    metrics.compute_metrics(tfm.data, tfm.results)
+    assert isinstance(metrics.results, dict)
