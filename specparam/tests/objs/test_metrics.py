@@ -72,7 +72,7 @@ def test_metrics_kwargs(tfm):
 
     er_met_def = {'measure' : 'error', 'metric' : 'mae', 'func' : compute_mean_abs_error}
     ar2_met_def = {'measure' : 'gof', 'metric' : 'arsquared',
-                   'func' : compute_adj_r_squared, 'additional_kwargs' : {'results' : 'n_params_'}}
+                   'func' : compute_adj_r_squared, 'kwargs' : {'results' : 'n_params_'}}
 
     metrics = Metrics([er_met_def, ar2_met_def])
     assert isinstance(metrics, Metrics)

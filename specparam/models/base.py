@@ -5,7 +5,6 @@ from copy import deepcopy
 from specparam.utils.array import unlog
 from specparam.modes.modes import Modes
 from specparam.modutils.errors import NoDataError
-from specparam.objs.metrics import Metrics
 from specparam.reports.strings import gen_modes_str, gen_settings_str, gen_issue_str
 
 ###################################################################################################
@@ -18,10 +17,6 @@ class BaseModel():
         """Initialize object."""
 
         self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode)
-
-        self.metrics = Metrics()
-        self.metrics.set_defaults()
-
         self.verbose = verbose
 
 

@@ -5,6 +5,7 @@ from itertools import repeat
 import numpy as np
 
 from specparam.bands import Bands
+from specparam.objs.metrics import Metrics
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
@@ -26,10 +27,15 @@ class BaseResults():
     """Base object for managing results."""
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    def __init__(self, modes=None, bands=None):
+    def __init__(self, modes=None, metrics=None, bands=None):
         """Initialize BaseResults object."""
 
         self.modes = modes
+
+        #self.metrics = metrics
+        self.metrics = Metrics()
+        self.metrics.set_defaults()
+
         self.bands = bands if bands else Bands()
 
         # Initialize results attributes
