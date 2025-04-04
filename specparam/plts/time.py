@@ -74,6 +74,6 @@ def plot_time_model(time, **plot_kwargs):
          time.results.time_results[time.results.metrics.labels[gof_ind]]],
         labels=[time.results.metrics.flabels[err_ind],
                 time.results.metrics.flabels[gof_ind]],
-        colors=[PARAM_COLORS[time.results.metrics.measures[err_ind]],
-                PARAM_COLORS[time.results.metrics.measures[gof_ind]]],
+        colors=[PARAM_COLORS[time.results.metrics.types[err_ind]],
+                PARAM_COLORS[time.results.metrics.types[gof_ind]]],
         xlim=xlim, title='Fit Quality', ax=next(axes))

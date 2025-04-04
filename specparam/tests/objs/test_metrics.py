@@ -52,8 +52,8 @@ def test_metrics_obj(tfm):
 
 def test_metrics_dict(tfm):
 
-    er_met_def = {'measure' : 'error', 'metric' : 'mae', 'func' : compute_mean_abs_error}
-    gof_met_def = {'measure' : 'gof', 'metric' : 'rsquared', 'func' : compute_r_squared}
+    er_met_def = {'type' : 'error', 'measure' : 'mae', 'func' : compute_mean_abs_error}
+    gof_met_def = {'type' : 'gof', 'measure' : 'rsquared', 'func' : compute_r_squared}
 
     metrics = Metrics([er_met_def, gof_met_def])
     assert isinstance(metrics, Metrics)
@@ -70,8 +70,8 @@ def test_metrics_dict(tfm):
 
 def test_metrics_kwargs(tfm):
 
-    er_met_def = {'measure' : 'error', 'metric' : 'mae', 'func' : compute_mean_abs_error}
-    ar2_met_def = {'measure' : 'gof', 'metric' : 'arsquared',
+    er_met_def = {'type' : 'error', 'measure' : 'mae', 'func' : compute_mean_abs_error}
+    ar2_met_def = {'type' : 'gof', 'measure' : 'arsquared',
                    'func' : compute_adj_r_squared, 'kwargs' : {'results' : 'n_params_'}}
 
     metrics = Metrics([er_met_def, ar2_met_def])

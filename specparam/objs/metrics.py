@@ -10,9 +10,9 @@ class Metric():
 
     Parameters
     ----------
-    measure : str
+    type : str
         The type of measure, e.g. 'error' or 'gof'.
-    metric : str
+    measure : str
         The specific measure, e.g. 'r_squared'.
     func : callable
         The function that computes the metric.
@@ -22,11 +22,11 @@ class Metric():
         Each value should be the name of the attribute to access and pass to compute the metric.
     """
 
-    def __init__(self, measure, metric, func, kwargs=None):
+    def __init__(self, type, measure, func, kwargs=None):
         """Initialize metric."""
 
+        self.type = type
         self.measure = measure
-        self.metric = metric
         self.func = func
         self.result = None
         self.kwargs = {} if not kwargs else kwargs
@@ -42,7 +42,7 @@ class Metric():
     def label(self):
         """Define label property."""
 
-        return self.measure + '_' + self.metric
+        return self.type + '_' + self.measure
 
 
     @property
@@ -92,6 +92,12 @@ class Metrics():
         self.metrics = []
         if metrics:
             self.add_metrics(metrics)
+
+
+    def __len__(self):
+        """Define length of the object as the number of metrics."""
+
+        return len(self.labels)
 
 
     def __getitem__(self, label):
@@ -152,6 +158,20 @@ class Metrics():
 
         for metric in self.metrics:
             metric.compute_metric(data, results)
+
+
+    @property
+    def types(self):
+        """Define alias for metric type of all currently defined metrics."""
+
+        return [metric.type for metric in self.metrics]
+
+
+    @property
+    def measures(self):
+        """Define alias for measure description of all currently defined metrics."""
+
+        return [metric.measure for metric in self.metrics]
 
 
     @property
