@@ -83,10 +83,12 @@ def plot_event_model(event, **plot_kwargs):
         next(axes).axis('off')
 
     # 03: goodness of fit
-    for glabel in ['error', 'r_squared']:
+    for ind, glabel in enumerate(event.results.metrics.labels):
         plot_param_over_time_yshade(\
-            None, event.results.event_time_results[glabel], label=glabel,
-            drop_xticks=False if glabel == 'r_squared' else True,
-            add_xlabel=True if glabel == 'r_squared' else False,
-            title='Goodness of Fit' if glabel == 'error' else None,
-            color=PARAM_COLORS[glabel],  xlim=xlim, ax=next(axes))
+            None, event.results.event_time_results[glabel],
+            label=event.results.metrics.flabels[ind],
+            title='Fit Quality' if ind == 0 else None,
+            drop_xticks=True if ind < len(event.results.metrics) else False,
+            add_xlabel=True if ind == len(event.results.metrics) else False,
+            color=PARAM_COLORS[event.results.metrics.measures[ind]],
+            xlim=xlim, ax=next(axes))

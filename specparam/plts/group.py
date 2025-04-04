@@ -7,6 +7,7 @@ This file contains plotting functions that take as input a group model object.
 
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import, check_dependency
+from specparam.utils.select import find_first_ind
 from specparam.plts.settings import PLT_FIGSIZES
 from specparam.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
 from specparam.plts.utils import savefig
@@ -100,8 +101,15 @@ def plot_group_goodness(group, ax=None, **plot_kwargs):
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    plot_scatter_2(group.results.get_params('error'), 'Error',
-                   group.results.get_params('r_squared'), 'R^2', 'Goodness of Fit', ax=ax)
+    # Get indices of metrics to plot
+    err_ind = find_first_ind(group.results.metrics.labels, 'error')
+    gof_ind = find_first_ind(group.results.metrics.labels, 'gof')
+
+    plot_scatter_2(group.results.get_params(group.results.metrics.labels[err_ind]),
+                   group.results.metrics.flabels[err_ind],
+                   group.results.get_params(group.results.metrics.labels[gof_ind]),
+                   group.results.metrics.flabels[gof_ind],
+                   'Fit Quality', ax=ax)
 
 
 @savefig

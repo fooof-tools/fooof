@@ -34,7 +34,7 @@ PARAM_COLORS = {
     'bw' : '#0fd197',
     'presence' : '#095407',
     'error' : '#940000',
-    'r_squared' : '#ab7171',
+    'gof' : '#ab7171',
 }
 
 # Levels for scaling alpha with the number of points in scatter plots

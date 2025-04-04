@@ -8,6 +8,7 @@ This file contains plotting functions that take as input a time model object.
 from itertools import cycle
 
 from specparam.data.utils import get_periodic_labels, get_band_labels
+from specparam.utils.select import find_first_ind
 from specparam.plts.utils import savefig
 from specparam.plts.templates import plot_params_over_time
 from specparam.plts.settings import PARAM_COLORS
@@ -80,9 +81,13 @@ def plot_time_model(time, **plot_kwargs):
             title='Periodic Parameters - ' + band_labels[band_ind], ax=next(axes))
 
     # 03: goodness of fit
+    err_ind = find_first_ind(time.results.metrics.labels, 'error')
+    gof_ind = find_first_ind(time.results.metrics.labels, 'gof')
     plot_params_over_time(None,
-                          [time.results.time_results['error'],
-                           time.results.time_results['r_squared']],
-                          labels=['Error', 'R-squared'], xlim=xlim,
-                          colors=[PARAM_COLORS['error'], PARAM_COLORS['r_squared']],
-                          title='Goodness of Fit', ax=next(axes))
+                          [time.results.time_results[time.results.metrics.labels[err_ind]],
+                           time.results.time_results[time.results.metrics.labels[gof_ind]]],
+                          labels=[time.results.metrics.flabels[err_ind],
+                                  time.results.metrics.flabels[gof_ind]],
+                          colors=[PARAM_COLORS[time.results.metrics.measures[err_ind]],
+                                  PARAM_COLORS[time.results.metrics.measures[gof_ind]]],
+                          xlim=xlim, title='Fit Quality', ax=next(axes))
