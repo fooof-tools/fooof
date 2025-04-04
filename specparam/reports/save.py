@@ -2,7 +2,6 @@
 
 from specparam.io.utils import create_file_path
 from specparam.modutils.dependencies import safe_import, check_dependency
-from specparam.data.utils import get_periodic_labels
 from specparam.plts.templates import plot_text
 from specparam.plts.group import (plot_group_aperiodic, plot_group_goodness,
                                   plot_group_peak_frequencies)
@@ -131,22 +130,19 @@ def save_time_report(time, file_name, file_path=None, add_settings=True):
         Whether to add a print out of the model settings to the end of the report.
     """
 
-    # Check model object for number of bands, to decide report size
-    pe_labels = get_periodic_labels(time.results.time_results)
-    n_bands = len(pe_labels['cf'])
-
     # Initialize figure, defining number of axes based on model + what is to be plotted
-    n_rows = 1 + 2 + n_bands + (1 if add_settings else 0)
-    height_ratios = [1.0] + [0.5] * (n_bands + 2) + ([0.4] if add_settings else [])
-    _, axes = plt.subplots(n_rows, 1,
-                           gridspec_kw={'hspace' : 0.35, 'height_ratios' : height_ratios},
-                           figsize=REPORT_FIGSIZE)
+    n_rows = 1 + 2 + time.results.bands.n_bands + (1 if add_settings else 0)
+    height_ratios = [1.0] + [0.5] * (time.results.bands.n_bands + 2) + \
+        ([0.4] if add_settings else [])
+    _, axes = plt.subplots(\
+        n_rows, 1, gridspec_kw={'hspace' : 0.35, 'height_ratios' : height_ratios},
+        figsize=REPORT_FIGSIZE)
 
     # First / top: text results
     plot_text(gen_time_results_str(time), 0.5, 0.7, ax=axes[0])
 
     # Second - data plots
-    time.plot(axes=axes[1:2+n_bands+1])
+    time.plot(axes=axes[1:2+time.results.bands.n_bands+1])
 
     # Third - Model settings
     if add_settings:
@@ -173,15 +169,12 @@ def save_event_report(event, file_name, file_path=None, add_settings=True):
         Whether to add a print out of the model settings to the end of the report.
     """
 
-    # Check model object for number of bands & aperiodic mode, to decide report size
-    pe_labels = get_periodic_labels(event.results.event_time_results)
-    n_bands = len(pe_labels['cf'])
-    has_knee = 'knee' in event.results.event_time_results.keys()
-
     # Initialize figure, defining number of axes based on model + what is to be plotted
-    n_rows = 1 + (4 if has_knee else 3) + (n_bands * 5) + 2 + (1 if add_settings else 0)
-    height_ratios = [2.75] + [1] * (3 if has_knee else 2) + \
-        [0.25, 1, 1, 1, 1] * n_bands + [0.25] + [1, 1] + ([1.5] if add_settings else [])
+    n_rows = 1 + (event.modes.aperiodic.n_params + 1) + (event.results.bands.n_bands * 5) + \
+        2 + (1 if add_settings else 0)
+    height_ratios = [2.75] + [1] * event.modes.aperiodic.n_params + \
+        [0.25, 1, 1, 1, 1] * event.results.bands.n_bands + [0.25] + [1, 1] + \
+        ([1.5] if add_settings else [])
     _, axes = plt.subplots(n_rows, 1,
                            gridspec_kw={'hspace' : 0.1, 'height_ratios' : height_ratios},
                            figsize=(REPORT_FIGSIZE[0], REPORT_FIGSIZE[1] + 7))
