@@ -129,36 +129,6 @@ def get_periodic_labels(results):
     return outs
 
 
-def get_band_labels(indict):
-    """Get a list of band labels from
-
-    Parameters
-    ----------
-    indict : dict
-        Dictionary of results and/or labels to get the band labels from.
-        Can be wither a `time_results` or `periodic_labels` dictionary.
-
-    Returns
-    -------
-    band_labels : list of str
-        List of band labels.
-    """
-
-    # If it's a results dictionary, convert to periodic labels
-    if 'offset' in indict:
-        indict = get_periodic_labels(indict)
-
-    n_bands = len(indict['cf'])
-
-    band_labels = []
-    for ind in range(n_bands):
-        tband_label = indict['cf'][ind].split('_')
-        tband_label.remove('cf')
-        band_labels.append(tband_label[0])
-
-    return band_labels
-
-
 def get_results_by_ind(results, ind):
     """Get a specified index from a dictionary of results.
 
