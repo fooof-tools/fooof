@@ -4,6 +4,7 @@ import numpy as np
 
 from specparam.sim import gen_freqs
 from specparam.data import FitResults
+from specparam.utils.checks import check_input_options
 from specparam.models import (SpectralModel, SpectralGroupModel,
                               SpectralTimeModel, SpectralTimeEventModel)
 from specparam.data.periodic import get_band_peak_group
@@ -39,6 +40,7 @@ def initialize_model_from_source(source, target):
 
     model = MODELS[target](**source.modes.get_modes()._asdict(),
                            **source.algorithm.get_settings()._asdict(),
+                           metrics=source.results.metrics.labels,
                            verbose=source.verbose)
     model.data.add_meta_data(source.data.get_meta_data())
     model.data.set_checks(*source.data.get_checks())
@@ -54,7 +56,7 @@ def compare_model_objs(model_objs, aspect):
     ----------
     model_objs : list of SpectralModel and/or SpectralGroupModel
         Objects whose attributes are to be compared.
-    aspect : {'settings', 'meta_data'}
+    aspect : {'settings', 'meta_data', 'metrics'} or list
         Which set of attributes to compare the objects across.
 
     Returns
@@ -63,12 +65,22 @@ def compare_model_objs(model_objs, aspect):
         Whether the settings are consistent across the input list of objects.
     """
 
+    if isinstance(aspect, list):
+        outputs = []
+        for caspect in aspect:
+            outputs.append(compare_model_objs(model_objs, caspect))
+        return np.all(outputs)
+
+    check_input_options(aspect, ['settings', 'meta_data', 'metrics'], 'aspect')
+
     # Check specified aspect of the objects are the same across instances
     for m_obj_1, m_obj_2 in zip(model_objs[:-1], model_objs[1:]):
         if aspect == 'settings':
             consistent = m_obj_1.algorithm.get_settings() == m_obj_2.algorithm.get_settings()
         if aspect == 'meta_data':
             consistent = m_obj_1.data.get_meta_data() == m_obj_2.data.get_meta_data()
+        if aspect == 'metrics':
+            consistent = m_obj_1.results.metrics.labels == m_obj_2.results.metrics.labels
 
     return consistent
 
@@ -125,19 +137,20 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
             peak_params.append(avg_funcs[avg_method](peaks, 0))
             gauss_params.append(avg_funcs[avg_method](gauss, 0))
 
-    peak_params = np.array(peak_params)
-    gauss_params = np.array(gauss_params)
+    # Collect together result parameters
+    results_params = {
+        'aperiodic_params' : ap_params,
+        'peak_params' : np.array(peak_params),
+        'gaussian_params' : np.array(gauss_params),
+    }
 
     # Goodness of fit measures: extract & average
-    r2 = avg_funcs[avg_method](group.results.get_params('r_squared'))
-    error = avg_funcs[avg_method](group.results.get_params('error'))
+    results_metrics = {label : avg_funcs[avg_method](group.results.get_params(label)) \
+        for label in group.results.metrics.labels}
 
-    # Collect all results together, to be added to the model object
-    results = FitResults(ap_params, peak_params, r2, error, gauss_params)
-
-    # Create the new model object, with settings, data info & results
+    # Create the new model object, with settings, data info, and then add average results
     model = group.get_model()
-    model.results.add_results(results)
+    model.results.add_results(model.results._fit_results(**results_params, **results_metrics))
 
     # Generate the average model from the parameters
     if regenerate:

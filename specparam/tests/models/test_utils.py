@@ -6,6 +6,7 @@ import numpy as np
 
 from specparam import SpectralGroupModel
 from specparam.sim import sim_group_power_spectra
+from specparam.measures.metrics import METRICS
 from specparam.modutils.errors import NoModelError, IncompatibleSettingsError
 
 from specparam.tests.tdata import default_group_params
@@ -32,6 +33,8 @@ def test_compare_model_objs(tfm, tfg):
 
         f_obj2 = f_obj.copy()
 
+        assert compare_model_objs([f_obj, f_obj2], ['settings', 'meta_data', 'metrics'])
+
         assert compare_model_objs([f_obj, f_obj2], 'settings')
         f_obj2.algorithm.peak_width_limits = [2, 4]
         f_obj2.algorithm._reset_internal_settings()
@@ -40,6 +43,10 @@ def test_compare_model_objs(tfm, tfg):
         assert compare_model_objs([f_obj, f_obj2], 'meta_data')
         f_obj2.data.freq_range = [5, 25]
         assert not compare_model_objs([f_obj, f_obj2], 'meta_data')
+
+        assert compare_model_objs([f_obj, f_obj2], 'metrics')
+        f_obj2.results.metrics.add_metric(METRICS['error_rmse'])
+        assert not compare_model_objs([f_obj, f_obj2], 'metrics')
 
 def test_average_group(tfg, tbands):
 
