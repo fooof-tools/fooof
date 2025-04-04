@@ -306,7 +306,7 @@ def gen_methods_report_str(concise=False):
     return output
 
 
-# TO UPDATE
+# TODO: UPDATE
 def gen_methods_text_str(model=None):
     """Generate a string representation of a template methods report.
 
@@ -398,10 +398,10 @@ def gen_model_results_str(model, concise=False):
         *[peak_str.format(*op) for op in model.results.peak_params_],
         '',
 
-        # Goodness if fit
-        'Goodness of fit metrics:',
-        'R^2 of model fit is {:5.4f}'.format(model.results.r_squared_),
-        'Error of the fit is {:5.4f}'.format(model.results.error_),
+        # Metrics
+        'Model fit quality metrics:',
+        *['{:>18s} is {:1.4f} {:8s}'.format('{:s} ({:s})'.format(*key.split('_')), res, ' ') \
+            for key, res in model.results.metrics.results.items()],
         '',
 
         # Footer
@@ -464,12 +464,12 @@ def gen_group_results_str(group, concise=False):
             group.modes.periodic.name, sum(group.results.n_peaks_)),
         '',
 
-        # Goodness if fit
-        'Goodness of fit metrics:',
-        '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(group.results.get_params('r_squared'))),
-        'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(group.results.get_params('error'))),
+        # Metrics
+        'Model fit quality metrics:',
+        *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
+            '{:s} ({:s})'.format(*key.split('_')),
+            *compute_arr_desc(group.results.get_params(key))) \
+                for key in group.results.metrics.results],
         '',
 
         # Footer
@@ -556,12 +556,12 @@ def gen_time_results_str(time, concise=False):
             for band_label in time.results.bands.labels],
         '',
 
-        # Goodness if fit
-        'Goodness of fit (mean values across windows):',
-        '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(time.results.time_results['r_squared'])),
-        'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(time.results.time_results['error'])),
+        # Metrics
+        'Model fit quality metrics (values across windows):',
+        *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
+            '{:s} ({:s})'.format(*key.split('_')),
+            *compute_arr_desc(time.results.time_results[key])) \
+                for key in time.results.metrics.results],
         '',
 
         # Footer
@@ -636,13 +636,14 @@ def gen_event_results_str(event, concise=False):
             for band_label in event.results.bands.labels],
         '',
 
-        # Goodness if fit
-        'Goodness of fit (values across events):',
-        '   R2s -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(np.mean(event.results.event_time_results['r_squared'], 1))),
-        'Errors -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'
-        .format(*compute_arr_desc(np.mean(event.results.event_time_results['error'], 1))),
+        # Metrics
+        'Model fit quality metrics (values across events):',
+        *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
+            '{:s} ({:s})'.format(*key.split('_')),
+            *compute_arr_desc(np.mean(event.results.event_time_results[key], 1))) \
+                for key in event.results.metrics.results],
         '',
+
 
         # Footer
         '='
