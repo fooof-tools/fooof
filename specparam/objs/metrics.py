@@ -45,6 +45,20 @@ class Metric():
         return self.measure + '_' + self.metric
 
 
+    @property
+    def flabel(self):
+        """Define formatted label property."""
+
+        label_els = self.label.split('_')
+
+        if 'error' in self.label:
+            flabel = '{} ({})'.format(label_els[0].capitalize(), label_els[1].upper())
+        if 'gof' in self.label:
+            flabel = '{} ({})'.format(label_els[0].upper(), label_els[1])
+
+        return flabel
+
+
     def compute_metric(self, data, results):
         """Compute metric.
 
@@ -145,6 +159,13 @@ class Metrics():
         """Define alias for labels of all currently defined metrics."""
 
         return [metric.label for metric in self.metrics]
+
+
+    @property
+    def flabels(self):
+        """Define alias for formatted labels of all currently defined metrics."""
+
+        return [metric.flabel for metric in self.metrics]
 
 
     @property
