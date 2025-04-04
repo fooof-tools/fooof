@@ -33,3 +33,13 @@ def test_dict_select_keys():
     assert len(out) == len(keep)
     for ke, va in out.items():
         assert ke in keep
+
+def test_find_first_ind():
+
+    l1 = ['test_for', 'word_other', 'lion_tiger', 'word_again']
+
+    assert find_first_ind(l1, 'test') == 0
+    assert find_first_ind(l1, 'word') == 1
+    assert find_first_ind(l1, 'lion') == 2
+    assert find_first_ind(l1, 'again') == 3
+    assert find_first_ind(l1, 'not') == None

@@ -92,3 +92,28 @@ def dict_select_keys(in_dict, keep):
     """
 
     return {ke:va for ke, va in in_dict.items() if ke in keep}
+
+
+def find_first_ind(options, search):
+    """Get the index of the first element that contains a specified search string.
+
+    Parameters
+    ----------
+    options : list or array
+        List to search for elements within.
+    search : str
+        Search string to search for.
+
+    Returns
+    -------
+    oind : int
+        Index of first element in `options` that contains `search`.
+    """
+
+    oind = None
+    for ind, label in enumerate(options):
+        if search in label:
+            oind = ind
+            break
+
+    return oind
