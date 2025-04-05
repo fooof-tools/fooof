@@ -192,7 +192,7 @@ class BaseResults():
         if not self.has_model:
             raise NoModelError("No model fit results are available to extract, can not proceed.")
 
-        return get_model_params(self.get_results(), name, col)
+        return get_model_params(self.get_results(), self.modes, name, col)
 
 
     def _check_loaded_results(self, data):
@@ -410,7 +410,7 @@ class BaseResults2D(BaseResults):
         if not self.has_model:
             raise NoModelError("No model fit results are available, can not proceed.")
 
-        return get_group_params(self.group_results, name, col)
+        return get_group_params(self.group_results, self.modes, name, col)
 
 
 class BaseResults2DT(BaseResults2D):
@@ -612,7 +612,7 @@ class BaseResults3D(BaseResults2DT):
         column is appended to the returned array, indicating the index that the peak came from.
         """
 
-        return [get_group_params(gres, name, col) for gres in self.event_group_results]
+        return [get_group_params(gres, self.modes, name, col) for gres in self.event_group_results]
 
 
     def convert_results(self, peak_org=None):

@@ -9,37 +9,37 @@ from specparam.data.utils import *
 ###################################################################################################
 ###################################################################################################
 
-def test_get_model_params(tresults):
+def test_get_model_params(tresults, tmodes):
 
     for dname in ['aperiodic_params', 'aperiodic',
                   'peak_params', 'peak',
                   'gaussian_params', 'gaussian',
                   'error_mae', 'gof_rsquared']:
-        assert np.any(get_model_params(tresults, dname))
+        assert np.any(get_model_params(tresults, tmodes, dname))
 
     if dname == 'aperiodic_params' or dname == 'aperiodic':
         for dtype in ['offset', 'exponent']:
-            assert np.any(get_model_params(tresults, dname, dtype))
+            assert np.any(get_model_params(tresults, tmodes, dname, dtype))
 
     if dname == 'peak_params' or dname == 'peak':
         for dtype in ['CF', 'PW', 'BW']:
-            assert np.any(get_model_params(tresults, dname, dtype))
+            assert np.any(get_model_params(tresults, tmodes, dname, dtype))
 
-def test_get_group_params(tresults):
+def test_get_group_params(tresults, tmodes):
 
     gresults = [tresults, tresults]
 
     for dname in ['aperiodic_params', 'peak_params', 'gaussian_params',
                   'error_mae', 'gof_rsquared',]:
-        assert np.any(get_group_params(gresults, dname))
+        assert np.any(get_group_params(gresults, tmodes, dname))
 
     if dname == 'aperiodic_params':
         for dtype in ['offset', 'exponent']:
-            assert np.any(get_group_params(gresults, dname, dtype))
+            assert np.any(get_group_params(gresults, tmodes, dname, dtype))
 
     if dname == 'peak_params':
         for dtype in ['CF', 'PW', 'BW']:
-            assert np.any(get_group_params(gresults, dname, dtype))
+            assert np.any(get_group_params(gresults, tmodes, dname, dtype))
 
 def test_get_results_by_ind():
 

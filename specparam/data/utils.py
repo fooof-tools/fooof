@@ -2,19 +2,35 @@
 
 import numpy as np
 
-from specparam.modes.info import get_indices
-from specparam.modes.funcs import infer_ap_func
-
 ###################################################################################################
 ###################################################################################################
 
-def get_model_params(fit_results, name, col=None):
+def _get_params_helper(modes, name, col):
+    """Helper function for get_*_params functions."""
+
+    # Allow for shortcut alias, without adding `_params`
+    if name in ['aperiodic', 'peak', 'gaussian']:
+        name = name + '_params'
+
+    # If col specified as string, get mapping back to integer
+    if isinstance(col, str):
+        if 'aperiodic' in name:
+            col = modes.aperiodic.params.indices[col.lower()]
+        if 'peak' in name or 'gaussian' in name:
+            col = modes.periodic.params.indices[col.lower()]
+
+    return name, col
+
+
+def get_model_params(fit_results, modes, name, col=None):
     """Return model fit parameters for specified feature(s).
 
     Parameters
     ----------
     fit_results : FitResults
         Results of a model fit.
+    modes : Modes
+        Model modes definition.
     name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
         Name of the data field to extract.
     col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
@@ -27,20 +43,15 @@ def get_model_params(fit_results, name, col=None):
         Requested data.
     """
 
-    # If col specified as string, get mapping back to integer
-    if isinstance(col, str):
-        col = get_indices(infer_ap_func(fit_results.aperiodic_params))[col]
-
-    # Allow for shortcut alias, without adding `_params`
-    if name in ['aperiodic', 'peak', 'gaussian']:
-        name = name + '_params'
+    # Use helper function to sort out name and column selection
+    name, col = _get_params_helper(modes, name, col)
 
     # Extract the requested data field from object
     out = getattr(fit_results, name)
 
     # Periodic values can be empty arrays and if so, replace with NaN array
     if isinstance(out, np.ndarray) and out.size == 0:
-        out = np.array([np.nan, np.nan, np.nan])
+        out = np.array([np.nan] * modes.periodic.n_params)
 
     # Select out a specific column, if requested
     if col is not None:
@@ -52,13 +63,15 @@ def get_model_params(fit_results, name, col=None):
     return out
 
 
-def get_group_params(group_results, name, col=None):
+def get_group_params(group_results, modes, name, col=None):
     """Extract a specified set of parameters from a set of group results.
 
     Parameters
     ----------
     group_results : list of FitResults
         List of FitResults objects, reflecting model results across a group of power spectra.
+    modes : Modes
+        Model modes definition.
     name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
         Name of the data field to extract across the group.
     col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
@@ -71,16 +84,8 @@ def get_group_params(group_results, name, col=None):
         Requested data.
     """
 
-    # Allow for shortcut alias, without adding `_params`
-    if name in ['aperiodic', 'peak', 'gaussian']:
-        name = name + '_params'
-
-    # If col specified as string, get mapping back to integer
-    if isinstance(col, str):
-        col = get_indices(infer_ap_func(group_results[0].aperiodic_params))[col]
-    elif isinstance(col, int):
-        if col not in [0, 1, 2]:
-            raise ValueError("Input value for `col` not valid.")
+    # Use helper function to sort out name and column selection
+    name, col = _get_params_helper(modes, name, col)
 
     # Pull out the requested data field from the group data
     # As a special case, peak_params are pulled out in a way that appends
@@ -88,7 +93,7 @@ def get_group_params(group_results, name, col=None):
     if name in ('peak_params', 'gaussian_params'):
 
         # Collect peak data, appending the index of the model it comes from
-        out = np.vstack([np.insert(getattr(data, name), 3, index, axis=1)
+        out = np.vstack([np.insert(getattr(data, name), modes.periodic.n_params, index, axis=1)
                          for index, data in enumerate(group_results)])
 
         # This updates index to grab selected column, and the last column
