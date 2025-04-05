@@ -1,6 +1,8 @@
 """Define base results objects."""
 
+from copy import deepcopy
 from itertools import repeat
+from collections import namedtuple
 
 import numpy as np
 
@@ -10,7 +12,8 @@ from specparam.measures.metrics import METRICS
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
-from specparam.data import FitResults
+#from specparam.data import FitResults
+from specparam.data.data import make_data_object
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import (get_model_params, get_group_params,
                                   get_results_by_ind, get_results_by_row)
@@ -20,8 +23,10 @@ from specparam.sim.gen import gen_model
 ###################################################################################################
 
 # Define set of results fields
-RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
-                  'r_squared_', 'error_']
+# RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
+#                   'r_squared_', 'error_']
+
+RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_']
 
 DEFAULT_METRICS = ['error_mae', 'gof_rsquared']
 
@@ -36,18 +41,23 @@ class BaseResults():
         self.modes = modes
 
         if isinstance(metrics, Metrics):
-            self.metrics = metrics
+            self.metrics = deepcopy(metrics)
         elif isinstance(metrics, list):
             self.metrics = Metrics(\
                 [METRICS[metric] if isinstance(metric, str) else metric for metric in metrics])
         else:
             self.metrics = Metrics([METRICS[metric] for metric in DEFAULT_METRICS])
 
-        self.bands = bands if bands else Bands()
+        self.bands = deepcopy(bands) if bands else Bands()
 
         # Initialize results attributes
         self._reset_results(True)
         self._fields = RESULTS_FIELDS
+
+        #self._fit_results = self._make_fit_results()
+        self._fit_results = \
+            make_data_object('FitResults', \
+                [key.strip('_') for key in self._fields] + self.metrics.labels)
 
 
     @property
@@ -90,11 +100,11 @@ class BaseResults():
             A data object containing the results from fitting a power spectrum model.
         """
 
-        self.aperiodic_params_ = results.aperiodic_params
-        self.gaussian_params_ = results.gaussian_params
-        self.peak_params_ = results.peak_params
-        self.r_squared_ = results.r_squared
-        self.error_ = results.error
+        # Add parameter fields and then select and add metrics results
+        for pfield in self._fields:
+            setattr(self, pfield, getattr(results, pfield.strip('_')))
+        self.metrics.add_results(\
+            {key : getattr(results, key) for key in self.metrics.labels})
 
         self._check_loaded_results(results._asdict())
 
@@ -108,7 +118,9 @@ class BaseResults():
             Object containing the model fit results from the current object.
         """
 
-        return FitResults(**{key.strip('_') : getattr(self, key) for key in self._fields})
+        fit_params = {key.strip('_') : getattr(self, key) for key in self._fields}
+
+        return self._fit_results(**fit_params, **self.metrics.results)
 
 
     def get_component(self, component='full', space='log'):
@@ -230,10 +242,6 @@ class BaseResults():
                 self.gaussian_params_ = np.nan
                 self.peak_params_ = np.nan
 
-            # Goodness of fit measures -- TEMP / Note: move to `self.gof` or similar (?)
-            self.r_squared_ = np.nan
-            self.error_ = np.nan
-
             # Data components
             self._spectrum_flat = None
             self._spectrum_peak_rm = None
@@ -256,6 +264,18 @@ class BaseResults():
         self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(
             freqs, self.aperiodic_params_,
             self.gaussian_params_, return_components=True)
+
+
+    # def _make_fit_results(self):
+    #     """Create a custom FitResults object for the current object's fit settings."""
+
+    #     results_fields = [key.strip('_') for key in self._fields]
+
+    #     class FitResults(namedtuple('FitResults', results_fields + self.metrics.labels)):
+    #         __slots__ = ()
+    #     #FitResults.__doc__ = ...
+
+    #     return FitResults
 
 
 class BaseResults2D(BaseResults):
@@ -317,7 +337,7 @@ class BaseResults2D(BaseResults):
     def n_peaks_(self):
         """How many peaks were fit for each model."""
 
-        return [res.peak_params.shape[0] for res in self] if self.has_model else None
+        return np.array([res.peak_params.shape[0] for res in self]) if self.has_model else None
 
 
     @property
