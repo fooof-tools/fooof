@@ -3,10 +3,11 @@
 import numpy as np
 
 from specparam.bands import Bands
-from specparam.data import FitResults
+from specparam.data.data import make_data_object
 from specparam.models import (SpectralModel, SpectralGroupModel,
                               SpectralTimeModel, SpectralTimeEventModel)
 from specparam.objs.data import BaseData, BaseData2D
+from specparam.objs.results import BaseResults
 from specparam.sim.params import param_sampler
 from specparam.sim.sim import sim_power_spectrum, sim_group_power_spectra, sim_spectrogram
 
@@ -99,10 +100,14 @@ def get_tbands():
 def get_tresults():
     """Get a FitResults object, for testing."""
 
-    return FitResults(aperiodic_params=np.array([1.0, 1.00]),
-                      peak_params=np.array([[10.0, 1.25, 2.0], [20.0, 1.0, 3.0]]),
-                      r_squared=0.97, error=0.01,
-                      gaussian_params=np.array([[10.0, 1.25, 1.0], [20.0, 1.0, 1.5]]))
+    tres = BaseResults()
+
+    fields = [el.strip('_') for el in tres._fields]
+    return make_data_object('FitResults', fields + tres.metrics.labels)(\
+        aperiodic_params=np.array([1.0, 1.00]),
+        peak_params=np.array([[10.0, 1.25, 2.0], [20.0, 1.0, 3.0]]),
+        gaussian_params=np.array([[10.0, 1.25, 1.0], [20.0, 1.0, 1.5]]),
+        error_mae=0.01, gof_rsquared=0.97)
 
 def get_tdocstring():
     """Get an example docstring, for testing."""

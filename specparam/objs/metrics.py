@@ -1,6 +1,9 @@
 """Metrics object."""
 
+from copy import deepcopy
 from collections import namedtuple
+
+import numpy as np
 
 ###################################################################################################
 ###################################################################################################
@@ -28,7 +31,7 @@ class Metric():
         self.type = type
         self.measure = measure
         self.func = func
-        self.result = None
+        self.result = np.nan
         self.kwargs = {} if not kwargs else kwargs
 
 
@@ -49,12 +52,10 @@ class Metric():
     def flabel(self):
         """Define formatted label property."""
 
-        label_els = self.label.split('_')
-
-        if 'error' in self.label:
-            flabel = '{} ({})'.format(label_els[0].capitalize(), label_els[1].upper())
-        if 'gof' in self.label:
-            flabel = '{} ({})'.format(label_els[0].upper(), label_els[1])
+        if self.type == 'error':
+            flabel = '{} ({})'.format(self.type.capitalize(), self.measure.upper())
+        if self.type == 'gof':
+            flabel = '{} ({})'.format(self.type.upper(), self.measure)
 
         return flabel
 
@@ -129,7 +130,7 @@ class Metrics():
         if isinstance(metric, dict):
             metric = Metric(**metric)
 
-        self.metrics.append(metric)
+        self.metrics.append(deepcopy(metric))
 
 
     def add_metrics(self, metrics):

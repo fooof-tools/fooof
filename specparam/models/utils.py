@@ -3,7 +3,7 @@
 import numpy as np
 
 from specparam.sim import gen_freqs
-from specparam.data import FitResults
+from specparam.data.data import make_data_object
 from specparam.utils.checks import check_input_options
 from specparam.models import (SpectralModel, SpectralGroupModel,
                               SpectralTimeModel, SpectralTimeEventModel)
@@ -150,7 +150,9 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
 
     # Create the new model object, with settings, data info, and then add average results
     model = group.get_model()
-    model.results.add_results(model.results._fit_results(**results_params, **results_metrics))
+    fields = [el.strip('_') for el in model.results._fields]
+    fitres = make_data_object('FitResults', fields + model.results.metrics.labels)
+    model.results.add_results(fitres(**results_params, **results_metrics))
 
     # Generate the average model from the parameters
     if regenerate:

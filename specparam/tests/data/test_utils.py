@@ -11,8 +11,10 @@ from specparam.data.utils import *
 
 def test_get_model_params(tresults):
 
-    for dname in ['aperiodic_params', 'aperiodic', 'peak_params', 'peak',
-                  'error', 'r_squared', 'gaussian_params', 'gaussian']:
+    for dname in ['aperiodic_params', 'aperiodic',
+                  'peak_params', 'peak',
+                  'gaussian_params', 'gaussian',
+                  'error_mae', 'gof_rsquared']:
         assert np.any(get_model_params(tresults, dname))
 
     if dname == 'aperiodic_params' or dname == 'aperiodic':
@@ -27,7 +29,8 @@ def test_get_group_params(tresults):
 
     gresults = [tresults, tresults]
 
-    for dname in ['aperiodic_params', 'peak_params', 'error', 'r_squared', 'gaussian_params']:
+    for dname in ['aperiodic_params', 'peak_params', 'gaussian_params',
+                  'error_mae', 'gof_rsquared',]:
         assert np.any(get_group_params(gresults, dname))
 
     if dname == 'aperiodic_params':

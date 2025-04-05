@@ -9,8 +9,8 @@ from specparam.objs.results import *
 
 def test_base_results():
 
-    tres1 = BaseResults()
-    assert isinstance(tres1, BaseResults)
+    tres = BaseResults()
+    assert isinstance(tres, BaseResults)
 
 def test_base_results_results(tresults):
 
@@ -22,7 +22,6 @@ def test_base_results_results(tresults):
         assert np.array_equal(getattr(tres, result), getattr(tresults, result.strip('_')))
 
     results_out = tres.get_results()
-    assert isinstance(tresults, FitResults)
     assert results_out == tresults
 
 ## 2D results object

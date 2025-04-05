@@ -13,7 +13,6 @@ from specparam.utils.select import groupby
 from specparam.modutils.errors import FitError
 from specparam.sim import gen_freqs, sim_power_spectrum
 from specparam.modes.definitions import AP_MODES, PE_MODES
-from specparam.data import FitResults
 from specparam.modutils.dependencies import safe_import
 from specparam.modutils.errors import DataError, NoDataError, InconsistentDataError
 
@@ -54,12 +53,9 @@ def test_has_model(tfm):
     ntfm = SpectralModel()
     assert not ntfm.results.has_model
 
-def test_n_peaks(tfm):
+def test_n_properties(tfm):
 
     assert tfm.results.n_peaks_
-
-def test_n_params(tfm):
-
     assert tfm.results.n_params_
 
 def test_fit_nk():
@@ -235,7 +231,7 @@ def test_load(tfm):
     for meta_dat in tfm.data._meta_fields:
         assert getattr(ntfm.data, meta_dat) is not None
 
-def test_add_data():
+def test_add_data(tresults):
     """Tests method to add data to model objects."""
 
     # This test uses it's own model object, to not add stuff to the global one
@@ -252,7 +248,7 @@ def test_add_data():
 
     # Test that prior data does not get cleared, when requesting not to clear
     tfm._reset_data_results(True, True, True)
-    tfm.results.add_results(FitResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25]))
+    tfm.results.add_results(tresults)
     tfm.add_data(freqs, pows, clear_results=False)
     assert tfm.data.has_data
     assert tfm.results.has_model
@@ -266,8 +262,10 @@ def test_add_data():
 def test_get_params(tfm):
     """Test the get_params method."""
 
-    for dname in ['aperiodic_params', 'aperiodic', 'peak_params', 'peak',
-                  'error', 'r_squared', 'gaussian_params', 'gaussian']:
+    for dname in ['aperiodic_params', 'aperiodic',
+                  'peak_params', 'peak',
+                  'gaussian_params', 'gaussian',
+                  'error_mae', 'gof_rsquared']:
         assert np.any(tfm.get_params(dname))
 
         if dname == 'aperiodic_params' or dname == 'aperiodic':

@@ -12,7 +12,6 @@ from specparam.measures.metrics import METRICS
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
-#from specparam.data import FitResults
 from specparam.data.data import make_data_object
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import (get_model_params, get_group_params,
@@ -22,12 +21,8 @@ from specparam.sim.gen import gen_model
 ###################################################################################################
 ###################################################################################################
 
-# Define set of results fields
-# RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_',
-#                   'r_squared_', 'error_']
-
+# Define set of results fields & default metrics to use
 RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_']
-
 DEFAULT_METRICS = ['error_mae', 'gof_rsquared']
 
 
@@ -53,11 +48,8 @@ class BaseResults():
         # Initialize results attributes
         self._reset_results(True)
         self._fields = RESULTS_FIELDS
-
-        #self._fit_results = self._make_fit_results()
-        self._fit_results = \
-            make_data_object('FitResults', \
-                [key.strip('_') for key in self._fields] + self.metrics.labels)
+        self._fit_results = make_data_object('FitResults', \
+            [el.strip('_') for el in self._fields] + self.metrics.labels)
 
 
     @property
@@ -118,9 +110,11 @@ class BaseResults():
             Object containing the model fit results from the current object.
         """
 
-        fit_params = {key.strip('_') : getattr(self, key) for key in self._fields}
+        results = self._fit_results(\
+           **{key.strip('_') : getattr(self, key) for key in self._fields},
+           **self.metrics.results)
 
-        return self._fit_results(**fit_params, **self.metrics.results)
+        return results
 
 
     def get_component(self, component='full', space='log'):
@@ -264,18 +258,6 @@ class BaseResults():
         self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(
             freqs, self.aperiodic_params_,
             self.gaussian_params_, return_components=True)
-
-
-    # def _make_fit_results(self):
-    #     """Create a custom FitResults object for the current object's fit settings."""
-
-    #     results_fields = [key.strip('_') for key in self._fields]
-
-    #     class FitResults(namedtuple('FitResults', results_fields + self.metrics.labels)):
-    #         __slots__ = ()
-    #     #FitResults.__doc__ = ...
-
-    #     return FitResults
 
 
 class BaseResults2D(BaseResults):

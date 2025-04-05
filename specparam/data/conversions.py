@@ -58,8 +58,13 @@ def model_to_dict(fit_results, peak_org):
                 fr_dict[band + '_' + label.lower()] = param
 
     # goodness-of-fit metrics
-    fr_dict['error'] = fit_results.error
-    fr_dict['r_squared'] = fit_results.r_squared
+    #fr_dict['error'] = fit_results.error
+    #fr_dict['r_squared'] = fit_results.r_squared
+
+    # FR-TEMP
+    for key in fit_results._fields:
+        if 'error' in key or 'gof' in key:
+            fr_dict[key] = getattr(fit_results, key)
 
     return fr_dict
 
