@@ -397,7 +397,7 @@ class SpectralGroupModel(SpectralModel):
             Model results organized into a pandas object.
         """
 
-        return group_to_dataframe(self.results.get_results(), peak_org)
+        return group_to_dataframe(self.results.get_results(), self.modes, peak_org)
 
 
     def _pass_through_spectrum(self, power_spectrum):

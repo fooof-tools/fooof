@@ -32,9 +32,9 @@ def test_base_results2d():
     assert isinstance(tres2d1, BaseResults)
     assert isinstance(tres2d1, BaseResults2D)
 
-def test_base_results2d_results(tresults):
+def test_base_results2d_results(tresults, tmodes):
 
-    tres2d = BaseResults2D()
+    tres2d = BaseResults2D(modes=tmodes)
 
     results = [tresults, tresults]
     tres2d.add_results(results)
@@ -52,9 +52,9 @@ def test_base_results2dt():
     assert isinstance(tres2dt1, BaseResults2D)
     assert isinstance(tres2dt1, BaseResults2DT)
 
-def test_base_results2d_results(tresults):
+def test_base_results2d_results(tresults, tmodes):
 
-    tres2dt = BaseResults2DT()
+    tres2dt = BaseResults2DT(modes=tmodes)
 
     results = [tresults, tresults]
     tres2dt.add_results(results)
@@ -74,9 +74,9 @@ def test_base_results3d():
     assert isinstance(tres3d1, BaseResults2DT)
     assert isinstance(tres3d1, BaseResults3D)
 
-def test_base_results3d_results(tresults):
+def test_base_results3d_results(tresults, tmodes):
 
-    tres3d = BaseResults3D()
+    tres3d = BaseResults3D(modes=tmodes)
 
     eresults = [[tresults, tresults], [tresults, tresults]]
     tres3d.add_results(eresults)

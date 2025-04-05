@@ -263,7 +263,7 @@ class SpectralTimeModel(SpectralGroupModel):
         """
 
         if peak_org is not None:
-            df = group_to_dataframe(self.results.group_results, peak_org)
+            df = group_to_dataframe(self.results.group_results, self.modes, peak_org)
         else:
             df = dict_to_df(self.results.get_results())
 

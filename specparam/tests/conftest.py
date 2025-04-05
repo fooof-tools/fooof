@@ -9,7 +9,7 @@ import numpy as np
 from specparam.modutils.dependencies import safe_import
 
 from specparam.tests.tdata import (get_tdata, get_tdata2d, get_tfm, get_tfg, get_tft, get_tfe,
-                                   get_tbands, get_tresults, get_tdocstring)
+                                   get_tbands, get_tresults, get_tmodes, get_tdocstring)
 from specparam.tests.tsettings import (BASE_TEST_FILE_PATH, TEST_DATA_PATH,
                                        TEST_REPORTS_PATH, TEST_PLOTS_PATH)
 
@@ -89,6 +89,10 @@ def tbands():
 @pytest.fixture(scope='session')
 def tresults():
     yield get_tresults()
+
+@pytest.fixture(scope='session')
+def tmodes():
+    yield get_tmodes()
 
 @pytest.fixture(scope='function')
 def tdocstring():

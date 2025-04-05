@@ -345,7 +345,7 @@ class SpectralModel(BaseModel):
             Model results organized into a pandas object.
         """
 
-        return model_to_dataframe(self.results.get_results(), peak_org)
+        return model_to_dataframe(self.results.get_results(), self.modes, peak_org)
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False):

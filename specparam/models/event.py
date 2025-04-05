@@ -406,7 +406,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
         """
 
         if peak_org is not None:
-            df = event_group_to_dataframe(self.results.event_group_results, peak_org)
+            df = event_group_to_dataframe(self.results.event_group_results, self.modes, peak_org)
         else:
             df = dict_to_df(flatten_results_dict(self.results.get_results()))
 

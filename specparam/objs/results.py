@@ -477,7 +477,7 @@ class BaseResults2DT(BaseResults2D):
         else:
             peak_org = self.bands
 
-        self.time_results = group_to_dict(self.group_results, peak_org)
+        self.time_results = group_to_dict(self.group_results, self.modes, peak_org)
 
 
 class BaseResults3D(BaseResults2DT):
@@ -632,4 +632,5 @@ class BaseResults3D(BaseResults2DT):
         else:
             peak_org = self.bands
 
-        self.event_time_results = event_group_to_dict(self.event_group_results, peak_org)
+        self.event_time_results = event_group_to_dict(\
+            self.event_group_results, self.modes, peak_org)

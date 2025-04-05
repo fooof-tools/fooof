@@ -3,6 +3,7 @@
 import numpy as np
 
 from specparam.bands import Bands
+from specparam.modes.modes import Modes
 from specparam.data.data import make_data_object
 from specparam.models import (SpectralModel, SpectralGroupModel,
                               SpectralTimeModel, SpectralTimeEventModel)
@@ -96,6 +97,11 @@ def get_tbands():
     """Get a bands object, for testing."""
 
     return Bands({'theta' : (4, 8), 'alpha' : (8, 12), 'beta' : (13, 30)})
+
+def get_tmodes():
+    """Get a Modes object, for testing."""
+
+    return Modes(aperiodic='fixed', periodic='gaussian')
 
 def get_tresults():
     """Get a FitResults object, for testing."""
