@@ -11,6 +11,7 @@ import os
 import numpy as np
 from numpy.testing import assert_equal
 
+from specparam.measures.metrics import METRICS
 from specparam.modutils.dependencies import safe_import
 from specparam.sim import sim_group_power_spectra
 
@@ -119,10 +120,25 @@ def test_fit_knee():
     # No accuracy checking here - just checking that it ran
     assert tfg.results.has_model
 
+def test_fit_custom_metrics():
+
+    metrics = list(METRICS.keys())
+
+    n_spectra = 2
+    xs, ys = sim_group_power_spectra(n_spectra, *default_group_params(), nlvs=0)
+
+    tfg = SpectralGroupModel(metrics=metrics, verbose=False)
+    tfg.fit(xs, ys)
+
+    for fres in tfg.results.group_results:
+        for metric in metrics:
+            assert isinstance(getattr(fres, metric), float)
+
 def test_fit_progress(tfg):
     """Test running group fitting, with a progress bar."""
 
     tfg.fit(progress='tqdm')
+    assert tfg.results.has_model
 
 def test_fg_fail():
     """Test group fit, in a way that some fits will fail.
