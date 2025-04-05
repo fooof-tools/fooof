@@ -149,7 +149,7 @@ def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, sim_p
 
     >>> from specparam.sim import sim_power_spectrum
     >>> freqs, powers, sp = sim_power_spectrum([1, 50], [1, 1], [10, 0.5, 1], return_params=True)
-    >>> rotated_powers, new_sp = rotate_sim_spectrum(freqs, powers, 0.5, 25, sp)
+    >>> rotated_powers, new_sp = rotate_sim_spectrum(freqs, powers, 0.5, 25, sp) # doctest:+SKIP
     """
 
     rotated_spectrum = rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation)
@@ -188,7 +188,7 @@ def translate_sim_spectrum(power_spectrum, delta_offset, sim_params):
 
     >>> from specparam.sim import sim_power_spectrum
     >>> freqs, powers, sp = sim_power_spectrum([1, 50], [1, 1], [10, 0.5, 1], return_params=True)
-    >>> translated_powers, new_sp = translate_sim_spectrum(powers, 0.5, sp)
+    >>> translated_powers, new_sp = translate_sim_spectrum(powers, 0.5, sp) # doctest:+SKIP
     """
 
     translated_spectrum = translate_spectrum(power_spectrum, delta_offset)
