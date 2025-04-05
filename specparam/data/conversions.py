@@ -3,7 +3,6 @@
 import numpy as np
 
 from specparam import Bands
-from specparam.modes.funcs import infer_ap_func
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.data.periodic import get_band_peak_arr
 from specparam.data.utils import flatten_results_dict
