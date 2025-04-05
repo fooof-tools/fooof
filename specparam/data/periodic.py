@@ -2,8 +2,6 @@
 
 import numpy as np
 
-from specparam.modes.info import get_peak_indices
-
 ###################################################################################################
 ###################################################################################################
 
@@ -285,7 +283,8 @@ def threshold_peaks(peak_params, threshold, param='PW'):
         return np.array([np.nan, np.nan, np.nan])
 
     # Otherwise, apply a mask to apply the requested threshold
-    thresh_mask = peak_params[:, get_peak_indices()[param]] > threshold
+    #   TEMP: interim hardcode for parameter index while updating for modes
+    thresh_mask = peak_params[:, {'PW' : 1, 'BW' : 2}[param]] > threshold
     thresholded_peaks = peak_params[thresh_mask]
 
     return thresholded_peaks

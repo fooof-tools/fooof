@@ -5,15 +5,6 @@ from specparam.modes.info import *
 ###################################################################################################
 ###################################################################################################
 
-def test_get_peak_indices():
-
-    indices = get_peak_indices()
-
-    # Check it returns a valid object & that values are correct
-    assert indices
-    for ind, val in enumerate(['CF', 'PW', 'BW']):
-        assert indices[val] == ind
-
 def test_get_indices():
 
     all_indices_fixed = get_indices('fixed')
