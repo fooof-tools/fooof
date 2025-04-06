@@ -36,26 +36,32 @@ def test_translate_spectrum():
     translated_spectrum = translate_spectrum(spectrum, delta_offset=0.)
     assert np.all(translated_spectrum == spectrum)
 
-# TEMP / TODO: turn off while sorting out sim modes usage
-# def test_rotate_sim_spectrum():
+def test_rotate_sim_spectrum():
 
-#     sim_params = SimParams([1, 1], [10, 0.5, 1], 0)
-#     freqs, spectrum = sim_power_spectrum([3, 40], *sim_params)
+    aps = [1, 1]
+    pes = [10, 0.5, 1]
+    nlv = 0
 
-#     rotated_spectrum, new_sim_params = rotate_sim_spectrum(freqs, spectrum, 0.5, 20, sim_params)
+    sim_params = SimParams(aps, pes, nlv)
+    freqs, spectrum = sim_power_spectrum([3, 40], aps, 'fixed', pes, 'gaussian', nlv)
 
-#     assert not np.all(rotated_spectrum == spectrum)
-#     assert new_sim_params.aperiodic_params[1] == 1.5
+    rotated_spectrum, new_sim_params = rotate_sim_spectrum(freqs, spectrum, 0.5, 20, sim_params)
 
-# TEMP / TODO: turn off while sorting out sim modes usage
-# def test_translate_sim_spectrum():
+    assert not np.all(rotated_spectrum == spectrum)
+    assert new_sim_params.aperiodic_params[1] == 1.5
 
-#     sim_params = SimParams([1, 1], [10, 0.5, 1], 0)
-#     freqs, spectrum = sim_power_spectrum([3, 40], *sim_params)
+def test_translate_sim_spectrum():
 
-#     translated_spectrum, new_sim_params = translate_sim_spectrum(spectrum, 0.5, sim_params)
-#     assert not np.all(translated_spectrum == spectrum)
-#     assert new_sim_params.aperiodic_params[0] == 1.5
+    aps = [1, 1]
+    pes = [10, 0.5, 1]
+    nlv = 0
+
+    sim_params = SimParams(aps, pes, nlv)
+    freqs, spectrum = sim_power_spectrum([3, 40], aps, 'fixed', pes, 'gaussian', nlv)
+
+    translated_spectrum, new_sim_params = translate_sim_spectrum(spectrum, 0.5, sim_params)
+    assert not np.all(translated_spectrum == spectrum)
+    assert new_sim_params.aperiodic_params[0] == 1.5
 
 def test_compute_rotation_offset():
 

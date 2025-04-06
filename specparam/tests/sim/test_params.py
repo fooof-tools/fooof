@@ -28,26 +28,25 @@ def test_collect_sim_params():
     sp = collect_sim_params(ap, pe, nlv)
     assert array_equal(sp.periodic_params, [[10, 1, 1], [20, 1, 1]])
 
-# TEMP / TODO: turn off while sorting out sim modes usage
-# def test_update_sim_ap_params():
+def test_update_sim_ap_params():
 
-#     sim_params = SimParams([1, 1], [10, 1, 1], 0.05)
+    sim_params = SimParams([1, 1], [10, 1, 1], 0.05)
 
-#     # Check updating of a single specified parameter
-#     new_sim_params = update_sim_ap_params(sim_params, 1, 'exponent')
-#     assert new_sim_params.aperiodic_params == [1, 2]
+    # Check updating of a single specified parameter
+    new_sim_params = update_sim_ap_params(sim_params, 1, 'exponent', 'fixed')
+    assert new_sim_params.aperiodic_params == [1, 2]
 
-#     # Check updating of multiple specified parameters
-#     new_sim_params = update_sim_ap_params(sim_params, [1, 1], ['offset', 'exponent'])
-#     assert new_sim_params.aperiodic_params == [2, 2]
+    # Check updating of multiple specified parameters
+    new_sim_params = update_sim_ap_params(sim_params, [1, 1], ['offset', 'exponent'], 'fixed')
+    assert new_sim_params.aperiodic_params == [2, 2]
 
-#     # Check updating of all parameters
-#     new_sim_params = update_sim_ap_params(sim_params, [1, 1])
-#     assert new_sim_params.aperiodic_params == [2, 2]
+    # Check updating of all parameters
+    new_sim_params = update_sim_ap_params(sim_params, [1, 1])
+    assert new_sim_params.aperiodic_params == [2, 2]
 
-#     # Check error with invalid overwrite
-#     with raises(InconsistentDataError):
-#         new_sim_params = update_sim_ap_params(sim_params, [1, 1, 1])
+    # Check error with invalid overwrite
+    with raises(InconsistentDataError):
+        new_sim_params = update_sim_ap_params(sim_params, [1, 1, 1])
 
 def test_stepper():
 

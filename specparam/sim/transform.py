@@ -194,7 +194,8 @@ def translate_sim_spectrum(power_spectrum, delta_offset, sim_params):
     """
 
     translated_spectrum = translate_spectrum(power_spectrum, delta_offset)
-    new_sim_params = update_sim_ap_params(sim_params, delta_offset, 'offset')
+    new_sim_params = update_sim_ap_params(\
+        sim_params, [delta_offset] + [0] * (len(sim_params.aperiodic_params) - 1))
 
     return translated_spectrum, new_sim_params
 

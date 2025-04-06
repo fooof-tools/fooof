@@ -3,6 +3,8 @@
 import numpy as np
 
 from specparam.data import SimParams
+from specparam.modes.modes import check_mode_definition
+from specparam.modes.definitions import AP_MODES
 from specparam.utils.select import groupby
 from specparam.utils.checks import check_flat
 from specparam.modutils.errors import InconsistentDataError
@@ -33,7 +35,7 @@ def collect_sim_params(aperiodic_params, periodic_params, nlv):
                      nlv)
 
 
-def update_sim_ap_params(sim_params, delta, field=None):
+def update_sim_ap_params(sim_params, delta, field=None, aperiodic_mode=None):
     """Update the aperiodic parameter definition in a SimParams object.
 
     Parameters
@@ -44,6 +46,8 @@ def update_sim_ap_params(sim_params, delta, field=None):
         Value(s) by which to update the parameters.
     field : {'offset', 'knee', 'exponent'} or list of string
         Field of the aperiodic parameter(s) to update.
+    aperiodic_mode : Mode or str, optional
+        Aperiodic mode that defined the simulation parameters.
 
     Returns
     -------
@@ -68,10 +72,13 @@ def update_sim_ap_params(sim_params, delta, field=None):
 
     # If labels are given, update deltas according to their labels
     else:
+
+        aperiodic_mode = check_mode_definition(aperiodic_mode, AP_MODES)
+
         # This loop checks & casts to list, to work for single or multiple passed in values
         for cur_field, cur_delta in zip(list([field]) if not isinstance(field, list) else field,
                                         list([delta]) if not isinstance(delta, list) else delta):
-            data_ind = get_indices(infer_ap_func(ap_params))[cur_field]
+            data_ind = aperiodic_mode.params.indices[cur_field]
             ap_params[data_ind] = ap_params[data_ind] + cur_delta
 
     # Replace parameters. Note that this copies a new object, as data objects are immutable
