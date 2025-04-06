@@ -215,67 +215,6 @@ def quadratic_function(xs, *params):
     return ys
 
 
-## GETTER FUNCTIONS
-
-def get_pe_func(periodic_mode):
-    """Select and return specified function for periodic component.
-
-    Parameters
-    ----------
-    periodic_mode : {'gaussian', 'cauchy'}
-        Which periodic fitting function to return.
-
-    Returns
-    -------
-    pe_func : function
-        Function for the periodic component.
-
-    Raises
-    ------
-    ValueError
-        If the specified periodic mode label is not understood.
-
-    """
-
-    if periodic_mode == 'gaussian':
-        pe_func = gaussian_function
-    elif periodic_mode == 'cauchy':
-        pe_func = cauchy_function
-    else:
-        raise ValueError("Requested periodic mode not understood.")
-
-    return pe_func
-
-
-def get_ap_func(aperiodic_mode):
-    """Select and return specified function for aperiodic component.
-
-    Parameters
-    ----------
-    aperiodic_mode : {'fixed', 'knee'}
-        Which aperiodic fitting function to return.
-
-    Returns
-    -------
-    ap_func : function
-        Function for the aperiodic component.
-
-    Raises
-    ------
-    ValueError
-        If the specified aperiodic mode label is not understood.
-    """
-
-    if aperiodic_mode == 'fixed':
-        ap_func = expo_nk_function
-    elif aperiodic_mode == 'knee':
-        ap_func = expo_function
-    else:
-        raise ValueError("Requested aperiodic mode not understood.")
-
-    return ap_func
-
-
 def infer_ap_func(aperiodic_params):
     """Infers which aperiodic function was used, from parameters.
 

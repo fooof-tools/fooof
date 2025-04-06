@@ -135,27 +135,6 @@ def test_quadratic_function():
     assert np.isclose(sl_meas, sl)
     assert np.isclose(curve_meas, curve)
 
-## Getter functions
-
-def test_get_pe_func():
-
-    pe_ga_func = get_pe_func('gaussian')
-    assert callable(pe_ga_func)
-
-    with raises(ValueError):
-        get_pe_func('bad')
-
-def test_get_ap_func():
-
-    ap_nk_func = get_ap_func('fixed')
-    assert callable(ap_nk_func)
-
-    ap_kn_func = get_ap_func('knee')
-    assert callable(ap_kn_func)
-
-    with raises(ValueError):
-        get_ap_func('bad')
-
 def test_infer_ap_func():
 
     ap_nk = [50, 1]
