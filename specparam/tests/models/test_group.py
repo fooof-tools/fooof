@@ -211,20 +211,19 @@ def test_drop():
     assert np.all(np.isnan(exps[drop_inds]))
     assert np.all(np.invert(np.isnan(np.delete(exps, drop_inds))))
 
-## TEMP / TODO: turn off while figuring out FitResults
-# def test_fit_par():
-#     """Test group fit, running in parallel."""
+def test_fit_par():
+    """Test group fit, running in parallel."""
 
-#     n_spectra = 2
-#     xs, ys = sim_group_power_spectra(n_spectra, *default_group_params())
+    n_spectra = 2
+    xs, ys = sim_group_power_spectra(n_spectra, *default_group_params())
 
-#     tfg = SpectralGroupModel(verbose=False)
-#     tfg.fit(xs, ys, n_jobs=2)
-#     out = tfg.results.get_results()
+    tfg = SpectralGroupModel(verbose=False)
+    tfg.fit(xs, ys, n_jobs=2)
+    out = tfg.results.get_results()
 
-#     assert out
-#     assert len(out) == n_spectra
-#     assert np.all(out[1].aperiodic_params)
+    assert out
+    assert len(out) == n_spectra
+    assert np.all(out[1].aperiodic_params)
 
 def test_print(tfg):
     """Check print method (alias)."""
