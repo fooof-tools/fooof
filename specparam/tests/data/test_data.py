@@ -31,7 +31,7 @@ def test_model_checks():
 
 def test_fit_results():
 
-    results = FitResults([1, 1], [10, 0.5, 1], 0.95, 0.05, [10, 0.5, 0.5])
+    results = FitResults([1, 1], [10, 0.5, 1], [10, 0.5, 0.5], {'a' : 0.95, 'b' : 0.05})
     assert results
 
     for field in FitResults._fields:

@@ -113,7 +113,7 @@ class SpectrumMetaData(namedtuple('SpectrumMetaData', ['freq_range', 'freq_res']
 
 
 class FitResults(namedtuple('FitResults', ['aperiodic_params', 'peak_params',
-                                           'r_squared', 'error', 'gaussian_params'])):
+                                           'gaussian_params', 'metrics'])):
     """Model results from parameterizing a power spectrum.
 
     Parameters
@@ -123,13 +123,11 @@ class FitResults(namedtuple('FitResults', ['aperiodic_params', 'peak_params',
         The knee parameter is only included if aperiodic is fit with knee.
     peak_params : 2d array
         Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
-    r_squared : float
-        R-squared of the fit between the full model fit and the input data.
-    error : float
-        Error of the full model fit.
     gaussian_params : 2d array
         Parameters that define the gaussian fit(s).
         Each row is a gaussian, as [mean, height, standard deviation].
+    metrics : dict
+        Metrics results.
 
     Notes
     -----

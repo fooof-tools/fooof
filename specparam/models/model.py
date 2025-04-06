@@ -197,10 +197,6 @@ class SpectralModel(BaseModel):
             # Compute post-fit metrics
             self.results.metrics.compute_metrics(self.data, self.results)
 
-            # TEMP: alias metric results into updated management
-            self.results.error_ = self.results.metrics.results['error_mae']
-            self.results.r_squared_ = self.results.metrics.results['gof_rsquared']
-
         except FitError:
 
             # If in debug mode, re-raise the error
