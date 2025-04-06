@@ -213,33 +213,3 @@ def quadratic_function(xs, *params):
     ys = offset + (xs*slope) + ((xs**2)*curve)
 
     return ys
-
-
-def infer_ap_func(aperiodic_params):
-    """Infers which aperiodic function was used, from parameters.
-
-    Parameters
-    ----------
-    aperiodic_params : list of float
-        Parameters that describe the aperiodic component of a power spectrum.
-
-    Returns
-    -------
-    aperiodic_mode : {'fixed', 'knee'}
-        Which kind of aperiodic fitting function the given parameters are consistent with.
-
-    Raises
-    ------
-    InconsistentDataError
-        If the given parameters are inconsistent with any available aperiodic function.
-    """
-
-    if len(aperiodic_params) == 2:
-        aperiodic_mode = 'fixed'
-    elif len(aperiodic_params) == 3:
-        aperiodic_mode = 'knee'
-    else:
-        raise InconsistentDataError("The given aperiodic parameters are "
-                                    "inconsistent with available options.")
-
-    return aperiodic_mode

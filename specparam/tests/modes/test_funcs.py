@@ -134,16 +134,3 @@ def test_quadratic_function():
     assert np.isclose(off_meas, off)
     assert np.isclose(sl_meas, sl)
     assert np.isclose(curve_meas, curve)
-
-def test_infer_ap_func():
-
-    ap_nk = [50, 1]
-    apf_nk = infer_ap_func(ap_nk)
-    assert apf_nk == 'fixed'
-
-    ap_kn = [50, 2, 1]
-    apf_kn = infer_ap_func(ap_kn)
-    assert apf_kn == 'knee'
-
-    with raises(InconsistentDataError):
-        infer_ap_func([1, 2, 3, 4])
