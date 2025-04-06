@@ -72,8 +72,8 @@ class SpectralTimeModel(SpectralGroupModel):
         self.algorithm._reset_subobjects(data=self.data, results=self.results)
 
 
-    def fit(self, freqs=None, spectrogram=None, freq_range=None, peak_org=None,
-            n_jobs=1, progress=None, prechecks=True):
+    def fit(self, freqs=None, spectrogram=None, freq_range=None, bands=None,
+            n_jobs=1, progress=None, prechecks=True, convert_results=True):
         """Fit a spectrogram.
 
         Parameters
@@ -84,10 +84,10 @@ class SpectralTimeModel(SpectralGroupModel):
             Spectrogram of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
             Frequency range to fit the model to. If not provided, fits the entire given range.
-        peak_org : int or Bands
-            How to organize peaks.
-            If int, extracts the first n peaks.
+        bands : Bands or int, optional
+            How to organize peaks into bands.
             If Bands, extracts peaks based on band definitions.
+            If int, extracts the first n peaks.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -95,11 +95,16 @@ class SpectralTimeModel(SpectralGroupModel):
             Which kind of progress bar to use. If None, no progress bar is used.
         prechecks : bool, optional, default: True
             Whether to run model fitting pre-checks.
+        convert_results : bool, optional, default: True
+            Whether to convert results per spectrogram window to be organized over time.
 
         Notes
         -----
         Data is optional, if data has already been added to the object.
         """
+
+        if bands:
+           self.results.add_bands(bands)
 
         if freqs is not None and spectrogram is not None:
             super().add_data(freqs, spectrogram, freq_range)
@@ -109,12 +114,12 @@ class SpectralTimeModel(SpectralGroupModel):
 
         super().fit(n_jobs=n_jobs, progress=progress, prechecks=False)
 
-        if peak_org is not False:
-            self.results.convert_results(peak_org)
+        if convert_results:
+            self.results.convert_results()
 
 
     def report(self, freqs=None, spectrogram=None, freq_range=None,
-               peak_org=None, report_type='time', n_jobs=1, progress=None):
+               bands=None, report_type='time', n_jobs=1, progress=None):
         """Fit a spectrogram and display a report, with a plot and printed results.
 
         Parameters
@@ -125,10 +130,10 @@ class SpectralTimeModel(SpectralGroupModel):
             Spectrogram of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
             Frequency range to fit the model to. If not provided, fits the entire given range.
-        peak_org : int or Bands
-            How to organize peaks.
-            If int, extracts the first n peaks.
+        bands : Bands or int, optional
+            How to organize peaks into bands.
             If Bands, extracts peaks based on band definitions.
+            If int, extracts the first n peaks.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -140,7 +145,7 @@ class SpectralTimeModel(SpectralGroupModel):
         Data is optional, if data has already been added to the object.
         """
 
-        self.fit(freqs, spectrogram, freq_range, peak_org, n_jobs=n_jobs, progress=progress)
+        self.fit(freqs, spectrogram, freq_range, bands, n_jobs=n_jobs, progress=progress)
         self.plot(report_type)
         self.print_results(report_type)
 

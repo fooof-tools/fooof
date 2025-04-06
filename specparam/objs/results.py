@@ -43,7 +43,7 @@ class BaseResults():
         else:
             self.metrics = Metrics([METRICS[metric] for metric in DEFAULT_METRICS])
 
-        self.bands = deepcopy(bands) if bands else Bands()
+        self.add_bands(bands)
 
         # Initialize results attributes
         self._reset_results(True)
@@ -79,6 +79,20 @@ class BaseResults():
         n_peak_params = self.modes.periodic.n_params * self.n_peaks_
 
         return n_peak_params + self.modes.aperiodic.n_params if self.has_model else None
+
+
+    def add_bands(self, bands):
+        """Add bands definition to object.
+
+        Parameters
+        ----------
+        bands : Bands or int or None
+            How to organize peaks into bands.
+            If Bands, defines band ranges, if int, specifies a number of bands to consider.
+            If None, sets bands as an empty Bands object.
+        """
+
+        self.bands = deepcopy(bands) if bands else Bands()
 
 
     def add_results(self, results):
@@ -458,24 +472,22 @@ class BaseResults2DT(BaseResults2D):
             self.time_results[key][inds] = np.nan
 
 
-    def convert_results(self, peak_org=None):
+    def convert_results(self, bands=None):
         """Convert the model results to be organized across time windows.
 
         Parameters
         ----------
-        peak_org : int or Bands, optional
-            How to organize peaks.
-            If int, extracts the first n peaks.
+        bands : Bands or int, optional
+            How to organize peaks into bands.
             If Bands, extracts peaks based on band definitions.
+            If int, extracts the first 'n' peaks.
             If not provided, uses band definition available in object.
         """
 
-        if peak_org:
-            self.bands = peak_org
-        else:
-            peak_org = self.bands
+        if bands:
+            self.add_bands(bands)
 
-        self.time_results = group_to_dict(self.group_results, self.modes, peak_org)
+        self.time_results = group_to_dict(self.group_results, self.modes, self.bands)
 
 
 class BaseResults3D(BaseResults2DT):
@@ -613,22 +625,20 @@ class BaseResults3D(BaseResults2DT):
         return [get_group_params(gres, self.modes, name, col) for gres in self.event_group_results]
 
 
-    def convert_results(self, peak_org=None):
+    def convert_results(self, bands=None):
         """Convert the event results to be organized across events and time windows.
 
         Parameters
         ----------
-        peak_org : int or Bands, optional
-            How to organize peaks.
-            If int, extracts the first n peaks.
+        bands : Bands or int, optional
+            How to organize peaks into bands.
             If Bands, extracts peaks based on band definitions.
+            If int, extracts the first 'n' peaks.
             If not provided, uses band definition available in object.
         """
 
-        if peak_org:
-            self.bands = peak_org
-        else:
-            peak_org = self.bands
+        if bands:
+            self.add_bands(bands)
 
         self.event_time_results = event_group_to_dict(\
-            self.event_group_results, self.modes, peak_org)
+            self.event_group_results, self.modes, self.bands)

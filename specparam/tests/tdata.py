@@ -74,9 +74,8 @@ def get_tft():
     n_spectra = 3
     xs, ys = sim_spectrogram(n_spectra, *default_group_params())
 
-    bands = Bands({'alpha' : (7, 14)})
     tft = SpectralTimeModel(verbose=False)
-    tft.fit(xs, ys, peak_org=bands)
+    tft.fit(xs, ys, bands=Bands({'alpha' : (7, 14)}))
 
     return tft
 
@@ -87,9 +86,8 @@ def get_tfe():
     xs, ys = sim_spectrogram(n_spectra, *default_group_params())
     ys = [ys, ys]
 
-    bands = Bands({'alpha' : (7, 14)})
     tfe = SpectralTimeEventModel(verbose=False)
-    tfe.fit(xs, ys, peak_org=bands)
+    tfe.fit(xs, ys, bands=Bands({'alpha' : (7, 14)}))
 
     return tfe
 

@@ -34,8 +34,8 @@ def test_model_to_dict(tresults, tmodes, tbands):
 
 def test_model_to_dataframe(tresults, tmodes, tbands, skip_if_no_pandas):
 
-    for peak_org in [1, 2, 3]:
-        out = model_to_dataframe(tresults, tmodes, peak_org)
+    for nbands in [1, 2, 3]:
+        out = model_to_dataframe(tresults, tmodes, nbands)
         assert isinstance(out, pd.Series)
 
     out = model_to_dataframe(tresults, tmodes, tbands)
@@ -45,8 +45,8 @@ def test_group_to_dict(tresults, tmodes, tbands):
 
     fit_results = [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]
 
-    for peak_org in [1, 2, 3]:
-        out = group_to_dict(fit_results, tmodes, peak_org)
+    for nbands in [1, 2, 3]:
+        out = group_to_dict(fit_results, tmodes, nbands)
         assert isinstance(out, dict)
 
     out = group_to_dict(fit_results, tmodes, tbands)
@@ -56,8 +56,8 @@ def test_group_to_dataframe(tresults, tmodes, tbands, skip_if_no_pandas):
 
     fit_results = [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]
 
-    for peak_org in [1, 2, 3]:
-        out = group_to_dataframe(fit_results, tmodes, peak_org)
+    for nbands in [1, 2, 3]:
+        out = group_to_dataframe(fit_results, tmodes, nbands)
         assert isinstance(out, pd.DataFrame)
 
     out = group_to_dataframe(fit_results, tmodes, tbands)
@@ -68,8 +68,8 @@ def test_event_group_to_dict(tresults, tmodes, tbands):
     fit_results = [[deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)],
                    [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]]
 
-    for peak_org in [1, 2, 3]:
-        out = event_group_to_dict(fit_results, tmodes, peak_org)
+    for nbands in [1, 2, 3]:
+        out = event_group_to_dict(fit_results, tmodes, nbands)
         assert isinstance(out, dict)
 
     out = event_group_to_dict(fit_results, tmodes, tbands)
@@ -80,8 +80,8 @@ def test_event_group_to_dataframe(tresults, tmodes, tbands, skip_if_no_pandas):
     fit_results = [[deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)],
                    [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]]
 
-    for peak_org in [1, 2, 3]:
-        out = event_group_to_dataframe(fit_results, tmodes, peak_org)
+    for nbands in [1, 2, 3]:
+        out = event_group_to_dataframe(fit_results, tmodes, nbands)
         assert isinstance(out, pd.DataFrame)
 
     out = event_group_to_dataframe(fit_results, tmodes, tbands)
