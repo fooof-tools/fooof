@@ -2,10 +2,8 @@
 
 import numpy as np
 
-from specparam.sim.gen import gen_aperiodic
 from specparam.utils.select import nearest_ind
 from specparam.data.periodic import get_band_peak
-from specparam.modes.funcs import gaussian_function
 from specparam.measures.params import compute_knee_frequency, compute_fwhm
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import, check_dependency
@@ -34,9 +32,8 @@ def plot_annotated_peak_search(model):
     # Recalculate the initial aperiodic fit and flattened spectrum that
     #   is the same as the one that is used in the peak fitting procedure
     flatspec = model.data.power_spectrum - \
-        gen_aperiodic(model.data.freqs,
-                      model.algorithm._robust_ap_fit(model.data.freqs, model.data.power_spectrum),
-                      model.modes.aperiodic.name)
+        model.modes.aperiodic.func(model.data.freqs, \
+            *model.algorithm._robust_ap_fit(model.data.freqs, model.data.power_spectrum),)
 
     # Calculate ylims of the plot that are scaled to the range of the data
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
@@ -70,7 +67,7 @@ def plot_annotated_peak_search(model):
 
         if ind < model.results.n_peaks_:
 
-            gauss = gaussian_function(model.data.freqs, *gaussian_params[ind, :])
+            gauss = model.modes.periodic.func(model.data.freqs, *gaussian_params[ind, :])
             plot_spectra(model.data.freqs, gauss, ax=ax, label='Gaussian Fit',
                          color=PLT_COLORS['periodic'], linestyle=':', linewidth=3.0)
 
