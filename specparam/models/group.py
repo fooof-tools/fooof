@@ -381,15 +381,16 @@ class SpectralGroupModel(SpectralModel):
             file_name, file_path, add_settings, **plot_kwargs)
 
 
-    def to_df(self, peak_org):
+    def to_df(self, bands=None):
         """Convert and extract the model results as a pandas object.
 
         Parameters
         ----------
-        peak_org : int or Bands
-            How to organize peaks.
-            If int, extracts the first n peaks.
+        bands : Bands or int, optional
+            How to organize peaks into bands.
             If Bands, extracts peaks based on band definitions.
+            If int, extracts the first n peaks.
+            If not provided, uses the bands definition available in the object.
 
         Returns
         -------
@@ -397,7 +398,10 @@ class SpectralGroupModel(SpectralModel):
             Model results organized into a pandas object.
         """
 
-        return group_to_dataframe(self.results.get_results(), self.modes, peak_org)
+        if not bands:
+            bands = self.results.bands
+
+        return group_to_dataframe(self.results.get_results(), self.modes, bands)
 
 
     def _pass_through_spectrum(self, power_spectrum):

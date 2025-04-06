@@ -250,15 +250,15 @@ class SpectralTimeModel(SpectralGroupModel):
         return output
 
 
-    def to_df(self, peak_org=None):
+    def to_df(self, bands=None):
         """Convert and extract the model results as a pandas object.
 
         Parameters
         ----------
-        peak_org : int or Bands, optional
-            How to organize peaks.
-            If int, extracts the first n peaks.
+        bands : Bands or int, optional
+            How to organize peaks into bands.
             If Bands, extracts peaks based on band definitions.
+            If int, extracts the first n peaks.
             If provided, re-extracts peak features; if not provided, converts from `time_results`.
 
         Returns
@@ -267,8 +267,8 @@ class SpectralTimeModel(SpectralGroupModel):
             Model results organized into a pandas object.
         """
 
-        if peak_org is not None:
-            df = group_to_dataframe(self.results.group_results, self.modes, peak_org)
+        if bands is not None:
+            df = group_to_dataframe(self.results.group_results, self.modes, bands)
         else:
             df = dict_to_df(self.results.get_results())
 
