@@ -39,7 +39,7 @@ def trim_spectrum(freqs, power_spectra, f_range):
     Using a simulated spectrum, extract a frequency range:
 
     >>> from specparam.sim import sim_power_spectrum
-    >>> freqs, powers = sim_power_spectrum([1, 50], [1, 1], [10, 0.5, 1.0])
+    >>> freqs, powers = sim_power_spectrum([1, 50], [1, 1], 'fixed', [10, 0.5, 1.0], 'gaussian')
     >>> freqs, powers = trim_spectrum(freqs, powers, [3, 30])
     """
 
@@ -102,7 +102,8 @@ def interpolate_spectrum(freqs, powers, interp_range, buffer=3):
     Using a simulated spectrum, interpolate away a line noise peak:
 
     >>> from specparam.sim import sim_power_spectrum
-    >>> freqs, powers = sim_power_spectrum([1, 75], [1, 1], [[10, 0.5, 1.0], [60, 2, 0.1]])
+    >>> freqs, powers = sim_power_spectrum([1, 75], [1, 1], 'fixed',
+    ...                                    [[10, 0.5, 1.0], [60, 2, 0.1]], 'gaussian')
     >>> freqs, powers = interpolate_spectrum(freqs, powers, [58, 62])
     """
 
@@ -178,7 +179,8 @@ def interpolate_spectra(freqs, powers, interp_range, buffer=3):
     Using simulated spectra, interpolate away line noise peaks:
 
     >>> from specparam.sim import sim_group_power_spectra
-    >>> freqs, powers = sim_group_power_spectra(5, [1, 75], [1, 1], [[10, 0.5, 1.0], [60, 2, 0.1]])
+    >>> freqs, powers = sim_group_power_spectra(5, [1, 75], [1, 1], 'fixed',
+    ...                                         [[10, 0.5, 1.0], [60, 2, 0.1]], 'gaussian')
     >>> freqs, powers = interpolate_spectra(freqs, powers, [58, 62])
     """
 
@@ -215,13 +217,15 @@ def subsample_spectra(spectra, selection, return_inds=False):
     Using a group of simulated spectra, subsample a specific number:
 
     >>> from specparam.sim import sim_group_power_spectra
-    >>> freqs, powers = sim_group_power_spectra(10, [1, 50], [1, 1], [10, 0.5, 1.0])
+    >>> freqs, powers = sim_group_power_spectra(10, [1, 50], [1, 1], 'fixed',
+    ...                                         [10, 0.5, 1.0], 'gaussian')
     >>> subsample = subsample_spectra(powers, 5)
 
     Using a group of simulated spectra, subsample a proportion:
 
     >>> from specparam.sim import sim_group_power_spectra
-    >>> freqs, powers = sim_group_power_spectra(10, [1, 50], [1, 1], [10, 0.5, 1.0])
+    >>> freqs, powers = sim_group_power_spectra(10, [1, 50], [1, 1], 'fixed',
+    ...                                         [10, 0.5, 1.0], 'gaussian')
     >>> subsample = subsample_spectra(powers, 0.25)
     """
 

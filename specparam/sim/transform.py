@@ -62,7 +62,7 @@ def rotate_spectrum(freqs, power_spectrum, delta_exponent, f_rotation):
     Rotate a simulated spectrum, changing the exponent around a rotation point of 25 Hz:
 
     >>> from specparam.sim import sim_power_spectrum
-    >>> freqs, powers = sim_power_spectrum([1, 50], [1, 1], [10, 0.5, 1])
+    >>> freqs, powers = sim_power_spectrum([1, 50], [1, 1], 'fixed', [10, 0.5, 1], 'gaussian')
     >>> rotated_powers = rotate_spectrum(freqs, powers, 0.5, 25)
     """
 
@@ -100,7 +100,7 @@ def translate_spectrum(power_spectrum, delta_offset):
     Translate a simulated spectrum, moving the offset up:
 
     >>> from specparam.sim import sim_power_spectrum
-    >>> freqs, powers = sim_power_spectrum([1, 50], [1, 1], [10, 0.5, 1])
+    >>> freqs, powers = sim_power_spectrum([1, 50], [1, 1], 'fixed', [10, 0.5, 1], 'gaussian')
     >>> translated_powers = translate_spectrum(powers, 0.5)
     """
 
@@ -148,7 +148,8 @@ def rotate_sim_spectrum(freqs, power_spectrum, delta_exponent, f_rotation, sim_p
     Rotate a simulated spectrum, changing the exponent around a rotation point of 25 Hz:
 
     >>> from specparam.sim import sim_power_spectrum
-    >>> freqs, powers, sp = sim_power_spectrum([1, 50], [1, 1], [10, 0.5, 1], return_params=True)
+    >>> freqs, powers, sp = sim_power_spectrum([1, 50], [1, 1], 'fixed',
+    ...                                        [10, 0.5, 1], 'gaussian', return_params=True)
     >>> rotated_powers, new_sp = rotate_sim_spectrum(freqs, powers, 0.5, 25, sp) # doctest:+SKIP
     """
 
@@ -187,7 +188,8 @@ def translate_sim_spectrum(power_spectrum, delta_offset, sim_params):
     Translate a simulated spectrum, moving the offset up:
 
     >>> from specparam.sim import sim_power_spectrum
-    >>> freqs, powers, sp = sim_power_spectrum([1, 50], [1, 1], [10, 0.5, 1], return_params=True)
+    >>> freqs, powers, sp = sim_power_spectrum([1, 50], [1, 1], 'fixed',
+    ...                                        [10, 0.5, 1], 'gaussian', return_params=True)
     >>> translated_powers, new_sp = translate_sim_spectrum(powers, 0.5, sp) # doctest:+SKIP
     """
 

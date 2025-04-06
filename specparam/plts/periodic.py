@@ -71,7 +71,7 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None, ax=None, 
 
 @savefig
 @style_plot
-def plot_peak_fits(peaks, pe_mode, freq_range=None, average='mean', shade='sem',
+def plot_peak_fits(peaks, periodic_mode, freq_range=None, average='mean', shade='sem',
                    plot_individual=True, colors=None, labels=None, ax=None, **plot_kwargs):
     """Plot reconstructions of model peak fits.
 
@@ -79,7 +79,7 @@ def plot_peak_fits(peaks, pe_mode, freq_range=None, average='mean', shade='sem',
     ----------
     peaks : 2d array
         Peak data. Each row is a peak, as [CF, PW, BW].
-    pe_mode : Mode or str
+    periodic_mode : Mode or str
         Periodic mode definition.
     freq_range : list of [float, float] , optional
         The frequency range to plot the peak fits across, as [f_min, f_max].
@@ -103,7 +103,7 @@ def plot_peak_fits(peaks, pe_mode, freq_range=None, average='mean', shade='sem',
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    pe_mode = check_mode_definition(pe_mode, PE_MODES)
+    periodic_mode = check_mode_definition(periodic_mode, PE_MODES)
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
 
@@ -113,7 +113,8 @@ def plot_peak_fits(peaks, pe_mode, freq_range=None, average='mean', shade='sem',
             colors = cycle(plt.rcParams['axes.prop_cycle'].by_key()['color'])
 
         recursive_plot(peaks, plot_function=plot_peak_fits, ax=ax,
-                       pe_mode=pe_mode, freq_range=tuple(freq_range) if freq_range else freq_range,
+                       periodic_mode=periodic_mode,
+                       freq_range=tuple(freq_range) if freq_range else freq_range,
                        colors=colors, labels=labels, **plot_kwargs)
 
     else:
@@ -138,7 +139,7 @@ def plot_peak_fits(peaks, pe_mode, freq_range=None, average='mean', shade='sem',
         for ind, peak_params in enumerate(peaks):
 
             # Create & collect the peak model from parameters
-            peak_vals = pe_mode.func(freqs, *peak_params)
+            peak_vals = periodic_mode.func(freqs, *peak_params)
             all_peak_vals[ind, :] = peak_vals
 
             if plot_individual:

@@ -64,7 +64,7 @@ def plot_aperiodic_params(aps, colors=None, labels=None, ax=None, **plot_kwargs)
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_aperiodic_fits(aps, freq_range, ap_mode, control_offset=False, average='mean',
+def plot_aperiodic_fits(aps, freq_range, aperiodic_mode, control_offset=False, average='mean',
                         shade='sem', plot_individual=True, log_freqs=False, colors=None,
                         labels=None, ax=None, **plot_kwargs):
     """Plot reconstructions of model aperiodic fits.
@@ -75,7 +75,7 @@ def plot_aperiodic_fits(aps, freq_range, ap_mode, control_offset=False, average=
         Aperiodic parameters. Each row is a parameter set, as [Off, Exp] or [Off, Knee, Exp].
     freq_range : list of [float, float]
         The frequency range to plot the peak fits across, as [f_min, f_max].
-    ap_mode : Mode or str
+    aperiodic_mode : Mode or str
         Aperiodic mode definition.
     average : {'mean', 'median'}, optional, default: 'mean'
         Approach to take to average across components.
@@ -100,7 +100,7 @@ def plot_aperiodic_fits(aps, freq_range, ap_mode, control_offset=False, average=
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    ap_mode = check_mode_definition(ap_mode, AP_MODES)
+    aperiodic_mode = check_mode_definition(aperiodic_mode, AP_MODES)
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
 
@@ -110,7 +110,7 @@ def plot_aperiodic_fits(aps, freq_range, ap_mode, control_offset=False, average=
             colors = cycle(plt.rcParams['axes.prop_cycle'].by_key()['color'])
 
         recursive_plot(aps, plot_function=plot_aperiodic_fits, ax=ax,
-                       freq_range=tuple(freq_range), ap_mode=ap_mode,
+                       freq_range=tuple(freq_range), aperiodic_mode=aperiodic_mode,
                        control_offset=control_offset, log_freqs=log_freqs,
                        colors=colors, labels=labels, **plot_kwargs)
     else:
@@ -130,7 +130,7 @@ def plot_aperiodic_fits(aps, freq_range, ap_mode, control_offset=False, average=
                 ap_params[0] = 0
 
             # Create & collect the aperiodic component model from parameters
-            ap_vals = ap_mode.func(freqs, *ap_params)
+            ap_vals = aperiodic_mode.func(freqs, *ap_params)
             all_ap_vals[ind, :] = ap_vals
 
             if plot_individual:

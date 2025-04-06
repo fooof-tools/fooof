@@ -65,7 +65,7 @@ def test_fit_nk():
     ap_params = [50, 2]
     gauss_params = [10, 0.5, 2, 20, 0.3, 4]
     nlv = 0.0025
-    xs, ys = sim_power_spectrum([3, 50], ap_params, gauss_params, nlv)
+    xs, ys = sim_power_spectrum([3, 50], ap_params, 'fixed', gauss_params, 'gaussian', nlv)
 
     tfm = SpectralModel(verbose=False)
     tfm.fit(xs, ys)
@@ -96,7 +96,7 @@ def test_fit_knee():
     gauss_params = [10, 0.3, 2, 20, 0.1, 4, 60, 0.3, 1]
     nlv = 0.0025
 
-    xs, ys = sim_power_spectrum([1, 150], ap_params, gauss_params, nlv)
+    xs, ys = sim_power_spectrum([1, 150], ap_params, 'knee', gauss_params, 'gaussian', nlv)
 
     tfm = SpectralModel(aperiodic_mode='knee', verbose=False)
     tfm.fit(xs, ys)
@@ -130,7 +130,7 @@ def test_fit_custom_metrics():
     ap_params = [50, 2]
     gauss_params = [10, 0.5, 2, 20, 0.3, 4]
     nlv = 0.0025
-    xs, ys = sim_power_spectrum([3, 50], ap_params, gauss_params, nlv)
+    xs, ys = sim_power_spectrum([3, 50], ap_params, 'fixed', gauss_params, 'gaussian', nlv)
 
     tfm.fit(xs, ys)
     for key, val in tfm.results.metrics.results.items():

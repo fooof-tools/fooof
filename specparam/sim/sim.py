@@ -12,8 +12,8 @@ from specparam.sim.transform import compute_rotation_offset
 ###################################################################################################
 ###################################################################################################
 
-def sim_power_spectrum(freq_range, aperiodic_params, periodic_params, nlv=0.005,
-                       freq_res=0.5, f_rotation=None, return_params=False):
+def sim_power_spectrum(freq_range, aperiodic_params, aperiodic_mode, periodic_params, periodic_mode,
+                       nlv=0.005, freq_res=0.5, f_rotation=None, return_params=False):
     """Simulate a power spectrum.
 
     Parameters
@@ -23,9 +23,13 @@ def sim_power_spectrum(freq_range, aperiodic_params, periodic_params, nlv=0.005,
     aperiodic_params : list of float
         Parameters to create the aperiodic component of a power spectrum.
         Length should be 2 or 3 (see note).
+    aperiodic_mode : Mode or str
+        Which kind of aperiodic component to simulate.
     periodic_params : list of float or list of list of float
         Parameters to create the periodic component of a power spectrum.
         Total length of n_peaks * 3 (see note).
+    periodic_mode : Mode or str
+        Which kind of periodic component to simulate.
     nlv : float, optional, default: 0.005
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
@@ -91,15 +95,17 @@ def sim_power_spectrum(freq_range, aperiodic_params, periodic_params, nlv=0.005,
     --------
     Generate a power spectrum with a single peak, at 10 Hz:
 
-    >>> freqs, powers = sim_power_spectrum([1, 50], [0, 2], [10, 0.5, 1])
+    >>> freqs, powers = sim_power_spectrum([1, 50], [0, 2], 'fixed', [10, 0.5, 1], 'gaussian')
 
     Generate a power spectrum with alpha and beta peaks:
 
-    >>> freqs, powers = sim_power_spectrum([1, 50], [0, 2], [[10, 0.5, 1], [20, 0.5, 1]])
+    >>> freqs, powers = sim_power_spectrum([1, 50], [0, 2], 'fixed', [[10, 0.5, 1],
+    ...                                    [20, 0.5, 1]], 'gaussian')
 
     Generate a power spectrum, that was rotated around a particular frequency point:
 
-    >>> freqs, powers = sim_power_spectrum([1, 50], [None, 2], [10, 0.5, 1], f_rotation=15)
+    >>> freqs, powers = sim_power_spectrum([1, 50], [None, 2], 'fixed',
+    ...                                    [10, 0.5, 1], 'gaussian', f_rotation=15)
     """
 
     freqs = gen_freqs(freq_range, freq_res)
@@ -115,7 +121,8 @@ def sim_power_spectrum(freq_range, aperiodic_params, periodic_params, nlv=0.005,
 
     else:
 
-        powers = gen_power_vals(freqs, aperiodic_params, check_flat(periodic_params), nlv)
+        powers = gen_power_vals(freqs, aperiodic_params, aperiodic_mode,
+                                check_flat(periodic_params), periodic_mode, nlv)
 
     if return_params:
         sim_params = collect_sim_params(aperiodic_params, periodic_params, nlv)
@@ -124,8 +131,9 @@ def sim_power_spectrum(freq_range, aperiodic_params, periodic_params, nlv=0.005,
         return freqs, powers
 
 
-def sim_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_params, nlvs=0.005,
-                            freq_res=0.5, f_rotation=None, return_params=False):
+def sim_group_power_spectra(n_spectra, freq_range, aperiodic_params, aperiodic_mode,
+                            periodic_params, periodic_mode, nlvs=0.005, freq_res=0.5,
+                            f_rotation=None, return_params=False):
     """Simulate multiple power spectra.
 
     Parameters
@@ -136,9 +144,13 @@ def sim_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
         Frequency range to simulate power spectra across, as [f_low, f_high], inclusive.
     aperiodic_params : list of float or generator
         Parameters for the aperiodic component of the power spectra.
+    aperiodic_mode : Mode or str
+        Which kind of aperiodic component to simulate.
     periodic_params : list of float or generator
         Parameters for the periodic component of the power spectra.
         Length of n_peaks * 3.
+    periodic_mode : Mode or str
+        Which kind of periodic component to simulate.
     nlvs : float or list of float or generator, optional, default: 0.005
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
@@ -208,28 +220,30 @@ def sim_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
     --------
     Generate 2 power spectra using the same parameters:
 
-    >>> freqs, powers = sim_group_power_spectra(2, [1, 50], [0, 2], [10, 0.5, 1])
+    >>> freqs, powers = sim_group_power_spectra(2, [1, 50], [0, 2], 'fixed',
+    ...                                         [10, 0.5, 1], 'gaussian')
 
     Generate 10 power spectra, randomly sampling possible parameters:
 
     >>> from specparam.sim.params import param_sampler
     >>> ap_opts = param_sampler([[0, 1.0], [0, 1.5], [0, 2]])
     >>> pe_opts = param_sampler([[], [10, 0.5, 1], [10, 0.5, 1, 20, 0.25, 1]])
-    >>> freqs, powers = sim_group_power_spectra(10, [1, 50], ap_opts, pe_opts)
+    >>> freqs, powers = sim_group_power_spectra(10, [1, 50], ap_opts, 'fixed', pe_opts, 'gaussian')
 
     Generate 5 power spectra, rotated around 20 Hz:
 
     >>> ap_params = [[None, 1], [None, 1.25], [None, 1.5], [None, 1.75], [None, 2]]
     >>> pe_params = [10, 0.5, 1]
-    >>> freqs, powers = sim_group_power_spectra(5, [1, 50], ap_params, pe_params, f_rotation=20)
+    >>> freqs, powers = sim_group_power_spectra(5, [1, 50], ap_params, 'fixed',
+    ...                                         pe_params, 'gaussian', f_rotation=20)
 
     Generate power spectra stepping across exponent values, and return parameter values:
 
     >>> from specparam.sim.params import Stepper, param_iter
     >>> ap_params = param_iter([0, Stepper(1, 2, 0.25)])
     >>> pe_params = [10, 0.5, 1]
-    >>> freqs, powers, sps = sim_group_power_spectra(5, [1, 50], ap_params, pe_params,
-    ...                                              return_params=True)
+    >>> freqs, powers, sps = sim_group_power_spectra(5, [1, 50], ap_params, 'fixed',
+    ...                                              pe_params, 'gaussian', return_params=True)
     """
 
     # Initialize things
@@ -251,7 +265,8 @@ def sim_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
             aperiodic_params = [compute_rotation_offset(ap[1], f_rot), ap[1]]
 
         else:
-            powers[ind, :] = gen_power_vals(freqs, ap, check_flat(pe), nlv)
+            powers[ind, :] = gen_power_vals(freqs, ap, aperiodic_mode, check_flat(pe),
+                                            periodic_mode, nlv)
 
         sim_params[ind] = collect_sim_params(ap, pe, nlv)
 
@@ -265,8 +280,9 @@ def sim_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
     docs_replace_param(docs_get_section(\
         sim_group_power_spectra.__doc__, 'Parameters'),
         'n_spectra', 'n_windows : int\n        The number of time windows to generate.'))
-def sim_spectrogram(n_windows, freq_range, aperiodic_params, periodic_params,
-                    nlvs=0.005, freq_res=0.5, f_rotation=None, return_params=False):
+def sim_spectrogram(n_windows, freq_range, aperiodic_params, aperiodic_mode,
+                    periodic_params, periodic_mode, nlvs=0.005, freq_res=0.5,
+                    f_rotation=None, return_params=False):
     """Simulate spectrogram.
 
     Parameters
@@ -289,8 +305,8 @@ def sim_spectrogram(n_windows, freq_range, aperiodic_params, periodic_params,
     See `sim_group_power_spectra` for details on the parameters.
     """
 
-    outputs = sim_group_power_spectra(n_windows, freq_range, aperiodic_params,
-                                      periodic_params, nlvs, freq_res,
+    outputs = sim_group_power_spectra(n_windows, freq_range, aperiodic_params, aperiodic_mode,
+                                      periodic_params, periodic_mode, nlvs, freq_res,
                                       f_rotation, return_params)
 
     outputs = list(outputs)

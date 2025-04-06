@@ -112,7 +112,8 @@ def test_fit_knee():
     ap_params = [50, 2, 1]
     gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    xs, ys = sim_group_power_spectra(n_spectra, [1, 150], ap_params, gaussian_params, nlvs=0)
+    xs, ys = sim_group_power_spectra(n_spectra, [1, 150], ap_params, 'knee',
+                                     gaussian_params, 'gaussian', nlvs=0)
 
     tfg = SpectralGroupModel(aperiodic_mode='knee', verbose=False)
     tfg.fit(xs, ys)
@@ -146,7 +147,7 @@ def test_fg_fail():
     """
 
     # Create some noisy spectra that will be hard to fit
-    fs, ps = sim_group_power_spectra(10, [3, 6], [1, 1], [10, 1, 1], nlvs=10)
+    fs, ps = sim_group_power_spectra(10, [3, 6], [1, 1], 'fixed', [10, 1, 1], 'gaussian', nlvs=10)
 
     # Use a fg with the max iterations set so low that it will fail to converge
     ntfg = SpectralGroupModel()

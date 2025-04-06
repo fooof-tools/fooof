@@ -255,9 +255,10 @@ class BaseResults():
             Frequency values for the power_spectrum, in linear scale.
         """
 
-        self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(
-            freqs, self.aperiodic_params_,
-            self.gaussian_params_, return_components=True)
+        self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(freqs, \
+            self.aperiodic_params_, self.modes.aperiodic,
+            self.gaussian_params_, self.modes.periodic,
+            return_components=True)
 
 
 class BaseResults2D(BaseResults):

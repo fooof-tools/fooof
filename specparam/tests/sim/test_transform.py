@@ -13,7 +13,7 @@ from specparam.sim.transform import *
 def test_rotate_spectrum():
 
     # Create a spectrum to use for test rotations
-    freqs, spectrum = sim_power_spectrum([1, 100], [1, 1], [])
+    freqs, spectrum = sim_power_spectrum([1, 100], [1, 1], 'fixed', [], 'gaussian')
 
     # Check that rotation transforms the power spectrum
     rotated_spectrum = rotate_spectrum(freqs, spectrum, delta_exponent=0.5, f_rotation=25.)
@@ -26,7 +26,7 @@ def test_rotate_spectrum():
 def test_translate_spectrum():
 
     # Create a spectrum to use for test translation
-    freqs, spectrum = sim_power_spectrum([1, 100], [1, 1], [])
+    freqs, spectrum = sim_power_spectrum([1, 100], [1, 1], 'fixed', [], 'gaussian')
 
     # Check that translation transforms the power spectrum
     translated_spectrum = translate_spectrum(spectrum, delta_offset=1.)

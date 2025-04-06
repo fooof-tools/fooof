@@ -23,7 +23,7 @@ def default_spectrum_params():
     ap_params = [1, 1]
     gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    return freq_range, ap_params, gaussian_params
+    return freq_range, ap_params, 'fixed', gaussian_params, 'gaussian'
 
 def default_group_params():
     """Create default parameters for simulating a test group of power spectra."""
@@ -32,7 +32,7 @@ def default_group_params():
     ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
     gauss_opts = param_sampler([[10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
-    return freq_range, ap_opts, gauss_opts
+    return freq_range, ap_opts, 'fixed', gauss_opts, 'gaussian'
 
 ## TEST DATA OBJECTS
 
