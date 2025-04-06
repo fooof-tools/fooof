@@ -133,7 +133,7 @@ def test_fit_custom_metrics():
 
     for fres in tfg.results.group_results:
         for metric in metrics:
-            assert isinstance(getattr(fres, metric), float)
+            assert isinstance(fres.metrics[metric], float)
 
 def test_fit_progress(tfg):
     """Test running group fitting, with a progress bar."""
@@ -190,8 +190,9 @@ def test_drop():
     drop_ind = 0
     tfg.results.drop(drop_ind)
     dropped_fres = tfg.results.group_results[drop_ind]
-    for field in dropped_fres._fields:
+    for field in [el for el in dropped_fres._fields if 'params' in el]:
         assert np.all(np.isnan(getattr(dropped_fres, field)))
+    assert np.all(np.isnan(list(dropped_fres.metrics.values())))
 
     # Test dropping multiple inds
     tfg.fit(xs, ys)
@@ -200,8 +201,9 @@ def test_drop():
 
     for d_ind in drop_inds:
         dropped_fres = tfg.results.group_results[d_ind]
-        for field in dropped_fres._fields:
+        for field in [el for el in dropped_fres._fields if 'params' in el]:
             assert np.all(np.isnan(getattr(dropped_fres, field)))
+    assert np.all(np.isnan(list(dropped_fres.metrics.values())))
 
     # Test that a group object that has had inds dropped still works with `get_params`
     cfs = tfg.results.get_params('peak_params', 1)
@@ -245,10 +247,8 @@ def test_get_results(tfg):
 def test_get_params(tfg):
     """Check get_params method."""
 
-    for dname in ['aperiodic_params', 'aperiodic',
-                  'peak_params', 'peak',
-                  'gaussian_params', 'gaussian',
-                  'error_mae', 'gof_rsquared']:
+    for dname in ['aperiodic_params', 'aperiodic', 'peak_params', 'peak',
+                  'gaussian_params', 'gaussian', 'metrics']:
         assert np.any(tfg.get_params(dname))
 
         if dname == 'aperiodic_params' or dname == 'aperiodic':
@@ -257,6 +257,10 @@ def test_get_params(tfg):
 
         if dname == 'peak_params' or dname == 'peak':
             for dtype in ['CF', 'PW', 'BW']:
+                assert np.any(tfg.get_params(dname, dtype))
+
+        if dname == 'metrics':
+            for dtype in ['error_mae', 'gof_rsquared']:
                 assert np.any(tfg.get_params(dname, dtype))
 
 @plot_test

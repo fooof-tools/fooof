@@ -105,9 +105,9 @@ def plot_group_goodness(group, ax=None, **plot_kwargs):
     err_ind = find_first_ind(group.results.metrics.labels, 'error')
     gof_ind = find_first_ind(group.results.metrics.labels, 'gof')
 
-    plot_scatter_2(group.results.get_params(group.results.metrics.labels[err_ind]),
+    plot_scatter_2(group.results.get_params('metrics', group.results.metrics.labels[err_ind]),
                    group.results.metrics.flabels[err_ind],
-                   group.results.get_params(group.results.metrics.labels[gof_ind]),
+                   group.results.get_params('metrics', group.results.metrics.labels[gof_ind]),
                    group.results.metrics.flabels[gof_ind],
                    'Fit Quality', ax=ax)
 

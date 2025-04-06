@@ -12,7 +12,7 @@ from specparam.measures.metrics import METRICS
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
-from specparam.data.data import make_data_object
+from specparam.data.data import FitResults
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import (get_model_params, get_group_params,
                                   get_results_by_ind, get_results_by_row)
@@ -48,8 +48,6 @@ class BaseResults():
         # Initialize results attributes
         self._reset_results(True)
         self._fields = RESULTS_FIELDS
-        self._fit_results = make_data_object('FitResults', \
-            [el.strip('_') for el in self._fields] + self.metrics.labels)
 
 
     @property
@@ -95,8 +93,7 @@ class BaseResults():
         # Add parameter fields and then select and add metrics results
         for pfield in self._fields:
             setattr(self, pfield, getattr(results, pfield.strip('_')))
-        self.metrics.add_results(\
-            {key : getattr(results, key) for key in self.metrics.labels})
+        self.metrics.add_results(results.metrics)
 
         self._check_loaded_results(results._asdict())
 
@@ -110,9 +107,9 @@ class BaseResults():
             Object containing the model fit results from the current object.
         """
 
-        results = self._fit_results(\
-           **{key.strip('_') : getattr(self, key) for key in self._fields},
-           **self.metrics.results)
+        results = FitResults(
+            **{key.strip('_') : getattr(self, key) for key in self._fields},
+            metrics=self.metrics.results)
 
         return results
 

@@ -270,10 +270,8 @@ def test_add_data(tresults):
 def test_get_params(tfm):
     """Test the get_params method."""
 
-    for dname in ['aperiodic_params', 'aperiodic',
-                  'peak_params', 'peak',
-                  'gaussian_params', 'gaussian',
-                  'error_mae', 'gof_rsquared']:
+    for dname in ['aperiodic_params', 'aperiodic', 'peak_params', 'peak',
+                  'gaussian_params', 'gaussian', 'metrics']:
         assert np.any(tfm.get_params(dname))
 
         if dname == 'aperiodic_params' or dname == 'aperiodic':
@@ -282,6 +280,10 @@ def test_get_params(tfm):
 
         if dname == 'peak_params' or dname == 'peak':
             for dtype in ['CF', 'PW', 'BW']:
+                assert np.any(tfm.get_params(dname, dtype))
+
+        if dname == 'metrics':
+            for dtype in ['error_mae', 'gof_rsquared']:
                 assert np.any(tfm.get_params(dname, dtype))
 
 def test_get_data(tfm):

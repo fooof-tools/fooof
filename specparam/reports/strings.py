@@ -468,7 +468,7 @@ def gen_group_results_str(group, concise=False):
         'Model fit quality metrics:',
         *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
             '{:s} ({:s})'.format(*key.split('_')),
-            *compute_arr_desc(group.results.get_params(key))) \
+            *compute_arr_desc(group.results.get_params('metrics', key))) \
                 for key in group.results.metrics.results],
         '',
 

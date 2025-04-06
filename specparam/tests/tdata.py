@@ -4,7 +4,7 @@ import numpy as np
 
 from specparam.bands import Bands
 from specparam.modes.modes import Modes
-from specparam.data.data import make_data_object
+from specparam.data.data import FitResults
 from specparam.models import (SpectralModel, SpectralGroupModel,
                               SpectralTimeModel, SpectralTimeEventModel)
 from specparam.objs.data import BaseData, BaseData2D
@@ -106,14 +106,10 @@ def get_tmodes():
 def get_tresults():
     """Get a FitResults object, for testing."""
 
-    tres = BaseResults()
-
-    fields = [el.strip('_') for el in tres._fields]
-    return make_data_object('FitResults', fields + tres.metrics.labels)(\
-        aperiodic_params=np.array([1.0, 1.00]),
-        peak_params=np.array([[10.0, 1.25, 2.0], [20.0, 1.0, 3.0]]),
-        gaussian_params=np.array([[10.0, 1.25, 1.0], [20.0, 1.0, 1.5]]),
-        error_mae=0.01, gof_rsquared=0.97)
+    return FitResults(aperiodic_params=np.array([1.0, 1.00]),
+                      peak_params=np.array([[10.0, 1.25, 2.0], [20.0, 1.0, 3.0]]),
+                      gaussian_params=np.array([[10.0, 1.25, 1.0], [20.0, 1.0, 1.5]]),
+                      metrics={'error_mae' : 0.01, 'gof_rsquared' : 0.97})
 
 def get_tdocstring():
     """Get an example docstring, for testing."""

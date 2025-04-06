@@ -31,11 +31,11 @@ def get_model_params(fit_results, modes, name, col=None):
         Results of a model fit.
     modes : Modes
         Model modes definition.
-    name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
+    name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'metrics'}
         Name of the data field to extract.
-    col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+    col : str or int, optional
         Column name / index to extract from selected data, if requested.
-        Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+        For example, {'CF', 'PW', 'BW'} (periodic) or {'offset', 'knee', 'exponent'} (aperiodic).
 
     Returns
     -------
@@ -56,9 +56,14 @@ def get_model_params(fit_results, modes, name, col=None):
     # Select out a specific column, if requested
     if col is not None:
 
-        # Extract column, & if result is a single value in an array, unpack from array
-        out = out[col] if out.ndim == 1 else out[:, col]
-        out = out[0] if isinstance(out, np.ndarray) and out.size == 1 else out
+        if name == 'metrics':
+            out = out[col]
+
+        else:
+
+            # Extract column, & if result is a single value in an array, unpack from array
+            out = out[col] if out.ndim == 1 else out[:, col]
+            out = out[0] if isinstance(out, np.ndarray) and out.size == 1 else out
 
     return out
 
@@ -74,9 +79,9 @@ def get_group_params(group_results, modes, name, col=None):
         Model modes definition.
     name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
         Name of the data field to extract across the group.
-    col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+    col : str or int, optional
         Column name / index to extract from selected data, if requested.
-        Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+        For example, {'CF', 'PW', 'BW'} (periodic) or {'offset', 'knee', 'exponent'} (aperiodic).
 
     Returns
     -------
@@ -105,7 +110,11 @@ def get_group_params(group_results, modes, name, col=None):
 
     # Select out a specific column, if requested
     if col is not None:
-        out = out[:, col]
+
+        if name == 'metrics':
+            out = np.array([cdict[col] for cdict in out])
+        else:
+            out = out[:, col]
 
     return out
 

@@ -186,8 +186,9 @@ def test_event_drop():
     tfe.results.drop(event_inds, window_inds)
     assert len(tfe.results) == len(ys)
     dropped_fres = tfe.results.event_group_results[event_inds[0]][window_inds[0]]
-    for field in dropped_fres._fields:
+    for field in [el for el in dropped_fres._fields if 'params' in el]:
         assert np.all(np.isnan(getattr(dropped_fres, field)))
+    assert np.all(np.isnan(list(dropped_fres.metrics.values())))
     for key in tfe.results.event_time_results:
         assert np.isnan(tfe.results.event_time_results[key][event_inds[0], window_inds[0]])
 
@@ -196,8 +197,9 @@ def test_event_drop():
     tfe.results.drop(drop_inds)
     assert len(tfe.results) == len(ys)
     dropped_fres = tfe.results.event_group_results[0][drop_inds[0][0]]
-    for field in dropped_fres._fields:
+    for field in [el for el in dropped_fres._fields if 'params' in el]:
         assert np.all(np.isnan(getattr(dropped_fres, field)))
+    assert np.all(np.isnan(list(dropped_fres.metrics.values())))
     for key in tfe.results.event_time_results:
         assert np.isnan(tfe.results.event_time_results[key][0, drop_inds[0][0]])
 

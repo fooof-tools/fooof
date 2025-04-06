@@ -55,9 +55,8 @@ def model_to_dict(fit_results, modes, bands):
                 fr_dict[band + '_' + label] = param
 
     # metrics
-    for key in fit_results._fields:
-        if 'error' in key or 'gof' in key:
-            fr_dict[key] = getattr(fit_results, key)
+    for key in fit_results.metrics:
+        fr_dict[key] = fit_results.metrics[key]
 
     return fr_dict
 
