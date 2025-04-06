@@ -5,8 +5,10 @@ from itertools import cycle
 import numpy as np
 import matplotlib.pyplot as plt
 
-from specparam.sim.gen import gen_freqs, gen_aperiodic
+from specparam.sim.gen import gen_freqs
 from specparam.modutils.dependencies import safe_import, check_dependency
+from specparam.modes.modes import check_mode_definition
+from specparam.modes.definitions import AP_MODES
 from specparam.plts.settings import PLT_FIGSIZES
 from specparam.plts.templates import plot_yshade
 from specparam.plts.style import style_param_plot, style_plot
@@ -62,10 +64,9 @@ def plot_aperiodic_params(aps, colors=None, labels=None, ax=None, **plot_kwargs)
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_aperiodic_fits(aps, freq_range, control_offset=False,
-                        average='mean', shade='sem', plot_individual=True,
-                        log_freqs=False, colors=None, labels=None,
-                        ax=None, **plot_kwargs):
+def plot_aperiodic_fits(aps, freq_range, ap_mode, control_offset=False, average='mean',
+                        shade='sem', plot_individual=True, log_freqs=False, colors=None,
+                        labels=None, ax=None, **plot_kwargs):
     """Plot reconstructions of model aperiodic fits.
 
     Parameters
@@ -74,6 +75,8 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         Aperiodic parameters. Each row is a parameter set, as [Off, Exp] or [Off, Knee, Exp].
     freq_range : list of [float, float]
         The frequency range to plot the peak fits across, as [f_min, f_max].
+    ap_mode : Mode or str
+        Aperiodic mode definition.
     average : {'mean', 'median'}, optional, default: 'mean'
         Approach to take to average across components.
         If set to None, no average is plotted.
@@ -97,6 +100,8 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
+    ap_mode = check_mode_definition(ap_mode, AP_MODES)
+
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
 
     if isinstance(aps, list):
@@ -104,9 +109,10 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
         if not colors:
             colors = cycle(plt.rcParams['axes.prop_cycle'].by_key()['color'])
 
-        recursive_plot(aps, plot_aperiodic_fits, ax=ax, freq_range=tuple(freq_range),
-                       control_offset=control_offset, log_freqs=log_freqs, colors=colors,
-                       labels=labels, **plot_kwargs)
+        recursive_plot(aps, plot_function=plot_aperiodic_fits, ax=ax,
+                       freq_range=tuple(freq_range), ap_mode=ap_mode,
+                       control_offset=control_offset, log_freqs=log_freqs,
+                       colors=colors, labels=labels, **plot_kwargs)
     else:
 
         freqs = gen_freqs(freq_range, 0.1)
@@ -124,7 +130,7 @@ def plot_aperiodic_fits(aps, freq_range, control_offset=False,
                 ap_params[0] = 0
 
             # Create & collect the aperiodic component model from parameters
-            ap_vals = gen_aperiodic(freqs, ap_params)
+            ap_vals = ap_mode.func(freqs, *ap_params)
             all_ap_vals[ind, :] = ap_vals
 
             if plot_individual:
