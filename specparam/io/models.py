@@ -16,7 +16,7 @@ from specparam.utils.convert import dict_array_to_lst
 ###################################################################################################
 
 def save_model(model, file_name, file_path=None, append=False,
-               save_results=False, save_settings=False, save_data=False):
+               save_results=False, save_settings=False, save_data=False, save_base=True):
     """Save out data, results and/or settings from a model object into a JSON file.
 
     Parameters
@@ -36,6 +36,9 @@ def save_model(model, file_name, file_path=None, append=False,
         Whether to save out settings.
     save_data : bool, optional
         Whether to save out input data.
+    save_base : bool, optional
+        Whether to save out base data.
+        Should be left to true unless saving a indivdual model results from multi-model object.
 
     Raises
     ------
@@ -56,11 +59,19 @@ def save_model(model, file_name, file_path=None, append=False,
     obj_dict['periodic_mode'] = obj_dict['modes'].periodic.name
     mode_labels = ['aperiodic_mode', 'periodic_mode']
 
+    # Add bands information to saveable information
+    obj_dict['bands'] = dict(model.results.bands.bands)
+    bands_label = ['bands'] if model.results.bands.n_bands else []
+
     # Set and select which variables to keep. Use a set to drop any potential overlap
     #   Note that results also saves frequency information to be able to recreate freq vector
-    keep = set((model.results._fields + model.data._meta_fields if save_results else []) + \
-               (model.algorithm.settings.names + mode_labels if save_settings else []) + \
-               (model.data._fields if save_data else []))
+    keep = set(\
+        (mode_labels + bands_label if save_base else []) + \
+        (model.data._meta_fields if save_base and (save_results or save_data) else []) + \
+        (model.results._fields if save_results else []) + \
+        (model.algorithm.settings.names if save_settings else []) + \
+        (model.data._fields if save_data else []))
+
     obj_dict = dict_select_keys(obj_dict, keep)
 
     # Save out to json file
@@ -282,4 +293,4 @@ def _save_group(group, f_obj, save_results, save_settings, save_data):
         for ind in range(len(group.results.group_results)):
             model = group.get_model(ind, regenerate=False)
             save_model(model, file_name=f_obj, file_path=None, append=False,
-                       save_results=save_results, save_data=save_data)
+                       save_results=save_results, save_data=save_data, save_base=False)

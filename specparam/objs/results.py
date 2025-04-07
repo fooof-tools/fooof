@@ -86,11 +86,15 @@ class BaseResults():
 
         Parameters
         ----------
-        bands : Bands or int or None
+        bands : Bands or dict or int or None
             How to organize peaks into bands.
             If Bands, defines band ranges, if int, specifies a number of bands to consider.
+            If dict, should be a set of band definitions to be converted into a Bands object.
             If None, sets bands as an empty Bands object.
         """
+
+        if isinstance(bands, dict):
+            bands = Bands(bands)
 
         self.bands = deepcopy(bands) if bands else Bands()
 
@@ -220,6 +224,20 @@ class BaseResults():
         if set(self._fields).issubset(set(data.keys())):
             self.peak_params_ = check_array_dim(self.peak_params_)
             self.gaussian_params_ = check_array_dim(self.gaussian_params_)
+
+
+    def _check_loaded_bands(self, data):
+        """Check if bands definition has been added and check definition.
+
+        Parameters
+        ----------
+        data : dict
+            A dictionary of data that has been added to the object.
+        """
+
+        # If bands definition has been added, convert to Bands object
+        if 'bands' in set(data.keys()):
+            self.add_bands(self.bands)
 
 
     def _reset_results(self, clear_results=False):

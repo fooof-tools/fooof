@@ -305,6 +305,7 @@ class SpectralModel(BaseModel):
         self._check_loaded_modes(data)
         self.algorithm._check_loaded_settings(data)
         self.results._check_loaded_results(data)
+        self.results._check_loaded_bands(data)
 
         # Regenerate model components, based on what is available
         if regenerate:

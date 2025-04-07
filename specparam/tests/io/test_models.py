@@ -143,10 +143,14 @@ def test_load_file_contents(tfm):
 
     loaded_data = load_json(file_name, TEST_DATA_PATH)
 
+    for mode in tfm.modes.get_modes()._fields:
+        assert mode in loaded_data.keys()
+    assert 'bands' in loaded_data.keys()
     for setting in tfm.algorithm.settings.names:
         assert setting in loaded_data.keys()
     for result in tfm.results._fields:
         assert result in loaded_data.keys()
+    #assert 'metrics' in loaded_data.keys() # TODO: fix modes tests
     for datum in tfm.data._fields:
         assert datum in loaded_data.keys()
 
@@ -158,15 +162,17 @@ def test_load_model(tfm):
     assert isinstance(ntfm, SpectralModel)
 
     # Check that all elements get loaded
-    assert isinstance(ntfm.modes, Modes)
-    for result in tfm.results._fields:
-        assert not np.all(np.isnan(getattr(ntfm.results, result)))
-    for setting in ntfm.algorithm.settings.names:
-        assert getattr(ntfm.algorithm, setting) is not None
-    for data in tfm.data._fields:
-        assert getattr(ntfm.data, data) is not None
+    assert tfm.modes.get_modes() == ntfm.modes.get_modes()
+    assert tfm.results.bands == ntfm.results.bands
     for meta_dat in tfm.data._meta_fields:
         assert getattr(ntfm.data, meta_dat) is not None
+    for setting in ntfm.algorithm.settings.names:
+        assert getattr(ntfm.algorithm, setting) is not None
+    for result in tfm.results._fields:
+        assert not np.all(np.isnan(getattr(ntfm.results, result)))
+    # add test for loading metrics
+    for data in tfm.data._fields:
+        assert getattr(ntfm.data, data) is not None
 
     # Check directory matches (loading didn't add any unexpected attributes)
     cfm = SpectralModel()
@@ -182,6 +188,8 @@ def test_load_group(tfg):
     assert isinstance(ntfg, SpectralGroupModel)
 
     # Check that all elements get loaded
+    assert tfg.modes.get_modes() == ntfg.modes.get_modes()
+    assert tfg.results.bands == ntfg.results.bands
     assert len(ntfg.results.group_results) > 0
     for setting in tfg.algorithm.settings.names:
         assert getattr(ntfg.algorithm, setting) is not None

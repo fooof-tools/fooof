@@ -37,8 +37,8 @@ def test_bands_errors():
 
 def test_bands_eq(tbands):
 
-    bands1 = Bands({'alpha' : [7, 14]})
-    bands2 = Bands({'alpha' : [7, 14]})
+    bands1 = Bands({'alpha' : (7, 14)})
+    bands2 = Bands({'alpha' : (7, 14)})
 
     assert bands1 == bands2
 
