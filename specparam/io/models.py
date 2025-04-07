@@ -63,6 +63,9 @@ def save_model(model, file_name, file_path=None, append=False,
     obj_dict['bands'] = dict(model.results.bands.bands)
     bands_label = ['bands'] if model.results.bands else []
 
+    # Convert metrics results to saveable information
+    obj_dict['metrics'] = obj_dict['metrics'].results
+
     # Shortcut for checking if set to save base only
     base_only = (not save_settings and not save_results and not save_data)
 
@@ -72,7 +75,7 @@ def save_model(model, file_name, file_path=None, append=False,
         (mode_labels + bands_label if save_base else []) + \
         (model.data._meta_fields if save_base and (save_results or save_data) else []) + \
         (model.data._meta_fields if base_only else []) + \
-        (model.results._fields if save_results else []) + \
+        (model.results._fields + ['metrics'] if save_results else []) + \
         (model.algorithm.settings.names if save_settings else []) + \
         (model.data._fields if save_data else []))
 

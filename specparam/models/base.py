@@ -124,6 +124,13 @@ class BaseModel():
             Dictionary of data to add to self.
         """
 
+        # Catch and add convert custom objects
+        if 'bands' in  data.keys():
+            self.results.add_bands(data.pop('bands'))
+        if 'metrics' in data.keys():
+            self.results.add_metrics(data.pop('metrics'))
+
+        # Add additional attributes directly to object
         for key in data.keys():
             if getattr(self, key, False) is not False:
                 setattr(self, key, data[key])

@@ -35,15 +35,8 @@ class BaseResults():
 
         self.modes = modes
 
-        if isinstance(metrics, Metrics):
-            self.metrics = deepcopy(metrics)
-        elif isinstance(metrics, list):
-            self.metrics = Metrics(\
-                [METRICS[metric] if isinstance(metric, str) else metric for metric in metrics])
-        else:
-            self.metrics = Metrics([METRICS[metric] for metric in DEFAULT_METRICS])
-
         self.add_bands(bands)
+        self.add_metrics(metrics)
 
         # Initialize results attributes
         self._reset_results(True)
@@ -99,6 +92,24 @@ class BaseResults():
         self.bands = deepcopy(bands) if bands else Bands()
 
 
+    def add_metrics(self, metrics):
+        """Add metrics definition to object.
+
+        Parameters
+        ----------
+        metrics : Metrics or list of Metric or list or str
+            Metrics definition(s) to add to object.
+        """
+
+        if isinstance(metrics, Metrics):
+            self.metrics = deepcopy(metrics)
+        elif isinstance(metrics, list):
+            self.metrics = Metrics(\
+                [METRICS[metric] if isinstance(metric, str) else metric for metric in metrics])
+        else:
+            self.metrics = Metrics([METRICS[metric] for metric in DEFAULT_METRICS])
+
+
     def add_results(self, results):
         """Add results data into object from a FitResults object.
 
@@ -111,6 +122,7 @@ class BaseResults():
         # Add parameter fields and then select and add metrics results
         for pfield in self._fields:
             setattr(self, pfield, getattr(results, pfield.strip('_')))
+
         self.metrics.add_results(results.metrics)
 
         self._check_loaded_results(results._asdict())
@@ -224,20 +236,6 @@ class BaseResults():
         if set(self._fields).issubset(set(data.keys())):
             self.peak_params_ = check_array_dim(self.peak_params_)
             self.gaussian_params_ = check_array_dim(self.gaussian_params_)
-
-
-    def _check_loaded_bands(self, data):
-        """Check if bands definition has been added and check definition.
-
-        Parameters
-        ----------
-        data : dict
-            A dictionary of data that has been added to the object.
-        """
-
-        # If bands definition has been added, convert to Bands object
-        if 'bands' in set(data.keys()):
-            self.add_bands(self.bands)
 
 
     def _reset_results(self, clear_results=False):
