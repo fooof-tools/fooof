@@ -104,7 +104,7 @@ class Bands():
         """
 
         self._check_band(label, band_definition)
-        self.bands[label] = band_definition
+        self.bands[label] = tuple(band_definition)
 
 
     def remove_band(self, label):
