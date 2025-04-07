@@ -54,7 +54,7 @@ def get_tdata2d():
 def get_tfm():
     """Get a model object, with a fit power spectrum, for testing."""
 
-    tfm = SpectralModel(verbose=False)
+    tfm = SpectralModel(bands=Bands({'alpha' : (7, 14)}), verbose=False)
     tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
     return tfm
@@ -63,7 +63,7 @@ def get_tfg():
     """Get a group object, with some fit power spectra, for testing."""
 
     n_spectra = 3
-    tfg = SpectralGroupModel(verbose=False)
+    tfg = SpectralGroupModel(bands=Bands({'alpha' : (7, 14)}), verbose=False)
     tfg.fit(*sim_group_power_spectra(n_spectra, *default_group_params()))
 
     return tfg
@@ -74,8 +74,8 @@ def get_tft():
     n_spectra = 3
     xs, ys = sim_spectrogram(n_spectra, *default_group_params())
 
-    tft = SpectralTimeModel(verbose=False)
-    tft.fit(xs, ys, bands=Bands({'alpha' : (7, 14)}))
+    tft = SpectralTimeModel(bands=Bands({'alpha' : (7, 14)}), verbose=False)
+    tft.fit(xs, ys)
 
     return tft
 
@@ -86,8 +86,8 @@ def get_tfe():
     xs, ys = sim_spectrogram(n_spectra, *default_group_params())
     ys = [ys, ys]
 
-    tfe = SpectralTimeEventModel(verbose=False)
-    tfe.fit(xs, ys, bands=Bands({'alpha' : (7, 14)}))
+    tfe = SpectralTimeEventModel(bands=Bands({'alpha' : (7, 14)}), verbose=False)
+    tfe.fit(xs, ys)
 
     return tfe
 
