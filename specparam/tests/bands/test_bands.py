@@ -35,6 +35,13 @@ def test_bands_errors():
     with raises(ValueError):
         bands.add_band('test', (2, 1))
 
+def test_bands_eq(tbands):
+
+    bands1 = Bands({'alpha' : [7, 14]})
+    bands2 = Bands({'alpha' : [7, 14]})
+
+    assert bands1 == bands2
+
 def test_bands_dunders(tbands):
 
     assert tbands['theta']

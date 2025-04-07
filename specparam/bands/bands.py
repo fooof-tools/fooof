@@ -65,6 +65,12 @@ class Bands():
             yield (label, band_definition)
 
 
+    def __eq__(self, other):
+        """Define equality of bands objects based on whether their definitions match."""
+
+        return self.bands == other.bands
+
+
     @property
     def labels(self):
         """Labels for all the bands defined in the object."""
