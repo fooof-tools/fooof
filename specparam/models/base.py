@@ -145,7 +145,9 @@ class BaseModel():
         if 'bands' in  data.keys():
             self.results.add_bands(data.pop('bands'))
         if 'metrics' in data.keys():
-            self.results.add_metrics(data.pop('metrics'))
+            tmetrics = data.pop('metrics')
+            self.results.add_metrics(tmetrics.keys())
+            self.results.metrics.add_results(tmetrics)
 
         # Add additional attributes directly to object
         for key in data.keys():

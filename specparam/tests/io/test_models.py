@@ -150,7 +150,7 @@ def test_load_file_contents(tfm):
         assert setting in loaded_data.keys()
     for result in tfm.results._fields:
         assert result in loaded_data.keys()
-    #assert 'metrics' in loaded_data.keys() # TODO: fix modes tests
+    assert 'metrics' in loaded_data.keys()
     for datum in tfm.data._fields:
         assert datum in loaded_data.keys()
 
@@ -170,7 +170,7 @@ def test_load_model(tfm):
         assert getattr(ntfm.algorithm, setting) is not None
     for result in tfm.results._fields:
         assert not np.all(np.isnan(getattr(ntfm.results, result)))
-    # add test for loading metrics
+    assert tfm.results.metrics.results == ntfm.results.metrics.results
     for data in tfm.data._fields:
         assert getattr(ntfm.data, data) is not None
 
@@ -190,9 +190,11 @@ def test_load_group(tfg):
     # Check that all elements get loaded
     assert tfg.modes.get_modes() == ntfg.modes.get_modes()
     assert tfg.results.bands == ntfg.results.bands
-    assert len(ntfg.results.group_results) > 0
     for setting in tfg.algorithm.settings.names:
         assert getattr(ntfg.algorithm, setting) is not None
+    assert len(ntfg.results.group_results) > 0
+    for metric in tfg.results.metrics.labels:
+        assert tfg.results.metrics.results[metric] is not None
     assert ntfg.data.power_spectra is not None
     for meta_dat in tfg.data._meta_fields:
         assert getattr(ntfg.data, meta_dat) is not None
