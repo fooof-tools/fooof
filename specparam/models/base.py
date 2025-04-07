@@ -3,7 +3,7 @@
 from copy import deepcopy
 
 from specparam.utils.array import unlog
-from specparam.modes.modes import Modes
+from specparam.modes.modes import Modes, Modes
 from specparam.modutils.errors import NoDataError
 from specparam.reports.strings import gen_modes_str, gen_settings_str, gen_issue_str
 
@@ -16,7 +16,7 @@ class BaseModel():
     def __init__(self, aperiodic_mode, periodic_mode, verbose):
         """Initialize object."""
 
-        self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode)
+        self.add_modes(aperiodic_mode, periodic_mode)
         self.verbose = verbose
 
 
@@ -24,6 +24,20 @@ class BaseModel():
         """Return a copy of the current object."""
 
         return deepcopy(self)
+
+
+    def add_modes(self, aperiodic_mode, periodic_mode):
+        """Add modes definition to the object.
+
+        Parameters
+        ----------
+        aperiodic_mode : Mode or str
+            Mode for aperiodic component, or string specifying which mode to use.
+        periodic_mode : Mode or str
+            Mode for periodic component, or string specifying which mode to use.
+        """
+
+        self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode)
 
 
     def get_data(self, component='full', space='log'):
@@ -125,6 +139,9 @@ class BaseModel():
         """
 
         # Catch and add convert custom objects
+        if 'aperiodic_mode' in data.keys() and 'periodic_mode' in data.keys():
+            self.add_modes(aperiodic_mode=data.pop('aperiodic_mode'),
+                           periodic_mode=data.pop('periodic_mode'))
         if 'bands' in  data.keys():
             self.results.add_bands(data.pop('bands'))
         if 'metrics' in data.keys():
@@ -138,20 +155,3 @@ class BaseModel():
                 setattr(self.data, key, data[key])
             elif getattr(self.results, key, False) is not False:
                 setattr(self.results, key, data[key])
-
-
-    def _check_loaded_modes(self, data):
-        """Check if fit modes added, and update the object as needed.
-
-        Parameters
-        ----------
-        data : dict
-            A dictionary of data that has been added to the object.
-        """
-
-        # TEMP / ToDo: not quite clear if this is the right place
-        #   And/or - might want a clearer process to 'reset' Modes
-
-        if 'aperiodic_mode' in data and 'periodic_mode' in data:
-            self.modes = Modes(aperiodic=data['aperiodic_mode'],
-                               periodic=data['periodic_mode'])

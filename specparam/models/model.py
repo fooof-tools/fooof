@@ -302,7 +302,6 @@ class SpectralModel(BaseModel):
 
         # Add loaded data to object and check loaded data
         self._add_from_dict(data)
-        self._check_loaded_modes(data)
         self.algorithm._check_loaded_settings(data)
         self.results._check_loaded_results(data)
 

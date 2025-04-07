@@ -248,7 +248,6 @@ class SpectralGroupModel(SpectralModel):
 
             # If settings are loaded, check and update based on the first line
             if ind == 0:
-                self._check_loaded_modes(data)
                 self.algorithm._check_loaded_settings(data)
 
             # If results part of current data added, check and update object results
