@@ -302,7 +302,7 @@ class SpectralGroupModel(SpectralModel):
             model.data.power_spectrum = self.data.power_spectra[ind]
 
         # Add results for specified power spectrum, regenerating full fit if requested
-        if ind:
+        if ind is not None:
             model.results.add_results(self.results.group_results[ind])
             if regenerate:
                 model.results._regenerate_model(self.data.freqs)
