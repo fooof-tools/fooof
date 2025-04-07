@@ -78,7 +78,7 @@ def test_time_report(skip_if_no_mpl):
 
     assert tft
 
-def test_time_load(tbands):
+def test_time_load():
 
     file_name_res = 'test_time_res'
     file_name_set = 'test_time_set'
@@ -86,7 +86,7 @@ def test_time_load(tbands):
 
     # Test loading results
     tft = SpectralTimeModel(verbose=False)
-    tft.load(file_name_res, TEST_DATA_PATH, peak_org=tbands)
+    tft.load(file_name_res, TEST_DATA_PATH)
     assert tft.results.time_results
 
     # Test loading settings

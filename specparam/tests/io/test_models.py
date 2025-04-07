@@ -203,7 +203,7 @@ def test_load_group(tfg):
     assert dir(cfg.data) == dir(ntfg.data)
     assert dir(cfg.results) == dir(ntfg.results)
 
-def test_load_time(tbands):
+def test_load_time():
 
     # Loads file saved from `test_save_time`
     file_name = 'test_time_all'
@@ -211,19 +211,15 @@ def test_load_time(tbands):
     # Load without bands definition
     tft = load_time(file_name, TEST_DATA_PATH)
     assert isinstance(tft, SpectralTimeModel)
-
-    # Load with bands definition
-    tft2 = load_time(file_name, TEST_DATA_PATH, tbands)
-    assert isinstance(tft2, SpectralTimeModel)
-    assert tft2.results.time_results
+    assert tft.results.time_results
 
     # Check directory matches (loading didn't add any unexpected attributes)
     cft = SpectralTimeModel()
-    assert dir(cft) == dir(tft2)
-    assert dir(cft.data) == dir(tft2.data)
-    assert dir(cft.results) == dir(tft2.results)
+    assert dir(cft) == dir(tft)
+    assert dir(cft.data) == dir(tft.data)
+    assert dir(cft.results) == dir(tft.results)
 
-def test_load_event(tbands):
+def test_load_event():
 
     # Loads file saved from `test_save_event`
     file_name = 'test_event_all'
@@ -232,15 +228,10 @@ def test_load_event(tbands):
     tfe = load_event(file_name, TEST_DATA_PATH)
     assert isinstance(tfe, SpectralTimeEventModel)
     assert len(tfe.results) > 1
-
-    # Load with bands definition
-    tfe2 = load_event(file_name, TEST_DATA_PATH, tbands)
-    assert isinstance(tfe2, SpectralTimeEventModel)
-    assert tfe2.results.event_time_results
-    assert len(tfe2.results) > 1
+    assert tfe.results.event_time_results
 
     # Check directory matches (loading didn't add any unexpected attributes)
     cfe = SpectralTimeEventModel()
-    assert dir(cfe) == dir(tfe2)
-    assert dir(cfe.data) == dir(tfe2.data)
-    assert dir(cfe.results) == dir(tfe2.results)
+    assert dir(cfe) == dir(tfe)
+    assert dir(cfe.data) == dir(tfe.data)
+    assert dir(cfe.results) == dir(tfe.results)

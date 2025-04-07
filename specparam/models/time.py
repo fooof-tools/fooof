@@ -187,7 +187,7 @@ class SpectralTimeModel(SpectralGroupModel):
         save_time_report(self, file_name, file_path, add_settings)
 
 
-    def load(self, file_name, file_path=None, peak_org=None):
+    def load(self, file_name, file_path=None, convert_results=True):
         """Load time data from file.
 
         Parameters
@@ -196,17 +196,15 @@ class SpectralTimeModel(SpectralGroupModel):
             File to load data from.
         file_path : str, optional
             Path to directory to load from. If None, loads from current directory.
-        peak_org : int or Bands
-            How to organize peaks.
-            If int, extracts the first n peaks.
-            If Bands, extracts peaks based on band definitions.
+        convert_results : bool, optional, default: True
+            Whether to convert results to be organized over time.
         """
 
         # Clear results so as not to have possible prior results interfere
         self.results._reset_time_results()
         super().load(file_name, file_path=file_path)
-        if peak_org is not False and self.results.group_results:
-            self.results.convert_results(peak_org)
+        if convert_results and self.results.bands and self.results.group_results:
+            self.results.convert_results()
 
 
     def get_group(self, inds, output_type='time'):

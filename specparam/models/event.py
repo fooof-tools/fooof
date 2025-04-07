@@ -239,7 +239,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
         save_event(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
-    def load(self, file_name, file_path=None, peak_org=None):
+    def load(self, file_name, file_path=None, convert_results=True):
         """Load data from file(s).
 
         Parameters
@@ -248,16 +248,14 @@ class SpectralTimeEventModel(SpectralTimeModel):
             File(s) to load data from.
         file_path : str, optional
             Path to directory to load from. If None, loads from current directory.
-        peak_org : int or Bands, optional
-            How to organize peaks.
-            If int, extracts the first n peaks.
-            If Bands, extracts peaks based on band definitions.
+        convert_results : bool, optional, default: True
+            Whether to convert results to be organized over time.
         """
 
         files = get_files(file_path, select=file_name)
         spectrograms = []
         for file in files:
-            super().load(file, file_path, peak_org=False)
+            super().load(file, file_path, convert_results=False)
             if self.results.group_results:
                 self.results.add_results(self.results.group_results, append=True)
             if np.all(self.data.power_spectra):
@@ -265,8 +263,8 @@ class SpectralTimeEventModel(SpectralTimeModel):
         self.data.spectrograms = np.array(spectrograms) if spectrograms else None
 
         self.results._reset_group_results()
-        if peak_org is not False and self.results.event_group_results:
-            self.results.convert_results(peak_org)
+        if convert_results and self.results.bands and self.results.event_group_results:
+            self.results.convert_results()
 
 
     def get_model(self, event_ind=None, window_ind=None, regenerate=True):

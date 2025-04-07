@@ -61,13 +61,17 @@ def save_model(model, file_name, file_path=None, append=False,
 
     # Add bands information to saveable information
     obj_dict['bands'] = dict(model.results.bands.bands)
-    bands_label = ['bands'] if model.results.bands.n_bands else []
+    bands_label = ['bands'] if model.results.bands else []
+
+    # Shortcut for checking if set to save base only
+    base_only = (not save_settings and not save_results and not save_data)
 
     # Set and select which variables to keep. Use a set to drop any potential overlap
     #   Note that results also saves frequency information to be able to recreate freq vector
     keep = set(\
         (mode_labels + bands_label if save_base else []) + \
         (model.data._meta_fields if save_base and (save_results or save_data) else []) + \
+        (model.data._meta_fields if base_only else []) + \
         (model.results._fields if save_results else []) + \
         (model.algorithm.settings.names if save_settings else []) + \
         (model.data._fields if save_data else []))
@@ -213,7 +217,7 @@ def load_group(file_name, file_path=None):
     return group
 
 
-def load_time(file_name, file_path=None, peak_org=None):
+def load_time(file_name, file_path=None):
     """Load a SpectralTimeModel object from file.
 
     Parameters
@@ -222,10 +226,6 @@ def load_time(file_name, file_path=None, peak_org=None):
         File(s) to load data from.
     file_path : Path or str, optional
         Path to directory to load from. If None, loads from current directory.
-    peak_org : int or Bands, optional
-        How to organize peaks.
-        If int, extracts the first n peaks.
-        If Bands, extracts peaks based on band definitions.
 
     Returns
     -------
@@ -235,12 +235,12 @@ def load_time(file_name, file_path=None, peak_org=None):
 
     from specparam import SpectralTimeModel
     time = SpectralTimeModel()
-    time.load(file_name, file_path, peak_org)
+    time.load(file_name, file_path)
 
     return time
 
 
-def load_event(file_name, file_path=None, peak_org=None, event=None):
+def load_event(file_name, file_path=None):
     """Load a SpectralTimeEventModel object from file.
 
     Parameters
@@ -249,10 +249,6 @@ def load_event(file_name, file_path=None, peak_org=None, event=None):
         File(s) to load data from.
     file_path : Path or str, optional
         Path to directory to load from. If None, loads from current directory.
-    peak_org : int or Bands, optional
-        How to organize peaks.
-        If int, extracts the first n peaks.
-        If Bands, extracts peaks based on band definitions.
 
     Returns
     -------
@@ -262,7 +258,7 @@ def load_event(file_name, file_path=None, peak_org=None, event=None):
 
     from specparam import SpectralTimeEventModel
     event = SpectralTimeEventModel()
-    event.load(file_name, file_path, peak_org)
+    event.load(file_name, file_path)
 
     return event
 
@@ -287,6 +283,8 @@ def _save_group(group, f_obj, save_results, save_settings, save_data):
     # Since there is a single set of object settings, save them out once, at the top
     if save_settings:
         save_model(group, file_name=f_obj, file_path=None, append=False, save_settings=True)
+    else:
+        save_model(group, file_name=f_obj, file_path=None, append=False, save_base=True)
 
     # For results & data, loop across all data and/or models, and save each out to a new line
     if save_results or save_data:

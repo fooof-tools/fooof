@@ -41,6 +41,7 @@ def initialize_model_from_source(source, target):
     model = MODELS[target](**source.modes.get_modes()._asdict(),
                            **source.algorithm.get_settings()._asdict(),
                            metrics=source.results.metrics.labels,
+                           bands=source.results.bands,
                            verbose=source.verbose)
     model.data.add_meta_data(source.data.get_meta_data())
     model.data.set_checks(*source.data.get_checks())

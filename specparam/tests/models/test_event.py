@@ -95,7 +95,7 @@ def test_event_report(skip_if_no_mpl):
 
     assert tfe
 
-def test_event_load(tbands):
+def test_event_load():
 
     file_name_res = 'test_event_res'
     file_name_set = 'test_event_set'
@@ -103,7 +103,7 @@ def test_event_load(tbands):
 
     # Test loading results
     tfe = SpectralTimeEventModel(verbose=False)
-    tfe.load(file_name_res, TEST_DATA_PATH, peak_org=tbands)
+    tfe.load(file_name_res, TEST_DATA_PATH)
     assert tfe.results.event_time_results
 
     # Test loading settings
