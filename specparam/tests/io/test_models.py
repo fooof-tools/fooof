@@ -9,6 +9,7 @@ import numpy as np
 
 from specparam import (SpectralModel, SpectralGroupModel,
                        SpectralTimeModel, SpectralTimeEventModel)
+from specparam.models.utils import compare_model_objs
 from specparam.io.files import load_json
 
 from specparam.tests.tsettings import TEST_DATA_PATH
@@ -35,6 +36,12 @@ def test_save_model(tfm):
     # Test saving out all save elements
     file_name_all = 'test_model_all'
     save_model(tfm, file_name_all, TEST_DATA_PATH, False, True, True, True)
+    assert os.path.exists(TEST_DATA_PATH / (file_name_all + '.json'))
+
+def test_save_model2(tfm2):
+
+    file_name_all = 'test_model_all2'
+    save_model(tfm2, file_name_all, TEST_DATA_PATH, False, True, True, True)
     assert os.path.exists(TEST_DATA_PATH / (file_name_all + '.json'))
 
 def test_save_model_append(tfm):
@@ -75,6 +82,12 @@ def test_save_group(tfg):
     # Test saving out all save elements
     file_name_all = 'test_group_all'
     save_group(tfg, file_name_all, TEST_DATA_PATH, False, True, True, True)
+    assert os.path.exists(TEST_DATA_PATH / (file_name_all + '.json'))
+
+def test_save_group2(tfg2):
+
+    file_name_all = 'test_group_all2'
+    save_group(tfg2, file_name_all, TEST_DATA_PATH, False, True, True, True)
     assert os.path.exists(TEST_DATA_PATH / (file_name_all + '.json'))
 
 def test_save_group_append(tfg):
@@ -179,6 +192,14 @@ def test_load_model(tfm):
     assert dir(cfm.data) == dir(ntfm.data)
     assert dir(cfm.results) == dir(ntfm.results)
 
+def test_load_model2(tfm2):
+
+    # Loads file saved from `test_save_model_str2`
+    file_name = 'test_model_all2'
+    ntfm2 = load_model(file_name, TEST_DATA_PATH)
+    assert tfm2.modes.get_modes() == ntfm2.modes.get_modes()
+    compare_model_objs([tfm2, ntfm2], ['settings', 'meta_data', 'metrics'])
+
 def test_load_group(tfg):
 
     # Loads file saved from `test_save_group`
@@ -203,6 +224,14 @@ def test_load_group(tfg):
     assert dir(cfg) == dir(ntfg)
     assert dir(cfg.data) == dir(ntfg.data)
     assert dir(cfg.results) == dir(ntfg.results)
+
+def test_load_group2(tfg2):
+
+    # Loads file saved from `test_save_group_str2`
+    file_name = 'test_group_all2'
+    ntfg2 = load_group(file_name, TEST_DATA_PATH)
+    assert tfg2.modes.get_modes() == ntfg2.modes.get_modes()
+    compare_model_objs([tfg2, ntfg2], ['settings', 'meta_data', 'metrics'])
 
 def test_load_time():
 

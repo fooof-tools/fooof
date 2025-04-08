@@ -58,6 +58,16 @@ def get_tfm():
 
     return tfm
 
+def get_tfm2():
+    """Get a model object, with a fit power spectrum, for testing - custom metrics & modes."""
+
+    tfm2 = SpectralModel(bands=Bands({'alpha' : (7, 14), 'beta' : [15, 30]}),
+                        metrics=['error_mse', 'gof_adjrsquared'],
+                        aperiodic_mode='knee', periodic_mode='gaussian')
+    tfm2.fit(*sim_power_spectrum(*default_spectrum_params()))
+
+    return tfm2
+
 def get_tfg():
     """Get a group object, with some fit power spectra, for testing."""
 
@@ -66,6 +76,17 @@ def get_tfg():
     tfg.fit(*sim_group_power_spectra(n_spectra, *default_group_params()))
 
     return tfg
+
+def get_tfg2():
+    """Get a group object, with some fit power spectra, for testing - custom metrics & modes."""
+
+    n_spectra = 3
+    tfg2 = SpectralGroupModel(bands=Bands({'alpha' : (7, 14), 'beta' : [15, 30]}),
+                             metrics=['error_mse', 'gof_adjrsquared'],
+                            aperiodic_mode='knee', periodic_mode='gaussian')
+    tfg2.fit(*sim_group_power_spectra(n_spectra, *default_group_params()))
+
+    return tfg2
 
 def get_tft():
     """Get a time object, with some fit power spectra, for testing."""

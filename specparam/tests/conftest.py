@@ -8,8 +8,9 @@ import numpy as np
 
 from specparam.modutils.dependencies import safe_import
 
-from specparam.tests.tdata import (get_tdata, get_tdata2d, get_tfm, get_tfg, get_tft, get_tfe,
-                                   get_tbands, get_tresults, get_tmodes, get_tdocstring)
+from specparam.tests.tdata import (get_tdata, get_tdata2d, get_tfm, get_tfm2, get_tfg, get_tfg2,
+                                   get_tft, get_tfe, get_tbands, get_tresults, get_tmodes,
+                                   get_tdocstring)
 from specparam.tests.tsettings import (BASE_TEST_FILE_PATH, TEST_DATA_PATH,
                                        TEST_REPORTS_PATH, TEST_PLOTS_PATH)
 
@@ -71,8 +72,16 @@ def tfm():
     yield get_tfm()
 
 @pytest.fixture(scope='session')
+def tfm2():
+    yield get_tfm2()
+
+@pytest.fixture(scope='session')
 def tfg():
     yield get_tfg()
+
+@pytest.fixture(scope='session')
+def tfg2():
+    yield get_tfg2()
 
 @pytest.fixture(scope='session')
 def tft():

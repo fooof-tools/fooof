@@ -39,6 +39,13 @@ class BaseModel():
 
         self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode)
 
+        if getattr(self, 'results', None):
+            self.results.modes = self.modes
+            self.results._reset_results()
+
+        if getattr(self, 'algorithm', None):
+            self.algorithm._reset_subobjects(modes=self.modes, results=self.results)
+
 
     def get_data(self, component='full', space='log'):
         """Get a data component.
@@ -146,7 +153,7 @@ class BaseModel():
             self.results.add_bands(data.pop('bands'))
         if 'metrics' in data.keys():
             tmetrics = data.pop('metrics')
-            self.results.add_metrics(tmetrics.keys())
+            self.results.add_metrics(list(tmetrics.keys()))
             self.results.metrics.add_results(tmetrics)
 
         # Add additional attributes directly to object
