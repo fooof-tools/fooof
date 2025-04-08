@@ -59,7 +59,7 @@ GOF_FUNCS = {
 }
 
 
-def compute_gof(power_spectrum, modeled_spectrum, gof_metric='r_squared'):
+def compute_gof(power_spectrum, modeled_spectrum, gof_metric='r_squared', **kwargs):
     """Compute goodness of fit between a model and a power spectrum.
 
     Parameters
@@ -70,6 +70,8 @@ def compute_gof(power_spectrum, modeled_spectrum, gof_metric='r_squared'):
         Modelled power spectrum.
     gof_metric : {'r_squared', 'adj_r_squared'} or callable
         Which approach to take to compute the goodness of fit.
+    **kwargs
+        Additional keyword arguments for the goodness of fit function.
 
     Returns
     -------
@@ -78,8 +80,8 @@ def compute_gof(power_spectrum, modeled_spectrum, gof_metric='r_squared'):
     """
 
     if isinstance(gof_metric, str):
-        gof = GOF_FUNCS[gof_metric.lower()](power_spectrum, modeled_spectrum)
+        gof_func = GOF_FUNCS[gof_metric.lower()]
     elif isfunction(gof_metric):
-        gof = gof_metric(power_spectrum, modeled_spectrum)
+        gof_func = gof_metric
 
-    return gof
+    return gof_func(power_spectrum, modeled_spectrum, **kwargs)

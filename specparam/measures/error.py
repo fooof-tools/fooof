@@ -100,7 +100,7 @@ ERROR_FUNCS = {
 }
 
 
-def compute_error(power_spectrum, modeled_spectrum, error_metric='mae'):
+def compute_error(power_spectrum, modeled_spectrum, error_metric='mae', **kwargs):
     """Compute error between a model and a power spectrum.
 
     Parameters
@@ -111,6 +111,8 @@ def compute_error(power_spectrum, modeled_spectrum, error_metric='mae'):
         Modelled power spectrum.
     error_metric : {'mae', 'mse', 'rsme', 'medae'} or callable
         Which approach to take to compute the error.
+    **kwargs
+        Additional keyword arguments for the error function.
 
     Returns
     -------
@@ -119,8 +121,8 @@ def compute_error(power_spectrum, modeled_spectrum, error_metric='mae'):
     """
 
     if isinstance(error_metric, str):
-        error = ERROR_FUNCS[error_metric.lower()](power_spectrum, modeled_spectrum)
+        error_func = ERROR_FUNCS[error_metric.lower()]
     elif isfunction(error_metric):
-        error = error_metric(power_spectrum, modeled_spectrum)
+        error_func = error_metric
 
-    return error
+    return error_func(power_spectrum, modeled_spectrum, **kwargs)
