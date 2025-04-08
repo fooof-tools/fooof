@@ -21,7 +21,10 @@ def test_metric(tfm):
 
 def test_metric_kwargs(tfm):
 
-    metric = Metric('gof', 'ar2', compute_adj_r_squared, {'results' : 'n_params_'})
+    metric = Metric('gof', 'ar2', compute_adj_r_squared,
+                    {'n_params' : lambda data, results: \
+                        results.peak_params_.size + results.aperiodic_params_.size})
+
     assert isinstance(metric, Metric)
     assert isinstance(metric.label, str)
 
@@ -72,7 +75,9 @@ def test_metrics_kwargs(tfm):
 
     er_met_def = {'type' : 'error', 'measure' : 'mae', 'func' : compute_mean_abs_error}
     ar2_met_def = {'type' : 'gof', 'measure' : 'arsquared',
-                   'func' : compute_adj_r_squared, 'kwargs' : {'results' : 'n_params_'}}
+                   'func' : compute_adj_r_squared,
+                   'kwargs' : {'n_params' : lambda data, results: \
+                        results.peak_params_.size + results.aperiodic_params_.size}}
 
     metrics = Metrics([er_met_def, ar2_met_def])
     assert isinstance(metrics, Metrics)

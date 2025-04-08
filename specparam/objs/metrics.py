@@ -20,8 +20,9 @@ class Metric():
         The function that computes the metric.
     kwargs : dictionary
         Additional keyword argument to compute the metric.
-        Each key should be 'data' or 'results', specifying where to access the attribute from.
-        Each value should be the name of the attribute to access and pass to compute the metric.
+        Each key should be the name of the additional argument.
+        Each value should be a lambda function that takes 'data' & 'results'
+        and returns the desired parameter / computed value.
     """
 
     def __init__(self, type, measure, func, kwargs=None):
@@ -70,9 +71,9 @@ class Metric():
             Model results.
         """
 
-        # Select any specified additional keyword arguments from kwargs definition
-        kwargs = {val.strip('_') : getattr({'results' : results, 'data' : data}[key], val) \
-            for key, val in self.kwargs.items()}
+        kwargs = {}
+        for key, lfunc in self.kwargs.items():
+            kwargs[key] = lfunc(data, results)
 
         self.result = self.func(data.power_spectrum, results.modeled_spectrum_, **kwargs)
 
