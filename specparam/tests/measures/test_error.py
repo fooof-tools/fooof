@@ -1,7 +1,5 @@
 """Test functions for specparam.measures.error."""
 
-import numpy as np
-
 from specparam.measures.error import *
 
 ###################################################################################################

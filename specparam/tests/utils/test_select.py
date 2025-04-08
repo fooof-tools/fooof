@@ -42,4 +42,4 @@ def test_find_first_ind():
     assert find_first_ind(l1, 'word') == 1
     assert find_first_ind(l1, 'lion') == 2
     assert find_first_ind(l1, 'again') == 3
-    assert find_first_ind(l1, 'not') == None
+    assert find_first_ind(l1, 'not') is None

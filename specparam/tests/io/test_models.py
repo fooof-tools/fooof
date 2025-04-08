@@ -9,7 +9,6 @@ import numpy as np
 
 from specparam import (SpectralModel, SpectralGroupModel,
                        SpectralTimeModel, SpectralTimeEventModel)
-from specparam.modes.modes import Modes
 from specparam.io.files import load_json
 
 from specparam.tests.tsettings import TEST_DATA_PATH

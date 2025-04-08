@@ -18,7 +18,7 @@ def test_model_to_dict(tresults, tmodes, tbands):
     assert isinstance(out, dict)
     assert 'cf_0' in out
     assert out['cf_0'] == tresults.peak_params[0, 0]
-    assert not 'cf_1' in out
+    assert 'cf_1' not in out
 
     out = model_to_dict(tresults, tmodes, 2)
     assert 'cf_0' in out

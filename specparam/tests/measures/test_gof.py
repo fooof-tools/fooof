@@ -1,7 +1,5 @@
 """Test functions for specparam.measures.gof."""
 
-import numpy as np
-
 from specparam.measures.gof import *
 
 ###################################################################################################

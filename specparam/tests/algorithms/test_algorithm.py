@@ -1,6 +1,5 @@
 """Tests for specparam.algorthms.algorithm."""
 
-from specparam.data import ModelSettings
 from specparam.algorithms.settings import SettingsDefinition
 
 from specparam.algorithms.algorithm import *

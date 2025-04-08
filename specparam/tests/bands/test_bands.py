@@ -35,7 +35,7 @@ def test_bands_errors():
     with raises(ValueError):
         bands.add_band('test', (2, 1))
 
-def test_bands_eq(tbands):
+def test_bands_eq():
 
     bands1 = Bands({'alpha' : (7, 14)})
     bands2 = Bands({'alpha' : (7, 14)})

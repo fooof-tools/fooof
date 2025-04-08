@@ -1,11 +1,7 @@
 """Tests for specparam.modes.funcs."""
 
-from pytest import raises
-
 import numpy as np
 from scipy.stats import norm, linregress
-
-from specparam.modutils.errors import InconsistentDataError
 
 from specparam.modes.funcs import *
 

@@ -8,7 +8,6 @@ from specparam.data.data import FitResults
 from specparam.models import (SpectralModel, SpectralGroupModel,
                               SpectralTimeModel, SpectralTimeEventModel)
 from specparam.objs.data import BaseData, BaseData2D
-from specparam.objs.results import BaseResults
 from specparam.sim.params import param_sampler
 from specparam.sim.sim import sim_power_spectrum, sim_group_power_spectra, sim_spectrogram
 

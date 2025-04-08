@@ -1,6 +1,5 @@
 """Tests for specparam.algorthms.spectral_fit."""
 
-from specparam import SpectralModel
 from specparam.models.base import BaseModel
 from specparam.objs.data import BaseData
 from specparam.objs.results import BaseResults

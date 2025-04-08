@@ -8,7 +8,7 @@ They serve rather as 'smoke tests', for if anything fails completely.
 
 import numpy as np
 
-from specparam.models import SpectralModel, SpectralGroupModel, SpectralTimeModel
+from specparam.models import SpectralGroupModel, SpectralTimeModel
 from specparam.sim import sim_spectrogram
 from specparam.modutils.dependencies import safe_import
 
@@ -146,7 +146,8 @@ def test_event_get_group(tfe):
     assert ntfe1.data.spectrograms.shape == (len(einds), len(tfe.data.freqs), len(winds))
     tkey = list(ntfe1.results.event_time_results.keys())[0]
     assert ntfe1.results.event_time_results[tkey].shape == (len(einds), len(winds))
-    assert len(ntfe1.results.event_group_results), len(ntfe1.results.event_group_results[0]) == (len(einds, len(winds)))
+    assert len(ntfe1.results.event_group_results), len(ntfe1.results.event_group_results[0]) == \
+        (len(einds, len(winds)))
 
     # Test export sub-objects, including with None input
     ntft0 = tfe.get_group(None, None, 'time')

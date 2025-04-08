@@ -1,7 +1,5 @@
 """Tests for the specparam.data.utils."""
 
-from copy import deepcopy
-
 import numpy as np
 
 from specparam.data.utils import *

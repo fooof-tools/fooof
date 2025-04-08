@@ -52,7 +52,7 @@ def test_base_results2dt():
     assert isinstance(tres2dt1, BaseResults2D)
     assert isinstance(tres2dt1, BaseResults2DT)
 
-def test_base_results2d_results(tresults, tmodes):
+def test_base_results2dt_results(tresults, tmodes):
 
     tres2dt = BaseResults2DT(modes=tmodes)
 
