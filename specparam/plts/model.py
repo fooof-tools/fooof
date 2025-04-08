@@ -172,7 +172,8 @@ def _add_peaks_shade(model, plt_log, ax, **plot_kwargs):
     for peak in model.results.gaussian_params_:
 
         peak_freqs = np.log10(model.data.freqs) if plt_log else model.data.freqs
-        peak_line = model.results._ap_fit + gen_periodic(model.data.freqs, peak)
+        #peak_line = model.results._ap_fit + gen_periodic(model.data.freqs, peak)
+        peak_line = model.results._ap_fit + model.modes.periodic.func(model.data.freqs, *peak)
 
         ax.fill_between(peak_freqs, peak_line, model.results._ap_fit, **plot_kwargs)
 
@@ -231,7 +232,8 @@ def _add_peaks_outline(model, plt_log, ax, **plot_kwargs):
         peak_range = [peak[0] - peak[2]*3, peak[0] + peak[2]*3]
 
         # Generate a peak reconstruction for each peak, and trim to desired range
-        peak_line = model.results._ap_fit + gen_periodic(model.data.freqs, peak)
+        #peak_line = model.results._ap_fit + gen_periodic(model.data.freqs, peak)
+        peak_line = model.results._ap_fit + model.modes.periodic.func(model.data.freqs, *peak)
         peak_freqs, peak_line = trim_spectrum(model.data.freqs, peak_line, peak_range)
 
         # Plot the peak outline

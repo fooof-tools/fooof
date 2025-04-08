@@ -89,8 +89,8 @@ def compute_pointwise_error_group(group, plot_errors=True, return_errors=False, 
 
     for ind, (res, data) in enumerate(zip(group.results, group.data.power_spectra)):
 
-        model = gen_model(group.data.freqs, res.aperiodic_params, group.modes.aperiodic,
-                          res.gaussian_params, group.modes.periodic)
+        model = gen_model(group.data.freqs, group.modes.aperiodic, res.aperiodic_params,
+                          group.modes.periodic, res.gaussian_params)
         errors[ind, :] = np.abs(model - data)
 
     mean = np.mean(errors, 0)

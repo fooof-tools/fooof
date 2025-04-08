@@ -23,11 +23,11 @@ def test_gen_aperiodic():
     xs = gen_freqs([3, 50], 0.5)
 
     ap_nk = [50, 2]
-    apv_nk = gen_aperiodic(xs, ap_nk, 'fixed')
+    apv_nk = gen_aperiodic(xs, 'fixed', ap_nk)
     assert np.all(apv_nk)
 
     ap_kn = [50, 1, 1]
-    apv_kn = gen_aperiodic(xs, ap_kn, 'knee')
+    apv_kn = gen_aperiodic(xs, 'knee', ap_kn)
     assert np.all(apv_kn)
 
 def test_gen_periodic():
@@ -35,7 +35,7 @@ def test_gen_periodic():
     xs = gen_freqs([3, 50], 0.5)
     pe_params = [10, 2, 1]
 
-    pe_vals = gen_periodic(xs, pe_params, 'gaussian')
+    pe_vals = gen_periodic(xs, 'gaussian', pe_params)
 
     assert np.all(np.invert(np.isnan(pe_vals)))
     assert xs[np.argmax(pe_vals)] == 10
@@ -62,7 +62,7 @@ def test_gen_power_values():
     pe_params = [10, 2, 1]
     nlv = 0.1
 
-    ys = gen_power_vals(xs, ap_params, 'fixed', pe_params, 'gaussian', nlv)
+    ys = gen_power_vals(xs, 'fixed', ap_params, 'gaussian', pe_params, nlv)
 
     assert np.all(ys)
 
@@ -82,6 +82,6 @@ def test_gen_rotated_power_vals():
 def test_gen_model():
 
     xs = gen_freqs([3, 50], 0.5)
-    ys = gen_model(xs, np.array([1, 1]), 'fixed', np.array([10, 0.5, 1]), 'gaussian')
+    ys = gen_model(xs, 'fixed', np.array([1, 1]), 'gaussian', np.array([10, 0.5, 1]))
 
     assert np.all(ys)

@@ -1,4 +1,4 @@
-"""Data fot tests."""
+"""Data for tests."""
 
 import numpy as np
 
@@ -22,7 +22,7 @@ def default_spectrum_params():
     ap_params = [1, 1]
     gaussian_params = [10, 0.5, 2, 20, 0.3, 4]
 
-    return freq_range, ap_params, 'fixed', gaussian_params, 'gaussian'
+    return freq_range, {'fixed' : ap_params}, {'gaussian' : gaussian_params}
 
 def default_group_params():
     """Create default parameters for simulating a test group of power spectra."""
@@ -31,7 +31,7 @@ def default_group_params():
     ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
     gauss_opts = param_sampler([[10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
-    return freq_range, ap_opts, 'fixed', gauss_opts, 'gaussian'
+    return freq_range, {'fixed' : ap_opts}, {'gaussian' : gauss_opts}
 
 ## TEST DATA OBJECTS
 
@@ -62,8 +62,8 @@ def get_tfm2():
     """Get a model object, with a fit power spectrum, for testing - custom metrics & modes."""
 
     tfm2 = SpectralModel(bands=Bands({'alpha' : (7, 14), 'beta' : [15, 30]}),
-                        metrics=['error_mse', 'gof_adjrsquared'],
-                        aperiodic_mode='knee', periodic_mode='gaussian')
+                         metrics=['error_mse', 'gof_adjrsquared'],
+                         aperiodic_mode='knee', periodic_mode='gaussian')
     tfm2.fit(*sim_power_spectrum(*default_spectrum_params()))
 
     return tfm2
@@ -82,8 +82,8 @@ def get_tfg2():
 
     n_spectra = 3
     tfg2 = SpectralGroupModel(bands=Bands({'alpha' : (7, 14), 'beta' : [15, 30]}),
-                             metrics=['error_mse', 'gof_adjrsquared'],
-                            aperiodic_mode='knee', periodic_mode='gaussian')
+                              metrics=['error_mse', 'gof_adjrsquared'],
+                              aperiodic_mode='knee', periodic_mode='gaussian')
     tfg2.fit(*sim_group_power_spectra(n_spectra, *default_group_params()))
 
     return tfg2

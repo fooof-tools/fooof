@@ -289,8 +289,8 @@ class BaseResults():
         """
 
         self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(freqs, \
-            self.aperiodic_params_, self.modes.aperiodic,
-            self.gaussian_params_, self.modes.periodic,
+            self.modes.aperiodic, self.aperiodic_params_,
+            self.modes.periodic, self.gaussian_params_,
             return_components=True)
 
 

@@ -13,7 +13,7 @@ from specparam.sim.transform import *
 def test_rotate_spectrum():
 
     # Create a spectrum to use for test rotations
-    freqs, spectrum = sim_power_spectrum([1, 100], [1, 1], 'fixed', [], 'gaussian')
+    freqs, spectrum = sim_power_spectrum([1, 100], {'fixed' : [1, 1]}, {'gaussian' : []})
 
     # Check that rotation transforms the power spectrum
     rotated_spectrum = rotate_spectrum(freqs, spectrum, delta_exponent=0.5, f_rotation=25.)
@@ -26,7 +26,7 @@ def test_rotate_spectrum():
 def test_translate_spectrum():
 
     # Create a spectrum to use for test translation
-    freqs, spectrum = sim_power_spectrum([1, 100], [1, 1], 'fixed', [], 'gaussian')
+    freqs, spectrum = sim_power_spectrum([1, 100], {'fixed' : [1, 1]}, {'gaussian' : []})
 
     # Check that translation transforms the power spectrum
     translated_spectrum = translate_spectrum(spectrum, delta_offset=1.)
@@ -43,7 +43,7 @@ def test_rotate_sim_spectrum():
     nlv = 0
 
     sim_params = SimParams(aps, pes, nlv)
-    freqs, spectrum = sim_power_spectrum([3, 40], aps, 'fixed', pes, 'gaussian', nlv)
+    freqs, spectrum = sim_power_spectrum([3, 40], {'fixed' : aps}, {'gaussian' : pes}, nlv)
 
     rotated_spectrum, new_sim_params = rotate_sim_spectrum(freqs, spectrum, 0.5, 20, sim_params)
 
@@ -57,7 +57,7 @@ def test_translate_sim_spectrum():
     nlv = 0
 
     sim_params = SimParams(aps, pes, nlv)
-    freqs, spectrum = sim_power_spectrum([3, 40], aps, 'fixed', pes, 'gaussian', nlv)
+    freqs, spectrum = sim_power_spectrum([3, 40], {'fixed' : aps}, {'gaussian' : pes}, nlv)
 
     translated_spectrum, new_sim_params = translate_sim_spectrum(spectrum, 0.5, sim_params)
     assert not np.all(translated_spectrum == spectrum)
