@@ -13,32 +13,6 @@ from collections import namedtuple
 ###################################################################################################
 ###################################################################################################
 
-def make_data_object(name, attributes, docstring=None):
-    """Create a data object for a set of attributes.
-
-    Parameters
-    ----------
-    name : str
-        Name of the data object to create.
-    attributes : list of str
-        List of attributes to define on the data object.
-    docstring : str
-        Docstring to add to the data object.
-
-    Notes
-    -----
-    The created object is based on a NamedTuple, which has immutable data attributes.
-    """
-
-    class DataObject(namedtuple(name, attributes)):
-        __slots__ = ()
-
-    if docstring:
-        DataObject.__doc__ = docstring
-
-    return DataObject
-
-
 class ModelModes(namedtuple('ModelModes', ['aperiodic_mode', 'periodic_mode'])):
     """User defined fit modes for model fitting.
 
