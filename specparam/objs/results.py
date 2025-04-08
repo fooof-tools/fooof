@@ -61,16 +61,23 @@ class BaseResults():
     def n_peaks_(self):
         """How many peaks were fit in the model."""
 
-        return self.peak_params_.shape[0] if self.has_model else None
+        n_peaks = None
+        if self.has_model:
+            n_peaks = self.peak_params_.shape[0]
+
+        return n_peaks
 
 
     @property
     def n_params_(self):
         """The total number of parameters fit in the model."""
 
-        n_peak_params = self.modes.periodic.n_params * self.n_peaks_
+        n_params = None
+        if self.has_model:
+            n_peak_params = self.modes.periodic.n_params * self.n_peaks_
+            n_params = n_peak_params + self.modes.aperiodic.n_params
 
-        return n_peak_params + self.modes.aperiodic.n_params if self.has_model else None
+        return n_params
 
 
     def add_bands(self, bands):
@@ -346,24 +353,34 @@ class BaseResults2D(BaseResults):
     def n_peaks_(self):
         """How many peaks were fit for each model."""
 
-        return np.array([res.peak_params.shape[0] for res in self]) if self.has_model else None
+        n_peaks = None
+        if self.has_model:
+            n_peaks = np.array([res.peak_params.shape[0] for res in self])
+
+        return n_peaks
 
 
     @property
     def n_null_(self):
         """How many model fits are null."""
 
-        return sum([1 for res in self.group_results if np.isnan(res.aperiodic_params[0])]) \
-            if self.has_model else None
+        n_null = None
+        if self.has_model:
+            n_null = sum([1 for res in self.group_results if np.isnan(res.aperiodic_params[0])])
+
+        return n_null
 
 
     @property
     def null_inds_(self):
         """The indices for model fits that are null."""
 
-        return [ind for ind, res in enumerate(self.group_results) \
-            if np.isnan(res.aperiodic_params[0])] \
-            if self.has_model else None
+        null_inds = None
+        if self.has_model:
+            null_inds = [ind for ind, res in enumerate(self.group_results) \
+                if np.isnan(res.aperiodic_params[0])]
+
+        return null_inds
 
 
     def add_results(self, results):
@@ -546,8 +563,12 @@ class BaseResults3D(BaseResults2DT):
     def n_peaks_(self):
         """How many peaks were fit for each model, for each event."""
 
-        return np.array([[res.peak_params.shape[0] for res in gres] \
-            if self.has_model else None for gres in self.event_group_results])
+        n_peaks = None
+        if self.has_model:
+            n_peaks = np.array([[res.peak_params.shape[0] for res in gres] \
+                for gres in self.event_group_results])
+
+        return n_peaks
 
 
     def drop(self, drop_inds=None, window_inds=None):
