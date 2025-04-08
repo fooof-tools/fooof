@@ -475,20 +475,6 @@ def gen_group_results_str(group, concise=False):
     return output
 
 
-# TEMP HELPER FUNCTION
-def _compute_avg_over_time(results, subselect=None):
-    """Compute average across results over time array."""
-
-    if subselect:
-        results = {key : vals for key, vals in results.items() if subselect in key}
-
-    out = {}
-    for label in results.keys():
-        out[label] = np.nanmean(results[label])
-
-    return out
-
-
 def gen_time_results_str(time, concise=False):
     """Generate a string representation of time fit results.
 
@@ -724,3 +710,29 @@ def _format(str_lst, concise):
     output = '\n'.join([string.center(center_val) for string in str_lst])
 
     return output
+
+
+def _compute_avg_over_time(results, subselect=None):
+    """Compute average across results over time array.
+
+    Parameters
+    ----------
+    results : dict of array
+        Dictionary with array entries.
+    subselect : str, optional
+        If provided, subselects keys containing 'subselect' from results.
+
+    Returns
+    -------
+    out : dict of array
+        Dictionary with array entries.
+    """
+
+    if subselect:
+        results = {key : vals for key, vals in results.items() if subselect in key}
+
+    out = {}
+    for label in results.keys():
+        out[label] = np.nanmean(results[label])
+
+    return out
