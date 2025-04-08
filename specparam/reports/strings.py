@@ -2,7 +2,6 @@
 
 import numpy as np
 
-from specparam.modutils.errors import NoModelError
 from specparam.utils.array import compute_arr_desc
 from specparam.measures.properties import compute_presence
 from specparam.version import __version__ as MODULE_VERSION
@@ -427,11 +426,6 @@ def gen_group_results_str(group, concise=False):
     -------
     output : str
         Formatted string of results.
-
-    Raises
-    ------
-    NoModelError
-        If no model fit data is available to report.
     """
 
     if not group.results.has_model:
@@ -509,11 +503,6 @@ def gen_time_results_str(time, concise=False):
     -------
     output : str
         Formatted string of results.
-
-    Raises
-    ------
-    NoModelError
-        If no model fit data is available to report.
     """
 
     if not time.results.has_model:
@@ -587,11 +576,6 @@ def gen_event_results_str(event, concise=False):
     -------
     output : str
         Formatted string of results.
-
-    Raises
-    ------
-    NoModelError
-        If no model fit data is available to report.
     """
 
     if not event.results.has_model:

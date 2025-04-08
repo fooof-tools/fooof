@@ -111,12 +111,10 @@ class SpectralModel(BaseModel):
         self.results = BaseResults(modes=self.modes, metrics=metrics, bands=bands)
 
         self.algorithm = SpectralFitAlgorithm(
-            peak_width_limits=peak_width_limits,
-            max_n_peaks=max_n_peaks, min_peak_height=min_peak_height,
-            peak_threshold=peak_threshold,
+            peak_width_limits=peak_width_limits, max_n_peaks=max_n_peaks,
+            min_peak_height=min_peak_height, peak_threshold=peak_threshold,
             modes=self.modes, data=self.data, results=self.results,
-            debug=debug, verbose=self.verbose,
-            **model_kwargs)
+            debug=debug, **model_kwargs)
 
 
     @replace_docstring_sections([docs_get_section(BaseData.add_data.__doc__, 'Parameters'),

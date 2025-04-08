@@ -2,7 +2,6 @@
 
 from copy import deepcopy
 from itertools import repeat
-from collections import namedtuple
 
 import numpy as np
 

@@ -141,7 +141,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
         """
 
         if bands:
-           self.results.add_bands(bands)
+            self.results.add_bands(bands)
 
         if spectrograms is not None:
             self.add_data(freqs, spectrograms, freq_range)

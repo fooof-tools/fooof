@@ -1,6 +1,5 @@
 """Define object to manage algorithm implementations."""
 
-from specparam.data import ModelSettings
 from specparam.utils.checks import check_input_options
 from specparam.algorithms.settings import SettingsDefinition
 

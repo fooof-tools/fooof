@@ -1,7 +1,6 @@
 """Metrics object."""
 
 from copy import deepcopy
-from collections import namedtuple
 
 import numpy as np
 

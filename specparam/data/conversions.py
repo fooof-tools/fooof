@@ -51,7 +51,8 @@ def model_to_dict(fit_results, modes, bands):
 
     elif isinstance(bands, Bands):
         for band, f_range in bands:
-            for label, param in zip(modes.periodic.params.indices, get_band_peak_arr(peaks, f_range)):
+            for label, param in zip(modes.periodic.params.indices,
+                                    get_band_peak_arr(peaks, f_range)):
                 fr_dict[band + '_' + label] = param
 
     # metrics

@@ -1,7 +1,5 @@
 """Time model object and associated code for fitting the model to spectrograms."""
 
-import numpy as np
-
 from specparam.models import SpectralModel, SpectralGroupModel
 from specparam.objs.results import BaseResults2DT
 from specparam.objs.data import BaseData2DT
@@ -108,7 +106,7 @@ class SpectralTimeModel(SpectralGroupModel):
         """
 
         if bands:
-           self.results.add_bands(bands)
+            self.results.add_bands(bands)
 
         if freqs is not None and spectrogram is not None:
             super().add_data(freqs, spectrogram, freq_range)
