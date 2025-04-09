@@ -50,10 +50,10 @@ from specparam.plts.annotate import plot_annotated_model
 set_random_seed(21)
 
 # Simulate example power spectra
-freqs1, powers1 = sim_power_spectrum([3, 40], [1, 1],
-                                     [[10, 0.2, 1.25], [30, 0.15, 2]])
-freqs2, powers2 = sim_power_spectrum([1, 150], [1, 125, 1.25],
-                                     [[8, 0.15, 1.], [30, 0.1, 2]])
+freqs1, powers1 = sim_power_spectrum([3, 40], {'fixed' : [1, 1]},
+                                     {'gaussian' : [[10, 0.2, 1.25], [30, 0.15, 2]]})
+freqs2, powers2 = sim_power_spectrum([1, 150], {'knee' : [1, 125, 1.25]},
+                                     {'gaussian' : [[8, 0.15, 1.], [30, 0.1, 2]]})
 
 ###################################################################################################
 

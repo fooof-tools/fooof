@@ -137,7 +137,8 @@ nlv = 0.1
 set_random_seed(21)
 
 # Create a simulated power spectrum
-freqs, spectrum = sim_power_spectrum(f_range, ap_params, gauss_params, nlv)
+freqs, spectrum = sim_power_spectrum(\
+    f_range, {'fixed' : ap_params}, {'gaussian' : gauss_params}, nlv)
 
 ###################################################################################################
 
@@ -222,7 +223,8 @@ gauss_params = [[10, 1.0, 1.0], [20, 0.3, 1.5], [32, 0.25, 1]]
 nlv = 0.025
 
 # Create a simulated power spectrum
-freqs, spectrum = sim_power_spectrum([1, 50], ap_params, gauss_params, nlv=nlv)
+freqs, spectrum = sim_power_spectrum(\
+    [1, 50], {'fixed' : ap_params}, {'gaussian' : gauss_params}, nlv=nlv)
 
 ###################################################################################################
 
@@ -276,8 +278,8 @@ ap_opts = param_sampler([[20, 2], [50, 2.5], [35, 1.5]])
 gauss_opts = param_sampler([[], [10, 0.5, 2], [10, 0.5, 2, 20, 0.3, 4]])
 
 # Simulate a group of power spectra
-freqs, power_spectra = sim_group_power_spectra(n_spectra, sim_freq_range,
-                                               ap_opts, gauss_opts, nlv)
+freqs, power_spectra = sim_group_power_spectra(\
+    n_spectra, sim_freq_range, {'fixed' : ap_opts}, {'gaussian' : gauss_opts}, nlv)
 
 ###################################################################################################
 
@@ -306,7 +308,7 @@ fg.report(freqs, power_spectra)
 ###################################################################################################
 
 # Find the index of the worst model fit from the group
-worst_fit_ind = np.argmax(fg.get_params('error'))
+worst_fit_ind = np.argmax(fg.get_params('metrics', 'error_mae'))
 
 # Extract this model fit from the group
 fm = fg.get_model(worst_fit_ind, regenerate=True)
@@ -335,11 +337,12 @@ fm.plot()
 error_threshold = 0.010
 to_check = []
 for ind, res in enumerate(fg.results):
-    if res.error > error_threshold:
+    if res.metrics['error_mae'] > error_threshold:
         to_check.append(fg.get_model(ind, regenerate=True))
 
 # A more condensed version of the procedure above can be written like this:
-#to_check = [fg.get_model(ind, True) for ind, res in enumerate(fg) if res.error > error_threshold]
+#to_check = [fg.get_model(ind, True) for ind, res in enumerate(fg) \
+#                if res.metrics['error_mae'] > error_threshold]
 
 ###################################################################################################
 

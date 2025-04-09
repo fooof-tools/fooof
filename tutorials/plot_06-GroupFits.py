@@ -149,8 +149,8 @@ peaks = fg.get_params('peak_params')
 cfs = fg.get_params('peak_params', 'CF')
 
 # Extract goodness-of-fit metrics
-errors = fg.get_params('error')
-r2s = fg.get_params('r_squared')
+errors = fg.get_params('metrics', 'error_mae')
+r2s = fg.get_params('metrics', 'gof_rsquared')
 
 ###################################################################################################
 

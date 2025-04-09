@@ -78,10 +78,10 @@ fm.fit(freqs, spectrum, [3, 30])
 set_random_seed(21)
 
 # Create some simulated power spectra
-freqs, spectra = sim_group_power_spectra(n_spectra=10,
-                                         freq_range=[3, 40],
-                                         aperiodic_params=param_sampler([[20, 2], [35, 1.5]]),
-                                         periodic_params=param_sampler([[], [10, 0.5, 2]]))
+freqs, spectra = sim_group_power_spectra(\
+    n_spectra=10, freq_range=[3, 40],
+    aperiodic_params={'fixed' : param_sampler([[20, 2], [35, 1.5]])},
+    periodic_params={'gaussian' : param_sampler([[], [10, 0.5, 2]])})
 
 ###################################################################################################
 

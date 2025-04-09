@@ -107,7 +107,8 @@ fm.fit(freqs, spectrum, [3, 40])
 # Do an initial aperiodic fit - a robust fit, that excludes outliers
 #   This recreates an initial fit that isn't ultimately stored in the model object
 init_ap_fit = gen_aperiodic(\
-    fm.data.freqs, fm.algorithm._robust_ap_fit(fm.data.freqs, fm.data.power_spectrum))
+    fm.data.freqs, fm.modes.aperiodic,
+    fm.algorithm._robust_ap_fit(fm.data.freqs, fm.data.power_spectrum))
 
 # Plot the initial aperiodic fit
 _, ax = plt.subplots(figsize=(12, 10))

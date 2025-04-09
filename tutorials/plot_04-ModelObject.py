@@ -230,12 +230,13 @@ print('Has model results: ', fm.results.has_model)
 
 ###################################################################################################
 
-# Print out model fit results
+# Print out model fit results parameters
 print('aperiodic params: \t', fm.results.aperiodic_params_)
 print('peak params: \t', fm.results.peak_params_)
-print('r-squared: \t', fm.results.r_squared_)
-print('fit error: \t', fm.results.error_)
-print('modeled spectrum: \t', fm.results.modeled_spectrum_[0:5])
+
+# Print out metrics model fit results parameters
+print('fit error: \t', fm.results.metrics.results['error_mae'])
+print('r-squared: \t', fm.results.metrics.results['gof_rsquared'])
 
 ###################################################################################################
 # 4) Methods

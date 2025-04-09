@@ -125,8 +125,8 @@ print('Peak parameters: \n', fm.results.peak_params_, '\n')
 
 # Goodness of fit measures
 print('Goodness of fit:')
-print(' Error - ', fm.results.error_)
-print(' R^2   - ', fm.results.r_squared_, '\n')
+print(' Error - ', fm.results.metrics.results['error_mae'])
+print(' R^2   - ', fm.results.metrics.results['gof_rsquared'], '\n')
 
 # Check how many peaks were fit
 print('Number of fit peaks: \n', fm.results.n_peaks_)
@@ -142,7 +142,7 @@ print('Number of fit peaks: \n', fm.results.n_peaks_)
 ###################################################################################################
 
 # Extract a model parameter with `get_params`
-err = fm.get_params('error')
+err = fm.get_params('metrics', 'error_mae')
 
 # Extract parameters, indicating sub-selections of parameters
 exp = fm.get_params('aperiodic_params', 'exponent')
@@ -227,7 +227,7 @@ for peak, gauss in zip(fm.results.peak_params_, fm.results.gaussian_params_):
 fres = fm.results.get_results()
 
 # You can also unpack all fit parameters when using `get_results`
-ap_params, peak_params, r_squared, fit_error, gauss_params = fm.results.get_results()
+ap_params, peak_params, metrics, gauss_params = fm.results.get_results()
 
 ###################################################################################################
 
@@ -238,8 +238,8 @@ print(fres, '\n')
 print('Aperiodic Parameters: \n', fres.aperiodic_params)
 
 # Check the R^2 and error of the model fit
-print('R-squared: \n {:5.4f}'.format(fres.r_squared))
-print('Fit error: \n {:5.4f}'.format(fres.error))
+print('R-squared: \n {:5.4f}'.format(fres.metrics['gof_rsquared']))
+print('Fit error: \n {:5.4f}'.format(fres.metrics['error_mae']))
 
 ###################################################################################################
 # Conclusion
