@@ -74,6 +74,25 @@ def dict_select_keys(in_dict, keep):
     return {ke:va for ke, va in in_dict.items() if ke in keep}
 
 
+def dict_extract_keys(in_dict, extract):
+    """Extract a set of keys from a dictionary.
+
+    Parameters
+    ----------
+    in_dict : dict
+        Dictionary to extract keys from.
+    extract : list
+        List of key values to extract from `in_dict`.
+
+    Returns
+    -------
+    out_dict : dict
+        Dictionary of extracted elements from `in_dict`.
+    """
+
+    return  {key : in_dict.pop(key) for key in extract if key in extract}
+
+
 def find_first_ind(options, search):
     """Get the index of the first element that contains a specified search string.
 

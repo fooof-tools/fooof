@@ -34,6 +34,18 @@ def test_dict_select_keys():
     for ke, va in out.items():
         assert ke in keep
 
+def test_dict_extract_keys():
+
+    t_dict = {'a' : 1, 'b' : [1, 2, 3], 'c' : [4, 5, 6], 'd' : np.array([7, 8, 9])}
+    extract = ['a', 'd']
+
+    out = dict_extract_keys(t_dict, extract)
+
+    assert isinstance(out, dict)
+    for ext in extract:
+        assert ext in out
+        assert ext not in t_dict
+
 def test_find_first_ind():
 
     l1 = ['test_for', 'word_other', 'lion_tiger', 'word_again']
