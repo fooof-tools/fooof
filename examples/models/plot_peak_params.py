@@ -33,7 +33,8 @@ from specparam.measures.params import compute_time_constant, compute_knee_freque
 ###################################################################################################
 
 # Simulate an example power spectrum
-freqs, powers = sim_power_spectrum([3, 40], [0, 1], [10, 0.3, 1.], freq_res=0.25)
+freqs, powers = sim_power_spectrum(\
+    [3, 40], {'fixed' : [0, 1]}, {'gaussian' : [10, 0.3, 1.]}, freq_res=0.25)
 
 ###################################################################################################
 
@@ -74,8 +75,8 @@ set_random_seed(10)
 ###################################################################################################
 
 # Simulate an example power spectrum created with an asymmetric peak
-freqs, powers = sim_power_spectrum([3, 40], [0, 1],
-                                   [[10, 0.3, 1.], [11.25, 0.175, 0.5]],
+freqs, powers = sim_power_spectrum([3, 40], {'fixed' : [0, 1]},
+                                   {'gaussian' : [[10, 0.3, 1.], [11.25, 0.175, 0.5]]},
                                    freq_res=0.25)
 
 ###################################################################################################

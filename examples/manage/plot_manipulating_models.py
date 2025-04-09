@@ -46,12 +46,12 @@ freq_range = [1, 50]
 freq_res = 0.25
 
 # Create some example power spectra
-freqs, powers_1 = sim_power_spectrum(freq_range, [0, 1.0], [10, 0.25, 2],
-                                     nlv=0.00, freq_res=freq_res)
-freqs, powers_2 = sim_power_spectrum(freq_range, [0, 1.2], [9, 0.20, 1.5],
-                                     nlv=0.01, freq_res=freq_res)
-freqs, powers_3 = sim_power_spectrum(freq_range, [0, 1.5], [11, 0.3, 2.5],
-                                     nlv=0.02, freq_res=freq_res)
+freqs, powers_1 = sim_power_spectrum(\
+    freq_range, {'fixed' : [0, 1.0]}, {'gaussian' : [10, 0.25, 2]}, nlv=0.00, freq_res=freq_res)
+freqs, powers_2 = sim_power_spectrum(\
+    freq_range, {'fixed' : [0, 1.2]}, {'gaussian' : [9, 0.20, 1.5]}, nlv=0.01, freq_res=freq_res)
+freqs, powers_3 = sim_power_spectrum(\
+    freq_range, {'fixed' : [0, 1.5]}, {'gaussian' : [11, 0.3, 2.5]}, nlv=0.02, freq_res=freq_res)
 
 ###################################################################################################
 
@@ -168,7 +168,7 @@ print('Number of model fits: ', len(nfg.results))
 ###################################################################################################
 
 # Drop all model fits above an error threshold
-fg.results.drop(fg.get_params('error') > 0.01)
+fg.results.drop(fg.get_params('metrics', 'error_mae') > 0.01)
 
 ###################################################################################################
 # Note on Dropped or Failed Fits

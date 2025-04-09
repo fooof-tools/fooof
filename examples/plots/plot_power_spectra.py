@@ -49,8 +49,8 @@ ap_2 = [0.25, 1]
 peaks = [[6, 0.2, 1], [10, 0.3, 1], [25, 0.15, 3]]
 
 # Simulate two example power spectra
-freqs, powers1 = sim_power_spectrum(freq_range, ap_1, peaks)
-freqs, powers2 = sim_power_spectrum(freq_range, ap_2, peaks)
+freqs, powers1 = sim_power_spectrum(freq_range, {'fixed' : ap_1}, {'gaussian' : peaks})
+freqs, powers2 = sim_power_spectrum(freq_range, {'fixed' : ap_2}, {'gaussian' : peaks})
 
 ###################################################################################################
 # Plotting Individual Power Spectra
@@ -142,13 +142,13 @@ freq_range = [3, 30]
 ap_params = [1, 1]
 
 # Simulate a single 10 Hz centered alpha
-freqs_al10, powers_al10 = sim_power_spectrum(freq_range, ap_params,
-                                             [10, 0.25, 1], nlv=0)
+freqs_al10, powers_al10 = sim_power_spectrum(freq_range, {'fixed' : ap_params},
+                                             {'gaussian' : [10, 0.25, 1]}, nlv=0)
 
 # Simulate spectra stepping across alpha center frequency
 cf_steps = Stepper(8, 12.5, 0.5)
-freqs_al, powers_al = sim_group_power_spectra(len(cf_steps), freq_range, ap_params,
-                                              param_iter([cf_steps, 0.25, 1]))
+freqs_al, powers_al = sim_group_power_spectra(len(cf_steps), freq_range, {'fixed' : ap_params},
+                                              {'gaussian' : param_iter([cf_steps, 0.25, 1])})
 
 ###################################################################################################
 

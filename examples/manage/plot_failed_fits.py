@@ -36,8 +36,8 @@ from specparam.modutils.errors import FitError
 ###################################################################################################
 
 # Simulate some example power spectra to use for the example
-freqs, powers = sim_group_power_spectra(25, [1, 50], [1, 1], [10, 0.25, 3],
-                                        nlvs=0.1, freq_res=0.25)
+freqs, powers = sim_group_power_spectra(25, [1, 50], {'fixed' : [1, 1]},
+                                        {'gaussian' : [10, 0.25, 3]}, nlvs=0.1, freq_res=0.25)
 
 ###################################################################################################
 

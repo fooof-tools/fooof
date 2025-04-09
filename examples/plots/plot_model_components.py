@@ -19,7 +19,7 @@ from specparam.sim import sim_group_power_spectra
 from specparam.sim.params import param_jitter
 
 # Import plotting function for model parameters and components
-from specparam.plts.periodic import plot_peak_fits, plot_peak_params
+from specparam.plts.periodic import plot_peak_params, plot_peak_fits
 from specparam.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 
 ###################################################################################################
@@ -60,8 +60,10 @@ g2_peaks = param_jitter([9, 1, 0.5], [0.25, 0.1, 0.3])
 ###################################################################################################
 
 # Simulate some test data, as two groups of power spectra
-freqs, powers1 = sim_group_power_spectra(n_subjs, freq_range, g1_aps, g1_peaks)
-freqs, powers2 = sim_group_power_spectra(n_subjs, freq_range, g2_aps, g2_peaks)
+freqs, powers1 = sim_group_power_spectra(\
+    n_subjs, freq_range, {'fixed' : g1_aps}, {'gaussian' : g1_peaks})
+freqs, powers2 = sim_group_power_spectra(\
+    n_subjs, freq_range, {'fixed' : g2_aps}, {'gaussian' : g2_peaks})
 
 ###################################################################################################
 # Fit Power Spectrum Models
@@ -162,12 +164,12 @@ plot_peak_params([g1_alphas, g2_alphas], freq_range=bands['alpha'],
 ###################################################################################################
 
 # Plot the peak fits of the alpha fits for Group 1
-plot_peak_fits(g1_alphas)
+plot_peak_fits(g1_alphas, fg1.modes.periodic)
 
 ###################################################################################################
 
 # Compare the peak fits of alpha peaks between groups
-plot_peak_fits([g1_alphas, g2_alphas], labels=labels, colors=colors)
+plot_peak_fits([g1_alphas, g2_alphas], fg1.modes.periodic, labels=labels, colors=colors)
 
 ###################################################################################################
 # Aperiodic Components
@@ -216,7 +218,7 @@ plot_aperiodic_params([aps1, aps2], labels=labels, colors=colors)
 ###################################################################################################
 
 # Plot the aperiodic fits for Group 1
-plot_aperiodic_fits(aps1, freq_range, control_offset=True)
+plot_aperiodic_fits(aps1, freq_range, fg1.modes.aperiodic, control_offset=True)
 
 ###################################################################################################
 #
@@ -232,7 +234,7 @@ plot_aperiodic_fits(aps1, freq_range, control_offset=True)
 ###################################################################################################
 
 # Plot the aperiodic fits for both groups
-plot_aperiodic_fits([aps1, aps2], freq_range,
+plot_aperiodic_fits([aps1, aps2], freq_range, fg1.modes.aperiodic,
                     control_offset=True, log_freqs=True,
                     labels=labels, colors=colors)
 

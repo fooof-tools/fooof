@@ -28,8 +28,8 @@ from specparam.sim import sim_power_spectrum
 ###################################################################################################
 
 # Simulate an example power spectrum
-freqs, powers = sim_power_spectrum([3, 50], [1, 1],
-                                   [[9, 0.25, 0.5], [22, 0.1, 1.5], [25, 0.2, 1.]])
+freqs, powers = sim_power_spectrum([3, 50], {'fixed' : [1, 1]},
+                                   {'gaussian' : [[9, 0.25, 0.5], [22, 0.1, 1.5], [25, 0.2, 1.]]})
 
 ###################################################################################################
 # Plotting from model objects
@@ -139,8 +139,8 @@ fm.plot(plot_aperiodic=True, plot_peaks='line-shade-outline', plt_log=False)
 ###################################################################################################
 
 # Simulate a new power spectrum, over a broader frequency region
-freqs, powers = sim_power_spectrum([1, 150], [0, 10, 1.5],
-                                   [[4, 0.25, 1], [12, 0.2, 1.5], [25, 0.1, 2]])
+freqs, powers = sim_power_spectrum([1, 150], {'knee' : [0, 10, 1.5]},
+                                   {'gaussian' : [[4, 0.25, 1], [12, 0.2, 1.5], [25, 0.1, 2]]})
 
 ###################################################################################################
 

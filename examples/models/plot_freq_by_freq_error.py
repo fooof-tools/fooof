@@ -52,7 +52,7 @@ from specparam.measures.pointwise import compute_pointwise_error, compute_pointw
 ###################################################################################################
 
 # Simulate an example power spectrum
-freqs, powers = sim_power_spectrum([3, 50], [1, 1], [10, 0.25, 0.5])
+freqs, powers = sim_power_spectrum([3, 50], {'fixed' : [1, 1]}, {'gaussian' : [10, 0.25, 0.5]})
 
 ###################################################################################################
 
@@ -84,7 +84,7 @@ errs_fm = compute_pointwise_error(fm, plot_errors=False, return_errors=True)
 
 # Note that the average of this error is the same as the global error stored
 print('Average freq-by-freq error:\t {:1.3f}'.format(np.mean(errs_fm)))
-print('Model fit error: \t\t {:1.3f}'.format(fm.results.error_))
+print('Model fit error: \t\t {:1.3f}'.format(fm.results.metrics.results['error_mae']))
 
 ###################################################################################################
 # Checking the Error Across Groups of Model Fits
@@ -99,7 +99,8 @@ print('Model fit error: \t\t {:1.3f}'.format(fm.results.error_))
 ###################################################################################################
 
 # Simulate a group of power spectra
-freqs, powers = sim_group_power_spectra(10, [3, 50], [1, 1], [10, 0.3, 1], nlvs=0.1)
+freqs, powers = sim_group_power_spectra(\
+    10, [3, 50], {'fixed' : [1, 1]}, {'gaussian' : [10, 0.3, 1]}, nlvs=0.1)
 
 ###################################################################################################
 
@@ -164,8 +165,8 @@ print('Frequency with highest standard deviation of error: \t', f_max_std)
 ###################################################################################################
 
 # Simulate a group of power spectra, with a knee
-freqs, powers = sim_group_power_spectra(10, [1, 50], [0, 10, 2],
-                                        [10, 0.3, 1], nlvs=0.01)
+freqs, powers = sim_group_power_spectra(10, [1, 50], {'knee' : [0, 10, 2]},
+                                        {'gaussian' : [10, 0.3, 1]}, nlvs=0.01)
 
 # Parameterize our new group of power spectra
 fg.fit(freqs, powers)

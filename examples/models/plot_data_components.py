@@ -22,7 +22,8 @@ from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 ###################################################################################################
 
 # Simulate example power spectrum
-freqs, powers = sim_power_spectrum([1, 50], [0, 10, 1], [10, 0.25, 2], freq_res=0.25)
+freqs, powers = sim_power_spectrum(\
+    [1, 50], {'knee' : [0, 10, 1]}, {'gaussian' : [10, 0.25, 2]}, freq_res=0.25)
 
 # Initialize model object and fit power spectrum
 fm = SpectralModel()

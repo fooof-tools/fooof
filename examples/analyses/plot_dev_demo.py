@@ -41,7 +41,7 @@ from specparam.sim.gen import gen_aperiodic
 from specparam.data import ModelSettings
 from specparam.plts.templates import plot_hist
 from specparam.plts.spectra import plot_spectra
-from specparam.plts.periodic import plot_peak_fits, plot_peak_params
+from specparam.plts.periodic import plot_peak_params, plot_peak_fits
 from specparam.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 
 # Import functions to examine frequency-by-frequency error of model fits
@@ -126,13 +126,17 @@ fm.report(freqs, spectrum, PSD_range)
 
 ###################################################################################################
 
-# Access the model fit parameters from the model object
+# Access the model fit parameters & related attributes from the model object
 print('Aperiodic parameters: \n', fm.results.aperiodic_params_, '\n')
 print('Peak parameters: \n', fm.results.peak_params_, '\n')
-print('Goodness of fit:')
-print('Error - ', fm.results.error_)
-print('R^2   - ', fm.results.r_squared_, '\n')
 print('Number of fit peaks: \n', fm.results.n_peaks_)
+
+###################################################################################################
+
+# Access computed metrics relating to error & goodness of fit of the model
+print('Goodness of fit:')
+print('Error - ', fm.results.metrics.results['error_mae'])
+print('R^2   - ', fm.results.metrics.results['gof_rsquared'])
 
 ###################################################################################################
 #
@@ -151,8 +155,8 @@ peaks = fm.get_params('peak_params')
 ###################################################################################################
 
 # Extract goodness of fit information
-err = fm.get_params('error')
-r2s = fm.get_params('r_squared')
+err = fm.get_params('metrics', 'error_mae')
+r2s = fm.get_params('metrics', 'gof_rsquared')
 
 ###################################################################################################
 
@@ -182,7 +186,8 @@ plt_log = False
 
 # Do an initial aperiodic fit - a robust fit, that excludes outliers
 init_ap_fit = gen_aperiodic(\
-    fm.data.freqs, fm.algorithm._robust_ap_fit(fm.data.freqs, fm.data.power_spectrum))
+    fm.data.freqs, fm.modes.aperiodic,
+    fm.algorithm._robust_ap_fit(fm.data.freqs, fm.data.power_spectrum))
 
 # Recompute the flattened spectrum using the initial aperiodic fit
 init_flat_spec = fm.data.power_spectrum - init_ap_fit
@@ -248,7 +253,7 @@ errs_fm = compute_pointwise_error(fm, plot_errors=False, return_errors=True)
 
 # Note that the average of this error is the same as the global error stored
 print('Average freq-by-freq error:\t {:1.3f}'.format(np.mean(errs_fm)))
-print('Total model fit error: \t\t {:1.3f}'.format(fm.results.error_))
+print('Total model fit error: \t\t {:1.3f}'.format(fm.results.metrics.results['error_mae']))
 
 ###################################################################################################
 # Fitting a Group of Power Spectra
@@ -324,8 +329,8 @@ per = fg.get_params('peak_params')
 ###################################################################################################
 
 # Extract group fit information
-err = fg.get_params('error')
-r2s = fg.get_params('r_squared')
+err = fg.get_params('metrics', 'error_mae')
+r2s = fg.get_params('metrics', 'gof_rsquared')
 
 ###################################################################################################
 
@@ -377,8 +382,8 @@ plt.subplots_adjust(hspace=0.4)
 
 # Plot reconstructions of model components
 _, axes = plt.subplots(1, 2, figsize=(14, 6))
-plot_peak_fits(alphas, ax=axes[0])
-plot_aperiodic_fits(aps, fg.data.freq_range, ax=axes[1])
+plot_peak_fits(alphas, fg.modes.periodic, ax=axes[0])
+plot_aperiodic_fits(aps, fg.data.freq_range, fg.modes.aperiodic, ax=axes[1])
 
 ###################################################################################################
 # Tuning the specparam algorithm
@@ -546,7 +551,7 @@ plot_hist(err, label='Mean absolute error (MAE)', ax=ax1)
 ###################################################################################################
 
 # Find the index of the worst model fit from the group
-worst_fit_ind = np.argmax(fg.get_params('error'))
+worst_fit_ind = np.argmax(fg.get_params('metrics', 'error_mae'))
 
 # Extract this model fit from the group
 fm = fg.get_model(worst_fit_ind, regenerate=True)
@@ -568,7 +573,7 @@ fm.plot()
 underfit_error_threshold = 0.100
 underfit_check = []
 for ind, res in enumerate(fg.results):
-    if res.error > underfit_error_threshold:
+    if res.metrics['error_mae'] > underfit_error_threshold:
         underfit_check.append(fg.get_model(ind, regenerate=True))
 
 ###################################################################################################
@@ -588,7 +593,7 @@ for ind, fm in enumerate(underfit_check):
 overfit_error_threshold = 0.02
 overfit_check = []
 for ind, res in enumerate(fg.results):
-    if res.error < overfit_error_threshold:
+    if res.metrics['error_mae'] < overfit_error_threshold:
         overfit_check.append(fg.get_model(ind, regenerate=True))
 
 ###################################################################################################
@@ -664,7 +669,7 @@ print('Frequency with highest standard deviation of error: \t', f_max_std)
 ###################################################################################################
 
 # Drop poor model fits based on MAE
-fg.results.drop(fg.get_params('error') > 0.10)
+fg.results.drop(fg.get_params('metrics', 'error_mae') > 0.10)
 
 ###################################################################################################
 # Conclusions
