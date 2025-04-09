@@ -65,7 +65,7 @@ def set_alpha(n_points):
     return alpha
 
 
-def add_shades(ax, shades, colors='r', alpha=0.2,
+def add_shades(ax, shades, colors='r', shade_alpha=0.2,
                add_center=False, center_alpha=0.6, logged=False):
     """Add shaded regions to a plot.
 
@@ -77,7 +77,7 @@ def add_shades(ax, shades, colors='r', alpha=0.2,
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
     colors : str or list of string
         Color(s) to plot shades.
-    alpha : float or list of float, optional, default: 0.2
+    shade_alpha : float or list of float, optional, default: 0.2
         The alpha level to add the shade regions with.
         If a list, can specify a separate alpha level per shade.
     add_center : boolean, default: False
@@ -89,16 +89,15 @@ def add_shades(ax, shades, colors='r', alpha=0.2,
     """
 
     # If only one shade region is specified, this embeds in a list, so that the loop works
-    if not isinstance(shades[0], list):
+    if not isinstance(shades[0], (tuple, list)):
         shades = [shades]
 
     colors = repeat(colors) if not isinstance(colors, list) else colors
-    alphas = repeat(alpha) if not isinstance(alpha, list) else alpha
+    shade_alphas = repeat(shade_alpha) if not isinstance(shade_alpha, list) else alpha
 
-    for shade, color, alpha in zip(shades, colors, alphas):
+    for shade, color, alpha in zip(shades, colors, shade_alphas):
 
         shade = np.log10(shade) if logged else shade
-
         ax.axvspan(shade[0], shade[1], color=color, alpha=alpha, lw=0)
 
         if add_center:
