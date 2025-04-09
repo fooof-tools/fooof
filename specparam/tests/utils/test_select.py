@@ -46,6 +46,10 @@ def test_dict_extract_keys():
         assert ext in out
         assert ext not in t_dict
 
+    # Test works with key that's not present
+    out = dict_extract_keys(t_dict, ['e'])
+    assert isinstance(out, dict)
+
 def test_find_first_ind():
 
     l1 = ['test_for', 'word_other', 'lion_tiger', 'word_again']

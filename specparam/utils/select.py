@@ -90,7 +90,7 @@ def dict_extract_keys(in_dict, extract):
         Dictionary of extracted elements from `in_dict`.
     """
 
-    return  {key : in_dict.pop(key) for key in extract if key in extract}
+    return  {key : in_dict.pop(key) for key in extract if key in extract and key in in_dict}
 
 
 def find_first_ind(options, search):
