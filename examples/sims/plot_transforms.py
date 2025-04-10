@@ -26,8 +26,8 @@ from specparam.sim import sim_power_spectrum
 
 # Import functions that can transform power spectra
 from specparam.sim.transform import (rotate_spectrum, translate_spectrum,
-                                 rotate_sim_spectrum, translate_sim_spectrum,
-                                 compute_rotation_offset, compute_rotation_frequency)
+                                     rotate_sim_spectrum, translate_sim_spectrum,
+                                     compute_rotation_offset, compute_rotation_frequency)
 
 # Import plot function to visualize power spectra
 from specparam.plts.spectra import plot_spectra
@@ -35,8 +35,8 @@ from specparam.plts.spectra import plot_spectra
 ###################################################################################################
 
 # Simulate a power spectrum
-freqs, powers, params = sim_power_spectrum([3, 40], [1, 1], [10, 0.5, 1],
-                                           return_params=True)
+freqs, powers, params = sim_power_spectrum(\
+    [3, 40], {'fixed' : [1, 1]}, {'gaussian' : [10, 0.5, 1]}, return_params=True)
 
 ###################################################################################################
 # Rotating Power Spectra
@@ -172,7 +172,8 @@ print(t_params)
 ###################################################################################################
 
 # Simulate a baseline power spectrum
-freqs, powers = sim_power_spectrum([3, 50], [0, 1.5], [10, 0.3, 0.5], nlv=0)
+freqs, powers = sim_power_spectrum(\
+    [3, 50], {'fixed' : [0, 1.5]}, {'gaussian' : [10, 0.3, 0.5]}, nlv=0)
 
 ###################################################################################################
 
