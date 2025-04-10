@@ -42,8 +42,8 @@ def test_sim_power_spectrum_return_params():
                                     nlv, return_params=True)
 
     # Test returning parameters
-    assert array_equal(sp.aperiodic_params, ap_params)
-    assert array_equal(sp.periodic_params, pe_params)
+    assert array_equal(sp.aperiodic_params['fixed'], ap_params)
+    assert array_equal(sp.periodic_params['gaussian'], pe_params)
     assert sp.nlv == nlv
 
 def test_sim_group_power_spectra():
@@ -84,8 +84,8 @@ def test_sim_group_power_spectra_return_params():
 
     assert n_spectra == ys.shape[0] == len(sim_params)
     sp = sim_params[0]
-    assert array_equal(sp.aperiodic_params, aps)
-    assert array_equal(sp.periodic_params, [pes])
+    assert array_equal(sp.aperiodic_params['fixed'], aps)
+    assert array_equal(sp.periodic_params['gaussian'], pes)
     assert sp.nlv == nlv
 
 def test_sim_spectrogram():

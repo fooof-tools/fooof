@@ -122,8 +122,7 @@ def sim_power_spectrum(freq_range, aperiodic_params, periodic_params,
                                 *list(*periodic_params.items()), nlv)
 
     if return_params:
-        sim_params = collect_sim_params(\
-            list(aperiodic_params.values())[0], list(periodic_params.values())[0], nlv)
+        sim_params = collect_sim_params(aperiodic_params, periodic_params, nlv)
         return freqs, powers, sim_params
     else:
         return freqs, powers
@@ -256,6 +255,10 @@ def sim_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
     nlvs = check_iter(nlvs, n_spectra)
     f_rots = check_iter(f_rotation, n_spectra)
 
+    # Get the mode definitions
+    ap_mode = list(aperiodic_params.keys())[0]
+    pe_mode = list(periodic_params.keys())[0]
+
     # Simulate power spectra
     for ind, ap, pe, nlv, f_rot in zip(range(n_spectra), ap_params, pe_params, nlvs, f_rots):
 
@@ -264,10 +267,9 @@ def sim_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
             aperiodic_params = [compute_rotation_offset(ap[1], f_rot), ap[1]]
 
         else:
-            powers[ind, :] = gen_power_vals(freqs, list(aperiodic_params.keys())[0], ap,
-                                            list(periodic_params.keys())[0], pe, nlv)
+            powers[ind, :] = gen_power_vals(freqs, ap_mode, ap, pe_mode, pe, nlv)
 
-        sim_params[ind] = collect_sim_params(ap, pe, nlv)
+        sim_params[ind] = collect_sim_params({ap_mode : ap}, {pe_mode : pe}, nlv)
 
     if return_params:
         return freqs, powers, sim_params
