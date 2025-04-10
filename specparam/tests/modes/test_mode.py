@@ -24,3 +24,19 @@ def test_mode():
                  freq_space='linear', powers_space='linear')
     assert tmode
     assert tmode.n_params == params.n_params
+
+def test_mode_params_dict():
+
+    def tfit2(xs, *params):
+        return xs
+
+    params = {
+        'a' : 'a desc',
+        'b' : 'b desc',
+    }
+
+    tmode = Mode(name='tmode', component='aperiodic', description='test_desc2',
+                 func=tfit2, jacobian=None, params=params,
+                 freq_space='linear', powers_space='linear')
+    assert tmode
+    assert isinstance(tmode.params, ParamDefinition)
