@@ -349,7 +349,7 @@ for ind, res in enumerate(fg.results):
 # Loop through the problem fits, checking the plots, and saving out reports, to check later.
 for ind, fm in enumerate(to_check):
     fm.plot()
-    fm.save_report('Report_ToCheck_#' + str(ind))
+    fm.save_report('report_to_check_#' + str(ind))
 
 ###################################################################################################
 #

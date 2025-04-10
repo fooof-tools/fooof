@@ -201,13 +201,13 @@ print(cfs[0:10, :])
 ###################################################################################################
 
 # Save out group settings & results
-fg.save('FG_results', save_settings=True, save_results=True)
+fg.save('group_results', save_settings=True, save_results=True)
 
 ###################################################################################################
 
 # You can then reload this group
 nfg = SpectralGroupModel()
-nfg.load('FG_results')
+nfg.load('group_results')
 
 ###################################################################################################
 
