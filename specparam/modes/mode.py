@@ -1,5 +1,6 @@
 """Mode object."""
 
+from specparam.modes.params import ParamDefinition
 from specparam.utils.checks import check_input_options
 
 ###################################################################################################
@@ -25,7 +26,7 @@ class Mode():
         Function that defines the fit function for the mode.
     jacobian : callable, optional
         Function for computing Jacobian matrix corresponding to `func`.
-    params : ParamDefinition
+    params : dict or ParamDefinition
         Parameter definition.
     freq_space : {'linear', 'log10'}
         Required spacing of the frequency values for this mode.
@@ -44,6 +45,8 @@ class Mode():
         self.func = func
         self.jacobian = jacobian
 
+        if isinstance(params, dict):
+            params = ParamDefinition(params)
         self.params = params
 
         self.spacing = {
