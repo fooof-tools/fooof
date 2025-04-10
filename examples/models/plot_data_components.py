@@ -22,7 +22,8 @@ from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 ###################################################################################################
 
 # Simulate example power spectrum
-freqs, powers = sim_power_spectrum([1, 50], [0, 10, 1], [10, 0.25, 2], freq_res=0.25)
+freqs, powers = sim_power_spectrum(\
+    [1, 50], {'knee' : [0, 10, 1]}, {'gaussian' : [10, 0.25, 2]}, freq_res=0.25)
 
 # Initialize model object and fit power spectrum
 fm = SpectralModel()
@@ -51,12 +52,12 @@ fm.fit(freqs, powers)
 ###################################################################################################
 
 # Plot the original power spectrum data from the object
-plot_spectra(fm.freqs, fm.power_spectrum, color='black')
+plot_spectra(fm.data.freqs, fm.data.power_spectrum, color='black')
 
 ###################################################################################################
 
 # Plot the power spectrum model from the object
-plot_spectra(fm.freqs, fm.modeled_spectrum_, color='red')
+plot_spectra(fm.data.freqs, fm.results.modeled_spectrum_, color='red')
 
 ###################################################################################################
 # Isolated Components
@@ -69,7 +70,7 @@ plot_spectra(fm.freqs, fm.modeled_spectrum_, color='red')
 # To access these components, we can use the following `getter` methods:
 #
 # - :meth:`~specparam.SpectralModel.get_data`: allows for accessing data components
-# - :meth:`~specparam.SpectralModel.get_model`: allows for accessing model components
+# - :meth:`~specparam.SpectralModel.results.get_component`: allows for accessing model components
 #
 
 ###################################################################################################
@@ -85,12 +86,12 @@ plot_spectra(fm.freqs, fm.modeled_spectrum_, color='red')
 ###################################################################################################
 
 # Plot the peak removed spectrum data component
-plot_spectra(fm.freqs, fm.get_data('aperiodic'), color='black')
+plot_spectra(fm.data.freqs, fm.get_data('aperiodic'), color='black')
 
 ###################################################################################################
 
 # Plot the peak removed spectrum, with the model aperiodic fit
-plot_spectra(fm.freqs, [fm.get_data('aperiodic'), fm.get_model('aperiodic')],
+plot_spectra(fm.data.freqs, [fm.get_data('aperiodic'), fm.results.get_component('aperiodic')],
              colors=['black', 'blue'], linestyle=['-', '--'])
 
 ###################################################################################################
@@ -107,12 +108,12 @@ plot_spectra(fm.freqs, [fm.get_data('aperiodic'), fm.get_model('aperiodic')],
 ###################################################################################################
 
 # Plot the flattened spectrum data component
-plot_spectra(fm.freqs, fm.get_data('peak'), color='black')
+plot_spectra(fm.data.freqs, fm.get_data('peak'), color='black')
 
 ###################################################################################################
 
 # Plot the flattened spectrum data with the model peak fit
-plot_spectra(fm.freqs, [fm.get_data('peak'), fm.get_model('peak')],
+plot_spectra(fm.data.freqs, [fm.get_data('peak'), fm.results.get_component('peak')],
              colors=['black', 'green'], linestyle=['-', '--'])
 
 ###################################################################################################
@@ -126,7 +127,9 @@ plot_spectra(fm.freqs, [fm.get_data('peak'), fm.get_model('peak')],
 ###################################################################################################
 
 # Plot the full model fit, as the combination of the aperiodic and peak model components
-plot_spectra(fm.freqs, [fm.get_model('aperiodic') + fm.get_model('peak')], color='red')
+plot_spectra(fm.data.freqs,
+             [fm.results.get_component('aperiodic') + fm.results.get_component('peak')],
+             color='red')
 
 ###################################################################################################
 # Linear vs Log Spacing
@@ -153,7 +156,8 @@ plot_spectra(fm.freqs, [fm.get_model('aperiodic') + fm.get_model('peak')], color
 ###################################################################################################
 
 # Plot the peak removed spectrum, with the model aperiodic fit
-plot_spectra(fm.freqs, [fm.get_data('aperiodic', 'linear'), fm.get_model('aperiodic', 'linear')],
+plot_spectra(fm.data.freqs, [fm.get_data('aperiodic', 'linear'),
+             fm.results.get_component('aperiodic', 'linear')],
              colors=['black', 'blue'], linestyle=['-', '--'])
 
 ###################################################################################################
@@ -166,7 +170,8 @@ plot_spectra(fm.freqs, [fm.get_data('aperiodic', 'linear'), fm.get_model('aperio
 ###################################################################################################
 
 # Plot the flattened spectrum data with the model peak fit
-plot_spectra(fm.freqs, [fm.get_data('peak', 'linear'), fm.get_model('peak', 'linear')],
+plot_spectra(fm.data.freqs,
+             [fm.get_data('peak', 'linear'), fm.results.get_component('peak', 'linear')],
              colors=['black', 'green'], linestyle=['-', '--'])
 
 ###################################################################################################
@@ -185,7 +190,7 @@ plot_spectra(fm.freqs, [fm.get_data('peak', 'linear'), fm.get_model('peak', 'lin
 ###################################################################################################
 
 # Plot the linear data, showing the combination of peak + aperiodic matches the full data
-plot_spectra(fm.freqs,
+plot_spectra(fm.data.freqs,
              [fm.get_data('full', 'linear'),
               fm.get_data('aperiodic', 'linear') + fm.get_data('peak', 'linear')],
              linestyle=['-', 'dashed'], colors=['black', 'red'], alpha=[0.3, 0.75])
@@ -193,9 +198,9 @@ plot_spectra(fm.freqs,
 ###################################################################################################
 
 # Plot the linear model, showing the combination of peak + aperiodic matches the full model
-plot_spectra(fm.freqs,
-             [fm.get_model('full', 'linear'),
-              fm.get_model('aperiodic', 'linear') + fm.get_model('peak', 'linear')],
+plot_spectra(fm.data.freqs,
+             [fm.results.get_component('full', 'linear'),
+              fm.results.get_component('aperiodic', 'linear') + fm.results.get_component('peak', 'linear')],
              linestyle=['-', 'dashed'], colors=['black', 'red'], alpha=[0.3, 0.75])
 
 ###################################################################################################

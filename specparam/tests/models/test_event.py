@@ -1,4 +1,4 @@
-"""Tests for the specparam.objs.event, including the event model object and it's methods.
+"""Tests for the specparam.models.event, including the event model object and it's methods.
 
 NOTES
 -----
@@ -8,6 +8,7 @@ They serve rather as 'smoke tests', for if anything fails completely.
 
 import numpy as np
 
+from specparam.models import SpectralGroupModel, SpectralTimeModel
 from specparam.sim import sim_spectrogram
 from specparam.modutils.dependencies import safe_import
 
@@ -17,7 +18,7 @@ from specparam.tests.tsettings import TEST_DATA_PATH
 from specparam.tests.tdata import default_group_params
 from specparam.tests.tutils import plot_test
 
-from specparam.objs.event import *
+from specparam.models.event import *
 
 ###################################################################################################
 ###################################################################################################
@@ -31,16 +32,17 @@ def test_event_model():
 
 def test_event_getitem(tfe):
 
-    assert tfe[0]
+    assert tfe.results[0]
 
 def test_event_iter(tfe):
 
-    for out in tfe:
+    for out in tfe.results:
         assert out
 
-def test_event_n_peaks(tfe):
+def test_event_n_properties(tfe):
 
-    assert np.all(tfe.n_peaks_)
+    assert np.all(tfe.results.n_peaks_)
+    assert np.all(tfe.results.n_params_)
 
 def test_event_fit():
 
@@ -50,7 +52,7 @@ def test_event_fit():
 
     tfe = SpectralTimeEventModel(verbose=False)
     tfe.fit(xs, ys)
-    results = tfe.get_results()
+    results = tfe.results.get_results()
     assert results
     assert isinstance(results, dict)
     for key in results.keys():
@@ -66,7 +68,7 @@ def test_event_fit_par():
 
     tfe = SpectralTimeEventModel(verbose=False)
     tfe.fit(xs, ys, n_jobs=2)
-    results =  tfe.get_results()
+    results =  tfe.results.get_results()
     assert results
     assert isinstance(results, dict)
     for key in results.keys():
@@ -93,7 +95,7 @@ def test_event_report(skip_if_no_mpl):
 
     assert tfe
 
-def test_event_load(tbands):
+def test_event_load():
 
     file_name_res = 'test_event_res'
     file_name_set = 'test_event_set'
@@ -101,18 +103,18 @@ def test_event_load(tbands):
 
     # Test loading results
     tfe = SpectralTimeEventModel(verbose=False)
-    tfe.load(file_name_res, TEST_DATA_PATH, peak_org=tbands)
-    assert tfe.event_time_results
+    tfe.load(file_name_res, TEST_DATA_PATH)
+    assert tfe.results.event_time_results
 
     # Test loading settings
     tfe = SpectralTimeEventModel(verbose=False)
     tfe.load(file_name_set, TEST_DATA_PATH)
-    assert tfe.get_settings()
+    assert tfe.algorithm.get_settings()
 
     # Test loading data
     tfe = SpectralTimeEventModel(verbose=False)
     tfe.load(file_name_dat, TEST_DATA_PATH)
-    assert np.all(tfe.spectrograms)
+    assert np.all(tfe.data.spectrograms)
 
 def test_event_get_model(tfe):
 
@@ -123,12 +125,12 @@ def test_event_get_model(tfe):
     # Check with regenerating
     tfm1 = tfe.get_model(1, 1, True)
     assert tfm1
-    assert np.all(tfm1.modeled_spectrum_)
+    assert np.all(tfm1.results.modeled_spectrum_)
 
 def test_event_get_params(tfe):
 
-    for dname in ['aperiodic', 'peak', 'error', 'r_squared']:
-        assert np.any(tfe.get_params(dname))
+    for dname in ['aperiodic', 'peak']:
+        assert np.any(tfe.results.get_params(dname))
 
 def test_event_get_group(tfe):
 
@@ -140,30 +142,35 @@ def test_event_get_group(tfe):
     n_out = len(einds) * len(winds)
 
     ntfe1 = tfe.get_group(einds, winds)
-    assert ntfe1
-    assert ntfe1.spectrograms.shape == (len(einds), len(tfe.freqs), len(winds))
-    tkey = list(ntfe1.event_time_results.keys())[0]
-    assert ntfe1.event_time_results[tkey].shape == (len(einds), len(winds))
-    assert len(ntfe1.event_group_results), len(ntfe1.event_group_results[0]) == (len(einds, len(winds)))
+    assert isinstance(ntfe1, SpectralTimeEventModel)
+    assert ntfe1.data.spectrograms.shape == (len(einds), len(tfe.data.freqs), len(winds))
+    tkey = list(ntfe1.results.event_time_results.keys())[0]
+    assert ntfe1.results.event_time_results[tkey].shape == (len(einds), len(winds))
+    assert len(ntfe1.results.event_group_results), len(ntfe1.results.event_group_results[0]) == \
+        (len(einds, len(winds)))
 
     # Test export sub-objects, including with None input
     ntft0 = tfe.get_group(None, None, 'time')
+    assert isinstance(ntft0, SpectralTimeModel)
     assert not isinstance(ntft0, SpectralTimeEventModel)
-    assert not ntft0.group_results
+    assert not ntft0.results.group_results
 
     ntft1 = tfe.get_group(einds, winds, 'time')
+    assert isinstance(ntft1, SpectralTimeModel)
     assert not isinstance(ntft1, SpectralTimeEventModel)
-    assert ntft1.group_results
-    assert len(ntft1.group_results) == len(ntft1.power_spectra) == n_out
+    assert ntft1.results.group_results
+    assert len(ntft1.results.group_results) == len(ntft1.data.power_spectra) == n_out
 
     ntfg0 = tfe.get_group(None, None, 'group')
-    assert not isinstance(ntfg0, SpectralTimeEventModel)
-    assert not ntfg0.group_results
+    assert isinstance(ntfg0, SpectralGroupModel)
+    assert not isinstance(ntfg0, (SpectralTimeModel, SpectralTimeEventModel))
+    assert not ntfg0.results.group_results
 
     ntfg1 = tfe.get_group(einds, winds, 'group')
-    assert not isinstance(ntfg1, SpectralTimeEventModel)
-    assert ntfg1.group_results
-    assert len(ntfg1.group_results) == len(ntfg1.power_spectra) == n_out
+    assert isinstance(ntfg1, SpectralGroupModel)
+    assert not isinstance(ntfg1, (SpectralTimeModel, SpectralTimeEventModel))
+    assert ntfg1.results.group_results
+    assert len(ntfg1.results.group_results) == len(ntfg1.data.power_spectra) == n_out
 
 def test_event_drop():
 
@@ -176,23 +183,25 @@ def test_event_drop():
     # Check list drops
     event_inds = [0]
     window_inds = [1]
-    tfe.drop(event_inds, window_inds)
-    assert len(tfe) == len(ys)
-    dropped_fres = tfe.event_group_results[event_inds[0]][window_inds[0]]
-    for field in dropped_fres._fields:
+    tfe.results.drop(event_inds, window_inds)
+    assert len(tfe.results) == len(ys)
+    dropped_fres = tfe.results.event_group_results[event_inds[0]][window_inds[0]]
+    for field in [el for el in dropped_fres._fields if 'params' in el]:
         assert np.all(np.isnan(getattr(dropped_fres, field)))
-    for key in tfe.event_time_results:
-        assert np.isnan(tfe.event_time_results[key][event_inds[0], window_inds[0]])
+    assert np.all(np.isnan(list(dropped_fres.metrics.values())))
+    for key in tfe.results.event_time_results:
+        assert np.isnan(tfe.results.event_time_results[key][event_inds[0], window_inds[0]])
 
     # Check dictionary drops
     drop_inds = {0 : [2], 1 : [1, 2]}
-    tfe.drop(drop_inds)
-    assert len(tfe) == len(ys)
-    dropped_fres = tfe.event_group_results[0][drop_inds[0][0]]
-    for field in dropped_fres._fields:
+    tfe.results.drop(drop_inds)
+    assert len(tfe.results) == len(ys)
+    dropped_fres = tfe.results.event_group_results[0][drop_inds[0][0]]
+    for field in [el for el in dropped_fres._fields if 'params' in el]:
         assert np.all(np.isnan(getattr(dropped_fres, field)))
-    for key in tfe.event_time_results:
-        assert np.isnan(tfe.event_time_results[key][0, drop_inds[0][0]])
+    assert np.all(np.isnan(list(dropped_fres.metrics.values())))
+    for key in tfe.results.event_time_results:
+        assert np.isnan(tfe.results.event_time_results[key][0, drop_inds[0][0]])
 
 def test_event_to_df(tfe, tbands, skip_if_no_pandas):
 

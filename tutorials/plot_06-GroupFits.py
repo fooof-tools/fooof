@@ -117,7 +117,7 @@ fg.save_report('group_report')
 ###################################################################################################
 
 # Check out some of the results stored in 'group_results'
-print(fg.group_results[0:2])
+print(fg.results.group_results[0:2])
 
 ###################################################################################################
 # get_params
@@ -149,8 +149,8 @@ peaks = fg.get_params('peak_params')
 cfs = fg.get_params('peak_params', 'CF')
 
 # Extract goodness-of-fit metrics
-errors = fg.get_params('error')
-r2s = fg.get_params('r_squared')
+errors = fg.get_params('metrics', 'error_mae')
+r2s = fg.get_params('metrics', 'gof_rsquared')
 
 ###################################################################################################
 
@@ -167,7 +167,7 @@ print(fg.get_params.__doc__)
 
 # Grab a particular FitResults data object
 #   Note: you can also index the SpectralGroupModel object directly to access 'group_results'
-f_res = fg[0]
+f_res = fg.results[0]
 
 # Check the documentation for the FitResults, which has descriptions of the parameters
 print(f_res.__doc__)
@@ -201,13 +201,13 @@ print(cfs[0:10, :])
 ###################################################################################################
 
 # Save out group settings & results
-fg.save('FG_results', save_settings=True, save_results=True)
+fg.save('group_results', save_settings=True, save_results=True)
 
 ###################################################################################################
 
 # You can then reload this group
 nfg = SpectralGroupModel()
-nfg.load('FG_results')
+nfg.load('group_results')
 
 ###################################################################################################
 

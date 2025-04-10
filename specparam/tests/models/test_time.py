@@ -1,4 +1,4 @@
-"""Tests for the specparam.objs.time, including the time model object and it's methods.
+"""Tests for the specparam.models.time, including the time model object and it's methods.
 
 NOTES
 -----
@@ -17,7 +17,7 @@ from specparam.tests.tsettings import TEST_DATA_PATH
 from specparam.tests.tdata import default_group_params
 from specparam.tests.tutils import plot_test
 
-from specparam.objs.time import *
+from specparam.models.time import *
 
 ###################################################################################################
 ###################################################################################################
@@ -31,16 +31,17 @@ def test_time_model():
 
 def test_time_getitem(tft):
 
-    assert tft[0]
+    assert tft.results[0]
 
 def test_time_iter(tft):
 
-    for out in tft:
+    for out in tft.results:
         assert out
 
-def test_time_n_peaks(tft):
+def test_time_n_properties(tft):
 
-    assert tft.n_peaks_
+    assert np.all(tft.results.n_peaks_)
+    assert np.all(tft.results.n_params_)
 
 def test_time_fit():
 
@@ -50,7 +51,7 @@ def test_time_fit():
     tft = SpectralTimeModel(verbose=False)
     tft.fit(xs, ys)
 
-    results = tft.get_results()
+    results = tft.results.get_results()
 
     assert results
     assert isinstance(results, dict)
@@ -77,7 +78,7 @@ def test_time_report(skip_if_no_mpl):
 
     assert tft
 
-def test_time_load(tbands):
+def test_time_load():
 
     file_name_res = 'test_time_res'
     file_name_set = 'test_time_set'
@@ -85,18 +86,18 @@ def test_time_load(tbands):
 
     # Test loading results
     tft = SpectralTimeModel(verbose=False)
-    tft.load(file_name_res, TEST_DATA_PATH, peak_org=tbands)
-    assert tft.time_results
+    tft.load(file_name_res, TEST_DATA_PATH)
+    assert tft.results.time_results
 
     # Test loading settings
     tft = SpectralTimeModel(verbose=False)
     tft.load(file_name_set, TEST_DATA_PATH)
-    assert tft.get_settings()
+    assert tft.algorithm.get_settings()
 
     # Test loading data
     tft = SpectralTimeModel(verbose=False)
     tft.load(file_name_dat, TEST_DATA_PATH)
-    assert np.all(tft.power_spectra)
+    assert np.all(tft.data.power_spectra)
 
 def test_time_drop():
 
@@ -106,11 +107,11 @@ def test_time_drop():
 
     tft.fit(xs, ys)
     drop_inds = [0, 2]
-    tft.drop(drop_inds)
-    assert len(tft) == n_windows
+    tft.results.drop(drop_inds)
+    assert len(tft.results) == n_windows
     for dind in drop_inds:
-        for key in tft.time_results:
-            assert np.isnan(tft.time_results[key][dind])
+        for key in tft.results.time_results:
+            assert np.isnan(tft.results.time_results[key][dind])
 
 def test_time_get_group(tft):
 
@@ -121,13 +122,13 @@ def test_time_get_group(tft):
 
     nft = tft.get_group(inds)
     assert isinstance(nft, SpectralTimeModel)
-    assert len(nft.group_results) == len(inds)
-    assert len(nft.time_results[list(nft.time_results.keys())[0]]) == len(inds)
-    assert nft.spectrogram.shape[-1] == len(inds)
+    assert len(nft.results.group_results) == len(inds)
+    assert len(nft.results.time_results[list(nft.results.time_results.keys())[0]]) == len(inds)
+    assert nft.data.spectrogram.shape[-1] == len(inds)
 
     nfg = tft.get_group(inds, 'group')
     assert not isinstance(nfg, SpectralTimeModel)
-    assert len(nfg.group_results) == len(inds)
+    assert len(nfg.results.group_results) == len(inds)
 
 def test_time_to_df(tft, tbands, skip_if_no_pandas):
 

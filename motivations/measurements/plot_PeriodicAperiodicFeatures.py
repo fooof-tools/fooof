@@ -90,18 +90,22 @@ cf_diff = [[11.75, 0.5, 1], [22, 0.2, 2]]
 off_diff = [-0.126, 1.5]
 exp_diff = [-0.87, 0.75]
 
+# Collect together simulation parameters
+ap_params = {'fixed' : ap_base}
+pe_params = {'gaussian' : pe_base}
+
 ###################################################################################################
 
 # Create baseline power spectrum, to compare to
-freqs, powers_base = sim_power_spectrum(f_range, ap_base, pe_base, nlv, f_res)
+freqs, powers_base = sim_power_spectrum(f_range, ap_params, pe_params, nlv, f_res)
 
 ###################################################################################################
 
 # Create comparison power spectra, with differences in different parameters of the data
-_, powers_pw = sim_power_spectrum(f_range, ap_base, pw_diff, nlv, f_res)
-_, powers_cf = sim_power_spectrum(f_range, ap_base, cf_diff, nlv, f_res)
-_, powers_off = sim_power_spectrum(f_range, off_diff, pe_base, nlv, f_res)
-_, powers_exp = sim_power_spectrum(f_range, exp_diff, pe_base, nlv, f_res)
+_, powers_pw = sim_power_spectrum(f_range, ap_params, {'gaussian' : pw_diff}, nlv, f_res)
+_, powers_cf = sim_power_spectrum(f_range, ap_params, {'gaussian' : cf_diff}, nlv, f_res)
+_, powers_off = sim_power_spectrum(f_range, {'fixed' : off_diff}, pe_params, nlv, f_res)
+_, powers_exp = sim_power_spectrum(f_range, {'fixed' : exp_diff}, pe_params, nlv, f_res)
 
 ###################################################################################################
 
@@ -138,7 +142,7 @@ for ax, (title, powers) in zip(axes.reshape(-1), all_powers.items()):
 
     # Create spectrum plot, with alpha band of interest shaded in
     plot_spectra_shading(freqs, [powers_base, powers],
-                         bands.alpha, shade_colors=shade_color,
+                         bands['alpha'], shade_colors=shade_color,
                          log_freqs=log_freqs, log_powers=log_powers, ax=ax)
 
     # Add the title, and do some plot styling
@@ -152,7 +156,7 @@ for ax, (title, powers) in zip(axes.reshape(-1), all_powers.items()):
 #
 # Now let's compare our different power spectra, in terms of band-specific power measures.
 #
-# To do so, we will first define a helper function that calculates the average power in
+# To do so, we will first define a helper function that computes the average power in
 # a band.
 #
 # Then, for each pair, consisting of the baseline power spectrum and an adapted version
@@ -162,8 +166,8 @@ for ax, (title, powers) in zip(axes.reshape(-1), all_powers.items()):
 
 ###################################################################################################
 
-def calc_avg_power(freqs, powers, freq_range):
-    """Helper function to calculate average power in a band."""
+def compute_avg_power(freqs, powers, freq_range):
+    """Helper function to compute average power in a band."""
 
     _, band_powers = trim_spectrum(freqs, powers, freq_range)
     avg_power = np.mean(band_powers)
@@ -173,14 +177,14 @@ def calc_avg_power(freqs, powers, freq_range):
 ###################################################################################################
 
 # Calculate the amount of alpha power in the baseline power spectrum
-base_alpha = calc_avg_power(freqs, powers_base, bands.alpha)
+base_alpha = compute_avg_power(freqs, powers_base, bands['alpha'])
 
 ###################################################################################################
 
 # Calculate the different in alpha power for each of our comparison pairs
 for title, powers in all_powers.items():
     print('{:20s}\t {:1.4f}'.format(\
-        title, calc_avg_power(freqs, powers, bands.alpha) - base_alpha))
+        title, compute_avg_power(freqs, powers, bands['alpha']) - base_alpha))
 
 ###################################################################################################
 #
@@ -215,16 +219,16 @@ for title, powers in all_powers.items():
 ###################################################################################################
 
 # Redefine baseline with no alpha
-pe_base_na = [[22, 0.2, 2]]
+pe_base_na = {'gaussian' : [[22, 0.2, 2]]}
 
 # Redefine changes in for each parameter
-off_diff_na = [-0.321, 1.5]
-exp_diff_na = [-1.31, 0.5]
+off_diff_na = {'fixed' : [-0.321, 1.5]}
+exp_diff_na = {'fixed' : [-1.31, 0.5]}
 
 ###################################################################################################
 
 # Create baseline power spectrum, to compare to
-freqs, powers_noa_base = sim_power_spectrum(f_range, ap_base, pe_base_na, nlv, f_res)
+freqs, powers_noa_base = sim_power_spectrum(f_range, ap_params, pe_base_na, nlv, f_res)
 
 # Collect all powers together,
 all_powers_na = {'Offset Change' : \
@@ -240,7 +244,7 @@ for ax, (title, powers) in zip(axes.reshape(-1), all_powers_na.items()):
 
     # Create spectrum plot, with alpha band of interest shaded in
     plot_spectra_shading(freqs, [powers_noa_base, powers],
-                         bands.alpha, shade_colors=shade_color,
+                         bands['alpha'], shade_colors=shade_color,
                          log_freqs=log_freqs, log_powers=log_powers, ax=ax)
 
     # Add the title, and do some plot styling
@@ -251,10 +255,10 @@ for ax, (title, powers) in zip(axes.reshape(-1), all_powers_na.items()):
 ###################################################################################################
 
 # Calculate and compare the difference of 'alpha' power
-base_noa_power = calc_avg_power(freqs, powers_noa_base, [8, 12])
+base_noa_power = compute_avg_power(freqs, powers_noa_base, [8, 12])
 for title, powers in all_powers_na.items():
     print('{:20s}\t {:1.4f}'.format(\
-        title, calc_avg_power(freqs, powers, [8, 12]) - base_noa_power))
+        title, compute_avg_power(freqs, powers, [8, 12]) - base_noa_power))
 
 ###################################################################################################
 #

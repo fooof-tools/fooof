@@ -48,7 +48,8 @@ periodic_params = [10, 0.3, 1]    # Parameters for any periodic components
 ###################################################################################################
 
 # Simulate a power spectrum
-freqs, powers = sim_power_spectrum(freq_range, aperiodic_params, periodic_params)
+freqs, powers = sim_power_spectrum(\
+    freq_range, {'fixed' : aperiodic_params}, {'gaussian' : periodic_params})
 
 ###################################################################################################
 
@@ -94,8 +95,8 @@ periodic_params = [9, 0.4, 1, 24, 0.2, 3]
 ###################################################################################################
 
 # Simulate the new power spectrum
-freqs, powers = sim_power_spectrum(freq_range, aperiodic_params,
-                                   periodic_params, nlv, freq_res)
+freqs, powers = sim_power_spectrum(freq_range, {'knee' : aperiodic_params},
+                                   {'gaussian' : periodic_params}, nlv, freq_res)
 
 ###################################################################################################
 
@@ -136,8 +137,8 @@ periodic_params = [10, 0.4, 1]
 ###################################################################################################
 
 # Simulate a group of power spectra
-freqs, powers = sim_group_power_spectra(n_spectra, freq_range, aperiodic_params,
-                                        periodic_params, nlv)
+freqs, powers = sim_group_power_spectra(n_spectra, freq_range, {'fixed' : aperiodic_params},
+                                        {'gaussian' : periodic_params}, nlv)
 
 ###################################################################################################
 
@@ -159,7 +160,7 @@ plot_spectra(freqs, powers, log_freqs=True, log_powers=True)
 ###################################################################################################
 
 # Simulate a power spectrum, returning the simulation parameter information
-freqs, powers, sp = sim_power_spectrum([1, 50], [1, 1], [10, 0.25, 1.5],
+freqs, powers, sp = sim_power_spectrum([1, 50], {'fixed' : [1, 1]}, {'gaussian' : [10, 0.25, 1.5]},
                                        0.01, return_params=True)
 
 # Check the information stored in the simulation params object
@@ -168,8 +169,8 @@ print(sp)
 ###################################################################################################
 
 # Simulate a group of power spectrum, returning the simulation parameter information
-freqs, powers, sps = sim_group_power_spectra(3, [1, 150], [1, 100, 150],
-                                             [4, 0.2, 2, 22, 0.15, 3],
+freqs, powers, sps = sim_group_power_spectra(3, [1, 150], {'knee' : [1, 100, 150]},
+                                             {'gaussian' : [4, 0.2, 2, 22, 0.15, 3]},
                                              0.01, return_params=True)
 
 # Check the information stored in the simulation params object

@@ -8,8 +8,9 @@ import numpy as np
 
 from specparam.modutils.dependencies import safe_import
 
-from specparam.tests.tdata import (get_tdata, get_tdata2d, get_tfm, get_tfg, get_tft, get_tfe,
-                                   get_tbands, get_tresults, get_tdocstring)
+from specparam.tests.tdata import (get_tdata, get_tdata2d, get_tfm, get_tfm2, get_tfg, get_tfg2,
+                                   get_tft, get_tfe, get_tbands, get_tresults, get_tmodes,
+                                   get_tdocstring)
 from specparam.tests.tsettings import (BASE_TEST_FILE_PATH, TEST_DATA_PATH,
                                        TEST_REPORTS_PATH, TEST_PLOTS_PATH)
 
@@ -47,6 +48,11 @@ def skip_if_no_mpl():
         pytest.skip('Matplotlib not available: skipping test.')
 
 @pytest.fixture(scope='session')
+def skip_if_no_tqdm():
+    if not safe_import('tqdm'):
+        pytest.skip('tqdm not available: skipping test.')
+
+@pytest.fixture(scope='session')
 def skip_if_no_pandas():
     if not safe_import('pandas'):
         pytest.skip('Pandas not available: skipping test.')
@@ -66,8 +72,16 @@ def tfm():
     yield get_tfm()
 
 @pytest.fixture(scope='session')
+def tfm2():
+    yield get_tfm2()
+
+@pytest.fixture(scope='session')
 def tfg():
     yield get_tfg()
+
+@pytest.fixture(scope='session')
+def tfg2():
+    yield get_tfg2()
 
 @pytest.fixture(scope='session')
 def tft():
@@ -84,6 +98,10 @@ def tbands():
 @pytest.fixture(scope='session')
 def tresults():
     yield get_tresults()
+
+@pytest.fixture(scope='session')
+def tmodes():
+    yield get_tmodes()
 
 @pytest.fixture(scope='function')
 def tdocstring():

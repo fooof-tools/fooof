@@ -1,120 +1,128 @@
-"""Functions to analyze and investigate model fit results, in terms of model fit error."""
+"""Functionality to compute model error."""
+
+from inspect import isfunction
 
 import numpy as np
 
-from specparam.sim.gen import gen_model
-from specparam.plts.error import plot_spectral_error
-from specparam.modutils.errors import NoModelError, NoDataError
-
 ###################################################################################################
 ###################################################################################################
 
-def compute_pointwise_error(model, plot_errors=True, return_errors=False, **plt_kwargs):
-    """Calculate the frequency by frequency error of a model fit.
+def compute_mean_abs_error(power_spectrum, modeled_spectrum):
+    """Compute mean absolute error.
 
     Parameters
     ----------
-    model : SpectralModel
-        Object containing the data and model.
-    plot_errors : bool, optional, default: True
-        Whether to plot the errors across frequencies.
-    return_errors : bool, optional, default: False
-        Whether to return the calculated errors.
-    **plt_kwargs
-        Keyword arguments to be passed to the plot function.
+    power_spectrum : 1d array
+        Real data power spectrum.
+    modeled_spectrum : 1d array
+        Modelled power spectrum.
 
     Returns
     -------
-    errors : 1d array
-        Calculated values of the difference between the data and the model.
-        Only returned if `return_errors` is True.
-
-    Raises
-    ------
-    NoDataError
-        If there is no data available to calculate model error from.
-    NoModelError
-        If there are no model results available to calculate model error from.
+    error : float
+        Computed mean absolute error.
     """
 
-    if not model.has_data:
-        raise NoDataError("Data must be available in the object to calculate errors.")
-    if not model.has_model:
-        raise NoModelError("No model is available to use, can not proceed.")
+    error = np.abs(power_spectrum - modeled_spectrum).mean()
 
-    errors = compute_pointwise_error_arr(model.modeled_spectrum_, model.power_spectrum)
-
-    if plot_errors:
-        plot_spectral_error(model.freqs, errors, **plt_kwargs)
-
-    if return_errors:
-        return errors
+    return error
 
 
-def compute_pointwise_error_group(group, plot_errors=True, return_errors=False, **plt_kwargs):
-    """Calculate the frequency by frequency error of model fits for a group of fits.
+def compute_mean_squared_error(power_spectrum, modeled_spectrum):
+    """Compute mean squared error.
 
     Parameters
     ----------
-    group : SpectralGroupModel
-        Object containing the data and models.
-    plot_errors : bool, optional, default: True
-        Whether to plot the errors across frequencies.
-    return_errors : bool, optional, default: False
-        Whether to return the calculated errors.
-    **plt_kwargs
-        Keyword arguments to be passed to the plot function.
+    power_spectrum : 1d array
+        Real data power spectrum.
+    modeled_spectrum : 1d array
+        Modelled power spectrum.
 
     Returns
     -------
-    errors : 2d array
-        Calculated values of the difference between the data and the models.
-        Only returned if `return_errors` is True.
-
-    Raises
-    ------
-    NoDataError
-        If there is no data available to calculate model errors from.
-    NoModelError
-        If there are no model results available to calculate model errors from.
+    error : float
+        Computed mean squared error.
     """
 
-    if not np.any(group.power_spectra):
-        raise NoDataError("Data must be available in the object to calculate errors.")
-    if not group.has_model:
-        raise NoModelError("No model is available to use, can not proceed.")
+    error = ((power_spectrum - modeled_spectrum) ** 2).mean()
 
-    errors = np.zeros_like(group.power_spectra)
-
-    for ind, (res, data) in enumerate(zip(group, group.power_spectra)):
-
-        model = gen_model(group.freqs, res.aperiodic_params, res.gaussian_params)
-        errors[ind, :] = np.abs(model - data)
-
-    mean = np.mean(errors, 0)
-    standard_dev = np.std(errors, 0)
-
-    if plot_errors:
-        plot_spectral_error(group.freqs, mean, standard_dev, **plt_kwargs)
-
-    if return_errors:
-        return errors
+    return error
 
 
-def compute_pointwise_error_arr(data_model, data):
-    """Calculate point-wise error between original data and a model fit of that data.
+def compute_root_mean_squared_error(power_spectrum, modeled_spectrum):
+    """Compute root mean squared error.
 
     Parameters
     ----------
-    data_model : 1d array
-        The model of the data.
-    data : 1d array
-        The original data that is being modeled.
+    power_spectrum : 1d array
+        Real data power spectrum.
+    modeled_spectrum : 1d array
+        Modelled power spectrum.
 
     Returns
     -------
-    1d array
-        Calculated values of the difference between the data and the model.
+    error : float
+        Computed root mean squared error.
     """
 
-    return np.abs(data_model - data)
+    error = np.sqrt(((power_spectrum - modeled_spectrum) ** 2).mean())
+
+    return error
+
+
+def compute_median_abs_error(power_spectrum, modeled_spectrum):
+    """Calculate the median absolute error.
+
+    Parameters
+    ----------
+    power_spectrum : 1d array
+        Real data power spectrum.
+    modeled_spectrum : 1d array
+        Modelled power spectrum.
+
+    Returns
+    -------
+    error : float
+        Computed median absolute error.
+    """
+
+    error = np.median(np.abs(modeled_spectrum - power_spectrum), axis=0)
+
+    return error
+
+
+# Collect available error functions together
+ERROR_FUNCS = {
+    'mae' : compute_mean_abs_error,
+    'mse' : compute_mean_squared_error,
+    'rmse' : compute_root_mean_squared_error,
+    'medae' : compute_median_abs_error,
+}
+
+
+def compute_error(power_spectrum, modeled_spectrum, error_metric='mae', **kwargs):
+    """Compute error between a model and a power spectrum.
+
+    Parameters
+    ----------
+    power_spectrum : 1d array
+        Real data power spectrum.
+    modeled_spectrum : 1d array
+        Modelled power spectrum.
+    error_metric : {'mae', 'mse', 'rsme', 'medae'} or callable
+        Which approach to take to compute the error.
+    **kwargs
+        Additional keyword arguments for the error function.
+
+    Returns
+    -------
+    error : float
+        Computed error.
+    """
+
+    if isinstance(error_metric, str):
+        error_func = ERROR_FUNCS[error_metric.lower()]
+    elif isfunction(error_metric):
+        error_func = error_metric
+
+    return error_func(power_spectrum, modeled_spectrum, **kwargs)

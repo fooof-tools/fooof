@@ -74,11 +74,11 @@ from specparam.plts.spectra import plot_spectra_shading
 ###################################################################################################
 
 # Define our frequency bands of interest
-bands = Bands({'delta' : [1, 4],
-               'theta' : [4, 8],
-               'alpha' : [8, 13],
-               'beta' : [13, 30],
-               'gamma' : [30, 50]})
+bands = Bands({'delta' : (1, 4),
+               'theta' : (4, 8),
+               'alpha' : (8, 13),
+               'beta' : (13, 30),
+               'gamma' : (30, 50)})
 
 # Define plot settings
 t_settings = {'fontsize' : 24, 'fontweight' : 'bold'}
@@ -123,8 +123,8 @@ def compare_peak_pw(fm1, fm2, band_def):
 def compare_band_pw(fm1, fm2, band_def):
     """Compare the power of frequency band ranges."""
 
-    pw1 = np.mean(trim_spectrum(fm1.freqs, fm1.power_spectrum, band_def)[1])
-    pw2 = np.mean(trim_spectrum(fm1.freqs, fm2.power_spectrum, band_def)[1])
+    pw1 = np.mean(trim_spectrum(fm1.data.freqs, fm1.data.power_spectrum, band_def)[1])
+    pw2 = np.mean(trim_spectrum(fm1.data.freqs, fm2.data.power_spectrum, band_def)[1])
 
     return pw1 - pw2
 
@@ -145,30 +145,34 @@ def compare_band_pw(fm1, fm2, band_def):
 
 ###################################################################################################
 
+# Set random seed, for consistency creating simulated data
+set_random_seed(21)
+
 # Set consistent aperiodic parameters
-ap_params = [1, 1]
+ap = [1, 1]
 
 # Set periodic parameters, defined to vary between groups
 #   All parameters are set to match, except for systematic power differences
 pe_g1 = [[2, 0.25, 1], [6, 0.2, 1], [10, 0.5, 1.5], [20, 0.2, 3], [40, 0.25, 3.5]]
 pe_g2 = [[2, 0.5, 1], [6, 0.3, 1], [10, 0.5, 1.5], [20, 0.15, 3], [40, 0.15, 3.5]]
 
-# Set random seed, for consistency creating simulated data
-set_random_seed(21)
+# Collect together simulation parameters
+ap_params = {'fixed' : ap}
+pe_params1 = {'gaussian' : pe_g1}
+pe_params2 = {'gaussian' : pe_g2}
 
 ###################################################################################################
 
 # Simulate example power spectra for each group
-freqs, g1_spectrum_bands = sim_power_spectrum(f_range, ap_params, pe_g1, nlv)
-freqs, g2_spectrum_bands = sim_power_spectrum(f_range, ap_params, pe_g2, nlv)
+freqs, g1_spectrum_bands = sim_power_spectrum(f_range, ap_params, pe_params1, nlv)
+freqs, g2_spectrum_bands = sim_power_spectrum(f_range, ap_params, pe_params2, nlv)
 
 ###################################################################################################
 
 # Plot the power spectra differences, representing the 'band-by-band' idea
 plot_spectra_shading(freqs, [g1_spectrum_bands, g2_spectrum_bands],
-                     log_powers=True, linewidth=3,
-                     shades=bands.definitions, shade_colors=shade_cols,
-                     labels=labels)
+                     log_powers=True, linewidth=3, shades=bands.definitions,
+                     shade_colors=shade_cols, labels=labels)
 plt.xlim(f_range);
 plt.title('Band-by-Band', t_settings);
 
@@ -198,7 +202,8 @@ fm_bands_g2.fit(freqs, g2_spectrum_bands)
 ###################################################################################################
 
 # Plot the power spectra differences
-plot_spectra_shading(freqs, [fm_bands_g1._spectrum_flat, fm_bands_g2._spectrum_flat],
+plot_spectra_shading(freqs,
+                     [fm_bands_g1.results._spectrum_flat, fm_bands_g2.results._spectrum_flat],
                      log_powers=False, linewidth=3,
                      shades=bands.definitions, shade_colors=shade_cols,
                      labels=labels)
@@ -250,8 +255,10 @@ for label, definition in bands:
 ###################################################################################################
 
 # Simulate spectra for each group, with aperiodic differences
-freqs, g1_spectrum_pa = sim_power_spectrum(f_range, [1.0, 1.25], [10, 0.5, 1.5], nlv)
-freqs, g2_spectrum_pa = sim_power_spectrum(f_range, [0.7, 1.00], [10, 0.5, 1.5], nlv)
+freqs, g1_spectrum_pa = sim_power_spectrum(f_range, {'fixed' : [1.0, 1.25]},
+                                           {'gaussian' : [10, 0.5, 1.5]}, nlv)
+freqs, g2_spectrum_pa = sim_power_spectrum(f_range, {'fixed' : [0.7, 1.00]},
+                                           {'gaussian' : [10, 0.5, 1.5]}, nlv)
 
 ###################################################################################################
 
@@ -286,7 +293,8 @@ fm_pa_g2.fit(freqs, g2_spectrum_pa)
 ###################################################################################################
 
 # Plot the power spectra differences
-plot_spectra_shading(freqs, [fm_pa_g1._spectrum_flat, fm_pa_g2._spectrum_flat],
+plot_spectra_shading(freqs,
+                     [fm_pa_g1.results._spectrum_flat, fm_pa_g2.results._spectrum_flat],
                      log_powers=False, linewidth=3,
                      shades=bands.definitions, shade_colors=shade_cols,
                      labels=labels)

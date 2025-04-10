@@ -1,14 +1,15 @@
 """Classes & functions for managing parameters for simulating power spectra."""
 
+from copy import deepcopy
+
 import numpy as np
 
+from specparam.data import SimParams
+from specparam.modes.modes import check_mode_definition
+from specparam.modes.definitions import AP_MODES
 from specparam.utils.select import groupby
 from specparam.utils.checks import check_flat
-from specparam.core.info import get_indices
-from specparam.core.funcs import infer_ap_func
 from specparam.modutils.errors import InconsistentDataError
-
-from specparam.data import SimParams
 
 ###################################################################################################
 ###################################################################################################
@@ -31,8 +32,9 @@ def collect_sim_params(aperiodic_params, periodic_params, nlv):
         Object containing the simulation parameters.
     """
 
-    return SimParams(aperiodic_params.copy(),
-                     sorted(groupby(check_flat(periodic_params), 3)),
+    return SimParams(deepcopy(aperiodic_params),
+                     #sorted(groupby(check_flat(periodic_params), 3)),
+                     deepcopy(periodic_params),
                      nlv)
 
 
@@ -60,7 +62,9 @@ def update_sim_ap_params(sim_params, delta, field=None):
     """
 
     # Grab the aperiodic parameters that need updating
-    ap_params = sim_params.aperiodic_params.copy()
+    aperiodic_params = sim_params.aperiodic_params.copy()
+    ap_mode = list(aperiodic_params.keys())[0]
+    ap_params = aperiodic_params[ap_mode].copy()
 
     # If field isn't specified, check shapes line up and update across parameters
     if not field:
@@ -71,14 +75,17 @@ def update_sim_ap_params(sim_params, delta, field=None):
 
     # If labels are given, update deltas according to their labels
     else:
+
+        aperiodic_mode = check_mode_definition(ap_mode, AP_MODES)
+
         # This loop checks & casts to list, to work for single or multiple passed in values
         for cur_field, cur_delta in zip(list([field]) if not isinstance(field, list) else field,
                                         list([delta]) if not isinstance(delta, list) else delta):
-            data_ind = get_indices(infer_ap_func(ap_params))[cur_field]
+            data_ind = aperiodic_mode.params.indices[cur_field]
             ap_params[data_ind] = ap_params[data_ind] + cur_delta
 
     # Replace parameters. Note that this copies a new object, as data objects are immutable
-    new_sim_params = sim_params._replace(aperiodic_params=ap_params)
+    new_sim_params = sim_params._replace(aperiodic_params={ap_mode : ap_params})
 
     return new_sim_params
 

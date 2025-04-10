@@ -49,8 +49,9 @@ nlv = 0.02
 ###################################################################################################
 
 # Simulate a group of power spectra
-freqs, powers, sim_params = sim_group_power_spectra(n_spectra, freq_range, ap_params,
-                                                    pe_params, nlv, return_params=True)
+freqs, powers, sim_params = sim_group_power_spectra(\
+    n_spectra, freq_range, {'fixed' : ap_params},
+    {'gaussian' : pe_params}, nlv, return_params=True)
 
 ###################################################################################################
 
@@ -61,8 +62,7 @@ for sim_param in sim_params:
 ###################################################################################################
 
 # You can also use a SimParams object to regenerate a particular power spectrum
-cur_params = sim_params[0]
-freqs, powers = sim_power_spectrum(freq_range, *cur_params)
+freqs, powers = sim_power_spectrum(freq_range, *sim_params[0])
 
 ###################################################################################################
 # Managing Parameters
@@ -99,7 +99,8 @@ pe_opts = param_sampler([[10, 0.5, 1], [[10, 0.5, 1], [20, 0.25, 2]]],
 ###################################################################################################
 
 # Simualte some power spectra, using param_sampler
-freqs, powers = sim_group_power_spectra(10, freq_range, ap_opts, pe_opts)
+freqs, powers = sim_group_power_spectra(\
+    10, freq_range, {'fixed' : ap_opts}, {'gaussian' : pe_opts})
 
 ###################################################################################################
 
@@ -134,7 +135,8 @@ pe_params = param_iter([cf_steps, 0.4, 1])
 ###################################################################################################
 
 # Simulate some power spectra, using param_iter
-freqs, powers = sim_group_power_spectra(len(cf_steps), freq_range, ap_params, pe_params)
+freqs, powers = sim_group_power_spectra(\
+    len(cf_steps), freq_range, {'fixed' : ap_params}, {'gaussian' : pe_params})
 
 ###################################################################################################
 
@@ -162,7 +164,8 @@ pe_params = [10, 0.2, 1, 22, 0.1, 3]
 ###################################################################################################
 
 # Simulate some power spectra, using param_jitter
-freqs, powers = sim_group_power_spectra(5, freq_range, ap_params, pe_params)
+freqs, powers = sim_group_power_spectra(\
+    5, freq_range, {'fixed' : ap_params}, {'gaussian' : pe_params})
 
 ###################################################################################################
 

@@ -1,4 +1,4 @@
-"""Tests for specparam.objs.model, including the model object and it's methods.
+"""Tests for specparam.models.model, including the model object and it's methods.
 
 NOTES
 -----
@@ -9,11 +9,11 @@ They serve rather as 'smoke tests', for if anything fails completely.
 import numpy as np
 from pytest import raises
 
-from specparam.core.items import OBJ_DESC
 from specparam.utils.select import groupby
 from specparam.modutils.errors import FitError
+from specparam.measures.metrics import METRICS
 from specparam.sim import gen_freqs, sim_power_spectrum
-from specparam.data import FitResults
+from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.modutils.dependencies import safe_import
 from specparam.modutils.errors import DataError, NoDataError, InconsistentDataError
 
@@ -23,7 +23,7 @@ from specparam.tests.tsettings import TEST_DATA_PATH
 from specparam.tests.tdata import default_spectrum_params, get_tfm
 from specparam.tests.tutils import plot_test
 
-from specparam.objs.model import *
+from specparam.models.model import *
 
 ###################################################################################################
 ###################################################################################################
@@ -31,28 +31,33 @@ from specparam.objs.model import *
 def test_model_object():
     """Check model object initializes properly."""
 
-    assert SpectralModel(verbose=False)
+    assert SpectralModel()
+
+    # Check initialization across all possibile mode combinations
+    for ap_mode in AP_MODES:
+        for pe_mode in PE_MODES:
+            assert SpectralModel(aperiodic_mode=ap_mode, periodic_mode=pe_mode, verbose=False)
 
 def test_has_data(tfm):
     """Test the has_data property attribute, with and without model fits."""
 
-    assert tfm.has_data
+    assert tfm.data.has_data
 
     ntfm = SpectralModel()
-    assert not ntfm.has_data
+    assert not ntfm.data.has_data
 
 def test_has_model(tfm):
     """Test the has_model property attribute, with and without model fits."""
 
-    assert tfm.has_model
+    assert tfm.results.has_model
 
     ntfm = SpectralModel()
-    assert not ntfm.has_model
+    assert not ntfm.results.has_model
 
-def test_n_peaks(tfm):
-    """Test the n_peaks property attribute."""
+def test_n_properties(tfm):
 
-    assert tfm.n_peaks_
+    assert tfm.results.n_peaks_
+    assert tfm.results.n_params_
 
 def test_fit_nk():
     """Test fit, no knee."""
@@ -60,18 +65,17 @@ def test_fit_nk():
     ap_params = [50, 2]
     gauss_params = [10, 0.5, 2, 20, 0.3, 4]
     nlv = 0.0025
-
-    xs, ys = sim_power_spectrum([3, 50], ap_params, gauss_params, nlv)
+    xs, ys = sim_power_spectrum([3, 50], {'fixed' : ap_params}, {'gaussian' : gauss_params}, nlv)
 
     tfm = SpectralModel(verbose=False)
     tfm.fit(xs, ys)
 
     # Check model results - aperiodic parameters
-    assert np.allclose(ap_params, tfm.aperiodic_params_, [0.5, 0.1])
+    assert np.allclose(ap_params, tfm.results.aperiodic_params_, [0.5, 0.1])
 
     # Check model results - gaussian parameters
     for ii, gauss in enumerate(groupby(gauss_params, 3)):
-        assert np.allclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0])
+        assert np.allclose(gauss, tfm.results.gaussian_params_[ii], [2.0, 0.5, 1.0])
 
 def test_fit_nk_noise():
     """Test fit on noisy data, to make sure nothing breaks."""
@@ -83,7 +87,7 @@ def test_fit_nk_noise():
     tfm.fit(xs, ys)
 
     # No accuracy checking here - just checking that it ran
-    assert tfm.has_model
+    assert tfm.results.has_model
 
 def test_fit_knee():
     """Test fit, with a knee."""
@@ -92,38 +96,46 @@ def test_fit_knee():
     gauss_params = [10, 0.3, 2, 20, 0.1, 4, 60, 0.3, 1]
     nlv = 0.0025
 
-    xs, ys = sim_power_spectrum([1, 150], ap_params, gauss_params, nlv)
+    xs, ys = sim_power_spectrum([1, 150], {'knee' : ap_params}, {'gaussian' : gauss_params}, nlv)
 
     tfm = SpectralModel(aperiodic_mode='knee', verbose=False)
     tfm.fit(xs, ys)
 
     # Check model results - aperiodic parameters
-    assert np.allclose(ap_params, tfm.aperiodic_params_, [1, 2, 0.2])
+    assert np.allclose(ap_params, tfm.results.aperiodic_params_, [1, 2, 0.2])
 
     # Check model results - gaussian parameters
     for ii, gauss in enumerate(groupby(gauss_params, 3)):
-        assert np.allclose(gauss, tfm.gaussian_params_[ii], [2.0, 0.5, 1.0])
+        assert np.allclose(gauss, tfm.results.gaussian_params_[ii], [2.0, 0.5, 1.0])
 
-def test_fit_measures():
+def test_fit_default_metrics():
     """Test goodness of fit & error metrics, post model fitting."""
 
     tfm = SpectralModel(verbose=False)
 
     # Hack fake data with known properties: total error magnitude 2
-    tfm.power_spectrum = np.array([1, 2, 3, 4, 5])
-    tfm.modeled_spectrum_ = np.array([1, 2, 5, 4, 5])
+    tfm.data.power_spectrum = np.array([1, 2, 3, 4, 5])
+    tfm.results.modeled_spectrum_ = np.array([1, 2, 5, 4, 5])
 
     # Check default goodness of fit and error measures
-    tfm._calc_r_squared()
-    assert np.isclose(tfm.r_squared_, 0.75757575)
-    tfm._calc_error()
-    assert np.isclose(tfm.error_, 0.4)
+    tfm.results.metrics.compute_metrics(tfm.data, tfm.results)
+    assert np.isclose(tfm.results.metrics.results['error_mae'], 0.4)
+    assert np.isclose(tfm.results.metrics.results['gof_rsquared'], 0.75757575)
 
-    # Check with alternative error fit approach
-    tfm._calc_error(metric='MSE')
-    assert np.isclose(tfm.error_, 0.8)
-    tfm._calc_error(metric='RMSE')
-    assert np.isclose(tfm.error_, np.sqrt(0.8))
+def test_fit_custom_metrics():
+
+    metrics = list(METRICS.keys())
+    tfm = SpectralModel(metrics=metrics)
+
+    ap_params = [50, 2]
+    gauss_params = [10, 0.5, 2, 20, 0.3, 4]
+    nlv = 0.0025
+    xs, ys = sim_power_spectrum([3, 50], {'fixed' : ap_params}, {'gaussian' : gauss_params}, nlv)
+
+    tfm.fit(xs, ys)
+    for key, val in tfm.results.metrics.results.items():
+        assert key in metrics
+        assert isinstance(val, float)
 
 def test_checks():
     """Test various checks, errors and edge cases for model fitting.
@@ -157,7 +169,7 @@ def test_checks():
     # Check freq of 0 issue
     xs, ys = sim_power_spectrum(*default_spectrum_params())
     tfm.fit(xs, ys)
-    assert tfm.freqs[0] != 0
+    assert tfm.data.freqs[0] != 0
 
     # Check error for `check_freqs` - for if there is non-even frequency values
     with raises(DataError):
@@ -176,59 +188,58 @@ def test_checks():
     with raises(NoDataError):
         tfm.fit()
 
-def test_load():
-    """Test loading data into model object. Note: loads files from test_core_io."""
+def test_load(tfm):
+    """Test loading data into model object.
+    Note: loads files from test_save_model in specparam/tests/io/test_models.py."""
 
     # Test loading just results
-    tfm = SpectralModel(verbose=False)
+    ntfm = SpectralModel(verbose=False)
     file_name_res = 'test_model_res'
-    tfm.load(file_name_res, TEST_DATA_PATH)
+    ntfm.load(file_name_res, TEST_DATA_PATH)
     # Check that result attributes get filled
-    for result in OBJ_DESC['results']:
-        assert not np.all(np.isnan(getattr(tfm, result)))
+    for result in tfm.results._fields:
+        assert not np.all(np.isnan(getattr(ntfm.results, result)))
     # Test that settings and data are None
-    #   Except for aperiodic mode, which can be inferred from the data
-    for setting in OBJ_DESC['settings']:
-        if setting != 'aperiodic_mode':
-            assert getattr(tfm, setting) is None
-    assert getattr(tfm, 'power_spectrum') is None
+    for setting in tfm.algorithm.settings.names:
+        assert getattr(ntfm.algorithm, setting) is None
+    assert ntfm.data.power_spectrum is None
 
     # Test loading just settings
-    tfm = SpectralModel(verbose=False)
+    ntfm = SpectralModel(verbose=False)
     file_name_set = 'test_model_set'
-    tfm.load(file_name_set, TEST_DATA_PATH)
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) is not None
+    ntfm.load(file_name_set, TEST_DATA_PATH)
+    for setting in tfm.algorithm.settings.names:
+        assert getattr(ntfm.algorithm, setting) is not None
     # Test that results and data are None
-    for result in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfm, result)))
-    assert tfm.power_spectrum is None
+    for result in tfm.results._fields:
+        assert np.all(np.isnan(getattr(ntfm.results, result)))
+    assert ntfm.data.power_spectrum is None
 
     # Test loading just data
-    tfm = SpectralModel(verbose=False)
+    ntfm = SpectralModel(verbose=False)
     file_name_dat = 'test_model_dat'
-    tfm.load(file_name_dat, TEST_DATA_PATH)
-    assert tfm.power_spectrum is not None
+    ntfm.load(file_name_dat, TEST_DATA_PATH)
+    assert ntfm.data.power_spectrum is not None
     # Test that settings and results are None
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) is None
-    for result in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfm, result)))
+    for setting in tfm.algorithm.settings.names:
+        assert getattr(ntfm.algorithm, setting) is None
+    for result in tfm.results._fields:
+        assert np.all(np.isnan(getattr(ntfm.results, result)))
 
     # Test loading all elements
-    tfm = SpectralModel(verbose=False)
+    ntfm = SpectralModel(verbose=False)
     file_name_all = 'test_model_all'
-    tfm.load(file_name_all, TEST_DATA_PATH)
-    for result in OBJ_DESC['results']:
-        assert not np.all(np.isnan(getattr(tfm, result)))
-    for setting in OBJ_DESC['settings']:
-        assert getattr(tfm, setting) is not None
-    for data in OBJ_DESC['data']:
-        assert getattr(tfm, data) is not None
-    for meta_dat in OBJ_DESC['meta_data']:
-        assert getattr(tfm, meta_dat) is not None
+    ntfm.load(file_name_all, TEST_DATA_PATH)
+    for result in tfm.results._fields:
+        assert not np.all(np.isnan(getattr(ntfm.results, result)))
+    for setting in tfm.algorithm.settings.names:
+        assert getattr(ntfm.algorithm, setting) is not None
+    for data in tfm.data._fields:
+        assert getattr(ntfm.data, data) is not None
+    for meta_dat in tfm.data._meta_fields:
+        assert getattr(ntfm.data, meta_dat) is not None
 
-def test_add_data():
+def test_add_data(tresults):
     """Tests method to add data to model objects."""
 
     # This test uses it's own model object, to not add stuff to the global one
@@ -239,28 +250,28 @@ def test_add_data():
 
     # Test adding data
     tfm.add_data(freqs, pows)
-    assert tfm.has_data
-    assert np.all(tfm.freqs == freqs)
-    assert np.all(tfm.power_spectrum == np.log10(pows))
+    assert tfm.data.has_data
+    assert np.all(tfm.data.freqs == freqs)
+    assert np.all(tfm.data.power_spectrum == np.log10(pows))
 
     # Test that prior data does not get cleared, when requesting not to clear
     tfm._reset_data_results(True, True, True)
-    tfm.add_results(FitResults([1, 1], [10, 0.5, 0.5], 0.95, 0.02, [10, 0.5, 0.25]))
+    tfm.results.add_results(tresults)
     tfm.add_data(freqs, pows, clear_results=False)
-    assert tfm.has_data
-    assert tfm.has_model
+    assert tfm.data.has_data
+    assert tfm.results.has_model
 
     # Test that prior data does get cleared, when requesting not to clear
     tfm._reset_data_results(True, True, True)
     tfm.add_data(freqs, pows, clear_results=True)
-    assert tfm.has_data
-    assert not tfm.has_model
+    assert tfm.data.has_data
+    assert not tfm.results.has_model
 
 def test_get_params(tfm):
     """Test the get_params method."""
 
     for dname in ['aperiodic_params', 'aperiodic', 'peak_params', 'peak',
-                  'error', 'r_squared', 'gaussian_params', 'gaussian']:
+                  'gaussian_params', 'gaussian', 'metrics']:
         assert np.any(tfm.get_params(dname))
 
         if dname == 'aperiodic_params' or dname == 'aperiodic':
@@ -271,24 +282,29 @@ def test_get_params(tfm):
             for dtype in ['CF', 'PW', 'BW']:
                 assert np.any(tfm.get_params(dname, dtype))
 
+        if dname == 'metrics':
+            for dtype in ['error_mae', 'gof_rsquared']:
+                assert np.any(tfm.get_params(dname, dtype))
+
 def test_get_data(tfm):
 
     for comp in ['full', 'aperiodic', 'peak']:
         for space in ['log', 'linear']:
             assert isinstance(tfm.get_data(comp, space), np.ndarray)
 
-def test_get_model(tfm):
+def test_get_component(tfm):
 
     for comp in ['full', 'aperiodic', 'peak']:
         for space in ['log', 'linear']:
-            assert isinstance(tfm.get_model(comp, space), np.ndarray)
+            assert isinstance(tfm.results.get_component(comp, space), np.ndarray)
 
 def test_prints(tfm):
     """Test methods that print (alias and pass through methods).
 
-    Checks: print_settings, print_results, print_report_issue.
+    Checks: print_modes, print_settings, print_results, print_report_issue.
     """
 
+    tfm.print_modes()
     tfm.print_settings()
     tfm.print_results()
     tfm.print_report_issue()
@@ -306,14 +322,17 @@ def test_resets():
     tfm = get_tfm()
 
     tfm._reset_data_results(True, True, True)
-    tfm._reset_internal_settings()
+    tfm.algorithm._reset_internal_settings()
 
-    for data in ['data', 'model_components']:
-        for field in OBJ_DESC[data]:
-            assert getattr(tfm, field) is None
-    for field in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfm, field)))
-    assert tfm.freqs is None and tfm.modeled_spectrum_ is None
+    for field in tfm.data._fields:
+        assert getattr(tfm.data, field) is None
+    model_components = ['modeled_spectrum_', '_spectrum_flat',
+                        '_spectrum_peak_rm', '_ap_fit', '_peak_fit']
+    for field in model_components:
+        assert getattr(tfm.results, field) is None
+    for field in tfm.results._fields:
+        assert np.all(np.isnan(getattr(tfm.results, field)))
+    assert tfm.data.freqs is None and tfm.results.modeled_spectrum_ is None
 
 def test_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
@@ -328,67 +347,67 @@ def test_fit_failure():
 
     ## Induce a runtime error, and check it runs through
     tfm = SpectralModel(verbose=False)
-    tfm._maxfev = 2
+    tfm.algorithm._maxfev = 2
 
     tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
     # Check after failing out of fit, all results are reset
-    for result in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfm, result)))
+    for result in tfm.results._fields:
+        assert np.all(np.isnan(getattr(tfm.results, result)))
 
     ## Monkey patch to check errors in general
     #  This mimics the main fit-failure, without requiring bad data / waiting for it to fail.
     tfm = SpectralModel(verbose=False)
     def raise_runtime_error(*args, **kwargs):
         raise FitError('Test-MonkeyPatch')
-    tfm._fit_peaks = raise_runtime_error
+    tfm.algorithm._fit_peaks = raise_runtime_error
 
     # Run a model fit - this should raise an error, but continue in try/except
     tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
     # Check after failing out of fit, all results are reset
-    for result in OBJ_DESC['results']:
-        assert np.all(np.isnan(getattr(tfm, result)))
+    for result in tfm.results._fields:
+        assert np.all(np.isnan(getattr(tfm.results, result)))
 
 def test_debug():
-    """Test model object in debug mode, including with fit failures."""
+    """Test model object in debug state, including with fit failures."""
 
     tfm = SpectralModel(verbose=False)
-    tfm._maxfev = 2
+    tfm.algorithm._maxfev = 2
 
-    tfm.set_debug_mode(True)
-    assert tfm._debug is True
+    tfm.algorithm.set_debug(True)
+    assert tfm.algorithm._debug is True
 
     with raises(FitError):
         tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
-def test_set_check_modes():
-    """Test changing check_modes using set_check_modes, and that checks get turned off.
+def test_set_checks():
+    """Test changing checks using set_checks, and that checks get turned off.
     Note that testing for checks raising errors happens in test_checks.`"""
 
     tfm = SpectralModel(verbose=False)
-    tfm.set_check_modes(False, False)
+    tfm.data.set_checks(False, False)
 
     # Add bad frequency data, with check freqs turned off
     freqs = np.array([1, 2, 4])
     powers = np.array([1, 2, 3])
     tfm.add_data(freqs, powers)
-    assert tfm.has_data
+    assert tfm.data.has_data
 
     # Add bad power values data, with check data turned off
     freqs = gen_freqs([3, 30], 1)
     powers = np.ones_like(freqs) * np.nan
     tfm.add_data(freqs, powers)
-    assert tfm.has_data
+    assert tfm.data.has_data
 
     # Model fitting should execute, but return a null model fit, given the NaNs, without failing
     tfm.fit()
-    assert not tfm.has_model
+    assert not tfm.results.has_model
 
-    # Reset check modes to true
-    tfm.set_check_modes(True, True)
-    assert tfm._check_freqs is True
-    assert tfm._check_data is True
+    # Reset checks to true
+    tfm.data.set_checks(True, True)
+    assert tfm.data._check_freqs is True
+    assert tfm.data._check_data is True
 
 def test_to_df(tfm, tbands, skip_if_no_pandas):
 

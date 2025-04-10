@@ -78,16 +78,16 @@ fm.fit(freqs, spectrum, [3, 30])
 set_random_seed(21)
 
 # Create some simulated power spectra
-freqs, spectra = sim_group_power_spectra(n_spectra=10,
-                                         freq_range=[3, 40],
-                                         aperiodic_params=param_sampler([[20, 2], [35, 1.5]]),
-                                         periodic_params=param_sampler([[], [10, 0.5, 2]]))
+freqs, spectra = sim_group_power_spectra(\
+    n_spectra=10, freq_range=[3, 40],
+    aperiodic_params={'fixed' : param_sampler([[20, 2], [35, 1.5]])},
+    periodic_params={'gaussian' : param_sampler([[], [10, 0.5, 2]])})
 
 ###################################################################################################
 
 # Initialize a group model object with some settings
 fg = SpectralGroupModel(peak_width_limits=[1, 8], min_peak_height=0.05,
-                max_n_peaks=6, verbose=False)
+                        max_n_peaks=6, verbose=False)
 
 # Fit power spectrum models across the group of simulated power spectra
 fg.fit(freqs, spectra)
@@ -146,7 +146,7 @@ bands = Bands({'theta' : [4, 8],
 ###################################################################################################
 
 # Extract any alpha band peaks from the power spectrum model
-alpha = get_band_peak(fm, bands.alpha)
+alpha = get_band_peak(fm, bands['alpha'])
 print(alpha)
 
 ###################################################################################################
@@ -165,7 +165,7 @@ print(alpha)
 ###################################################################################################
 
 # Get all alpha peaks from a group of power spectrum models
-alphas = get_band_peak_group(fg, bands.alpha)
+alphas = get_band_peak_group(fg, bands['alpha'])
 
 # Check out some of the alpha parameters
 print(alphas[0:5, :])

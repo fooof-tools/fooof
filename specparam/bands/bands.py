@@ -34,6 +34,7 @@ class Bands():
         for label, band_def in input_bands.items():
             self.add_band(label, band_def)
 
+
     def __getitem__(self, label):
         """Define indexing as returning the definition of a requested band label."""
 
@@ -43,10 +44,6 @@ class Bands():
             message = "The label '{}' was not found in the defined bands.".format(label)
             raise ValueError(message) from None
 
-    def __getattr__(self, label):
-        """Define getting an attribute as returning the definition of a requested band label."""
-
-        return self.__getitem__(label)
 
     def __repr__(self):
         """Define the string representation as a printout of the band information."""
@@ -54,16 +51,25 @@ class Bands():
         return '\n'.join(['{:8} :  {:2} - {:2}  Hz'.format(key, *val) \
             for key, val in self.bands.items()])
 
+
     def __len__(self):
         """Define length as the number of bands it contains."""
 
         return self.n_bands
+
 
     def __iter__(self):
         """Define iteration as stepping across each band."""
 
         for label, band_definition in self.bands.items():
             yield (label, band_definition)
+
+
+    def __eq__(self, other):
+        """Define equality of bands objects based on whether their definitions match."""
+
+        return self.bands == other.bands
+
 
     @property
     def labels(self):
@@ -98,7 +104,7 @@ class Bands():
         """
 
         self._check_band(label, band_definition)
-        self.bands[label] = band_definition
+        self.bands[label] = tuple(band_definition)
 
 
     def remove_band(self, label):

@@ -5,7 +5,6 @@ import json
 from json import JSONDecodeError
 
 from specparam.io.utils import create_file_path
-from specparam.core.items import OBJ_DESC
 from specparam.utils.convert import dict_lst_to_array
 
 ###################################################################################################
@@ -69,7 +68,9 @@ def load_json(file_name, file_path):
         data = json.loads(file_name.readline())
 
     # Get dictionary of available attributes, and convert specified lists back into arrays
-    data = dict_lst_to_array(data, OBJ_DESC['arrays'])
+    arrays_to_convert = ['freqs', 'power_spectrum',
+                         'aperiodic_params_', 'peak_params_', 'gaussian_params_']
+    data = dict_lst_to_array(data, arrays_to_convert)
 
     return data
 

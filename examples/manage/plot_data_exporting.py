@@ -50,7 +50,8 @@ fm = SpectralModel()
 ###################################################################################################
 
 # Simulate example power spectrum
-freqs, powers = sim_power_spectrum([1, 50], [0, 10, 1], [10, 0.25, 2], freq_res=0.25)
+freqs, powers = sim_power_spectrum(\
+    [1, 50], {'knee' : [0, 10, 1]}, {'gaussian' : [10, 0.25, 2]}, freq_res=0.25)
 
 # Fit model to power spectrum
 fm.fit(freqs, powers)
@@ -128,7 +129,8 @@ fm.to_df(bands1)
 ###################################################################################################
 
 # Simulate an example group of power spectra
-freqs, powers = sim_group_power_spectra(5, [1, 50], [0, 1], [10, 0.25, 2])
+freqs, powers = sim_group_power_spectra(\
+    5, [1, 50], {'fixed' : [0, 1]}, {'gaussian' : [10, 0.25, 2]})
 
 # Initialize a group model object and fit power spectra
 fg = SpectralGroupModel(verbose=False)

@@ -56,7 +56,7 @@ Object Utilities
 
 Functions to manipulate, examine, and analyze model objects.
 
-.. currentmodule:: specparam.objs
+.. currentmodule:: specparam.models
 
 .. autosummary::
    :toctree: generated/
@@ -65,13 +65,8 @@ Functions to manipulate, examine, and analyze model objects.
    combine_model_objs
    average_group
    average_reconstructions
-
-.. currentmodule:: specparam
-
-.. autosummary::
-   :toctree: generated/
-
    fit_models_3d
+
 
 Data Objects
 ------------
@@ -102,8 +97,9 @@ Objects to store settings, metadata and results for power spectrum models.
    :template: data_object.rst
 
    SpectrumMetaData
+   ModelModes
    ModelSettings
-   ModelRunModes
+   ModelChecks
    FitResults
 
 Simulation Parameters
@@ -163,7 +159,7 @@ Functions for analyzing the error of model fits.
 
 The following functions take in model objects directly.
 
-.. currentmodule:: specparam.measures.error
+.. currentmodule:: specparam.measures.pointwise
 
 .. autosummary::
     :toctree: generated/
@@ -175,7 +171,7 @@ The following functions take in model objects directly.
 
 The following functions operate on arrays of models and data, which may be useful for more custom work-flows.
 
-.. currentmodule:: specparam.measures.error
+.. currentmodule:: specparam.measures.pointwise
 
 .. autosummary::
     :toctree: generated/

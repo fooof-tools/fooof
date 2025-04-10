@@ -22,7 +22,7 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_scatter_1(data, label=None, title=None, x_val=0, ax=None):
+def plot_scatter_1(data, label=None, title=None, x_val=0, color=None, ax=None, **plot_kwargs):
     """Plot a scatter plot, with a single y-axis.
 
     Parameters
@@ -35,8 +35,12 @@ def plot_scatter_1(data, label=None, title=None, x_val=0, ax=None):
         Title for the plot.
     x_val : int, optional, default: 0
         Position along the x-axis to plot set of data.
+    color : str, optional
+        Color to plot the data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
+    **plot_kwargs
+        Additional keyword arguments to pass into the plot call.
 
     Notes
     -----
@@ -48,7 +52,7 @@ def plot_scatter_1(data, label=None, title=None, x_val=0, ax=None):
     # Create x-axis data, with small jitter for visualization purposes
     x_data = np.ones_like(data) * x_val + np.random.normal(0, 0.025, data.shape)
 
-    ax.scatter(x_data, data, s=36, alpha=set_alpha(len(data)))
+    ax.scatter(x_data, data, s=36, color=color, alpha=set_alpha(len(data)), **plot_kwargs)
 
     if label:
         ax.set_ylabel(label, fontsize=LABEL_SIZE)
@@ -64,7 +68,8 @@ def plot_scatter_1(data, label=None, title=None, x_val=0, ax=None):
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
+def plot_scatter_2(data_0, label_0, data_1, label_1,
+                   title=None, colors=None, ax=None, **plot_kwargs):
     """Plot a scatter plot, with two y-axes.
 
     Parameters
@@ -79,8 +84,12 @@ def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
         Label for the data on the second axis, to be set as the axis label.
     title : str, optional
         Title for the plot.
+    colors : list of str, optional
+        Color(s) to plot data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
+    **plot_kwargs
+        Additional keyword arguments to pass into the plot call.
 
     Notes
     -----
@@ -90,8 +99,10 @@ def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
     ax = check_ax(ax)
     ax1 = ax.twinx()
 
-    plot_scatter_1(data_0, label_0, ax=ax)
-    plot_scatter_1(data_1, label_1, x_val=1, ax=ax1)
+    colors = iter(colors) if isinstance(colors, list) else repeat(colors)
+
+    plot_scatter_1(data_0, label_0, color=next(colors), ax=ax, **plot_kwargs)
+    plot_scatter_1(data_1, label_1, x_val=1, color=next(colors), ax=ax1, **plot_kwargs)
 
     if title:
         ax.set_title(title, fontsize=TITLE_FONTSIZE)
@@ -103,7 +114,7 @@ def plot_scatter_2(data_0, label_0, data_1, label_1, title=None, ax=None):
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_hist(data, label, title=None, n_bins=25, x_lims=None, ax=None):
+def plot_hist(data, label, title=None, n_bins=25, x_lims=None, color=None, ax=None, **plot_kwargs):
     """Plot a histogram.
 
     Parameters
@@ -118,13 +129,17 @@ def plot_hist(data, label, title=None, n_bins=25, x_lims=None, ax=None):
         Number of bins to use for the histogram.
     x_lims : list of float, optional
         Limits for the x-axis of the plot.
+    color : str, optional
+        Color to plot the data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
+    **plot_kwargs
+        Additional keyword arguments to pass into the plot call.
     """
 
     ax = check_ax(ax)
 
-    ax.hist(data[~np.isnan(data)], n_bins, range=x_lims, alpha=0.8)
+    ax.hist(data[~np.isnan(data)], n_bins, range=x_lims, color=color, alpha=0.8, **plot_kwargs)
 
     ax.set_xlabel(label, fontsize=LABEL_SIZE)
     ax.set_ylabel('Count', fontsize=LABEL_SIZE)
@@ -157,8 +172,8 @@ def plot_yshade(x_vals, y_vals, average='mean', shade='std', scale=1., color=Non
         If set to None, no shading is plotted.
     scale : float, optional, default: 1.
         Factor to multiply the plotted shade by.
-    color : str, optional, default: None
-        Color to plot.
+    color : str, optional
+        Color to plot the data.
     plot_function : callable, optional
         Function to use to create the plot.
     ax : matplotlib.Axes, optional
@@ -202,10 +217,18 @@ def plot_param_over_time(times, param, label=None, title=None, add_legend=True, 
         Parameter values to plot.
     label : str, optional
         Label for the data, to be set as the y-axis label.
+    title : str, optional
+        Title for the plot.
     add_legend : bool, optional, default: True
         Whether to add a legend to the plot.
     add_xlabel : bool, optional, default: True
         Whether to add an x-label to the plot.
+    xlim : list of float, optional
+        Plot limits for the x-axis.
+    drop_xticks : bool, optional, default: False
+        Whether to drop x-ticks from the plot.
+    color : str, optional
+        Color to plot the data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
@@ -252,6 +275,8 @@ def plot_params_over_time(times, params, labels=None, title=None, colors=None,
         Parameter values to plot.
     labels : list of str
         Label(s) for the data, to be set as the y-axis label(s).
+    title : str, optional
+        Title for the plot.
     colors : list of str
         Color(s) to plot data.
     ax : matplotlib.Axes, optional
@@ -323,7 +348,7 @@ def plot_param_over_time_yshade(times, param, average='nanmean', shade='nanstd',
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_text(text, x, y, ax=None, **plot_kwargs):
+def plot_text(text, x, y, color=None, ax=None, **plot_kwargs):
     """Plot text.
 
     Parameters
@@ -332,6 +357,8 @@ def plot_text(text, x, y, ax=None, **plot_kwargs):
         Text to plot.
     x, y : float
         The position to place the text.
+    color : str, optional
+        Color to plot the text.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
     **plot_kwargs
@@ -340,6 +367,6 @@ def plot_text(text, x, y, ax=None, **plot_kwargs):
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', None))
 
-    ax.text(x, y, text, PLT_TEXT_FONT, ha='center', va='center', **plot_kwargs)
+    ax.text(x, y, text, PLT_TEXT_FONT, ha='center', va='center', color=color, **plot_kwargs)
     ax.set_frame_on(False)
     ax.set(xticks=[], yticks=[])

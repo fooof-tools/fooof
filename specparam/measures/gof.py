@@ -1,4 +1,4 @@
-"""Goodness of fit related functions & utilities."""
+"""Functionality to compute model goodness of fit."""
 
 from inspect import isfunction
 
@@ -6,8 +6,6 @@ import numpy as np
 
 ###################################################################################################
 ###################################################################################################
-
-## Goodness of fit measures
 
 def compute_r_squared(power_spectrum, modeled_spectrum):
     """Calculate the r-squared of the model, compared to the original data.
@@ -54,17 +52,15 @@ def compute_adj_r_squared(power_spectrum, modeled_spectrum, n_params):
     return adj_r_squared
 
 
-# Collect available error functions together
-RSQUARED_FUNCS = {
+# Collect available goodness of fit functions together
+GOF_FUNCS = {
     'r_squared' : compute_r_squared,
     'adj_r_squared' : compute_adj_r_squared,
 }
 
 
-## ERROR FUNCTIONS
-
-def compute_mean_abs_error(power_spectrum, modeled_spectrum):
-    """Compute mean absolute error.
+def compute_gof(power_spectrum, modeled_spectrum, gof_metric='r_squared', **kwargs):
+    """Compute goodness of fit between a model and a power spectrum.
 
     Parameters
     ----------
@@ -72,111 +68,20 @@ def compute_mean_abs_error(power_spectrum, modeled_spectrum):
         Real data power spectrum.
     modeled_spectrum : 1d array
         Modelled power spectrum.
+    gof_metric : {'r_squared', 'adj_r_squared'} or callable
+        Which approach to take to compute the goodness of fit.
+    **kwargs
+        Additional keyword arguments for the goodness of fit function.
 
     Returns
     -------
-    error : float
-        Computed mean absolute error.
+    gof : float
+        Computed goodness of fit.
     """
 
-    error = np.abs(power_spectrum - modeled_spectrum).mean()
+    if isinstance(gof_metric, str):
+        gof_func = GOF_FUNCS[gof_metric.lower()]
+    elif isfunction(gof_metric):
+        gof_func = gof_metric
 
-    return error
-
-
-def compute_mean_squared_error(power_spectrum, modeled_spectrum):
-    """Compute mean squared error.
-
-    Parameters
-    ----------
-    power_spectrum : 1d array
-        Real data power spectrum.
-    modeled_spectrum : 1d array
-        Modelled power spectrum.
-
-    Returns
-    -------
-    error : float
-        Computed mean squared error.
-    """
-
-    error = ((power_spectrum - modeled_spectrum) ** 2).mean()
-
-    return error
-
-
-def compute_root_mean_squared_error(power_spectrum, modeled_spectrum):
-    """Compute root mean squared error.
-
-    Parameters
-    ----------
-    power_spectrum : 1d array
-        Real data power spectrum.
-    modeled_spectrum : 1d array
-        Modelled power spectrum.
-
-    Returns
-    -------
-    error : float
-        Computed root mean squared error.
-    """
-
-    error = np.sqrt(((power_spectrum - modeled_spectrum) ** 2).mean())
-
-    return error
-
-
-def compute_median_abs_error(power_spectrum, modeled_spectrum):
-    """Calculate the median absolute error.
-
-    Parameters
-    ----------
-    power_spectrum : 1d array
-        Real data power spectrum.
-    modeled_spectrum : 1d array
-        Modelled power spectrum.
-
-    Returns
-    -------
-    error : float
-        Computed median absolute error.
-    """
-
-    error = np.median(np.abs(modeled_spectrum - power_spectrum), axis=0)
-
-    return error
-
-
-# Collect available error functions together
-ERROR_FUNCS = {
-    'mae' : compute_mean_abs_error,
-    'mse' : compute_mean_squared_error,
-    'rmse' : compute_root_mean_squared_error,
-    'medae' : compute_median_abs_error,
-}
-
-
-def compute_error(power_spectrum, modeled_spectrum, error_metric='mae'):
-    """Compute error between a model and a power spectrum.
-
-    Parameters
-    ----------
-    power_spectrum : 1d array
-        Real data power spectrum.
-    modeled_spectrum : 1d array
-        Modelled power spectrum.
-    error_metric : {'mae', 'mse', 'rsme', 'medae'} or callable
-        Which approach to take to compute the error.
-
-    Returns
-    -------
-    error : float
-        Computed error.
-    """
-
-    if isinstance(error_metric, str):
-        error = ERROR_FUNCS[error_metric.lower()](power_spectrum, modeled_spectrum)
-    elif isfunction(error_metric):
-        error = error_metric(power_spectrum, modeled_spectrum)
-
-    return error
+    return gof_func(power_spectrum, modeled_spectrum, **kwargs)

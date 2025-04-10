@@ -11,6 +11,7 @@ from itertools import repeat, cycle
 import numpy as np
 
 from specparam.modutils.dependencies import safe_import, check_dependency
+from specparam.utils.select import dict_extract_keys
 from specparam.plts.templates import plot_yshade
 from specparam.plts.settings import PLT_FIGSIZES
 from specparam.plts.style import style_spectrum_plot, style_plot
@@ -118,16 +119,21 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r',
 
     Notes
     -----
-    Parameters for `plot_spectra` can also be passed into this function as keyword arguments.
+    Additional parameters for `plot_spectra` can also be provded as keyword arguments, including
+    `log_freqs`, `log_powers` & `labels`. See `plot_spectra` for usage details.
 
-    This includes `log_freqs`, `log_powers` & `labels`. See `plot_spectra` for usage details.
+    Additional keyword arguments can be passed to manage the shade styling, including
+    'shade_alpha' and 'center_alpha'. See `add_shades` for usage details.
     """
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['spectral']))
 
+    shade_kwargs = dict_extract_keys(plot_kwargs, ['shade_alpha', 'center_alpha'])
+
     plot_spectra(freqs, power_spectra, ax=ax, **plot_kwargs)
 
-    add_shades(ax, shades, shade_colors, add_center, plot_kwargs.get('log_freqs', False))
+    add_shades(ax, shades, shade_colors, add_center=add_center,
+               logged=plot_kwargs.get('log_freqs', False), **shade_kwargs)
 
     style_spectrum_plot(ax, plot_kwargs.get('log_freqs', False),
                         plot_kwargs.get('log_powers', False),

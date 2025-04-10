@@ -22,8 +22,8 @@ def test_plot_model(tfm, skip_if_no_mpl):
 def test_plot_model_custom(tfm, skip_if_no_mpl):
 
     # Extract broader range of data available in the object
-    custom_freqs = tfm.freqs
-    custom_power_spectrum = np.power(10, tfm.power_spectrum)
+    custom_freqs = tfm.data.freqs
+    custom_power_spectrum = np.power(10, tfm.data.power_spectrum)
 
     # Make sure model has been fit - set custom frequency range
     tfm.fit(custom_freqs, custom_power_spectrum, freq_range=[5, 35])

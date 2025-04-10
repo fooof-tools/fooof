@@ -52,7 +52,7 @@ from specparam.plts.spectra import plot_spectra_shading
 # General Settings
 
 # Define band definitions
-bands = Bands({'theta' : [4, 8], 'beta' : [20, 30]})
+bands = Bands({'theta' : (4, 8), 'beta' : (20, 30)})
 
 # Define helper variables for indexing peak data
 icf, ipw, ibw = 0, 1, 2
@@ -70,6 +70,9 @@ shade_color = '#0365C0'
 
 ###################################################################################################
 
+# Set random seed, for consistency creating simulated data
+set_random_seed(21)
+
 # Simulation Settings
 nlv = 0
 f_res = 0.1
@@ -83,13 +86,14 @@ theta = [6, 0.4, 1]
 alpha = [10, 0.5, 0.75]
 beta  = [25, 0.3, 1.5]
 
-# Set random seed, for consistency creating simulated data
-set_random_seed(21)
+# Collect together simulation parameters
+ap_params = {'fixed' : ap}
+pe_params = {'gaussian' : [theta, alpha, beta]}
 
 ###################################################################################################
 
 # Simulate a power spectrum
-freqs, powers = sim_power_spectrum(f_range, ap, [theta, alpha, beta], nlv, f_res)
+freqs, powers = sim_power_spectrum(f_range, ap_params, pe_params, nlv, f_res)
 
 ###################################################################################################
 # Calculating Band Ratios
@@ -97,7 +101,7 @@ freqs, powers = sim_power_spectrum(f_range, ap, [theta, alpha, beta], nlv, f_res
 #
 # Band ratio measures are a ratio of power between defined frequency bands.
 #
-# We can now define a function we can use to calculate band ratio measures, and
+# We can now define a function we can use to compute band ratio measures, and
 # apply it to our baseline power spectrum.
 #
 # For this example, we will be using the theta / beta ratio, which is the
@@ -110,8 +114,8 @@ freqs, powers = sim_power_spectrum(f_range, ap, [theta, alpha, beta], nlv, f_res
 
 ###################################################################################################
 
-def calc_band_ratio(freqs, powers, low_band, high_band):
-    """Helper function to calculate band ratio measures."""
+def compute_band_ratio(freqs, powers, low_band, high_band):
+    """Helper function to compute band ratio measures."""
 
     # Extract frequencies within each specified band
     _, low_band = trim_spectrum(freqs, powers, low_band)
@@ -125,14 +129,14 @@ def calc_band_ratio(freqs, powers, low_band, high_band):
 ###################################################################################################
 
 # Plot the power spectrum, shading the frequency bands used for the ratio
-plot_spectra_shading(freqs, powers, [bands.theta, bands.beta],
+plot_spectra_shading(freqs, powers, [bands['theta'], bands['beta']],
                      color='black', shade_colors=shade_color,
                      log_powers=True, linewidth=3.5)
 
 ###################################################################################################
 
 # Calculate a band ratio measure
-tbr = calc_band_ratio(freqs, powers, bands.theta, bands.beta)
+tbr = compute_band_ratio(freqs, powers, bands['theta'], bands['beta'])
 print('Calculate theta / beta ratio is :\t {:1.2f}'.format(tbr))
 
 ###################################################################################################
@@ -164,20 +168,20 @@ def upd(data, index, value):
 spectra = {
     'Theta Frequency' : None,
     'Theta Power' : sim_power_spectrum(\
-        f_range, ap, [upd(theta, ipw, 0.5041), alpha, beta], nlv, f_res)[1],
+        f_range, ap_params, {'gaussian' : [upd(theta, ipw, 0.5041), alpha, beta]}, nlv, f_res)[1],
     'Theta Bandwidth' : sim_power_spectrum(\
-        f_range, ap, [upd(theta, ibw, 1.61), alpha, beta], nlv, f_res)[1],
+        f_range, ap_params, {'gaussian' : [upd(theta, ibw, 1.61), alpha, beta]}, nlv, f_res)[1],
     'Alpha Frequency' : sim_power_spectrum(\
-        f_range, ap, [theta, upd(alpha, icf, 8.212), beta], nlv, f_res)[1],
+        f_range, ap_params, {'gaussian' : [theta, upd(alpha, icf, 8.212), beta]}, nlv, f_res)[1],
     'Alpha Power' : None,
     'Alpha Bandwidth' : sim_power_spectrum(\
-        f_range, ap, [theta, upd(alpha, ibw, 1.8845), beta], nlv, f_res)[1],
+        f_range, ap_params, {'gaussian' : [theta, upd(alpha, ibw, 1.8845), beta]}, nlv, f_res)[1],
     'Beta Frequency' : sim_power_spectrum(\
-        f_range, ap, [theta, alpha, upd(beta, icf, 19.388)], nlv, f_res)[1],
+        f_range, ap_params, {'gaussian' : [theta, alpha, upd(beta, icf, 19.388)]}, nlv, f_res)[1],
     'Beta Power' : sim_power_spectrum(\
-        f_range, ap, [theta, alpha, upd(beta, ipw, 0.1403)], nlv, f_res)[1],
+        f_range, ap_params, {'gaussian' : [theta, alpha, upd(beta, ipw, 0.1403)]}, nlv, f_res)[1],
     'Beta Bandwidth' : sim_power_spectrum(\
-        f_range, ap, [theta, alpha, upd(beta, ibw, 0.609)], nlv, f_res)[1],
+        f_range, ap_params, {'gaussian' : [theta, alpha, upd(beta, ibw, 0.609)]}, nlv, f_res)[1],
 }
 
 ###################################################################################################
@@ -186,7 +190,7 @@ spectra = {
 for label, spectrum in spectra.items():
     if spectrum is not None:
         print('TBR difference from   {:20}   is \t {:1.3f}'.format(\
-            label, tbr - calc_band_ratio(freqs, spectrum, bands.theta, bands.beta)))
+            label, tbr - compute_band_ratio(freqs, spectrum, bands['theta'], bands['beta'])))
 
 ###################################################################################################
 
@@ -199,7 +203,7 @@ for ax, (label, spectrum) in zip(axes.flatten(), spectra.items()):
     if spectrum is None: continue
 
     plot_spectra_shading(freqs, [powers, spectrum],
-                         [bands.theta, bands.beta], shade_colors=shade_color,
+                         [bands['theta'], bands['beta']], shade_colors=shade_color,
                          log_freqs=False, log_powers=True, ax=ax)
 
     ax.set_title(label, **title_settings)
@@ -240,11 +244,12 @@ _ = [ax.axis('off') for ax in [axes[0, 0], axes[1, 1]]]
 exp_spectra = {
     'Exponent w Peaks' : \
         [powers,
-         sim_power_spectrum(f_range, [0.13, 1.1099],
-                            [theta, alpha, beta], nlv, f_res)[1]],
+         sim_power_spectrum(f_range, {'fixed' : [0.13, 1.1099]},
+                            {'gaussian' : [theta, alpha, beta]}, nlv, f_res)[1]],
     'Exponent w/out Peaks' : \
-        [sim_power_spectrum(f_range, ap, [], nlv, f_res)[1],
-         sim_power_spectrum(f_range, [0.13, 1.1417], [], nlv, f_res)[1]]}
+        [sim_power_spectrum(f_range, {'fixed' : ap}, {'gaussian' : []}, nlv, f_res)[1],
+         sim_power_spectrum(f_range, {'fixed' : [0.13, 1.1417]},
+                            {'gaussian' : []}, nlv, f_res)[1]]}
 
 ###################################################################################################
 
@@ -253,10 +258,10 @@ fig, axes = plt.subplots(1, 2, figsize=(15, 6))
 fig.subplots_adjust(wspace=.3)
 for ax, (label, (comparison, spectrum)) in zip(axes, exp_spectra.items()):
     print('\tTBR difference from   {:20}   is \t {:1.3f}'.format(label, \
-        calc_band_ratio(freqs, comparison, bands.theta, bands.beta) - \
-        calc_band_ratio(freqs, spectrum, bands.theta, bands.beta)))
+        compute_band_ratio(freqs, comparison, bands['theta'], bands['beta']) - \
+        compute_band_ratio(freqs, spectrum, bands['theta'], bands['beta'])))
     plot_spectra_shading(freqs, [comparison, spectrum],
-                         [bands.theta, bands.beta],
+                         [bands['theta'], bands['beta']],
                          shade_colors=shade_color,
                          log_freqs=False, log_powers=True, ax=ax)
     ax.set_title(label, **title_settings)

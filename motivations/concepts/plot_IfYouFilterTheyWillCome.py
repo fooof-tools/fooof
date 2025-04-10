@@ -160,7 +160,7 @@ plot_time_series(times, sig_delta_ap)
 ###################################################################################################
 
 # Filter the signal to the current band definition
-band_sig = filter_signal(sig_delta_ap, s_rate, 'bandpass', bands.beta)
+band_sig = filter_signal(sig_delta_ap, s_rate, 'bandpass', bands['beta'])
 
 # Plot the filtered time series
 plot_time_series(times, band_sig, xlim=(0, n_seconds), ylim=(-1, 1))
@@ -177,7 +177,7 @@ plot_time_series(times, band_sig, xlim=(0, n_seconds), ylim=(-1, 1))
 ###################################################################################################
 
 # Filter the signal to the current band definition
-band_sig = filter_signal(sig_delta_ap, s_rate, 'bandpass', bands.high_gamma)
+band_sig = filter_signal(sig_delta_ap, s_rate, 'bandpass', bands['high_gamma'])
 
 # Plot the filtered time series
 plot_time_series(times, band_sig, xlim=(0, n_seconds), ylim=(-1, 1))

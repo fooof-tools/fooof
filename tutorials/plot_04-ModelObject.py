@@ -178,15 +178,15 @@ fm.add_data(freqs, spectrum, freq_range)
 ###################################################################################################
 
 # Check if the object has data loaded
-print('Has data loaded: ', fm.has_data)
+print('Has data loaded: ', fm.data.has_data)
 
 ###################################################################################################
 
 # Check out the data attributes in the object
-print('Frequency Range: \t', fm.freq_range)
-print('Frequency Resolution: \t', fm.freq_res)
-print('Frequency Values: \t', fm.freqs[0:5])
-print('Power Values: \t\t', fm.power_spectrum[0:5])
+print('Frequency Range: \t', fm.data.freq_range)
+print('Frequency Resolution: \t', fm.data.freq_res)
+print('Frequency Values: \t', fm.data.freqs[0:5])
+print('Power Values: \t\t', fm.data.power_spectrum[0:5])
 
 ###################################################################################################
 #
@@ -226,16 +226,17 @@ fm.fit()
 ###################################################################################################
 
 # Check if the object has model results
-print('Has model results: ', fm.has_model)
+print('Has model results: ', fm.results.has_model)
 
 ###################################################################################################
 
-# Print out model fit results
-print('aperiodic params: \t', fm.aperiodic_params_)
-print('peak params: \t', fm.peak_params_)
-print('r-squared: \t', fm.r_squared_)
-print('fit error: \t', fm.error_)
-print('modeled spectrum: \t', fm.modeled_spectrum_[0:5])
+# Print out model fit results parameters
+print('aperiodic params: \t', fm.results.aperiodic_params_)
+print('peak params: \t', fm.results.peak_params_)
+
+# Print out metrics model fit results parameters
+print('fit error: \t', fm.results.metrics.results['error_mae'])
+print('r-squared: \t', fm.results.metrics.results['gof_rsquared'])
 
 ###################################################################################################
 # 4) Methods

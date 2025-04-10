@@ -46,8 +46,8 @@ from neurodsp.spectral import compute_spectrum
 ###################################################################################################
 
 # Simulate an example power spectrum, with line noise
-freqs1, powers1 = sim_power_spectrum([3, 75], [1, 1],
-                                     [[10, 0.75, 2], [60, 1, 0.5]])
+freqs1, powers1 = sim_power_spectrum([3, 75], {'fixed' : [1, 1]},
+                                     {'gaussian' : [[10, 0.75, 2], [60, 1, 0.5]]})
 
 # Visualize the simulated power spectrum
 plot_spectra(freqs1, powers1, log_powers=True)
@@ -98,8 +98,9 @@ fm1.report(freqs_int1, powers_int1)
 ###################################################################################################
 
 # Simulate an example power spectrum, with line noise & harmonics
-freqs2, powers2 = sim_power_spectrum([1, 150], [1, 500, 1.5],
-                                     [[10, 0.5, 2], [60, 0.75, 0.5], [120, 0.5, 0.5]])
+freqs2, powers2 = sim_power_spectrum(\
+    [1, 150], {'knee' : [1, 500, 1.5]},
+    {'gaussian' : [[10, 0.5, 2], [60, 0.75, 0.5], [120, 0.5, 0.5]]})
 
 # Interpolate away the line noise region & harmonics
 interp_ranges = [[58, 62], [118, 122]]

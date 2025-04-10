@@ -5,8 +5,9 @@ from itertools import cycle
 import numpy as np
 
 from specparam.sim import gen_freqs
-from specparam.core.funcs import gaussian_function
 from specparam.modutils.dependencies import safe_import, check_dependency
+from specparam.modes.modes import check_mode_definition
+from specparam.modes.definitions import PE_MODES
 from specparam.plts.settings import PLT_FIGSIZES
 from specparam.plts.templates import plot_yshade
 from specparam.plts.style import style_param_plot, style_plot
@@ -70,14 +71,16 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None, ax=None, 
 
 @savefig
 @style_plot
-def plot_peak_fits(peaks, freq_range=None, average='mean', shade='sem', plot_individual=True,
-                   colors=None, labels=None, ax=None, **plot_kwargs):
+def plot_peak_fits(peaks, periodic_mode, freq_range=None, average='mean', shade='sem',
+                   plot_individual=True, colors=None, labels=None, ax=None, **plot_kwargs):
     """Plot reconstructions of model peak fits.
 
     Parameters
     ----------
     peaks : 2d array
         Peak data. Each row is a peak, as [CF, PW, BW].
+    periodic_mode : Mode or str
+        Periodic mode definition.
     freq_range : list of [float, float] , optional
         The frequency range to plot the peak fits across, as [f_min, f_max].
         If not provided, defaults to +/- 4 around given peak center frequencies.
@@ -100,6 +103,8 @@ def plot_peak_fits(peaks, freq_range=None, average='mean', shade='sem', plot_ind
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
+    periodic_mode = check_mode_definition(periodic_mode, PE_MODES)
+
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
 
     if isinstance(peaks, list):
@@ -108,6 +113,7 @@ def plot_peak_fits(peaks, freq_range=None, average='mean', shade='sem', plot_ind
             colors = cycle(plt.rcParams['axes.prop_cycle'].by_key()['color'])
 
         recursive_plot(peaks, plot_function=plot_peak_fits, ax=ax,
+                       periodic_mode=periodic_mode,
                        freq_range=tuple(freq_range) if freq_range else freq_range,
                        colors=colors, labels=labels, **plot_kwargs)
 
@@ -133,7 +139,7 @@ def plot_peak_fits(peaks, freq_range=None, average='mean', shade='sem', plot_ind
         for ind, peak_params in enumerate(peaks):
 
             # Create & collect the peak model from parameters
-            peak_vals = gaussian_function(freqs, *peak_params)
+            peak_vals = periodic_mode.func(freqs, *peak_params)
             all_peak_vals[ind, :] = peak_vals
 
             if plot_individual:

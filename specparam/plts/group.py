@@ -7,6 +7,7 @@ This file contains plotting functions that take as input a group model object.
 
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import, check_dependency
+from specparam.utils.select import find_first_ind
 from specparam.plts.settings import PLT_FIGSIZES
 from specparam.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
 from specparam.plts.utils import savefig
@@ -36,7 +37,7 @@ def plot_group_model(group, **plot_kwargs):
         If the model object does not have model fit data available to plot.
     """
 
-    if not group.has_model:
+    if not group.results.has_model:
         raise NoModelError("No model fit results are available, can not proceed.")
 
     fig = plt.figure(figsize=plot_kwargs.pop('figsize', PLT_FIGSIZES['group']))
@@ -75,12 +76,12 @@ def plot_group_aperiodic(group, ax=None, **plot_kwargs):
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    if group.aperiodic_mode == 'knee':
-        plot_scatter_2(group.get_params('aperiodic_params', 'exponent'), 'Exponent',
-                       group.get_params('aperiodic_params', 'knee'), 'Knee',
+    if group.modes.aperiodic.name == 'knee':
+        plot_scatter_2(group.results.get_params('aperiodic_params', 'exponent'), 'Exponent',
+                       group.results.get_params('aperiodic_params', 'knee'), 'Knee',
                        'Aperiodic Fit', ax=ax)
     else:
-        plot_scatter_1(group.get_params('aperiodic_params', 'exponent'), 'Exponent',
+        plot_scatter_1(group.results.get_params('aperiodic_params', 'exponent'), 'Exponent',
                        'Aperiodic Fit', ax=ax)
 
 
@@ -100,8 +101,15 @@ def plot_group_goodness(group, ax=None, **plot_kwargs):
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    plot_scatter_2(group.get_params('error'), 'Error',
-                   group.get_params('r_squared'), 'R^2', 'Goodness of Fit', ax=ax)
+    # Get indices of metrics to plot
+    err_ind = find_first_ind(group.results.metrics.labels, 'error')
+    gof_ind = find_first_ind(group.results.metrics.labels, 'gof')
+
+    plot_scatter_2(group.results.get_params('metrics', group.results.metrics.labels[err_ind]),
+                   group.results.metrics.flabels[err_ind],
+                   group.results.get_params('metrics', group.results.metrics.labels[gof_ind]),
+                   group.results.metrics.flabels[gof_ind],
+                   'Fit Quality', ax=ax)
 
 
 @savefig
@@ -120,5 +128,5 @@ def plot_group_peak_frequencies(group, ax=None, **plot_kwargs):
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    plot_hist(group.get_params('peak_params', 0)[:, 0], 'Center Frequency',
-              'Peaks - Center Frequencies', x_lims=group.freq_range, ax=ax)
+    plot_hist(group.results.get_params('peak_params', 0)[:, 0], 'Center Frequency',
+              'Peaks - Center Frequencies', x_lims=group.data.freq_range, ax=ax)

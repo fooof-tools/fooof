@@ -19,7 +19,6 @@ from specparam import Bands
 from specparam.sim import sim_spectrogram
 from specparam.plts.spectra import plot_spectrogram
 
-
 ###################################################################################################
 # Parameterizing Spectrograms
 # ---------------------------
@@ -42,37 +41,19 @@ from specparam.plts.spectra import plot_spectrogram
 
 ###################################################################################################
 
-# Create & plot an example spectrogram
+# Define simulation parameters for a spectrogram
 n_pre_post = 50
 freq_range = [3, 25]
-ap_params = [[1, 1.5]] * n_pre_post + [[1, 1]] * n_pre_post
-pe_params = [[10, 1.5, 2.5]] * n_pre_post + [[10, 0.5, 2.]] * n_pre_post
+ap_params = {'fixed' : [[1, 1.5]] * n_pre_post + [[1, 1]] * n_pre_post}
+pe_params = {'gaussian' : [[10, 1.5, 2.5]] * n_pre_post + [[10, 0.5, 2.]] * n_pre_post}
+
+# Simulate spectrogram
 freqs, spectrogram = sim_spectrogram(n_pre_post * 2, freq_range, ap_params, pe_params, nlvs=0.1)
 
 ###################################################################################################
 
 # Plot our simulated spectrogram
 plot_spectrogram(freqs, spectrogram)
-
-###################################################################################################
-# SpectralTimeModel
-# -----------------
-#
-# The :class:`~specparam.SpectralTimeModel` object is an extension of the SpectralModel objects
-# to support parameterizing neural power spectra that are organized across time (spectrograms).
-#
-# In practice, this object is very similar to the previously introduced spectral model objects,
-# especially the Group model object. The time object is a mildly updated Group object.
-#
-# The main differences with the SpectralTimeModel from previous model objects are that the
-# data it accepts and parameterizes should be organized as as array of power spectra over
-# time windows - basically as a spectrogram.
-#
-
-###################################################################################################
-
-# Initialize a SpectralTimeModel model, which accepts all the same settings as SpectralModel
-ft = SpectralTimeModel()
 
 ###################################################################################################
 # Defining Oscillation Bands
@@ -94,6 +75,26 @@ ft = SpectralTimeModel()
 bands = Bands({'alpha' : [7, 14]})
 
 ###################################################################################################
+# SpectralTimeModel
+# -----------------
+#
+# The :class:`~specparam.SpectralTimeModel` object is an extension of the SpectralModel objects
+# to support parameterizing neural power spectra that are organized across time (spectrograms).
+#
+# In practice, this object is very similar to the previously introduced spectral model objects,
+# especially the Group model object. The time object is a mildly updated Group object.
+#
+# The main differences with the SpectralTimeModel from previous model objects are that the
+# data it accepts and parameterizes should be organized as as array of power spectra over
+# time windows - basically as a spectrogram.
+#
+
+###################################################################################################
+
+# Initialize a SpectralTimeModel model, which accepts all the same settings as SpectralModel
+ft = SpectralTimeModel(bands=bands)
+
+###################################################################################################
 #
 # Now we are ready to fit our spectrogram! As with all model objects, we can fit the models
 # with the `fit` method, or fit, plot, and print with the `report` method.
@@ -102,7 +103,7 @@ bands = Bands({'alpha' : [7, 14]})
 ###################################################################################################
 
 # Fit the spectrogram and print out report
-ft.report(freqs, spectrogram, peak_org=bands)
+ft.report(freqs, spectrogram)
 
 ###################################################################################################
 #
@@ -129,7 +130,8 @@ ft.report(freqs, spectrogram, peak_org=bands)
 n_events = 3
 spectrograms = []
 for ind in range(n_events):
-    freqs, cur_spect = sim_spectrogram(n_pre_post * 2, freq_range, ap_params, pe_params, nlvs=0.1)
+    freqs, cur_spect = sim_spectrogram(\
+        n_pre_post * 2, freq_range, ap_params, pe_params, nlvs=0.1)
     spectrograms.append(cur_spect)
 
 ###################################################################################################
@@ -157,12 +159,12 @@ for cur_spect in spectrograms:
 ###################################################################################################
 
 # Initialize the spectral event model
-fe = SpectralTimeEventModel()
+fe = SpectralTimeEventModel(bands=bands)
 
 ###################################################################################################
 
 # Fit the spectrograms and print out report
-fe.report(freqs, spectrograms, peak_org=bands)
+fe.report(freqs, spectrograms)
 
 ###################################################################################################
 #

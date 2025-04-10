@@ -5,10 +5,10 @@ from functools import wraps
 import numpy as np
 
 from specparam.sim.gen import gen_freqs
+from specparam.data import SpectrumMetaData, ModelChecks
 from specparam.utils.spectral import trim_spectrum
-from specparam.core.items import OBJ_DESC
+from specparam.utils.checks import check_input_options
 from specparam.modutils.errors import DataError, InconsistentDataError
-from specparam.data import SpectrumMetaData
 from specparam.plts.settings import PLT_COLORS
 from specparam.plts.spectra import plot_spectra, plot_spectrogram
 from specparam.plts.utils import check_plot_kwargs
@@ -16,33 +16,47 @@ from specparam.plts.utils import check_plot_kwargs
 ###################################################################################################
 ###################################################################################################
 
+# Define set of data fields
+DATA_FIELDS = ['power_spectrum', 'freq_range', 'freq_res']
+META_DATA_FIELDS = ['freq_range', 'freq_res']
+FORMATS = ['power']
+
+
 class BaseData():
     """Base object for managing data for spectral parameterization - for 1D data.
 
     Parameters
     ----------
-    _check_freqs : bool
-        Run mode: whether to check the frequency values.
+    check_freqs : bool
+        Whether to check the frequency values.
         If True, checks the frequency values, and raises an error for uneven spacing.
-    _check_data : bool
-        Run mode: whether to check the power spectrum values.
+    check_data : bool
+        Whether to check the power spectrum values.
         If True, checks the power values and raises an error for any NaN / Inf values.
+    format : {'power'}
+        The representation format of the data.
     """
 
-    def __init__(self, check_freqs_mode=True, check_data_mode=True):
+    def __init__(self, check_freqs=True, check_data=True, format='power'):
+        """Initialize BaseData object."""
 
         self._reset_data(True, True)
+        self._fields = DATA_FIELDS
+        self._meta_fields = META_DATA_FIELDS
 
-        # Define data check run modes
-        self._check_freqs = check_freqs_mode
-        self._check_data = check_data_mode
+        # Define data check run statuses
+        self._check_freqs = check_freqs
+        self._check_data = check_data
+
+        check_input_options(format, FORMATS, 'format')
+        self.format = format
 
 
     @property
     def has_data(self):
         """Indicator for if the object contains data."""
 
-        return True if np.any(self.power_spectrum) else False
+        return bool(np.any(self.power_spectrum))
 
 
     def add_data(self, freqs, power_spectrum, freq_range=None):
@@ -80,10 +94,22 @@ class BaseData():
             A meta data object containing meta data information.
         """
 
-        for meta_dat in OBJ_DESC['meta_data']:
+        for meta_dat in self._meta_fields:
             setattr(self, meta_dat, getattr(meta_data, meta_dat))
 
         self._regenerate_freqs()
+
+
+    def get_checks(self):
+        """Return check statuses of the current object.
+
+        Returns
+        -------
+        ModelChecks
+            Object containing the check statuses from the current object.
+        """
+
+        return ModelChecks(**{key : getattr(self, '_' + key) for key in ModelChecks._fields})
 
 
     def get_meta_data(self):
@@ -95,8 +121,7 @@ class BaseData():
             Object containing meta data from the current object.
         """
 
-        return SpectrumMetaData(**{key : getattr(self, key) \
-            for key in OBJ_DESC['meta_data']})
+        return SpectrumMetaData(**{key : getattr(self, key) for key in self._meta_fields})
 
 
     def plot(self, plt_log=False, **plt_kwargs):
@@ -108,15 +133,15 @@ class BaseData():
                      log_powers=False, **data_kwargs)
 
 
-    def set_check_modes(self, check_freqs=None, check_data=None):
-        """Set check modes, which controls if an error is raised based on check on the inputs.
+    def set_checks(self, check_freqs=None, check_data=None):
+        """Set check statuses, which control if an error is raised based on check on the inputs.
 
         Parameters
         ----------
         check_freqs : bool, optional
-            Whether to run in check freqs mode, which checks the frequency data.
+            Whether to check the frequency data.
         check_data : bool, optional
-            Whether to run in check data mode, which checks the power spectrum values data.
+            Whether to check the power spectrum data.
         """
 
         if check_freqs is not None:
@@ -232,7 +257,7 @@ class BaseData():
         # Log power values
         powers = np.log10(powers)
 
-        ## Data checks - run checks on inputs based on check modes
+        ## Data checks - run checks on inputs based on check statuses
 
         if self._check_freqs:
             # Check if the frequency data is unevenly spaced, and raise an error if so
@@ -256,6 +281,7 @@ class BaseData2D(BaseData):
     """Base object for managing data for spectral parameterization - for 2D data."""
 
     def __init__(self):
+        """Initialize BaseData2D object."""
 
         BaseData.__init__(self)
 
@@ -266,7 +292,7 @@ class BaseData2D(BaseData):
     def has_data(self):
         """Indicator for if the object contains data."""
 
-        return True if np.any(self.power_spectra) else False
+        return bool(np.any(self.power_spectra))
 
 
     def add_data(self, freqs, power_spectra, freq_range=None):
@@ -339,6 +365,7 @@ class BaseData2DT(BaseData2D):
     """Base object for managing data for spectral parameterization - for 2D transposed data."""
 
     def __init__(self):
+        """Initialize BaseData2DT object."""
 
         BaseData2D.__init__(self)
 
@@ -391,6 +418,7 @@ class BaseData3D(BaseData2DT):
     """Base object for managing data for spectral parameterization - for 3D data."""
 
     def __init__(self):
+        """Initialize BaseData3D object."""
 
         BaseData2DT.__init__(self)
 

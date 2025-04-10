@@ -13,7 +13,7 @@ from specparam.sim.transform import *
 def test_rotate_spectrum():
 
     # Create a spectrum to use for test rotations
-    freqs, spectrum = sim_power_spectrum([1, 100], [1, 1], [])
+    freqs, spectrum = sim_power_spectrum([1, 100], {'fixed' : [1, 1]}, {'gaussian' : []})
 
     # Check that rotation transforms the power spectrum
     rotated_spectrum = rotate_spectrum(freqs, spectrum, delta_exponent=0.5, f_rotation=25.)
@@ -26,7 +26,7 @@ def test_rotate_spectrum():
 def test_translate_spectrum():
 
     # Create a spectrum to use for test translation
-    freqs, spectrum = sim_power_spectrum([1, 100], [1, 1], [])
+    freqs, spectrum = sim_power_spectrum([1, 100], {'fixed' : [1, 1]}, {'gaussian' : []})
 
     # Check that translation transforms the power spectrum
     translated_spectrum = translate_spectrum(spectrum, delta_offset=1.)
@@ -38,22 +38,30 @@ def test_translate_spectrum():
 
 def test_rotate_sim_spectrum():
 
-    sim_params = SimParams([1, 1], [10, 0.5, 1], 0)
-    freqs, spectrum = sim_power_spectrum([3, 40], *sim_params)
+    ap_def = {'fixed' : [1, 1]}
+    pe_def = {'gaussian' : [10, 0.5, 1]}
+    nlv = 0
+
+    sim_params = SimParams(ap_def, pe_def, nlv)
+    freqs, spectrum = sim_power_spectrum([3, 40], ap_def, pe_def, nlv)
 
     rotated_spectrum, new_sim_params = rotate_sim_spectrum(freqs, spectrum, 0.5, 20, sim_params)
 
     assert not np.all(rotated_spectrum == spectrum)
-    assert new_sim_params.aperiodic_params[1] == 1.5
+    assert new_sim_params.aperiodic_params['fixed'][1] == 1.5
 
 def test_translate_sim_spectrum():
 
-    sim_params = SimParams([1, 1], [10, 0.5, 1], 0)
-    freqs, spectrum = sim_power_spectrum([3, 40], *sim_params)
+    ap_def = {'fixed' : [1, 1]}
+    pe_def = {'gaussian' : [10, 0.5, 1]}
+    nlv = 0
+
+    sim_params = SimParams(ap_def, pe_def, nlv)
+    freqs, spectrum = sim_power_spectrum([3, 40], ap_def, pe_def, nlv)
 
     translated_spectrum, new_sim_params = translate_sim_spectrum(spectrum, 0.5, sim_params)
     assert not np.all(translated_spectrum == spectrum)
-    assert new_sim_params.aperiodic_params[0] == 1.5
+    assert new_sim_params.aperiodic_params['fixed'][0] == 1.5
 
 def test_compute_rotation_offset():
 
