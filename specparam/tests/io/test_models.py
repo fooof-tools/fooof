@@ -113,9 +113,9 @@ def test_save_time(tft):
     set_file_name = 'test_time_set'
     dat_file_name = 'test_time_dat'
 
-    save_group(tft, file_name=res_file_name, file_path=TEST_DATA_PATH, save_results=True)
-    save_group(tft, file_name=set_file_name, file_path=TEST_DATA_PATH, save_settings=True)
-    save_group(tft, file_name=dat_file_name, file_path=TEST_DATA_PATH, save_data=True)
+    save_time(tft, file_name=res_file_name, file_path=TEST_DATA_PATH, save_results=True)
+    save_time(tft, file_name=set_file_name, file_path=TEST_DATA_PATH, save_settings=True)
+    save_time(tft, file_name=dat_file_name, file_path=TEST_DATA_PATH, save_data=True)
 
     assert os.path.exists(TEST_DATA_PATH / (res_file_name + '.json'))
     assert os.path.exists(TEST_DATA_PATH / (set_file_name + '.json'))
@@ -123,7 +123,7 @@ def test_save_time(tft):
 
     # Test saving out all save elements
     file_name_all = 'test_time_all'
-    save_group(tft, file_name_all, TEST_DATA_PATH, False, True, True, True)
+    save_time(tft, file_name_all, TEST_DATA_PATH, False, True, True, True)
     assert os.path.exists(TEST_DATA_PATH / (file_name_all + '.json'))
 
 def test_save_event(tfe):

@@ -11,6 +11,8 @@ from specparam.io.files import save_json
 from specparam.io.utils import create_file_path
 from specparam.utils.select import dict_select_keys
 from specparam.utils.convert import dict_array_to_lst
+from specparam.modutils.docs import (docs_get_section, replace_docstring_sections,
+                                     docs_replace_param)
 
 ###################################################################################################
 ###################################################################################################
@@ -129,6 +131,23 @@ def save_group(group, file_name, file_path=None, append=False,
 
     else:
         raise ValueError("Save file not understood.")
+
+
+@replace_docstring_sections(\
+    docs_replace_param(docs_get_section(\
+        save_group.__doc__, 'Parameters'),
+        'group', 'time : SpectralTimeModel\n        Object to save data from.'))
+def save_time(time, file_name, file_path=None, append=False,
+              save_results=False, save_settings=False, save_data=False):
+    """Save out results and/or settings from time object. Saves out to a JSON file.
+
+    Parameters
+    ----------
+    % copied in from save_group function.
+    """
+
+    save_group(time, file_name, file_path, append,
+               save_results, save_settings, save_data)
 
 
 def save_event(event, file_name, file_path=None, append=False,

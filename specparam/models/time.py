@@ -5,6 +5,7 @@ from specparam.objs.results import BaseResults2DT
 from specparam.objs.data import BaseData2DT
 from specparam.data.conversions import group_to_dataframe, dict_to_df
 from specparam.data.utils import get_results_by_ind
+from specparam.io.models import save_time
 from specparam.plts.time import plot_time_model
 from specparam.reports.save import save_time_report
 from specparam.reports.strings import gen_time_results_str
@@ -177,6 +178,13 @@ class SpectralTimeModel(SpectralGroupModel):
                             file_path=file_path, **plot_kwargs)
         if plot_type == 'group':
             super().plot(save_fig=save_fig, file_name=file_name, file_path=file_path, **plot_kwargs)
+
+
+    @copy_doc_func_to_method(save_time)
+    def save(self, file_name, file_path=None, append=False,
+             save_results=False, save_settings=False, save_data=False):
+
+        save_time(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
     @copy_doc_func_to_method(save_time_report)
