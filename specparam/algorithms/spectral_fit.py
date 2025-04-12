@@ -159,7 +159,7 @@ class SpectralFitAlgorithm(Algorithm):
 
         # Create remaining model components: flatspec & full power_spectrum model fit
         self.results.model._spectrum_flat = self.data.power_spectrum - self.results.model._ap_fit
-        self.results.model.modeled_spectrum_ = self.results.model._peak_fit + self.results.model._ap_fit
+        self.results.model.modeled_spectrum = self.results.model._peak_fit + self.results.model._ap_fit
 
         ## PARAMETER UPDATES
 
@@ -611,7 +611,7 @@ class SpectralFitAlgorithm(Algorithm):
         'bandwidth' of the peak, as opposed to the gaussian parameter, which is 1-sided.
 
         Performing this conversion requires that the model has been run,
-        with `freqs`, `modeled_spectrum_` and `_ap_fit` all required to be available.
+        with `freqs`, `modeled_spectrum` and `_ap_fit` all required to be available.
         """
 
         peak_params = np.empty((len(gaus_params), self.modes.periodic.n_params))
@@ -624,13 +624,13 @@ class SpectralFitAlgorithm(Algorithm):
             # Collect peak parameter data
             if self.modes.periodic.name == 'gaussian':  ## TEMP
                 peak_params[ii] = [peak[0],
-                                   self.results.model.modeled_spectrum_[ind] - self.results.model._ap_fit[ind],
+                                   self.results.model.modeled_spectrum[ind] - self.results.model._ap_fit[ind],
                                    peak[2] * 2]
 
             ## TEMP:
             if self.modes.periodic.name == 'skewnorm':
                 peak_params[ii] = [peak[0],
-                                   self.results.model.modeled_spectrum_[ind] - self.results.model._ap_fit[ind],
+                                   self.results.model.modeled_spectrum[ind] - self.results.model._ap_fit[ind],
                                    peak[2] * 2, peak[3]]
 
         return peak_params

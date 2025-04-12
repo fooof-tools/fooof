@@ -43,7 +43,7 @@ def compute_pointwise_error(model, plot_errors=True, return_errors=False, **plt_
         raise NoModelError("No model is available to use, can not proceed.")
 
     errors = compute_pointwise_error_arr(\
-        model.results.model.modeled_spectrum_, model.data.power_spectrum)
+        model.results.model.modeled_spectrum, model.data.power_spectrum)
 
     if plot_errors:
         plot_spectral_error(model.data.freqs, errors, **plt_kwargs)

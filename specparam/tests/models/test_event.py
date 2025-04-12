@@ -138,7 +138,7 @@ def test_event_get_model(tfe):
     assert tfm1
     assert tfm1.data.has_data
     assert tfm1.results.has_model
-    assert np.all(tfm1.results.model.modeled_spectrum_)
+    assert np.all(tfm1.results.model.modeled_spectrum)
 
 def test_event_get_params(tfe):
 

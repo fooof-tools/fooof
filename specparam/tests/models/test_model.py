@@ -115,7 +115,7 @@ def test_fit_default_metrics():
 
     # Hack fake data with known properties: total error magnitude 2
     tfm.data.power_spectrum = np.array([1, 2, 3, 4, 5])
-    tfm.results.model.modeled_spectrum_ = np.array([1, 2, 5, 4, 5])
+    tfm.results.model.modeled_spectrum = np.array([1, 2, 5, 4, 5])
 
     # Check default goodness of fit and error measures
     tfm.results.metrics.compute_metrics(tfm.data, tfm.results)
@@ -330,7 +330,7 @@ def test_resets():
         assert value is None
     for field in tfm.results._fields:
         assert np.all(np.isnan(getattr(tfm.results, field)))
-    assert tfm.data.freqs is None and tfm.results.model.modeled_spectrum_ is None
+    assert tfm.data.freqs is None and tfm.results.model.modeled_spectrum is None
 
 def test_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""

@@ -48,7 +48,7 @@ class SpectralGroupModel(SpectralModel):
     -----
     % copied in from SpectralModel object
     - The group object inherits from the model object. As such it also has data
-      attributes (`power_spectrum` & `modeled_spectrum_`), and parameter attributes
+      attributes (`power_spectrum` & `modeled_spectrum`), and parameter attributes
       (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)
       which are defined in the context of individual model fits. These attributes are
       used during the fitting process, but in the group context do not store results

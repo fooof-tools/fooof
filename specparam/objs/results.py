@@ -52,16 +52,16 @@ class ModelComponents():
     def reset(self):
         """Reset model components attributes."""
 
-        # Data components
-        self._spectrum_flat = None
-        self._spectrum_peak_rm = None
-
         # Full model
-        self.modeled_spectrum_ = None
+        self.modeled_spectrum = None
 
         # Model components
         self._ap_fit = None
         self._peak_fit = None
+
+        # Data components
+        self._spectrum_flat = None
+        self._spectrum_peak_rm = None
 
 
     def get_component(self, component='full', space='log'):
@@ -93,17 +93,17 @@ class ModelComponents():
         With space set as 'linear', this combination holds in linear space.
         """
 
-        if self.modeled_spectrum_ is None:
+        if self.modeled_spectrum is None:
             raise NoModelError("No model fit results are available, can not proceed.")
         assert space in ['linear', 'log'], "Input for 'space' invalid."
 
         if component == 'full':
-            output = self.modeled_spectrum_ if space == 'log' else unlog(self.modeled_spectrum_)
+            output = self.modeled_spectrum if space == 'log' else unlog(self.modeled_spectrum)
         elif component == 'aperiodic':
             output = self._ap_fit if space == 'log' else unlog(self._ap_fit)
         elif component == 'peak':
             output = self._peak_fit if space == 'log' else \
-                unlog(self.modeled_spectrum_) - unlog(self._ap_fit)
+                unlog(self.modeled_spectrum) - unlog(self._ap_fit)
         else:
             raise ValueError('Input for component invalid.')
 
@@ -330,7 +330,7 @@ class Results():
             Frequency values for the power_spectrum, in linear scale.
         """
 
-        self.model.modeled_spectrum_, self.model._peak_fit, self.model._ap_fit = \
+        self.model.modeled_spectrum, self.model._peak_fit, self.model._ap_fit = \
             gen_model(freqs, self.modes.aperiodic, self.aperiodic_params_,
                       self.modes.periodic, self.gaussian_params_, return_components=True)
 
