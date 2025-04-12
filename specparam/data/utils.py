@@ -5,24 +5,24 @@ import numpy as np
 ###################################################################################################
 ###################################################################################################
 
-def _get_params_helper(modes, name, col):
+def _get_params_helper(modes, name, field):
     """Helper function for get_*_params functions."""
 
     # Allow for shortcut alias, without adding `_params`
     if name in ['aperiodic', 'peak', 'gaussian']:
         name = name + '_params'
 
-    # If col specified as string, get mapping back to integer
-    if isinstance(col, str):
+    # If field specified as string, get mapping back to integer
+    if isinstance(field, str):
         if 'aperiodic' in name:
-            col = modes.aperiodic.params.indices[col.lower()]
+            field = modes.aperiodic.params.indices[field.lower()]
         if 'peak' in name or 'gaussian' in name:
-            col = modes.periodic.params.indices[col.lower()]
+            field = modes.periodic.params.indices[field.lower()]
 
-    return name, col
+    return name, field
 
 
-def get_model_params(fit_results, modes, name, col=None):
+def get_model_params(fit_results, modes, name, field=None):
     """Return model fit parameters for specified feature(s).
 
     Parameters
@@ -33,7 +33,7 @@ def get_model_params(fit_results, modes, name, col=None):
         Model modes definition.
     name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'metrics'}
         Name of the data field to extract.
-    col : str or int, optional
+    field : str or int, optional
         Column name / index to extract from selected data, if requested.
         For example, {'CF', 'PW', 'BW'} (periodic) or {'offset', 'knee', 'exponent'} (aperiodic).
 
@@ -44,9 +44,9 @@ def get_model_params(fit_results, modes, name, col=None):
     """
 
     # Use helper function to sort out name and column selection
-    name, col = _get_params_helper(modes, name, col)
+    name, ind = _get_params_helper(modes, name, field)
 
-    # Extract the requested data field from object
+    # Extract the requested data attribute from object
     out = getattr(fit_results, name)
 
     # Periodic values can be empty arrays and if so, replace with NaN array
@@ -54,21 +54,21 @@ def get_model_params(fit_results, modes, name, col=None):
         out = np.array([np.nan] * modes.periodic.n_params)
 
     # Select out a specific column, if requested
-    if col is not None:
+    if ind is not None:
 
         if name == 'metrics':
-            out = out[col]
+            out = out[ind]
 
         else:
 
             # Extract column, & if result is a single value in an array, unpack from array
-            out = out[col] if out.ndim == 1 else out[:, col]
+            out = out[ind] if out.ndim == 1 else out[:, ind]
             out = out[0] if isinstance(out, np.ndarray) and out.size == 1 else out
 
     return out
 
 
-def get_group_params(group_results, modes, name, col=None):
+def get_group_params(group_results, modes, name, field=None):
     """Extract a specified set of parameters from a set of group results.
 
     Parameters
@@ -79,7 +79,7 @@ def get_group_params(group_results, modes, name, col=None):
         Model modes definition.
     name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
         Name of the data field to extract across the group.
-    col : str or int, optional
+    field : str or int, optional
         Column name / index to extract from selected data, if requested.
         For example, {'CF', 'PW', 'BW'} (periodic) or {'offset', 'knee', 'exponent'} (aperiodic).
 
@@ -90,7 +90,7 @@ def get_group_params(group_results, modes, name, col=None):
     """
 
     # Use helper function to sort out name and column selection
-    name, col = _get_params_helper(modes, name, col)
+    name, ind = _get_params_helper(modes, name, field)
 
     # Pull out the requested data field from the group data
     # As a special case, peak_params are pulled out in a way that appends
@@ -103,18 +103,18 @@ def get_group_params(group_results, modes, name, col=None):
 
         # This updates index to grab selected column, and the last column
         #   This last column is the 'index' column (model object source)
-        if col is not None:
-            col = [col, -1]
+        if ind is not None:
+            ind = [ind, -1]
     else:
         out = np.array([getattr(data, name) for data in group_results])
 
     # Select out a specific column, if requested
-    if col is not None:
+    if ind is not None:
 
         if name == 'metrics':
-            out = np.array([cdict[col] for cdict in out])
+            out = np.array([cdict[ind] for cdict in out])
         else:
-            out = out[:, col]
+            out = out[:, ind]
 
     return out
 

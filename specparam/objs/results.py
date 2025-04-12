@@ -196,14 +196,14 @@ class BaseResults():
         return output
 
 
-    def get_params(self, name, col=None):
+    def get_params(self, name, field=None):
         """Return model fit parameters for specified feature(s).
 
         Parameters
         ----------
         name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
             Name of the data field to extract.
-        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+        field : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
             Column name / index to extract from selected data, if requested.
             Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
 
@@ -225,7 +225,7 @@ class BaseResults():
         if not self.has_model:
             raise NoModelError("No model fit results are available to extract, can not proceed.")
 
-        return get_model_params(self.get_results(), self.modes, name, col)
+        return get_model_params(self.get_results(), self.modes, name, field)
 
 
     def _check_loaded_results(self, data):
@@ -422,14 +422,14 @@ class BaseResults2D(BaseResults):
             self.group_results[ind] = null_model
 
 
-    def get_params(self, name, col=None):
+    def get_params(self, name, field=None):
         """Return model fit parameters for specified feature(s).
 
         Parameters
         ----------
         name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
             Name of the data field to extract across the group.
-        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+        field : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
             Column name / index to extract from selected data, if requested.
             Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
 
@@ -443,7 +443,7 @@ class BaseResults2D(BaseResults):
         NoModelError
             If there are no model fit results available.
         ValueError
-            If the input for the `col` input is not understood.
+            If the input for the `field` input is not understood.
 
         Notes
         -----
@@ -454,7 +454,7 @@ class BaseResults2D(BaseResults):
         if not self.has_model:
             raise NoModelError("No model fit results are available, can not proceed.")
 
-        return get_group_params(self.group_results, self.modes, name, col)
+        return get_group_params(self.group_results, self.modes, name, field)
 
 
 class BaseResults2DT(BaseResults2D):
@@ -629,14 +629,14 @@ class BaseResults3D(BaseResults2DT):
         return self.event_time_results
 
 
-    def get_params(self, name, col=None):
+    def get_params(self, name, field=None):
         """Return model fit parameters for specified feature(s).
 
         Parameters
         ----------
         name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
             Name of the data field to extract across the group.
-        col : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+        field : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
             Column name / index to extract from selected data, if requested.
             Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
 
@@ -650,7 +650,7 @@ class BaseResults3D(BaseResults2DT):
         NoModelError
             If there are no model fit results available.
         ValueError
-            If the input for the `col` input is not understood.
+            If the input for the `field` input is not understood.
 
         Notes
         -----
@@ -658,7 +658,7 @@ class BaseResults3D(BaseResults2DT):
         column is appended to the returned array, indicating the index that the peak came from.
         """
 
-        return [get_group_params(gres, self.modes, name, col) for gres in self.event_group_results]
+        return [get_group_params(gres, self.modes, name, field) for gres in self.event_group_results]
 
 
     def convert_results(self, bands=None):
