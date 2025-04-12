@@ -1,7 +1,7 @@
 """Tests for specparam.algorthms.spectral_fit."""
 
 from specparam.models.base import BaseModel
-from specparam.objs.data import BaseData
+from specparam.objs.data import Data
 from specparam.objs.results import Results
 from specparam.sim import sim_power_spectrum
 from specparam.algorithms.algorithm import Algorithm
@@ -19,7 +19,7 @@ def test_algorithm_inherit(tfm):
         def __init__(self):
             BaseModel.__init__(self, aperiodic_mode='fixed',
                                periodic_mode='gaussian', verbose=False)
-            self.data = BaseData()
+            self.data = Data()
             self.add_data = self.data.add_data
             self.results = Results(modes=self.modes)
             self.algorithm = SpectralFitAlgorithm(\

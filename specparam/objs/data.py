@@ -22,8 +22,8 @@ META_DATA_FIELDS = ['freq_range', 'freq_res']
 FORMATS = ['power']
 
 
-class BaseData():
-    """Base object for managing data for spectral parameterization - for 1D data.
+class Data():
+    """Object for managing data for spectral parameterization - for 1D data.
 
     Parameters
     ----------
@@ -38,7 +38,7 @@ class BaseData():
     """
 
     def __init__(self, check_freqs=True, check_data=True, format='power'):
-        """Initialize BaseData object."""
+        """Initialize Data object."""
 
         self._reset_data(True, True)
         self._fields = DATA_FIELDS
@@ -277,13 +277,13 @@ class BaseData():
         return freqs, powers, freq_range, freq_res
 
 
-class BaseData2D(BaseData):
+class Data2D(Data):
     """Base object for managing data for spectral parameterization - for 2D data."""
 
     def __init__(self):
-        """Initialize BaseData2D object."""
+        """Initialize Data2D object."""
 
-        BaseData.__init__(self)
+        Data.__init__(self)
 
         self.power_spectra = None
 
@@ -361,13 +361,13 @@ def transpose_arg1(func):
     return decorated
 
 
-class BaseData2DT(BaseData2D):
+class Data2DT(Data2D):
     """Base object for managing data for spectral parameterization - for 2D transposed data."""
 
     def __init__(self):
-        """Initialize BaseData2DT object."""
+        """Initialize Data2DT object."""
 
-        BaseData2D.__init__(self)
+        Data2D.__init__(self)
 
 
     @property
@@ -414,13 +414,13 @@ class BaseData2DT(BaseData2D):
         plot_spectrogram(self.freqs, self.spectrogram, **plot_kwargs)
 
 
-class BaseData3D(BaseData2DT):
+class Data3D(Data2DT):
     """Base object for managing data for spectral parameterization - for 3D data."""
 
     def __init__(self):
-        """Initialize BaseData3D object."""
+        """Initialize Data3D object."""
 
-        BaseData2DT.__init__(self)
+        Data2DT.__init__(self)
 
         self.spectrograms = None
 

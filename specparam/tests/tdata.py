@@ -7,7 +7,7 @@ from specparam.modes.modes import Modes
 from specparam.data.data import FitResults
 from specparam.models import (SpectralModel, SpectralGroupModel,
                               SpectralTimeModel, SpectralTimeEventModel)
-from specparam.objs.data import BaseData, BaseData2D
+from specparam.objs.data import Data, Data2D
 from specparam.sim.params import param_sampler
 from specparam.sim.sim import sim_power_spectrum, sim_group_power_spectra, sim_spectrogram
 
@@ -37,7 +37,7 @@ def default_group_params():
 
 def get_tdata():
 
-    tdata = BaseData()
+    tdata = Data()
     tdata.add_data(*sim_power_spectrum(*default_spectrum_params()))
 
     return tdata
@@ -45,7 +45,7 @@ def get_tdata():
 def get_tdata2d():
 
     n_spectra = 3
-    tdata2d = BaseData2D()
+    tdata2d = Data2D()
     tdata2d.add_data(*sim_group_power_spectra(n_spectra, *default_group_params()))
 
     return tdata2d

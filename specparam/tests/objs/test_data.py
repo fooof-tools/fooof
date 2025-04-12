@@ -11,22 +11,22 @@ from specparam.objs.data import *
 
 ## 1D Data Object
 
-def test_base_data():
-    """Check base object initializes properly."""
+def test_data():
+    """Check data object initializes properly."""
 
-    tdata = BaseData()
+    tdata = Data()
     assert tdata
 
-def test_base_data_add_data():
+def test_data_add_data():
 
-    tdata = BaseData()
+    tdata = Data()
     freqs, pows = np.array([1, 2, 3]), np.array([10, 10, 10])
     tdata.add_data(freqs, pows)
     assert tdata.has_data
 
-def test_base_data_meta_data():
+def test_data_meta_data():
 
-    tdata = BaseData()
+    tdata = Data()
 
     # Test adding meta data
     meta_data = SpectrumMetaData([3, 40], 0.5)
@@ -39,7 +39,7 @@ def test_base_data_meta_data():
     assert isinstance(meta_data_out, SpectrumMetaData)
     assert meta_data_out == meta_data
 
-def test_base_data_get_set_checks(tdata):
+def test_data_get_set_checks(tdata):
 
     tdata.set_checks(False, False)
     tchecks1 = tdata.get_checks()
@@ -55,44 +55,44 @@ def test_base_data_get_set_checks(tdata):
 
 
 @plot_test
-def test_base_data_plot(tdata, skip_if_no_mpl):
+def test_data_plot(tdata, skip_if_no_mpl):
 
     tdata.plot()
 
 ## 2D Data Object
 
-def test_base_data2d():
+def test_data2d():
 
-    tdata2d = BaseData2D()
+    tdata2d = Data2D()
     assert tdata2d
-    assert isinstance(tdata2d, BaseData)
-    assert isinstance(tdata2d, BaseData2D)
+    assert isinstance(tdata2d, Data)
+    assert isinstance(tdata2d, Data2D)
 
-def test_base_data2d_add_data():
+def test_data2d_add_data():
 
-    tdata2d = BaseData2D()
+    tdata2d = Data2D()
     freqs, pows = np.array([1, 2, 3]), np.array([[10, 10, 10], [20, 20, 20]])
     tdata2d.add_data(freqs, pows)
     assert tdata2d.has_data
 
 @plot_test
-def test_base_data2d_plot(tdata2d, skip_if_no_mpl):
+def test_data2d_plot(tdata2d, skip_if_no_mpl):
 
     tdata2d.plot()
 
 ## 2DT Data Object
 
-def test_base_data2dt():
+def test_data2dt():
 
-    tdata2dt = BaseData2DT()
+    tdata2dt = Data2DT()
     assert tdata2dt
-    assert isinstance(tdata2dt, BaseData)
-    assert isinstance(tdata2dt, BaseData2D)
-    assert isinstance(tdata2dt, BaseData2DT)
+    assert isinstance(tdata2dt, Data)
+    assert isinstance(tdata2dt, Data2D)
+    assert isinstance(tdata2dt, Data2DT)
 
-def test_base_data2dt_add_data():
+def test_data2dt_add_data():
 
-    tdata2dt = BaseData2DT()
+    tdata2dt = Data2DT()
     freqs, pows = np.array([1, 2, 3]), np.array([[10, 10, 10], [20, 20, 20]]).T
     tdata2dt.add_data(freqs, pows)
     assert tdata2dt.has_data
@@ -101,18 +101,18 @@ def test_base_data2dt_add_data():
 
 ## 3D Data Object
 
-def test_base_data3d():
+def test_data3d():
 
-    tdata3d = BaseData3D()
+    tdata3d = Data3D()
     assert tdata3d
-    assert isinstance(tdata3d, BaseData)
-    assert isinstance(tdata3d, BaseData2D)
-    assert isinstance(tdata3d, BaseData2DT)
-    assert isinstance(tdata3d, BaseData3D)
+    assert isinstance(tdata3d, Data)
+    assert isinstance(tdata3d, Data2D)
+    assert isinstance(tdata3d, Data2DT)
+    assert isinstance(tdata3d, Data3D)
 
-def test_base_data3d_add_data():
+def test_data3d_add_data():
 
-    tdata3d = BaseData3D()
+    tdata3d = Data3D()
     freqs, pows = np.array([1, 2, 3]), np.array([[10, 10, 10], [20, 20, 20]]).T
     tdata3d.add_data(freqs, np.array([pows, pows]))
     assert tdata3d.has_data
