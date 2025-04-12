@@ -78,10 +78,9 @@ class SpectralTimeModel(SpectralGroupModel):
             Spectrogram of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
             Frequency range to fit the model to. If not provided, fits the entire given range.
-        bands : Bands or int, optional
+        bands : Bands or dict or int, optional
             How to organize peaks into bands.
-            If Bands, extracts peaks based on band definitions.
-            If int, extracts the first n peaks.
+            If Bands or dict, uses band definitions. If int, extracts the first 'n' peaks.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -121,10 +120,9 @@ class SpectralTimeModel(SpectralGroupModel):
             Spectrogram of power spectrum values, in linear space.
         freq_range : list of [float, float], optional
             Frequency range to fit the model to. If not provided, fits the entire given range.
-        bands : Bands or int, optional
+        bands : Bands or dict or int, optional
             How to organize peaks into bands.
-            If Bands, extracts peaks based on band definitions.
-            If int, extracts the first n peaks.
+            If Bands or dict, uses band definitions. If int, extracts the first 'n' peaks.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -251,11 +249,10 @@ class SpectralTimeModel(SpectralGroupModel):
 
         Parameters
         ----------
-        bands : Bands or int, optional
+        bands : Bands or dict or int, optional
             How to organize peaks into bands.
-            If Bands, extracts peaks based on band definitions.
-            If int, extracts the first n peaks.
-            If provided, re-extracts peak features; if not provided, converts from `time_results`.
+            If Bands or dict, uses band definitions. If int, extracts the first 'n' peaks.
+            If provided, re-extracts peak features; if not, converts from `time_results`.
 
         Returns
         -------
@@ -276,10 +273,9 @@ class SpectralTimeModel(SpectralGroupModel):
 
         Parameters
         ----------
-        bands : Bands or int, optional
+        bands : Bands or dict or int, optional
             How to organize peaks into bands.
-            If Bands, extracts peaks based on band definitions.
-            If int, extracts the first 'n' peaks.
+            If Bands or dict, uses band definitions. If int, extracts the first 'n' peaks.
             If not provided, uses band definition available in object.
         """
 

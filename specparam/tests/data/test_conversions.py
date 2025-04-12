@@ -4,6 +4,7 @@ from copy import deepcopy
 
 import numpy as np
 
+from specparam.bands import Bands
 from specparam.modutils.dependencies import safe_import
 pd = safe_import('pandas')
 
@@ -14,18 +15,18 @@ from specparam.data.conversions import *
 
 def test_model_to_dict(tresults, tmodes, tbands):
 
-    out = model_to_dict(tresults, tmodes, 1)
+    out = model_to_dict(tresults, tmodes, Bands(n_bands=1))
     assert isinstance(out, dict)
     assert 'cf_0' in out
     assert out['cf_0'] == tresults.peak_params[0, 0]
     assert 'cf_1' not in out
 
-    out = model_to_dict(tresults, tmodes, 2)
+    out = model_to_dict(tresults, tmodes, Bands(n_bands=2))
     assert 'cf_0' in out
     assert 'cf_1' in out
     assert out['cf_1'] == tresults.peak_params[1, 0]
 
-    out = model_to_dict(tresults, tmodes, 3)
+    out = model_to_dict(tresults, tmodes, Bands(n_bands=3))
     assert 'cf_2' in out
     assert np.isnan(out['cf_2'])
 
@@ -35,7 +36,7 @@ def test_model_to_dict(tresults, tmodes, tbands):
 def test_model_to_dataframe(tresults, tmodes, tbands, skip_if_no_pandas):
 
     for nbands in [1, 2, 3]:
-        out = model_to_dataframe(tresults, tmodes, nbands)
+        out = model_to_dataframe(tresults, tmodes, Bands(n_bands=nbands))
         assert isinstance(out, pd.Series)
 
     out = model_to_dataframe(tresults, tmodes, tbands)
@@ -46,7 +47,7 @@ def test_group_to_dict(tresults, tmodes, tbands):
     fit_results = [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]
 
     for nbands in [1, 2, 3]:
-        out = group_to_dict(fit_results, tmodes, nbands)
+        out = group_to_dict(fit_results, tmodes, Bands(n_bands=nbands))
         assert isinstance(out, dict)
 
     out = group_to_dict(fit_results, tmodes, tbands)
@@ -57,7 +58,7 @@ def test_group_to_dataframe(tresults, tmodes, tbands, skip_if_no_pandas):
     fit_results = [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]
 
     for nbands in [1, 2, 3]:
-        out = group_to_dataframe(fit_results, tmodes, nbands)
+        out = group_to_dataframe(fit_results, tmodes, Bands(n_bands=nbands))
         assert isinstance(out, pd.DataFrame)
 
     out = group_to_dataframe(fit_results, tmodes, tbands)
@@ -69,7 +70,7 @@ def test_event_group_to_dict(tresults, tmodes, tbands):
                    [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]]
 
     for nbands in [1, 2, 3]:
-        out = event_group_to_dict(fit_results, tmodes, nbands)
+        out = event_group_to_dict(fit_results, tmodes, Bands(n_bands=nbands))
         assert isinstance(out, dict)
 
     out = event_group_to_dict(fit_results, tmodes, tbands)
@@ -81,7 +82,7 @@ def test_event_group_to_dataframe(tresults, tmodes, tbands, skip_if_no_pandas):
                    [deepcopy(tresults), deepcopy(tresults), deepcopy(tresults)]]
 
     for nbands in [1, 2, 3]:
-        out = event_group_to_dataframe(fit_results, tmodes, nbands)
+        out = event_group_to_dataframe(fit_results, tmodes, Bands(n_bands=nbands))
         assert isinstance(out, pd.DataFrame)
 
     out = event_group_to_dataframe(fit_results, tmodes, tbands)

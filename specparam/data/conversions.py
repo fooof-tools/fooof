@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from specparam import Bands
+from specparam.bands.bands import Bands, check_bands
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.data.periodic import get_band_peak_arr
 from specparam.data.utils import flatten_results_dict
@@ -21,14 +21,17 @@ def model_to_dict(fit_results, modes, bands):
         Results of a model fit.
     modes : Modes
         Model modes definition.
-    bands : Bands or int
-        How to organize peaks, based on band definitions (Bands) or number of peaks (int).
+    bands : Bands or dict or int
+        How to organize peaks, based on band definitions.
+        Can be Bands object or object that can be converted into a Bands object.
 
     Returns
     -------
     dict
         Model results organized into a dictionary.
     """
+
+    bands = check_bands(bands)
 
     fr_dict = {}
 
@@ -38,18 +41,18 @@ def model_to_dict(fit_results, modes, bands):
 
     # periodic parameters
     peaks = fit_results.peak_params
+    if not bands.bands and bands.n_bands:
 
-    if isinstance(bands, int):
-
-        if len(peaks) < bands:
-            nans = [np.array([np.nan] * 3) for ind in range(bands-len(peaks))]
+        # If bands if defined in terms of number of peaks
+        if len(peaks) < bands.n_bands:
+            nans = [np.array([np.nan] * 3) for ind in range(bands.n_bands-len(peaks))]
             peaks = np.vstack((peaks, nans))
 
-        for ind, peak in enumerate(peaks[:bands, :]):
+        for ind, peak in enumerate(peaks[:bands.n_bands, :]):
             for pe_label, pe_param in zip(modes.periodic.params.indices, peak):
                 fr_dict[pe_label + '_' + str(ind)] = pe_param
 
-    elif isinstance(bands, Bands):
+    elif bands.bands:
         for band, f_range in bands:
             for label, param in zip(modes.periodic.params.indices,
                                     get_band_peak_arr(peaks, f_range)):
@@ -72,8 +75,9 @@ def model_to_dataframe(fit_results, modes, bands):
         Results of a model fit.
     modes : Modes
         Model modes definition.
-    bands : Bands or int
-        How to organize peaks, based on band definitions (Bands) or number of peaks (int).
+    bands : Bands or dict or int
+        How to organize peaks, based on band definitions.
+        Can be Bands object or object that can be converted into a Bands object.
 
     Returns
     -------
@@ -81,7 +85,7 @@ def model_to_dataframe(fit_results, modes, bands):
         Model results organized into a dataframe.
     """
 
-    return pd.Series(model_to_dict(fit_results, modes, bands))
+    return pd.Series(model_to_dict(fit_results, modes, check_bands(bands)))
 
 
 def group_to_dict(group_results, modes, bands):
@@ -93,14 +97,17 @@ def group_to_dict(group_results, modes, bands):
         List of FitResults objects, reflecting model results across a group of power spectra.
     modes : Modes
         Model modes definition.
-    bands : Bands or int
-        How to organize peaks, based on band definitions (Bands) or number of peaks (int).
+    bands : Bands or dict or int
+        How to organize peaks, based on band definitions.
+        Can be Bands object or object that can be converted into a Bands object.
 
     Returns
     -------
     dict
         Model results organized into a dictionary.
     """
+
+    bands = check_bands(bands)
 
     nres = len(group_results)
     fr_dict = {ke : np.zeros(nres) for ke in model_to_dict(group_results[0], modes, bands)}
@@ -121,8 +128,9 @@ def group_to_dataframe(group_results, modes, bands):
         List of FitResults objects.
     modes : Modes
         Model modes definition.
-    bands : Bands or int
-        How to organize peaks, based on band definitions (Bands) or number of peaks (int).
+    bands : Bands or dict or int
+        How to organize peaks, based on band definitions.
+        Can be Bands object or object that can be converted into a Bands object.
 
     Returns
     -------
@@ -130,7 +138,7 @@ def group_to_dataframe(group_results, modes, bands):
         Model results organized into a dataframe.
     """
 
-    return pd.DataFrame(group_to_dict(group_results, modes, bands))
+    return pd.DataFrame(group_to_dict(group_results, modes, check_bands(bands)))
 
 
 def event_group_to_dict(event_group_results, modes, bands):
@@ -142,8 +150,9 @@ def event_group_to_dict(event_group_results, modes, bands):
         Model fit results from across a set of events.
     modes : Modes
         Model modes definition.
-    bands : Bands or int
-        How to organize peaks, based on band definitions (Bands) or number of peaks (int).
+    bands : Bands or dict or int
+        How to organize peaks, based on band definitions.
+        Can be Bands object or object that can be converted into a Bands object.
 
     Returns
     -------
@@ -152,6 +161,7 @@ def event_group_to_dict(event_group_results, modes, bands):
     """
 
     event_time_results = {}
+    bands = check_bands(bands)
 
     for key in group_to_dict(event_group_results[0], modes, bands):
         event_time_results[key] = []
@@ -177,8 +187,9 @@ def event_group_to_dataframe(event_group_results, modes, bands):
         List of FitResults objects.
     modes : Modes
         Model modes definition.
-    bands : Bands or int
-        How to organize peaks, based on band definitions (Bands) or number of peaks (int).
+    bands : Bands or dict or int
+        How to organize peaks, based on band definitions.
+        Can be Bands object or object that can be converted into a Bands object.
 
     Returns
     -------
@@ -187,7 +198,7 @@ def event_group_to_dataframe(event_group_results, modes, bands):
     """
 
     return pd.DataFrame(flatten_results_dict(\
-        event_group_to_dict(event_group_results, modes, bands)))
+        event_group_to_dict(event_group_results, modes, check_bands(bands))))
 
 
 @check_dependency(pd, 'pandas')
