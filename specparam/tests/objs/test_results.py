@@ -1,16 +1,9 @@
-"""Tests for specparam.objs.results, including the data object and it's methods."""
+"""Tests for specparam.objs.results."""
 
 from specparam.objs.results import *
 
 ###################################################################################################
 ###################################################################################################
-
-## ModelComponents object
-
-def test_model_components():
-
-    mc = ModelComponents()
-    assert mc
 
 ## 1D results object
 

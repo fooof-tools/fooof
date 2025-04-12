@@ -1,4 +1,4 @@
-"""Tests for specparam.objs.data, including the data object and it's methods."""
+"""Tests for specparam.objs.data."""
 
 from specparam.data import SpectrumMetaData, ModelChecks
 

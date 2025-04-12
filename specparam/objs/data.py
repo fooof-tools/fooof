@@ -1,4 +1,4 @@
-"""Define base data objects."""
+"""Define data objects."""
 
 from functools import wraps
 
