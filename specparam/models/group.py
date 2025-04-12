@@ -8,8 +8,8 @@ Methods without defined docstrings import docs at runtime, from aliased external
 import numpy as np
 
 from specparam.models import SpectralModel
-from specparam.objs.data import BaseData2D
-from specparam.objs.results import BaseResults2D
+from specparam.objs.data import Data2D
+from specparam.objs.results import Results2D
 from specparam.objs.utils import run_parallel_group, pbar
 from specparam.plts.group import plot_group_model
 from specparam.io.models import save_group
@@ -25,6 +25,7 @@ from specparam.utils.checks import check_inds
 ###################################################################################################
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
+                             docs_get_section(SpectralModel.__doc__, 'Attributes'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
 class SpectralGroupModel(SpectralModel):
 
@@ -41,27 +42,7 @@ class SpectralGroupModel(SpectralModel):
 
     Attributes
     ----------
-    freqs : 1d array
-        Frequency values for the power spectra.
-    power_spectra : 2d array
-        Power values for the group of power spectra, as [n_power_spectra, n_freqs].
-        Power values are stored internally in log10 scale.
-    freq_range : list of [float, float]
-        Frequency range of the power spectra, as [lowest_freq, highest_freq].
-    freq_res : float
-        Frequency resolution of the power spectra.
-    group_results : list of FitResults
-        Results of the model fit for each power spectrum.
-    has_data : bool
-        Whether data is loaded to the object.
-    has_model : bool
-        Whether model results are available in the object.
-    n_peaks_ : int
-        The number of peaks fit in the model.
-    n_null_ : int
-        The number of models that failed to fit and/or that are marked as null.
-    null_inds_ : list of int
-        The indices of any models that are null.
+    % copied in from SpectralModel object
 
     Notes
     -----
@@ -85,9 +66,9 @@ class SpectralGroupModel(SpectralModel):
                                verbose=kwargs.pop('verbose', True),
                                **kwargs)
 
-        self.data = BaseData2D()
+        self.data = Data2D()
 
-        self.results = BaseResults2D(modes=self.modes,
+        self.results = Results2D(modes=self.modes,
                                      metrics=kwargs.pop('metrics', None),
                                      bands=kwargs.pop('bands', None))
 
@@ -267,7 +248,7 @@ class SpectralGroupModel(SpectralModel):
         self._reset_data_results(clear_spectrum=True, clear_results=True)
 
 
-    @copy_doc_func_to_method(BaseResults2D.get_params)
+    @copy_doc_func_to_method(Results2D.get_params)
     def get_params(self, name, field=None):
 
         return self.results.get_params(name, field)

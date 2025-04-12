@@ -8,8 +8,8 @@ Methods without defined docstrings import docs at runtime, from aliased external
 import numpy as np
 
 from specparam.models.base import BaseModel
-from specparam.objs.data import BaseData
-from specparam.objs.results import BaseResults
+from specparam.objs.data import Data
+from specparam.objs.results import Results
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import gen_model_results_str
@@ -47,49 +47,25 @@ class SpectralModel(BaseModel):
 
     Attributes
     ----------
-    freqs : 1d array
-        Frequency values for the power spectrum.
-    power_spectrum : 1d array
-        Power values, stored internally in log10 scale.
-    freq_range : list of [float, float]
-        Frequency range of the power spectrum, as [lowest_freq, highest_freq].
-    freq_res : float
-        Frequency resolution of the power spectrum.
-    modeled_spectrum_ : 1d array
-        The full model fit of the power spectrum, in log10 scale.
-    aperiodic_params_ : 1d array
-        Fitted parameter values that define the aperiodic fit. As [Offset, (Knee), Exponent].
-        The knee parameter is only included if aperiodic component is fit with a knee.
-    peak_params_ : 2d array
-        Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
-    gaussian_params_ : 2d array
-        Fitted parameter values that define the gaussian fit(s).
-        Each row is a gaussian, as [mean, height, standard deviation].
-    r_squared_ : float
-        R-squared of the fit between the input power spectrum and the full model fit.
-    error_ : float
-        Error of the full model fit.
-    n_peaks_ : int
-        The number of peaks fit in the model.
-    has_data : bool
-        Whether data is loaded to the object.
-    has_model : bool
-        Whether model results are available in the object.
-    _debug : bool
-        Whether the object is set in debug mode.
-        If in debug mode, an error is raised if model fitting is unsuccessful.
-        This should be controlled by using the `set_debug` method.
+    algorithm : Algorithm
+        Algorithm object with model fitting settings and procedures.
+    modes : Modes
+        Modes object with fit mode definitions.
+    data : Data
+        Data object with spectral data and metadata.
+    results : Results
+        Results object with model fit results and metrics.
 
     Notes
     -----
-    - Commonly used abbreviations used in this module include:
-      CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic
     - Input power spectra must be provided in linear scale.
       Internally they are stored in log10 scale, as this is what the model operates upon.
     - Input power spectra should be smooth, as overly noisy power spectra may lead to bad fits.
       For example, raw FFT inputs are not appropriate. Where possible and appropriate, use
       longer time segments for power spectrum calculation to get smoother power spectra,
       as this will give better model fits.
+    - Commonly used abbreviations used in this module include:
+      CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic
     - The gaussian params are those that define the gaussian of the fit, where as the peak
       params are a modified version, in which the CF of the peak is the mean of the gaussian,
       the PW of the peak is the height of the gaussian over and above the aperiodic component,
@@ -106,9 +82,9 @@ class SpectralModel(BaseModel):
                            periodic_mode=periodic_mode,
                            verbose=verbose)
 
-        self.data = BaseData()
+        self.data = Data()
 
-        self.results = BaseResults(modes=self.modes, metrics=metrics, bands=bands)
+        self.results = Results(modes=self.modes, metrics=metrics, bands=bands)
 
         self.algorithm = SpectralFitAlgorithm(
             peak_width_limits=peak_width_limits, max_n_peaks=max_n_peaks,
@@ -117,8 +93,8 @@ class SpectralModel(BaseModel):
             debug=debug, **model_kwargs)
 
 
-    @replace_docstring_sections([docs_get_section(BaseData.add_data.__doc__, 'Parameters'),
-                                 docs_get_section(BaseData.add_data.__doc__, 'Notes')])
+    @replace_docstring_sections([docs_get_section(Data.add_data.__doc__, 'Parameters'),
+                                 docs_get_section(Data.add_data.__doc__, 'Notes')])
     def add_data(self, freqs, power_spectrum, freq_range=None, clear_results=True):
         """Add data (frequencies, and power spectrum values) to the current object.
 
@@ -311,7 +287,7 @@ class SpectralModel(BaseModel):
                 self.results._regenerate_model(self.data.freqs)
 
 
-    @copy_doc_func_to_method(BaseResults.get_params)
+    @copy_doc_func_to_method(Results.get_params)
     def get_params(self, name, field=None):
 
         return self.results.get_params(name, field)

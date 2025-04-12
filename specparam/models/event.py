@@ -3,8 +3,8 @@
 import numpy as np
 
 from specparam.models import SpectralModel, SpectralTimeModel
-from specparam.objs.results import BaseResults3D
-from specparam.objs.data import BaseData3D
+from specparam.objs.results import Results3D
+from specparam.objs.data import Data3D
 from specparam.plts.event import plot_event_model
 from specparam.data.conversions import event_group_to_dataframe, dict_to_df
 from specparam.data.utils import flatten_results_dict
@@ -22,6 +22,7 @@ from specparam.utils.checks import check_inds
 ###################################################################################################
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
+                             docs_get_section(SpectralModel.__doc__, 'Attributes'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
 class SpectralTimeEventModel(SpectralTimeModel):
     """Model a set of event as a combination of aperiodic and periodic components.
@@ -37,20 +38,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
     Attributes
     ----------
-    freqs : 1d array
-        Frequency values for the power spectra.
-    spectrograms : 3d array
-        Power values for the spectrograms, organized as [n_events, n_freqs, n_time_windows].
-        Power values are stored internally in log10 scale.
-    freq_range : list of [float, float]
-        Frequency range of the power spectra, as [lowest_freq, highest_freq].
-    freq_res : float
-        Frequency resolution of the power spectra.
-    event_group_results : list of list of FitResults
-        Full model results collected across all events and models.
-    event_time_results : dict
-        Results of the model fit across each time window, collected across events.
-        Each value in the dictionary stores a model fit parameter, as [n_events, n_time_windows].
+    % copied in from SpectralModel object
 
     Notes
     -----
@@ -69,9 +57,9 @@ class SpectralTimeEventModel(SpectralTimeModel):
                                    verbose=kwargs.pop('verbose', True),
                                    **kwargs)
 
-        self.data = BaseData3D()
+        self.data = Data3D()
 
-        self.results = BaseResults3D(modes=self.modes,
+        self.results = Results3D(modes=self.modes,
                                      metrics=kwargs.pop('metrics', None),
                                      bands=kwargs.pop('bands', None))
 

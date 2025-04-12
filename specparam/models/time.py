@@ -1,8 +1,8 @@
 """Time model object and associated code for fitting the model to spectrograms."""
 
 from specparam.models import SpectralModel, SpectralGroupModel
-from specparam.objs.results import BaseResults2DT
-from specparam.objs.data import BaseData2DT
+from specparam.objs.results import Results2DT
+from specparam.objs.data import Data2DT
 from specparam.data.conversions import group_to_dataframe, dict_to_df
 from specparam.data.utils import get_results_by_ind
 from specparam.io.models import save_time
@@ -17,6 +17,7 @@ from specparam.utils.checks import check_inds
 ###################################################################################################
 
 @replace_docstring_sections([docs_get_section(SpectralModel.__doc__, 'Parameters'),
+                             docs_get_section(SpectralModel.__doc__, 'Attributes'),
                              docs_get_section(SpectralModel.__doc__, 'Notes')])
 class SpectralTimeModel(SpectralGroupModel):
     """Model a spectrogram as a combination of aperiodic and periodic components.
@@ -32,17 +33,7 @@ class SpectralTimeModel(SpectralGroupModel):
 
     Attributes
     ----------
-    freqs : 1d array
-        Frequency values for the spectrogram.
-    spectrogram : 2d array
-        Power values for the spectrogram, as [n_freqs, n_time_windows].
-        Power values are stored internally in log10 scale.
-    freq_range : list of [float, float]
-        Frequency range of the spectrogram, as [lowest_freq, highest_freq].
-    freq_res : float
-        Frequency resolution of the spectrogram.
-    time_results : dict
-        Results of the model fit across each time window.
+    % copied in from SpectralModel object
 
     Notes
     -----
@@ -66,9 +57,9 @@ class SpectralTimeModel(SpectralGroupModel):
                                     verbose=kwargs.pop('verbose', True),
                                     **kwargs)
 
-        self.data = BaseData2DT()
+        self.data = Data2DT()
 
-        self.results = BaseResults2DT(modes=self.modes,
+        self.results = Results2DT(modes=self.modes,
                                       metrics=kwargs.pop('metrics', None),
                                       bands=kwargs.pop('bands', None))
 
