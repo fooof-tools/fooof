@@ -11,7 +11,24 @@ from specparam.reports.strings import gen_modes_str, gen_settings_str, gen_issue
 ###################################################################################################
 
 class BaseModel():
-    """Define BaseModel object."""
+    """Define BaseModel object.
+
+    Parameters
+    ----------
+    aperiodic_mode : Mode or str
+        Mode for aperiodic component, or string specifying which mode to use.
+    periodic_mode : Mode or str
+        Mode for periodic component, or string specifying which mode to use.
+    verbose : bool
+        Whether to print out updates from the object.
+
+    Attributes
+    ----------
+    modes : Modes
+        Fit modes definitions.
+    verbose : bool
+        Verbosity status.
+    """
 
     def __init__(self, aperiodic_mode, periodic_mode, verbose):
         """Initialize object."""
