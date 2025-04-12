@@ -35,6 +35,17 @@ class Data():
         If True, checks the power values and raises an error for any NaN / Inf values.
     format : {'power'}
         The representation format of the data.
+
+    Attributes
+    ----------
+    freqs : 1d array
+        Frequency values for the power spectrum.
+    power_spectrum : 1d array
+        Power values, stored internally in log10 scale.
+    freq_range : list of [float, float]
+        Frequency range of the power spectrum, as [lowest_freq, highest_freq].
+    freq_res : float
+        Frequency resolution of the power spectrum.
     """
 
     def __init__(self, check_freqs=True, check_data=True, format='power'):
@@ -278,7 +289,20 @@ class Data():
 
 
 class Data2D(Data):
-    """Base object for managing data for spectral parameterization - for 2D data."""
+    """Base object for managing data for spectral parameterization - for 2D data.
+
+    Attributes
+    ----------
+    freqs : 1d array
+        Frequency values for the power spectra.
+    power_spectra : 2d array
+        Power values for the group of power spectra, as [n_power_spectra, n_freqs].
+        Power values are stored internally in log10 scale.
+    freq_range : list of [float, float]
+        Frequency range of the power spectra, as [lowest_freq, highest_freq].
+    freq_res : float
+        Frequency resolution of the power spectra.
+    """
 
     def __init__(self):
         """Initialize Data2D object."""
@@ -362,7 +386,20 @@ def transpose_arg1(func):
 
 
 class Data2DT(Data2D):
-    """Base object for managing data for spectral parameterization - for 2D transposed data."""
+    """Base object for managing data for spectral parameterization - for 2D transposed data.
+
+    Attributes
+    ----------
+    freqs : 1d array
+        Frequency values for the spectrogram.
+    spectrogram : 2d array
+        Power values for the spectrogram, as [n_freqs, n_time_windows].
+        Power values are stored internally in log10 scale.
+    freq_range : list of [float, float]
+        Frequency range of the spectrogram, as [lowest_freq, highest_freq].
+    freq_res : float
+        Frequency resolution of the spectrogram.
+    """
 
     def __init__(self):
         """Initialize Data2DT object."""
@@ -415,7 +452,20 @@ class Data2DT(Data2D):
 
 
 class Data3D(Data2DT):
-    """Base object for managing data for spectral parameterization - for 3D data."""
+    """Base object for managing data for spectral parameterization - for 3D data.
+
+    Attributes
+    ----------
+    freqs : 1d array
+        Frequency values for the power spectra.
+    spectrograms : 3d array
+        Power values for the spectrograms, organized as [n_events, n_freqs, n_time_windows].
+        Power values are stored internally in log10 scale.
+    freq_range : list of [float, float]
+        Frequency range of the power spectra, as [lowest_freq, highest_freq].
+    freq_res : float
+        Frequency resolution of the power spectra.
+    """
 
     def __init__(self):
         """Initialize Data3D object."""

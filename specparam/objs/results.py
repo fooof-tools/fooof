@@ -11,6 +11,7 @@ from specparam.measures.metrics import METRICS
 from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
+from specparam.modutils.docs import docs_get_section, replace_docstring_sections
 from specparam.data.data import FitResults
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import (get_model_params, get_group_params,
@@ -26,7 +27,17 @@ DEFAULT_METRICS = ['error_mae', 'gof_rsquared']
 
 
 class Results():
-    """Object for managing results - base / 1D version."""
+    """Object for managing results - base / 1D version.
+
+    Parameters
+    ----------
+    modes : Modes
+        Modes object with fit mode definitions.
+    metrics : Metrics
+        Metrics object with metric definitions.
+    bands : bands
+        Bands object with band definitions.
+    """
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
     def __init__(self, modes=None, metrics=None, bands=None):
@@ -294,8 +305,14 @@ class Results():
             return_components=True)
 
 
+@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters')])
 class Results2D(Results):
-    """Object for managing results - 2D version."""
+    """Object for managing results - 2D version.
+
+    Parameters
+    ----------
+    % copied in from Results
+    """
 
     def __init__(self, modes=None, metrics=None, bands=None):
         """Initialize Results2D object."""
@@ -457,8 +474,14 @@ class Results2D(Results):
         return get_group_params(self.group_results, self.modes, name, field)
 
 
+@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters')])
 class Results2DT(Results2D):
-    """Object for managing results - 2D transpose version."""
+    """Object for managing results - 2D transpose version.
+
+    Parameters
+    ----------
+    % copied in from Results
+    """
 
     def __init__(self, modes=None, metrics=None, bands=None):
         """Initialize Results2DT object."""
@@ -510,8 +533,14 @@ class Results2DT(Results2D):
         self.time_results = group_to_dict(self.group_results, self.modes, self.bands)
 
 
+@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters')])
 class Results3D(Results2DT):
-    """Object for managing results - 3D version."""
+    """Object for managing results - 3D version.
+
+    Parameters
+    ----------
+    % copied in from Results
+    """
 
     def __init__(self, modes=None, metrics=None, bands=None):
         """Initialize Results3D object."""
