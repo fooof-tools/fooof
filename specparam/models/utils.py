@@ -188,7 +188,7 @@ def average_reconstructions(group, avg_method='mean'):
 
     models = np.zeros(shape=group.data.power_spectra.shape)
     for ind in range(len(group.results)):
-        models[ind, :] = group.get_model(ind, regenerate=True).results.modeled_spectrum_
+        models[ind, :] = group.get_model(ind, regenerate=True).results.model.modeled_spectrum_
 
     avg_model = avg_funcs[avg_method](models, 0)
 

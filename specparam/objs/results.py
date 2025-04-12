@@ -26,6 +26,90 @@ RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_']
 DEFAULT_METRICS = ['error_mae', 'gof_rsquared']
 
 
+class ModelComponents():
+    """Object for managing model components.
+
+    Attributes
+    ----------
+    modeled_spectrum : 1d array
+        Modeled spectrum.
+    _spectrum_flat : 1d array
+        Data attribute: flattened power spectrum, with the aperiodic component removed.
+    _spectrum_peak_rm : 1d array
+        Data attribute: power spectrum, with peaks removed.
+    _ap_fit : 1d array
+        Model attribute: values of the isolated aperiodic fit.
+    _peak_fit : 1d array
+        Model attribute: values of the isolated peak fit.
+    """
+
+    def __init__(self):
+        """Initialize ModelComponents object."""
+
+        self.reset()
+
+
+    def reset(self):
+        """Reset model components attributes."""
+
+        # Data components
+        self._spectrum_flat = None
+        self._spectrum_peak_rm = None
+
+        # Full model
+        self.modeled_spectrum_ = None
+
+        # Model components
+        self._ap_fit = None
+        self._peak_fit = None
+
+
+    def get_component(self, component='full', space='log'):
+        """Get a model component.
+
+        Parameters
+        ----------
+        component : {'full', 'aperiodic', 'peak'}
+            Which model component to return.
+                'full' - full model
+                'aperiodic' - isolated aperiodic model component
+                'peak' - isolated peak model component
+        space : {'log', 'linear'}
+            Which space to return the model component in.
+                'log' - returns in log10 space.
+                'linear' - returns in linear space.
+
+        Returns
+        -------
+        output : 1d array
+            Specified model component, in specified spacing.
+
+        Notes
+        -----
+        The 'space' parameter doesn't just define the spacing of the model component
+        values, but rather defines the space of the additive model such that
+        `model = aperiodic_component + peak_component`.
+        With space set as 'log', this combination holds in log space.
+        With space set as 'linear', this combination holds in linear space.
+        """
+
+        if self.modeled_spectrum_ is None:
+            raise NoModelError("No model fit results are available, can not proceed.")
+        assert space in ['linear', 'log'], "Input for 'space' invalid."
+
+        if component == 'full':
+            output = self.modeled_spectrum_ if space == 'log' else unlog(self.modeled_spectrum_)
+        elif component == 'aperiodic':
+            output = self._ap_fit if space == 'log' else unlog(self._ap_fit)
+        elif component == 'peak':
+            output = self._peak_fit if space == 'log' else \
+                unlog(self.modeled_spectrum_) - unlog(self._ap_fit)
+        else:
+            raise ValueError('Input for component invalid.')
+
+        return output
+
+
 class Results():
     """Object for managing results - base / 1D version.
 
@@ -47,6 +131,8 @@ class Results():
 
         self.add_bands(bands)
         self.add_metrics(metrics)
+
+        self.model = ModelComponents()
 
         # Initialize results attributes
         self._reset_results(True)
@@ -158,52 +244,6 @@ class Results():
         return results
 
 
-    def get_component(self, component='full', space='log'):
-        """Get a model component.
-
-        Parameters
-        ----------
-        component : {'full', 'aperiodic', 'peak'}
-            Which model component to return.
-                'full' - full model
-                'aperiodic' - isolated aperiodic model component
-                'peak' - isolated peak model component
-        space : {'log', 'linear'}
-            Which space to return the model component in.
-                'log' - returns in log10 space.
-                'linear' - returns in linear space.
-
-        Returns
-        -------
-        output : 1d array
-            Specified model component, in specified spacing.
-
-        Notes
-        -----
-        The 'space' parameter doesn't just define the spacing of the model component
-        values, but rather defines the space of the additive model such that
-        `model = aperiodic_component + peak_component`.
-        With space set as 'log', this combination holds in log space.
-        With space set as 'linear', this combination holds in linear space.
-        """
-
-        if not self.has_model:
-            raise NoModelError("No model fit results are available, can not proceed.")
-        assert space in ['linear', 'log'], "Input for 'space' invalid."
-
-        if component == 'full':
-            output = self.modeled_spectrum_ if space == 'log' else unlog(self.modeled_spectrum_)
-        elif component == 'aperiodic':
-            output = self._ap_fit if space == 'log' else unlog(self._ap_fit)
-        elif component == 'peak':
-            output = self._peak_fit if space == 'log' else \
-                unlog(self.modeled_spectrum_) - unlog(self._ap_fit)
-        else:
-            raise ValueError('Input for component invalid.')
-
-        return output
-
-
     def get_params(self, name, field=None):
         """Return model fit parameters for specified feature(s).
 
@@ -277,14 +317,8 @@ class Results():
                 self.gaussian_params_ = np.nan
                 self.peak_params_ = np.nan
 
-            # Data components
-            self._spectrum_flat = None
-            self._spectrum_peak_rm = None
-
-            # Modeled spectrum components
-            self.modeled_spectrum_ = None
-            self._ap_fit = None
-            self._peak_fit = None
+            # Reset model components
+            self.model.reset()
 
 
     def _regenerate_model(self, freqs):
@@ -296,10 +330,9 @@ class Results():
             Frequency values for the power_spectrum, in linear scale.
         """
 
-        self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(freqs, \
-            self.modes.aperiodic, self.aperiodic_params_,
-            self.modes.periodic, self.gaussian_params_,
-            return_components=True)
+        self.model.modeled_spectrum_, self.model._peak_fit, self.model._ap_fit = \
+            gen_model(freqs, self.modes.aperiodic, self.aperiodic_params_,
+                      self.modes.periodic, self.gaussian_params_, return_components=True)
 
 
 @replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters')])

@@ -84,11 +84,11 @@ class BaseModel():
             output = self.data.power_spectrum if space == 'log' \
                 else unlog(self.data.power_spectrum)
         elif component == 'aperiodic':
-            output = self.results._spectrum_peak_rm if space == 'log' else \
-                unlog(self.data.power_spectrum) / unlog(self.results._peak_fit)
+            output = self.results.model._spectrum_peak_rm if space == 'log' else \
+                unlog(self.data.power_spectrum) / unlog(self.results.model._peak_fit)
         elif component == 'peak':
-            output = self.results._spectrum_flat if space == 'log' else \
-                unlog(self.data.power_spectrum) - unlog(self.results._ap_fit)
+            output = self.results.model._spectrum_flat if space == 'log' else \
+                unlog(self.data.power_spectrum) - unlog(self.results.model._ap_fit)
         else:
             raise ValueError('Input for component invalid.')
 

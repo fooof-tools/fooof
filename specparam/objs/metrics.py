@@ -75,7 +75,7 @@ class Metric():
         for key, lfunc in self.kwargs.items():
             kwargs[key] = lfunc(data, results)
 
-        self.result = self.func(data.power_spectrum, results.modeled_spectrum_, **kwargs)
+        self.result = self.func(data.power_spectrum, results.model.modeled_spectrum_, **kwargs)
 
 
 class Metrics():

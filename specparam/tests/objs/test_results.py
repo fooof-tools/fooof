@@ -5,6 +5,13 @@ from specparam.objs.results import *
 ###################################################################################################
 ###################################################################################################
 
+## ModelComponents object
+
+def test_model_components():
+
+    mc = ModelComponents()
+    assert mc
+
 ## 1D results object
 
 def test_results():

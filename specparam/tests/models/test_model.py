@@ -115,7 +115,7 @@ def test_fit_default_metrics():
 
     # Hack fake data with known properties: total error magnitude 2
     tfm.data.power_spectrum = np.array([1, 2, 3, 4, 5])
-    tfm.results.modeled_spectrum_ = np.array([1, 2, 5, 4, 5])
+    tfm.results.model.modeled_spectrum_ = np.array([1, 2, 5, 4, 5])
 
     # Check default goodness of fit and error measures
     tfm.results.metrics.compute_metrics(tfm.data, tfm.results)
@@ -296,7 +296,7 @@ def test_get_component(tfm):
 
     for comp in ['full', 'aperiodic', 'peak']:
         for space in ['log', 'linear']:
-            assert isinstance(tfm.results.get_component(comp, space), np.ndarray)
+            assert isinstance(tfm.results.model.get_component(comp, space), np.ndarray)
 
 def test_prints(tfm):
     """Test methods that print (alias and pass through methods).
@@ -326,13 +326,11 @@ def test_resets():
 
     for field in tfm.data._fields:
         assert getattr(tfm.data, field) is None
-    model_components = ['modeled_spectrum_', '_spectrum_flat',
-                        '_spectrum_peak_rm', '_ap_fit', '_peak_fit']
-    for field in model_components:
-        assert getattr(tfm.results, field) is None
+    for key, value in tfm.results.model.__dict__.items():
+        assert value is None
     for field in tfm.results._fields:
         assert np.all(np.isnan(getattr(tfm.results, field)))
-    assert tfm.data.freqs is None and tfm.results.modeled_spectrum_ is None
+    assert tfm.data.freqs is None and tfm.results.model.modeled_spectrum_ is None
 
 def test_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
