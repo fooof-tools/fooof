@@ -133,9 +133,9 @@ class Algorithm():
         ----------
         modes : Modes
             Model modes object.
-        data : BaseData*
+        data : Data*
             Model data object.
-        results : BaseResults*
+        results : Results*
             Model results object.
         """
 

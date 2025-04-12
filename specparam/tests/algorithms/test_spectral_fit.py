@@ -2,7 +2,7 @@
 
 from specparam.models.base import BaseModel
 from specparam.objs.data import BaseData
-from specparam.objs.results import BaseResults
+from specparam.objs.results import Results
 from specparam.sim import sim_power_spectrum
 from specparam.algorithms.algorithm import Algorithm
 
@@ -21,7 +21,7 @@ def test_algorithm_inherit(tfm):
                                periodic_mode='gaussian', verbose=False)
             self.data = BaseData()
             self.add_data = self.data.add_data
-            self.results = BaseResults(modes=self.modes)
+            self.results = Results(modes=self.modes)
             self.algorithm = SpectralFitAlgorithm(\
                 data=self.data, results=self.results, modes=self.modes)
             self.fit = tfm.fit

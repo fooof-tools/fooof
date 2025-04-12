@@ -7,14 +7,14 @@ from specparam.objs.results import *
 
 ## 1D results object
 
-def test_base_results():
+def test_results():
 
-    tres = BaseResults()
-    assert isinstance(tres, BaseResults)
+    tres = Results()
+    assert isinstance(tres, Results)
 
-def test_base_results_results(tresults):
+def test_results_results(tresults):
 
-    tres = BaseResults()
+    tres = Results()
 
     tres.add_results(tresults)
     assert tres.has_model
@@ -26,15 +26,15 @@ def test_base_results_results(tresults):
 
 ## 2D results object
 
-def test_base_results2d():
+def test_results2d():
 
-    tres2d1 = BaseResults2D()
-    assert isinstance(tres2d1, BaseResults)
-    assert isinstance(tres2d1, BaseResults2D)
+    tres2d1 = Results2D()
+    assert isinstance(tres2d1, Results)
+    assert isinstance(tres2d1, Results2D)
 
-def test_base_results2d_results(tresults, tmodes):
+def test_results2d_results(tresults, tmodes):
 
-    tres2d = BaseResults2D(modes=tmodes)
+    tres2d = Results2D(modes=tmodes)
 
     results = [tresults, tresults]
     tres2d.add_results(results)
@@ -45,16 +45,16 @@ def test_base_results2d_results(tresults, tmodes):
 
 ## 2DT results object
 
-def test_base_results2dt():
+def test_results2dt():
 
-    tres2dt1 = BaseResults2DT()
-    assert isinstance(tres2dt1, BaseResults)
-    assert isinstance(tres2dt1, BaseResults2D)
-    assert isinstance(tres2dt1, BaseResults2DT)
+    tres2dt1 = Results2DT()
+    assert isinstance(tres2dt1, Results)
+    assert isinstance(tres2dt1, Results2D)
+    assert isinstance(tres2dt1, Results2DT)
 
-def test_base_results2dt_results(tresults, tmodes):
+def test_results2dt_results(tresults, tmodes):
 
-    tres2dt = BaseResults2DT(modes=tmodes)
+    tres2dt = Results2DT(modes=tmodes)
 
     results = [tresults, tresults]
     tres2dt.add_results(results)
@@ -66,17 +66,17 @@ def test_base_results2dt_results(tresults, tmodes):
 
 ## 3D results object
 
-def test_base_results3d():
+def test_results3d():
 
-    tres3d1 = BaseResults3D()
-    assert isinstance(tres3d1, BaseResults)
-    assert isinstance(tres3d1, BaseResults2D)
-    assert isinstance(tres3d1, BaseResults2DT)
-    assert isinstance(tres3d1, BaseResults3D)
+    tres3d1 = Results3D()
+    assert isinstance(tres3d1, Results)
+    assert isinstance(tres3d1, Results2D)
+    assert isinstance(tres3d1, Results2DT)
+    assert isinstance(tres3d1, Results3D)
 
-def test_base_results3d_results(tresults, tmodes):
+def test_results3d_results(tresults, tmodes):
 
-    tres3d = BaseResults3D(modes=tmodes)
+    tres3d = Results3D(modes=tmodes)
 
     eresults = [[tresults, tresults], [tresults, tresults]]
     tres3d.add_results(eresults)

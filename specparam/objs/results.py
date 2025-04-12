@@ -25,12 +25,12 @@ RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_']
 DEFAULT_METRICS = ['error_mae', 'gof_rsquared']
 
 
-class BaseResults():
-    """Base object for managing results."""
+class Results():
+    """Object for managing results - base / 1D version."""
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
     def __init__(self, modes=None, metrics=None, bands=None):
-        """Initialize BaseResults object."""
+        """Initialize Results object."""
 
         self.modes = modes
 
@@ -294,13 +294,13 @@ class BaseResults():
             return_components=True)
 
 
-class BaseResults2D(BaseResults):
-    """Base object for managing results - 2D version."""
+class Results2D(Results):
+    """Object for managing results - 2D version."""
 
     def __init__(self, modes=None, metrics=None, bands=None):
-        """Initialize BaseResults2D object."""
+        """Initialize Results2D object."""
 
-        BaseResults.__init__(self, modes=modes, metrics=metrics, bands=bands)
+        Results.__init__(self, modes=modes, metrics=metrics, bands=bands)
 
         self._reset_group_results()
 
@@ -457,13 +457,13 @@ class BaseResults2D(BaseResults):
         return get_group_params(self.group_results, self.modes, name, field)
 
 
-class BaseResults2DT(BaseResults2D):
-    """Base object for managing results - 2D transpose version."""
+class Results2DT(Results2D):
+    """Object for managing results - 2D transpose version."""
 
     def __init__(self, modes=None, metrics=None, bands=None):
-        """Initialize BaseResults2DT object."""
+        """Initialize Results2DT object."""
 
-        BaseResults2D.__init__(self, modes=modes, metrics=metrics, bands=bands)
+        Results2D.__init__(self, modes=modes, metrics=metrics, bands=bands)
 
         self._reset_time_results()
 
@@ -510,13 +510,13 @@ class BaseResults2DT(BaseResults2D):
         self.time_results = group_to_dict(self.group_results, self.modes, self.bands)
 
 
-class BaseResults3D(BaseResults2DT):
-    """Base object for managing results - 3D version."""
+class Results3D(Results2DT):
+    """Object for managing results - 3D version."""
 
     def __init__(self, modes=None, metrics=None, bands=None):
-        """Initialize BaseResults3D object."""
+        """Initialize Results3D object."""
 
-        BaseResults2DT.__init__(self, modes=modes, metrics=metrics, bands=bands)
+        Results2DT.__init__(self, modes=modes, metrics=metrics, bands=bands)
 
         self._reset_event_results()
 
