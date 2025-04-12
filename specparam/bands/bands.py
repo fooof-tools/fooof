@@ -20,19 +20,34 @@ class Bands():
     >>> bands = Bands({'theta' : [4, 8], 'alpha' : [8, 12], 'beta' : [15, 30]})
     """
 
-    def __init__(self, input_bands={}):
+    def __init__(self, input_bands=None, n_bands=None):
         """Initialize the Bands object.
 
         Parameters
         ----------
         input_bands : dict, optional
             A dictionary of oscillation bands.
+        n_bands : int, optional
+            The number of bands to extract from the spectra.
+            Can only be specified if not providing `input_bands`.
+
+        Attributes
+        ----------
+        bands : OrderedDict
+            Band definitions.
         """
 
         self.bands = OrderedDict()
 
-        for label, band_def in input_bands.items():
-            self.add_band(label, band_def)
+        if input_bands:
+            for label, band_def in input_bands.items():
+                self.add_band(label, band_def)
+
+        self._n_bands = None
+        if n_bands:
+            if input_bands:
+                raise ValueError('Cannot provive both `input_bands` and `n_bands`.')
+            self._n_bands = n_bands
 
 
     def __getitem__(self, label):
@@ -89,7 +104,10 @@ class Bands():
     def n_bands(self):
         """The number of bands defined in the object."""
 
-        return len(self.bands)
+        if self._n_bands is not None:
+            return self._n_bands
+        else:
+            return len(self.bands)
 
 
     def add_band(self, label, band_definition):
@@ -103,6 +121,7 @@ class Bands():
             The lower and upper frequency limit of the band, in Hz.
         """
 
+        self._n_bands = None
         self._check_band(label, band_definition)
         self.bands[label] = tuple(band_definition)
 
@@ -147,3 +166,28 @@ class Bands():
         # Safety check that limits are in correct order
         if not band_definition[0] < band_definition[1]:
             raise ValueError("Band limit definitions are invalid.")
+
+
+def check_bands(bands):
+    """Check bands definition.
+
+    Parameters
+    ----------
+    bands : Bands or dict or int, optional
+        How to organize peaks into bands.
+
+    Returns
+    -------
+    bands : Bands
+        Bands definition.
+    """
+
+    if not isinstance(bands, Bands):
+        if isinstance(bands, (dict, OrderedDict)):
+            bands = Bands(bands)
+        elif isinstance(bands, int):
+            bands = Bands(n_bands=bands)
+        else:
+            raise ValueError('Bands definition not understood.')
+
+    return bands
