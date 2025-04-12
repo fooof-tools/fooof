@@ -140,9 +140,6 @@ class SpectralTimeEventModel(SpectralTimeModel):
         Data is optional, if data has already been added to the object.
         """
 
-        if bands:
-            self.results.add_bands(bands)
-
         if spectrograms is not None:
             self.add_data(freqs, spectrograms, freq_range)
 
@@ -170,7 +167,7 @@ class SpectralTimeEventModel(SpectralTimeModel):
                 fg, self.data.spectrograms, n_jobs, progress)
 
         if convert_results:
-            self.results.convert_results()
+            self.convert_results(bands)
 
 
     def report(self, freqs=None, spectrograms=None, freq_range=None,
@@ -418,6 +415,23 @@ class SpectralTimeEventModel(SpectralTimeModel):
             df = dict_to_df(flatten_results_dict(self.results.get_results()))
 
         return df
+
+
+    def convert_results(self, bands=None):
+        """Convert results to be organized across time & events.
+
+        Parameters
+        ----------
+        bands : Bands or int, optional
+            How to organize peaks into bands.
+            If Bands, extracts peaks based on band definitions.
+            If int, extracts the first 'n' peaks.
+            If not provided, uses band definition available in object.
+        """
+
+        if bands:
+            self.results.add_bands(bands)
+        self.results.convert_results()
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False,

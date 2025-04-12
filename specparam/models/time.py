@@ -106,9 +106,6 @@ class SpectralTimeModel(SpectralGroupModel):
         Data is optional, if data has already been added to the object.
         """
 
-        if bands:
-            self.results.add_bands(bands)
-
         if freqs is not None and spectrogram is not None:
             super().add_data(freqs, spectrogram, freq_range)
 
@@ -118,7 +115,7 @@ class SpectralTimeModel(SpectralGroupModel):
         super().fit(n_jobs=n_jobs, progress=progress, prechecks=False)
 
         if convert_results:
-            self.results.convert_results()
+            self.convert_results(bands)
 
 
     def report(self, freqs=None, spectrogram=None, freq_range=None,
@@ -281,3 +278,20 @@ class SpectralTimeModel(SpectralGroupModel):
             df = dict_to_df(self.results.get_results())
 
         return df
+
+
+    def convert_results(self, bands):
+        """Convert results to be organized across time.
+
+        Parameters
+        ----------
+        bands : Bands or int, optional
+            How to organize peaks into bands.
+            If Bands, extracts peaks based on band definitions.
+            If int, extracts the first 'n' peaks.
+            If not provided, uses band definition available in object.
+        """
+
+        if bands:
+            self.results.add_bands(bands)
+        self.results.convert_results()

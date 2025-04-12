@@ -504,20 +504,8 @@ class BaseResults2DT(BaseResults2D):
             self.time_results[key][inds] = np.nan
 
 
-    def convert_results(self, bands=None):
-        """Convert the model results to be organized across time windows.
-
-        Parameters
-        ----------
-        bands : Bands or int, optional
-            How to organize peaks into bands.
-            If Bands, extracts peaks based on band definitions.
-            If int, extracts the first 'n' peaks.
-            If not provided, uses band definition available in object.
-        """
-
-        if bands:
-            self.add_bands(bands)
+    def convert_results(self):
+        """Convert the model results to be organized across time windows."""
 
         self.time_results = group_to_dict(self.group_results, self.modes, self.bands)
 
@@ -661,20 +649,8 @@ class BaseResults3D(BaseResults2DT):
         return [get_group_params(gres, self.modes, name, field) for gres in self.event_group_results]
 
 
-    def convert_results(self, bands=None):
-        """Convert the event results to be organized across events and time windows.
-
-        Parameters
-        ----------
-        bands : Bands or int, optional
-            How to organize peaks into bands.
-            If Bands, extracts peaks based on band definitions.
-            If int, extracts the first 'n' peaks.
-            If not provided, uses band definition available in object.
-        """
-
-        if bands:
-            self.add_bands(bands)
+    def convert_results(self):
+        """Convert the event results to be organized across events and time windows."""
 
         self.event_time_results = event_group_to_dict(\
             self.event_group_results, self.modes, self.bands)

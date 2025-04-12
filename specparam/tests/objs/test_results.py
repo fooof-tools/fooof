@@ -58,7 +58,7 @@ def test_base_results2dt_results(tresults, tmodes):
 
     results = [tresults, tresults]
     tres2dt.add_results(results)
-    tres2dt.convert_results(None)
+    tres2dt.convert_results()
 
     assert tres2dt.has_model
     results_out = tres2dt.get_results()
@@ -80,7 +80,7 @@ def test_base_results3d_results(tresults, tmodes):
 
     eresults = [[tresults, tresults], [tresults, tresults]]
     tres3d.add_results(eresults)
-    tres3d.convert_results(None)
+    tres3d.convert_results()
 
     assert tres3d.has_model
     results_out = tres3d.get_results()
