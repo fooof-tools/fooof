@@ -5,7 +5,7 @@ from itertools import repeat
 
 import numpy as np
 
-from specparam.bands import Bands
+from specparam.bands.bands import check_bands
 from specparam.objs.metrics import Metrics
 from specparam.measures.metrics import METRICS
 from specparam.utils.array import unlog
@@ -103,10 +103,7 @@ class Results():
             If None, sets bands as an empty Bands object.
         """
 
-        if isinstance(bands, dict):
-            bands = Bands(bands)
-
-        self.bands = deepcopy(bands) if bands else Bands()
+        self.bands = deepcopy(check_bands(bands))
 
 
     def add_metrics(self, metrics):

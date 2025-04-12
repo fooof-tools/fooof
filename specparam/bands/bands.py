@@ -175,6 +175,7 @@ def check_bands(bands):
     ----------
     bands : Bands or dict or int, optional
         How to organize peaks into bands.
+        If None, initializes and empty Bands object.
 
     Returns
     -------
@@ -182,7 +183,9 @@ def check_bands(bands):
         Bands definition.
     """
 
-    if not isinstance(bands, Bands):
+    if bands is None:
+        bands = Bands()
+    elif not isinstance(bands, Bands):
         if isinstance(bands, (dict, OrderedDict)):
             bands = Bands(bands)
         elif isinstance(bands, int):

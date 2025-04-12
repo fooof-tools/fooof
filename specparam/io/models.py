@@ -62,7 +62,8 @@ def save_model(model, file_name, file_path=None, append=False,
     mode_labels = ['aperiodic_mode', 'periodic_mode']
 
     # Add bands information to saveable information
-    obj_dict['bands'] = dict(model.results.bands.bands)
+    obj_dict['bands'] = dict(model.results.bands.bands) \
+        if not model.results.bands._n_bands else model.results.bands._n_bands
     bands_label = ['bands'] if model.results.bands else []
 
     # Convert metrics results to saveable information
