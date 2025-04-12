@@ -428,12 +428,9 @@ class Results2D(Results):
         This method sets the model fits as null, and preserves the shape of the model fits.
         """
 
-        # Local import - avoid circular
-        from specparam import SpectralModel
-
-        null_model = SpectralModel(**self.modes.get_modes()._asdict()).results.get_results()
+        null_results = Results(self.modes, self.metrics.labels, self.bands).get_results()
         for ind in check_inds(inds):
-            self.group_results[ind] = null_model
+            self.group_results[ind] = null_results
 
 
     def get_params(self, name, field=None):
@@ -603,10 +600,7 @@ class Results3D(Results2DT):
         This method sets the model fits as null, and preserves the shape of the model fits.
         """
 
-        # Local import - avoid circular
-        from specparam import SpectralModel
-
-        null_model = SpectralModel(**self.modes.get_modes()._asdict()).results.get_results()
+        null_results = Results(self.modes, self.metrics.labels, self.bands).get_results()
 
         drop_inds = drop_inds if isinstance(drop_inds, dict) else \
             dict(zip(check_inds(drop_inds), repeat(window_inds)))
@@ -615,7 +609,7 @@ class Results3D(Results2DT):
 
             winds = check_inds(winds)
             for wind in winds:
-                self.event_group_results[eind][wind] = null_model
+                self.event_group_results[eind][wind] = null_results
             for key in self.event_time_results:
                 self.event_time_results[key][eind, winds] = np.nan
 
