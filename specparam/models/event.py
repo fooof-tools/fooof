@@ -272,13 +272,14 @@ class SpectralTimeEventModel(SpectralTimeModel):
         model = super().get_model()
 
         # Add data for specified single power spectrum, if available
-        if self.data.has_data:
+        if event_ind is not None and window_ind is not None and self.data.has_data:
             model.data.power_spectrum = self.data.spectrograms[event_ind][:, window_ind]
 
         # Add results for specified power spectrum, regenerating full fit if requested
-        model.results.add_results(self.results.event_group_results[event_ind][window_ind])
-        if regenerate:
-            model.results._regenerate_model(self.data.freqs)
+        if event_ind is not None and window_ind is not None:
+            model.results.add_results(self.results.event_group_results[event_ind][window_ind])
+            if regenerate:
+                model.results._regenerate_model(self.data.freqs)
 
         return model
 

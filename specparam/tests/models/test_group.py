@@ -332,14 +332,13 @@ def test_get_model(tfg):
     """Check return of an individual model fit from a group object."""
 
     # Test with no ind (no data / results)
-    tfm = tfg.get_model()
-    assert tfm
+    tfm_null = tfg.get_model()
+    assert tfm_null
     # Check that settings are copied over properly, but data and results are empty
     for setting in tfg.algorithm.settings.names:
-        assert getattr(tfg.algorithm, setting) == getattr(tfm.algorithm, setting)
-    for result in tfg.results._fields:
-        assert np.all(np.isnan(getattr(tfm.results, result)))
-    assert not tfm.data.power_spectrum
+        assert getattr(tfg.algorithm, setting) == getattr(tfm_null.algorithm, setting)
+    assert not tfm_null.data.has_data
+    assert not tfm_null.results.has_model
 
     # Check without regenerating
     tfm0 = tfg.get_model(0, False)

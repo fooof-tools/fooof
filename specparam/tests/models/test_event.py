@@ -118,13 +118,26 @@ def test_event_load():
 
 def test_event_get_model(tfe):
 
+    # Check getting null model
+    tfm_null = tfe.get_model()
+    assert tfm_null
+    # Check that settings are copied over properly, but data and results are empty
+    for setting in tfe.algorithm.settings.names:
+        assert getattr(tfe.algorithm, setting) == getattr(tfm_null.algorithm, setting)
+    assert not tfm_null.data.has_data
+    assert not tfm_null.results.has_model
+
     # Check without regenerating
     tfm0 = tfe.get_model(0, 0, False)
     assert tfm0
+    assert tfm0.data.has_data
+    assert tfm0.results.has_model
 
     # Check with regenerating
     tfm1 = tfe.get_model(1, 1, True)
     assert tfm1
+    assert tfm1.data.has_data
+    assert tfm1.results.has_model
     assert np.all(tfm1.results.modeled_spectrum_)
 
 def test_event_get_params(tfe):
