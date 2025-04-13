@@ -31,10 +31,8 @@ class SpectralGroupModel(SpectralModel):
 
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
-    WARNING: frequency and power values inputs must be in linear space.
-
-    Passing in logged frequencies and/or power spectra is not detected,
-    and will silently produce incorrect results.
+    WARNING: frequency and power values inputs must be in linear space. Passing in logged
+    frequencies and/or power spectra is not detected, and will silently produce incorrect results.
 
     Parameters
     ----------
@@ -47,14 +45,10 @@ class SpectralGroupModel(SpectralModel):
     Notes
     -----
     % copied in from SpectralModel object
-    - The group object inherits from the model object. As such it also has data
-      attributes (`power_spectrum` & `modeled_spectrum`), and parameter attributes
-      (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)
-      which are defined in the context of individual model fits. These attributes are
-      used during the fitting process, but in the group context do not store results
-      post-fitting. Rather, all model fit results are collected and stored into the
-      `group_results` attribute. To access individual parameters of the fit, use
-      the `get_params` method.
+    - The group object inherits from the model object, and in doing so overwrites the
+      `data` and `results` objects with versions for fitting groups of power spectra.
+      All model fit results are collected and stored in the `results.group_results` attribute.
+      To access individual parameters of the fit, use the `get_params` method.
     """
 
     def __init__(self, *args, **kwargs):

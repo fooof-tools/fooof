@@ -35,8 +35,21 @@ class Results():
         Modes object with fit mode definitions.
     metrics : Metrics
         Metrics object with metric definitions.
-    bands : bands
+    bands : Bands
         Bands object with band definitions.
+
+    Attributes
+    ----------
+    modes : Modes
+        Modes object with fit mode definitions.
+    bands : Bands
+        Bands object with band definitions.
+    model : ModelComponents
+        Manages the model fit and components.
+    params : ModelParameters
+        Manages the model fit parameters.
+    metrics : Metrics
+        Metrics object with metric definitions.
     """
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
@@ -220,13 +233,20 @@ class Results():
                       self.modes.periodic, self.params.gaussian, return_components=True)
 
 
-@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters')])
+@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters'),
+                             docs_get_section(Results.__doc__, 'Attributes')])
 class Results2D(Results):
     """Object for managing results - 2D version.
 
     Parameters
     ----------
     % copied in from Results
+
+    Attributes
+    ----------
+    % copied in from Results
+    group_results : list of FitResults
+        Results of the model fit for each power spectrum.
     """
 
     def __init__(self, modes=None, metrics=None, bands=None):
@@ -386,13 +406,20 @@ class Results2D(Results):
         return get_group_params(self.group_results, self.modes, name, field)
 
 
-@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters')])
+@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters'),
+                             docs_get_section(Results2D.__doc__, 'Attributes')])
 class Results2DT(Results2D):
     """Object for managing results - 2D transpose version.
 
     Parameters
     ----------
     % copied in from Results
+
+    Attributes
+    ----------
+    % copied in from Results2D
+    time_results : dict
+        Results of the model fit across each time window.
     """
 
     def __init__(self, modes=None, metrics=None, bands=None):
@@ -445,13 +472,23 @@ class Results2DT(Results2D):
         self.time_results = group_to_dict(self.group_results, self.modes, self.bands)
 
 
-@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters')])
+@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters'),
+                             docs_get_section(Results2DT.__doc__, 'Attributes')])
 class Results3D(Results2DT):
     """Object for managing results - 3D version.
 
     Parameters
     ----------
     % copied in from Results
+
+    Attributes
+    ----------
+    % copied in from Results2DT
+    event_group_results : list of list of FitResults
+        Full model results collected across all events and models.
+    event_time_results : dict
+        Results of the model fit across each time window, collected across events.
+        Each value in the dictionary stores a model fit parameter, as [n_events, n_time_windows].
     """
 
     def __init__(self, modes=None, metrics=None, bands=None):
