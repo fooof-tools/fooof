@@ -14,6 +14,7 @@ from specparam.modutils.errors import FitError
 from specparam.measures.metrics import METRICS
 from specparam.sim import gen_freqs, sim_power_spectrum
 from specparam.modes.definitions import AP_MODES, PE_MODES
+from specparam.models.utils import compare_model_objs
 from specparam.modutils.dependencies import safe_import
 from specparam.modutils.errors import DataError, NoDataError, InconsistentDataError
 
@@ -194,8 +195,7 @@ def test_load(tfm):
 
     # Test loading just results
     ntfm = SpectralModel(verbose=False)
-    file_name_res = 'test_model_res'
-    ntfm.load(file_name_res, TEST_DATA_PATH)
+    ntfm.load('test_model_res', TEST_DATA_PATH)
     # Check that result attributes get filled
     for result in tfm.results._fields:
         assert not np.all(np.isnan(getattr(ntfm.results.params, result)))
@@ -206,10 +206,9 @@ def test_load(tfm):
 
     # Test loading just settings
     ntfm = SpectralModel(verbose=False)
-    file_name_set = 'test_model_set'
-    ntfm.load(file_name_set, TEST_DATA_PATH)
+    ntfm.load('test_model_set', TEST_DATA_PATH)
     for setting in tfm.algorithm.settings.names:
-        assert getattr(ntfm.algorithm, setting) is not None
+        assert getattr(tfm.algorithm, setting) == getattr(ntfm.algorithm, setting)
     # Test that results and data are None
     for result in tfm.results._fields:
         assert np.all(np.isnan(getattr(ntfm.results.params, result)))
@@ -217,9 +216,9 @@ def test_load(tfm):
 
     # Test loading just data
     ntfm = SpectralModel(verbose=False)
-    file_name_dat = 'test_model_dat'
-    ntfm.load(file_name_dat, TEST_DATA_PATH)
-    assert ntfm.data.power_spectrum is not None
+    ntfm.load('test_model_dat', TEST_DATA_PATH)
+    assert ntfm.data.has_data
+    assert np.array_equal(tfm.data.power_spectrum, ntfm.data.power_spectrum)
     # Test that settings and results are None
     for setting in tfm.algorithm.settings.names:
         assert getattr(ntfm.algorithm, setting) is None
@@ -228,16 +227,12 @@ def test_load(tfm):
 
     # Test loading all elements
     ntfm = SpectralModel(verbose=False)
-    file_name_all = 'test_model_all'
-    ntfm.load(file_name_all, TEST_DATA_PATH)
+    ntfm.load('test_model_all', TEST_DATA_PATH)
+    assert compare_model_objs([tfm, ntfm], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
+    for data in tfm.data._fields:
+        assert np.array_equal(getattr(tfm.data, data), getattr(ntfm.data, data))
     for result in tfm.results._fields:
         assert not np.all(np.isnan(getattr(ntfm.results.params, result)))
-    for setting in tfm.algorithm.settings.names:
-        assert getattr(ntfm.algorithm, setting) is not None
-    for data in tfm.data._fields:
-        assert getattr(ntfm.data, data) is not None
-    for meta_dat in tfm.data._meta_fields:
-        assert getattr(ntfm.data, meta_dat) is not None
 
 def test_add_data(tresults):
     """Tests method to add data to model objects."""

@@ -12,6 +12,7 @@ import numpy as np
 from numpy.testing import assert_equal
 
 from specparam.measures.metrics import METRICS
+from specparam.models.utils import compare_model_objs
 from specparam.modutils.dependencies import safe_import
 from specparam.sim import sim_group_power_spectra
 
@@ -273,13 +274,9 @@ def test_load(tfg):
     """Test load into group object.
     Note: loads files from test_save_group in specparam/tests/io/test_models.py."""
 
-    file_name_res = 'test_group_res'
-    file_name_set = 'test_group_set'
-    file_name_dat = 'test_group_dat'
-
     # Test loading just results
     ntfg = SpectralGroupModel(verbose=False)
-    ntfg.load(file_name_res, TEST_DATA_PATH)
+    ntfg.load('test_group_res', TEST_DATA_PATH)
     assert len(ntfg.results.group_results) > 0
     # Test that settings and data are None
     for setting in tfg.algorithm.settings.names:
@@ -288,9 +285,9 @@ def test_load(tfg):
 
     # Test loading just settings
     ntfg = SpectralGroupModel(verbose=False)
-    ntfg.load(file_name_set, TEST_DATA_PATH)
+    ntfg.load('test_group_set', TEST_DATA_PATH)
     for setting in tfg.algorithm.settings.names:
-        assert getattr(ntfg.algorithm, setting) is not None
+        assert getattr(tfg.algorithm, setting) == getattr(ntfg.algorithm, setting)
     # Test that results and data are None
     for result in tfg.results._fields:
         assert np.all(np.isnan(getattr(ntfg.results.params, result)))
@@ -298,7 +295,7 @@ def test_load(tfg):
 
     # Test loading just data
     ntfg = SpectralGroupModel(verbose=False)
-    ntfg.load(file_name_dat, TEST_DATA_PATH)
+    ntfg.load('test_group_dat', TEST_DATA_PATH)
     assert ntfg.data.has_data
     # Test that settings and results are None
     for setting in tfg.algorithm.settings.names:
@@ -308,14 +305,9 @@ def test_load(tfg):
 
     # Test loading all elements
     ntfg = SpectralGroupModel(verbose=False)
-    file_name_all = 'test_group_all'
-    ntfg.load(file_name_all, TEST_DATA_PATH)
+    ntfg.load('test_group_all', TEST_DATA_PATH)
+    assert compare_model_objs([tfg, ntfg], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
     assert len(ntfg.results.group_results) > 0
-    for setting in tfg.algorithm.settings.names:
-        assert getattr(ntfg.algorithm, setting) is not None
-    assert ntfg.data.has_data
-    for meta_dat in tfg.data._meta_fields:
-        assert getattr(ntfg.data, meta_dat) is not None
 
 def test_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""

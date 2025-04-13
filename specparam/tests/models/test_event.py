@@ -9,6 +9,7 @@ They serve rather as 'smoke tests', for if anything fails completely.
 import numpy as np
 
 from specparam.models import SpectralGroupModel, SpectralTimeModel
+from specparam.models.utils import compare_model_objs
 from specparam.sim import sim_spectrogram
 from specparam.modutils.dependencies import safe_import
 
@@ -95,26 +96,27 @@ def test_event_report(skip_if_no_mpl):
 
     assert tfe
 
-def test_event_load():
-
-    file_name_res = 'test_event_res'
-    file_name_set = 'test_event_set'
-    file_name_dat = 'test_event_dat'
+def test_event_load(tfe):
 
     # Test loading results
-    tfe = SpectralTimeEventModel(verbose=False)
-    tfe.load(file_name_res, TEST_DATA_PATH)
-    assert tfe.results.event_time_results
+    ntfe = SpectralTimeEventModel(verbose=False)
+    ntfe.load('test_event_res', TEST_DATA_PATH)
+    assert ntfe.results.event_time_results
 
     # Test loading settings
-    tfe = SpectralTimeEventModel(verbose=False)
-    tfe.load(file_name_set, TEST_DATA_PATH)
-    assert tfe.algorithm.get_settings()
+    ntfe = SpectralTimeEventModel(verbose=False)
+    ntfe.load('test_event_set', TEST_DATA_PATH)
+    assert ntfe.algorithm.get_settings()
 
     # Test loading data
-    tfe = SpectralTimeEventModel(verbose=False)
-    tfe.load(file_name_dat, TEST_DATA_PATH)
-    assert np.all(tfe.data.spectrograms)
+    ntfe = SpectralTimeEventModel(verbose=False)
+    ntfe.load('test_event_dat', TEST_DATA_PATH)
+    assert np.all(ntfe.data.spectrograms)
+
+    # Test loading all elements
+    ntfe = SpectralTimeEventModel(verbose=False)
+    ntfe.load('test_event_all', TEST_DATA_PATH)
+    assert compare_model_objs([tfe, ntfe], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
 
 def test_event_get_model(tfe):
 
