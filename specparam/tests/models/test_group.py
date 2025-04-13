@@ -65,8 +65,8 @@ def test_has_model(tfg):
 def test_n_properties(tfg):
     """Test the n_peaks & n_params property attributes."""
 
-    assert np.all(tfg.results.n_peaks_)
-    assert np.all(tfg.results.n_params_)
+    assert np.all(tfg.results.n_peaks)
+    assert np.all(tfg.results.n_params)
 
 def test_n_null(tfg):
     """Test the n_null_ property attribute."""

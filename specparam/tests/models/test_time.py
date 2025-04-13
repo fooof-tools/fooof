@@ -41,8 +41,8 @@ def test_time_iter(tft):
 
 def test_time_n_properties(tft):
 
-    assert np.all(tft.results.n_peaks_)
-    assert np.all(tft.results.n_params_)
+    assert np.all(tft.results.n_peaks)
+    assert np.all(tft.results.n_params)
 
 def test_time_fit():
 

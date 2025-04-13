@@ -57,8 +57,8 @@ def test_has_model(tfm):
 
 def test_n_properties(tfm):
 
-    assert tfm.results.n_peaks_
-    assert tfm.results.n_params_
+    assert tfm.results.n_peaks
+    assert tfm.results.n_params
 
 def test_fit_nk():
     """Test fit, no knee."""

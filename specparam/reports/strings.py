@@ -393,7 +393,7 @@ def gen_model_results_str(model, concise=False):
 
         # Peak parameters
         'Peak Parameters (\'{}\' mode) {} peaks found'.format(\
-            model.modes.periodic.name, model.results.n_peaks_),
+            model.modes.periodic.name, model.results.n_peaks),
         *[peak_str.format(*op) for op in model.results.params.peak],
         '',
 
@@ -455,7 +455,7 @@ def gen_group_results_str(group, concise=False):
 
         # Peak Parameters
         'Peak Parameters (\'{}\' mode) {} total peaks found'.format(\
-            group.modes.periodic.name, sum(group.results.n_peaks_)),
+            group.modes.periodic.name, sum(group.results.n_peaks)),
         '',
 
         # Metrics

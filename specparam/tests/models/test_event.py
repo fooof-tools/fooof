@@ -42,8 +42,8 @@ def test_event_iter(tfe):
 
 def test_event_n_properties(tfe):
 
-    assert np.all(tfe.results.n_peaks_)
-    assert np.all(tfe.results.n_params_)
+    assert np.all(tfe.results.n_peaks)
+    assert np.all(tfe.results.n_params)
 
 def test_event_fit():
 

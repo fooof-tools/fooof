@@ -71,7 +71,7 @@ class Results():
 
 
     @property
-    def n_peaks_(self):
+    def n_peaks(self):
         """How many peaks were fit in the model."""
 
         n_peaks = None
@@ -82,12 +82,12 @@ class Results():
 
 
     @property
-    def n_params_(self):
+    def n_params(self):
         """The total number of parameters fit in the model."""
 
         n_params = None
         if self.has_model:
-            n_peak_params = self.modes.periodic.n_params * self.n_peaks_
+            n_peak_params = self.modes.periodic.n_params * self.n_peaks
             n_params = n_peak_params + self.modes.aperiodic.n_params
 
         return n_params
@@ -282,7 +282,7 @@ class Results2D(Results):
 
 
     @property
-    def n_peaks_(self):
+    def n_peaks(self):
         """How many peaks were fit for each model."""
 
         n_peaks = None
@@ -489,7 +489,7 @@ class Results3D(Results2DT):
 
 
     @property
-    def n_peaks_(self):
+    def n_peaks(self):
         """How many peaks were fit for each model, for each event."""
 
         n_peaks = None

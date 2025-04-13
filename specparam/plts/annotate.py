@@ -43,7 +43,7 @@ def plot_annotated_peak_search(model):
         model.results.params.gaussian[:, 1].argsort()][::-1]
 
     # Loop through the iterative search for each peak
-    for ind in range(model.results.n_peaks_ + 1):
+    for ind in range(model.results.n_peaks + 1):
 
         # This forces the creation of a new plotting axes per iteration
         ax = check_ax(None, PLT_FIGSIZES['spectral'])
@@ -65,7 +65,7 @@ def plot_annotated_peak_search(model):
         ax.set_ylim(ylims)
         ax.set_title('Iteration #' + str(ind+1), fontsize=16)
 
-        if ind < model.results.n_peaks_:
+        if ind < model.results.n_peaks:
 
             gauss = model.modes.periodic.func(model.data.freqs, *gaussian_params[ind, :])
             plot_spectra(model.data.freqs, gauss, ax=ax, label='Gaussian Fit',
@@ -136,7 +136,7 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
     #   See: https://github.com/matplotlib/matplotlib/issues/12820. Fixed in 3.2.1.
     bug_buff = 0.000001
 
-    if annotate_peaks and model.results.n_peaks_:
+    if annotate_peaks and model.results.n_peaks:
 
         # Extract largest peak, to annotate, grabbing gaussian params
         gauss = get_band_peak(model, model.data.freq_range, attribute='gaussian')
