@@ -7,6 +7,7 @@ import numpy as np
 
 from specparam.bands.bands import check_bands
 from specparam.objs.metrics import Metrics
+from specparam.objs.params import ModelParameters
 from specparam.objs.components import ModelComponents
 from specparam.measures.metrics import METRICS
 from specparam.utils.checks import check_inds, check_array_dim
@@ -22,7 +23,8 @@ from specparam.sim.gen import gen_model
 ###################################################################################################
 
 # Define set of results fields & default metrics to use
-RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_']
+#RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_']
+RESULTS_FIELDS = ['aperiodic', 'gaussian', 'peak']
 DEFAULT_METRICS = ['error_mae', 'gof_rsquared']
 
 
@@ -49,6 +51,7 @@ class Results():
         self.add_metrics(metrics)
 
         self.model = ModelComponents()
+        self.params = ModelParameters()
 
         # Initialize results attributes
         self._reset_results(True)
@@ -67,7 +70,7 @@ class Results():
         - necessarily defined, as floats, if model has been fit
         """
 
-        return not np.all(np.isnan(self.aperiodic_params_))
+        return not np.all(np.isnan(self.params.aperiodic))
 
 
     @property
@@ -76,7 +79,7 @@ class Results():
 
         n_peaks = None
         if self.has_model:
-            n_peaks = self.peak_params_.shape[0]
+            n_peaks = self.params.peak.shape[0]
 
         return n_peaks
 
@@ -137,7 +140,7 @@ class Results():
 
         # Add parameter fields and then select and add metrics results
         for pfield in self._fields:
-            setattr(self, pfield, getattr(results, pfield.strip('_')))
+            setattr(self.params, pfield, getattr(results, pfield + '_params'))
 
         self.metrics.add_results(results.metrics)
 
@@ -154,7 +157,7 @@ class Results():
         """
 
         results = FitResults(
-            **{key.strip('_') : getattr(self, key) for key in self._fields},
+            **{key + '_params' : getattr(self.params, key) for key in self._fields},
             metrics=self.metrics.results)
 
         return results
@@ -192,6 +195,7 @@ class Results():
         return get_model_params(self.get_results(), self.modes, name, field)
 
 
+    # TODO: check / move to ModelParameters?
     def _check_loaded_results(self, data):
         """Check if results have been added and check data.
 
@@ -204,8 +208,8 @@ class Results():
         # If results loaded, check dimensions of peak parameters
         #   This fixes an issue where they end up the wrong shape if they are empty (no peaks)
         if set(self._fields).issubset(set(data.keys())):
-            self.peak_params_ = check_array_dim(self.peak_params_)
-            self.gaussian_params_ = check_array_dim(self.gaussian_params_)
+            self.params.peak = check_array_dim(self.params.peak)
+            self.params.gaussian = check_array_dim(self.params.gaussian)
 
 
     def _reset_results(self, clear_results=False):
@@ -219,21 +223,22 @@ class Results():
 
         if clear_results:
 
-            # Aperiodic parameters
-            if self.modes:
-                self.aperiodic_params_ = np.array([np.nan] * self.modes.aperiodic.n_params)
-            else:
-                self.aperiodic_params_ = np.nan
+            # # Aperiodic parameters
+            # if self.modes:
+            #     self.aperiodic_params_ = np.array([np.nan] * self.modes.aperiodic.n_params)
+            # else:
+            #     self.aperiodic_params_ = np.nan
 
-            # Periodic parameters
-            if self.modes:
-                self.gaussian_params_ = np.empty([0, self.modes.periodic.n_params])
-                self.peak_params_ = np.empty([0, self.modes.periodic.n_params])
-            else:
-                self.gaussian_params_ = np.nan
-                self.peak_params_ = np.nan
+            # # Periodic parameters
+            # if self.modes:
+            #     self.gaussian_params_ = np.empty([0, self.modes.periodic.n_params])
+            #     self.peak_params_ = np.empty([0, self.modes.periodic.n_params])
+            # else:
+            #     self.gaussian_params_ = np.nan
+            #     self.peak_params_ = np.nan
 
-            # Reset model components
+            # Reset model parameters & components
+            self.params.reset(self.modes)
             self.model.reset()
 
 
@@ -247,8 +252,8 @@ class Results():
         """
 
         self.model.modeled_spectrum, self.model._peak_fit, self.model._ap_fit = \
-            gen_model(freqs, self.modes.aperiodic, self.aperiodic_params_,
-                      self.modes.periodic, self.gaussian_params_, return_components=True)
+            gen_model(freqs, self.modes.aperiodic, self.params.aperiodic,
+                      self.modes.periodic, self.params.gaussian, return_components=True)
 
 
 @replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters')])

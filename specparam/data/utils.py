@@ -77,7 +77,7 @@ def get_group_params(group_results, modes, name, field=None):
         List of FitResults objects, reflecting model results across a group of power spectra.
     modes : Modes
         Model modes definition.
-    name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
+    name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'metrics'}
         Name of the data field to extract across the group.
     field : str or int, optional
         Column name / index to extract from selected data, if requested.

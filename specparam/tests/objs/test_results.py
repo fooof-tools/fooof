@@ -19,7 +19,7 @@ def test_results_results(tresults):
     tres.add_results(tresults)
     assert tres.has_model
     for result in tres._fields:
-        assert np.array_equal(getattr(tres, result), getattr(tresults, result.strip('_')))
+        assert np.array_equal(getattr(tres.params, result), getattr(tresults, result + '_params'))
 
     results_out = tres.get_results()
     assert results_out == tresults

@@ -71,11 +71,11 @@ def test_fit_nk():
     tfm.fit(xs, ys)
 
     # Check model results - aperiodic parameters
-    assert np.allclose(ap_params, tfm.results.aperiodic_params_, [0.5, 0.1])
+    assert np.allclose(ap_params, tfm.results.params.aperiodic, [0.5, 0.1])
 
     # Check model results - gaussian parameters
     for ii, gauss in enumerate(groupby(gauss_params, 3)):
-        assert np.allclose(gauss, tfm.results.gaussian_params_[ii], [2.0, 0.5, 1.0])
+        assert np.allclose(gauss, tfm.results.params.gaussian[ii], [2.0, 0.5, 1.0])
 
 def test_fit_nk_noise():
     """Test fit on noisy data, to make sure nothing breaks."""
@@ -102,11 +102,11 @@ def test_fit_knee():
     tfm.fit(xs, ys)
 
     # Check model results - aperiodic parameters
-    assert np.allclose(ap_params, tfm.results.aperiodic_params_, [1, 2, 0.2])
+    assert np.allclose(ap_params, tfm.results.params.aperiodic, [1, 2, 0.2])
 
     # Check model results - gaussian parameters
     for ii, gauss in enumerate(groupby(gauss_params, 3)):
-        assert np.allclose(gauss, tfm.results.gaussian_params_[ii], [2.0, 0.5, 1.0])
+        assert np.allclose(gauss, tfm.results.params.gaussian[ii], [2.0, 0.5, 1.0])
 
 def test_fit_default_metrics():
     """Test goodness of fit & error metrics, post model fitting."""
@@ -198,7 +198,7 @@ def test_load(tfm):
     ntfm.load(file_name_res, TEST_DATA_PATH)
     # Check that result attributes get filled
     for result in tfm.results._fields:
-        assert not np.all(np.isnan(getattr(ntfm.results, result)))
+        assert not np.all(np.isnan(getattr(ntfm.results.params, result)))
     # Test that settings and data are None
     for setting in tfm.algorithm.settings.names:
         assert getattr(ntfm.algorithm, setting) is None
@@ -212,7 +212,7 @@ def test_load(tfm):
         assert getattr(ntfm.algorithm, setting) is not None
     # Test that results and data are None
     for result in tfm.results._fields:
-        assert np.all(np.isnan(getattr(ntfm.results, result)))
+        assert np.all(np.isnan(getattr(ntfm.results.params, result)))
     assert ntfm.data.power_spectrum is None
 
     # Test loading just data
@@ -224,14 +224,14 @@ def test_load(tfm):
     for setting in tfm.algorithm.settings.names:
         assert getattr(ntfm.algorithm, setting) is None
     for result in tfm.results._fields:
-        assert np.all(np.isnan(getattr(ntfm.results, result)))
+        assert np.all(np.isnan(getattr(ntfm.results.params, result)))
 
     # Test loading all elements
     ntfm = SpectralModel(verbose=False)
     file_name_all = 'test_model_all'
     ntfm.load(file_name_all, TEST_DATA_PATH)
     for result in tfm.results._fields:
-        assert not np.all(np.isnan(getattr(ntfm.results, result)))
+        assert not np.all(np.isnan(getattr(ntfm.results.params, result)))
     for setting in tfm.algorithm.settings.names:
         assert getattr(ntfm.algorithm, setting) is not None
     for data in tfm.data._fields:
@@ -329,7 +329,7 @@ def test_resets():
     for key, value in tfm.results.model.__dict__.items():
         assert value is None
     for field in tfm.results._fields:
-        assert np.all(np.isnan(getattr(tfm.results, field)))
+        assert np.all(np.isnan(getattr(tfm.results.params, field)))
     assert tfm.data.freqs is None and tfm.results.model.modeled_spectrum is None
 
 def test_report(skip_if_no_mpl):
@@ -351,7 +351,7 @@ def test_fit_failure():
 
     # Check after failing out of fit, all results are reset
     for result in tfm.results._fields:
-        assert np.all(np.isnan(getattr(tfm.results, result)))
+        assert np.all(np.isnan(getattr(tfm.results.params, result)))
 
     ## Monkey patch to check errors in general
     #  This mimics the main fit-failure, without requiring bad data / waiting for it to fail.
@@ -365,7 +365,7 @@ def test_fit_failure():
 
     # Check after failing out of fit, all results are reset
     for result in tfm.results._fields:
-        assert np.all(np.isnan(getattr(tfm.results, result)))
+        assert np.all(np.isnan(getattr(tfm.results.params, result)))
 
 def test_debug():
     """Test model object in debug state, including with fit failures."""

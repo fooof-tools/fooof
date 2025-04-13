@@ -48,17 +48,12 @@ def save_model(model, file_name, file_path=None, append=False,
         If the save file is not understood.
     """
 
-    # Convert object to dictionary & convert all arrays to lists, for JSON serializing
-    #   This 'flattens' the object, getting all relevant attributes in the same dictionary
-    obj_dict = dict_array_to_lst(model.__dict__)
-    data_dict = dict_array_to_lst(model.data.__dict__)
-    results_dict = dict_array_to_lst(model.results.__dict__)
-    algo_dict = dict_array_to_lst(model.algorithm.__dict__)
-    obj_dict = {**obj_dict, **data_dict, **results_dict, **algo_dict}
+    # 'Flatten' the model object by extracting relevant attributes to a dictionary
+    obj_dict = {**model.data.__dict__, **model.algorithm.__dict__}
 
     # Convert modes object to their saveable string name
-    obj_dict['aperiodic_mode'] = obj_dict['modes'].aperiodic.name
-    obj_dict['periodic_mode'] = obj_dict['modes'].periodic.name
+    obj_dict['aperiodic_mode'] = model.modes.aperiodic.name
+    obj_dict['periodic_mode'] = model.modes.periodic.name
     mode_labels = ['aperiodic_mode', 'periodic_mode']
 
     # Add bands information to saveable information
@@ -66,8 +61,15 @@ def save_model(model, file_name, file_path=None, append=False,
         if not model.results.bands._n_bands else model.results.bands._n_bands
     bands_label = ['bands'] if model.results.bands else []
 
-    # Convert metrics results to saveable information
-    obj_dict['metrics'] = obj_dict['metrics'].results
+    # Convert results & metrics to saveable information
+    results_labels = []
+    for rfield in model.results._fields:
+        results_labels.append(rfield + '_params')
+        obj_dict[rfield + '_params'] = getattr(model.results.params, rfield)
+    obj_dict['metrics'] = model.results.metrics.results
+
+    # Convert all arrays to list for JSON serialization
+    obj_dict = dict_array_to_lst(obj_dict)
 
     # Check for saving out base information / check if base only
     if save_base is None:
@@ -79,7 +81,7 @@ def save_model(model, file_name, file_path=None, append=False,
     keep = set(\
         (mode_labels + bands_label if save_base else []) + \
         (model.data._meta_fields if save_base or base_only else []) + \
-        (model.results._fields + ['metrics'] if save_results else []) + \
+        (results_labels + ['metrics'] if save_results else []) + \
         (model.algorithm.settings.names if save_settings else []) + \
         (model.data._fields if save_data else []))
 

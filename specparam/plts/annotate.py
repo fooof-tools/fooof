@@ -33,14 +33,14 @@ def plot_annotated_peak_search(model):
     #   is the same as the one that is used in the peak fitting procedure
     flatspec = model.data.power_spectrum - \
         model.modes.aperiodic.func(model.data.freqs, \
-            *model.algorithm._robust_ap_fit(model.data.freqs, model.data.power_spectrum),)
+            *model.algorithm._robust_ap_fit(model.data.freqs, model.data.power_spectrum))
 
     # Calculate ylims of the plot that are scaled to the range of the data
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
 
     # Sort parameters by peak height
-    gaussian_params = model.results.gaussian_params_[\
-        model.results.gaussian_params_[:, 1].argsort()][::-1]
+    gaussian_params = model.results.params.gaussian[\
+        model.results.params.gaussian[:, 1].argsort()][::-1]
 
     # Loop through the iterative search for each peak
     for ind in range(model.results.n_peaks_ + 1):
@@ -139,7 +139,7 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
     if annotate_peaks and model.results.n_peaks_:
 
         # Extract largest peak, to annotate, grabbing gaussian params
-        gauss = get_band_peak(model, model.data.freq_range, attribute='gaussian_params')
+        gauss = get_band_peak(model, model.data.freq_range, attribute='gaussian')
 
         peak_ctr, peak_hgt, peak_wid = gauss
         bw_freqs = [peak_ctr - 0.5 * compute_fwhm(peak_wid),

@@ -136,26 +136,26 @@ class SpectralFitAlgorithm(Algorithm):
         ## FIT PROCEDURES
 
         # Take an initial fit of the aperiodic component
-        temp_aperiodic_params_ = self._robust_ap_fit(self.data.freqs, self.data.power_spectrum)
-        temp_ap_fit = self.modes.aperiodic.func(self.data.freqs, *temp_aperiodic_params_)
+        temp_aperiodic_params = self._robust_ap_fit(self.data.freqs, self.data.power_spectrum)
+        temp_ap_fit = self.modes.aperiodic.func(self.data.freqs, *temp_aperiodic_params)
 
         # Find peaks from the flattened power spectrum, and fit them with gaussians
         temp_spectrum_flat = self.data.power_spectrum - temp_ap_fit
-        self.results.gaussian_params_ = self._fit_peaks(temp_spectrum_flat)
+        self.results.params.gaussian = self._fit_peaks(temp_spectrum_flat)
 
         # Calculate the peak fit
         #   Note: if no peaks are found, this creates a flat (all zero) peak fit
         self.results.model._peak_fit = self.modes.periodic.func(\
-            self.data.freqs, *np.ndarray.flatten(self.results.gaussian_params_))
+            self.data.freqs, *np.ndarray.flatten(self.results.params.gaussian))
 
         # Create peak-removed (but not flattened) power spectrum
         self.results.model._spectrum_peak_rm = self.data.power_spectrum - self.results.model._peak_fit
 
         # Run final aperiodic fit on peak-removed power spectrum
-        self.results.aperiodic_params_ = self._simple_ap_fit(\
+        self.results.params.aperiodic = self._simple_ap_fit(\
             self.data.freqs, self.results.model._spectrum_peak_rm)
         self.results.model._ap_fit = self.modes.aperiodic.func(\
-            self.data.freqs, *self.results.aperiodic_params_)
+            self.data.freqs, *self.results.params.aperiodic)
 
         # Create remaining model components: flatspec & full power_spectrum model fit
         self.results.model._spectrum_flat = self.data.power_spectrum - self.results.model._ap_fit
@@ -164,7 +164,7 @@ class SpectralFitAlgorithm(Algorithm):
         ## PARAMETER UPDATES
 
         # Convert gaussian definitions to peak parameters
-        self.results.peak_params_ = self._create_peak_params(self.results.gaussian_params_)
+        self.results.params.peak = self._create_peak_params(self.results.params.gaussian)
 
 
     def _reset_internal_settings(self):

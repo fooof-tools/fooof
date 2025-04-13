@@ -161,7 +161,7 @@ def test_load_file_contents(tfm):
     for setting in tfm.algorithm.settings.names:
         assert setting in loaded_data.keys()
     for result in tfm.results._fields:
-        assert result in loaded_data.keys()
+        assert result + '_params' in loaded_data.keys()
     assert 'metrics' in loaded_data.keys()
     for datum in tfm.data._fields:
         assert datum in loaded_data.keys()
@@ -181,7 +181,7 @@ def test_load_model(tfm):
     for setting in ntfm.algorithm.settings.names:
         assert getattr(ntfm.algorithm, setting) is not None
     for result in tfm.results._fields:
-        assert not np.all(np.isnan(getattr(ntfm.results, result)))
+        assert not np.all(np.isnan(getattr(ntfm.results.params, result)))
     assert tfm.results.metrics.results == ntfm.results.metrics.results
     for data in tfm.data._fields:
         assert getattr(ntfm.data, data) is not None

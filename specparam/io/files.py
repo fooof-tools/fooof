@@ -69,7 +69,7 @@ def load_json(file_name, file_path):
 
     # Get dictionary of available attributes, and convert specified lists back into arrays
     arrays_to_convert = ['freqs', 'power_spectrum',
-                         'aperiodic_params_', 'peak_params_', 'gaussian_params_']
+                         'aperiodic_params', 'peak_params', 'gaussian_params']
     data = dict_lst_to_array(data, arrays_to_convert)
 
     return data

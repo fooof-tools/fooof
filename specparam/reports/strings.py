@@ -388,13 +388,13 @@ def gen_model_results_str(model, concise=False):
         'Aperiodic Parameters (\'{}\' mode)'.format(model.modes.aperiodic.name),
         '(' + ', '.join(model.modes.aperiodic.params.labels) + ')',
         ', '.join(['{:2.4f}'] * \
-            len(model.results.aperiodic_params_)).format(*model.results.aperiodic_params_),
+            len(model.results.params.aperiodic)).format(*model.results.params.aperiodic),
         '',
 
         # Peak parameters
         'Peak Parameters (\'{}\' mode) {} peaks found'.format(\
             model.modes.periodic.name, model.results.n_peaks_),
-        *[peak_str.format(*op) for op in model.results.peak_params_],
+        *[peak_str.format(*op) for op in model.results.params.peak],
         '',
 
         # Metrics

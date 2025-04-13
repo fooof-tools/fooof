@@ -283,7 +283,7 @@ class SpectralModel(BaseModel):
         if regenerate:
             if self.data.freq_res:
                 self.data._regenerate_freqs()
-            if np.all(self.data.freqs) and np.all(self.results.aperiodic_params_):
+            if np.all(self.data.freqs) and np.all(self.results.params.aperiodic):
                 self.results._regenerate_model(self.data.freqs)
 
 

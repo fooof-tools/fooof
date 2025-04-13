@@ -3,6 +3,7 @@
 from copy import deepcopy
 
 from specparam.utils.array import unlog
+from specparam.utils.checks import check_array_dim
 from specparam.modes.modes import Modes
 from specparam.modutils.errors import NoDataError
 from specparam.reports.strings import gen_modes_str, gen_settings_str, gen_issue_str
@@ -172,6 +173,10 @@ class BaseModel():
             tmetrics = data.pop('metrics')
             self.results.add_metrics(list(tmetrics.keys()))
             self.results.metrics.add_results(tmetrics)
+        for label, params in {key : vals for key, vals in data.items() if 'params' in key}.items():
+            if 'peak' in label or 'gaussian' in label:
+                params = check_array_dim(params)
+            setattr(self.results.params, label.split('_')[0], params)
 
         # Add additional attributes directly to object
         for key in data.keys():

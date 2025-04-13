@@ -293,7 +293,7 @@ def test_load(tfg):
         assert getattr(ntfg.algorithm, setting) is not None
     # Test that results and data are None
     for result in tfg.results._fields:
-        assert np.all(np.isnan(getattr(ntfg.results, result)))
+        assert np.all(np.isnan(getattr(ntfg.results.params, result)))
     assert ntfg.data.power_spectra is None
 
     # Test loading just data
@@ -304,7 +304,7 @@ def test_load(tfg):
     for setting in tfg.algorithm.settings.names:
         assert getattr(ntfg.algorithm, setting) is None
     for result in tfg.results._fields:
-        assert np.all(np.isnan(getattr(ntfg.results, result)))
+        assert np.all(np.isnan(getattr(ntfg.results.params, result)))
 
     # Test loading all elements
     ntfg = SpectralGroupModel(verbose=False)
@@ -352,7 +352,7 @@ def test_get_model(tfg):
     assert tfm1
     # Check that regenerated model is created
     for result in tfg.results._fields:
-        assert np.all(getattr(tfm1.results, result))
+        assert np.all(getattr(tfm1.results.params, result))
 
     # Test when object has no data (clear a copy of tfg)
     new_tfg = tfg.copy()

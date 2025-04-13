@@ -232,7 +232,7 @@ class SpectralGroupModel(SpectralModel):
                 self.algorithm._check_loaded_settings(data)
 
             # If results part of current data added, check and update object results
-            if set(self.results._fields).issubset(set(data.keys())):
+            if set([el + '_params' for el in self.results._fields]).issubset(set(data.keys())):
                 self.results._check_loaded_results(data)
                 self.results.group_results.append(self.results._get_results())
 
