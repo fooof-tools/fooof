@@ -651,7 +651,7 @@ def _report_str_n_null(model):
 
     output = \
             [el for el in ['{} power spectra failed to fit'.format(\
-            model.results.n_null_)] if model.results.n_null_]
+            model.results.n_null)] if model.results.n_null]
 
     return output
 

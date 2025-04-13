@@ -293,7 +293,7 @@ class Results2D(Results):
 
 
     @property
-    def n_null_(self):
+    def n_null(self):
         """How many model fits are null."""
 
         n_null = None
@@ -304,7 +304,7 @@ class Results2D(Results):
 
 
     @property
-    def null_inds_(self):
+    def null_inds(self):
         """The indices for model fits that are null."""
 
         null_inds = None

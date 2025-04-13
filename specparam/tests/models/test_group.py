@@ -69,16 +69,16 @@ def test_n_properties(tfg):
     assert np.all(tfg.results.n_params)
 
 def test_n_null(tfg):
-    """Test the n_null_ property attribute."""
+    """Test the n_null property attribute."""
 
     # Since there should have been no failed fits, this should return 0
-    assert tfg.results.n_null_ == 0
+    assert tfg.results.n_null == 0
 
 def test_null_inds(tfg):
-    """Test the null_inds_ property attribute."""
+    """Test the null_inds property attribute."""
 
     # Since there should be no failed fits, this should return an empty list
-    assert tfg.results.null_inds_ == []
+    assert tfg.results.null_inds == []
 
 def test_fit_nk():
     """Test group fit, no knee."""
@@ -175,8 +175,8 @@ def test_fg_fail():
 
     # Test the property attributes related to null model fits
     #   This checks that they do the right thing when there are null fits (failed fits)
-    assert ntfg.results.n_null_ > 0
-    assert ntfg.results.null_inds_
+    assert ntfg.results.n_null > 0
+    assert ntfg.results.null_inds
 
 def test_drop():
     """Test function to drop results from group object."""
