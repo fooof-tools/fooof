@@ -160,7 +160,7 @@ class SpectralModel(BaseModel):
             # If not set to fail on NaN or Inf data at add time, check data here
             #   This serves as a catch all for curve_fits which will fail given NaN or Inf
             #   Because FitError's are by default caught, this allows fitting to continue
-            if not self.data._check_data:
+            if not self.data.checks['data']:
                 if np.any(np.isinf(self.data.power_spectrum)) or \
                     np.any(np.isnan(self.data.power_spectrum)):
                     raise FitError("Model fitting was skipped because there are NaN or Inf "

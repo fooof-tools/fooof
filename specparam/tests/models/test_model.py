@@ -399,8 +399,8 @@ def test_set_checks():
 
     # Reset checks to true
     tfm.data.set_checks(True, True)
-    assert tfm.data._check_freqs is True
-    assert tfm.data._check_data is True
+    assert tfm.data.checks['freqs'] is True
+    assert tfm.data.checks['data'] is True
 
 def test_to_df(tfm, tbands, skip_if_no_pandas):
 

@@ -267,8 +267,8 @@ def combine_model_objs(model_objs):
     # Set the status for freqs & data checking
     #  Check states gets set as True if any of the inputs have it on, False otherwise
     group.data.set_checks(\
-        check_freqs=any(getattr(m_obj.data, '_check_freqs') for m_obj in model_objs),
-        check_data=any(getattr(m_obj.data, '_check_data') for m_obj in model_objs))
+        check_freqs=any(m_obj.data.checks['freqs'] for m_obj in model_objs),
+        check_data=any(m_obj.data.checks['data'] for m_obj in model_objs))
 
     # Add data information information
     group.data.add_meta_data(model_objs[0].data.get_meta_data())
