@@ -23,7 +23,6 @@ from specparam.sim.gen import gen_model
 ###################################################################################################
 
 # Define set of results fields & default metrics to use
-#RESULTS_FIELDS = ['aperiodic', 'gaussian', 'peak']
 DEFAULT_METRICS = ['error_mae', 'gof_rsquared']
 
 
@@ -54,8 +53,6 @@ class Results():
 
         # Initialize results attributes
         self._reset_results(True)
-        #self._fields = RESULTS_FIELDS
-        self._fields = self.params._fields
 
 
     @property
@@ -138,7 +135,7 @@ class Results():
             A data object containing the results from fitting a power spectrum model.
         """
 
-        for pfield in self._fields:
+        for pfield in self.params.fields:
             params = getattr(results, pfield + '_params')
             if 'peak' in pfield or 'gaussian' in pfield:
                 params = check_array_dim(params)
@@ -157,7 +154,7 @@ class Results():
         """
 
         results = FitResults(
-            **{key + '_params' : getattr(self.params, key) for key in self._fields},
+            **{key + '_params' : getattr(self.params, key) for key in self.params.fields},
             metrics=self.metrics.results)
 
         return results

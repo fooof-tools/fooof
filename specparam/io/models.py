@@ -63,7 +63,7 @@ def save_model(model, file_name, file_path=None, append=False,
 
     # Convert results & metrics to saveable information
     results_labels = []
-    for rfield in model.results._fields:
+    for rfield in model.results.params.fields:
         results_labels.append(rfield + '_params')
         obj_dict[rfield + '_params'] = getattr(model.results.params, rfield)
     obj_dict['metrics'] = model.results.metrics.results

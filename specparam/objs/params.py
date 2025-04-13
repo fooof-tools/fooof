@@ -49,3 +49,10 @@ class ModelParameters():
         else:
             self.gaussian = np.nan
             self.peak = np.nan
+
+
+    @property
+    def fields(self):
+        """Alias as a property attribute the list of fields."""
+
+        return list(vars(self).keys())
