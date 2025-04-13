@@ -23,8 +23,7 @@ from specparam.sim.gen import gen_model
 ###################################################################################################
 
 # Define set of results fields & default metrics to use
-#RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_']
-RESULTS_FIELDS = ['aperiodic', 'gaussian', 'peak']
+#RESULTS_FIELDS = ['aperiodic', 'gaussian', 'peak']
 DEFAULT_METRICS = ['error_mae', 'gof_rsquared']
 
 
@@ -55,7 +54,8 @@ class Results():
 
         # Initialize results attributes
         self._reset_results(True)
-        self._fields = RESULTS_FIELDS
+        #self._fields = RESULTS_FIELDS
+        self._fields = self.params._fields
 
 
     @property
@@ -138,13 +138,13 @@ class Results():
             A data object containing the results from fitting a power spectrum model.
         """
 
-        # Add parameter fields and then select and add metrics results
         for pfield in self._fields:
-            setattr(self.params, pfield, getattr(results, pfield + '_params'))
+            params = getattr(results, pfield + '_params')
+            if 'peak' in pfield or 'gaussian' in pfield:
+                params = check_array_dim(params)
+            setattr(self.params, pfield, params)
 
         self.metrics.add_results(results.metrics)
-
-        self._check_loaded_results(results._asdict())
 
 
     def get_results(self):
@@ -195,23 +195,6 @@ class Results():
         return get_model_params(self.get_results(), self.modes, name, field)
 
 
-    # TODO: check / move to ModelParameters?
-    def _check_loaded_results(self, data):
-        """Check if results have been added and check data.
-
-        Parameters
-        ----------
-        data : dict
-            A dictionary of data that has been added to the object.
-        """
-
-        # If results loaded, check dimensions of peak parameters
-        #   This fixes an issue where they end up the wrong shape if they are empty (no peaks)
-        if set(self._fields).issubset(set(data.keys())):
-            self.params.peak = check_array_dim(self.params.peak)
-            self.params.gaussian = check_array_dim(self.params.gaussian)
-
-
     def _reset_results(self, clear_results=False):
         """Set, or reset, results attributes to empty.
 
@@ -222,22 +205,6 @@ class Results():
         """
 
         if clear_results:
-
-            # # Aperiodic parameters
-            # if self.modes:
-            #     self.aperiodic_params_ = np.array([np.nan] * self.modes.aperiodic.n_params)
-            # else:
-            #     self.aperiodic_params_ = np.nan
-
-            # # Periodic parameters
-            # if self.modes:
-            #     self.gaussian_params_ = np.empty([0, self.modes.periodic.n_params])
-            #     self.peak_params_ = np.empty([0, self.modes.periodic.n_params])
-            # else:
-            #     self.gaussian_params_ = np.nan
-            #     self.peak_params_ = np.nan
-
-            # Reset model parameters & components
             self.params.reset(self.modes)
             self.model.reset()
 

@@ -277,7 +277,6 @@ class SpectralModel(BaseModel):
         # Add loaded data to object and check loaded data
         self._add_from_dict(data)
         self.algorithm._check_loaded_settings(data)
-        self.results._check_loaded_results(data)
 
         # Regenerate model components, based on what is available
         if regenerate:
