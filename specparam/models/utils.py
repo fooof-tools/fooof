@@ -72,14 +72,19 @@ def compare_model_objs(model_objs, aspect):
             outputs.append(compare_model_objs(model_objs, caspect))
         return np.all(outputs)
 
-    check_input_options(aspect, ['settings', 'meta_data', 'metrics'], 'aspect')
+    aspects = ['modes', 'settings', 'meta_data', 'bands', 'metrics']
+    check_input_options(aspect, aspects, 'aspect')
 
     # Check specified aspect of the objects are the same across instances
     for m_obj_1, m_obj_2 in zip(model_objs[:-1], model_objs[1:]):
+        if aspect == 'modes':
+            consistent = m_obj_1.modes.get_modes() == m_obj_2.modes.get_modes()
         if aspect == 'settings':
             consistent = m_obj_1.algorithm.get_settings() == m_obj_2.algorithm.get_settings()
         if aspect == 'meta_data':
             consistent = m_obj_1.data.get_meta_data() == m_obj_2.data.get_meta_data()
+        if aspect == 'bands':
+            consistent = m_obj_1.results.bands == m_obj_2.results.bands
         if aspect == 'metrics':
             consistent = m_obj_1.results.metrics.labels == m_obj_2.results.metrics.labels
 

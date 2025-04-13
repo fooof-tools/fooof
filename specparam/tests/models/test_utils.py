@@ -33,7 +33,12 @@ def test_compare_model_objs(tfm, tfg):
 
         f_obj2 = f_obj.copy()
 
-        assert compare_model_objs([f_obj, f_obj2], ['settings', 'meta_data', 'metrics'])
+        assert compare_model_objs([f_obj, f_obj2],
+                                  ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
+
+        assert compare_model_objs([f_obj, f_obj2], 'modes')
+        f_obj2.add_modes('knee', 'cauchy')
+        assert not compare_model_objs([f_obj, f_obj2], 'modes')
 
         assert compare_model_objs([f_obj, f_obj2], 'settings')
         f_obj2.algorithm.peak_width_limits = [2, 4]
@@ -43,6 +48,10 @@ def test_compare_model_objs(tfm, tfg):
         assert compare_model_objs([f_obj, f_obj2], 'meta_data')
         f_obj2.data.freq_range = [5, 25]
         assert not compare_model_objs([f_obj, f_obj2], 'meta_data')
+
+        assert compare_model_objs([f_obj, f_obj2], 'bands')
+        f_obj2.results.add_bands({'new' : [1, 4]})
+        assert not compare_model_objs([f_obj, f_obj2], 'bands')
 
         assert compare_model_objs([f_obj, f_obj2], 'metrics')
         f_obj2.results.metrics.add_metric(METRICS['error_rmse'])
