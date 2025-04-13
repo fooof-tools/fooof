@@ -53,7 +53,8 @@ def get_tdata2d():
 def get_tfm():
     """Get a model object, with a fit power spectrum, for testing."""
 
-    tfm = SpectralModel(bands=Bands({'alpha' : (7, 14)}), verbose=False)
+    tfm = SpectralModel(bands=Bands({'alpha' : (7, 14)}),
+                        min_peak_height=0.05, peak_width_limits=[1, 8])
     tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
     return tfm
@@ -62,6 +63,7 @@ def get_tfm2():
     """Get a model object, with a fit power spectrum, for testing - custom metrics & modes."""
 
     tfm2 = SpectralModel(bands=Bands({'alpha' : (7, 14), 'beta' : [15, 30]}),
+                         min_peak_height=0.05, peak_width_limits=[1, 8],
                          metrics=['error_mse', 'gof_adjrsquared'],
                          aperiodic_mode='knee', periodic_mode='gaussian')
     tfm2.fit(*sim_power_spectrum(*default_spectrum_params()))
@@ -72,7 +74,8 @@ def get_tfg():
     """Get a group object, with some fit power spectra, for testing."""
 
     n_spectra = 3
-    tfg = SpectralGroupModel(bands=Bands({'alpha' : (7, 14)}), verbose=False)
+    tfg = SpectralGroupModel(bands=Bands({'alpha' : (7, 14)}),
+                             min_peak_height=0.05, peak_width_limits=[1, 8])
     tfg.fit(*sim_group_power_spectra(n_spectra, *default_group_params()))
 
     return tfg
@@ -82,6 +85,7 @@ def get_tfg2():
 
     n_spectra = 3
     tfg2 = SpectralGroupModel(bands=Bands({'alpha' : (7, 14), 'beta' : [15, 30]}),
+                              min_peak_height=0.05, peak_width_limits=[1, 8],
                               metrics=['error_mse', 'gof_adjrsquared'],
                               aperiodic_mode='knee', periodic_mode='gaussian')
     tfg2.fit(*sim_group_power_spectra(n_spectra, *default_group_params()))
@@ -94,7 +98,8 @@ def get_tft():
     n_spectra = 3
     xs, ys = sim_spectrogram(n_spectra, *default_group_params())
 
-    tft = SpectralTimeModel(bands=Bands({'alpha' : (7, 14)}), verbose=False)
+    tft = SpectralTimeModel(bands=Bands({'alpha' : (7, 14)}), \
+                            min_peak_height=0.05, peak_width_limits=[1, 8],)
     tft.fit(xs, ys)
 
     return tft
@@ -106,7 +111,8 @@ def get_tfe():
     xs, ys = sim_spectrogram(n_spectra, *default_group_params())
     ys = [ys, ys]
 
-    tfe = SpectralTimeEventModel(bands=Bands({'alpha' : (7, 14)}), verbose=False)
+    tfe = SpectralTimeEventModel(bands=Bands({'alpha' : (7, 14)}),
+                                 min_peak_height=0.05, peak_width_limits=[1, 8],)
     tfe.fit(xs, ys)
 
     return tfe
