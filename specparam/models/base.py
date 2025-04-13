@@ -180,9 +180,7 @@ class BaseModel():
 
         # Add additional attributes directly to object
         for key in data.keys():
-            if getattr(self, key, False) is not False:
-                setattr(self, key, data[key])
+            if getattr(self.algorithm, key, False) is not False:
+                setattr(self.algorithm, key, data[key])
             elif getattr(self.data, key, False) is not False:
                 setattr(self.data, key, data[key])
-            elif getattr(self.results, key, False) is not False:
-                setattr(self.results, key, data[key])
