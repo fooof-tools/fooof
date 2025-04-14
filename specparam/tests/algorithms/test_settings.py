@@ -5,6 +5,19 @@ from specparam.algorithms.settings import *
 ###################################################################################################
 ###################################################################################################
 
+def test_settings_values():
+
+    tsettings_names = ['a', 'b']
+    settings_vals = SettingsValues(tsettings_names)
+    assert isinstance(settings_vals.values, dict)
+    assert settings_vals.names == tsettings_names
+    assert settings_vals.a is None
+    assert settings_vals.b is None
+    settings_vals.a = 1
+    settings_vals.b = 2
+    assert settings_vals.a == 1
+    assert settings_vals.b == 2
+
 def test_settings_definition():
 
     tdefinitions = {
@@ -12,12 +25,12 @@ def test_settings_definition():
         'b' : {'type' : 'b type desc', 'description' : 'b desc'},
     }
 
-    settings = SettingsDefinition(tdefinitions)
-    assert settings._definitions == tdefinitions
-    assert len(settings) == len(tdefinitions)
-    assert settings.names == list(tdefinitions.keys())
-    assert settings.types
-    assert settings.descriptions
+    settings_def = SettingsDefinition(tdefinitions)
+    assert settings_def._definitions == tdefinitions
+    assert len(settings_def) == len(tdefinitions)
+    assert settings_def.names == list(tdefinitions.keys())
+    assert settings_def.types
+    assert settings_def.descriptions
     for label in tdefinitions.keys():
-        assert settings.make_setting_str(label)
-    assert settings.make_docstring()
+        assert settings_def.make_setting_str(label)
+    assert settings_def.make_docstring()

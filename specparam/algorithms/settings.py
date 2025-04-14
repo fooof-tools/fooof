@@ -5,6 +5,66 @@ from collections import namedtuple
 ###################################################################################################
 ###################################################################################################
 
+class SettingsValues():
+    """Defines a set of algorithm settings values.
+
+    Parameters
+    ----------
+    names : list of str
+        Names of the settings to hold values for.
+
+    Attributes
+    ----------
+    values : dict of {str : object}
+        Settings values.
+    """
+
+    __slots__ = 'values'
+
+    def __init__(self, names):
+        """Initialize settings values."""
+
+        self.values = {name : None for name in names}
+
+
+    def __getattr__(self, name):
+        """Allow for accessing settings values as attributes."""
+
+        try:
+            return self.values[name]
+        except KeyError:
+            raise AttributeError(name)
+
+
+    def __setattr__(self, name, value):
+        """Allow for setting settings values as attributes."""
+
+        if name == 'values':
+            super().__setattr__(name, value)
+        else:
+            getattr(self, name)
+            self.values[name] = value
+
+
+    def __getstate__(self):
+        """Define how to get object state - for pickling."""
+
+        return self.values
+
+
+    def __setstate__(self, state):
+        """Define how to set object state - for pickling."""
+
+        self.values = state
+
+
+    @property
+    def names(self):
+        """Property attribute for settings names."""
+
+        return list(self.values.keys())
+
+
 class SettingsDefinition():
     """Defines a set of algorithm settings.
 
