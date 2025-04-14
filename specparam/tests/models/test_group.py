@@ -280,14 +280,13 @@ def test_load(tfg):
     assert len(ntfg.results.group_results) > 0
     # Test that settings and data are None
     for setting in tfg.algorithm.settings.names:
-        assert getattr(ntfg.algorithm, setting) is None
+        assert getattr(ntfg.algorithm.settings, setting) is None
     assert ntfg.data.power_spectra is None
 
     # Test loading just settings
     ntfg = SpectralGroupModel(verbose=False)
     ntfg.load('test_group_set', TEST_DATA_PATH)
-    for setting in tfg.algorithm.settings.names:
-        assert getattr(tfg.algorithm, setting) == getattr(ntfg.algorithm, setting)
+    assert tfg.algorithm.settings.values == ntfg.algorithm.settings.values
     # Test that results and data are None
     for result in tfg.results.params.fields:
         assert np.all(np.isnan(getattr(ntfg.results.params, result)))
@@ -299,7 +298,7 @@ def test_load(tfg):
     assert ntfg.data.has_data
     # Test that settings and results are None
     for setting in tfg.algorithm.settings.names:
-        assert getattr(ntfg.algorithm, setting) is None
+        assert getattr(ntfg.algorithm.settings, setting) is None
     for result in tfg.results.params.fields:
         assert np.all(np.isnan(getattr(ntfg.results.params, result)))
 
@@ -327,8 +326,7 @@ def test_get_model(tfg):
     tfm_null = tfg.get_model()
     assert tfm_null
     # Check that settings are copied over properly, but data and results are empty
-    for setting in tfg.algorithm.settings.names:
-        assert getattr(tfg.algorithm, setting) == getattr(tfm_null.algorithm, setting)
+    assert tfg.algorithm.settings.values == tfm_null.algorithm.settings.values
     assert not tfm_null.data.has_data
     assert not tfm_null.results.has_model
 
@@ -336,8 +334,7 @@ def test_get_model(tfg):
     tfm0 = tfg.get_model(0, False)
     assert tfm0
     # Check that settings are copied over properly
-    for setting in tfg.algorithm.settings.names:
-        assert getattr(tfg.algorithm, setting) == getattr(tfm0.algorithm, setting)
+    assert tfg.algorithm.settings.values == tfm0.algorithm.settings.values
 
     # Check with regenerating
     tfm1 = tfg.get_model(1, True)
@@ -375,9 +372,8 @@ def test_get_group(tfg):
     assert isinstance(nfg2, SpectralGroupModel)
 
     # Check that settings are copied over properly
-    for setting in tfg.algorithm.settings.names:
-        assert getattr(tfg.algorithm, setting) == getattr(nfg1.algorithm, setting)
-        assert getattr(tfg.algorithm, setting) == getattr(nfg2.algorithm, setting)
+    assert tfg.algorithm.settings.values == nfg1.algorithm.settings.values
+    assert tfg.algorithm.settings.values == nfg2.algorithm.settings.values
 
     # Check that data info is copied over properly
     for meta_dat in tfg.data._meta_fields:

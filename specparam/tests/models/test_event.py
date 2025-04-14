@@ -124,8 +124,7 @@ def test_event_get_model(tfe):
     tfm_null = tfe.get_model()
     assert tfm_null
     # Check that settings are copied over properly, but data and results are empty
-    for setting in tfe.algorithm.settings.names:
-        assert getattr(tfe.algorithm, setting) == getattr(tfm_null.algorithm, setting)
+    assert tfe.algorithm.settings.values == tfm_null.algorithm.settings.values
     assert not tfm_null.data.has_data
     assert not tfm_null.results.has_model
 

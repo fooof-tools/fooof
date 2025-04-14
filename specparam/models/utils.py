@@ -39,7 +39,7 @@ def initialize_model_from_source(source, target):
     """
 
     model = MODELS[target](**source.modes.get_modes()._asdict(),
-                           **source.algorithm.get_settings()._asdict(),
+                           **source.algorithm.settings.values,
                            metrics=source.results.metrics.labels,
                            bands=source.results.bands,
                            verbose=source.verbose)

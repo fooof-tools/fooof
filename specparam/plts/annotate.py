@@ -51,10 +51,12 @@ def plot_annotated_peak_search(model):
         plot_spectra(model.data.freqs, flatspec, linewidth=2.5,
                      label='Flattened Spectrum', color=PLT_COLORS['data'], ax=ax)
         plot_spectra(model.data.freqs,
-                     [model.algorithm.peak_threshold * np.std(flatspec)] * len(model.data.freqs),
+                     [model.algorithm.settings.peak_threshold * np.std(flatspec)] \
+                        * len(model.data.freqs),
                      label='Relative Threshold', color='orange', linewidth=2.5,
                      linestyle='dashed', ax=ax)
-        plot_spectra(model.data.freqs, [model.algorithm.min_peak_height]*len(model.data.freqs),
+        plot_spectra(model.data.freqs,
+                     [model.algorithm.settings.min_peak_height] * len(model.data.freqs),
                      label='Absolute Threshold', color='red', linewidth=2.5,
                      linestyle='dashed', ax=ax)
 

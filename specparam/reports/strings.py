@@ -211,9 +211,9 @@ def gen_settings_str(model, description=False, concise=False):
 
     # Loop through algorithm settings, and add information
     for name in model.algorithm.settings.names:
-        str_lst.append(name + ' : ' + str(getattr(model.algorithm, name)))
+        str_lst.append(name + ' : ' + str(getattr(model.algorithm.settings, name)))
         if description:
-            str_lst.append(model.algorithm.settings.descriptions[name].split('\n ')[0])
+            str_lst.append(model.algorithm._settings.descriptions[name].split('\n ')[0])
 
     # Add footer to string
     str_lst.extend([
@@ -337,10 +337,10 @@ def gen_methods_text_str(model=None):
     methods_str = template.format(MODULE_VERSION,
                                   model.modes.aperiodic.name if model else 'XX',
                                   model.modes.periodic.name if model else 'XX',
-                                  model.algorithm.peak_width_limits if model else 'XX',
-                                  model.algorithm.max_n_peaks if model else 'XX',
-                                  model.algorithm.min_peak_height if model else 'XX',
-                                  model.algorithm.peak_threshold if model else 'XX',
+                                  model.algorithm.settings.peak_width_limits if model else 'XX',
+                                  model.algorithm.settings.max_n_peaks if model else 'XX',
+                                  model.algorithm.settings.min_peak_height if model else 'XX',
+                                  model.algorithm.settings.peak_threshold if model else 'XX',
                                   *freq_range)
 
     return methods_str

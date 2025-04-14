@@ -49,7 +49,7 @@ def save_model(model, file_name, file_path=None, append=False,
     """
 
     # 'Flatten' the model object by extracting relevant attributes to a dictionary
-    obj_dict = {**model.data.__dict__, **model.algorithm.__dict__}
+    obj_dict = {**model.data.__dict__, **model.algorithm.settings.values}
 
     # Convert modes object to their saveable string name
     obj_dict['aperiodic_mode'] = model.modes.aperiodic.name
