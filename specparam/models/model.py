@@ -10,7 +10,7 @@ import numpy as np
 from specparam.models.base import BaseModel
 from specparam.objs.data import Data
 from specparam.objs.results import Results
-from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS
+from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS_DEF
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import gen_model_results_str
 from specparam.modutils.errors import NoDataError, FitError
@@ -24,7 +24,7 @@ from specparam.data.conversions import model_to_dataframe
 ###################################################################################################
 ###################################################################################################
 
-@replace_docstring_sections([SPECTRAL_FIT_SETTINGS.make_docstring()])
+@replace_docstring_sections([SPECTRAL_FIT_SETTINGS_DEF.make_docstring()])
 class SpectralModel(BaseModel):
     """Model a power spectrum as a combination of aperiodic and periodic components.
 
