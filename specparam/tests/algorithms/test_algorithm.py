@@ -38,7 +38,7 @@ def test_algorithm_settings():
     settings = model_settings(a=1, b=2)
     talgo.add_settings(settings)
     for setting in settings._fields:
-        assert getattr(talgo, setting) == getattr(settings, setting)
+        assert getattr(talgo.settings, setting) == getattr(settings, setting)
 
     settings_out = talgo.get_settings()
     assert isinstance(settings, model_settings)

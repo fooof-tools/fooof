@@ -16,7 +16,7 @@ from specparam.algorithms.settings import SettingsDefinition
 ###################################################################################################
 ###################################################################################################
 
-SPECTRAL_FIT_SETTINGS = SettingsDefinition({
+SPECTRAL_FIT_SETTINGS_DEF = SettingsDefinition({
     'peak_width_limits' : {
         'type' : 'tuple of (float, float), optional, default: (0.5, 12.0)',
         'description' : 'Limits on possible peak width, in Hz, as (lower_bound, upper_bound).',
@@ -91,14 +91,14 @@ class SpectralFitAlgorithm(Algorithm):
         super().__init__(
             name='spectral fit',
             description='Original parameterizing neural power spectra algorithm.',
-            settings=SPECTRAL_FIT_SETTINGS, format='spectrum',
+            settings=SPECTRAL_FIT_SETTINGS_DEF, format='spectrum',
             modes=modes, data=data, results=results, debug=debug)
 
         ## Public settings
-        self.peak_width_limits = peak_width_limits
-        self.max_n_peaks = max_n_peaks
-        self.min_peak_height = min_peak_height
-        self.peak_threshold = peak_threshold
+        self.settings.peak_width_limits = peak_width_limits
+        self.settings.max_n_peaks = max_n_peaks
+        self.settings.min_peak_height = min_peak_height
+        self.settings.peak_threshold = peak_threshold
 
         ## Private settings: model parameters related settings
         self._ap_percentile_thresh = ap_percentile_thresh
@@ -126,8 +126,8 @@ class SpectralFitAlgorithm(Algorithm):
         """
 
         if verbose:
-            if 1.5 * self.data.freq_res >= self.peak_width_limits[0]:
-                print(gen_width_warning_str(self.data.freq_res, self.peak_width_limits[0]))
+            if 1.5 * self.data.freq_res >= self.settings.peak_width_limits[0]:
+                print(gen_width_warning_str(self.data.freq_res, self.settings.peak_width_limits[0]))
 
 
     def _fit(self):
@@ -177,11 +177,11 @@ class SpectralFitAlgorithm(Algorithm):
         """
 
         # Only update these settings if other relevant settings are available
-        if self.peak_width_limits:
+        if self.settings.peak_width_limits:
 
             # Bandwidth limits are given in 2-sided peak bandwidth
             #   Convert to gaussian std parameter limits
-            self._gauss_std_limits = tuple(bwl / 2 for bwl in self.peak_width_limits)
+            self._gauss_std_limits = tuple(bwl / 2 for bwl in self.settings.peak_width_limits)
 
         # Otherwise, assume settings are unknown (have been cleared) and set to None
         else:
@@ -360,14 +360,14 @@ class SpectralFitAlgorithm(Algorithm):
 
         # Find peak: loop through, finding a candidate peak, & fit with a guess peak
         #   Stopping procedures: limit on # of peaks, or relative or absolute height thresholds
-        while len(guess) < self.max_n_peaks:
+        while len(guess) < self.settings.max_n_peaks:
 
             # Find candidate peak - the maximum point of the flattened spectrum
             max_ind = np.argmax(flat_iter)
             max_height = flat_iter[max_ind]
 
             # Stop searching for peaks once height drops below height threshold
-            if max_height <= self.peak_threshold * np.std(flat_iter):
+            if max_height <= self.settings.peak_threshold * np.std(flat_iter):
                 break
 
             # Set the guess parameters for gaussian fitting, specifying the mean and height
@@ -375,7 +375,7 @@ class SpectralFitAlgorithm(Algorithm):
             guess_height = max_height
 
             # Halt fitting process if candidate peak drops below minimum height
-            if not guess_height > self.min_peak_height:
+            if not guess_height > self.settings.min_peak_height:
                 break
 
             # Data-driven first guess at standard deviation
@@ -402,7 +402,7 @@ class SpectralFitAlgorithm(Algorithm):
             except ValueError:
                 # This procedure can fail (very rarely), if both left & right inds end up as None
                 #   In this case, default the guess to the average of the peak width limits
-                guess_std = np.mean(self.peak_width_limits)
+                guess_std = np.mean(self.settings.peak_width_limits)
 
             # Check that guess value isn't outside preset limits - restrict if so
             #   Note: without this, curve_fitting fails if given guess > or < bounds

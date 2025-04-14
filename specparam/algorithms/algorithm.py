@@ -1,7 +1,7 @@
 """Define object to manage algorithm implementations."""
 
 from specparam.utils.checks import check_input_options
-from specparam.algorithms.settings import SettingsDefinition
+from specparam.algorithms.settings import SettingsDefinition, SettingsValues
 
 ###################################################################################################
 ###################################################################################################
@@ -42,7 +42,7 @@ class Algorithm():
         if not isinstance(settings, SettingsDefinition):
             settings = SettingsDefinition(settings)
         self._settings = settings
-        self.settings = None
+        self.settings = SettingsValues(self._settings.names)
 
         check_input_options(format, FORMATS, 'format')
         self.format = format
@@ -73,7 +73,7 @@ class Algorithm():
         """
 
         for setting in settings._fields:
-            setattr(self, setting, getattr(settings, setting))
+            setattr(self.settings, setting, getattr(settings, setting))
 
         self._check_loaded_settings(settings._asdict())
 
@@ -88,7 +88,7 @@ class Algorithm():
         """
 
         return self._settings.make_model_settings()(\
-            **{key : getattr(self, key) for key in self._settings.names})
+            **{key : getattr(self.settings, key) for key in self._settings.names})
 
 
     def get_debug(self):
@@ -124,7 +124,7 @@ class Algorithm():
 
             # Reset all public settings to None
             for setting in self._settings.names:
-                setattr(self, setting, None)
+                setattr(self.settings, setting, None)
 
         # Reset internal settings so that they are consistent with what was loaded
         #   Note that this will set internal settings to None, if public settings unavailable
