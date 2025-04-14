@@ -20,8 +20,8 @@ def test_algorithm():
     assert algo
     assert algo.name == tname
     assert algo.description == tdescription
-    assert isinstance(algo.settings, SettingsDefinition)
-    assert algo.settings == tsettings
+    assert isinstance(algo._settings, SettingsDefinition)
+    assert algo._settings == tsettings
 
 def test_algorithm_settings():
 
@@ -34,7 +34,7 @@ def test_algorithm_settings():
 
     talgo = Algorithm(name=tname, description=tdescription, settings=tsettings, format='spectrum')
 
-    model_settings = talgo.settings.make_model_settings()
+    model_settings = talgo._settings.make_model_settings()
     settings = model_settings(a=1, b=2)
     talgo.add_settings(settings)
     for setting in settings._fields:

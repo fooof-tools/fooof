@@ -18,10 +18,18 @@ class Algorithm():
         Name of the fitting algorithm.
     description : str
         Description of the fitting algorithm.
-    settings : dict
+    settings : SettingsDefinition or dict
         Name and description of settings for the fitting algorithm.
     format : {'spectrum', 'spectra', 'spectrogram', 'spectrograms'}
         Set base format of data model can be applied to.
+    modes : Modes
+        Modes object with fit mode definitions.
+    data : Data
+        Data object with spectral data and metadata.
+    results : Results
+        Results object with model fit results and metrics.
+    debug :  bool
+        Whether to run in debug state, raising an error if encountered during fitting.
     """
 
     def __init__(self, name, description, settings, format,
@@ -33,7 +41,8 @@ class Algorithm():
 
         if not isinstance(settings, SettingsDefinition):
             settings = SettingsDefinition(settings)
-        self.settings = settings
+        self._settings = settings
+        self.settings = None
 
         check_input_options(format, FORMATS, 'format')
         self.format = format
@@ -78,8 +87,8 @@ class Algorithm():
             Object containing the settings from the current object.
         """
 
-        return self.settings.make_model_settings()(\
-            **{key : getattr(self, key) for key in self.settings.names})
+        return self._settings.make_model_settings()(\
+            **{key : getattr(self, key) for key in self._settings.names})
 
 
     def get_debug(self):
@@ -111,10 +120,10 @@ class Algorithm():
 
         # If settings not loaded from file, clear from object, so that default
         # settings, which are potentially wrong for loaded data, aren't kept
-        if not set(self.settings.names).issubset(set(data.keys())):
+        if not set(self._settings.names).issubset(set(data.keys())):
 
             # Reset all public settings to None
-            for setting in self.settings.names:
+            for setting in self._settings.names:
                 setattr(self, setting, None)
 
         # Reset internal settings so that they are consistent with what was loaded
