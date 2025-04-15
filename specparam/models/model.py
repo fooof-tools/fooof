@@ -268,7 +268,10 @@ class SpectralModel(BaseModel):
 
         # Add loaded data to object and check loaded data
         self._add_from_dict(data)
-        self.algorithm._check_loaded_settings(data)
+
+        # If settings are not loaded, clear defaults to not have potentially incorrect values
+        if not set(self.algorithm.settings.names).issubset(set(data.keys())):
+            self.algorithm.settings.clear()
 
         # Regenerate model components, based on what is available
         if regenerate:

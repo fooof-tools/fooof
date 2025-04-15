@@ -78,13 +78,11 @@ class Algorithm():
         Parameters
         ----------
         settings : ModelSettings
-            A data object containing the settings for a power spectrum model.
+            A data object containing model settings.
         """
 
         for setting in settings._fields:
             setattr(self.settings, setting, getattr(settings, setting))
-
-        self._check_loaded_settings(settings._asdict())
 
 
     def get_settings(self):
@@ -116,24 +114,6 @@ class Algorithm():
         """
 
         self._debug = debug
-
-
-    def _check_loaded_settings(self, data):
-        """Check if settings added, and update the object as needed.
-
-        Parameters
-        ----------
-        data : dict
-            A dictionary of data that has been added to the object.
-        """
-
-        # If settings not loaded from file, clear from object, so that default
-        # settings, which are potentially wrong for loaded data, aren't kept
-        if not set(self.settings.names).issubset(set(data.keys())):
-
-            # Reset all public settings to None
-            for setting in self.settings.names:
-                setattr(self.settings, setting, None)
 
 
     def _reset_subobjects(self, modes=None, data=None, results=None):

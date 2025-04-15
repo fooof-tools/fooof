@@ -221,9 +221,9 @@ class SpectralGroupModel(SpectralModel):
 
             self._add_from_dict(data)
 
-            # If settings are loaded, check and update based on the first line
-            if ind == 0:
-                self.algorithm._check_loaded_settings(data)
+            # For hearder line, check if settings are loaded and clear defaults if not
+            if ind == 0 and not set(self.algorithm.settings.names).issubset(set(data.keys())):
+                self.algorithm.settings.clear()
 
             # If results part of current data added, check and update object results
             if set([el + '_params' for el in self.results.params.fields]).issubset(set(data.keys())):
