@@ -621,7 +621,8 @@ class Results3D(Results2DT):
         column is appended to the returned array, indicating the index that the peak came from.
         """
 
-        return [get_group_params(gres, self.modes, name, field) for gres in self.event_group_results]
+        return [get_group_params(gres, self.modes, name, field) \
+                    for gres in self.event_group_results]
 
 
     def convert_results(self):

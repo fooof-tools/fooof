@@ -19,7 +19,7 @@ class SettingsValues():
         Settings values.
     """
 
-    __slots__ = 'values'
+    __slots__ = ('values',)
 
     def __init__(self, names):
         """Initialize settings values."""

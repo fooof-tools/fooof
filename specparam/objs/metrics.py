@@ -12,8 +12,8 @@ class Metric():
 
     Parameters
     ----------
-    type : str
-        The type of measure, e.g. 'error' or 'gof'.
+    category : str
+        The category of measure, e.g. 'error' or 'gof'.
     measure : str
         The specific measure, e.g. 'r_squared'.
     func : callable
@@ -25,10 +25,10 @@ class Metric():
         and returns the desired parameter / computed value.
     """
 
-    def __init__(self, type, measure, func, kwargs=None):
+    def __init__(self, category, measure, func, kwargs=None):
         """Initialize metric."""
 
-        self.type = type
+        self.category = category
         self.measure = measure
         self.func = func
         self.result = np.nan
@@ -45,17 +45,17 @@ class Metric():
     def label(self):
         """Define label property."""
 
-        return self.type + '_' + self.measure
+        return self.category + '_' + self.measure
 
 
     @property
     def flabel(self):
         """Define formatted label property."""
 
-        if self.type == 'error':
-            flabel = '{} ({})'.format(self.type.capitalize(), self.measure.upper())
-        if self.type == 'gof':
-            flabel = '{} ({})'.format(self.type.upper(), self.measure)
+        if self.category == 'error':
+            flabel = '{} ({})'.format(self.category.capitalize(), self.measure.upper())
+        if self.category == 'gof':
+            flabel = '{} ({})'.format(self.category.upper(), self.measure)
 
         return flabel
 
@@ -162,10 +162,10 @@ class Metrics():
 
 
     @property
-    def types(self):
-        """Define alias for metric type of all currently defined metrics."""
+    def categories(self):
+        """Define alias for metric categories of all currently defined metrics."""
 
-        return [metric.type for metric in self.metrics]
+        return [metric.category for metric in self.metrics]
 
 
     @property

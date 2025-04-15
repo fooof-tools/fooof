@@ -1,6 +1,7 @@
 """Define model components object."""
 
 from specparam.utils.array import unlog
+from specparam.modutils.errors import NoModelError
 
 ###################################################################################################
 ###################################################################################################

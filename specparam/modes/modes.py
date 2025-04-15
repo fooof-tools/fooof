@@ -56,9 +56,8 @@ def check_mode_definition(mode, options):
     if isinstance(mode, str):
         assert mode in list(options.keys()), 'Specific Mode not found.'
         mode = options[mode]
-    elif isinstance(mode, Mode):
-        mode = mode
-    else:
+
+    if not isinstance(mode, Mode):
         raise ValueError('Mode input not understood.')
 
     return mode

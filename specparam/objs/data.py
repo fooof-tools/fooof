@@ -1,5 +1,6 @@
 """Define data objects."""
 
+from warnings import warn
 from functools import wraps
 
 import numpy as np
@@ -262,10 +263,10 @@ class Data():
         # Check if freqs start at 0 and move up one value if so
         #   Aperiodic fit gets an inf if freq of 0 is included, which leads to an error
         if freqs[0] == 0.0:
+            msg = "specparam fit warning - skipping frequency == 0, " \
+                "as this causes a problem with fitting."
+            warn(msg, category=RuntimeWarning)
             freqs, powers = trim_spectrum(freqs, powers, [freqs[1], freqs.max()])
-            if self.verbose:
-                print("\nFITTING WARNING: Skipping frequency == 0, "
-                      "as this causes a problem with fitting.")
 
         # Calculate frequency resolution, and actual frequency range of the data
         freq_range = [freqs.min(), freqs.max()]

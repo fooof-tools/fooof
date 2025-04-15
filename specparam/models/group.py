@@ -219,14 +219,15 @@ class SpectralGroupModel(SpectralModel):
             if 'power_spectrum' in data.keys():
                 power_spectra.append(data.pop('power_spectrum'))
 
+            data_keys = set(data.keys())
             self._add_from_dict(data)
 
             # For hearder line, check if settings are loaded and clear defaults if not
-            if ind == 0 and not set(self.algorithm.settings.names).issubset(set(data.keys())):
+            if ind == 0 and not set(self.algorithm.settings.names).issubset(data_keys):
                 self.algorithm.settings.clear()
 
             # If results part of current data added, check and update object results
-            if set([el + '_params' for el in self.results.params.fields]).issubset(set(data.keys())):
+            if set([el + '_params' for el in self.results.params.fields]).issubset(data_keys):
                 self.results.group_results.append(self.results._get_results())
 
         # Reconstruct frequency vector, if information is available to do so
