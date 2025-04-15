@@ -153,7 +153,7 @@ def test_fg_fail():
 
     # Use a fg with the max iterations set so low that it will fail to converge
     ntfg = SpectralGroupModel()
-    ntfg.algorithm._maxfev = 5
+    ntfg.algorithm._cf_settings.maxfev = 5
 
     # Fit models, where some will fail, to see if it completes cleanly
     ntfg.fit(fs, ps)

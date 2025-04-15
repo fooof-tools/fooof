@@ -336,7 +336,7 @@ def test_fit_failure():
 
     ## Induce a runtime error, and check it runs through
     tfm = SpectralModel(verbose=False)
-    tfm.algorithm._maxfev = 2
+    tfm.algorithm._cf_settings.maxfev = 2
 
     tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
@@ -362,7 +362,7 @@ def test_debug():
     """Test model object in debug state, including with fit failures."""
 
     tfm = SpectralModel(verbose=False)
-    tfm.algorithm._maxfev = 2
+    tfm.algorithm._cf_settings.maxfev = 2
 
     tfm.algorithm.set_debug(True)
     assert tfm.algorithm._debug is True

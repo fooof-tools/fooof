@@ -86,13 +86,6 @@ class SpectralFitAlgorithm(Algorithm):
     Parameters
     ----------
     % public settings described in Spectral Fit Algorithm Settings
-
-    _maxfev : int
-        The maximum number of calls to the curve fitting function.
-    _tol : float
-        The tolerance setting for curve fitting (see scipy.curve_fit - ftol / xtol / gtol).
-        The default value reduce tolerance to speed fitting (as compared to curve_fit's default).
-        Set value to 1e-8 to match curve_fit default.
     """
     # pylint: disable=attribute-defined-outside-init
 
@@ -124,9 +117,11 @@ class SpectralFitAlgorithm(Algorithm):
         self._settings.bw_std_edge = bw_std_edge
         self._settings.gauss_overlap_thresh = gauss_overlap_thresh
 
-        ## Private setting: curve_fit related settings
-        self._maxfev = maxfev
-        self._tol = tol
+        ## curve_fit settings
+        # Note - default reduces tolerance to speed fitting (as compared to curve_fit's default).
+        #   Set value to 1e-8 to match curve_fit default.
+        self._cf_settings.maxfev = maxfev
+        self._cf_settings.tol = tol
 
 
     def _fit_prechecks(self, verbose=True):
@@ -260,8 +255,9 @@ class SpectralFitAlgorithm(Algorithm):
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(self.modes.aperiodic.func, freqs, power_spectrum,
                                                 p0=ap_guess, bounds=self._settings.ap_bounds,
-                                                maxfev=self._maxfev, check_finite=False,
-                                                ftol=self._tol, xtol=self._tol, gtol=self._tol)
+                                                maxfev=self._cf_settings.maxfev, check_finite=False,
+                                                ftol=self._cf_settings.tol, xtol=self._cf_settings.tol,
+                                                gtol=self._cf_settings.tol)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding parameters in "
                          "the simple aperiodic component fit.")
@@ -315,8 +311,9 @@ class SpectralFitAlgorithm(Algorithm):
                 aperiodic_params, _ = curve_fit(self.modes.aperiodic.func,
                                                 freqs_ignore, spectrum_ignore,
                                                 p0=popt, bounds=self._settings.ap_bounds,
-                                                maxfev=self._maxfev, check_finite=False,
-                                                ftol=self._tol, xtol=self._tol, gtol=self._tol)
+                                                maxfev=self._cf_settings.maxfev, check_finite=False,
+                                                ftol=self._cf_settings.tol, xtol=self._cf_settings.tol,
+                                                gtol=self._cf_settings.tol)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
                          "parameters in the robust aperiodic fit.")
@@ -483,8 +480,9 @@ class SpectralFitAlgorithm(Algorithm):
                                      p0=np.ndarray.flatten(guess),
                                      bounds=self._get_pe_bounds(guess),
                                      jac=self.modes.periodic.jacobian,
-                                     maxfev=self._maxfev, check_finite=False,
-                                     ftol=self._tol, xtol=self._tol, gtol=self._tol)
+                                     maxfev=self._cf_settings.maxfev, check_finite=False,
+                                     ftol=self._cf_settings.tol, xtol=self._cf_settings.tol,
+                                     gtol=self._cf_settings.tol)
 
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
