@@ -135,14 +135,6 @@ class Algorithm():
             for setting in self.settings.names:
                 setattr(self.settings, setting, None)
 
-        # Reset internal settings so that they are consistent with what was loaded
-        #   Note that this will set internal settings to None, if public settings unavailable
-        self._reset_internal_settings()
-
-
-    def _reset_internal_settings(self):
-        """"Can be overloaded if any resetting needed for internal settings."""
-
 
     def _reset_subobjects(self, modes=None, data=None, results=None):
         """Reset links to sub-objects (mode / data / results).

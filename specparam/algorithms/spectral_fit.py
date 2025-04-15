@@ -224,8 +224,7 @@ class SpectralFitAlgorithm(Algorithm):
 
         if ap_bounds:
             msg = 'Provided aperiodic bounds do not have right length for fit function.'
-            assert len(ap_bounds[0]) == len(ap_bounds[1]) == \
-                self.modes.aperiodic.n_params, msg
+            assert len(ap_bounds[0]) == len(ap_bounds[1]) == self.modes.aperiodic.n_params, msg
         else:
             ap_bounds = (tuple([-np.inf] * self.modes.aperiodic.n_params),
                          tuple([np.inf] * self.modes.aperiodic.n_params))
