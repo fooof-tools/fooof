@@ -40,32 +40,53 @@ SPECTRAL_FIT_SETTINGS_DEF = SettingsDefinition({
 })
 
 
+SPECTRAL_FIT_PRIVATE_SETTINGS_DEF = SettingsDefinition({
+    'ap_percentile_thresh' : {
+        'type' : 'float',
+        'description' : \
+            'Percentile threshold, to select points from a flat spectrum for an initial aperiodic fit.\n        '
+            'Points are selected at a low percentile value to restrict to non-peak points.'
+        },
+    'ap_guess' : {
+        'type' : 'list of float',
+        'description' : \
+            'Guess parameters for fitting the aperiodic component.\n        '
+            'The length of the guess parameters should match the number & order of the aperiodic parameters.\n        '
+            'If \'offset\' is a parameter & guess is None, the first value of the power spectrum is used as the guess.\n        '
+            'If \'exponent\' is a parmater & guess is None, the abs(log-log slope) of first & last points is used.'
+        },
+    'ap_bounds' : {
+        'type' : 'tuple of tuple of float',
+        'description' : \
+            'Bounds for aperiodic fitting, as ((param1_low_bound, ...) (param1_high_bound, ...)).\n        '
+            'By default, aperiodic fitting is unbound, but can be restricted here.'
+        },
+    'cf_bound' : {
+        'type' : 'float',
+        'description' : 'Parameter bounds for center frequency when fitting gaussians, in terms of +/- std dev.'
+        },
+    'bw_std_edge' : {
+        'type' : 'float',
+        'description' : \
+            'Threshold for how far a peak has to be from edge to keep.\n        '
+            'This is defined in units of gaussian standard deviation.'
+        },
+    'gauss_overlap_thresh' : {
+        'type' : 'float',
+        'description' : \
+            'Degree of overlap between gaussian guesses for one to be dropped.\n        '
+            'This is defined in units of gaussian standard deviation.'
+        },
+})
+
+
 class SpectralFitAlgorithm(Algorithm):
     """Base object defining model & algorithm for spectral parameterization.
 
     Parameters
     ----------
     % public settings described in Spectral Fit Algorithm Settings
-    _ap_percentile_thresh : float
-        Percentile threshold, to select points from a flat spectrum for an initial aperiodic fit
-        Points are selected at a low percentile value to restrict to non-peak points.
-    _ap_guess : list of [float, float, float]
-        Guess parameters for fitting the aperiodic component, as [offset, knee, exponent].
-        If offset guess is None, the first value of the power spectrum is used as offset guess
-        If exponent guess is None, the abs(log-log slope) of first & last points is used
-    _ap_bounds : tuple of tuple of float
-        Bounds for aperiodic fitting, as: ((offset_low_bound, knee_low_bound, exp_low_bound),
-                                           (offset_high_bound, knee_high_bound, exp_high_bound))
-        By default, aperiodic fitting is unbound, but can be restricted here.
-        Even if fitting without knee, leave bounds for knee (they are dropped later).
-    _cf_bound : float
-        Parameter bounds for center frequency when fitting gaussians, in terms of +/- std dev.
-    _bw_std_edge : float
-        Threshold for how far a peak has to be from edge to keep.
-        This is defined in units of gaussian standard deviation.
-    _gauss_overlap_thresh : float
-        Degree of overlap between gaussian guesses for one to be dropped.
-        This is defined in units of gaussian standard deviation.
+
     _maxfev : int
         The maximum number of calls to the curve fitting function.
     _tol : float
@@ -91,7 +112,8 @@ class SpectralFitAlgorithm(Algorithm):
         super().__init__(
             name='spectral fit',
             description='Original parameterizing neural power spectra algorithm.',
-            settings=SPECTRAL_FIT_SETTINGS_DEF, format='spectrum',
+            public_settings=SPECTRAL_FIT_SETTINGS_DEF,
+            private_settings=SPECTRAL_FIT_PRIVATE_SETTINGS_DEF,
             modes=modes, data=data, results=results, debug=debug)
 
         ## Public settings
@@ -101,12 +123,12 @@ class SpectralFitAlgorithm(Algorithm):
         self.settings.peak_threshold = peak_threshold
 
         ## Private settings: model parameters related settings
-        self._ap_percentile_thresh = ap_percentile_thresh
-        self._ap_guess = ap_guess
-        self._set_ap_bounds(ap_bounds)
-        self._cf_bound = cf_bound
-        self._bw_std_edge = bw_std_edge
-        self._gauss_overlap_thresh = gauss_overlap_thresh
+        self._settings.ap_percentile_thresh = ap_percentile_thresh
+        self._settings.ap_guess = ap_guess
+        self._settings.ap_bounds = self._get_ap_bounds(ap_bounds)
+        self._settings.cf_bound = cf_bound
+        self._settings.bw_std_edge = bw_std_edge
+        self._settings.gauss_overlap_thresh = gauss_overlap_thresh
 
         ## Private setting: curve_fit related settings
         self._maxfev = maxfev
@@ -198,7 +220,7 @@ class SpectralFitAlgorithm(Algorithm):
         ToDo - Could be updated to fill in missing guesses.
         """
 
-        if not self._ap_guess:
+        if not self._settings.ap_guess:
 
             ap_guess = []
             for label in self.modes.aperiodic.params.labels:
@@ -221,7 +243,7 @@ class SpectralFitAlgorithm(Algorithm):
         return ap_guess
 
 
-    def _set_ap_bounds(self, ap_bounds):
+    def _get_ap_bounds(self, ap_bounds):
         """Set the default bounds for the aperiodic fit.
 
         Notes
@@ -232,12 +254,13 @@ class SpectralFitAlgorithm(Algorithm):
 
         if ap_bounds:
             msg = 'Provided aperiodic bounds do not have right length for fit function.'
-            assert len(self._ap_bounds[0]) == len(self._ap_bounds[1]) == \
+            assert len(ap_bounds[0]) == len(ap_bounds[1]) == \
                 self.modes.aperiodic.n_params, msg
-            self._ap_bounds = ap_bounds
         else:
-            self._ap_bounds = (tuple([-np.inf] * self.modes.aperiodic.n_params),
-                               tuple([np.inf] * self.modes.aperiodic.n_params))
+            ap_bounds = (tuple([-np.inf] * self.modes.aperiodic.n_params),
+                         tuple([np.inf] * self.modes.aperiodic.n_params))
+
+        return ap_bounds
 
 
     def _simple_ap_fit(self, freqs, power_spectrum):
@@ -267,7 +290,7 @@ class SpectralFitAlgorithm(Algorithm):
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(self.modes.aperiodic.func, freqs, power_spectrum,
-                                                p0=ap_guess, bounds=self._ap_bounds,
+                                                p0=ap_guess, bounds=self._settings.ap_bounds,
                                                 maxfev=self._maxfev, check_finite=False,
                                                 ftol=self._tol, xtol=self._tol, gtol=self._tol)
         except RuntimeError as excp:
@@ -310,7 +333,7 @@ class SpectralFitAlgorithm(Algorithm):
         flatspec[flatspec < 0] = 0
 
         # Use percentile threshold, in terms of # of points, to extract and re-fit
-        perc_thresh = np.percentile(flatspec, self._ap_percentile_thresh)
+        perc_thresh = np.percentile(flatspec, self._settings.ap_percentile_thresh)
         perc_mask = flatspec <= perc_thresh
         freqs_ignore = freqs[perc_mask]
         spectrum_ignore = power_spectrum[perc_mask]
@@ -322,7 +345,7 @@ class SpectralFitAlgorithm(Algorithm):
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(self.modes.aperiodic.func,
                                                 freqs_ignore, spectrum_ignore,
-                                                p0=popt, bounds=self._ap_bounds,
+                                                p0=popt, bounds=self._settings.ap_bounds,
                                                 maxfev=self._maxfev, check_finite=False,
                                                 ftol=self._tol, xtol=self._tol, gtol=self._tol)
         except RuntimeError as excp:
@@ -447,9 +470,9 @@ class SpectralFitAlgorithm(Algorithm):
         #     ((cf_low_peak1, height_low_peak1, bw_low_peak1, *repeated for n_peaks*),
         #      (cf_high_peak1, height_high_peak1, bw_high_peak, *repeated for n_peaks*))
         #     ^where each value sets the bound on the specified parameter
-        lo_bound = [[peak[0] - 2 * self._cf_bound * peak[2], 0, self._gauss_std_limits[0]]
+        lo_bound = [[peak[0] - 2 * self._settings.cf_bound * peak[2], 0, self._gauss_std_limits[0]]
                     for peak in guess]
-        hi_bound = [[peak[0] + 2 * self._cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]
+        hi_bound = [[peak[0] + 2 * self._settings.cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]
                     for peak in guess]
 
         # Check that CF bounds are within frequency range
@@ -525,7 +548,7 @@ class SpectralFitAlgorithm(Algorithm):
         """
 
         cf_params = guess[:, 0]
-        bw_params = guess[:, 2] * self._bw_std_edge
+        bw_params = guess[:, 2] * self._settings.bw_std_edge
 
         # Check if peaks within drop threshold from the edge of the frequency range
         keep_peak = \
@@ -562,8 +585,8 @@ class SpectralFitAlgorithm(Algorithm):
 
         # Calculate standard deviation bounds for checking amount of overlap
         #   The bounds are the gaussian frequency +/- gaussian standard deviation
-        bounds = [[peak[0] - peak[2] * self._gauss_overlap_thresh,
-                   peak[0] + peak[2] * self._gauss_overlap_thresh] for peak in guess]
+        bounds = [[peak[0] - peak[2] * self._settings.gauss_overlap_thresh,
+                   peak[0] + peak[2] * self._settings.gauss_overlap_thresh] for peak in guess]
 
         # Loop through peak bounds, comparing current bound to that of next peak
         #   If the left peak's upper bound extends pass the right peaks lower bound,
