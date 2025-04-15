@@ -28,13 +28,15 @@ SPECTRAL_FIT_SETTINGS_DEF = SettingsDefinition({
     'min_peak_height' : {
         'type' : 'float, optional, default: 0',
         'description' : \
-            'Absolute threshold for detecting peaks.\n        ' \
+            'Absolute threshold for detecting peaks.'
+            '\n        '
             'This threshold is defined in absolute units of the power spectrum (log power).',
         },
     'peak_threshold' : {
         'type' : 'float, optional, default: 2.0',
         'description' : \
-            'Relative threshold for detecting peaks.\n        ' \
+            'Relative threshold for detecting peaks.'
+            '\n        '
             'Threshold is defined in relative units of the power spectrum (standard deviation).',
         },
 })
@@ -44,38 +46,47 @@ SPECTRAL_FIT_PRIVATE_SETTINGS_DEF = SettingsDefinition({
     'ap_percentile_thresh' : {
         'type' : 'float',
         'description' : \
-            'Percentile threshold, to select points from a flat spectrum for an initial aperiodic fit.\n        '
-            'Points are selected at a low percentile value to restrict to non-peak points.'
+            'Percentile threshold to select data from flat spectrum for an initial aperiodic fit.'
+            '\n        '
+            'Points are selected at a low percentile value to restrict to non-peak points.',
         },
     'ap_guess' : {
         'type' : 'list of float',
         'description' : \
-            'Guess parameters for fitting the aperiodic component.\n        '
-            'The length of the guess parameters should match the number & order of the aperiodic parameters.\n        '
-            'If \'offset\' is a parameter & guess is None, the first value of the power spectrum is used as the guess.\n        '
-            'If \'exponent\' is a parameter & guess is None, the abs(log-log slope) of first & last points is used.'
+            'Guess parameters for fitting the aperiodic component.'
+            '\n        '
+            'The guess parameters should match the length and order of the aperiodic parameters.'
+            '\n        '
+            'If \'offset\' is a parameter, default guess is the first value of the power spectrum.'
+            '\n        '
+            'If \'exponent\' is a parameter, '
+            'default guess is the abs(log-log slope) of first & last points.'
         },
     'ap_bounds' : {
         'type' : 'tuple of tuple of float',
         'description' : \
-            'Bounds for aperiodic fitting, as ((param1_low_bound, ...) (param1_high_bound, ...)).\n        '
-            'By default, aperiodic fitting is unbound, but can be restricted here.'
+            'Bounds for aperiodic fitting, as ((param1_low_bound, ...) (param1_high_bound, ...)).'
+            '\n        '
+            'By default, aperiodic fitting is unbound, but can be restricted here.',
         },
     'cf_bound' : {
         'type' : 'float',
-        'description' : 'Parameter bounds for center frequency when fitting gaussians, in terms of +/- std dev.'
+        'description' : \
+            'Parameter bounds for center frequency when fitting gaussians, as +/- std dev.',
         },
     'bw_std_edge' : {
         'type' : 'float',
         'description' : \
-            'Threshold for how far a peak has to be from edge to keep.\n        '
-            'This is defined in units of gaussian standard deviation.'
+            'Threshold for how far a peak has to be from edge to keep.'
+            '\n        '
+            'This is defined in units of gaussian standard deviation.',
         },
     'gauss_overlap_thresh' : {
         'type' : 'float',
         'description' : \
-            'Degree of overlap between gaussian guesses for one to be dropped.\n        '
-            'This is defined in units of gaussian standard deviation.'
+            'Degree of overlap between gaussian guesses for one to be dropped.'
+            '\n        '
+            'This is defined in units of gaussian standard deviation.',
         },
 })
 
@@ -157,7 +168,8 @@ class SpectralFitAlgorithm(Algorithm):
             self.data.freqs, *np.ndarray.flatten(self.results.params.gaussian))
 
         # Create peak-removed (but not flattened) power spectrum
-        self.results.model._spectrum_peak_rm = self.data.power_spectrum - self.results.model._peak_fit
+        self.results.model._spectrum_peak_rm = \
+            self.data.power_spectrum - self.results.model._peak_fit
 
         # Run final aperiodic fit on peak-removed power spectrum
         self.results.params.aperiodic = self._simple_ap_fit(\
@@ -167,7 +179,8 @@ class SpectralFitAlgorithm(Algorithm):
 
         # Create remaining model components: flatspec & full power_spectrum model fit
         self.results.model._spectrum_flat = self.data.power_spectrum - self.results.model._ap_fit
-        self.results.model.modeled_spectrum = self.results.model._peak_fit + self.results.model._ap_fit
+        self.results.model.modeled_spectrum = \
+            self.results.model._peak_fit + self.results.model._ap_fit
 
         ## PARAMETER UPDATES
 
@@ -255,8 +268,10 @@ class SpectralFitAlgorithm(Algorithm):
                 warnings.simplefilter("ignore")
                 aperiodic_params, _ = curve_fit(self.modes.aperiodic.func, freqs, power_spectrum,
                                                 p0=ap_guess, bounds=self._settings.ap_bounds,
-                                                maxfev=self._cf_settings.maxfev, check_finite=False,
-                                                ftol=self._cf_settings.tol, xtol=self._cf_settings.tol,
+                                                maxfev=self._cf_settings.maxfev,
+                                                check_finite=False,
+                                                ftol=self._cf_settings.tol,
+                                                xtol=self._cf_settings.tol,
                                                 gtol=self._cf_settings.tol)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding parameters in "
@@ -311,8 +326,10 @@ class SpectralFitAlgorithm(Algorithm):
                 aperiodic_params, _ = curve_fit(self.modes.aperiodic.func,
                                                 freqs_ignore, spectrum_ignore,
                                                 p0=popt, bounds=self._settings.ap_bounds,
-                                                maxfev=self._cf_settings.maxfev, check_finite=False,
-                                                ftol=self._cf_settings.tol, xtol=self._cf_settings.tol,
+                                                maxfev=self._cf_settings.maxfev,
+                                                check_finite=False,
+                                                ftol=self._cf_settings.tol,
+                                                xtol=self._cf_settings.tol,
                                                 gtol=self._cf_settings.tol)
         except RuntimeError as excp:
             error_msg = ("Model fitting failed due to not finding "
@@ -480,8 +497,10 @@ class SpectralFitAlgorithm(Algorithm):
                                      p0=np.ndarray.flatten(guess),
                                      bounds=self._get_pe_bounds(guess),
                                      jac=self.modes.periodic.jacobian,
-                                     maxfev=self._cf_settings.maxfev, check_finite=False,
-                                     ftol=self._cf_settings.tol, xtol=self._cf_settings.tol,
+                                     maxfev=self._cf_settings.maxfev,
+                                     check_finite=False,
+                                     ftol=self._cf_settings.tol,
+                                     xtol=self._cf_settings.tol,
                                      gtol=self._cf_settings.tol)
 
         except RuntimeError as excp:
@@ -614,14 +633,16 @@ class SpectralFitAlgorithm(Algorithm):
 
             # Collect peak parameter data
             if self.modes.periodic.name == 'gaussian':  ## TEMP
-                peak_params[ii] = [peak[0],
-                                   self.results.model.modeled_spectrum[ind] - self.results.model._ap_fit[ind],
-                                   peak[2] * 2]
+                peak_params[ii] = [\
+                    peak[0],
+                    self.results.model.modeled_spectrum[ind] - self.results.model._ap_fit[ind],
+                    peak[2] * 2]
 
             ## TEMP:
             if self.modes.periodic.name == 'skewnorm':
-                peak_params[ii] = [peak[0],
-                                   self.results.model.modeled_spectrum[ind] - self.results.model._ap_fit[ind],
-                                   peak[2] * 2, peak[3]]
+                peak_params[ii] = [\
+                    peak[0],
+                    self.results.model.modeled_spectrum[ind] - self.results.model._ap_fit[ind],
+                    peak[2] * 2, peak[3]]
 
         return peak_params
