@@ -18,6 +18,10 @@ def test_settings_values():
     assert settings_vals.a == 1
     assert settings_vals.b == 2
 
+    settings_vals.clear()
+    assert settings_vals.a is None
+    assert settings_vals.b is None
+
 def test_settings_definition():
 
     tdefinitions = {

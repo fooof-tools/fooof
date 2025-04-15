@@ -65,6 +65,13 @@ class SettingsValues():
         return list(self.values.keys())
 
 
+    def clear(self):
+        """Clear all settings - resetting to None."""
+
+        for setting in self.names:
+            self.values[setting] = None
+
+
 class SettingsDefinition():
     """Defines a set of algorithm settings.
 
