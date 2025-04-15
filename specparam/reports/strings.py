@@ -213,7 +213,7 @@ def gen_settings_str(model, description=False, concise=False):
     for name in model.algorithm.settings.names:
         str_lst.append(name + ' : ' + str(getattr(model.algorithm.settings, name)))
         if description:
-            str_lst.append(model.algorithm._settings.descriptions[name].split('\n ')[0])
+            str_lst.append(model.algorithm.public_settings.descriptions[name].split('\n ')[0])
 
     # Add footer to string
     str_lst.extend([

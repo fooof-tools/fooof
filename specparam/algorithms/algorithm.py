@@ -6,7 +6,7 @@ from specparam.algorithms.settings import SettingsDefinition, SettingsValues
 ###################################################################################################
 ###################################################################################################
 
-FORMATS = ['spectrum', 'spectra', 'spectrogram', 'spectrograms']
+DATA_FORMATS = ['spectrum', 'spectra', 'spectrogram', 'spectrograms']
 
 
 class Algorithm():
@@ -18,10 +18,12 @@ class Algorithm():
         Name of the fitting algorithm.
     description : str
         Description of the fitting algorithm.
-    settings : SettingsDefinition or dict
-        Name and description of settings for the fitting algorithm.
-    format : {'spectrum', 'spectra', 'spectrogram', 'spectrograms'}
-        Set base format of data model can be applied to.
+    public_settings : SettingsDefinition or dict
+        Name and description of public settings for the fitting algorithm.
+    private_settings :  SettingsDefinition or dict, optional
+        Name and description of private settings for the fitting algorithm.
+    data_format : {'spectrum', 'spectra', 'spectrogram', 'spectrograms'}
+        Set base data format the model can be applied to.
     modes : Modes
         Modes object with fit mode definitions.
     data : Data
@@ -32,20 +34,27 @@ class Algorithm():
         Whether to run in debug state, raising an error if encountered during fitting.
     """
 
-    def __init__(self, name, description, settings, format,
-                 modes=None, data=None, results=None, debug=False):
+    def __init__(self, name, description, public_settings, private_settings=None,
+                 data_format='spectrum', modes=None, data=None, results=None, debug=False):
         """Initialize Algorithm object."""
 
         self.name = name
         self.description = description
 
-        if not isinstance(settings, SettingsDefinition):
-            settings = SettingsDefinition(settings)
-        self._settings = settings
-        self.settings = SettingsValues(self._settings.names)
+        if not isinstance(public_settings, SettingsDefinition):
+            public_settings = SettingsDefinition(public_settings)
+        self.public_settings = public_settings
+        self.settings = SettingsValues(self.public_settings.names)
 
-        check_input_options(format, FORMATS, 'format')
-        self.format = format
+        if private_settings is None:
+            private_settings = {}
+        if not isinstance(private_settings, SettingsDefinition):
+            private_settings = SettingsDefinition(private_settings)
+        self.private_settings = private_settings
+        self._settings = SettingsValues(self.private_settings.names)
+
+        check_input_options(data_format, DATA_FORMATS, 'data_format')
+        self.data_format = data_format
 
         self.modes = None
         self.data = None
@@ -87,8 +96,8 @@ class Algorithm():
             Object containing the settings from the current object.
         """
 
-        return self._settings.make_model_settings()(\
-            **{key : getattr(self.settings, key) for key in self._settings.names})
+        return self.public_settings.make_model_settings()(\
+            **{key : getattr(self.settings, key) for key in self.public_settings.names})
 
 
     def get_debug(self):
@@ -120,10 +129,10 @@ class Algorithm():
 
         # If settings not loaded from file, clear from object, so that default
         # settings, which are potentially wrong for loaded data, aren't kept
-        if not set(self._settings.names).issubset(set(data.keys())):
+        if not set(self.settings.names).issubset(set(data.keys())):
 
             # Reset all public settings to None
-            for setting in self._settings.names:
+            for setting in self.settings.names:
                 setattr(self.settings, setting, None)
 
         # Reset internal settings so that they are consistent with what was loaded

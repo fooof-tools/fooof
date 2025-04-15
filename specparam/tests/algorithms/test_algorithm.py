@@ -16,12 +16,12 @@ def test_algorithm():
         'b' : {'type' : 'b type desc', 'description' : 'b desc'},
     })
 
-    algo = Algorithm(name=tname, description=tdescription, settings=tsettings, format='spectrum')
+    algo = Algorithm(name=tname, description=tdescription, public_settings=tsettings)
     assert algo
     assert algo.name == tname
     assert algo.description == tdescription
-    assert isinstance(algo._settings, SettingsDefinition)
-    assert algo._settings == tsettings
+    assert isinstance(algo.public_settings, SettingsDefinition)
+    assert algo.public_settings == tsettings
 
 def test_algorithm_settings():
 
@@ -32,9 +32,9 @@ def test_algorithm_settings():
         'b' : {'type' : 'b type desc', 'description' : 'b desc'},
     })
 
-    talgo = Algorithm(name=tname, description=tdescription, settings=tsettings, format='spectrum')
+    talgo = Algorithm(name=tname, description=tdescription, public_settings=tsettings)
 
-    model_settings = talgo._settings.make_model_settings()
+    model_settings = talgo.public_settings.make_model_settings()
     settings = model_settings(a=1, b=2)
     talgo.add_settings(settings)
     for setting in settings._fields:
