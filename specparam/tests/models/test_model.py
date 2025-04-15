@@ -314,10 +314,7 @@ def test_resets():
 
     # Note: uses it's own tfm, to not clear the global one
     tfm = get_tfm()
-
     tfm._reset_data_results(True, True, True)
-    tfm.algorithm._reset_internal_settings()
-
     for field in tfm.data._fields:
         assert getattr(tfm.data, field) is None
     for key, value in tfm.results.model.__dict__.items():

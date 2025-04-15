@@ -53,7 +53,7 @@ SPECTRAL_FIT_PRIVATE_SETTINGS_DEF = SettingsDefinition({
             'Guess parameters for fitting the aperiodic component.\n        '
             'The length of the guess parameters should match the number & order of the aperiodic parameters.\n        '
             'If \'offset\' is a parameter & guess is None, the first value of the power spectrum is used as the guess.\n        '
-            'If \'exponent\' is a parmater & guess is None, the abs(log-log slope) of first & last points is used.'
+            'If \'exponent\' is a parameter & guess is None, the abs(log-log slope) of first & last points is used.'
         },
     'ap_bounds' : {
         'type' : 'tuple of tuple of float',
@@ -93,12 +93,6 @@ class SpectralFitAlgorithm(Algorithm):
         The tolerance setting for curve fitting (see scipy.curve_fit - ftol / xtol / gtol).
         The default value reduce tolerance to speed fitting (as compared to curve_fit's default).
         Set value to 1e-8 to match curve_fit default.
-
-    Attributes
-    ----------
-    _gauss_std_limits : list of [float, float]
-        Settings attribute: peak width limits, to use for gaussian standard deviation parameter.
-        This attribute is computed based on `peak_width_limits` and should not be updated directly.
     """
     # pylint: disable=attribute-defined-outside-init
 
@@ -133,9 +127,6 @@ class SpectralFitAlgorithm(Algorithm):
         ## Private setting: curve_fit related settings
         self._maxfev = maxfev
         self._tol = tol
-
-        ## Set internal settings, based on inputs, and initialize data & results attributes
-        self._reset_internal_settings()
 
 
     def _fit_prechecks(self, verbose=True):
@@ -187,27 +178,6 @@ class SpectralFitAlgorithm(Algorithm):
 
         # Convert gaussian definitions to peak parameters
         self.results.params.peak = self._create_peak_params(self.results.params.gaussian)
-
-
-    def _reset_internal_settings(self):
-        """Set, or reset, internal settings, based on what is provided in init.
-
-        Notes
-        -----
-        These settings are for internal use, based on what is provided to, or set in `__init__`.
-        They should not be altered by the user.
-        """
-
-        # Only update these settings if other relevant settings are available
-        if self.settings.peak_width_limits:
-
-            # Bandwidth limits are given in 2-sided peak bandwidth
-            #   Convert to gaussian std parameter limits
-            self._gauss_std_limits = tuple(bwl / 2 for bwl in self.settings.peak_width_limits)
-
-        # Otherwise, assume settings are unknown (have been cleared) and set to None
-        else:
-            self._gauss_std_limits = None
 
 
     def _get_ap_guess(self, freqs, power_spectrum):
@@ -428,11 +398,12 @@ class SpectralFitAlgorithm(Algorithm):
                 guess_std = np.mean(self.settings.peak_width_limits)
 
             # Check that guess value isn't outside preset limits - restrict if so
+            #   This also converts the peak_width_limits from 2-sided BW to 1-sided gaussian std
             #   Note: without this, curve_fitting fails if given guess > or < bounds
-            if guess_std < self._gauss_std_limits[0]:
-                guess_std = self._gauss_std_limits[0]
-            if guess_std > self._gauss_std_limits[1]:
-                guess_std = self._gauss_std_limits[1]
+            if guess_std < self.settings.peak_width_limits[0] / 2:
+                guess_std = self.settings.peak_width_limits[0] / 2
+            if guess_std > self.settings.peak_width_limits[1] / 2:
+                guess_std = self.settings.peak_width_limits[0] / 2
 
             # Collect guess parameters and subtract this guess gaussian from the data
             current_guess_params = (guess_freq, guess_height, guess_std)
@@ -465,15 +436,15 @@ class SpectralFitAlgorithm(Algorithm):
         """Get the bound for the peak fit."""
 
         # Set the bounds for CF, enforce positive height value, and set bandwidth limits
-        #   Note that 'guess' is in terms of gaussian std, so +/- BW is 2 * the guess_gauss_std
+        #   Note that 'guess' is in terms of gaussian std, so peak_width_limit is % by 2
         #   This set of list comprehensions is a way to end up with bounds in the form:
         #     ((cf_low_peak1, height_low_peak1, bw_low_peak1, *repeated for n_peaks*),
         #      (cf_high_peak1, height_high_peak1, bw_high_peak, *repeated for n_peaks*))
         #     ^where each value sets the bound on the specified parameter
-        lo_bound = [[peak[0] - 2 * self._settings.cf_bound * peak[2], 0, self._gauss_std_limits[0]]
-                    for peak in guess]
-        hi_bound = [[peak[0] + 2 * self._settings.cf_bound * peak[2], np.inf, self._gauss_std_limits[1]]
-                    for peak in guess]
+        lo_bound = [[peak[0] - 2 * self._settings.cf_bound * peak[2], 0, \
+                     self.settings.peak_width_limits[0] / 2] for peak in guess]
+        hi_bound = [[peak[0] + 2 * self._settings.cf_bound * peak[2], np.inf, \
+                     self.settings.peak_width_limits[1] / 2] for peak in guess]
 
         # Check that CF bounds are within frequency range
         #   If they are  not, update them to be restricted to frequency range

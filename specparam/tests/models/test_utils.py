@@ -42,7 +42,6 @@ def test_compare_model_objs(tfm, tfg):
 
         assert compare_model_objs([f_obj, f_obj2], 'settings')
         f_obj2.algorithm.settings.peak_width_limits = [2, 4]
-        f_obj2.algorithm._reset_internal_settings()
         assert not compare_model_objs([f_obj, f_obj2], 'settings')
 
         assert compare_model_objs([f_obj, f_obj2], 'meta_data')
@@ -138,8 +137,6 @@ def test_combine_errors(tfm, tfg):
     for f_obj in [tfm, tfg]:
         f_obj2 = f_obj.copy()
         f_obj2.algorithm.settings.peak_width_limits = [2, 4]
-        f_obj2.algorithm._reset_internal_settings()
-
         with raises(IncompatibleSettingsError):
             combine_model_objs([f_obj, f_obj2])
 
