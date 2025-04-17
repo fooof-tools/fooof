@@ -73,21 +73,21 @@ SPECTRAL_FIT_PRIVATE_SETTINGS_DEF = SettingsDefinition({
     'cf_bound' : {
         'type' : 'float',
         'description' : \
-            'Parameter bounds for center frequency when fitting gaussians, as +/- std dev.',
+            'Parameter bounds for center frequency when fitting peaks, as +/- std dev.',
         },
     'bw_std_edge' : {
         'type' : 'float',
         'description' : \
             'Threshold for how far a peak has to be from edge to keep.'
             '\n        '
-            'This is defined in units of gaussian standard deviation.',
+            'This is defined in units of peak standard deviation.',
         },
     'gauss_overlap_thresh' : {
         'type' : 'float',
         'description' : \
-            'Degree of overlap between gaussian guesses for one to be dropped.'
+            'Degree of overlap between peak guesses for one to be dropped.'
             '\n        '
-            'This is defined in units of gaussian standard deviation.',
+            'This is defined in units of peak standard deviation.',
         },
 })
 
@@ -147,7 +147,8 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         if verbose:
             if 1.5 * self.data.freq_res >= self.settings.peak_width_limits[0]:
-                print(gen_width_warning_str(self.data.freq_res, self.settings.peak_width_limits[0]))
+                print(gen_width_warning_str(self.data.freq_res,
+                                            self.settings.peak_width_limits[0]))
 
 
     def _fit(self):
@@ -159,7 +160,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
         temp_aperiodic_params = self._robust_ap_fit(self.data.freqs, self.data.power_spectrum)
         temp_ap_fit = self.modes.aperiodic.func(self.data.freqs, *temp_aperiodic_params)
 
-        # Find peaks from the flattened power spectrum, and fit them with gaussians
+        # Find peaks from the flattened power spectrum, and fit them
         temp_spectrum_flat = self.data.power_spectrum - temp_ap_fit
         self.results.params.gaussian = self._fit_peaks(temp_spectrum_flat)
 
@@ -185,7 +186,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         ## PARAMETER UPDATES
 
-        # Convert gaussian definitions to peak parameters
+        # Convert fit peak parameters to updated values
         self.results.params.peak = self._create_peak_params(self.results.params.gaussian)
 
 
@@ -428,8 +429,8 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
             # Fit and subtract guess peak from the spectrum
             guess = np.vstack((guess, cur_guess))
-            peak_gauss = self.modes.periodic.func(self.data.freqs, *cur_guess)
-            flat_iter = flat_iter - peak_gauss
+            peak_fit = self.modes.periodic.func(self.data.freqs, *cur_guess)
+            flat_iter = flat_iter - peak_fit
 
         # Check peaks based on edges, and on overlap, dropping any that violate requirements
         guess = self._drop_peak_cf(guess)
@@ -571,7 +572,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
 
     def _drop_peak_overlap(self, guess):
-        """Checks whether to drop gaussians based on amount of overlap.
+        """Checks whether to drop peaks based on amount of overlap.
 
         Parameters
         ----------
@@ -595,7 +596,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
         guess = sorted(guess, key=lambda x: float(x[inds['cf']]))
 
         # Calculate standard deviation bounds for checking amount of overlap
-        #   The bounds are the gaussian frequency +/- gaussian standard deviation
+        #   The bounds are the center frequency +/- width (standard deviation)
         bounds = [[peak[inds['cf']] - peak[inds['bw']] * self._settings.gauss_overlap_thresh,
                    peak[inds['cf']] + peak[inds['bw']] * self._settings.gauss_overlap_thresh]\
                    for peak in guess]
@@ -620,9 +621,8 @@ class SpectralFitAlgorithm(AlgorithmCF):
         return guess
 
 
-    ## TO GENERALIZE FOR MODES
     def _create_peak_params(self, fit_peak_params):
-        """Copies over the gaussian params to peak outputs, updating as appropriate.
+        """Copies over the fit peak parameters output parameters, updating as appropriate.
 
         Parameters
         ----------
@@ -636,14 +636,14 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         Notes
         -----
-        The gaussian center is unchanged as the peak center frequency.
+        The center frequency estimate is unchanged as the peak center frequency.
 
-        The gaussian height is updated to reflect the height of the peak above
-        the aperiodic fit. This is returned instead of the gaussian height, as
-        the gaussian height is harder to interpret, due to peak overlaps.
+        The peak height is updated to reflect the height of the peak above
+        the aperiodic fit. This is returned instead of the fit peak height, as
+        the fit height is harder to interpret, due to peak overlaps.
 
-        The gaussian standard deviation is updated to be 'both-sided', to reflect the
-        'bandwidth' of the peak, as opposed to the gaussian parameter, which is 1-sided.
+        The peak bandwidth is updated to be 'both-sided', to reflect the overal width
+        of the peak, as opposed to the fit parameter, which is 1-sided standard deviation.
 
         Performing this conversion requires that the model has been run,
         with `freqs`, `modeled_spectrum` and `_ap_fit` all required to be available.
