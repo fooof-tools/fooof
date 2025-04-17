@@ -621,18 +621,18 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
 
     ## TO GENERALIZE FOR MODES
-    def _create_peak_params(self, gaus_params):
+    def _create_peak_params(self, fit_peak_params):
         """Copies over the gaussian params to peak outputs, updating as appropriate.
 
         Parameters
         ----------
-        gaus_params : 2d array
-            Parameters that define the gaussian fit(s), as gaussian parameters.
+        fit_peak_params : 2d array
+            Parameters that define the peak parameters directly fit to the spectrum.
 
         Returns
         -------
         peak_params : 2d array
-            Fitted parameter values for the peaks, with each row as [CF, PW, BW].
+            Updated parameter values for the peaks.
 
         Notes
         -----
@@ -649,25 +649,22 @@ class SpectralFitAlgorithm(AlgorithmCF):
         with `freqs`, `modeled_spectrum` and `_ap_fit` all required to be available.
         """
 
-        peak_params = np.empty((len(gaus_params), self.modes.periodic.n_params))
+        inds = self.modes.periodic.params.indices
 
-        for ii, peak in enumerate(gaus_params):
+        peak_params = np.empty((len(fit_peak_params), self.modes.periodic.n_params))
+
+        for ii, peak in enumerate(fit_peak_params):
+
+            cpeak = peak.copy()
 
             # Gets the index of the power_spectrum at the frequency closest to the CF of the peak
-            ind = np.argmin(np.abs(self.data.freqs - peak[0]))
+            cf_ind = np.argmin(np.abs(self.data.freqs - peak[inds['cf']]))
+            cpeak[inds['pw']] = \
+                self.results.model.modeled_spectrum[cf_ind] - self.results.model._ap_fit[cf_ind]
 
-            # Collect peak parameter data
-            if self.modes.periodic.name == 'gaussian':  ## TEMP
-                peak_params[ii] = [\
-                    peak[0],
-                    self.results.model.modeled_spectrum[ind] - self.results.model._ap_fit[ind],
-                    peak[2] * 2]
+            # Bandwidth is updated to be 'two-sided' (as opposed to one-sided std dev)
+            cpeak[inds['bw']] = peak[inds['bw']] * 2
 
-            ## TEMP:
-            if self.modes.periodic.name == 'skewnorm':
-                peak_params[ii] = [\
-                    peak[0],
-                    self.results.model.modeled_spectrum[ind] - self.results.model._ap_fit[ind],
-                    peak[2] * 2, peak[3]]
+            peak_params[ii] = cpeak
 
         return peak_params
