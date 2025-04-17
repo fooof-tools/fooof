@@ -185,12 +185,18 @@ class AlgorithmCF(Algorithm):
 
         Returns
         -------
-        bounds : tuple of tuple
+        bounds : tuple of array
             Bounds values.
+
+        Notes
+        -----
+        Output follows the needed bounds definition for curve_fit, which is:
+            ([low_bound_param1, low_bound_param2],
+             [high_bound_param1, high_bound_param2])
         """
 
         n_params = getattr(self.modes, mode).n_params
-        bounds = (tuple([-np.inf] * n_params), tuple([np.inf] * n_params))
+        bounds = (np.array([-np.inf] * n_params), np.array([np.inf] * n_params))
 
         return bounds
 

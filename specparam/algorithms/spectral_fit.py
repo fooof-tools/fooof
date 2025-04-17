@@ -1,6 +1,7 @@
 """Define original spectral fitting algorithm object."""
 
 import warnings
+from itertools import repeat
 
 import numpy as np
 from numpy.linalg import LinAlgError
@@ -446,34 +447,56 @@ class SpectralFitAlgorithm(AlgorithmCF):
         return gaussian_params
 
 
-    ## TO GENERALIZE FOR MODES
     def _get_pe_bounds(self, guess):
-        """Get the bound for the peak fit."""
+        """Get the bound for the peak fit.
 
-        # Set the bounds for CF, enforce positive height value, and set bandwidth limits
-        #   Note that 'guess' is in terms of gaussian std, so peak_width_limit is % by 2
-        #   This set of list comprehensions is a way to end up with bounds in the form:
-        #     ((cf_low_peak1, height_low_peak1, bw_low_peak1, *repeated for n_peaks*),
-        #      (cf_high_peak1, height_high_peak1, bw_high_peak, *repeated for n_peaks*))
-        #     ^where each value sets the bound on the specified parameter
-        lo_bound = [[peak[0] - 2 * self._settings.cf_bound * peak[2], 0, \
-                     self.settings.peak_width_limits[0] / 2] for peak in guess]
-        hi_bound = [[peak[0] + 2 * self._settings.cf_bound * peak[2], np.inf, \
-                     self.settings.peak_width_limits[1] / 2] for peak in guess]
+        Parameters
+        ----------
+        guess : list
+            Guess parameters from initial peak search.
 
-        # Check that CF bounds are within frequency range
-        #   If they are  not, update them to be restricted to frequency range
-        lo_bound = [bound if bound[0] > self.data.freq_range[0] else \
-            [self.data.freq_range[0], *bound[1:]] for bound in lo_bound]
-        hi_bound = [bound if bound[0] < self.data.freq_range[1] else \
-            [self.data.freq_range[1], *bound[1:]] for bound in hi_bound]
+        Returns
+        -------
+        pe_bounds : tuple of array
+            Bounds for periodic fit.
+        """
 
-        # Unpacks the embedded lists into flat tuples
-        #   This is what the fit function requires as input
-        gaus_param_bounds = (tuple(item for sublist in lo_bound for item in sublist),
-                             tuple(item for sublist in hi_bound for item in sublist))
+        n_pe_params = self.modes.periodic.n_params
+        bounds = repeat(self._initialize_bounds('periodic'))
+        bounds_lo = np.empty(len(guess) * n_pe_params)
+        bounds_hi = np.empty(len(guess) * n_pe_params)
 
-        return gaus_param_bounds
+        for p_ind, peak in enumerate(guess):
+            for label, ind in self.modes.periodic.params.indices.items():
+
+                pbounds_lo, pbounds_hi = next(bounds)
+
+                if label == 'cf':
+                    # Set boundaries on CF, weighted by the bandwidth
+                    peak_bw = peak[self.modes.periodic.params.indices['bw']]
+                    lcf = peak[ind] - 2 * self._settings.cf_bound * peak_bw
+                    hcf = peak[ind] + 2 * self._settings.cf_bound * peak_bw
+                    # Check that CF bounds are within frequency range - if not restrict to range
+                    pbounds_lo[ind] = lcf if lcf > self.data.freq_range[0] \
+                        else self.data.freq_range[0]
+                    pbounds_hi[ind] = hcf if hcf < self.data.freq_range[1] \
+                        else self.data.freq_range[1]
+
+                if label == 'pw':
+                    # Enforce positive values for height
+                    pbounds_lo[ind] = 0
+
+                if label == 'bw':
+                    # Set bandwidth limits, converting limits from Hz to guess params in std
+                    pbounds_lo[ind] = self.settings.peak_width_limits[0] / 2
+                    pbounds_hi[ind] = self.settings.peak_width_limits[1] / 2
+
+            bounds_lo[p_ind*n_pe_params:(p_ind+1)*n_pe_params] = pbounds_lo
+            bounds_hi[p_ind*n_pe_params:(p_ind+1)*n_pe_params] = pbounds_hi
+
+        pe_bounds = (bounds_lo, bounds_hi)
+
+        return pe_bounds
 
 
     def _fit_peak_guess(self, flatspec, guess):
