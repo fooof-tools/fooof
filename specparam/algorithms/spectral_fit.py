@@ -356,9 +356,8 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         Returns
         -------
-        gaussian_params : 2d array
-            Parameters that define the gaussian fit(s).
-            Each row is a gaussian, as [mean, height, standard deviation].
+        peak_params : 2d array
+            Parameters that define the peak fit(s).
         """
 
         # Take a copy of the flattened spectrum to iterate across
@@ -379,7 +378,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
             if max_height <= self.settings.peak_threshold * np.std(flat_iter):
                 break
 
-            # Set the guess parameters for gaussian fitting, specifying the mean and height
+            # Set the guess parameters for peak fitting, specifying the mean and height
             guess_freq = self.data.freqs[max_ind]
             guess_height = max_height
 
@@ -404,7 +403,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
                     for ind in [le_ind, ri_ind] if ind is not None])
 
                 # Use the shortest side to estimate full-width, half max (converted to Hz)
-                #   and use this to estimate that guess for gaussian standard deviation
+                #   and use this to estimate that guess for peak standard deviation
                 fwhm = short_side * 2 * self.data.freq_res
                 guess_std = compute_gauss_std(fwhm)
 
@@ -414,23 +413,22 @@ class SpectralFitAlgorithm(AlgorithmCF):
                 guess_std = np.mean(self.settings.peak_width_limits)
 
             # Check that guess value isn't outside preset limits - restrict if so
-            #   This also converts the peak_width_limits from 2-sided BW to 1-sided gaussian std
+            #   This also converts the peak_width_limits from 2-sided BW to 1-sided std
             #   Note: without this, curve_fitting fails if given guess > or < bounds
             if guess_std < self.settings.peak_width_limits[0] / 2:
                 guess_std = self.settings.peak_width_limits[0] / 2
             if guess_std > self.settings.peak_width_limits[1] / 2:
                 guess_std = self.settings.peak_width_limits[0] / 2
 
-            # Collect guess parameters and subtract this guess gaussian from the data
-            current_guess_params = (guess_freq, guess_height, guess_std)
+            # Collect guess parameters
+            cur_guess = [0] * self.modes.periodic.n_params
+            cur_guess[self.modes.periodic.params.indices['cf']] = guess_freq
+            cur_guess[self.modes.periodic.params.indices['pw']] = guess_height
+            cur_guess[self.modes.periodic.params.indices['bw']] = guess_std
 
-            ## TEMP
-            if self.modes.periodic.name == 'skewnorm':
-                guess_skew = 0
-                current_guess_params = (guess_freq, guess_height, guess_std, guess_skew)
-
-            guess = np.vstack((guess, current_guess_params))
-            peak_gauss = self.modes.periodic.func(self.data.freqs, *current_guess_params)
+            # Fit and subtract guess peak from the spectrum
+            guess = np.vstack((guess, cur_guess))
+            peak_gauss = self.modes.periodic.func(self.data.freqs, *cur_guess)
             flat_iter = flat_iter - peak_gauss
 
         # Check peaks based on edges, and on overlap, dropping any that violate requirements
@@ -439,12 +437,12 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         # If there are peak guesses, fit the peaks, and sort results
         if len(guess) > 0:
-            gaussian_params = self._fit_peak_guess(flatspec, guess)
-            gaussian_params = gaussian_params[gaussian_params[:, 0].argsort()]
+            peak_params = self._fit_peak_guess(flatspec, guess)
+            peak_params = peak_params[peak_params[:, 0].argsort()]
         else:
-            gaussian_params = np.empty([0, self.modes.periodic.n_params])
+            peak_params = np.empty([0, self.modes.periodic.n_params])
 
-        return gaussian_params
+        return peak_params
 
 
     def _get_pe_bounds(self, guess):
