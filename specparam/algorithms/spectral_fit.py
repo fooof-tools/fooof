@@ -10,7 +10,7 @@ from specparam.modutils.errors import FitError
 from specparam.utils.select import groupby
 from specparam.reports.strings import gen_width_warning_str
 from specparam.measures.params import compute_gauss_std
-from specparam.algorithms.algorithm import Algorithm
+from specparam.algorithms.algorithm import AlgorithmCF
 from specparam.algorithms.settings import SettingsDefinition
 
 ###################################################################################################
@@ -91,7 +91,7 @@ SPECTRAL_FIT_PRIVATE_SETTINGS_DEF = SettingsDefinition({
 })
 
 
-class SpectralFitAlgorithm(Algorithm):
+class SpectralFitAlgorithm(AlgorithmCF):
     """Base object defining model & algorithm for spectral parameterization.
 
     Parameters

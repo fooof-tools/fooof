@@ -2,24 +2,12 @@
 
 from specparam.utils.checks import check_input_options
 from specparam.algorithms.settings import SettingsDefinition, SettingsValues
+from specparam.modutils.docs import docs_get_section, replace_docstring_sections
 
 ###################################################################################################
 ###################################################################################################
 
 DATA_FORMATS = ['spectrum', 'spectra', 'spectrogram', 'spectrograms']
-
-CURVE_FIT_SETTINGS = SettingsDefinition({
-    'maxfev' : {
-        'type' : 'int',
-        'description' : 'The maximum number of calls to the curve fitting function.',
-        },
-    'tol' : {
-        'type' : 'float',
-        'description' : \
-            'The tolerance setting for curve fitting (see scipy.curve_fit: ftol / xtol / gtol).'
-        },
-})
-
 
 class Algorithm():
     """Template object for defining a fit algorithm.
@@ -64,9 +52,6 @@ class Algorithm():
             private_settings = SettingsDefinition(private_settings)
         self.private_settings = private_settings
         self._settings = SettingsValues(self.private_settings.names)
-
-        self._cf_settings_desc = CURVE_FIT_SETTINGS
-        self._cf_settings = SettingsValues(self._cf_settings_desc.names)
 
         check_input_options(data_format, DATA_FORMATS, 'data_format')
         self.data_format = data_format
@@ -150,3 +135,39 @@ class Algorithm():
             self.data = data
         if results is not None:
             self.results = results
+
+
+## AlgorithmCF
+
+CURVE_FIT_SETTINGS = SettingsDefinition({
+    'maxfev' : {
+        'type' : 'int',
+        'description' : 'The maximum number of calls to the curve fitting function.',
+        },
+    'tol' : {
+        'type' : 'float',
+        'description' : \
+            'The tolerance setting for curve fitting (see scipy.curve_fit: ftol / xtol / gtol).'
+        },
+})
+
+@replace_docstring_sections([docs_get_section(Algorithm.__doc__, 'Parameters')])
+class AlgorithmCF(Algorithm):
+    """Template object for defining a fit algorithm that uses `curve_fit`.
+
+    Parameters
+    ----------
+    % copied in from Algorithm
+    """
+
+    def __init__(self, name, description, public_settings, private_settings=None,
+                 data_format='spectrum', modes=None, data=None, results=None, debug=False):
+        """Initialize Algorithm object."""
+
+        Algorithm.__init__(self, name=name, description=description,
+                           public_settings=public_settings, private_settings=private_settings,
+                           data_format=data_format, modes=modes, data=data, results=results,
+                           debug=debug)
+
+        self._cf_settings_desc = CURVE_FIT_SETTINGS
+        self._cf_settings = SettingsValues(self._cf_settings_desc.names)
