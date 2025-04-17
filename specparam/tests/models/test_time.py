@@ -9,6 +9,7 @@ They serve rather as 'smoke tests', for if anything fails completely.
 import numpy as np
 
 from specparam.sim import sim_spectrogram
+from specparam.models.utils import compare_model_objs
 from specparam.modutils.dependencies import safe_import
 
 pd = safe_import('pandas')
@@ -40,8 +41,8 @@ def test_time_iter(tft):
 
 def test_time_n_properties(tft):
 
-    assert np.all(tft.results.n_peaks_)
-    assert np.all(tft.results.n_params_)
+    assert np.all(tft.results.n_peaks)
+    assert np.all(tft.results.n_params)
 
 def test_time_fit():
 
@@ -78,26 +79,27 @@ def test_time_report(skip_if_no_mpl):
 
     assert tft
 
-def test_time_load():
-
-    file_name_res = 'test_time_res'
-    file_name_set = 'test_time_set'
-    file_name_dat = 'test_time_dat'
+def test_time_load(tft):
 
     # Test loading results
-    tft = SpectralTimeModel(verbose=False)
-    tft.load(file_name_res, TEST_DATA_PATH)
-    assert tft.results.time_results
+    ntft = SpectralTimeModel(verbose=False)
+    ntft.load('test_time_res', TEST_DATA_PATH)
+    assert ntft.results.time_results
 
     # Test loading settings
-    tft = SpectralTimeModel(verbose=False)
-    tft.load(file_name_set, TEST_DATA_PATH)
-    assert tft.algorithm.get_settings()
+    ntft = SpectralTimeModel(verbose=False)
+    ntft.load('test_time_set', TEST_DATA_PATH)
+    assert ntft.algorithm.get_settings()
 
     # Test loading data
-    tft = SpectralTimeModel(verbose=False)
-    tft.load(file_name_dat, TEST_DATA_PATH)
-    assert np.all(tft.data.power_spectra)
+    ntft = SpectralTimeModel(verbose=False)
+    ntft.load('test_time_dat', TEST_DATA_PATH)
+    assert np.all(ntft.data.spectrogram)
+
+    # Test loading all elements
+    ntft = SpectralTimeModel(verbose=False)
+    ntft.load('test_time_all', TEST_DATA_PATH)
+    assert compare_model_objs([tft, ntft], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
 
 def test_time_drop():
 

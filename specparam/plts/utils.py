@@ -93,7 +93,7 @@ def add_shades(ax, shades, colors='r', shade_alpha=0.2,
         shades = [shades]
 
     colors = repeat(colors) if not isinstance(colors, list) else colors
-    shade_alphas = repeat(shade_alpha) if not isinstance(shade_alpha, list) else alpha
+    shade_alphas = repeat(shade_alpha) if not isinstance(shade_alpha, list) else shade_alpha
 
     for shade, color, alpha in zip(shades, colors, shade_alphas):
 
