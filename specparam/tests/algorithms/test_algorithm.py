@@ -1,5 +1,6 @@
 """Tests for specparam.algorthms.algorithm."""
 
+from specparam.modes.modes import Modes
 from specparam.algorithms.settings import SettingsDefinition
 
 from specparam.algorithms.algorithm import *
@@ -61,3 +62,19 @@ def test_algorithm_cf():
     assert algo._cf_settings
     for setting in algo._cf_settings.names:
         assert getattr(algo._cf_settings, setting) is None
+
+def test_algorithm_cf_initialize():
+
+    algo = AlgorithmCF(name='test_algo', description='desc',
+                       public_settings={'a' : {'type' : 'a type desc', 'description' : 'a desc'}},
+                       modes=Modes('fixed', 'gaussian'))
+
+    ap_bounds = algo._initialize_bounds('aperiodic')
+    assert len(ap_bounds[0]) == algo.modes.aperiodic.n_params
+    pe_bounds = algo._initialize_bounds('periodic')
+    assert len(pe_bounds[0]) == algo.modes.periodic.n_params
+
+    ap_guess = algo._initialize_guess('aperiodic')
+    assert len(ap_guess) == algo.modes.aperiodic.n_params
+    pe_guess = algo._initialize_guess('periodic')
+    assert len(pe_guess) == algo.modes.periodic.n_params

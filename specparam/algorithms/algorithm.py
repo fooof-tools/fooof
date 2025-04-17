@@ -1,5 +1,7 @@
 """Define object to manage algorithm implementations."""
 
+import numpy as np
+
 from specparam.utils.checks import check_input_options
 from specparam.algorithms.settings import SettingsDefinition, SettingsValues
 from specparam.modutils.docs import docs_get_section, replace_docstring_sections
@@ -171,3 +173,41 @@ class AlgorithmCF(Algorithm):
 
         self._cf_settings_desc = CURVE_FIT_SETTINGS
         self._cf_settings = SettingsValues(self._cf_settings_desc.names)
+
+
+    def _initialize_bounds(self, mode):
+        """Initialize a bounds definition.
+
+        Parameters
+        ----------
+        mode : {'aperiodic', 'periodic'}
+            Which mode to initialize for.
+
+        Returns
+        -------
+        bounds : tuple of tuple
+            Guess values.
+        """
+
+        n_params = getattr(self.modes, mode).n_params
+        bounds = (tuple([-np.inf] * n_params), tuple([np.inf] * n_params))
+
+        return bounds
+
+    def _initialize_guess(self, mode):
+        """Initialize a guess definition.
+
+        Parameters
+        ----------
+        mode : {'aperiodic', 'periodic'}
+            Which mode to initialize for.
+
+        Returns
+        -------
+        guess : 1d array
+            Guess values.
+        """
+
+        guess = np.zeros([getattr(self.modes, mode).n_params])
+
+        return guess
