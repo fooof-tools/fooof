@@ -186,7 +186,7 @@ class AlgorithmCF(Algorithm):
         Returns
         -------
         bounds : tuple of tuple
-            Guess values.
+            Bounds values.
         """
 
         n_params = getattr(self.modes, mode).n_params

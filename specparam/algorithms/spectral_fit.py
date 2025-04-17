@@ -200,29 +200,32 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         if not self._settings.ap_guess:
 
-            ap_guess = []
-            for label in self.modes.aperiodic.params.labels:
+            ap_guess = self._initialize_guess('aperiodic')
+
+            for label, ind in self.modes.aperiodic.params.indices.items():
                 if label == 'offset':
                     # Offset guess is the power value for lowest available frequency
-                    ap_guess.append(power_spectrum[0])
+                    ap_guess[ind] = power_spectrum[0]
                 elif 'exponent' in label:
                     # Exponent guess is a quick calculation of the log-log slope
-                    ap_guess.append(np.abs((power_spectrum[-1] - power_spectrum[0]) /
-                                    (np.log10(freqs[-1]) - np.log10(freqs[0]))))
-                elif 'knee' in label:
-                    # Knee guess set to zero (no real guess)
-                    ap_guess.append(0)
-                else:
-                    # Any other (un-anticipated) parameter set to guess of 0
-                    ap_guess.append(0)
-
-            ap_guess = np.array(ap_guess)
+                    ap_guess[ind] = np.abs((power_spectrum[-1] - power_spectrum[0]) /
+                                           (np.log10(freqs[-1]) - np.log10(freqs[0])))
 
         return ap_guess
 
 
     def _get_ap_bounds(self, ap_bounds):
         """Set the default bounds for the aperiodic fit.
+
+        Parameters
+        ----------
+        bounds : tuple of tuple or None
+            Bounds definition. If None, creates default bounds.
+
+        Returns
+        -------
+        bounds : tuple of tuple
+            Bounds definition.
 
         Notes
         -----
@@ -234,8 +237,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
             msg = 'Provided aperiodic bounds do not have right length for fit function.'
             assert len(ap_bounds[0]) == len(ap_bounds[1]) == self.modes.aperiodic.n_params, msg
         else:
-            ap_bounds = (tuple([-np.inf] * self.modes.aperiodic.n_params),
-                         tuple([np.inf] * self.modes.aperiodic.n_params))
+            ap_bounds = self._initialize_bounds('aperiodic')
 
         return ap_bounds
 
