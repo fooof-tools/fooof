@@ -542,7 +542,6 @@ class SpectralFitAlgorithm(AlgorithmCF):
         return pe_params
 
 
-    ## TO GENERALIZE FOR MODES
     def _drop_peak_cf(self, guess):
         """Check whether to drop peaks based on center's proximity to the edge of the spectrum.
 
@@ -557,8 +556,8 @@ class SpectralFitAlgorithm(AlgorithmCF):
             Guess parameters for periodic peak fits. Shape: [n_peaks, n_params_per_peak].
         """
 
-        cf_params = guess[:, 0]
-        bw_params = guess[:, 2] * self._settings.bw_std_edge
+        cf_params = guess[:, self.modes.periodic.params.indices['cf']]
+        bw_params = guess[:, self.modes.periodic.params.indices['bw']] * self._settings.bw_std_edge
 
         # Check if peaks within drop threshold from the edge of the frequency range
         keep_peak = \
@@ -589,14 +588,17 @@ class SpectralFitAlgorithm(AlgorithmCF):
         For any peaks with an overlap >  threshold, the lowest height guess peak is dropped.
         """
 
+        inds = self.modes.periodic.params.indices
+
         # Sort the peak guesses by increasing frequency
         #   This is so adjacent peaks can be compared from right to left
-        guess = sorted(guess, key=lambda x: float(x[0]))
+        guess = sorted(guess, key=lambda x: float(x[inds['cf']]))
 
         # Calculate standard deviation bounds for checking amount of overlap
         #   The bounds are the gaussian frequency +/- gaussian standard deviation
-        bounds = [[peak[0] - peak[2] * self._settings.gauss_overlap_thresh,
-                   peak[0] + peak[2] * self._settings.gauss_overlap_thresh] for peak in guess]
+        bounds = [[peak[inds['cf']] - peak[inds['bw']] * self._settings.gauss_overlap_thresh,
+                   peak[inds['cf']] + peak[inds['bw']] * self._settings.gauss_overlap_thresh]\
+                   for peak in guess]
 
         # Loop through peak bounds, comparing current bound to that of next peak
         #   If the left peak's upper bound extends pass the right peaks lower bound,
@@ -608,7 +610,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
             # Check if bound of current peak extends into next peak
             if b_0[1] > b_1[0]:
 
-                # If so, get the index of the gaussian with the lowest height (to drop)
+                # If so, get the index of the peak with the lowest height (to drop)
                 drop_inds.append([ind, ind + 1][np.argmin([guess[ind][1], guess[ind + 1][1]])])
 
         # Drop any peaks guesses that overlap too much, based on threshold
