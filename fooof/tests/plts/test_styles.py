@@ -1,7 +1,12 @@
 """Tests for fooof.plts.styles."""
 
+from fooof.core.modutils import safe_import
+
 from fooof.tests.tutils import plot_test
+
 from fooof.plts.style import *
+
+plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
@@ -9,8 +14,6 @@ from fooof.plts.style import *
 def test_style_spectrum_plot(skip_if_no_mpl):
 
     # Create a dummy plot and style it
-    from fooof.core.modutils import safe_import
-    plt = safe_import('.pyplot', 'matplotlib')
     _, ax = plt.subplots()
     style_spectrum_plot(ax, False, False)
 

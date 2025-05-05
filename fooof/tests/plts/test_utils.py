@@ -10,6 +10,7 @@ from fooof.tests.settings import TEST_PLOTS_PATH
 from fooof.plts.utils import *
 
 mpl = safe_import('matplotlib')
+plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
