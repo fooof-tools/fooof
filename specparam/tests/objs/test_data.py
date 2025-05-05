@@ -1,4 +1,4 @@
-"""Tests for specparam.objs.data, including the data object and it's methods."""
+"""Tests for specparam.objs.data."""
 
 from specparam.data import SpectrumMetaData, ModelChecks
 
@@ -44,15 +44,14 @@ def test_data_get_set_checks(tdata):
     tdata.set_checks(False, False)
     tchecks1 = tdata.get_checks()
     assert isinstance(tchecks1, ModelChecks)
-    assert tdata._check_freqs == tchecks1.check_freqs == False
-    assert tdata._check_data == tchecks1.check_data == False
+    assert tdata.checks['freqs'] == tchecks1.check_freqs == False
+    assert tdata.checks['data'] == tchecks1.check_data == False
 
     tdata.set_checks(True, True)
     tchecks2 = tdata.get_checks()
     assert isinstance(tchecks2, ModelChecks)
-    assert tdata._check_freqs == tchecks2.check_freqs == True
-    assert tdata._check_data == tchecks2.check_data == True
-
+    assert tdata.checks['freqs'] == tchecks2.check_freqs == True
+    assert tdata.checks['data'] == tchecks2.check_data == True
 
 @plot_test
 def test_data_plot(tdata, skip_if_no_mpl):

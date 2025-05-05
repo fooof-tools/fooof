@@ -60,7 +60,7 @@ class Bands():
             raise ValueError(message) from None
 
 
-    def __repr__(self):
+    def __str__(self):
         """Define the string representation as a printout of the band information."""
 
         return '\n'.join(['{:8} :  {:2} - {:2}  Hz'.format(key, *val) \

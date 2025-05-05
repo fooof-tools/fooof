@@ -27,10 +27,8 @@ from specparam.utils.checks import check_inds
 class SpectralTimeEventModel(SpectralTimeModel):
     """Model a set of event as a combination of aperiodic and periodic components.
 
-    WARNING: frequency and power values inputs must be in linear space.
-
-    Passing in logged frequencies and/or power spectra is not detected,
-    and will silently produce incorrect results.
+    WARNING: frequency and power values inputs must be in linear space. Passing in logged
+    frequencies and/or power spectra is not detected, and will silently produce incorrect results.
 
     Parameters
     ----------
@@ -43,9 +41,12 @@ class SpectralTimeEventModel(SpectralTimeModel):
     Notes
     -----
     % copied in from SpectralModel object
-    - The event object inherits from the time model, which in turn inherits from the
-      group object, etc. As such it also has data attributes defined on the underlying
-      objects (see notes and attribute lists in inherited objects for details).
+    - The event object inherits from the time model, overwriting the `data` and
+      `results` objects with versions for fitting models across events.
+      Event related, temporally organized results are collected into the
+      `results.event_time_results` attribute, which may include sub-selecting peaks
+      per band (depending on settings). Note that the `results.event_group_results` attribute
+      is also available, which maintains the full model results.
     """
 
     def __init__(self, *args, **kwargs):

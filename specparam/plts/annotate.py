@@ -33,17 +33,17 @@ def plot_annotated_peak_search(model):
     #   is the same as the one that is used in the peak fitting procedure
     flatspec = model.data.power_spectrum - \
         model.modes.aperiodic.func(model.data.freqs, \
-            *model.algorithm._robust_ap_fit(model.data.freqs, model.data.power_spectrum),)
+            *model.algorithm._robust_ap_fit(model.data.freqs, model.data.power_spectrum))
 
     # Calculate ylims of the plot that are scaled to the range of the data
     ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
 
     # Sort parameters by peak height
-    gaussian_params = model.results.gaussian_params_[\
-        model.results.gaussian_params_[:, 1].argsort()][::-1]
+    gaussian_params = model.results.params.gaussian[\
+        model.results.params.gaussian[:, 1].argsort()][::-1]
 
     # Loop through the iterative search for each peak
-    for ind in range(model.results.n_peaks_ + 1):
+    for ind in range(model.results.n_peaks + 1):
 
         # This forces the creation of a new plotting axes per iteration
         ax = check_ax(None, PLT_FIGSIZES['spectral'])
@@ -51,10 +51,12 @@ def plot_annotated_peak_search(model):
         plot_spectra(model.data.freqs, flatspec, linewidth=2.5,
                      label='Flattened Spectrum', color=PLT_COLORS['data'], ax=ax)
         plot_spectra(model.data.freqs,
-                     [model.algorithm.peak_threshold * np.std(flatspec)] * len(model.data.freqs),
+                     [model.algorithm.settings.peak_threshold * np.std(flatspec)] \
+                        * len(model.data.freqs),
                      label='Relative Threshold', color='orange', linewidth=2.5,
                      linestyle='dashed', ax=ax)
-        plot_spectra(model.data.freqs, [model.algorithm.min_peak_height]*len(model.data.freqs),
+        plot_spectra(model.data.freqs,
+                     [model.algorithm.settings.min_peak_height] * len(model.data.freqs),
                      label='Absolute Threshold', color='red', linewidth=2.5,
                      linestyle='dashed', ax=ax)
 
@@ -65,7 +67,7 @@ def plot_annotated_peak_search(model):
         ax.set_ylim(ylims)
         ax.set_title('Iteration #' + str(ind+1), fontsize=16)
 
-        if ind < model.results.n_peaks_:
+        if ind < model.results.n_peaks:
 
             gauss = model.modes.periodic.func(model.data.freqs, *gaussian_params[ind, :])
             plot_spectra(model.data.freqs, gauss, ax=ax, label='Gaussian Fit',
@@ -136,10 +138,10 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
     #   See: https://github.com/matplotlib/matplotlib/issues/12820. Fixed in 3.2.1.
     bug_buff = 0.000001
 
-    if annotate_peaks and model.results.n_peaks_:
+    if annotate_peaks and model.results.n_peaks:
 
         # Extract largest peak, to annotate, grabbing gaussian params
-        gauss = get_band_peak(model, model.data.freq_range, attribute='gaussian_params')
+        gauss = get_band_peak(model, model.data.freq_range, attribute='gaussian')
 
         peak_ctr, peak_hgt, peak_wid = gauss
         bw_freqs = [peak_ctr - 0.5 * compute_fwhm(peak_wid),
@@ -183,7 +185,7 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
         # Annotate Aperiodic Offset
         #   Add a line to indicate offset, without adjusting plot limits below it
         ax.set_autoscaley_on(False)
-        ax.plot([freqs[0], freqs[0]], [ax.get_ylim()[0], model.results.modeled_spectrum_[0]],
+        ax.plot([freqs[0], freqs[0]], [ax.get_ylim()[0], model.results.model.modeled_spectrum[0]],
                 color=PLT_COLORS['aperiodic'], linewidth=lw2, alpha=0.5)
         ax.annotate('Offset',
                     xy=(freqs[0]+bug_buff, model.data.power_spectrum[0]-y_buff1),
