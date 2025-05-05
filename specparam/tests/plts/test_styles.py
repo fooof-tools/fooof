@@ -2,7 +2,11 @@
 
 from specparam.tests.tutils import plot_test
 
+from specparam.modutils.dependencies import safe_import
+
 from specparam.plts.style import *
+
+plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################
@@ -14,8 +18,6 @@ def test_check_style_options():
 def test_style_spectrum_plot(skip_if_no_mpl):
 
     # Create a dummy plot and style it
-    from specparam.modutils.dependencies import safe_import
-    plt = safe_import('.pyplot', 'matplotlib')
     _, ax = plt.subplots()
     style_spectrum_plot(ax, False, False)
 
@@ -23,8 +25,7 @@ def test_style_spectrum_plot(skip_if_no_mpl):
     assert ax.xaxis.get_label().get_text()
     assert ax.yaxis.get_label().get_text()
 
-
-def test_apply_axis_style():
+def test_apply_axis_style(skip_if_no_mpl):
 
     _, ax = plt.subplots()
 
@@ -38,8 +39,7 @@ def test_apply_axis_style():
     assert ax.get_xlim() == xlim
     assert ax.get_ylabel() == ylabel
 
-
-def test_apply_line_style():
+def test_apply_line_style(skip_if_no_mpl):
 
     # Check applying style to one line
     _, ax = plt.subplots()
@@ -60,8 +60,7 @@ def test_apply_line_style():
     for line, alpha in zip(ax.get_lines(), alphas):
         assert line.get_alpha() == alpha
 
-
-def test_apply_custom_style():
+def test_apply_custom_style(skip_if_no_mpl):
 
     _, ax = plt.subplots()
     ax.set_title('placeholder')
@@ -75,8 +74,7 @@ def test_apply_custom_style():
     apply_custom_style(ax, title_fontsize=new_title_fontsize)
     assert ax.title.get_size() == new_title_fontsize
 
-
-def test_apply_style():
+def test_apply_style(skip_if_no_mpl):
 
     _, ax = plt.subplots()
 
@@ -89,9 +87,8 @@ def test_apply_style():
     # Apply plot style passing in a styler
     apply_style(ax, custom_styler=my_custom_styler)
 
-
 @plot_test
-def test_style_plot():
+def test_style_plot(skip_if_no_mpl):
 
     @style_plot
     def example_plot():

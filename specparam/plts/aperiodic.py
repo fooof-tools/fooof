@@ -3,7 +3,6 @@
 from itertools import cycle
 
 import numpy as np
-import matplotlib.pyplot as plt
 
 from specparam.sim.gen import gen_freqs
 from specparam.modutils.dependencies import safe_import, check_dependency
