@@ -19,7 +19,7 @@ def test_style_spectrum_plot(skip_if_no_mpl):
     assert ax.yaxis.get_label().get_text()
 
 
-def test_apply_axis_style():
+def test_apply_axis_style(skip_if_no_mpl):
 
     _, ax = plt.subplots()
 
@@ -34,7 +34,7 @@ def test_apply_axis_style():
     assert ax.get_ylabel() == ylabel
 
 
-def test_apply_line_style():
+def test_apply_line_style(skip_if_no_mpl):
 
     # Check applying style to one line
     _, ax = plt.subplots()
@@ -56,7 +56,7 @@ def test_apply_line_style():
         assert line.get_alpha() == alpha
 
 
-def test_apply_custom_style():
+def test_apply_custom_style(skip_if_no_mpl):
 
     _, ax = plt.subplots()
     ax.set_title('placeholder')
@@ -71,7 +71,7 @@ def test_apply_custom_style():
     assert ax.title.get_size() == new_title_fontsize
 
 
-def test_apply_style():
+def test_apply_style(skip_if_no_mpl):
 
     _, ax = plt.subplots()
 
@@ -86,7 +86,7 @@ def test_apply_style():
 
 
 @plot_test
-def test_style_plot():
+def test_style_plot(skip_if_no_mpl):
 
     @style_plot
     def example_plot():

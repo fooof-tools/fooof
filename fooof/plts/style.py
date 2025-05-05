@@ -3,11 +3,12 @@
 from itertools import cycle
 from functools import wraps
 
-import matplotlib.pyplot as plt
-
+from fooof.core.modutils import safe_import
 from fooof.plts.settings import (AXIS_STYLE_ARGS, LINE_STYLE_ARGS, COLLECTION_STYLE_ARGS,
                                  STYLE_ARGS, LABEL_SIZE, LEGEND_SIZE, LEGEND_LOC,
                                  TICK_LABELSIZE, TITLE_FONTSIZE)
+
+plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
 ###################################################################################################

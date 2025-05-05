@@ -214,7 +214,7 @@ def test_fg_print(tfg):
     tfg.print_results()
     assert True
 
-def test_save_model_report(tfg):
+def test_save_model_report(tfg, skip_if_no_mpl):
 
     file_name = 'test_group_model_report'
     tfg.save_model_report(0, file_name, TEST_REPORTS_PATH)
