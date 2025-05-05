@@ -9,7 +9,7 @@ from specparam.tests.tsettings import TEST_PLOTS_PATH
 
 from specparam.plts.utils import *
 
-#mpl = safe_import('matplotlib')
+mpl = safe_import('matplotlib')
 plt = safe_import('.pyplot', 'matplotlib')
 
 ###################################################################################################
@@ -20,7 +20,7 @@ def test_check_ax(skip_if_no_mpl):
     figsize = [5., 5.]
     ax = check_ax(None, figsize=figsize)
 
-    assert isinstance(ax, plt.axes.Axes)
+    assert isinstance(ax, mpl.axes.Axes)
     assert figsize == [ax.get_figure().get_figwidth(),
                        ax.get_figure().get_figheight()]
 
