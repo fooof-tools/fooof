@@ -21,7 +21,7 @@ setup(
     description = 'Spectral parameterization.',
     long_description = long_description,
     long_description_content_type = 'text/x-rst',
-    python_requires = '>=3.6',
+    python_requires = '>=3.7',
     author = 'The Voytek Lab',
     author_email = 'voyteklab@gmail.com',
     maintainer = 'Thomas Donoghue',
