@@ -1,4 +1,4 @@
-"""Tests for specparam.objs.results, including the data object and it's methods."""
+"""Tests for specparam.objs.results."""
 
 from specparam.objs.results import *
 
@@ -18,8 +18,8 @@ def test_results_results(tresults):
 
     tres.add_results(tresults)
     assert tres.has_model
-    for result in tres._fields:
-        assert np.array_equal(getattr(tres, result), getattr(tresults, result.strip('_')))
+    for result in tres.params.fields:
+        assert np.array_equal(getattr(tres.params, result), getattr(tresults, result + '_params'))
 
     results_out = tres.get_results()
     assert results_out == tresults

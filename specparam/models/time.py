@@ -22,10 +22,8 @@ from specparam.utils.checks import check_inds
 class SpectralTimeModel(SpectralGroupModel):
     """Model a spectrogram as a combination of aperiodic and periodic components.
 
-    WARNING: frequency and power values inputs must be in linear space.
-
-    Passing in logged frequencies and/or power spectra is not detected,
-    and will silently produce incorrect results.
+    WARNING: frequency and power values inputs must be in linear space. Passing in logged
+    frequencies and/or power spectra is not detected, and will silently produce incorrect results.
 
     Parameters
     ----------
@@ -38,14 +36,12 @@ class SpectralTimeModel(SpectralGroupModel):
     Notes
     -----
     % copied in from SpectralModel object
-    - The time object inherits from the group model, which in turn inherits from the
-      model object. As such it also has data attributes defined on the model object,
-      as well as additional attributes that are added to the group object (see notes
-      and attribute list in SpectralGroupModel).
-    - Notably, while this object organizes the results into the `time_results`
-      attribute, which may include sub-selecting peaks per band (depending on settings)
-      the `group_results` attribute is also available, which maintains the full
-      model results.
+    - The time object inherits from the group model, overwriting the `data` and
+      `results` objects with versions for fitting models across time. Temporally
+      organized results are collected into the `results.time_results` attribute,
+      which may include sub-selecting peaks per band (depending on settings).
+      Note that the `results.group_results` attribute is also available, which maintains
+      the full model results.
     """
 
     def __init__(self, *args, **kwargs):

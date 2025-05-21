@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from specparam.bands.bands import Bands, check_bands
+from specparam.bands.bands import check_bands
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.data.periodic import get_band_peak_arr
 from specparam.data.utils import flatten_results_dict

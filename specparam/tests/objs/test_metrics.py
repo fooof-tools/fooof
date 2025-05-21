@@ -23,7 +23,7 @@ def test_metric_kwargs(tfm):
 
     metric = Metric('gof', 'ar2', compute_adj_r_squared,
                     {'n_params' : lambda data, results: \
-                        results.peak_params_.size + results.aperiodic_params_.size})
+                        results.params.peak.size + results.params.aperiodic.size})
 
     assert isinstance(metric, Metric)
     assert isinstance(metric.label, str)
@@ -55,8 +55,8 @@ def test_metrics_obj(tfm):
 
 def test_metrics_dict(tfm):
 
-    er_met_def = {'type' : 'error', 'measure' : 'mae', 'func' : compute_mean_abs_error}
-    gof_met_def = {'type' : 'gof', 'measure' : 'rsquared', 'func' : compute_r_squared}
+    er_met_def = {'category' : 'error', 'measure' : 'mae', 'func' : compute_mean_abs_error}
+    gof_met_def = {'category' : 'gof', 'measure' : 'rsquared', 'func' : compute_r_squared}
 
     metrics = Metrics([er_met_def, gof_met_def])
     assert isinstance(metrics, Metrics)
@@ -73,11 +73,11 @@ def test_metrics_dict(tfm):
 
 def test_metrics_kwargs(tfm):
 
-    er_met_def = {'type' : 'error', 'measure' : 'mae', 'func' : compute_mean_abs_error}
-    ar2_met_def = {'type' : 'gof', 'measure' : 'arsquared',
+    er_met_def = {'category' : 'error', 'measure' : 'mae', 'func' : compute_mean_abs_error}
+    ar2_met_def = {'category' : 'gof', 'measure' : 'arsquared',
                    'func' : compute_adj_r_squared,
                    'kwargs' : {'n_params' : lambda data, results: \
-                        results.peak_params_.size + results.aperiodic_params_.size}}
+                        results.params.peak.size + results.params.aperiodic.size}}
 
     metrics = Metrics([er_met_def, ar2_met_def])
     assert isinstance(metrics, Metrics)

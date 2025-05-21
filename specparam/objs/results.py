@@ -1,4 +1,4 @@
-"""Define base results objects."""
+"""Define results objects."""
 
 from copy import deepcopy
 from itertools import repeat
@@ -7,8 +7,9 @@ import numpy as np
 
 from specparam.bands.bands import check_bands
 from specparam.objs.metrics import Metrics
+from specparam.objs.params import ModelParameters
+from specparam.objs.components import ModelComponents
 from specparam.measures.metrics import METRICS
-from specparam.utils.array import unlog
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.docs import docs_get_section, replace_docstring_sections
@@ -22,7 +23,6 @@ from specparam.sim.gen import gen_model
 ###################################################################################################
 
 # Define set of results fields & default metrics to use
-RESULTS_FIELDS = ['aperiodic_params_', 'gaussian_params_', 'peak_params_']
 DEFAULT_METRICS = ['error_mae', 'gof_rsquared']
 
 
@@ -35,8 +35,21 @@ class Results():
         Modes object with fit mode definitions.
     metrics : Metrics
         Metrics object with metric definitions.
-    bands : bands
+    bands : Bands
         Bands object with band definitions.
+
+    Attributes
+    ----------
+    modes : Modes
+        Modes object with fit mode definitions.
+    bands : Bands
+        Bands object with band definitions.
+    model : ModelComponents
+        Manages the model fit and components.
+    params : ModelParameters
+        Manages the model fit parameters.
+    metrics : Metrics
+        Metrics object with metric definitions.
     """
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
@@ -48,9 +61,11 @@ class Results():
         self.add_bands(bands)
         self.add_metrics(metrics)
 
+        self.model = ModelComponents()
+        self.params = ModelParameters()
+
         # Initialize results attributes
         self._reset_results(True)
-        self._fields = RESULTS_FIELDS
 
 
     @property
@@ -65,27 +80,27 @@ class Results():
         - necessarily defined, as floats, if model has been fit
         """
 
-        return not np.all(np.isnan(self.aperiodic_params_))
+        return not np.all(np.isnan(self.params.aperiodic))
 
 
     @property
-    def n_peaks_(self):
+    def n_peaks(self):
         """How many peaks were fit in the model."""
 
         n_peaks = None
         if self.has_model:
-            n_peaks = self.peak_params_.shape[0]
+            n_peaks = self.params.peak.shape[0]
 
         return n_peaks
 
 
     @property
-    def n_params_(self):
+    def n_params(self):
         """The total number of parameters fit in the model."""
 
         n_params = None
         if self.has_model:
-            n_peak_params = self.modes.periodic.n_params * self.n_peaks_
+            n_peak_params = self.modes.periodic.n_params * self.n_peaks
             n_params = n_peak_params + self.modes.aperiodic.n_params
 
         return n_params
@@ -133,13 +148,13 @@ class Results():
             A data object containing the results from fitting a power spectrum model.
         """
 
-        # Add parameter fields and then select and add metrics results
-        for pfield in self._fields:
-            setattr(self, pfield, getattr(results, pfield.strip('_')))
+        for pfield in self.params.fields:
+            params = getattr(results, pfield + '_params')
+            if 'peak' in pfield or 'gaussian' in pfield:
+                params = check_array_dim(params)
+            setattr(self.params, pfield, params)
 
         self.metrics.add_results(results.metrics)
-
-        self._check_loaded_results(results._asdict())
 
 
     def get_results(self):
@@ -152,56 +167,10 @@ class Results():
         """
 
         results = FitResults(
-            **{key.strip('_') : getattr(self, key) for key in self._fields},
+            **{key + '_params' : getattr(self.params, key) for key in self.params.fields},
             metrics=self.metrics.results)
 
         return results
-
-
-    def get_component(self, component='full', space='log'):
-        """Get a model component.
-
-        Parameters
-        ----------
-        component : {'full', 'aperiodic', 'peak'}
-            Which model component to return.
-                'full' - full model
-                'aperiodic' - isolated aperiodic model component
-                'peak' - isolated peak model component
-        space : {'log', 'linear'}
-            Which space to return the model component in.
-                'log' - returns in log10 space.
-                'linear' - returns in linear space.
-
-        Returns
-        -------
-        output : 1d array
-            Specified model component, in specified spacing.
-
-        Notes
-        -----
-        The 'space' parameter doesn't just define the spacing of the model component
-        values, but rather defines the space of the additive model such that
-        `model = aperiodic_component + peak_component`.
-        With space set as 'log', this combination holds in log space.
-        With space set as 'linear', this combination holds in linear space.
-        """
-
-        if not self.has_model:
-            raise NoModelError("No model fit results are available, can not proceed.")
-        assert space in ['linear', 'log'], "Input for 'space' invalid."
-
-        if component == 'full':
-            output = self.modeled_spectrum_ if space == 'log' else unlog(self.modeled_spectrum_)
-        elif component == 'aperiodic':
-            output = self._ap_fit if space == 'log' else unlog(self._ap_fit)
-        elif component == 'peak':
-            output = self._peak_fit if space == 'log' else \
-                unlog(self.modeled_spectrum_) - unlog(self._ap_fit)
-        else:
-            raise ValueError('Input for component invalid.')
-
-        return output
 
 
     def get_params(self, name, field=None):
@@ -236,22 +205,6 @@ class Results():
         return get_model_params(self.get_results(), self.modes, name, field)
 
 
-    def _check_loaded_results(self, data):
-        """Check if results have been added and check data.
-
-        Parameters
-        ----------
-        data : dict
-            A dictionary of data that has been added to the object.
-        """
-
-        # If results loaded, check dimensions of peak parameters
-        #   This fixes an issue where they end up the wrong shape if they are empty (no peaks)
-        if set(self._fields).issubset(set(data.keys())):
-            self.peak_params_ = check_array_dim(self.peak_params_)
-            self.gaussian_params_ = check_array_dim(self.gaussian_params_)
-
-
     def _reset_results(self, clear_results=False):
         """Set, or reset, results attributes to empty.
 
@@ -262,29 +215,8 @@ class Results():
         """
 
         if clear_results:
-
-            # Aperiodic parameters
-            if self.modes:
-                self.aperiodic_params_ = np.array([np.nan] * self.modes.aperiodic.n_params)
-            else:
-                self.aperiodic_params_ = np.nan
-
-            # Periodic parameters
-            if self.modes:
-                self.gaussian_params_ = np.empty([0, self.modes.periodic.n_params])
-                self.peak_params_ = np.empty([0, self.modes.periodic.n_params])
-            else:
-                self.gaussian_params_ = np.nan
-                self.peak_params_ = np.nan
-
-            # Data components
-            self._spectrum_flat = None
-            self._spectrum_peak_rm = None
-
-            # Modeled spectrum components
-            self.modeled_spectrum_ = None
-            self._ap_fit = None
-            self._peak_fit = None
+            self.params.reset(self.modes)
+            self.model.reset()
 
 
     def _regenerate_model(self, freqs):
@@ -296,19 +228,25 @@ class Results():
             Frequency values for the power_spectrum, in linear scale.
         """
 
-        self.modeled_spectrum_, self._peak_fit, self._ap_fit = gen_model(freqs, \
-            self.modes.aperiodic, self.aperiodic_params_,
-            self.modes.periodic, self.gaussian_params_,
-            return_components=True)
+        self.model.modeled_spectrum, self.model._peak_fit, self.model._ap_fit = \
+            gen_model(freqs, self.modes.aperiodic, self.params.aperiodic,
+                      self.modes.periodic, self.params.gaussian, return_components=True)
 
 
-@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters')])
+@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters'),
+                             docs_get_section(Results.__doc__, 'Attributes')])
 class Results2D(Results):
     """Object for managing results - 2D version.
 
     Parameters
     ----------
     % copied in from Results
+
+    Attributes
+    ----------
+    % copied in from Results
+    group_results : list of FitResults
+        Results of the model fit for each power spectrum.
     """
 
     def __init__(self, modes=None, metrics=None, bands=None):
@@ -364,7 +302,7 @@ class Results2D(Results):
 
 
     @property
-    def n_peaks_(self):
+    def n_peaks(self):
         """How many peaks were fit for each model."""
 
         n_peaks = None
@@ -375,7 +313,7 @@ class Results2D(Results):
 
 
     @property
-    def n_null_(self):
+    def n_null(self):
         """How many model fits are null."""
 
         n_null = None
@@ -386,7 +324,7 @@ class Results2D(Results):
 
 
     @property
-    def null_inds_(self):
+    def null_inds(self):
         """The indices for model fits that are null."""
 
         null_inds = None
@@ -468,13 +406,20 @@ class Results2D(Results):
         return get_group_params(self.group_results, self.modes, name, field)
 
 
-@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters')])
+@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters'),
+                             docs_get_section(Results2D.__doc__, 'Attributes')])
 class Results2DT(Results2D):
     """Object for managing results - 2D transpose version.
 
     Parameters
     ----------
     % copied in from Results
+
+    Attributes
+    ----------
+    % copied in from Results2D
+    time_results : dict
+        Results of the model fit across each time window.
     """
 
     def __init__(self, modes=None, metrics=None, bands=None):
@@ -527,13 +472,23 @@ class Results2DT(Results2D):
         self.time_results = group_to_dict(self.group_results, self.modes, self.bands)
 
 
-@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters')])
+@replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters'),
+                             docs_get_section(Results2DT.__doc__, 'Attributes')])
 class Results3D(Results2DT):
     """Object for managing results - 3D version.
 
     Parameters
     ----------
     % copied in from Results
+
+    Attributes
+    ----------
+    % copied in from Results2DT
+    event_group_results : list of list of FitResults
+        Full model results collected across all events and models.
+    event_time_results : dict
+        Results of the model fit across each time window, collected across events.
+        Each value in the dictionary stores a model fit parameter, as [n_events, n_time_windows].
     """
 
     def __init__(self, modes=None, metrics=None, bands=None):
@@ -571,7 +526,7 @@ class Results3D(Results2DT):
 
 
     @property
-    def n_peaks_(self):
+    def n_peaks(self):
         """How many peaks were fit for each model, for each event."""
 
         n_peaks = None
@@ -666,7 +621,8 @@ class Results3D(Results2DT):
         column is appended to the returned array, indicating the index that the peak came from.
         """
 
-        return [get_group_params(gres, self.modes, name, field) for gres in self.event_group_results]
+        return [get_group_params(gres, self.modes, name, field) \
+                    for gres in self.event_group_results]
 
 
     def convert_results(self):
