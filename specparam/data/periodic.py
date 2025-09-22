@@ -81,7 +81,8 @@ def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribut
     you can do something like:
 
     >>> peaks = np.empty((0, 3))
-    >>> for res in group:  # doctest:+SKIP
+    >>> for i in range(len(fg.get_results())):  # doctest:+SKIP
+    ...     model = fg.get_model(i)
     ...     peaks = np.vstack((peaks, get_band_peak(res, band, select_highest=False)))
 
     Examples
