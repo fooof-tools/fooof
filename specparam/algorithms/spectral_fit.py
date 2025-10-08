@@ -11,6 +11,7 @@ from specparam.modutils.errors import FitError
 from specparam.utils.select import groupby
 from specparam.data.periodic import sort_peaks
 from specparam.reports.strings import gen_width_warning_str
+from specparam.measures.estimates import estimate_fwhm
 from specparam.measures.params import compute_gauss_std
 from specparam.algorithms.algorithm import AlgorithmCF
 from specparam.algorithms.settings import SettingsDefinition
@@ -388,31 +389,11 @@ class SpectralFitAlgorithm(AlgorithmCF):
             if not guess_height > self.settings.min_peak_height:
                 break
 
-            # Data-driven first guess at standard deviation
-            #   Find half height index on each side of the center frequency
-            half_height = 0.5 * max_height
-            le_ind = next((val for val in range(max_ind - 1, 0, -1)
-                           if flat_iter[val] <= half_height), None)
-            ri_ind = next((val for val in range(max_ind + 1, len(flat_iter), 1)
-                           if flat_iter[val] <= half_height), None)
-
-            # Guess bandwidth procedure: estimate the width of the peak
-            try:
-                # Get an estimated width from the shortest side of the peak
-                #   We grab shortest to avoid estimating very large values from overlapping peaks
-                # Grab the shortest side, ignoring a side if the half max was not found
-                short_side = min([abs(ind - max_ind) \
-                    for ind in [le_ind, ri_ind] if ind is not None])
-
-                # Use the shortest side to estimate full-width, half max (converted to Hz)
-                #   and use this to estimate that guess for peak standard deviation
-                fwhm = short_side * 2 * self.data.freq_res
-                guess_std = compute_gauss_std(fwhm)
-
-            except ValueError:
-                # This procedure can fail (very rarely), if both left & right inds end up as None
-                #   In this case, default the guess to the average of the peak width limits
-                guess_std = np.mean(self.settings.peak_width_limits)
+            # Estimate FWHM, and use to convert to an estimated Gaussian std
+            #   If estimation process fails, then default guess to average of limits
+            fwhm = estimate_fwhm(flat_iter, max_ind, self.data.freq_res)
+            guess_std = compute_gauss_std(fwhm) if not np.isnan(fwhm) else \
+                np.mean(self.settings.peak_width_limits)
 
             # Check that guess value isn't outside preset limits - restrict if so
             #   This also converts the peak_width_limits from 2-sided BW to 1-sided std
