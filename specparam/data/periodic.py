@@ -288,3 +288,36 @@ def threshold_peaks(peak_params, threshold, param='PW'):
     thresholded_peaks = peak_params[thresh_mask]
 
     return thresholded_peaks
+
+
+def sort_peaks(peak_params, sort_param, direction='inc'):
+    """Sort peak parameters by specified parameter and direction.
+
+    Parameters
+    ----------
+    peak_params : 2d array
+        Peak parameters, with shape of [n_peaks, 3].
+    sort_param : {'CF', 'PW', 'BW'}
+        Which parameter to sort the parameters by.
+    direction : {'inc', 'dec'}
+        Whether to sort as increasing (lowest -> highest) or decreasing (highest -> lowest).
+
+    Returns
+    -------
+    sorted_peaks : 2d array
+        Sorted peak parameters.
+    """
+
+    # Return nan array if empty input
+    if peak_params.size == 0:
+        return np.array([np.nan, np.nan, np.nan])
+
+    # NOTE - TEMP: interim hardcode for parameter index while updating for modes
+    param_ind = {'CF' : 0, 'PW' : 1, 'BW' : 2}[sort_param]
+
+    peak_params = peak_params[peak_params[:, param_ind].argsort()]
+
+    if direction == 'dec':
+        peak_params = np.flipud(peak_params)
+
+    return peak_params
