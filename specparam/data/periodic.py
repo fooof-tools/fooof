@@ -81,8 +81,8 @@ def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribut
     you can do something like:
 
     >>> peaks = np.empty((0, 3))
-    >>> for res in group:  # doctest:+SKIP
-    ...     peaks = np.vstack((peaks, get_band_peak(res.peak_params, band, select_highest=False)))
+    >>> for res in group.results:  # doctest:+SKIP
+    ...     peaks = np.vstack((peaks, get_band_peak_arr(res.peak_params, band, select_highest=False)))
 
     Examples
     --------
