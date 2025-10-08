@@ -133,7 +133,7 @@ def plot_individual_peak_search(model, iteration, flatspec=None, ax=None, **plt_
             color=PLT_COLORS['periodic'], alpha=0.75, markersize=30)
 
     ax.set_ylim(plt_kwargs.get('ylim', None))
-    ax.set_title('Iteration #' + str(iteration+1), fontsize=16)
+    ax.set_title(plt_kwargs.get('title', 'Iteration #' + str(iteration+1)), fontsize=16)
 
     if iteration < model.results.n_peaks:
 
@@ -142,7 +142,8 @@ def plot_individual_peak_search(model, iteration, flatspec=None, ax=None, **plt_
         plot_spectra(model.data.freqs, gauss, ax=ax, label='Gaussian Fit',
                      color=PLT_COLORS['periodic'], linestyle=':', linewidth=3.0)
 
-    style_spectrum_plot(ax, False, True)
+    if plt_kwargs.get('restyle', True) is not False:
+        style_spectrum_plot(ax, False, True)
 
 
 @savefig
