@@ -18,6 +18,57 @@ mpatches = safe_import('.patches', 'matplotlib')
 ###################################################################################################
 ###################################################################################################
 
+def _recompute_flatspec(model, remove_peaks=0):
+    """Helper function to recompute the initial flattened spectrum from model fitting.
+
+    Parameters
+    ----------
+    model : SpectralModel
+        Model object, with model fit, data and settings available.
+    remove_peaks : int, optional, default: 0
+        Number of peak iterations to remove from the flattened spectrum.
+
+    Returns
+    -------
+    flatspec : 1d array
+        Flattened spectrum.
+    """
+
+    flatspec = model.data.power_spectrum - \
+        model.modes.aperiodic.func(model.data.freqs, \
+            *model.algorithm._robust_ap_fit(model.data.freqs, model.data.power_spectrum))
+
+    for peak_ind in range(remove_peaks):
+        flatspec = _remove_flatspec_peak(model, flatspec, peak_ind)
+
+    return flatspec
+
+
+def _remove_flatspec_peak(model, flatspec, peak_ind):
+    """Helper function to remove peaks from flattened spectrum.
+
+    Parameters
+    ----------
+    model : SpectralModel
+        Model object, with model fit, data and settings available.
+    flatspec : 1d array
+        Flattened spectrum.
+    peak_ind : int
+        Index of the peak to remove from the flattened spectrum.
+
+    Returns
+    -------
+    flatspec : 1d array
+        Flattened spectrum, with peak(s) removed.
+    """
+
+    gauss_params = model.results.params.gaussian[\
+        model.results.params.gaussian[:, 1].argsort()][::-1]
+    flatspec = flatspec - model.modes.periodic.func(model.data.freqs, *gauss_params[peak_ind, :])
+
+    return flatspec
+
+
 @savefig
 @check_dependency(plt, 'matplotlib')
 def plot_annotated_peak_search(model):
@@ -29,53 +80,71 @@ def plot_annotated_peak_search(model):
         Model object, with model fit, data and settings available.
     """
 
-    # Recalculate the initial aperiodic fit and flattened spectrum that
-    #   is the same as the one that is used in the peak fitting procedure
-    flatspec = model.data.power_spectrum - \
-        model.modes.aperiodic.func(model.data.freqs, \
-            *model.algorithm._robust_ap_fit(model.data.freqs, model.data.power_spectrum))
-
     # Calculate ylims of the plot that are scaled to the range of the data
-    ylims = [min(flatspec) - 0.1 * np.abs(min(flatspec)), max(flatspec) + 0.1 * max(flatspec)]
-
-    # Sort parameters by peak height
-    gaussian_params = model.results.params.gaussian[\
-        model.results.params.gaussian[:, 1].argsort()][::-1]
+    flatspec = _recompute_flatspec(model)
+    ylim = [min(flatspec) - 0.1 * np.abs(min(flatspec)),
+            max(flatspec) + 0.1 * max(flatspec)]
 
     # Loop through the iterative search for each peak
-    for ind in range(model.results.n_peaks + 1):
+    for peak_ind in range(model.results.n_peaks + 1):
+        plot_individual_peak_search(model, peak_ind, flatspec, ylim=ylim)
+        if peak_ind != model.results.n_peaks:
+            flatspec = _remove_flatspec_peak(model, flatspec, peak_ind)
 
-        # This forces the creation of a new plotting axes per iteration
-        ax = check_ax(None, PLT_FIGSIZES['spectral'])
 
-        plot_spectra(model.data.freqs, flatspec, linewidth=2.5,
-                     label='Flattened Spectrum', color=PLT_COLORS['data'], ax=ax)
-        plot_spectra(model.data.freqs,
-                     [model.algorithm.settings.peak_threshold * np.std(flatspec)] \
-                        * len(model.data.freqs),
-                     label='Relative Threshold', color='orange', linewidth=2.5,
-                     linestyle='dashed', ax=ax)
-        plot_spectra(model.data.freqs,
-                     [model.algorithm.settings.min_peak_height] * len(model.data.freqs),
-                     label='Absolute Threshold', color='red', linewidth=2.5,
-                     linestyle='dashed', ax=ax)
+@savefig
+@check_dependency(plt, 'matplotlib')
+def plot_individual_peak_search(model, iteration, flatspec=None, ax=None, **plt_kwargs):
+    """Plot the process of detecting and fitting an individual peak.
 
-        maxi = np.argmax(flatspec)
-        ax.plot(model.data.freqs[maxi], flatspec[maxi], '.',
-                color=PLT_COLORS['periodic'], alpha=0.75, markersize=30)
+    Parameters
+    ----------
+    model : SpectralModel
+        Model object, with model fit, data and settings available.
+    iteration : int
+        Which peak iteration to plot.
+    flatspec : array, optional
+        xx
+    plt_kwargs
+        Keyword arguments for managing the plot.
+    """
 
-        ax.set_ylim(ylims)
-        ax.set_title('Iteration #' + str(ind+1), fontsize=16)
+    if not model.results.has_model:
+        raise NoModelError("No model is available to plot, can not proceed.")
 
-        if ind < model.results.n_peaks:
+    if flatspec is None:
+        flatspec = _recompute_flatspec(model, iteration)
 
-            gauss = model.modes.periodic.func(model.data.freqs, *gaussian_params[ind, :])
-            plot_spectra(model.data.freqs, gauss, ax=ax, label='Gaussian Fit',
-                         color=PLT_COLORS['periodic'], linestyle=':', linewidth=3.0)
+    ax = check_ax(ax, PLT_FIGSIZES['spectral'])
 
-            flatspec = flatspec - gauss
+    plot_spectra(model.data.freqs, flatspec, linewidth=2.5,
+                 label='Flattened Spectrum', color=PLT_COLORS['data'], ax=ax)
+    plot_spectra(model.data.freqs,
+                 [model.algorithm.settings.peak_threshold * np.std(flatspec)] \
+                    * len(model.data.freqs),
+                 label='Relative Threshold', color='orange', linewidth=2.5,
+                 linestyle='dashed', ax=ax)
+    plot_spectra(model.data.freqs,
+                 [model.algorithm.settings.min_peak_height] * len(model.data.freqs),
+                 label='Absolute Threshold', color='red', linewidth=2.5,
+                 linestyle='dashed', ax=ax)
 
-        style_spectrum_plot(ax, False, True)
+    maxi = np.argmax(flatspec)
+    ax.plot(model.data.freqs[maxi], flatspec[maxi], '.',
+            color=PLT_COLORS['periodic'], alpha=0.75, markersize=30)
+
+    ax.set_ylim(plt_kwargs.get('ylim', None))
+    ax.set_title('Iteration #' + str(iteration+1), fontsize=16)
+
+    if iteration < model.results.n_peaks:
+
+        gaussian_params = model.results.params.gaussian[\
+            model.results.params.gaussian[:, 1].argsort()][::-1]
+        gauss = model.modes.periodic.func(model.data.freqs, *gaussian_params[iteration, :])
+        plot_spectra(model.data.freqs, gauss, ax=ax, label='Gaussian Fit',
+                     color=PLT_COLORS['periodic'], linestyle=':', linewidth=3.0)
+
+    style_spectrum_plot(ax, False, True)
 
 
 @savefig

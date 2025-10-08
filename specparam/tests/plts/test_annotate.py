@@ -15,6 +15,14 @@ def test_plot_annotated_peak_search(tfm, skip_if_no_mpl):
                                file_name='test_plot_annotated_peak_search.png')
 
 @plot_test
+def test_plot_individual_peak_search(tfm, skip_if_no_mpl):
+
+    plot_individual_peak_search(tfm, 0, file_path=TEST_PLOTS_PATH,
+                                file_name='test_plot_individual_peak_search-0.png')
+    plot_individual_peak_search(tfm, 1, file_path=TEST_PLOTS_PATH,
+                                file_name='test_plot_individual_peak_search-1.png')
+
+@plot_test
 def test_plot_annotated_model(tfm, skip_if_no_mpl):
 
     # Make sure model has been fit & then plot annotated model
