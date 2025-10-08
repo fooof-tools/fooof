@@ -3,7 +3,7 @@
 import numpy as np
 
 from specparam.utils.select import nearest_ind
-from specparam.data.periodic import get_band_peak
+from specparam.data.periodic import get_band_peak, sort_peaks
 from specparam.measures.params import compute_knee_frequency, compute_fwhm
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import, check_dependency
@@ -62,8 +62,7 @@ def _remove_flatspec_peak(model, flatspec, peak_ind):
         Flattened spectrum, with peak(s) removed.
     """
 
-    gauss_params = model.results.params.gaussian[\
-        model.results.params.gaussian[:, 1].argsort()][::-1]
+    gauss_params = sort_peaks(model.results.params.gaussian, 'PW', 'dec')
     flatspec = flatspec - model.modes.periodic.func(model.data.freqs, *gauss_params[peak_ind, :])
 
     return flatspec
@@ -138,9 +137,8 @@ def plot_individual_peak_search(model, iteration, flatspec=None, ax=None, **plt_
 
     if iteration < model.results.n_peaks:
 
-        gaussian_params = model.results.params.gaussian[\
-            model.results.params.gaussian[:, 1].argsort()][::-1]
-        gauss = model.modes.periodic.func(model.data.freqs, *gaussian_params[iteration, :])
+        gauss_params = sort_peaks(model.results.params.gaussian, 'PW', 'dec')
+        gauss = model.modes.periodic.func(model.data.freqs, *gauss_params[iteration, :])
         plot_spectra(model.data.freqs, gauss, ax=ax, label='Gaussian Fit',
                      color=PLT_COLORS['periodic'], linestyle=':', linewidth=3.0)
 

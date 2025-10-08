@@ -9,6 +9,7 @@ from scipy.optimize import curve_fit
 
 from specparam.modutils.errors import FitError
 from specparam.utils.select import groupby
+from specparam.data.periodic import sort_peaks
 from specparam.reports.strings import gen_width_warning_str
 from specparam.measures.params import compute_gauss_std
 from specparam.algorithms.algorithm import AlgorithmCF
@@ -436,10 +437,11 @@ class SpectralFitAlgorithm(AlgorithmCF):
         guess = self._drop_peak_cf(guess)
         guess = self._drop_peak_overlap(guess)
 
-        # If there are peak guesses, fit the peaks, and sort results
+        # If there are peak guesses, fit the peaks, and sort results by CF
         if len(guess) > 0:
             peak_params = self._fit_peak_guess(flatspec, guess)
-            peak_params = peak_params[peak_params[:, 0].argsort()]
+            peak_params = sort_peaks(peak_params, 'CF', 'inc')
+
         else:
             peak_params = np.empty([0, self.modes.periodic.n_params])
 
