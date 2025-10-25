@@ -17,9 +17,9 @@ class ModelParameters():
     Attributes
     ----------
     aperiodic : ComponentParameters
-        Aperiodic parameters of the model fit.
-    peak : ComponentParameters
-        Peak parameters of the model fit.
+        Parameters for the aperiodic component of the model fit.
+    periodic : ComponentParameters
+        Parameters for the periodic component of the model fit.
     """
 
     def __init__(self, modes=None):
@@ -32,13 +32,26 @@ class ModelParameters():
 
 
     def reset(self, modes=None):
-        """Reset component parameter definitions."""
+        """Reset component parameter definitions.
+
+        Parameters
+        ----------
+        modes : Modes
+            Modes definition.
+        """
 
         self.aperiodic.reset(modes.aperiodic.n_params if modes else None)
         self.periodic.reset(modes.periodic.n_params if modes else None, make2d=True)
 
 
     def asdict(self):
+        """"Export model parameters to a dictionary.
+
+        Returns
+        -------
+        dict
+            Exported dictionary of the model parameters.
+        """
 
         apdict = self.aperiodic.asdict()
         pedict = self.periodic.asdict()
@@ -49,6 +62,7 @@ class ModelParameters():
     @property
     def fields(self):
         """Alias as a property attribute the list of fields."""
+        # TODO: Drop?
 
         return list(vars(self).keys())
 
@@ -77,7 +91,7 @@ class ComponentParameters():
 
         if mode is not None:
             assert mode.component == component, 'Given mode does not match component'
-            self.initialize(mode.n_params)
+            self.reset(mode.n_params)
             self.add_indices(mode.params.indices)
 
 
