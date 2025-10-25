@@ -146,6 +146,35 @@ class Metrics():
             self.add_metric(metric)
 
 
+    def get_metrics(self, metric, measure=None):
+        """Get requested metric(s) from the object.
+
+        Parameters
+        ----------
+        metric : str
+            xx
+        measure : str
+            xx
+
+        Returns
+        -------
+        metrics : dict
+            Dictionary of requested metrics.
+        """
+
+        if metric == 'all':
+            out = self.results
+
+        else:
+
+            out = {ke : va for ke, va in self.results.items() if metric in ke}
+
+            if measure is not None:
+                out = {ke : va for ke, va in out.items() if measure in ke}
+
+        return out
+
+
     def compute_metrics(self, data, results):
         """Compute all currently defined metrics.
 
