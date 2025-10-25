@@ -164,22 +164,22 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         # Find peaks from the flattened power spectrum, and fit them
         temp_spectrum_flat = self.data.power_spectrum - temp_ap_fit
-        self.results.params.gaussian = self._fit_peaks(temp_spectrum_flat)
+        self.results.params.peak.add_params('fit', self._fit_peaks(temp_spectrum_flat))
 
         # Calculate the peak fit
         #   Note: if no peaks are found, this creates a flat (all zero) peak fit
         self.results.model._peak_fit = self.modes.periodic.func(\
-            self.data.freqs, *np.ndarray.flatten(self.results.params.gaussian))
+            self.data.freqs, *np.ndarray.flatten(self.results.params.peak.get_params('fit')))
 
         # Create peak-removed (but not flattened) power spectrum
         self.results.model._spectrum_peak_rm = \
             self.data.power_spectrum - self.results.model._peak_fit
 
         # Run final aperiodic fit on peak-removed power spectrum
-        self.results.params.aperiodic = self._simple_ap_fit(\
-            self.data.freqs, self.results.model._spectrum_peak_rm)
+        self.results.params.aperiodic.add_params('fit', \
+            self._simple_ap_fit(self.data.freqs, self.results.model._spectrum_peak_rm))
         self.results.model._ap_fit = self.modes.aperiodic.func(\
-            self.data.freqs, *self.results.params.aperiodic)
+            self.data.freqs, *self.results.params.aperiodic.params)
 
         # Create remaining model components: flatspec & full power_spectrum model fit
         self.results.model._spectrum_flat = self.data.power_spectrum - self.results.model._ap_fit
@@ -189,7 +189,8 @@ class SpectralFitAlgorithm(AlgorithmCF):
         ## PARAMETER UPDATES
 
         # Convert fit peak parameters to updated values
-        self.results.params.peak = self._create_peak_params(self.results.params.gaussian)
+        self.results.params.peak.add_params('converted', \
+            self._create_peak_params(self.results.params.peak.get_params('fit')))
 
 
     def _get_ap_guess(self, freqs, power_spectrum):
