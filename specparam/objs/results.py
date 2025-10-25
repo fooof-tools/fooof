@@ -80,7 +80,7 @@ class Results():
         - necessarily defined, as floats, if model has been fit
         """
 
-        return not np.all(np.isnan(self.params.aperiodic))
+        return self.params.aperiodic.has_params
 
 
     @property
@@ -89,7 +89,7 @@ class Results():
 
         n_peaks = None
         if self.has_model:
-            n_peaks = self.params.peak.shape[0]
+            n_peaks = self.params.peak.params.shape[0]
 
         return n_peaks
 
@@ -229,8 +229,9 @@ class Results():
         """
 
         self.model.modeled_spectrum, self.model._peak_fit, self.model._ap_fit = \
-            gen_model(freqs, self.modes.aperiodic, self.params.aperiodic,
-                      self.modes.periodic, self.params.gaussian, return_components=True)
+            gen_model(freqs, self.modes.aperiodic, self.params.aperiodic.get_params('fit'),
+                      self.modes.periodic, self.params.peak.get_params('fit'),
+                      return_components=True)
 
 
 @replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters'),
