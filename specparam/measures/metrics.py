@@ -20,5 +20,5 @@ METRICS = {
     'gof_rsquared' : Metric('gof', 'rsquared', compute_r_squared),
     'gof_adjrsquared' : Metric('gof', 'adjrsquared', compute_adj_r_squared, \
         {'n_params' : lambda data, results: \
-            results.params.peak.size + results.params.aperiodic.size})
+            results.params.periodic.params.size + results.params.aperiodic.params.size})
 }

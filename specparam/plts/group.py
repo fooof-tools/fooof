@@ -77,11 +77,11 @@ def plot_group_aperiodic(group, ax=None, **plot_kwargs):
     """
 
     if group.modes.aperiodic.name == 'knee':
-        plot_scatter_2(group.results.get_params('aperiodic_params', 'exponent'), 'Exponent',
-                       group.results.get_params('aperiodic_params', 'knee'), 'Knee',
+        plot_scatter_2(group.results.get_params('aperiodic', 'exponent'), 'Exponent',
+                       group.results.get_params('aperiodic', 'knee'), 'Knee',
                        'Aperiodic Fit', ax=ax)
     else:
-        plot_scatter_1(group.results.get_params('aperiodic_params', 'exponent'), 'Exponent',
+        plot_scatter_1(group.results.get_params('aperiodic', 'exponent'), 'Exponent',
                        'Aperiodic Fit', ax=ax)
 
 
@@ -103,11 +103,13 @@ def plot_group_goodness(group, ax=None, **plot_kwargs):
 
     # Get indices of metrics to plot
     err_ind = find_first_ind(group.results.metrics.labels, 'error')
+    err_label = group.results.metrics.labels[err_ind]
     gof_ind = find_first_ind(group.results.metrics.labels, 'gof')
+    gof_label = group.results.metrics.labels[gof_ind]
 
-    plot_scatter_2(group.results.get_params('metrics', group.results.metrics.labels[err_ind]),
+    plot_scatter_2(group.results.get_metrics(err_label),
                    group.results.metrics.flabels[err_ind],
-                   group.results.get_params('metrics', group.results.metrics.labels[gof_ind]),
+                   group.results.get_metrics(gof_label),
                    group.results.metrics.flabels[gof_ind],
                    'Fit Quality', ax=ax)
 
@@ -128,5 +130,5 @@ def plot_group_peak_frequencies(group, ax=None, **plot_kwargs):
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    plot_hist(group.results.get_params('peak_params', 0)[:, 0], 'Center Frequency',
+    plot_hist(group.results.get_params('peak', 0)[:, 0], 'Center Frequency',
               'Peaks - Center Frequencies', x_lims=group.data.freq_range, ax=ax)

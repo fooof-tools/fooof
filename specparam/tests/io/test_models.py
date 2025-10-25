@@ -157,8 +157,12 @@ def test_load_file_contents(tfm):
     assert 'bands' in loaded_data.keys()
     for setting in tfm.algorithm.settings.names:
         assert setting in loaded_data.keys()
-    for result in tfm.results.params.fields:
-        assert result + '_params' in loaded_data.keys()
+    # TODO
+    #for result in tfm.results.params.fields:
+    #    assert result + '_params' in loaded_data.keys()
+    for rescomp in ['aperiodic', 'peak']:
+        for version in ['fit', 'converted']:
+            assert rescomp + '_' + version in loaded_data.keys()
     assert 'metrics' in loaded_data.keys()
     for datum in tfm.data._fields:
         assert datum in loaded_data.keys()
@@ -171,8 +175,11 @@ def test_load_model(tfm):
     compare_model_objs([tfm, ntfm], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
     for data in tfm.data._fields:
         assert np.array_equal(getattr(tfm.data, data), getattr(ntfm.data, data))
-    for result in tfm.results.params.fields:
-        assert not np.all(np.isnan(getattr(ntfm.results.params, result)))
+    # TODO
+    #for result in tfm.results.params.fields:
+    #    assert not np.all(np.isnan(getattr(ntfm.results.params, result)))
+    for component in ['periodic', 'aperiodic']:
+        assert not np.all(np.isnan(getattr(ntfm.results.params, component).get_params('fit')))
     assert tfm.results.metrics.results == ntfm.results.metrics.results
 
     # Check directory matches (loading didn't add any unexpected attributes)

@@ -31,16 +31,18 @@ def model_to_dict(fit_results, modes, bands):
         Model results organized into a dictionary.
     """
 
+    # TODO / NOTE: current update assumes fit / converted
+
     bands = check_bands(bands)
 
     fr_dict = {}
 
     # aperiodic parameters
-    for label, param in zip(modes.aperiodic.params.indices, fit_results.aperiodic_params):
+    for label, param in zip(modes.aperiodic.params.indices, fit_results.aperiodic_fit):
         fr_dict[label] = param
 
     # periodic parameters
-    peaks = fit_results.peak_params
+    peaks = fit_results.peak_converted
     if not bands.bands and bands.n_bands:
 
         # If bands if defined in terms of number of peaks

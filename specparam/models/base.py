@@ -160,23 +160,27 @@ class BaseModel():
         Parameters
         ----------
         data : dict
-            Dictionary of data to add to self.
+            Dictionary of data to add to current object.
         """
 
-        # Catch and add convert custom objects
+        # Catch and add custom objects
         if 'aperiodic_mode' in data.keys() and 'periodic_mode' in data.keys():
             self.add_modes(aperiodic_mode=data.pop('aperiodic_mode'),
                            periodic_mode=data.pop('periodic_mode'))
-        if 'bands' in  data.keys():
+        if 'bands' in data.keys():
             self.results.add_bands(data.pop('bands'))
         if 'metrics' in data.keys():
             tmetrics = data.pop('metrics')
             self.results.add_metrics(list(tmetrics.keys()))
             self.results.metrics.add_results(tmetrics)
-        for label, params in {key : vals for key, vals in data.items() if 'params' in key}.items():
-            if 'peak' in label or 'gaussian' in label:
+        # TODO
+        for label, params in {ke : va for ke, va in data.items() if '_fit' in ke or '_converted' in ke}.items():
+            if 'peak' in label:
                 params = check_array_dim(params)
-            setattr(self.results.params, label.split('_')[0], params)
+            label1, label2 = label.split('_')
+            component = 'periodic' if label1 == 'peak' else label1
+            getattr(self.results.params, component).add_params(label2, params)
+            #setattr(self.results.params, label.split('_')[0], params)
 
         # Add additional attributes directly to object
         for key in data.keys():

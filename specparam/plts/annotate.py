@@ -62,8 +62,8 @@ def _remove_flatspec_peak(model, flatspec, peak_ind):
         Flattened spectrum, with peak(s) removed.
     """
 
-    gauss_params = sort_peaks(model.results.params.gaussian, 'PW', 'dec')
-    flatspec = flatspec - model.modes.periodic.func(model.data.freqs, *gauss_params[peak_ind, :])
+    peak_fit_params = sort_peaks(model.results.params.periodic.get_params('fit'), 'PW', 'dec')
+    flatspec = flatspec - model.modes.periodic.func(model.data.freqs, *peak_fit_params[peak_ind, :])
 
     return flatspec
 
@@ -137,9 +137,9 @@ def plot_individual_peak_search(model, iteration, flatspec=None, ax=None, **plt_
 
     if iteration < model.results.n_peaks:
 
-        gauss_params = sort_peaks(model.results.params.gaussian, 'PW', 'dec')
-        gauss = model.modes.periodic.func(model.data.freqs, *gauss_params[iteration, :])
-        plot_spectra(model.data.freqs, gauss, ax=ax, label='Gaussian Fit',
+        peak_fit_params = sort_peaks(model.results.params.periodic.get_params('fit'), 'PW', 'dec')
+        cpeak = model.modes.periodic.func(model.data.freqs, *peak_fit_params[iteration, :])
+        plot_spectra(model.data.freqs, cpeak, ax=ax, label='Gaussian Fit',
                      color=PLT_COLORS['periodic'], linestyle=':', linewidth=3.0)
 
     if plt_kwargs.get('restyle', True) is not False:
@@ -208,8 +208,8 @@ def plot_annotated_model(model, plt_log=False, annotate_peaks=True,
 
     if annotate_peaks and model.results.n_peaks:
 
-        # Extract largest peak, to annotate, grabbing gaussian params
-        gauss = get_band_peak(model, model.data.freq_range, attribute='gaussian')
+        # Extract largest peak, to annotate, grabbing peak fit params
+        gauss = get_band_peak(model, model.data.freq_range, attribute='fit')
 
         peak_ctr, peak_hgt, peak_wid = gauss
         bw_freqs = [peak_ctr - 0.5 * compute_fwhm(peak_wid),

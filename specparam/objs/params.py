@@ -26,7 +26,7 @@ class ModelParameters():
         """Initialize ModelParameters object."""
 
         self.aperiodic = ComponentParameters('aperiodic')
-        self.peak = ComponentParameters('periodic')
+        self.periodic = ComponentParameters('periodic')
 
         self.reset(modes)
 
@@ -35,13 +35,13 @@ class ModelParameters():
         """Reset component parameter definitions."""
 
         self.aperiodic.reset(modes.aperiodic.n_params if modes else None)
-        self.peak.reset(modes.periodic.n_params if modes else None)
+        self.periodic.reset(modes.periodic.n_params if modes else None, make2d=True)
 
 
     def asdict(self):
 
         apdict = self.aperiodic.asdict()
-        pedict = self.peak.asdict()
+        pedict = self.periodic.asdict()
 
         return {**apdict, **pedict}
 
@@ -136,7 +136,7 @@ class ComponentParameters():
         return self.get_params('converted' if self.has_converted else 'fit')
 
 
-    def reset(self, n_params=None):
+    def reset(self, n_params=None, make2d=False):
         """Reset parameter stores, optional specifying a specified size.
 
         Parameters
@@ -146,8 +146,9 @@ class ComponentParameters():
         """
 
         if n_params:
-            self._fit = np.array([np.nan] * n_params)
-            self._converted = np.array([np.nan] * n_params)
+            ndmin = 2 if make2d else 1
+            self._fit = np.array([np.nan] * n_params, ndmin=ndmin)
+            self._converted = np.array([np.nan] * n_params, ndmin=ndmin)
         else:
             self._fit = np.nan
             self._converted = np.nan
@@ -204,6 +205,8 @@ class ComponentParameters():
             Extracted parameter values.
         """
 
+        if version is None:
+            output = self.params
         if version == 'fit':
             output = self._fit
         if version == 'converted':
@@ -225,9 +228,12 @@ class ComponentParameters():
             Parameter values from object in a dictionary.
         """
 
+        # TEMP
+        label = 'peak' if self.component == 'periodic' else self.component
+
         outdict = {
-            self.component + '_fit' : self._fit,
-            self.component + '_converted' : self._converted,
+            label + '_fit' : self._fit,
+            label + '_converted' : self._converted,
         }
 
         return outdict

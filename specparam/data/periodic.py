@@ -6,7 +6,7 @@ import numpy as np
 ###################################################################################################
 
 def get_band_peak(model, band, select_highest=True, threshold=None,
-                  thresh_param='PW', attribute='peak'):
+                  thresh_param='PW', attribute='converted'):
     """Extract peaks from a band of interest from a model object.
 
     Parameters
@@ -23,8 +23,9 @@ def get_band_peak(model, band, select_highest=True, threshold=None,
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
         Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
-    attribute : {'peak', 'gaussian'}
-        Which attribute of peak data to extract data from.
+    attribute : {'fit', 'converted'}
+        Which version of the peak parameters to extract data from.
+    TODO
 
     Returns
     -------
@@ -42,11 +43,11 @@ def get_band_peak(model, band, select_highest=True, threshold=None,
     >>> betas = get_band_peak(model, [13, 30], select_highest=False)  # doctest:+SKIP
     """
 
-    return get_band_peak_arr(getattr(model.results.params, attribute), band,
+    return get_band_peak_arr(getattr(model.results.params.periodic, '_' + attribute), band,
                              select_highest, threshold, thresh_param)
 
 
-def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribute='peak'):
+def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribute='converted'):
     """Extract peaks from a band of interest from a group model object.
 
     Parameters
@@ -60,8 +61,9 @@ def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribut
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
         Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
-    attribute : {'peak', 'gaussian'}
-        Which attribute of peak data to extract data from.
+    attribute : {'fit', 'converted'}
+        Which version of the peak parameters to extract data from.
+    TODO
 
     Returns
     -------
@@ -95,11 +97,11 @@ def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribut
     >>> betas = get_band_peak_group(group, [13, 30], threshold=0.1)  # doctest:+SKIP
     """
 
-    return get_band_peak_group_arr(group.results.get_params(attribute), band, len(group.results),
+    return get_band_peak_group_arr(group.results.get_params('peak'), band, len(group.results),
                                    threshold, thresh_param)
 
 
-def get_band_peak_event(event, band, threshold=None, thresh_param='PW', attribute='peak'):
+def get_band_peak_event(event, band, threshold=None, thresh_param='PW', attribute='converted'):
     """Extract peaks from a band of interest from an event model object.
 
     Parameters
@@ -116,8 +118,8 @@ def get_band_peak_event(event, band, threshold=None, thresh_param='PW', attribut
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
         Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
-    attribute : {'peak', 'gaussian'}
-        Which attribute of peak data to extract data from.
+    attribute : {'fit', 'converted'}
+        Which version of the peak parameters to extract data from.
 
     Returns
     -------

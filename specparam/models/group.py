@@ -227,7 +227,9 @@ class SpectralGroupModel(SpectralModel):
                 self.algorithm.settings.clear()
 
             # If results part of current data added, check and update object results
-            if set([el + '_params' for el in self.results.params.fields]).issubset(data_keys):
+            # TODO
+            #if set([el + '_params' for el in self.results.params.fields]).issubset(data_keys):
+            if 'aperiodic_fit' in data_keys:
                 self.results.group_results.append(self.results._get_results())
 
         # Reconstruct frequency vector, if information is available to do so

@@ -86,12 +86,13 @@ class SpectrumMetaData(namedtuple('SpectrumMetaData', ['freq_range', 'freq_res']
     __slots__ = ()
 
 
-class FitResults(namedtuple('FitResults', ['aperiodic_params', 'peak_params',
-                                           'gaussian_params', 'metrics'])):
+class FitResults(namedtuple('FitResults', ['aperiodic_fit', 'aperiodic_converted',
+                                           'peak_fit', 'peak_converted', 'metrics'])):
     """Model results from parameterizing a power spectrum.
 
     Parameters
     ----------
+    TODO
     aperiodic_params : 1d array
         Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
         The knee parameter is only included if aperiodic is fit with knee.

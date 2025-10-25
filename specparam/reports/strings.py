@@ -388,13 +388,13 @@ def gen_model_results_str(model, concise=False):
         'Aperiodic Parameters (\'{}\' mode)'.format(model.modes.aperiodic.name),
         '(' + ', '.join(model.modes.aperiodic.params.labels) + ')',
         ', '.join(['{:2.4f}'] * \
-            len(model.results.params.aperiodic)).format(*model.results.params.aperiodic),
+            len(model.results.params.aperiodic.params)).format(*model.results.params.aperiodic.params),
         '',
 
         # Peak parameters
         'Peak Parameters (\'{}\' mode) {} peaks found'.format(\
             model.modes.periodic.name, model.results.n_peaks),
-        *[peak_str.format(*op) for op in model.results.params.peak],
+        *[peak_str.format(*op) for op in model.results.params.periodic.params],
         '',
 
         # Metrics
@@ -449,7 +449,7 @@ def gen_group_results_str(group, concise=False):
         'Aperiodic Parameters (\'{}\' mode)'.format(group.modes.aperiodic.name),
         *[el for el in [\
             '{:8s} - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'.format(label, \
-                *compute_arr_desc(group.results.get_params('aperiodic_params', label))) \
+                *compute_arr_desc(group.results.get_params('aperiodic', label))) \
                     for label in group.modes.aperiodic.params.labels]],
         '',
 
@@ -461,9 +461,9 @@ def gen_group_results_str(group, concise=False):
         # Metrics
         'Model fit quality metrics:',
         *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
-            '{:s} ({:s})'.format(*key.split('_')),
-            *compute_arr_desc(group.results.get_params('metrics', key))) \
-                for key in group.results.metrics.results],
+            '{:s} ({:s})'.format(*label.split('_')),
+            *compute_arr_desc(group.results.get_metrics(label))) \
+                for label in group.results.metrics.labels],
         '',
 
         # Footer

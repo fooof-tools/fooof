@@ -18,8 +18,10 @@ def test_results_results(tresults):
 
     tres.add_results(tresults)
     assert tres.has_model
-    for result in tres.params.fields:
-        assert np.array_equal(getattr(tres.params, result), getattr(tresults, result + '_params'))
+    for component in tres.params.fields:
+        attr_comp = 'peak' if component == 'periodic' else component
+        assert np.array_equal(getattr(tres.params, component).get_params('fit'),
+                              getattr(tresults, attr_comp + '_fit'))
 
     results_out = tres.get_results()
     assert results_out == tresults

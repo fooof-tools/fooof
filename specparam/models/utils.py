@@ -126,32 +126,33 @@ def average_group(group, bands, avg_method='mean', regenerate=True):
         raise ValueError("Requested average method not understood.")
 
     # Aperiodic parameters: extract & average
-    ap_params = avg_funcs[avg_method](group.results.get_params('aperiodic_params'), 0)
+    ap_params = avg_funcs[avg_method](group.results.get_params('aperiodic'), 0)
 
     # Periodic parameters: extract & average
-    peak_params = []
-    gauss_params = []
+    peak_fit_params = []
+    peak_conv_params = []
 
     for band_def in bands.definitions:
 
-        peaks = get_band_peak_group(group, band_def, attribute='peak_params')
-        gauss = get_band_peak_group(group, band_def, attribute='gaussian_params')
+        peaks_fit = get_band_peak_group(group, band_def, attribute='fit')
+        peaks_conv = get_band_peak_group(group, band_def, attribute='converted')
 
         # Check if there are any extracted peaks - if not, don't add
-        #   Note that we only check peaks, but gauss should be the same
-        if not np.all(np.isnan(peaks)):
-            peak_params.append(avg_funcs[avg_method](peaks, 0))
-            gauss_params.append(avg_funcs[avg_method](gauss, 0))
+        #   Note that we only check fit peaks, but converted should be the same
+        if not np.all(np.isnan(peaks_fit)):
+            peak_fit_params.append(avg_funcs[avg_method](peaks_fit, 0))
+            peak_conv_params.append(avg_funcs[avg_method](peaks_conv, 0))
 
     # Collect together result parameters
     results_params = {
-        'aperiodic_params' : ap_params,
-        'peak_params' : np.array(peak_params),
-        'gaussian_params' : np.array(gauss_params),
+        'aperiodic_fit' : ap_params,
+        'aperiodic_converted' : np.array([np.nan] * len(ap_params)),
+        'peak_fit' : np.array(peak_fit_params),
+        'peak_converted' : np.array(peak_conv_params),
     }
 
     # Goodness of fit measures: extract & average
-    results_metrics = {label : avg_funcs[avg_method](group.results.get_params('metrics', label)) \
+    results_metrics = {label : avg_funcs[avg_method](group.results.get_metrics(label)) \
         for label in group.results.metrics.labels}
 
     # Create the new model object, with settings, data info, and then add average results

@@ -61,11 +61,12 @@ def save_model(model, file_name, file_path=None, append=False,
         if not model.results.bands._n_bands else model.results.bands._n_bands
     bands_label = ['bands'] if model.results.bands else []
 
-    # Convert results & metrics to saveable information
-    results_labels = []
-    for rfield in model.results.params.fields:
-        results_labels.append(rfield + '_params')
-        obj_dict[rfield + '_params'] = getattr(model.results.params, rfield)
+    # Add parameter results to information to saveable information
+    res_dict = model.results.params.asdict()
+    obj_dict = {**obj_dict, **res_dict}
+    results_labels = list(res_dict.keys())
+
+    # Add metrics to information to saveable information
     obj_dict['metrics'] = model.results.metrics.results
 
     # Convert all arrays to list for JSON serialization

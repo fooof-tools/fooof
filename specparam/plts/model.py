@@ -168,7 +168,7 @@ def _add_peaks_shade(model, plt_log, ax, **plot_kwargs):
     defaults = {'color' : PLT_COLORS['periodic'], 'alpha' : 0.25}
     plot_kwargs = check_plot_kwargs(plot_kwargs, defaults)
 
-    for peak in model.results.params.gaussian:
+    for peak in model.results.params.periodic.get_params('fit'):
 
         peak_freqs = np.log10(model.data.freqs) if plt_log else model.data.freqs
         peak_line = model.results.model._ap_fit + model.modes.periodic.func(model.data.freqs, *peak)
@@ -194,7 +194,7 @@ def _add_peaks_dot(model, plt_log, ax, **plot_kwargs):
     defaults = {'color' : PLT_COLORS['periodic'], 'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6}
     plot_kwargs = check_plot_kwargs(plot_kwargs, defaults)
 
-    for peak in model.results.params.peak:
+    for peak in model.results.params.periodic.get_params('fit'):
 
         ap_point = np.interp(peak[0], model.data.freqs, model.results.model._ap_fit)
         freq_point = np.log10(peak[0]) if plt_log else peak[0]
@@ -224,7 +224,7 @@ def _add_peaks_outline(model, plt_log, ax, **plot_kwargs):
     defaults = {'color' : PLT_COLORS['periodic'], 'alpha' : 0.7, 'lw' : 1.5}
     plot_kwargs = check_plot_kwargs(plot_kwargs, defaults)
 
-    for peak in model.results.params.gaussian:
+    for peak in model.results.params.periodic.get_params('fit'):
 
         # Define the frequency range around each peak to plot - peak bandwidth +/- 3
         peak_range = [peak[0] - peak[2]*3, peak[0] + peak[2]*3]
@@ -258,7 +258,7 @@ def _add_peaks_line(model, plt_log, ax, **plot_kwargs):
 
     ylims = ax.get_ylim()
 
-    for peak in model.results.params.peak:
+    for peak in model.results.params.periodic.get_params('fit'):
 
         freq_point = np.log10(peak[0]) if plt_log else peak[0]
         ax.plot([freq_point, freq_point], ylims, '-', **plot_kwargs)
@@ -288,7 +288,7 @@ def _add_peaks_width(model, plt_log, ax, **plot_kwargs):
     defaults = {'color' : PLT_COLORS['periodic'], 'alpha' : 0.6, 'lw' : 2.5, 'ms' : 6}
     plot_kwargs = check_plot_kwargs(plot_kwargs, defaults)
 
-    for peak in model.results.params.gaussian:
+    for peak in model.results.params.periodic.get_params('fit'):
 
         peak_top = model.data.power_spectrum[nearest_ind(model.data.freqs, peak[0])]
         bw_freqs = [peak[0] - 0.5 * compute_fwhm(peak[2]),

@@ -130,9 +130,10 @@ def get_tmodes():
 def get_tresults():
     """Get a FitResults object, for testing."""
 
-    return FitResults(aperiodic_params=np.array([1.0, 1.00]),
-                      peak_params=np.array([[10.0, 1.25, 2.0], [20.0, 1.0, 3.0]]),
-                      gaussian_params=np.array([[10.0, 1.25, 1.0], [20.0, 1.0, 1.5]]),
+    return FitResults(aperiodic_fit=np.array([1.0, 1.00]),
+                      aperiodic_converted=np.array([np.nan, np.nan]),
+                      peak_fit=np.array([[10.0, 1.25, 1.0], [20.0, 1.0, 1.5]]),
+                      peak_converted=np.array([[10.0, 1.25, 2.0], [20.0, 1.0, 3.0]]),
                       metrics={'error_mae' : 0.01, 'gof_rsquared' : 0.97})
 
 def get_tdocstring():

@@ -15,7 +15,7 @@ from specparam.modutils.errors import NoModelError
 from specparam.modutils.docs import docs_get_section, replace_docstring_sections
 from specparam.data.data import FitResults
 from specparam.data.conversions import group_to_dict, event_group_to_dict
-from specparam.data.utils import (get_model_params, get_group_params,
+from specparam.data.utils import (get_model_params, get_group_params, get_group_metrics,
                                   get_results_by_ind, get_results_by_row)
 from specparam.sim.gen import gen_model
 
@@ -89,7 +89,7 @@ class Results():
 
         n_peaks = None
         if self.has_model:
-            n_peaks = self.params.peak.params.shape[0]
+            n_peaks = self.params.periodic.params.shape[0]
 
         return n_peaks
 
@@ -148,11 +148,18 @@ class Results():
             A data object containing the results from fitting a power spectrum model.
         """
 
-        for pfield in self.params.fields:
-            params = getattr(results, pfield + '_params')
-            if 'peak' in pfield or 'gaussian' in pfield:
-                params = check_array_dim(params)
-            setattr(self.params, pfield, params)
+        # # TODO
+        # for pfield in self.params.fields:
+        #     params = getattr(results, pfield + '_params')
+        #     if 'peak' in pfield or 'gaussian' in pfield:
+        #         params = check_array_dim(params)
+        #     setattr(self.params, pfield, params)
+
+        for component in ['aperiodic', 'periodic']:
+            for version in ['fit', 'converted']:
+                attr_comp = 'peak' if component == 'periodic' else component
+                getattr(self.params, component).add_params(\
+                    version, getattr(results, attr_comp + '_' + version))
 
         self.metrics.add_results(results.metrics)
 
@@ -166,23 +173,21 @@ class Results():
             Object containing the model fit results from the current object.
         """
 
-        results = FitResults(
-            **{key + '_params' : getattr(self.params, key) for key in self.params.fields},
-            metrics=self.metrics.results)
-
-        return results
+        return FitResults(**self.params.asdict(), metrics=self.metrics.results)
 
 
-    def get_params(self, name, field=None):
+    def get_params(self, component, field=None, version=None):
         """Return model fit parameters for specified feature(s).
 
         Parameters
         ----------
-        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
-            Name of the data field to extract.
-        field : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+        component : {'aperiodic', 'peak'}
+            Name of the component to extract parameters for.
+        field : str or int, optional
             Column name / index to extract from selected data, if requested.
-            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+            If str, should align with a parameter label for the component fit mode.
+        version : {'fit', 'converted'}
+            Which version of the parameters to extract.
 
         Returns
         -------
@@ -199,10 +204,18 @@ class Results():
         If there are no fit peak (no peak parameters), this method will return NaN.
         """
 
+        component = 'periodic' if component == 'peak' else component
+
         if not self.has_model:
             raise NoModelError("No model fit results are available to extract, can not proceed.")
 
-        return get_model_params(self.get_results(), self.modes, name, field)
+        return getattr(self.params, component).get_params(version, field)
+
+
+    def get_metrics(self, metric, measure=None):
+        """TODO"""
+
+        return self.metrics.get_metrics(metric, measure)
 
 
     def _reset_results(self, clear_results=False):
@@ -230,7 +243,7 @@ class Results():
 
         self.model.modeled_spectrum, self.model._peak_fit, self.model._ap_fit = \
             gen_model(freqs, self.modes.aperiodic, self.params.aperiodic.get_params('fit'),
-                      self.modes.periodic, self.params.peak.get_params('fit'),
+                      self.modes.periodic, self.params.periodic.get_params('fit'),
                       return_components=True)
 
 
@@ -308,7 +321,7 @@ class Results2D(Results):
 
         n_peaks = None
         if self.has_model:
-            n_peaks = np.array([res.peak_params.shape[0] for res in self])
+            n_peaks = np.array([res.peak_fit.shape[0] for res in self])
 
         return n_peaks
 
@@ -319,7 +332,7 @@ class Results2D(Results):
 
         n_null = None
         if self.has_model:
-            n_null = sum([1 for res in self.group_results if np.isnan(res.aperiodic_params[0])])
+            n_null = sum([1 for res in self.group_results if np.isnan(res.aperiodic_fit[0])])
 
         return n_null
 
@@ -331,7 +344,7 @@ class Results2D(Results):
         null_inds = None
         if self.has_model:
             null_inds = [ind for ind, res in enumerate(self.group_results) \
-                if np.isnan(res.aperiodic_params[0])]
+                if np.isnan(res.aperiodic_fit[0])]
 
         return null_inds
 
@@ -405,6 +418,12 @@ class Results2D(Results):
             raise NoModelError("No model fit results are available, can not proceed.")
 
         return get_group_params(self.group_results, self.modes, name, field)
+
+
+    def get_metrics(self, metric, measure=None):
+        """TODO"""
+
+        return get_group_metrics(self.group_results, metric, measure)
 
 
 @replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters'),
@@ -532,7 +551,7 @@ class Results3D(Results2DT):
 
         n_peaks = None
         if self.has_model:
-            n_peaks = np.array([[res.peak_params.shape[0] for res in gres] \
+            n_peaks = np.array([[res.peak_fit.shape[0] for res in gres] \
                 for gres in self.event_group_results])
 
         return n_peaks

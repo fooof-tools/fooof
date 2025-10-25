@@ -164,12 +164,12 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         # Find peaks from the flattened power spectrum, and fit them
         temp_spectrum_flat = self.data.power_spectrum - temp_ap_fit
-        self.results.params.peak.add_params('fit', self._fit_peaks(temp_spectrum_flat))
+        self.results.params.periodic.add_params('fit', self._fit_peaks(temp_spectrum_flat))
 
         # Calculate the peak fit
         #   Note: if no peaks are found, this creates a flat (all zero) peak fit
         self.results.model._peak_fit = self.modes.periodic.func(\
-            self.data.freqs, *np.ndarray.flatten(self.results.params.peak.get_params('fit')))
+            self.data.freqs, *np.ndarray.flatten(self.results.params.periodic.get_params('fit')))
 
         # Create peak-removed (but not flattened) power spectrum
         self.results.model._spectrum_peak_rm = \
@@ -189,8 +189,8 @@ class SpectralFitAlgorithm(AlgorithmCF):
         ## PARAMETER UPDATES
 
         # Convert fit peak parameters to updated values
-        self.results.params.peak.add_params('converted', \
-            self._create_peak_params(self.results.params.peak.get_params('fit')))
+        self.results.params.periodic.add_params('converted', \
+            self._create_peak_params(self.results.params.periodic.get_params('fit')))
 
 
     def _get_ap_guess(self, freqs, power_spectrum):
