@@ -118,6 +118,13 @@ class ComponentParameters():
 
 
     @property
+    def has_params(self):
+        """"Property attribute for checking if any params are avaialble."""
+
+        return self.has_fit
+
+
+    @property
     def params(self):
         """Property attribute to return parameters.
 
@@ -167,6 +174,18 @@ class ComponentParameters():
             self._fit = params
         if version == 'converted':
             self._converted = params
+
+
+    def convert_params(self, converter):
+        """Convert fit parameters to converted versions and store in the object.
+
+        Parameters
+        ----------
+        converter : func
+            Callable that takes in fit parameters and returns converted version.
+        """
+
+        self.add_params('converted', converter(self.get_params('fit')))
 
 
     def get_params(self, version, field=None):

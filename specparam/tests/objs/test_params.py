@@ -44,4 +44,4 @@ def test_model_parameters():
     assert mp
 
     assert isinstance(mp.aperiodic, ComponentParameters)
-    assert isinstance(mp.periodic, ComponentParameters)
+    assert isinstance(mp.peak, ComponentParameters)
