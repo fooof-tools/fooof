@@ -7,13 +7,6 @@ from specparam.objs.params import *
 ###################################################################################################
 ###################################################################################################
 
-## ModelParameters object
-
-def test_model_parameters():
-
-    mp = ModelParameters()
-    assert mp
-
 ## ComponentParameters object
 
 def test_component_parameters():
@@ -21,8 +14,8 @@ def test_component_parameters():
     acp = ComponentParameters('aperiodic')
     assert acp
 
-    # Check initializing
-    acp.initialize(2)
+    # Check reseting parameter stores
+    acp.reset(2)
     assert len(acp._fit) == 2
     assert len(acp._converted) == 2
 
@@ -42,3 +35,13 @@ def test_component_parameters():
     assert isinstance(pdict, dict)
     assert np.array_equal(pdict['aperiodic_fit'], fparams)
     assert np.array_equal(pdict['aperiodic_converted'], cparams)
+
+## ModelParameters object
+
+def test_model_parameters():
+
+    mp = ModelParameters()
+    assert mp
+
+    assert isinstance(mp.aperiodic, ComponentParameters)
+    assert isinstance(mp.periodic, ComponentParameters)

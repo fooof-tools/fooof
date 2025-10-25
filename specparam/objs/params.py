@@ -38,6 +38,14 @@ class ModelParameters():
         self.peak.reset(modes.periodic.n_params if modes else None)
 
 
+    def asdict(self):
+
+        apdict = self.aperiodic.asdict()
+        pedict = self.peak.asdict()
+
+        return {**apdict, **pedict}
+
+
     @property
     def fields(self):
         """Alias as a property attribute the list of fields."""
