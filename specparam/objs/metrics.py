@@ -78,6 +78,12 @@ class Metric():
         self.result = self.func(data.power_spectrum, results.model.modeled_spectrum, **kwargs)
 
 
+    def reset(self):
+        """Reset metric result."""
+
+        self.result = np.nan
+
+
 class Metrics():
     """Define a collection of metrics.
 
@@ -238,3 +244,10 @@ class Metrics():
 
         for key, value in results.items():
             self[key].result = value
+
+
+    def reset(self):
+        """Reset all metric results."""
+
+        for metric in self.metrics:
+            metric.reset()

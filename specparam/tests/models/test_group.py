@@ -181,7 +181,7 @@ def test_fg_fail():
     # Check that null ind values are nan
     for null_ind in ntfg.results.null_inds:
         assert np.isnan(ntfg.results.get_params('aperiodic', 'exponent')[null_ind])
-        #assert np.isnan(ntfg.results.get_metrics('error', 'mae')[null_ind])
+        assert np.isnan(ntfg.results.get_metrics('error', 'mae')[null_ind])
 
 def test_drop():
     """Test function to drop results from group object."""

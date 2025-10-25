@@ -206,7 +206,7 @@ def test_load_group(tfg):
         assert np.array_equal(getattr(tfg.data, data), getattr(ntfg.data, data))
     assert len(ntfg.results.group_results) > 0
     for metric in tfg.results.metrics.labels:
-        assert tfg.results.metrics.results[metric] == ntfg.results.metrics.results[metric]
+        assert np.array_equal(tfg.results.get_metrics(metric), ntfg.results.get_metrics(metric))
 
     # Check directory matches (loading didn't add any unexpected attributes)
     cfg = SpectralGroupModel()

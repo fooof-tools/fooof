@@ -230,6 +230,7 @@ class Results():
         if clear_results:
             self.params.reset(self.modes)
             self.model.reset()
+            self.metrics.reset()
 
 
     def _regenerate_model(self, freqs):
