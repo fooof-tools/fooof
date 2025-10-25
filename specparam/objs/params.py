@@ -11,45 +11,31 @@ class ModelParameters():
     Parameters
     ----------
     modes : Modes
-        Fit modes defintion.
+        Fit modes definition.
         If provided, used to initialize parameter arrays to correct sizes.
 
     Attributes
     ----------
-    aperiodic : 1d array
+    aperiodic : ComponentParameters
         Aperiodic parameters of the model fit.
-    peak : 1d array
+    peak : ComponentParameters
         Peak parameters of the model fit.
-    gaussian : 1d array
-        Gaussian parameters of the model fit.
     """
 
     def __init__(self, modes=None):
         """Initialize ModelParameters object."""
 
-        self.aperiodic = np.nan
-
-        self.peak = np.nan
-        self.gaussian = np.nan
+        self.aperiodic = ComponentParameters('aperiodic')
+        self.peak = ComponentParameters('periodic')
 
         self.reset(modes)
 
+
     def reset(self, modes=None):
-        """Reset parameters."""
+        """Reset component parameter definitions."""
 
-        # Aperiodic parameters
-        if modes:
-            self.aperiodic = np.array([np.nan] * modes.aperiodic.n_params)
-        else:
-            self.aperiodic = np.nan
-
-        # Periodic parameters
-        if modes:
-            self.gaussian = np.empty([0, modes.periodic.n_params])
-            self.peak = np.empty([0, modes.periodic.n_params])
-        else:
-            self.gaussian = np.nan
-            self.peak = np.nan
+        self.aperiodic.reset(modes.aperiodic.n_params if modes else None)
+        self.peak.reset(modes.periodic.n_params if modes else None)
 
 
     @property
@@ -90,8 +76,8 @@ class ComponentParameters():
     def _has_param(self, version):
         """Helper function to check whether the object has parameter values.
 
-        Paramters
-        ---------
+        Parameters
+        ----------
         version : {'fit', 'converted'}
             Which version of the parameters to check for.
 
@@ -135,17 +121,21 @@ class ComponentParameters():
         return self.get_params('converted' if self.has_converted else 'fit')
 
 
-    def initialize(self, n_params):
-        """Initialize parameter stores to a specified size.
+    def reset(self, n_params=None):
+        """Reset parameter stores, optional specifying a specified size.
 
         Parameters
         ----------
-        n_params : int
+        n_params : int, optional
             The number of parameters to initialize.
         """
 
-        self._fit = np.array([np.nan] * n_params)
-        self._converted = np.array([np.nan] * n_params)
+        if n_params:
+            self._fit = np.array([np.nan] * n_params)
+            self._converted = np.array([np.nan] * n_params)
+        else:
+            self._fit = np.nan
+            self._converted = np.nan
 
 
     def add_indices(self, indices):
