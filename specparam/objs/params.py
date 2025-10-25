@@ -65,14 +65,9 @@ class ComponentParameters():
     Parameters
     ----------
     component : {'periodic', 'aperiodic'}
-        xx
-    mode : str
-        xx
-
-    Attributes
-    ----------
-    XX
-
+        Description of which kind of component parameters are for.
+    mode : Mode, optional
+        Mode object description the component fit mode.
     """
 
     def __init__(self, component, mode=None):
@@ -92,61 +87,56 @@ class ComponentParameters():
             self.add_indices(mode.params.indices)
 
 
-#     def __getattr__(self, label):
-
-#         if label == self.component:
-#             return self.params
-#         else:
-#             errstr = "'{}' object has no attribute '{}'".format(type(self).__name__, label)
-#             raise AttributeError(errstr)
-
-    def _has_param(self, attr):
-        """Helper function to check whether
+    def _has_param(self, version):
+        """Helper function to check whether the object has parameter values.
 
         Paramters
         ---------
-        attr : {'fit', 'converted'}
-            xx
+        version : {'fit', 'converted'}
+            Which version of the parameters to check for.
 
         Returns
         -------
         bool
-            XX
+            Whether the object has the specified type of parameter values.
 
         Notes
         -----
-        Return of False can indicate either that the attr is uninitialized (singular
-        nan value), or that it is initialized but has no values (an array of nan).
+        Return of False can indicate either that the specified params attribute is uninitialized
+        (singular nan value), or that it is initialized but has no values (an array of nan).
         """
 
-        return True if not np.all(np.isnan(getattr(self, attr))) else False
+        return True if not np.all(np.isnan(getattr(self, version))) else False
+
 
     @property
     def has_fit(self):
-        """   """
+        """Property attribute for checking if object has fit parameters."""
 
         return self._has_param('_fit')
 
+
     @property
     def has_converted(self):
-        """   """
+        """Property attribute for checking if object has converted parameters."""
 
         return self._has_param('_converted')
 
-#     @property
-#     def has_params(self):
-#         """   """
-
-#         return self._has_param('params')
 
     @property
     def params(self):
-        """   """
+        """Property attribute to return parameters.
+
+        Notes
+        -----
+        If available, this return converted parameters. If not, this returns fit parameters.
+        """
 
         return self.get_params('converted' if self.has_converted else 'fit')
 
+
     def initialize(self, n_params):
-        """Initialize
+        """Initialize parameter stores to a specified size.
 
         Parameters
         ----------
@@ -157,21 +147,45 @@ class ComponentParameters():
         self._fit = np.array([np.nan] * n_params)
         self._converted = np.array([np.nan] * n_params)
 
+
     def add_indices(self, indices):
-        """   """
+        """Add parameter indices definition to the object."""
 
         self.indices = indices
 
-    def add_params(self, params, version):
-        """   """
+
+    def add_params(self, version, params):
+        """Add parameter values to the object.
+
+        Parameters
+        ----------
+        version : {'fit', 'converted'}
+            Which version of the parameters to return.
+        params : array
+            Parameter values to add to the object.
+        """
 
         if version == 'fit':
             self._fit = params
         if version == 'converted':
             self._converted = params
 
+
     def get_params(self, version, field=None):
-        """   """
+        """Get parameter values from the object.
+
+        Parameters
+        ----------
+        version : {'fit', 'converted'}
+            Which version of the parameters to return.
+        field : str, optional
+            Which field from the parameters to return.
+
+        Returns
+        -------
+        params : array
+            Extracted parameter values.
+        """
 
         if version == 'fit':
             output = self._fit
@@ -184,8 +198,15 @@ class ComponentParameters():
 
         return output
 
+
     def asdict(self):
-        """   """
+        """Get the parameter values in a dictionary.
+
+        Returns
+        -------
+        dict
+            Parameter values from object in a dictionary.
+        """
 
         outdict = {
             self.component + '_fit' : self._fit,
@@ -193,34 +214,3 @@ class ComponentParameters():
         }
 
         return outdict
-
-
-#     @property
-#     def fields(self):
-#         """Alias as a property attribute the list of fields."""
-
-#         return list(vars(self).keys())
-
-
-#     def asdict(self):
-#         return dict(self)
-
-
-#     def __iter__(self):
-#         """   """
-
-#         yield self.component + '_fit', self._fit,
-#         yield self.component + '_converted', self._converted
-
-
-#        Alternate version of checking has attr that supports None
-#         attr_val = getattr(self, attr)
-
-#         if attr_val is None:
-#             answer = False
-#         elif isinstance(attr_val, np.ndarray) and np.all(np.isnan(attr_val)):
-#             answer = False
-#         else:
-#             answer = True
-
-#         return answer
