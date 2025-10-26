@@ -18,7 +18,7 @@ class Mode():
     ----------
     name : str
         Name of the mode.
-    component : {'periodic', 'aperiodic'},
+    component : {'aperiodic', 'periodic'},
         Which component the mode relates to.
     description : str
         Description of the mode.
@@ -28,6 +28,9 @@ class Mode():
         Function for computing Jacobian matrix corresponding to `func`.
     params : dict or ParamDefinition
         Parameter definition.
+    ndim : {1, 2}
+        Dimensionality of the parameters.
+        This reflects whether they require a 1d or 2d array to store.
     freq_space : {'linear', 'log10'}
         Required spacing of the frequency values for this mode.
     powers_space : {'linear', 'log10'}
@@ -35,7 +38,7 @@ class Mode():
     """
 
     def __init__(self, name, component, description, func, jacobian,
-                 params, freq_space, powers_space):
+                 params, ndim, freq_space, powers_space):
         """Initialize a mode."""
 
         self.name = name
@@ -48,6 +51,8 @@ class Mode():
         if isinstance(params, dict):
             params = ParamDefinition(params)
         self.params = params
+
+        self.ndim = ndim
 
         self.spacing = {
             'frequency' : check_input_options(freq_space, VALID_SPACINGS, 'freq_space'),
