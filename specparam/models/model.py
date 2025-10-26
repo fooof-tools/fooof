@@ -282,9 +282,15 @@ class SpectralModel(BaseModel):
 
 
     @copy_doc_func_to_method(Results.get_params)
-    def get_params(self, name, field=None):
+    def get_params(self, component, field=None):
 
-        return self.results.get_params(name, field)
+        return self.results.get_params(component, field)
+
+
+    @copy_doc_func_to_method(Results.get_metrics)
+    def get_metrics(self, category, measure=None):
+
+        return self.results.get_metrics(category, measure)
 
 
     @copy_doc_func_to_method(save_model_report)

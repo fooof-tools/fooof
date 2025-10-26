@@ -243,9 +243,15 @@ class SpectralGroupModel(SpectralModel):
 
 
     @copy_doc_func_to_method(Results2D.get_params)
-    def get_params(self, name, field=None):
+    def get_params(self, component, field=None):
 
-        return self.results.get_params(name, field)
+        return self.results.get_params(component, field)
+
+
+    @copy_doc_func_to_method(Results2D.get_metrics)
+    def get_metrics(self, category, measure=None):
+
+        return self.results.get_metrics(category, measure)
 
 
     def get_model(self, ind=None, regenerate=True):
