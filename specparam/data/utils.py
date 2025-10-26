@@ -144,7 +144,22 @@ def get_group_params(group_results, modes, component, field=None, version=None):
 
 
 def get_group_metrics(group_results, metric, measure=None):
-    """TODO"""
+    """Extract compueted metric from a set of group results.
+
+    Parameters
+    ----------
+    group_results : list of FitResults
+        List of FitResults objects, reflecting model results across a group of power spectra.
+    category : str
+        Category of metric to extract, e.g. 'error' or 'gof'.
+    measure : str, optional
+        Name of the specific measure to extract.
+
+    Returns
+    -------
+    group_metrics : array
+        Requested metrics.
+    """
 
     label = metric + '_' + measure if measure else metric
     group_metrics = np.array([getattr(fres, 'metrics')[label] for fres in group_results])

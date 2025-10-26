@@ -152,16 +152,16 @@ class Metrics():
             self.add_metric(metric)
 
 
-    def get_metrics(self, metric, measure=None):
+    def get_metrics(self, category, measure=None):
         """Get requested metric(s) from the object.
 
         Parameters
         ----------
-        metric : str
-            xx
-        measure : str
-            xx
-        TODO
+        category : str
+            Category of metric to extract, e.g. 'error' or 'gof'.
+            If 'all', returns all available metrics.
+        measure : str, optional
+            Name of the specific measure(s) to return.
 
         Returns
         -------
@@ -169,12 +169,12 @@ class Metrics():
             Dictionary of requested metrics.
         """
 
-        if metric == 'all':
+        if category == 'all':
             out = self.results
 
         else:
 
-            out = {ke : va for ke, va in self.results.items() if metric in ke}
+            out = {ke : va for ke, va in self.results.items() if category in ke}
 
             if measure is not None:
                 out = {ke : va for ke, va in out.items() if measure in ke}

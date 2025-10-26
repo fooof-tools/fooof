@@ -92,15 +92,14 @@ class FitResults(namedtuple('FitResults', ['aperiodic_fit', 'aperiodic_converted
 
     Parameters
     ----------
-    TODO
-    aperiodic_params : 1d array
-        Parameters that define the aperiodic fit. As [Offset, (Knee), Exponent].
-        The knee parameter is only included if aperiodic is fit with knee.
-    peak_params : 2d array
-        Fitted parameter values for the peaks. Each row is a peak, as [CF, PW, BW].
-    gaussian_params : 2d array
-        Parameters that define the gaussian fit(s).
-        Each row is a gaussian, as [mean, height, standard deviation].
+    aperiodic_fit : 1d array
+        Parameters that define the aperiodic fit.
+    aperiodic_fit : 1d array
+        Parameters for the aperiodic fit after any applied conversions.
+    peak_fit : 2d array
+        Parameters that define the peak(s) that make up the periodic fit.
+    peak_converted : 2d array
+        Parameters for the periodic fit after any applied conversions.
     metrics : dict
         Metrics results.
 
