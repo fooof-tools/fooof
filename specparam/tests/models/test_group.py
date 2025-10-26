@@ -295,9 +295,6 @@ def test_load(tfg):
     # Test that results and data are None
     for component in ['periodic', 'aperiodic']:
         assert not getattr(ntfg.results.params, component).has_params
-    # TODO
-    #for result in tfg.results.params.fields:
-    #    assert np.all(np.isnan(getattr(ntfg.results.params, result)))
     assert ntfg.data.power_spectra is None
 
     # Test loading just data
@@ -309,9 +306,6 @@ def test_load(tfg):
         assert getattr(ntfg.algorithm.settings, setting) is None
     for component in ['periodic', 'aperiodic']:
         assert not getattr(ntfg.results.params, component).has_params
-    # TODO
-    #for result in tfg.results.params.fields:
-    #    assert np.all(np.isnan(getattr(ntfg.results.params, result)))
 
     # Test loading all elements
     ntfg = SpectralGroupModel(verbose=False)
@@ -353,9 +347,7 @@ def test_get_model(tfg):
     # Check that parameters are copied and that regenerated model is created
     for component in ['periodic', 'aperiodic']:
         assert getattr(tfm1.results.params, component).has_params
-    # TODO
-    #for result in tfg.results.params.fields:
-    #    assert np.all(getattr(tfm1.results.params, result))
+    assert np.all(tfm1.results.model.modeled_spectrum)
 
     # Test when object has no data (clear a copy of tfg)
     new_tfg = tfg.copy()

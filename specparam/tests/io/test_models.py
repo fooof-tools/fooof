@@ -152,18 +152,21 @@ def test_load_file_contents(tfm):
 
     # Loads file saved from `test_save_model_str`
     loaded_data = load_json('test_model_all', TEST_DATA_PATH)
+
     for mode in tfm.modes.get_modes()._fields:
         assert mode in loaded_data.keys()
+
     assert 'bands' in loaded_data.keys()
+
     for setting in tfm.algorithm.settings.names:
         assert setting in loaded_data.keys()
-    # TODO
-    #for result in tfm.results.params.fields:
-    #    assert result + '_params' in loaded_data.keys()
+
     for rescomp in ['aperiodic', 'peak']:
         for version in ['fit', 'converted']:
             assert rescomp + '_' + version in loaded_data.keys()
+
     assert 'metrics' in loaded_data.keys()
+
     for datum in tfm.data._fields:
         assert datum in loaded_data.keys()
 
@@ -171,13 +174,13 @@ def test_load_model(tfm):
 
     # Loads file saved from `test_save_model_str`
     ntfm = load_model('test_model_all', TEST_DATA_PATH)
+
     assert isinstance(ntfm, SpectralModel)
     compare_model_objs([tfm, ntfm], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
+
     for data in tfm.data._fields:
         assert np.array_equal(getattr(tfm.data, data), getattr(ntfm.data, data))
-    # TODO
-    #for result in tfm.results.params.fields:
-    #    assert not np.all(np.isnan(getattr(ntfm.results.params, result)))
+
     for component in ['periodic', 'aperiodic']:
         assert not np.all(np.isnan(getattr(ntfm.results.params, component).get_params('fit')))
     assert tfm.results.metrics.results == ntfm.results.metrics.results

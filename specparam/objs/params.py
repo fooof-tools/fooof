@@ -59,14 +59,6 @@ class ModelParameters():
         return {**apdict, **pedict}
 
 
-    @property
-    def fields(self):
-        """Alias as a property attribute the list of fields."""
-        # TODO: Drop?
-
-        return list(vars(self).keys())
-
-
 class ComponentParameters():
     """Object to manage parameters for a particular model component.
 

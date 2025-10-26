@@ -148,12 +148,7 @@ class Results():
             A data object containing the results from fitting a power spectrum model.
         """
 
-        # # TODO
-        # for pfield in self.params.fields:
-        #     params = getattr(results, pfield + '_params')
-        #     if 'peak' in pfield or 'gaussian' in pfield:
-        #         params = check_array_dim(params)
-        #     setattr(self.params, pfield, params)
+        # TODO: use check_array_dim for peak arrays? Or is / should this be done in `add_params`
 
         for component in ['aperiodic', 'periodic']:
             for version in ['fit', 'converted']:

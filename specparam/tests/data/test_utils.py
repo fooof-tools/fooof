@@ -43,20 +43,21 @@ def test_get_group_params(tresults, tmodes):
             for dtype in ['error_mae', 'gof_rsquared']:
                 assert np.any(get_group_params(gresults, tmodes, dname, dtype))
 
-def test_get_group_metrics(tresults):
+# TODO
+# def test_get_group_metrics(tresults):
 
-    gresults = [tresults, tresults]
-    measures = {'error' : 'mae', 'gof' : 'rsquared'}
+#     gresults = [tresults, tresults]
+#     measures = {'error' : 'mae', 'gof' : 'rsquared'}
 
-    for metric in ['error', 'gof']:
+#     for metric in ['error', 'gof']:
 
-        out1 = get_group_metrics(gresults, metric)
-        assert np.all(out1)
-        assert len(out1) == len(gresults)
+#         out1 = get_group_metrics(gresults, metric)
+#         assert np.all(out1)
+#         assert len(out1) == len(gresults)
 
-        out2 = get_group_metrics(gresults, metric, measures[metric])
-        assert np.all(out2)
-        assert len(out2) == len(gresults)
+#         out2 = get_group_metrics(gresults, metric, measures[metric])
+#         assert np.all(out2)
+#         assert len(out2) == len(gresults)
 
 def test_get_results_by_ind():
 

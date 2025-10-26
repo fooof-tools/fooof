@@ -200,9 +200,6 @@ def test_load(tfm):
     # Check that result attributes get filled
     for component in ['periodic', 'aperiodic']:
         assert getattr(ntfm.results.params, component).has_params
-    # TODO
-    #for result in tfm.results.params.fields:
-    #    assert not np.all(np.isnan(getattr(ntfm.results.params, result)))
 
     # Test that settings and data are None
     for setting in tfm.algorithm.settings.names:
@@ -216,9 +213,6 @@ def test_load(tfm):
     # Test that results and data are None
     for component in ['periodic', 'aperiodic']:
         assert not getattr(ntfm.results.params, component).has_params
-    # TODO
-    #for result in tfm.results.params.fields:
-    #    assert np.all(np.isnan(getattr(ntfm.results.params, result)))
     assert ntfm.data.power_spectrum is None
 
     # Test loading just data
@@ -231,9 +225,6 @@ def test_load(tfm):
         assert getattr(ntfm.algorithm.settings, setting) is None
     for component in ['periodic', 'aperiodic']:
         assert not getattr(ntfm.results.params, component).has_params
-    # TODO
-    #for result in tfm.results.params.fields:
-    #    assert np.all(np.isnan(getattr(ntfm.results.params, result)))
 
     # Test loading all elements
     ntfm = SpectralModel(verbose=False)
@@ -243,9 +234,6 @@ def test_load(tfm):
         assert np.array_equal(getattr(tfm.data, data), getattr(ntfm.data, data))
     for component in ['periodic', 'aperiodic']:
         assert getattr(ntfm.results.params, component).has_params
-    # TODO
-    #for result in tfm.results.params.fields:
-    #    assert not np.all(np.isnan(getattr(ntfm.results.params, result)))
 
 def test_add_data(tresults):
     """Tests method to add data to model objects."""
@@ -336,9 +324,6 @@ def test_resets():
         assert value is None
     for component in ['periodic', 'aperiodic']:
         assert not getattr(tfm.results.params, component).has_params
-    # TODO
-    #for field in tfm.results.params.fields:
-    #    assert np.all(np.isnan(getattr(tfm.results.params, field)))
     assert tfm.data.freqs is None and tfm.results.model.modeled_spectrum is None
 
 def test_report(skip_if_no_mpl):
@@ -361,9 +346,6 @@ def test_fit_failure():
     # Check after failing out of fit, all results are reset
     for component in ['periodic', 'aperiodic']:
         assert not getattr(tfm.results.params, component).has_params
-    # TODO
-    #for result in tfm.results.params.fields:
-    #    assert np.all(np.isnan(getattr(tfm.results.params, result)))
 
     ## Monkey patch to check errors in general
     #  This mimics the main fit-failure, without requiring bad data / waiting for it to fail.
@@ -378,9 +360,6 @@ def test_fit_failure():
     # Check after failing out of fit, all results are reset
     for component in ['periodic', 'aperiodic']:
         assert not getattr(tfm.results.params, component).has_params
-    # TODO
-    #for result in tfm.results.params.fields:
-    #    assert np.all(np.isnan(getattr(tfm.results.params, result)))
 
 def test_debug():
     """Test model object in debug state, including with fit failures."""
