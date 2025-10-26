@@ -107,8 +107,8 @@ pw_template = ("The difference of {:5} power is  {: 1.2f}\t"
 def compare_exp(fm1, fm2):
     """Compare exponent values."""
 
-    exp1 = fm1.get_params('aperiodic_params', 'exponent')
-    exp2 = fm2.get_params('aperiodic_params', 'exponent')
+    exp1 = fm1.get_params('aperiodic', 'exponent')
+    exp2 = fm2.get_params('aperiodic', 'exponent')
 
     return exp1 - exp2
 
@@ -203,7 +203,7 @@ fm_bands_g2.fit(freqs, g2_spectrum_bands)
 
 # Plot the power spectra differences
 plot_spectra_shading(freqs,
-                     [fm_bands_g1.results._spectrum_flat, fm_bands_g2.results._spectrum_flat],
+                     [fm_bands_g1.get_data('peak'), fm_bands_g2.get_data('peak')],
                      log_powers=False, linewidth=3,
                      shades=bands.definitions, shade_colors=shade_cols,
                      labels=labels)
@@ -294,7 +294,7 @@ fm_pa_g2.fit(freqs, g2_spectrum_pa)
 
 # Plot the power spectra differences
 plot_spectra_shading(freqs,
-                     [fm_pa_g1.results._spectrum_flat, fm_pa_g2.results._spectrum_flat],
+                     [fm_pa_g1.get_data('peak'), fm_pa_g2.get_data('peak')],
                      log_powers=False, linewidth=3,
                      shades=bands.definitions, shade_colors=shade_cols,
                      labels=labels)
