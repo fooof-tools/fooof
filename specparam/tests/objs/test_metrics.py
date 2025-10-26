@@ -55,9 +55,9 @@ def test_metrics_obj(tfm):
 
     # Check getting metrics out
     out1 = metrics.get_metrics('error')
-    assert out1[0] == metrics.results['error_mae']
+    assert out1 == metrics.results['error_mae']
     out2 = metrics.get_metrics('gof', 'rsquared')
-    assert out2[0] == metrics.results['gof_rsquared']
+    assert out2 == metrics.results['gof_rsquared']
 
 def test_metrics_dict(tfm):
 

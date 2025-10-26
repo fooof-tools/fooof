@@ -180,6 +180,7 @@ class Metrics():
                 out = {ke : va for ke, va in out.items() if measure in ke}
 
         out = np.array(list(out.values()))
+        out = out[0] if out.size == 1 else out
 
         return out
 
