@@ -141,16 +141,12 @@ print(fg.results.group_results[0:2])
 ###################################################################################################
 
 # Extract aperiodic parameters
-aps = fg.get_params('aperiodic_params')
-exps = fg.get_params('aperiodic_params', 'exponent')
+aps = fg.get_params('aperiodic')
+exps = fg.get_params('aperiodic', 'exponent')
 
 # Extract peak parameters
-peaks = fg.get_params('peak_params')
-cfs = fg.get_params('peak_params', 'CF')
-
-# Extract goodness-of-fit metrics
-errors = fg.get_params('metrics', 'error_mae')
-r2s = fg.get_params('metrics', 'gof_rsquared')
+peaks = fg.get_params('peak')
+cfs = fg.get_params('peak', 'CF')
 
 ###################################################################################################
 
@@ -159,7 +155,19 @@ print(fg.get_params.__doc__)
 
 ###################################################################################################
 #
-# More information about the parameters you can extract is also documented in the
+# Similarly, goodness of fit metrics can be accessed with the
+# the :func:`~specparam.SpectralGroupModel.get_metrics` method.
+#
+
+###################################################################################################
+
+# Extract goodness-of-fit metrics
+errors = fg.get_metrics('error')
+r2s = fg.get_metrics('gof')
+
+###################################################################################################
+#
+# More information about the parameters and metrics you can extract is also documented in the
 # FitResults object.
 #
 

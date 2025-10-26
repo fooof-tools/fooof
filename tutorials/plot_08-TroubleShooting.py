@@ -177,7 +177,7 @@ fm.report(freqs, spectrum)
 
 # Compare ground truth simulated parameters to model fit results
 print('Ground Truth \t\t Model Parameters')
-for sy, fi in zip(np.array(gauss_params), fm.results.gaussian_params_):
+for sy, fi in zip(np.array(gauss_params), fm.results.params.periodic.get_params('fit')):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*sy, *fi))
 
 ###################################################################################################
@@ -236,7 +236,7 @@ fm.report(freqs, spectrum)
 
 # Check reconstructed parameters compared to the simulated parameters
 print('Ground Truth \t\t Model Parameters')
-for sy, fi in zip(np.array(gauss_params), fm.results.gaussian_params_):
+for sy, fi in zip(np.array(gauss_params), fm.results.params.periodic.get_params('fit')):
     print('{:5.2f} {:5.2f} {:5.2f} \t {:5.2f} {:5.2f} {:5.2f}'.format(*sy, *fi))
 
 ###################################################################################################
@@ -308,7 +308,7 @@ fg.report(freqs, power_spectra)
 ###################################################################################################
 
 # Find the index of the worst model fit from the group
-worst_fit_ind = np.argmax(fg.get_params('metrics', 'error_mae'))
+worst_fit_ind = np.argmax(fg.get_metrics('error'))
 
 # Extract this model fit from the group
 fm = fg.get_model(worst_fit_ind, regenerate=True)
@@ -360,7 +360,7 @@ for ind, fm in enumerate(to_check):
 ###################################################################################################
 
 # Check the average number of fit peaks, per model
-print('Average number of fit peaks: ', np.mean(fg.results.n_peaks_))
+print('Average number of fit peaks: ', np.mean(fg.results.n_peaks))
 
 ###################################################################################################
 # Reporting Bad Fits
