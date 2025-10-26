@@ -181,8 +181,8 @@ plot_peak_fits([g1_alphas, g2_alphas], fg1.modes.periodic, labels=labels, colors
 ###################################################################################################
 
 # Extract the aperiodic parameters for each group
-aps1 = fg1.get_params('aperiodic_params')
-aps2 = fg2.get_params('aperiodic_params')
+aps1 = fg1.get_params('aperiodic')
+aps2 = fg2.get_params('aperiodic')
 
 ###################################################################################################
 # Plotting Aperiodic Parameters

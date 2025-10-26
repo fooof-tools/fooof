@@ -57,7 +57,7 @@ plot_spectra(fm.data.freqs, fm.data.power_spectrum, color='black')
 ###################################################################################################
 
 # Plot the power spectrum model from the object
-plot_spectra(fm.data.freqs, fm.results.modeled_spectrum_, color='red')
+plot_spectra(fm.data.freqs, fm.results.model.modeled_spectrum, color='red')
 
 ###################################################################################################
 # Isolated Components
@@ -70,7 +70,7 @@ plot_spectra(fm.data.freqs, fm.results.modeled_spectrum_, color='red')
 # To access these components, we can use the following `getter` methods:
 #
 # - :meth:`~specparam.SpectralModel.get_data`: allows for accessing data components
-# - :meth:`~specparam.SpectralModel.results.get_component`: allows for accessing model components
+# - :meth:`~specparam.SpectralModel.results.model.get_component`: allows for accessing model components
 #
 
 ###################################################################################################
@@ -91,7 +91,7 @@ plot_spectra(fm.data.freqs, fm.get_data('aperiodic'), color='black')
 ###################################################################################################
 
 # Plot the peak removed spectrum, with the model aperiodic fit
-plot_spectra(fm.data.freqs, [fm.get_data('aperiodic'), fm.results.get_component('aperiodic')],
+plot_spectra(fm.data.freqs, [fm.get_data('aperiodic'), fm.results.model.get_component('aperiodic')],
              colors=['black', 'blue'], linestyle=['-', '--'])
 
 ###################################################################################################
@@ -113,7 +113,7 @@ plot_spectra(fm.data.freqs, fm.get_data('peak'), color='black')
 ###################################################################################################
 
 # Plot the flattened spectrum data with the model peak fit
-plot_spectra(fm.data.freqs, [fm.get_data('peak'), fm.results.get_component('peak')],
+plot_spectra(fm.data.freqs, [fm.get_data('peak'), fm.results.model.get_component('peak')],
              colors=['black', 'green'], linestyle=['-', '--'])
 
 ###################################################################################################
@@ -128,7 +128,7 @@ plot_spectra(fm.data.freqs, [fm.get_data('peak'), fm.results.get_component('peak
 
 # Plot the full model fit, as the combination of the aperiodic and peak model components
 plot_spectra(fm.data.freqs,
-             [fm.results.get_component('aperiodic') + fm.results.get_component('peak')],
+             [fm.results.model.get_component('aperiodic') + fm.results.model.get_component('peak')],
              color='red')
 
 ###################################################################################################
@@ -157,7 +157,7 @@ plot_spectra(fm.data.freqs,
 
 # Plot the peak removed spectrum, with the model aperiodic fit
 plot_spectra(fm.data.freqs, [fm.get_data('aperiodic', 'linear'),
-             fm.results.get_component('aperiodic', 'linear')],
+             fm.results.model.get_component('aperiodic', 'linear')],
              colors=['black', 'blue'], linestyle=['-', '--'])
 
 ###################################################################################################
@@ -171,7 +171,7 @@ plot_spectra(fm.data.freqs, [fm.get_data('aperiodic', 'linear'),
 
 # Plot the flattened spectrum data with the model peak fit
 plot_spectra(fm.data.freqs,
-             [fm.get_data('peak', 'linear'), fm.results.get_component('peak', 'linear')],
+             [fm.get_data('peak', 'linear'), fm.results.model.get_component('peak', 'linear')],
              colors=['black', 'green'], linestyle=['-', '--'])
 
 ###################################################################################################
@@ -199,8 +199,8 @@ plot_spectra(fm.data.freqs,
 
 # Plot the linear model, showing the combination of peak + aperiodic matches the full model
 plot_spectra(fm.data.freqs,
-             [fm.results.get_component('full', 'linear'),
-              fm.results.get_component('aperiodic', 'linear') + fm.results.get_component('peak', 'linear')],
+             [fm.results.model.get_component('full', 'linear'),
+              fm.results.model.get_component('aperiodic', 'linear') + fm.results.model.get_component('peak', 'linear')],
              linestyle=['-', 'dashed'], colors=['black', 'red'], alpha=[0.3, 0.75])
 
 ###################################################################################################

@@ -127,9 +127,9 @@ fm.report(freqs, spectrum, PSD_range)
 ###################################################################################################
 
 # Access the model fit parameters & related attributes from the model object
-print('Aperiodic parameters: \n', fm.results.aperiodic_params_, '\n')
-print('Peak parameters: \n', fm.results.peak_params_, '\n')
-print('Number of fit peaks: \n', fm.results.n_peaks_)
+print('Aperiodic parameters: \n', fm.results.params.aperiodic.params, '\n')
+print('Peak parameters: \n', fm.results.params.periodic.params, '\n')
+print('Number of fit peaks: \n', fm.results.n_peaks)
 
 ###################################################################################################
 
@@ -148,21 +148,21 @@ print('R^2   - ', fm.results.metrics.results['gof_rsquared'])
 
 ###################################################################################################
 
-# Extract aperiodic and periodic parameter
-aps = fm.get_params('aperiodic_params')
-peaks = fm.get_params('peak_params')
-
-###################################################################################################
-
-# Extract goodness of fit information
-err = fm.get_params('metrics', 'error_mae')
-r2s = fm.get_params('metrics', 'gof_rsquared')
+# Extract aperiodic and periodic parameters
+aps = fm.get_params('aperiodic')
+peaks = fm.get_params('peak')
 
 ###################################################################################################
 
 # Extract specific parameters
-exp = fm.get_params('aperiodic_params', 'exponent')
-cfs = fm.get_params('peak_params', 'CF')
+exp = fm.get_params('aperiodic', 'exponent')
+cfs = fm.get_params('peak', 'CF')
+
+###################################################################################################
+
+# Extract goodness of fit information
+err = fm.get_metrics('error')
+r2s = fm.get_metrics('gof')
 
 ###################################################################################################
 
@@ -323,19 +323,19 @@ fg.plot()
 ###################################################################################################
 
 # Extract aperiodic and full periodic parameters
-aps = fg.get_params('aperiodic_params')
-per = fg.get_params('peak_params')
+aps = fg.get_params('aperiodic')
+per = fg.get_params('peak')
 
 ###################################################################################################
 
 # Extract group fit information
-err = fg.get_params('metrics', 'error_mae')
-r2s = fg.get_params('metrics', 'gof_rsquared')
+err = fg.get_metrics('error')
+r2s = fg.get_metrics('gof')
 
 ###################################################################################################
 
 # Check the average number of fit peaks, per model
-print('Average number of fit peaks: ', np.mean(fg.results.n_peaks_))
+print('Average number of fit peaks: ', np.mean(fg.results.n_peaks))
 
 ###################################################################################################
 
@@ -551,7 +551,7 @@ plot_hist(err, label='Mean absolute error (MAE)', ax=ax1)
 ###################################################################################################
 
 # Find the index of the worst model fit from the group
-worst_fit_ind = np.argmax(fg.get_params('metrics', 'error_mae'))
+worst_fit_ind = np.argmax(fg.get_metrics('error'))
 
 # Extract this model fit from the group
 fm = fg.get_model(worst_fit_ind, regenerate=True)
@@ -669,7 +669,7 @@ print('Frequency with highest standard deviation of error: \t', f_max_std)
 ###################################################################################################
 
 # Drop poor model fits based on MAE
-fg.results.drop(fg.get_params('metrics', 'error_mae') > 0.10)
+fg.results.drop(fg.get_metrics('error', 'mae') > 0.10)
 
 ###################################################################################################
 # Conclusions

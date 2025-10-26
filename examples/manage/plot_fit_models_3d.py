@@ -205,7 +205,7 @@ print('Number of conditions: \t{}'.format(n_conditions))
 # Compare the aperiodic exponent results across conditions
 for ind, fg in enumerate(fgs):
     print("Aperiodic exponent for condition {} is {:1.4f}".format(
-        ind, np.mean(fg.get_params('aperiodic_params', 'exponent'))))
+        ind, np.mean(fg.get_params('aperiodic', 'exponent'))))
 
 ###################################################################################################
 # Managing Model Objects
