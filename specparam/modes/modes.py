@@ -1,7 +1,7 @@
 """Modes object."""
 
 from specparam.data import ModelModes
-from specparam.modes.mode import Mode
+from specparam.modes.mode import Mode, VALID_COMPONENTS
 from specparam.modes.definitions import AP_MODES, PE_MODES
 
 ###################################################################################################
@@ -21,6 +21,10 @@ class Modes():
     def __init__(self, aperiodic, periodic):
         """Initialize modes."""
 
+        # Set list of component names
+        self.components = VALID_COMPONENTS
+
+        # Add mode definitions for each component
         self.aperiodic = check_mode_definition(aperiodic, AP_MODES)
         self.periodic = check_mode_definition(periodic, PE_MODES)
 

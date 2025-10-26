@@ -7,7 +7,7 @@ from specparam.utils.checks import check_input_options
 ###################################################################################################
 
 # Set valid options for Mode parameters
-VALID_COMPONENTS = ['periodic', 'aperiodic']
+VALID_COMPONENTS = ['aperiodic', 'periodic']
 VALID_SPACINGS = ['linear', 'log10']
 
 

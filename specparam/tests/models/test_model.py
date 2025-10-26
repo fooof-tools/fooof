@@ -198,7 +198,7 @@ def test_load(tfm):
     ntfm.load('test_model_res', TEST_DATA_PATH)
 
     # Check that result attributes get filled
-    for component in ['periodic', 'aperiodic']:
+    for component in tfm.modes.components:
         assert getattr(ntfm.results.params, component).has_params
 
     # Test that settings and data are None
@@ -211,7 +211,7 @@ def test_load(tfm):
     ntfm.load('test_model_set', TEST_DATA_PATH)
     assert tfm.algorithm.settings.values == ntfm.algorithm.settings.values
     # Test that results and data are None
-    for component in ['periodic', 'aperiodic']:
+    for component in tfm.modes.components:
         assert not getattr(ntfm.results.params, component).has_params
     assert ntfm.data.power_spectrum is None
 
@@ -223,7 +223,7 @@ def test_load(tfm):
     # Test that settings and results are None
     for setting in tfm.algorithm.settings.names:
         assert getattr(ntfm.algorithm.settings, setting) is None
-    for component in ['periodic', 'aperiodic']:
+    for component in tfm.modes.components:
         assert not getattr(ntfm.results.params, component).has_params
 
     # Test loading all elements
@@ -232,7 +232,7 @@ def test_load(tfm):
     assert compare_model_objs([tfm, ntfm], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
     for data in tfm.data._fields:
         assert np.array_equal(getattr(tfm.data, data), getattr(ntfm.data, data))
-    for component in ['periodic', 'aperiodic']:
+    for component in tfm.modes.components:
         assert getattr(ntfm.results.params, component).has_params
 
 def test_add_data(tresults):
@@ -322,7 +322,7 @@ def test_resets():
         assert getattr(tfm.data, field) is None
     for key, value in tfm.results.model.__dict__.items():
         assert value is None
-    for component in ['periodic', 'aperiodic']:
+    for component in tfm.modes.components:
         assert not getattr(tfm.results.params, component).has_params
     assert tfm.data.freqs is None and tfm.results.model.modeled_spectrum is None
 
@@ -344,7 +344,7 @@ def test_fit_failure():
     tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
     # Check after failing out of fit, all results are reset
-    for component in ['periodic', 'aperiodic']:
+    for component in tfm.modes.components:
         assert not getattr(tfm.results.params, component).has_params
 
     ## Monkey patch to check errors in general
@@ -358,7 +358,7 @@ def test_fit_failure():
     tfm.fit(*sim_power_spectrum(*default_spectrum_params()))
 
     # Check after failing out of fit, all results are reset
-    for component in ['periodic', 'aperiodic']:
+    for component in tfm.modes.components:
         assert not getattr(tfm.results.params, component).has_params
 
 def test_debug():

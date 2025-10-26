@@ -293,7 +293,7 @@ def test_load(tfg):
     ntfg.load('test_group_set', TEST_DATA_PATH)
     assert tfg.algorithm.settings.values == ntfg.algorithm.settings.values
     # Test that results and data are None
-    for component in ['periodic', 'aperiodic']:
+    for component in tfg.modes.components:
         assert not getattr(ntfg.results.params, component).has_params
     assert ntfg.data.power_spectra is None
 
@@ -304,7 +304,7 @@ def test_load(tfg):
     # Test that settings and results are None
     for setting in tfg.algorithm.settings.names:
         assert getattr(ntfg.algorithm.settings, setting) is None
-    for component in ['periodic', 'aperiodic']:
+    for component in tfg.modes.components:
         assert not getattr(ntfg.results.params, component).has_params
 
     # Test loading all elements
@@ -345,7 +345,7 @@ def test_get_model(tfg):
     tfm1 = tfg.get_model(1, True)
     assert tfm1
     # Check that parameters are copied and that regenerated model is created
-    for component in ['periodic', 'aperiodic']:
+    for component in tfg.modes.components:
         assert getattr(tfm1.results.params, component).has_params
     assert np.all(tfm1.results.model.modeled_spectrum)
 

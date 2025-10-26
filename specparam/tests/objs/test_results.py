@@ -18,7 +18,7 @@ def test_results_results(tresults):
 
     tres.add_results(tresults)
     assert tres.has_model
-    for component in ['periodic', 'aperiodic']:
+    for component in ['aperiodic', 'periodic']:
         attr_comp = 'peak' if component == 'periodic' else component
         assert np.array_equal(getattr(tres.params, component).get_params('fit'),
                               getattr(tresults, attr_comp + '_fit'))

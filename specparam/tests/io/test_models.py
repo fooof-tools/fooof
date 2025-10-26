@@ -181,7 +181,7 @@ def test_load_model(tfm):
     for data in tfm.data._fields:
         assert np.array_equal(getattr(tfm.data, data), getattr(ntfm.data, data))
 
-    for component in ['periodic', 'aperiodic']:
+    for component in tfm.modes.components:
         assert not np.all(np.isnan(getattr(ntfm.results.params, component).get_params('fit')))
     assert tfm.results.metrics.results == ntfm.results.metrics.results
 
