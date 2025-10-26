@@ -12,7 +12,8 @@ from specparam.objs.components import ModelComponents
 from specparam.measures.metrics import METRICS
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
-from specparam.modutils.docs import docs_get_section, replace_docstring_sections
+from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
+                                     replace_docstring_sections)
 from specparam.data.data import FitResults
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import (get_model_params, get_group_params, get_group_metrics,
@@ -204,10 +205,10 @@ class Results():
         return getattr(self.params, component).get_params(version, field)
 
 
-    def get_metrics(self, metric, measure=None):
-        """TODO"""
+    @copy_doc_func_to_method(Metrics.get_metrics)
+    def get_metrics(self, category, measure=None):
 
-        return self.metrics.get_metrics(metric, measure)
+        return self.metrics.get_metrics(category, measure)
 
 
     def _reset_results(self, clear_results=False):
@@ -413,10 +414,10 @@ class Results2D(Results):
         return get_group_params(self.group_results, self.modes, component, field)
 
 
-    def get_metrics(self, metric, measure=None):
-        """TODO"""
+    @copy_doc_func_to_method(Metrics.get_metrics)
+    def get_metrics(self, category, measure=None):
 
-        return get_group_metrics(self.group_results, metric, measure)
+        return get_group_metrics(self.group_results, category, measure)
 
 
 @replace_docstring_sections([docs_get_section(Results.__doc__, 'Parameters'),

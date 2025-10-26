@@ -179,6 +179,8 @@ class Metrics():
             if measure is not None:
                 out = {ke : va for ke, va in out.items() if measure in ke}
 
+        out = np.array(list(out.values()))
+
         return out
 
 

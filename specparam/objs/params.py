@@ -210,7 +210,7 @@ class ComponentParameters():
             output = self._converted
 
         if field is not None:
-            ind = self.indices[field] if isinstance(field, str) else field
+            ind = self.indices[field.lower()] if isinstance(field, str) else field
             output = output[ind] if output.ndim == 1 else output[:, ind]
 
         return output

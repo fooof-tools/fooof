@@ -30,6 +30,32 @@ def _get_field_ind(modes, component, field):
     return field
 
 
+def _get_metric_labels(metrics, category, measure):
+    """Get a selected set of metric labels.
+
+    Parameters
+    ----------
+    metrics : list of str
+        List of metric labels.
+    category : str or list of str
+        Category of metric to extract, e.g. 'error' or 'gof'.
+        If 'all', gets all metric labels.
+    measure : str or list of str
+        Name of the specific measure(s) to extract.
+    """
+
+    if category == 'all':
+        labels = metrics
+    elif category and not measure:
+        labels = [label for label in metrics if category in label]
+    elif isinstance(measure, list):
+        labels = [category + '_' + label for label in measure]
+    else:
+        labels = [category + '_' + measure]
+
+    return labels
+
+
 def get_model_params(fit_results, modes, component, field=None, version=None):
     """Return model fit parameters for specified feature(s) from FitResults object.
 
@@ -145,26 +171,29 @@ def get_group_params(group_results, modes, component, field=None, version=None):
     return out
 
 
-def get_group_metrics(group_results, metric, measure=None):
-    """Extract compueted metric from a set of group results.
+def get_group_metrics(group_results, category, measure=None):
+    """Extract metrics from a set of group results.
 
     Parameters
     ----------
     group_results : list of FitResults
         List of FitResults objects, reflecting model results across a group of power spectra.
-    category : str
+    category : str or list of str
         Category of metric to extract, e.g. 'error' or 'gof'.
-    measure : str, optional
-        Name of the specific measure to extract.
+        If 'all', returns all metrics.
+    measure : str or list of str, optional
+        Name of the specific measure(s) to extract.
 
     Returns
     -------
     group_metrics : array
-        Requested metrics.
+        Requested metric(s).
     """
 
-    label = metric + '_' + measure if measure else metric
-    group_metrics = np.array([getattr(fres, 'metrics')[label] for fres in group_results])
+    group_metrics = []
+    for label in _get_metric_labels(list(group_results[0].metrics.keys()), category, measure):
+        group_metrics.append(np.array([getattr(fres, 'metrics')[label] for fres in group_results]))
+    group_metrics = np.squeeze(np.array(group_metrics))
 
     return group_metrics
 
