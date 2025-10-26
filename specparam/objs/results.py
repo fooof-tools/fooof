@@ -74,10 +74,7 @@ class Results():
 
         Notes
         -----
-        This check uses the aperiodic params, which are:
-
-        - nan if no model has been fit
-        - necessarily defined, as floats, if model has been fit
+        This checks the aperiodic params, which are necessarily defined if a model has been fit.
         """
 
         return self.params.aperiodic.has_params
@@ -176,7 +173,7 @@ class Results():
 
         Parameters
         ----------
-        component : {'aperiodic', 'peak'}
+        component : {'aperiodic', 'periodic'}
             Name of the component to extract parameters for.
         field : str or int, optional
             Column name / index to extract from selected data, if requested.
@@ -196,13 +193,13 @@ class Results():
 
         Notes
         -----
-        If there are no fit peak (no peak parameters), this method will return NaN.
+        If there are no fit peaks (no periodic parameters), this method will return NaN.
         """
 
         component = 'periodic' if component == 'peak' else component
 
         if not self.has_model:
-            raise NoModelError("No model fit results are available to extract, can not proceed.")
+            raise NoModelError("No model fit results are available, can not proceed.")
 
         return getattr(self.params, component).get_params(version, field)
 
@@ -381,16 +378,16 @@ class Results2D(Results):
             self.group_results[ind] = null_results
 
 
-    def get_params(self, name, field=None):
+    def get_params(self, component, field=None):
         """Return model fit parameters for specified feature(s).
 
         Parameters
         ----------
-        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
-            Name of the data field to extract across the group.
-        field : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+        component : {'aperiodic', 'periodic'}
+            Name of the component to extract parameters for.
+        field : str or int, optional
             Column name / index to extract from selected data, if requested.
-            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+            If str, should align with a parameter label for the component fit mode.
 
         Returns
         -------
@@ -406,14 +403,14 @@ class Results2D(Results):
 
         Notes
         -----
-        When extracting peak information ('peak_params' or 'gaussian_params'), an additional
-        column is appended to the returned array, indicating the index that the peak came from.
+        When extracting peak parameters, an additional column is appended to the
+        returned array, indicating the index that the peak came from.
         """
 
         if not self.has_model:
             raise NoModelError("No model fit results are available, can not proceed.")
 
-        return get_group_params(self.group_results, self.modes, name, field)
+        return get_group_params(self.group_results, self.modes, component, field)
 
 
     def get_metrics(self, metric, measure=None):
@@ -608,16 +605,16 @@ class Results3D(Results2DT):
         return self.event_time_results
 
 
-    def get_params(self, name, field=None):
+    def get_params(self, component, field=None):
         """Return model fit parameters for specified feature(s).
 
         Parameters
         ----------
-        name : {'aperiodic_params', 'peak_params', 'gaussian_params', 'error', 'r_squared'}
-            Name of the data field to extract across the group.
-        field : {'CF', 'PW', 'BW', 'offset', 'knee', 'exponent'} or int, optional
+        component : {'aperiodic', 'periodic'}
+            Name of the component to extract parameters for.
+        field : str or int, optional
             Column name / index to extract from selected data, if requested.
-            Only used for name of {'aperiodic_params', 'peak_params', 'gaussian_params'}.
+            If str, should align with a parameter label for the component fit mode.
 
         Returns
         -------
@@ -633,11 +630,11 @@ class Results3D(Results2DT):
 
         Notes
         -----
-        When extracting peak information ('peak_params' or 'gaussian_params'), an additional
-        column is appended to the returned array, indicating the index that the peak came from.
+        When extracting peak parameters, an additional column is appended to the
+        returned array, indicating the index that the peak came from.
         """
 
-        return [get_group_params(gres, self.modes, name, field) \
+        return [get_group_params(gres, self.modes, component, field) \
                     for gres in self.event_group_results]
 
 

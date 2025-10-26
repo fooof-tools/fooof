@@ -266,22 +266,10 @@ def test_add_data(tresults):
 def test_get_params(tfm):
     """Test the get_params method."""
 
-    for dname in ['aperiodic', 'peak']:
-        assert np.any(tfm.get_params(dname))
-
-        # TODO
-        # if dname == 'aperiodic':
-        #     for dtype in ['offset', 'exponent']:
-        #         assert np.any(tfm.get_params(dname, dtype))
-
-        # if dname == 'peak':
-        #     for dtype in ['CF', 'PW', 'BW']:
-        #         assert np.any(tfm.get_params(dname, dtype))
-
-        # TODO
-        # if dname == 'metrics':
-        #     for dtype in ['error_mae', 'gof_rsquared']:
-        #         assert np.any(tfm.get_params(dname, dtype))
+    for component in tfm.modes.components:
+        assert np.any(tfm.get_params(component))
+        for pname in getattr(tfm.modes, component).params.labels:
+            assert np.any(tfm.get_params(component, pname))
 
 def test_get_data(tfm):
 

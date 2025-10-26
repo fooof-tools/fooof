@@ -98,6 +98,7 @@ def get_group_params(group_results, modes, component, field=None, version=None):
         Column name / index to extract from selected data, if requested.
         For example, {'CF', 'PW', 'BW'} (periodic) or {'offset', 'knee', 'exponent'} (aperiodic).
     version : {'fit', 'converted'}, optional
+        TODO
 
     Returns
     -------
@@ -108,6 +109,7 @@ def get_group_params(group_results, modes, component, field=None, version=None):
     # TEMP:
     if not version:
         version = 'converted' if component == 'peak' else 'fit'
+    component = 'peak' if component == 'periodic' else component
 
     # Use helper function to sort out name and column selection
     ind = None

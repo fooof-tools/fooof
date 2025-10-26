@@ -143,8 +143,10 @@ def test_event_get_model(tfe):
 
 def test_event_get_params(tfe):
 
-    for dname in ['aperiodic', 'peak']:
-        assert np.any(tfe.results.get_params(dname))
+    for component in tfe.modes.components:
+        assert np.any(tfe.get_params(component))
+        for pname in getattr(tfe.modes, component).params.labels:
+            assert np.any(tfe.get_params(component, pname))
 
 def test_event_get_group(tfe):
 

@@ -213,8 +213,8 @@ def test_drop():
     assert np.all(np.isnan(list(dropped_fres.metrics.values())))
 
     # Test that a group object that has had inds dropped still works with `get_params`
-    cfs = tfg.results.get_params('peak', 1)
-    exps = tfg.results.get_params('aperiodic', 'exponent')
+    cfs = tfg.get_params('peak', 1)
+    exps = tfg.get_params('aperiodic', 'exponent')
     assert np.all(np.isnan(exps[drop_inds]))
     assert np.all(np.invert(np.isnan(np.delete(exps, drop_inds))))
 
@@ -253,21 +253,10 @@ def test_get_results(tfg):
 def test_get_params(tfg):
     """Check get_params method."""
 
-    for dname in ['aperiodic', 'peak']:
-        assert np.any(tfg.get_params(dname))
-
-        if dname == 'aperiodic':
-            for dtype in ['offset', 'exponent']:
-                assert np.any(tfg.get_params(dname, dtype))
-
-        if dname == 'peak':
-            for dtype in ['CF', 'PW', 'BW']:
-                assert np.any(tfg.get_params(dname, dtype))
-
-        # TODO
-        # if dname == 'metrics':
-        #     for dtype in ['error_mae', 'gof_rsquared']:
-        #         assert np.any(tfg.get_params(dname, dtype))
+    for component in tfg.modes.components:
+        assert np.any(tfg.get_params(component))
+        for pname in getattr(tfg.modes, component).params.labels:
+            assert np.any(tfg.get_params(component, pname))
 
 @plot_test
 def test_plot(tfg, skip_if_no_mpl):
