@@ -62,7 +62,7 @@ class Results():
         self.add_metrics(metrics)
 
         self.model = ModelComponents()
-        self.params = ModelParameters()
+        self.params = ModelParameters(modes=modes)
 
         # Initialize results attributes
         self._reset_results(True)
@@ -223,7 +223,7 @@ class Results():
         """
 
         if clear_results:
-            self.params.reset(self.modes)
+            self.params.reset()
             self.model.reset()
             self.metrics.reset()
 

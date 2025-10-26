@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from specparam.modes.mode import Mode
+
 ###################################################################################################
 ###################################################################################################
 
@@ -25,23 +27,15 @@ class ModelParameters():
     def __init__(self, modes=None):
         """Initialize ModelParameters object."""
 
-        self.aperiodic = ComponentParameters('aperiodic')
-        self.periodic = ComponentParameters('periodic')
-
-        self.reset(modes)
+        self.aperiodic = ComponentParameters(modes.aperiodic if modes else 'aperiodic')
+        self.periodic = ComponentParameters(modes.periodic if modes else 'periodic')
 
 
-    def reset(self, modes=None):
-        """Reset component parameter definitions.
+    def reset(self):
+        """Reset component parameter definitions."""
 
-        Parameters
-        ----------
-        modes : Modes
-            Modes definition.
-        """
-
-        self.aperiodic.reset(modes.aperiodic.n_params if modes else None)
-        self.periodic.reset(modes.periodic.n_params if modes else None, make2d=True)
+        self.aperiodic.reset()
+        self.periodic.reset()
 
 
     def asdict(self):
@@ -64,27 +58,31 @@ class ComponentParameters():
 
     Parameters
     ----------
-    component : {'periodic', 'aperiodic'}
-        Description of which kind of component parameters are for.
-    mode : Mode, optional
-        Mode object description the component fit mode.
+    component : str or Mode
+        Component that the parameters reflect.
+        If Mode, includes a definition of the component fit mode.
+        If str, should be a label to use for the component.
     """
 
-    def __init__(self, component, mode=None):
+    def __init__(self, component):
         """Initialize ComponentParameters object."""
 
         self._fit = np.nan
         self._converted = np.nan
 
+        self.n_params = None
+        self.ndim = None
         self.indices = {}
 
-        assert component in ['aperiodic', 'periodic'], "Component does not match expected names."
-        self.component = component
+        if isinstance(component, Mode):
+            self.component = component.component
+            self.n_params = component.n_params
+            self.ndim = component.ndim
+            self.add_indices(component.params.indices)
+            self.reset()
 
-        if mode is not None:
-            assert mode.component == component, 'Given mode does not match component'
-            self.reset(mode.n_params)
-            self.add_indices(mode.params.indices)
+        else:
+            self.component = component
 
 
     def _has_param(self, version):
@@ -142,19 +140,12 @@ class ComponentParameters():
         return self.get_params('converted' if self.has_converted else 'fit')
 
 
-    def reset(self, n_params=None, make2d=False):
-        """Reset parameter stores, optional specifying a specified size.
+    def reset(self):
+        """Reset parameter stores."""
 
-        Parameters
-        ----------
-        n_params : int, optional
-            The number of parameters to initialize.
-        """
-
-        if n_params:
-            ndmin = 2 if make2d else 1
-            self._fit = np.array([np.nan] * n_params, ndmin=ndmin)
-            self._converted = np.array([np.nan] * n_params, ndmin=ndmin)
+        if self.n_params:
+            self._fit = np.array([np.nan] * self.n_params, ndmin=self.ndim)
+            self._converted = np.array([np.nan] * self.n_params, ndmin=self.ndim)
         else:
             self._fit = np.nan
             self._converted = np.nan
