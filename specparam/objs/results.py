@@ -6,6 +6,7 @@ from itertools import repeat
 import numpy as np
 
 from specparam.bands.bands import check_bands
+from specparam.modes.modes import Modes
 from specparam.objs.metrics import Metrics
 from specparam.objs.params import ModelParameters
 from specparam.objs.components import ModelComponents
@@ -57,7 +58,7 @@ class Results():
     def __init__(self, modes=None, metrics=None, bands=None):
         """Initialize Results object."""
 
-        self.modes = modes
+        self.modes = modes if modes else Modes(None, None)
 
         self.add_bands(bands)
         self.add_metrics(metrics)
@@ -148,7 +149,7 @@ class Results():
 
         # TODO: use check_array_dim for peak arrays? Or is / should this be done in `add_params`
 
-        for component in ['aperiodic', 'periodic']:
+        for component in self.modes.components:
             for version in ['fit', 'converted']:
                 attr_comp = 'peak' if component == 'periodic' else component
                 getattr(self.params, component).add_params(\
