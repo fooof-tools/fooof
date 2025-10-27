@@ -1,6 +1,4 @@
-""""Utility functions for working with data and data objects.
-TODO
-"""
+""""Utility functions for working with data and data objects."""
 
 import numpy as np
 
@@ -65,11 +63,11 @@ def get_model_params(fit_results, modes, component, field=None, version=None):
         Results of a model fit.
     modes : Modes
         Model modes definition.
-    component : {'aperiodic', 'peak', 'metrics'}
+    component : {'aperiodic', 'peak'}
         Name of the component to extract.
     field : str or int, optional
         Column name / index to extract from selected data, if requested.
-        For example, {'CF', 'PW', 'BW'} (periodic) or {'offset', 'knee', 'exponent'} (aperiodic).
+        See `SpectralModel.modes.check_params` for a description of parameter field names.
 
     Returns
     -------
@@ -84,9 +82,8 @@ def get_model_params(fit_results, modes, component, field=None, version=None):
 
     # Use helper function to sort out name and column selection
     ind = None
-    if component in ['aperiodic', 'peak']:
-        ind = _get_field_ind(modes, component, field)
-        component = component + '_' + version
+    ind = _get_field_ind(modes, component, field)
+    component = component + '_' + version
 
     # Extract the requested data attribute from object
     out = getattr(fit_results, component)
@@ -98,14 +95,9 @@ def get_model_params(fit_results, modes, component, field=None, version=None):
     # Select out a specific column, if requested
     if ind is not None:
 
-        if component == 'metrics':
-            out = out[ind]
-
-        else:
-
-            # Extract column, & if result is a single value in an array, unpack from array
-            out = out[ind] if out.ndim == 1 else out[:, ind]
-            out = out[0] if isinstance(out, np.ndarray) and out.size == 1 else out
+        # Extract column, & if result is a single value in an array, unpack from array
+        out = out[ind] if out.ndim == 1 else out[:, ind]
+        out = out[0] if isinstance(out, np.ndarray) and out.size == 1 else out
 
     return out
 
@@ -119,11 +111,11 @@ def get_group_params(group_results, modes, component, field=None, version=None):
         List of FitResults objects, reflecting model results across a group of power spectra.
     modes : Modes
         Model modes definition.
-    component : {'aperiodic', 'peak', 'metrics'}
+    component : {'aperiodic', 'peak'}
         Name of the data field to extract across the group.
     field : str or int, optional
         Column name / index to extract from selected data, if requested.
-        For example, {'CF', 'PW', 'BW'} (periodic) or {'offset', 'knee', 'exponent'} (aperiodic).
+        See `SpectralModel.modes.check_params` for a description of parameter field names.
     version : {'fit', 'converted'}, optional
         TODO
 
@@ -140,9 +132,8 @@ def get_group_params(group_results, modes, component, field=None, version=None):
 
     # Use helper function to sort out name and column selection
     ind = None
-    if component in ['aperiodic', 'peak']:
-        ind = _get_field_ind(modes, component, field)
-        component = component + '_' + version
+    ind = _get_field_ind(modes, component, field)
+    component = component + '_' + version
 
     # Pull out the requested data field from the group data
     # As a special case, peak_params are pulled out in a way that appends
@@ -163,11 +154,7 @@ def get_group_params(group_results, modes, component, field=None, version=None):
 
     # Select out a specific column, if requested
     if ind is not None:
-
-        if component == 'metrics':
-            out = np.array([cdict[ind] for cdict in out])
-        else:
-            out = out[:, ind]
+        out = out[:, ind]
 
     return out
 
