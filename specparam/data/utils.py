@@ -80,6 +80,7 @@ def get_model_params(fit_results, modes, component, field=None, version=None):
     # TEMP:
     if not version:
         version = 'converted' if component == 'peak' else 'fit'
+    component = 'peak' if component == 'periodic' else component
 
     # Use helper function to sort out name and column selection
     ind = None

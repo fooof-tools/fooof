@@ -9,55 +9,40 @@ from specparam.data.utils import *
 
 def test_get_model_params(tresults, tmodes):
 
-    for dname in ['aperiodic', 'peak', 'metrics']:
-        assert np.any(get_model_params(tresults, tmodes, dname))
+    for component in tmodes.components:
 
-        if dname == 'aperiodic':
-            for dtype in ['offset', 'exponent']:
-                assert np.any(get_model_params(tresults, tmodes, dname, dtype))
+        assert np.any(get_model_params(tresults, tmodes, component))
 
-        if dname == 'peak':
-            for dtype in ['CF', 'PW', 'BW']:
-                assert np.any(get_model_params(tresults, tmodes, dname, dtype))
+        for param in getattr(tmodes, component).params.labels:
 
-        if dname == 'metrics':
-            for dtype in ['error_mae', 'gof_rsquared']:
-                assert np.any(get_model_params(tresults, tmodes, dname, dtype))
+            assert np.any(get_model_params(tresults, tmodes, component, param))
 
 def test_get_group_params(tresults, tmodes):
 
     gresults = [tresults, tresults]
 
-    for dname in ['aperiodic', 'peak', 'metrics']:
-        assert np.any(get_group_params(gresults, tmodes, dname))
+    for component in tmodes.components:
 
-        if dname == 'aperiodic':
-            for dtype in ['offset', 'exponent']:
-                assert np.any(get_group_params(gresults, tmodes, dname, dtype))
+        assert np.any(get_group_params(gresults, tmodes, component))
 
-        if dname == 'peak':
-            for dtype in ['CF', 'PW', 'BW']:
-                assert np.any(get_group_params(gresults, tmodes, dname, dtype))
+        for param in getattr(tmodes, component).params.labels:
 
-        if dname == 'metrics':
-            for dtype in ['error_mae', 'gof_rsquared']:
-                assert np.any(get_group_params(gresults, tmodes, dname, dtype))
+            assert np.any(get_group_params(gresults, tmodes, component, param))
 
-# TODO
-# def test_get_group_metrics(tresults):
+def test_get_group_metrics(tresults):
 
-#     gresults = [tresults, tresults]
-#     measures = {'error' : 'mae', 'gof' : 'rsquared'}
+    gresults = [tresults, tresults]
+    measures = {'error' : 'mae', 'gof' : 'rsquared'}
 
-#     for metric in ['error', 'gof']:
+    for metric in measures.keys():
 
-#         out1 = get_group_metrics(gresults, metric)
-#         assert np.all(out1)
-#         assert len(out1) == len(gresults)
+        out1 = get_group_metrics(gresults, metric)
+        assert np.all(out1)
+        assert len(out1) == len(gresults)
 
-#         out2 = get_group_metrics(gresults, metric, measures[metric])
-#         assert np.all(out2)
-#         assert len(out2) == len(gresults)
+        out2 = get_group_metrics(gresults, metric, measures[metric])
+        assert np.all(out2)
+        assert len(out2) == len(gresults)
 
 def test_get_results_by_ind():
 
