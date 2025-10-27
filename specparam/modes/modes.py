@@ -29,6 +29,13 @@ class Modes():
         self.periodic = check_mode_definition(periodic, PE_MODES)
 
 
+    def check_params(self):
+        """Check the description of the parameters for each mode."""
+
+        self.aperiodic.check_params()
+        self.periodic.check_params()
+
+
     def get_modes(self):
         """Get the modes definition.
 

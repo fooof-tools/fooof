@@ -83,3 +83,12 @@ class Mode():
         """Define property attribute to access the number of parameters."""
 
         return self.params.n_params
+
+
+    def check_params(self):
+        """Check the description of the parameters for the current mode."""
+
+        print('Parameters for the {} component in {} mode:'.format(\
+            self.component, self.name))
+        for pkey, desc in self.params.descriptions.items():
+            print('\t{:15s} {:s}'.format(pkey, desc))
