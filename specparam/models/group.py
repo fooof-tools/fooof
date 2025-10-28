@@ -31,10 +31,8 @@ class SpectralGroupModel(SpectralModel):
 
     """Model a group of power spectra as a combination of aperiodic and periodic components.
 
-    WARNING: frequency and power values inputs must be in linear space.
-
-    Passing in logged frequencies and/or power spectra is not detected,
-    and will silently produce incorrect results.
+    WARNING: frequency and power values inputs must be in linear space. Passing in logged
+    frequencies and/or power spectra is not detected, and will silently produce incorrect results.
 
     Parameters
     ----------
@@ -47,14 +45,10 @@ class SpectralGroupModel(SpectralModel):
     Notes
     -----
     % copied in from SpectralModel object
-    - The group object inherits from the model object. As such it also has data
-      attributes (`power_spectrum` & `modeled_spectrum_`), and parameter attributes
-      (`aperiodic_params_`, `peak_params_`, `gaussian_params_`, `r_squared_`, `error_`)
-      which are defined in the context of individual model fits. These attributes are
-      used during the fitting process, but in the group context do not store results
-      post-fitting. Rather, all model fit results are collected and stored into the
-      `group_results` attribute. To access individual parameters of the fit, use
-      the `get_params` method.
+    - The group object inherits from the model object, and in doing so overwrites the
+      `data` and `results` objects with versions for fitting groups of power spectra.
+      All model fit results are collected and stored in the `results.group_results` attribute.
+      To access individual parameters of the fit, use the `get_params` method.
     """
 
     def __init__(self, *args, **kwargs):
@@ -225,15 +219,15 @@ class SpectralGroupModel(SpectralModel):
             if 'power_spectrum' in data.keys():
                 power_spectra.append(data.pop('power_spectrum'))
 
+            data_keys = set(data.keys())
             self._add_from_dict(data)
 
-            # If settings are loaded, check and update based on the first line
-            if ind == 0:
-                self.algorithm._check_loaded_settings(data)
+            # For hearder line, check if settings are loaded and clear defaults if not
+            if ind == 0 and not set(self.algorithm.settings.names).issubset(data_keys):
+                self.algorithm.settings.clear()
 
             # If results part of current data added, check and update object results
-            if set(self.results._fields).issubset(set(data.keys())):
-                self.results._check_loaded_results(data)
+            if 'aperiodic_fit' in data_keys:
                 self.results.group_results.append(self.results._get_results())
 
         # Reconstruct frequency vector, if information is available to do so
@@ -249,9 +243,15 @@ class SpectralGroupModel(SpectralModel):
 
 
     @copy_doc_func_to_method(Results2D.get_params)
-    def get_params(self, name, field=None):
+    def get_params(self, component, field=None):
 
-        return self.results.get_params(name, field)
+        return self.results.get_params(component, field)
+
+
+    @copy_doc_func_to_method(Results2D.get_metrics)
+    def get_metrics(self, category, measure=None):
+
+        return self.results.get_metrics(category, measure)
 
 
     def get_model(self, ind=None, regenerate=True):

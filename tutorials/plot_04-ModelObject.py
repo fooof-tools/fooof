@@ -231,8 +231,8 @@ print('Has model results: ', fm.results.has_model)
 ###################################################################################################
 
 # Print out model fit results parameters
-print('aperiodic params: \t', fm.results.aperiodic_params_)
-print('peak params: \t', fm.results.peak_params_)
+print('aperiodic params: \t', fm.results.params.aperiodic.params)
+print('peak params: \t', fm.results.params.periodic.params)
 
 # Print out metrics model fit results parameters
 print('fit error: \t', fm.results.metrics.results['error_mae'])

@@ -43,7 +43,7 @@ def compute_pointwise_error(model, plot_errors=True, return_errors=False, **plt_
         raise NoModelError("No model is available to use, can not proceed.")
 
     errors = compute_pointwise_error_arr(\
-        model.results.modeled_spectrum_, model.data.power_spectrum)
+        model.results.model.modeled_spectrum, model.data.power_spectrum)
 
     if plot_errors:
         plot_spectral_error(model.data.freqs, errors, **plt_kwargs)
@@ -89,8 +89,8 @@ def compute_pointwise_error_group(group, plot_errors=True, return_errors=False, 
 
     for ind, (res, data) in enumerate(zip(group.results, group.data.power_spectra)):
 
-        model = gen_model(group.data.freqs, group.modes.aperiodic, res.aperiodic_params,
-                          group.modes.periodic, res.gaussian_params)
+        model = gen_model(group.data.freqs, group.modes.aperiodic, res.aperiodic_fit,
+                          group.modes.periodic, res.peak_fit)
         errors[ind, :] = np.abs(model - data)
 
     mean = np.mean(errors, 0)

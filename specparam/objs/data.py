@@ -1,5 +1,6 @@
-"""Define base data objects."""
+"""Define data objects."""
 
+from warnings import warn
 from functools import wraps
 
 import numpy as np
@@ -9,6 +10,7 @@ from specparam.data import SpectrumMetaData, ModelChecks
 from specparam.utils.spectral import trim_spectrum
 from specparam.utils.checks import check_input_options
 from specparam.modutils.errors import DataError, InconsistentDataError
+from specparam.modutils.docs import docs_get_section, replace_docstring_sections
 from specparam.plts.settings import PLT_COLORS
 from specparam.plts.spectra import plot_spectra, plot_spectrogram
 from specparam.plts.utils import check_plot_kwargs
@@ -28,24 +30,28 @@ class Data():
     Parameters
     ----------
     check_freqs : bool
-        Whether to check the frequency values.
-        If True, checks the frequency values, and raises an error for uneven spacing.
+        Whether to check the frequency values. If so, raises an error for uneven spacing.
     check_data : bool
-        Whether to check the power spectrum values.
-        If True, checks the power values and raises an error for any NaN / Inf values.
+        Whether to check the spectral data. If so, raises an error for any NaN / Inf values.
     format : {'power'}
         The representation format of the data.
 
     Attributes
     ----------
+    checks : dict
+        Specifiers for which aspects of the data to run checks on.
     freqs : 1d array
-        Frequency values for the power spectrum.
-    power_spectrum : 1d array
-        Power values, stored internally in log10 scale.
+        Frequency values for the spectral data.
     freq_range : list of [float, float]
-        Frequency range of the power spectrum, as [lowest_freq, highest_freq].
+        Frequency range of the spectral data, as [lowest_freq, highest_freq].
     freq_res : float
-        Frequency resolution of the power spectrum.
+        Frequency resolution of the spectral data.
+    power_spectrum : 1d array
+        Power values.
+
+    Notes
+    -----
+    All power values are stored internally in log10 scale.
     """
 
     def __init__(self, check_freqs=True, check_data=True, format='power'):
@@ -55,9 +61,10 @@ class Data():
         self._fields = DATA_FIELDS
         self._meta_fields = META_DATA_FIELDS
 
-        # Define data check run statuses
-        self._check_freqs = check_freqs
-        self._check_data = check_data
+        self.checks = {
+            'freqs' : check_freqs,
+            'data' : check_data,
+        }
 
         check_input_options(format, FORMATS, 'format')
         self.format = format
@@ -120,7 +127,7 @@ class Data():
             Object containing the check statuses from the current object.
         """
 
-        return ModelChecks(**{key : getattr(self, '_' + key) for key in ModelChecks._fields})
+        return ModelChecks(**{'check_' + key : value for key, value in self.checks.items()})
 
 
     def get_meta_data(self):
@@ -156,9 +163,9 @@ class Data():
         """
 
         if check_freqs is not None:
-            self._check_freqs = check_freqs
+            self.checks['freqs'] = check_freqs
         if check_data is not None:
-            self._check_data = check_data
+            self.checks['data'] = check_data
 
 
     def _reset_data(self, clear_freqs=False, clear_spectrum=False):
@@ -256,10 +263,10 @@ class Data():
         # Check if freqs start at 0 and move up one value if so
         #   Aperiodic fit gets an inf if freq of 0 is included, which leads to an error
         if freqs[0] == 0.0:
+            msg = "specparam fit warning - skipping frequency == 0, " \
+                "as this causes a problem with fitting."
+            warn(msg, category=RuntimeWarning)
             freqs, powers = trim_spectrum(freqs, powers, [freqs[1], freqs.max()])
-            if self.verbose:
-                print("\nFITTING WARNING: Skipping frequency == 0, "
-                      "as this causes a problem with fitting.")
 
         # Calculate frequency resolution, and actual frequency range of the data
         freq_range = [freqs.min(), freqs.max()]
@@ -270,13 +277,13 @@ class Data():
 
         ## Data checks - run checks on inputs based on check statuses
 
-        if self._check_freqs:
+        if self.checks['freqs']:
             # Check if the frequency data is unevenly spaced, and raise an error if so
             freq_diffs = np.diff(freqs)
             if not np.all(np.isclose(freq_diffs, freq_res)):
                 raise DataError("The input frequency values are not evenly spaced. "
                                 "The model expects equidistant frequency values in linear space.")
-        if self._check_data:
+        if self.checks['data']:
             # Check if there are any infs / nans, and raise an error if so
             if np.any(np.isinf(powers)) or np.any(np.isnan(powers)):
                 error_msg = ("The input power spectra data, after logging, contains NaNs or Infs. "
@@ -288,20 +295,24 @@ class Data():
         return freqs, powers, freq_range, freq_res
 
 
+@replace_docstring_sections([docs_get_section(Data.__doc__, 'Parameters'),
+                             docs_get_section(Data.__doc__, 'Attributes')])
 class Data2D(Data):
     """Base object for managing data for spectral parameterization - for 2D data.
 
+    Parameters
+    ----------
+    % copied in from Data
+
     Attributes
     ----------
-    freqs : 1d array
-        Frequency values for the power spectra.
+    % copied in from Data
     power_spectra : 2d array
         Power values for the group of power spectra, as [n_power_spectra, n_freqs].
-        Power values are stored internally in log10 scale.
-    freq_range : list of [float, float]
-        Frequency range of the power spectra, as [lowest_freq, highest_freq].
-    freq_res : float
-        Frequency resolution of the power spectra.
+
+    Notes
+    -----
+    All power values are stored internally in log10 scale.
     """
 
     def __init__(self):
@@ -385,20 +396,24 @@ def transpose_arg1(func):
     return decorated
 
 
+@replace_docstring_sections([docs_get_section(Data.__doc__, 'Parameters'),
+                             docs_get_section(Data2D.__doc__, 'Attributes')])
 class Data2DT(Data2D):
     """Base object for managing data for spectral parameterization - for 2D transposed data.
 
+    Parameters
+    ----------
+    % copied in from Data
+
     Attributes
     ----------
-    freqs : 1d array
-        Frequency values for the spectrogram.
+    % copied in from Data2D
     spectrogram : 2d array
         Power values for the spectrogram, as [n_freqs, n_time_windows].
-        Power values are stored internally in log10 scale.
-    freq_range : list of [float, float]
-        Frequency range of the spectrogram, as [lowest_freq, highest_freq].
-    freq_res : float
-        Frequency resolution of the spectrogram.
+
+    Notes
+    -----
+    All power values are stored internally in log10 scale.
     """
 
     def __init__(self):
@@ -451,20 +466,24 @@ class Data2DT(Data2D):
         plot_spectrogram(self.freqs, self.spectrogram, **plot_kwargs)
 
 
+@replace_docstring_sections([docs_get_section(Data.__doc__, 'Parameters'),
+                             docs_get_section(Data2DT.__doc__, 'Attributes')])
 class Data3D(Data2DT):
     """Base object for managing data for spectral parameterization - for 3D data.
 
+    Parameters
+    ----------
+    % copied in from Data
+
     Attributes
     ----------
-    freqs : 1d array
-        Frequency values for the power spectra.
+    % copied in from Data2DT
     spectrograms : 3d array
         Power values for the spectrograms, organized as [n_events, n_freqs, n_time_windows].
-        Power values are stored internally in log10 scale.
-    freq_range : list of [float, float]
-        Frequency range of the power spectra, as [lowest_freq, highest_freq].
-    freq_res : float
-        Frequency resolution of the power spectra.
+
+    Notes
+    -----
+    All power values are stored internally in log10 scale.
     """
 
     def __init__(self):

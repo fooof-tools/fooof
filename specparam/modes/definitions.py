@@ -24,6 +24,7 @@ ap_fixed = Mode(
     func=expo_nk_function,
     jacobian=None,
     params=params_fixed,
+    ndim=1,
     freq_space='linear',
     powers_space='log10',
 )
@@ -43,6 +44,7 @@ ap_knee = Mode(
     func=expo_function,
     jacobian=None,
     params=params_knee,
+    ndim=1,
     freq_space='linear',
     powers_space='log10',
 )
@@ -63,6 +65,7 @@ ap_doublexp = Mode(
     func=double_expo_function,
     jacobian=None,
     params=params_double_exp,
+    ndim=1,
     freq_space='linear',
     powers_space='log10',
 )
@@ -92,6 +95,7 @@ pe_gaussian = Mode(
     func=gaussian_function,
     jacobian=jacobian_gauss,
     params=params_gauss,
+    ndim=2,
     freq_space='linear',
     powers_space='log10',
 )
@@ -112,6 +116,7 @@ pe_skewnorm = Mode(
     func=skewnorm_function,
     jacobian=None,
     params=params_skew,
+    ndim=2,
     freq_space='linear',
     powers_space='log10',
 )
@@ -131,6 +136,7 @@ pe_cauchy = Mode(
     func=cauchy_function,
     jacobian=None,
     params=params_cauchy,
+    ndim=2,
     freq_space='linear',
     powers_space='log10',
 )

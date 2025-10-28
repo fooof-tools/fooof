@@ -18,13 +18,13 @@ def test_model_to_dict(tresults, tmodes, tbands):
     out = model_to_dict(tresults, tmodes, Bands(n_bands=1))
     assert isinstance(out, dict)
     assert 'cf_0' in out
-    assert out['cf_0'] == tresults.peak_params[0, 0]
+    assert out['cf_0'] == tresults.peak_converted[0, 0]
     assert 'cf_1' not in out
 
     out = model_to_dict(tresults, tmodes, Bands(n_bands=2))
     assert 'cf_0' in out
     assert 'cf_1' in out
-    assert out['cf_1'] == tresults.peak_params[1, 0]
+    assert out['cf_1'] == tresults.peak_converted[1, 0]
 
     out = model_to_dict(tresults, tmodes, Bands(n_bands=3))
     assert 'cf_2' in out

@@ -86,5 +86,5 @@ def plot_event_model(event, **plot_kwargs):
             title='Fit Quality' if ind == 0 else None,
             drop_xticks=ind < len(event.results.metrics),
             add_xlabel=ind == len(event.results.metrics),
-            color=PARAM_COLORS[event.results.metrics.types[ind]],
+            color=PARAM_COLORS[event.results.metrics.categories[ind]],
             xlim=xlim, ax=next(axes))

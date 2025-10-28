@@ -1,5 +1,7 @@
 """Tests for the specparam.data.data."""
 
+import numpy as np
+
 from specparam.data.data import *
 
 ###################################################################################################
@@ -31,7 +33,8 @@ def test_model_checks():
 
 def test_fit_results():
 
-    results = FitResults([1, 1], [10, 0.5, 1], [10, 0.5, 0.5], {'a' : 0.95, 'b' : 0.05})
+    results = FitResults(\
+        [1, 1], [np.nan, np.nan], [10, 0.5, 1], [10, 0.5, 0.5], {'a' : 0.95, 'b' : 0.05})
     assert results
 
     for field in FitResults._fields:

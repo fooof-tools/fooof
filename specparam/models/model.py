@@ -10,7 +10,7 @@ import numpy as np
 from specparam.models.base import BaseModel
 from specparam.objs.data import Data
 from specparam.objs.results import Results
-from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS
+from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS_DEF
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import gen_model_results_str
 from specparam.modutils.errors import NoDataError, FitError
@@ -24,14 +24,12 @@ from specparam.data.conversions import model_to_dataframe
 ###################################################################################################
 ###################################################################################################
 
-@replace_docstring_sections([SPECTRAL_FIT_SETTINGS.make_docstring()])
+@replace_docstring_sections([SPECTRAL_FIT_SETTINGS_DEF.make_docstring()])
 class SpectralModel(BaseModel):
     """Model a power spectrum as a combination of aperiodic and periodic components.
 
-    WARNING: frequency and power values inputs must be in linear space.
-
-    Passing in logged frequencies and/or power spectra is not detected,
-    and will silently produce incorrect results.
+    WARNING: frequency and power values inputs must be in linear space. Passing in logged
+    frequencies and/or power spectra is not detected, and will silently produce incorrect results.
 
     Parameters
     ----------
@@ -64,12 +62,6 @@ class SpectralModel(BaseModel):
       For example, raw FFT inputs are not appropriate. Where possible and appropriate, use
       longer time segments for power spectrum calculation to get smoother power spectra,
       as this will give better model fits.
-    - Commonly used abbreviations used in this module include:
-      CF: center frequency, PW: power, BW: Bandwidth, AP: aperiodic
-    - The gaussian params are those that define the gaussian of the fit, where as the peak
-      params are a modified version, in which the CF of the peak is the mean of the gaussian,
-      the PW of the peak is the height of the gaussian over and above the aperiodic component,
-      and the BW of the peak, is 2*std of the gaussian (as 'two sided' bandwidth).
     """
 
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
@@ -160,7 +152,7 @@ class SpectralModel(BaseModel):
             # If not set to fail on NaN or Inf data at add time, check data here
             #   This serves as a catch all for curve_fits which will fail given NaN or Inf
             #   Because FitError's are by default caught, this allows fitting to continue
-            if not self.data._check_data:
+            if not self.data.checks['data']:
                 if np.any(np.isinf(self.data.power_spectrum)) or \
                     np.any(np.isnan(self.data.power_spectrum)):
                     raise FitError("Model fitting was skipped because there are NaN or Inf "
@@ -276,21 +268,29 @@ class SpectralModel(BaseModel):
 
         # Add loaded data to object and check loaded data
         self._add_from_dict(data)
-        self.algorithm._check_loaded_settings(data)
-        self.results._check_loaded_results(data)
+
+        # If settings are not loaded, clear defaults to not have potentially incorrect values
+        if not set(self.algorithm.settings.names).issubset(set(data.keys())):
+            self.algorithm.settings.clear()
 
         # Regenerate model components, based on what is available
         if regenerate:
             if self.data.freq_res:
                 self.data._regenerate_freqs()
-            if np.all(self.data.freqs) and np.all(self.results.aperiodic_params_):
+            if np.all(self.data.freqs) and np.all(self.results.params.aperiodic):
                 self.results._regenerate_model(self.data.freqs)
 
 
     @copy_doc_func_to_method(Results.get_params)
-    def get_params(self, name, field=None):
+    def get_params(self, component, field=None):
 
-        return self.results.get_params(name, field)
+        return self.results.get_params(component, field)
+
+
+    @copy_doc_func_to_method(Results.get_metrics)
+    def get_metrics(self, category, measure=None):
+
+        return self.results.get_metrics(category, measure)
 
 
     @copy_doc_func_to_method(save_model_report)

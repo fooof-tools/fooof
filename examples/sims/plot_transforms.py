@@ -78,9 +78,9 @@ fm2.fit(freqs, r_powers)
 
 # Check the measured exponent values
 print("Original exponent value:\t {:1.2f}".format(\
-    fm1.get_params('aperiodic_params', 'exponent')))
+    fm1.get_params('aperiodic', 'exponent')))
 print("Rotated exponent value:\t{:1.2f}".format(\
-    fm2.get_params('aperiodic_params', 'exponent')))
+    fm2.get_params('aperiodic', 'exponent')))
 
 ###################################################################################################
 # Rotation Related Offset Changes

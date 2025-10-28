@@ -12,6 +12,7 @@ import numpy as np
 from numpy.testing import assert_equal
 
 from specparam.measures.metrics import METRICS
+from specparam.models.utils import compare_model_objs
 from specparam.modutils.dependencies import safe_import
 from specparam.sim import sim_group_power_spectra
 
@@ -64,20 +65,20 @@ def test_has_model(tfg):
 def test_n_properties(tfg):
     """Test the n_peaks & n_params property attributes."""
 
-    assert np.all(tfg.results.n_peaks_)
-    assert np.all(tfg.results.n_params_)
+    assert np.all(tfg.results.n_peaks)
+    assert np.all(tfg.results.n_params)
 
 def test_n_null(tfg):
-    """Test the n_null_ property attribute."""
+    """Test the n_null property attribute."""
 
     # Since there should have been no failed fits, this should return 0
-    assert tfg.results.n_null_ == 0
+    assert tfg.results.n_null == 0
 
 def test_null_inds(tfg):
-    """Test the null_inds_ property attribute."""
+    """Test the null_inds property attribute."""
 
     # Since there should be no failed fits, this should return an empty list
-    assert tfg.results.null_inds_ == []
+    assert tfg.results.null_inds == []
 
 def test_fit_nk():
     """Test group fit, no knee."""
@@ -91,7 +92,7 @@ def test_fit_nk():
 
     assert out
     assert len(out) == n_spectra
-    assert np.all(out[1].aperiodic_params)
+    assert np.all(out[1].aperiodic_fit)
 
 def test_fit_nk_noise():
     """Test group fit, no knee, on noisy data, to make sure nothing breaks."""
@@ -147,35 +148,40 @@ def test_fg_fail():
     """
 
     # Create some noisy spectra that will be hard to fit
+    n_spectra = 10
     fs, ps = sim_group_power_spectra(\
-        10, [3, 6], {'fixed' : [1, 1]}, {'gaussian' : [10, 1, 1]}, nlvs=10)
+        n_spectra, [3, 6], {'fixed' : [1, 1]}, {'gaussian' : [10, 1, 1]}, nlvs=10)
 
     # Use a fg with the max iterations set so low that it will fail to converge
     ntfg = SpectralGroupModel()
-    ntfg.algorithm._maxfev = 5
+    ntfg.algorithm._cf_settings.maxfev = 5
 
     # Fit models, where some will fail, to see if it completes cleanly
     ntfg.fit(fs, ps)
 
-    # Check that results are all
+    # Check that results are all properly organized
+    assert len(ntfg.results) == n_spectra
     for res in ntfg.results.get_results():
         assert res
 
-    # Test that get_params works with failed model fits
-    outs1 = ntfg.results.get_params('aperiodic_params')
-    outs2 = ntfg.results.get_params('aperiodic_params', 'exponent')
-    outs3 = ntfg.results.get_params('peak_params')
-    outs4 = ntfg.results.get_params('peak_params', 0)
-    outs5 = ntfg.results.get_params('gaussian_params', 2)
-
-    # Test shortcut labels
-    outs6 = ntfg.results.get_params('aperiodic')
-    outs6 = ntfg.results.get_params('peak', 'CF')
-
     # Test the property attributes related to null model fits
     #   This checks that they do the right thing when there are null fits (failed fits)
-    assert ntfg.results.n_null_ > 0
-    assert ntfg.results.null_inds_
+    assert ntfg.results.n_null > 0
+    assert ntfg.results.null_inds
+
+    # Test that get_params works with failed model fits
+    outs1 = ntfg.results.get_params('aperiodic')
+    outs2 = ntfg.results.get_params('aperiodic', 'exponent')
+    outs3 = ntfg.results.get_params('peak')
+    outs4 = ntfg.results.get_params('peak', 0)
+    outs5 = ntfg.results.get_params('peak', 'CF')
+    # TODO
+    #outs6 = ntfg.results.get_params('peak', 2, version='fit')
+
+    # Check that null ind values are nan
+    for null_ind in ntfg.results.null_inds:
+        assert np.isnan(ntfg.results.get_params('aperiodic', 'exponent')[null_ind])
+        assert np.isnan(ntfg.results.get_metrics('error', 'mae')[null_ind])
 
 def test_drop():
     """Test function to drop results from group object."""
@@ -207,8 +213,8 @@ def test_drop():
     assert np.all(np.isnan(list(dropped_fres.metrics.values())))
 
     # Test that a group object that has had inds dropped still works with `get_params`
-    cfs = tfg.results.get_params('peak_params', 1)
-    exps = tfg.results.get_params('aperiodic_params', 'exponent')
+    cfs = tfg.get_params('peak', 1)
+    exps = tfg.get_params('aperiodic', 'exponent')
     assert np.all(np.isnan(exps[drop_inds]))
     assert np.all(np.invert(np.isnan(np.delete(exps, drop_inds))))
 
@@ -224,7 +230,7 @@ def test_fit_par():
 
     assert out
     assert len(out) == n_spectra
-    assert np.all(out[1].aperiodic_params)
+    assert np.all(out[1].aperiodic_fit)
 
 def test_print(tfg):
     """Check print method (alias)."""
@@ -247,21 +253,10 @@ def test_get_results(tfg):
 def test_get_params(tfg):
     """Check get_params method."""
 
-    for dname in ['aperiodic_params', 'aperiodic', 'peak_params', 'peak',
-                  'gaussian_params', 'gaussian', 'metrics']:
-        assert np.any(tfg.get_params(dname))
-
-        if dname == 'aperiodic_params' or dname == 'aperiodic':
-            for dtype in ['offset', 'exponent']:
-                assert np.any(tfg.get_params(dname, dtype))
-
-        if dname == 'peak_params' or dname == 'peak':
-            for dtype in ['CF', 'PW', 'BW']:
-                assert np.any(tfg.get_params(dname, dtype))
-
-        if dname == 'metrics':
-            for dtype in ['error_mae', 'gof_rsquared']:
-                assert np.any(tfg.get_params(dname, dtype))
+    for component in tfg.modes.components:
+        assert np.any(tfg.get_params(component))
+        for pname in getattr(tfg.modes, component).params.labels:
+            assert np.any(tfg.get_params(component, pname))
 
 @plot_test
 def test_plot(tfg, skip_if_no_mpl):
@@ -273,49 +268,39 @@ def test_load(tfg):
     """Test load into group object.
     Note: loads files from test_save_group in specparam/tests/io/test_models.py."""
 
-    file_name_res = 'test_group_res'
-    file_name_set = 'test_group_set'
-    file_name_dat = 'test_group_dat'
-
     # Test loading just results
     ntfg = SpectralGroupModel(verbose=False)
-    ntfg.load(file_name_res, TEST_DATA_PATH)
+    ntfg.load('test_group_res', TEST_DATA_PATH)
     assert len(ntfg.results.group_results) > 0
     # Test that settings and data are None
     for setting in tfg.algorithm.settings.names:
-        assert getattr(ntfg.algorithm, setting) is None
+        assert getattr(ntfg.algorithm.settings, setting) is None
     assert ntfg.data.power_spectra is None
 
     # Test loading just settings
     ntfg = SpectralGroupModel(verbose=False)
-    ntfg.load(file_name_set, TEST_DATA_PATH)
-    for setting in tfg.algorithm.settings.names:
-        assert getattr(ntfg.algorithm, setting) is not None
+    ntfg.load('test_group_set', TEST_DATA_PATH)
+    assert tfg.algorithm.settings.values == ntfg.algorithm.settings.values
     # Test that results and data are None
-    for result in tfg.results._fields:
-        assert np.all(np.isnan(getattr(ntfg.results, result)))
+    for component in tfg.modes.components:
+        assert not getattr(ntfg.results.params, component).has_params
     assert ntfg.data.power_spectra is None
 
     # Test loading just data
     ntfg = SpectralGroupModel(verbose=False)
-    ntfg.load(file_name_dat, TEST_DATA_PATH)
+    ntfg.load('test_group_dat', TEST_DATA_PATH)
     assert ntfg.data.has_data
     # Test that settings and results are None
     for setting in tfg.algorithm.settings.names:
-        assert getattr(ntfg.algorithm, setting) is None
-    for result in tfg.results._fields:
-        assert np.all(np.isnan(getattr(ntfg.results, result)))
+        assert getattr(ntfg.algorithm.settings, setting) is None
+    for component in tfg.modes.components:
+        assert not getattr(ntfg.results.params, component).has_params
 
     # Test loading all elements
     ntfg = SpectralGroupModel(verbose=False)
-    file_name_all = 'test_group_all'
-    ntfg.load(file_name_all, TEST_DATA_PATH)
+    ntfg.load('test_group_all', TEST_DATA_PATH)
+    assert compare_model_objs([tfg, ntfg], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
     assert len(ntfg.results.group_results) > 0
-    for setting in tfg.algorithm.settings.names:
-        assert getattr(ntfg.algorithm, setting) is not None
-    assert ntfg.data.has_data
-    for meta_dat in tfg.data._meta_fields:
-        assert getattr(ntfg.data, meta_dat) is not None
 
 def test_report(skip_if_no_mpl):
     """Check that running the top level model method runs."""
@@ -335,8 +320,7 @@ def test_get_model(tfg):
     tfm_null = tfg.get_model()
     assert tfm_null
     # Check that settings are copied over properly, but data and results are empty
-    for setting in tfg.algorithm.settings.names:
-        assert getattr(tfg.algorithm, setting) == getattr(tfm_null.algorithm, setting)
+    assert tfg.algorithm.settings.values == tfm_null.algorithm.settings.values
     assert not tfm_null.data.has_data
     assert not tfm_null.results.has_model
 
@@ -344,15 +328,15 @@ def test_get_model(tfg):
     tfm0 = tfg.get_model(0, False)
     assert tfm0
     # Check that settings are copied over properly
-    for setting in tfg.algorithm.settings.names:
-        assert getattr(tfg.algorithm, setting) == getattr(tfm0.algorithm, setting)
+    assert tfg.algorithm.settings.values == tfm0.algorithm.settings.values
 
     # Check with regenerating
     tfm1 = tfg.get_model(1, True)
     assert tfm1
-    # Check that regenerated model is created
-    for result in tfg.results._fields:
-        assert np.all(getattr(tfm1.results, result))
+    # Check that parameters are copied and that regenerated model is created
+    for component in tfg.modes.components:
+        assert getattr(tfm1.results.params, component).has_params
+    assert np.all(tfm1.results.model.modeled_spectrum)
 
     # Test when object has no data (clear a copy of tfg)
     new_tfg = tfg.copy()
@@ -383,9 +367,8 @@ def test_get_group(tfg):
     assert isinstance(nfg2, SpectralGroupModel)
 
     # Check that settings are copied over properly
-    for setting in tfg.algorithm.settings.names:
-        assert getattr(tfg.algorithm, setting) == getattr(nfg1.algorithm, setting)
-        assert getattr(tfg.algorithm, setting) == getattr(nfg2.algorithm, setting)
+    assert tfg.algorithm.settings.values == nfg1.algorithm.settings.values
+    assert tfg.algorithm.settings.values == nfg2.algorithm.settings.values
 
     # Check that data info is copied over properly
     for meta_dat in tfg.data._meta_fields:

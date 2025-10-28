@@ -144,6 +144,7 @@ The following functions operate on arrays of peak parameters, which may be usefu
     get_band_peak_group_arr
     get_highest_peak
     threshold_peaks
+    sort_peaks
 
 Measures
 --------

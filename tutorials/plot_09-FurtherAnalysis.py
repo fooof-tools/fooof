@@ -234,7 +234,7 @@ fg.plot()
 ###################################################################################################
 
 # Extract aperiodic exponent parameters from group results
-exps = fg.get_params('aperiodic_params', 'exponent')
+exps = fg.get_params('aperiodic', 'exponent')
 
 # Check out the aperiodic exponent results
 print(exps)

@@ -151,117 +151,119 @@ def test_load_file_contents(tfm):
     """Check that loaded model files contain the contents they should."""
 
     # Loads file saved from `test_save_model_str`
-    file_name = 'test_model_all'
-
-    loaded_data = load_json(file_name, TEST_DATA_PATH)
+    loaded_data = load_json('test_model_all', TEST_DATA_PATH)
 
     for mode in tfm.modes.get_modes()._fields:
         assert mode in loaded_data.keys()
+
     assert 'bands' in loaded_data.keys()
+
     for setting in tfm.algorithm.settings.names:
         assert setting in loaded_data.keys()
-    for result in tfm.results._fields:
-        assert result in loaded_data.keys()
+
+    for rescomp in ['aperiodic', 'peak']:
+        for version in ['fit', 'converted']:
+            assert rescomp + '_' + version in loaded_data.keys()
+
     assert 'metrics' in loaded_data.keys()
+
     for datum in tfm.data._fields:
         assert datum in loaded_data.keys()
 
 def test_load_model(tfm):
 
     # Loads file saved from `test_save_model_str`
-    file_name = 'test_model_all'
-    ntfm = load_model(file_name, TEST_DATA_PATH)
-    assert isinstance(ntfm, SpectralModel)
+    ntfm = load_model('test_model_all', TEST_DATA_PATH)
 
-    # Check that all elements get loaded
-    assert tfm.modes.get_modes() == ntfm.modes.get_modes()
-    assert tfm.results.bands == ntfm.results.bands
-    for meta_dat in tfm.data._meta_fields:
-        assert getattr(ntfm.data, meta_dat) is not None
-    for setting in ntfm.algorithm.settings.names:
-        assert getattr(ntfm.algorithm, setting) is not None
-    for result in tfm.results._fields:
-        assert not np.all(np.isnan(getattr(ntfm.results, result)))
-    assert tfm.results.metrics.results == ntfm.results.metrics.results
+    assert isinstance(ntfm, SpectralModel)
+    compare_model_objs([tfm, ntfm], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
+
     for data in tfm.data._fields:
-        assert getattr(ntfm.data, data) is not None
+        assert np.array_equal(getattr(tfm.data, data), getattr(ntfm.data, data))
+
+    for component in tfm.modes.components:
+        assert not np.all(np.isnan(getattr(ntfm.results.params, component).get_params('fit')))
+    assert tfm.results.metrics.results == ntfm.results.metrics.results
 
     # Check directory matches (loading didn't add any unexpected attributes)
     cfm = SpectralModel()
     assert dir(cfm) == dir(ntfm)
+    assert dir(cfm.algorithm) == dir(ntfm.algorithm)
     assert dir(cfm.data) == dir(ntfm.data)
     assert dir(cfm.results) == dir(ntfm.results)
+    assert dir(cfm.results.params) == dir(ntfm.results.params)
 
 def test_load_model2(tfm2):
 
     # Loads file saved from `test_save_model_str2`
-    file_name = 'test_model_all2'
-    ntfm2 = load_model(file_name, TEST_DATA_PATH)
-    assert tfm2.modes.get_modes() == ntfm2.modes.get_modes()
-    compare_model_objs([tfm2, ntfm2], ['settings', 'meta_data', 'metrics'])
+    ntfm2 = load_model('test_model_all2', TEST_DATA_PATH)
+    compare_model_objs([tfm2, ntfm2], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
 
 def test_load_group(tfg):
 
     # Loads file saved from `test_save_group`
-    file_name = 'test_group_all'
-    ntfg = load_group(file_name, TEST_DATA_PATH)
+    ntfg = load_group('test_group_all', TEST_DATA_PATH)
     assert isinstance(ntfg, SpectralGroupModel)
-
-    # Check that all elements get loaded
-    assert tfg.modes.get_modes() == ntfg.modes.get_modes()
-    assert tfg.results.bands == ntfg.results.bands
-    for setting in tfg.algorithm.settings.names:
-        assert getattr(ntfg.algorithm, setting) is not None
+    compare_model_objs([tfg, ntfg], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
+    for data in tfg.data._fields:
+        assert np.array_equal(getattr(tfg.data, data), getattr(ntfg.data, data))
     assert len(ntfg.results.group_results) > 0
     for metric in tfg.results.metrics.labels:
-        assert tfg.results.metrics.results[metric] is not None
-    assert ntfg.data.power_spectra is not None
-    for meta_dat in tfg.data._meta_fields:
-        assert getattr(ntfg.data, meta_dat) is not None
+        assert np.array_equal(tfg.results.get_metrics(metric), ntfg.results.get_metrics(metric))
 
     # Check directory matches (loading didn't add any unexpected attributes)
     cfg = SpectralGroupModel()
     assert dir(cfg) == dir(ntfg)
+    assert dir(cfg.algorithm) == dir(ntfg.algorithm)
     assert dir(cfg.data) == dir(ntfg.data)
     assert dir(cfg.results) == dir(ntfg.results)
+    assert dir(cfg.results.params) == dir(ntfg.results.params)
 
 def test_load_group2(tfg2):
 
     # Loads file saved from `test_save_group_str2`
-    file_name = 'test_group_all2'
-    ntfg2 = load_group(file_name, TEST_DATA_PATH)
-    assert tfg2.modes.get_modes() == ntfg2.modes.get_modes()
-    compare_model_objs([tfg2, ntfg2], ['settings', 'meta_data', 'metrics'])
+    ntfg2 = load_group('test_group_all2', TEST_DATA_PATH)
+    compare_model_objs([tfg2, ntfg2], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
 
-def test_load_time():
+def test_load_time(tft):
 
     # Loads file saved from `test_save_time`
-    file_name = 'test_time_all'
-
-    # Load without bands definition
-    tft = load_time(file_name, TEST_DATA_PATH)
+    ntft = load_time('test_time_all', TEST_DATA_PATH)
     assert isinstance(tft, SpectralTimeModel)
-    assert tft.results.time_results
+    compare_model_objs([tft, ntft], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
+    for data in tft.data._fields:
+        assert np.array_equal(getattr(tft.data, data), getattr(ntft.data, data))
+    assert tft.results.time_results.keys() == ntft.results.time_results.keys()
+    for key in tft.results.time_results:
+        assert np.array_equal(\
+            tft.results.time_results[key], ntft.results.time_results[key], equal_nan=True)
 
     # Check directory matches (loading didn't add any unexpected attributes)
     cft = SpectralTimeModel()
-    assert dir(cft) == dir(tft)
-    assert dir(cft.data) == dir(tft.data)
-    assert dir(cft.results) == dir(tft.results)
+    assert dir(cft) == dir(ntft)
+    assert dir(cft.algorithm) == dir(ntft.algorithm)
+    assert dir(cft.data) == dir(ntft.data)
+    assert dir(cft.results) == dir(ntft.results)
+    assert dir(cft.results.params) == dir(ntft.results.params)
 
-def test_load_event():
+def test_load_event(tfe):
 
     # Loads file saved from `test_save_event`
-    file_name = 'test_event_all'
-
-    # Load without bands definition
-    tfe = load_event(file_name, TEST_DATA_PATH)
+    ntfe = load_event('test_event_all', TEST_DATA_PATH)
     assert isinstance(tfe, SpectralTimeEventModel)
+    compare_model_objs([tfe, ntfe], ['modes', 'settings', 'meta_data', 'bands', 'metrics'])
+    for data in tfe.data._fields:
+        assert np.array_equal(getattr(tfe.data, data), getattr(ntfe.data, data))
     assert len(tfe.results) > 1
-    assert tfe.results.event_time_results
+    assert tfe.results.time_results.keys() == ntfe.results.time_results.keys()
+    for key in tfe.results.time_results:
+        assert np.array_equal(\
+            tfe.results.time_results[key], ntfe.results.time_results[key], equal_nan=True)
 
     # Check directory matches (loading didn't add any unexpected attributes)
     cfe = SpectralTimeEventModel()
-    assert dir(cfe) == dir(tfe)
-    assert dir(cfe.data) == dir(tfe.data)
-    assert dir(cfe.results) == dir(tfe.results)
+    assert dir(cfe) == dir(ntfe)
+    assert dir(cfe.algorithm) == dir(ntfe.algorithm)
+    assert dir(cfe.data) == dir(ntfe.data)
+    assert dir(cfe.results) == dir(ntfe.results)
+    assert dir(cfe.results.params) == dir(ntfe.results.params)

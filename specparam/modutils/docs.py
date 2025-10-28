@@ -22,12 +22,11 @@ def get_docs_indices(docstring, sections=DOCSTRING_SECTIONS):
         Docstring to check indices for.
     sections : list of str, optional
         List of sections to check and get indices for.
-        If not provided, uses the default set of
 
     Returns
     -------
     inds : dict
-        Dictionary in which each key is a section label, and each value is the corresponding index.
+        Dictionary where each key is a section label, and each value is the corresponding index.
     """
 
     inds = {label : None for label in sections}

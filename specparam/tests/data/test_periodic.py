@@ -75,6 +75,19 @@ def test_threshold_peaks():
     data = np.array([[10, 1, 1.8, 0], [13, 1, 2, 2], [14, 2, 4, 2]])
     assert np.array_equal(threshold_peaks(data, 1.5), np.array([[14, 2, 4, 2]]))
 
+def test_sort_peaks():
+
+    # With original order of {A B C}, these should get sorted differently for each param
+    #   CF: A, C, B; PW: B, A, C; BW: C, B, A
+    tpeaks = np.array([[5, 2, 8], [15, 1, 7], [10, 3, 6]])
+
+    assert np.array_equal(sort_peaks(tpeaks, 'CF', 'inc')[:, 0], np.array([5, 10, 15]))
+    assert np.array_equal(sort_peaks(tpeaks, 'CF', 'dec')[:, 0], np.array([15, 10, 5]))
+    assert np.array_equal(sort_peaks(tpeaks, 'PW', 'inc')[:, 1], np.array([1, 2, 3]))
+    assert np.array_equal(sort_peaks(tpeaks, 'PW', 'dec')[:, 1], np.array([3, 2, 1]))
+    assert np.array_equal(sort_peaks(tpeaks, 'BW', 'inc')[:, 2], np.array([6, 7, 8]))
+    assert np.array_equal(sort_peaks(tpeaks, 'BW', 'dec')[:, 2], np.array([8, 7, 6]))
+
 def test_empty_inputs():
 
     data = np.empty(shape=[0, 3])
@@ -82,6 +95,7 @@ def test_empty_inputs():
     assert np.all(get_band_peak_arr(data, [8, 12]))
     assert np.all(get_highest_peak(data))
     assert np.all(threshold_peaks(data, 1))
+    assert np.all(sort_peaks(data, 1))
 
     data = np.empty(shape=[0, 4])
 

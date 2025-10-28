@@ -1,4 +1,4 @@
-"""Tests for specparam.objs.results, including the data object and it's methods."""
+"""Tests for specparam.objs.results."""
 
 from specparam.objs.results import *
 
@@ -12,14 +12,16 @@ def test_results():
     tres = Results()
     assert isinstance(tres, Results)
 
-def test_results_results(tresults):
+def test_results_results(tresults, tmodes):
 
     tres = Results()
 
     tres.add_results(tresults)
     assert tres.has_model
-    for result in tres._fields:
-        assert np.array_equal(getattr(tres, result), getattr(tresults, result.strip('_')))
+    for component in tmodes.components:
+        attr_comp = 'peak' if component == 'periodic' else component
+        assert np.array_equal(getattr(tres.params, component).get_params('fit'),
+                              getattr(tresults, attr_comp + '_fit'))
 
     results_out = tres.get_results()
     assert results_out == tresults

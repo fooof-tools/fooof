@@ -40,7 +40,7 @@ fm.fit(freqs, powers)
 ###################################################################################################
 
 # Check the aperiodic parameters
-fm.results.aperiodic_params_
+fm.results.params.aperiodic.params
 
 ###################################################################################################
 
@@ -140,7 +140,7 @@ plot_annotated_model(fm, annotate_peaks=False, annotate_aperiodic=True, plt_log=
 ###################################################################################################
 
 # Check the measured aperiodic parameters
-fm.results.aperiodic_params_
+fm.results.params.aperiodic.params
 
 ###################################################################################################
 # Knee Frequency
@@ -158,7 +158,7 @@ fm.results.aperiodic_params_
 ###################################################################################################
 
 # Compute the knee frequency from aperiodic parameters
-knee_frequency = compute_knee_frequency(*fm.results.aperiodic_params_[1:])
+knee_frequency = compute_knee_frequency(*fm.results.params.aperiodic.params[1:])
 print('Knee frequency: ', knee_frequency)
 
 ###################################################################################################

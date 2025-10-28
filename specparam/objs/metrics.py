@@ -12,8 +12,8 @@ class Metric():
 
     Parameters
     ----------
-    type : str
-        The type of measure, e.g. 'error' or 'gof'.
+    category : str
+        The category of measure, e.g. 'error' or 'gof'.
     measure : str
         The specific measure, e.g. 'r_squared'.
     func : callable
@@ -25,10 +25,10 @@ class Metric():
         and returns the desired parameter / computed value.
     """
 
-    def __init__(self, type, measure, func, kwargs=None):
+    def __init__(self, category, measure, func, kwargs=None):
         """Initialize metric."""
 
-        self.type = type
+        self.category = category
         self.measure = measure
         self.func = func
         self.result = np.nan
@@ -45,17 +45,17 @@ class Metric():
     def label(self):
         """Define label property."""
 
-        return self.type + '_' + self.measure
+        return self.category + '_' + self.measure
 
 
     @property
     def flabel(self):
         """Define formatted label property."""
 
-        if self.type == 'error':
-            flabel = '{} ({})'.format(self.type.capitalize(), self.measure.upper())
-        if self.type == 'gof':
-            flabel = '{} ({})'.format(self.type.upper(), self.measure)
+        if self.category == 'error':
+            flabel = '{} ({})'.format(self.category.capitalize(), self.measure.upper())
+        if self.category == 'gof':
+            flabel = '{} ({})'.format(self.category.upper(), self.measure)
 
         return flabel
 
@@ -75,7 +75,13 @@ class Metric():
         for key, lfunc in self.kwargs.items():
             kwargs[key] = lfunc(data, results)
 
-        self.result = self.func(data.power_spectrum, results.modeled_spectrum_, **kwargs)
+        self.result = self.func(data.power_spectrum, results.model.modeled_spectrum, **kwargs)
+
+
+    def reset(self):
+        """Reset metric result."""
+
+        self.result = np.nan
 
 
 class Metrics():
@@ -146,6 +152,39 @@ class Metrics():
             self.add_metric(metric)
 
 
+    def get_metrics(self, category, measure=None):
+        """Get requested metric(s) from the object.
+
+        Parameters
+        ----------
+        category : str
+            Category of metric to extract, e.g. 'error' or 'gof'.
+            If 'all', returns all available metrics.
+        measure : str, optional
+            Name of the specific measure(s) to return.
+
+        Returns
+        -------
+        metrics : dict
+            Dictionary of requested metrics.
+        """
+
+        if category == 'all':
+            out = self.results
+
+        else:
+
+            out = {ke : va for ke, va in self.results.items() if category in ke}
+
+            if measure is not None:
+                out = {ke : va for ke, va in out.items() if measure in ke}
+
+        out = np.array(list(out.values()))
+        out = out[0] if out.size == 1 else out
+
+        return out
+
+
     def compute_metrics(self, data, results):
         """Compute all currently defined metrics.
 
@@ -162,10 +201,10 @@ class Metrics():
 
 
     @property
-    def types(self):
-        """Define alias for metric type of all currently defined metrics."""
+    def categories(self):
+        """Define alias for metric categories of all currently defined metrics."""
 
-        return [metric.type for metric in self.metrics]
+        return [metric.category for metric in self.metrics]
 
 
     @property
@@ -208,3 +247,10 @@ class Metrics():
 
         for key, value in results.items():
             self[key].result = value
+
+
+    def reset(self):
+        """Reset all metric results."""
+
+        for metric in self.metrics:
+            metric.reset()

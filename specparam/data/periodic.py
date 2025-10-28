@@ -6,7 +6,7 @@ import numpy as np
 ###################################################################################################
 
 def get_band_peak(model, band, select_highest=True, threshold=None,
-                  thresh_param='PW', attribute='peak_params'):
+                  thresh_param='PW', attribute='converted'):
     """Extract peaks from a band of interest from a model object.
 
     Parameters
@@ -23,8 +23,9 @@ def get_band_peak(model, band, select_highest=True, threshold=None,
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
         Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
-    attribute : {'peak_params', 'gaussian_params'}
-        Which attribute of peak data to extract data from.
+    attribute : {'fit', 'converted'}
+        Which version of the peak parameters to extract data from.
+    TODO
 
     Returns
     -------
@@ -42,11 +43,11 @@ def get_band_peak(model, band, select_highest=True, threshold=None,
     >>> betas = get_band_peak(model, [13, 30], select_highest=False)  # doctest:+SKIP
     """
 
-    return get_band_peak_arr(getattr(model.results, attribute + '_'), band,
+    return get_band_peak_arr(getattr(model.results.params.periodic, '_' + attribute), band,
                              select_highest, threshold, thresh_param)
 
 
-def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribute='peak_params'):
+def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribute='converted'):
     """Extract peaks from a band of interest from a group model object.
 
     Parameters
@@ -60,8 +61,9 @@ def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribut
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
         Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
-    attribute : {'peak_params', 'gaussian_params'}
-        Which attribute of peak data to extract data from.
+    attribute : {'fit', 'converted'}
+        Which version of the peak parameters to extract data from.
+    TODO
 
     Returns
     -------
@@ -81,8 +83,8 @@ def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribut
     you can do something like:
 
     >>> peaks = np.empty((0, 3))
-    >>> for res in group:  # doctest:+SKIP
-    ...     peaks = np.vstack((peaks, get_band_peak(res.peak_params, band, select_highest=False)))
+    >>> for res in group.results:  # doctest:+SKIP
+    ...     peaks = np.vstack((peaks, get_band_peak_arr(res.peak_params, band, select_highest=False)))
 
     Examples
     --------
@@ -95,11 +97,11 @@ def get_band_peak_group(group, band, threshold=None, thresh_param='PW', attribut
     >>> betas = get_band_peak_group(group, [13, 30], threshold=0.1)  # doctest:+SKIP
     """
 
-    return get_band_peak_group_arr(group.results.get_params(attribute), band, len(group.results),
+    return get_band_peak_group_arr(group.results.get_params('peak'), band, len(group.results),
                                    threshold, thresh_param)
 
 
-def get_band_peak_event(event, band, threshold=None, thresh_param='PW', attribute='peak_params'):
+def get_band_peak_event(event, band, threshold=None, thresh_param='PW', attribute='converted'):
     """Extract peaks from a band of interest from an event model object.
 
     Parameters
@@ -116,8 +118,8 @@ def get_band_peak_event(event, band, threshold=None, thresh_param='PW', attribut
         A minimum threshold value to apply.
     thresh_param : {'PW', 'BW'}
         Which parameter to threshold on. 'PW' is power and 'BW' is bandwidth.
-    attribute : {'peak_params', 'gaussian_params'}
-        Which attribute of peak data to extract data from.
+    attribute : {'fit', 'converted'}
+        Which version of the peak parameters to extract data from.
 
     Returns
     -------
@@ -288,3 +290,36 @@ def threshold_peaks(peak_params, threshold, param='PW'):
     thresholded_peaks = peak_params[thresh_mask]
 
     return thresholded_peaks
+
+
+def sort_peaks(peak_params, sort_param, direction='inc'):
+    """Sort peak parameters by specified parameter and direction.
+
+    Parameters
+    ----------
+    peak_params : 2d array
+        Peak parameters, with shape of [n_peaks, 3].
+    sort_param : {'CF', 'PW', 'BW'}
+        Which parameter to sort the parameters by.
+    direction : {'inc', 'dec'}
+        Whether to sort as increasing (lowest -> highest) or decreasing (highest -> lowest).
+
+    Returns
+    -------
+    sorted_peaks : 2d array
+        Sorted peak parameters.
+    """
+
+    # Return nan array if empty input
+    if peak_params.size == 0:
+        return np.array([np.nan, np.nan, np.nan])
+
+    # NOTE - TEMP: interim hardcode for parameter index while updating for modes
+    param_ind = {'CF' : 0, 'PW' : 1, 'BW' : 2}[sort_param]
+
+    peak_params = peak_params[peak_params[:, param_ind].argsort()]
+
+    if direction == 'dec':
+        peak_params = np.flipud(peak_params)
+
+    return peak_params

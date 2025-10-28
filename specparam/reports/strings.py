@@ -211,9 +211,9 @@ def gen_settings_str(model, description=False, concise=False):
 
     # Loop through algorithm settings, and add information
     for name in model.algorithm.settings.names:
-        str_lst.append(name + ' : ' + str(getattr(model.algorithm, name)))
+        str_lst.append(name + ' : ' + str(getattr(model.algorithm.settings, name)))
         if description:
-            str_lst.append(model.algorithm.settings.descriptions[name].split('\n ')[0])
+            str_lst.append(model.algorithm.public_settings.descriptions[name].split('\n ')[0])
 
     # Add footer to string
     str_lst.extend([
@@ -337,10 +337,10 @@ def gen_methods_text_str(model=None):
     methods_str = template.format(MODULE_VERSION,
                                   model.modes.aperiodic.name if model else 'XX',
                                   model.modes.periodic.name if model else 'XX',
-                                  model.algorithm.peak_width_limits if model else 'XX',
-                                  model.algorithm.max_n_peaks if model else 'XX',
-                                  model.algorithm.min_peak_height if model else 'XX',
-                                  model.algorithm.peak_threshold if model else 'XX',
+                                  model.algorithm.settings.peak_width_limits if model else 'XX',
+                                  model.algorithm.settings.max_n_peaks if model else 'XX',
+                                  model.algorithm.settings.min_peak_height if model else 'XX',
+                                  model.algorithm.settings.peak_threshold if model else 'XX',
                                   *freq_range)
 
     return methods_str
@@ -388,13 +388,13 @@ def gen_model_results_str(model, concise=False):
         'Aperiodic Parameters (\'{}\' mode)'.format(model.modes.aperiodic.name),
         '(' + ', '.join(model.modes.aperiodic.params.labels) + ')',
         ', '.join(['{:2.4f}'] * \
-            len(model.results.aperiodic_params_)).format(*model.results.aperiodic_params_),
+            len(model.results.params.aperiodic.params)).format(*model.results.params.aperiodic.params),
         '',
 
         # Peak parameters
         'Peak Parameters (\'{}\' mode) {} peaks found'.format(\
-            model.modes.periodic.name, model.results.n_peaks_),
-        *[peak_str.format(*op) for op in model.results.peak_params_],
+            model.modes.periodic.name, model.results.n_peaks),
+        *[peak_str.format(*op) for op in model.results.params.periodic.params],
         '',
 
         # Metrics
@@ -449,21 +449,21 @@ def gen_group_results_str(group, concise=False):
         'Aperiodic Parameters (\'{}\' mode)'.format(group.modes.aperiodic.name),
         *[el for el in [\
             '{:8s} - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'.format(label, \
-                *compute_arr_desc(group.results.get_params('aperiodic_params', label))) \
+                *compute_arr_desc(group.results.get_params('aperiodic', label))) \
                     for label in group.modes.aperiodic.params.labels]],
         '',
 
         # Peak Parameters
         'Peak Parameters (\'{}\' mode) {} total peaks found'.format(\
-            group.modes.periodic.name, sum(group.results.n_peaks_)),
+            group.modes.periodic.name, sum(group.results.n_peaks)),
         '',
 
         # Metrics
         'Model fit quality metrics:',
         *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
-            '{:s} ({:s})'.format(*key.split('_')),
-            *compute_arr_desc(group.results.get_params('metrics', key))) \
-                for key in group.results.metrics.results],
+            '{:s} ({:s})'.format(*label.split('_')),
+            *compute_arr_desc(group.results.get_metrics(label))) \
+                for label in group.results.metrics.labels],
         '',
 
         # Footer
@@ -651,7 +651,7 @@ def _report_str_n_null(model):
 
     output = \
             [el for el in ['{} power spectra failed to fit'.format(\
-            model.results.n_null_)] if model.results.n_null_]
+            model.results.n_null)] if model.results.n_null]
 
     return output
 

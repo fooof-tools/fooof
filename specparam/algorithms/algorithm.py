@@ -1,13 +1,15 @@
 """Define object to manage algorithm implementations."""
 
+import numpy as np
+
 from specparam.utils.checks import check_input_options
-from specparam.algorithms.settings import SettingsDefinition
+from specparam.algorithms.settings import SettingsDefinition, SettingsValues
+from specparam.modutils.docs import docs_get_section, replace_docstring_sections
 
 ###################################################################################################
 ###################################################################################################
 
-FORMATS = ['spectrum', 'spectra', 'spectrogram', 'spectrograms']
-
+DATA_FORMATS = ['spectrum', 'spectra', 'spectrogram', 'spectrograms']
 
 class Algorithm():
     """Template object for defining a fit algorithm.
@@ -18,25 +20,43 @@ class Algorithm():
         Name of the fitting algorithm.
     description : str
         Description of the fitting algorithm.
-    settings : dict
-        Name and description of settings for the fitting algorithm.
-    format : {'spectrum', 'spectra', 'spectrogram', 'spectrograms'}
-        Set base format of data model can be applied to.
+    public_settings : SettingsDefinition or dict
+        Name and description of public settings for the fitting algorithm.
+    private_settings :  SettingsDefinition or dict, optional
+        Name and description of private settings for the fitting algorithm.
+    data_format : {'spectrum', 'spectra', 'spectrogram', 'spectrograms'}
+        Set base data format the model can be applied to.
+    modes : Modes
+        Modes object with fit mode definitions.
+    data : Data
+        Data object with spectral data and metadata.
+    results : Results
+        Results object with model fit results and metrics.
+    debug :  bool
+        Whether to run in debug state, raising an error if encountered during fitting.
     """
 
-    def __init__(self, name, description, settings, format,
-                 modes=None, data=None, results=None, debug=False):
+    def __init__(self, name, description, public_settings, private_settings=None,
+                 data_format='spectrum', modes=None, data=None, results=None, debug=False):
         """Initialize Algorithm object."""
 
         self.name = name
         self.description = description
 
-        if not isinstance(settings, SettingsDefinition):
-            settings = SettingsDefinition(settings)
-        self.settings = settings
+        if not isinstance(public_settings, SettingsDefinition):
+            public_settings = SettingsDefinition(public_settings)
+        self.public_settings = public_settings
+        self.settings = SettingsValues(self.public_settings.names)
 
-        check_input_options(format, FORMATS, 'format')
-        self.format = format
+        if private_settings is None:
+            private_settings = {}
+        if not isinstance(private_settings, SettingsDefinition):
+            private_settings = SettingsDefinition(private_settings)
+        self.private_settings = private_settings
+        self._settings = SettingsValues(self.private_settings.names)
+
+        check_input_options(data_format, DATA_FORMATS, 'data_format')
+        self.data_format = data_format
 
         self.modes = None
         self.data = None
@@ -60,13 +80,11 @@ class Algorithm():
         Parameters
         ----------
         settings : ModelSettings
-            A data object containing the settings for a power spectrum model.
+            A data object containing model settings.
         """
 
         for setting in settings._fields:
-            setattr(self, setting, getattr(settings, setting))
-
-        self._check_loaded_settings(settings._asdict())
+            setattr(self.settings, setting, getattr(settings, setting))
 
 
     def get_settings(self):
@@ -78,8 +96,8 @@ class Algorithm():
             Object containing the settings from the current object.
         """
 
-        return self.settings.make_model_settings()(\
-            **{key : getattr(self, key) for key in self.settings.names})
+        return self.public_settings.make_model_settings()(\
+            **{key : getattr(self.settings, key) for key in self.public_settings.names})
 
 
     def get_debug(self):
@@ -98,32 +116,6 @@ class Algorithm():
         """
 
         self._debug = debug
-
-
-    def _check_loaded_settings(self, data):
-        """Check if settings added, and update the object as needed.
-
-        Parameters
-        ----------
-        data : dict
-            A dictionary of data that has been added to the object.
-        """
-
-        # If settings not loaded from file, clear from object, so that default
-        # settings, which are potentially wrong for loaded data, aren't kept
-        if not set(self.settings.names).issubset(set(data.keys())):
-
-            # Reset all public settings to None
-            for setting in self.settings.names:
-                setattr(self, setting, None)
-
-        # Reset internal settings so that they are consistent with what was loaded
-        #   Note that this will set internal settings to None, if public settings unavailable
-        self._reset_internal_settings()
-
-
-    def _reset_internal_settings(self):
-        """"Can be overloaded if any resetting needed for internal settings."""
 
 
     def _reset_subobjects(self, modes=None, data=None, results=None):
@@ -145,3 +137,83 @@ class Algorithm():
             self.data = data
         if results is not None:
             self.results = results
+
+
+## AlgorithmCF
+
+CURVE_FIT_SETTINGS = SettingsDefinition({
+    'maxfev' : {
+        'type' : 'int',
+        'description' : 'The maximum number of calls to the curve fitting function.',
+        },
+    'tol' : {
+        'type' : 'float',
+        'description' : \
+            'The tolerance setting for curve fitting (see scipy.curve_fit: ftol / xtol / gtol).'
+        },
+})
+
+@replace_docstring_sections([docs_get_section(Algorithm.__doc__, 'Parameters')])
+class AlgorithmCF(Algorithm):
+    """Template object for defining a fit algorithm that uses `curve_fit`.
+
+    Parameters
+    ----------
+    % copied in from Algorithm
+    """
+
+    def __init__(self, name, description, public_settings, private_settings=None,
+                 data_format='spectrum', modes=None, data=None, results=None, debug=False):
+        """Initialize Algorithm object."""
+
+        Algorithm.__init__(self, name=name, description=description,
+                           public_settings=public_settings, private_settings=private_settings,
+                           data_format=data_format, modes=modes, data=data, results=results,
+                           debug=debug)
+
+        self._cf_settings_desc = CURVE_FIT_SETTINGS
+        self._cf_settings = SettingsValues(self._cf_settings_desc.names)
+
+
+    def _initialize_bounds(self, mode):
+        """Initialize a bounds definition.
+
+        Parameters
+        ----------
+        mode : {'aperiodic', 'periodic'}
+            Which mode to initialize for.
+
+        Returns
+        -------
+        bounds : tuple of array
+            Bounds values.
+
+        Notes
+        -----
+        Output follows the needed bounds definition for curve_fit, which is:
+            ([low_bound_param1, low_bound_param2],
+             [high_bound_param1, high_bound_param2])
+        """
+
+        n_params = getattr(self.modes, mode).n_params
+        bounds = (np.array([-np.inf] * n_params), np.array([np.inf] * n_params))
+
+        return bounds
+
+    def _initialize_guess(self, mode):
+        """Initialize a guess definition.
+
+        Parameters
+        ----------
+        mode : {'aperiodic', 'periodic'}
+            Which mode to initialize for.
+
+        Returns
+        -------
+        guess : 1d array
+            Guess values.
+        """
+
+        guess = np.zeros([getattr(self.modes, mode).n_params])
+
+        return guess

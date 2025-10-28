@@ -260,7 +260,7 @@ for ind, (label, band_def) in enumerate(bands):
 ###################################################################################################
 
 # Extract aperiodic exponent values
-exps = fg.get_params('aperiodic_params', 'exponent')
+exps = fg.get_params('aperiodic', 'exponent')
 
 ###################################################################################################
 

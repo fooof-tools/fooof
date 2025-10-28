@@ -59,15 +59,15 @@ fg.fit(freqs, powers)
 #
 # These attributes are:
 #
-# - ``n_null_`` : the number of model results that are null
-# - ``null_inds_`` : the indices of any null model results
+# - ``n_null`` : the number of model results that are null
+# - ``null_inds`` : the indices of any null model results
 #
 
 ###################################################################################################
 
 # Check for failed model fits
-print('Number of Null models  : \t', fg.results.n_null_)
-print('Indices of Null models : \t', fg.results.null_inds_)
+print('Number of Null models  : \t', fg.results.n_null)
+print('Indices of Null models : \t', fg.results.null_inds)
 
 ###################################################################################################
 # Inducing Model Fit Failures
@@ -86,7 +86,7 @@ print('Indices of Null models : \t', fg.results.null_inds_)
 ###################################################################################################
 
 # Hack the object to induce model failures
-fg._maxfev = 50
+fg.algorithm._cf_settings.maxfev = 50
 
 ###################################################################################################
 
@@ -102,8 +102,8 @@ fg.fit(freqs, powers)
 ###################################################################################################
 
 # Check how many model fit failures we have failed model fits
-print('Number of Null models  : \t', fg.results.n_null_)
-print('Indices of Null models : \t', fg.results.null_inds_)
+print('Number of Null models  : \t', fg.results.n_null)
+print('Indices of Null models : \t', fg.results.null_inds)
 
 ###################################################################################################
 # Debug Mode

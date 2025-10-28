@@ -7,7 +7,6 @@ import numpy as np
 from specparam.data import SimParams
 from specparam.modes.modes import check_mode_definition
 from specparam.modes.definitions import AP_MODES
-from specparam.utils.select import groupby
 from specparam.utils.checks import check_flat
 from specparam.modutils.errors import InconsistentDataError
 
@@ -33,7 +32,6 @@ def collect_sim_params(aperiodic_params, periodic_params, nlv):
     """
 
     return SimParams(deepcopy(aperiodic_params),
-                     #sorted(groupby(check_flat(periodic_params), 3)),
                      deepcopy(periodic_params),
                      nlv)
 
