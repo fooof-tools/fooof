@@ -16,6 +16,8 @@ class Metric():
         The category of measure, e.g. 'error' or 'gof'.
     measure : str
         The specific measure, e.g. 'r_squared'.
+    description : str
+        Description of the metric.
     func : callable
         The function that computes the metric.
     kwargs : dictionary
@@ -25,11 +27,12 @@ class Metric():
         and returns the desired parameter / computed value.
     """
 
-    def __init__(self, category, measure, func, kwargs=None):
+    def __init__(self, category, measure, description, func, kwargs=None):
         """Initialize metric."""
 
         self.category = category
         self.measure = measure
+        self.description = description
         self.func = func
         self.result = np.nan
         self.kwargs = {} if not kwargs else kwargs
