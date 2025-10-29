@@ -11,7 +11,7 @@ import os
 import numpy as np
 from numpy.testing import assert_equal
 
-from specparam.measures.metrics import METRICS
+from specparam.metrics.definitions import METRICS
 from specparam.models.utils import compare_model_objs
 from specparam.modutils.dependencies import safe_import
 from specparam.sim import sim_group_power_spectra

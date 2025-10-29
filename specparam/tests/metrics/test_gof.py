@@ -1,6 +1,6 @@
-"""Test functions for specparam.measures.gof."""
+"""Test functions for specparam.metrics.gof."""
 
-from specparam.measures.gof import *
+from specparam.metrics.gof import *
 
 ###################################################################################################
 ###################################################################################################
