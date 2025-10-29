@@ -1,11 +1,11 @@
-"""Tests for specparam.objs.metrics."""
+"""Tests for specparam.metrics.metrics"""
 
 from pytest import raises
 
-from specparam.measures.error import compute_mean_abs_error
-from specparam.measures.gof import compute_r_squared, compute_adj_r_squared
+from specparam.metrics.error import compute_mean_abs_error
+from specparam.metrics.gof import compute_r_squared, compute_adj_r_squared
 
-from specparam.objs.metrics import *
+from specparam.metrics.metrics import *
 
 ###################################################################################################
 ###################################################################################################

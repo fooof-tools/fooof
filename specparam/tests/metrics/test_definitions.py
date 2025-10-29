@@ -1,8 +1,8 @@
-"""Test functions for specparam.measures.metrics."""
+"""Test functions for specparam.metrics.definitions."""
 
-from specparam.objs.metrics import Metric
+from specparam.metrics.metrics import Metric
 
-from specparam.measures.metrics import *
+from specparam.metrics.definitions import *
 
 ###################################################################################################
 ###################################################################################################

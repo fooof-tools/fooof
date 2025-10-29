@@ -11,7 +11,7 @@ from pytest import raises
 
 from specparam.utils.select import groupby
 from specparam.modutils.errors import FitError
-from specparam.measures.metrics import METRICS
+from specparam.metrics.definitions import METRICS
 from specparam.sim import gen_freqs, sim_power_spectrum
 from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.models.utils import compare_model_objs

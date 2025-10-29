@@ -7,10 +7,10 @@ import numpy as np
 
 from specparam.bands.bands import check_bands
 from specparam.modes.modes import Modes
-from specparam.objs.metrics import Metrics
 from specparam.objs.params import ModelParameters
 from specparam.objs.components import ModelComponents
-from specparam.measures.metrics import METRICS
+from specparam.metrics.metrics import Metrics
+from specparam.metrics.definitions import METRICS
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,

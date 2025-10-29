@@ -1,9 +1,9 @@
 """Collect together library of available built in metrics."""
 
-from specparam.objs.metrics import Metric
-from specparam.measures.error import (compute_mean_abs_error, compute_mean_squared_error,
-                                      compute_root_mean_squared_error, compute_median_abs_error)
-from specparam.measures.gof import compute_r_squared, compute_adj_r_squared
+from specparam.metrics.metrics import Metric
+from specparam.metrics.error import (compute_mean_abs_error, compute_mean_squared_error,
+                                     compute_root_mean_squared_error, compute_median_abs_error)
+from specparam.metrics.gof import compute_r_squared, compute_adj_r_squared
 
 ###################################################################################################
 ## ERROR METRICS
