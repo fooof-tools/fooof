@@ -153,7 +153,6 @@ PE_MODES = {
 ## ALL MODES
 
 # Collect a store of all available modes
-
 MODES = {
     'aperiodic' : AP_MODES,
     'periodic' : PE_MODES,
@@ -172,7 +171,7 @@ def check_modes(component, check_params=False):
     """
 
     print('Available {:s} modes:'.format(component))
-    for mode in ALL_MODES[component].values():
+    for mode in MODES[component].values():
         if not check_params:
             print('    {:10s}    {:s}'.format(mode.name, mode.description))
         else:
