@@ -1,5 +1,5 @@
 """
-XX: Periodic Component Fitting
+04: Periodic Component Fitting
 ===============================
 
 Choosing and using different modes for fitting the periodic component.

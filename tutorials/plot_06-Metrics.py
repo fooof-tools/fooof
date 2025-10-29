@@ -1,5 +1,5 @@
 """
-XX: Metrics & Model Evaluation
+06: Metrics & Model Evaluation
 ==============================
 
 An overview of metrics & model evaluation to examine model fit quality.
