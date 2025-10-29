@@ -1,49 +1,119 @@
-"""Tests for the specparam.data.data."""
+"""Tests for specparam.data.data."""
 
-import numpy as np
+from specparam.data import SpectrumMetaData, ModelChecks
+
+from specparam.tests.tutils import plot_test
 
 from specparam.data.data import *
 
 ###################################################################################################
 ###################################################################################################
 
-def test_model_settings():
+## 1D Data Object
 
-    settings = ModelSettings([1, 8], 8, 0.25, 2)
-    assert settings
+def test_data():
+    """Check data object initializes properly."""
 
-    for field in ModelSettings._fields:
-        assert getattr(settings, field)
+    tdata = Data()
+    assert tdata
 
-def test_spectrum_meta_data():
+def test_data_add_data():
 
-    meta_data = SpectrumMetaData([1, 50], 0.5)
-    assert meta_data
+    tdata = Data()
+    freqs, pows = np.array([1, 2, 3]), np.array([10, 10, 10])
+    tdata.add_data(freqs, pows)
+    assert tdata.has_data
 
-    for field in SpectrumMetaData._fields:
-        assert getattr(meta_data, field)
+def test_data_meta_data():
 
-def test_model_checks():
+    tdata = Data()
 
-    checks = ModelChecks(True, True)
-    assert checks
+    # Test adding meta data
+    meta_data = SpectrumMetaData([3, 40], 0.5)
+    tdata.add_meta_data(meta_data)
+    for mlabel in tdata._meta_fields:
+        assert getattr(tdata, mlabel) == getattr(meta_data, mlabel)
 
-    for field in ModelChecks._fields:
-        assert getattr(checks, field.strip('_'))
+    # Test getting meta data
+    meta_data_out = tdata.get_meta_data()
+    assert isinstance(meta_data_out, SpectrumMetaData)
+    assert meta_data_out == meta_data
 
-def test_fit_results():
+def test_data_get_set_checks(tdata):
 
-    results = FitResults(\
-        [1, 1], [np.nan, np.nan], [10, 0.5, 1], [10, 0.5, 0.5], {'a' : 0.95, 'b' : 0.05})
-    assert results
+    tdata.set_checks(False, False)
+    tchecks1 = tdata.get_checks()
+    assert isinstance(tchecks1, ModelChecks)
+    assert tdata.checks['freqs'] == tchecks1.check_freqs == False
+    assert tdata.checks['data'] == tchecks1.check_data == False
 
-    for field in FitResults._fields:
-        assert getattr(results, field.strip('_'))
+    tdata.set_checks(True, True)
+    tchecks2 = tdata.get_checks()
+    assert isinstance(tchecks2, ModelChecks)
+    assert tdata.checks['freqs'] == tchecks2.check_freqs == True
+    assert tdata.checks['data'] == tchecks2.check_data == True
 
-def test_sim_params():
+@plot_test
+def test_data_plot(tdata, skip_if_no_mpl):
 
-    sim_params = SimParams([1, 1], [10, 1, 1], 0.05)
-    assert sim_params
+    tdata.plot()
 
-    for field in SimParams._fields:
-        assert getattr(sim_params, field)
+## 2D Data Object
+
+def test_data2d():
+
+    tdata2d = Data2D()
+    assert tdata2d
+    assert isinstance(tdata2d, Data)
+    assert isinstance(tdata2d, Data2D)
+
+def test_data2d_add_data():
+
+    tdata2d = Data2D()
+    freqs, pows = np.array([1, 2, 3]), np.array([[10, 10, 10], [20, 20, 20]])
+    tdata2d.add_data(freqs, pows)
+    assert tdata2d.has_data
+
+@plot_test
+def test_data2d_plot(tdata2d, skip_if_no_mpl):
+
+    tdata2d.plot()
+
+## 2DT Data Object
+
+def test_data2dt():
+
+    tdata2dt = Data2DT()
+    assert tdata2dt
+    assert isinstance(tdata2dt, Data)
+    assert isinstance(tdata2dt, Data2D)
+    assert isinstance(tdata2dt, Data2DT)
+
+def test_data2dt_add_data():
+
+    tdata2dt = Data2DT()
+    freqs, pows = np.array([1, 2, 3]), np.array([[10, 10, 10], [20, 20, 20]]).T
+    tdata2dt.add_data(freqs, pows)
+    assert tdata2dt.has_data
+    assert np.all(tdata2dt.spectrogram)
+    assert tdata2dt.n_time_windows
+
+## 3D Data Object
+
+def test_data3d():
+
+    tdata3d = Data3D()
+    assert tdata3d
+    assert isinstance(tdata3d, Data)
+    assert isinstance(tdata3d, Data2D)
+    assert isinstance(tdata3d, Data2DT)
+    assert isinstance(tdata3d, Data3D)
+
+def test_data3d_add_data():
+
+    tdata3d = Data3D()
+    freqs, pows = np.array([1, 2, 3]), np.array([[10, 10, 10], [20, 20, 20]]).T
+    tdata3d.add_data(freqs, np.array([pows, pows]))
+    assert tdata3d.has_data
+    assert np.all(tdata3d.spectrograms)
+    assert tdata3d.n_events

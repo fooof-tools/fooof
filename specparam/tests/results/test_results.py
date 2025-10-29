@@ -1,6 +1,6 @@
-"""Tests for specparam.objs.results."""
+"""Tests for specparam.results.results."""
 
-from specparam.objs.results import *
+from specparam.results.results import *
 
 ###################################################################################################
 ###################################################################################################
